@@ -1,0 +1,27 @@
+{
+  "name": "triplex_monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "pnpm --filter @triplex/run dev",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "postinstall": "preconstruct dev"
+  },
+  "dependencies": {
+    "@triplex/run": "workspace:*",
+    "@preconstruct/cli": "^2.3.0",
+    "esbuild": "^0.17.4",
+    "esbuild-register": "^3.4.2",
+    "prettier": "^2.8.3",
+    "typescript": "^4.9.4"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "packageManager": "pnpm@7.21.0",
+  "preconstruct": {
+    "packages": [
+      "packages/*"
+    ]
+  }
+}
