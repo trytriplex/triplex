@@ -1,5 +1,10 @@
 {
-  "extends": "tsconfig/node.json",
+  "extends": "../../.tsconfig/node.json",
   "include": ["."],
-  "exclude": ["dist", "build", "node_modules"]
+  "exclude": ["dist", "build", "node_modules"],
+  "ts-node": {
+    "esm": true,
+    "transpileOnly": true,
+    "swc": true
+  }
 }
