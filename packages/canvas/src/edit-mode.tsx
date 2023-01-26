@@ -1,5 +1,5 @@
 import { OrbitControls, PerspectiveCamera, Grid } from "@react-three/drei";
-import { Canvas as R3FCanvas } from "@react-three/fiber";
+import { Canvas } from "@react-three/fiber";
 import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import {
   Box3,
@@ -41,13 +41,6 @@ export function CanvasEditMode({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
-    if (path) {
-      window.document.title = path.split("/").at(-1) + " • TRIPLEX";
-      fetch(`http://localhost:8000/scene/open?path=${path}`, {});
-    }
-  }, [path]);
-
-  useEffect(() => {
     if (!path) {
       return;
     }
@@ -70,7 +63,7 @@ export function CanvasEditMode({ children }: { children: React.ReactNode }) {
   }, [path]);
 
   return (
-    <R3FCanvas
+    <Canvas
       gl={{ antialias: false }}
       id="editor-canvas"
       shadows
@@ -98,6 +91,6 @@ export function CanvasEditMode({ children }: { children: React.ReactNode }) {
         fadeStrength={1.5}
         position={focalPoint.grid}
       />
-    </R3FCanvas>
+    </Canvas>
   );
 }
