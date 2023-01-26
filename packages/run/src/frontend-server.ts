@@ -5,7 +5,7 @@ import { createServer as createViteServer } from "vite";
 import react from "@vitejs/plugin-react";
 import glsl from "vite-plugin-glsl";
 
-const root = "/Users/douges/projects/triplex_new";
+const root = process.cwd();
 const triplexTmpPath = join(root, "node_modules", ".triplex");
 const runPkgPath = join(dirname(fileURLToPath(import.meta.url)), "..");
 
@@ -23,6 +23,9 @@ export async function createServer(config: { publicDir?: string }) {
     },
     plugins: [(react as any)(), glsl()],
     publicDir: config.publicDir,
+    resolve: {
+      preserveSymlinks: true,
+    },
     root,
   });
 
