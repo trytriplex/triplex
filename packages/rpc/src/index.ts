@@ -66,8 +66,13 @@ export function createServer(config: { tsConfigFilePath?: string }) {
   async function watchSourceFile(sourceFile: SourceFile, watcher: FsWatcher) {
     for await (const event of watcher.iterable) {
       if (event.eventType === "change") {
-        const result = await sourceFile.refreshFromFileSystem();
-        if (result === FileSystemRefreshResult.Updated) {
+        const result = sourceFile.refreshFromFileSystemSync();
+        if (
+          result === FileSystemRefreshResult.Updated &&
+          // TODO: Hack - there is a race condition somewhere.
+          // This ensures the file doesn't get blown away unexpectedly.
+          sourceFile.getText().trim()
+        ) {
           transformSouceFileSync(sourceFile);
         }
       }
