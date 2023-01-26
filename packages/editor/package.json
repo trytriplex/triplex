@@ -3,13 +3,6 @@
   "version": "0.0.0",
   "main": "dist/triplex-editor.cjs.js",
   "module": "dist/triplex-editor.esm.js",
-  "exports": {
-    ".": {
-      "module": "./dist/triplex-editor.esm.js",
-      "default": "./dist/triplex-editor.cjs.js"
-    },
-    "./package.json": "./package.json"
-  },
   "types": "dist/triplex-editor.cjs.js",
   "license": "MIT",
   "dependencies": {

@@ -3,7 +3,6 @@
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"],
   "ts-node": {
-    "esm": true,
     "transpileOnly": true,
     "swc": true
   }

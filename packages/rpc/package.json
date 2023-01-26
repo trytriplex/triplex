@@ -1,17 +1,9 @@
 {
   "name": "@triplex/rpc",
   "version": "0.0.0",
-  "type": "module",
   "main": "dist/triplex-rpc.cjs.js",
   "module": "dist/triplex-rpc.esm.js",
   "types": "dist/triplex-rpc.cjs.d.ts",
-  "exports": {
-    ".": {
-      "import": "./dist/triplex-rpc.esm.js",
-      "default": "./dist/triplex-rpc.cjs.js"
-    },
-    "./package.json": "./package.json"
-  },
   "license": "MIT",
   "dependencies": {
     "@oakserver/oak": "^11.0.0",
@@ -19,15 +11,5 @@
   },
   "devDependencies": {
     "@types/node": "^18.11.18"
-  },
-  "preconstruct": {
-    "exports": {
-      "extra": {
-        ".": {
-          "import": "./dist/triplex-rpc.esm.js",
-          "default": "./dist/triplex-rpc.cjs.js"
-        }
-      }
-    }
   }
 }

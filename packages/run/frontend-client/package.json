@@ -1,0 +1,4 @@
+{
+  "main": "dist/triplex-run-frontend-client.cjs.js",
+  "module": "dist/triplex-run-frontend-client.esm.js"
+}

@@ -1,10 +1,12 @@
 import { createServer as createViteServer } from "vite";
 import react from "@vitejs/plugin-react";
-import glsl from "vite-plugin-glsl";
+import { join } from "path";
 
-const root = process.cwd();
+const root = join(process.cwd(), "node_modules", "@triplex/run");
 
 export async function createServer(config: { publicDir?: string }) {
+  const glsl = (await import("vite-plugin-glsl")).default;
+
   const frontendServer = await createViteServer({
     configFile: false,
     define: {
