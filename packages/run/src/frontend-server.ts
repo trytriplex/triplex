@@ -18,9 +18,6 @@ export async function createServer(config: { publicDir?: string }) {
 
   const frontendServer = await createViteServer({
     configFile: false,
-    define: {
-      __CWD__: `"${root}"`,
-    },
     plugins: [(react as any)(), glsl()],
     publicDir: config.publicDir,
     root,

@@ -1,1 +1,1 @@
-import "@triplex/canvas";
+import "@triplex/editor";

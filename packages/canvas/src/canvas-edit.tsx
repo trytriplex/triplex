@@ -1,6 +1,6 @@
 import { OrbitControls, PerspectiveCamera, Grid } from "@react-three/drei";
 import { Canvas as R3FCanvas } from "@react-three/fiber";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import {
   Box3,
   Layers,
@@ -10,19 +10,17 @@ import {
 } from "three";
 import { useSearchParams } from "react-router-dom";
 import { Selection } from "./selection";
-import { SceneLoader } from "./scene-loader";
-
-const layers = new Layers();
-layers.enableAll();
 
 const V1 = new Vector3();
+const layers = new Layers();
+layers.enableAll();
 
 const defaultFocalPoint: { grid: Vector3Tuple; objectCenter: Vector3Tuple } = {
   grid: [0, 0, 0],
   objectCenter: [0, 0, 0],
 };
 
-export function Canvas() {
+export function CanvasEditMode({ children }: { children: React.ReactNode }) {
   const [searchParams] = useSearchParams();
   const path = searchParams.get("path") || "";
   const [focalPoint, setFocalPoint] = useState(defaultFocalPoint);
@@ -45,7 +43,7 @@ export function Canvas() {
   useEffect(() => {
     if (path) {
       window.document.title = path.split("/").at(-1) + " • TRIPLEX";
-      fetch(`http://localhost:8000/scene/open?path=${path}&cwd=${__CWD__}`);
+      fetch(`http://localhost:8000/scene/open?path=${path}`);
     }
   }, [path]);
 
@@ -86,7 +84,7 @@ export function Canvas() {
       />
       <OrbitControls makeDefault target={target} />
       <Selection onFocus={onFocusObject}>
-        <Suspense fallback={null}>{path && <SceneLoader />}</Suspense>
+        <Suspense fallback={null}>{children}</Suspense>
       </Selection>
 
       <Grid

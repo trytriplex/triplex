@@ -41,7 +41,6 @@ importers:
       '@react-three/drei': ^9.54.0
       '@react-three/fiber': ^8.10.1
       '@types/react': ^18.0.27
-      '@types/react-dom': ^18.0.10
       '@types/three': ^0.148.0
       react: ^18.0.0
       react-dom: ^18.2.0
@@ -52,11 +51,35 @@ importers:
     dependencies:
       '@react-three/drei': 9.54.0_x2hxvfhxegsms6izcxmvhtdkgy
       '@types/react': 18.0.27
-      '@types/react-dom': 18.0.10
       '@types/three': 0.148.0
       react-dom: 18.2.0_react@18.2.0
       react-router-dom: 6.7.0_biqbaboplfbrettd7655fr4n2y
       three-stdlib: 2.21.5_three@0.148.0
+    devDependencies:
+      '@react-three/fiber': 8.10.1_4tzez3c2xpzuefjrvhpyy55bva
+      react: 18.2.0
+      three: 0.148.0
+      vite: 4.0.4
+
+  packages/editor:
+    specifiers:
+      '@react-three/fiber': ^8.10.1
+      '@triplex/canvas': ^0.0.0
+      '@types/react': ^18.0.27
+      '@types/react-dom': ^18.0.10
+      '@types/three': ^0.148.0
+      react: ^18.0.0
+      react-dom: ^18.2.0
+      react-router-dom: ^6.7.0
+      three: ^0.148.0
+      vite: ^4.0.4
+    dependencies:
+      '@triplex/canvas': link:../canvas
+      '@types/react': 18.0.27
+      '@types/react-dom': 18.0.10
+      '@types/three': 0.148.0
+      react-dom: 18.2.0_react@18.2.0
+      react-router-dom: 6.7.0_biqbaboplfbrettd7655fr4n2y
     devDependencies:
       '@react-three/fiber': 8.10.1_4tzez3c2xpzuefjrvhpyy55bva
       react: 18.2.0
@@ -78,7 +101,7 @@ importers:
 
   packages/run:
     specifiers:
-      '@triplex/canvas': ^0.0.0
+      '@triplex/editor': ^0.0.0
       '@triplex/rpc': ^0.0.0
       '@types/node': ^18.11.18
       '@vitejs/plugin-react': ^2.2.0
@@ -87,7 +110,7 @@ importers:
       vite: ^3.2.4
       vite-plugin-glsl: ^0.5.4
     dependencies:
-      '@triplex/canvas': link:../canvas
+      '@triplex/editor': link:../editor
       '@triplex/rpc': link:../rpc
       '@vitejs/plugin-react': 2.2.0_vite@3.2.5
       vite: 3.2.5_@types+node@18.11.18
