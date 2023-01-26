@@ -1,9 +1,9 @@
 {
-  "name": "@triplex/rpc",
+  "name": "@triplex/server",
   "version": "0.0.0",
-  "main": "dist/triplex-rpc.cjs.js",
-  "module": "dist/triplex-rpc.esm.js",
-  "types": "dist/triplex-rpc.cjs.d.ts",
+  "main": "dist/triplex-server.cjs.js",
+  "module": "dist/triplex-server.esm.js",
+  "types": "dist/triplex-server.cjs.d.ts",
   "license": "MIT",
   "dependencies": {
     "@oakserver/oak": "^11.0.0",

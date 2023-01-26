@@ -1,1 +1,1 @@
-export { createServer } from "@triplex/rpc";
+export { createServer } from "@triplex/server";

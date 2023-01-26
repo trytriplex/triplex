@@ -38,7 +38,6 @@ importers:
 
   packages/canvas:
     specifiers:
-      '@adobe/react-spectrum': ^3.24.1
       '@react-three/drei': ^9.54.0
       '@react-three/fiber': ^8.10.1
       '@types/react': ^18.0.27
@@ -50,7 +49,6 @@ importers:
       three-stdlib: ^2.21.5
       vite: ^4.0.4
     dependencies:
-      '@adobe/react-spectrum': 3.24.1_biqbaboplfbrettd7655fr4n2y
       '@react-three/drei': 9.54.0_x2hxvfhxegsms6izcxmvhtdkgy
       '@types/react': 18.0.27
       '@types/three': 0.148.0
@@ -88,7 +86,30 @@ importers:
       three: 0.148.0
       vite: 4.0.4
 
-  packages/rpc:
+  packages/run:
+    specifiers:
+      '@triplex/canvas': ^0.0.0
+      '@triplex/editor': ^0.0.0
+      '@triplex/server': ^0.0.0
+      '@types/node': ^18.11.18
+      '@vitejs/plugin-react': ^2.2.0
+      ts-node: ^10.9.1
+      typescript: ^4.9.4
+      vite: ^3.2.4
+      vite-plugin-glsl: ^0.5.4
+    dependencies:
+      '@triplex/canvas': link:../canvas
+      '@triplex/editor': link:../editor
+      '@triplex/server': link:../server
+      '@vitejs/plugin-react': 2.2.0_vite@3.2.5
+      vite: 3.2.5_@types+node@18.11.18
+      vite-plugin-glsl: 0.5.4_vite@3.2.5
+    devDependencies:
+      '@types/node': 18.11.18
+      ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
+      typescript: 4.9.4
+
+  packages/server:
     specifiers:
       '@oakserver/oak': ^11.0.0
       '@triplex/ts-morph': ^0.0.0
@@ -100,29 +121,6 @@ importers:
       ts-morph: 17.0.1
     devDependencies:
       '@types/node': 18.11.18
-
-  packages/run:
-    specifiers:
-      '@triplex/canvas': ^0.0.0
-      '@triplex/editor': ^0.0.0
-      '@triplex/rpc': ^0.0.0
-      '@types/node': ^18.11.18
-      '@vitejs/plugin-react': ^2.2.0
-      ts-node: ^10.9.1
-      typescript: ^4.9.4
-      vite: ^3.2.4
-      vite-plugin-glsl: ^0.5.4
-    dependencies:
-      '@triplex/canvas': link:../canvas
-      '@triplex/editor': link:../editor
-      '@triplex/rpc': link:../rpc
-      '@vitejs/plugin-react': 2.2.0_vite@3.2.5
-      vite: 3.2.5_@types+node@18.11.18
-      vite-plugin-glsl: 0.5.4_vite@3.2.5
-    devDependencies:
-      '@types/node': 18.11.18
-      ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
-      typescript: 4.9.4
 
   packages/ts-morph:
     specifiers:
