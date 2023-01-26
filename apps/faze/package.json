@@ -1,5 +1,6 @@
 {
-  "name": "example_game",
+  "name": "faze_game",
+  "private": true,
   "dependencies": {
     "@react-three/fiber": "^8.10.1",
     "@triplex/run": "workspace:*",
@@ -8,6 +9,6 @@
     "three": "^0.148.0"
   },
   "scripts": {
-    "start": "triplex"
+    "dev": "triplex"
   }
 }

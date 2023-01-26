@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter @triplex/run dev",
+    "dev": "pnpm --filter faze_game dev",
     "build": "preconstruct build",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "postinstall": "preconstruct fix && preconstruct dev"

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { useForceVisible } from "./scene-utils";
 
-const sceneModules = import.meta.glob("../.tmp/**/*.tsx");
+const sceneModules = import.meta.glob("@@/**/*.tsx");
 
 interface SceneMeta {
   customLighting: boolean;
@@ -37,7 +37,7 @@ export function SceneLoader() {
   }, [path, searchParams]);
 
   const meta: SceneMeta = resolvedModule?.__r3fEditorMeta || {};
-  const SceneComponent = Object.values(resolvedModule || {})[0] as Function;
+  const SceneComponent = resolvedModule?.default as Function;
 
   if (!SceneComponent) {
     return null;

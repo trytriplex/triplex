@@ -44,7 +44,7 @@ export function createServer(config: { tsConfigFilePath?: string }) {
     }
   >();
   const transformedFilesPath = () =>
-    posixPath.join(process.cwd(), "node_modules", ".triplex", ".tmp");
+    posixPath.join(process.cwd(), "node_modules", ".triplex");
 
   app.use(async (ctx, next) => {
     try {
