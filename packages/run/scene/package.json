@@ -1,0 +1,4 @@
+{
+  "main": "dist/triplex-run-scene.cjs.js",
+  "module": "dist/triplex-run-scene.esm.js"
+}

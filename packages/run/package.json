@@ -9,6 +9,7 @@
     "triplex": "./dist/triplex-run.cjs.js"
   },
   "dependencies": {
+    "@triplex/canvas": "^0.0.0",
     "@triplex/editor": "^0.0.0",
     "@triplex/rpc": "^0.0.0",
     "@vitejs/plugin-react": "^2.2.0",
@@ -23,7 +24,8 @@
   "preconstruct": {
     "entrypoints": [
       "index.ts",
-      "frontend-client.ts"
+      "editor.ts",
+      "scene.ts"
     ]
   }
 }

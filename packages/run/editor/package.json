@@ -1,0 +1,4 @@
+{
+  "main": "dist/triplex-run-editor.cjs.js",
+  "module": "dist/triplex-run-editor.esm.js"
+}

@@ -43,7 +43,7 @@ export function CanvasEditMode({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     if (path) {
       window.document.title = path.split("/").at(-1) + " • TRIPLEX";
-      fetch(`http://localhost:8000/scene/open?path=${path}`);
+      fetch(`http://localhost:8000/scene/open?path=${path}`, {});
     }
   }, [path]);
 
@@ -58,7 +58,7 @@ export function CanvasEditMode({ children }: { children: React.ReactNode }) {
         (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
       ) {
         e.preventDefault();
-        fetch(`http://localhost:8000/scene/save?path=${path}`);
+        fetch(`http://localhost:8000/scene/save?path=${path}`, {});
       }
     };
 

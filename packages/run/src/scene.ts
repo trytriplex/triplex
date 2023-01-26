@@ -1,0 +1,1 @@
+import "@triplex/canvas";
