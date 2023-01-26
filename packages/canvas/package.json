@@ -6,6 +6,7 @@
   "types": "dist/triplex-canvas.cjs.js",
   "license": "MIT",
   "dependencies": {
+    "@adobe/react-spectrum": "^3.24.1",
     "@react-three/drei": "^9.54.0",
     "@types/react": "^18.0.27",
     "@types/three": "^0.148.0",

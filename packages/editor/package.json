@@ -6,6 +6,7 @@
   "types": "dist/triplex-editor.cjs.js",
   "license": "MIT",
   "dependencies": {
+    "@adobe/react-spectrum": "^3.24.1",
     "@types/react-dom": "^18.0.10",
     "@types/react": "^18.0.27",
     "@types/three": "^0.148.0",
