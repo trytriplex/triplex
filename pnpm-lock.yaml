@@ -66,10 +66,12 @@ importers:
   packages/rpc:
     specifiers:
       '@oakserver/oak': ^11.0.0
+      '@triplex/ts-morph': ^0.0.0
       '@types/node': ^18.11.18
       ts-morph: ^17.0.1
     dependencies:
       '@oakserver/oak': 11.0.0
+      '@triplex/ts-morph': link:../ts-morph
       ts-morph: 17.0.1
     devDependencies:
       '@types/node': 18.11.18
@@ -94,6 +96,15 @@ importers:
       '@types/node': 18.11.18
       ts-node: 10.9.1_awa2wsr5thmg3i7jqycphctjfq
       typescript: 4.9.4
+
+  packages/ts-morph:
+    specifiers:
+      '@types/node': ^18.11.18
+      ts-morph: ^17.0.1
+    dependencies:
+      ts-morph: 17.0.1
+    devDependencies:
+      '@types/node': 18.11.18
 
 packages:
 

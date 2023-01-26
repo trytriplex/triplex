@@ -7,6 +7,7 @@
   "license": "MIT",
   "dependencies": {
     "@oakserver/oak": "^11.0.0",
+    "@triplex/ts-morph": "^0.0.0",
     "ts-morph": "^17.0.1"
   },
   "devDependencies": {
