@@ -23,7 +23,6 @@
   },
   "packageManager": "pnpm@7.21.0",
   "preconstruct": {
-    "exports": true,
     "packages": [
       "packages/*"
     ]

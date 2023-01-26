@@ -3,8 +3,7 @@
   "display": "Node",
   "extends": "./base.json",
   "compilerOptions": {
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
+    "module": "CommonJS",
     "target": "ES2017"
   }
 }

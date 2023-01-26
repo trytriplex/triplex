@@ -1,5 +1,5 @@
-import { createServer as createFrontendServer } from "./frontend-server.js";
-import { createServer as createBackendServer } from "./backend-server.js";
+import { createServer as createFrontendServer } from "./frontend-server";
+import { createServer as createBackendServer } from "./backend-server";
 
 async function init() {
   const frontendServer = await createFrontendServer({});
