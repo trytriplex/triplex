@@ -1,8 +1,8 @@
-import { TransformControls } from '@react-three/drei';
-import { ReactNode, useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'react-router-dom';
-import { Box3, Object3D, Vector3, Vector3Tuple } from 'three';
-import { TransformControls as TransformControlsImpl } from 'three-stdlib';
+import { TransformControls } from "@react-three/drei";
+import { ReactNode, useEffect, useRef, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import { Box3, Object3D, Vector3, Vector3Tuple } from "three";
+import { TransformControls as TransformControlsImpl } from "three-stdlib";
 
 interface EditorNodeData {
   path: string;
@@ -13,7 +13,7 @@ interface EditorNodeData {
   scale: boolean;
   sceneObject: Object3D;
   translate: boolean;
-  space: 'local' | 'world';
+  space: "local" | "world";
 }
 
 interface SceneObjectData {
@@ -34,7 +34,7 @@ type WithR3FData<TObject extends Object3D> = {
   traverse(callback: (object: WithR3FData<Object3D>) => any): void;
 
   parent: WithR3FData<Object3D> | null;
-} & Omit<TObject, 'traverse' | 'parent'>;
+} & Omit<TObject, "traverse" | "parent">;
 
 const findPositionedObject = (object: WithR3FData<Object3D>): Object3D => {
   let found: Object3D | undefined = undefined;
@@ -50,25 +50,25 @@ const findPositionedObject = (object: WithR3FData<Object3D>): Object3D => {
 };
 
 const findEditorData = (
-  object: WithR3FData<Object3D>,
+  object: WithR3FData<Object3D>
 ): EditorNodeData | null => {
   let parent: WithR3FData<Object3D> | null = object.parent;
   let data: EditorNodeData | null = null;
 
   while (parent) {
-    if ('__r3fEditor' in parent.userData) {
+    if ("__r3fEditor" in parent.userData) {
       if (!data) {
         data = {
           ...parent.userData.__r3fEditor,
           sceneObject: findPositionedObject(parent),
-          space: 'world',
+          space: "world",
         } as EditorNodeData;
       }
     }
 
     if (data && parent.__r3f.memoizedProps.position) {
       // There is a parent that has set position so this must be local space.
-      data.space = 'local';
+      data.space = "local";
     }
 
     parent = parent.parent;
@@ -90,10 +90,10 @@ export function Selection({
   const [selected, setSelected] = useState<EditorNodeData>();
   const [objectData, setObjectData] = useState<SceneObjectData | undefined>();
   const [searchParams, setSearchParams] = useSearchParams();
-  const [mode, setMode] = useState<'translate' | 'rotate' | 'scale'>(
-    'translate',
+  const [mode, setMode] = useState<"translate" | "rotate" | "scale">(
+    "translate"
   );
-  const path = searchParams.get('path');
+  const path = searchParams.get("path");
   const transformControls = useRef<TransformControlsImpl>(null);
   const dragging = useRef(false);
 
@@ -121,13 +121,13 @@ export function Selection({
 
       if (data.path) {
         fetch(
-          `http://localhost:8000/scene/open?path=${data.path}&cwd=${__CWD__}`,
+          `http://localhost:8000/scene/open?path=${data.path}&cwd=${__CWD__}`
         );
       }
 
       // Begin fetching data for this.
       const res = await fetch(
-        `http://localhost:8000/scene/object/${data.line}/${data.column}?path=${path}`,
+        `http://localhost:8000/scene/object/${data.line}/${data.column}?path=${path}`
       );
       const json = await res.json();
       setObjectData(json);
@@ -140,7 +140,7 @@ export function Selection({
         return;
       }
 
-      if (e.key === 'Escape') {
+      if (e.key === "Escape") {
         if (dragging.current) {
           transformControls.current?.reset();
         } else {
@@ -149,38 +149,38 @@ export function Selection({
         }
       }
 
-      if (e.key === 'f') {
+      if (e.key === "f") {
         box.setFromObject(selected.sceneObject);
         onFocus(
           selected.sceneObject.getWorldPosition(V1).toArray(),
           box,
-          selected.sceneObject,
+          selected.sceneObject
         );
       }
 
-      if (e.key === 'F') {
+      if (e.key === "F") {
         setSearchParams({
           path: selected.path,
           props: encodeURIComponent(JSON.stringify(selected.props)),
         });
       }
 
-      if (e.key === 'r') {
-        setMode('rotate');
+      if (e.key === "r") {
+        setMode("rotate");
       }
 
-      if (e.key === 't') {
-        setMode('translate');
+      if (e.key === "t") {
+        setMode("translate");
       }
 
-      if (e.key === 's' && !e.metaKey && !e.ctrlKey) {
-        setMode('scale');
+      if (e.key === "s" && !e.metaKey && !e.ctrlKey) {
+        setMode("scale");
       }
     };
 
-    document.addEventListener('keyup', callback);
+    document.addEventListener("keyup", callback);
 
-    return () => document.removeEventListener('keyup', callback);
+    return () => document.removeEventListener("keyup", callback);
   }, [onFocus, selected, setSearchParams]);
 
   const onMouseUp = (e: any) => {
@@ -190,36 +190,37 @@ export function Selection({
       return;
     }
 
-    if (e.mode === 'translate') {
-      const position = selected.space === 'world'
-        ? selected.sceneObject.getWorldPosition(V1).toArray()
-        : selected.sceneObject.position.toArray();
+    if (e.mode === "translate") {
+      const position =
+        selected.space === "world"
+          ? selected.sceneObject.getWorldPosition(V1).toArray()
+          : selected.sceneObject.position.toArray();
 
       fetch(
-        `http://localhost:8000/scene/object/${selected.line}/${selected.column}/prop?value=${
-          JSON.stringify(position)
-        }&path=${path}&name=position`,
+        `http://localhost:8000/scene/object/${selected.line}/${
+          selected.column
+        }/prop?value=${JSON.stringify(position)}&path=${path}&name=position`
       );
     }
 
-    if (e.mode === 'rotate') {
+    if (e.mode === "rotate") {
       const rotation = selected.sceneObject.rotation.toArray();
       rotation.pop();
 
       fetch(
-        `http://localhost:8000/scene/object/${selected.line}/${selected.column}/prop?value=${
-          JSON.stringify(rotation)
-        }&path=${path}&name=rotation`,
+        `http://localhost:8000/scene/object/${selected.line}/${
+          selected.column
+        }/prop?value=${JSON.stringify(rotation)}&path=${path}&name=rotation`
       );
     }
 
-    if (e.mode === 'scale') {
+    if (e.mode === "scale") {
       const scale = selected.sceneObject.scale.toArray();
 
       fetch(
-        `http://localhost:8000/scene/object/${selected.line}/${selected.column}/prop?value=${
-          JSON.stringify(scale)
-        }&path=${path}&name=scale`,
+        `http://localhost:8000/scene/object/${selected.line}/${
+          selected.column
+        }/prop?value=${JSON.stringify(scale)}&path=${path}&name=scale`
       );
     }
   };

@@ -1,4 +1,4 @@
-import { OrbitControls, PerspectiveCamera } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera, Grid } from "@react-three/drei";
 import { Canvas as R3FCanvas } from "@react-three/fiber";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -89,7 +89,17 @@ export function Canvas() {
         <Suspense fallback={null}>{path && <SceneLoader />}</Suspense>
       </Selection>
 
-      <gridHelper position={focalPoint.grid} />
+      <Grid
+        sectionColor="#9d4b4b"
+        cellColor="#6f6f6f"
+        cellThickness={1.0}
+        infiniteGrid
+        fadeDistance={30}
+        cellSize={1}
+        sectionSize={3}
+        fadeStrength={1.5}
+        position={focalPoint.grid}
+      />
     </R3FCanvas>
   );
 }
