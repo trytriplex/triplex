@@ -72,7 +72,12 @@ export function Canvas() {
   }, [path]);
 
   return (
-    <R3FCanvas gl={{ antialias: false }} shadows id="editor-canvas">
+    <R3FCanvas
+      gl={{ antialias: false }}
+      id="editor-canvas"
+      shadows
+      style={{ position: "absolute", inset: 0, backgroundColor: "black" }}
+    >
       <PerspectiveCamera
         ref={camera}
         makeDefault
