@@ -1,9 +1,9 @@
 {
-  "name": "@triplex/editor",
+  "name": "@triplex/canvas",
   "version": "0.0.0",
-  "main": "dist/triplex-editor.cjs.js",
-  "module": "dist/triplex-editor.esm.js",
-  "types": "dist/triplex-editor.cjs.js",
+  "main": "dist/triplex-canvas.cjs.js",
+  "module": "dist/triplex-canvas.esm.js",
+  "types": "dist/triplex-canvas.cjs.js",
   "license": "MIT",
   "dependencies": {
     "@react-three/drei": "^9.54.0",
