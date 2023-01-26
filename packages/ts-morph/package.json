@@ -1,0 +1,14 @@
+{
+  "name": "@triplex/ts-morph",
+  "version": "0.0.0",
+  "main": "dist/triplex-ts-morph.cjs.js",
+  "module": "dist/triplex-ts-morph.esm.js",
+  "types": "dist/triplex-jsx.cjs.d.ts",
+  "license": "MIT",
+  "dependencies": {
+    "ts-morph": "^17.0.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.11.18"
+  }
+}
