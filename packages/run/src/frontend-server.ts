@@ -3,8 +3,9 @@ import react from "@vitejs/plugin-react";
 import { join } from "path";
 import { mkdir } from "fs/promises";
 
+const tempFolderName = join("node_modules", ".triplex");
 const root = join(process.cwd(), "node_modules", "@triplex/run");
-const tempDir = join(process.cwd(), "node_modules", ".triplex");
+const tempDir = join(process.cwd(), tempFolderName);
 
 export async function createServer(config: { publicDir?: string }) {
   try {
@@ -23,6 +24,11 @@ export async function createServer(config: { publicDir?: string }) {
     plugins: [(react as any)(), glsl()],
     publicDir: config.publicDir,
     root,
+    server: {
+      watch: {
+        ignored: [join("!**", tempFolderName, "**")],
+      },
+    },
     resolve: {
       alias: {
         "@@": tempDir,
