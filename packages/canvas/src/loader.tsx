@@ -17,8 +17,9 @@ export function SceneLoader() {
 
   useEffect(() => {
     const sceneModule: any = Object.entries(sceneModules).find(([modPath]) =>
-      modPath.includes(path)
+      modPath.endsWith(path)
     );
+
     if (!sceneModule) {
       return;
     }

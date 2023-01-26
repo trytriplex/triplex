@@ -9,5 +9,6 @@
     "jsx": "react-jsx",
     "types": ["@react-three/fiber"]
   },
+  "include": ["."],
   "exclude": ["node_modules"]
 }

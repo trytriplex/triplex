@@ -106,7 +106,6 @@ export function getJsxElementPropTypes(
     const symbol = sourceFile.getLocalOrThrow(elementName);
     const componentFunction = symbol
       .getDeclarations()[0]
-      .asKindOrThrow(SyntaxKind.ImportSpecifier)
       .getType()
       .getSymbolOrThrow()
       .getDeclarations()[0]
