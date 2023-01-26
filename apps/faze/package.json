@@ -1,0 +1,13 @@
+{
+  "name": "example_game",
+  "dependencies": {
+    "@react-three/fiber": "^8.10.1",
+    "@triplex/run": "workspace:*",
+    "react-dom": "^18.2.0",
+    "react": "^18.2.0",
+    "three": "^0.148.0"
+  },
+  "scripts": {
+    "start": "triplex"
+  }
+}
