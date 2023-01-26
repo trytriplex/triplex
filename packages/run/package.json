@@ -5,15 +5,12 @@
   "module": "dist/triplex-run.esm.js",
   "types": "dist/triplex-run.cjs.d.ts",
   "license": "MIT",
-  "scripts": {
-    "dev": "ts-node ./src/index.ts"
-  },
   "bin": {
     "triplex": "./dist/triplex-run.cjs.js"
   },
   "dependencies": {
-    "@triplex/editor": "workspace:*",
-    "@triplex/rpc": "workspace:*",
+    "@triplex/editor": "^0.0.0",
+    "@triplex/rpc": "^0.0.0",
     "@vitejs/plugin-react": "^2.2.0",
     "vite": "^3.2.4",
     "vite-plugin-glsl": "^0.5.4"

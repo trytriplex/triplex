@@ -66,7 +66,7 @@ export function createServer(config: { tsConfigFilePath?: string }) {
   async function watchSourceFile(sourceFile: SourceFile, watcher: FsWatcher) {
     for await (const event of watcher.iterable) {
       if (event.eventType === "change") {
-        const result = sourceFile.refreshFromFileSystemSync();
+        const result = await sourceFile.refreshFromFileSystem();
         if (result === FileSystemRefreshResult.Updated) {
           transformSouceFileSync(sourceFile);
         }

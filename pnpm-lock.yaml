@@ -76,8 +76,8 @@ importers:
 
   packages/run:
     specifiers:
-      '@triplex/editor': workspace:*
-      '@triplex/rpc': workspace:*
+      '@triplex/editor': ^0.0.0
+      '@triplex/rpc': ^0.0.0
       '@types/node': ^18.11.18
       '@vitejs/plugin-react': ^2.2.0
       ts-node: ^10.9.1
