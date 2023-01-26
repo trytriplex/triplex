@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { useForceVisible } from "./scene-utils";
 
 const sceneModules = import.meta.glob("@@/**/*.tsx");
 
@@ -15,8 +14,6 @@ export function SceneLoader() {
     Record<string, any> | undefined
   >();
   const [props, setProps] = useState({});
-
-  useForceVisible();
 
   useEffect(() => {
     const sceneModule: any = Object.entries(sceneModules).find(([modPath]) =>

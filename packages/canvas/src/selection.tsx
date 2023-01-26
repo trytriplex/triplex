@@ -120,9 +120,7 @@ export function Selection({
       setSelected(data);
 
       if (data.path) {
-        fetch(
-          `http://localhost:8000/scene/open?path=${data.path}&cwd=${__CWD__}`
-        );
+        fetch(`http://localhost:8000/scene/open?path=${data.path}`);
       }
 
       // Begin fetching data for this.
