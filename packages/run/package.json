@@ -11,7 +11,7 @@
   "dependencies": {
     "@triplex/canvas": "^0.0.0",
     "@triplex/editor": "^0.0.0",
-    "@triplex/rpc": "^0.0.0",
+    "@triplex/server": "^0.0.0",
     "@vitejs/plugin-react": "^2.2.0",
     "vite-plugin-glsl": "^0.5.4",
     "vite": "^3.2.4"
