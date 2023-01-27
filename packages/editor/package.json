@@ -1,13 +1,13 @@
 {
   "name": "@triplex/editor",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "dist/triplex-editor.cjs.js",
   "module": "dist/triplex-editor.esm.js",
   "types": "dist/triplex-editor.cjs.js",
   "license": "MIT",
   "dependencies": {
     "@adobe/react-spectrum": "^3.24.1",
-    "@triplex/bridge": "^0.0.0",
+    "@triplex/bridge": "^0.1.0",
     "@types/react-dom": "^18.0.10",
     "@types/react": "^18.0.27",
     "@types/three": "^0.148.0",

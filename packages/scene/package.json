@@ -1,12 +1,12 @@
 {
   "name": "@triplex/scene",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "dist/triplex-scene.cjs.js",
   "module": "dist/triplex-scene.esm.js",
   "types": "dist/triplex-scene.cjs.js",
   "license": "MIT",
   "dependencies": {
-    "@triplex/bridge": "^0.0.0",
+    "@triplex/bridge": "^0.1.0",
     "@react-three/drei": "^9.54.0",
     "@types/react": "^18.0.27",
     "@types/three": "^0.148.0",
