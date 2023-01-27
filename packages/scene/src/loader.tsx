@@ -3,6 +3,8 @@ import { useSearchParams } from "react-router-dom";
 
 const sceneModules = import.meta.glob("@@/**/*.tsx");
 
+console.log(sceneModules);
+
 interface SceneMeta {
   customLighting: boolean;
 }

@@ -5,17 +5,13 @@ import {
   Router,
   RouterContext,
 } from "@oakserver/oak";
-import {
-  JsxOpeningElement,
-  JsxSelfClosingElement,
-  SourceFile,
-  SyntaxKind,
-} from "ts-morph";
-import { join } from "path/posix";
+import { SyntaxKind } from "ts-morph";
+import { join } from "path";
 import {
   createProject,
   getJsxAttributeValue,
   getJsxElementPropTypes,
+  getAllJsxElements,
 } from "@triplex/ts-morph";
 
 export function createServer(_: {}) {
@@ -84,20 +80,6 @@ export function createServer(_: {}) {
       sceneObjects: jsxElements.concat(jsxSelfClosing),
     };
   });
-
-  function getAllJsxElements(sourceFile: SourceFile) {
-    const jsxElements = sourceFile.getDescendantsOfKind(
-      SyntaxKind.JsxOpeningElement
-    );
-    const jsxSelfClosing = sourceFile.getDescendantsOfKind(
-      SyntaxKind.JsxSelfClosingElement
-    );
-
-    const elements: (JsxSelfClosingElement | JsxOpeningElement)[] = [];
-    elements.push(...jsxSelfClosing, ...jsxElements);
-
-    return elements;
-  }
 
   router.get("/scene/object/:line/:column", (context) => {
     const path = getParam(context, "path");
