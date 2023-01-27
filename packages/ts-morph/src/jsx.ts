@@ -1,6 +1,8 @@
 import {
   SyntaxKind,
   ts,
+  type JsxOpeningElement,
+  type JsxSelfClosingElement,
   type JsxAttributeLike,
   type SourceFile,
   type TransformTraversalControl,
@@ -174,4 +176,18 @@ export function serializeProps(
       return traversal.factory.createPropertyAssignment(prop.name, value);
     })
   );
+}
+
+export function getAllJsxElements(sourceFile: SourceFile) {
+  const jsxElements = sourceFile.getDescendantsOfKind(
+    SyntaxKind.JsxOpeningElement
+  );
+  const jsxSelfClosing = sourceFile.getDescendantsOfKind(
+    SyntaxKind.JsxSelfClosingElement
+  );
+
+  const elements: (JsxSelfClosingElement | JsxOpeningElement)[] = [];
+  elements.push(...jsxSelfClosing, ...jsxElements);
+
+  return elements;
 }

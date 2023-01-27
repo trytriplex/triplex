@@ -1,4 +1,4 @@
-import { join } from "path/posix";
+import { join } from "path";
 import { SourceFile, ts, VariableDeclarationKind } from "ts-morph";
 import { getJsxElementPropTypes, serializeProps } from "./jsx";
 
