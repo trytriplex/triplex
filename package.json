@@ -7,7 +7,8 @@
     "build": "preconstruct build",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "postinstall": "preconstruct fix && preconstruct dev",
-    "publish": "pnpm build && changeset publish"
+    "ci:publish": "pnpm publish --recursive --access=public",
+    "ci:version": "changeset version && pnpm install --lockfile-only"
   },
   "dependencies": {
     "@babel/core": "^7.20.12",

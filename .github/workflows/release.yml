@@ -5,6 +5,10 @@ on:
     branches:
       - main
 
+env:
+  CI: true
+  PNPM_CACHE_FOLDER: .pnpm-store
+
 jobs:
   release:
     name: Release
@@ -30,14 +34,22 @@ jobs:
         with:
           version: 7.21.0
 
+      - name: Setup npmrc
+        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
+
+      - name: Setup pnpm config
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+
       - name: Install dependencies
         run: pnpm i
 
       - name: Create release PR or publish to npm
         uses: changesets/action@v1
         with:
-          # this expects you to have a script called release which does a build for your packages and calls changeset publish
-          publish: pnpm publish
+          commit: "chore: update package versions"
+          title: "Release packages"
+          publish: pnpm ci:publish
+          version: pnpm ci:version
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
