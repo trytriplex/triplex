@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter faze_game dev",
+    "dev": "pnpm --filter geometry_example dev",
     "build": "preconstruct build",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "postinstall": "preconstruct fix && preconstruct dev"

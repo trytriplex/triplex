@@ -1,5 +1,5 @@
 {
-  "name": "faze_game",
+  "name": "geometry_example",
   "private": true,
   "dependencies": {
     "@react-three/fiber": "^8.10.1",
