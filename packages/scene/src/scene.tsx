@@ -1,7 +1,10 @@
-import { send, listen } from "@triplex/bridge/client";
+import { useSearchParams } from "react-router-dom";
+import { listen, send } from "@triplex/bridge/client";
+import { Canvas } from "./canvas";
+import { SceneLoader } from "./loader";
+import type { EditorNodeData } from "./selection";
 import { OrbitControls, PerspectiveCamera, Grid } from "@react-three/drei";
-import { Canvas } from "@react-three/fiber";
-import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import {
   Box3,
   Layers,
@@ -9,7 +12,6 @@ import {
   Vector3,
   Vector3Tuple,
 } from "three";
-import { useSearchParams } from "react-router-dom";
 import { Selection } from "./selection";
 
 const V1 = new Vector3();
@@ -21,9 +23,29 @@ const defaultFocalPoint: { grid: Vector3Tuple; objectCenter: Vector3Tuple } = {
   objectCenter: [0, 0, 0],
 };
 
-export function CanvasEditMode({ children }: { children: React.ReactNode }) {
+export function SceneFrame() {
   const [searchParams, setSearchParams] = useSearchParams();
   const path = searchParams.get("path") || "";
+
+  const onNavigate = (selected: EditorNodeData) => {
+    send("trplx:navigate", {
+      path: selected.path,
+      props: selected.props,
+    });
+  };
+
+  useEffect(() => {
+    return listen("trplx:navigate", (data) => {
+      setSearchParams(
+        {
+          path: data.path,
+          props: encodeURIComponent(JSON.stringify(data.props)),
+        },
+        { replace: true }
+      );
+    });
+  }, []);
+
   const [focalPoint, setFocalPoint] = useState(defaultFocalPoint);
   const { target, position } = useMemo(() => {
     const actualCameraPosition: Vector3Tuple = [...focalPoint.objectCenter];
@@ -41,11 +63,9 @@ export function CanvasEditMode({ children }: { children: React.ReactNode }) {
     });
   };
 
-  useEffect(() => {
-    return listen("trplx:navigate", (data) => {
-      setSearchParams(data.searchParams, { replace: true });
-    });
-  }, []);
+  const onBlurObject = () => {
+    send("trplx:close", {});
+  };
 
   useEffect(() => {
     if (!path) {
@@ -71,12 +91,7 @@ export function CanvasEditMode({ children }: { children: React.ReactNode }) {
   }, [path]);
 
   return (
-    <Canvas
-      gl={{ antialias: false }}
-      id="editor-canvas"
-      shadows
-      style={{ position: "absolute", inset: 0, backgroundColor: "black" }}
-    >
+    <Canvas>
       <PerspectiveCamera
         ref={camera}
         makeDefault
@@ -84,8 +99,15 @@ export function CanvasEditMode({ children }: { children: React.ReactNode }) {
         position={position}
       />
       <OrbitControls makeDefault target={target} />
-      <Selection onFocus={onFocusObject}>
-        <Suspense fallback={null}>{children}</Suspense>
+      <Selection
+        path={path}
+        onBlur={onBlurObject}
+        onNavigate={onNavigate}
+        onFocus={onFocusObject}
+      >
+        <Suspense fallback={null}>
+          <SceneLoader />
+        </Suspense>
       </Selection>
 
       <Grid

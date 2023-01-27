@@ -1,9 +1,9 @@
 {
-  "name": "@triplex/canvas",
+  "name": "@triplex/scene",
   "version": "0.0.0",
-  "main": "dist/triplex-canvas.cjs.js",
-  "module": "dist/triplex-canvas.esm.js",
-  "types": "dist/triplex-canvas.cjs.js",
+  "main": "dist/triplex-scene.cjs.js",
+  "module": "dist/triplex-scene.esm.js",
+  "types": "dist/triplex-scene.cjs.js",
   "license": "MIT",
   "dependencies": {
     "@triplex/bridge": "^0.0.0",
@@ -11,6 +11,7 @@
     "@types/react": "^18.0.27",
     "@types/three": "^0.148.0",
     "react-dom": "^18.2.0",
+    "react-router-dom": "^6.7.0",
     "three-stdlib": "^2.21.5"
   },
   "peerDependencies": {

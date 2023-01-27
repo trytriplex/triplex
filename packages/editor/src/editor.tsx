@@ -1,7 +1,7 @@
 import { listen, send } from "@triplex/bridge/host";
 import { useSearchParams } from "react-router-dom";
 import { View, Grid } from "@adobe/react-spectrum";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
 export function Editor() {
   const [searchParams, setSearchParams] = useSearchParams({ path: "" });
@@ -27,7 +27,10 @@ export function Editor() {
 
   useEffect(() => {
     if (path) {
-      send(iframe.current, "trplx:navigate", { searchParams: { path, props } });
+      send(iframe.current, "trplx:navigate", {
+        path,
+        props: props ? JSON.parse(decodeURIComponent(props)) : {},
+      });
     }
   }, [path, props]);
 
