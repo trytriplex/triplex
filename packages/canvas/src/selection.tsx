@@ -1,4 +1,5 @@
 import { TransformControls } from "@react-three/drei";
+import { send } from "@triplex/bridge/client";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { Box3, Object3D, Vector3, Vector3Tuple } from "three";
@@ -89,7 +90,7 @@ export function Selection({
 }) {
   const [selected, setSelected] = useState<EditorNodeData>();
   const [objectData, setObjectData] = useState<SceneObjectData | undefined>();
-  const [searchParams, setSearchParams] = useSearchParams();
+  const [searchParams] = useSearchParams();
   const [mode, setMode] = useState<"translate" | "rotate" | "scale">(
     "translate"
   );
@@ -118,6 +119,7 @@ export function Selection({
     if (data) {
       e.stopPropagation();
       setSelected(data);
+      send("trplx:focus", { path: data.path });
 
       if (data.path) {
         fetch(`http://localhost:8000/scene/open?path=${data.path}`);
@@ -144,6 +146,7 @@ export function Selection({
         } else {
           setSelected(undefined);
           setObjectData(undefined);
+          send("trplx:close", {});
         }
       }
 
@@ -157,9 +160,9 @@ export function Selection({
       }
 
       if (e.key === "F") {
-        setSearchParams({
+        send("trplx:navigate", {
           path: selected.path,
-          props: encodeURIComponent(JSON.stringify(selected.props)),
+          props: selected.props,
         });
       }
 
@@ -179,7 +182,7 @@ export function Selection({
     document.addEventListener("keyup", callback);
 
     return () => document.removeEventListener("keyup", callback);
-  }, [onFocus, selected, setSearchParams]);
+  }, [onFocus, selected]);
 
   const onMouseUp = (e: any) => {
     dragging.current = false;
