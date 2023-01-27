@@ -18,19 +18,17 @@
   "license": "MIT",
   "dependencies": {
     "@react-three/drei": "^9.54.0",
-    "@types/react": "^18.0.27",
-    "@types/three": "^0.148.0",
+    "@react-three/fiber": "^8.10.1",
     "react-dom": "^18.2.0",
+    "react": "^18.2.0",
     "three-stdlib": "^2.21.5"
   },
   "peerDependencies": {
-    "@react-three/fiber": "^8.10.1",
-    "react": "^18.0.0",
     "three": "^0.148.0"
   },
   "devDependencies": {
-    "@react-three/fiber": "^8.10.1",
-    "react": "^18.0.0",
+    "@types/react": "^18.0.27",
+    "@types/three": "^0.148.0",
     "three": "^0.148.0",
     "vite": "^4.0.4"
   },
