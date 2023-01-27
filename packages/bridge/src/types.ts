@@ -11,5 +11,5 @@ export interface ClientEventData {
 export type HostEventName = keyof HostEventData;
 
 export interface HostEventData {
-  "trplx:navigate": { searchParams: Record<string, any> };
+  "trplx:navigate": { path: string; props: Record<string, unknown> };
 }

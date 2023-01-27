@@ -1,11 +1,9 @@
 import { TransformControls } from "@react-three/drei";
-import { send } from "@triplex/bridge/client";
 import { ReactNode, useEffect, useRef, useState } from "react";
-import { useSearchParams } from "react-router-dom";
 import { Box3, Object3D, Vector3, Vector3Tuple } from "three";
 import { TransformControls as TransformControlsImpl } from "three-stdlib";
 
-interface EditorNodeData {
+export interface EditorNodeData {
   path: string;
   line: number;
   column: number;
@@ -84,17 +82,21 @@ const box = new Box3();
 export function Selection({
   children,
   onFocus,
+  path,
+  onNavigate,
+  onBlur,
 }: {
   children?: ReactNode;
+  path: string;
   onFocus: (v: Vector3Tuple, bb: Box3, obj: Object3D) => void;
+  onNavigate: (node: EditorNodeData) => void;
+  onBlur: () => void;
 }) {
   const [selected, setSelected] = useState<EditorNodeData>();
   const [objectData, setObjectData] = useState<SceneObjectData | undefined>();
-  const [searchParams] = useSearchParams();
   const [mode, setMode] = useState<"translate" | "rotate" | "scale">(
     "translate"
   );
-  const path = searchParams.get("path");
   const transformControls = useRef<TransformControlsImpl>(null);
   const dragging = useRef(false);
 
@@ -119,7 +121,6 @@ export function Selection({
     if (data) {
       e.stopPropagation();
       setSelected(data);
-      send("trplx:focus", { path: data.path });
 
       if (data.path) {
         fetch(`http://localhost:8000/scene/open?path=${data.path}`);
@@ -143,10 +144,10 @@ export function Selection({
       if (e.key === "Escape") {
         if (dragging.current) {
           transformControls.current?.reset();
-        } else {
+        } else if (selected) {
           setSelected(undefined);
           setObjectData(undefined);
-          send("trplx:close", {});
+          onBlur();
         }
       }
 
@@ -160,10 +161,7 @@ export function Selection({
       }
 
       if (e.key === "F") {
-        send("trplx:navigate", {
-          path: selected.path,
-          props: selected.props,
-        });
+        onNavigate(selected);
       }
 
       if (e.key === "r") {
