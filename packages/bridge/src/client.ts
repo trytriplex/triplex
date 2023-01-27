@@ -1,20 +1,20 @@
 import type {
-  ClientEventData,
-  ClientEventName,
-  HostEventData,
-  HostEventName,
+  ClientSendEventData,
+  ClientSendEventName,
+  HostSendEventData,
+  HostSendEventName,
 } from "./types";
 
-export function send<TEvent extends ClientEventName>(
+export function send<TEvent extends ClientSendEventName>(
   eventName: TEvent,
-  data: ClientEventData[TEvent]
+  data: ClientSendEventData[TEvent]
 ) {
   window.top?.postMessage({ eventName, data });
 }
 
-export function listen<TEvent extends HostEventName>(
+export function listen<TEvent extends HostSendEventName>(
   eventName: TEvent,
-  callback: (ata: HostEventData[TEvent]) => void
+  callback: (ata: HostSendEventData[TEvent]) => void
 ) {
   const cb = (e: MessageEvent) => {
     if (typeof e.data === "object" && e.data.eventName === eventName) {

@@ -1,15 +1,21 @@
-export type ClientEventName = keyof ClientEventData;
+export type ClientSendEventName = keyof ClientSendEventData;
 
-export interface ClientEventData {
-  "trplx:close": {};
-  "trplx:focus": { path: string };
-  "trplx:navigate": { path: string; props: Record<string, unknown> };
-  "trplx:save": {};
-  "trplx:showActionMenu": {};
+export interface ClientSendEventData {
+  "trplx:onSceneObjectBlur": {};
+  "trplx:onSceneObjectFocus": { path: string };
+  "trplx:onSceneObjectNavigated": {
+    path: string;
+    props: Record<string, unknown>;
+  };
+  "trplx:requestSave": {};
+  "trplx:requestActionMenu": {};
 }
 
-export type HostEventName = keyof HostEventData;
+export type HostSendEventName = keyof HostSendEventData;
 
-export interface HostEventData {
-  "trplx:navigate": { path: string; props: Record<string, unknown> };
+export interface HostSendEventData {
+  "trplx:requestNavigateToSceneObject": {
+    path: string;
+    props: Record<string, unknown>;
+  };
 }

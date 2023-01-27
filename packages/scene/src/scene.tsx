@@ -28,14 +28,14 @@ export function SceneFrame() {
   const path = searchParams.get("path") || "";
 
   const onNavigate = (selected: EditorNodeData) => {
-    send("trplx:navigate", {
+    send("trplx:onSceneObjectNavigated", {
       path: selected.path,
       props: selected.props,
     });
   };
 
   useEffect(() => {
-    return listen("trplx:navigate", (data) => {
+    return listen("trplx:requestNavigateToSceneObject", (data) => {
       setSearchParams(
         {
           path: data.path,
@@ -64,7 +64,7 @@ export function SceneFrame() {
   };
 
   const onBlurObject = () => {
-    send("trplx:close", {});
+    send("trplx:onSceneObjectBlur", {});
   };
 
   useEffect(() => {
@@ -77,7 +77,7 @@ export function SceneFrame() {
         e.keyCode === 83 &&
         (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
       ) {
-        send("trplx:save", {});
+        send("trplx:requestSave", {});
         e.preventDefault();
         fetch(`http://localhost:8000/scene/save?path=${path}`, {});
       }

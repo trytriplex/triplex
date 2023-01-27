@@ -1,13 +1,13 @@
 import type {
-  ClientEventData,
-  ClientEventName,
-  HostEventData,
-  HostEventName,
+  ClientSendEventData,
+  ClientSendEventName,
+  HostSendEventData,
+  HostSendEventName,
 } from "./types";
 
-export function listen<TEvent extends ClientEventName>(
+export function listen<TEvent extends ClientSendEventName>(
   eventName: TEvent,
-  callback: (ata: ClientEventData[TEvent]) => void
+  callback: (ata: ClientSendEventData[TEvent]) => void
 ) {
   const cb = (e: MessageEvent) => {
     if (typeof e.data === "object" && e.data.eventName === eventName) {
@@ -22,10 +22,10 @@ export function listen<TEvent extends ClientEventName>(
   };
 }
 
-export function send<TEvent extends HostEventName>(
+export function send<TEvent extends HostSendEventName>(
   iframe: HTMLIFrameElement,
   eventName: TEvent,
-  data: HostEventData[TEvent]
+  data: HostSendEventData[TEvent]
 ) {
   iframe.contentWindow?.postMessage({
     eventName,
