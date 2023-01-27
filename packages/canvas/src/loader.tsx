@@ -16,6 +16,10 @@ export function SceneLoader() {
   const [props, setProps] = useState({});
 
   useEffect(() => {
+    if (!path) {
+      return;
+    }
+
     const sceneModule: any = Object.entries(sceneModules).find(([modPath]) =>
       modPath.endsWith(path)
     );

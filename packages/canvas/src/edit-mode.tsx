@@ -1,3 +1,4 @@
+import { send, listen } from "@triplex/bridge/client";
 import { OrbitControls, PerspectiveCamera, Grid } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
 import React, { Suspense, useEffect, useMemo, useRef, useState } from "react";
@@ -21,7 +22,7 @@ const defaultFocalPoint: { grid: Vector3Tuple; objectCenter: Vector3Tuple } = {
 };
 
 export function CanvasEditMode({ children }: { children: React.ReactNode }) {
-  const [searchParams] = useSearchParams();
+  const [searchParams, setSearchParams] = useSearchParams();
   const path = searchParams.get("path") || "";
   const [focalPoint, setFocalPoint] = useState(defaultFocalPoint);
   const { target, position } = useMemo(() => {
@@ -41,6 +42,12 @@ export function CanvasEditMode({ children }: { children: React.ReactNode }) {
   };
 
   useEffect(() => {
+    return listen("trplx:navigate", (data) => {
+      setSearchParams(data.searchParams, { replace: true });
+    });
+  }, []);
+
+  useEffect(() => {
     if (!path) {
       return;
     }
@@ -50,6 +57,7 @@ export function CanvasEditMode({ children }: { children: React.ReactNode }) {
         e.keyCode === 83 &&
         (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
       ) {
+        send("trplx:save", {});
         e.preventDefault();
         fetch(`http://localhost:8000/scene/save?path=${path}`, {});
       }
