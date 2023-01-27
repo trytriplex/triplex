@@ -7,7 +7,7 @@
     "build": "preconstruct build",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "postinstall": "preconstruct fix && preconstruct dev",
-    "ci:publish": "pnpm publish --recursive --access=public",
+    "ci:publish": "pnpm publish --recursive --access=public && changeset tag",
     "ci:version": "changeset version && pnpm install --lockfile-only"
   },
   "dependencies": {
