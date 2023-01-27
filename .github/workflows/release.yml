@@ -34,9 +34,6 @@ jobs:
         with:
           version: 7.21.0
 
-      - name: Setup npmrc
-        run: echo "//registry.npmjs.org/:_authToken=${{ secrets.NPM_TOKEN }}" > .npmrc
-
       - name: Setup pnpm config
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER
 

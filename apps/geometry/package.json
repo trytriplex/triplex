@@ -1,5 +1,6 @@
 {
   "name": "geometry_example",
+  "version": "0.0.0",
   "private": true,
   "dependencies": {
     "@react-three/fiber": "^8.10.1",
