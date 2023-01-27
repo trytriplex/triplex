@@ -1,6 +1,6 @@
 {
   "name": "@triplex/run",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "main": "dist/triplex-run.cjs.js",
   "module": "dist/triplex-run.esm.js",
   "types": "dist/triplex-run.cjs.d.ts",
@@ -9,9 +9,9 @@
     "triplex": "./dist/triplex-run.cjs.js"
   },
   "dependencies": {
-    "@triplex/editor": "^0.0.0",
-    "@triplex/scene": "^0.0.0",
-    "@triplex/server": "^0.0.0",
+    "@triplex/editor": "^0.1.0",
+    "@triplex/scene": "^0.1.0",
+    "@triplex/server": "^0.1.0",
     "@vitejs/plugin-react": "^2.2.0",
     "vite-plugin-glsl": "^0.5.4",
     "vite": "^3.2.4"
