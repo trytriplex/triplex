@@ -3,12 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm --filter geometry_example dev",
     "build": "preconstruct build",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "postinstall": "preconstruct fix && preconstruct dev",
     "ci:publish": "pnpm publish --recursive --access=public && changeset tag",
-    "ci:version": "changeset version && pnpm install --lockfile-only"
+    "ci:version": "changeset version && pnpm install --lockfile-only",
+    "dev": "pnpm --filter geometry_example dev",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "postinstall": "preconstruct fix && preconstruct dev"
   },
   "dependencies": {
     "@babel/core": "^7.20.12",
