@@ -17,7 +17,7 @@ export function Editor() {
   }, [path]);
 
   useEffect(() => {
-    return listen("trplx:navigate", (data) => {
+    return listen("trplx:onSceneObjectNavigated", (data) => {
       setSearchParams({
         path: data.path,
         props: encodeURIComponent(JSON.stringify(data.props)),
@@ -27,7 +27,7 @@ export function Editor() {
 
   useEffect(() => {
     if (path) {
-      send(iframe.current, "trplx:navigate", {
+      send(iframe.current, "trplx:requestNavigateToSceneObject", {
         path,
         props: props ? JSON.parse(decodeURIComponent(props)) : {},
       });
