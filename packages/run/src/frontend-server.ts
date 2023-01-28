@@ -1,37 +1,12 @@
-import { createServer as createViteServer, Plugin } from "vite";
 import react from "@vitejs/plugin-react";
-import { join } from "path";
 import express from "express";
-import { watch } from "chokidar";
+import { join } from "path";
+import { createServer as createViteServer } from "vite";
 import { createHTML } from "./templates";
 
 const root = process.cwd();
 const tempFolderName = join("node_modules", ".triplex");
 const tempDir = join(process.cwd(), tempFolderName);
-
-function forceGlobsHmr(): Plugin[] {
-  const triplexGlobModule = "triplex-scene-glob";
-
-  return [
-    {
-      name: "triplex/watch-globs",
-      configureServer(server) {
-        function reloadGlobModule() {
-          server.moduleGraph.fileToModulesMap.forEach((mods) => {
-            mods.forEach((mod) => {
-              if (mod.id?.includes(triplexGlobModule)) {
-                server.reloadModule(mod);
-              }
-            });
-          });
-        }
-
-        const watcher = watch(tempDir);
-        watcher.on("add", reloadGlobModule);
-      },
-    },
-  ];
-}
 
 export async function createServer(config: { publicDir?: string }) {
   const app = express();
@@ -39,7 +14,7 @@ export async function createServer(config: { publicDir?: string }) {
 
   const vite = await createViteServer({
     configFile: false,
-    plugins: [(react as any)(), glsl(), forceGlobsHmr()],
+    plugins: [(react as any)(), glsl()],
     publicDir: config.publicDir,
     root,
     appType: "custom",
