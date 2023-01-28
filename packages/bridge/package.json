@@ -1,6 +1,6 @@
 {
   "name": "@triplex/bridge",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "main": "dist/triplex-bridge.cjs.js",
   "module": "dist/triplex-bridge.esm.js",
   "exports": {
