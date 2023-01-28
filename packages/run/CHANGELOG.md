@@ -1,5 +1,11 @@
 # @triplex/run
 
+## 0.4.0
+
+### Minor Changes
+
+- 56c62a1: Fixed pre-bundling bugs.
+
 ## 0.3.0
 
 ### Minor Changes
