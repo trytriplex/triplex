@@ -28,6 +28,9 @@
   "preconstruct": {
     "packages": [
       "packages/*"
-    ]
+    ],
+    "___experimentalFlags_WILL_CHANGE_IN_PATCH": {
+      "keepDynamicImportAsDynamicImportInCommonJS": true
+    }
   }
 }
