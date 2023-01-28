@@ -1,6 +1,6 @@
 {
   "name": "@triplex/ts-morph",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "dist/triplex-ts-morph.cjs.js",
   "module": "dist/triplex-ts-morph.esm.js",
   "types": "dist/triplex-jsx.cjs.d.ts",
