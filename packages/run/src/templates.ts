@@ -1,4 +1,4 @@
-export const createHTML = (title: string, src: string) => `
+export const createHTML = (title: string, entry: "scene" | "editor") => `
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -8,7 +8,9 @@ export const createHTML = (title: string, src: string) => `
   </head>
   <body style="margin: 0; padding: 0">
     <div id="root"></div>
-    <script type="module" src="${src}"></script>
+    <script type="module">
+      import "@triplex/run/${entry}";
+    </script>
   </body>
 </html>
 `;
