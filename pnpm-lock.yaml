@@ -50,7 +50,6 @@ importers:
       react-dom: ^18.2.0
       three: ^0.148.0
       three-stdlib: ^2.21.5
-      vite: ^4.0.4
     dependencies:
       '@react-three/drei': 9.54.0_x2hxvfhxegsms6izcxmvhtdkgy
       '@react-three/fiber': 8.10.1_4tzez3c2xpzuefjrvhpyy55bva
@@ -61,7 +60,6 @@ importers:
       '@types/react': 18.0.27
       '@types/three': 0.148.0
       three: 0.148.0
-      vite: 4.0.4
 
   packages/editor:
     specifiers:
@@ -75,7 +73,6 @@ importers:
       react-dom: ^18.2.0
       react-router-dom: ^6.7.0
       three: ^0.148.0
-      vite: ^4.0.4
     dependencies:
       '@adobe/react-spectrum': 3.24.1_biqbaboplfbrettd7655fr4n2y
       '@react-three/fiber': 8.10.1_4tzez3c2xpzuefjrvhpyy55bva
@@ -88,7 +85,6 @@ importers:
       '@types/react-dom': 18.0.10
       '@types/three': 0.148.0
       three: 0.148.0
-      vite: 4.0.4
 
   packages/run:
     specifiers:
@@ -129,6 +125,7 @@ importers:
       '@react-three/fiber': ^8.10.1
       '@triplex/bridge': ^0.2.0
       '@types/react': ^18.0.27
+      '@types/react-dom': ^18.0.10
       '@types/three': ^0.148.0
       react: ^18.0.0
       react-dom: ^18.2.0
@@ -146,6 +143,7 @@ importers:
       three-stdlib: 2.21.5_three@0.148.0
     devDependencies:
       '@types/react': 18.0.27
+      '@types/react-dom': 18.0.10
       '@types/three': 0.148.0
       three: 0.148.0
       vite: 4.0.4

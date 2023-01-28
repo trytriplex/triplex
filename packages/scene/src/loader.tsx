@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { sceneModules } from "./triplex-scene-glob";
+
+const sceneModules = import.meta.glob("@@/**/*.tsx");
 
 interface SceneMeta {
   customLighting: boolean;
