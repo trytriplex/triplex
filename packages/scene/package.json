@@ -1,6 +1,6 @@
 {
   "name": "@triplex/scene",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "dist/triplex-scene.cjs.js",
   "module": "dist/triplex-scene.esm.js",
   "types": "dist/triplex-scene.cjs.js",
@@ -8,7 +8,7 @@
   "dependencies": {
     "@react-three/drei": "^9.54.0",
     "@react-three/fiber": "^8.10.1",
-    "@triplex/bridge": "^0.2.0",
+    "@triplex/bridge": "^0.3.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.7.0",
     "react": "^18.0.0",

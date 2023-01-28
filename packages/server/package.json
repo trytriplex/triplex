@@ -1,13 +1,13 @@
 {
   "name": "@triplex/server",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "main": "dist/triplex-server.cjs.js",
   "module": "dist/triplex-server.esm.js",
   "types": "dist/triplex-server.cjs.d.ts",
   "license": "MIT",
   "dependencies": {
     "@oakserver/oak": "^11.0.0",
-    "@triplex/ts-morph": "^0.2.0",
+    "@triplex/ts-morph": "^0.3.0",
     "ts-morph": "^17.0.1"
   },
   "devDependencies": {

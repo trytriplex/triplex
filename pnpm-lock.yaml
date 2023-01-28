@@ -65,7 +65,7 @@ importers:
     specifiers:
       '@adobe/react-spectrum': ^3.24.1
       '@react-three/fiber': ^8.10.1
-      '@triplex/bridge': ^0.2.0
+      '@triplex/bridge': ^0.3.0
       '@types/react': ^18.0.27
       '@types/react-dom': ^18.0.10
       '@types/three': ^0.148.0
@@ -88,9 +88,9 @@ importers:
 
   packages/run:
     specifiers:
-      '@triplex/editor': ^0.2.0
-      '@triplex/scene': ^0.2.0
-      '@triplex/server': ^0.2.0
+      '@triplex/editor': ^0.3.0
+      '@triplex/scene': ^0.3.0
+      '@triplex/server': ^0.3.0
       '@types/express': ^4.17.16
       '@types/node': ^18.11.18
       '@vitejs/plugin-react': ^3.0.1
@@ -123,7 +123,7 @@ importers:
     specifiers:
       '@react-three/drei': ^9.54.0
       '@react-three/fiber': ^8.10.1
-      '@triplex/bridge': ^0.2.0
+      '@triplex/bridge': ^0.3.0
       '@types/react': ^18.0.27
       '@types/react-dom': ^18.0.10
       '@types/three': ^0.148.0
@@ -151,7 +151,7 @@ importers:
   packages/server:
     specifiers:
       '@oakserver/oak': ^11.0.0
-      '@triplex/ts-morph': ^0.2.0
+      '@triplex/ts-morph': ^0.3.0
       '@types/node': ^18.11.18
       ts-morph: ^17.0.1
     dependencies:
