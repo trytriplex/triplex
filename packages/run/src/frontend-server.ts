@@ -37,10 +37,7 @@ export async function createServer(config: { publicDir?: string }) {
     const url = req.originalUrl;
 
     try {
-      const template = createHTML(
-        "r3f_scene",
-        "/node_modules/@triplex/run/scene"
-      );
+      const template = createHTML("r3f_scene", "scene");
       const html = await vite.transformIndexHtml(url, template);
 
       res.status(200).set({ "Content-Type": "text/html" }).end(html);
@@ -54,10 +51,7 @@ export async function createServer(config: { publicDir?: string }) {
     const url = req.originalUrl;
 
     try {
-      const template = createHTML(
-        "TRIPLEX",
-        "/node_modules/@triplex/run/editor"
-      );
+      const template = createHTML("TRIPLEX", "editor");
       const html = await vite.transformIndexHtml(url, template);
 
       res.status(200).set({ "Content-Type": "text/html" }).end(html);
