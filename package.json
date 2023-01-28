@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "build": "preconstruct build",
-    "ci:publish": "pnpm publish --recursive --access=public && changeset tag",
+    "ci:publish": "pnpm build && pnpm publish --recursive --access=public && changeset tag",
     "ci:version": "changeset version && pnpm install --lockfile-only",
     "dev": "pnpm --filter geometry_example dev",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
