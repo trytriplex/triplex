@@ -1,5 +1,4 @@
 import { Canvas as RCanvas } from "@react-three/fiber";
-import React from "react";
 
 export function Canvas({ children }: { children: React.ReactNode }) {
   return (
