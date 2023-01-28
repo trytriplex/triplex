@@ -18,6 +18,9 @@ export async function createServer(config: { publicDir?: string }) {
     publicDir: config.publicDir,
     root,
     appType: "custom",
+    // Because this needs to be HMR'd during dev we exclude @triplex/scene from optimization.
+    // It has a import.meta.glob() call in it that will be updated when files are added/removed.
+    optimizeDeps: { exclude: ["@triplex/run/scene > @triplex/scene"] },
     server: {
       middlewareMode: true,
       watch: {
