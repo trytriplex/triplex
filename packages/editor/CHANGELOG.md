@@ -1,5 +1,16 @@
 # @triplex/editor
 
+## 0.3.0
+
+### Minor Changes
+
+- bbc457e: Fixes some bugs preventing triplex from being able to be ran via cli.
+
+### Patch Changes
+
+- Updated dependencies [bbc457e]
+  - @triplex/bridge@0.3.0
+
 ## 0.2.0
 
 ### Minor Changes
