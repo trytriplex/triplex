@@ -1,6 +1,6 @@
 {
   "name": "@triplex/run",
-  "version": "0.4.0",
+  "version": "0.5.0",
   "exports": {
     "./editor": {
       "module": "./src/editor.ts"
@@ -31,9 +31,9 @@
     "typedef": "tsc"
   },
   "dependencies": {
-    "@triplex/editor": "^0.3.0",
-    "@triplex/scene": "^0.3.0",
-    "@triplex/server": "^0.3.0",
+    "@triplex/editor": "^0.4.0",
+    "@triplex/scene": "^0.4.0",
+    "@triplex/server": "^0.4.0",
     "@vitejs/plugin-react": "^3.0.1",
     "chokidar": "^3.5.3",
     "express": "^4.18.2",
