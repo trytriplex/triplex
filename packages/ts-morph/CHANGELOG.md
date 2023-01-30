@@ -1,5 +1,11 @@
 # @triplex/ts-morph
 
+## 0.4.0
+
+### Minor Changes
+
+- b144bb1: Package `build` now use `swc` and `tsc` directly.
+
 ## 0.3.0
 
 ### Minor Changes
