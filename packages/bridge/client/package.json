@@ -1,4 +1,0 @@
-{
-  "main": "dist/triplex-bridge-client.cjs.js",
-  "module": "dist/triplex-bridge-client.esm.js"
-}

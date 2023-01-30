@@ -1,21 +1,30 @@
 {
   "name": "@triplex/bridge",
   "version": "0.3.0",
-  "main": "dist/triplex-bridge.cjs.js",
-  "module": "dist/triplex-bridge.esm.js",
+  "license": "MIT",
+  "types": "./src/index.tsx",
   "exports": {
     "./host": {
-      "module": "./host/dist/triplex-bridge-host.esm.js",
-      "default": "./host/dist/triplex-bridge-host.cjs.js"
+      "module": "./src/host.ts"
     },
     "./client": {
-      "module": "./client/dist/triplex-bridge-client.esm.js",
-      "default": "./client/dist/triplex-bridge-client.cjs.js"
-    },
-    "./package.json": "./package.json"
+      "module": "./src/client.ts"
+    }
   },
-  "types": "dist/triplex-bridge.cjs.js",
-  "license": "MIT",
+  "publishConfig": {
+    "types": "./dist/index.d.ts",
+    "exports": {
+      "./host": {
+        "module": "./dist/host.js"
+      },
+      "./client": {
+        "module": "./dist/client.js"
+      }
+    }
+  },
+  "scripts": {
+    "build": "pnpm swc ./src -d ./dist"
+  },
   "dependencies": {
     "@react-three/drei": "^9.54.0",
     "@react-three/fiber": "^8.10.1",
@@ -27,15 +36,10 @@
     "three": "^0.148.0"
   },
   "devDependencies": {
+    "@swc/cli": "^0.1.59",
+    "@swc/core": "^1.3.28",
     "@types/react": "^18.0.27",
     "@types/three": "^0.148.0",
     "three": "^0.148.0"
-  },
-  "preconstruct": {
-    "exports": true,
-    "entrypoints": [
-      "client.ts",
-      "host.ts"
-    ]
   }
 }
