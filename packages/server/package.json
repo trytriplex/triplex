@@ -24,8 +24,6 @@
     "typescript": "^4.9.4"
   },
   "files": [
-    "dist",
-    "CHANGELOG.md",
-    "README.md"
+    "dist"
   ]
 }
