@@ -13,8 +13,7 @@
   },
   "license": "MIT",
   "dependencies": {
-    "ts-morph": "^17.0.1",
-    "typedef": "tsc"
+    "ts-morph": "^17.0.1"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.59",
