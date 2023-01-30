@@ -8,16 +8,19 @@
     "main": "./dist/index.js"
   },
   "scripts": {
-    "build": "pnpm swc ./src -d ./dist"
+    "build": "pnpm swc ./src -d ./dist",
+    "typedef": "tsc"
   },
   "license": "MIT",
   "dependencies": {
-    "ts-morph": "^17.0.1"
+    "ts-morph": "^17.0.1",
+    "typedef": "tsc"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.3.28",
-    "@types/node": "^18.11.18"
+    "@types/node": "^18.11.18",
+    "typescript": "^4.9.4"
   },
   "files": [
     "dist",

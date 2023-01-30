@@ -3,7 +3,8 @@
   "display": "Node",
   "extends": "./base.json",
   "compilerOptions": {
-    "module": "CommonJS",
+    "lib": ["es2022"],
+    "module": "Node16",
     "target": "ES2017"
   }
 }

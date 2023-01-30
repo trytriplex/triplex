@@ -3,6 +3,8 @@
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
-    "types": ["vite/client", "./types"]
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "types": ["vite/client"]
   }
 }
