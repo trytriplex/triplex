@@ -10,11 +10,10 @@ const tempDir = join(process.cwd(), tempFolderName);
 
 export async function createServer(config: { publicDir?: string }) {
   const app = express();
-  const glsl = (await import("vite-plugin-glsl")).default;
 
   const vite = await createViteServer({
     configFile: false,
-    plugins: [(react as any)(), glsl()],
+    plugins: [react()],
     publicDir: config.publicDir,
     root,
     appType: "custom",

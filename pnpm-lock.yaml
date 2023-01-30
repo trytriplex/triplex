@@ -103,7 +103,6 @@ importers:
       ts-node: ^10.9.1
       typescript: ^4.9.4
       vite: ^4.0.4
-      vite-plugin-glsl: ^1.1.1
     dependencies:
       '@triplex/editor': link:../editor
       '@triplex/scene': link:../scene
@@ -114,7 +113,6 @@ importers:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       vite: 4.0.4_@types+node@18.11.18
-      vite-plugin-glsl: 1.1.1_vite@4.0.4
     devDependencies:
       '@swc/cli': 0.1.59_nc4s4lufnr2nmdobgkrsi75i6m
       '@swc/core': 1.3.28
@@ -3542,20 +3540,6 @@ packages:
     engines: {node: '>=14'}
     dev: false
 
-  /@rollup/pluginutils/5.0.2:
-    resolution: {integrity: sha512-pTd9rIsP92h+B6wWwFbW8RkZv4hiR/xKsqre4SIuAOaOEQRxi0lqLke9k2/7WegC85GgUs9pjmOjCUi3In4vwA==}
-    engines: {node: '>=14.0.0'}
-    peerDependencies:
-      rollup: ^1.20.0||^2.0.0||^3.0.0
-    peerDependenciesMeta:
-      rollup:
-        optional: true
-    dependencies:
-      '@types/estree': 1.0.0
-      estree-walker: 2.0.2
-      picomatch: 2.3.1
-    dev: false
-
   /@sindresorhus/is/0.7.0:
     resolution: {integrity: sha512-ONhaKPIufzzrlNbqtWFFd+jlnemX6lJAgq9ZeiZtS7I1PIf/la7CW4m83rTXRnVnsMbW2k56pGYu7AUFJD9Pow==}
     engines: {node: '>=4'}
@@ -3771,10 +3755,6 @@ packages:
     dependencies:
       '@types/node': 18.11.18
     dev: true
-
-  /@types/estree/1.0.0:
-    resolution: {integrity: sha512-WulqXMDUTYAXCjZnk6JtIHPigp55cVtDgDrO2gHRwhyJto21+1zbVCtOYB2L1F9w4qCQ0rOGWBnBe0FNTiEJIQ==}
-    dev: false
 
   /@types/express-serve-static-core/4.17.33:
     resolution: {integrity: sha512-TPBqmR/HRYI3eC2E5hmiivIzv+bidAfXofM+sbonAGvyDhySGw9/PQZFt2BLOrjUUR++4eJVpx6KnLQK1Fk9tA==}
@@ -4766,10 +4746,6 @@ packages:
     resolution: {integrity: sha512-eGuFFw7Upda+g4p+QHvnW0RyTX/SVeJBDM/gCtMARO0cLuT2HcEKnTPvhjV6aGeqrCB/sbNop0Kszm0jsaWU4A==}
     engines: {node: '>=4'}
     hasBin: true
-    dev: false
-
-  /estree-walker/2.0.2:
-    resolution: {integrity: sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==}
     dev: false
 
   /etag/1.8.1:
@@ -7064,18 +7040,6 @@ packages:
   /vary/1.1.2:
     resolution: {integrity: sha512-BNGbWLfd0eUPabhkXUVm0j8uuvREyTh5ovRa/dyow/BqAbZJyC+5fU+IzQOzmAKzYqYRAISoRhdQr3eIZ/PXqg==}
     engines: {node: '>= 0.8'}
-    dev: false
-
-  /vite-plugin-glsl/1.1.1_vite@4.0.4:
-    resolution: {integrity: sha512-OLkjjpl2yByaMxqUrSKSoNkP8fxpZL2ZWgMc20lvhateBrffe0rbgCIDOGOsCna8GYBfKS9GBoOMxK6Umkrjzg==}
-    engines: {node: '>= 16.15.1', npm: '>= 8.11.0'}
-    peerDependencies:
-      vite: ^3.0.0 || ^4.0.0
-    dependencies:
-      '@rollup/pluginutils': 5.0.2
-      vite: 4.0.4_@types+node@18.11.18
-    transitivePeerDependencies:
-      - rollup
     dev: false
 
   /vite/4.0.4:

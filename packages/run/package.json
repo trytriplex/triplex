@@ -1,13 +1,12 @@
 {
   "name": "@triplex/run",
   "version": "0.4.0",
-  "type": "module",
   "exports": {
     "./editor": {
       "module": "./src/editor.ts"
     },
     "./scene": {
-      "module": "./src/scene.ts"
+      "module": "./ls/scene.ts"
     }
   },
   "publishConfig": {
@@ -25,7 +24,7 @@
     }
   },
   "bin": {
-    "triplex": "./src/hook.js"
+    "triplex": "./hook.js"
   },
   "scripts": {
     "build": "pnpm swc ./src -d ./dist"
@@ -39,7 +38,6 @@
     "express": "^4.18.2",
     "react-dom": "^18.2.0",
     "react": "^18.2.0",
-    "vite-plugin-glsl": "^1.1.1",
     "vite": "^4.0.4"
   },
   "devDependencies": {
