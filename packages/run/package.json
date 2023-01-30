@@ -6,7 +6,7 @@
       "module": "./src/editor.ts"
     },
     "./scene": {
-      "module": "./ls/scene.ts"
+      "module": "./src/scene.ts"
     }
   },
   "publishConfig": {
@@ -27,7 +27,8 @@
     "triplex": "./hook.js"
   },
   "scripts": {
-    "build": "pnpm swc ./src -d ./dist"
+    "build": "pnpm swc ./src -d ./dist",
+    "typedef": "tsc"
   },
   "dependencies": {
     "@triplex/editor": "^0.3.0",

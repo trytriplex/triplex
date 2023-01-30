@@ -3,6 +3,7 @@
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"],
   "compilerOptions": {
-    "types": ["./types"]
+    "baseUrl": ".",
+    "outDir": "./dist"
   }
 }

@@ -1,7 +1,6 @@
 import react from "@vitejs/plugin-react";
 import express from "express";
 import { join } from "path";
-import { createServer as createViteServer } from "vite";
 import { createHTML } from "./templates";
 
 const root = process.cwd();
@@ -10,6 +9,7 @@ const tempDir = join(process.cwd(), tempFolderName);
 
 export async function createServer(config: { publicDir?: string }) {
   const app = express();
+  const { createServer: createViteServer } = await import("vite");
 
   const vite = await createViteServer({
     configFile: false,

@@ -5,5 +5,9 @@
   "ts-node": {
     "transpileOnly": true,
     "swc": true
+  },
+  "compilerOptions": {
+    "baseUrl": ".",
+    "outDir": "./dist"
   }
 }

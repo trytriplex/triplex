@@ -3,8 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "build": "pnpm clean && pnpm --filter @triplex/* build",
+    "build": "pnpm clean && pnpm --filter @triplex/* build && pnpm typedef",
     "clean": "pnpm -r exec rm -rf dist",
+    "typedef": "pnpm --filter @triplex/* typedef",
     "ci:publish": "pnpm build && pnpm publish --recursive --access=public && changeset tag",
     "ci:version": "changeset version && pnpm install --lockfile-only",
     "dev": "pnpm --filter geometry_example dev",
