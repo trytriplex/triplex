@@ -1,5 +1,18 @@
 # @triplex/run
 
+## 0.5.0
+
+### Minor Changes
+
+- b144bb1: Package `build` now use `swc` and `tsc` directly.
+
+### Patch Changes
+
+- Updated dependencies [b144bb1]
+  - @triplex/editor@0.4.0
+  - @triplex/scene@0.4.0
+  - @triplex/server@0.4.0
+
 ## 0.4.0
 
 ### Minor Changes

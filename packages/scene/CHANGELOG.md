@@ -1,5 +1,16 @@
 # @triplex/scene
 
+## 0.4.0
+
+### Minor Changes
+
+- b144bb1: Package `build` now use `swc` and `tsc` directly.
+
+### Patch Changes
+
+- Updated dependencies [b144bb1]
+  - @triplex/bridge@0.4.0
+
 ## 0.3.0
 
 ### Minor Changes
