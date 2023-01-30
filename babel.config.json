@@ -1,9 +1,0 @@
-{
-  "presets": [
-    "@babel/preset-typescript",
-    [
-      "@babel/preset-react",
-      { "runtime": "automatic", "useBuiltIns": true, "useSpread": true }
-    ]
-  ]
-}
