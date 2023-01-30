@@ -18,5 +18,10 @@
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.3.28",
     "@types/node": "^18.11.18"
-  }
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "README.md"
+  ]
 }

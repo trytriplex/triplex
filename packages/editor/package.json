@@ -29,5 +29,10 @@
     "@types/react": "^18.0.27",
     "@types/three": "^0.148.0",
     "three": "^0.148.0"
-  }
+  },
+  "files": [
+    "dist",
+    "CHANGELOG.md",
+    "README.md"
+  ]
 }
