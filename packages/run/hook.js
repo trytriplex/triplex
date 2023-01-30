@@ -1,2 +1,2 @@
 require("ts-node").register();
-require("./index.ts");
+require("./src/index.ts");
