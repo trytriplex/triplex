@@ -3,7 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { View, Grid } from "@adobe/react-spectrum";
 import { useEffect, useRef } from "react";
 
-export function Editor() {
+export function EditorFrame() {
   const [searchParams, setSearchParams] = useSearchParams({ path: "" });
   const path = searchParams.get("path");
   const props = searchParams.get("props");
