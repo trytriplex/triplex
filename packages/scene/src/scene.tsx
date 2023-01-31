@@ -23,7 +23,11 @@ const defaultFocalPoint: { grid: Vector3Tuple; objectCenter: Vector3Tuple } = {
   objectCenter: [0, 0, 0],
 };
 
-export function SceneFrame() {
+export function SceneFrame({
+  scenes,
+}: {
+  scenes: Record<string, () => Promise<unknown>>;
+}) {
   const [searchParams, setSearchParams] = useSearchParams();
   const path = searchParams.get("path") || "";
 
@@ -106,7 +110,7 @@ export function SceneFrame() {
         onFocus={onFocusObject}
       >
         <Suspense fallback={null}>
-          <SceneLoader />
+          <SceneLoader scenes={scenes} />
         </Suspense>
       </Selection>
 

@@ -4,26 +4,21 @@ import { join } from "path";
 import { createHTML } from "./templates";
 
 const root = process.cwd();
-const tempFolderName = join("node_modules", ".triplex");
-const tempDir = join(process.cwd(), tempFolderName);
+const tempDir = join(process.cwd(), "node_modules", ".triplex");
 
-export async function createServer(config: { publicDir?: string }) {
+export async function createServer({}) {
   const app = express();
   const { createServer: createViteServer } = await import("vite");
 
   const vite = await createViteServer({
     configFile: false,
     plugins: [react()],
-    publicDir: config.publicDir,
     root,
     appType: "custom",
-    // Because this needs to be HMR'd during dev we exclude @triplex/scene from optimization.
-    // It has a import.meta.glob() call in it that will be updated when files are added/removed.
-    optimizeDeps: { exclude: ["@triplex/run/scene > @triplex/scene"] },
     server: {
       middlewareMode: true,
       watch: {
-        ignored: [join("!**", tempFolderName, "**")],
+        ignored: ["!**/.triplex/**"],
       },
     },
     resolve: {

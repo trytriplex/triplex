@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 
-const sceneModules = import.meta.glob("@@/**/*.tsx");
-
 interface SceneMeta {
   customLighting: boolean;
 }
 
-export function SceneLoader() {
+export function SceneLoader({
+  scenes,
+}: {
+  scenes: Record<string, () => Promise<unknown>>;
+}) {
   const [searchParams] = useSearchParams();
   const path = searchParams.get("path") || "";
   const [resolvedModule, setResolvedModule] = useState<
@@ -20,7 +22,7 @@ export function SceneLoader() {
       return;
     }
 
-    const sceneModule: any = Object.entries(sceneModules).find(([modPath]) =>
+    const sceneModule: any = Object.entries(scenes).find(([modPath]) =>
       modPath.endsWith(path)
     );
 
