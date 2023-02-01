@@ -1,6 +1,7 @@
 import react from "@vitejs/plugin-react";
 import express from "express";
 import { join } from "path";
+import { scenePlugin } from "./scene-plugin";
 import { createHTML } from "./templates";
 
 const root = process.cwd();
@@ -12,7 +13,7 @@ export async function createServer({}) {
 
   const vite = await createViteServer({
     configFile: false,
-    plugins: [react()],
+    plugins: [react(), scenePlugin({ tempDir })],
     root,
     appType: "custom",
     server: {

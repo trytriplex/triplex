@@ -1,8 +1,8 @@
 const scripts = {
   scene: `
-    import { Scene } from "@triplex/run/scene";
     import { createElement } from "react";
     import { createRoot } from "react-dom/client";
+    import { Scene } from "triplex:scene-frame.tsx";
 
     createRoot(document.getElementById("root")).render(
       createElement(Scene)

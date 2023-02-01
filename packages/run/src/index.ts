@@ -1,5 +1,5 @@
+import { createServer as createBackendServer } from "@triplex/server";
 import { createServer as createFrontendServer } from "./frontend-server";
-import { createServer as createBackendServer } from "./backend-server";
 
 async function init() {
   const frontendServer = await createFrontendServer({});
