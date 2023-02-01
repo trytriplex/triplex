@@ -1,5 +1,17 @@
 # @triplex/run
 
+## 0.6.0
+
+### Minor Changes
+
+- c8c4a55: Fixes scene frame so it can hot module reload.
+
+### Patch Changes
+
+- Updated dependencies [c8c4a55]
+  - @triplex/editor@0.5.0
+  - @triplex/scene@0.5.0
+
 ## 0.5.0
 
 ### Minor Changes
