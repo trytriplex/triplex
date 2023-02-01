@@ -5,7 +5,7 @@ import { scenePlugin } from "./scene-plugin";
 import { createHTML } from "./templates";
 
 const root = process.cwd();
-const tempDir = join(process.cwd(), "node_modules", ".triplex");
+const tempDir = join(process.cwd(), ".triplex");
 
 export async function createServer({}) {
   const app = express();
@@ -13,7 +13,7 @@ export async function createServer({}) {
 
   const vite = await createViteServer({
     configFile: false,
-    plugins: [react(), scenePlugin({ tempDir })],
+    plugins: [react(), scenePlugin()],
     root,
     appType: "custom",
     server: {

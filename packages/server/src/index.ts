@@ -18,7 +18,7 @@ export function createServer(_: {}) {
   const app = new Application();
   const router = new Router();
   const project = createProject({
-    tempDir: join(process.cwd(), "node_modules", ".triplex"),
+    tempDir: join(process.cwd(), ".triplex"),
   });
 
   app.use(async (ctx, next) => {
