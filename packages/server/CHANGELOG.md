@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.5.0
+
+### Minor Changes
+
+- dea65bf: The temp folder is not outside of node_modules.
+
 ## 0.4.0
 
 ### Minor Changes
