@@ -1,5 +1,11 @@
 # @triplex/scene
 
+## 0.6.0
+
+### Minor Changes
+
+- 5498a39: Scene frame now correctly calls back to the react refresh registry on hmr.
+
 ## 0.5.0
 
 ### Minor Changes
