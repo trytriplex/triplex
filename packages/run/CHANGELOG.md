@@ -1,5 +1,14 @@
 # @triplex/run
 
+## 0.6.1
+
+### Patch Changes
+
+- Updated dependencies [dea65bf]
+- Updated dependencies [5498a39]
+  - @triplex/server@0.5.0
+  - @triplex/scene@0.6.0
+
 ## 0.6.0
 
 ### Minor Changes
