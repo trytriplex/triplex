@@ -1,5 +1,11 @@
 # @triplex/editor
 
+## 0.5.0
+
+### Minor Changes
+
+- c8c4a55: Fixes scene frame so it can hot module reload.
+
 ## 0.4.0
 
 ### Minor Changes
