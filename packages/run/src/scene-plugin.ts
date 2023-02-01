@@ -9,6 +9,7 @@ export function scenePlugin({
   tempDir,
 }: {
   tempDir: string;
+  // @ts-ignore
 }): import("vite").Plugin {
   return {
     name: "triplex:scene-glob-plugin",
