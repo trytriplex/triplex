@@ -1,5 +1,16 @@
 # @triplex/run
 
+## 0.7.0
+
+### Minor Changes
+
+- c84a8ca: Frontend server is now extracted to the client package.
+
+### Patch Changes
+
+- Updated dependencies [c84a8ca]
+  - @triplex/client@0.1.0
+
 ## 0.6.1
 
 ### Patch Changes

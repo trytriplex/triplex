@@ -1,5 +1,11 @@
 # @triplex/scene
 
+## 0.7.0
+
+### Minor Changes
+
+- c84a8ca: Package now declares the main field.
+
 ## 0.6.0
 
 ### Minor Changes
