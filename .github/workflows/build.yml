@@ -1,18 +1,20 @@
-name: Release packages
+name: Build packages
 
 on:
   push:
     branches:
       - main
 
+  pull_request:
+
 env:
   CI: true
   PNPM_CACHE_FOLDER: .pnpm-store
 
 jobs:
-  release:
-    name: Release
+  build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -40,13 +42,5 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - name: Create release PR or publish to npm
-        uses: changesets/action@v1
-        with:
-          commit: "chore: update package versions"
-          title: "Release packages"
-          publish: pnpm ci:publish
-          version: pnpm ci:version
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
+      - name: Build packages
+        run: pnpm build

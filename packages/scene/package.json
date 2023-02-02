@@ -1,11 +1,13 @@
 {
   "name": "@triplex/scene",
   "version": "0.6.0",
+  "main": "./src/index.tsx",
   "module": "./src/index.tsx",
   "types": "./src/index.tsx",
   "publishConfig": {
     "types": "./dist/index.d.ts",
-    "module": "./dist/index.js"
+    "module": "./dist/index.js",
+    "main": "./dist/index.js"
   },
   "license": "MIT",
   "scripts": {

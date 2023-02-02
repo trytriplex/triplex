@@ -1,4 +1,13 @@
-const scripts = {
+export const scripts = {
+  editor: `
+    import { createElement } from "react";
+    import { createRoot } from "react-dom/client";
+    import { Editor } from "@triplex/editor";
+
+    createRoot(document.getElementById("root")).render(
+      createElement(Editor)
+    );
+  `,
   scene: `
     import { createElement } from "react";
     import { createRoot } from "react-dom/client";
@@ -8,14 +17,17 @@ const scripts = {
       createElement(Scene)
     );
   `,
-  editor: `
-    import { Editor } from "@triplex/run/editor";
-    import { createElement } from "react";
-    import { createRoot } from "react-dom/client";
+  sceneFrame: `
+    import { Scene as SceneFrame } from "@triplex/scene";
 
-    createRoot(document.getElementById("root")).render(
-      createElement(Editor)
-    );
+    const scenes = import.meta.glob('@@/**/*');
+
+    export function Scene() {
+      return <SceneFrame scenes={scenes} />;
+    }
+
+    // This is needed to make React use the new component.
+    $RefreshReg$(Scene, "Scene");
   `,
 };
 

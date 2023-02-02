@@ -24,6 +24,11 @@ export async function createServer({}) {
     },
     resolve: {
       alias: {
+        // TODO: These resolves shouldn't be needed, but without them
+        // Vite can't pick them up in the HTML, we probably have some
+        // exports/main/module declaration problem in their pkg json.
+        "@triplex/editor": require.resolve("@triplex/editor"),
+        "@triplex/scene": require.resolve("@triplex/scene"),
         "@@": tempDir,
       },
     },
@@ -31,12 +36,10 @@ export async function createServer({}) {
 
   app.use(vite.middlewares);
 
-  app.get("/scene.html", async (req, res, next) => {
-    const url = req.originalUrl;
-
+  app.get("/scene.html", async (_, res, next) => {
     try {
       const template = createHTML("r3f_scene", "scene");
-      const html = await vite.transformIndexHtml(url, template);
+      const html = await vite.transformIndexHtml("scene", template);
 
       res.status(200).set({ "Content-Type": "text/html" }).end(html);
     } catch (e) {
@@ -45,12 +48,10 @@ export async function createServer({}) {
     }
   });
 
-  app.get("*", async (req, res, next) => {
-    const url = req.originalUrl;
-
+  app.get("*", async (_, res, next) => {
     try {
       const template = createHTML("TRIPLEX", "editor");
-      const html = await vite.transformIndexHtml(url, template);
+      const html = await vite.transformIndexHtml("editor", template);
 
       res.status(200).set({ "Content-Type": "text/html" }).end(html);
     } catch (e) {

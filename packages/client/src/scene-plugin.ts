@@ -1,6 +1,7 @@
 import { addRefreshWrapper } from "./hmr-hacks";
+import { scripts } from "./templates";
 
-const sceneHmrId = "triplex:scene-frame.tsx";
+const sceneFrameId = "triplex:scene-frame.tsx";
 const virtual = (str: string) => "\0" + str;
 
 // @ts-ignore
@@ -9,28 +10,17 @@ export function scenePlugin(): import("vite").Plugin {
     name: "triplex:scene-glob-plugin",
     enforce: "pre",
     resolveId(id: string) {
-      if (id === sceneHmrId) {
-        return virtual(sceneHmrId);
+      if (id === sceneFrameId) {
+        return virtual(sceneFrameId);
       }
     },
     async load(id: string) {
       const { transformWithEsbuild } = await import("vite");
 
-      if (id === virtual(sceneHmrId)) {
+      if (id === virtual(sceneFrameId)) {
         const result = await transformWithEsbuild(
-          `
-            import { Scene as SceneFrame } from "@triplex/run/scene";
-
-            const scenes = import.meta.glob('@@/**/*');
-
-            export function Scene() {
-              return <SceneFrame scenes={scenes} />;
-            }
-
-            // This is needed to make React use the new component.
-            $RefreshReg$(Scene, "Scene");
-          `,
-          sceneHmrId,
+          scripts.sceneFrame,
+          sceneFrameId,
           { loader: "tsx" }
         );
 
