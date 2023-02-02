@@ -1,5 +1,11 @@
 # @triplex/editor
 
+## 0.7.0
+
+### Minor Changes
+
+- 56dde00: Fixes publish config main field to point to the correct location.
+
 ## 0.6.0
 
 ### Minor Changes

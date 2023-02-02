@@ -1,5 +1,12 @@
 # @triplex/client
 
+## 0.1.1
+
+### Patch Changes
+
+- Updated dependencies [56dde00]
+  - @triplex/editor@0.7.0
+
 ## 0.1.0
 
 ### Minor Changes
