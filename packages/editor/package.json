@@ -7,7 +7,7 @@
   "publishConfig": {
     "types": "./dist/index.d.ts",
     "module": "./dist/index.js",
-    "main": "./dist/index.tsx"
+    "main": "./dist/index.js"
   },
   "license": "MIT",
   "scripts": {
