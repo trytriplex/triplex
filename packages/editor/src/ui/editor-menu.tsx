@@ -6,14 +6,19 @@ import {
   MenuItem,
   Separator,
 } from "../ds/menubar";
+import { useOverlayStore } from "../stores/overlay";
 
-export function SceneMenu() {
+export function EditorMenu() {
+  const showOverlay = useOverlayStore((store) => store.show);
+
   return (
     <Menubar>
       <Menu>
-        <Trigger>Scene</Trigger>
+        <Trigger>File</Trigger>
         <MenuContent>
-          <MenuItem rslot="⌘ O">Open</MenuItem>
+          <MenuItem rslot="⌘ O" onClick={() => showOverlay("open-scene")}>
+            Open
+          </MenuItem>
           <Separator />
           <MenuItem rslot="⌘ S">Save</MenuItem>
         </MenuContent>

@@ -1,7 +1,8 @@
 import { listen, send } from "@triplex/bridge/host";
 import { useSearchParams } from "react-router-dom";
 import { useEffect, useRef } from "react";
-import { SceneMenu } from "./ui/scene-menu";
+import { EditorMenu } from "./ui/editor-menu";
+import { SceneList } from "./ui/scene-list";
 
 export function EditorFrame() {
   const [searchParams, setSearchParams] = useSearchParams({ path: "" });
@@ -35,18 +36,19 @@ export function EditorFrame() {
   }, [path, props]);
 
   return (
-    <div className="h-screen bg-neutral-900">
-      <div className="absolute top-5 left-5 z-50">
-        <div className="flex">
-          <SceneMenu />
-        </div>
-      </div>
-
+    <div className="relative h-screen bg-neutral-900">
       <iframe
         src={`/scene.html`}
         ref={iframe}
         className="absolute h-full w-full border-none"
       />
+
+      <div className="absolute top-5 left-5">
+        <div className="flex">
+          <SceneList />
+          <EditorMenu />
+        </div>
+      </div>
     </div>
   );
 }

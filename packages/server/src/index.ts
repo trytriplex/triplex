@@ -6,7 +6,8 @@ import {
   RouterContext,
 } from "@oakserver/oak";
 import { SyntaxKind } from "ts-morph";
-import { join } from "path";
+import { join, basename, extname } from "path";
+import { readdir } from "./fs";
 import {
   createProject,
   getJsxAttributeValue,
@@ -209,6 +210,19 @@ export function createServer(_: {}) {
     }
 
     context.response.body = { message: "success" };
+  });
+
+  router.get("/scene", async (context) => {
+    const files = await readdir(join(process.cwd(), "src"), {
+      recursive: true,
+    });
+
+    context.response.body = files
+      .filter((file) => file.endsWith(".tsx"))
+      .map((path) => ({
+        path,
+        name: basename(path).replace(extname(path), ""),
+      }));
   });
 
   app.use(router.routes());
