@@ -1,5 +1,11 @@
 # @triplex/scene
 
+## 0.8.0
+
+### Minor Changes
+
+- 387f6cd: Adds a menu bar to the editor.
+
 ## 0.7.0
 
 ### Minor Changes

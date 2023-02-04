@@ -1,5 +1,18 @@
 # @triplex/client
 
+## 0.2.0
+
+### Minor Changes
+
+- 387f6cd: Adds a menu bar to the editor.
+
+### Patch Changes
+
+- Updated dependencies [387f6cd]
+- Updated dependencies [387f6cd]
+  - @triplex/editor@0.8.0
+  - @triplex/scene@0.8.0
+
 ## 0.1.1
 
 ### Patch Changes
