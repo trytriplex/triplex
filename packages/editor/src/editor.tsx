@@ -1,7 +1,7 @@
 import { listen, send } from "@triplex/bridge/host";
 import { useSearchParams } from "react-router-dom";
-import { View, Grid } from "@adobe/react-spectrum";
 import { useEffect, useRef } from "react";
+import { SceneMenu } from "./ui/scene-menu";
 
 export function EditorFrame() {
   const [searchParams, setSearchParams] = useSearchParams({ path: "" });
@@ -35,23 +35,18 @@ export function EditorFrame() {
   }, [path, props]);
 
   return (
-    <Grid areas={["content"]} columns={["auto"]} rows={["auto"]} height="100vh">
-      <View
-        gridArea="content"
-        backgroundColor="static-black"
-        position="relative"
-      >
-        <iframe
-          src={`/scene.html`}
-          ref={iframe}
-          style={{
-            border: 0,
-            position: "absolute",
-            width: "100%",
-            height: "100%",
-          }}
-        />
-      </View>
-    </Grid>
+    <div className="h-screen bg-neutral-900">
+      <div className="absolute top-5 left-5 z-50">
+        <div className="flex">
+          <SceneMenu />
+        </div>
+      </div>
+
+      <iframe
+        src={`/scene.html`}
+        ref={iframe}
+        className="absolute h-full w-full border-none"
+      />
+    </div>
   );
 }

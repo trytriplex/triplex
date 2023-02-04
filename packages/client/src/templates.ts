@@ -3,6 +3,7 @@ export const scripts = {
     import { createElement } from "react";
     import { createRoot } from "react-dom/client";
     import { Editor } from "@triplex/editor";
+    import 'triplex:styles.css';
 
     createRoot(document.getElementById("root")).render(
       createElement(Editor)
@@ -38,8 +39,14 @@ export const createHTML = (title: string, entry: "scene" | "editor") => `
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>${title}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Karla&family=Merriweather:ital,wght@0,400;1,900&display=swap"
+      rel="stylesheet"
+    />
   </head>
-  <body style="margin: 0; padding: 0">
+  <body>
     <div id="root"></div>
     <script type="module">
       ${scripts[entry]}

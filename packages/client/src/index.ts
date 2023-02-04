@@ -16,6 +16,24 @@ export async function createServer({}) {
     plugins: [react(), scenePlugin()],
     root,
     appType: "custom",
+    css: {
+      postcss: process.env.TRIPLEX_DEV
+        ? // PostCSS will only run in TRIPLEX_DEV mode.
+          // When built for NPM we use the tailwind CLI and build CSS to dist instead.
+          {
+            plugins: [
+              ((await import("tailwindcss")).default as any)(
+                (
+                  await import(
+                    // @ts-ignore
+                    "../tailwind.config.js"
+                  )
+                ).default
+              ),
+            ],
+          }
+        : {},
+    },
     server: {
       middlewareMode: true,
       watch: {
@@ -29,6 +47,7 @@ export async function createServer({}) {
         // exports/main/module declaration problem in their pkg json.
         "@triplex/editor": require.resolve("@triplex/editor"),
         "@triplex/scene": require.resolve("@triplex/scene"),
+        "triplex:styles.css": join(__dirname, "styles.css"),
         "@@": tempDir,
       },
     },
