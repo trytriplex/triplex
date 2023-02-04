@@ -18,6 +18,7 @@ function Files() {
       {files.map((file) => (
         <Link
           replace
+          key={file.path}
           to={{ search: `?path=${file.path}` }}
           className={cn([
             current === file.path

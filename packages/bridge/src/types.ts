@@ -1,6 +1,7 @@
 export type ClientSendEventName = keyof ClientSendEventData;
 
 export interface ClientSendEventData {
+  "trplx:onConnected": {};
   "trplx:onSceneObjectBlur": {};
   "trplx:onSceneObjectFocus": { path: string };
   "trplx:onSceneObjectNavigated": {
