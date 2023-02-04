@@ -15,7 +15,8 @@
     "typedef": "tsc"
   },
   "dependencies": {
-    "@adobe/react-spectrum": "^3.24.1",
+    "@radix-ui/react-icons": "^1.1.1",
+    "@radix-ui/react-menubar": "^1.0.0",
     "@react-three/fiber": "^8.10.1",
     "@triplex/bridge": "^0.4.0",
     "react-dom": "^18.2.0",
