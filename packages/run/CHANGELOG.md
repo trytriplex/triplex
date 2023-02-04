@@ -1,5 +1,17 @@
 # @triplex/run
 
+## 0.8.0
+
+### Minor Changes
+
+- 387f6cd: Editor now able to use tailwindcss during dev, which is compiled away when packaged to npm.
+- 387f6cd: Adds a menu bar to the editor.
+
+### Patch Changes
+
+- Updated dependencies [387f6cd]
+  - @triplex/client@0.2.0
+
 ## 0.7.0
 
 ### Minor Changes
