@@ -5,7 +5,7 @@ async function init() {
   const frontendServer = await createFrontendServer({});
   const backendServer = await createBackendServer({});
 
-  await frontendServer.listen(5173);
+  await frontendServer.listen(3333);
   await backendServer.listen(8000);
 }
 

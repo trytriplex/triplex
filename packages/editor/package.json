@@ -15,13 +15,16 @@
     "typedef": "tsc"
   },
   "dependencies": {
+    "@radix-ui/react-dialog": "^1.0.2",
     "@radix-ui/react-icons": "^1.1.1",
     "@radix-ui/react-menubar": "^1.0.0",
     "@react-three/fiber": "^8.10.1",
     "@triplex/bridge": "^0.4.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.7.0",
-    "react": "^18.2.0"
+    "react": "^18.2.0",
+    "suspend-react": "^0.0.9",
+    "zustand": "^4.3.2"
   },
   "peerDependencies": {
     "three": "^0.148.0"
