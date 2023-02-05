@@ -20,12 +20,12 @@ importers:
 
   apps/geometry:
     specifiers:
-      '@react-three/fiber': ^8.10.1
-      '@triplex/run': workspace:*
-      '@types/react': ^18.0.27
+      '@react-three/fiber': ^8.0.0
+      '@triplex/run': 0.8.0
+      '@types/react': ^18.0.0
       '@types/three': ^0.148.0
-      react: ^18.2.0
-      react-dom: ^18.2.0
+      react: ^18.0.0
+      react-dom: ^18.0.0
       three: ^0.148.0
     dependencies:
       '@react-three/fiber': 8.10.1_4tzez3c2xpzuefjrvhpyy55bva
@@ -74,6 +74,7 @@ importers:
       '@vitejs/plugin-react': ^3.0.1
       chokidar: ^3.5.3
       express: ^4.18.2
+      open: ^8.4.0
       react: ^18.2.0
       react-dom: ^18.2.0
       tailwindcss: ^3.2.4
@@ -85,6 +86,7 @@ importers:
       '@vitejs/plugin-react': 3.0.1_vite@4.0.4
       chokidar: 3.5.3
       express: 4.18.2
+      open: 8.4.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       vite: 4.0.4_@types+node@18.11.18
@@ -137,17 +139,21 @@ importers:
 
   packages/run:
     specifiers:
+      '@commander-js/extra-typings': ^10.0.2
       '@swc/cli': ^0.1.59
       '@swc/core': ^1.3.28
       '@triplex/client': ^0.2.0
       '@triplex/server': ^0.5.0
       '@types/node': ^18.11.18
+      commander: ^10.0.0
       ts-node: ^10.9.1
       typescript: ^4.9.4
     dependencies:
       '@triplex/client': link:../client
       '@triplex/server': link:../server
+      commander: 10.0.0
     devDependencies:
+      '@commander-js/extra-typings': 10.0.2_commander@10.0.0
       '@swc/cli': 0.1.59_@swc+core@1.3.28
       '@swc/core': 1.3.28
       '@types/node': 18.11.18
@@ -669,6 +675,14 @@ packages:
   /@chevrotain/utils/10.4.2:
     resolution: {integrity: sha512-V34dacxWLwKcvcy32dx96ADJVdB7kOJLm7LyBkBQw5u5HC9WdEFw2G17zml+U3ivavGTrGPJHl8o9/UJm0PlUw==}
     dev: false
+
+  /@commander-js/extra-typings/10.0.2_commander@10.0.0:
+    resolution: {integrity: sha512-PSGG74fpbc2/WRInbKJbwKiUwdN9YqZSgHxDGMqInUe4G6DTLp90ww12uHMC1U/219qPWI0fLSSjwVDUTdnqIQ==}
+    peerDependencies:
+      commander: 10.0.x
+    dependencies:
+      commander: 10.0.0
+    dev: true
 
   /@cspotcode/source-map-support/0.8.1:
     resolution: {integrity: sha512-IchNf6dN4tHoMFIn/7OE8LWZ19Y6q/67Bmf6vnGREv8RSbBVb9LPJxEcnwrcwX6ixSvaiGoomAUvu4YSxXrVgw==}
@@ -2260,6 +2274,10 @@ packages:
   /color-name/1.1.4:
     resolution: {integrity: sha512-dOy+3AuW3a2wNbZHIuMZpTcgjGuLU/uBL/ubcZF9OXbDo8ff4O8yVp5Bf0efS8uEoYo5q4Fx7dY9OgQGXgAsQA==}
 
+  /commander/10.0.0:
+    resolution: {integrity: sha512-zS5PnTI22FIRM6ylNW8G4Ap0IEOyk62fhLSD0+uHRT9McRCLGpkVNvao4bjimpK/GShynyQkFFxHhwMcETmduA==}
+    engines: {node: '>=14'}
+
   /commander/2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
     dev: true
@@ -2466,6 +2484,11 @@ packages:
     resolution: {integrity: sha512-eFuaLoy/Rxalv2kr+lqMlUnrDWV+3j4pljOIJgLIhI058IQfWJ7vXhyEIHu+HtC738klGALYxOKDO0bQP3tg8A==}
     dependencies:
       clone: 1.0.4
+    dev: false
+
+  /define-lazy-prop/2.0.0:
+    resolution: {integrity: sha512-Ds09qNh8yw3khSjiJjiUInaGX9xlqZDY7JVryGxdxV7NPeuqQfplOpQ66yJFZut3jLa5zOwkXw1g9EI2uKh4Og==}
+    engines: {node: '>=8'}
     dev: false
 
   /define-properties/1.1.4:
@@ -3332,6 +3355,12 @@ packages:
       has-tostringtag: 1.0.0
     dev: false
 
+  /is-docker/2.2.1:
+    resolution: {integrity: sha512-F+i2BKsFrH66iaUFc0woD8sLy8getkwTwtOBjvs56Cx4CgJDeKQeqfz8wAYiSb8JOprWhHH5p77PbmYCvvUuXQ==}
+    engines: {node: '>=8'}
+    hasBin: true
+    dev: false
+
   /is-extglob/2.1.1:
     resolution: {integrity: sha512-SbKbANkN603Vi4jEZv49LeVJMn4yGwsbzZworEoyEiutsN3nJYdbO36zfhGJ6QEDpOZIFkDtnq5JRxmvl3jsoQ==}
     engines: {node: '>=0.10.0'}
@@ -3440,6 +3469,13 @@ packages:
   /is-windows/1.0.2:
     resolution: {integrity: sha512-eXK1UInq2bPmjyX6e3VHIzMLobc4J94i4AWn+Hpq3OU5KkrRC96OAcR3PRJ/pGu6m8TRnBHP9dkXQVsT/COVIA==}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /is-wsl/2.2.0:
+    resolution: {integrity: sha512-fKzAra0rGJUUBwGBgNkHZuToZcn+TtXHpeCgmkMJMMYx1sQDYaCSyjJBSCa2nH1DGm7s3n1oBnohoVTBaN7Lww==}
+    engines: {node: '>=8'}
+    dependencies:
+      is-docker: 2.2.1
     dev: false
 
   /isarray/1.0.0:
@@ -3870,6 +3906,15 @@ packages:
     dependencies:
       wrappy: 1.0.2
     dev: true
+
+  /open/8.4.0:
+    resolution: {integrity: sha512-XgFPPM+B28FtCCgSb9I+s9szOC1vZRSwgWsRUA5ylIxRTgKozqjOCrVOqGsYABPYK5qnfqClxZTFBa8PKt2v6Q==}
+    engines: {node: '>=12'}
+    dependencies:
+      define-lazy-prop: 2.0.0
+      is-docker: 2.2.1
+      is-wsl: 2.2.0
+    dev: false
 
   /opentype.js/1.3.4:
     resolution: {integrity: sha512-d2JE9RP/6uagpQAVtJoF0pJJA/fgai89Cc50Yp0EJHk+eLp6QQ7gBoblsnubRULNY132I0J1QKMJ+JTbMqz4sw==}

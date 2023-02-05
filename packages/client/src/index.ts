@@ -1,13 +1,14 @@
 import react from "@vitejs/plugin-react";
 import express from "express";
 import { join } from "path";
+import openBrowser from "open";
 import { scenePlugin } from "./scene-plugin";
 import { createHTML } from "./templates";
 
 const root = process.cwd();
 const tempDir = join(process.cwd(), ".triplex");
 
-export async function createServer({}) {
+export async function createServer({ open }: { open?: boolean | string }) {
   const app = express();
   const { createServer: createViteServer } = await import("vite");
 
@@ -15,6 +16,7 @@ export async function createServer({}) {
     configFile: false,
     plugins: [react(), scenePlugin()],
     root,
+    logLevel: "silent",
     appType: "custom",
     css: {
       postcss: process.env.TRIPLEX_DEV
@@ -80,6 +82,12 @@ export async function createServer({}) {
   });
 
   return {
-    listen: (port: number) => app.listen(port),
+    listen: async (port: number) => {
+      await app.listen(port);
+      if (open) {
+        const searchParam = typeof open === "string" ? `?path=${open}` : "";
+        await openBrowser(`http://localhost:${port}/${searchParam}`);
+      }
+    },
   };
 }

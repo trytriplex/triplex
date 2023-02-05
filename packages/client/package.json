@@ -19,7 +19,8 @@
     "express": "^4.18.2",
     "react-dom": "^18.2.0",
     "react": "^18.2.0",
-    "vite": "^4.0.4"
+    "vite": "^4.0.4",
+    "open": "^8.4.0"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.59",

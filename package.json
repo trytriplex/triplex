@@ -8,8 +8,9 @@
     "typedef": "pnpm --filter @triplex/* typedef",
     "ci:publish": "pnpm build && pnpm publish --recursive --access=public && changeset tag",
     "ci:version": "changeset version && pnpm install --lockfile-only",
-    "dev": "pnpm --filter geometry_example dev",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\""
+    "dev": "pnpm --filter geometry_example editor",
+    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
+    "triplex": "pnpm --filter geometry_example triplex"
   },
   "dependencies": {
     "@changesets/cli": "^2.26.0",
