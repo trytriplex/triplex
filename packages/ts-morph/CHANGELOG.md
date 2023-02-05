@@ -1,5 +1,11 @@
 # @triplex/ts-morph
 
+## 0.5.0
+
+### Minor Changes
+
+- 55e8a52: On save the source file will be formatted with prettier if a prettierrc file was found, else it will be formatted by the TypeScript compiler.
+
 ## 0.4.0
 
 ### Minor Changes

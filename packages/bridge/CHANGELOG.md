@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.5.0
+
+### Minor Changes
+
+- ac9624f: Fixes client/host race condition where host would send events before the client has connected.
+
 ## 0.4.0
 
 ### Minor Changes
