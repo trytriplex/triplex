@@ -1,5 +1,10 @@
 import { join } from "path";
-import { FileSystemRefreshResult, Project, SourceFile } from "ts-morph";
+import {
+  FileSystemRefreshResult,
+  Project,
+  SourceFile,
+  QuoteKind,
+} from "ts-morph";
 import { watch, rm as remove, FileChangeInfo } from "fs/promises";
 import { cloneAndWrapSourceJsx } from "./transform";
 
@@ -8,7 +13,19 @@ interface FsWatcher {
   abort: () => void;
 }
 
-export function createProject({ tempDir }: { tempDir: string }) {
+export interface TRIPLEXProject {
+  getSourceFile(path: string): {
+    sourceFile: SourceFile;
+    transformedPath: string;
+  };
+  removeSourceFile(path: string): Promise<void>;
+}
+
+export function createProject({
+  tempDir,
+}: {
+  tempDir: string;
+}): TRIPLEXProject {
   const project = new Project({
     tsConfigFilePath: join(process.cwd(), "tsconfig.json"),
   });
