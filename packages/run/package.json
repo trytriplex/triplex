@@ -1,7 +1,7 @@
 {
   "name": "@triplex/run",
   "description": "What's this?",
-  "version": "0.9.0",
+  "version": "0.10.0",
   "publishConfig": {
     "bin": {
       "triplex": "./dist/index.js"
