@@ -5,6 +5,7 @@
   "compilerOptions": {
     "lib": ["es2022"],
     "module": "Node16",
-    "target": "ES2017"
+    "target": "ES2017",
+    "resolveJsonModule": true
   }
 }
