@@ -1,5 +1,23 @@
 # @triplex/run
 
+## 0.9.0
+
+### Minor Changes
+
+- 7db42bd: Editor now runs on port 3333.
+- 12ecbc4: Adds --open command to the editor command. Optionally pass in a filepath to open that file initially.
+- 12ecbc4: Adds `init` command to the CLI. Run `triplex init` to setup your repository for TRIPLEX.
+- 12ecbc4: When running from the CLI `triplex` now uses commands. Run `triplex editor` for the same behaviour as when running `triplex` before.
+
+### Patch Changes
+
+- Updated dependencies [55e8a52]
+- Updated dependencies [12ecbc4]
+- Updated dependencies [7db42bd]
+- Updated dependencies [7db42bd]
+  - @triplex/server@0.6.0
+  - @triplex/client@0.3.0
+
 ## 0.8.0
 
 ### Minor Changes

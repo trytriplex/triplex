@@ -1,5 +1,17 @@
 # @triplex/editor
 
+## 0.9.0
+
+### Minor Changes
+
+- ac9624f: Fixes client/host race condition where host would send events before the client has connected.
+- 7db42bd: Adds open scene drawer.
+
+### Patch Changes
+
+- Updated dependencies [ac9624f]
+  - @triplex/bridge@0.5.0
+
 ## 0.8.0
 
 ### Minor Changes

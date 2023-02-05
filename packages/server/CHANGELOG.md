@@ -1,5 +1,17 @@
 # @triplex/server
 
+## 0.6.0
+
+### Minor Changes
+
+- 55e8a52: On save the source file will be formatted with prettier if a prettierrc file was found, else it will be formatted by the TypeScript compiler.
+- 7db42bd: Adds /scene route to return all available files in the cwd.
+
+### Patch Changes
+
+- Updated dependencies [55e8a52]
+  - @triplex/ts-morph@0.5.0
+
 ## 0.5.0
 
 ### Minor Changes

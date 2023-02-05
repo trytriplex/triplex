@@ -1,5 +1,19 @@
 # @triplex/client
 
+## 0.3.0
+
+### Minor Changes
+
+- 12ecbc4: Adds --open command to the editor command. Optionally pass in a filepath to open that file initially.
+- 7db42bd: Adds slide in animation.
+
+### Patch Changes
+
+- Updated dependencies [ac9624f]
+- Updated dependencies [7db42bd]
+  - @triplex/editor@0.9.0
+  - @triplex/scene@0.9.0
+
 ## 0.2.0
 
 ### Minor Changes
