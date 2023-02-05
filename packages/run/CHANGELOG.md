@@ -1,5 +1,11 @@
 # @triplex/run
 
+## 0.10.0
+
+### Minor Changes
+
+- 0eecf88: Fixes missing dependency error.
+
 ## 0.9.0
 
 ### Minor Changes

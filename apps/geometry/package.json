@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@react-three/fiber": "^8.0.0",
-    "@triplex/run": "0.9.0",
+    "@triplex/run": "0.10.0",
     "@types/react": "^18.0.0",
     "@types/three": "^0.148.0",
     "react-dom": "^18.0.0",
