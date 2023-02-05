@@ -1,19 +1,15 @@
-import {
-  Application,
-  HttpError,
-  isHttpError,
-  Router,
-  RouterContext,
-} from "@oakserver/oak";
+import { Application, isHttpError, Router } from "@oakserver/oak";
 import { SyntaxKind } from "ts-morph";
 import { join, basename, extname } from "path";
-import { readdir } from "./fs";
+import { readdir } from "./util/fs";
 import {
   createProject,
   getJsxAttributeValue,
   getJsxElementPropTypes,
   getAllJsxElements,
 } from "@triplex/ts-morph";
+import { getParam } from "./util/params";
+import { save } from "./services/save";
 
 export function createServer(_: {}) {
   const app = new Application();
@@ -38,15 +34,6 @@ export function createServer(_: {}) {
     ctx.response.headers.set("Access-Control-Allow-Origin", "*");
     return next();
   });
-
-  function getParam(context: RouterContext<any, any>, key: string) {
-    const path = context.request.url.searchParams.get(key);
-    if (!path) {
-      throw new HttpError(`Missing [${key}] search param`);
-    }
-
-    return path;
-  }
 
   router.get("/scene/open", async (context) => {
     const path = getParam(context, "path");
@@ -204,10 +191,8 @@ export function createServer(_: {}) {
 
   router.get("/scene/save", async (context) => {
     const path = getParam(context, "path");
-    const { sourceFile } = project.getSourceFile(path);
-    if (sourceFile) {
-      await sourceFile.save();
-    }
+
+    await save({ path, project });
 
     context.response.body = { message: "success" };
   });
