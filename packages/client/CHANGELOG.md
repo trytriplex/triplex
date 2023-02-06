@@ -1,5 +1,16 @@
 # @triplex/client
 
+## 0.4.0
+
+### Minor Changes
+
+- a32c72e: Removes silent logging for now.
+
+### Patch Changes
+
+- Updated dependencies [a32c72e]
+  - @triplex/editor@0.10.0
+
 ## 0.3.0
 
 ### Minor Changes

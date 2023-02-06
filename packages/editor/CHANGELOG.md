@@ -1,5 +1,12 @@
 # @triplex/editor
 
+## 0.10.0
+
+### Minor Changes
+
+- a32c72e: Adds the scene component list to the sidebar with the ability to focus scene objects on click.
+  Scene components in this list are also selected when focusing scene objects in the scene.
+
 ## 0.9.0
 
 ### Minor Changes

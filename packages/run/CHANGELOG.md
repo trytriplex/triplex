@@ -1,5 +1,16 @@
 # @triplex/run
 
+## 0.11.0
+
+### Minor Changes
+
+- a32c72e: Fixed bin script missing a node shebang.
+
+### Patch Changes
+
+- Updated dependencies [a32c72e]
+  - @triplex/client@0.4.0
+
 ## 0.10.0
 
 ### Minor Changes
