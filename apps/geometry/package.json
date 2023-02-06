@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "triplex": "triplex",
-    "editor": "triplex editor --open src/scene.tsx"
+    "editor": "triplex editor"
   },
   "dependencies": {
     "@react-three/fiber": "^8.0.0",

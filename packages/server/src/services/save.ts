@@ -1,6 +1,5 @@
 import type { TRIPLEXProject } from "@triplex/ts-morph";
 import { resolveConfig, resolveConfigFile, format } from "prettier";
-import { FormatCodeSettings } from "ts-morph";
 
 export async function save({
   project,

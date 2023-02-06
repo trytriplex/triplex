@@ -1,3 +1,4 @@
+import { useSearchParams } from "react-router-dom";
 import {
   Menubar,
   Menu,
@@ -10,6 +11,8 @@ import { useOverlayStore } from "../stores/overlay";
 
 export function EditorMenu() {
   const showOverlay = useOverlayStore((store) => store.show);
+  const [searchParams] = useSearchParams({ path: "" });
+  const path = searchParams.get("path");
 
   return (
     <Menubar>
@@ -20,20 +23,14 @@ export function EditorMenu() {
             Open
           </MenuItem>
           <Separator />
-          <MenuItem rslot="⌘ S">Save</MenuItem>
-        </MenuContent>
-      </Menu>
-      <Menu>
-        <Trigger>Edit</Trigger>
-        <MenuContent>
-          <MenuItem rslot="⌘ Z">Undo</MenuItem>
-          <MenuItem rslot="⇧ ⌘ Z">Redo</MenuItem>
-        </MenuContent>
-      </Menu>
-      <Menu>
-        <Trigger>View</Trigger>
-        <MenuContent>
-          <MenuItem rslot="⌘ R">Reload</MenuItem>
+          <MenuItem
+            rslot="⌘ S"
+            onClick={() =>
+              fetch(`http://localhost:8000/scene/save?path=${path}`)
+            }
+          >
+            Save
+          </MenuItem>
         </MenuContent>
       </Menu>
     </Menubar>

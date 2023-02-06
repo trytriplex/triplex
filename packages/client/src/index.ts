@@ -16,7 +16,6 @@ export async function createServer({ open }: { open?: boolean | string }) {
     configFile: false,
     plugins: [react(), scenePlugin()],
     root,
-    logLevel: "silent",
     appType: "custom",
     css: {
       postcss: process.env.TRIPLEX_DEV

@@ -1,3 +1,4 @@
+#!/usr/bin/env node
 import { program } from "@commander-js/extra-typings";
 import { description, version } from "../package.json";
 import { editor } from "./commands/editor";

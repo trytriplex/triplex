@@ -1,4 +1,6 @@
 import { TransformControls } from "@react-three/drei";
+import { useThree } from "@react-three/fiber";
+import { listen } from "@triplex/bridge/client";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { Box3, Object3D, Vector3, Vector3Tuple } from "three";
 import { TransformControls as TransformControlsImpl } from "three-stdlib";
@@ -51,7 +53,7 @@ const findPositionedObject = (object: WithR3FData<Object3D>): Object3D => {
 const findEditorData = (
   object: WithR3FData<Object3D>
 ): EditorNodeData | null => {
-  let parent: WithR3FData<Object3D> | null = object.parent;
+  let parent: WithR3FData<Object3D> | null = object;
   let data: EditorNodeData | null = null;
 
   while (parent) {
@@ -76,34 +78,87 @@ const findEditorData = (
   return data;
 };
 
+const findSceneObjectWithLineColumn = (
+  scene: WithR3FData<Object3D>,
+  line: number,
+  column: number,
+  path: string
+): EditorNodeData | null => {
+  let nodeData: EditorNodeData | null = null;
+
+  scene.traverse((obj) => {
+    if ("__r3fEditor" in obj.userData) {
+      if (obj.userData) {
+        const node: EditorNodeData = obj.userData.__r3fEditor;
+        if (
+          node.column === column &&
+          node.line === line &&
+          node.path === path
+        ) {
+          // We've found our scene object!
+          nodeData = findEditorData(obj);
+        }
+      }
+    }
+  });
+
+  return nodeData;
+};
+
 const V1 = new Vector3();
 const box = new Box3();
 
 export function Selection({
   children,
-  onFocus,
-  path,
-  onNavigate,
   onBlur,
+  onFocus,
+  onJumpTo,
+  onNavigate,
+  path,
 }: {
   children?: ReactNode;
-  path: string;
-  onFocus: (v: Vector3Tuple, bb: Box3, obj: Object3D) => void;
-  onNavigate: (node: EditorNodeData) => void;
   onBlur: () => void;
+  onFocus: (data: EditorNodeData) => void;
+  onJumpTo: (v: Vector3Tuple, bb: Box3, obj: Object3D) => void;
+  onNavigate: (node: EditorNodeData) => void;
+  path: string;
 }) {
   const [selected, setSelected] = useState<EditorNodeData>();
-  const [objectData, setObjectData] = useState<SceneObjectData | undefined>();
+  const [objectData, setObjectData] = useState<SceneObjectData>();
   const [mode, setMode] = useState<"translate" | "rotate" | "scale">(
     "translate"
   );
   const transformControls = useRef<TransformControlsImpl>(null);
   const dragging = useRef(false);
+  const scene = useThree((store) => store.scene);
+
+  useEffect(() => {
+    return listen("trplx:requestBlurSceneObject", () => {
+      setSelected(undefined);
+      setObjectData(undefined);
+    });
+  }, []);
+
+  useEffect(() => {
+    return listen("trplx:requestFocusSceneObject", (data) => {
+      const sceneObject = findSceneObjectWithLineColumn(
+        scene as unknown as WithR3FData<Object3D>,
+        data.line,
+        data.column,
+        data.path
+      );
+
+      if (sceneObject) {
+        setSelected(sceneObject);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     return () => {
       setSelected(undefined);
       setObjectData(undefined);
+      onBlur();
     };
   }, [path]);
 
@@ -121,19 +176,32 @@ export function Selection({
     if (data) {
       e.stopPropagation();
       setSelected(data);
+      onFocus(data);
+    }
+  };
 
-      if (data.path) {
-        fetch(`http://localhost:8000/scene/open?path=${data.path}`);
+  useEffect(() => {
+    async function loadData() {
+      if (!selected) {
+        return;
+      }
+
+      if (selected.path) {
+        fetch(
+          `http://localhost:8000/scene/${encodeURIComponent(selected.path)}`
+        );
       }
 
       // Begin fetching data for this.
       const res = await fetch(
-        `http://localhost:8000/scene/object/${data.line}/${data.column}?path=${path}`
+        `http://localhost:8000/scene/object/${selected.line}/${selected.column}?path=${path}`
       );
       const json = await res.json();
       setObjectData(json);
     }
-  };
+
+    loadData();
+  }, [selected]);
 
   useEffect(() => {
     const callback = (e: KeyboardEvent) => {
@@ -153,7 +221,7 @@ export function Selection({
 
       if (e.key === "f") {
         box.setFromObject(selected.sceneObject);
-        onFocus(
+        onJumpTo(
           selected.sceneObject.getWorldPosition(V1).toArray(),
           box,
           selected.sceneObject
@@ -180,7 +248,7 @@ export function Selection({
     document.addEventListener("keyup", callback);
 
     return () => document.removeEventListener("keyup", callback);
-  }, [onFocus, selected]);
+  }, [onJumpTo, selected]);
 
   const onMouseUp = (e: any) => {
     dragging.current = false;

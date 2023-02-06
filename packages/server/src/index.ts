@@ -10,6 +10,7 @@ import {
 } from "@triplex/ts-morph";
 import { getParam } from "./util/params";
 import { save } from "./services/save";
+import { getAllFiles, getFile } from "./services/file";
 
 export function createServer(_: {}) {
   const app = new Application();
@@ -33,40 +34,6 @@ export function createServer(_: {}) {
   app.use((ctx, next) => {
     ctx.response.headers.set("Access-Control-Allow-Origin", "*");
     return next();
-  });
-
-  router.get("/scene/open", async (context) => {
-    const path = getParam(context, "path");
-    const { sourceFile, transformedPath } = project.getSourceFile(path);
-
-    const jsxElements = sourceFile
-      .getDescendantsOfKind(SyntaxKind.JsxElement)
-      .map((x) => {
-        const { column, line } = sourceFile.getLineAndColumnAtPos(x.getPos());
-
-        return {
-          name: x.getOpeningElement().getTagNameNode().getText(),
-          line: line - 1,
-          column: column - 1,
-        };
-      });
-
-    const jsxSelfClosing = sourceFile
-      .getDescendantsOfKind(SyntaxKind.JsxSelfClosingElement)
-      .map((x) => {
-        const { column, line } = sourceFile.getLineAndColumnAtPos(x.getPos());
-
-        return {
-          name: x.getTagNameNode().getText(),
-          line: line - 1,
-          column: column - 1,
-        };
-      });
-
-    context.response.body = {
-      transformedPath,
-      sceneObjects: jsxElements.concat(jsxSelfClosing),
-    };
   });
 
   router.get("/scene/object/:line/:column", (context) => {
@@ -197,17 +164,17 @@ export function createServer(_: {}) {
     context.response.body = { message: "success" };
   });
 
-  router.get("/scene", async (context) => {
-    const files = await readdir(join(process.cwd(), "src"), {
-      recursive: true,
-    });
+  router.get("/scene/:path", async (context) => {
+    const path = context.params.path;
+    const result = await getFile({ path, project });
 
-    context.response.body = files
-      .filter((file) => file.endsWith(".tsx"))
-      .map((path) => ({
-        path,
-        name: basename(path).replace(extname(path), ""),
-      }));
+    context.response.body = result;
+  });
+
+  router.get("/scene", async (context) => {
+    const result = await getAllFiles();
+
+    context.response.body = result;
   });
 
   app.use(router.routes());
