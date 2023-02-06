@@ -59,11 +59,19 @@ export function SceneFrame({
   }, [focalPoint]);
   const camera = useRef<PC>(null);
 
-  const onFocusObject = (point: Vector3Tuple, box: Box3) => {
+  const onJumpTo = (point: Vector3Tuple, box: Box3) => {
     const center = box.getCenter(V1);
     setFocalPoint({
       objectCenter: center.toArray(),
       grid: [point[0], 0, point[2]],
+    });
+  };
+
+  const onFocus = (data: EditorNodeData) => {
+    send("trplx:onSceneObjectFocus", {
+      path: data.path,
+      column: data.column,
+      line: data.line,
     });
   };
 
@@ -105,9 +113,10 @@ export function SceneFrame({
       <OrbitControls makeDefault target={target} />
       <Selection
         path={path}
+        onFocus={onFocus}
         onBlur={onBlurObject}
         onNavigate={onNavigate}
-        onFocus={onFocusObject}
+        onJumpTo={onJumpTo}
       >
         <Suspense fallback={null}>
           <SceneLoader scenes={scenes} />

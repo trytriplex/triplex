@@ -8,7 +8,7 @@ export function Trigger({
   return (
     <RadixMenubar.Trigger
       {...props}
-      className="cursor-default rounded px-3 py-1 text-sm text-neutral-300 outline-none hover:bg-neutral-700 data-[state=open]:bg-neutral-700 data-[state=open]:text-blue-400"
+      className="cursor-default rounded px-3 py-1 text-sm text-neutral-300 outline-none hover:bg-neutral-700 data-[state=open]:bg-neutral-700 data-[state=open]:text-blue-500"
     >
       {children}
     </RadixMenubar.Trigger>
@@ -23,7 +23,7 @@ export function MenuContent({
     <RadixMenubar.Portal>
       <RadixMenubar.Content
         {...props}
-        className="mt-0.5 min-w-[150px] rounded bg-neutral-800 p-1 shadow-2xl shadow-black/50"
+        className="mt-0.5 min-w-[150px] rounded bg-neutral-800 p-1 shadow-2xl shadow-black"
       >
         {children}
       </RadixMenubar.Content>
@@ -52,13 +52,9 @@ export function Menu({ children }: RadixMenubar.MenubarMenuProps) {
 }
 
 export function Menubar({ children }: RadixMenubar.MenubarProps) {
-  return (
-    <RadixMenubar.Root className="flex rounded bg-neutral-800 shadow-2xl shadow-black/50">
-      {children}
-    </RadixMenubar.Root>
-  );
+  return <RadixMenubar.Root className="flex">{children}</RadixMenubar.Root>;
 }
 
 export function Separator() {
-  return <RadixMenubar.Separator className="my-1 h-[1px] bg-neutral-700" />;
+  return <RadixMenubar.Separator className="my-1 -mx-1 h-0.5 bg-neutral-700" />;
 }

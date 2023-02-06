@@ -14,7 +14,7 @@ export function send<TEvent extends ClientSendEventName>(
 
 export function listen<TEvent extends HostSendEventName>(
   eventName: TEvent,
-  callback: (ata: HostSendEventData[TEvent]) => void
+  callback: (data: HostSendEventData[TEvent]) => void
 ) {
   const cb = (e: MessageEvent) => {
     if (typeof e.data === "object" && e.data.eventName === eventName) {
