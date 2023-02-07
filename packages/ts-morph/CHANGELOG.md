@@ -1,5 +1,11 @@
 # @triplex/ts-morph
 
+## 0.7.0
+
+### Minor Changes
+
+- 55f0206: Scene components now appear nested when children of other components in the UI.
+
 ## 0.6.0
 
 ### Minor Changes

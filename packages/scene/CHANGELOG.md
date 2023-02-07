@@ -1,5 +1,11 @@
 # @triplex/scene
 
+## 0.11.0
+
+### Minor Changes
+
+- 55f0206: Scene components now appear nested when children of other components in the UI.
+
 ## 0.10.0
 
 ### Minor Changes

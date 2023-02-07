@@ -1,5 +1,12 @@
 # @triplex/editor
 
+## 0.12.0
+
+### Minor Changes
+
+- 55f0206: Fixed focus and blur events between the scene and the editor.
+- 55f0206: Scene components now appear nested when children of other components in the UI.
+
 ## 0.11.0
 
 ### Minor Changes

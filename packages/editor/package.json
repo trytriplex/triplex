@@ -1,6 +1,6 @@
 {
   "name": "@triplex/editor",
-  "version": "0.11.0",
+  "version": "0.12.0",
   "main": "./src/index.tsx",
   "module": "./src/index.tsx",
   "types": "./src/index.tsx",
