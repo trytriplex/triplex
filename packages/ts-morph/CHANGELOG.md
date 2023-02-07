@@ -1,5 +1,11 @@
 # @triplex/ts-morph
 
+## 0.6.0
+
+### Minor Changes
+
+- 3c725bc: Force release all packages.
+
 ## 0.5.0
 
 ### Minor Changes

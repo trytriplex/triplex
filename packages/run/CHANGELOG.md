@@ -1,5 +1,17 @@
 # @triplex/run
 
+## 0.12.0
+
+### Minor Changes
+
+- 3c725bc: Force release all packages.
+
+### Patch Changes
+
+- Updated dependencies [3c725bc]
+  - @triplex/client@0.5.0
+  - @triplex/server@0.7.0
+
 ## 0.11.0
 
 ### Minor Changes
