@@ -1,7 +1,7 @@
-import { getJsxElementPropTypes, TRIPLEXProject } from "@triplex/ts-morph";
+import { TRIPLEXProject } from "@triplex/ts-morph";
 import { basename, extname, join } from "path";
+import { getJsxElementsPositions } from "@triplex/ts-morph";
 import { readdir } from "../util/fs";
-import { SyntaxKind } from "ts-morph";
 
 export function getFile({
   path,
@@ -11,46 +11,12 @@ export function getFile({
   project: TRIPLEXProject;
 }) {
   const { sourceFile, transformedPath } = project.getSourceFile(path);
-  const importCache = new Map();
-
-  const jsxElements = sourceFile
-    .getDescendantsOfKind(SyntaxKind.JsxElement)
-    .map((x) => {
-      const meta = getJsxElementPropTypes(
-        sourceFile,
-        x.getOpeningElement().getTagNameNode().getText()
-      );
-      const { column, line } = sourceFile.getLineAndColumnAtPos(x.getPos());
-
-      return {
-        column: column - 1,
-        line: line - 1,
-        name: x.getOpeningElement().getTagNameNode().getText(),
-        path: meta.filePath,
-      };
-    });
-
-  const jsxSelfClosing = sourceFile
-    .getDescendantsOfKind(SyntaxKind.JsxSelfClosingElement)
-    .map((x) => {
-      const meta = getJsxElementPropTypes(
-        sourceFile,
-        x.getTagNameNode().getText()
-      );
-      const { column, line } = sourceFile.getLineAndColumnAtPos(x.getPos());
-
-      return {
-        column: column - 1,
-        line: line - 1,
-        name: x.getTagNameNode().getText(),
-        path: meta.filePath,
-      };
-    });
+  const jsxElements = getJsxElementsPositions(sourceFile);
 
   return {
     path: join(process.cwd(), path),
     transformedPath,
-    sceneObjects: jsxElements.concat(jsxSelfClosing),
+    sceneObjects: jsxElements,
   };
 }
 

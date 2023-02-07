@@ -1,0 +1,46 @@
+name: Test packages
+
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+
+env:
+  CI: true
+  PNPM_CACHE_FOLDER: .pnpm-store
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
+          fetch-depth: 0
+
+      - name: Read node version
+        run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+        id: nvm
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ steps.nvm.outputs.NVMRC }}
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7.21.0
+
+      - name: Setup pnpm config
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Test packages
+        run: pnpm test

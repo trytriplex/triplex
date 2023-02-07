@@ -1,7 +1,6 @@
 import { Application, isHttpError, Router } from "@oakserver/oak";
 import { SyntaxKind } from "ts-morph";
-import { join, basename, extname } from "path";
-import { readdir } from "./util/fs";
+import { join } from "path";
 import {
   createProject,
   getJsxAttributeValue,

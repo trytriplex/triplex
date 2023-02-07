@@ -205,18 +205,19 @@ export function Selection({
 
   useEffect(() => {
     const callback = (e: KeyboardEvent) => {
-      if (!selected) {
-        return;
-      }
-
       if (e.key === "Escape") {
         if (dragging.current) {
           transformControls.current?.reset();
         } else if (selected) {
           setSelected(undefined);
           setObjectData(undefined);
-          onBlur();
         }
+
+        onBlur();
+      }
+
+      if (!selected) {
+        return;
       }
 
       if (e.key === "f") {

@@ -7,6 +7,8 @@ import {
   type SourceFile,
   type TransformTraversalControl,
   type Type,
+  Node,
+  JsxElement,
 } from "ts-morph";
 
 export function getJsxAttributeValue(prop: JsxAttributeLike) {
@@ -188,6 +190,57 @@ export function getAllJsxElements(sourceFile: SourceFile) {
 
   const elements: (JsxSelfClosingElement | JsxOpeningElement)[] = [];
   elements.push(...jsxSelfClosing, ...jsxElements);
+
+  return elements;
+}
+
+export interface JsxElementPositions {
+  column: number;
+  line: number;
+  name: string;
+  path: string;
+  children: JsxElementPositions[];
+}
+
+export function getJsxTagName(node: JsxElement | JsxSelfClosingElement) {
+  if (Node.isJsxElement(node)) {
+    return node.getOpeningElement().getTagNameNode().getText();
+  }
+
+  return node.getTagNameNode().getText();
+}
+
+export function getJsxElementsPositions(sourceFile: SourceFile) {
+  const elements: JsxElementPositions[] = [];
+  const parentPointers = new Map<Node, JsxElementPositions>();
+
+  sourceFile.forEachDescendant((node) => {
+    if (Node.isJsxElement(node) || Node.isJsxSelfClosingElement(node)) {
+      const meta = getJsxElementPropTypes(sourceFile, getJsxTagName(node));
+      const { column, line } = sourceFile.getLineAndColumnAtPos(node.getPos());
+      const positions = {
+        column: column - 1,
+        line: line - 1,
+        name: getJsxTagName(node),
+        path: meta.filePath,
+        children: [],
+      };
+
+      const parentElement = node.getParentWhileKind(SyntaxKind.JsxElement);
+      if (parentElement) {
+        const parentPositions = parentPointers.get(parentElement);
+        if (!parentPositions) {
+          throw new Error("invariant");
+        }
+
+        parentPositions.children.push(positions);
+      } else {
+        elements.push(positions);
+      }
+
+      parentPointers.set(node, positions);
+    }
+  });
 
   return elements;
 }

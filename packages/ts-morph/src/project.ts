@@ -1,10 +1,5 @@
 import { join } from "path";
-import {
-  FileSystemRefreshResult,
-  Project,
-  SourceFile,
-  QuoteKind,
-} from "ts-morph";
+import { FileSystemRefreshResult, Project, SourceFile } from "ts-morph";
 import { watch, rm as remove, FileChangeInfo } from "fs/promises";
 import { cloneAndWrapSourceJsx } from "./transform";
 

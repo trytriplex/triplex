@@ -37,12 +37,24 @@ export function Bridge({
   const focused = useSceneStore((store) => store.focused);
 
   useEffect(() => {
+    send(iframeRef.current, "trplx:requestBlurSceneObject", {});
+
     if (focused) {
       send(iframeRef.current, "trplx:requestFocusSceneObject", focused);
-    } else {
-      send(iframeRef.current, "trplx:requestBlurSceneObject", {});
     }
   }, [focused]);
+
+  useEffect(() => {
+    const callback = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        focus(null);
+      }
+    };
+
+    document.addEventListener("keyup", callback);
+
+    return () => document.removeEventListener("keyup", callback);
+  }, []);
 
   useEffect(() => {
     if (path) {
