@@ -19,6 +19,8 @@ jobs:
         with:
           # This makes Actions fetch all Git history so that Changesets can generate changelogs with the correct commits
           fetch-depth: 0
+          # Needed to ensure we always use the atlas-dst-bot creds.
+          persist-credentials: false
 
       - name: Read node version
         run: echo ::set-output name=NVMRC::$(cat .nvmrc)
@@ -48,5 +50,5 @@ jobs:
           publish: pnpm ci:publish
           version: pnpm ci:version
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}
           NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
