@@ -1,5 +1,17 @@
 # @triplex/client
 
+## 0.5.0
+
+### Minor Changes
+
+- 3c725bc: Force release all packages.
+
+### Patch Changes
+
+- Updated dependencies [3c725bc]
+  - @triplex/editor@0.11.0
+  - @triplex/scene@0.10.0
+
 ## 0.4.0
 
 ### Minor Changes

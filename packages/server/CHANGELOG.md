@@ -1,5 +1,16 @@
 # @triplex/server
 
+## 0.7.0
+
+### Minor Changes
+
+- 3c725bc: Force release all packages.
+
+### Patch Changes
+
+- Updated dependencies [3c725bc]
+  - @triplex/ts-morph@0.6.0
+
 ## 0.6.0
 
 ### Minor Changes

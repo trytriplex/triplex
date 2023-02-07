@@ -1,5 +1,16 @@
 # @triplex/scene
 
+## 0.10.0
+
+### Minor Changes
+
+- 3c725bc: Force release all packages.
+
+### Patch Changes
+
+- Updated dependencies [3c725bc]
+  - @triplex/bridge@0.6.0
+
 ## 0.9.0
 
 ### Minor Changes
