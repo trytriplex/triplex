@@ -4,6 +4,7 @@ import { EditorMenu } from "./ui/editor-menu";
 import { SceneList } from "./ui/scene-list";
 import { SceneComponents } from "./ui/scene-components";
 import { SceneFrame } from "./scence-bridge";
+import { ErrorBoundary } from "react-error-boundary";
 
 export function EditorFrame() {
   const [searchParams] = useSearchParams({ path: "" });
@@ -29,9 +30,11 @@ export function EditorFrame() {
         <div className="border-t-2 border-neutral-700" />
 
         <div className="pt-2 text-neutral-300">
-          <Suspense fallback={<div className="px-3">Loading...</div>}>
-            <SceneComponents />
-          </Suspense>
+          <ErrorBoundary resetKeys={[path]} fallbackRender={() => null}>
+            <Suspense fallback={<div className="px-3">Loading...</div>}>
+              <SceneComponents />
+            </Suspense>
+          </ErrorBoundary>
         </div>
       </div>
     </div>

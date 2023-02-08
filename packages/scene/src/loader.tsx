@@ -1,57 +1,64 @@
-import { useEffect, useState } from "react";
+import { suspend } from "suspend-react";
 import { useSearchParams } from "react-router-dom";
-
-interface SceneMeta {
-  customLighting: boolean;
-}
+import { useLayoutEffect, useMemo, useState } from "react";
+import { SceneMeta, SceneModule } from "./types";
 
 export function SceneLoader({
   scenes,
 }: {
-  scenes: Record<string, () => Promise<unknown>>;
+  scenes: Record<string, () => Promise<SceneModule>>;
 }) {
+  const [updatedMeta, setUpdatedMeta] = useState<SceneMeta>();
   const [searchParams] = useSearchParams();
-  const path = searchParams.get("path") || "";
-  const [resolvedModule, setResolvedModule] = useState<
-    Record<string, any> | undefined
-  >();
-  const [props, setProps] = useState({});
-
-  useEffect(() => {
-    if (!path) {
-      return;
-    }
-
-    const sceneModule: any = Object.entries(scenes).find(([modPath]) =>
-      modPath.endsWith(path)
-    );
-
-    if (!sceneModule) {
-      return;
-    }
-
-    const serializedProps = searchParams.has("props")
-      ? JSON.parse(decodeURIComponent(searchParams.get("props") || ""))
+  const path = searchParams.get("path");
+  const stringifiedProps = searchParams.get("props");
+  const sceneProps = useMemo<Record<string, unknown>>(() => {
+    return stringifiedProps
+      ? JSON.parse(decodeURIComponent(stringifiedProps))
       : {};
+  }, [stringifiedProps]);
 
-    sceneModule[1]().then((resolved: any) => {
-      setResolvedModule(resolved);
-      setProps(serializedProps);
-    });
-  }, [path, searchParams]);
+  const loadModule = Object.entries(scenes).find(([filename]) =>
+    path ? filename.endsWith(path) : false
+  );
 
-  const meta: SceneMeta = resolvedModule?.__r3fEditorMeta || {};
-  const SceneComponent = resolvedModule?.default as Function;
+  useLayoutEffect(() => {
+    async function load() {
+      if (!loadModule) {
+        return;
+      }
 
-  if (!SceneComponent) {
+      const module = await loadModule[1]();
+      setUpdatedMeta(module.triplexMeta);
+    }
+
+    load();
+  }, [loadModule]);
+
+  if (!loadModule || !path) {
     return null;
   }
 
+  const { SceneComponent, initialMeta } = suspend(async () => {
+    const resolvedModule = await loadModule[1]();
+
+    if (typeof resolvedModule.default !== "function") {
+      throw new Error("invariant: module should export a default component");
+    }
+
+    return {
+      SceneComponent: resolvedModule.default,
+      initialMeta: resolvedModule.triplexMeta,
+    };
+  }, [path]);
+
+  const reconciledMeta = updatedMeta || initialMeta;
+
   return (
     <>
-      <SceneComponent {...props} />
+      <SceneComponent {...sceneProps} />
 
-      {!meta.customLighting && (
+      {!reconciledMeta.customLighting && (
         <>
           <hemisphereLight
             color="#87CEEB"
