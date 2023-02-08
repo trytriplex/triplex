@@ -230,7 +230,7 @@ export function cloneAndWrapSourceJsx(sourceFile: SourceFile, tempDir: string) {
     declarationKind: VariableDeclarationKind.Const,
     declarations: [
       {
-        name: "__r3fEditorMeta",
+        name: "triplexMeta",
         initializer: JSON.stringify({ customLighting }),
       },
     ],

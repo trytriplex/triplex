@@ -1,7 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import { listen, send } from "@triplex/bridge/client";
 import { Canvas } from "./canvas";
-import { SceneLoader } from "./loader";
 import type { EditorNodeData } from "./selection";
 import { OrbitControls, PerspectiveCamera, Grid } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
@@ -13,6 +12,9 @@ import {
   Vector3Tuple,
 } from "three";
 import { Selection } from "./selection";
+import { SceneLoader } from "./loader";
+import { ErrorBoundary } from "react-error-boundary";
+import { SceneModule } from "./types";
 
 const V1 = new Vector3();
 const layers = new Layers();
@@ -26,7 +28,7 @@ const defaultFocalPoint: { grid: Vector3Tuple; objectCenter: Vector3Tuple } = {
 export function SceneFrame({
   scenes,
 }: {
-  scenes: Record<string, () => Promise<unknown>>;
+  scenes: Record<string, () => Promise<SceneModule>>;
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const path = searchParams.get("path") || "";
@@ -118,9 +120,11 @@ export function SceneFrame({
         onNavigate={onNavigate}
         onJumpTo={onJumpTo}
       >
-        <Suspense fallback={null}>
-          <SceneLoader scenes={scenes} />
-        </Suspense>
+        <ErrorBoundary resetKeys={[path]} fallbackRender={() => null}>
+          <Suspense fallback={null}>
+            <SceneLoader scenes={scenes} />
+          </Suspense>
+        </ErrorBoundary>
       </Selection>
 
       <Grid

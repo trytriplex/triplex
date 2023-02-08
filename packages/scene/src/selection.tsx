@@ -229,7 +229,8 @@ export function Selection({
         );
       }
 
-      if (e.key === "F") {
+      if (e.key === "F" && selected.path) {
+        // Only navigate if there is a path to navigate to.
         onNavigate(selected);
       }
 
