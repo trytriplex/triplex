@@ -13,7 +13,6 @@ export function EditorFrame() {
   useEffect(() => {
     if (path) {
       window.document.title = path.split("/").at(-1) + " • TRIPLEX";
-      fetch(`http://localhost:8000/scene/${encodeURIComponent(path)}`, {});
     }
   }, [path]);
 
@@ -32,7 +31,7 @@ export function EditorFrame() {
         <div className="pt-2 text-neutral-300">
           <ErrorBoundary resetKeys={[path]} fallbackRender={() => null}>
             <Suspense fallback={<div className="px-3">Loading...</div>}>
-              <SceneComponents />
+              {path && <SceneComponents />}
             </Suspense>
           </ErrorBoundary>
         </div>

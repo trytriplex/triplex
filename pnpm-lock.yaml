@@ -116,7 +116,6 @@ importers:
       react-dom: ^18.2.0
       react-error-boundary: ^3.1.4
       react-router-dom: ^6.7.0
-      suspend-react: ^0.0.9
       three: ^0.148.0
       typescript: ^4.9.4
       zustand: ^4.3.2
@@ -130,7 +129,6 @@ importers:
       react-dom: 18.2.0_react@18.2.0
       react-error-boundary: 3.1.4_react@18.2.0
       react-router-dom: 6.7.0_biqbaboplfbrettd7655fr4n2y
-      suspend-react: 0.0.9_react@18.2.0
       zustand: 4.3.2_react@18.2.0
     devDependencies:
       '@swc/cli': 0.1.59_@swc+core@1.3.28
@@ -211,19 +209,27 @@ importers:
       '@triplex/ts-morph': ^0.7.0
       '@types/node': ^18.11.18
       '@types/prettier': ^2.7.2
+      '@types/ws': ^8.5.4
+      chokidar: ^3.5.3
+      node-match-path: ^0.6.3
       prettier: ^2.8.3
       ts-morph: ^17.0.1
       typescript: ^4.9.4
+      ws: ^8.12.0
     dependencies:
       '@oakserver/oak': 11.0.0
       '@triplex/ts-morph': link:../ts-morph
+      chokidar: 3.5.3
+      node-match-path: 0.6.3
       prettier: 2.8.3
       ts-morph: 17.0.1
+      ws: 8.12.0
     devDependencies:
-      '@swc/cli': 0.1.59_@swc+core@1.3.28
+      '@swc/cli': 0.1.59_nc4s4lufnr2nmdobgkrsi75i6m
       '@swc/core': 1.3.28
       '@types/node': 18.11.18
       '@types/prettier': 2.7.2
+      '@types/ws': 8.5.4
       typescript: 4.9.4
 
   packages/ts-morph:
@@ -234,17 +240,21 @@ importers:
       '@types/node': ^18.11.18
       '@types/react': ^18.0.27
       react: ^18.2.0
+      react-dom: ^18.2.0
+      three: ^0.148.0
       ts-morph: ^17.0.1
       typescript: ^4.9.4
     dependencies:
       ts-morph: 17.0.1
     devDependencies:
-      '@react-three/fiber': 8.11.0_react@18.2.0
+      '@react-three/fiber': 8.11.0_4tzez3c2xpzuefjrvhpyy55bva
       '@swc/cli': 0.1.59_@swc+core@1.3.28
       '@swc/core': 1.3.28
       '@types/node': 18.11.18
       '@types/react': 18.0.27
       react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      three: 0.148.0
       typescript: 4.9.4
 
 packages:
@@ -1492,7 +1502,7 @@ packages:
       zustand: 3.7.2_react@18.2.0
     dev: false
 
-  /@react-three/fiber/8.11.0_react@18.2.0:
+  /@react-three/fiber/8.11.0_4tzez3c2xpzuefjrvhpyy55bva:
     resolution: {integrity: sha512-n9eM7hVsHbecexKK0isvUOPq1SYMHcLhUTZsMZQSYo5RT1yjbgQbbrVtF9bXN9rQgrD9l3V3Ho3ckPp0cNNs1w==}
     peerDependencies:
       expo: '>=43.0'
@@ -1518,10 +1528,12 @@ packages:
       '@types/react-reconciler': 0.26.7
       its-fine: 1.0.8_react@18.2.0
       react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
       react-reconciler: 0.27.0_react@18.2.0
-      react-use-measure: 2.1.1_react@18.2.0
+      react-use-measure: 2.1.1_biqbaboplfbrettd7655fr4n2y
       scheduler: 0.21.0
       suspend-react: 0.0.8_react@18.2.0
+      three: 0.148.0
       zustand: 3.7.2_react@18.2.0
     dev: true
 
@@ -1837,6 +1849,12 @@ packages:
 
   /@types/webxr/0.5.0:
     resolution: {integrity: sha512-IUMDPSXnYIbEO2IereEFcgcqfDREOgmbGqtrMpVPpACTU6pltYLwHgVkrnYv0XhWEcjio9sYEfIEzgn3c7nDqA==}
+
+  /@types/ws/8.5.4:
+    resolution: {integrity: sha512-zdQDHKUgcX/zBc4GrwsE/7dVdAD8JR4EuiAXiiUhhfyIJXXb2+PrGshFyeXWQPMmmZ2XxgaqclgpIC7eTXc1mg==}
+    dependencies:
+      '@types/node': 18.11.18
+    dev: true
 
   /@use-gesture/core/10.2.23:
     resolution: {integrity: sha512-Ynap/Uh6RX1Vgn3zNmFTyKapapdf7Av+GzAe6h+RsBZaxMF1z3cK6aohHPJP6T1hLrPyH/yehxa7RBqyESG9RA==}
@@ -4018,6 +4036,10 @@ packages:
     resolution: {integrity: sha512-1nh45deeb5olNY7eX82BkPO7SSxR5SSYJiPTrTdFUVYwAl8CKMA5N9PjTYkHiRjisVcxcQ1HXdLhx2qxxJzLNQ==}
     dev: true
 
+  /node-match-path/0.6.3:
+    resolution: {integrity: sha512-fB1reOHKLRZCJMAka28hIxCwQLxGmd7WewOCBDYKpyA1KXi68A7vaGgdZAPhY2E6SXoYt3KqYCCvXLJ+O0Fu/Q==}
+    dev: false
+
   /node-releases/2.0.8:
     resolution: {integrity: sha512-dFSmB8fFHEH/s81Xi+Y/15DQY6VHW81nXRj86EMSL3lmuTmK1e+aT4wrFCkTbm+gSwkw4KpX+rT/pMM2c1mF+A==}
     dev: false
@@ -4566,7 +4588,6 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
-    dev: false
 
   /react-error-boundary/3.1.4_react@18.2.0:
     resolution: {integrity: sha512-uM9uPzZJTF6wRQORmSrvOIgt4lJ9MC1sNgEOj2XGsDTRE4kmpWxg7ENK9EWNKJRMAOY9z0MuF4yIfl6gp4sotA==}
@@ -4689,17 +4710,6 @@ packages:
       debounce: 1.2.1
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
-    dev: false
-
-  /react-use-measure/2.1.1_react@18.2.0:
-    resolution: {integrity: sha512-nocZhN26cproIiIduswYpV5y5lQpSQS1y/4KuvUCjSKmw7ZWIS/+g3aFnX3WdBkyuGUtTLif3UTqnLLhbDoQig==}
-    peerDependencies:
-      react: '>=16.13'
-      react-dom: '>=16.13'
-    dependencies:
-      debounce: 1.2.1
-      react: 18.2.0
-    dev: true
 
   /react/18.2.0:
     resolution: {integrity: sha512-/3IjMdb2L9QbBdWiW5e3P2/npwMBaU9mHCSCUzNln0ZCYbcfTsGbTJrU/kGemdH2IWmB2ioZ+zkxtmq6g09fGQ==}
@@ -4861,7 +4871,6 @@ packages:
     resolution: {integrity: sha512-CtuThmgHNg7zIZWAXi3AsyIzA3n4xx7aNyjwC2VJldO2LMVDhFK+63xGqq6CsJH4rTAt6/M+N4GhZiDYPx9eUw==}
     dependencies:
       loose-envify: 1.4.0
-    dev: false
 
   /seek-bzip/1.0.6:
     resolution: {integrity: sha512-e1QtP3YL5tWww8uKaOCQ18UxIT2laNBXHjV/S2WYCiK4udiv8lkG89KRIoCjUagnAmCBurjF4zEVX2ByBbnCjQ==}
@@ -5878,6 +5887,19 @@ packages:
   /wrappy/1.0.2:
     resolution: {integrity: sha512-l4Sp/DRseor9wL6EvV2+TuQn63dMkPjZ/sp9XkghTEbV9KlPS1xUsZ3u7/IQO4wxtcFB4bgpQPRcR3QCvezPcQ==}
     dev: true
+
+  /ws/8.12.0:
+    resolution: {integrity: sha512-kU62emKIdKVeEIOIKVegvqpXMSTAMLJozpHZaJNDYqBjzlSYXQGviYwN1osDLJ9av68qHd4a2oSjd7yD4pacig==}
+    engines: {node: '>=10.0.0'}
+    peerDependencies:
+      bufferutil: ^4.0.1
+      utf-8-validate: '>=5.0.2'
+    peerDependenciesMeta:
+      bufferutil:
+        optional: true
+      utf-8-validate:
+        optional: true
+    dev: false
 
   /xtend/4.0.2:
     resolution: {integrity: sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==}

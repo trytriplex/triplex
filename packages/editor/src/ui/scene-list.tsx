@@ -1,28 +1,21 @@
 import { Suspense } from "react";
-import { suspend } from "suspend-react";
 import { Link, useSearchParams } from "react-router-dom";
+import { cn } from "../ds/cn";
 import { Drawer, DrawerContent } from "../ds/drawer";
 import { useOverlayStore } from "../stores/overlay";
-import { cn } from "../ds/cn";
+import { useLazySubscription } from "../stores/ws-client";
 
 function Files() {
-  const files = suspend(
-    async () => {
-      const res = await fetch("http://localhost:8000/scene");
-      return res.json() as Promise<{
-        cwd: string;
-        scenes: { path: string; name: string }[];
-      }>;
-    },
-    ["files"],
-    { lifespan: 0 }
-  );
+  const files = useLazySubscription<{
+    cwd: string;
+    scenes: { path: string; name: string }[];
+  }>("/scene");
   const [search] = useSearchParams();
   const current = search.get("path");
 
   return (
     <>
-      {files.scenes.map((file) => (
+      {files?.scenes.map((file) => (
         <Link
           replace
           key={file.path}

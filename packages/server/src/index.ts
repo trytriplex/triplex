@@ -8,8 +8,11 @@ import {
   getAllJsxElements,
 } from "@triplex/ts-morph";
 import { getParam } from "./util/params";
+import { createServer as createWSS } from "./util/ws-server";
 import { save } from "./services/save";
 import { getAllFiles, getFile } from "./services/file";
+
+import { watch } from "chokidar";
 
 export function createServer(_: {}) {
   const app = new Application();
@@ -17,6 +20,7 @@ export function createServer(_: {}) {
   const project = createProject({
     tempDir: join(process.cwd(), ".triplex"),
   });
+  const wss = createWSS();
 
   app.use(async (ctx, next) => {
     try {
@@ -163,21 +167,33 @@ export function createServer(_: {}) {
     context.response.body = { message: "success" };
   });
 
-  router.get("/scene/:path", async (context) => {
-    const path = context.params.path;
-    const result = await getFile({ path, project });
-
-    context.response.body = result;
-  });
-
-  router.get("/scene", async (context) => {
-    const result = await getAllFiles();
-
-    context.response.body = result;
-  });
-
   app.use(router.routes());
   app.use(router.allowedMethods());
+
+  wss.message(
+    "/scene",
+    async () => {
+      const result = await getAllFiles();
+      return result;
+    },
+    (push) => {
+      const watcher = watch(join(process.cwd(), "src"));
+      watcher.on("add", push);
+      watcher.on("unlink", push);
+    }
+  );
+
+  wss.message(
+    "/scene/:path",
+    async ({ path }) => {
+      const result = await getFile({ path, project });
+      return result;
+    },
+    (push, { path }) => {
+      const watcher = watch(path);
+      watcher.on("change", push);
+    }
+  );
 
   return {
     listen: (port = 8000) => app.listen({ port }),

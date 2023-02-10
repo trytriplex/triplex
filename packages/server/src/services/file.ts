@@ -7,6 +7,9 @@ export function getFile({
   path,
   project,
 }: {
+  /**
+   * The absolute path to the file.
+   */
   path: string;
   project: TRIPLEXProject;
 }) {
@@ -14,7 +17,7 @@ export function getFile({
   const jsxElements = getJsxElementsPositions(sourceFile);
 
   return {
-    path: join(process.cwd(), path),
+    path,
     transformedPath,
     sceneObjects: jsxElements,
   };
