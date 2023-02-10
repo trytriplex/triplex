@@ -186,12 +186,6 @@ export function Selection({
         return;
       }
 
-      if (selected.path) {
-        fetch(
-          `http://localhost:8000/scene/${encodeURIComponent(selected.path)}`
-        );
-      }
-
       // Begin fetching data for this.
       const res = await fetch(
         `http://localhost:8000/scene/object/${selected.line}/${selected.column}?path=${path}`

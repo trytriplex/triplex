@@ -1,7 +1,7 @@
 import { Fragment } from "react";
 import { useSearchParams } from "react-router-dom";
-import { suspend } from "suspend-react";
 import { cn } from "../ds/cn";
+import { useLazySubscription } from "../stores/ws-client";
 import { useSceneStore } from "../stores/scene";
 
 function SceneComponent({
@@ -46,22 +46,9 @@ interface JsxElementPositions {
 export function SceneComponents() {
   const [searchParams] = useSearchParams();
   const path = searchParams.get("path") || "";
-  const scene = suspend(
-    async () => {
-      const res = await fetch(
-        `http://localhost:8000/scene/${encodeURIComponent(path)}`
-      );
-      return res.json() as Promise<{
-        sceneObjects: JsxElementPositions[];
-      }>;
-    },
-    [path],
-    { lifespan: 0 }
-  );
-
-  if (!scene || !scene.sceneObjects) {
-    return null;
-  }
+  const scene = useLazySubscription<{
+    sceneObjects: JsxElementPositions[];
+  }>(`/scene/${encodeURIComponent(path)}`);
 
   return (
     <div className="flex flex-col">
