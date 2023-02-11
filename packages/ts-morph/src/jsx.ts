@@ -1,23 +1,48 @@
 import {
-  SyntaxKind,
-  ts,
-  type JsxOpeningElement,
-  type JsxSelfClosingElement,
   type JsxAttributeLike,
+  type JsxSelfClosingElement,
   type SourceFile,
   type TransformTraversalControl,
   type Type,
-  Node,
+  createWrappedNode,
+  Expression,
   JsxElement,
+  Node,
+  SyntaxKind,
+  ts,
 } from "ts-morph";
+
+function isStaticType(expression: Expression<ts.Expression>): boolean {
+  if (Node.isArrayLiteralExpression(expression)) {
+    const result = expression.compilerNode.elements.map((element) => {
+      return isStaticType(createWrappedNode(element));
+    });
+
+    if (result.every((value) => !!value)) {
+      return true;
+    }
+  }
+
+  if (Node.isPrefixUnaryExpression(expression)) {
+    return isStaticType(expression.getOperand());
+  }
+
+  if (Node.isLiteralLike(expression)) {
+    return true;
+  }
+
+  return false;
+}
 
 export function getJsxAttributeValue(prop: JsxAttributeLike) {
   const expression = prop
     .getChildrenOfKind(SyntaxKind.JsxExpression)[0]
     ?.getExpression();
   let result = "undefined";
+  let type = "unhandled";
 
   if (expression) {
+    type = isStaticType(expression) ? "static" : "unhandled";
     result = expression
       .getFullText()
       .replace(/\n| /g, "")
@@ -26,13 +51,17 @@ export function getJsxAttributeValue(prop: JsxAttributeLike) {
 
   const stringLiteral = prop.getChildrenOfKind(SyntaxKind.StringLiteral)[0];
   if (stringLiteral) {
+    type = "static";
     result = stringLiteral.getText();
   }
 
   try {
-    return JSON.parse(result);
+    return {
+      type,
+      value: JSON.parse(result),
+    };
   } catch (_e) {
-    return result;
+    return { type, value: result };
   }
 }
 
@@ -92,8 +121,9 @@ export function unrollType(type: Type, _nested = false): any {
 
 export function getJsxElementPropTypes(
   sourceFile: SourceFile,
-  elementName: string
+  element: JsxSelfClosingElement | JsxElement
 ) {
+  const elementName = getJsxTagName(element);
   const propTypes: Record<
     string,
     { name: string; required: boolean; type: any }
@@ -154,7 +184,7 @@ export function serializeProps(
       let value: ts.Expression;
 
       if (!prop.initializer) {
-        // Implict true
+        // Implicit true
         value = traversal.factory.createTrue();
       } else {
         switch (prop.initializer.kind) {
@@ -181,14 +211,12 @@ export function serializeProps(
 }
 
 export function getAllJsxElements(sourceFile: SourceFile) {
-  const jsxElements = sourceFile.getDescendantsOfKind(
-    SyntaxKind.JsxOpeningElement
-  );
+  const jsxElements = sourceFile.getDescendantsOfKind(SyntaxKind.JsxElement);
   const jsxSelfClosing = sourceFile.getDescendantsOfKind(
     SyntaxKind.JsxSelfClosingElement
   );
 
-  const elements: (JsxSelfClosingElement | JsxOpeningElement)[] = [];
+  const elements: (JsxSelfClosingElement | JsxElement)[] = [];
   elements.push(...jsxSelfClosing, ...jsxElements);
 
   return elements;
@@ -216,7 +244,7 @@ export function getJsxElementsPositions(sourceFile: SourceFile) {
 
   sourceFile.forEachDescendant((node) => {
     if (Node.isJsxElement(node) || Node.isJsxSelfClosingElement(node)) {
-      const meta = getJsxElementPropTypes(sourceFile, getJsxTagName(node));
+      const meta = getJsxElementPropTypes(sourceFile, node);
       const { column, line } = sourceFile.getLineAndColumnAtPos(node.getPos());
       const positions = {
         column: column - 1,
@@ -243,4 +271,66 @@ export function getJsxElementsPositions(sourceFile: SourceFile) {
   });
 
   return elements;
+}
+
+export function getAttributes(element: JsxSelfClosingElement | JsxElement) {
+  const attributes = Node.isJsxSelfClosingElement(element)
+    ? element.getAttributes()
+    : element.getOpeningElement().getAttributes();
+
+  return attributes;
+}
+
+export function getJsxElementProps(
+  sourceFile: SourceFile,
+  element: JsxSelfClosingElement | JsxElement
+) {
+  const attributes = getAttributes(element);
+  const props = attributes.map((prop) => {
+    const { column, line } = sourceFile.getLineAndColumnAtPos(prop.getPos());
+    const value = getJsxAttributeValue(prop);
+
+    return {
+      column: column - 1,
+      line: line - 1,
+      name: prop.getChildAtIndex(0).getText(),
+      value: value.value,
+      type: value.type,
+    };
+  });
+
+  return props;
+}
+
+export function getJsxElementAt(
+  sourceFile: SourceFile,
+  line: number,
+  column: number
+) {
+  const pos = sourceFile.compilerNode.getPositionOfLineAndCharacter(
+    line,
+    column
+  );
+
+  const sceneObject = getAllJsxElements(sourceFile).find(
+    (node) => node.getPos() === pos
+  );
+
+  return sceneObject;
+}
+
+export function getJsxAttributeAt(
+  sourceFile: SourceFile,
+  line: number,
+  column: number
+) {
+  const pos = sourceFile.compilerNode.getPositionOfLineAndCharacter(
+    line,
+    column
+  );
+  const attribute = sourceFile
+    .getDescendantAtPos(pos)
+    ?.getParentIfKind(SyntaxKind.JsxAttribute);
+
+  return attribute;
 }

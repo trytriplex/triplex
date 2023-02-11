@@ -1,10 +1,11 @@
+import { ErrorBoundary } from "react-error-boundary";
 import { useSearchParams } from "react-router-dom";
 import { Suspense, useEffect } from "react";
 import { EditorMenu } from "./ui/editor-menu";
 import { SceneList } from "./ui/scene-list";
-import { SceneComponents } from "./ui/scene-components";
+import { ScenePanel } from "./ui/scene-panel";
 import { SceneFrame } from "./scence-bridge";
-import { ErrorBoundary } from "react-error-boundary";
+import { ContextPanel } from "./ui/context-panel";
 
 export function EditorFrame() {
   const [searchParams] = useSearchParams({ path: "" });
@@ -21,21 +22,23 @@ export function EditorFrame() {
       <SceneFrame />
       <SceneList />
 
-      <div className="absolute top-4 left-4 bottom-4 flex w-52 flex-col rounded bg-neutral-800/90 shadow-2xl shadow-black">
-        <div className="p-1">
+      <div className="absolute top-4 left-4 bottom-4 flex w-52 flex-col gap-4">
+        <div className="rounded-lg bg-neutral-800/90 p-1 shadow-2xl shadow-black/50">
           <EditorMenu />
         </div>
 
-        <div className="border-t-2 border-neutral-700" />
-
-        <div className="pt-2 text-neutral-300">
-          <ErrorBoundary resetKeys={[path]} fallbackRender={() => null}>
-            <Suspense fallback={<div className="px-3">Loading...</div>}>
-              {path && <SceneComponents />}
-            </Suspense>
-          </ErrorBoundary>
-        </div>
+        {path && (
+          <div className="h-full rounded-lg bg-neutral-800/90 p-4 pt-2 text-neutral-300 shadow-2xl shadow-black/50">
+            <ErrorBoundary resetKeys={[path]} fallbackRender={() => null}>
+              <Suspense fallback={<div>Loading...</div>}>
+                <ScenePanel />
+              </Suspense>
+            </ErrorBoundary>
+          </div>
+        )}
       </div>
+
+      {path && <ContextPanel />}
     </div>
   );
 }

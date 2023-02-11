@@ -1,8 +1,15 @@
 import { create } from "zustand";
 
+export interface FocusedObject {
+  path: string;
+  line: number;
+  column: number;
+  name: string;
+}
+
 interface SceneState {
-  focus: (obj: { path: string; line: number; column: number } | null) => void;
-  focused: { path: string; line: number; column: number } | null;
+  focus: (obj: FocusedObject | null) => void;
+  focused: FocusedObject | null;
 }
 
 export const useSceneStore = create<SceneState>((set) => ({

@@ -1,8 +1,19 @@
 import { join } from "path";
-import { SourceFile, ts, VariableDeclarationKind } from "ts-morph";
-import { getJsxElementPropTypes, serializeProps } from "./jsx";
+import {
+  JsxElement,
+  JsxSelfClosingElement,
+  SourceFile,
+  ts,
+  VariableDeclarationKind,
+  createWrappedNode,
+} from "ts-morph";
+import { getJsxElementPropTypes, getJsxTagName, serializeProps } from "./jsx";
 
-function getNodeTransforms(sourceFile: SourceFile, elementName: string) {
+function getNodeTransforms(
+  sourceFile: SourceFile,
+  element: JsxSelfClosingElement | JsxElement
+) {
+  const elementName = getJsxTagName(element);
   if (/[a-z]/.exec(elementName[0])) {
     return {
       translate: true,
@@ -11,7 +22,7 @@ function getNodeTransforms(sourceFile: SourceFile, elementName: string) {
     };
   }
 
-  const meta = getJsxElementPropTypes(sourceFile, elementName);
+  const meta = getJsxElementPropTypes(sourceFile, element);
 
   return {
     filePath: meta.filePath,
@@ -66,13 +77,14 @@ export function cloneAndWrapSourceJsx(sourceFile: SourceFile, tempDir: string) {
     }
 
     if (ts.isJsxSelfClosingElement(node)) {
-      if (node.tagName.getText().includes("Light")) {
+      const tagName = getJsxTagName(createWrappedNode(node));
+      if (tagName.includes("Light")) {
         customLighting = true;
       }
 
       const transform = getNodeTransforms(
         transformedSource,
-        node.tagName.getText()
+        createWrappedNode(node)
       );
 
       return traversal.factory.createJsxElement(
@@ -92,6 +104,10 @@ export function cloneAndWrapSourceJsx(sourceFile: SourceFile, tempDir: string) {
                     traversal.factory.createPropertyAssignment(
                       "__r3fEditor",
                       traversal.factory.createObjectLiteralExpression([
+                        traversal.factory.createPropertyAssignment(
+                          "name",
+                          traversal.factory.createStringLiteral(tagName)
+                        ),
                         traversal.factory.createPropertyAssignment(
                           "path",
                           traversal.factory.createStringLiteral(
@@ -144,13 +160,14 @@ export function cloneAndWrapSourceJsx(sourceFile: SourceFile, tempDir: string) {
     }
 
     if (ts.isJsxElement(node)) {
-      if (node.openingElement.tagName.getText().includes("Light")) {
+      const tagName = getJsxTagName(createWrappedNode(node));
+      if (tagName.includes("Light")) {
         customLighting = true;
       }
 
       const transform = getNodeTransforms(
         transformedSource,
-        node.openingElement.tagName.getText()
+        createWrappedNode(node)
       );
 
       return traversal.factory.updateJsxElement(
@@ -167,6 +184,10 @@ export function cloneAndWrapSourceJsx(sourceFile: SourceFile, tempDir: string) {
                   traversal.factory.createPropertyAssignment(
                     "__r3fEditor",
                     traversal.factory.createObjectLiteralExpression([
+                      traversal.factory.createPropertyAssignment(
+                        "name",
+                        traversal.factory.createStringLiteral(tagName)
+                      ),
                       traversal.factory.createPropertyAssignment(
                         "path",
                         traversal.factory.createStringLiteral(
