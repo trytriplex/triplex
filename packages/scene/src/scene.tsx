@@ -71,9 +71,10 @@ export function SceneFrame({
 
   const onFocus = (data: EditorNodeData) => {
     send("trplx:onSceneObjectFocus", {
-      path: data.path,
       column: data.column,
       line: data.line,
+      name: data.name,
+      path: data.path,
     });
   };
 

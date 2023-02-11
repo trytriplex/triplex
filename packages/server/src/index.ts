@@ -1,5 +1,5 @@
 import { Application, isHttpError, Router } from "@oakserver/oak";
-import { SyntaxKind } from "ts-morph";
+import { Node, SyntaxKind } from "ts-morph";
 import { join } from "path";
 import {
   createProject,
@@ -13,6 +13,13 @@ import { save } from "./services/save";
 import { getAllFiles, getFile } from "./services/file";
 
 import { watch } from "chokidar";
+import {
+  getAttributes,
+  getJsxAttributeAt,
+  getJsxElementAt,
+  getJsxElementProps,
+  getJsxTagName,
+} from "@triplex/ts-morph";
 
 export function createServer(_: {}) {
   const app = new Application();
@@ -58,7 +65,8 @@ export function createServer(_: {}) {
       return;
     }
 
-    const props = sceneObject.getAttributes().map((prop) => {
+    const attributes = getAttributes(sceneObject);
+    const props = attributes.map((prop) => {
       const { column, line } = sourceFile.getLineAndColumnAtPos(prop.getPos());
 
       return {
@@ -69,8 +77,8 @@ export function createServer(_: {}) {
       };
     });
 
-    const name = sceneObject.getTagNameNode().getText();
-    const types = getJsxElementPropTypes(sourceFile, name);
+    const name = getJsxTagName(sceneObject);
+    const types = getJsxElementPropTypes(sourceFile, sceneObject);
 
     context.response.body = { name, props, types };
   });
@@ -82,13 +90,7 @@ export function createServer(_: {}) {
     const line = Number(context.params.line);
     const column = Number(context.params.column);
     const { sourceFile } = project.getSourceFile(path);
-    const pos = sourceFile.compilerNode.getPositionOfLineAndCharacter(
-      line,
-      column
-    );
-    const sceneObject = getAllJsxElements(sourceFile).find(
-      (node) => node.getPos() === pos
-    );
+    const sceneObject = getJsxElementAt(sourceFile, line, column);
 
     if (!sceneObject) {
       context.response.status = 404;
@@ -106,10 +108,17 @@ export function createServer(_: {}) {
       attribute.setInitializer(`{${value}}`);
       action = "updated";
     } else {
-      sceneObject.addAttribute({
+      const newAttribute = {
         name,
         initializer: `{${value}}`,
-      });
+      };
+
+      if (Node.isJsxElement(sceneObject)) {
+        sceneObject.getOpeningElement().addAttribute(newAttribute);
+      } else {
+        sceneObject.addAttribute(newAttribute);
+      }
+
       action = "added";
     }
 
@@ -122,13 +131,7 @@ export function createServer(_: {}) {
     const { sourceFile } = project.getSourceFile(path);
     const line = Number(context.params.line);
     const column = Number(context.params.column);
-    const pos = sourceFile.compilerNode.getPositionOfLineAndCharacter(
-      line,
-      column
-    );
-    const attribute = sourceFile
-      .getDescendantAtPos(pos)
-      ?.getParentIfKind(SyntaxKind.JsxAttribute);
+    const attribute = getJsxAttributeAt(sourceFile, line, column);
 
     if (!attribute) {
       context.response.status = 404;
@@ -194,6 +197,24 @@ export function createServer(_: {}) {
       watcher.on("change", push);
     }
   );
+
+  wss.message("/scene/:path/object/:line/:column", (params) => {
+    const path = params.path;
+    const line = Number(params.line);
+    const column = Number(params.column);
+    const { sourceFile } = project.getSourceFile(path);
+    const sceneObject = getJsxElementAt(sourceFile, line, column);
+
+    if (!sceneObject) {
+      throw new Error(`invariant: element not found`);
+    }
+
+    const name = getJsxTagName(sceneObject);
+    const props = getJsxElementProps(sourceFile, sceneObject);
+    const types = getJsxElementPropTypes(sourceFile, sceneObject);
+
+    return { name, props, propTypes: types.propTypes };
+  });
 
   return {
     listen: (port = 8000) => app.listen({ port }),

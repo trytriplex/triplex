@@ -7,6 +7,7 @@ import { TransformControls as TransformControlsImpl } from "three-stdlib";
 
 export interface EditorNodeData {
   path: string;
+  name: string;
   line: number;
   column: number;
   props: Record<string, any>;

@@ -1,4 +1,7 @@
-import { TRIPLEXProject } from "@triplex/ts-morph";
+import {
+  getDefaultExportFunctionName,
+  TRIPLEXProject,
+} from "@triplex/ts-morph";
 import { basename, extname, join } from "path";
 import { getJsxElementsPositions } from "@triplex/ts-morph";
 import { readdir } from "../util/fs";
@@ -15,9 +18,11 @@ export function getFile({
 }) {
   const { sourceFile, transformedPath } = project.getSourceFile(path);
   const jsxElements = getJsxElementsPositions(sourceFile);
+  const name = getDefaultExportFunctionName(sourceFile);
 
   return {
     path,
+    name,
     transformedPath,
     sceneObjects: jsxElements,
   };

@@ -23,7 +23,7 @@ export function MenuContent({
     <RadixMenubar.Portal>
       <RadixMenubar.Content
         {...props}
-        className="mt-0.5 min-w-[150px] rounded bg-neutral-800 p-1 shadow-2xl shadow-black"
+        className="mt-0.5 min-w-[150px] rounded bg-neutral-800 p-1 shadow-2xl shadow-black/50"
       >
         {children}
       </RadixMenubar.Content>
