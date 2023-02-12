@@ -12,8 +12,8 @@
     "typedef": "tsc"
   },
   "dependencies": {
-    "@triplex/editor": "^0.13.0",
-    "@triplex/scene": "^0.12.0",
+    "@triplex/editor": "0.13.0",
+    "@triplex/scene": "0.12.0",
     "@vitejs/plugin-react": "^3.0.1",
     "chokidar": "^3.5.3",
     "express": "^4.18.2",
