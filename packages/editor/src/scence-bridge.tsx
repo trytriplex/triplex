@@ -38,6 +38,11 @@ export function Bridge({
     send(iframeRef.current, "trplx:requestBlurSceneObject", {});
 
     if (focused) {
+      // This opens the scene early to cache to memory and fs.
+      // It's quite an expensive operation so we fire it as early as we can.
+      fetch(
+        `http://localhost:8000/scene/${encodeURIComponent(focused.path)}/open`
+      );
       send(iframeRef.current, "trplx:requestFocusSceneObject", focused);
     }
   }, [focused]);
