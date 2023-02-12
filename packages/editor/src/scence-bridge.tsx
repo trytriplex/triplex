@@ -1,7 +1,7 @@
 import { listen, send } from "@triplex/bridge/host";
-import { useSearchParams } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { useSceneStore } from "./stores/scene";
+import { useEditorContext } from "./stores/editor-context";
 
 export function SceneFrame() {
   const iframe = useRef<HTMLIFrameElement>(null!);
@@ -30,9 +30,7 @@ export function Bridge({
 }: {
   iframeRef: React.MutableRefObject<HTMLIFrameElement>;
 }) {
-  const [searchParams, setSearchParams] = useSearchParams({ path: "" });
-  const path = searchParams.get("path");
-  const props = searchParams.get("props");
+  const { path, props, set } = useEditorContext();
   const focus = useSceneStore((store) => store.focus);
   const focused = useSceneStore((store) => store.focused);
 
@@ -60,16 +58,17 @@ export function Bridge({
     if (path) {
       send(iframeRef.current, "trplx:requestNavigateToSceneObject", {
         path,
-        props: props ? JSON.parse(decodeURIComponent(props)) : {},
+        props,
       });
     }
-  }, [path, props]);
+  }, [path]);
 
   useEffect(() => {
     return listen("trplx:onSceneObjectNavigated", (data) => {
-      setSearchParams({
+      focus(null);
+      set({
         path: data.path,
-        props: encodeURIComponent(JSON.stringify(data.props)),
+        props: data.props,
       });
     });
   }, []);

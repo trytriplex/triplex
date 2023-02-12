@@ -1,6 +1,6 @@
 import { Vector3Tuple } from "three";
 
-export default function Box({
+export default function Sphere({
   position,
   rotation,
   scale,
@@ -11,8 +11,8 @@ export default function Box({
 }) {
   return (
     <mesh position={position} rotation={rotation} scale={scale}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color="green" />
+      <sphereGeometry args={[1, 10, 10]} />
+      <meshStandardMaterial color="blue" />
     </mesh>
   );
 }

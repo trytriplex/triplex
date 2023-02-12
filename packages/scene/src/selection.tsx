@@ -157,7 +157,6 @@ export function Selection({
 
   useEffect(() => {
     return () => {
-      setSelected(undefined);
       setObjectData(undefined);
       onBlur();
     };
@@ -224,7 +223,7 @@ export function Selection({
         );
       }
 
-      if (e.key === "F" && selected.path) {
+      if (e.key === "F" && e.shiftKey && selected.path) {
         // Only navigate if there is a path to navigate to.
         onNavigate(selected);
       }

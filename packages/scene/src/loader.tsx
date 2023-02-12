@@ -1,25 +1,21 @@
 import { suspend } from "suspend-react";
-import { useSearchParams } from "react-router-dom";
-import { useLayoutEffect, useMemo, useState } from "react";
+import { useDeferredValue, useLayoutEffect, useState } from "react";
 import { SceneMeta, SceneModule } from "./types";
 
 export function SceneLoader({
+  path,
   scenes,
+  sceneProps,
 }: {
+  path: string;
   scenes: Record<string, () => Promise<SceneModule>>;
+  sceneProps: Record<string, unknown>;
 }) {
   const [updatedMeta, setUpdatedMeta] = useState<SceneMeta>();
-  const [searchParams] = useSearchParams();
-  const path = searchParams.get("path");
-  const stringifiedProps = searchParams.get("props");
-  const sceneProps = useMemo<Record<string, unknown>>(() => {
-    return stringifiedProps
-      ? JSON.parse(decodeURIComponent(stringifiedProps))
-      : {};
-  }, [stringifiedProps]);
-
+  // Defer path so the loading in scene doesn't flash in and out.
+  const deferredPath = useDeferredValue(path);
   const loadModule = Object.entries(scenes).find(([filename]) =>
-    path ? filename.endsWith(path) : false
+    deferredPath ? filename.endsWith(deferredPath) : false
   );
 
   useLayoutEffect(() => {
@@ -50,7 +46,7 @@ export function SceneLoader({
       SceneComponent: resolvedModule.default,
       initialMeta: resolvedModule.triplexMeta,
     };
-  }, [path]);
+  }, [deferredPath]);
 
   const reconciledMeta = updatedMeta || initialMeta;
 

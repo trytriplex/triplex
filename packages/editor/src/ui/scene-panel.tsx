@@ -1,9 +1,9 @@
-import { Fragment } from "react";
-import { useSearchParams } from "react-router-dom";
+import { Fragment, useDeferredValue } from "react";
 import { cn } from "../ds/cn";
 import { useLazySubscription } from "../stores/ws-client";
 import { useSceneStore } from "../stores/scene";
 import { getEditorLink } from "../util/ide";
+import { useEditorContext } from "../stores/editor-context";
 
 function SceneComponent({
   name,
@@ -16,15 +16,13 @@ function SceneComponent({
   onClick: () => void;
   level?: number;
 }) {
-  const subtle = level > 1;
   return (
     <button
       type="submit"
       onClick={onClick}
       style={{ paddingLeft: level === 1 ? 13 : level * 13 }}
       className={cn([
-        subtle && !selected && "text-neutral-400",
-        !subtle && !selected && "text-neutral-300",
+        !selected && "text-neutral-400",
         selected
           ? "border-l-blue-500 bg-neutral-700"
           : "hover:border-l-blue-500 hover:bg-neutral-700 active:bg-neutral-600",
@@ -45,8 +43,7 @@ interface JsxElementPositions {
 }
 
 export function ScenePanel() {
-  const [searchParams] = useSearchParams();
-  const path = searchParams.get("path") || "";
+  const { path } = useEditorContext();
   const scene = useLazySubscription<{
     path: string;
     name: string;
@@ -89,6 +86,7 @@ function SceneObjectButtons({
 }) {
   const focus = useSceneStore((store) => store.focus);
   const focused = useSceneStore((store) => store.focused);
+  const deferredFocus = useDeferredValue(focused);
 
   return (
     <>
@@ -105,9 +103,9 @@ function SceneObjectButtons({
             }
             level={level}
             selected={
-              !!focused &&
-              focused.column === child.column &&
-              focused.line === child.line
+              !!deferredFocus &&
+              deferredFocus.column === child.column &&
+              deferredFocus.line === child.line
             }
             name={child.name}
           />
