@@ -1,4 +1,4 @@
-import { useSearchParams } from "react-router-dom";
+import { useEditorContext } from "../stores/editor-context";
 import {
   Menubar,
   Menu,
@@ -11,8 +11,7 @@ import { useOverlayStore } from "../stores/overlay";
 
 export function EditorMenu() {
   const showOverlay = useOverlayStore((store) => store.show);
-  const [searchParams] = useSearchParams({ path: "" });
-  const path = searchParams.get("path");
+  const { path } = useEditorContext();
 
   return (
     <Menubar>

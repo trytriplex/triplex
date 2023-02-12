@@ -1,9 +1,9 @@
 import { useLazySubscription } from "../stores/ws-client";
 import { FocusedObject, useSceneStore } from "../stores/scene";
 import { ErrorBoundary } from "react-error-boundary";
-import { useSearchParams } from "react-router-dom";
 import { getEditorLink } from "../util/ide";
-import { Suspense } from "react";
+import { Suspense, useDeferredValue } from "react";
+import { useEditorContext } from "../stores/editor-context";
 
 interface Prop {
   column: number;
@@ -17,8 +17,12 @@ function Prop({ value, width = "100%" }: { value: unknown; width?: string }) {
   if (Array.isArray(value)) {
     return (
       <div className="flex gap-0.5">
-        {value.map((val) => (
-          <Prop key={val} width={`${100 / value.length}%`} value={val} />
+        {value.map((val, index) => (
+          <Prop
+            key={val + index}
+            width={`${100 / value.length}%`}
+            value={val}
+          />
         ))}
       </div>
     );
@@ -47,8 +51,7 @@ function Prop({ value, width = "100%" }: { value: unknown; width?: string }) {
 }
 
 function SelectedSceneObject({ focused }: { focused: FocusedObject }) {
-  const [searchParams] = useSearchParams({ path: "" });
-  const path = searchParams.get("path") || "";
+  const { path } = useEditorContext();
   const data = useLazySubscription<{
     name: string;
     props: Prop[];
@@ -132,15 +135,20 @@ function SelectedSceneObject({ focused }: { focused: FocusedObject }) {
 
 export function ContextPanel() {
   const focused = useSceneStore((store) => store.focused);
-  if (focused) {
+  const deferredFocused = useDeferredValue(focused);
+
+  if (deferredFocused) {
     return (
       <div className="absolute top-4 right-4 bottom-4 flex w-60 flex-col rounded-lg bg-neutral-800/90 shadow-2xl shadow-black/50">
         <div className="p-4 text-neutral-300">
-          <Suspense fallback={<div>Loading...</div>}>
-            <ErrorBoundary resetKeys={[focused]} fallbackRender={() => null}>
-              <SelectedSceneObject focused={focused} />
-            </ErrorBoundary>
-          </Suspense>
+          <ErrorBoundary
+            resetKeys={[deferredFocused]}
+            fallbackRender={() => <div>Error!</div>}
+          >
+            <Suspense fallback={<div>Loading...</div>}>
+              <SelectedSceneObject focused={deferredFocused} />
+            </Suspense>
+          </ErrorBoundary>
         </div>
       </div>
     );

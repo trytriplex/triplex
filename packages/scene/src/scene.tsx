@@ -32,6 +32,11 @@ export function SceneFrame({
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
   const path = searchParams.get("path") || "";
+  const props = searchParams.get("props") || "";
+  const sceneProps = useMemo<Record<string, unknown>>(
+    () => (props ? JSON.parse(decodeURIComponent(props)) : {}),
+    [props]
+  );
 
   const onNavigate = (selected: EditorNodeData) => {
     send("trplx:onSceneObjectNavigated", {
@@ -116,14 +121,17 @@ export function SceneFrame({
       <OrbitControls makeDefault target={target} />
       <Selection
         path={path}
-        onFocus={onFocus}
         onBlur={onBlurObject}
-        onNavigate={onNavigate}
+        onFocus={onFocus}
         onJumpTo={onJumpTo}
+        onNavigate={onNavigate}
       >
-        <ErrorBoundary resetKeys={[path]} fallbackRender={() => null}>
+        <ErrorBoundary
+          resetKeys={[path]}
+          fallbackRender={() => <div>Error!</div>}
+        >
           <Suspense fallback={null}>
-            <SceneLoader scenes={scenes} />
+            <SceneLoader path={path} sceneProps={sceneProps} scenes={scenes} />
           </Suspense>
         </ErrorBoundary>
       </Selection>
