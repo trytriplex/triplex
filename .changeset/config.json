@@ -2,8 +2,16 @@
   "$schema": "https://unpkg.com/@changesets/config@2.3.0/schema.json",
   "changelog": "@changesets/cli/changelog",
   "commit": true,
-  "fixed": [],
-  "linked": [],
+  "fixed": [
+    [
+      "@triplex/bridge",
+      "@triplex/client",
+      "@triplex/editor",
+      "@triplex/run",
+      "@triplex/scene",
+      "@triplex/server"
+    ]
+  ],
   "access": "restricted",
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
