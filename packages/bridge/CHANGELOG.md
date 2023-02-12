@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.7.0
+
+### Minor Changes
+
+- a4d6882: Passes name during object focus.
+
 ## 0.6.0
 
 ### Minor Changes

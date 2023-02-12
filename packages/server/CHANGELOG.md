@@ -1,5 +1,20 @@
 # @triplex/server
 
+## 0.9.0
+
+### Minor Changes
+
+- a4d6882: Adds scene object ws request.
+- 969feab: Adds websocket server and replaces scene and scene components endpoints with it.
+- cc917d7: Removes unused apis.
+
+### Patch Changes
+
+- Updated dependencies [99075ff]
+- Updated dependencies [969feab]
+- Updated dependencies [a4d6882]
+  - @triplex/ts-morph@0.8.0
+
 ## 0.8.0
 
 ### Minor Changes

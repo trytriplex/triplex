@@ -1,5 +1,30 @@
 # @triplex/client
 
+## 0.6.0
+
+### Minor Changes
+
+- a4d6882: Adds extra font weights for karla font.
+
+### Patch Changes
+
+- Updated dependencies [99075ff]
+- Updated dependencies [99075ff]
+- Updated dependencies [cfbd47b]
+- Updated dependencies [969feab]
+- Updated dependencies [cc917d7]
+- Updated dependencies [969feab]
+- Updated dependencies [a4d6882]
+- Updated dependencies [a4d6882]
+- Updated dependencies [99075ff]
+- Updated dependencies [7bebe67]
+- Updated dependencies [cfbd47b]
+- Updated dependencies [969feab]
+- Updated dependencies [99075ff]
+- Updated dependencies [cfbd47b]
+  - @triplex/scene@0.12.0
+  - @triplex/editor@0.13.0
+
 ## 0.5.1
 
 ### Patch Changes
