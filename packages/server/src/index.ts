@@ -1,12 +1,7 @@
 import { Application, isHttpError, Router } from "@oakserver/oak";
 import { Node, SyntaxKind } from "ts-morph";
 import { join } from "path";
-import {
-  createProject,
-  getJsxAttributeValue,
-  getJsxElementPropTypes,
-  getAllJsxElements,
-} from "@triplex/ts-morph";
+import { createProject, getJsxElementPropTypes } from "@triplex/ts-morph";
 import { getParam } from "./util/params";
 import { createServer as createWSS } from "./util/ws-server";
 import { save } from "./services/save";
@@ -14,8 +9,6 @@ import { getAllFiles, getFile } from "./services/file";
 
 import { watch } from "chokidar";
 import {
-  getAttributes,
-  getJsxAttributeAt,
   getJsxElementAt,
   getJsxElementProps,
   getJsxTagName,
@@ -46,43 +39,9 @@ export function createServer(_: {}) {
     return next();
   });
 
-  router.get("/scene/object/:line/:column", (context) => {
-    const path = getParam(context, "path");
-    const { sourceFile } = project.getSourceFile(path);
-    const line = Number(context.params.line);
-    const column = Number(context.params.column);
-    const pos = sourceFile.compilerNode.getPositionOfLineAndCharacter(
-      line,
-      column
-    );
-    const sceneObject = getAllJsxElements(sourceFile).find(
-      (node) => node.getPos() === pos
-    );
-
-    if (!sceneObject) {
-      context.response.status = 404;
-      context.response.body = { message: "Not found" };
-      return;
-    }
-
-    const attributes = getAttributes(sceneObject);
-    const props = attributes.map((prop) => {
-      const { column, line } = sourceFile.getLineAndColumnAtPos(prop.getPos());
-
-      return {
-        column: column - 1,
-        line: line - 1,
-        name: prop.getChildAtIndex(0).getText(),
-        value: getJsxAttributeValue(prop),
-      };
-    });
-
-    const name = getJsxTagName(sceneObject);
-    const types = getJsxElementPropTypes(sourceFile, sceneObject);
-
-    context.response.body = { name, props, types };
-  });
-
+  /**
+   * Update or add a prop to a jsx element.
+   */
   router.get("/scene/object/:line/:column/prop", (context) => {
     const path = getParam(context, "path");
     const value = getParam(context, "value");
@@ -125,35 +84,9 @@ export function createServer(_: {}) {
     context.response.body = { message: "success", action };
   });
 
-  router.get("/scene/prop/:line/:column", (context) => {
-    const path = getParam(context, "path");
-    const value = getParam(context, "value");
-    const { sourceFile } = project.getSourceFile(path);
-    const line = Number(context.params.line);
-    const column = Number(context.params.column);
-    const attribute = getJsxAttributeAt(sourceFile, line, column);
-
-    if (!attribute) {
-      context.response.status = 404;
-      context.response.body = { message: "Not found" };
-      return;
-    }
-
-    const parsed = JSON.parse(value);
-
-    switch (typeof parsed) {
-      case "string":
-        attribute.setInitializer(`"${parsed}"`);
-        break;
-
-      default:
-        attribute.setInitializer(`{${value}}`);
-        break;
-    }
-
-    context.response.body = { message: "success" };
-  });
-
+  /**
+   * Close a scene - cleaning it up from memory and fs.
+   */
   router.get("/scene/close", async (context) => {
     const path = getParam(context, "path");
 
@@ -162,6 +95,9 @@ export function createServer(_: {}) {
     context.response.body = { message: "success" };
   });
 
+  /**
+   * Persist the in-memory scene to fs.
+   */
   router.get("/scene/save", async (context) => {
     const path = getParam(context, "path");
 
@@ -173,6 +109,9 @@ export function createServer(_: {}) {
   app.use(router.routes());
   app.use(router.allowedMethods());
 
+  /**
+   * Return all found scene files in a project.
+   */
   wss.message(
     "/scene",
     async () => {
@@ -186,6 +125,9 @@ export function createServer(_: {}) {
     }
   );
 
+  /**
+   * Return details about a scene.
+   */
   wss.message(
     "/scene/:path",
     async ({ path }) => {
@@ -198,23 +140,33 @@ export function createServer(_: {}) {
     }
   );
 
-  wss.message("/scene/:path/object/:line/:column", (params) => {
-    const path = params.path;
-    const line = Number(params.line);
-    const column = Number(params.column);
-    const { sourceFile } = project.getSourceFile(path);
-    const sceneObject = getJsxElementAt(sourceFile, line, column);
+  /**
+   * Return details about a jsx element inside a scene.
+   */
+  wss.message(
+    "/scene/:path/object/:line/:column",
+    (params) => {
+      const path = params.path;
+      const line = Number(params.line);
+      const column = Number(params.column);
+      const { sourceFile } = project.getSourceFile(path);
+      const sceneObject = getJsxElementAt(sourceFile, line, column);
 
-    if (!sceneObject) {
-      throw new Error(`invariant: element not found`);
+      if (!sceneObject) {
+        throw new Error(`invariant: element not found`);
+      }
+
+      const name = getJsxTagName(sceneObject);
+      const props = getJsxElementProps(sourceFile, sceneObject);
+      const types = getJsxElementPropTypes(sourceFile, sceneObject);
+
+      return { name, props, propTypes: types.propTypes };
+    },
+    (push, { path }) => {
+      const watcher = watch(path);
+      watcher.on("change", push);
     }
-
-    const name = getJsxTagName(sceneObject);
-    const props = getJsxElementProps(sourceFile, sceneObject);
-    const types = getJsxElementPropTypes(sourceFile, sceneObject);
-
-    return { name, props, propTypes: types.propTypes };
-  });
+  );
 
   return {
     listen: (port = 8000) => app.listen({ port }),

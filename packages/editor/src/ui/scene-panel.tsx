@@ -1,6 +1,6 @@
 import { Fragment, useDeferredValue } from "react";
 import { cn } from "../ds/cn";
-import { useLazySubscription } from "../stores/ws-client";
+import { useLazySubscription } from "@triplex/ws-client";
 import { useSceneStore } from "../stores/scene";
 import { getEditorLink } from "../util/ide";
 import { useEditorContext } from "../stores/editor-context";

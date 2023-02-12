@@ -1,9 +1,9 @@
 import { Suspense } from "react";
 import { Link } from "react-router-dom";
+import { useLazySubscription } from "@triplex/ws-client";
 import { useEditorContext } from "../stores/editor-context";
 import { cn } from "../ds/cn";
 import { Drawer, DrawerContent } from "../ds/drawer";
-import { useLazySubscription } from "../stores/ws-client";
 import { useOverlayStore } from "../stores/overlay";
 
 function Scenes() {

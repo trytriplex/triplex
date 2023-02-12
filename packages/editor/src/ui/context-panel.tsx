@@ -1,4 +1,4 @@
-import { useLazySubscription } from "../stores/ws-client";
+import { useLazySubscription } from "@triplex/ws-client";
 import { FocusedObject, useSceneStore } from "../stores/scene";
 import { ErrorBoundary } from "react-error-boundary";
 import { getEditorLink } from "../util/ide";

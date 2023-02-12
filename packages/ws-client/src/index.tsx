@@ -1,4 +1,4 @@
-import { useCallback, useSyncExternalStore } from "react";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 
 const valueCache = new Map<string, unknown>();
 const queryCache = new Map<
@@ -58,7 +58,7 @@ function wsQuery<TValue>(path: string) {
     });
   }
 
-  function read() {
+  function read(suspend: boolean = true) {
     const query = queryCache.get(path);
     if (!query) {
       throw new Error(`invariant: call load() first for ${path}`);
@@ -66,7 +66,11 @@ function wsQuery<TValue>(path: string) {
 
     const value = valueCache.get(path);
     if (!value) {
-      throw query.deferred.promise;
+      if (suspend) {
+        throw query.deferred.promise;
+      } else {
+        return null as TValue;
+      }
     }
 
     if (typeof value === "object" && "error" in value) {
@@ -108,4 +112,27 @@ export function useLazySubscription<TSubscriptionData>(path: string) {
   );
 
   return data;
+}
+
+export function useSubscriptionEffect<TSubscriptionData>(
+  path: string
+): TSubscriptionData | null {
+  const [value, setValue] = useState<TSubscriptionData | null>(null);
+
+  useEffect(() => {
+    if (path === "") {
+      setValue(null);
+      return;
+    }
+
+    const query = wsQuery<TSubscriptionData | null>(path);
+    query.load();
+    setValue(query.read(false));
+
+    return query.subscribe(() => {
+      setValue(query.read(false));
+    });
+  }, [path]);
+
+  return value;
 }
