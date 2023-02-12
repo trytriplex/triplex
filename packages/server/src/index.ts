@@ -85,6 +85,17 @@ export function createServer(_: {}) {
   });
 
   /**
+   * Open a scene - caching it in memory and fs.
+   */
+  router.get("/scene/:path/open", async (context) => {
+    const path = context.params.path;
+
+    await project.getSourceFile(path);
+
+    context.response.body = { message: "success" };
+  });
+
+  /**
    * Close a scene - cleaning it up from memory and fs.
    */
   router.get("/scene/close", async (context) => {
