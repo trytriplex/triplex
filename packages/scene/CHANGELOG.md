@@ -1,5 +1,12 @@
 # @triplex/scene
 
+## 0.14.0
+
+### Patch Changes
+
+- @triplex/bridge@0.14.0
+- @triplex/ws-client@0.14.0
+
 ## 0.12.0
 
 ### Minor Changes

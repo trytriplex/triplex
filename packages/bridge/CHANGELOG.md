@@ -1,5 +1,7 @@
 # @triplex/bridge
 
+## 0.14.0
+
 ## 0.7.0
 
 ### Minor Changes

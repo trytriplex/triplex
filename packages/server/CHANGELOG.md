@@ -1,5 +1,15 @@
 # @triplex/server
 
+## 0.14.0
+
+### Minor Changes
+
+- 7a8083c: The open rpc has been added back to prevent the "flash of no scene" when transitioning between scenes for the first time.
+
+### Patch Changes
+
+- @triplex/ts-morph@0.14.0
+
 ## 0.9.0
 
 ### Minor Changes

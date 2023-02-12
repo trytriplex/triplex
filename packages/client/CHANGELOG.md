@@ -1,5 +1,13 @@
 # @triplex/client
 
+## 0.14.0
+
+### Patch Changes
+
+- Updated dependencies [7a8083c]
+  - @triplex/editor@0.14.0
+  - @triplex/scene@0.14.0
+
 ## 0.6.0
 
 ### Minor Changes

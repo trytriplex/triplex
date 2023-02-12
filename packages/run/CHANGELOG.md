@@ -1,5 +1,17 @@
 # @triplex/run
 
+## 0.14.0
+
+### Minor Changes
+
+- 3a5d9cc: Primary packages now released and versioned together.
+
+### Patch Changes
+
+- Updated dependencies [7a8083c]
+  - @triplex/server@0.14.0
+  - @triplex/client@0.14.0
+
 ## 0.12.2
 
 ### Patch Changes

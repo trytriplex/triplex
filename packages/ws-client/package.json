@@ -1,6 +1,6 @@
 {
   "name": "@triplex/ws-client",
-  "version": "0.1.0",
+  "version": "0.14.0",
   "main": "./src/index.tsx",
   "module": "./src/index.tsx",
   "types": "./src/index.tsx",
