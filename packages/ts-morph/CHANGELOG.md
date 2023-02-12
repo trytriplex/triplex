@@ -1,5 +1,13 @@
 # @triplex/ts-morph
 
+## 0.8.0
+
+### Minor Changes
+
+- 99075ff: Transformed scene entrypoints now export the variable `triplexMeta` instead of `__r3fEditorMeta`.
+- 969feab: Adds missing dev dependencies.
+- a4d6882: Adds `getDefaultExportFunctionName` and new jsx functions.
+
 ## 0.7.0
 
 ### Minor Changes

@@ -1,5 +1,25 @@
 # @triplex/editor
 
+## 0.13.0
+
+### Minor Changes
+
+- cfbd47b: When transitioning between scenes there is no longer a flash of hidden scene objects.
+- 969feab: Removes unneeded fetch calls.
+- cc917d7: Adds usage of ws-client pkg.
+- 969feab: Adds react suspense powered websocket abstraction.
+- a4d6882: Adds context panel for selected scene objects.
+- 99075ff: Adds error boundaries so the app doesn't blow up when a scene isn't found.
+- cfbd47b: Scene meta has been extrated into a common hook.
+- 969feab: Scene list and scene components ui now fetch data using the websocket client.
+
+### Patch Changes
+
+- Updated dependencies [a4d6882]
+- Updated dependencies [cc917d7]
+  - @triplex/bridge@0.7.0
+  - @triplex/ws-client@0.1.0
+
 ## 0.12.0
 
 ### Minor Changes

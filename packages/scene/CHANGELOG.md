@@ -1,5 +1,27 @@
 # @triplex/scene
 
+## 0.12.0
+
+### Minor Changes
+
+- 99075ff: Transformed scene entrypoints now export the variable `triplexMeta` instead of `__r3fEditorMeta`.
+- 99075ff: When being loaded for the first time scenes will now suspend. This means for any errors thrown during loaded are now propagated to the nearest error boundary.
+- cfbd47b: When transitioning between scenes there is no longer a flash of hidden scene objects.
+- 969feab: Removes unneeded fetch calls.
+- cc917d7: Adds usage of ws-client pkg.
+- a4d6882: Passes name during object focus.
+- 99075ff: Adds error boundaries so the app doesn't blow up when a scene isn't found.
+- 7bebe67: When transforming a selected scene object the intended object object3d is now modified instead of the parent group.
+- 99075ff: Scene now loads updated triplex meta when the source file changes.
+- cfbd47b: The hotkey check when navigating to a child scene now checks for shift usage instead of upper "f".
+
+### Patch Changes
+
+- Updated dependencies [a4d6882]
+- Updated dependencies [cc917d7]
+  - @triplex/bridge@0.7.0
+  - @triplex/ws-client@0.1.0
+
 ## 0.11.0
 
 ### Minor Changes
