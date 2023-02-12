@@ -50,23 +50,48 @@ type WithR3FData<TObject extends Object3D> = {
   parent: WithR3FData<Object3D> | null;
 } & Omit<TObject, "traverse" | "parent">;
 
-const findPositionedObject = (object: WithR3FData<Object3D>): Object3D => {
-  let found: Object3D | undefined = undefined;
+const findTransformedSceneObject = (
+  sceneObject: WithR3FData<Object3D>,
+  transform: "translate" | "scale" | "rotate"
+): Object3D => {
+  const propertyName = {
+    translate: "position",
+    scale: "scale",
+    rotate: "rotation",
+  }[transform];
+  let transformedSceneObject: Object3D | undefined = undefined;
+  let translatedSceneObject: Object3D | undefined = undefined;
 
-  object.traverse((child: WithR3FData<Object3D>) => {
-    if (!found && child.__r3f && child.__r3f.memoizedProps.position) {
-      // This scene object has been assigned a position.
-      found = child;
+  sceneObject.traverse((child: WithR3FData<Object3D>) => {
+    if (
+      !transformedSceneObject &&
+      child.__r3f &&
+      propertyName in child.__r3f.memoizedProps
+    ) {
+      // This scene object be transformed via props.
+      transformedSceneObject = child;
+    }
+
+    if (
+      !translatedSceneObject &&
+      child.__r3f &&
+      "position" in child.__r3f.memoizedProps
+    ) {
+      // This scene object has translated via props.
+      // This is used as a backup just in case the
+      // transformedSceneObject wasn't found.
+      translatedSceneObject = child;
     }
   });
 
-  return found || object;
+  return transformedSceneObject || translatedSceneObject || sceneObject;
 };
 
 const findEditorData = (
-  object: WithR3FData<Object3D>
+  object: Object3D,
+  transform: "translate" | "scale" | "rotate"
 ): EditorNodeData | null => {
-  let parent: WithR3FData<Object3D> | null = object;
+  let parent: WithR3FData<Object3D> | null = object as WithR3FData<Object3D>;
   let data: EditorNodeData | null = null;
 
   while (parent) {
@@ -74,7 +99,7 @@ const findEditorData = (
       if (!data) {
         data = {
           ...parent.userData.__r3fEditor,
-          sceneObject: findPositionedObject(parent),
+          sceneObject: findTransformedSceneObject(parent, transform),
           space: "world",
         } as EditorNodeData;
       }
@@ -91,11 +116,12 @@ const findEditorData = (
   return data;
 };
 
-const findSceneObjectWithLineColumn = (
+const findSceneObjectFromSource = (
   scene: WithR3FData<Object3D>,
   line: number,
   column: number,
-  path: string
+  path: string,
+  transform: "translate" | "scale" | "rotate"
 ): EditorNodeData | null => {
   let nodeData: EditorNodeData | null = null;
 
@@ -109,7 +135,7 @@ const findSceneObjectWithLineColumn = (
           node.path === path
         ) {
           // We've found our scene object!
-          nodeData = findEditorData(obj);
+          nodeData = findEditorData(obj, transform);
         }
       }
     }
@@ -137,7 +163,7 @@ export function Selection({
   path: string;
 }) {
   const [selected, setSelected] = useState<EditorNodeData>();
-  const [mode, setMode] = useState<"translate" | "rotate" | "scale">(
+  const [transform, setTransform] = useState<"translate" | "rotate" | "scale">(
     "translate"
   );
   const transformControls = useRef<TransformControlsImpl>(null);
@@ -159,11 +185,12 @@ export function Selection({
 
   useEffect(() => {
     return listen("trplx:requestFocusSceneObject", (data) => {
-      const sceneObject = findSceneObjectWithLineColumn(
+      const sceneObject = findSceneObjectFromSource(
         scene as unknown as WithR3FData<Object3D>,
         data.line,
         data.column,
-        data.path
+        data.path,
+        transform
       );
 
       if (sceneObject) {
@@ -190,7 +217,7 @@ export function Selection({
 
     // TODO: If clicking on a scene object when a selection is already
     // made this will fire A LOT OF TIMES. Need to investigate why.
-    const data = findEditorData(e.object as WithR3FData<Object3D>);
+    const data = findEditorData(e.object, transform);
     if (data) {
       e.stopPropagation();
       setSelected(data);
@@ -229,15 +256,27 @@ export function Selection({
       }
 
       if (e.key === "r") {
-        setMode("rotate");
+        setTransform("rotate");
+        const data = findEditorData(selected.sceneObject, "rotate");
+        if (data) {
+          setSelected(data);
+        }
       }
 
       if (e.key === "t") {
-        setMode("translate");
+        setTransform("translate");
+        const data = findEditorData(selected.sceneObject, "translate");
+        if (data) {
+          setSelected(data);
+        }
       }
 
       if (e.key === "s" && !e.metaKey && !e.ctrlKey) {
-        setMode("scale");
+        setTransform("scale");
+        const data = findEditorData(selected.sceneObject, "scale");
+        if (data) {
+          setSelected(data);
+        }
       }
     };
 
@@ -293,12 +332,12 @@ export function Selection({
       {children}
       {selected && (
         <TransformControls
-          ref={transformControls}
-          mode={mode}
-          enabled={selected[mode] && !!objectData}
-          onMouseUp={onMouseUp}
-          onMouseDown={() => (dragging.current = true)}
+          enabled={selected[transform] && !!objectData}
+          mode={transform}
           object={selected.sceneObject}
+          onMouseDown={() => (dragging.current = true)}
+          onMouseUp={onMouseUp}
+          ref={transformControls}
         />
       )}
     </group>
