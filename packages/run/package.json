@@ -15,8 +15,8 @@
     "typedef": "tsc"
   },
   "dependencies": {
-    "@triplex/client": "^0.6.0",
-    "@triplex/server": "^0.9.0",
+    "@triplex/client": "0.6.0",
+    "@triplex/server": "0.9.0",
     "@commander-js/extra-typings": "^10.0.2",
     "commander": "^10.0.0"
   },
