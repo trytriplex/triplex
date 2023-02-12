@@ -1,6 +1,7 @@
 import { TransformControls } from "@react-three/drei";
-import { useThree } from "@react-three/fiber";
+import { ThreeEvent, useThree } from "@react-three/fiber";
 import { listen } from "@triplex/bridge/client";
+import { useSubscriptionEffect } from "@triplex/ws-client";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { Box3, Object3D, Vector3, Vector3Tuple } from "three";
 import { TransformControls as TransformControlsImpl } from "three-stdlib";
@@ -18,14 +19,25 @@ export interface EditorNodeData {
   space: "local" | "world";
 }
 
+interface Prop {
+  column: number;
+  line: number;
+  name: string;
+  value: unknown;
+  type: "static" | "unhandled";
+}
+
 interface SceneObjectData {
   name: string;
-  props?: {
-    column: number;
-    line: number;
-    name: string;
-    value: any;
-  }[];
+  props: Prop[];
+  propTypes: Record<
+    string,
+    {
+      name: string;
+      required: boolean;
+      type: unknown;
+    }
+  >;
 }
 
 type WithR3FData<TObject extends Object3D> = {
@@ -125,18 +137,23 @@ export function Selection({
   path: string;
 }) {
   const [selected, setSelected] = useState<EditorNodeData>();
-  const [objectData, setObjectData] = useState<SceneObjectData>();
   const [mode, setMode] = useState<"translate" | "rotate" | "scale">(
     "translate"
   );
   const transformControls = useRef<TransformControlsImpl>(null);
   const dragging = useRef(false);
   const scene = useThree((store) => store.scene);
+  const objectData = useSubscriptionEffect<SceneObjectData | null>(
+    selected
+      ? `/scene/${encodeURIComponent(path)}/object/${selected.line}/${
+          selected.column
+        }`
+      : ""
+  );
 
   useEffect(() => {
     return listen("trplx:requestBlurSceneObject", () => {
       setSelected(undefined);
-      setObjectData(undefined);
     });
   }, []);
 
@@ -157,12 +174,11 @@ export function Selection({
 
   useEffect(() => {
     return () => {
-      setObjectData(undefined);
       onBlur();
     };
   }, [path]);
 
-  const onClick = async (e: any) => {
+  const onClick = async (e: ThreeEvent<MouseEvent>) => {
     if (e.delta > 1) {
       return;
     }
@@ -172,6 +188,8 @@ export function Selection({
       return;
     }
 
+    // TODO: If clicking on a scene object when a selection is already
+    // made this will fire A LOT OF TIMES. Need to investigate why.
     const data = findEditorData(e.object as WithR3FData<Object3D>);
     if (data) {
       e.stopPropagation();
@@ -181,30 +199,12 @@ export function Selection({
   };
 
   useEffect(() => {
-    async function loadData() {
-      if (!selected) {
-        return;
-      }
-
-      // Begin fetching data for this.
-      const res = await fetch(
-        `http://localhost:8000/scene/object/${selected.line}/${selected.column}?path=${path}`
-      );
-      const json = await res.json();
-      setObjectData(json);
-    }
-
-    loadData();
-  }, [selected]);
-
-  useEffect(() => {
     const callback = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         if (dragging.current) {
           transformControls.current?.reset();
         } else if (selected) {
           setSelected(undefined);
-          setObjectData(undefined);
         }
 
         onBlur();
@@ -289,7 +289,7 @@ export function Selection({
   };
 
   return (
-    <group onClick={onClick}>
+    <group onPointerUp={onClick}>
       {children}
       {selected && (
         <TransformControls

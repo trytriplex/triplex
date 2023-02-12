@@ -20,6 +20,7 @@
     "@radix-ui/react-menubar": "^1.0.0",
     "@react-three/fiber": "^8.10.1",
     "@triplex/bridge": "^0.6.0",
+    "@triplex/ws-client": "^0.0.0",
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.7.0",
     "react-error-boundary": "^3.1.4",
