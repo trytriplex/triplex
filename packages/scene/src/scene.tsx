@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
-import { listen, send } from "@triplex/bridge/client";
+import { send } from "@triplex/bridge/client";
 import { Canvas } from "./canvas";
-import type { EditorNodeData } from "./selection";
+import type { SelectedNode } from "./selection";
 import { OrbitControls, PerspectiveCamera, Grid } from "@react-three/drei";
 import { Suspense, useEffect, useMemo, useRef, useState } from "react";
 import {
@@ -37,26 +37,6 @@ export function SceneFrame({
     () => (props ? JSON.parse(decodeURIComponent(props)) : {}),
     [props]
   );
-
-  const onNavigate = (selected: EditorNodeData) => {
-    send("trplx:onSceneObjectNavigated", {
-      path: selected.path,
-      props: selected.props,
-    });
-  };
-
-  useEffect(() => {
-    return listen("trplx:requestNavigateToSceneObject", (data) => {
-      setSearchParams(
-        {
-          path: data.path,
-          props: encodeURIComponent(JSON.stringify(data.props)),
-        },
-        { replace: true }
-      );
-    });
-  }, []);
-
   const [focalPoint, setFocalPoint] = useState(defaultFocalPoint);
   const { target, position } = useMemo(() => {
     const actualCameraPosition: Vector3Tuple = [...focalPoint.objectCenter];
@@ -74,7 +54,15 @@ export function SceneFrame({
     });
   };
 
-  const onFocus = (data: EditorNodeData) => {
+  const onNavigate = (selected: { path: string; encodedProps: string }) => {
+    setSearchParams(
+      { path: selected.path, props: selected.encodedProps },
+      { replace: true }
+    );
+    send("trplx:onSceneObjectNavigated", selected);
+  };
+
+  const onFocus = (data: SelectedNode) => {
     send("trplx:onSceneObjectFocus", {
       column: data.column,
       line: data.line,
@@ -99,7 +87,6 @@ export function SceneFrame({
       ) {
         send("trplx:requestSave", {});
         e.preventDefault();
-        fetch(`http://localhost:8000/scene/save?path=${path}`, {});
       }
     };
 
@@ -126,10 +113,7 @@ export function SceneFrame({
         onJumpTo={onJumpTo}
         onNavigate={onNavigate}
       >
-        <ErrorBoundary
-          resetKeys={[path]}
-          fallbackRender={() => <div>Error!</div>}
-        >
+        <ErrorBoundary resetKeys={[path]} fallbackRender={() => null}>
           <Suspense fallback={null}>
             <SceneLoader path={path} sceneProps={sceneProps} scenes={scenes} />
           </Suspense>

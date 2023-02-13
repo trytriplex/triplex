@@ -1,7 +1,7 @@
 import { Suspense } from "react";
 import { Link } from "react-router-dom";
 import { useLazySubscription } from "@triplex/ws-client";
-import { useEditorContext } from "../stores/editor-context";
+import { useEditor } from "../stores/editor";
 import { cn } from "../ds/cn";
 import { Drawer, DrawerContent } from "../ds/drawer";
 import { useOverlayStore } from "../stores/overlay";
@@ -11,7 +11,7 @@ function Scenes() {
     cwd: string;
     scenes: { path: string; name: string }[];
   }>("/scene");
-  const { path } = useEditorContext();
+  const { path } = useEditor();
 
   return (
     <>
