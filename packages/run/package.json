@@ -1,7 +1,7 @@
 {
   "name": "@triplex/run",
   "description": "What's this?",
-  "version": "0.14.0",
+  "version": "0.15.0",
   "publishConfig": {
     "bin": {
       "triplex": "./dist/index.js"
@@ -15,8 +15,8 @@
     "typedef": "tsc"
   },
   "dependencies": {
-    "@triplex/client": "0.14.0",
-    "@triplex/server": "0.14.0",
+    "@triplex/client": "0.15.0",
+    "@triplex/server": "0.15.0",
     "@commander-js/extra-typings": "^10.0.2",
     "commander": "^10.0.0"
   },

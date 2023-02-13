@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.15.0
+
+### Minor Changes
+
+- e54e0f8: Bridge events now flow unidirectionally enabling the editor ui to initiate events to the scene, such as navigate and focus.
+
 ## 0.14.0
 
 ## 0.7.0
