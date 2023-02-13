@@ -1,4 +1,4 @@
-import { useEditorContext } from "../stores/editor-context";
+import { useEditor } from "../stores/editor";
 import {
   Menubar,
   Menu,
@@ -8,10 +8,12 @@ import {
   Separator,
 } from "../ds/menubar";
 import { useOverlayStore } from "../stores/overlay";
+import { useScene } from "../scence-bridge";
 
 export function EditorMenu() {
   const showOverlay = useOverlayStore((store) => store.show);
-  const { path } = useEditorContext();
+  const { path, target } = useEditor();
+  const { blur, jumpTo, navigateTo } = useScene();
 
   return (
     <Menubar>
@@ -29,6 +31,21 @@ export function EditorMenu() {
             }
           >
             Save
+          </MenuItem>
+        </MenuContent>
+      </Menu>
+      <Menu>
+        <Trigger>Select</Trigger>
+        <MenuContent>
+          <MenuItem disabled={!target} rslot="ESC" onClick={() => blur()}>
+            Deselect
+          </MenuItem>
+          <Separator />
+          <MenuItem disabled={!target} rslot="F" onClick={() => jumpTo()}>
+            Jump to
+          </MenuItem>
+          <MenuItem disabled={!target} rslot="⇧ F" onClick={() => navigateTo()}>
+            Navigate to
           </MenuItem>
         </MenuContent>
       </Menu>

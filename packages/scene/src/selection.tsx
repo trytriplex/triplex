@@ -1,6 +1,6 @@
 import { TransformControls } from "@react-three/drei";
 import { ThreeEvent, useThree } from "@react-three/fiber";
-import { listen } from "@triplex/bridge/client";
+import { listen, send } from "@triplex/bridge/client";
 import { useSubscriptionEffect } from "@triplex/ws-client";
 import { ReactNode, useEffect, useRef, useState } from "react";
 import { Box3, Object3D, Vector3, Vector3Tuple } from "three";
@@ -17,6 +17,14 @@ export interface EditorNodeData {
   sceneObject: Object3D;
   translate: boolean;
   space: "local" | "world";
+}
+
+export interface SelectedNode {
+  column: number;
+  line: number;
+  name: string;
+  path: string;
+  props: Record<string, unknown>;
 }
 
 interface Prop {
@@ -157,9 +165,9 @@ export function Selection({
 }: {
   children?: ReactNode;
   onBlur: () => void;
-  onFocus: (data: EditorNodeData) => void;
+  onFocus: (node: SelectedNode) => void;
   onJumpTo: (v: Vector3Tuple, bb: Box3, obj: Object3D) => void;
-  onNavigate: (node: EditorNodeData) => void;
+  onNavigate: (node: { path: string; encodedProps: string }) => void;
   path: string;
 }) {
   const [selected, setSelected] = useState<EditorNodeData>();
@@ -178,10 +186,46 @@ export function Selection({
   );
 
   useEffect(() => {
+    return listen("trplx:requestNavigateToScene", (sceneObject) => {
+      if (!sceneObject && !selected) {
+        throw new Error("invariant: no scene object to navigate to");
+      }
+
+      setSelected(undefined);
+      onBlur();
+
+      if (sceneObject) {
+        onNavigate(sceneObject);
+      } else if (selected) {
+        onNavigate({
+          path: selected.path,
+          encodedProps: JSON.stringify(selected.props),
+        });
+      }
+    });
+  }, [selected]);
+
+  useEffect(() => {
     return listen("trplx:requestBlurSceneObject", () => {
       setSelected(undefined);
+      send("trplx:onSceneObjectBlur", {});
     });
   }, []);
+
+  useEffect(() => {
+    if (!selected) {
+      return;
+    }
+
+    return listen("trplx:requestJumpToSceneObject", () => {
+      box.setFromObject(selected.sceneObject);
+      onJumpTo(
+        selected.sceneObject.getWorldPosition(V1).toArray(),
+        box,
+        selected.sceneObject
+      );
+    });
+  }, [selected]);
 
   useEffect(() => {
     return listen("trplx:requestFocusSceneObject", (data) => {
@@ -195,15 +239,15 @@ export function Selection({
 
       if (sceneObject) {
         setSelected(sceneObject);
+        send("trplx:onSceneObjectFocus", {
+          column: sceneObject.column,
+          line: sceneObject.line,
+          name: sceneObject.name,
+          path: sceneObject.path,
+        });
       }
     });
   }, []);
-
-  useEffect(() => {
-    return () => {
-      onBlur();
-    };
-  }, [path]);
 
   const onClick = async (e: ThreeEvent<MouseEvent>) => {
     if (e.delta > 1) {
@@ -252,7 +296,12 @@ export function Selection({
 
       if (e.key === "F" && e.shiftKey && selected.path) {
         // Only navigate if there is a path to navigate to.
-        onNavigate(selected);
+        setSelected(undefined);
+        onBlur();
+        onNavigate({
+          path: selected.path,
+          encodedProps: JSON.stringify(selected.props),
+        });
       }
 
       if (e.key === "r") {
@@ -328,7 +377,7 @@ export function Selection({
   };
 
   return (
-    <group onPointerUp={onClick}>
+    <group onClick={onClick}>
       {children}
       {selected && (
         <TransformControls

@@ -1,9 +1,8 @@
 import { useLazySubscription } from "@triplex/ws-client";
-import { FocusedObject, useSceneStore } from "../stores/scene";
 import { ErrorBoundary } from "react-error-boundary";
 import { getEditorLink } from "../util/ide";
 import { Suspense, useDeferredValue } from "react";
-import { useEditorContext } from "../stores/editor-context";
+import { useEditor, FocusedObject } from "../stores/editor";
 
 interface Prop {
   column: number;
@@ -51,7 +50,7 @@ function Prop({ value, width = "100%" }: { value: unknown; width?: string }) {
 }
 
 function SelectedSceneObject({ focused }: { focused: FocusedObject }) {
-  const { path } = useEditorContext();
+  const { path } = useEditor();
   const data = useLazySubscription<{
     name: string;
     props: Prop[];
@@ -134,8 +133,8 @@ function SelectedSceneObject({ focused }: { focused: FocusedObject }) {
 }
 
 export function ContextPanel() {
-  const focused = useSceneStore((store) => store.focused);
-  const deferredFocused = useDeferredValue(focused);
+  const { target } = useEditor();
+  const deferredFocused = useDeferredValue(target);
 
   if (deferredFocused) {
     return (

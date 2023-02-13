@@ -11,23 +11,25 @@ export interface ClientSendEventData {
   };
   "trplx:onSceneObjectNavigated": {
     path: string;
-    props: Record<string, unknown>;
+    encodedProps: string;
   };
   "trplx:requestSave": {};
-  "trplx:requestActionMenu": {};
 }
 
 export type HostSendEventName = keyof HostSendEventData;
 
 export interface HostSendEventData {
-  "trplx:requestNavigateToSceneObject": {
-    path: string;
-    props: Record<string, unknown>;
-  };
+  "trplx:requestNavigateToScene":
+    | {
+        path: string;
+        encodedProps: string;
+      }
+    | undefined;
   "trplx:requestFocusSceneObject": {
     path: string;
     column: number;
     line: number;
   };
+  "trplx:requestJumpToSceneObject": {};
   "trplx:requestBlurSceneObject": {};
 }

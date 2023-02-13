@@ -1,9 +1,9 @@
 import { Fragment, useDeferredValue } from "react";
 import { cn } from "../ds/cn";
 import { useLazySubscription } from "@triplex/ws-client";
-import { useSceneStore } from "../stores/scene";
 import { getEditorLink } from "../util/ide";
-import { useEditorContext } from "../stores/editor-context";
+import { useEditor } from "../stores/editor";
+import { useScene } from "../scence-bridge";
 
 function SceneComponent({
   name,
@@ -43,7 +43,7 @@ interface JsxElementPositions {
 }
 
 export function ScenePanel() {
-  const { path } = useEditorContext();
+  const { path } = useEditor();
   const scene = useLazySubscription<{
     path: string;
     name: string;
@@ -84,9 +84,9 @@ function SceneObjectButtons({
   sceneObjects: JsxElementPositions[];
   level?: number;
 }) {
-  const focus = useSceneStore((store) => store.focus);
-  const focused = useSceneStore((store) => store.focused);
-  const deferredFocus = useDeferredValue(focused);
+  const { focus } = useScene();
+  const { target } = useEditor();
+  const deferredFocus = useDeferredValue(target);
 
   return (
     <>

@@ -1,5 +1,6 @@
 import * as RadixMenubar from "@radix-ui/react-menubar";
 import { ReactNode } from "react";
+import { cn } from "./cn";
 
 export function Trigger({
   children,
@@ -34,12 +35,18 @@ export function MenuContent({
 export function MenuItem({
   rslot,
   children,
+  disabled,
   ...props
 }: RadixMenubar.MenuItemProps & { rslot?: ReactNode }) {
   return (
     <RadixMenubar.Item
       {...props}
-      className="flex select-none rounded px-2 py-1 text-sm text-neutral-300 outline-none hover:bg-neutral-700"
+      className={cn([
+        disabled
+          ? "cursor-not-allowed opacity-60"
+          : "hover:bg-neutral-700 active:bg-neutral-600",
+        "flex select-none rounded px-2 py-1 text-sm text-neutral-300 outline-none ",
+      ])}
     >
       {children}
       {rslot && <div className="ml-auto text-neutral-500">{rslot}</div>}
