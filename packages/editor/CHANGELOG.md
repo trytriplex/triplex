@@ -1,5 +1,18 @@
 # @triplex/editor
 
+## 0.15.0
+
+### Minor Changes
+
+- e54e0f8: Editor now has a select menu with useful actions when a scene object is selected.
+- e54e0f8: Bridge events now flow unidirectionally enabling the editor ui to initiate events to the scene, such as navigate and focus.
+
+### Patch Changes
+
+- Updated dependencies [e54e0f8]
+  - @triplex/bridge@0.15.0
+  - @triplex/ws-client@0.15.0
+
 ## 0.14.0
 
 ### Minor Changes

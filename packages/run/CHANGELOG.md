@@ -1,5 +1,12 @@
 # @triplex/run
 
+## 0.15.0
+
+### Patch Changes
+
+- @triplex/client@0.15.0
+- @triplex/server@0.15.0
+
 ## 0.14.0
 
 ### Minor Changes
