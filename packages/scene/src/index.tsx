@@ -10,7 +10,7 @@ export function Scene({
   scenes: Record<string, () => Promise<SceneModule>>;
 }) {
   useEffect(() => {
-    send("trplx:onConnected", {});
+    send("trplx:onConnected", undefined);
   }, []);
 
   return (

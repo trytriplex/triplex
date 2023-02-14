@@ -3,7 +3,14 @@ import { send } from "@triplex/bridge/client";
 import { Canvas } from "./canvas";
 import type { SelectedNode } from "./selection";
 import { OrbitControls, PerspectiveCamera, Grid } from "@react-three/drei";
-import { Suspense, useEffect, useMemo, useRef, useState } from "react";
+import {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   Box3,
   Layers,
@@ -46,35 +53,6 @@ export function SceneFrame({
   }, [focalPoint]);
   const camera = useRef<PC>(null);
 
-  const onJumpTo = (point: Vector3Tuple, box: Box3) => {
-    const center = box.getCenter(V1);
-    setFocalPoint({
-      objectCenter: center.toArray(),
-      grid: [point[0], 0, point[2]],
-    });
-  };
-
-  const onNavigate = (selected: { path: string; encodedProps: string }) => {
-    setSearchParams(
-      { path: selected.path, props: selected.encodedProps },
-      { replace: true }
-    );
-    send("trplx:onSceneObjectNavigated", selected);
-  };
-
-  const onFocus = (data: SelectedNode) => {
-    send("trplx:onSceneObjectFocus", {
-      column: data.column,
-      line: data.line,
-      name: data.name,
-      path: data.path,
-    });
-  };
-
-  const onBlurObject = () => {
-    send("trplx:onSceneObjectBlur", {});
-  };
-
   useEffect(() => {
     if (!path) {
       return;
@@ -85,7 +63,7 @@ export function SceneFrame({
         e.keyCode === 83 &&
         (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
       ) {
-        send("trplx:requestSave", {});
+        send("trplx:requestSave", undefined);
         e.preventDefault();
       }
     };
@@ -96,6 +74,38 @@ export function SceneFrame({
       document.removeEventListener("keydown", callback);
     };
   }, [path]);
+
+  const onJumpTo = useCallback((point: Vector3Tuple, box: Box3) => {
+    const center = box.getCenter(V1);
+    setFocalPoint({
+      objectCenter: center.toArray(),
+      grid: [point[0], 0, point[2]],
+    });
+  }, []);
+
+  const onNavigate = useCallback(
+    (selected: { path: string; encodedProps: string }) => {
+      setSearchParams(
+        { path: selected.path, props: selected.encodedProps },
+        { replace: true }
+      );
+      send("trplx:onSceneObjectNavigated", selected);
+    },
+    [setSearchParams]
+  );
+
+  const onFocus = useCallback((data: SelectedNode) => {
+    send("trplx:onSceneObjectFocus", {
+      column: data.column,
+      line: data.line,
+      name: data.name,
+      path: data.path,
+    });
+  }, []);
+
+  const onBlurObject = useCallback(() => {
+    send("trplx:onSceneObjectBlur", undefined);
+  }, []);
 
   return (
     <Canvas>

@@ -4,5 +4,5 @@ export interface SceneMeta {
 
 export interface SceneModule {
   triplexMeta: SceneMeta;
-  default?: Function;
+  default?: () => JSX.Element;
 }
