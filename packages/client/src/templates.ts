@@ -26,9 +26,6 @@ export const scripts = {
     export function Scene() {
       return <SceneFrame scenes={scenes} />;
     }
-
-    // This is needed to make React use the new component.
-    $RefreshReg$(Scene, "Scene");
   `,
 };
 
