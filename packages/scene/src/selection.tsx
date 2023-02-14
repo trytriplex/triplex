@@ -11,7 +11,7 @@ export interface EditorNodeData {
   name: string;
   line: number;
   column: number;
-  props: Record<string, any>;
+  props: Record<string, unknown>;
   rotate: boolean;
   scale: boolean;
   sceneObject: Object3D;
@@ -50,10 +50,10 @@ interface SceneObjectData {
 
 type WithR3FData<TObject extends Object3D> = {
   __r3f: {
-    memoizedProps: Record<string, any>;
+    memoizedProps: Record<string, unknown>;
   };
 
-  traverse(callback: (object: WithR3FData<Object3D>) => any): void;
+  traverse(callback: (object: WithR3FData<Object3D>) => unknown): void;
 
   parent: WithR3FData<Object3D> | null;
 } & Omit<TObject, "traverse" | "parent">;
@@ -203,12 +203,12 @@ export function Selection({
         });
       }
     });
-  }, [selected]);
+  }, [onBlur, onNavigate, selected]);
 
   useEffect(() => {
     return listen("trplx:requestBlurSceneObject", () => {
       setSelected(undefined);
-      send("trplx:onSceneObjectBlur", {});
+      send("trplx:onSceneObjectBlur", undefined);
     });
   }, []);
 
@@ -225,7 +225,7 @@ export function Selection({
         selected.sceneObject
       );
     });
-  }, [selected]);
+  }, [onJumpTo, selected]);
 
   useEffect(() => {
     return listen("trplx:requestFocusSceneObject", (data) => {
@@ -247,7 +247,7 @@ export function Selection({
         });
       }
     });
-  }, []);
+  }, [scene, transform]);
 
   const onClick = async (e: ThreeEvent<MouseEvent>) => {
     if (e.delta > 1) {
@@ -332,8 +332,9 @@ export function Selection({
     document.addEventListener("keyup", callback);
 
     return () => document.removeEventListener("keyup", callback);
-  }, [onJumpTo, selected]);
+  }, [onBlur, onJumpTo, onNavigate, selected]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onMouseUp = (e: any) => {
     dragging.current = false;
 

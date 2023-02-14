@@ -4,7 +4,7 @@ const valueCache = new Map<string, unknown>();
 const queryCache = new Map<
   string,
   {
-    subscriptions: Function[];
+    subscriptions: (() => void)[];
     deferred: ReturnType<typeof defer>;
     ws: WebSocket;
   }
@@ -34,7 +34,7 @@ function wsQuery<TValue>(path: string) {
 
     const ws = new WebSocket("ws://localhost:3300");
     const deferred = defer();
-    const subscriptions: Function[] = [];
+    const subscriptions: (() => void)[] = [];
 
     ws.addEventListener("open", () => {
       ws!.send(path);
@@ -58,7 +58,7 @@ function wsQuery<TValue>(path: string) {
     });
   }
 
-  function read(suspend: boolean = true) {
+  function read(suspend = true) {
     const query = queryCache.get(path);
     if (!query) {
       throw new Error(`invariant: call load() first for ${path}`);
@@ -107,7 +107,7 @@ export function useLazySubscription<TSubscriptionData>(path: string) {
   query.load();
 
   const data = useSyncExternalStore<TSubscriptionData>(
-    useCallback(query.subscribe, []),
+    useCallback((onStoreChanged) => query.subscribe(onStoreChanged), [query]),
     query.read
   );
 

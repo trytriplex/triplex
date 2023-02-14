@@ -33,7 +33,7 @@ export function useSceneReady() {
   return useContext(ReadyContext);
 }
 
-function useEffectWhenReady(cb: () => void | (() => void), deps: any[]) {
+function useEffectWhenReady(cb: () => void | (() => void), deps: unknown[]) {
   const ready = useSceneReady();
 
   useEffect(() => {
@@ -42,7 +42,13 @@ function useEffectWhenReady(cb: () => void | (() => void), deps: any[]) {
     }
 
     return cb();
-  }, [ready, ...deps]);
+    // Ignore cb from dependency array
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    ready,
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    ...deps,
+  ]);
 }
 
 export function SceneFrame({ children }: { children: ReactNode }) {
@@ -61,13 +67,13 @@ export function SceneFrame({ children }: { children: ReactNode }) {
   const context: BridgeContext = useMemo(
     (): BridgeContext => ({
       blur() {
-        send(iframe.current, "trplx:requestBlurSceneObject", {});
+        send(iframe.current, "trplx:requestBlurSceneObject", undefined);
       },
       focus(sceneObject) {
         send(iframe.current, "trplx:requestFocusSceneObject", sceneObject);
       },
       jumpTo() {
-        send(iframe.current, "trplx:requestJumpToSceneObject", {});
+        send(iframe.current, "trplx:requestJumpToSceneObject", undefined);
       },
       navigateTo(sceneObject) {
         send(iframe.current, "trplx:requestNavigateToScene", sceneObject);

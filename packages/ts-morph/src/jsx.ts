@@ -65,7 +65,7 @@ export function getJsxAttributeValue(prop: JsxAttributeLike) {
   }
 }
 
-export function unrollType(type: Type, _nested = false): any {
+export function unrollType(type: Type, _nested = false): unknown {
   const args = type.getTypeArguments();
   if (args.length) {
     return args.map((arg) => unrollType(arg, true)) as string[];
@@ -126,7 +126,7 @@ export function getJsxElementPropTypes(
   const elementName = getJsxTagName(element);
   const propTypes: Record<
     string,
-    { name: string; required: boolean; type: any }
+    { name: string; required: boolean; type: unknown }
   > = {};
 
   if (/[a-z]/.exec(elementName[0])) {

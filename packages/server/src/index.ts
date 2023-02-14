@@ -14,7 +14,7 @@ import {
   getJsxTagName,
 } from "@triplex/ts-morph";
 
-export function createServer(_: {}) {
+export function createServer() {
   const app = new Application();
   const router = new Router();
   const project = createProject({

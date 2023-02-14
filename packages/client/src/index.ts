@@ -23,9 +23,11 @@ export async function createServer({ open }: { open?: boolean | string }) {
           // When built for NPM we use the tailwind CLI and build CSS to dist instead.
           {
             plugins: [
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
               ((await import("tailwindcss")).default as any)(
                 (
                   await import(
+                    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                     // @ts-ignore
                     "../tailwind.config.js"
                   )

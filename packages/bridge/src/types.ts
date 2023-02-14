@@ -1,8 +1,8 @@
 export type ClientSendEventName = keyof ClientSendEventData;
 
 export interface ClientSendEventData {
-  "trplx:onConnected": {};
-  "trplx:onSceneObjectBlur": {};
+  "trplx:onConnected": undefined;
+  "trplx:onSceneObjectBlur": undefined;
   "trplx:onSceneObjectFocus": {
     path: string;
     line: number;
@@ -13,7 +13,7 @@ export interface ClientSendEventData {
     path: string;
     encodedProps: string;
   };
-  "trplx:requestSave": {};
+  "trplx:requestSave": undefined;
 }
 
 export type HostSendEventName = keyof HostSendEventData;
@@ -30,6 +30,6 @@ export interface HostSendEventData {
     column: number;
     line: number;
   };
-  "trplx:requestJumpToSceneObject": {};
-  "trplx:requestBlurSceneObject": {};
+  "trplx:requestJumpToSceneObject": undefined;
+  "trplx:requestBlurSceneObject": undefined;
 }

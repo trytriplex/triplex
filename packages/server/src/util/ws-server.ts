@@ -9,7 +9,7 @@ function decodeParams(params?: Record<string, string> | null) {
 
   const newParams = { ...params };
 
-  for (let key in newParams) {
+  for (const key in newParams) {
     newParams[key] = decodeURIComponent(newParams[key]);
   }
 
@@ -20,7 +20,7 @@ export function createServer() {
   const wss = new WebSocketServer({ port: 3300 });
 
   function message<
-    TData extends any,
+    TData,
     R extends string,
     P extends RouteParams<R> = RouteParams<R>
   >(

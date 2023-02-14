@@ -44,3 +44,6 @@ jobs:
 
       - name: Test packages
         run: pnpm test
+
+      - name: Lint packages
+        run: pnpm lint
