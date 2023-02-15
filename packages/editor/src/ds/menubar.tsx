@@ -36,16 +36,19 @@ export function MenuItem({
   rslot,
   children,
   disabled,
+  onClick,
   ...props
 }: RadixMenubar.MenuItemProps & { rslot?: ReactNode }) {
   return (
     <RadixMenubar.Item
       {...props}
+      onClick={disabled ? undefined : onClick}
+      disabled={disabled}
       className={cn([
         disabled
           ? "cursor-not-allowed opacity-60"
           : "hover:bg-neutral-700 active:bg-neutral-600",
-        "flex select-none rounded px-2 py-1 text-sm text-neutral-300 outline-none ",
+        "flex select-none rounded px-2 py-1 text-sm text-neutral-300 outline-none",
       ])}
     >
       {children}

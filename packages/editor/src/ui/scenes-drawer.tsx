@@ -12,6 +12,7 @@ function Scenes() {
     scenes: { path: string; name: string }[];
   }>("/scene");
   const { path } = useEditor();
+  const { show } = useOverlayStore();
 
   return (
     <>
@@ -19,6 +20,7 @@ function Scenes() {
         <Link
           key={file.path}
           to={{ search: `?path=${file.path}` }}
+          onClick={() => show(false)}
           className={cn([
             path === file.path
               ? "bg-neutral-700 text-blue-500"

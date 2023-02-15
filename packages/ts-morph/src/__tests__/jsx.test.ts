@@ -170,4 +170,48 @@ describe("jsx ast extractor", () => {
       },
     ]);
   });
+
+  it("should extract array static props from nested host jsx elements", () => {
+    const project = new Project({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/nested.tsx")
+    );
+
+    const elements = getJsxElementsPositions(sourceFile);
+
+    expect(elements).toEqual([
+      {
+        column: 10,
+        line: 1,
+        name: "group",
+        path: "",
+        children: [
+          {
+            children: [
+              {
+                children: [],
+                column: 8,
+                line: 4,
+                name: "boxGeometry",
+                path: "",
+              },
+              {
+                column: 8,
+                line: 5,
+                name: "meshBasicMaterial",
+                path: "",
+                children: [],
+              },
+            ],
+            column: 6,
+            line: 3,
+            name: "mesh",
+            path: "",
+          },
+        ],
+      },
+    ]);
+  });
 });
