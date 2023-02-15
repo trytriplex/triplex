@@ -156,15 +156,25 @@ export function createServer() {
    */
   wss.message(
     "/scene/:path/object/:line/:column",
-    (params) => {
+    (params, { type }) => {
       const path = params.path;
       const line = Number(params.line);
       const column = Number(params.column);
       const { sourceFile } = project.getSourceFile(path);
       const sceneObject = getJsxElementAt(sourceFile, line, column);
-
       if (!sceneObject) {
-        throw new Error(`invariant: element not found`);
+        // Initial request - throw an error.
+        if (type === "pull") {
+          throw new Error(
+            `invariant: component at ${line}:${column} not found`
+          );
+        } else {
+          return {
+            name: "[deleted]",
+            props: [],
+            propTypes: [],
+          };
+        }
       }
 
       const name = getJsxTagName(sceneObject);

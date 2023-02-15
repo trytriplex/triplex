@@ -54,7 +54,7 @@ export async function init({
     });
 
     Object.assign(parsed.dependencies, {
-      "@react-three/fiber": "^8.0.0",
+      "@react-three/fiber": "^8.11.1",
       "@triplex/run": `^${version}`,
       "@types/react": "^18.0.0",
       "@types/three": "^0.148.0",
@@ -74,7 +74,7 @@ export async function init({
     "editor": "triplex editor"
   },
   "dependencies": {
-    "@react-three/fiber": "^8.0.0",
+    "@react-three/fiber": "^8.11.1",
     "@triplex/run": "${version}",
     "@types/react": "^18.0.0",
     "@types/three": "^0.148.0",

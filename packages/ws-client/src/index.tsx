@@ -51,6 +51,10 @@ function wsQuery<TValue>(path: string) {
       deferred.reject();
     });
 
+    ws.addEventListener("close", () => {
+      queryCache.delete(path);
+    });
+
     queryCache.set(path, {
       deferred,
       subscriptions,
@@ -74,7 +78,9 @@ function wsQuery<TValue>(path: string) {
     }
 
     if (typeof value === "object" && "error" in value) {
-      throw value.error;
+      throw new Error(
+        `Error reading "${decodeURIComponent(path)}" - [${value.error}]`
+      );
     }
 
     return value as TValue;

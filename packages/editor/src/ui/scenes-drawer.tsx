@@ -17,7 +17,6 @@ function Scenes() {
     <>
       {files?.scenes.map((file) => (
         <Link
-          replace
           key={file.path}
           to={{ search: `?path=${file.path}` }}
           className={cn([

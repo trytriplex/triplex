@@ -85,7 +85,7 @@ function SceneObjectButtons({
   level?: number;
 }) {
   const { focus } = useScene();
-  const { target } = useEditor();
+  const { target, path } = useEditor();
   const deferredFocus = useDeferredValue(target);
 
   return (
@@ -93,14 +93,15 @@ function SceneObjectButtons({
       {sceneObjects.map((child) => (
         <Fragment key={child.name + child.column + child.line}>
           <SceneComponent
-            onClick={() =>
+            onClick={() => {
               focus({
                 name: child.name,
                 column: child.column,
                 line: child.line,
                 path: child.path,
-              })
-            }
+                ownerPath: path,
+              });
+            }}
             level={level}
             selected={
               !!deferredFocus &&

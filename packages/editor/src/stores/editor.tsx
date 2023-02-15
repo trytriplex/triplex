@@ -12,6 +12,7 @@ export interface FocusedObject {
   line: number;
   column: number;
   name: string;
+  ownerPath: string;
 }
 
 interface SelectionState {

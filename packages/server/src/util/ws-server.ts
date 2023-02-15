@@ -25,7 +25,7 @@ export function createServer() {
     P extends RouteParams<R> = RouteParams<R>
   >(
     route: R,
-    cb: (params: P) => Promise<TData> | TData,
+    cb: (params: P, state: { type: "push" | "pull" }) => Promise<TData> | TData,
     pushConstructor?: (push: () => void, params: P) => void
   ) {
     wss.on("connection", (ws) => {
@@ -38,17 +38,19 @@ export function createServer() {
         if (matches.matches) {
           const params: P = decodeParams(matches.params) as P;
 
-          async function pushMessageToClient() {
+          async function pushMessageToClient(type: "push" | "pull") {
             let data;
 
             try {
-              data = await cb(params);
+              data = await cb(params, { type });
             } catch (e) {
               if (e instanceof Error) {
-                data = { error: e.message };
+                ws.send(JSON.stringify({ error: e.message }));
               } else {
-                data = { error: e };
+                ws.send(JSON.stringify({ error: e }));
               }
+
+              return ws.terminate();
             }
 
             const stringifiedData = JSON.stringify(data);
@@ -59,10 +61,10 @@ export function createServer() {
             }
           }
 
-          pushMessageToClient();
+          pushMessageToClient("pull");
 
           if (pushConstructor) {
-            pushConstructor(pushMessageToClient, params);
+            pushConstructor(() => pushMessageToClient("push"), params);
           }
         }
       });

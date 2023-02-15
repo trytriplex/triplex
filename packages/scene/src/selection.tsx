@@ -1,5 +1,5 @@
 import { TransformControls } from "@react-three/drei";
-import { ThreeEvent, useThree } from "@react-three/fiber";
+import { ThreeEvent, useFrame, useThree } from "@react-three/fiber";
 import { listen, send } from "@triplex/bridge/client";
 import { useSubscriptionEffect } from "@triplex/ws-client";
 import { ReactNode, useEffect, useRef, useState } from "react";
@@ -376,6 +376,13 @@ export function Selection({
       );
     }
   };
+
+  useFrame(() => {
+    if (selected && selected.sceneObject.parent === null) {
+      // If the scene object gets removed from the scene unselect it.
+      setSelected(undefined);
+    }
+  });
 
   return (
     <group onClick={onClick}>

@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@react-three/drei": "^9.54.0",
-    "@react-three/fiber": "^8.10.1",
+    "@react-three/fiber": "^8.11.1",
     "@triplex/bridge": "0.15.0",
     "@triplex/ws-client": "0.15.0",
     "react-dom": "^18.2.0",
