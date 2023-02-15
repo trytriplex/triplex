@@ -49,8 +49,7 @@ function Prop({ value, width = "100%" }: { value: unknown; width?: string }) {
   );
 }
 
-function SelectedSceneObject({ focused }: { focused: FocusedObject }) {
-  const { path } = useEditor();
+function SelectedSceneObject({ target }: { target: FocusedObject }) {
   const data = useLazySubscription<{
     name: string;
     props: Prop[];
@@ -63,38 +62,38 @@ function SelectedSceneObject({ focused }: { focused: FocusedObject }) {
       }
     >;
   }>(
-    `/scene/${encodeURIComponent(path)}/object/${focused.line}/${
-      focused.column
+    `/scene/${encodeURIComponent(target.ownerPath)}/object/${target.line}/${
+      target.column
     }`
   );
 
   return (
     <div>
       <h2 className="text-xl font-medium">
-        <div className="overflow-hidden text-ellipsis">{focused.name}</div>
+        <div className="overflow-hidden text-ellipsis">{target.name}</div>
       </h2>
 
       <div className="mb-2.5 -mt-0.5">
         <a
           className="text-xs text-neutral-400"
           href={getEditorLink({
-            path: path,
-            column: focused.column + 1,
-            line: focused.line + 1,
+            path: target.ownerPath,
+            column: target.column + 1,
+            line: target.line + 1,
             editor: "vscode",
           })}
         >
           View usage
         </a>
 
-        {focused.path && (
+        {target.path && (
           <>
             <span className="mx-1.5 text-xs text-neutral-400">•</span>
 
             <a
               className="text-xs text-neutral-400"
               href={getEditorLink({
-                path: focused.path,
+                path: target.path,
                 column: 1,
                 line: 1,
                 editor: "vscode",
@@ -114,7 +113,7 @@ function SelectedSceneObject({ focused }: { focused: FocusedObject }) {
             <a
               className="text-sm text-neutral-400"
               href={getEditorLink({
-                path,
+                path: target.ownerPath,
                 // ts-morph/tsc lines start from zero - offset them.
                 column: prop.column + 2,
                 line: prop.line + 1,
@@ -134,18 +133,18 @@ function SelectedSceneObject({ focused }: { focused: FocusedObject }) {
 
 export function ContextPanel() {
   const { target } = useEditor();
-  const deferredFocused = useDeferredValue(target);
+  const deferredTarget = useDeferredValue(target);
 
-  if (deferredFocused) {
+  if (deferredTarget) {
     return (
       <div className="absolute top-4 right-4 bottom-4 flex w-60 flex-col rounded-lg bg-neutral-800/90 shadow-2xl shadow-black/50">
         <div className="p-4 text-neutral-300">
           <ErrorBoundary
-            resetKeys={[deferredFocused]}
+            resetKeys={[deferredTarget]}
             fallbackRender={() => <div>Error!</div>}
           >
             <Suspense fallback={<div>Loading...</div>}>
-              <SelectedSceneObject focused={deferredFocused} />
+              <SelectedSceneObject target={deferredTarget} />
             </Suspense>
           </ErrorBoundary>
         </div>

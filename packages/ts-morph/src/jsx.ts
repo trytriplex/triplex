@@ -307,16 +307,20 @@ export function getJsxElementAt(
   line: number,
   column: number
 ) {
-  const pos = sourceFile.compilerNode.getPositionOfLineAndCharacter(
-    line,
-    column
-  );
+  try {
+    const pos = sourceFile.compilerNode.getPositionOfLineAndCharacter(
+      line,
+      column
+    );
 
-  const sceneObject = getAllJsxElements(sourceFile).find(
-    (node) => node.getPos() === pos
-  );
+    const sceneObject = getAllJsxElements(sourceFile).find(
+      (node) => node.getPos() === pos
+    );
 
-  return sceneObject;
+    return sceneObject;
+  } catch (e) {
+    return undefined;
+  }
 }
 
 export function getJsxAttributeAt(

@@ -150,7 +150,10 @@ function BridgeReceiveEvents() {
 
   useEffectWhenReady(() => {
     return listen("trplx:onSceneObjectFocus", (data) => {
-      editor.focus(data);
+      editor.focus({
+        ...data,
+        ownerPath: editor.path,
+      });
 
       if (data.path) {
         // Only custom components will have a path set.
@@ -159,7 +162,7 @@ function BridgeReceiveEvents() {
         );
       }
     });
-  }, [editor.focus]);
+  }, [editor.focus, editor.path]);
 
   useEffectWhenReady(() => {
     return listen("trplx:onSceneObjectBlur", () => {
