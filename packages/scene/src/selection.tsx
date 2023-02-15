@@ -69,6 +69,7 @@ const findTransformedSceneObject = (
   }[transform];
   let transformedSceneObject: Object3D | undefined = undefined;
   let translatedSceneObject: Object3D | undefined = undefined;
+  const firstChildSceneObject = sceneObject.children[0];
 
   sceneObject.traverse((child: WithR3FData<Object3D>) => {
     if (
@@ -92,7 +93,12 @@ const findTransformedSceneObject = (
     }
   });
 
-  return transformedSceneObject || translatedSceneObject || sceneObject;
+  return (
+    transformedSceneObject ||
+    translatedSceneObject ||
+    firstChildSceneObject ||
+    sceneObject
+  );
 };
 
 const findEditorData = (

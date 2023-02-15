@@ -1,11 +1,11 @@
 import { join } from "path";
 import {
+  createWrappedNode,
   JsxElement,
   JsxSelfClosingElement,
   SourceFile,
   ts,
   VariableDeclarationKind,
-  createWrappedNode,
 } from "ts-morph";
 import { getJsxElementPropTypes, getJsxTagName, serializeProps } from "./jsx";
 
@@ -77,14 +77,20 @@ export function cloneAndWrapSourceJsx(sourceFile: SourceFile, tempDir: string) {
     }
 
     if (ts.isJsxSelfClosingElement(node)) {
-      const tagName = getJsxTagName(createWrappedNode(node));
+      const tagName = getJsxTagName(
+        createWrappedNode(node, {
+          sourceFile: sourceFile.compilerNode.getSourceFile(),
+        })
+      );
       if (tagName.includes("Light")) {
         customLighting = true;
       }
 
       const transform = getNodeTransforms(
         transformedSource,
-        createWrappedNode(node)
+        createWrappedNode(node, {
+          sourceFile: sourceFile.compilerNode.getSourceFile(),
+        })
       );
 
       return traversal.factory.createJsxElement(
@@ -160,14 +166,20 @@ export function cloneAndWrapSourceJsx(sourceFile: SourceFile, tempDir: string) {
     }
 
     if (ts.isJsxElement(node)) {
-      const tagName = getJsxTagName(createWrappedNode(node));
+      const tagName = getJsxTagName(
+        createWrappedNode(node, {
+          sourceFile: sourceFile.compilerNode.getSourceFile(),
+        })
+      );
       if (tagName.includes("Light")) {
         customLighting = true;
       }
 
       const transform = getNodeTransforms(
         transformedSource,
-        createWrappedNode(node)
+        createWrappedNode(node, {
+          sourceFile: sourceFile.compilerNode.getSourceFile(),
+        })
       );
 
       return traversal.factory.updateJsxElement(

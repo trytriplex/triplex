@@ -254,7 +254,7 @@ export function getJsxElementsPositions(sourceFile: SourceFile) {
         children: [],
       };
 
-      const parentElement = node.getParentWhileKind(SyntaxKind.JsxElement);
+      const parentElement = node.getParentIfKind(SyntaxKind.JsxElement);
       if (parentElement) {
         const parentPositions = parentPointers.get(parentElement);
         if (!parentPositions) {
