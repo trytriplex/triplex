@@ -29,6 +29,7 @@ export interface HostSendEventData {
     path: string;
     column: number;
     line: number;
+    name: string;
   };
   "trplx:requestJumpToSceneObject": undefined;
   "trplx:requestBlurSceneObject": undefined;
