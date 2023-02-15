@@ -239,13 +239,16 @@ export function Selection({
 
       if (sceneObject) {
         setSelected(sceneObject);
-        send("trplx:onSceneObjectFocus", {
-          column: sceneObject.column,
-          line: sceneObject.line,
-          name: sceneObject.name,
-          path: sceneObject.path,
-        });
+      } else {
+        setSelected(undefined);
       }
+
+      send("trplx:onSceneObjectFocus", {
+        column: data.column,
+        line: data.line,
+        name: data.name,
+        path: data.path,
+      });
     });
   }, [scene, transform]);
 
