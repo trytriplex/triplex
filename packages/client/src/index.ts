@@ -6,7 +6,7 @@ import { scenePlugin } from "./scene-plugin";
 import { createHTML } from "./templates";
 
 const root = process.cwd();
-const tempDir = join(process.cwd(), ".triplex");
+const tempDir = join(process.cwd(), ".triplex", "tmp");
 
 export async function createServer({ open }: { open?: boolean | string }) {
   const app = express();
@@ -84,11 +84,19 @@ export async function createServer({ open }: { open?: boolean | string }) {
 
   return {
     listen: async (port: number) => {
-      await app.listen(port);
+      const server = await app.listen(port);
       if (open) {
         const searchParam = typeof open === "string" ? `?path=${open}` : "";
         await openBrowser(`http://localhost:${port}/${searchParam}`);
       }
+
+      const close = () => {
+        server.close();
+        vite.close();
+      };
+
+      process.once("SIGINT", close);
+      process.once("SIGTERM", close);
     },
   };
 }

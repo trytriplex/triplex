@@ -73,5 +73,6 @@ export function createServer() {
 
   return {
     message,
+    close: wss.close.bind(wss),
   };
 }

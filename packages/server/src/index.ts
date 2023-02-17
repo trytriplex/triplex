@@ -18,7 +18,7 @@ export function createServer() {
   const app = new Application();
   const router = new Router();
   const project = createProject({
-    tempDir: join(process.cwd(), ".triplex"),
+    tempDir: join(process.cwd(), ".triplex", "tmp"),
   });
   const wss = createWSS();
 
@@ -190,6 +190,19 @@ export function createServer() {
   );
 
   return {
-    listen: (port = 8000) => app.listen({ port }),
+    listen: (port = 8000) => {
+      const controller = new AbortController();
+      const promise = app.listen({ port, signal: controller.signal });
+
+      const close = () => {
+        controller.abort();
+        wss.close();
+      };
+
+      process.once("SIGINT", close);
+      process.once("SIGTERM", close);
+
+      return promise;
+    },
   };
 }

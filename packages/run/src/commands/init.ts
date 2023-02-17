@@ -1,45 +1,66 @@
 import { exec as execCb } from "child_process";
 import { promisify } from "node:util";
-import { mkdir, readdir, readFile, writeFile } from "fs/promises";
+import fs_dont_use_directly from "fs/promises";
 import { join } from "path";
 
-const exec = promisify(execCb);
-const gitIgnorePath = join(process.cwd(), ".gitignore");
-const packageJsonPath = join(process.cwd(), "package.json");
-const tsconfigPath = join(process.cwd(), "tsconfig.json");
-const examplePath = join(process.cwd(), "src");
+const exec_dont_use_directly = promisify(execCb);
+const templateDir = join(__dirname, "../../templates");
 
 export async function init({
+  name,
+  cwd = process.cwd(),
   version,
   pkgManager,
+  __fs: fs = fs_dont_use_directly,
+  __exec: exec = exec_dont_use_directly,
 }: {
+  name: string;
+  cwd?: string;
   version: string;
-  pkgManager: string;
+  pkgManager: "npm" | "pnpm" | "yarn";
+  __fs?: typeof import("fs/promises");
+  __exec?: typeof exec_dont_use_directly;
 }) {
-  console.log("Initializing...");
-  const dir = await readdir(process.cwd());
+  const { default: ora } = await import("ora");
+  const spinner = ora("Setting up files...").start();
+
+  const dir = await fs.readdir(cwd);
+  const gitIgnorePath = join(cwd, ".gitignore");
+  const packageJsonPath = join(cwd, "package.json");
+  const readmePath = join(cwd, "README.md");
+  const tsconfigPath = join(cwd, "tsconfig.json");
+  const examplePath = join(cwd, "src");
+
+  let existing = false;
 
   if (dir.includes(".gitignore")) {
     // Update
-    let gitIgnore = await readFile(gitIgnorePath, "utf-8");
+    let gitIgnore = await fs.readFile(gitIgnorePath, "utf-8");
 
-    if (gitIgnore.includes(".triplex")) {
+    if (gitIgnore.includes(".triplex/tmp")) {
       // Abort
     } else {
       // Add ignore
-      gitIgnore += ".triplex\n";
-      await writeFile(gitIgnorePath, gitIgnore);
+      gitIgnore += ".triplex/tmp\n";
+      await fs.writeFile(gitIgnorePath, gitIgnore);
     }
+
+    existing = true;
   } else {
     // Create one
-    const gitIgnore = `.triplex\nnode_modules\n`;
-    await writeFile(gitIgnorePath, gitIgnore);
+    const templatePath = join(templateDir, ".gitignore");
+    await fs.copyFile(templatePath, gitIgnorePath);
   }
 
   if (dir.includes("package.json")) {
     // Update
-    const packageJson = await readFile(packageJsonPath, "utf-8");
+    const packageJson = await fs.readFile(packageJsonPath, "utf-8");
     const parsed = JSON.parse(packageJson);
+    const pkgJSON = await fs.readFile(
+      join(templateDir, "package.json"),
+      "utf-8"
+    );
+    const pkgJSONParsed = JSON.parse(pkgJSON);
 
     if (!parsed.dependencies) {
       parsed.dependencies = {};
@@ -49,108 +70,135 @@ export async function init({
       parsed.scripts = {};
     }
 
-    Object.assign(parsed.scripts.editor, {
-      editor: "triplex editor",
-    });
+    Object.assign(parsed.scripts, pkgJSONParsed.scripts);
+    Object.assign(parsed.dependencies, pkgJSONParsed.dependencies);
 
-    Object.assign(parsed.dependencies, {
-      "@react-three/fiber": "^8.11.1",
-      "@triplex/run": `^${version}`,
-      "@types/react": "^18.0.0",
-      "@types/three": "^0.148.0",
-      "react-dom": "^18.0.0",
-      react: "^18.0.0",
-      three: "^0.148.0",
-    });
+    const result = JSON.stringify(parsed, null, 2).replace(
+      "{triplex_version}",
+      `${version}`
+    );
 
-    await writeFile(packageJsonPath, JSON.stringify(parsed, null, 2) + "\n");
+    await fs.writeFile(packageJsonPath, result + "\n");
+
+    existing = true;
   } else {
     // Create
-    const packageJson = `{
-  "name": "my-triplex-app",
-  "version": "0.0.0",
-  "private": true,
-  "scripts": {
-    "editor": "triplex editor"
-  },
-  "dependencies": {
-    "@react-three/fiber": "^8.11.1",
-    "@triplex/run": "${version}",
-    "@types/react": "^18.0.0",
-    "@types/three": "^0.148.0",
-    "react-dom": "^18.0.0",
-    "react": "^18.0.0",
-    "three": "^0.148.0"
+    const pkgJson = await fs.readFile(
+      join(templateDir, "package.json"),
+      "utf-8"
+    );
+    await fs.writeFile(
+      packageJsonPath,
+      pkgJson.replace("{app_name}", name).replace("{triplex_version}", version)
+    );
   }
-}
-`;
-    await writeFile(packageJsonPath, packageJson);
+
+  if (dir.includes("README.md")) {
+    // Skip
+    existing = true;
+  } else {
+    const readme = await fs.readFile(join(templateDir, "README.md"), "utf-8");
+    await fs.writeFile(
+      readmePath,
+      readme.replace("{pkg_manager}", pkgManager).replace("{app_name}", name)
+    );
   }
 
   if (dir.includes("tsconfig.json")) {
-    // Skip
+    // Ensure r3f is in types
+    const tsconfig = await fs.readFile(tsconfigPath, "utf-8");
+    const parsed = JSON.parse(tsconfig);
+
+    if (!parsed.compilerOptions) {
+      parsed.compilerOptions = {};
+    }
+
+    parsed.compilerOptions.jsx = "react-jsx";
+
+    if (!parsed.compilerOptions.types) {
+      parsed.compilerOptions.types = [];
+    }
+
+    if (!parsed.include) {
+      parsed.include = [];
+    }
+
+    if (!parsed.exclude) {
+      parsed.exclude = [];
+    }
+
+    if (!parsed.include.includes(".")) {
+      parsed.include.push(".");
+    }
+
+    if (!parsed.exclude.includes("node_modules")) {
+      parsed.exclude.push("node_modules");
+    }
+
+    if (!parsed.compilerOptions.types.includes("@react-three/fiber")) {
+      parsed.compilerOptions.types.push("@react-three/fiber");
+    }
+
+    await fs.writeFile(tsconfigPath, JSON.stringify(parsed, null, 2) + "\n");
+
+    existing = true;
   } else {
     // Create
-    const tsconfig = `{
-  "compilerOptions": {
-    "esModuleInterop": true,
-    "forceConsistentCasingInFileNames": true,
-    "isolatedModules": true,
-    "moduleResolution": "node",
-    "skipLibCheck": true,
-    "strict": true,
-    "jsx": "react-jsx",
-    "types": ["@react-three/fiber"]
-  },
-  "include": ["."],
-  "exclude": ["node_modules"]
-}
-`;
-    await writeFile(tsconfigPath, tsconfig);
+    const templatePath = join(templateDir, "tsconfig.json");
+    await fs.copyFile(templatePath, tsconfigPath);
   }
+
+  let openPath = "";
 
   if (dir.includes("src")) {
-    // Skip creating an example
+    const srcDir = await fs.readdir(examplePath);
+    if (!srcDir.includes("scene.tsx")) {
+      // Examples haven't been added yet - add them!
+      const templatePath = join(templateDir, "src");
+      await fs.cp(templatePath, join(examplePath, "examples"), {
+        recursive: true,
+      });
+      openPath = join(examplePath, "examples", "scene.tsx");
+    } else {
+      // A previous run already added examples, nothing to do here.
+    }
+
+    existing = true;
   } else {
-    const scene = `import Box from "./box";
-
-export default function Scene() {
-  return (
-    <>
-      <Box />
-    </>
-  );
-}
-`;
-    const box = `
-import type { Vector3Tuple } from "three";
-
-export default function Box({
-  position,
-  rotation,
-  scale,
-}: {
-  position?: Vector3Tuple;
-  rotation?: Vector3Tuple;
-  scale?: Vector3Tuple;
-}) {
-  return (
-    <mesh position={position} rotation={rotation} scale={scale}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color="pink" />
-    </mesh>
-  );
-}
-`;
-
-    await mkdir(examplePath);
-    await writeFile(join(examplePath, "scene.tsx"), scene);
-    await writeFile(join(examplePath, "box.tsx"), box);
+    const templatePath = join(templateDir, "src");
+    await fs.cp(templatePath, examplePath, { recursive: true });
+    openPath = join(examplePath, "scene.tsx");
   }
 
-  console.log("Installing dependencies...");
+  if (dir.includes(".triplex")) {
+    // Skip creating an example
+    existing = true;
+  } else {
+    const templatePath = join(templateDir, ".triplex");
+    await fs.cp(templatePath, join(cwd, ".triplex"), { recursive: true });
+  }
+
+  spinner.text = "Installing dependencies...";
+
   await exec(`${pkgManager} i`);
 
-  console.log("Starting the TRIPLEX editor!");
-  await exec(`${pkgManager} run editor --open src/scene.tsx`);
+  if (!existing) {
+    spinner.text = "Initializing git...";
+
+    await exec(`git init`);
+    await exec(`git add .`);
+    await exec(`git commit -m "INITIALIZED TRIPLEX."`);
+  }
+
+  spinner.succeed("Successfully initialized!");
+
+  console.log(`
+       Run the editor: ${pkgManager} run editor
+           Raise bugs: https://github.com/triplex-run/TRIPLEX/issues
+  Sponsor development: https://github.com/sponsors/itsdouges
+`);
+
+  return {
+    openPath,
+  };
 }
