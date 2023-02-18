@@ -1,6 +1,6 @@
 {
   "name": "@triplex/bridge",
-  "version": "0.17.0",
+  "version": "0.18.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "types": "./src/index.ts",
   "exports": {

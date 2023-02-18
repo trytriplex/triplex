@@ -1,5 +1,12 @@
 # @triplex/scene
 
+## 0.18.0
+
+### Patch Changes
+
+- @triplex/bridge@0.18.0
+- @triplex/ws-client@0.18.0
+
 ## 0.17.0
 
 ### Patch Changes

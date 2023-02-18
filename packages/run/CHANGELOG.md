@@ -1,5 +1,16 @@
 # @triplex/run
 
+## 0.18.0
+
+### Minor Changes
+
+- 7e16516: Adds missing template file to npm dist.
+
+### Patch Changes
+
+- @triplex/client@0.18.0
+- @triplex/server@0.18.0
+
 ## 0.17.0
 
 ### Minor Changes
