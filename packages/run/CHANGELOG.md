@@ -1,5 +1,18 @@
 # @triplex/run
 
+## 0.19.0
+
+### Minor Changes
+
+- 70b3365: Adds `publicDir` to config.
+- 70b3365: Rename .gitignore template to gitignore as npm doesn't seem to want to install it.
+
+### Patch Changes
+
+- Updated dependencies [70b3365]
+  - @triplex/client@0.19.0
+  - @triplex/server@0.19.0
+
 ## 0.18.0
 
 ### Minor Changes
