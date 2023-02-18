@@ -1,5 +1,27 @@
 # @triplex/run
 
+## 0.16.0
+
+### Minor Changes
+
+- 926359a: Extracts templates from strings into their own folder.
+- 2fa7c45: Adds triplex config and files option, an array of globs for triplex to find scenes with.
+- 926359a: Server now gracefully exits when closed.
+- 7ff35f3: Upgrades @react-three/fiber to latest.
+- 2fa7c45: Adds author field to package.json.
+- 926359a: Prompts have replaced cli args for the init command.
+
+### Patch Changes
+
+- Updated dependencies [7ff35f3]
+- Updated dependencies [2fa7c45]
+- Updated dependencies [926359a]
+- Updated dependencies [c8ab78b]
+- Updated dependencies [2fa7c45]
+- Updated dependencies [926359a]
+  - @triplex/server@0.16.0
+  - @triplex/client@0.16.0
+
 ## 0.15.0
 
 ### Patch Changes

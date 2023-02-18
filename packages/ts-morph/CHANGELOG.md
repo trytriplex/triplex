@@ -1,5 +1,13 @@
 # @triplex/ts-morph
 
+## 0.16.0
+
+### Minor Changes
+
+- e7c026b: Scene panel now shows correctly nested jsx elements.
+- 7ff35f3: Upgrades @react-three/fiber to latest.
+- 2fa7c45: Adds author field to package.json.
+
 ## 0.15.0
 
 ## 0.14.0

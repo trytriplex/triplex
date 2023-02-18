@@ -1,5 +1,25 @@
 # @triplex/editor
 
+## 0.16.0
+
+### Minor Changes
+
+- e7c026b: Scene drawer no-longer stays open when selecting a scene.
+- 7ff35f3: Context panel no longer throws when navigating between scene and a scene object is selected.
+- e7c026b: Scene panel now shows correctly nested jsx elements.
+- e7c026b: Disabled menu items are now actually disabled.
+- 7ff35f3: Upgrades @react-three/fiber to latest.
+- 7ff35f3: Navigating to host elements is no longer possible (as there is nowhere to navigate to).
+- 2fa7c45: Adds author field to package.json.
+
+### Patch Changes
+
+- Updated dependencies [d8e1602]
+- Updated dependencies [7ff35f3]
+- Updated dependencies [2fa7c45]
+  - @triplex/bridge@0.16.0
+  - @triplex/ws-client@0.16.0
+
 ## 0.15.0
 
 ### Minor Changes
