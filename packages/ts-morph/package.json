@@ -1,6 +1,7 @@
 {
   "name": "@triplex/ts-morph",
   "version": "0.15.0",
+  "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "publishConfig": {

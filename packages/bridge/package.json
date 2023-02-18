@@ -1,7 +1,7 @@
 {
   "name": "@triplex/bridge",
   "version": "0.15.0",
-  "license": "MIT",
+  "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "types": "./src/index.ts",
   "exports": {
     "./host": {

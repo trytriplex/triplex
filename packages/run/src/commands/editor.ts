@@ -1,11 +1,17 @@
 import { createServer as createBackendServer } from "@triplex/server";
 import { createServer as createFrontendServer } from "@triplex/client";
 
-export async function editor({ open }: { open?: boolean | string }) {
+export async function editor({
+  open,
+  files,
+}: {
+  open?: boolean | string;
+  files: string[];
+}) {
   const { default: ora } = await import("ora");
   const spinner = ora("Starting...\n").start();
   const frontendServer = await createFrontendServer({ open });
-  const backendServer = await createBackendServer();
+  const backendServer = await createBackendServer({ files });
 
   await frontendServer.listen(3333);
 

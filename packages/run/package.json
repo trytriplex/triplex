@@ -2,6 +2,8 @@
   "name": "@triplex/run",
   "description": "The React Three Fiber framework.",
   "version": "0.15.0",
+  "author": "Michael Dougall (https://twitter.com/itsdouges)",
+  "license": "MIT",
   "publishConfig": {
     "bin": {
       "triplex": "./dist/index.js"
