@@ -1,5 +1,16 @@
 # @triplex/client
 
+## 0.19.0
+
+### Minor Changes
+
+- 70b3365: Adds `publicDir` to config.
+
+### Patch Changes
+
+- @triplex/editor@0.19.0
+- @triplex/scene@0.19.0
+
 ## 0.18.0
 
 ### Patch Changes
