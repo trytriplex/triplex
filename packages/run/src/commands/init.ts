@@ -150,19 +150,35 @@ export async function init({
 
   let openPath = "";
 
-  if (dir.includes("src")) {
-    const srcDir = await fs.readdir(examplePath);
-    if (!srcDir.includes("scene.tsx")) {
+  if (dir.includes("packages")) {
+    const packagesPath = join(cwd, "packages");
+    // Assume workspace environment
+    const examplesDir = await fs.readdir(packagesPath);
+    if (!examplesDir.includes("triplex-examples")) {
       // Examples haven't been added yet - add them!
       const templatePath = join(templateDir, "src");
-      await fs.cp(templatePath, join(examplePath, "examples"), {
+      await fs.cp(templatePath, join(packagesPath, "triplex-examples"), {
         recursive: true,
       });
-      openPath = join(examplePath, "examples", "scene.tsx");
     } else {
       // A previous run already added examples, nothing to do here.
     }
 
+    openPath = join(cwd, "packages/triplex-examples", "scene.tsx");
+    existing = true;
+  } else if (dir.includes("src")) {
+    const srcDir = await fs.readdir(examplePath);
+    if (!srcDir.includes("scene.tsx")) {
+      // Examples haven't been added yet - add them!
+      const templatePath = join(templateDir, "src");
+      await fs.cp(templatePath, join(examplePath, "triplex-examples"), {
+        recursive: true,
+      });
+    } else {
+      // A previous run already added examples, nothing to do here.
+    }
+
+    openPath = join(examplePath, "triplex-examples", "scene.tsx");
     existing = true;
   } else {
     const templatePath = join(templateDir, "src");
