@@ -142,7 +142,7 @@ describe("init command", () => {
 
       expect(stubFs.cp).toHaveBeenCalledWith(
         join(templateDir, "src"),
-        join(cwd, "src/examples"),
+        join(cwd, "src/triplex-examples"),
         { recursive: true }
       );
     });
@@ -281,7 +281,35 @@ describe("init command", () => {
         __exec: stubExec,
       });
 
-      expect(openPath).toEqual(join(cwd, "src/examples/scene.tsx"));
+      expect(openPath).toEqual(join(cwd, "src/triplex-examples/scene.tsx"));
+    });
+  });
+
+  describe("existing init workspace", () => {
+    it("should return open path", async () => {
+      const stubFs: FS = {
+        readdir,
+        readFile,
+        writeFile: vi.fn(),
+        mkdir: vi.fn(),
+        copyFile: vi.fn(),
+        cp: vi.fn(),
+      } as unknown as FS;
+      const stubExec = vi.fn();
+      const cwd = join(__dirname, "__mocks__", "init-existing-workspace");
+
+      const { openPath } = await init({
+        cwd,
+        name: "fresh-local",
+        pkgManager: "npm",
+        version: "0.0.0-local",
+        __fs: stubFs,
+        __exec: stubExec,
+      });
+
+      expect(openPath).toEqual(
+        join(cwd, "packages/triplex-examples/scene.tsx")
+      );
     });
   });
 });
