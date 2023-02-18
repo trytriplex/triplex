@@ -1,5 +1,12 @@
 # @triplex/client
 
+## 0.17.0
+
+### Patch Changes
+
+- @triplex/editor@0.17.0
+- @triplex/scene@0.17.0
+
 ## 0.16.0
 
 ### Minor Changes

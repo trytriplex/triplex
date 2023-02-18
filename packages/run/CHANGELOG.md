@@ -1,5 +1,16 @@
 # @triplex/run
 
+## 0.17.0
+
+### Minor Changes
+
+- 8620560: Init now adds examples folder to packages if found.
+
+### Patch Changes
+
+- @triplex/client@0.17.0
+- @triplex/server@0.17.0
+
 ## 0.16.0
 
 ### Minor Changes

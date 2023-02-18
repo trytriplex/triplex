@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.17.0
+
+### Patch Changes
+
+- @triplex/ts-morph@0.17.0
+
 ## 0.16.0
 
 ### Minor Changes

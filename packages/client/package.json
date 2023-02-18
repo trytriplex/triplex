@@ -1,6 +1,6 @@
 {
   "name": "@triplex/client",
-  "version": "0.16.0",
+  "version": "0.17.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
@@ -13,8 +13,8 @@
     "typedef": "tsc"
   },
   "dependencies": {
-    "@triplex/editor": "0.16.0",
-    "@triplex/scene": "0.16.0",
+    "@triplex/editor": "0.17.0",
+    "@triplex/scene": "0.17.0",
     "@vitejs/plugin-react": "^3.0.1",
     "chokidar": "^3.5.3",
     "express": "^4.18.2",
