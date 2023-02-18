@@ -7,7 +7,13 @@ import { createHTML } from "./templates";
 
 const tempDir = join(process.cwd(), ".triplex", "tmp");
 
-export async function createServer({ open }: { open?: boolean | string }) {
+export async function createServer({
+  open,
+  publicDir,
+}: {
+  open?: boolean | string;
+  publicDir?: string;
+}) {
   const app = express();
   const { createServer: createViteServer } = await import("vite");
 
@@ -16,6 +22,7 @@ export async function createServer({ open }: { open?: boolean | string }) {
     plugins: [react(), scenePlugin()],
     root: process.cwd(),
     appType: "custom",
+    publicDir,
     logLevel: "error",
     css: {
       postcss: process.env.TRIPLEX_DEV

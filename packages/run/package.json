@@ -38,7 +38,6 @@
   },
   "files": [
     "dist",
-    "templates",
-    "templates/.gitignore"
+    "templates"
   ]
 }

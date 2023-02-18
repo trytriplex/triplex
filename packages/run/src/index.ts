@@ -26,15 +26,33 @@ program
   .description("start the TRIPLEX editor")
   .option("-o --open [file]", "opens the editor when running")
   .action(async ({ open }) => {
-    const conf = await readFile(
-      join(process.cwd(), ".triplex/config.json"),
-      "utf-8"
+    let config: TRIPLEXConfig;
+
+    try {
+      const conf = await readFile(
+        join(process.cwd(), ".triplex/config.json"),
+        "utf-8"
+      );
+      config = JSON.parse(conf);
+    } catch (e) {
+      console.log("Could not find config! Run triplex init to generate one.\n");
+      return;
+    }
+
+    const publicDir = join(
+      process.cwd(),
+      ".triplex",
+      config.publicDir || "../public"
     );
-    const config: TRIPLEXConfig = JSON.parse(conf);
+
+    const files = config.files.map((file) =>
+      join(process.cwd(), ".triplex", file)
+    );
 
     editor({
       open,
-      files: config.files.map((file) => join(process.cwd(), ".triplex", file)),
+      publicDir,
+      files,
     });
   });
 

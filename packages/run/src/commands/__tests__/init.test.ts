@@ -54,7 +54,7 @@ describe("init command", () => {
       });
 
       expect(stubFs.copyFile).toHaveBeenCalledWith(
-        join(templateDir, ".gitignore"),
+        join(templateDir, "gitignore"),
         join(cwd, ".gitignore")
       );
       expect(stubFs.copyFile).toHaveBeenCalledWith(

@@ -48,7 +48,7 @@ export async function init({
     existing = true;
   } else {
     // Create one
-    const templatePath = join(templateDir, ".gitignore");
+    const templatePath = join(templateDir, "gitignore");
     await fs.copyFile(templatePath, gitIgnorePath);
   }
 
