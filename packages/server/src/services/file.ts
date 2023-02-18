@@ -2,9 +2,11 @@ import {
   getDefaultExportFunctionName,
   TRIPLEXProject,
 } from "@triplex/ts-morph";
-import { basename, extname, join } from "path";
+import { extname } from "path";
 import { getJsxElementsPositions } from "@triplex/ts-morph";
-import { readdir } from "../util/fs";
+import readdirp from "readdirp";
+import parent from "glob-parent";
+import anymatch from "anymatch";
 
 export function getFile({
   path,
@@ -28,18 +30,27 @@ export function getFile({
   };
 }
 
-export async function getAllFiles() {
-  const files = await readdir(join(process.cwd(), "src"), {
-    recursive: true,
-  });
+export async function getAllFiles({ files }: { files: string[] }) {
+  const foundFiles: { path: string; name: string }[] = [];
+  const roots = files.map((glob) => parent(glob));
+
+  for (let i = 0; i < files.length; i++) {
+    const glob = files[i];
+    const root = roots[i];
+    const match = anymatch(glob);
+
+    for await (const entry of readdirp(root)) {
+      if (match(entry.fullPath)) {
+        foundFiles.push({
+          path: entry.fullPath,
+          name: entry.basename.replace(extname(entry.path), ""),
+        });
+      }
+    }
+  }
 
   return {
     cwd: process.cwd(),
-    scenes: files
-      .filter((file) => file.endsWith(".tsx"))
-      .map((path) => ({
-        path: join(process.cwd(), path),
-        name: basename(path).replace(extname(path), ""),
-      })),
+    scenes: foundFiles,
   };
 }

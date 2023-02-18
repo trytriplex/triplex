@@ -5,7 +5,6 @@ import openBrowser from "open";
 import { scenePlugin } from "./scene-plugin";
 import { createHTML } from "./templates";
 
-const root = process.cwd();
 const tempDir = join(process.cwd(), ".triplex", "tmp");
 
 export async function createServer({ open }: { open?: boolean | string }) {
@@ -15,8 +14,9 @@ export async function createServer({ open }: { open?: boolean | string }) {
   const vite = await createViteServer({
     configFile: false,
     plugins: [react(), scenePlugin()],
-    root,
+    root: process.cwd(),
     appType: "custom",
+    logLevel: "error",
     css: {
       postcss: process.env.TRIPLEX_DEV
         ? // PostCSS will only run in TRIPLEX_DEV mode.
@@ -90,9 +90,13 @@ export async function createServer({ open }: { open?: boolean | string }) {
         await openBrowser(`http://localhost:${port}/${searchParam}`);
       }
 
-      const close = () => {
-        server.close();
-        vite.close();
+      const close = async () => {
+        try {
+          await server.close();
+          await vite.close();
+        } finally {
+          process.exit(0);
+        }
       };
 
       process.once("SIGINT", close);

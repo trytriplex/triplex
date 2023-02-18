@@ -1,6 +1,7 @@
 {
   "name": "@triplex/scene",
   "version": "0.15.0",
+  "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "main": "./src/index.tsx",
   "module": "./src/index.tsx",
   "types": "./src/index.tsx",

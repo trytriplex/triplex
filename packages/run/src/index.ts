@@ -2,10 +2,13 @@
 import { program } from "@commander-js/extra-typings";
 import { prompt } from "enquirer";
 import { exec as execCb } from "child_process";
+import { promisify } from "util";
+import { readFile } from "fs/promises";
 import { description, version } from "../package.json";
 import { editor } from "./commands/editor";
 import { init } from "./commands/init";
-import { promisify } from "util";
+import { join } from "path";
+import { TRIPLEXConfig } from "./types";
 
 const exec = promisify(execCb);
 
@@ -22,8 +25,17 @@ program
   .command("editor")
   .description("start the TRIPLEX editor")
   .option("-o --open [file]", "opens the editor when running")
-  .action(({ open }) => {
-    editor({ open });
+  .action(async ({ open }) => {
+    const conf = await readFile(
+      join(process.cwd(), ".triplex/config.json"),
+      "utf-8"
+    );
+    const config: TRIPLEXConfig = JSON.parse(conf);
+
+    editor({
+      open,
+      files: config.files.map((file) => join(process.cwd(), ".triplex", file)),
+    });
   });
 
 program

@@ -2,19 +2,18 @@ import { Application, isHttpError, Router } from "@oakserver/oak";
 import { Node, SyntaxKind } from "ts-morph";
 import { join } from "path";
 import { createProject, getJsxElementPropTypes } from "@triplex/ts-morph";
-import { getParam } from "./util/params";
-import { createServer as createWSS } from "./util/ws-server";
-import { save } from "./services/save";
-import { getAllFiles, getFile } from "./services/file";
-
 import { watch } from "chokidar";
 import {
   getJsxElementAt,
   getJsxElementProps,
   getJsxTagName,
 } from "@triplex/ts-morph";
+import { getParam } from "./util/params";
+import { createServer as createWSS } from "./util/ws-server";
+import { save } from "./services/save";
+import { getAllFiles, getFile } from "./services/file";
 
-export function createServer() {
+export function createServer({ files }: { files: string[] }) {
   const app = new Application();
   const router = new Router();
   const project = createProject({
@@ -126,11 +125,14 @@ export function createServer() {
   wss.message(
     "/scene",
     async () => {
-      const result = await getAllFiles();
+      const result = await getAllFiles({ files });
       return result;
     },
     (push) => {
-      const watcher = watch(join(process.cwd(), "src"));
+      const watcher = watch(
+        files.map((glob) => join(process.cwd(), glob)),
+        { ignoreInitial: true }
+      );
       watcher.on("add", push);
       watcher.on("unlink", push);
     }
