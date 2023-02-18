@@ -1,5 +1,24 @@
 # @triplex/scene
 
+## 0.16.0
+
+### Minor Changes
+
+- d8e1602: Fixed non-scene objects not being able to be selected through the UI.
+- 7ff35f3: Transform controls now longer continuously error when a scene object has been removed from the scene.
+- 7ff35f3: Upgrades @react-three/fiber to latest.
+- e7c026b: Selecting host scene objects now have the correct objects selected instead of the wrapping parent group
+- 7ff35f3: Navigating to host elements is no longer possible (as there is nowhere to navigate to).
+- 2fa7c45: Adds author field to package.json.
+
+### Patch Changes
+
+- Updated dependencies [d8e1602]
+- Updated dependencies [7ff35f3]
+- Updated dependencies [2fa7c45]
+  - @triplex/bridge@0.16.0
+  - @triplex/ws-client@0.16.0
+
 ## 0.15.0
 
 ### Minor Changes

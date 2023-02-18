@@ -1,5 +1,22 @@
 # @triplex/server
 
+## 0.16.0
+
+### Minor Changes
+
+- 7ff35f3: Context panel no longer throws when navigating between scene and a scene object is selected.
+- 2fa7c45: Adds triplex config and files option, an array of globs for triplex to find scenes with.
+- 926359a: Server now gracefully exits when closed.
+- 2fa7c45: Adds author field to package.json.
+- 926359a: The temp folder is now located in .triplex/tmp.
+
+### Patch Changes
+
+- Updated dependencies [e7c026b]
+- Updated dependencies [7ff35f3]
+- Updated dependencies [2fa7c45]
+  - @triplex/ts-morph@0.16.0
+
 ## 0.15.0
 
 ### Patch Changes

@@ -1,5 +1,28 @@
 # @triplex/client
 
+## 0.16.0
+
+### Minor Changes
+
+- c8ab78b: Scene no longer uses its own copied HMR library and instead leans on the vite react plugin offering.
+- 2fa7c45: Adds author field to package.json.
+- 926359a: The temp folder is now located in .triplex/tmp.
+
+### Patch Changes
+
+- Updated dependencies [d8e1602]
+- Updated dependencies [e7c026b]
+- Updated dependencies [7ff35f3]
+- Updated dependencies [7ff35f3]
+- Updated dependencies [e7c026b]
+- Updated dependencies [e7c026b]
+- Updated dependencies [7ff35f3]
+- Updated dependencies [e7c026b]
+- Updated dependencies [7ff35f3]
+- Updated dependencies [2fa7c45]
+  - @triplex/scene@0.16.0
+  - @triplex/editor@0.16.0
+
 ## 0.15.0
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @triplex/bridge
 
+## 0.16.0
+
+### Minor Changes
+
+- d8e1602: Fixed non-scene objects not being able to be selected through the UI.
+- 7ff35f3: Upgrades @react-three/fiber to latest.
+- 2fa7c45: Adds author field to package.json.
+
 ## 0.15.0
 
 ### Minor Changes
