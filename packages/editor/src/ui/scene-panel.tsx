@@ -38,17 +38,17 @@ interface JsxElementPositions {
   column: number;
   line: number;
   name: string;
-  path: string;
   children: JsxElementPositions[];
+  type: "host" | "custom";
 }
 
 export function ScenePanel() {
-  const { path } = useEditor();
+  const { path, exportName } = useEditor();
   const scene = useLazySubscription<{
     path: string;
     name: string;
     sceneObjects: JsxElementPositions[];
-  }>(`/scene/${encodeURIComponent(path)}`);
+  }>(`/scene/${encodeURIComponent(path)}/${exportName}`);
 
   return (
     <div className="flex flex-col">
@@ -95,10 +95,8 @@ function SceneObjectButtons({
           <SceneComponent
             onClick={() => {
               focus({
-                name: child.name,
                 column: child.column,
                 line: child.line,
-                path: child.path,
                 ownerPath: path,
               });
             }}

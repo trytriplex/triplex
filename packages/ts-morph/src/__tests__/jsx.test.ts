@@ -5,10 +5,11 @@ import {
   getJsxElementAt,
   getJsxElementProps,
   getJsxElementsPositions,
+  getJsxElementPropTypes,
 } from "../jsx";
 
 describe("jsx ast extractor", () => {
-  it("should return top level components", async () => {
+  it("should return top level components for default export", async () => {
     const project = new Project({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
@@ -16,24 +17,64 @@ describe("jsx ast extractor", () => {
       join(__dirname, "__mocks__/scene.tsx")
     );
 
-    const elements = getJsxElementsPositions(sourceFile);
+    const elements = getJsxElementsPositions(sourceFile, "default");
 
-    expect(
-      elements.map((x) => ({ ...x, path: x.path.replace(process.cwd(), "") }))
-    ).toEqual([
-      {
-        children: [],
-        column: 6,
-        line: 6,
-        name: "Box",
-        path: "/packages/ts-morph/src/__tests__/__mocks__/box.tsx",
-      },
+    expect(elements).toEqual([
       {
         children: [],
         column: 6,
         line: 12,
+        name: "Box",
+        type: "custom",
+      },
+      {
+        children: [],
+        column: 6,
+        line: 18,
         name: "Cylinder",
-        path: "/packages/ts-morph/src/__tests__/__mocks__/cylinder.tsx",
+        type: "custom",
+      },
+    ]);
+  });
+
+  it("should return top level components for named export", async () => {
+    const project = new Project({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/scene.tsx")
+    );
+
+    const elements = getJsxElementsPositions(sourceFile, "SceneAlt");
+
+    expect(elements).toEqual([
+      {
+        children: [],
+        column: 8,
+        line: 6,
+        name: "Box",
+        type: "custom",
+      },
+    ]);
+  });
+
+  it("should return top level components for named arrow export", async () => {
+    const project = new Project({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/scene.tsx")
+    );
+
+    const elements = getJsxElementsPositions(sourceFile, "SceneArrow");
+
+    expect(elements).toEqual([
+      {
+        children: [],
+        column: 31,
+        line: 3,
+        name: "Box",
+        type: "custom",
       },
     ]);
   });
@@ -46,27 +87,27 @@ describe("jsx ast extractor", () => {
       join(__dirname, "__mocks__/box.tsx")
     );
 
-    const elements = getJsxElementsPositions(sourceFile);
+    const elements = getJsxElementsPositions(sourceFile, "default");
 
     expect(elements).toEqual([
       {
         column: 10,
         line: 9,
         name: "mesh",
-        path: "",
+        type: "host",
         children: [
           {
             column: 6,
             line: 11,
             name: "boxGeometry",
-            path: "",
+            type: "host",
             children: [],
           },
           {
             column: 6,
             line: 12,
             name: "meshStandardMaterial",
-            path: "",
+            type: "host",
             children: [],
           },
         ],
@@ -149,21 +190,24 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/scene.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 6, 6);
+    const sceneObject = getJsxElementAt(sourceFile, 12, 6);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
 
-    const elements = getJsxElementProps(sourceFile, sceneObject!);
+    const elements = getJsxElementProps(sourceFile, sceneObject);
 
     expect(elements).toEqual([
       {
         column: 10,
-        line: 6,
+        line: 12,
         name: "position",
         value: [0.9223319881614562, 0, 4.703084245305494],
         type: "static",
       },
       {
         column: 61,
-        line: 7,
+        line: 13,
         name: "rotation",
         value: [1.660031347769923, -0.07873115868670048, -0.7211124466452248],
         type: "static",
@@ -179,14 +223,14 @@ describe("jsx ast extractor", () => {
       join(__dirname, "__mocks__/nested.tsx")
     );
 
-    const elements = getJsxElementsPositions(sourceFile);
+    const elements = getJsxElementsPositions(sourceFile, "default");
 
     expect(elements).toEqual([
       {
         column: 10,
         line: 1,
         name: "group",
-        path: "",
+        type: "host",
         children: [
           {
             children: [
@@ -195,23 +239,139 @@ describe("jsx ast extractor", () => {
                 column: 8,
                 line: 4,
                 name: "boxGeometry",
-                path: "",
+                type: "host",
               },
               {
                 column: 8,
                 line: 5,
                 name: "meshBasicMaterial",
-                path: "",
+                type: "host",
                 children: [],
               },
             ],
             column: 6,
             line: 3,
             name: "mesh",
-            path: "",
+            type: "host",
           },
         ],
       },
     ]);
+  });
+
+  it("should return the path of an imported component", () => {
+    const project = new Project({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/import-named.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 11, 6);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const types = getJsxElementPropTypes(sourceFile, sceneObject);
+
+    expect(types.filePath).toEqual(
+      join(process.cwd(), "packages/ts-morph/src/__tests__/__mocks__/box.tsx")
+    );
+  });
+
+  it("should return the path of an local component", () => {
+    const project = new Project({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/import-named.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 19, 6);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const types = getJsxElementPropTypes(sourceFile, sceneObject);
+
+    expect(types.filePath).toEqual(
+      join(
+        process.cwd(),
+        "packages/ts-morph/src/__tests__/__mocks__/import-named.tsx"
+      )
+    );
+  });
+
+  it("should return types of a imported component", () => {
+    const project = new Project({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/import-named.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 11, 6);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const types = getJsxElementPropTypes(sourceFile, sceneObject);
+
+    expect(types.propTypes).toMatchInlineSnapshot(`
+      {
+        "position": {
+          "name": "position",
+          "required": false,
+          "type": [
+            "number",
+            "number",
+            "number",
+          ],
+        },
+        "rotation": {
+          "name": "rotation",
+          "required": false,
+          "type": [
+            "number",
+            "number",
+            "number",
+          ],
+        },
+        "scale": {
+          "name": "scale",
+          "required": false,
+          "type": [
+            "number",
+            "number",
+            "number",
+          ],
+        },
+      }
+    `);
+  });
+
+  it("should return types of a local component", () => {
+    const project = new Project({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/import-named.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 19, 6);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const types = getJsxElementPropTypes(sourceFile, sceneObject);
+
+    expect(types.propTypes).toMatchInlineSnapshot(`
+      {
+        "color": {
+          "name": "color",
+          "required": false,
+          "type": {
+            "kind": "type",
+            "value": "string",
+          },
+        },
+      }
+    `);
   });
 });

@@ -1,60 +1,40 @@
 import { suspend } from "suspend-react";
-import { useDeferredValue, useLayoutEffect, useState } from "react";
-import { SceneMeta, SceneModule } from "./types";
+import { SceneModule } from "./types";
 
 export function SceneLoader({
   path,
   scenes,
+  exportName,
   sceneProps,
 }: {
   path: string;
   scenes: Record<string, () => Promise<SceneModule>>;
   sceneProps: Record<string, unknown>;
+  exportName: "default" | string;
 }) {
-  const [updatedMeta, setUpdatedMeta] = useState<SceneMeta>();
   // Defer path so the loading in scene doesn't flash in and out.
-  const deferredPath = useDeferredValue(path);
   const loadModule = Object.entries(scenes).find(([filename]) =>
-    deferredPath ? filename.endsWith(deferredPath) : false
+    path ? filename.endsWith(path) : false
   );
 
-  useLayoutEffect(() => {
-    async function load() {
-      if (!loadModule) {
-        return;
-      }
-
-      const module = await loadModule[1]();
-      setUpdatedMeta(module.triplexMeta);
-    }
-
-    load();
-  }, [loadModule]);
-
-  if (!loadModule || !path) {
+  if (!loadModule || !path || !exportName) {
     return null;
   }
 
-  const { SceneComponent, initialMeta } = suspend(async () => {
+  const { SceneComponent, triplexMeta } = suspend(async () => {
     const resolvedModule = await loadModule[1]();
 
-    if (typeof resolvedModule.default !== "function") {
-      throw new Error("invariant: module should export a default component");
-    }
-
     return {
-      SceneComponent: resolvedModule.default,
-      initialMeta: resolvedModule.triplexMeta,
+      SceneComponent: resolvedModule[exportName],
+      triplexMeta: resolvedModule[exportName].triplexMeta,
     };
-  }, [deferredPath]);
-
-  const reconciledMeta = updatedMeta || initialMeta;
+  }, [path, exportName]);
 
   return (
     <>
       <SceneComponent {...sceneProps} />
 
-      {!reconciledMeta.customLighting && (
+      {triplexMeta.lighting === "default" && (
         <>
           <hemisphereLight
             color="#87CEEB"

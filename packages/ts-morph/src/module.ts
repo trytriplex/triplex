@@ -1,22 +1,70 @@
 import { Node, SourceFile } from "ts-morph";
 
-export function getDefaultExportFunctionName(sourceFile: SourceFile): string {
-  const symbol = sourceFile.getDefaultExportSymbol();
-  if (!symbol) {
-    throw new Error("invariant: no default export found");
-  }
+export function getExportName(
+  sourceFile: SourceFile,
+  exportName: string
+): string {
+  const symbols = sourceFile.getExportSymbols();
 
-  const declarations = symbol?.getDeclarations();
-  if (declarations.length !== 1) {
-    throw new Error("invariant: default export should be a single function");
-  }
+  for (let i = 0; i < symbols.length; i++) {
+    const symbol = symbols[i];
+    if (symbol.getEscapedName() !== exportName) {
+      continue;
+    }
 
-  const declaration = declarations[0];
-  if (!Node.isFunctionDeclaration(declaration)) {
+    // We found our export!
+    const declarations = symbol?.getDeclarations();
+    if (declarations.length !== 1) {
+      throw new Error("invariant: default export should be a single function");
+    }
+
+    const declaration = declarations[0];
+    if (Node.isFunctionDeclaration(declaration)) {
+      return declaration.getNameOrThrow();
+    }
+
+    if (Node.isVariableDeclaration(declaration)) {
+      return declaration.getName();
+    }
+
     throw new Error(
       "invariant: default export should be a function declaration"
     );
   }
 
-  return declaration.getNameOrThrow();
+  throw new Error(`invariant: no export ${exportName} found`);
+}
+
+export function getLocalName(sourceFile: SourceFile, exportName: string) {
+  const local = sourceFile.getLocal(exportName);
+  const decl = local?.getDeclarations()[0];
+
+  if (Node.isImportClause(decl)) {
+    const namedBindings = decl.getNamedBindings();
+    if (!namedBindings) {
+      return {
+        importName: "default",
+      };
+    }
+  }
+
+  if (Node.isImportSpecifier(decl)) {
+    return {
+      importName: decl.getName(),
+    };
+  }
+
+  if (Node.isFunctionDeclaration(decl)) {
+    return {
+      importName: decl.getNameOrThrow(),
+    };
+  }
+
+  if (Node.isVariableDeclaration(decl)) {
+    return {
+      importName: decl.getName(),
+    };
+  }
+
+  throw new Error("invariant: unhandled");
 }

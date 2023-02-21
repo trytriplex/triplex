@@ -7,10 +7,10 @@ export {
   getJsxElementProps,
   getJsxElementPropTypes,
   getJsxElementsPositions,
-  getJsxTagName,
+  getJsxTag,
   serializeProps,
   unrollType,
 } from "./jsx";
 export { createProject, type TRIPLEXProject } from "./project";
 export { cloneAndWrapSourceJsx as wrapSourceFileJsxSync } from "./transform";
-export { getDefaultExportFunctionName } from "./module";
+export { getExportName, getLocalName } from "./module";

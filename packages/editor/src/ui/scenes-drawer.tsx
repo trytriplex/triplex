@@ -9,32 +9,41 @@ import { useOverlayStore } from "../stores/overlay";
 function Scenes() {
   const files = useLazySubscription<{
     cwd: string;
-    scenes: { path: string; name: string }[];
+    scenes: { path: string; name: string; exports: string[] }[];
   }>("/scene");
-  const { path } = useEditor();
+  const { path, exportName } = useEditor();
   const { show } = useOverlayStore();
 
   return (
-    <>
+    <div className="flex flex-col gap-2">
       {files?.scenes.map((file) => (
-        <Link
-          key={file.path}
-          to={{ search: `?path=${file.path}` }}
-          onClick={() => show(false)}
+        <div
           className={cn([
-            path === file.path
-              ? "bg-neutral-700 text-blue-500"
-              : "text-neutral-300",
-            "block select-none  rounded px-2 py-1 text-base outline-none hover:bg-neutral-700 active:bg-neutral-600",
+            path === file.path && "rounded bg-neutral-700/50 py-1",
           ])}
+          key={file.path}
         >
-          <div>{file.name}</div>
-          <small className="-mt-1 block text-neutral-400">
-            {file.path.replace(files.cwd, "")}
+          <small className="block px-2 text-xs text-neutral-400">
+            {file.path.replace(files.cwd + "/", "")}
           </small>
-        </Link>
+          {file.exports.map((exp) => (
+            <Link
+              key={exp}
+              to={{ search: `?path=${file.path}&exportName=${exp}` }}
+              onClick={() => show(false)}
+              className={cn([
+                path === file.path && exportName === exp
+                  ? "bg-neutral-700 text-blue-500"
+                  : "text-neutral-300",
+                "block select-none px-2 text-base outline-none hover:bg-neutral-700 active:bg-neutral-600",
+              ])}
+            >
+              <div>{exp}</div>
+            </Link>
+          ))}
+        </div>
       ))}
-    </>
+    </div>
   );
 }
 

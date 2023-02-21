@@ -123,13 +123,13 @@ export function getJsxElementPropTypes(
   sourceFile: SourceFile,
   element: JsxSelfClosingElement | JsxElement
 ) {
-  const elementName = getJsxTagName(element);
+  const tag = getJsxTag(element);
   const propTypes: Record<
     string,
     { name: string; required: boolean; type: unknown }
   > = {};
 
-  if (/[a-z]/.exec(elementName[0])) {
+  if (tag.type === "host") {
     return {
       filePath: "",
       propTypes,
@@ -137,7 +137,7 @@ export function getJsxElementPropTypes(
   }
 
   try {
-    const symbol = sourceFile.getLocalOrThrow(elementName);
+    const symbol = sourceFile.getLocalOrThrow(tag.name);
     const componentFunction = symbol
       .getDeclarations()[0]
       .getType()
@@ -146,21 +146,23 @@ export function getJsxElementPropTypes(
       .asKindOrThrow(SyntaxKind.FunctionDeclaration);
 
     const [props] = componentFunction.getParameters();
-    const filePath = componentFunction.getSourceFile().getFilePath();
+    const functionFilePath = componentFunction.getSourceFile().getFilePath();
 
-    props
-      .getType()
-      .getProperties()
-      .forEach((prop) => {
-        propTypes[prop.getName()] = {
-          name: prop.getName(),
-          required: !prop.isOptional(),
-          type: unrollType(prop.getTypeAtLocation(componentFunction)),
-        };
-      });
+    if (props) {
+      props
+        .getType()
+        .getProperties()
+        .forEach((prop) => {
+          propTypes[prop.getName()] = {
+            name: prop.getName(),
+            required: !prop.isOptional(),
+            type: unrollType(prop.getTypeAtLocation(componentFunction)),
+          };
+        });
+    }
 
     return {
-      filePath,
+      filePath: functionFilePath,
       propTypes,
     };
   } catch (_) {
@@ -222,37 +224,73 @@ export function getAllJsxElements(sourceFile: SourceFile) {
   return elements;
 }
 
-export interface JsxElementPositions {
+export type JsxElementPositions =
+  | CustomJsxElementPosition
+  | HostJsxElementPosition;
+
+export interface CustomJsxElementPosition {
   column: number;
   line: number;
   name: string;
-  path: string;
   children: JsxElementPositions[];
+  type: "custom";
 }
 
-export function getJsxTagName(node: JsxElement | JsxSelfClosingElement) {
-  if (Node.isJsxElement(node)) {
-    return node.getOpeningElement().getTagNameNode().getText();
-  }
-
-  return node.getTagNameNode().getText();
+export interface HostJsxElementPosition {
+  column: number;
+  line: number;
+  name: string;
+  children: JsxElementPositions[];
+  type: "host";
 }
 
-export function getJsxElementsPositions(sourceFile: SourceFile) {
+export function getJsxTag(node: JsxElement | JsxSelfClosingElement) {
+  const name = Node.isJsxElement(node)
+    ? node.getOpeningElement().getTagNameNode().getText()
+    : node.getTagNameNode().getText();
+  const type: "host" | "custom" = /^[a-z]/.exec(name) ? "host" : "custom";
+
+  return {
+    name,
+    type,
+  };
+}
+
+export function getJsxElementsPositions(
+  sourceFile: SourceFile,
+  exportName: string
+): JsxElementPositions[] {
   const elements: JsxElementPositions[] = [];
   const parentPointers = new Map<Node, JsxElementPositions>();
+  const foundExport = sourceFile
+    .getExportSymbols()
+    .find((symbol) => symbol.getName() === exportName);
 
-  sourceFile.forEachDescendant((node) => {
+  if (!foundExport) {
+    throw new Error(`invariant: export ${exportName} not found`);
+  }
+
+  const declaration = foundExport.getDeclarations();
+  declaration[0].forEachDescendant((node) => {
     if (Node.isJsxElement(node) || Node.isJsxSelfClosingElement(node)) {
-      const meta = getJsxElementPropTypes(sourceFile, node);
       const { column, line } = sourceFile.getLineAndColumnAtPos(node.getPos());
-      const positions = {
-        column: column - 1,
-        line: line - 1,
-        name: getJsxTagName(node),
-        path: meta.filePath,
-        children: [],
-      };
+      const tag = getJsxTag(node);
+      const positions: JsxElementPositions =
+        tag.type === "custom"
+          ? {
+              column: column - 1,
+              line: line - 1,
+              name: tag.name,
+              children: [],
+              type: "custom",
+            }
+          : {
+              column: column - 1,
+              line: line - 1,
+              name: tag.name,
+              children: [],
+              type: "host",
+            };
 
       const parentElement = node.getParentIfKind(SyntaxKind.JsxElement);
       if (parentElement) {

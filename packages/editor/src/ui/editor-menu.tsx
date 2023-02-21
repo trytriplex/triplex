@@ -44,11 +44,7 @@ export function EditorMenu() {
           <MenuItem disabled={!target} rslot="F" onClick={() => jumpTo()}>
             Jump to
           </MenuItem>
-          <MenuItem
-            disabled={!target || !target.path}
-            rslot="⇧ F"
-            onClick={() => navigateTo()}
-          >
+          <MenuItem disabled={!target} rslot="⇧ F" onClick={() => navigateTo()}>
             Navigate to
           </MenuItem>
         </MenuContent>

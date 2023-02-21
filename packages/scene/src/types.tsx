@@ -1,8 +1,10 @@
 export interface SceneMeta {
-  customLighting: boolean;
+  lighting: "custom" | "default";
 }
 
-export interface SceneModule {
+export interface SceneComponent {
+  (props: unknown): JSX.Element;
   triplexMeta: SceneMeta;
-  default?: () => JSX.Element;
 }
+
+export type SceneModule = Record<string, SceneComponent>;

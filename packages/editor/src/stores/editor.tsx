@@ -1,17 +1,16 @@
-import { useCallback, useDeferredValue } from "react";
+import { useCallback } from "react";
 import { useSearchParams } from "react-router-dom";
 import { create } from "zustand";
 
 export interface Params {
-  encodedProps?: string;
-  path?: string;
+  encodedProps: string;
+  path: string;
+  exportName: string;
 }
 
 export interface FocusedObject {
-  path: string;
   line: number;
   column: number;
-  name: string;
   ownerPath: string;
 }
 
@@ -28,14 +27,18 @@ const useSelectionStore = create<SelectionState>((set) => ({
 export function useEditor() {
   const [searchParams, setSearchParams] = useSearchParams({ path: "" });
   const path = searchParams.get("path") || "";
-  const deferredPath = useDeferredValue(path);
   const encodedProps = searchParams.get("props") || "";
+  const exportName = searchParams.get("exportName") || "";
   const focus = useSelectionStore((store) => store.focus);
   const target = useSelectionStore((store) => store.focused);
 
+  if (path && !exportName) {
+    throw new Error("invariant: exportName is undefined");
+  }
+
   const set = useCallback(
     (params: Params) => {
-      if (params.path === path) {
+      if (params.path === path && params.exportName === exportName) {
         // Bail if we're already on the same path.
         // If we implement props being able to change
         // We'll need to do more work here later.
@@ -52,16 +55,21 @@ export function useEditor() {
         newParams.props = params.encodedProps;
       }
 
+      if (params.exportName) {
+        newParams.exportName = params.exportName;
+      }
+
       setSearchParams(newParams);
     },
-    [path, setSearchParams]
+    [exportName, path, setSearchParams]
   );
 
   return {
-    path: deferredPath,
+    path,
     encodedProps,
     set,
     focus,
     target,
+    exportName,
   };
 }

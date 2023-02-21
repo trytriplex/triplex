@@ -4,13 +4,12 @@ export interface ClientSendEventData {
   "trplx:onConnected": undefined;
   "trplx:onSceneObjectBlur": undefined;
   "trplx:onSceneObjectFocus": {
-    path: string;
     line: number;
     column: number;
-    name: string;
   };
   "trplx:onSceneObjectNavigated": {
     path: string;
+    exportName: string;
     encodedProps: string;
   };
   "trplx:requestSave": undefined;
@@ -23,13 +22,12 @@ export interface HostSendEventData {
     | {
         path: string;
         encodedProps: string;
+        exportName: string;
       }
     | undefined;
   "trplx:requestFocusSceneObject": {
-    path: string;
     column: number;
     line: number;
-    name: string;
   };
   "trplx:requestJumpToSceneObject": undefined;
   "trplx:requestBlurSceneObject": undefined;
