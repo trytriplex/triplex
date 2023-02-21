@@ -1,7 +1,7 @@
 import { useLazySubscription } from "@triplex/ws-client";
 import { ErrorBoundary } from "react-error-boundary";
 import { getEditorLink } from "../util/ide";
-import { Suspense, useDeferredValue } from "react";
+import { Suspense, useDeferredValue, useEffect } from "react";
 import { useEditor, FocusedObject } from "../stores/editor";
 
 interface Prop {
@@ -52,6 +52,8 @@ function Prop({ value, width = "100%" }: { value: unknown; width?: string }) {
 function SelectedSceneObject({ target }: { target: FocusedObject }) {
   const data = useLazySubscription<{
     name: string;
+    type: "custom" | "host";
+    path: string;
     props: Prop[];
     propTypes: Record<
       string,
@@ -67,10 +69,18 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
     }`
   );
 
+  useEffect(() => {
+    if (data.type === "custom") {
+      fetch(
+        `http://localhost:8000/scene/${encodeURIComponent(data.path)}/open`
+      );
+    }
+  }, [data.path, data.type]);
+
   return (
     <div>
       <h2 className="text-xl font-medium">
-        <div className="overflow-hidden text-ellipsis">{target.name}</div>
+        <div className="overflow-hidden text-ellipsis">{data.name}</div>
       </h2>
 
       <div className="mb-2.5 -mt-0.5">
@@ -86,14 +96,14 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
           View usage
         </a>
 
-        {target.path && (
+        {data.path && (
           <>
             <span className="mx-1.5 text-xs text-neutral-400">•</span>
 
             <a
               className="text-xs text-neutral-400"
               href={getEditorLink({
-                path: target.path,
+                path: data.path,
                 column: 1,
                 line: 1,
                 editor: "vscode",

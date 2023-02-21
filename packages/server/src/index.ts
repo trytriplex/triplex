@@ -1,17 +1,21 @@
 import { Application, isHttpError, Router } from "@oakserver/oak";
 import { Node, SyntaxKind } from "ts-morph";
 import { join } from "path";
-import { createProject, getJsxElementPropTypes } from "@triplex/ts-morph";
+import {
+  createProject,
+  getJsxElementPropTypes,
+  getLocalName,
+} from "@triplex/ts-morph";
 import { watch } from "chokidar";
 import {
   getJsxElementAt,
   getJsxElementProps,
-  getJsxTagName,
+  getJsxTag,
 } from "@triplex/ts-morph";
 import { getParam } from "./util/params";
 import { createServer as createWSS } from "./util/ws-server";
 import { save } from "./services/save";
-import { getAllFiles, getFile } from "./services/file";
+import { getAllFiles, getSceneExport } from "./services/file";
 
 export function createServer({ files }: { files: string[] }) {
   const app = new Application();
@@ -142,9 +146,9 @@ export function createServer({ files }: { files: string[] }) {
    * Return details about a scene.
    */
   wss.message(
-    "/scene/:path",
-    async ({ path }) => {
-      const result = await getFile({ path, project });
+    "/scene/:path/:exportName",
+    async ({ path, exportName }) => {
+      const result = await getSceneExport({ path, project, exportName });
       return result;
     },
     (push, { path }) => {
@@ -175,15 +179,34 @@ export function createServer({ files }: { files: string[] }) {
             name: "[deleted]",
             props: [],
             propTypes: [],
+            type: "host",
           };
         }
       }
 
-      const name = getJsxTagName(sceneObject);
+      const tag = getJsxTag(sceneObject);
       const props = getJsxElementProps(sourceFile, sceneObject);
       const types = getJsxElementPropTypes(sourceFile, sceneObject);
 
-      return { name, props, propTypes: types.propTypes };
+      if (tag.type === "custom") {
+        const exportName = getLocalName(sourceFile, tag.name);
+
+        return {
+          name: tag.name,
+          path: types.filePath,
+          exportName: exportName.importName,
+          props,
+          propTypes: types.propTypes,
+          type: tag.type,
+        };
+      }
+
+      return {
+        name: tag.name,
+        props,
+        propTypes: types.propTypes,
+        type: tag.type,
+      };
     },
     (push, { path }) => {
       const watcher = watch(path);

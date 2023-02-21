@@ -2,9 +2,18 @@ import Box from "./box";
 import Cylinder from "./cylinder";
 import Sphere from "./sphere";
 
+export function SceneAlt() {
+  return (
+    <>
+      <Box />
+    </>
+  );
+}
+
 export default function Scene() {
   return (
     <>
+      <SceneAlt />
       <Box
         position={[1.1942776184295054, 0, 0.12798637867114415]}
         rotation={[

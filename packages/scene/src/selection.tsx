@@ -8,6 +8,7 @@ import { TransformControls as TransformControlsImpl } from "three-stdlib";
 
 export interface EditorNodeData {
   path: string;
+  exportName: string;
   name: string;
   line: number;
   column: number;
@@ -109,14 +110,13 @@ const findEditorData = (
   let data: EditorNodeData | null = null;
 
   while (parent) {
-    if ("__r3fEditor" in parent.userData) {
-      if (!data) {
-        data = {
-          ...parent.userData.__r3fEditor,
-          sceneObject: findTransformedSceneObject(parent, transform),
-          space: "world",
-        } as EditorNodeData;
-      }
+    if ("triplexSceneMeta" in parent.userData) {
+      // Keep traversing up the tree to find the top most wrapped scene object.
+      data = {
+        ...parent.userData.triplexSceneMeta,
+        sceneObject: findTransformedSceneObject(parent, transform),
+        space: "world",
+      } as EditorNodeData;
     }
 
     if (data && parent.__r3f.memoizedProps.position) {
@@ -134,20 +134,15 @@ const findSceneObjectFromSource = (
   scene: WithR3FData<Object3D>,
   line: number,
   column: number,
-  path: string,
   transform: "translate" | "scale" | "rotate"
 ): EditorNodeData | null => {
   let nodeData: EditorNodeData | null = null;
 
   scene.traverse((obj) => {
-    if ("__r3fEditor" in obj.userData) {
+    if ("triplexSceneMeta" in obj.userData) {
       if (obj.userData) {
-        const node: EditorNodeData = obj.userData.__r3fEditor;
-        if (
-          node.column === column &&
-          node.line === line &&
-          node.path === path
-        ) {
+        const node: EditorNodeData = obj.userData.triplexSceneMeta;
+        if (node.column === column && node.line === line) {
           // We've found our scene object!
           nodeData = findEditorData(obj, transform);
         }
@@ -173,7 +168,11 @@ export function Selection({
   onBlur: () => void;
   onFocus: (node: SelectedNode) => void;
   onJumpTo: (v: Vector3Tuple, bb: Box3, obj: Object3D) => void;
-  onNavigate: (node: { path: string; encodedProps: string }) => void;
+  onNavigate: (node: {
+    path: string;
+    exportName: string;
+    encodedProps: string;
+  }) => void;
   path: string;
 }) {
   const [selected, setSelected] = useState<EditorNodeData>();
@@ -205,6 +204,7 @@ export function Selection({
       } else if (selected) {
         onNavigate({
           path: selected.path,
+          exportName: selected.exportName,
           encodedProps: JSON.stringify(selected.props),
         });
       }
@@ -239,7 +239,6 @@ export function Selection({
         scene as unknown as WithR3FData<Object3D>,
         data.line,
         data.column,
-        data.path,
         transform
       );
 
@@ -252,8 +251,6 @@ export function Selection({
       send("trplx:onSceneObjectFocus", {
         column: data.column,
         line: data.line,
-        name: data.name,
-        path: data.path,
       });
     });
   }, [scene, transform]);
@@ -309,6 +306,7 @@ export function Selection({
         onBlur();
         onNavigate({
           path: selected.path,
+          exportName: selected.exportName,
           encodedProps: JSON.stringify(selected.props),
         });
       }

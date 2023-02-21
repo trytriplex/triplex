@@ -1,9 +1,8 @@
 import Box from "./box";
-import Cylinder from "./cylinder";
+import { Named } from "./named";
+import { Named as Remapped } from "./named";
 
-export const SceneArrow = () => <Box />;
-
-export function SceneAlt() {
+export function SceneAlt(_: { color?: string }) {
   return <Box />;
 }
 
@@ -16,9 +15,9 @@ export default function Scene() {
           1.660031347769923, -0.07873115868670048, -0.7211124466452248,
         ]}
       />
-      <Cylinder
-        position={[0.8294721441907313, 0, 2.6996450834382677]}
-      ></Cylinder>
+      <Named />
+      <Remapped />
+      <SceneAlt />
     </>
   );
 }

@@ -40,6 +40,7 @@ export function SceneFrame({
   const [searchParams, setSearchParams] = useSearchParams();
   const path = searchParams.get("path") || "";
   const props = searchParams.get("props") || "";
+  const exportName = searchParams.get("exportName") || "";
   const sceneProps = useMemo<Record<string, unknown>>(
     () => (props ? JSON.parse(decodeURIComponent(props)) : {}),
     [props]
@@ -52,6 +53,10 @@ export function SceneFrame({
     return { target: focalPoint.objectCenter, position: actualCameraPosition };
   }, [focalPoint]);
   const camera = useRef<PC>(null);
+
+  if (path && !exportName) {
+    throw new Error("invariant: exportName is undefined");
+  }
 
   useEffect(() => {
     if (!path) {
@@ -84,11 +89,16 @@ export function SceneFrame({
   }, []);
 
   const onNavigate = useCallback(
-    (selected: { path: string; encodedProps: string }) => {
+    (selected: { path: string; exportName: string; encodedProps: string }) => {
       setSearchParams(
-        { path: selected.path, props: selected.encodedProps },
+        {
+          path: selected.path,
+          exportName: selected.exportName,
+          props: selected.encodedProps,
+        },
         { replace: true }
       );
+
       send("trplx:onSceneObjectNavigated", selected);
     },
     [setSearchParams]
@@ -98,8 +108,6 @@ export function SceneFrame({
     send("trplx:onSceneObjectFocus", {
       column: data.column,
       line: data.line,
-      name: data.name,
-      path: data.path,
     });
   }, []);
 
@@ -125,7 +133,12 @@ export function SceneFrame({
       >
         <ErrorBoundary resetKeys={[path]} fallbackRender={() => null}>
           <Suspense fallback={null}>
-            <SceneLoader path={path} sceneProps={sceneProps} scenes={scenes} />
+            <SceneLoader
+              path={path}
+              exportName={exportName}
+              sceneProps={sceneProps}
+              scenes={scenes}
+            />
           </Suspense>
         </ErrorBoundary>
       </Selection>

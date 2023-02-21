@@ -4,17 +4,18 @@ import {
   JsxElement,
   JsxSelfClosingElement,
   SourceFile,
+  TransformTraversalControl,
   ts,
-  VariableDeclarationKind,
 } from "ts-morph";
-import { getJsxElementPropTypes, getJsxTagName, serializeProps } from "./jsx";
+import { getJsxElementPropTypes, getJsxTag, serializeProps } from "./jsx";
+import { getLocalName } from "./module";
 
 function getNodeTransforms(
   sourceFile: SourceFile,
   element: JsxSelfClosingElement | JsxElement
 ) {
-  const elementName = getJsxTagName(element);
-  if (/[a-z]/.exec(elementName[0])) {
+  const tag = getJsxTag(element);
+  if (tag.type === "host") {
     return {
       translate: true,
       scale: true,
@@ -53,159 +54,68 @@ function isSceneObject(
   return false;
 }
 
-export function cloneAndWrapSourceJsx(sourceFile: SourceFile, tempDir: string) {
-  // This will be the final destination persisted to the file system picked up by the Editor.
-  const destination = join(tempDir, sourceFile.getFilePath());
+function wrapSceneObject(
+  traversal: TransformTraversalControl,
+  originalSourceFile: SourceFile,
+  transformedSourceFile: SourceFile,
+  node: ts.JsxElement | ts.JsxSelfClosingElement
+) {
+  let foundLightJsxElement = false;
 
-  // This is a temporary destination so we can copy the source file and keep
-  // node positions the same while transforming them.
-  const tempDestination = join(tempDir, "/temp.tsx");
-  const transformedSource = sourceFile.copy(tempDestination, {
-    overwrite: true,
+  const wrappedNode = createWrappedNode(node, {
+    sourceFile: originalSourceFile.compilerNode.getSourceFile(),
   });
+  const tag = getJsxTag(wrappedNode);
+  const lineColumn = transformedSourceFile.getLineAndColumnAtPos(node.pos);
+  const line = lineColumn.line - 1;
+  const column = lineColumn.column - 1;
+  const transform = getNodeTransforms(originalSourceFile, wrappedNode);
+  const localName =
+    tag.type === "custom" ? getLocalName(originalSourceFile, tag.name) : "";
+  const attributes = ts.isJsxElement(node)
+    ? node.openingElement.attributes
+    : node.attributes;
 
-  let customLighting = false;
+  if (tag.name.endsWith("Light")) {
+    // Found a jsx element that ends with light
+    // Turn 'em off!
+    foundLightJsxElement = true;
+  }
 
-  transformedSource.transform((traversal) => {
-    const node = traversal.visitChildren();
-    const lineColumn = transformedSource.getLineAndColumnAtPos(node.pos);
-    const line = lineColumn.line - 1;
-    const column = lineColumn.column - 1;
-
-    if (!isSceneObject(node)) {
-      return node;
-    }
-
-    if (ts.isJsxSelfClosingElement(node)) {
-      const tagName = getJsxTagName(
-        createWrappedNode(node, {
-          sourceFile: sourceFile.compilerNode.getSourceFile(),
-        })
-      );
-      if (tagName.includes("Light")) {
-        customLighting = true;
-      }
-
-      const transform = getNodeTransforms(
-        transformedSource,
-        createWrappedNode(node, {
-          sourceFile: sourceFile.compilerNode.getSourceFile(),
-        })
-      );
-
-      return traversal.factory.createJsxElement(
-        traversal.factory.createJsxOpeningElement(
-          traversal.factory.createIdentifier("group"),
-          [],
-          traversal.factory.createJsxAttributes(
-            [
-              node.attributes.properties.find(
-                (x) => x.name?.getText() === "key"
-              ),
-              traversal.factory.createJsxAttribute(
-                traversal.factory.createIdentifier("userData"),
-                traversal.factory.createJsxExpression(
-                  undefined,
-                  traversal.factory.createObjectLiteralExpression([
-                    traversal.factory.createPropertyAssignment(
-                      "__r3fEditor",
-                      traversal.factory.createObjectLiteralExpression([
-                        traversal.factory.createPropertyAssignment(
-                          "name",
-                          traversal.factory.createStringLiteral(tagName)
-                        ),
+  const newNode = traversal.factory.createJsxElement(
+    traversal.factory.createJsxOpeningElement(
+      traversal.factory.createIdentifier("group"),
+      [],
+      traversal.factory.createJsxAttributes(
+        [
+          attributes.properties.find((x) => x.name?.getText() === "key"),
+          traversal.factory.createJsxAttribute(
+            traversal.factory.createIdentifier("userData"),
+            traversal.factory.createJsxExpression(
+              undefined,
+              traversal.factory.createObjectLiteralExpression([
+                traversal.factory.createPropertyAssignment(
+                  "triplexSceneMeta",
+                  traversal.factory.createObjectLiteralExpression(
+                    [
+                      traversal.factory.createPropertyAssignment(
+                        "name",
+                        traversal.factory.createStringLiteral(tag.name)
+                      ),
+                      transform.filePath &&
                         traversal.factory.createPropertyAssignment(
                           "path",
                           traversal.factory.createStringLiteral(
                             transform.filePath || ""
                           )
                         ),
+                      localName &&
                         traversal.factory.createPropertyAssignment(
-                          "line",
-                          traversal.factory.createNumericLiteral(line)
+                          "exportName",
+                          traversal.factory.createStringLiteral(
+                            localName.importName
+                          )
                         ),
-                        traversal.factory.createPropertyAssignment(
-                          "column",
-                          traversal.factory.createNumericLiteral(column)
-                        ),
-                        traversal.factory.createPropertyAssignment(
-                          "props",
-                          serializeProps(traversal, node.attributes)
-                        ),
-                        traversal.factory.createPropertyAssignment(
-                          "translate",
-                          transform.translate
-                            ? traversal.factory.createTrue()
-                            : traversal.factory.createFalse()
-                        ),
-                        traversal.factory.createPropertyAssignment(
-                          "rotate",
-                          transform.rotate
-                            ? traversal.factory.createTrue()
-                            : traversal.factory.createFalse()
-                        ),
-                        traversal.factory.createPropertyAssignment(
-                          "scale",
-                          transform.scale
-                            ? traversal.factory.createTrue()
-                            : traversal.factory.createFalse()
-                        ),
-                      ])
-                    ),
-                  ])
-                )
-              ),
-            ].filter(Boolean) as ts.JsxAttributeLike[]
-          )
-        ),
-        [node],
-        traversal.factory.createJsxClosingElement(
-          traversal.factory.createIdentifier("group")
-        )
-      );
-    }
-
-    if (ts.isJsxElement(node)) {
-      const tagName = getJsxTagName(
-        createWrappedNode(node, {
-          sourceFile: sourceFile.compilerNode.getSourceFile(),
-        })
-      );
-      if (tagName.includes("Light")) {
-        customLighting = true;
-      }
-
-      const transform = getNodeTransforms(
-        transformedSource,
-        createWrappedNode(node, {
-          sourceFile: sourceFile.compilerNode.getSourceFile(),
-        })
-      );
-
-      return traversal.factory.updateJsxElement(
-        node,
-        traversal.factory.createJsxOpeningElement(
-          traversal.factory.createIdentifier("group"),
-          [],
-          traversal.factory.createJsxAttributes([
-            traversal.factory.createJsxAttribute(
-              traversal.factory.createIdentifier("userData"),
-              traversal.factory.createJsxExpression(
-                undefined,
-                traversal.factory.createObjectLiteralExpression([
-                  traversal.factory.createPropertyAssignment(
-                    "__r3fEditor",
-                    traversal.factory.createObjectLiteralExpression([
-                      traversal.factory.createPropertyAssignment(
-                        "name",
-                        traversal.factory.createStringLiteral(tagName)
-                      ),
-                      traversal.factory.createPropertyAssignment(
-                        "path",
-                        traversal.factory.createStringLiteral(
-                          transform.filePath || ""
-                        )
-                      ),
                       traversal.factory.createPropertyAssignment(
                         "line",
                         traversal.factory.createNumericLiteral(line)
@@ -216,10 +126,7 @@ export function cloneAndWrapSourceJsx(sourceFile: SourceFile, tempDir: string) {
                       ),
                       traversal.factory.createPropertyAssignment(
                         "props",
-                        serializeProps(
-                          traversal,
-                          node.openingElement.attributes
-                        )
+                        serializeProps(traversal, attributes)
                       ),
                       traversal.factory.createPropertyAssignment(
                         "translate",
@@ -239,37 +146,90 @@ export function cloneAndWrapSourceJsx(sourceFile: SourceFile, tempDir: string) {
                           ? traversal.factory.createTrue()
                           : traversal.factory.createFalse()
                       ),
-                    ])
-                  ),
-                ])
-              )
-            ),
-          ])
-        ),
-        [node],
-        traversal.factory.createJsxClosingElement(
-          traversal.factory.createIdentifier("group")
-        )
-      );
+                    ].filter(Boolean) as ts.PropertyAssignment[]
+                  )
+                ),
+              ])
+            )
+          ),
+        ].filter(Boolean) as ts.JsxAttributeLike[]
+      )
+    ),
+    [node],
+    traversal.factory.createJsxClosingElement(
+      traversal.factory.createIdentifier("group")
+    )
+  );
+
+  return {
+    node: newNode,
+    foundLightJsxElement,
+  };
+}
+
+export function cloneAndWrapSourceJsx(sourceFile: SourceFile, tempDir: string) {
+  // This will be the final destination persisted to the file system picked up by the Editor.
+  const destination = join(tempDir, sourceFile.getFilePath());
+  // This is a temporary destination so we can copy the source file and keep
+  // node positions the same while transforming them.
+  const tempDestination = join(tempDir, "/temp.tsx");
+  const transformedSource = sourceFile.copy(tempDestination, {
+    overwrite: true,
+  });
+
+  const foundFunctions: {
+    name: string;
+    meta: Record<string, boolean | string>;
+  }[] = [];
+
+  let foundLightJsxElement = false;
+
+  transformedSource.transform((traversal) => {
+    const node = traversal.visitChildren();
+
+    if (ts.isFunctionDeclaration(node)) {
+      const wrappedNode = createWrappedNode(node, {
+        sourceFile: sourceFile.compilerNode.getSourceFile(),
+      });
+      if (wrappedNode.isExported()) {
+        foundFunctions.push({
+          name: wrappedNode.getNameOrThrow(),
+          meta: { lighting: foundLightJsxElement ? "custom" : "default" },
+        });
+
+        foundLightJsxElement = false;
+      }
     }
 
-    return node;
+    if (!isSceneObject(node)) {
+      return node;
+    }
+
+    const result = wrapSceneObject(
+      traversal,
+      sourceFile,
+      transformedSource,
+      node
+    );
+
+    if (result.foundLightJsxElement) {
+      foundLightJsxElement = true;
+    }
+
+    return result.node;
+  });
+
+  foundFunctions.forEach((func) => {
+    transformedSource.addStatements(
+      `${func.name}.triplexMeta = ${JSON.stringify(func.meta)}`
+    );
   });
 
   transformedSource.move(destination, { overwrite: true });
-
-  transformedSource.addVariableStatement({
-    isExported: true,
-    declarationKind: VariableDeclarationKind.Const,
-    declarations: [
-      {
-        name: "triplexMeta",
-        initializer: JSON.stringify({ customLighting }),
-      },
-    ],
-  });
-
   transformedSource.saveSync();
 
-  return { transformedPath: destination, customLighting };
+  return {
+    transformedPath: destination,
+    transformedSourceFile: transformedSource,
+  };
 }

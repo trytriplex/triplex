@@ -14,7 +14,11 @@ interface BridgeContext {
   blur(): void;
   focus(sceneObject: FocusedObject): void;
   jumpTo(): void;
-  navigateTo(sceneObject?: { path: string; encodedProps: string }): void;
+  navigateTo(sceneObject?: {
+    path: string;
+    encodedProps: string;
+    exportName: string;
+  }): void;
 }
 
 const BridgeContext = createContext<BridgeContext | null>(null);
@@ -56,6 +60,7 @@ export function SceneFrame({ children }: { children: ReactNode }) {
   const editor = useEditor();
   const [initialPath] = useState(() => editor.path);
   const [initialProps] = useState(() => editor.encodedProps);
+  const [initialExportName] = useState(() => editor.exportName);
   const [ready, setReady] = useState(false);
 
   useEffect(() => {
@@ -86,7 +91,7 @@ export function SceneFrame({ children }: { children: ReactNode }) {
     <>
       <iframe
         // This should never change during a session as it will do a full page reload.
-        src={`/scene.html?path=${initialPath}&props=${initialProps}`}
+        src={`/scene.html?path=${initialPath}&props=${initialProps}&exportName=${initialExportName}`}
         ref={iframe}
         className="absolute h-full w-full border-none"
       />
@@ -130,8 +135,9 @@ function BridgeSendEvents() {
     scene.navigateTo({
       path: editor.path,
       encodedProps: editor.encodedProps,
+      exportName: editor.exportName,
     });
-  }, [editor.path]);
+  }, [editor.path, editor.exportName]);
 
   return null;
 }
@@ -143,6 +149,7 @@ function BridgeReceiveEvents() {
     return listen("trplx:onSceneObjectNavigated", (data) => {
       editor.set({
         path: data.path,
+        exportName: data.exportName,
         encodedProps: data.encodedProps,
       });
     });
@@ -151,16 +158,10 @@ function BridgeReceiveEvents() {
   useEffectWhenReady(() => {
     return listen("trplx:onSceneObjectFocus", (data) => {
       editor.focus({
-        ...data,
+        column: data.column,
+        line: data.line,
         ownerPath: editor.path,
       });
-
-      if (data.path) {
-        // Only custom components will have a path set.
-        fetch(
-          `http://localhost:8000/scene/${encodeURIComponent(data.path)}/open`
-        );
-      }
     });
   }, [editor.focus, editor.path]);
 
