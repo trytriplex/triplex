@@ -1,5 +1,17 @@
 # @triplex/server
 
+## 0.20.0
+
+### Minor Changes
+
+- 1c9771d: Named exports are now able to be opened by the editor.
+- 1c9771d: Scene drawer now shows named exports from scenes.
+
+### Patch Changes
+
+- Updated dependencies [1c9771d]
+  - @triplex/ts-morph@0.20.0
+
 ## 0.19.0
 
 ### Patch Changes

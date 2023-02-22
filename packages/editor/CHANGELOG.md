@@ -1,5 +1,19 @@
 # @triplex/editor
 
+## 0.20.0
+
+### Minor Changes
+
+- 1c9771d: Named exports are now able to be opened by the editor.
+- 1c9771d: Scene drawer now shows named exports from scenes.
+- 1c9771d: Focus events now only use line and column numbers.
+
+### Patch Changes
+
+- Updated dependencies [1c9771d]
+  - @triplex/bridge@0.20.0
+  - @triplex/ws-client@0.20.0
+
 ## 0.19.0
 
 ### Patch Changes

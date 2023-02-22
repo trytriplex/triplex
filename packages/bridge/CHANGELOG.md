@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.20.0
+
+### Minor Changes
+
+- 1c9771d: Focus events now only use line and column numbers.
+
 ## 0.19.0
 
 ## 0.18.0
