@@ -25,7 +25,11 @@ program
   .command("editor")
   .description("start the TRIPLEX editor")
   .option("-o --open [file]", "opens the editor when running")
-  .action(async ({ open }) => {
+  .option(
+    "-E --export-name <name>",
+    "specify the export name when opening a file [default]"
+  )
+  .action(async ({ open, exportName }) => {
     let config: TRIPLEXConfig;
 
     try {
@@ -53,6 +57,7 @@ program
       open,
       publicDir,
       files,
+      exportName: exportName || "default",
     });
   });
 

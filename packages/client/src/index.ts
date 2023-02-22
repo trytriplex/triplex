@@ -9,9 +9,11 @@ const tempDir = join(process.cwd(), ".triplex", "tmp");
 
 export async function createServer({
   open,
+  exportName,
   publicDir,
 }: {
   open?: boolean | string;
+  exportName?: string;
   publicDir?: string;
 }) {
   const app = express();
@@ -94,7 +96,9 @@ export async function createServer({
       const server = await app.listen(port);
       if (open) {
         const searchParam = typeof open === "string" ? `?path=${open}` : "";
-        await openBrowser(`http://localhost:${port}/${searchParam}`);
+        await openBrowser(
+          `http://localhost:${port}/${searchParam}&exportName=${exportName}`
+        );
       }
 
       const close = async () => {

@@ -5,14 +5,20 @@ export async function editor({
   open,
   files,
   publicDir,
+  exportName,
 }: {
   open?: boolean | string;
   publicDir?: string;
   files: string[];
+  exportName?: string;
 }) {
   const { default: ora } = await import("ora");
   const spinner = ora("Starting...\n").start();
-  const frontendServer = await createFrontendServer({ open, publicDir });
+  const frontendServer = await createFrontendServer({
+    open,
+    publicDir,
+    exportName,
+  });
   const backendServer = await createBackendServer({ files });
 
   await frontendServer.listen(3333);
