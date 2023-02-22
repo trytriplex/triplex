@@ -1,5 +1,17 @@
 # @triplex/run
 
+## 0.21.0
+
+### Minor Changes
+
+- 633e309: Adds export-name option to editor command.
+
+### Patch Changes
+
+- Updated dependencies [633e309]
+  - @triplex/client@0.21.0
+  - @triplex/server@0.21.0
+
 ## 0.20.0
 
 ### Minor Changes
