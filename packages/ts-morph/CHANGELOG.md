@@ -1,5 +1,11 @@
 # @triplex/ts-morph
 
+## 0.20.0
+
+### Minor Changes
+
+- 1c9771d: Named exports are now able to be opened by the editor.
+
 ## 0.19.0
 
 ## 0.18.0

@@ -1,5 +1,19 @@
 # @triplex/run
 
+## 0.20.0
+
+### Minor Changes
+
+- b51d977: Adds a README.
+- a2c49d9: Template scene now uses more scene objects, lights, and shadows.
+
+### Patch Changes
+
+- Updated dependencies [1c9771d]
+- Updated dependencies [1c9771d]
+  - @triplex/server@0.20.0
+  - @triplex/client@0.20.0
+
 ## 0.19.0
 
 ### Minor Changes
