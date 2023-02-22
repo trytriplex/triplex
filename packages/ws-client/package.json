@@ -2,6 +2,7 @@
   "name": "@triplex/ws-client",
   "version": "0.19.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
+  "license": "Apache-2.0",
   "main": "./src/index.tsx",
   "module": "./src/index.tsx",
   "types": "./src/index.tsx",
@@ -10,7 +11,6 @@
     "module": "./dist/index.js",
     "main": "./dist/index.js"
   },
-  "license": "MIT",
   "scripts": {
     "build": "pnpm swc ./src -d ./dist",
     "typedef": "tsc"
