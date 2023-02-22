@@ -8,9 +8,15 @@ export default function Box({
   scale?: [number, number, number];
 }) {
   return (
-    <mesh position={position} rotation={rotation} scale={scale}>
+    <mesh
+      castShadow
+      receiveShadow
+      position={position}
+      rotation={rotation}
+      scale={scale}
+    >
       <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color="pink" />
+      <meshStandardMaterial color="#a0c3d2" />
     </mesh>
   );
 }
