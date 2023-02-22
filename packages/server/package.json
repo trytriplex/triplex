@@ -1,6 +1,6 @@
 {
   "name": "@triplex/server",
-  "version": "0.20.0",
+  "version": "0.21.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "license": "Apache-2.0",
   "main": "./src/index.ts",
@@ -15,7 +15,7 @@
   },
   "dependencies": {
     "@oakserver/oak": "^11.0.0",
-    "@triplex/ts-morph": "0.20.0",
+    "@triplex/ts-morph": "0.21.0",
     "anymatch": "^3.1.3",
     "chokidar": "^3.5.3",
     "glob-parent": "^6.0.2",
