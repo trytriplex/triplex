@@ -29,6 +29,7 @@ npx triplex editor
 
 ### Options
 
-| Option             | Description                                          |
-| ------------------ | ---------------------------------------------------- |
-| `-o --open [path]` | Open your default browser with an optional filepath. |
+| Option                    | Description                                            |
+| ------------------------- | ------------------------------------------------------ |
+| `-o --open [path]`        | Open your default browser with an optional filepath.   |
+| `-E --export-name <name>` | Specify the export name when opening a file [default]. |
