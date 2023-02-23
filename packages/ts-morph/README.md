@@ -1,1 +1,0 @@
-# @triplex/ts-morph-jsx
