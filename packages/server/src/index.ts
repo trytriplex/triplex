@@ -1,17 +1,15 @@
 import { Application, isHttpError, Router } from "@oakserver/oak";
 import { Node, SyntaxKind } from "ts-morph";
 import { join } from "path";
+import { watch } from "chokidar";
 import {
   createProject,
   getJsxElementPropTypes,
   getLocalName,
-} from "@triplex/ts-morph";
-import { watch } from "chokidar";
-import {
   getJsxElementAt,
   getJsxElementProps,
   getJsxTag,
-} from "@triplex/ts-morph";
+} from "./ast";
 import { getParam } from "./util/params";
 import { createServer as createWSS } from "./util/ws-server";
 import { save } from "./services/save";

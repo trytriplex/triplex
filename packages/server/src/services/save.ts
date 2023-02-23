@@ -1,5 +1,5 @@
-import type { TRIPLEXProject } from "@triplex/ts-morph";
 import { resolveConfig, resolveConfigFile, format } from "prettier";
+import type { TRIPLEXProject } from "../ast";
 
 export async function save({
   project,

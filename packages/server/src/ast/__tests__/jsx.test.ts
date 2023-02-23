@@ -274,7 +274,7 @@ describe("jsx ast extractor", () => {
     const types = getJsxElementPropTypes(sourceFile, sceneObject);
 
     expect(types.filePath).toEqual(
-      join(process.cwd(), "packages/ts-morph/src/__tests__/__mocks__/box.tsx")
+      join(process.cwd(), "packages/server/src/ast/__tests__/__mocks__/box.tsx")
     );
   });
 
@@ -295,7 +295,7 @@ describe("jsx ast extractor", () => {
     expect(types.filePath).toEqual(
       join(
         process.cwd(),
-        "packages/ts-morph/src/__tests__/__mocks__/import-named.tsx"
+        "packages/server/src/ast/__tests__/__mocks__/import-named.tsx"
       )
     );
   });

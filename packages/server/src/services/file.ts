@@ -1,10 +1,9 @@
-import { getExportName, TRIPLEXProject } from "@triplex/ts-morph";
-import { getJsxElementsPositions } from "@triplex/ts-morph";
 import { extname } from "path";
 import readdirp from "readdirp";
 import parent from "glob-parent";
 import anymatch from "anymatch";
 import { readFile } from "fs/promises";
+import { getExportName, TRIPLEXProject, getJsxElementsPositions } from "../ast";
 
 export function getSceneExport({
   path,
