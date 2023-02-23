@@ -1,6 +1,6 @@
 {
   "name": "@triplex/run",
-  "description": "The React Three Fiber framework.",
+  "description": "The React Three Fiber framework and editor that saves your changes back to source.",
   "version": "0.21.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "license": "Apache-2.0",
