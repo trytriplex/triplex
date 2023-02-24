@@ -1,5 +1,17 @@
 # @triplex/run
 
+## 0.23.0
+
+### Minor Changes
+
+- 0aa8b4a: Tsconfig template has been updated to include base url.
+
+### Patch Changes
+
+- Updated dependencies [0aa8b4a]
+  - @triplex/client@0.23.0
+  - @triplex/server@0.23.0
+
 ## 0.22.0
 
 ### Minor Changes
