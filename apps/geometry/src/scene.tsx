@@ -1,5 +1,5 @@
-import Box from "./box";
-import Cylinder from "./cylinder";
+import Cylinder from "@/cylinder";
+import Box from "src/box";
 import Sphere from "./sphere";
 
 export function SceneAlt() {

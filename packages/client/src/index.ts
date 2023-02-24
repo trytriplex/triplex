@@ -2,10 +2,12 @@ import react from "@vitejs/plugin-react";
 import express from "express";
 import { join } from "path";
 import openBrowser from "open";
+import tsconfigPaths from "vite-tsconfig-paths";
 import { scenePlugin } from "./scene-plugin";
 import { createHTML } from "./templates";
 
 const tempDir = join(process.cwd(), ".triplex", "tmp");
+const tsConfig = join(process.cwd(), "tsconfig.json");
 
 export async function createServer({
   open,
@@ -21,7 +23,7 @@ export async function createServer({
 
   const vite = await createViteServer({
     configFile: false,
-    plugins: [react(), scenePlugin()],
+    plugins: [react(), scenePlugin(), tsconfigPaths({ projects: [tsConfig] })],
     root: process.cwd(),
     appType: "custom",
     publicDir,

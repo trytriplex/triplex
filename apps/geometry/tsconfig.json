@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
@@ -7,7 +8,10 @@
     "skipLibCheck": true,
     "strict": true,
     "jsx": "react-jsx",
-    "types": ["@react-three/fiber"]
+    "types": ["@react-three/fiber"],
+    "paths": {
+      "@/*": ["./src/*"]
+    }
   },
   "include": ["."],
   "exclude": ["node_modules"]
