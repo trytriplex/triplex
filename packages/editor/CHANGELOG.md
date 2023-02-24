@@ -1,5 +1,16 @@
 # @triplex/editor
 
+## 0.22.0
+
+### Minor Changes
+
+- aa9c9ae: Lighten selected state.
+
+### Patch Changes
+
+- @triplex/bridge@0.22.0
+- @triplex/ws-client@0.22.0
+
 ## 0.21.0
 
 ### Patch Changes

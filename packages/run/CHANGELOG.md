@@ -1,5 +1,18 @@
 # @triplex/run
 
+## 0.22.0
+
+### Minor Changes
+
+- b14f297: Adds config info to the readme.
+
+### Patch Changes
+
+- Updated dependencies [aa9c9ae]
+- Updated dependencies [837ef90]
+  - @triplex/server@0.22.0
+  - @triplex/client@0.22.0
+
 ## 0.21.0
 
 ### Minor Changes
