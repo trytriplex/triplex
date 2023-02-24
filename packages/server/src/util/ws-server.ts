@@ -45,7 +45,7 @@ export function createServer() {
               data = await cb(params, { type });
             } catch (e) {
               if (e instanceof Error) {
-                ws.send(JSON.stringify({ error: e.message }));
+                ws.send(JSON.stringify({ error: e.stack || e.message }));
               } else {
                 ws.send(JSON.stringify({ error: e }));
               }

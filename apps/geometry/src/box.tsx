@@ -1,6 +1,6 @@
 import { Vector3Tuple } from "three";
 
-export default function Box({
+function Box({
   position,
   rotation,
   scale,
@@ -16,3 +16,5 @@ export default function Box({
     </mesh>
   );
 }
+
+export default Box;

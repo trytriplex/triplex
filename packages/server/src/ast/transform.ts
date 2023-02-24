@@ -4,6 +4,7 @@ import {
   JsxElement,
   JsxSelfClosingElement,
   SourceFile,
+  SyntaxKind,
   TransformTraversalControl,
   ts,
 } from "ts-morph";
@@ -65,6 +66,7 @@ function wrapSceneObject(
   const wrappedNode = createWrappedNode(node, {
     sourceFile: originalSourceFile.compilerNode.getSourceFile(),
   });
+
   const tag = getJsxTag(wrappedNode);
   const lineColumn = transformedSourceFile.getLineAndColumnAtPos(node.pos);
   const line = lineColumn.line - 1;
@@ -183,21 +185,43 @@ export function cloneAndWrapSourceJsx(sourceFile: SourceFile, tempDir: string) {
   }[] = [];
 
   let foundLightJsxElement = false;
+  let foundJsx = false;
 
   transformedSource.transform((traversal) => {
     const node = traversal.visitChildren();
 
-    if (ts.isFunctionDeclaration(node)) {
+    if (ts.isFunctionDeclaration(node) && foundJsx) {
       const wrappedNode = createWrappedNode(node, {
         sourceFile: sourceFile.compilerNode.getSourceFile(),
       });
-      if (wrappedNode.isExported()) {
+
+      if (!wrappedNode.getParent()) {
         foundFunctions.push({
-          name: wrappedNode.getNameOrThrow(),
+          name: wrappedNode.getNameOrThrow("Expected function to have a name"),
           meta: { lighting: foundLightJsxElement ? "custom" : "default" },
         });
 
         foundLightJsxElement = false;
+        foundJsx = false;
+      }
+    }
+
+    if (ts.isVariableStatement(node) && !node.parent && foundJsx) {
+      // Top level variable statement
+      const wrappedNode = createWrappedNode(node, {
+        sourceFile: sourceFile.compilerNode.getSourceFile(),
+      });
+      const foundArrowFunctions = wrappedNode.getDescendantsOfKind(
+        SyntaxKind.ArrowFunction
+      );
+
+      if (foundArrowFunctions[0]) {
+        foundFunctions.push({
+          name: node.declarationList.declarations[0].name.getText(),
+          meta: { lighting: foundLightJsxElement ? "custom" : "default" },
+        });
+
+        foundJsx = false;
       }
     }
 
@@ -215,6 +239,8 @@ export function cloneAndWrapSourceJsx(sourceFile: SourceFile, tempDir: string) {
     if (result.foundLightJsxElement) {
       foundLightJsxElement = true;
     }
+
+    foundJsx = true;
 
     return result.node;
   });

@@ -22,10 +22,9 @@ function SceneComponent({
       onClick={onClick}
       style={{ paddingLeft: level === 1 ? 13 : level * 13 }}
       className={cn([
-        !selected && "text-neutral-400",
         selected
-          ? "border-l-blue-500 bg-neutral-700"
-          : "hover:border-l-blue-500 hover:bg-neutral-700 active:bg-neutral-600",
+          ? "border-l-blue-400 bg-neutral-700 text-blue-400"
+          : "text-neutral-400 hover:border-l-blue-400 hover:bg-neutral-700 active:bg-neutral-600",
         "-mx-4 cursor-default border-l-2 border-transparent py-1.5 px-3 text-left text-sm -outline-offset-1",
       ])}
     >

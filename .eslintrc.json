@@ -21,6 +21,7 @@
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-non-null-assertion": "off",
+    "@typescript-eslint/no-unnecessary-type-constraint": "off",
     "no-inner-declarations": "off",
     "react-hooks/exhaustive-deps": "error"
   }

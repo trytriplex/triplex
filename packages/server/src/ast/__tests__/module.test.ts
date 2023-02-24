@@ -4,6 +4,19 @@ import { describe, expect, it } from "vitest";
 import { getExportName, getLocalName } from "../module";
 
 describe("module", () => {
+  it("should return the name of a disconnected default export", () => {
+    const project = new Project({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/cylinder.tsx")
+    );
+
+    const actual = getExportName(sourceFile, "default");
+
+    expect(actual).toEqual("Cylinder");
+  });
+
   it("should return the name of the direct default export function", () => {
     const project = new Project({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),

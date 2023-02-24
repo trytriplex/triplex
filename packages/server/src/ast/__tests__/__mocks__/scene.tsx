@@ -7,6 +7,12 @@ export function SceneAlt() {
   return <Box />;
 }
 
+const identity = <TObj extends unknown>(n: TObj): TObj => n;
+
+export const SceneWrapped = identity(() => {
+  return <Box />;
+});
+
 export default function Scene() {
   return (
     <>

@@ -256,6 +256,24 @@ export function getJsxTag(node: JsxElement | JsxSelfClosingElement) {
   };
 }
 
+export function getExportDeclaration(node: Node<ts.Node>) {
+  if (Node.isExportAssignment(node)) {
+    const result = node
+      .asKind(SyntaxKind.ExportAssignment)
+      ?.getExpression()
+      .getSymbol()
+      ?.getDeclarations()[0];
+
+    if (!result) {
+      throw new Error("invariant: could not find export declaration");
+    }
+
+    return result;
+  }
+
+  return node;
+}
+
 export function getJsxElementsPositions(
   sourceFile: SourceFile,
   exportName: string
@@ -270,8 +288,9 @@ export function getJsxElementsPositions(
     throw new Error(`invariant: export ${exportName} not found`);
   }
 
-  const declaration = foundExport.getDeclarations();
-  declaration[0].forEachDescendant((node) => {
+  const declaration = getExportDeclaration(foundExport.getDeclarations()[0]);
+
+  declaration.forEachDescendant((node) => {
     if (Node.isJsxElement(node) || Node.isJsxSelfClosingElement(node)) {
       const { column, line } = sourceFile.getLineAndColumnAtPos(node.getPos());
       const tag = getJsxTag(node);

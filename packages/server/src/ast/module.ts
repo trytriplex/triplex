@@ -1,4 +1,5 @@
 import { Node, SourceFile } from "ts-morph";
+import { getExportDeclaration } from "./jsx";
 
 export function getExportName(
   sourceFile: SourceFile,
@@ -18,13 +19,17 @@ export function getExportName(
       throw new Error("invariant: default export should be a single function");
     }
 
-    const declaration = declarations[0];
+    const declaration = getExportDeclaration(declarations[0]);
     if (Node.isFunctionDeclaration(declaration)) {
       return declaration.getNameOrThrow();
     }
 
     if (Node.isVariableDeclaration(declaration)) {
       return declaration.getName();
+    }
+
+    if (Node.isIdentifier(declaration)) {
+      return declaration.getText();
     }
 
     throw new Error(

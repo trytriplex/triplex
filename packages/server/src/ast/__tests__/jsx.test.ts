@@ -23,14 +23,14 @@ describe("jsx ast extractor", () => {
       {
         children: [],
         column: 6,
-        line: 12,
+        line: 18,
         name: "Box",
         type: "custom",
       },
       {
         children: [],
         column: 6,
-        line: 18,
+        line: 24,
         name: "Cylinder",
         type: "custom",
       },
@@ -190,7 +190,7 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/scene.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 12, 6);
+    const sceneObject = getJsxElementAt(sourceFile, 18, 6);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -200,14 +200,14 @@ describe("jsx ast extractor", () => {
     expect(elements).toEqual([
       {
         column: 10,
-        line: 12,
+        line: 18,
         name: "position",
         value: [0.9223319881614562, 0, 4.703084245305494],
         type: "static",
       },
       {
         column: 61,
-        line: 13,
+        line: 19,
         name: "rotation",
         value: [1.660031347769923, -0.07873115868670048, -0.7211124466452248],
         type: "static",
@@ -372,6 +372,44 @@ describe("jsx ast extractor", () => {
           },
         },
       }
+    `);
+  });
+
+  it("should extract jsx positions from a separated export", () => {
+    const project = new Project({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/cylinder.tsx")
+    );
+
+    const elements = getJsxElementsPositions(sourceFile, "default");
+
+    expect(elements).toMatchInlineSnapshot(`
+      [
+        {
+          "children": [
+            {
+              "children": [],
+              "column": 6,
+              "line": 3,
+              "name": "cylinderGeometry",
+              "type": "host",
+            },
+            {
+              "children": [],
+              "column": 6,
+              "line": 4,
+              "name": "meshStandardMaterial",
+              "type": "host",
+            },
+          ],
+          "column": 10,
+          "line": 1,
+          "name": "mesh",
+          "type": "host",
+        },
+      ]
     `);
   });
 });

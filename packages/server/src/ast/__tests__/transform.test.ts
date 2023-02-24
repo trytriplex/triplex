@@ -136,4 +136,32 @@ describe("jsx transform", () => {
     expect(module.default.triplexMeta).toEqual({ lighting: "default" });
     expect(module.MetaNamed.triplexMeta).toEqual({ lighting: "custom" });
   });
+
+  it("should add triplex meta to a arrow function export", async () => {
+    const project = new Project({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/scene.tsx")
+    );
+
+    const { transformedPath } = cloneAndWrapSourceJsx(sourceFile, os.tmpdir());
+    const module = await import(transformedPath);
+
+    expect(module.SceneArrow.triplexMeta).toEqual({ lighting: "default" });
+  });
+
+  it("should add triplex meta to hoc export", async () => {
+    const project = new Project({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/scene.tsx")
+    );
+
+    const { transformedPath } = cloneAndWrapSourceJsx(sourceFile, os.tmpdir());
+    const module = await import(transformedPath);
+
+    expect(module.SceneWrapped.triplexMeta).toEqual({ lighting: "default" });
+  });
 });
