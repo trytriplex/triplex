@@ -9,7 +9,7 @@ export function Trigger({
   return (
     <RadixMenubar.Trigger
       {...props}
-      className="cursor-default rounded px-3 py-1 text-sm text-neutral-300 outline-none hover:bg-neutral-700 data-[state=open]:bg-neutral-700 data-[state=open]:text-blue-500"
+      className="cursor-default rounded px-3 py-1 text-sm text-neutral-300 outline-none hover:bg-neutral-700 data-[state=open]:bg-neutral-700 data-[state=open]:text-blue-400"
     >
       {children}
     </RadixMenubar.Trigger>
