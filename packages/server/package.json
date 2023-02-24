@@ -1,6 +1,6 @@
 {
   "name": "@triplex/server",
-  "version": "0.21.0",
+  "version": "0.22.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "license": "Apache-2.0",
   "main": "./src/index.ts",

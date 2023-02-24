@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.22.0
+
+### Minor Changes
+
+- aa9c9ae: Fixes scene transform to handle exported component edge cases.
+- 837ef90: Consolidates `ts-morph` pkg into the `server` pkg.
+
 ## 0.21.0
 
 ### Patch Changes
