@@ -1,5 +1,16 @@
 # @triplex/client
 
+## 0.23.0
+
+### Minor Changes
+
+- 0aa8b4a: Adds tsconfig-paths plugin to resolve absolute paths.
+
+### Patch Changes
+
+- @triplex/editor@0.23.0
+- @triplex/scene@0.23.0
+
 ## 0.22.0
 
 ### Patch Changes
