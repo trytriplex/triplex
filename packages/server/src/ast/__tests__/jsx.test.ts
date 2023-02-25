@@ -1,5 +1,4 @@
 import { join } from "path";
-import { Project } from "ts-morph";
 import { describe, it, expect } from "vitest";
 import {
   getJsxElementAt,
@@ -7,10 +6,11 @@ import {
   getJsxElementsPositions,
   getJsxElementPropTypes,
 } from "../jsx";
+import { _createProject } from "../project";
 
 describe("jsx ast extractor", () => {
   it("should return top level components for default export", async () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -38,7 +38,7 @@ describe("jsx ast extractor", () => {
   });
 
   it("should return top level components for named export", async () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -59,7 +59,7 @@ describe("jsx ast extractor", () => {
   });
 
   it("should return top level components for named arrow export", async () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -80,7 +80,7 @@ describe("jsx ast extractor", () => {
   });
 
   it("should return jsx information nested", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -116,7 +116,7 @@ describe("jsx ast extractor", () => {
   });
 
   it("should extract tuple props from a host jsx element", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -132,7 +132,7 @@ describe("jsx ast extractor", () => {
   });
 
   it("should extract string props from a host jsx element", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -148,7 +148,7 @@ describe("jsx ast extractor", () => {
   });
 
   it("should extract props with identifiers from a host jsx element", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -184,7 +184,7 @@ describe("jsx ast extractor", () => {
   });
 
   it("should extract array static props from a host jsx element", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -216,7 +216,7 @@ describe("jsx ast extractor", () => {
   });
 
   it("should extract array static props from nested host jsx elements", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -260,7 +260,7 @@ describe("jsx ast extractor", () => {
   });
 
   it("should return the path of an imported component", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -279,7 +279,7 @@ describe("jsx ast extractor", () => {
   });
 
   it("should return the path of an local component", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -301,7 +301,7 @@ describe("jsx ast extractor", () => {
   });
 
   it("should return types of a imported component", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -348,7 +348,7 @@ describe("jsx ast extractor", () => {
   });
 
   it("should return types of a local component", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -376,7 +376,7 @@ describe("jsx ast extractor", () => {
   });
 
   it("should extract jsx positions from a separated export", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(

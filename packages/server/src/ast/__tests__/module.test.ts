@@ -1,11 +1,11 @@
 import { join } from "path";
-import { Project } from "ts-morph";
 import { describe, expect, it } from "vitest";
 import { getExportName, getLocalName } from "../module";
+import { _createProject } from "../project";
 
 describe("module", () => {
   it("should return the name of a disconnected default export", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -18,7 +18,7 @@ describe("module", () => {
   });
 
   it("should return the name of the direct default export function", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -31,7 +31,7 @@ describe("module", () => {
   });
 
   it("should return the name of the named function declaration", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -44,7 +44,7 @@ describe("module", () => {
   });
 
   it("should return the name of the named arrow function", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -57,7 +57,7 @@ describe("module", () => {
   });
 
   it("should return default as the import", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -72,7 +72,7 @@ describe("module", () => {
   });
 
   it("should return named import as the import", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -87,7 +87,7 @@ describe("module", () => {
   });
 
   it("should return mapped named import as the import", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -102,7 +102,7 @@ describe("module", () => {
   });
 
   it("should return in module name", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(

@@ -2,7 +2,6 @@ import { join } from "path";
 import {
   JsxElement,
   JsxSelfClosingElement,
-  Project,
   SourceFile,
   SyntaxKind,
 } from "ts-morph";
@@ -10,6 +9,7 @@ import { describe, it, expect } from "vitest";
 import os from "os";
 import { cloneAndWrapSourceJsx } from "../transform";
 import { getJsxElementAt, getJsxElementsPositions } from "../jsx";
+import { _createProject } from "../project";
 
 function getUserDataPropString(
   jsxElement: JsxSelfClosingElement | JsxElement | undefined
@@ -44,7 +44,7 @@ function findJsxElement(
 
 describe("jsx transform", () => {
   it("should copy result to temp dir", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -59,7 +59,7 @@ describe("jsx transform", () => {
   });
 
   it("should return path for an external custom component", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -80,7 +80,7 @@ describe("jsx transform", () => {
   });
 
   it("should return path for local custom component", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -99,7 +99,7 @@ describe("jsx transform", () => {
   });
 
   it("should transform scene objects into triplex groups", () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -123,7 +123,7 @@ describe("jsx transform", () => {
   });
 
   it("should add triplex meta to the exported functions", async () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -138,7 +138,7 @@ describe("jsx transform", () => {
   });
 
   it("should add triplex meta to a arrow function export", async () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
@@ -152,7 +152,7 @@ describe("jsx transform", () => {
   });
 
   it("should add triplex meta to hoc export", async () => {
-    const project = new Project({
+    const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
