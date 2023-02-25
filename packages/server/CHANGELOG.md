@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.24.0
+
+### Minor Changes
+
+- 4f468f6: The server project [ts-morph] now skips adding files from ts config on instantiation.
+
 ## 0.23.0
 
 ## 0.22.0
