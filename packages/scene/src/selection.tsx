@@ -193,20 +193,21 @@ export function Selection({
   useEffect(() => {
     return listen("trplx:requestNavigateToScene", (sceneObject) => {
       if (!sceneObject && !selected) {
-        throw new Error("invariant: no scene object to navigate to");
+        return;
       }
 
-      setSelected(undefined);
-      onBlur();
-
-      if (sceneObject) {
+      if (sceneObject && sceneObject.path) {
         onNavigate(sceneObject);
-      } else if (selected) {
+        setSelected(undefined);
+        onBlur();
+      } else if (selected && selected.path) {
         onNavigate({
           path: selected.path,
           exportName: selected.exportName,
           encodedProps: JSON.stringify(selected.props),
         });
+        setSelected(undefined);
+        onBlur();
       }
     });
   }, [onBlur, onNavigate, selected]);
