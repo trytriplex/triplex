@@ -1,14 +1,9 @@
 import { join } from "path";
-import {
-  JsxElement,
-  JsxSelfClosingElement,
-  SourceFile,
-  SyntaxKind,
-} from "ts-morph";
+import { JsxElement, JsxSelfClosingElement, SyntaxKind } from "ts-morph";
 import { describe, it, expect } from "vitest";
 import os from "os";
 import { cloneAndWrapSourceJsx } from "../transform";
-import { getJsxElementAt, getJsxElementsPositions } from "../jsx";
+import { findJsxElement } from "../jsx";
 import { _createProject } from "../project";
 
 function getUserDataPropString(
@@ -21,25 +16,6 @@ function getUserDataPropString(
     .getDescendantsOfKind(SyntaxKind.ObjectLiteralExpression)[0]
     .getText()
     .replace(process.cwd(), "/{cwd}");
-}
-
-function findJsxElement(
-  sourceFile: SourceFile,
-  name: string,
-  exportName = "default"
-) {
-  const found = getJsxElementsPositions(sourceFile, exportName).flatMap(
-    (x) => x.children
-  );
-
-  for (let i = 0; i < found.length; i++) {
-    const element = found[i];
-    if (element.name === name) {
-      return getJsxElementAt(sourceFile, element.line, element.column);
-    }
-  }
-
-  return undefined;
 }
 
 describe("jsx transform", () => {

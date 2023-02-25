@@ -375,6 +375,50 @@ describe("jsx ast extractor", () => {
     `);
   });
 
+  it("should return types of an wrapped arrow function component", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/type-extraction.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 11, 6);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const types = getJsxElementPropTypes(sourceFile, sceneObject);
+
+    expect(types.filePath).toEqual(
+      join(
+        process.cwd(),
+        "packages/server/src/ast/__tests__/__mocks__/type-extraction.tsx"
+      )
+    );
+  });
+
+  it("should return types of a direct arrow function component", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/type-extraction.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 10, 6);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const types = getJsxElementPropTypes(sourceFile, sceneObject);
+
+    expect(types.filePath).toEqual(
+      join(
+        process.cwd(),
+        "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
+      )
+    );
+  });
+
   it("should extract jsx positions from a separated export", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),

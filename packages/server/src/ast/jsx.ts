@@ -136,41 +136,37 @@ export function getJsxElementPropTypes(
     };
   }
 
-  try {
-    const symbol = sourceFile.getLocalOrThrow(tag.name);
-    const componentFunction = symbol
-      .getDeclarations()[0]
-      .getType()
-      .getSymbolOrThrow()
-      .getDeclarations()[0]
-      .asKindOrThrow(SyntaxKind.FunctionDeclaration);
+  const symbol = sourceFile.getLocalOrThrow(tag.name);
+  const node = symbol
+    .getDeclarations()[0]
+    .getType()
+    .getSymbolOrThrow()
+    .getDeclarations()[0];
 
-    const [props] = componentFunction.getParameters();
-    const functionFilePath = componentFunction.getSourceFile().getFilePath();
-
-    if (props) {
-      props
-        .getType()
-        .getProperties()
-        .forEach((prop) => {
-          propTypes[prop.getName()] = {
-            name: prop.getName(),
-            required: !prop.isOptional(),
-            type: unrollType(prop.getTypeAtLocation(componentFunction)),
-          };
-        });
-    }
-
-    return {
-      filePath: functionFilePath,
-      propTypes,
-    };
-  } catch (_) {
-    return {
-      filePath: "",
-      propTypes,
-    };
+  if (!Node.isArrowFunction(node) && !Node.isFunctionDeclaration(node)) {
+    throw new Error("invariant: unhandled");
   }
+
+  const [props] = node.getParameters();
+  const functionFilePath = node.getSourceFile().getFilePath();
+
+  if (props) {
+    props
+      .getType()
+      .getProperties()
+      .forEach((prop) => {
+        propTypes[prop.getName()] = {
+          name: prop.getName(),
+          required: !prop.isOptional(),
+          type: unrollType(prop.getTypeAtLocation(node)),
+        };
+      });
+  }
+
+  return {
+    filePath: functionFilePath,
+    propTypes,
+  };
 }
 
 export function serializeProps(
@@ -394,4 +390,29 @@ export function getJsxAttributeAt(
     ?.getParentIfKind(SyntaxKind.JsxAttribute);
 
   return attribute;
+}
+
+/**
+ * Do not use in production code, this is slow!
+ * Instead prefer direct access via `getJsxElementAt()`.
+ *
+ * @private
+ */
+export function findJsxElement(
+  sourceFile: SourceFile,
+  name: string,
+  exportName = "default"
+) {
+  const found = getJsxElementsPositions(sourceFile, exportName).flatMap(
+    (x) => x.children
+  );
+
+  for (let i = 0; i < found.length; i++) {
+    const element = found[i];
+    if (element.name === name) {
+      return getJsxElementAt(sourceFile, element.line, element.column);
+    }
+  }
+
+  return undefined;
 }
