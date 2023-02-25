@@ -11,7 +11,7 @@ const WhiteBox = forwardRef(() => (
 ));
 
 export const AnotherBox = memo(() => (
-  <mesh position={[0.26399575079550774, 0, -0.3774516311320868]}>
+  <mesh position-x={1}>
     <boxGeometry args={[1, 1, 1]} />
     <meshStandardMaterial color="pink" />
   </mesh>

@@ -203,7 +203,10 @@ export function serializeProps(
         }
       }
 
-      return traversal.factory.createPropertyAssignment(prop.name, value);
+      return traversal.factory.createPropertyAssignment(
+        traversal.factory.createStringLiteralFromNode(prop.name),
+        value
+      );
     })
   );
 }

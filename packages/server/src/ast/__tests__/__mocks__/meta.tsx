@@ -1,7 +1,7 @@
 export function MetaNamed() {
   return (
     <>
-      <mesh>
+      <mesh position-x={10}>
         <spotLight />
         <boxGeometry args={[1, 1, 1]} />
         <meshStandardMaterial color="pink" />

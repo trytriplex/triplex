@@ -49,7 +49,7 @@ describe("jsx transform", () => {
     const jsxElement = findJsxElement(transformedSourceFile, "Box");
 
     expect(getUserDataPropString(jsxElement)).toMatchInlineSnapshot(`
-      "{ triplexSceneMeta: { name: \\"Box\\", path: \\"/{cwd}/packages/server/src/ast/__tests__/__mocks__/box.tsx\\", exportName: \\"default\\", line: 11, column: 6, props: { position: [0.9223319881614562, 0, 4.703084245305494], rotation: [
+      "{ triplexSceneMeta: { name: \\"Box\\", path: \\"/{cwd}/packages/server/src/ast/__tests__/__mocks__/box.tsx\\", exportName: \\"default\\", line: 11, column: 6, props: { \\"position\\": [0.9223319881614562, 0, 4.703084245305494], \\"rotation\\": [
                       1.660031347769923, -0.07873115868670048, -0.7211124466452248,
                   ] }, translate: true, rotate: true, scale: true } }"
     `);
@@ -91,7 +91,7 @@ describe("jsx transform", () => {
     );
 
     expect(jsxElement.print()).toMatchInlineSnapshot(`
-      "<group userData={{ triplexSceneMeta: { name: \\"mesh\\", line: 9, column: 10, props: { position: position, rotation: rotation, scale: scale }, translate: true, rotate: true, scale: true } }}><mesh position={position} rotation={rotation} scale={scale}>
+      "<group userData={{ triplexSceneMeta: { name: \\"mesh\\", line: 9, column: 10, props: { \\"position\\": position, \\"rotation\\": rotation, \\"scale\\": scale }, translate: true, rotate: true, scale: true } }}><mesh position={position} rotation={rotation} scale={scale}>
             <boxGeometry args={[1, 1, 1]}/>
             <meshStandardMaterial color=\\"pink\\"/>
           </mesh></group>"
