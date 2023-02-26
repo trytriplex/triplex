@@ -17,11 +17,7 @@ function Prop({ value, width = "100%" }: { value: unknown; width?: string }) {
     return (
       <div className="flex gap-0.5">
         {value.map((val, index) => (
-          <Prop
-            key={val + index}
-            width={`${100 / value.length}%`}
-            value={val}
-          />
+          <Prop key={index} width={`${100 / value.length}%`} value={val} />
         ))}
       </div>
     );
@@ -70,7 +66,7 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
   );
 
   useEffect(() => {
-    if (data.type === "custom") {
+    if (data.type === "custom" && data.path) {
       fetch(
         `http://localhost:8000/scene/${encodeURIComponent(data.path)}/open`
       );

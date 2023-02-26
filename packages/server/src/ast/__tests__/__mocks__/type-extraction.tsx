@@ -1,3 +1,4 @@
+import { RoundedBox } from "@react-three/drei";
 import Box from "./box";
 import { SceneWrapped } from "./scene";
 
@@ -13,3 +14,7 @@ export default function Scene() {
     </>
   );
 }
+
+export const NodeModules = () => {
+  return <RoundedBox />;
+};

@@ -25,9 +25,11 @@
     "ws": "^8.12.0"
   },
   "devDependencies": {
+    "@react-three/drei": "^9.56.27",
     "@react-three/fiber": "^8.11.1",
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.3.28",
+    "@types/three": "^0.148.0",
     "@types/glob-parent": "^5.1.1",
     "@types/node": "^18.11.18",
     "@types/prettier": "^2.7.2",

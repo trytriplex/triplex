@@ -144,7 +144,12 @@ export function getJsxElementPropTypes(
     .getDeclarations()[0];
 
   if (!Node.isArrowFunction(node) && !Node.isFunctionDeclaration(node)) {
-    throw new Error("invariant: unhandled");
+    console.log("Unhandled node in getJsxElementPropTypes()");
+
+    return {
+      filePath: "",
+      propTypes,
+    };
   }
 
   const [props] = node.getParameters();

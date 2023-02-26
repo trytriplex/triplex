@@ -392,7 +392,7 @@ describe("jsx ast extractor", () => {
     expect(types.filePath).toEqual(
       join(
         process.cwd(),
-        "packages/server/src/ast/__tests__/__mocks__/type-extraction.tsx"
+        "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
       )
     );
   });
@@ -404,7 +404,7 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/type-extraction.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 10, 6);
+    const sceneObject = getJsxElementAt(sourceFile, 12, 6);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -414,7 +414,7 @@ describe("jsx ast extractor", () => {
     expect(types.filePath).toEqual(
       join(
         process.cwd(),
-        "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
+        "packages/server/src/ast/__tests__/__mocks__/type-extraction.tsx"
       )
     );
   });
@@ -455,5 +455,22 @@ describe("jsx ast extractor", () => {
         },
       ]
     `);
+  });
+
+  it("should not throw when extracting types from typedef jsx", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/type-extraction.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 18, 8);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    expect(() => {
+      getJsxElementPropTypes(sourceFile, sceneObject);
+    }).not.toThrow();
   });
 });
