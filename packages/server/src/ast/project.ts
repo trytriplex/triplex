@@ -64,6 +64,10 @@ export function createProject({
   }
 
   function getSourceFile(path: string) {
+    if (!path.startsWith(process.cwd())) {
+      throw new Error("invariant: path is outside of cwd");
+    }
+
     const sourceFile = project.addSourceFileAtPath(path);
     const sourceFileMeta = sourceFiles.get(path);
 
