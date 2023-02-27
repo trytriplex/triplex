@@ -1,5 +1,16 @@
 # @triplex/scene
 
+## 0.25.0
+
+### Minor Changes
+
+- aaac9cc: Scene navigation now guards against empty paths (meaning there's nowhere to navigate to).
+
+### Patch Changes
+
+- @triplex/bridge@0.25.0
+- @triplex/ws-client@0.25.0
+
 ## 0.24.0
 
 ### Patch Changes
