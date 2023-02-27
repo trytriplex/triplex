@@ -61,12 +61,9 @@ function wrapSceneObject(
   transformedSourceFile: SourceFile,
   node: ts.JsxElement | ts.JsxSelfClosingElement
 ) {
-  let foundLightJsxElement = false;
-
   const wrappedNode = createWrappedNode(node, {
     sourceFile: originalSourceFile.compilerNode.getSourceFile(),
   });
-
   const tag = getJsxTag(wrappedNode);
   const lineColumn = transformedSourceFile.getLineAndColumnAtPos(node.pos);
   const line = lineColumn.line - 1;
@@ -77,6 +74,8 @@ function wrapSceneObject(
   const attributes = ts.isJsxElement(node)
     ? node.openingElement.attributes
     : node.attributes;
+
+  let foundLightJsxElement = false;
 
   if (tag.name.endsWith("Light")) {
     // Found a jsx element that ends with light
@@ -157,7 +156,23 @@ function wrapSceneObject(
         ].filter(Boolean) as ts.JsxAttributeLike[]
       )
     ),
-    [node],
+    [
+      ts.isJsxElement(node)
+        ? traversal.factory.createJsxElement(
+            traversal.factory.createJsxOpeningElement(
+              node.openingElement.tagName,
+              node.openingElement.typeArguments,
+              node.openingElement.attributes
+            ),
+            node.children,
+            node.closingElement
+          )
+        : traversal.factory.createJsxSelfClosingElement(
+            node.tagName,
+            node.typeArguments,
+            node.attributes
+          ),
+    ],
     traversal.factory.createJsxClosingElement(
       traversal.factory.createIdentifier("group")
     )

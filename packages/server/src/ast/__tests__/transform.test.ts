@@ -140,4 +140,24 @@ describe("jsx transform", () => {
 
     expect(module.SceneWrapped.triplexMeta).toEqual({ lighting: "default" });
   });
+
+  it("should strip leading trivia in cloned element", async () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/with-comments.tsx")
+    );
+
+    const { transformedSourceFile } = cloneAndWrapSourceJsx(
+      sourceFile,
+      os.tmpdir()
+    );
+
+    // Only one instance should exist as it should not be cloned anymore.
+    expect(
+      transformedSourceFile.getText().match(/\/\/ Hello there/g)
+    ).toHaveLength(1);
+    expect(transformedSourceFile.getText().match(/\/\/ OK/g)).toHaveLength(1);
+  });
 });
