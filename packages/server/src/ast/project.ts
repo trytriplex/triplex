@@ -25,6 +25,12 @@ export function _createProject(opts: ProjectOptions) {
   const project = new Project({
     ...opts,
     skipAddingFilesFromTsConfig: true,
+    compilerOptions: {
+      // Having this as `true` results in 100% CPU utilization when importing modules from
+      // node_modules. We set this to false to ensure that consumers of TRIPLEX never run into
+      // this.
+      preserveSymlinks: false,
+    },
   });
 
   return project;
