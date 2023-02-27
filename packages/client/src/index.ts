@@ -55,6 +55,7 @@ export async function createServer({
       },
     },
     resolve: {
+      dedupe: ["@react-three/fiber"],
       alias: {
         // TODO: These resolves shouldn't be needed, but without them
         // Vite can't pick them up in the HTML, we probably have some
