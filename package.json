@@ -5,6 +5,7 @@
   "scripts": {
     "build": "pnpm clean && pnpm --filter @triplex/* build && pnpm typedef",
     "clean": "pnpm -r exec rm -rf dist",
+    "clean:nm": "pnpm -r exec rm -rf node_modules",
     "test": "vitest",
     "typedef": "pnpm --filter @triplex/* typedef",
     "lint": "eslint ./",

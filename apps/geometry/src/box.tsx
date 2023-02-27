@@ -10,10 +10,12 @@ function Box({
   scale?: Vector3Tuple;
 }) {
   return (
-    <mesh position={position} rotation={rotation} scale={scale}>
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color="green" />
-    </mesh>
+    <group scale={scale}>
+      <mesh position={position} rotation={rotation}>
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color="green" />
+      </mesh>
+    </group>
   );
 }
 

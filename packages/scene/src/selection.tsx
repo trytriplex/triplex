@@ -49,89 +49,78 @@ interface SceneObjectData {
   >;
 }
 
-type WithR3FData<TObject extends Object3D> = {
-  __r3f: {
-    memoizedProps: Record<string, unknown>;
-  };
-
-  traverse(callback: (object: WithR3FData<Object3D>) => unknown): void;
-
-  parent: WithR3FData<Object3D> | null;
-} & Omit<TObject, "traverse" | "parent">;
-
 const findTransformedSceneObject = (
-  sceneObject: WithR3FData<Object3D>,
+  sceneObject: Object3D,
   transform: "translate" | "scale" | "rotate"
 ): Object3D => {
+  type ObjectR3F = {
+    __r3f: {
+      memoizedProps: Record<string, unknown>;
+    };
+  } & Object3D;
+
   const propertyName = {
     translate: "position",
     scale: "scale",
     rotate: "rotation",
   }[transform];
-  let transformedSceneObject: Object3D | undefined = undefined;
-  let translatedSceneObject: Object3D | undefined = undefined;
-  const firstChildSceneObject = sceneObject.children[0];
+  let foundSceneObject: Object3D | undefined = undefined;
 
-  sceneObject.traverse((child: WithR3FData<Object3D>) => {
-    if (
-      !transformedSceneObject &&
-      child.__r3f &&
-      propertyName in child.__r3f.memoizedProps
-    ) {
-      // This scene object be transformed via props.
-      transformedSceneObject = child;
+  sceneObject.traverse((c: unknown) => {
+    const child = c as ObjectR3F;
+
+    if (foundSceneObject) {
+      return;
     }
 
-    if (
-      !translatedSceneObject &&
-      child.__r3f &&
-      "position" in child.__r3f.memoizedProps
-    ) {
-      // This scene object has translated via props.
-      // This is used as a backup just in case the
-      // transformedSceneObject wasn't found.
-      translatedSceneObject = child;
+    if ("triplexSceneMeta" in child.userData) {
+      // Stop traversing as we've reached another triplex boundary.
+      foundSceneObject = sceneObject;
+      return;
+    }
+
+    // We need to find out if one of the jsx elements between sceneObject
+    // and the next triplex boundary has the transform prop applied - if it
+    // does we've found the scene object we're interested in!
+    // NOTE: This relies on r3f internals meaning this is a vector for breaks.
+    if (propertyName in child.__r3f.memoizedProps) {
+      foundSceneObject = child;
     }
   });
 
-  return (
-    transformedSceneObject ||
-    translatedSceneObject ||
-    firstChildSceneObject ||
-    sceneObject
-  );
+  return foundSceneObject || sceneObject;
 };
 
 const findEditorData = (
   object: Object3D,
   transform: "translate" | "scale" | "rotate"
 ): EditorNodeData | null => {
-  let parent: WithR3FData<Object3D> | null = object as WithR3FData<Object3D>;
+  let parent: Object3D | null = object;
   let data: EditorNodeData | null = null;
 
   while (parent) {
-    if ("triplexSceneMeta" in parent.userData) {
+    if ("triplexSceneMeta" in parent.userData && !data) {
       // Keep traversing up the tree to find the top most wrapped scene object.
       data = {
         ...parent.userData.triplexSceneMeta,
-        sceneObject: findTransformedSceneObject(parent, transform),
+        sceneObject: findTransformedSceneObject(parent.children[0], transform),
         space: "world",
       } as EditorNodeData;
     }
 
-    if (data && parent.__r3f.memoizedProps.position) {
+    parent = parent.parent;
+
+    if (data && parent && parent.position.lengthSq() > 0) {
       // There is a parent that has set position so this must be local space.
       data.space = "local";
     }
-
-    parent = parent.parent;
   }
 
   return data;
 };
 
 const findSceneObjectFromSource = (
-  scene: WithR3FData<Object3D>,
+  scene: Object3D,
   line: number,
   column: number,
   transform: "translate" | "scale" | "rotate"
@@ -140,12 +129,10 @@ const findSceneObjectFromSource = (
 
   scene.traverse((obj) => {
     if ("triplexSceneMeta" in obj.userData) {
-      if (obj.userData) {
-        const node: EditorNodeData = obj.userData.triplexSceneMeta;
-        if (node.column === column && node.line === line) {
-          // We've found our scene object!
-          nodeData = findEditorData(obj, transform);
-        }
+      const node: EditorNodeData = obj.userData.triplexSceneMeta;
+      if (node.column === column && node.line === line) {
+        // We've found our scene object!
+        nodeData = findEditorData(obj, transform);
       }
     }
   });
@@ -237,7 +224,7 @@ export function Selection({
   useEffect(() => {
     return listen("trplx:requestFocusSceneObject", (data) => {
       const sceneObject = findSceneObjectFromSource(
-        scene as unknown as WithR3FData<Object3D>,
+        scene,
         data.line,
         data.column,
         transform
