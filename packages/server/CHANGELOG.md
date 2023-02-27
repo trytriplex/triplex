@@ -1,5 +1,15 @@
 # @triplex/server
 
+## 0.25.0
+
+### Minor Changes
+
+- 1be56fe: Scene transform now correctly handles props with dashes.
+- ed6349b: Extracting prop types now returns early instead of throwing for unhandled nodes.
+- aaac9cc: Fix type extraction for jsx elements to handle arrow function components.
+- 5736992: Server now throws when accessing files outside of cwd.
+- e694cf2: Now override userland config for preserveSymlinks to false to prevent 100% CPU utilization.
+
 ## 0.24.0
 
 ### Minor Changes

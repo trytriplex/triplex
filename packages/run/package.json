@@ -1,7 +1,7 @@
 {
   "name": "@triplex/run",
   "description": "The React Three Fiber framework and editor that saves your changes back to source.",
-  "version": "0.24.0",
+  "version": "0.25.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "license": "Apache-2.0",
   "publishConfig": {
@@ -17,8 +17,8 @@
     "typedef": "tsc"
   },
   "dependencies": {
-    "@triplex/client": "0.24.0",
-    "@triplex/server": "0.24.0",
+    "@triplex/client": "0.25.0",
+    "@triplex/server": "0.25.0",
     "@commander-js/extra-typings": "^10.0.2",
     "commander": "^10.0.0",
     "enquirer": "^2.3.6",

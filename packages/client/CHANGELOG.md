@@ -1,5 +1,17 @@
 # @triplex/client
 
+## 0.25.0
+
+### Minor Changes
+
+- 9c807ac: When running r3f is now deduped and forced to [use the version from project root](https://vitejs.dev/config/shared-options.html#resolve-dedupe).
+
+### Patch Changes
+
+- Updated dependencies [aaac9cc]
+  - @triplex/scene@0.25.0
+  - @triplex/editor@0.25.0
+
 ## 0.24.0
 
 ### Patch Changes
