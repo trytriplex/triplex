@@ -3,6 +3,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { getEditorLink } from "../util/ide";
 import { Suspense, useDeferredValue, useEffect } from "react";
 import { useEditor, FocusedObject } from "../stores/editor";
+import { ScrollContainer } from "../ds/scroll-container";
 
 interface Prop {
   column: number;
@@ -72,12 +73,12 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
   }, [data.path, data.type]);
 
   return (
-    <div>
-      <h2 className="text-xl font-medium">
+    <>
+      <h2 className="px-4 pt-3 text-xl font-medium text-neutral-300">
         <div className="overflow-hidden text-ellipsis">{data.name}</div>
       </h2>
 
-      <div className="mb-2.5 -mt-0.5">
+      <div className="mb-2.5 -mt-0.5 px-4">
         <a
           className="text-xs text-neutral-400"
           href={getEditorLink({
@@ -109,29 +110,32 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
         )}
       </div>
 
-      <div className="-mx-4 mb-3 h-0.5 bg-neutral-700" />
+      <div className="h-0.5 bg-neutral-700" />
 
-      {data.props.map((prop) => (
-        <div className="mb-2" key={`${prop.column}${prop.line}`}>
-          <div>
-            <a
-              className="text-sm text-neutral-400"
-              href={getEditorLink({
-                path: target.ownerPath,
-                // ts-morph/tsc lines start from zero - offset them.
-                column: prop.column + 2,
-                line: prop.line + 1,
-                editor: "vscode",
-              })}
-            >
-              {prop.name}
-            </a>
+      <ScrollContainer className="pt-2">
+        {data.props.map((prop) => (
+          <div className="mb-2 px-4" key={`${prop.column}${prop.line}`}>
+            <div>
+              <a
+                className="text-sm text-neutral-400"
+                href={getEditorLink({
+                  path: target.ownerPath,
+                  // ts-morph/tsc lines start from zero - offset them.
+                  column: prop.column + 2,
+                  line: prop.line + 1,
+                  editor: "vscode",
+                })}
+              >
+                {prop.name}
+              </a>
+            </div>
+
+            <Prop value={prop.value} />
           </div>
-
-          <Prop value={prop.value} />
-        </div>
-      ))}
-    </div>
+        ))}
+        <div className="h-1" />
+      </ScrollContainer>
+    </>
   );
 }
 
@@ -141,17 +145,19 @@ export function ContextPanel() {
 
   if (deferredTarget) {
     return (
-      <div className="absolute top-4 right-4 bottom-4 flex w-60 flex-col rounded-lg bg-neutral-800/90 shadow-2xl shadow-black/50">
-        <div className="p-4 text-neutral-300">
-          <ErrorBoundary
-            resetKeys={[deferredTarget]}
-            fallbackRender={() => <div>Error!</div>}
+      <div className="absolute top-4 right-4 bottom-4 flex w-60 flex-col overflow-hidden rounded-lg bg-neutral-800/90 shadow-2xl shadow-black/50">
+        <ErrorBoundary
+          resetKeys={[deferredTarget]}
+          fallbackRender={() => (
+            <div className="p-4 text-neutral-400">Error!</div>
+          )}
+        >
+          <Suspense
+            fallback={<div className="p-4 text-neutral-400">Loading...</div>}
           >
-            <Suspense fallback={<div>Loading...</div>}>
-              <SelectedSceneObject target={deferredTarget} />
-            </Suspense>
-          </ErrorBoundary>
-        </div>
+            <SelectedSceneObject target={deferredTarget} />
+          </Suspense>
+        </ErrorBoundary>
       </div>
     );
   }
