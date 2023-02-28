@@ -107,6 +107,11 @@ function wsQuery<TValue>(path: string) {
   };
 }
 
+export function preloadSubscription(path: string) {
+  const query = wsQuery(path);
+  query.load();
+}
+
 export function useLazySubscription<TSubscriptionData>(path: string) {
   const query = wsQuery<TSubscriptionData>(path);
 

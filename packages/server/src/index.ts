@@ -86,28 +86,6 @@ export function createServer({ files }: { files: string[] }) {
   });
 
   /**
-   * Open a scene - caching it in memory and fs.
-   */
-  router.get("/scene/:path/open", async (context) => {
-    const path = context.params.path;
-
-    await project.getSourceFile(path);
-
-    context.response.body = { message: "success" };
-  });
-
-  /**
-   * Close a scene - cleaning it up from memory and fs.
-   */
-  router.get("/scene/close", async (context) => {
-    const path = getParam(context, "path");
-
-    await project.removeSourceFile(path);
-
-    context.response.body = { message: "success" };
-  });
-
-  /**
    * Persist the in-memory scene to fs.
    */
   router.get("/scene/save", async (context) => {
@@ -137,6 +115,19 @@ export function createServer({ files }: { files: string[] }) {
       );
       watcher.on("add", push);
       watcher.on("unlink", push);
+    }
+  );
+
+  wss.message(
+    "/scene/:path",
+    async ({ path }) => {
+      const { sourceFile } = await project.getSourceFile(path);
+      const isSaved = sourceFile.isSaved();
+      return { isSaved };
+    },
+    async (push, { path }) => {
+      const { sourceFile } = await project.getSourceFile(path);
+      sourceFile.onModified(push);
     }
   );
 

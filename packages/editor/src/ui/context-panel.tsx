@@ -1,4 +1,4 @@
-import { useLazySubscription } from "@triplex/ws-client";
+import { preloadSubscription, useLazySubscription } from "@triplex/ws-client";
 import { ErrorBoundary } from "react-error-boundary";
 import { getEditorLink } from "../util/ide";
 import { Suspense, useDeferredValue, useEffect } from "react";
@@ -67,9 +67,7 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
 
   useEffect(() => {
     if (data.type === "custom" && data.path) {
-      fetch(
-        `http://localhost:8000/scene/${encodeURIComponent(data.path)}/open`
-      );
+      preloadSubscription(`/scene/${encodeURIComponent(data.path)}`);
     }
   }, [data.path, data.type]);
 
