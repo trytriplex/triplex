@@ -43,6 +43,9 @@ interface JsxElementPositions {
 
 export function ScenePanel() {
   const { path, exportName } = useEditor();
+  const file = useLazySubscription<{ isSaved: boolean }>(
+    `/scene/${encodeURIComponent(path)}`
+  );
   const scene = useLazySubscription<{
     path: string;
     name: string;
@@ -51,8 +54,9 @@ export function ScenePanel() {
 
   return (
     <div className="flex flex-col">
-      <h2 className="mt-0.5 text-2xl font-medium">
+      <h2 className="mt-0.5 flex flex-row text-2xl font-medium">
         <div className="overflow-hidden text-ellipsis">{scene.name}</div>
+        {!file.isSaved && <span aria-label="Unsaved changes">*</span>}
       </h2>
 
       <div className="mb-2.5 -mt-0.5">
