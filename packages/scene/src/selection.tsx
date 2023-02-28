@@ -110,8 +110,13 @@ const findEditorData = (
 
     parent = parent.parent;
 
-    if (data && parent && parent.position.lengthSq() > 0) {
-      // There is a parent that has set position so this must be local space.
+    if (
+      data &&
+      parent &&
+      (parent.position.lengthSq() > 0 || parent.scale.lengthSq() > 0)
+    ) {
+      // There is a parent that has set position/scale so this must be local space.
+      // This affects the resulting position calculated later on after a transform.
       data.space = "local";
     }
   }
