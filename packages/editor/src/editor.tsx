@@ -1,5 +1,4 @@
-import { Suspense, useEffect } from "react";
-import { ErrorBoundary } from "react-error-boundary";
+import { useEffect } from "react";
 import { ContextPanel } from "./ui/context-panel";
 import { EditorMenu } from "./ui/editor-menu";
 import { ScenePanel } from "./ui/scene-panel";
@@ -26,18 +25,7 @@ export function EditorFrame() {
             <EditorMenu />
           </div>
 
-          {path && (
-            <div className="h-full rounded-lg bg-neutral-800/90 p-4 text-neutral-300 shadow-2xl shadow-black/50">
-              <ErrorBoundary
-                resetKeys={[path]}
-                fallbackRender={() => <div>Error!</div>}
-              >
-                <Suspense fallback={<div>Loading...</div>}>
-                  <ScenePanel />
-                </Suspense>
-              </ErrorBoundary>
-            </div>
-          )}
+          {path && <ScenePanel />}
         </div>
 
         {path && <ContextPanel />}

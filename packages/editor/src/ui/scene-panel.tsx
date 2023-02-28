@@ -1,9 +1,11 @@
-import { Fragment, useDeferredValue } from "react";
+import { Fragment, Suspense, useDeferredValue } from "react";
 import { cn } from "../ds/cn";
 import { useLazySubscription } from "@triplex/ws-client";
 import { getEditorLink } from "../util/ide";
 import { useEditor } from "../stores/editor";
 import { useScene } from "../scence-bridge";
+import { ScrollContainer } from "../ds/scroll-container";
+import { ErrorBoundary } from "react-error-boundary";
 
 function SceneComponent({
   name,
@@ -25,7 +27,7 @@ function SceneComponent({
         selected
           ? "border-l-blue-400 bg-neutral-700 text-blue-400"
           : "text-neutral-400 hover:border-l-blue-400 hover:bg-neutral-700 active:bg-neutral-600",
-        "-mx-4 cursor-default border-l-2 border-transparent py-1.5 px-3 text-left text-sm -outline-offset-1",
+        "flex w-full cursor-default border-l-2 border-transparent py-1.5 px-3 text-left text-sm -outline-offset-1",
       ])}
     >
       {name}
@@ -42,6 +44,27 @@ interface JsxElementPositions {
 }
 
 export function ScenePanel() {
+  const { path } = useEditor();
+
+  return (
+    <div className="h-full overflow-hidden rounded-lg bg-neutral-800/90 shadow-2xl shadow-black/50">
+      <ErrorBoundary
+        resetKeys={[path]}
+        fallbackRender={() => (
+          <div className="p-4 text-neutral-400">Error!</div>
+        )}
+      >
+        <Suspense
+          fallback={<div className="p-4 text-neutral-400">Loading...</div>}
+        >
+          <SceneContents />
+        </Suspense>
+      </ErrorBoundary>
+    </div>
+  );
+}
+
+function SceneContents() {
   const { path, exportName } = useEditor();
   const file = useLazySubscription<{ isSaved: boolean }>(
     `/scene/${encodeURIComponent(path)}`
@@ -53,13 +76,13 @@ export function ScenePanel() {
   }>(`/scene/${encodeURIComponent(path)}/${exportName}`);
 
   return (
-    <div className="flex flex-col">
-      <h2 className="mt-0.5 flex flex-row text-2xl font-medium">
+    <div className="flex h-full flex-shrink flex-col">
+      <h2 className="flex flex-row px-4 pt-3 text-2xl font-medium text-neutral-300">
         <div className="overflow-hidden text-ellipsis">{scene.name}</div>
         {!file.isSaved && <span aria-label="Unsaved changes">*</span>}
       </h2>
 
-      <div className="mb-2.5 -mt-0.5">
+      <div className="mb-2.5 -mt-0.5 px-4">
         <a
           className="text-xs text-neutral-400"
           href={getEditorLink({
@@ -73,9 +96,12 @@ export function ScenePanel() {
         </a>
       </div>
 
-      <div className="-mx-4 mb-1 h-0.5 bg-neutral-700" />
+      <div className="h-0.5 bg-neutral-700" />
 
-      <SceneObjectButtons sceneObjects={scene.sceneObjects} />
+      <ScrollContainer className="pt-1">
+        <SceneObjectButtons sceneObjects={scene.sceneObjects} />
+        <div className="h-1" />
+      </ScrollContainer>
     </div>
   );
 }
