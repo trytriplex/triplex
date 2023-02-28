@@ -1,5 +1,13 @@
 # @triplex/server
 
+## 0.26.0
+
+### Minor Changes
+
+- 785050d: Adds unsaved indicator to the editor.
+- 440d427: Server now pings every 30s awaiting a pong from connected clients.
+- b77438d: During transformation any leading trivia found is now stripped from cloned jsx elements.
+
 ## 0.25.0
 
 ### Minor Changes

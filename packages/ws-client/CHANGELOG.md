@@ -1,5 +1,11 @@
 # @triplex/ws-client
 
+## 0.26.0
+
+### Minor Changes
+
+- 785050d: Adds `preloadSubscription` function.
+
 ## 0.25.0
 
 ## 0.24.0

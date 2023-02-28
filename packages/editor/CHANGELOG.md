@@ -1,5 +1,18 @@
 # @triplex/editor
 
+## 0.26.0
+
+### Minor Changes
+
+- 785050d: Adds unsaved indicator to the editor.
+- 71374c9: Scene, context, and open scene containers now scroll when overflowing with content.
+
+### Patch Changes
+
+- Updated dependencies [785050d]
+  - @triplex/ws-client@0.26.0
+  - @triplex/bridge@0.26.0
+
 ## 0.25.0
 
 ### Patch Changes

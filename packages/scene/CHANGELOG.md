@@ -1,5 +1,18 @@
 # @triplex/scene
 
+## 0.26.0
+
+### Minor Changes
+
+- 9d400e4: Selected objects now operate in local space when a parent scene object is scaled.
+- e532920: When traversing the Three.js scene to find the appropriate scene object to select it now stops traversal when reaching a triplex boundary.
+
+### Patch Changes
+
+- Updated dependencies [785050d]
+  - @triplex/ws-client@0.26.0
+  - @triplex/bridge@0.26.0
+
 ## 0.25.0
 
 ### Minor Changes
