@@ -33,7 +33,7 @@ function Scenes() {
               onClick={() => show(false)}
               className={cn([
                 path === file.path && exportName === exp
-                  ? "bg-neutral-700 text-blue-400"
+                  ? "bg-neutral-700 text-blue-300"
                   : "text-neutral-300",
                 "block select-none px-2 text-base outline-none hover:bg-neutral-700 active:bg-neutral-600",
               ])}

@@ -25,8 +25,8 @@ function SceneComponent({
       style={{ paddingLeft: level === 1 ? 13 : level * 13 }}
       className={cn([
         selected
-          ? "border-l-blue-400 bg-neutral-700 text-blue-400"
-          : "text-neutral-400 hover:border-l-blue-400 hover:bg-neutral-700 active:bg-neutral-600",
+          ? "border-l-blue-300 bg-neutral-700 text-blue-300"
+          : "text-neutral-300 hover:border-l-blue-300 hover:bg-neutral-700 active:bg-neutral-600",
         "flex w-full cursor-default border-l-2 border-transparent py-1.5 px-3 text-left text-sm -outline-offset-1",
       ])}
     >
