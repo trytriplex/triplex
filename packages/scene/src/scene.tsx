@@ -124,24 +124,26 @@ export function SceneFrame({
         position={position}
       />
       <OrbitControls makeDefault target={target} />
-      <Selection
-        path={path}
-        onBlur={onBlurObject}
-        onFocus={onFocus}
-        onJumpTo={onJumpTo}
-        onNavigate={onNavigate}
-      >
-        <ErrorBoundary resetKeys={[path]} fallbackRender={() => null}>
-          <Suspense fallback={null}>
+
+      <ErrorBoundary resetKeys={[path, exportName]} fallbackRender={() => null}>
+        <Suspense fallback={null}>
+          <Selection
+            path={path}
+            onBlur={onBlurObject}
+            onFocus={onFocus}
+            onJumpTo={onJumpTo}
+            onNavigate={onNavigate}
+            exportName={exportName}
+          >
             <SceneLoader
               path={path}
               exportName={exportName}
               sceneProps={sceneProps}
               scenes={scenes}
             />
-          </Suspense>
-        </ErrorBoundary>
-      </Selection>
+          </Selection>
+        </Suspense>
+      </ErrorBoundary>
 
       <Grid
         sectionColor="#9d4b4b"
