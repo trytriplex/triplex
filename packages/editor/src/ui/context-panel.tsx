@@ -117,7 +117,7 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
           <div className="mb-2 px-4" key={`${prop.column}${prop.line}`}>
             <div>
               <a
-                className="text-sm text-neutral-400"
+                className="text-sm text-neutral-300"
                 href={getEditorLink({
                   path: target.ownerPath,
                   // ts-morph/tsc lines start from zero - offset them.

@@ -144,8 +144,6 @@ export function getJsxElementPropTypes(
     .getDeclarations()[0];
 
   if (!Node.isArrowFunction(node) && !Node.isFunctionDeclaration(node)) {
-    console.log("Unhandled node in getJsxElementPropTypes()");
-
     return {
       filePath: "",
       propTypes,
