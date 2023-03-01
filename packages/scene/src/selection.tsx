@@ -1,8 +1,8 @@
 import { TransformControls } from "@react-three/drei";
 import { ThreeEvent, useFrame, useThree } from "@react-three/fiber";
 import { listen, send } from "@triplex/bridge/client";
-import { useSubscriptionEffect } from "@triplex/ws-client";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws-client";
+import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { Box3, Object3D, Vector3, Vector3Tuple } from "three";
 import { TransformControls as TransformControlsImpl } from "three-stdlib";
 
@@ -91,15 +91,55 @@ const findTransformedSceneObject = (
   return foundSceneObject || sceneObject;
 };
 
+function flatten(
+  positions: JsxElementPositions[]
+): Exclude<JsxElementPositions, "children">[] {
+  const result: Exclude<JsxElementPositions, "children">[] = [];
+
+  for (let i = 0; i < positions.length; i++) {
+    const item = positions[i];
+    if (item.children) {
+      result.push(...flatten(item.children));
+    }
+
+    result.push(item);
+  }
+
+  return result;
+}
+
+function isInScene(
+  node: EditorNodeData,
+  positions: JsxElementPositions[]
+): boolean {
+  for (let i = 0; i < positions.length; i++) {
+    const position = positions[i];
+    if (
+      node.line === position.line &&
+      node.column === position.column &&
+      node.name === position.name
+    ) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
 const findEditorData = (
   object: Object3D,
-  transform: "translate" | "scale" | "rotate"
+  transform: "translate" | "scale" | "rotate",
+  positions: JsxElementPositions[]
 ): EditorNodeData | null => {
   let parent: Object3D | null = object;
   let data: EditorNodeData | null = null;
 
   while (parent) {
-    if ("triplexSceneMeta" in parent.userData && !data) {
+    if (
+      "triplexSceneMeta" in parent.userData &&
+      !data &&
+      isInScene(parent.userData.triplexSceneMeta, positions)
+    ) {
       // Keep traversing up the tree to find the top most wrapped scene object.
       data = {
         ...parent.userData.triplexSceneMeta,
@@ -128,7 +168,8 @@ const findSceneObjectFromSource = (
   scene: Object3D,
   line: number,
   column: number,
-  transform: "translate" | "scale" | "rotate"
+  transform: "translate" | "scale" | "rotate",
+  positions: JsxElementPositions[]
 ): EditorNodeData | null => {
   let nodeData: EditorNodeData | null = null;
 
@@ -137,13 +178,21 @@ const findSceneObjectFromSource = (
       const node: EditorNodeData = obj.userData.triplexSceneMeta;
       if (node.column === column && node.line === line) {
         // We've found our scene object!
-        nodeData = findEditorData(obj, transform);
+        nodeData = findEditorData(obj, transform, positions);
       }
     }
   });
 
   return nodeData;
 };
+
+interface JsxElementPositions {
+  column: number;
+  line: number;
+  name: string;
+  children: JsxElementPositions[];
+  type: "host" | "custom";
+}
 
 const V1 = new Vector3();
 const box = new Box3();
@@ -155,6 +204,7 @@ export function Selection({
   onJumpTo,
   onNavigate,
   path,
+  exportName,
 }: {
   children?: ReactNode;
   onBlur: () => void;
@@ -166,6 +216,7 @@ export function Selection({
     encodedProps: string;
   }) => void;
   path: string;
+  exportName: string;
 }) {
   const [selected, setSelected] = useState<EditorNodeData>();
   const [transform, setTransform] = useState<"translate" | "rotate" | "scale">(
@@ -174,6 +225,15 @@ export function Selection({
   const transformControls = useRef<TransformControlsImpl>(null);
   const dragging = useRef(false);
   const scene = useThree((store) => store.scene);
+  const sceneData = useSubscriptionEffect<{
+    sceneObjects: JsxElementPositions[];
+  }>(
+    path && exportName ? `/scene/${encodeURIComponent(path)}/${exportName}` : ""
+  );
+  const sceneObjects = useMemo(
+    () => flatten(sceneData?.sceneObjects || []),
+    [sceneData]
+  );
   const objectData = useSubscriptionEffect<SceneObjectData | null>(
     selected
       ? `/scene/${encodeURIComponent(path)}/object/${selected.line}/${
@@ -216,6 +276,10 @@ export function Selection({
       return;
     }
 
+    preloadSubscription(
+      `/scene/${encodeURIComponent(selected.path)}/${selected.exportName}`
+    );
+
     return listen("trplx:requestJumpToSceneObject", () => {
       box.setFromObject(selected.sceneObject);
       onJumpTo(
@@ -232,7 +296,8 @@ export function Selection({
         scene,
         data.line,
         data.column,
-        transform
+        transform,
+        sceneObjects
       );
 
       if (sceneObject) {
@@ -246,7 +311,7 @@ export function Selection({
         line: data.line,
       });
     });
-  }, [scene, transform]);
+  }, [scene, transform, sceneObjects]);
 
   const onClick = async (e: ThreeEvent<MouseEvent>) => {
     if (e.delta > 1) {
@@ -260,7 +325,7 @@ export function Selection({
 
     // TODO: If clicking on a scene object when a selection is already
     // made this will fire A LOT OF TIMES. Need to investigate why.
-    const data = findEditorData(e.object, transform);
+    const data = findEditorData(e.object, transform, sceneObjects);
     if (data) {
       e.stopPropagation();
       setSelected(data);
@@ -306,7 +371,11 @@ export function Selection({
 
       if (e.key === "r") {
         setTransform("rotate");
-        const data = findEditorData(selected.sceneObject, "rotate");
+        const data = findEditorData(
+          selected.sceneObject,
+          "rotate",
+          sceneObjects
+        );
         if (data) {
           setSelected(data);
         }
@@ -314,7 +383,11 @@ export function Selection({
 
       if (e.key === "t") {
         setTransform("translate");
-        const data = findEditorData(selected.sceneObject, "translate");
+        const data = findEditorData(
+          selected.sceneObject,
+          "translate",
+          sceneObjects
+        );
         if (data) {
           setSelected(data);
         }
@@ -322,7 +395,11 @@ export function Selection({
 
       if (e.key === "s" && !e.metaKey && !e.ctrlKey) {
         setTransform("scale");
-        const data = findEditorData(selected.sceneObject, "scale");
+        const data = findEditorData(
+          selected.sceneObject,
+          "scale",
+          sceneObjects
+        );
         if (data) {
           setSelected(data);
         }
@@ -332,7 +409,7 @@ export function Selection({
     document.addEventListener("keyup", callback);
 
     return () => document.removeEventListener("keyup", callback);
-  }, [onBlur, onJumpTo, onNavigate, selected]);
+  }, [onBlur, onJumpTo, onNavigate, selected, sceneObjects]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onMouseUp = (e: any) => {
