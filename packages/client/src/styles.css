@@ -16,3 +16,17 @@
   animation-name: slide-in;
   animation-duration: 100ms;
 }
+
+input[type="color"]::-moz-color-swatch {
+  border: none;
+  border-radius: 2px;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border-radius: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+}

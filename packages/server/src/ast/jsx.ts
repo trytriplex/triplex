@@ -1,68 +1,102 @@
 import {
-  type JsxAttributeLike,
   type JsxSelfClosingElement,
   type SourceFile,
   type TransformTraversalControl,
   type Type,
-  createWrappedNode,
-  Expression,
   JsxElement,
   Node,
   SyntaxKind,
   ts,
+  Expression,
 } from "ts-morph";
 
-function isStaticType(expression: Expression<ts.Expression>): boolean {
-  if (Node.isArrayLiteralExpression(expression)) {
-    const result = expression.compilerNode.elements.map((element) => {
-      return isStaticType(createWrappedNode(element));
-    });
+export function getJsxAttributeValue(expression: Expression | undefined): {
+  type:
+    | "identifier"
+    | "array"
+    | "string"
+    | "function"
+    | "boolean"
+    | "number"
+    | "unhandled";
+  value: string | number | boolean | (string | number)[];
+} {
+  // Value is inside a JSX expression
+  if (Node.isIdentifier(expression)) {
+    return {
+      type: "identifier",
+      value: expression.getText(),
+    };
+  }
 
-    if (result.every((value) => !!value)) {
-      return true;
-    }
+  if (Node.isArrayLiteralExpression(expression)) {
+    // Hack around types too lazy to figure this out atm.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const value = expression.getElements().map(getJsxAttributeValue) as any;
+
+    return {
+      type: "array",
+      value,
+    };
+  }
+
+  if (Node.isStringLiteral(expression)) {
+    return {
+      type: "string",
+      value: expression.getLiteralText(),
+    };
+  }
+
+  if (Node.isNumericLiteral(expression)) {
+    return {
+      type: "number",
+      value: Number(expression.getLiteralText()),
+    };
   }
 
   if (Node.isPrefixUnaryExpression(expression)) {
-    return isStaticType(expression.getOperand());
+    const operand = expression.getOperand();
+    if (Node.isNumericLiteral(operand)) {
+      return {
+        type: "number",
+        value: -Number(operand.getLiteralText()),
+      };
+    }
   }
 
-  if (Node.isLiteralLike(expression)) {
-    return true;
-  }
-
-  return false;
-}
-
-export function getJsxAttributeValue(prop: JsxAttributeLike) {
-  const expression = prop
-    .getChildrenOfKind(SyntaxKind.JsxExpression)[0]
-    ?.getExpression();
-  let result = "undefined";
-  let type = "unhandled";
-
-  if (expression) {
-    type = isStaticType(expression) ? "static" : "unhandled";
-    result = expression
-      .getFullText()
-      .replace(/\n| /g, "")
-      .replace(/(,)(}|])/g, (match) => match.replace(",", ""));
-  }
-
-  const stringLiteral = prop.getChildrenOfKind(SyntaxKind.StringLiteral)[0];
-  if (stringLiteral) {
-    type = "static";
-    result = stringLiteral.getText();
-  }
-
-  try {
+  if (Node.isTrueLiteral(expression)) {
     return {
-      type,
-      value: JSON.parse(result),
+      type: "boolean",
+      value: true,
     };
-  } catch (_e) {
-    return { type, value: result };
   }
+
+  if (Node.isFalseLiteral(expression)) {
+    return {
+      type: "boolean",
+      value: false,
+    };
+  }
+
+  if (Node.isArrowFunction(expression)) {
+    return {
+      type: "function",
+      value: "Function",
+    };
+  }
+
+  if (!expression) {
+    // Implicit boolean!
+    return {
+      type: "boolean",
+      value: true,
+    };
+  }
+
+  return {
+    type: "unhandled",
+    value: expression.getText(),
+  };
 }
 
 export function unrollType(type: Type, _nested = false): unknown {
@@ -347,7 +381,25 @@ export function getJsxElementProps(
   const attributes = getAttributes(element);
   const props = attributes.map((prop) => {
     const { column, line } = sourceFile.getLineAndColumnAtPos(prop.getPos());
-    const value = getJsxAttributeValue(prop);
+
+    if (Node.isJsxSpreadAttribute(prop)) {
+      return {
+        column: column - 1,
+        line: line - 1,
+        name: "",
+        value: `...${prop
+          .getExpressionIfKindOrThrow(SyntaxKind.Identifier)
+          .getText()}`,
+        type: "spread",
+      };
+    }
+
+    const initializer = prop.getInitializer();
+    const value = getJsxAttributeValue(
+      Node.isJsxExpression(initializer)
+        ? initializer.getExpressionOrThrow()
+        : initializer
+    );
 
     return {
       column: column - 1,

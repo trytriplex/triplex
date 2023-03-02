@@ -1,7 +1,7 @@
 export default function WithComments() {
   return (
     // Hello there
-    <mesh>
+    <mesh visible>
       <boxGeometry />
     </mesh>
     // Oh no!
@@ -11,6 +11,6 @@ export default function WithComments() {
 export function AnotherOne() {
   return (
     // OK
-    <mesh />
+    <mesh visible={true} castShadow={false} />
   );
 }

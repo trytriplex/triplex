@@ -9,11 +9,19 @@ function Box({
   rotation?: Vector3Tuple;
   scale?: Vector3Tuple;
 }) {
+  const ok = {};
   return (
-    <group scale={scale}>
-      <mesh position={position} rotation={rotation}>
+    <group visible scale={scale}>
+      <mesh
+        {...ok}
+        userData={{ hello: true }}
+        onClick={() => {}}
+        visible={true}
+        position={position}
+        rotation={rotation}
+      >
         <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="green" />
+        <meshStandardMaterial color="#00ff00" />
       </mesh>
     </group>
   );

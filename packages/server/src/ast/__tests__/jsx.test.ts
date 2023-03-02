@@ -127,7 +127,17 @@ describe("jsx ast extractor", () => {
     const elements = getJsxElementProps(sourceFile, sceneObject!);
 
     expect(elements).toEqual([
-      { column: 18, line: 11, name: "args", value: [1, 1, 1], type: "static" },
+      {
+        column: 18,
+        line: 11,
+        name: "args",
+        type: "array",
+        value: [
+          { type: "number", value: 1 },
+          { type: "number", value: 1 },
+          { type: "number", value: 1 },
+        ],
+      },
     ]);
   });
 
@@ -143,7 +153,46 @@ describe("jsx ast extractor", () => {
     const elements = getJsxElementProps(sourceFile, sceneObject!);
 
     expect(elements).toEqual([
-      { column: 27, line: 12, name: "color", value: "pink", type: "static" },
+      { column: 27, line: 12, name: "color", value: "pink", type: "string" },
+    ]);
+  });
+
+  it("should extract implicit boolean props", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/with-comments.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 1, 10);
+
+    const elements = getJsxElementProps(sourceFile, sceneObject!);
+
+    expect(elements).toEqual([
+      { column: 9, line: 3, name: "visible", value: true, type: "boolean" },
+    ]);
+  });
+
+  it("should extract explicit boolean props", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/with-comments.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 11, 10);
+
+    const elements = getJsxElementProps(sourceFile, sceneObject!);
+
+    expect(elements).toEqual([
+      { column: 9, line: 13, name: "visible", value: true, type: "boolean" },
+      {
+        column: 24,
+        line: 13,
+        name: "castShadow",
+        value: false,
+        type: "boolean",
+      },
     ]);
   });
 
@@ -164,21 +213,21 @@ describe("jsx ast extractor", () => {
         line: 10,
         name: "position",
         value: "position",
-        type: "unhandled",
+        type: "identifier",
       },
       {
         column: 29,
         line: 10,
         name: "rotation",
         value: "rotation",
-        type: "unhandled",
+        type: "identifier",
       },
       {
         column: 49,
         line: 10,
         name: "scale",
         value: "scale",
-        type: "unhandled",
+        type: "identifier",
       },
     ]);
   });
@@ -202,15 +251,23 @@ describe("jsx ast extractor", () => {
         column: 10,
         line: 18,
         name: "position",
-        value: [0.9223319881614562, 0, 4.703084245305494],
-        type: "static",
+        value: [
+          { value: 0.9223319881614562, type: "number" },
+          { value: 0, type: "number" },
+          { value: 4.703084245305494, type: "number" },
+        ],
+        type: "array",
       },
       {
         column: 61,
         line: 19,
         name: "rotation",
-        value: [1.660031347769923, -0.07873115868670048, -0.7211124466452248],
-        type: "static",
+        value: [
+          { value: 1.660031347769923, type: "number" },
+          { value: -0.07873115868670048, type: "number" },
+          { value: -0.7211124466452248, type: "number" },
+        ],
+        type: "array",
       },
     ]);
   });
