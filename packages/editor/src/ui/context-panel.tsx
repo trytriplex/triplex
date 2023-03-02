@@ -4,47 +4,7 @@ import { getEditorLink } from "../util/ide";
 import { Suspense, useDeferredValue, useEffect } from "react";
 import { useEditor, FocusedObject } from "../stores/editor";
 import { ScrollContainer } from "../ds/scroll-container";
-
-interface Prop {
-  column: number;
-  line: number;
-  name: string;
-  value: unknown;
-  type: "static" | "unhandled";
-}
-
-function Prop({ value, width = "100%" }: { value: unknown; width?: string }) {
-  if (Array.isArray(value)) {
-    return (
-      <div className="flex gap-0.5">
-        {value.map((val, index) => (
-          <Prop key={index} width={`${100 / value.length}%`} value={val} />
-        ))}
-      </div>
-    );
-  }
-
-  const isNumber = Number.isFinite(Number(value));
-
-  let normalizedValue: string | number;
-
-  if (isNumber) {
-    const num = Number(value);
-    const isDecimal = Math.abs(num) - Math.floor(Math.abs(num)) > 0;
-    normalizedValue = isDecimal ? num.toFixed(2) : num;
-  } else {
-    normalizedValue = `{${value}}`;
-  }
-
-  return (
-    <input
-      style={{ width }}
-      readOnly
-      className="rounded border-2 border-neutral-700 bg-transparent py-0.5 px-1 text-neutral-400 outline-none"
-      value={normalizedValue}
-    />
-  );
-}
+import { Prop, PropInput } from "./prop-input";
 
 function SelectedSceneObject({ target }: { target: FocusedObject }) {
   const data = useLazySubscription<{
@@ -112,28 +72,28 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
 
       <div className="h-0.5 bg-neutral-700" />
 
-      <ScrollContainer className="pt-2">
-        {data.props.map((prop) => (
-          <div className="mb-2 px-4" key={`${prop.column}${prop.line}`}>
-            <div>
-              <a
-                className="text-sm text-neutral-300"
-                href={getEditorLink({
-                  path: target.ownerPath,
-                  // ts-morph/tsc lines start from zero - offset them.
-                  column: prop.column + 2,
-                  line: prop.line + 1,
-                  editor: "vscode",
-                })}
+      <ScrollContainer>
+        <div className="h-4" />
+        {data.props
+          .filter((prop) => prop.type !== "spread")
+          .map((prop) => (
+            <div
+              className="mb-2 flex w-full flex-shrink gap-2 px-4"
+              key={`${prop.column}${prop.line}`}
+            >
+              <div
+                title={prop.name}
+                className="h-7 w-full overflow-hidden text-ellipsis pt-1 text-right text-sm text-neutral-300"
               >
-                {prop.name}
-              </a>
-            </div>
+                <label htmlFor={prop.name}>{prop.name}</label>
+              </div>
 
-            <Prop value={prop.value} />
-          </div>
-        ))}
-        <div className="h-1" />
+              <div className="flex w-[139px] flex-shrink-0 flex-col justify-center gap-1">
+                <PropInput path={target.ownerPath} prop={prop} />
+              </div>
+            </div>
+          ))}
+        <div className="h-2" />
       </ScrollContainer>
     </>
   );
