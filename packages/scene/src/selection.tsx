@@ -49,6 +49,21 @@ interface SceneObjectData {
   >;
 }
 
+function encodeProps(selected: EditorNodeData): string {
+  if ("position" in selected.props) {
+    // If position exists we want to make sure we pass in the world position
+    // So if any parent groups have their position set when we transition
+    // It won't jump around unexpectedly.
+    const worldPosition = selected.sceneObject.getWorldPosition(V1).toArray();
+    return JSON.stringify({
+      ...selected.props,
+      position: worldPosition,
+    });
+  }
+
+  return JSON.stringify(selected.props);
+}
+
 const findTransformedSceneObject = (
   sceneObject: Object3D,
   transform: "translate" | "scale" | "rotate"
@@ -256,7 +271,7 @@ export function Selection({
         onNavigate({
           path: selected.path,
           exportName: selected.exportName,
-          encodedProps: JSON.stringify(selected.props),
+          encodedProps: encodeProps(selected),
         });
         setSelected(undefined);
         onBlur();
@@ -365,7 +380,7 @@ export function Selection({
         onNavigate({
           path: selected.path,
           exportName: selected.exportName,
-          encodedProps: JSON.stringify(selected.props),
+          encodedProps: encodeProps(selected),
         });
       }
 

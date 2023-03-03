@@ -99,9 +99,9 @@ function SceneContents() {
       <div className="h-0.5 bg-neutral-700" />
 
       <ScrollContainer>
-        <div className="h-1" />
+        <div className="h-2" />
         <SceneObjectButtons sceneObjects={scene.sceneObjects} />
-        <div className="h-1" />
+        <div className="h-2" />
       </ScrollContainer>
     </div>
   );
