@@ -4,11 +4,7 @@
       <image width="128" height="128" src="https://user-images.githubusercontent.com/6801309/220534156-eb195365-a438-4233-b83c-a5463c57b1e9.png" />
     </picture>
   </a>
-  <h1 align="center"><strong>TRIPLEX</strong></h1>
-</p>
-
-<p align="center">
-  The React Three Fiber framework and editor that saves your changes back to source.
+  <h1 align="center">TRIPLEX</h1>
 </p>
 
 <p align="center">
@@ -17,8 +13,8 @@
 
 ## Getting started
 
-TRIPLEX is made to work standalone and with other frameworks like Next.js or Remix.
-To start run this command in a folder you want to initialize:
+TRIPLEX works standalone and with other frameworks like Next.js or Remix.
+Start by initializing in a folder:
 
 > **Note** - Starting fresh? Create a folder first.
 >
@@ -31,7 +27,7 @@ To start run this command in a folder you want to initialize:
 npx @triplex/run@latest init
 ```
 
-And follow the prompts.
+Then follow the prompts.
 
 ### Config
 
@@ -45,7 +41,6 @@ find it in the `.triplex` folder.
 
 ## Running the editor
 
-TRIPLEX has an embedded editor that syncs changes back and fourth from scene to source.
 To start run:
 
 ```sh

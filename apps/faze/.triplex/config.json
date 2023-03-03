@@ -1,0 +1,3 @@
+{
+  "files": ["../src/scenes/*.tsx", "../src/meshes/*.tsx"]
+}

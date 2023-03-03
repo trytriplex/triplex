@@ -11,7 +11,8 @@
     "lint": "eslint ./",
     "ci:publish": "pnpm build && pnpm publish --recursive --access=public && changeset tag",
     "ci:version": "changeset version && pnpm install --lockfile-only",
-    "dev": "pnpm --filter geometry_example editor",
+    "dev:geometry": "pnpm --filter geometry_example editor",
+    "dev:faze": "pnpm --filter faze editor",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "triplex": "pnpm --filter geometry_example triplex"
   },
@@ -32,5 +33,5 @@
   "engines": {
     "node": ">=14.0.0"
   },
-  "packageManager": "pnpm@7.21.0"
+  "packageManager": "pnpm@7.28.0"
 }

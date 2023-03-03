@@ -20,10 +20,16 @@ export async function createServer({
 }) {
   const app = express();
   const { createServer: createViteServer } = await import("vite");
+  const { default: glsl } = await import("vite-plugin-glsl");
 
   const vite = await createViteServer({
     configFile: false,
-    plugins: [react(), scenePlugin(), tsconfigPaths({ projects: [tsConfig] })],
+    plugins: [
+      react(),
+      glsl(),
+      scenePlugin(),
+      tsconfigPaths({ projects: [tsConfig] }),
+    ],
     root: process.cwd(),
     appType: "custom",
     publicDir,

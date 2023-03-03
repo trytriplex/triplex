@@ -83,7 +83,7 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
             >
               <div
                 title={prop.name}
-                className="h-7 w-full overflow-hidden text-ellipsis pt-1 text-right text-sm text-neutral-300"
+                className="h-7 w-[61px] overflow-hidden text-ellipsis pt-1 text-right text-sm text-neutral-300"
               >
                 <label htmlFor={prop.name}>{prop.name}</label>
               </div>
