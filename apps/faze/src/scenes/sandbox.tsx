@@ -177,7 +177,10 @@ export function SandboxScene() {
 
       <hemisphereLight color="#87CEEB" intensity={0.3} groundColor="#362907" />
       <ambientLight intensity={0.3} />
-      <directionalLight position={[2.5, 8, 5]} intensity={0.5} />
+      <directionalLight
+        position={[2.5, 8.047348851185415, 5]}
+        intensity={0.5}
+      />
       <pointLight position={[-10, 0, -20]} color="#eef4aa" intensity={0.5} />
       <CascadedShadowMap />
     </>

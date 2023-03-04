@@ -80,11 +80,12 @@ export function SceneFrame({
     };
   }, [path]);
 
-  const onJumpTo = useCallback((point: Vector3Tuple, box: Box3) => {
-    const center = box.getCenter(V1);
+  const onJumpTo = useCallback((position: Vector3Tuple, box: Box3) => {
     setFocalPoint({
-      objectCenter: center.toArray(),
-      grid: [point[0], 0, point[2]],
+      // If the box is empty (as the object takes up no 3d space, like a light)
+      // We instead use the position instead of the center position.
+      objectCenter: box.isEmpty() ? position : box.getCenter(V1).toArray(),
+      grid: [position[0], 0, position[2]],
     });
   }, []);
 

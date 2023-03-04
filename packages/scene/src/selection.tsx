@@ -191,8 +191,9 @@ const findSceneObjectFromSource = (
   scene.traverse((obj) => {
     if ("triplexSceneMeta" in obj.userData) {
       const node: EditorNodeData = obj.userData.triplexSceneMeta;
-      if (node.column === column && node.line === line) {
-        // We've found our scene object!
+      if (node.column === column && node.line === line && obj.children[0]) {
+        // We've found our scene object that _also_ has a direct child in the
+        // Three.js scene.
         nodeData = findEditorData(obj, transform, positions);
       }
     }
@@ -365,10 +366,9 @@ export function Selection({
       }
 
       if (e.key === "f") {
-        box.setFromObject(selected.sceneObject);
         onJumpTo(
           selected.sceneObject.getWorldPosition(V1).toArray(),
-          box,
+          box.setFromObject(selected.sceneObject),
           selected.sceneObject
         );
       }
