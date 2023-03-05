@@ -1,5 +1,20 @@
 # @triplex/scene
 
+## 0.27.0
+
+### Minor Changes
+
+- 56f2b3e: Scene objects that have no dimensions (such as lights) can now be focused.
+- fa35cde: JSX element type inference has been removed from the critical path of the scene transform.
+- 1e405c3: Scene object selection is now scoped to ensure only selecting objects from the current open scene.
+- fa35cde: Fix unguarded three.js child check.
+- 9b1d135: When transitioning to a scene and it has a position prop set it is replaced with the world position.
+
+### Patch Changes
+
+- @triplex/bridge@0.27.0
+- @triplex/ws-client@0.27.0
+
 ## 0.26.0
 
 ### Minor Changes
