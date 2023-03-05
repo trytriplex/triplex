@@ -1,5 +1,19 @@
 # @triplex/editor
 
+## 0.27.0
+
+### Minor Changes
+
+- fa35cde: Fixes UI scrolling and contrast bugs.
+- 9b1d135: Increased gutters in the scene panel list as well as fixing the variable width in the context panel.
+- 246217f: Text contrast in the scene and context panel have been improved.
+- e5a3419: Context panel now supports more prop types.
+
+### Patch Changes
+
+- @triplex/bridge@0.27.0
+- @triplex/ws-client@0.27.0
+
 ## 0.26.0
 
 ### Minor Changes

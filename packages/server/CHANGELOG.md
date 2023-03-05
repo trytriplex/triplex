@@ -1,5 +1,13 @@
 # @triplex/server
 
+## 0.27.0
+
+### Minor Changes
+
+- fa35cde: JSX element type inference has been re-written to be more resilient.
+- fa35cde: JSX element type inference has been removed from the critical path of the scene transform.
+- e5a3419: Context panel now supports more prop types.
+
 ## 0.26.0
 
 ### Minor Changes

@@ -1,5 +1,26 @@
 # @triplex/client
 
+## 0.27.0
+
+### Minor Changes
+
+- 9b1d135: Adds out-of-the-box support for `.gtlf`, `.vert`, and `.frag` files.
+- e5a3419: Context panel now supports more prop types.
+
+### Patch Changes
+
+- Updated dependencies [fa35cde]
+- Updated dependencies [9b1d135]
+- Updated dependencies [56f2b3e]
+- Updated dependencies [fa35cde]
+- Updated dependencies [246217f]
+- Updated dependencies [1e405c3]
+- Updated dependencies [fa35cde]
+- Updated dependencies [e5a3419]
+- Updated dependencies [9b1d135]
+  - @triplex/editor@0.27.0
+  - @triplex/scene@0.27.0
+
 ## 0.26.0
 
 ### Patch Changes
