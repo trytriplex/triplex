@@ -27,7 +27,7 @@ function SceneComponent({
         selected
           ? "border-l-blue-300 bg-neutral-700 text-blue-300"
           : "text-neutral-300 hover:border-l-blue-300 hover:bg-neutral-700 active:bg-neutral-600",
-        "flex w-full cursor-default border-l-2 border-transparent py-1.5 px-3 text-left text-sm -outline-offset-1",
+        "block w-[208px] cursor-default overflow-hidden text-ellipsis border-l-2 border-transparent py-1.5 px-3 text-left text-sm -outline-offset-1",
       ])}
     >
       {name}

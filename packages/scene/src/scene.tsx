@@ -1,7 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import { send } from "@triplex/bridge/client";
 import { Canvas } from "./canvas";
-import type { SelectedNode } from "./selection";
 import { OrbitControls, PerspectiveCamera, Grid } from "@react-three/drei";
 import {
   Suspense,
@@ -105,7 +104,7 @@ export function SceneFrame({
     [setSearchParams]
   );
 
-  const onFocus = useCallback((data: SelectedNode) => {
+  const onFocus = useCallback((data: { column: number; line: number }) => {
     send("trplx:onSceneObjectFocus", {
       column: data.column,
       line: data.line,

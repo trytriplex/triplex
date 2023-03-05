@@ -7,16 +7,11 @@ import { Box3, Object3D, Vector3, Vector3Tuple } from "three";
 import { TransformControls as TransformControlsImpl } from "three-stdlib";
 
 export interface EditorNodeData {
-  path: string;
-  exportName: string;
   name: string;
   line: number;
   column: number;
   props: Record<string, unknown>;
-  rotate: boolean;
-  scale: boolean;
   sceneObject: Object3D;
-  translate: boolean;
   space: "local" | "world";
 }
 
@@ -37,7 +32,9 @@ interface Prop {
 }
 
 interface SceneObjectData {
+  exportName: string;
   name: string;
+  path: string;
   props: Prop[];
   propTypes: Record<
     string,
@@ -47,6 +44,9 @@ interface SceneObjectData {
       type: unknown;
     }
   >;
+  rotate: boolean;
+  scale: boolean;
+  translate: boolean;
 }
 
 function encodeProps(selected: EditorNodeData): string {
@@ -98,7 +98,7 @@ const findTransformedSceneObject = (
     // and the next triplex boundary has the transform prop applied - if it
     // does we've found the scene object we're interested in!
     // NOTE: This relies on r3f internals meaning this is a vector for breaks.
-    if (propertyName in child.__r3f.memoizedProps) {
+    if (child && child.__r3f && propertyName in child.__r3f.memoizedProps) {
       foundSceneObject = child;
     }
   });
@@ -224,7 +224,7 @@ export function Selection({
 }: {
   children?: ReactNode;
   onBlur: () => void;
-  onFocus: (node: SelectedNode) => void;
+  onFocus: (node: { column: number; line: number }) => void;
   onJumpTo: (v: Vector3Tuple, bb: Box3, obj: Object3D) => void;
   onNavigate: (node: {
     path: string;
@@ -260,7 +260,7 @@ export function Selection({
 
   useEffect(() => {
     return listen("trplx:requestNavigateToScene", (sceneObject) => {
-      if (!sceneObject && !selected) {
+      if (!sceneObject && (!selected || !objectData)) {
         return;
       }
 
@@ -268,17 +268,17 @@ export function Selection({
         onNavigate(sceneObject);
         setSelected(undefined);
         onBlur();
-      } else if (selected && selected.path) {
+      } else if (selected && objectData && objectData.path) {
         onNavigate({
-          path: selected.path,
-          exportName: selected.exportName,
+          path: objectData.path,
+          exportName: objectData.exportName,
           encodedProps: encodeProps(selected),
         });
         setSelected(undefined);
         onBlur();
       }
     });
-  }, [onBlur, onNavigate, selected]);
+  }, [onBlur, onNavigate, selected, objectData]);
 
   useEffect(() => {
     return listen("trplx:requestBlurSceneObject", () => {
@@ -292,10 +292,6 @@ export function Selection({
       return;
     }
 
-    preloadSubscription(
-      `/scene/${encodeURIComponent(selected.path)}/${selected.exportName}`
-    );
-
     return listen("trplx:requestJumpToSceneObject", () => {
       box.setFromObject(selected.sceneObject);
       onJumpTo(
@@ -305,6 +301,16 @@ export function Selection({
       );
     });
   }, [onJumpTo, selected]);
+
+  useEffect(() => {
+    if (!objectData || !objectData.exportName || !objectData.path) {
+      return;
+    }
+
+    preloadSubscription(
+      `/scene/${encodeURIComponent(objectData.path)}/${objectData.exportName}`
+    );
+  }, [objectData]);
 
   useEffect(() => {
     return listen("trplx:requestFocusSceneObject", (data) => {
@@ -373,13 +379,19 @@ export function Selection({
         );
       }
 
-      if (e.key === "F" && e.shiftKey && selected.path) {
+      if (
+        e.key === "F" &&
+        e.shiftKey &&
+        selected &&
+        objectData &&
+        objectData.path
+      ) {
         // Only navigate if there is a path to navigate to.
         setSelected(undefined);
         onBlur();
         onNavigate({
-          path: selected.path,
-          exportName: selected.exportName,
+          path: objectData.path,
+          exportName: objectData.exportName,
           encodedProps: encodeProps(selected),
         });
       }
@@ -424,7 +436,7 @@ export function Selection({
     document.addEventListener("keyup", callback);
 
     return () => document.removeEventListener("keyup", callback);
-  }, [onBlur, onJumpTo, onNavigate, selected, sceneObjects]);
+  }, [onBlur, onJumpTo, onNavigate, selected, sceneObjects, objectData]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onMouseUp = (e: any) => {
@@ -481,7 +493,7 @@ export function Selection({
       {children}
       {selected && (
         <TransformControls
-          enabled={selected[transform] && !!objectData}
+          enabled={!!objectData && objectData[transform]}
           mode={transform}
           object={selected.sceneObject}
           onMouseDown={() => (dragging.current = true)}
