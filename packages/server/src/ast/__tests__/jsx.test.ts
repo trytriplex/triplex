@@ -4,7 +4,6 @@ import {
   getJsxElementAt,
   getJsxElementProps,
   getJsxElementsPositions,
-  getJsxElementPropTypes,
 } from "../jsx";
 import { _createProject } from "../project";
 
@@ -32,6 +31,27 @@ describe("jsx ast extractor", () => {
         column: 6,
         line: 24,
         name: "Cylinder",
+        type: "custom",
+      },
+      {
+        children: [],
+        column: 6,
+        line: 27,
+        name: "SceneAlt",
+        type: "custom",
+      },
+      {
+        children: [],
+        column: 6,
+        line: 28,
+        name: "SceneWrapped",
+        type: "custom",
+      },
+      {
+        children: [],
+        column: 6,
+        line: 29,
+        name: "SceneArrow",
         type: "custom",
       },
     ]);
@@ -316,166 +336,6 @@ describe("jsx ast extractor", () => {
     ]);
   });
 
-  it("should return the path of an imported component", () => {
-    const project = _createProject({
-      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
-    });
-    const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/import-named.tsx")
-    );
-    const sceneObject = getJsxElementAt(sourceFile, 11, 6);
-    if (!sceneObject) {
-      throw new Error("not found");
-    }
-
-    const types = getJsxElementPropTypes(sourceFile, sceneObject);
-
-    expect(types.filePath).toEqual(
-      join(process.cwd(), "packages/server/src/ast/__tests__/__mocks__/box.tsx")
-    );
-  });
-
-  it("should return the path of an local component", () => {
-    const project = _createProject({
-      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
-    });
-    const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/import-named.tsx")
-    );
-    const sceneObject = getJsxElementAt(sourceFile, 19, 6);
-    if (!sceneObject) {
-      throw new Error("not found");
-    }
-
-    const types = getJsxElementPropTypes(sourceFile, sceneObject);
-
-    expect(types.filePath).toEqual(
-      join(
-        process.cwd(),
-        "packages/server/src/ast/__tests__/__mocks__/import-named.tsx"
-      )
-    );
-  });
-
-  it("should return types of a imported component", () => {
-    const project = _createProject({
-      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
-    });
-    const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/import-named.tsx")
-    );
-    const sceneObject = getJsxElementAt(sourceFile, 11, 6);
-    if (!sceneObject) {
-      throw new Error("not found");
-    }
-
-    const types = getJsxElementPropTypes(sourceFile, sceneObject);
-
-    expect(types.propTypes).toMatchInlineSnapshot(`
-      {
-        "position": {
-          "name": "position",
-          "required": false,
-          "type": [
-            "number",
-            "number",
-            "number",
-          ],
-        },
-        "rotation": {
-          "name": "rotation",
-          "required": false,
-          "type": [
-            "number",
-            "number",
-            "number",
-          ],
-        },
-        "scale": {
-          "name": "scale",
-          "required": false,
-          "type": [
-            "number",
-            "number",
-            "number",
-          ],
-        },
-      }
-    `);
-  });
-
-  it("should return types of a local component", () => {
-    const project = _createProject({
-      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
-    });
-    const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/import-named.tsx")
-    );
-    const sceneObject = getJsxElementAt(sourceFile, 19, 6);
-    if (!sceneObject) {
-      throw new Error("not found");
-    }
-
-    const types = getJsxElementPropTypes(sourceFile, sceneObject);
-
-    expect(types.propTypes).toMatchInlineSnapshot(`
-      {
-        "color": {
-          "name": "color",
-          "required": false,
-          "type": {
-            "kind": "type",
-            "value": "string",
-          },
-        },
-      }
-    `);
-  });
-
-  it("should return types of an wrapped arrow function component", () => {
-    const project = _createProject({
-      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
-    });
-    const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
-    );
-    const sceneObject = getJsxElementAt(sourceFile, 11, 6);
-    if (!sceneObject) {
-      throw new Error("not found");
-    }
-
-    const types = getJsxElementPropTypes(sourceFile, sceneObject);
-
-    expect(types.filePath).toEqual(
-      join(
-        process.cwd(),
-        "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
-      )
-    );
-  });
-
-  it("should return types of a direct arrow function component", () => {
-    const project = _createProject({
-      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
-    });
-    const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
-    );
-    const sceneObject = getJsxElementAt(sourceFile, 12, 6);
-    if (!sceneObject) {
-      throw new Error("not found");
-    }
-
-    const types = getJsxElementPropTypes(sourceFile, sceneObject);
-
-    expect(types.filePath).toEqual(
-      join(
-        process.cwd(),
-        "packages/server/src/ast/__tests__/__mocks__/type-extraction.tsx"
-      )
-    );
-  });
-
   it("should extract jsx positions from a separated export", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
@@ -512,22 +372,5 @@ describe("jsx ast extractor", () => {
         },
       ]
     `);
-  });
-
-  it("should not throw when extracting types from typedef jsx", () => {
-    const project = _createProject({
-      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
-    });
-    const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
-    );
-    const sceneObject = getJsxElementAt(sourceFile, 18, 8);
-    if (!sceneObject) {
-      throw new Error("not found");
-    }
-
-    expect(() => {
-      getJsxElementPropTypes(sourceFile, sceneObject);
-    }).not.toThrow();
   });
 });

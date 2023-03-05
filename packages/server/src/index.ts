@@ -5,10 +5,10 @@ import { watch } from "chokidar";
 import {
   createProject,
   getJsxElementPropTypes,
-  getLocalName,
   getJsxElementAt,
   getJsxElementProps,
   getJsxTag,
+  getElementFilePath,
 } from "./ast";
 import { getParam } from "./util/params";
 import { createServer as createWSS } from "./util/ws-server";
@@ -157,6 +157,7 @@ export function createServer({ files }: { files: string[] }) {
       const column = Number(params.column);
       const { sourceFile } = project.getSourceFile(path);
       const sceneObject = getJsxElementAt(sourceFile, line, column);
+
       if (!sceneObject) {
         // Initial request - throw an error.
         if (type === "pull") {
@@ -175,17 +176,38 @@ export function createServer({ files }: { files: string[] }) {
 
       const tag = getJsxTag(sceneObject);
       const props = getJsxElementProps(sourceFile, sceneObject);
-      const types = getJsxElementPropTypes(sourceFile, sceneObject);
+      const propTypes = getJsxElementPropTypes(sceneObject);
 
       if (tag.type === "custom") {
-        const exportName = getLocalName(sourceFile, tag.name);
+        const elementPath = getElementFilePath(sceneObject);
+
+        let rotate = false;
+        let scale = false;
+        let translate = false;
+
+        for (const prop of propTypes) {
+          if (prop.name === "rotation") {
+            rotate = true;
+          }
+
+          if (prop.name === "scale") {
+            scale = true;
+          }
+
+          if (prop.name === "position") {
+            translate = true;
+          }
+        }
 
         return {
+          exportName: elementPath.exportName,
           name: tag.name,
-          path: types.filePath,
-          exportName: exportName.importName,
+          path: elementPath.filePath,
           props,
-          propTypes: types.propTypes,
+          propTypes,
+          rotate,
+          scale,
+          translate,
           type: tag.type,
         };
       }
@@ -193,7 +215,10 @@ export function createServer({ files }: { files: string[] }) {
       return {
         name: tag.name,
         props,
-        propTypes: types.propTypes,
+        propTypes,
+        rotate: true,
+        scale: true,
+        translate: true,
         type: tag.type,
       };
     },

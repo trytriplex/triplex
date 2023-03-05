@@ -1,9 +1,30 @@
 import { join } from "path";
 import { describe, expect, it } from "vitest";
-import { getExportName, getLocalName } from "../module";
+import { getJsxElementAt } from "../jsx";
+import { getExportName, getElementFilePath } from "../module";
 import { _createProject } from "../project";
 
 describe("module", () => {
+  it("should return the file path and export", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/scene.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 18, 6);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const path = getElementFilePath(sceneObject);
+
+    expect(path).toEqual({
+      filePath: join(__dirname, "__mocks__/box.tsx"),
+      exportName: "default",
+    });
+  });
+
   it("should return the name of a disconnected default export", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
@@ -63,11 +84,16 @@ describe("module", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/import-named.tsx")
     );
+    const sceneObject = getJsxElementAt(sourceFile, 11, 6);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
 
-    const actual = getLocalName(sourceFile, "Box");
+    const actual = getElementFilePath(sceneObject);
 
     expect(actual).toEqual({
-      importName: "default",
+      filePath: join(__dirname, "__mocks__/box.tsx"),
+      exportName: "default",
     });
   });
 
@@ -78,11 +104,16 @@ describe("module", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/import-named.tsx")
     );
+    const sceneObject = getJsxElementAt(sourceFile, 17, 6);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
 
-    const actual = getLocalName(sourceFile, "Named");
+    const actual = getElementFilePath(sceneObject);
 
     expect(actual).toEqual({
-      importName: "Named",
+      filePath: join(__dirname, "__mocks__/named.tsx"),
+      exportName: "Named",
     });
   });
 
@@ -93,11 +124,16 @@ describe("module", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/import-named.tsx")
     );
+    const sceneObject = getJsxElementAt(sourceFile, 18, 6);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
 
-    const actual = getLocalName(sourceFile, "Remapped");
+    const actual = getElementFilePath(sceneObject);
 
     expect(actual).toEqual({
-      importName: "Named",
+      filePath: join(__dirname, "__mocks__/named.tsx"),
+      exportName: "Named",
     });
   });
 
@@ -108,11 +144,56 @@ describe("module", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/import-named.tsx")
     );
+    const sceneObject = getJsxElementAt(sourceFile, 19, 6);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
 
-    const actual = getLocalName(sourceFile, "SceneAlt");
+    const actual = getElementFilePath(sceneObject);
 
     expect(actual).toEqual({
-      importName: "SceneAlt",
+      filePath: join(__dirname, "__mocks__/import-named.tsx"),
+      exportName: "SceneAlt",
+    });
+  });
+
+  it("should return arrow func path", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/scene.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 29, 6);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const actual = getElementFilePath(sceneObject);
+
+    expect(actual).toEqual({
+      filePath: join(__dirname, "__mocks__/scene.tsx"),
+      exportName: "SceneArrow",
+    });
+  });
+
+  it("should return wrapped arrow func path", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/scene.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 28, 6);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const actual = getElementFilePath(sceneObject);
+
+    expect(actual).toEqual({
+      filePath: join(__dirname, "__mocks__/scene.tsx"),
+      exportName: "SceneWrapped",
     });
   });
 });

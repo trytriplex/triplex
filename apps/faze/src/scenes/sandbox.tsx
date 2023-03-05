@@ -110,7 +110,7 @@ export function SandboxScene() {
       <Tree position={[7, -0.35, -3]} />
       <NPCEntity
         speed={5}
-        position={[2, 0, 0]}
+        position={[1.4622019307180276, 0, 0.31658175916090947]}
         positionCycle={[
           [-5, 0, 0],
           [-5, 0, 5],
@@ -169,11 +169,20 @@ export function SandboxScene() {
         positionCycle={[[-3, 0, 10]]}
       />
 
-      <ItemEntity id="bone" position={[-5, 1, -1]} />
+      <ItemEntity
+        id="bone"
+        position={[-2.937701209752876, 1, -0.20588456170343328]}
+      />
       <ItemEntity id="bone" position={[-7.5, 5, -13]} />
 
-      <ItemEntity id="gum" position={[-6, 1, -5]} />
-      <ItemEntity id="stick" position={[-6, 1, -6]} />
+      <ItemEntity
+        id="gum"
+        position={[-4.187484792352585, 1, -3.267958833236561]}
+      />
+      <ItemEntity
+        id="stick"
+        position={[-7.405874236287305, 0.5685185565842982, -5.306576506353176]}
+      />
 
       <hemisphereLight color="#87CEEB" intensity={0.3} groundColor="#362907" />
       <ambientLight intensity={0.3} />

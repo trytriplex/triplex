@@ -5,7 +5,6 @@ export {
   getJsxAttributeValue,
   getJsxElementAt,
   getJsxElementProps,
-  getJsxElementPropTypes,
   getJsxElementsPositions,
   getJsxTag,
   serializeProps,
@@ -13,4 +12,5 @@ export {
 } from "./jsx";
 export { createProject, type TRIPLEXProject } from "./project";
 export { cloneAndWrapSourceJsx as wrapSourceFileJsxSync } from "./transform";
-export { getExportName, getLocalName } from "./module";
+export { getExportName, getElementFilePath } from "./module";
+export { getJsxElementPropTypes } from "./type-infer";

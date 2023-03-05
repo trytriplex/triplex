@@ -1,38 +1,12 @@
 import { join } from "path";
 import {
   createWrappedNode,
-  JsxElement,
-  JsxSelfClosingElement,
   SourceFile,
   SyntaxKind,
   TransformTraversalControl,
   ts,
 } from "ts-morph";
-import { getJsxElementPropTypes, getJsxTag, serializeProps } from "./jsx";
-import { getLocalName } from "./module";
-
-function getNodeTransforms(
-  sourceFile: SourceFile,
-  element: JsxSelfClosingElement | JsxElement
-) {
-  const tag = getJsxTag(element);
-  if (tag.type === "host") {
-    return {
-      translate: true,
-      scale: true,
-      rotate: true,
-    };
-  }
-
-  const meta = getJsxElementPropTypes(sourceFile, element);
-
-  return {
-    filePath: meta.filePath,
-    translate: !!meta.propTypes.position,
-    scale: !!meta.propTypes.scale,
-    rotate: !!meta.propTypes.rotation,
-  };
-}
+import { getJsxTag, serializeProps } from "./jsx";
 
 const exclude = ["Material", "Geometry"];
 function isSceneObject(
@@ -68,9 +42,6 @@ function wrapSceneObject(
   const lineColumn = transformedSourceFile.getLineAndColumnAtPos(node.pos);
   const line = lineColumn.line - 1;
   const column = lineColumn.column - 1;
-  const transform = getNodeTransforms(originalSourceFile, wrappedNode);
-  const localName =
-    tag.type === "custom" ? getLocalName(originalSourceFile, tag.name) : "";
   const attributes = ts.isJsxElement(node)
     ? node.openingElement.attributes
     : node.attributes;
@@ -97,58 +68,24 @@ function wrapSceneObject(
               traversal.factory.createObjectLiteralExpression([
                 traversal.factory.createPropertyAssignment(
                   "triplexSceneMeta",
-                  traversal.factory.createObjectLiteralExpression(
-                    [
-                      traversal.factory.createPropertyAssignment(
-                        "name",
-                        traversal.factory.createStringLiteral(tag.name)
-                      ),
-                      transform.filePath &&
-                        traversal.factory.createPropertyAssignment(
-                          "path",
-                          traversal.factory.createStringLiteral(
-                            transform.filePath || ""
-                          )
-                        ),
-                      localName &&
-                        traversal.factory.createPropertyAssignment(
-                          "exportName",
-                          traversal.factory.createStringLiteral(
-                            localName.importName
-                          )
-                        ),
-                      traversal.factory.createPropertyAssignment(
-                        "line",
-                        traversal.factory.createNumericLiteral(line)
-                      ),
-                      traversal.factory.createPropertyAssignment(
-                        "column",
-                        traversal.factory.createNumericLiteral(column)
-                      ),
-                      traversal.factory.createPropertyAssignment(
-                        "props",
-                        serializeProps(traversal, attributes)
-                      ),
-                      traversal.factory.createPropertyAssignment(
-                        "translate",
-                        transform.translate
-                          ? traversal.factory.createTrue()
-                          : traversal.factory.createFalse()
-                      ),
-                      traversal.factory.createPropertyAssignment(
-                        "rotate",
-                        transform.rotate
-                          ? traversal.factory.createTrue()
-                          : traversal.factory.createFalse()
-                      ),
-                      traversal.factory.createPropertyAssignment(
-                        "scale",
-                        transform.scale
-                          ? traversal.factory.createTrue()
-                          : traversal.factory.createFalse()
-                      ),
-                    ].filter(Boolean) as ts.PropertyAssignment[]
-                  )
+                  traversal.factory.createObjectLiteralExpression([
+                    traversal.factory.createPropertyAssignment(
+                      "name",
+                      traversal.factory.createStringLiteral(tag.name)
+                    ),
+                    traversal.factory.createPropertyAssignment(
+                      "line",
+                      traversal.factory.createNumericLiteral(line)
+                    ),
+                    traversal.factory.createPropertyAssignment(
+                      "column",
+                      traversal.factory.createNumericLiteral(column)
+                    ),
+                    traversal.factory.createPropertyAssignment(
+                      "props",
+                      serializeProps(traversal, attributes)
+                    ),
+                  ])
                 ),
               ])
             )

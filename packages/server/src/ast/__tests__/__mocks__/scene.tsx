@@ -25,6 +25,9 @@ export default function Scene() {
       <Cylinder
         position={[0.8294721441907313, 0, 2.6996450834382677]}
       ></Cylinder>
+      <SceneAlt />
+      <SceneWrapped />
+      <SceneArrow />
     </>
   );
 }

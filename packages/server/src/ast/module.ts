@@ -1,5 +1,54 @@
-import { Node, SourceFile } from "ts-morph";
+import { JsxElement, JsxSelfClosingElement, Node, SourceFile } from "ts-morph";
 import { getExportDeclaration } from "./jsx";
+
+export function getElementFilePath(
+  element: JsxSelfClosingElement | JsxElement
+): { filePath: string; exportName: string } {
+  const tagNode = Node.isJsxSelfClosingElement(element)
+    ? element.getTagNameNode()
+    : element.getOpeningElement().getTagNameNode();
+
+  const jsxType = tagNode.getType();
+  const declaration = jsxType.getSymbolOrThrow().getDeclarations()[0];
+  const filePath = declaration.getSourceFile().getFilePath();
+
+  if (filePath.includes("node_modules")) {
+    return { filePath: "", exportName: "" };
+  }
+
+  const localSymbolDecl = tagNode.getSymbol()?.getDeclarations()[0];
+
+  if (Node.isImportClause(localSymbolDecl)) {
+    // Default import!
+    return { filePath, exportName: "default" };
+  }
+
+  if (Node.isImportSpecifier(localSymbolDecl)) {
+    // Named import!
+    const exportName = localSymbolDecl.getName();
+    return { filePath, exportName };
+  }
+
+  if (Node.isFunctionDeclaration(localSymbolDecl)) {
+    if (localSymbolDecl.isDefaultExport()) {
+      return { filePath, exportName: "default" };
+    }
+
+    if (localSymbolDecl.isNamedExport()) {
+      return { filePath, exportName: localSymbolDecl.getNameOrThrow() };
+    }
+  }
+
+  if (Node.isVariableDeclaration(localSymbolDecl)) {
+    const parent = localSymbolDecl.getParent().getParent();
+
+    if (Node.isVariableStatement(parent) && parent.isExported()) {
+      return { filePath, exportName: localSymbolDecl.getName() };
+    }
+  }
+
+  return { filePath: "", exportName: "" };
+}
 
 export function getExportName(
   sourceFile: SourceFile,
@@ -38,38 +87,4 @@ export function getExportName(
   }
 
   throw new Error(`invariant: no export ${exportName} found`);
-}
-
-export function getLocalName(sourceFile: SourceFile, exportName: string) {
-  const local = sourceFile.getLocal(exportName);
-  const decl = local?.getDeclarations()[0];
-
-  if (Node.isImportClause(decl)) {
-    const namedBindings = decl.getNamedBindings();
-    if (!namedBindings) {
-      return {
-        importName: "default",
-      };
-    }
-  }
-
-  if (Node.isImportSpecifier(decl)) {
-    return {
-      importName: decl.getName(),
-    };
-  }
-
-  if (Node.isFunctionDeclaration(decl)) {
-    return {
-      importName: decl.getNameOrThrow(),
-    };
-  }
-
-  if (Node.isVariableDeclaration(decl)) {
-    return {
-      importName: decl.getName(),
-    };
-  }
-
-  throw new Error("invariant: unhandled");
 }

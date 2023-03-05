@@ -153,59 +153,6 @@ export function unrollType(type: Type, _nested = false): unknown {
   };
 }
 
-export function getJsxElementPropTypes(
-  sourceFile: SourceFile,
-  element: JsxSelfClosingElement | JsxElement
-) {
-  const tag = getJsxTag(element);
-  const propTypes: Record<
-    string,
-    { name: string; required: boolean; type: unknown }
-  > = {};
-
-  if (tag.type === "host") {
-    return {
-      filePath: "",
-      propTypes,
-    };
-  }
-
-  const symbol = sourceFile.getLocalOrThrow(tag.name);
-  const node = symbol
-    .getDeclarations()[0]
-    .getType()
-    .getSymbolOrThrow()
-    .getDeclarations()[0];
-
-  if (!Node.isArrowFunction(node) && !Node.isFunctionDeclaration(node)) {
-    return {
-      filePath: "",
-      propTypes,
-    };
-  }
-
-  const [props] = node.getParameters();
-  const functionFilePath = node.getSourceFile().getFilePath();
-
-  if (props) {
-    props
-      .getType()
-      .getProperties()
-      .forEach((prop) => {
-        propTypes[prop.getName()] = {
-          name: prop.getName(),
-          required: !prop.isOptional(),
-          type: unrollType(prop.getTypeAtLocation(node)),
-        };
-      });
-  }
-
-  return {
-    filePath: functionFilePath,
-    propTypes,
-  };
-}
-
 export function serializeProps(
   traversal: TransformTraversalControl,
   attributes: ts.JsxAttributes
