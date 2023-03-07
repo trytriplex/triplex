@@ -15,7 +15,7 @@ function Scenes() {
   const { show } = useOverlayStore();
 
   return (
-    <div className="flex flex-col gap-2">
+    <div className="flex flex-col gap-2 px-2 pt-2">
       {files?.scenes.map((file) => (
         <div
           className={cn([

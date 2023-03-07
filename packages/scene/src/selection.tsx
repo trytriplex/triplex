@@ -92,12 +92,6 @@ const findTransformedSceneObject = (
       return;
     }
 
-    if ("triplexSceneMeta" in child.userData) {
-      // Stop traversing as we've reached another triplex boundary.
-      foundSceneObject = sceneObject;
-      return;
-    }
-
     // We need to find out if one of the jsx elements between sceneObject
     // and the next triplex boundary has the transform prop applied - if it
     // does we've found the scene object we're interested in!
