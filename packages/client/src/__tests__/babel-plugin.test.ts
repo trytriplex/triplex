@@ -115,6 +115,55 @@ describe("babel plugin", () => {
     `);
   });
 
+  it("should forward key", () => {
+    const result = transformSync(
+      `
+      export const HelloWorld = () => {
+        return (
+          <>
+            <mesh key="ok-then" />
+            <spotLight />
+          </>
+        );
+      }
+    `,
+      {
+        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        filename: "/box.tsx",
+      }
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "export const HelloWorld = () => {
+        return <>
+                  <group key=\\"ok-then\\" userData={{
+            \\"triplexSceneMeta\\": {
+              \\"path\\": \\"/box.tsx\\",
+              \\"name\\": \\"mesh\\",
+              \\"line\\": 5,
+              \\"column\\": 13,
+              \\"props\\": {
+                \\"key\\": \\"ok-then\\"
+              }
+            }
+          }}><mesh /></group>
+                  <group userData={{
+            \\"triplexSceneMeta\\": {
+              \\"path\\": \\"/box.tsx\\",
+              \\"name\\": \\"spotLight\\",
+              \\"line\\": 6,
+              \\"column\\": 13,
+              \\"props\\": {}
+            }
+          }}><spotLight /></group>
+                </>;
+      };
+      HelloWorld.triplexMeta = {
+        \\"lighting\\": \\"custom\\"
+      };"
+    `);
+  });
+
   it("should set lighting meta to custom", () => {
     const result = transformSync(
       `

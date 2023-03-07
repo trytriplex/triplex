@@ -29,11 +29,14 @@ export function DrawerContent({
       <Dialog.Close>
         <Dialog.Overlay className="fixed inset-0 cursor-default bg-black/20" />
       </Dialog.Close>
-      <Dialog.Content className="slide-in fixed top-0 left-0 bottom-0 flex w-48 flex-col bg-neutral-800 text-neutral-300 shadow-2xl shadow-black/50 outline-none">
-        <Dialog.DialogTitle className="mt-4 mb-2 px-4 text-2xl font-medium text-neutral-100">
+      <Dialog.Content className="slide-in fixed top-0 left-0 bottom-0 flex w-64 flex-col bg-neutral-800 text-neutral-300 shadow-2xl shadow-black/50 outline-none">
+        <Dialog.DialogTitle className="mt-6 mb-2 px-4 text-2xl font-medium text-neutral-100">
           {title}
         </Dialog.DialogTitle>
-        <ScrollContainer className="p-2">{children}</ScrollContainer>
+        <ScrollContainer>
+          {children}
+          <div className="h-2" />
+        </ScrollContainer>
         <Dialog.Close asChild>Close</Dialog.Close>
       </Dialog.Content>
     </Dialog.Portal>

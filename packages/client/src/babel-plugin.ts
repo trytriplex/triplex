@@ -138,45 +138,64 @@ export default function triplexBabelPlugin() {
           }
         }
 
+        const keyAttributeIndex = path.node.openingElement.attributes.findIndex(
+          (attr) =>
+            attr.type === "JSXAttribute" &&
+            attr.name.type === "JSXIdentifier" &&
+            attr.name.name === "key"
+        );
+        const keyAttribute =
+          path.node.openingElement.attributes[keyAttributeIndex];
+
         const newNode = t.jsxElement(
-          t.jsxOpeningElement(t.jsxIdentifier("group"), [
-            t.jsxAttribute(
-              t.jsxIdentifier("userData"),
-              t.jsxExpressionContainer(
-                t.objectExpression([
-                  t.objectProperty(
-                    t.stringLiteral("triplexSceneMeta"),
-                    t.objectExpression([
-                      t.objectProperty(
-                        t.stringLiteral("path"),
-                        t.stringLiteral(pass.filename || "")
-                      ),
-                      t.objectProperty(
-                        t.stringLiteral("name"),
-                        t.stringLiteral(elementName)
-                      ),
-                      t.objectProperty(
-                        t.stringLiteral("line"),
-                        t.numericLiteral(path.node.loc.start.line)
-                      ),
-                      t.objectProperty(
-                        t.stringLiteral("column"),
-                        // Align to tsc where column numbers start from 1
-                        t.numericLiteral(path.node.loc.start.column + 1)
-                      ),
-                      t.objectProperty(
-                        t.stringLiteral("props"),
-                        toObjectExpression(path.node.openingElement.attributes)
-                      ),
-                    ])
-                  ),
-                ])
-              )
-            ),
-          ]),
+          t.jsxOpeningElement(
+            t.jsxIdentifier("group"),
+            [
+              keyAttribute!,
+              t.jsxAttribute(
+                t.jsxIdentifier("userData"),
+                t.jsxExpressionContainer(
+                  t.objectExpression([
+                    t.objectProperty(
+                      t.stringLiteral("triplexSceneMeta"),
+                      t.objectExpression([
+                        t.objectProperty(
+                          t.stringLiteral("path"),
+                          t.stringLiteral(pass.filename || "")
+                        ),
+                        t.objectProperty(
+                          t.stringLiteral("name"),
+                          t.stringLiteral(elementName)
+                        ),
+                        t.objectProperty(
+                          t.stringLiteral("line"),
+                          t.numericLiteral(path.node.loc.start.line)
+                        ),
+                        t.objectProperty(
+                          t.stringLiteral("column"),
+                          // Align to tsc where column numbers start from 1
+                          t.numericLiteral(path.node.loc.start.column + 1)
+                        ),
+                        t.objectProperty(
+                          t.stringLiteral("props"),
+                          toObjectExpression(
+                            path.node.openingElement.attributes
+                          )
+                        ),
+                      ])
+                    ),
+                  ])
+                )
+              ),
+            ].filter(Boolean)
+          ),
           t.jsxClosingElement(t.jsxIdentifier("group")),
           [path.node]
         );
+
+        if (keyAttribute) {
+          path.node.openingElement.attributes.splice(keyAttributeIndex, 1);
+        }
 
         path.replaceWith(newNode);
       },
