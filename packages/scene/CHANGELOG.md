@@ -1,5 +1,16 @@
 # @triplex/scene
 
+## 0.29.0
+
+### Minor Changes
+
+- 0d83ef2: When selecting a scene object triplex now continues traversing down the tree looking for the appropriate object to use rather than stopping at the first encountered triplex boundary.
+
+### Patch Changes
+
+- @triplex/bridge@0.29.0
+- @triplex/ws-client@0.29.0
+
 ## 0.28.0
 
 ### Minor Changes

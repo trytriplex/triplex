@@ -1,5 +1,17 @@
 # @triplex/editor
 
+## 0.29.0
+
+### Minor Changes
+
+- 0d83ef2: Scene drawer now has correct padding and is increased in width.
+- 0d83ef2: The catch all prop field now has capped height stopping it from looking ridiculous.
+
+### Patch Changes
+
+- @triplex/bridge@0.29.0
+- @triplex/ws-client@0.29.0
+
 ## 0.28.0
 
 ### Minor Changes

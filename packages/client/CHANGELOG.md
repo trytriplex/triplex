@@ -1,5 +1,19 @@
 # @triplex/client
 
+## 0.29.0
+
+### Minor Changes
+
+- 0d83ef2: The babel plugin now forwards key prop to the wrapping group element.
+
+### Patch Changes
+
+- Updated dependencies [0d83ef2]
+- Updated dependencies [0d83ef2]
+- Updated dependencies [0d83ef2]
+  - @triplex/scene@0.29.0
+  - @triplex/editor@0.29.0
+
 ## 0.28.0
 
 ### Minor Changes
