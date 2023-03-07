@@ -1,5 +1,18 @@
 # @triplex/run
 
+## 0.28.0
+
+### Minor Changes
+
+- aa1aa8c: Scene transformation using ts-morph has been replaced with Babel significantly speeding up initial load and saving. The need for the `.triplex/tmp` folder is now gone and thus no longer used.
+
+### Patch Changes
+
+- Updated dependencies [aa1aa8c]
+- Updated dependencies [aa1aa8c]
+  - @triplex/client@0.28.0
+  - @triplex/server@0.28.0
+
 ## 0.27.0
 
 ### Patch Changes
