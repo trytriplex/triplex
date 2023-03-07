@@ -21,36 +21,36 @@ describe("jsx ast extractor", () => {
     expect(elements).toEqual([
       {
         children: [],
-        column: 6,
-        line: 18,
+        column: 7,
+        line: 19,
         name: "Box",
         type: "custom",
       },
       {
         children: [],
-        column: 6,
-        line: 24,
+        column: 7,
+        line: 25,
         name: "Cylinder",
         type: "custom",
       },
       {
         children: [],
-        column: 6,
-        line: 27,
+        column: 7,
+        line: 28,
         name: "SceneAlt",
         type: "custom",
       },
       {
         children: [],
-        column: 6,
-        line: 28,
+        column: 7,
+        line: 29,
         name: "SceneWrapped",
         type: "custom",
       },
       {
         children: [],
-        column: 6,
-        line: 29,
+        column: 7,
+        line: 30,
         name: "SceneArrow",
         type: "custom",
       },
@@ -70,8 +70,8 @@ describe("jsx ast extractor", () => {
     expect(elements).toEqual([
       {
         children: [],
-        column: 8,
-        line: 6,
+        column: 10,
+        line: 7,
         name: "Box",
         type: "custom",
       },
@@ -91,8 +91,8 @@ describe("jsx ast extractor", () => {
     expect(elements).toEqual([
       {
         children: [],
-        column: 31,
-        line: 3,
+        column: 33,
+        line: 4,
         name: "Box",
         type: "custom",
       },
@@ -111,21 +111,21 @@ describe("jsx ast extractor", () => {
 
     expect(elements).toEqual([
       {
-        column: 10,
-        line: 9,
+        column: 5,
+        line: 11,
         name: "mesh",
         type: "host",
         children: [
           {
-            column: 6,
-            line: 11,
+            column: 7,
+            line: 12,
             name: "boxGeometry",
             type: "host",
             children: [],
           },
           {
-            column: 6,
-            line: 12,
+            column: 7,
+            line: 13,
             name: "meshStandardMaterial",
             type: "host",
             children: [],
@@ -142,14 +142,14 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/box.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 11, 6);
+    const sceneObject = getJsxElementAt(sourceFile, 12, 7);
 
     const elements = getJsxElementProps(sourceFile, sceneObject!);
 
     expect(elements).toEqual([
       {
-        column: 18,
-        line: 11,
+        column: 20,
+        line: 12,
         name: "args",
         type: "array",
         value: [
@@ -168,12 +168,12 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/box.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 12, 6);
+    const sceneObject = getJsxElementAt(sourceFile, 13, 7);
 
     const elements = getJsxElementProps(sourceFile, sceneObject!);
 
     expect(elements).toEqual([
-      { column: 27, line: 12, name: "color", value: "pink", type: "string" },
+      { column: 29, line: 13, name: "color", value: "pink", type: "string" },
     ]);
   });
 
@@ -184,12 +184,12 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/with-comments.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 1, 10);
+    const sceneObject = getJsxElementAt(sourceFile, 4, 5);
 
     const elements = getJsxElementProps(sourceFile, sceneObject!);
 
     expect(elements).toEqual([
-      { column: 9, line: 3, name: "visible", value: true, type: "boolean" },
+      { column: 11, line: 4, name: "visible", value: true, type: "boolean" },
     ]);
   });
 
@@ -200,15 +200,15 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/with-comments.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 11, 10);
+    const sceneObject = getJsxElementAt(sourceFile, 14, 5);
 
     const elements = getJsxElementProps(sourceFile, sceneObject!);
 
     expect(elements).toEqual([
-      { column: 9, line: 13, name: "visible", value: true, type: "boolean" },
+      { column: 11, line: 14, name: "visible", value: true, type: "boolean" },
       {
-        column: 24,
-        line: 13,
+        column: 26,
+        line: 14,
         name: "castShadow",
         value: false,
         type: "boolean",
@@ -223,28 +223,28 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/box.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 9, 10);
+    const sceneObject = getJsxElementAt(sourceFile, 11, 5);
 
     const elements = getJsxElementProps(sourceFile, sceneObject!);
 
     expect(elements).toEqual([
       {
-        column: 9,
-        line: 10,
+        column: 11,
+        line: 11,
         name: "position",
         value: "position",
         type: "identifier",
       },
       {
-        column: 29,
-        line: 10,
+        column: 31,
+        line: 11,
         name: "rotation",
         value: "rotation",
         type: "identifier",
       },
       {
-        column: 49,
-        line: 10,
+        column: 51,
+        line: 11,
         name: "scale",
         value: "scale",
         type: "identifier",
@@ -259,7 +259,7 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/scene.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 18, 6);
+    const sceneObject = getJsxElementAt(sourceFile, 19, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -268,8 +268,8 @@ describe("jsx ast extractor", () => {
 
     expect(elements).toEqual([
       {
-        column: 10,
-        line: 18,
+        column: 9,
+        line: 20,
         name: "position",
         value: [
           { value: 0.9223319881614562, type: "number" },
@@ -279,8 +279,8 @@ describe("jsx ast extractor", () => {
         type: "array",
       },
       {
-        column: 61,
-        line: 19,
+        column: 9,
+        line: 21,
         name: "rotation",
         value: [
           { value: 1.660031347769923, type: "number" },
@@ -304,8 +304,8 @@ describe("jsx ast extractor", () => {
 
     expect(elements).toEqual([
       {
-        column: 10,
-        line: 1,
+        column: 5,
+        line: 3,
         name: "group",
         type: "host",
         children: [
@@ -313,21 +313,21 @@ describe("jsx ast extractor", () => {
             children: [
               {
                 children: [],
-                column: 8,
-                line: 4,
+                column: 9,
+                line: 5,
                 name: "boxGeometry",
                 type: "host",
               },
               {
-                column: 8,
-                line: 5,
+                column: 9,
+                line: 6,
                 name: "meshBasicMaterial",
                 type: "host",
                 children: [],
               },
             ],
-            column: 6,
-            line: 3,
+            column: 7,
+            line: 4,
             name: "mesh",
             type: "host",
           },
@@ -352,21 +352,21 @@ describe("jsx ast extractor", () => {
           "children": [
             {
               "children": [],
-              "column": 6,
-              "line": 3,
+              "column": 7,
+              "line": 4,
               "name": "cylinderGeometry",
               "type": "host",
             },
             {
               "children": [],
-              "column": 6,
-              "line": 4,
+              "column": 7,
+              "line": 5,
               "name": "meshStandardMaterial",
               "type": "host",
             },
           ],
-          "column": 10,
-          "line": 1,
+          "column": 5,
+          "line": 3,
           "name": "mesh",
           "type": "host",
         },

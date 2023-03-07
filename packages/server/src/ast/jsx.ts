@@ -1,7 +1,6 @@
 import {
   type JsxSelfClosingElement,
   type SourceFile,
-  type TransformTraversalControl,
   type Type,
   JsxElement,
   Node,
@@ -153,48 +152,6 @@ export function unrollType(type: Type, _nested = false): unknown {
   };
 }
 
-export function serializeProps(
-  traversal: TransformTraversalControl,
-  attributes: ts.JsxAttributes
-): ts.ObjectLiteralExpression {
-  return traversal.factory.createObjectLiteralExpression(
-    attributes.properties.map((prop) => {
-      if (prop.kind === SyntaxKind.JsxSpreadAttribute) {
-        return traversal.factory.createSpreadAssignment(prop.expression);
-      }
-
-      let value: ts.Expression;
-
-      if (!prop.initializer) {
-        // Implicit true
-        value = traversal.factory.createTrue();
-      } else {
-        switch (prop.initializer.kind) {
-          case SyntaxKind.StringLiteral:
-            value = prop.initializer;
-            break;
-
-          case SyntaxKind.JsxExpression:
-            value = prop.initializer.expression!;
-            break;
-
-          case SyntaxKind.JsxElement:
-          case SyntaxKind.JsxSelfClosingElement:
-          case SyntaxKind.JsxFragment:
-            throw new Error(
-              `invariant: Unsupported syntax [${prop.initializer.kind}]`
-            );
-        }
-      }
-
-      return traversal.factory.createPropertyAssignment(
-        traversal.factory.createStringLiteralFromNode(prop.name),
-        value
-      );
-    })
-  );
-}
-
 export function getAllJsxElements(sourceFile: SourceFile) {
   const jsxElements = sourceFile.getDescendantsOfKind(SyntaxKind.JsxElement);
   const jsxSelfClosing = sourceFile.getDescendantsOfKind(
@@ -275,20 +232,22 @@ export function getJsxElementsPositions(
 
   declaration.forEachDescendant((node) => {
     if (Node.isJsxElement(node) || Node.isJsxSelfClosingElement(node)) {
-      const { column, line } = sourceFile.getLineAndColumnAtPos(node.getPos());
+      const { column, line } = sourceFile.getLineAndColumnAtPos(
+        node.getStart()
+      );
       const tag = getJsxTag(node);
       const positions: JsxElementPositions =
         tag.type === "custom"
           ? {
-              column: column - 1,
-              line: line - 1,
+              column: column,
+              line: line,
               name: tag.name,
               children: [],
               type: "custom",
             }
           : {
-              column: column - 1,
-              line: line - 1,
+              column: column,
+              line: line,
               name: tag.name,
               children: [],
               type: "host",
@@ -327,12 +286,12 @@ export function getJsxElementProps(
 ) {
   const attributes = getAttributes(element);
   const props = attributes.map((prop) => {
-    const { column, line } = sourceFile.getLineAndColumnAtPos(prop.getPos());
+    const { column, line } = sourceFile.getLineAndColumnAtPos(prop.getStart());
 
     if (Node.isJsxSpreadAttribute(prop)) {
       return {
-        column: column - 1,
-        line: line - 1,
+        column: column,
+        line: line,
         name: "",
         value: `...${prop
           .getExpressionIfKindOrThrow(SyntaxKind.Identifier)
@@ -349,8 +308,8 @@ export function getJsxElementProps(
     );
 
     return {
-      column: column - 1,
-      line: line - 1,
+      column: column,
+      line: line,
       name: prop.getChildAtIndex(0).getText(),
       value: value.value,
       type: value.type,
@@ -366,14 +325,10 @@ export function getJsxElementAt(
   column: number
 ) {
   try {
-    const pos = sourceFile.compilerNode.getPositionOfLineAndCharacter(
-      line,
-      column
-    );
-
-    const sceneObject = getAllJsxElements(sourceFile).find(
-      (node) => node.getPos() === pos
-    );
+    const sceneObject = getAllJsxElements(sourceFile).find((node) => {
+      const pos = sourceFile.getLineAndColumnAtPos(node.getStart());
+      return pos.line === line && pos.column === column;
+    });
 
     return sceneObject;
   } catch (e) {

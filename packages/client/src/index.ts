@@ -5,19 +5,20 @@ import openBrowser from "open";
 import tsconfigPaths from "vite-tsconfig-paths";
 import { scenePlugin } from "./scene-plugin";
 import { createHTML } from "./templates";
-
-const tempDir = join(process.cwd(), ".triplex", "tmp");
-const tsConfig = join(process.cwd(), "tsconfig.json");
+import triplexBabelPlugin from "./babel-plugin";
 
 export async function createServer({
   open,
   exportName,
   publicDir,
+  files,
 }: {
   open?: boolean | string;
   exportName?: string;
   publicDir?: string;
+  files: string[];
 }) {
+  const tsConfig = join(process.cwd(), "tsconfig.json");
   const app = express();
   const { createServer: createViteServer } = await import("vite");
   const { default: glsl } = await import("vite-plugin-glsl");
@@ -25,9 +26,9 @@ export async function createServer({
   const vite = await createViteServer({
     configFile: false,
     plugins: [
-      react(),
+      react({ babel: { plugins: [triplexBabelPlugin] } }),
       glsl(),
-      scenePlugin(),
+      scenePlugin({ files }),
       tsconfigPaths({ projects: [tsConfig] }),
     ],
     root: process.cwd(),
@@ -69,7 +70,6 @@ export async function createServer({
         "@triplex/editor": require.resolve("@triplex/editor"),
         "@triplex/scene": require.resolve("@triplex/scene"),
         "triplex:styles.css": join(__dirname, "styles.css"),
-        "@@": tempDir,
       },
     },
   });
@@ -78,7 +78,7 @@ export async function createServer({
 
   app.get("/scene.html", async (_, res, next) => {
     try {
-      const template = createHTML("r3f_scene", "scene");
+      const template = createHTML("Scene", "scene");
       const html = await vite.transformIndexHtml("scene", template);
 
       res.status(200).set({ "Content-Type": "text/html" }).end(html);
@@ -90,7 +90,7 @@ export async function createServer({
 
   app.get("*", async (_, res, next) => {
     try {
-      const template = createHTML("TRIPLEX", "editor");
+      const template = createHTML("Triplex", "editor");
       const html = await vite.transformIndexHtml("editor", template);
 
       res.status(200).set({ "Content-Type": "text/html" }).end(html);

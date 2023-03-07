@@ -43,8 +43,8 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
           className="text-xs text-neutral-400"
           href={getEditorLink({
             path: target.ownerPath,
-            column: target.column + 1,
-            line: target.line + 1,
+            column: target.column,
+            line: target.line,
             editor: "vscode",
           })}
         >

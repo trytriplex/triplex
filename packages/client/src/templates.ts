@@ -21,7 +21,7 @@ export const scripts = {
   sceneFrame: `
     import { Scene as SceneFrame } from "@triplex/scene";
 
-    const scenes = import.meta.glob('@@/**/*');
+    const scenes = import.meta.glob({{SCENE_FILES_GLOB}});
 
     export function Scene() {
       return <SceneFrame scenes={scenes} />;

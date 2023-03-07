@@ -18,6 +18,7 @@ export async function editor({
     open,
     publicDir,
     exportName,
+    files,
   });
   const backendServer = await createBackendServer({ files });
 

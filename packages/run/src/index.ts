@@ -23,7 +23,7 @@ program.name("triplex").description(description).version(version);
 
 program
   .command("editor")
-  .description("start the TRIPLEX editor")
+  .description("start the editor")
   .option("-o --open [file]", "opens the editor when running")
   .option(
     "-E --export-name <name>",
@@ -63,7 +63,7 @@ program
 
 program
   .command("init")
-  .description("initialize TRIPLEX in this directory")
+  .description("initialize Triplex in this directory")
   .action(async () => {
     try {
       const response = await prompt<{

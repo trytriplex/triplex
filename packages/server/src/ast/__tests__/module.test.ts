@@ -12,7 +12,7 @@ describe("module", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/scene.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 18, 6);
+    const sceneObject = getJsxElementAt(sourceFile, 19, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -84,7 +84,7 @@ describe("module", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/import-named.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 11, 6);
+    const sceneObject = getJsxElementAt(sourceFile, 12, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -104,7 +104,7 @@ describe("module", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/import-named.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 17, 6);
+    const sceneObject = getJsxElementAt(sourceFile, 18, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -124,7 +124,7 @@ describe("module", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/import-named.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 18, 6);
+    const sceneObject = getJsxElementAt(sourceFile, 19, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -144,7 +144,7 @@ describe("module", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/import-named.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 19, 6);
+    const sceneObject = getJsxElementAt(sourceFile, 20, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -164,7 +164,7 @@ describe("module", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/scene.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 29, 6);
+    const sceneObject = getJsxElementAt(sourceFile, 30, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -184,7 +184,7 @@ describe("module", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/scene.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 28, 6);
+    const sceneObject = getJsxElementAt(sourceFile, 29, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }

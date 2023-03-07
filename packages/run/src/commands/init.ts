@@ -203,14 +203,14 @@ export async function init({
 
     await exec(`git init`);
     await exec(`git add .`);
-    await exec(`git commit -m "INITIALIZED TRIPLEX."`);
+    await exec(`git commit -m "Initialized Triplex."`);
   }
 
   spinner.succeed("Successfully initialized!");
 
   console.log(`
        Run the editor: ${pkgManager} run editor
-           Raise bugs: https://github.com/triplex-run/TRIPLEX/issues
+           Raise bugs: https://github.com/triplex-run/triplex/issues
   Sponsor development: https://github.com/sponsors/itsdouges
 `);
 

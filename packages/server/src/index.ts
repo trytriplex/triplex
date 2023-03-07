@@ -18,9 +18,7 @@ import { getAllFiles, getSceneExport } from "./services/file";
 export function createServer({ files }: { files: string[] }) {
   const app = new Application();
   const router = new Router();
-  const project = createProject({
-    tempDir: join(process.cwd(), ".triplex", "tmp"),
-  });
+  const project = createProject();
   const wss = createWSS();
 
   app.use(async (ctx, next) => {
@@ -126,8 +124,13 @@ export function createServer({ files }: { files: string[] }) {
       return { isSaved };
     },
     async (push, { path }) => {
+      // When modified
       const { sourceFile } = await project.getSourceFile(path);
       sourceFile.onModified(push);
+
+      // When saved
+      const watcher = watch(path);
+      watcher.on("change", push);
     }
   );
 

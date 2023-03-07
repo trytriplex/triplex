@@ -223,7 +223,7 @@
 
 - 7db42bd: Editor now runs on port 3333.
 - 12ecbc4: Adds --open command to the editor command. Optionally pass in a filepath to open that file initially.
-- 12ecbc4: Adds `init` command to the CLI. Run `triplex init` to setup your repository for TRIPLEX.
+- 12ecbc4: Adds `init` command to the CLI. Run `triplex init` to setup your repository.
 - 12ecbc4: When running from the CLI `triplex` now uses commands. Run `triplex editor` for the same behaviour as when running `triplex` before.
 
 ### Patch Changes

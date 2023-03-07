@@ -12,7 +12,7 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/import-named.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 11, 6);
+    const sceneObject = getJsxElementAt(sourceFile, 12, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -57,7 +57,7 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/import-named.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 19, 6);
+    const sceneObject = getJsxElementAt(sourceFile, 20, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -83,7 +83,7 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/type-extraction.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 18, 8);
+    const sceneObject = getJsxElementAt(sourceFile, 19, 10);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -100,7 +100,7 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/variables.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 37, 6);
+    const sceneObject = getJsxElementAt(sourceFile, 38, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -129,7 +129,7 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/scene.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 27, 6);
+    const sceneObject = getJsxElementAt(sourceFile, 28, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }

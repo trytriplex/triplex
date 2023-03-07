@@ -9,6 +9,7 @@ export async function save({
   path: string;
 }) {
   const { sourceFile } = project.getSourceFile(path);
+
   if (sourceFile) {
     const prettierConfigPath = await resolveConfigFile(process.cwd());
     if (prettierConfigPath) {

@@ -14,14 +14,13 @@ export function getSceneExport({
   exportName: string;
   project: TRIPLEXProject;
 }) {
-  const { sourceFile, transformedPath } = project.getSourceFile(path);
+  const { sourceFile } = project.getSourceFile(path);
   const jsxElements = getJsxElementsPositions(sourceFile, exportName);
   const name = getExportName(sourceFile, exportName);
 
   return {
     path,
     name,
-    transformedPath,
     sceneObjects: jsxElements,
   };
 }
