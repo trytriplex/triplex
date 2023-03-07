@@ -12,6 +12,7 @@ export interface EditorNodeData {
   column: number;
   props: Record<string, unknown>;
   sceneObject: Object3D;
+  path: string;
   space: "local" | "world";
 }
 
@@ -84,7 +85,10 @@ const findTransformedSceneObject = (
   sceneObject.traverse((c: unknown) => {
     const child = c as ObjectR3F;
 
-    if (foundSceneObject) {
+    // The immediate child can also be a triplex boundary if it is a custom
+    // component - if it is skip and continue traversing to find the scene
+    // object that we're interested in.
+    if (foundSceneObject || child === sceneObject) {
       return;
     }
 
@@ -124,17 +128,20 @@ function flatten(
 }
 
 function isInScene(
+  path: string,
   node: EditorNodeData,
   positions: JsxElementPositions[]
 ): boolean {
-  for (let i = 0; i < positions.length; i++) {
-    const position = positions[i];
-    if (
-      node.line === position.line &&
-      node.column === position.column &&
-      node.name === position.name
-    ) {
-      return true;
+  if (path === node.path) {
+    for (let i = 0; i < positions.length; i++) {
+      const position = positions[i];
+      if (
+        node.line === position.line &&
+        node.column === position.column &&
+        node.name === position.name
+      ) {
+        return true;
+      }
     }
   }
 
@@ -142,6 +149,7 @@ function isInScene(
 }
 
 const findEditorData = (
+  path: string,
   object: Object3D,
   transform: "translate" | "scale" | "rotate",
   positions: JsxElementPositions[]
@@ -153,7 +161,7 @@ const findEditorData = (
     if (
       "triplexSceneMeta" in parent.userData &&
       !data &&
-      isInScene(parent.userData.triplexSceneMeta, positions)
+      isInScene(path, parent.userData.triplexSceneMeta, positions)
     ) {
       // Keep traversing up the tree to find the top most wrapped scene object.
       data = {
@@ -180,6 +188,7 @@ const findEditorData = (
 };
 
 const findSceneObjectFromSource = (
+  path: string,
   scene: Object3D,
   line: number,
   column: number,
@@ -191,10 +200,16 @@ const findSceneObjectFromSource = (
   scene.traverse((obj) => {
     if ("triplexSceneMeta" in obj.userData) {
       const node: EditorNodeData = obj.userData.triplexSceneMeta;
-      if (node.column === column && node.line === line && obj.children[0]) {
+
+      if (
+        node.path === path &&
+        node.column === column &&
+        node.line === line &&
+        obj.children[0]
+      ) {
         // We've found our scene object that _also_ has a direct child in the
         // Three.js scene.
-        nodeData = findEditorData(obj, transform, positions);
+        nodeData = findEditorData(path, obj, transform, positions);
       }
     }
   });
@@ -315,6 +330,7 @@ export function Selection({
   useEffect(() => {
     return listen("trplx:requestFocusSceneObject", (data) => {
       const sceneObject = findSceneObjectFromSource(
+        data.ownerPath,
         scene,
         data.line,
         data.column,
@@ -347,7 +363,7 @@ export function Selection({
 
     // TODO: If clicking on a scene object when a selection is already
     // made this will fire A LOT OF TIMES. Need to investigate why.
-    const data = findEditorData(e.object, transform, sceneObjects);
+    const data = findEditorData(path, e.object, transform, sceneObjects);
     if (data) {
       e.stopPropagation();
       setSelected(data);
@@ -399,6 +415,7 @@ export function Selection({
       if (e.key === "r") {
         setTransform("rotate");
         const data = findEditorData(
+          path,
           selected.sceneObject,
           "rotate",
           sceneObjects
@@ -411,6 +428,7 @@ export function Selection({
       if (e.key === "t") {
         setTransform("translate");
         const data = findEditorData(
+          path,
           selected.sceneObject,
           "translate",
           sceneObjects
@@ -423,6 +441,7 @@ export function Selection({
       if (e.key === "s" && !e.metaKey && !e.ctrlKey) {
         setTransform("scale");
         const data = findEditorData(
+          path,
           selected.sceneObject,
           "scale",
           sceneObjects
@@ -436,7 +455,7 @@ export function Selection({
     document.addEventListener("keyup", callback);
 
     return () => document.removeEventListener("keyup", callback);
-  }, [onBlur, onJumpTo, onNavigate, selected, sceneObjects, objectData]);
+  }, [onBlur, onJumpTo, onNavigate, selected, sceneObjects, path, objectData]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onMouseUp = (e: any) => {

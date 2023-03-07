@@ -11,7 +11,7 @@ export function EditorFrame() {
 
   useEffect(() => {
     if (path) {
-      window.document.title = path.split("/").at(-1) + " • TRIPLEX";
+      window.document.title = path.split("/").at(-1) + " • Triplex";
     }
   }, [path]);
 

@@ -1,7 +1,7 @@
 # {app_name}
 
 Thanks for being an early adopter!
-If you find TRIPLEX useful think about [sponsoring the project](https://github.com/sponsors/itsdouges),
+If you find Triplex useful think about [sponsoring the project](https://github.com/sponsors/itsdouges),
 with more sponsors more time can be spent on development!
 
 ## Commands
@@ -14,7 +14,7 @@ npx triplex
 
 ### Editor
 
-TRIPLEX comes with an embedded editor used to visually build out your React Three Fiber scenes:
+Triplex comes with an embedded editor used to visually build out your React Three Fiber scenes:
 
 ```bash
 {pkg_manager} run editor

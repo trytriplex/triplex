@@ -28,6 +28,7 @@ export interface HostSendEventData {
   "trplx:requestFocusSceneObject": {
     column: number;
     line: number;
+    ownerPath: string;
   };
   "trplx:requestJumpToSceneObject": undefined;
   "trplx:requestBlurSceneObject": undefined;
