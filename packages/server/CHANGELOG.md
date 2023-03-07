@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.28.0
+
+### Minor Changes
+
+- aa1aa8c: Scene transformation using ts-morph has been replaced with Babel significantly speeding up initial load and saving. The need for the `.triplex/tmp` folder is now gone and thus no longer used.
+- aa1aa8c: Line and column numbers for scene objects have been corrected and are now consistent across editor, scene, and server.
+
 ## 0.27.0
 
 ### Minor Changes
