@@ -14,6 +14,13 @@ interface BridgeContext {
   blur(): void;
   focus(sceneObject: FocusedObject): void;
   jumpTo(): void;
+  setProp(_: {
+    column: number;
+    line: number;
+    path: string;
+    propName: string;
+    propValue: unknown;
+  }): void;
   navigateTo(sceneObject?: {
     path: string;
     encodedProps: string;
@@ -82,6 +89,9 @@ export function SceneFrame({ children }: { children: ReactNode }) {
       },
       navigateTo(sceneObject) {
         send(iframe.current, "trplx:requestNavigateToScene", sceneObject);
+      },
+      setProp(data) {
+        send(iframe.current, "trplx:requestSetSceneObjectProp", data);
       },
     }),
     []

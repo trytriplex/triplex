@@ -19,6 +19,14 @@ interface SelectionState {
   focused: FocusedObject | null;
 }
 
+interface PersistProp {
+  column: number;
+  line: number;
+  path: string;
+  propName: string;
+  propValue: unknown;
+}
+
 const useSelectionStore = create<SelectionState>((set) => ({
   focused: null,
   focus: (sceneObject) => set({ focused: sceneObject }),
@@ -31,6 +39,17 @@ export function useEditor() {
   const exportName = searchParams.get("exportName") || "";
   const focus = useSelectionStore((store) => store.focus);
   const target = useSelectionStore((store) => store.focused);
+  const persistPropValue = useCallback((data: PersistProp) => {
+    fetch(
+      `http://localhost:8000/scene/object/${data.line}/${
+        data.column
+      }/prop?value=${encodeURIComponent(
+        JSON.stringify(data.propValue)
+      )}&path=${encodeURIComponent(data.path)}&name=${encodeURIComponent(
+        data.propName
+      )}`
+    );
+  }, []);
 
   if (path && !exportName) {
     throw new Error("invariant: exportName is undefined");
@@ -71,5 +90,6 @@ export function useEditor() {
     focus,
     target,
     exportName,
+    persistPropValue,
   };
 }

@@ -32,3 +32,5 @@ export function send<TEvent extends HostSendEventName>(
     data,
   });
 }
+
+export { compose } from "./compose";
