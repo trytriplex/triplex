@@ -5,8 +5,11 @@ import { Suspense, useDeferredValue, useEffect } from "react";
 import { useEditor, FocusedObject } from "../stores/editor";
 import { ScrollContainer } from "../ds/scroll-container";
 import { Prop, PropInput } from "./prop-input";
+import { useScene } from "../scence-bridge";
 
 function SelectedSceneObject({ target }: { target: FocusedObject }) {
+  const { setProp } = useScene();
+  const { persistPropValue } = useEditor();
   const data = useLazySubscription<{
     name: string;
     type: "custom" | "host";
@@ -79,7 +82,7 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
           .map((prop) => (
             <div
               className="mb-2 flex w-full flex-shrink gap-2 px-4"
-              key={`${prop.column}${prop.line}`}
+              key={`${prop.name}${prop.column}${prop.line}`}
             >
               <div
                 title={prop.name}
@@ -89,7 +92,28 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
               </div>
 
               <div className="flex w-[139px] flex-shrink-0 flex-col justify-center gap-1">
-                <PropInput path={target.ownerPath} prop={prop} />
+                <PropInput
+                  path={target.ownerPath}
+                  prop={prop}
+                  onConfirm={(value) =>
+                    persistPropValue({
+                      column: target.column,
+                      line: target.line,
+                      path: target.ownerPath,
+                      propName: prop.name,
+                      propValue: value,
+                    })
+                  }
+                  onChange={(value) =>
+                    setProp({
+                      column: target.column,
+                      line: target.line,
+                      path: target.ownerPath,
+                      propName: prop.name,
+                      propValue: value,
+                    })
+                  }
+                />
               </div>
             </div>
           ))}

@@ -11,7 +11,7 @@ function Box({
 }) {
   const ok = {};
   return (
-    <group visible scale={scale}>
+    <group visible={true} scale={scale}>
       <mesh
         {...ok}
         userData={{ hello: true }}

@@ -18,6 +18,19 @@ export interface ClientSendEventData {
 export type HostSendEventName = keyof HostSendEventData;
 
 export interface HostSendEventData {
+  "trplx:requestSetSceneObjectProp": {
+    column: number;
+    line: number;
+    path: string;
+    propName: string;
+    propValue: unknown;
+  };
+  "trplx:requestResetSceneObjectProp": {
+    column: number;
+    line: number;
+    path: string;
+    propName: string;
+  };
   "trplx:requestNavigateToScene":
     | {
         path: string;

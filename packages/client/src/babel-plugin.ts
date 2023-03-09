@@ -1,57 +1,10 @@
-import type { NodePath, PluginObj } from "@babel/core";
-import type { JSXElement } from "@babel/types";
+import type { PluginObj } from "@babel/core";
 import * as t from "@babel/types";
-
-function isSceneObject(path: NodePath<JSXElement>): boolean {
-  const exclusions = ["Material", "Geometry"];
-
-  if (path.node.openingElement.name.type === "JSXIdentifier") {
-    const tagName = path.node.openingElement.name.name;
-    if (exclusions.find((n) => tagName.includes(n))) {
-      return false;
-    }
-  }
-
-  return true;
-}
-
-function toObjectExpression(
-  attributes: (t.JSXAttribute | t.JSXSpreadAttribute)[]
-) {
-  return t.objectExpression(
-    attributes.map((attr) => {
-      if (attr.type === "JSXSpreadAttribute") {
-        return t.spreadElement(attr.argument);
-      }
-
-      let value: t.Expression;
-
-      if (!attr.value) {
-        value = t.booleanLiteral(true);
-      } else if (attr.value.type === "StringLiteral") {
-        value = attr.value;
-      } else if (
-        attr.value.type === "JSXExpressionContainer" &&
-        attr.value.expression.type !== "JSXEmptyExpression"
-      ) {
-        value = attr.value.expression;
-      } else {
-        throw new Error("invariant");
-      }
-
-      const name =
-        attr.name.type === "JSXIdentifier"
-          ? attr.name.name
-          : attr.name.name.name;
-
-      return t.objectProperty(t.stringLiteral(name), value);
-    })
-  );
-}
 
 export default function triplexBabelPlugin() {
   const cache = new WeakSet();
   const triplexMeta = new Map<string, { lighting: "default" | "custom" }>();
+  const SCENE_OBJECT_COMPONENT_NAME = "SceneObject";
 
   let current: string | undefined = undefined;
 
@@ -115,7 +68,6 @@ export default function triplexBabelPlugin() {
       },
       JSXElement(path, pass) {
         if (
-          !isSceneObject(path) ||
           cache.has(path.node) ||
           path.node.openingElement.name.type !== "JSXIdentifier" ||
           !path.node.loc
@@ -130,6 +82,7 @@ export default function triplexBabelPlugin() {
         }
 
         const elementName = path.node.openingElement.name.name;
+        const isCustomElement = /^[A-Z]/.exec(elementName);
 
         if (current && elementName.endsWith("Light")) {
           const meta = triplexMeta.get(current);
@@ -138,64 +91,45 @@ export default function triplexBabelPlugin() {
           }
         }
 
-        const keyAttributeIndex = path.node.openingElement.attributes.findIndex(
-          (attr) =>
-            attr.type === "JSXAttribute" &&
-            attr.name.type === "JSXIdentifier" &&
-            attr.name.name === "key"
-        );
-        const keyAttribute =
-          path.node.openingElement.attributes[keyAttributeIndex];
-
         const newNode = t.jsxElement(
-          t.jsxOpeningElement(
-            t.jsxIdentifier("group"),
-            [
-              keyAttribute!,
-              t.jsxAttribute(
-                t.jsxIdentifier("userData"),
-                t.jsxExpressionContainer(
-                  t.objectExpression([
-                    t.objectProperty(
-                      t.stringLiteral("triplexSceneMeta"),
-                      t.objectExpression([
-                        t.objectProperty(
-                          t.stringLiteral("path"),
-                          t.stringLiteral(pass.filename || "")
-                        ),
-                        t.objectProperty(
-                          t.stringLiteral("name"),
-                          t.stringLiteral(elementName)
-                        ),
-                        t.objectProperty(
-                          t.stringLiteral("line"),
-                          t.numericLiteral(path.node.loc.start.line)
-                        ),
-                        t.objectProperty(
-                          t.stringLiteral("column"),
-                          // Align to tsc where column numbers start from 1
-                          t.numericLiteral(path.node.loc.start.column + 1)
-                        ),
-                        t.objectProperty(
-                          t.stringLiteral("props"),
-                          toObjectExpression(
-                            path.node.openingElement.attributes
-                          )
-                        ),
-                      ])
-                    ),
-                  ])
-                )
-              ),
-            ].filter(Boolean)
-          ),
-          t.jsxClosingElement(t.jsxIdentifier("group")),
-          [path.node]
+          t.jsxOpeningElement(t.jsxIdentifier(SCENE_OBJECT_COMPONENT_NAME), [
+            ...path.node.openingElement.attributes,
+            t.jsxAttribute(
+              t.jsxIdentifier("__component"),
+              t.jsxExpressionContainer(
+                isCustomElement
+                  ? t.identifier(elementName)
+                  : t.stringLiteral(elementName)
+              )
+            ),
+            t.jsxAttribute(
+              t.jsxIdentifier("__meta"),
+              t.jsxExpressionContainer(
+                t.objectExpression([
+                  t.objectProperty(
+                    t.stringLiteral("path"),
+                    t.stringLiteral(pass.filename || "")
+                  ),
+                  t.objectProperty(
+                    t.stringLiteral("name"),
+                    t.stringLiteral(elementName)
+                  ),
+                  t.objectProperty(
+                    t.stringLiteral("line"),
+                    t.numericLiteral(path.node.loc.start.line)
+                  ),
+                  t.objectProperty(
+                    t.stringLiteral("column"),
+                    // Align to tsc where column numbers start from 1
+                    t.numericLiteral(path.node.loc.start.column + 1)
+                  ),
+                ])
+              )
+            ),
+          ]),
+          t.jsxClosingElement(t.jsxIdentifier(SCENE_OBJECT_COMPONENT_NAME)),
+          path.node.children
         );
-
-        if (keyAttribute) {
-          path.node.openingElement.attributes.splice(keyAttributeIndex, 1);
-        }
 
         path.replaceWith(newNode);
       },

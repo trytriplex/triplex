@@ -28,3 +28,5 @@ export function listen<TEvent extends HostSendEventName>(
     window.removeEventListener("message", cb, false);
   };
 }
+
+export { compose } from "./compose";

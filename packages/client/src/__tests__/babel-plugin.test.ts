@@ -20,32 +20,32 @@ describe("babel plugin", () => {
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
-      "<group userData={{
-        \\"triplexSceneMeta\\": {
+      "<SceneObject scale={scale} __component={\\"group\\"} __meta={{
+        \\"path\\": \\"/box.tsx\\",
+        \\"name\\": \\"group\\",
+        \\"line\\": 2,
+        \\"column\\": 7
+      }}>
+              <SceneObject position={[1, 1, 1]} __component={\\"mesh\\"} __meta={{
           \\"path\\": \\"/box.tsx\\",
-          \\"name\\": \\"group\\",
-          \\"line\\": 2,
-          \\"column\\": 7,
-          \\"props\\": {
-            \\"scale\\": scale
-          }
-        }
-      }}><group scale={scale}>
-              <group userData={{
-            \\"triplexSceneMeta\\": {
-              \\"path\\": \\"/box.tsx\\",
-              \\"name\\": \\"mesh\\",
-              \\"line\\": 3,
-              \\"column\\": 9,
-              \\"props\\": {
-                \\"position\\": [1, 1, 1]
-              }
-            }
-          }}><mesh position={[1, 1, 1]}>
-                <boxGeometry args={[1, 1, 1]} />
-                <standardMaterial color=\\"black\\" />
-              </mesh></group>
-            </group></group>;"
+          \\"name\\": \\"mesh\\",
+          \\"line\\": 3,
+          \\"column\\": 9
+        }}>
+                <SceneObject args={[1, 1, 1]} __component={\\"boxGeometry\\"} __meta={{
+            \\"path\\": \\"/box.tsx\\",
+            \\"name\\": \\"boxGeometry\\",
+            \\"line\\": 4,
+            \\"column\\": 11
+          }}></SceneObject>
+                <SceneObject color=\\"black\\" __component={\\"standardMaterial\\"} __meta={{
+            \\"path\\": \\"/box.tsx\\",
+            \\"name\\": \\"standardMaterial\\",
+            \\"line\\": 5,
+            \\"column\\": 11
+          }}></SceneObject>
+              </SceneObject>
+            </SceneObject>;"
     `);
   });
 
@@ -66,15 +66,12 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "export function HelloWorld() {
-        return <group userData={{
-          \\"triplexSceneMeta\\": {
-            \\"path\\": \\"/box.tsx\\",
-            \\"name\\": \\"mesh\\",
-            \\"line\\": 4,
-            \\"column\\": 11,
-            \\"props\\": {}
-          }
-        }}><mesh /></group>;
+        return <SceneObject __component={\\"mesh\\"} __meta={{
+          \\"path\\": \\"/box.tsx\\",
+          \\"name\\": \\"mesh\\",
+          \\"line\\": 4,
+          \\"column\\": 11
+        }}></SceneObject>;
       }
       HelloWorld.triplexMeta = {
         \\"lighting\\": \\"default\\"
@@ -99,67 +96,15 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "export const HelloWorld = () => {
-        return <group userData={{
-          \\"triplexSceneMeta\\": {
-            \\"path\\": \\"/box.tsx\\",
-            \\"name\\": \\"mesh\\",
-            \\"line\\": 4,
-            \\"column\\": 11,
-            \\"props\\": {}
-          }
-        }}><mesh /></group>;
+        return <SceneObject __component={\\"mesh\\"} __meta={{
+          \\"path\\": \\"/box.tsx\\",
+          \\"name\\": \\"mesh\\",
+          \\"line\\": 4,
+          \\"column\\": 11
+        }}></SceneObject>;
       };
       HelloWorld.triplexMeta = {
         \\"lighting\\": \\"default\\"
-      };"
-    `);
-  });
-
-  it("should forward key", () => {
-    const result = transformSync(
-      `
-      export const HelloWorld = () => {
-        return (
-          <>
-            <mesh key="ok-then" />
-            <spotLight />
-          </>
-        );
-      }
-    `,
-      {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
-        filename: "/box.tsx",
-      }
-    );
-
-    expect(result?.code).toMatchInlineSnapshot(`
-      "export const HelloWorld = () => {
-        return <>
-                  <group key=\\"ok-then\\" userData={{
-            \\"triplexSceneMeta\\": {
-              \\"path\\": \\"/box.tsx\\",
-              \\"name\\": \\"mesh\\",
-              \\"line\\": 5,
-              \\"column\\": 13,
-              \\"props\\": {
-                \\"key\\": \\"ok-then\\"
-              }
-            }
-          }}><mesh /></group>
-                  <group userData={{
-            \\"triplexSceneMeta\\": {
-              \\"path\\": \\"/box.tsx\\",
-              \\"name\\": \\"spotLight\\",
-              \\"line\\": 6,
-              \\"column\\": 13,
-              \\"props\\": {}
-            }
-          }}><spotLight /></group>
-                </>;
-      };
-      HelloWorld.triplexMeta = {
-        \\"lighting\\": \\"custom\\"
       };"
     `);
   });
@@ -170,7 +115,9 @@ describe("babel plugin", () => {
       export const HelloWorld = () => {
         return (
           <>
-            <mesh />
+            <mesh visible>
+              <boxGeometry />
+            </mesh>
             <spotLight />
           </>
         );
@@ -185,24 +132,25 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "export const HelloWorld = () => {
         return <>
-                  <group userData={{
-            \\"triplexSceneMeta\\": {
+                  <SceneObject visible __component={\\"mesh\\"} __meta={{
+            \\"path\\": \\"/box.tsx\\",
+            \\"name\\": \\"mesh\\",
+            \\"line\\": 5,
+            \\"column\\": 13
+          }}>
+                    <SceneObject __component={\\"boxGeometry\\"} __meta={{
               \\"path\\": \\"/box.tsx\\",
-              \\"name\\": \\"mesh\\",
-              \\"line\\": 5,
-              \\"column\\": 13,
-              \\"props\\": {}
-            }
-          }}><mesh /></group>
-                  <group userData={{
-            \\"triplexSceneMeta\\": {
-              \\"path\\": \\"/box.tsx\\",
-              \\"name\\": \\"spotLight\\",
+              \\"name\\": \\"boxGeometry\\",
               \\"line\\": 6,
-              \\"column\\": 13,
-              \\"props\\": {}
-            }
-          }}><spotLight /></group>
+              \\"column\\": 15
+            }}></SceneObject>
+                  </SceneObject>
+                  <SceneObject __component={\\"spotLight\\"} __meta={{
+            \\"path\\": \\"/box.tsx\\",
+            \\"name\\": \\"spotLight\\",
+            \\"line\\": 8,
+            \\"column\\": 13
+          }}></SceneObject>
                 </>;
       };
       HelloWorld.triplexMeta = {
@@ -236,15 +184,12 @@ describe("babel plugin", () => {
       const okThen = () => {};
       function HelloWorld() {
         const onClick = () => {};
-        return <group userData={{
-          \\"triplexSceneMeta\\": {
-            \\"path\\": \\"/box.tsx\\",
-            \\"name\\": \\"group\\",
-            \\"line\\": 9,
-            \\"column\\": 11,
-            \\"props\\": {}
-          }
-        }}><group /></group>;
+        return <SceneObject __component={\\"group\\"} __meta={{
+          \\"path\\": \\"/box.tsx\\",
+          \\"name\\": \\"group\\",
+          \\"line\\": 9,
+          \\"column\\": 11
+        }}></SceneObject>;
       }
       HelloWorld.triplexMeta = {
         \\"lighting\\": \\"default\\"
@@ -271,15 +216,12 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "const HelloWorld = () => {
-        return <group userData={{
-          \\"triplexSceneMeta\\": {
-            \\"path\\": \\"/box.tsx\\",
-            \\"name\\": \\"mesh\\",
-            \\"line\\": 4,
-            \\"column\\": 11,
-            \\"props\\": {}
-          }
-        }}><mesh /></group>;
+        return <SceneObject __component={\\"mesh\\"} __meta={{
+          \\"path\\": \\"/box.tsx\\",
+          \\"name\\": \\"mesh\\",
+          \\"line\\": 4,
+          \\"column\\": 11
+        }}></SceneObject>;
       };
       export default HelloWorld;
       HelloWorld.triplexMeta = {
@@ -291,9 +233,9 @@ describe("babel plugin", () => {
   it("should set triplex meta for wrapped exports", () => {
     const result = transformSync(
       `
-      export const HelloWorld = forwardRef(() => {
+      export const HelloWorld = forwardRef((ref) => {
         return (
-          <mesh />
+          <mesh ref={ref} />
         );
       });
     `,
@@ -304,16 +246,13 @@ describe("babel plugin", () => {
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
-      "export const HelloWorld = forwardRef(() => {
-        return <group userData={{
-          \\"triplexSceneMeta\\": {
-            \\"path\\": \\"/box.tsx\\",
-            \\"name\\": \\"mesh\\",
-            \\"line\\": 4,
-            \\"column\\": 11,
-            \\"props\\": {}
-          }
-        }}><mesh /></group>;
+      "export const HelloWorld = forwardRef(ref => {
+        return <SceneObject ref={ref} __component={\\"mesh\\"} __meta={{
+          \\"path\\": \\"/box.tsx\\",
+          \\"name\\": \\"mesh\\",
+          \\"line\\": 4,
+          \\"column\\": 11
+        }}></SceneObject>;
       });
       HelloWorld.triplexMeta = {
         \\"lighting\\": \\"default\\"
@@ -362,47 +301,60 @@ describe("babel plugin", () => {
         scale
       }) {
         const ok = {};
-        return <group userData={{
-          \\"triplexSceneMeta\\": {
+        return <SceneObject visible scale={scale} __component={\\"group\\"} __meta={{
+          \\"path\\": \\"/box.tsx\\",
+          \\"name\\": \\"group\\",
+          \\"line\\": 9,
+          \\"column\\": 11
+        }}>
+                  <SceneObject {...ok} userData={{
+            hello: true
+          }} onClick={() => {}} visible={true} position={position} rotation={rotation} __component={\\"mesh\\"} __meta={{
             \\"path\\": \\"/box.tsx\\",
-            \\"name\\": \\"group\\",
-            \\"line\\": 9,
-            \\"column\\": 11,
-            \\"props\\": {
-              \\"visible\\": true,
-              \\"scale\\": scale
-            }
-          }
-        }}><group visible scale={scale}>
-                  <group userData={{
-              \\"triplexSceneMeta\\": {
-                \\"path\\": \\"/box.tsx\\",
-                \\"name\\": \\"mesh\\",
-                \\"line\\": 10,
-                \\"column\\": 13,
-                \\"props\\": {
-                  ...ok,
-                  \\"userData\\": {
-                    hello: true
-                  },
-                  \\"onClick\\": () => {},
-                  \\"visible\\": true,
-                  \\"position\\": position,
-                  \\"rotation\\": rotation
-                }
-              }
-            }}><mesh {...ok} userData={{
-                hello: true
-              }} onClick={() => {}} visible={true} position={position} rotation={rotation}>
-                    <boxGeometry args={[1, 1, 1]} />
-                    <meshStandardMaterial color=\\"#00ff00\\" />
-                  </mesh></group>
-                </group></group>;
+            \\"name\\": \\"mesh\\",
+            \\"line\\": 10,
+            \\"column\\": 13
+          }}>
+                    <SceneObject args={[1, 1, 1]} __component={\\"boxGeometry\\"} __meta={{
+              \\"path\\": \\"/box.tsx\\",
+              \\"name\\": \\"boxGeometry\\",
+              \\"line\\": 18,
+              \\"column\\": 15
+            }}></SceneObject>
+                    <SceneObject color=\\"#00ff00\\" __component={\\"meshStandardMaterial\\"} __meta={{
+              \\"path\\": \\"/box.tsx\\",
+              \\"name\\": \\"meshStandardMaterial\\",
+              \\"line\\": 19,
+              \\"column\\": 15
+            }}></SceneObject>
+                  </SceneObject>
+                </SceneObject>;
       }
       export default Box;
       Box.triplexMeta = {
         \\"lighting\\": \\"default\\"
       };"
+    `);
+  });
+
+  it("should wrap custom component", () => {
+    const result = transformSync(
+      `
+      <CustomComponent />
+    `,
+      {
+        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        filename: "/box.tsx",
+      }
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "<SceneObject __component={CustomComponent} __meta={{
+        \\"path\\": \\"/box.tsx\\",
+        \\"name\\": \\"CustomComponent\\",
+        \\"line\\": 2,
+        \\"column\\": 7
+      }}></SceneObject>;"
     `);
   });
 });

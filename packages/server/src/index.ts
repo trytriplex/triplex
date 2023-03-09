@@ -27,6 +27,7 @@ export function createServer({ files }: { files: string[] }) {
     } catch (err) {
       if (isHttpError(err)) {
         ctx.response.body = { error: err.message };
+        ctx.response.status = 500;
       } else {
         throw err;
       }

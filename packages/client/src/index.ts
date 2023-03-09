@@ -57,9 +57,6 @@ export async function createServer({
     },
     server: {
       middlewareMode: true,
-      watch: {
-        ignored: ["!**/.triplex/**"],
-      },
     },
     resolve: {
       dedupe: ["@react-three/fiber"],
