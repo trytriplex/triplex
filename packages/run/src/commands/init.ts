@@ -196,7 +196,7 @@ export async function init({
 
   spinner.text = "Installing dependencies...";
 
-  await exec(`${pkgManager} i`);
+  await exec(`${pkgManager} install`);
 
   if (!existing) {
     spinner.text = "Initializing git...";
