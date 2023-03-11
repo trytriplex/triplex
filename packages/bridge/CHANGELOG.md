@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.30.0
+
+### Minor Changes
+
+- 0bb6119: Adds support for updating scene objects through the context panel.
+
 ## 0.29.0
 
 ## 0.28.0
