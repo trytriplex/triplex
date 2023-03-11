@@ -1,5 +1,19 @@
 # @triplex/client
 
+## 0.30.0
+
+### Minor Changes
+
+- 0bb6119: Adds support for updating scene objects through the context panel.
+
+### Patch Changes
+
+- Updated dependencies [0bb6119]
+- Updated dependencies [0bb6119]
+- Updated dependencies [0bb6119]
+  - @triplex/editor@0.30.0
+  - @triplex/scene@0.30.0
+
 ## 0.29.0
 
 ### Minor Changes

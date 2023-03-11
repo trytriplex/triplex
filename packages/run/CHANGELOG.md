@@ -1,5 +1,18 @@
 # @triplex/run
 
+## 0.30.0
+
+### Minor Changes
+
+- c2a2a80: Installing dependencies now uses `install` instead of `i`.
+
+### Patch Changes
+
+- Updated dependencies [0bb6119]
+- Updated dependencies [0bb6119]
+  - @triplex/client@0.30.0
+  - @triplex/server@0.30.0
+
 ## 0.29.0
 
 ### Patch Changes

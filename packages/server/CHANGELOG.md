@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.30.0
+
+### Minor Changes
+
+- 0bb6119: Fixed server errors not returning with status code 500.
+
 ## 0.29.0
 
 ## 0.28.0
