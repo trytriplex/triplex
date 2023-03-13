@@ -8,6 +8,7 @@ import { description, version } from "../package.json";
 import { editor } from "./commands/editor";
 import { init } from "./commands/init";
 import { join } from "path";
+import { join as joinPosix } from "path/posix";
 import { TRIPLEXConfig } from "./types";
 
 const exec = promisify(execCb);
@@ -29,7 +30,7 @@ program
     "-E --export-name <name>",
     "specify the export name when opening a file [default]"
   )
-  .action(async ({ open, exportName }) => {
+  .action(async ({ open, exportName = "default" }) => {
     let config: TRIPLEXConfig;
 
     try {
@@ -50,14 +51,15 @@ program
     );
 
     const files = config.files.map((file) =>
-      join(process.cwd(), ".triplex", file)
+      // Separators should always be forward slashes for glob compatibility.
+      joinPosix(process.cwd(), ".triplex", file)
     );
 
     editor({
       open,
       publicDir,
       files,
-      exportName: exportName || "default",
+      exportName,
     });
   });
 
