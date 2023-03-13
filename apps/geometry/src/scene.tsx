@@ -34,9 +34,9 @@ export default function Scene() {
       />
 
       <RoundedBox
-        position={[2.7013067158410884, 0, 1.9198548833251383]}
-        rotation={[0, 0.555099417670126, 0]}
-        scale={[1, 1.469696188700793, 1]}
+        position={[3, 0, 2]}
+        rotation={[0, 0.25, 0]}
+        scale={[1, 1.5, 1]}
       >
         <meshStandardMaterial color="purple" />
       </RoundedBox>

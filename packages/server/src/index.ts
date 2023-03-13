@@ -141,9 +141,9 @@ export function createServer({ files }: { files: string[] }) {
       const result = await getSceneExport({ path, project, exportName });
       return result;
     },
-    (push, { path }) => {
-      const watcher = watch(path);
-      watcher.on("change", push);
+    async (push, { path }) => {
+      const { sourceFile } = await project.getSourceFile(path);
+      sourceFile.onModified(push);
     }
   );
 
@@ -223,9 +223,9 @@ export function createServer({ files }: { files: string[] }) {
         type: tag.type,
       };
     },
-    (push, { path }) => {
-      const watcher = watch(path);
-      watcher.on("change", push);
+    async (push, { path }) => {
+      const { sourceFile } = await project.getSourceFile(path);
+      sourceFile.onModified(push);
     }
   );
 
