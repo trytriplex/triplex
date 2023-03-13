@@ -1,6 +1,5 @@
 import { Application, isHttpError, Router } from "@oakserver/oak";
 import { Node, SyntaxKind } from "ts-morph";
-import { join } from "path";
 import { watch } from "chokidar";
 import {
   createProject,
@@ -108,11 +107,9 @@ export function createServer({ files }: { files: string[] }) {
       return result;
     },
     (push) => {
-      const watcher = watch(
-        files.map((glob) => join(process.cwd(), glob)),
-        { ignoreInitial: true }
-      );
+      const watcher = watch(files, { ignoreInitial: true });
       watcher.on("add", push);
+      watcher.on("change", push);
       watcher.on("unlink", push);
     }
   );
@@ -163,8 +160,8 @@ export function createServer({ files }: { files: string[] }) {
       const sceneObject = getJsxElementAt(sourceFile, line, column);
 
       if (!sceneObject) {
-        // Initial request - throw an error.
         if (type === "pull") {
+          // Initial request - throw an error.
           throw new Error(
             `invariant: component at ${line}:${column} not found`
           );
