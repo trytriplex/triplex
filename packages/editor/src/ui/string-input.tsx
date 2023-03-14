@@ -12,6 +12,7 @@ export function StringInput({
   return (
     <div className="flex w-full items-center rounded border-2 border-neutral-600">
       <input
+        key={defaultValue}
         data-testid={`string-${defaultValue}`}
         id={name}
         type="text"

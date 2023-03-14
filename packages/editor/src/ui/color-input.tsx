@@ -42,6 +42,7 @@ export function ColorInput({
 
   return (
     <input
+      key={defaultValue}
       data-testid={`color-${defaultValue}`}
       id={name}
       type="color"
