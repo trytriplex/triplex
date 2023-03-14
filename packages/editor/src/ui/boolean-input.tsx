@@ -11,6 +11,7 @@ export function BooleanInput({
 }) {
   return (
     <input
+      key={`${defaultValue}`}
       data-testid={`boolean-${defaultValue}`}
       id={name}
       type="checkbox"
