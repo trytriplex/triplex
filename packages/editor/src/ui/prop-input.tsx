@@ -138,10 +138,10 @@ export function PropInput({
         editor: "vscode",
       })}
       title="This prop is controlled in code."
-      className="flex h-7 gap-0.5 overflow-hidden rounded border-2 border-neutral-600 py-0.5 px-1 text-sm hover:bg-neutral-700"
+      className="flex h-[26px] items-center gap-0.5 overflow-hidden rounded-md border border-transparent bg-white/5 py-0.5 px-1 text-sm hover:bg-white/10 focus-visible:border-blue-400"
     >
-      <span className="overflow-hidden text-ellipsis text-neutral-400">{`{${prop.value}}`}</span>
-      <div className="ml-auto flex-shrink-0 pt-0.5 text-orange-300">
+      <span className="overflow-hidden text-ellipsis whitespace-nowrap text-neutral-400">{`{${prop.value}}`}</span>
+      <div className="ml-auto flex-shrink-0 text-orange-300">
         <ExclamationTriangleIcon />
       </div>
     </a>

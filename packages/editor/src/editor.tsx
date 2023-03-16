@@ -21,7 +21,7 @@ export function EditorFrame() {
         <ScenesDrawer />
 
         <div className="absolute top-4 left-4 bottom-4 flex w-52 flex-col gap-4">
-          <div className="rounded-lg bg-neutral-800/90 p-1 shadow-2xl shadow-black/50">
+          <div className="rounded-lg bg-neutral-900/[97%] p-1 shadow-2xl shadow-black/50">
             <EditorMenu />
           </div>
 

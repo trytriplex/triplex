@@ -46,7 +46,7 @@ export function ColorInput({
       data-testid={`color-${defaultValue}`}
       id={name}
       type="color"
-      className="h-7 w-7 rounded border-2 border-neutral-600 p-1 outline-none [color-scheme:dark]"
+      className="h-7 w-7 rounded-md bg-neutral-800 p-1 outline-none [color-scheme:dark]"
       defaultValue={tinycolor(defaultValue).toHexString()}
       onChange={onChangeCallback}
       ref={ref}

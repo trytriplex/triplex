@@ -25,8 +25,8 @@ function SceneComponent({
       style={{ paddingLeft: level === 1 ? 13 : level * 13 }}
       className={cn([
         selected
-          ? "border-l-blue-300 bg-neutral-700 text-blue-300"
-          : "text-neutral-300 hover:border-l-blue-300 hover:bg-neutral-700 active:bg-neutral-600",
+          ? "border-l-blue-400 bg-white/5 text-blue-400"
+          : "text-neutral-400 hover:border-l-blue-400 hover:bg-white/5 active:bg-neutral-700",
         "block w-[208px] cursor-default overflow-hidden text-ellipsis border-l-2 border-transparent py-1.5 px-3 text-left text-sm -outline-offset-1",
       ])}
     >
@@ -47,7 +47,7 @@ export function ScenePanel() {
   const { path } = useEditor();
 
   return (
-    <div className="h-full overflow-hidden rounded-lg bg-neutral-800/90 shadow-2xl shadow-black/50">
+    <div className="h-full overflow-hidden rounded-lg bg-neutral-900/[97%] shadow-2xl shadow-black/50">
       <ErrorBoundary
         resetKeys={[path]}
         fallbackRender={() => (
@@ -96,7 +96,7 @@ function SceneContents() {
         </a>
       </div>
 
-      <div className="h-0.5 bg-neutral-700" />
+      <div className="h-[1px] bg-neutral-800" />
 
       <ScrollContainer>
         <div className="h-2" />

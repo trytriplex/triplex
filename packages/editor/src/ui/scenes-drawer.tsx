@@ -19,7 +19,7 @@ function Scenes() {
       {files?.scenes.map((file) => (
         <div
           className={cn([
-            path === file.path && "rounded bg-neutral-700/50 py-1",
+            path === file.path && "rounded-md bg-neutral-800/50 py-1",
           ])}
           key={file.path}
         >
@@ -33,9 +33,9 @@ function Scenes() {
               onClick={() => show(false)}
               className={cn([
                 path === file.path && exportName === exp
-                  ? "bg-neutral-700 text-blue-300"
+                  ? "bg-neutral-800 text-blue-400"
                   : "text-neutral-300",
-                "block select-none px-2 text-base outline-none hover:bg-neutral-700 active:bg-neutral-600",
+                "block select-none px-2 text-base outline-none hover:bg-white/5 active:bg-white/10",
               ])}
             >
               <div>{exp}</div>

@@ -15,7 +15,7 @@ export function BooleanInput({
       data-testid={`boolean-${defaultValue}`}
       id={name}
       type="checkbox"
-      className="self-start accent-blue-300 [color-scheme:dark]"
+      className="self-start accent-blue-400 [color-scheme:dark]"
       onChange={(e) => {
         const value = e.target.checked;
         onChange(value);
