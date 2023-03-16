@@ -1,5 +1,18 @@
 # @triplex/editor
 
+## 0.31.0
+
+### Minor Changes
+
+- 5ac3a26: UI has been darkened and borders have been deemphasized.
+- a1e3127: When source changes ui now reflects the updated value.
+- 48002a7: Array input no longer caches its value which resulted in unexpected bugs when transforming in scene and then through the ui.
+
+### Patch Changes
+
+- @triplex/bridge@0.31.0
+- @triplex/ws-client@0.31.0
+
 ## 0.30.0
 
 ### Minor Changes

@@ -1,5 +1,16 @@
 # @triplex/scene
 
+## 0.31.0
+
+### Minor Changes
+
+- 48002a7: When transitioning to a scene object any props that are jsx elements are now removed preventing serialization errors.
+
+### Patch Changes
+
+- @triplex/bridge@0.31.0
+- @triplex/ws-client@0.31.0
+
 ## 0.30.0
 
 ### Minor Changes

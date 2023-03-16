@@ -1,5 +1,18 @@
 # @triplex/run
 
+## 0.31.0
+
+### Minor Changes
+
+- 6e9b119: Paths passed to globs are now normalized to use POSIX separators.
+
+### Patch Changes
+
+- Updated dependencies [dad975f]
+- Updated dependencies [6e9b119]
+  - @triplex/server@0.31.0
+  - @triplex/client@0.31.0
+
 ## 0.30.0
 
 ### Minor Changes

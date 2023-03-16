@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.31.0
+
+### Minor Changes
+
+- dad975f: Watchers have been replaced with ts-morph events where appropriate to prevent race conditions when changing from source.
+- 6e9b119: Paths passed to globs are now normalized to use POSIX separators.
+
 ## 0.30.0
 
 ### Minor Changes
