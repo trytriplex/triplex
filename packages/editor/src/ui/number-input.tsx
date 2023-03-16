@@ -1,3 +1,5 @@
+import type { FocusEventHandler, ChangeEventHandler } from "react";
+
 export function NumberInput({
   defaultValue,
   name,
@@ -9,9 +11,15 @@ export function NumberInput({
   onChange: (value: number) => void;
   onConfirm: (value: number) => void;
 }) {
-  const onChangeHandler: React.ChangeEventHandler<HTMLInputElement> = (e) => {
+  const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     e.target.focus();
     onChange(e.target.valueAsNumber);
+  };
+
+  const onBlurHandler: FocusEventHandler<HTMLInputElement> = (e) => {
+    if (defaultValue !== e.target.valueAsNumber) {
+      onConfirm(e.target.valueAsNumber);
+    }
   };
 
   return (
@@ -23,7 +31,7 @@ export function NumberInput({
         type="number"
         defaultValue={defaultValue}
         onChange={onChangeHandler}
-        onBlur={(e) => onConfirm(e.target.valueAsNumber)}
+        onBlur={onBlurHandler}
         className="w-full bg-transparent py-0.5 px-1 text-sm text-neutral-300 outline-none [color-scheme:dark]"
       />
     </div>
