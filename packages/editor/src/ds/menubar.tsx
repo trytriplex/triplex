@@ -9,7 +9,7 @@ export function Trigger({
   return (
     <RadixMenubar.Trigger
       {...props}
-      className="cursor-default rounded px-3 py-1 text-sm text-neutral-300 outline-none hover:bg-neutral-700 data-[state=open]:bg-neutral-700 data-[state=open]:text-blue-300"
+      className="cursor-default rounded px-3 py-1 text-sm text-neutral-400 outline-none hover:bg-white/5 data-[state=open]:bg-white/5 data-[state=open]:text-blue-400"
     >
       {children}
     </RadixMenubar.Trigger>
@@ -24,7 +24,7 @@ export function MenuContent({
     <RadixMenubar.Portal>
       <RadixMenubar.Content
         {...props}
-        className="mt-0.5 min-w-[150px] rounded bg-neutral-800 p-1 shadow-2xl shadow-black/50"
+        className="mt-0.5 min-w-[150px] rounded bg-neutral-900 p-1 shadow-2xl shadow-black/50"
       >
         {children}
       </RadixMenubar.Content>
@@ -47,7 +47,7 @@ export function MenuItem({
       className={cn([
         disabled
           ? "cursor-not-allowed opacity-60"
-          : "hover:bg-neutral-700 active:bg-neutral-600",
+          : "hover:bg-white/5 active:bg-white/10",
         "flex select-none rounded px-2 py-1 text-sm text-neutral-300 outline-none",
       ])}
     >
@@ -66,5 +66,7 @@ export function Menubar({ children }: RadixMenubar.MenubarProps) {
 }
 
 export function Separator() {
-  return <RadixMenubar.Separator className="my-1 -mx-1 h-0.5 bg-neutral-700" />;
+  return (
+    <RadixMenubar.Separator className="my-1 -mx-1 h-[1px] bg-neutral-800" />
+  );
 }

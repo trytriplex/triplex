@@ -149,7 +149,7 @@ export function SandboxScene() {
         </DialogEntity>
       </NPCEntity>
 
-      <NPCEntity position={[2, 0, -1]}>
+      <NPCEntity position={[2.009005080231767, 0, -0.9881268012650954]}>
         <DialogEntity>
           <DialogMessage text="AHHH hello!!!" />
           <DialogMessage text="How are you going today!" />
@@ -170,8 +170,8 @@ export function SandboxScene() {
       />
 
       <ItemEntity
-        id="bone"
-        position={[-2.937701209752876, 1, -0.20588456170343328]}
+        id={"bone"}
+        position={[-2.93770120975288, 1, -0.20588456170343328]}
       />
       <ItemEntity id="bone" position={[-7.5, 5, -13]} />
 
@@ -184,7 +184,11 @@ export function SandboxScene() {
         position={[-7.405874236287305, 0.5685185565842982, -5.306576506353176]}
       />
 
-      <hemisphereLight color="#87CEEB" intensity={0.3} groundColor="#362907" />
+      <hemisphereLight
+        color="#87CEEB"
+        intensity={0.3}
+        groundColor={"#362907"}
+      />
       <ambientLight intensity={0.3} />
       <directionalLight
         position={[1.5977056043375601, 8.047348851185415, 5]}

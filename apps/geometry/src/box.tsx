@@ -14,6 +14,7 @@ function Box({
     <group visible={true} scale={scale}>
       <mesh
         {...ok}
+        name="hello-world"
         userData={{ hello: true }}
         onClick={() => {}}
         visible={true}
@@ -21,7 +22,7 @@ function Box({
         rotation={rotation}
       >
         <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color="#00ff00" />
+        <meshStandardMaterial color={"#fb8f99"} />
       </mesh>
     </group>
   );

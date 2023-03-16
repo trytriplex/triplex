@@ -6,6 +6,7 @@ import { useEditor, FocusedObject } from "../stores/editor";
 import { ScrollContainer } from "../ds/scroll-container";
 import { Prop, PropInput } from "./prop-input";
 import { useScene } from "../scence-bridge";
+import { cn } from "../ds/cn";
 
 function SelectedSceneObject({ target }: { target: FocusedObject }) {
   const { setProp } = useScene();
@@ -73,7 +74,7 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
         )}
       </div>
 
-      <div className="h-0.5 bg-neutral-700" />
+      <div className="h-[1px] bg-neutral-800" />
 
       <ScrollContainer>
         <div className="h-4" />
@@ -81,12 +82,17 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
           .filter((prop) => prop.type !== "spread")
           .map((prop) => (
             <div
-              className="mb-2 flex w-full flex-shrink gap-2 px-4"
+              className={cn([
+                prop.type === "array"
+                  ? "-mt-2 py-2 hover:bg-white/[2%]"
+                  : "mb-2",
+                "flex w-full flex-shrink gap-2 px-4",
+              ])}
               key={`${prop.name}${prop.column}${prop.line}`}
             >
               <div
                 title={prop.name}
-                className="h-7 w-[61px] overflow-hidden text-ellipsis pt-1 text-right text-sm text-neutral-300"
+                className="h-7 w-[61px] overflow-hidden text-ellipsis pt-1 text-right text-sm text-neutral-400"
               >
                 <label htmlFor={prop.name}>{prop.name}</label>
               </div>
@@ -129,7 +135,7 @@ export function ContextPanel() {
 
   if (deferredTarget) {
     return (
-      <div className="absolute top-4 right-4 bottom-4 flex w-60 flex-col overflow-hidden rounded-lg bg-neutral-800/90 shadow-2xl shadow-black/50">
+      <div className="absolute top-4 right-4 bottom-4 flex w-60 flex-col overflow-hidden rounded-lg bg-neutral-900/[97%] shadow-2xl shadow-black/50">
         <ErrorBoundary
           resetKeys={[deferredTarget]}
           fallbackRender={() => (

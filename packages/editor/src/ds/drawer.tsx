@@ -29,7 +29,7 @@ export function DrawerContent({
       <Dialog.Close>
         <Dialog.Overlay className="fixed inset-0 cursor-default bg-black/20" />
       </Dialog.Close>
-      <Dialog.Content className="slide-in fixed top-0 left-0 bottom-0 flex w-64 flex-col bg-neutral-800 text-neutral-300 shadow-2xl shadow-black/50 outline-none">
+      <Dialog.Content className="slide-in fixed top-0 left-0 bottom-0 flex w-64 flex-col bg-neutral-900 text-neutral-300 shadow-2xl shadow-black/50 outline-none">
         <Dialog.DialogTitle className="mt-6 mb-2 px-4 text-2xl font-medium text-neutral-100">
           {title}
         </Dialog.DialogTitle>

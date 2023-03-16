@@ -10,7 +10,7 @@ export function StringInput({
   onConfirm: (value: string) => void;
 }) {
   return (
-    <div className="flex w-full items-center rounded border-2 border-neutral-600">
+    <div className="flex w-full items-center rounded-md border border-transparent bg-white/5 focus-within:border-blue-400 hover:bg-white/10">
       <input
         key={defaultValue}
         data-testid={`string-${defaultValue}`}
