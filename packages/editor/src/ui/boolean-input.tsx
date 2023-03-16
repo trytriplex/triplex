@@ -1,3 +1,5 @@
+import type { ChangeEventHandler } from "react";
+
 export function BooleanInput({
   defaultValue,
   name,
@@ -9,6 +11,12 @@ export function BooleanInput({
   onChange: (value: boolean) => void;
   onConfirm: (value: boolean) => void;
 }) {
+  const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
+    const value = e.target.checked;
+    onChange(value);
+    onConfirm(value);
+  };
+
   return (
     <input
       key={`${defaultValue}`}
@@ -16,11 +24,7 @@ export function BooleanInput({
       id={name}
       type="checkbox"
       className="self-start accent-blue-400 [color-scheme:dark]"
-      onChange={(e) => {
-        const value = e.target.checked;
-        onChange(value);
-        onConfirm(value);
-      }}
+      onChange={onChangeHandler}
       defaultChecked={defaultValue}
     />
   );

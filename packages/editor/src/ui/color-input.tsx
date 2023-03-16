@@ -13,6 +13,7 @@ export function ColorInput({
   onConfirm: (value: string) => void;
 }) {
   const ref = useRef<HTMLInputElement>(null);
+  const defaultValueHex = tinycolor(defaultValue).toHexString();
 
   useEffect(() => {
     if (!ref.current) {
@@ -20,7 +21,10 @@ export function ColorInput({
     }
 
     const cb = (e: Event) => {
-      if (e.target instanceof HTMLInputElement) {
+      if (
+        e.target instanceof HTMLInputElement &&
+        defaultValueHex !== e.target.value
+      ) {
         onConfirm(e.target.value);
       }
     };
@@ -32,9 +36,9 @@ export function ColorInput({
     return () => {
       element.removeEventListener("change", cb);
     };
-  }, [onConfirm]);
+  }, [defaultValueHex, onConfirm]);
 
-  const onChangeCallback: FormEventHandler<HTMLInputElement> = (e) => {
+  const onChangeHandler: FormEventHandler<HTMLInputElement> = (e) => {
     if (e.target instanceof HTMLInputElement) {
       onChange(e.target.value);
     }
@@ -47,8 +51,8 @@ export function ColorInput({
       id={name}
       type="color"
       className="h-7 w-7 rounded-md bg-neutral-800 p-1 outline-none [color-scheme:dark]"
-      defaultValue={tinycolor(defaultValue).toHexString()}
-      onChange={onChangeCallback}
+      defaultValue={defaultValueHex}
+      onChange={onChangeHandler}
       ref={ref}
     />
   );
