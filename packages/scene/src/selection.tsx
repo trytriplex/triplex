@@ -51,18 +51,29 @@ interface SceneObjectData {
 }
 
 function encodeProps(selected: EditorNodeData): string {
-  if ("position" in selected.props) {
+  const props = { ...selected.props };
+
+  for (const key in props) {
+    const prop = props[key];
+    if (prop && typeof prop === "object" && "$$typeof" in prop) {
+      // We remove any jsx elements from props as they can't be serialized.
+      delete props[key];
+    }
+  }
+
+  if ("position" in props) {
     // If position exists we want to make sure we pass in the world position
     // So if any parent groups have their position set when we transition
     // It won't jump around unexpectedly.
     const worldPosition = selected.sceneObject.getWorldPosition(V1).toArray();
+
     return JSON.stringify({
-      ...selected.props,
+      ...props,
       position: worldPosition,
     });
   }
 
-  return JSON.stringify(selected.props);
+  return JSON.stringify(props);
 }
 
 const findTransformedSceneObject = (

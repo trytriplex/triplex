@@ -1,4 +1,3 @@
-import { useRef } from "react";
 import type { ArrayProp } from "./prop-input";
 import { PropInput } from "./prop-input";
 
@@ -19,20 +18,21 @@ export function ArrayInput({
   onChange: (value: unknown[]) => void;
   onConfirm: (value: unknown[]) => void;
 }) {
-  const currentValue = useRef<unknown[]>(values.map((val) => val.value));
   const isUnhandled = !!values.find((val) => val.type === "unhandled");
 
   return (
     <>
       {values.map((val, index) => {
         const onChangeHandler = (value: unknown) => {
-          currentValue.current[index] = value;
-          onChange(currentValue.current);
+          const currentValue: unknown[] = values.map((val) => val.value);
+          currentValue[index] = value;
+          onChange(currentValue);
         };
 
         const onConfirmHandler = (value: unknown) => {
-          currentValue.current[index] = value;
-          onConfirm(currentValue.current);
+          const currentValue: unknown[] = values.map((val) => val.value);
+          currentValue[index] = value;
+          onConfirm(currentValue);
         };
 
         return (
