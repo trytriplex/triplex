@@ -19,35 +19,71 @@ describe("type infer", () => {
 
     const types = getJsxElementPropTypes(sceneObject);
 
-    expect(types).toEqual([
-      {
+    expect(types).toEqual({
+      position: {
         name: "position",
         required: false,
         description: null,
         type: {
-          type: "tuple",
-          value: [{ type: "number" }, { type: "number" }, { type: "number" }],
+          type: "union",
+          value: [
+            {
+              type: "undefined",
+            },
+            {
+              type: "tuple",
+              value: [
+                { type: "number" },
+                { type: "number" },
+                { type: "number" },
+              ],
+            },
+          ],
         },
       },
-      {
+      rotation: {
         name: "rotation",
         required: false,
         description: null,
         type: {
-          type: "tuple",
-          value: [{ type: "number" }, { type: "number" }, { type: "number" }],
+          type: "union",
+          value: [
+            {
+              type: "undefined",
+            },
+            {
+              type: "tuple",
+              value: [
+                { type: "number" },
+                { type: "number" },
+                { type: "number" },
+              ],
+            },
+          ],
         },
       },
-      {
+      scale: {
         name: "scale",
         required: false,
         description: null,
         type: {
-          type: "tuple",
-          value: [{ type: "number" }, { type: "number" }, { type: "number" }],
+          type: "union",
+          value: [
+            {
+              type: "undefined",
+            },
+            {
+              type: "tuple",
+              value: [
+                { type: "number" },
+                { type: "number" },
+                { type: "number" },
+              ],
+            },
+          ],
         },
       },
-    ]);
+    });
   });
 
   it("should return types of a local component", () => {
@@ -64,16 +100,24 @@ describe("type infer", () => {
 
     const types = getJsxElementPropTypes(sceneObject);
 
-    expect(types).toEqual([
-      {
+    expect(types).toEqual({
+      color: {
         description: null,
         name: "color",
         required: false,
         type: {
-          type: "string",
+          type: "union",
+          value: [
+            {
+              type: "undefined",
+            },
+            {
+              type: "string",
+            },
+          ],
         },
       },
-    ]);
+    });
   });
 
   it("should not throw when extracting types from typedef jsx", () => {
@@ -90,7 +134,7 @@ describe("type infer", () => {
 
     const types = getJsxElementPropTypes(sceneObject);
 
-    expect(types?.length).toBeTruthy();
+    expect(Object.keys(types).length).toBeTruthy();
   });
 
   it("should get the jsx tag of a jsx element with children", () => {
@@ -106,20 +150,20 @@ describe("type infer", () => {
     }
     const propTypes = getJsxElementPropTypes(sceneObject);
 
-    expect(propTypes).toEqual([
-      {
+    expect(propTypes).toEqual({
+      value: {
         name: "value",
         required: true,
         description: null,
         type: { type: "boolean" },
       },
-      {
+      children: {
         name: "children",
         required: false,
         description: null,
         type: { type: "any" },
       },
-    ]);
+    });
   });
 
   it("should extract same file types", () => {
@@ -135,6 +179,74 @@ describe("type infer", () => {
     }
     const propTypes = getJsxElementPropTypes(sceneObject);
 
-    expect(propTypes).toEqual([]);
+    expect(propTypes).toEqual({});
+  });
+
+  it("should extract args", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/type-extraction.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 19, 10);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+    const propTypes = getJsxElementPropTypes(sceneObject);
+
+    expect(propTypes.args).toMatchInlineSnapshot(`
+      {
+        "description": null,
+        "name": "args",
+        "required": false,
+        "type": {
+          "type": "union",
+          "value": [
+            {
+              "type": "undefined",
+            },
+            {
+              "type": "tuple",
+              "value": [
+                {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "undefined",
+                    },
+                    {
+                      "type": "number",
+                    },
+                  ],
+                },
+                {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "undefined",
+                    },
+                    {
+                      "type": "number",
+                    },
+                  ],
+                },
+                {
+                  "type": "union",
+                  "value": [
+                    {
+                      "type": "undefined",
+                    },
+                    {
+                      "type": "number",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+      }
+    `);
   });
 });

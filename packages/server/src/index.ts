@@ -181,24 +181,9 @@ export function createServer({ files }: { files: string[] }) {
 
       if (tag.type === "custom") {
         const elementPath = getElementFilePath(sceneObject);
-
-        let rotate = false;
-        let scale = false;
-        let translate = false;
-
-        for (const prop of propTypes) {
-          if (prop.name === "rotation") {
-            rotate = true;
-          }
-
-          if (prop.name === "scale") {
-            scale = true;
-          }
-
-          if (prop.name === "position") {
-            translate = true;
-          }
-        }
+        const rotate: boolean = !!propTypes.rotation;
+        const scale: boolean = !!propTypes.scale;
+        const translate: boolean = !!propTypes.position;
 
         return {
           exportName: elementPath.exportName,

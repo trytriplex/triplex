@@ -7,12 +7,9 @@ import {
 } from "ts-morph";
 
 function unrollType(type: Type): { type: string; value?: unknown } {
-  if (type.isTuple()) {
-    const elements = type.getTupleElements();
-
+  if (type.isUndefined()) {
     return {
-      type: "tuple",
-      value: elements.map(unrollType),
+      type: "undefined",
     };
   }
 
@@ -40,6 +37,24 @@ function unrollType(type: Type): { type: string; value?: unknown } {
     };
   }
 
+  if (type.isTuple()) {
+    const elements = type.getTupleElements();
+
+    return {
+      type: "tuple",
+      value: elements.map(unrollType),
+    };
+  }
+
+  if (type.isUnion()) {
+    const types = type.getUnionTypes();
+
+    return {
+      type: "union",
+      value: types.map(unrollType),
+    };
+  }
+
   return {
     type: "unknown",
   };
@@ -53,24 +68,33 @@ export function getJsxElementPropTypes(
     : element.getOpeningElement().getTagNameNode();
   const jsxType = tagNode.getType();
   const signatures = jsxType.getCallSignatures();
+  const propTypes: Record<
+    string,
+    {
+      name: string;
+      required: boolean;
+      description: string | null;
+      type: { type: string; value?: unknown };
+    }
+  > = {};
 
   if (signatures.length === 0) {
     // No types found!
-    return [];
+    return propTypes;
   }
 
   const [props] = signatures[0].getParameters();
 
   if (!props) {
     // No props arg
-    return [];
+    return propTypes;
   }
 
   const valueDeclaration = props.getValueDeclaration();
 
   if (!valueDeclaration) {
     // No decl found!
-    return [];
+    return propTypes;
   }
 
   const declaration = jsxType.getSymbolOrThrow().getDeclarations()[0];
@@ -80,7 +104,10 @@ export function getJsxElementPropTypes(
     .getTypeChecker()
     .getTypeOfSymbolAtLocation(props, valueDeclaration);
 
-  const result = propsType.getApparentProperties().map((prop) => {
+  const properties = propsType.getApparentProperties();
+
+  for (let i = 0; i < properties.length; i++) {
+    const prop = properties[i];
     const declarations = prop.getDeclarations();
     const propDeclaration = declarations[0] as PropertySignature;
     const propName = prop.getName();
@@ -96,13 +123,13 @@ export function getJsxElementPropTypes(
       )
       .join("\n");
 
-    return {
+    propTypes[propName] = {
       name: propName,
       required: !propDeclaration?.hasQuestionToken(),
       description: description || null,
       type: unrollType(propType),
     };
-  });
+  }
 
-  return result;
+  return propTypes;
 }

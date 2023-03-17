@@ -21,7 +21,11 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
       {
         name: string;
         required: boolean;
-        type: unknown;
+        description: string | null;
+        type: {
+          type: string;
+          value?: unknown;
+        };
       }
     >;
   }>(
@@ -78,6 +82,7 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
 
       <ScrollContainer>
         <div className="h-4" />
+
         {data.props
           .filter((prop) => prop.type !== "spread")
           .map((prop) => (
