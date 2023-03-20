@@ -1,65 +1,12 @@
-import { listen, send } from "@triplex/bridge/host";
-import {
-  createContext,
-  ReactNode,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { useEditor, FocusedObject } from "./stores/editor";
+import { listen, send, compose } from "@triplex/bridge/host";
+import { ReactNode, useEffect, useRef, useState } from "react";
+import { useEditor } from "./stores/editor";
+import { useScene } from "./stores/scene";
 
-interface BridgeContext {
-  blur(): void;
-  focus(sceneObject: FocusedObject): void;
-  jumpTo(): void;
-  setProp(_: {
-    column: number;
-    line: number;
-    path: string;
-    propName: string;
-    propValue: unknown;
-  }): void;
-  navigateTo(sceneObject?: {
-    path: string;
-    encodedProps: string;
-    exportName: string;
-  }): void;
-}
-
-const BridgeContext = createContext<BridgeContext | null>(null);
-const ReadyContext = createContext<boolean>(false);
-
-export function useScene(): BridgeContext {
-  const context = useContext(BridgeContext);
-  if (!context) {
-    throw new Error("invariant: scene not ");
-  }
-
-  return context;
-}
-
-export function useSceneReady() {
-  return useContext(ReadyContext);
-}
-
-function useEffectWhenReady(cb: () => void | (() => void), deps: unknown[]) {
-  const ready = useSceneReady();
-
-  useEffect(() => {
-    if (!ready) {
-      return;
-    }
-
-    return cb();
-    // Ignore cb from dependency array
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    ready,
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    ...deps,
-  ]);
+export interface FocusedObject {
+  line: number;
+  column: number;
+  ownerPath: string;
 }
 
 export function SceneFrame({ children }: { children: ReactNode }) {
@@ -68,34 +15,40 @@ export function SceneFrame({ children }: { children: ReactNode }) {
   const [initialPath] = useState(() => editor.path);
   const [initialProps] = useState(() => editor.encodedProps);
   const [initialExportName] = useState(() => editor.exportName);
-  const [ready, setReady] = useState(false);
+  const __set = useScene((prev) => prev.__set);
 
   useEffect(() => {
     listen("trplx:onConnected", () => {
-      setReady(true);
+      __set({
+        getPropValue(prop) {
+          return send(
+            iframe.current,
+            "trplx:requestSceneObjectPropValue",
+            prop,
+            true
+          );
+        },
+        blur() {
+          send(iframe.current, "trplx:requestBlurSceneObject", undefined);
+        },
+        focus(sceneObject) {
+          send(iframe.current, "trplx:requestFocusSceneObject", sceneObject);
+        },
+        jumpTo() {
+          send(iframe.current, "trplx:requestJumpToSceneObject", undefined);
+        },
+        navigateTo(sceneObject) {
+          send(iframe.current, "trplx:requestNavigateToScene", sceneObject);
+        },
+        setPropValue(data) {
+          send(iframe.current, "trplx:requestSetSceneObjectProp", data);
+        },
+        persistPropValue(data) {
+          send(iframe.current, "trplx:requestPersistSceneObjectProp", data);
+        },
+      });
     });
-  }, []);
-
-  const context: BridgeContext = useMemo(
-    (): BridgeContext => ({
-      blur() {
-        send(iframe.current, "trplx:requestBlurSceneObject", undefined);
-      },
-      focus(sceneObject) {
-        send(iframe.current, "trplx:requestFocusSceneObject", sceneObject);
-      },
-      jumpTo() {
-        send(iframe.current, "trplx:requestJumpToSceneObject", undefined);
-      },
-      navigateTo(sceneObject) {
-        send(iframe.current, "trplx:requestNavigateToScene", sceneObject);
-      },
-      setProp(data) {
-        send(iframe.current, "trplx:requestSetSceneObjectProp", data);
-      },
-    }),
-    []
-  );
+  }, [__set]);
 
   return (
     <>
@@ -105,13 +58,9 @@ export function SceneFrame({ children }: { children: ReactNode }) {
         ref={iframe}
         className="absolute h-full w-full border-none"
       />
-      <ReadyContext.Provider value={ready}>
-        <BridgeContext.Provider value={context}>
-          <BridgeSendEvents />
-          <BridgeReceiveEvents />
-          {children}
-        </BridgeContext.Provider>
-      </ReadyContext.Provider>
+      <BridgeSendEvents />
+      <BridgeReceiveEvents />
+      {children}
     </>
   );
 }
@@ -120,7 +69,11 @@ function BridgeSendEvents() {
   const scene = useScene();
   const editor = useEditor();
 
-  useEffectWhenReady(() => {
+  useEffect(() => {
+    if (!scene.ready) {
+      return;
+    }
+
     const callback = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
         scene.blur();
@@ -138,54 +91,68 @@ function BridgeSendEvents() {
     document.addEventListener("keyup", callback);
 
     return () => document.removeEventListener("keyup", callback);
-  }, []);
+  }, [scene]);
 
-  useEffectWhenReady(() => {
+  useEffect(() => {
+    if (!scene.ready) {
+      return;
+    }
+
     // This handles the browser history being updated and propagating to the scene.
     scene.navigateTo({
       path: editor.path,
       encodedProps: editor.encodedProps,
       exportName: editor.exportName,
     });
-  }, [editor.path, editor.exportName]);
+  }, [editor.encodedProps, editor.exportName, editor.path, scene]);
 
   return null;
 }
 
 function BridgeReceiveEvents() {
   const editor = useEditor();
+  const scene = useScene();
 
-  useEffectWhenReady(() => {
-    return listen("trplx:onSceneObjectNavigated", (data) => {
-      editor.set({
-        path: data.path,
-        exportName: data.exportName,
-        encodedProps: data.encodedProps,
-      });
-    });
-  }, [editor.set]);
+  useEffect(() => {
+    if (!scene.ready) {
+      return;
+    }
 
-  useEffectWhenReady(() => {
-    return listen("trplx:onSceneObjectFocus", (data) => {
-      editor.focus({
-        column: data.column,
-        line: data.line,
-        ownerPath: editor.path,
-      });
-    });
-  }, [editor.focus, editor.path]);
+    return compose([
+      listen("trplx:requestSave", editor.save),
+      listen("trplx:requestUndo", editor.undo),
+      listen("trplx:requestRedo", editor.redo),
+      listen("trplx:onSceneObjectNavigated", (data) => {
+        editor.set({
+          path: data.path,
+          exportName: data.exportName,
+          encodedProps: data.encodedProps,
+        });
+      }),
+      listen("trplx:onConfirmSceneObjectProp", async (data) => {
+        const currentPropValue = await scene.getPropValue(data);
 
-  useEffectWhenReady(() => {
-    return listen("trplx:onSceneObjectBlur", () => {
-      editor.focus(null);
-    });
-  }, [editor.focus]);
-
-  useEffectWhenReady(() => {
-    return listen("trplx:requestSave", () => {
-      fetch(`http://localhost:8000/scene/save?path=${editor.path}`, {});
-    });
-  }, [editor.path]);
+        editor.persistPropValue({
+          column: data.column,
+          line: data.line,
+          path: data.path,
+          propName: data.propName,
+          nextPropValue: data.propValue,
+          currentPropValue: currentPropValue.value,
+        });
+      }),
+      listen("trplx:onSceneObjectFocus", (data) => {
+        editor.focus({
+          column: data.column,
+          line: data.line,
+          ownerPath: editor.path,
+        });
+      }),
+      listen("trplx:onSceneObjectBlur", () => {
+        editor.focus(null);
+      }),
+    ]);
+  }, [scene, editor]);
 
   return null;
 }

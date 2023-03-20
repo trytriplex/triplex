@@ -52,7 +52,7 @@ export function MenuItem({
       ])}
     >
       {children}
-      {rslot && <div className="ml-auto text-neutral-500">{rslot}</div>}
+      {rslot && <div className="ml-auto text-neutral-400">{rslot}</div>}
     </RadixMenubar.Item>
   );
 }

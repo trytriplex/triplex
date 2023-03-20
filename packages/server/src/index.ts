@@ -86,9 +86,22 @@ export function createServer({ files }: { files: string[] }) {
   /**
    * Persist the in-memory scene to fs.
    */
-  router.get("/scene/save", async (context) => {
-    const path = getParam(context, "path");
+  router.get("/scene/:path/save", async (context) => {
+    const path = context.params.path;
 
+    await save({ path, project });
+
+    context.response.body = { message: "success" };
+  });
+
+  /**
+   * Resets the scene to what is currently saved to fs.
+   */
+  router.get("/scene/:path/reset", async (context) => {
+    const path = context.params.path;
+    const { sourceFile } = await project.getSourceFile(path);
+
+    await sourceFile.refreshFromFileSystem();
     await save({ path, project });
 
     context.response.body = { message: "success" };

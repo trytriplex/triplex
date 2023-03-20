@@ -8,11 +8,65 @@ import {
   Separator,
 } from "../ds/menubar";
 import { useOverlayStore } from "../stores/overlay";
-import { useScene } from "../scence-bridge";
+import { useScene } from "../stores/scene";
+
+function ShortcutItem({
+  children,
+  disabled,
+  metaKey,
+  onClick,
+  shiftKey,
+  shortcut,
+}: {
+  children: string;
+  disabled?: boolean;
+  metaKey?: boolean;
+  onClick: () => void;
+  shiftKey?: boolean;
+  shortcut: string;
+}) {
+  const OS_META_KEY = navigator.platform.match("Mac") ? "⌘" : "CTRL";
+  const metaHotkey = metaKey ? `${OS_META_KEY} ` : "";
+  const shiftHotkey = shiftKey ? "⇧ " : "";
+  const hotkey = `${shiftHotkey}${metaHotkey}${shortcut}`;
+
+  return (
+    <MenuItem onClick={onClick} disabled={disabled} rslot={hotkey}>
+      {children}
+    </MenuItem>
+  );
+}
+
+function UndoRedoItems() {
+  const { undo, redo, getState } = useEditor();
+  const { redoAvailable, undoAvailable } = getState();
+
+  return (
+    <>
+      <ShortcutItem
+        disabled={!undoAvailable}
+        metaKey
+        onClick={undo}
+        shortcut="Z"
+      >
+        Undo
+      </ShortcutItem>
+      <ShortcutItem
+        disabled={!redoAvailable}
+        metaKey
+        onClick={redo}
+        shiftKey
+        shortcut="Z"
+      >
+        Redo
+      </ShortcutItem>
+    </>
+  );
+}
 
 export function EditorMenu() {
   const showOverlay = useOverlayStore((store) => store.show);
-  const { path, target } = useEditor();
+  const { target, save, reset } = useEditor();
   const { blur, jumpTo, navigateTo } = useScene();
 
   return (
@@ -20,33 +74,57 @@ export function EditorMenu() {
       <Menu>
         <Trigger>File</Trigger>
         <MenuContent>
-          <MenuItem rslot="⌘ O" onClick={() => showOverlay("open-scene")}>
+          <ShortcutItem
+            metaKey
+            shortcut="O"
+            onClick={() => showOverlay("open-scene")}
+          >
             Open
-          </MenuItem>
+          </ShortcutItem>
+          <Separator />
+          <ShortcutItem shortcut="S" metaKey onClick={save}>
+            Save
+          </ShortcutItem>
+        </MenuContent>
+      </Menu>
+      <Menu>
+        <Trigger>Edit</Trigger>
+        <MenuContent>
+          <UndoRedoItems />
           <Separator />
           <MenuItem
-            rslot="⌘ S"
-            onClick={() =>
-              fetch(`http://localhost:8000/scene/save?path=${path}`)
-            }
+            onClick={() => {
+              const result = confirm(
+                "Will throw away unsaved state, continue?"
+              );
+
+              if (result) {
+                reset();
+              }
+            }}
           >
-            Save
+            Reset
           </MenuItem>
         </MenuContent>
       </Menu>
       <Menu>
         <Trigger>Select</Trigger>
         <MenuContent>
-          <MenuItem disabled={!target} rslot="ESC" onClick={() => blur()}>
+          <ShortcutItem disabled={!target} shortcut="ESC" onClick={blur}>
             Deselect
-          </MenuItem>
+          </ShortcutItem>
           <Separator />
-          <MenuItem disabled={!target} rslot="F" onClick={() => jumpTo()}>
+          <ShortcutItem disabled={!target} shortcut="F" onClick={jumpTo}>
             Jump to
-          </MenuItem>
-          <MenuItem disabled={!target} rslot="⇧ F" onClick={() => navigateTo()}>
+          </ShortcutItem>
+          <ShortcutItem
+            disabled={!target}
+            shiftKey
+            shortcut="F"
+            onClick={navigateTo}
+          >
             Navigate to
-          </MenuItem>
+          </ShortcutItem>
         </MenuContent>
       </Menu>
     </Menubar>
