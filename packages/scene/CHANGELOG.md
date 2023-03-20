@@ -1,5 +1,17 @@
 # @triplex/scene
 
+## 0.32.0
+
+### Minor Changes
+
+- c87a5f3: Undo/redo now available. When manipulating the scene through transform controls or the context panel each persisted manipulation will be able to be undone (and redone) using hotkeys and the edit menu actions.
+
+### Patch Changes
+
+- Updated dependencies [c87a5f3]
+  - @triplex/bridge@0.32.0
+  - @triplex/ws-client@0.32.0
+
 ## 0.31.0
 
 ### Minor Changes
