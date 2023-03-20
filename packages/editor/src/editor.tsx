@@ -7,7 +7,56 @@ import { SceneFrame } from "./scence-bridge";
 import { useEditor } from "./stores/editor";
 
 export function EditorFrame() {
-  const { path } = useEditor();
+  const { path, save, undo, redo } = useEditor();
+
+  useEffect(() => {
+    if (!path) {
+      return;
+    }
+
+    const callback = (e: KeyboardEvent) => {
+      if (
+        e.keyCode === 83 &&
+        (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
+      ) {
+        save();
+        e.preventDefault();
+      }
+    };
+
+    document.addEventListener("keydown", callback);
+
+    return () => {
+      document.removeEventListener("keydown", callback);
+    };
+  }, [path, save]);
+
+  useEffect(() => {
+    if (!path) {
+      return;
+    }
+
+    const callback = (e: KeyboardEvent) => {
+      if (
+        e.key === "z" &&
+        (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) &&
+        e.shiftKey
+      ) {
+        redo();
+      } else if (
+        e.key === "z" &&
+        (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
+      ) {
+        undo();
+      }
+    };
+
+    document.addEventListener("keydown", callback);
+
+    return () => {
+      document.removeEventListener("keydown", callback);
+    };
+  }, [path, redo, save, undo]);
 
   useEffect(() => {
     if (path) {

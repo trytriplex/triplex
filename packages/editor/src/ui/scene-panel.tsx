@@ -3,7 +3,7 @@ import { cn } from "../ds/cn";
 import { useLazySubscription } from "@triplex/ws-client";
 import { getEditorLink } from "../util/ide";
 import { useEditor } from "../stores/editor";
-import { useScene } from "../scence-bridge";
+import { useScene } from "../stores/scene";
 import { ScrollContainer } from "../ds/scroll-container";
 import { ErrorBoundary } from "react-error-boundary";
 

@@ -3,6 +3,7 @@ import type {
   ClientSendEventName,
   HostSendEventData,
   HostSendEventName,
+  HostSendEventResponse,
 } from "./types";
 
 export function send<TEvent extends ClientSendEventName>(
@@ -12,13 +13,26 @@ export function send<TEvent extends ClientSendEventName>(
   window.top?.postMessage({ eventName, data });
 }
 
+function respond<TEvent extends keyof HostSendEventResponse>(
+  eventName: TEvent,
+  data: HostSendEventResponse[TEvent]
+) {
+  window.top?.postMessage({ eventName: `${eventName}Response`, data });
+}
+
 export function listen<TEvent extends HostSendEventName>(
   eventName: TEvent,
-  callback: (data: HostSendEventData[TEvent]) => void
+  callback: (
+    data: HostSendEventData[TEvent]
+  ) => void | HostSendEventResponse[TEvent]
 ) {
   const cb = (e: MessageEvent) => {
     if (typeof e.data === "object" && e.data.eventName === eventName) {
-      callback(e.data.data);
+      const value = callback(e.data.data);
+
+      if (typeof value !== "undefined") {
+        respond(eventName, value);
+      }
     }
   };
 

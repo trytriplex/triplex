@@ -3,6 +3,7 @@ import type {
   ClientSendEventName,
   HostSendEventData,
   HostSendEventName,
+  HostSendEventResponse,
 } from "./types";
 
 export function listen<TEvent extends ClientSendEventName>(
@@ -25,12 +26,26 @@ export function listen<TEvent extends ClientSendEventName>(
 export function send<TEvent extends HostSendEventName>(
   iframe: HTMLIFrameElement,
   eventName: TEvent,
-  data: HostSendEventData[TEvent]
-) {
+  data: HostSendEventData[TEvent],
+  awaitResponse = false
+): Promise<HostSendEventResponse[TEvent]> {
   iframe.contentWindow?.postMessage({
     eventName,
     data,
   });
+
+  if (awaitResponse) {
+    return new Promise((resolve) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const responseName = `${eventName}Response` as any;
+      const cleanup = listen(responseName, (responseValue) => {
+        resolve(responseValue as HostSendEventResponse[TEvent]);
+        cleanup();
+      });
+    });
+  }
+
+  return Promise.resolve(undefined as HostSendEventResponse[TEvent]);
 }
 
 export { compose } from "./compose";

@@ -476,32 +476,38 @@ export function Selection({
           ? selected.sceneObject.getWorldPosition(V1).toArray()
           : selected.sceneObject.position.toArray();
 
-      fetch(
-        `http://localhost:8000/scene/object/${selected.line}/${
-          selected.column
-        }/prop?value=${JSON.stringify(position)}&path=${path}&name=position`
-      );
+      send("trplx:onConfirmSceneObjectProp", {
+        column: selected.column,
+        line: selected.line,
+        path,
+        propName: "position",
+        propValue: position,
+      });
     }
 
     if (e.mode === "rotate") {
       const rotation = selected.sceneObject.rotation.toArray();
       rotation.pop();
 
-      fetch(
-        `http://localhost:8000/scene/object/${selected.line}/${
-          selected.column
-        }/prop?value=${JSON.stringify(rotation)}&path=${path}&name=rotation`
-      );
+      send("trplx:onConfirmSceneObjectProp", {
+        column: selected.column,
+        line: selected.line,
+        path,
+        propName: "rotation",
+        propValue: rotation,
+      });
     }
 
     if (e.mode === "scale") {
       const scale = selected.sceneObject.scale.toArray();
 
-      fetch(
-        `http://localhost:8000/scene/object/${selected.line}/${
-          selected.column
-        }/prop?value=${JSON.stringify(scale)}&path=${path}&name=scale`
-      );
+      send("trplx:onConfirmSceneObjectProp", {
+        column: selected.column,
+        line: selected.line,
+        path,
+        propName: "scale",
+        propValue: scale,
+      });
     }
   };
 

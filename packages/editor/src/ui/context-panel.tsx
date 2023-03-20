@@ -5,11 +5,11 @@ import { Suspense, useDeferredValue, useEffect } from "react";
 import { useEditor, FocusedObject } from "../stores/editor";
 import { ScrollContainer } from "../ds/scroll-container";
 import { Prop, PropInput } from "./prop-input";
-import { useScene } from "../scence-bridge";
+import { useScene } from "../stores/scene";
 import { cn } from "../ds/cn";
 
 function SelectedSceneObject({ target }: { target: FocusedObject }) {
-  const { setProp } = useScene();
+  const { setPropValue, getPropValue } = useScene();
   const { persistPropValue } = useEditor();
   const data = useLazySubscription<{
     name: string;
@@ -106,17 +106,25 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
                 <PropInput
                   path={target.ownerPath}
                   prop={prop}
-                  onConfirm={(value) =>
+                  onConfirm={async (value) => {
+                    const currentValue = await getPropValue({
+                      column: target.column,
+                      line: target.line,
+                      path: target.ownerPath,
+                      propName: prop.name,
+                    });
+
                     persistPropValue({
                       column: target.column,
                       line: target.line,
                       path: target.ownerPath,
                       propName: prop.name,
-                      propValue: value,
-                    })
-                  }
+                      currentPropValue: currentValue.value,
+                      nextPropValue: value,
+                    });
+                  }}
                   onChange={(value) =>
-                    setProp({
+                    setPropValue({
                       column: target.column,
                       line: target.line,
                       path: target.ownerPath,

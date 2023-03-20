@@ -79,6 +79,33 @@ export function SceneFrame({
     };
   }, [path]);
 
+  useEffect(() => {
+    if (!path) {
+      return;
+    }
+
+    const callback = (e: KeyboardEvent) => {
+      if (
+        e.key === "z" &&
+        (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) &&
+        e.shiftKey
+      ) {
+        send("trplx:requestRedo", undefined);
+      } else if (
+        e.key === "z" &&
+        (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
+      ) {
+        send("trplx:requestUndo", undefined);
+      }
+    };
+
+    document.addEventListener("keydown", callback);
+
+    return () => {
+      document.removeEventListener("keydown", callback);
+    };
+  }, [path]);
+
   const onJumpTo = useCallback((position: Vector3Tuple, box: Box3) => {
     setFocalPoint({
       // If the box is empty (as the object takes up no 3d space, like a light)
