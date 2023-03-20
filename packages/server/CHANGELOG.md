@@ -1,5 +1,13 @@
 # @triplex/server
 
+## 0.32.0
+
+### Minor Changes
+
+- c87a5f3: Undo/redo now available. When manipulating the scene through transform controls or the context panel each persisted manipulation will be able to be undone (and redone) using hotkeys and the edit menu actions.
+- 3a190f1: API response for prop types now returns an object and works with strict compiler option.
+- c87a5f3: Adds reset command. Use this to throw away all unsaved changes in the scene.
+
 ## 0.31.0
 
 ### Minor Changes
