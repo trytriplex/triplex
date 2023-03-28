@@ -66,6 +66,10 @@ interface BridgeContext {
     exportName: string;
   }): void;
   /**
+   * Sets the scene transform control mode.
+   */
+  setTransform(mode: "scale" | "translate" | "rotate"): void;
+  /**
    * Value is `true` when the scene is ready else `false`.
    * If the scene is not ready accessing any of the scene store
    * values will throw an invariant.
@@ -99,6 +103,9 @@ export const useScene = create<
     throw new Error("invariant");
   },
   persistPropValue() {
+    throw new Error("invariant");
+  },
+  setTransform() {
     throw new Error("invariant");
   },
 }));
