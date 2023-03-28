@@ -1,5 +1,18 @@
 # @triplex/scene
 
+## 0.33.0
+
+### Minor Changes
+
+- 1067d23: Adds transform controls to the ui.
+- 1067d23: Transform control hotkeys now continue to function even when there is no scene object currently selected.
+
+### Patch Changes
+
+- Updated dependencies [1067d23]
+  - @triplex/bridge@0.33.0
+  - @triplex/ws-client@0.33.0
+
 ## 0.32.0
 
 ### Minor Changes

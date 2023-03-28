@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.33.0
+
+### Minor Changes
+
+- 1067d23: Adds transform controls to the ui.
+
 ## 0.32.0
 
 ### Minor Changes

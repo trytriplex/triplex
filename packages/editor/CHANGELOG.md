@@ -1,5 +1,17 @@
 # @triplex/editor
 
+## 0.33.0
+
+### Minor Changes
+
+- 1067d23: Adds transform controls to the ui.
+
+### Patch Changes
+
+- Updated dependencies [1067d23]
+  - @triplex/bridge@0.33.0
+  - @triplex/ws-client@0.33.0
+
 ## 0.32.0
 
 ### Minor Changes
