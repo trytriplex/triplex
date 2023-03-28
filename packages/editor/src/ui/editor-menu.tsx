@@ -70,63 +70,65 @@ export function EditorMenu() {
   const { blur, jumpTo, navigateTo } = useScene();
 
   return (
-    <Menubar>
-      <Menu>
-        <Trigger>File</Trigger>
-        <MenuContent>
-          <ShortcutItem
-            metaKey
-            shortcut="O"
-            onClick={() => showOverlay("open-scene")}
-          >
-            Open
-          </ShortcutItem>
-          <Separator />
-          <ShortcutItem shortcut="S" metaKey onClick={save}>
-            Save
-          </ShortcutItem>
-        </MenuContent>
-      </Menu>
-      <Menu>
-        <Trigger>Edit</Trigger>
-        <MenuContent>
-          <UndoRedoItems />
-          <Separator />
-          <MenuItem
-            onClick={() => {
-              const result = confirm(
-                "Will throw away unsaved state, continue?"
-              );
+    <div className="self-start rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1 shadow-2xl shadow-black/50">
+      <Menubar>
+        <Menu>
+          <Trigger>File</Trigger>
+          <MenuContent>
+            <ShortcutItem
+              metaKey
+              shortcut="O"
+              onClick={() => showOverlay("open-scene")}
+            >
+              Open
+            </ShortcutItem>
+            <Separator />
+            <ShortcutItem shortcut="S" metaKey onClick={save}>
+              Save
+            </ShortcutItem>
+          </MenuContent>
+        </Menu>
+        <Menu>
+          <Trigger>Edit</Trigger>
+          <MenuContent>
+            <UndoRedoItems />
+            <Separator />
+            <MenuItem
+              onClick={() => {
+                const result = confirm(
+                  "Will throw away unsaved state, continue?"
+                );
 
-              if (result) {
-                reset();
-              }
-            }}
-          >
-            Reset
-          </MenuItem>
-        </MenuContent>
-      </Menu>
-      <Menu>
-        <Trigger>Select</Trigger>
-        <MenuContent>
-          <ShortcutItem disabled={!target} shortcut="ESC" onClick={blur}>
-            Deselect
-          </ShortcutItem>
-          <Separator />
-          <ShortcutItem disabled={!target} shortcut="F" onClick={jumpTo}>
-            Jump to
-          </ShortcutItem>
-          <ShortcutItem
-            disabled={!target}
-            shiftKey
-            shortcut="F"
-            onClick={navigateTo}
-          >
-            Navigate to
-          </ShortcutItem>
-        </MenuContent>
-      </Menu>
-    </Menubar>
+                if (result) {
+                  reset();
+                }
+              }}
+            >
+              Reset
+            </MenuItem>
+          </MenuContent>
+        </Menu>
+        <Menu>
+          <Trigger>Select</Trigger>
+          <MenuContent>
+            <ShortcutItem disabled={!target} shortcut="ESC" onClick={blur}>
+              Deselect
+            </ShortcutItem>
+            <Separator />
+            <ShortcutItem disabled={!target} shortcut="F" onClick={jumpTo}>
+              Jump to
+            </ShortcutItem>
+            <ShortcutItem
+              disabled={!target}
+              shiftKey
+              shortcut="F"
+              onClick={navigateTo}
+            >
+              Navigate to
+            </ShortcutItem>
+          </MenuContent>
+        </Menu>
+      </Menubar>
+    </div>
   );
 }

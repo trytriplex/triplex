@@ -14,6 +14,9 @@ export interface ClientSendEventData {
     line: number;
     column: number;
   };
+  "trplx:onTransformChange": {
+    mode: "translate" | "scale" | "rotate";
+  };
   "trplx:onSceneObjectNavigated": {
     path: string;
     exportName: string;
@@ -40,6 +43,9 @@ export interface HostSendEventData {
     path: string;
     propName: string;
     propValue: unknown;
+  };
+  "trplx:requestTransformChange": {
+    mode: "translate" | "scale" | "rotate";
   };
   "trplx:requestResetSceneObjectProp": {
     column: number;
@@ -78,4 +84,5 @@ export interface HostSendEventResponse {
   "trplx:requestResetSceneObjectProp": void;
   "trplx:requestSceneObjectPropValue": { value: unknown };
   "trplx:requestSetSceneObjectProp": void;
+  "trplx:requestTransformChange": void;
 }

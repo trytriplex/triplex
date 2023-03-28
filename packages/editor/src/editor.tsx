@@ -5,6 +5,7 @@ import { ScenePanel } from "./ui/scene-panel";
 import { ScenesDrawer } from "./ui/scenes-drawer";
 import { SceneFrame } from "./scence-bridge";
 import { useEditor } from "./stores/editor";
+import { ControlsMenu } from "./ui/controls-menu";
 
 export function EditorFrame() {
   const { path, save, undo, redo } = useEditor();
@@ -69,15 +70,15 @@ export function EditorFrame() {
       <SceneFrame>
         <ScenesDrawer />
 
-        <div className="absolute top-4 left-4 bottom-4 flex w-52 flex-col gap-4">
-          <div className="rounded-lg bg-neutral-900/[97%] p-1 shadow-2xl shadow-black/50">
-            <EditorMenu />
-          </div>
-
+        <div className="absolute top-4 left-4 bottom-4 flex flex-col gap-3">
+          <EditorMenu />
           {path && <ScenePanel />}
         </div>
 
-        {path && <ContextPanel />}
+        <div className="pointer-events-none absolute left-4 right-4 bottom-4 flex justify-center">
+          <ControlsMenu />
+        </div>
+        <ContextPanel />
       </SceneFrame>
     </div>
   );

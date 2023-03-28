@@ -47,7 +47,7 @@ export function ScenePanel() {
   const { path } = useEditor();
 
   return (
-    <div className="h-full overflow-hidden rounded-lg bg-neutral-900/[97%] shadow-2xl shadow-black/50">
+    <div className="h-full w-52 overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%] shadow-2xl shadow-black/50">
       <ErrorBoundary
         resetKeys={[path]}
         fallbackRender={() => (

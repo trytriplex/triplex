@@ -279,6 +279,16 @@ export function Selection({
   );
 
   useEffect(() => {
+    send("trplx:onTransformChange", { mode: transform });
+  }, [transform]);
+
+  useEffect(() => {
+    return listen("trplx:requestTransformChange", ({ mode }) => {
+      setTransform(mode);
+    });
+  }, []);
+
+  useEffect(() => {
     return listen("trplx:requestNavigateToScene", (sceneObject) => {
       if (!sceneObject && (!selected || !objectData)) {
         return;
@@ -388,71 +398,75 @@ export function Selection({
         onBlur();
       }
 
-      if (!selected) {
-        return;
-      }
+      if (selected) {
+        if (e.key === "f") {
+          onJumpTo(
+            selected.sceneObject.getWorldPosition(V1).toArray(),
+            box.setFromObject(selected.sceneObject),
+            selected.sceneObject
+          );
+        }
 
-      if (e.key === "f") {
-        onJumpTo(
-          selected.sceneObject.getWorldPosition(V1).toArray(),
-          box.setFromObject(selected.sceneObject),
-          selected.sceneObject
-        );
-      }
-
-      if (
-        e.key === "F" &&
-        e.shiftKey &&
-        selected &&
-        objectData &&
-        objectData.path
-      ) {
-        // Only navigate if there is a path to navigate to.
-        setSelected(undefined);
-        onBlur();
-        onNavigate({
-          path: objectData.path,
-          exportName: objectData.exportName,
-          encodedProps: encodeProps(selected),
-        });
+        if (
+          e.key === "F" &&
+          e.shiftKey &&
+          selected &&
+          objectData &&
+          objectData.path
+        ) {
+          // Only navigate if there is a path to navigate to.
+          setSelected(undefined);
+          onBlur();
+          onNavigate({
+            path: objectData.path,
+            exportName: objectData.exportName,
+            encodedProps: encodeProps(selected),
+          });
+        }
       }
 
       if (e.key === "r") {
         setTransform("rotate");
-        const data = findEditorData(
-          path,
-          selected.sceneObject,
-          "rotate",
-          sceneObjects
-        );
-        if (data) {
-          setSelected(data);
+        if (selected) {
+          const data = findEditorData(
+            path,
+            selected.sceneObject,
+            "rotate",
+            sceneObjects
+          );
+          if (data) {
+            setSelected(data);
+          }
         }
       }
 
       if (e.key === "t") {
         setTransform("translate");
-        const data = findEditorData(
-          path,
-          selected.sceneObject,
-          "translate",
-          sceneObjects
-        );
-        if (data) {
-          setSelected(data);
+        if (selected) {
+          const data = findEditorData(
+            path,
+            selected.sceneObject,
+            "translate",
+            sceneObjects
+          );
+          if (data) {
+            setSelected(data);
+          }
         }
       }
 
       if (e.key === "s" && !e.metaKey && !e.ctrlKey) {
         setTransform("scale");
-        const data = findEditorData(
-          path,
-          selected.sceneObject,
-          "scale",
-          sceneObjects
-        );
-        if (data) {
-          setSelected(data);
+        if (selected) {
+          const data = findEditorData(
+            path,
+            selected.sceneObject,
+            "scale",
+            sceneObjects
+          );
+          if (data) {
+            setSelected(data);
+          }
         }
       }
     };

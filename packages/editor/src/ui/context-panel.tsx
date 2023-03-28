@@ -146,24 +146,26 @@ export function ContextPanel() {
   const { target } = useEditor();
   const deferredTarget = useDeferredValue(target);
 
-  if (deferredTarget) {
-    return (
-      <div className="absolute top-4 right-4 bottom-4 flex w-60 flex-col overflow-hidden rounded-lg bg-neutral-900/[97%] shadow-2xl shadow-black/50">
-        <ErrorBoundary
-          resetKeys={[deferredTarget]}
-          fallbackRender={() => (
-            <div className="p-4 text-neutral-400">Error!</div>
-          )}
-        >
-          <Suspense
-            fallback={<div className="p-4 text-neutral-400">Loading...</div>}
+  return (
+    <div className="pointer-events-none absolute top-4 right-4 bottom-4 flex w-60 flex-col gap-3">
+      {deferredTarget && (
+        <div className="pointer-events-auto flex h-full flex-col overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%] shadow-2xl shadow-black/50">
+          <ErrorBoundary
+            resetKeys={[deferredTarget]}
+            fallbackRender={() => (
+              <div className="p-4 text-neutral-400">Error!</div>
+            )}
           >
-            <SelectedSceneObject target={deferredTarget} />
-          </Suspense>
-        </ErrorBoundary>
-      </div>
-    );
-  }
+            <Suspense
+              fallback={<div className="p-4 text-neutral-400">Loading...</div>}
+            >
+              <SelectedSceneObject target={deferredTarget} />
+            </Suspense>
+          </ErrorBoundary>
+        </div>
+      )}
+    </div>
+  );
 
   return null;
 }

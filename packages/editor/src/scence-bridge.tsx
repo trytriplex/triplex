@@ -46,6 +46,9 @@ export function SceneFrame({ children }: { children: ReactNode }) {
         persistPropValue(data) {
           send(iframe.current, "trplx:requestPersistSceneObjectProp", data);
         },
+        setTransform(mode) {
+          send(iframe.current, "trplx:requestTransformChange", { mode });
+        },
       });
     });
   }, [__set]);
