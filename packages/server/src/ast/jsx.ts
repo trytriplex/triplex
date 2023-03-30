@@ -318,25 +318,26 @@ interface UndeclaredProp {
   values?: unknown;
 }
 
-const propsSortList: Record<string, number> = {
-  name: 100,
-  args: 99,
-  position: 98,
-  scale: 97,
-  rotation: 96,
-  visible: 95,
-  castShadow: 94,
-  receiveShadow: 93,
-  color: 92,
-  opacity: 91,
-  transparent: 90,
-  metalness: 89,
-  roughness: 88,
-};
+const propsSortList: Record<string, number> = [
+  "position",
+  "scale",
+  "rotation",
+  "args",
+  "name",
+  "visible",
+  "castShadow",
+  "receiveShadow",
+  "color",
+  "opacity",
+  "transparent",
+  "metalness",
+  "roughness",
+].reduce((acc, val, index) => Object.assign(acc, { [val]: 1000 - index }), {});
 
 const propsExcludeList: Record<string, true> = {
   attach: true,
   id: true,
+  isBufferGeometry: true,
   isLineBasicMaterial: true,
   isLineDashedMaterial: true,
   isMaterial: true,
@@ -445,7 +446,7 @@ export function getJsxElementProps(
       return -1;
     }
 
-    return propB.name.localeCompare(propA.name);
+    return propA.name.localeCompare(propB.name);
   });
 }
 

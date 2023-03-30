@@ -9,6 +9,19 @@ import { LiteralUnionInput } from "./literal-union-input";
 import { UnionInput } from "./union-input";
 import { Prop } from "../api-types";
 
+function isColorProp(name: string) {
+  const includeList = ["emissive"];
+  if (name.toLowerCase().endsWith("color")) {
+    return true;
+  }
+
+  if (includeList.includes(name)) {
+    return true;
+  }
+
+  return false;
+}
+
 export function PropInput({
   prop,
   path,
@@ -91,7 +104,7 @@ export function PropInput({
         onConfirm={onConfirm}
       />
     );
-  } else if (prop.type === "string" && name.toLowerCase().endsWith("color")) {
+  } else if (prop.type === "string" && isColorProp(name)) {
     return (
       <ColorInput
         defaultValue={prop.value}
