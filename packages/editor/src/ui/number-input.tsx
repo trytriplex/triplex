@@ -32,7 +32,7 @@ export function NumberInput({
         defaultValue={defaultValue}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
-        className="w-full bg-transparent py-0.5 px-1 text-sm text-neutral-300 outline-none [color-scheme:dark]"
+        className="w-full bg-transparent py-0.5 px-1 text-sm text-neutral-300 outline-none [color-scheme:dark] [appearance:textfield]"
       />
     </div>
   );

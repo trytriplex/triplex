@@ -46,11 +46,10 @@ export function ColorInput({
 
   return (
     <input
-      key={defaultValue}
       data-testid={`color-${defaultValue}`}
       id={name}
       type="color"
-      className="h-7 w-7 rounded-md bg-neutral-800 p-1 outline-none [color-scheme:dark]"
+      className="h-7 w-7 rounded-md bg-neutral-700 p-[3px] outline-none [color-scheme:dark]"
       defaultValue={defaultValueHex}
       onChange={onChangeHandler}
       ref={ref}

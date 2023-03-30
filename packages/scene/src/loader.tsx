@@ -12,7 +12,6 @@ export function SceneLoader({
   sceneProps: Record<string, unknown>;
   exportName: "default" | string;
 }) {
-  // Defer path so the loading in scene doesn't flash in and out.
   const loadModule = Object.entries(scenes).find(([filename]) =>
     path ? path.endsWith(filename) : false
   );

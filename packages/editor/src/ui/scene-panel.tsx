@@ -26,7 +26,7 @@ function SceneComponent({
       className={cn([
         selected
           ? "border-l-blue-400 bg-white/5 text-blue-400"
-          : "text-neutral-400 hover:border-l-blue-400 hover:bg-white/5 active:bg-neutral-700",
+          : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
         "block w-[208px] cursor-default overflow-hidden text-ellipsis border-l-2 border-transparent py-1.5 px-3 text-left text-sm -outline-offset-1",
       ])}
     >

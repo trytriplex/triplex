@@ -1,8 +1,4 @@
-import {
-  AllSidesIcon,
-  DimensionsIcon,
-  RotateCounterClockwiseIcon,
-} from "@radix-ui/react-icons";
+import { AllSidesIcon, TransformIcon, AngleIcon } from "@radix-ui/react-icons";
 import { listen } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
 import { IconButton } from "../ds/button";
@@ -31,13 +27,13 @@ export function ControlsMenu() {
       <IconButton
         isSelected={mode === "rotate"}
         title="Rotate [r]"
-        icon={RotateCounterClockwiseIcon}
+        icon={AngleIcon}
         onClick={() => setTransform("rotate")}
       />
       <IconButton
         isSelected={mode === "scale"}
         title="Scale [s]"
-        icon={DimensionsIcon}
+        icon={TransformIcon}
         onClick={() => setTransform("scale")}
       />
     </div>

@@ -1,44 +1,28 @@
 import { preloadSubscription, useLazySubscription } from "@triplex/ws-client";
 import { ErrorBoundary } from "react-error-boundary";
 import { getEditorLink } from "../util/ide";
-import { Suspense, useDeferredValue, useEffect } from "react";
+import { Suspense, useEffect } from "react";
 import { useEditor, FocusedObject } from "../stores/editor";
 import { ScrollContainer } from "../ds/scroll-container";
-import { Prop, PropInput } from "./prop-input";
+import { PropInput } from "./prop-input";
 import { useScene } from "../stores/scene";
-import { cn } from "../ds/cn";
+import { PropField } from "./prop-field";
+import { GetSceneObject } from "../api-types";
 
 function SelectedSceneObject({ target }: { target: FocusedObject }) {
   const { setPropValue, getPropValue } = useScene();
   const { persistPropValue } = useEditor();
-  const data = useLazySubscription<{
-    name: string;
-    type: "custom" | "host";
-    path: string;
-    props: Prop[];
-    propTypes: Record<
-      string,
-      {
-        name: string;
-        required: boolean;
-        description: string | null;
-        type: {
-          type: string;
-          value?: unknown;
-        };
-      }
-    >;
-  }>(
+  const data = useLazySubscription<GetSceneObject>(
     `/scene/${encodeURIComponent(target.ownerPath)}/object/${target.line}/${
       target.column
     }`
   );
 
   useEffect(() => {
-    if (data.type === "custom" && data.path) {
+    if (data.type === "custom") {
       preloadSubscription(`/scene/${encodeURIComponent(data.path)}`);
     }
-  }, [data.path, data.type]);
+  }, [data]);
 
   return (
     <>
@@ -59,7 +43,7 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
           View usage
         </a>
 
-        {data.path && (
+        {data.type === "custom" && (
           <>
             <span className="mx-1.5 text-xs text-neutral-400">•</span>
 
@@ -86,55 +70,47 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
         {data.props
           .filter((prop) => prop.type !== "spread")
           .map((prop) => (
-            <div
-              className={cn([
-                prop.type === "array"
-                  ? "-mt-2 py-2 hover:bg-white/[2%]"
-                  : "mb-2",
-                "flex w-full flex-shrink gap-2 px-4",
-              ])}
+            <PropField
+              htmlFor={prop.name}
+              label={prop.name}
+              description={prop.description}
               key={`${prop.name}${prop.column}${prop.line}`}
             >
-              <div
-                title={prop.name}
-                className="h-7 w-[61px] overflow-hidden text-ellipsis pt-1 text-right text-sm text-neutral-400"
-              >
-                <label htmlFor={prop.name}>{prop.name}</label>
-              </div>
+              <PropInput
+                name={prop.name}
+                column={prop.column}
+                line={prop.line}
+                path={target.ownerPath}
+                prop={prop}
+                required={prop.required}
+                onConfirm={async (value) => {
+                  const currentValue = await getPropValue({
+                    column: target.column,
+                    line: target.line,
+                    path: target.ownerPath,
+                    propName: prop.name,
+                  });
 
-              <div className="flex w-[139px] flex-shrink-0 flex-col justify-center gap-1">
-                <PropInput
-                  path={target.ownerPath}
-                  prop={prop}
-                  onConfirm={async (value) => {
-                    const currentValue = await getPropValue({
-                      column: target.column,
-                      line: target.line,
-                      path: target.ownerPath,
-                      propName: prop.name,
-                    });
-
-                    persistPropValue({
-                      column: target.column,
-                      line: target.line,
-                      path: target.ownerPath,
-                      propName: prop.name,
-                      currentPropValue: currentValue.value,
-                      nextPropValue: value,
-                    });
-                  }}
-                  onChange={(value) =>
-                    setPropValue({
-                      column: target.column,
-                      line: target.line,
-                      path: target.ownerPath,
-                      propName: prop.name,
-                      propValue: value,
-                    })
-                  }
-                />
-              </div>
-            </div>
+                  persistPropValue({
+                    column: target.column,
+                    line: target.line,
+                    path: target.ownerPath,
+                    propName: prop.name,
+                    currentPropValue: currentValue.value,
+                    nextPropValue: value,
+                  });
+                }}
+                onChange={(value) =>
+                  setPropValue({
+                    column: target.column,
+                    line: target.line,
+                    path: target.ownerPath,
+                    propName: prop.name,
+                    propValue: value,
+                  })
+                }
+              />
+            </PropField>
           ))}
         <div className="h-2" />
       </ScrollContainer>
@@ -144,14 +120,13 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
 
 export function ContextPanel() {
   const { target } = useEditor();
-  const deferredTarget = useDeferredValue(target);
 
   return (
-    <div className="pointer-events-none absolute top-4 right-4 bottom-4 flex w-60 flex-col gap-3">
-      {deferredTarget && (
+    <div className="pointer-events-none absolute top-4 right-4 bottom-4 flex w-72 flex-col gap-3">
+      {target && (
         <div className="pointer-events-auto flex h-full flex-col overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%] shadow-2xl shadow-black/50">
           <ErrorBoundary
-            resetKeys={[deferredTarget]}
+            resetKeys={[target]}
             fallbackRender={() => (
               <div className="p-4 text-neutral-400">Error!</div>
             )}
@@ -159,13 +134,14 @@ export function ContextPanel() {
             <Suspense
               fallback={<div className="p-4 text-neutral-400">Loading...</div>}
             >
-              <SelectedSceneObject target={deferredTarget} />
+              <SelectedSceneObject
+                key={target.ownerPath + target.column + target.line}
+                target={target}
+              />
             </Suspense>
           </ErrorBoundary>
         </div>
       )}
     </div>
   );
-
-  return null;
 }
