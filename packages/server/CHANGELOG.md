@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.35.0
+
+### Minor Changes
+
+- e53a703: `isBufferGeometry` now excluded from the context panel.
+- e53a703: Context panel now correctly orders props from a-z.
+
 ## 0.34.0
 
 ### Minor Changes

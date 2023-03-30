@@ -1,5 +1,7 @@
 # @triplex/ws-client
 
+## 0.35.0
+
 ## 0.34.0
 
 ### Minor Changes
