@@ -1,5 +1,17 @@
 # @triplex/editor
 
+## 0.35.0
+
+### Minor Changes
+
+- e53a703: Prop font size in the context panel has been reduced.
+- e53a703: Emissive prop now considered a color.
+
+### Patch Changes
+
+- @triplex/bridge@0.35.0
+- @triplex/ws-client@0.35.0
+
 ## 0.34.0
 
 ### Minor Changes

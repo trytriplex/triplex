@@ -1,5 +1,14 @@
 # @triplex/run
 
+## 0.35.0
+
+### Patch Changes
+
+- Updated dependencies [e53a703]
+- Updated dependencies [e53a703]
+  - @triplex/server@0.35.0
+  - @triplex/client@0.35.0
+
 ## 0.34.0
 
 ### Minor Changes
