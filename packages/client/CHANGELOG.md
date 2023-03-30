@@ -1,5 +1,18 @@
 # @triplex/client
 
+## 0.34.0
+
+### Minor Changes
+
+- 2a64658: The context panel now displays all available props on a component even if they aren't yet declared thanks to the TypeScript compiler and ts-morph. Not all prop types are supported currently, if you have one that you expected to be available but isn't please reach out.
+
+### Patch Changes
+
+- Updated dependencies [2a64658]
+- Updated dependencies [2a64658]
+  - @triplex/editor@0.34.0
+  - @triplex/scene@0.34.0
+
 ## 0.33.0
 
 ### Patch Changes
