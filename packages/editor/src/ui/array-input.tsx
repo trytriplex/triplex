@@ -1,5 +1,13 @@
-import type { ArrayProp } from "./prop-input";
+import { ArrayProp, Prop } from "../api-types";
 import { PropInput } from "./prop-input";
+
+function reduceValue(value: Prop): string | number | boolean | undefined {
+  if (Array.isArray(value.value)) {
+    return reduceValue(value.value[0]);
+  }
+
+  return value.value;
+}
 
 export function ArrayInput({
   values,
@@ -13,8 +21,8 @@ export function ArrayInput({
   values: ArrayProp["value"];
   name: string;
   path: string;
-  column: number;
-  line: number;
+  column?: number;
+  line?: number;
   onChange: (value: unknown[]) => void;
   onConfirm: (value: unknown[]) => void;
 }) {
@@ -24,13 +32,13 @@ export function ArrayInput({
     <>
       {values.map((val, index) => {
         const onChangeHandler = (value: unknown) => {
-          const currentValue: unknown[] = values.map((val) => val.value);
+          const currentValue: unknown[] = values.map(reduceValue);
           currentValue[index] = value;
           onChange(currentValue);
         };
 
         const onConfirmHandler = (value: unknown) => {
-          const currentValue: unknown[] = values.map((val) => val.value);
+          const currentValue: unknown[] = values.map(reduceValue);
           currentValue[index] = value;
           onConfirm(currentValue);
         };
@@ -41,14 +49,12 @@ export function ArrayInput({
             key={index}
             onChange={onChangeHandler}
             onConfirm={onConfirmHandler}
-            prop={{
-              column,
-              line,
-              name: name + index,
-              type: isUnhandled ? "unhandled" : val.type,
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              value: val.value as any,
-            }}
+            column={column}
+            line={line}
+            name={name + index}
+            prop={
+              isUnhandled ? { type: "unhandled", value: `${val.value}` } : val
+            }
           />
         );
       })}

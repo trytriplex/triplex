@@ -4,10 +4,12 @@ function Box({
   position,
   rotation,
   scale,
+  color,
 }: {
-  position?: Vector3Tuple;
+  position?: Vector3Tuple | number;
   rotation?: Vector3Tuple;
-  scale?: Vector3Tuple;
+  scale?: Vector3Tuple | number;
+  color?: "red" | "green" | "blue";
 }) {
   const ok = {};
   return (
@@ -22,7 +24,7 @@ function Box({
         rotation={rotation}
       >
         <boxGeometry args={[1, 1, 1]} />
-        <meshStandardMaterial color={"#fb8f99"} />
+        <meshStandardMaterial key={color} color={color} />
       </mesh>
     </group>
   );

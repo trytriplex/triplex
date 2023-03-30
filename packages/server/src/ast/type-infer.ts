@@ -5,8 +5,10 @@ import {
   PropertySignature,
   Type,
 } from "ts-morph";
+import { getAttributes } from "./jsx";
+import type { PropType, Type as UnrolledType } from "../types";
 
-function unrollType(type: Type): { type: string; value?: unknown } {
+export function unrollType(type: Type, name?: string): UnrolledType {
   if (type.isUndefined()) {
     return {
       type: "undefined",
@@ -25,15 +27,9 @@ function unrollType(type: Type): { type: string; value?: unknown } {
     };
   }
 
-  if (type.isBoolean()) {
+  if (type.isBoolean() || type.isBooleanLiteral()) {
     return {
       type: "boolean",
-    };
-  }
-
-  if (type.isAny()) {
-    return {
-      type: "any",
     };
   }
 
@@ -42,16 +38,39 @@ function unrollType(type: Type): { type: string; value?: unknown } {
 
     return {
       type: "tuple",
-      value: elements.map(unrollType),
+      values: elements.map((val) => unrollType(val, name)),
     };
   }
 
   if (type.isUnion()) {
     const types = type.getUnionTypes();
+    const values = types
+      .map((val) => unrollType(val, name))
+      // Filter out unknown values - if its unknown we don't want to handle it.
+      .filter((val) => val.type !== "unknown")
+      .filter(
+        // Remove duplicates if any exist
+        (v, i, a) =>
+          a.findIndex((v2) => JSON.stringify(v2) === JSON.stringify(v)) === i
+      );
+
+    if (values.length === 1) {
+      // After filter if there is only one value let's throw away the union and return the
+      // only value inside it. Easier for us to handle on the client that way.
+      return values[0];
+    }
 
     return {
       type: "union",
-      value: types.map(unrollType),
+      value: "",
+      values,
+    };
+  }
+
+  if (type.isStringLiteral()) {
+    return {
+      type: "string",
+      value: `${type.getLiteralValueOrThrow()}`,
     };
   }
 
@@ -60,51 +79,69 @@ function unrollType(type: Type): { type: string; value?: unknown } {
   };
 }
 
+function getJsxDeclProps(element: JsxSelfClosingElement | JsxElement) {
+  const tagName = Node.isJsxSelfClosingElement(element)
+    ? element.getTagNameNode()
+    : element.getOpeningElement().getTagNameNode();
+
+  if (/^[a-z]/.exec(tagName.getText())) {
+    const jsxType = tagName.getSymbolOrThrow().getDeclarations()[0].getType();
+    return {
+      declaration: element,
+      properties: jsxType.getApparentProperties(),
+    };
+  } else {
+    const jsxType = tagName.getType();
+    const signatures = jsxType.getCallSignatures();
+    if (signatures.length === 0) {
+      // No signatures for this call-like node found.
+      return null;
+    }
+
+    const [props] = signatures[0].getParameters();
+    if (!props) {
+      // No props arg
+      return null;
+    }
+
+    const valueDeclaration = props.getValueDeclaration();
+    if (!valueDeclaration) {
+      // No decl found!
+      return null;
+    }
+    const declaration = jsxType.getSymbolOrThrow().getDeclarations()[0];
+    const propsType = element
+      .getProject()
+      .getTypeChecker()
+      .getTypeOfSymbolAtLocation(props, valueDeclaration);
+
+    const properties = propsType.getApparentProperties();
+
+    return {
+      properties,
+      declaration,
+    };
+  }
+}
+
 export function getJsxElementPropTypes(
   element: JsxSelfClosingElement | JsxElement
 ) {
-  const tagNode = Node.isJsxSelfClosingElement(element)
-    ? element.getTagNameNode()
-    : element.getOpeningElement().getTagNameNode();
-  const jsxType = tagNode.getType();
-  const signatures = jsxType.getCallSignatures();
-  const propTypes: Record<
-    string,
-    {
-      name: string;
-      required: boolean;
-      description: string | null;
-      type: { type: string; value?: unknown };
-    }
-  > = {};
+  const propTypes: PropType[] = [];
+  const attributeDecls = getAttributes(element);
+  const jsxDecl = getJsxDeclProps(element);
 
-  if (signatures.length === 0) {
-    // No types found!
-    return propTypes;
+  if (!jsxDecl) {
+    return {
+      propTypes: [],
+      transforms: { rotate: false, scale: false, translate: false },
+    };
   }
 
-  const [props] = signatures[0].getParameters();
-
-  if (!props) {
-    // No props arg
-    return propTypes;
-  }
-
-  const valueDeclaration = props.getValueDeclaration();
-
-  if (!valueDeclaration) {
-    // No decl found!
-    return propTypes;
-  }
-
-  const declaration = jsxType.getSymbolOrThrow().getDeclarations()[0];
-
-  const propsType = element
-    .getProject()
-    .getTypeChecker()
-    .getTypeOfSymbolAtLocation(props, valueDeclaration);
-
-  const properties = propsType.getApparentProperties();
+  const { declaration, properties } = jsxDecl;
+  let rotate = false;
+  let scale = false;
+  let translate = false;
 
   for (let i = 0; i < properties.length; i++) {
     const prop = properties[i];
@@ -116,20 +153,26 @@ export function getJsxElementPropTypes(
       .getDeclarations()
       .filter(Node.isJSDocable)
       .map((declaration) =>
-        declaration
-          .getJsDocs()
-          .map((doc) => doc.getComment())
-          .flat()
+        declaration.getJsDocs().map((doc) => doc.getDescription().trim())
       )
       .join("\n");
 
-    propTypes[propName] = {
+    if (propName === "rotation") {
+      rotate = true;
+    } else if (propName === "position") {
+      translate = true;
+    } else if (propName === "scale") {
+      scale = true;
+    }
+
+    propTypes.push({
       name: propName,
+      declared: !!attributeDecls[propName],
       required: !propDeclaration?.hasQuestionToken(),
-      description: description || null,
-      type: unrollType(propType),
-    };
+      description: description || undefined,
+      type: unrollType(propType, propName),
+    });
   }
 
-  return propTypes;
+  return { propTypes, transforms: { rotate, translate, scale } };
 }

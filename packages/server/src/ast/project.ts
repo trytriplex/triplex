@@ -18,6 +18,11 @@ export function _createProject(opts: ProjectOptions) {
       // node_modules. We set this to false to ensure that consumers of triplex never run into
       // this.
       preserveSymlinks: false,
+      // We turn this off to we can effectively ignore null and undefined when fetching
+      // the types of jsx elements. This makes everything much easier to reason about.
+      // Meaning instead of us having to manually iterate and ignore type values they just
+      // aren't ever defined.
+      strictNullChecks: false,
     },
   });
 

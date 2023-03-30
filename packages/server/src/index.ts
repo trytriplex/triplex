@@ -182,7 +182,7 @@ export function createServer({ files }: { files: string[] }) {
           return {
             name: "[deleted]",
             props: [],
-            propTypes: [],
+            propTypes: {},
             type: "host",
           };
         }
@@ -190,23 +190,15 @@ export function createServer({ files }: { files: string[] }) {
 
       const tag = getJsxTag(sceneObject);
       const props = getJsxElementProps(sourceFile, sceneObject);
-      const propTypes = getJsxElementPropTypes(sceneObject);
 
       if (tag.type === "custom") {
         const elementPath = getElementFilePath(sceneObject);
-        const rotate: boolean = !!propTypes.rotation;
-        const scale: boolean = !!propTypes.scale;
-        const translate: boolean = !!propTypes.position;
 
         return {
           exportName: elementPath.exportName,
           name: tag.name,
           path: elementPath.filePath,
           props,
-          propTypes,
-          rotate,
-          scale,
-          translate,
           type: tag.type,
         };
       }
@@ -214,11 +206,48 @@ export function createServer({ files }: { files: string[] }) {
       return {
         name: tag.name,
         props,
-        propTypes,
-        rotate: true,
-        scale: true,
-        translate: true,
         type: tag.type,
+      };
+    },
+    async (push, { path }) => {
+      const { sourceFile } = await project.getSourceFile(path);
+      sourceFile.onModified(push);
+    }
+  );
+
+  /**
+   * Return type information for a jsx element.
+   */
+  wss.message(
+    "/scene/:path/object/:line/:column/types",
+    (params, { type }) => {
+      const path = params.path;
+      const line = Number(params.line);
+      const column = Number(params.column);
+      const { sourceFile } = project.getSourceFile(path);
+      const sceneObject = getJsxElementAt(sourceFile, line, column);
+
+      if (!sceneObject) {
+        if (type === "pull") {
+          // Initial request - throw an error.
+          throw new Error(
+            `invariant: component at ${line}:${column} not found`
+          );
+        } else {
+          return {
+            propTypes: {},
+            rotate: false,
+            scale: false,
+            translate: false,
+          };
+        }
+      }
+
+      const propTypes = getJsxElementPropTypes(sceneObject);
+
+      return {
+        propTypes: propTypes.propTypes,
+        transforms: propTypes.transforms,
       };
     },
     async (push, { path }) => {

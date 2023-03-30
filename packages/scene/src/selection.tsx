@@ -5,6 +5,7 @@ import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws-client";
 import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { Box3, Object3D, Vector3, Vector3Tuple } from "three";
 import { TransformControls as TransformControlsImpl } from "three-stdlib";
+import { GetSceneObject, GetSceneObjectTypes } from "./api-types";
 
 export interface EditorNodeData {
   name: string;
@@ -14,40 +15,6 @@ export interface EditorNodeData {
   sceneObject: Object3D;
   path: string;
   space: "local" | "world";
-}
-
-export interface SelectedNode {
-  column: number;
-  line: number;
-  name: string;
-  path: string;
-  props: Record<string, unknown>;
-}
-
-interface Prop {
-  column: number;
-  line: number;
-  name: string;
-  value: unknown;
-  type: "static" | "unhandled";
-}
-
-interface SceneObjectData {
-  exportName: string;
-  name: string;
-  path: string;
-  props: Prop[];
-  propTypes: Record<
-    string,
-    {
-      name: string;
-      required: boolean;
-      type: unknown;
-    }
-  >;
-  rotate: boolean;
-  scale: boolean;
-  translate: boolean;
 }
 
 function encodeProps(selected: EditorNodeData): string {
@@ -270,13 +237,21 @@ export function Selection({
     () => flatten(sceneData?.sceneObjects || []),
     [sceneData]
   );
-  const objectData = useSubscriptionEffect<SceneObjectData | null>(
+  const selectedSceneObjectMeta = useSubscriptionEffect<GetSceneObject | null>(
     selected
       ? `/scene/${encodeURIComponent(path)}/object/${selected.line}/${
           selected.column
         }`
       : ""
   );
+  const selectedSceneObjectTypes =
+    useSubscriptionEffect<GetSceneObjectTypes | null>(
+      selected
+        ? `/scene/${encodeURIComponent(path)}/object/${selected.line}/${
+            selected.column
+          }/types`
+        : ""
+    );
 
   useEffect(() => {
     send("trplx:onTransformChange", { mode: transform });
@@ -290,7 +265,7 @@ export function Selection({
 
   useEffect(() => {
     return listen("trplx:requestNavigateToScene", (sceneObject) => {
-      if (!sceneObject && (!selected || !objectData)) {
+      if (!sceneObject && (!selected || !selectedSceneObjectMeta)) {
         return;
       }
 
@@ -298,17 +273,21 @@ export function Selection({
         onNavigate(sceneObject);
         setSelected(undefined);
         onBlur();
-      } else if (selected && objectData && objectData.path) {
+      } else if (
+        selected &&
+        selectedSceneObjectMeta &&
+        selectedSceneObjectMeta.type === "custom"
+      ) {
         onNavigate({
-          path: objectData.path,
-          exportName: objectData.exportName,
+          path: selectedSceneObjectMeta.path,
+          exportName: selectedSceneObjectMeta.exportName,
           encodedProps: encodeProps(selected),
         });
         setSelected(undefined);
         onBlur();
       }
     });
-  }, [onBlur, onNavigate, selected, objectData]);
+  }, [onBlur, onNavigate, selected, selectedSceneObjectMeta]);
 
   useEffect(() => {
     return listen("trplx:requestBlurSceneObject", () => {
@@ -333,14 +312,16 @@ export function Selection({
   }, [onJumpTo, selected]);
 
   useEffect(() => {
-    if (!objectData || !objectData.exportName || !objectData.path) {
+    if (!selectedSceneObjectMeta || selectedSceneObjectMeta.type === "host") {
       return;
     }
 
     preloadSubscription(
-      `/scene/${encodeURIComponent(objectData.path)}/${objectData.exportName}`
+      `/scene/${encodeURIComponent(selectedSceneObjectMeta.path)}/${
+        selectedSceneObjectMeta.exportName
+      }`
     );
-  }, [objectData]);
+  }, [selectedSceneObjectMeta]);
 
   useEffect(() => {
     return listen("trplx:requestFocusSceneObject", (data) => {
@@ -399,6 +380,7 @@ export function Selection({
       }
 
       if (selected) {
+        // These commands are only available when there is a selected scene object.
         if (e.key === "f") {
           onJumpTo(
             selected.sceneObject.getWorldPosition(V1).toArray(),
@@ -411,15 +393,15 @@ export function Selection({
           e.key === "F" &&
           e.shiftKey &&
           selected &&
-          objectData &&
-          objectData.path
+          selectedSceneObjectMeta &&
+          selectedSceneObjectMeta.type === "custom"
         ) {
           // Only navigate if there is a path to navigate to.
           setSelected(undefined);
           onBlur();
           onNavigate({
-            path: objectData.path,
-            exportName: objectData.exportName,
+            path: selectedSceneObjectMeta.path,
+            exportName: selectedSceneObjectMeta.exportName,
             encodedProps: encodeProps(selected),
           });
         }
@@ -427,7 +409,10 @@ export function Selection({
 
       if (e.key === "r") {
         setTransform("rotate");
+
         if (selected) {
+          // If there is a selected scene object re-calculate it as it might
+          // need to select a different scene object as the transform target.
           const data = findEditorData(
             path,
             selected.sceneObject,
@@ -442,7 +427,10 @@ export function Selection({
 
       if (e.key === "t") {
         setTransform("translate");
+
         if (selected) {
+          // If there is a selected scene object re-calculate it as it might
+          // need to select a different scene object as the transform target.
           const data = findEditorData(
             path,
             selected.sceneObject,
@@ -457,7 +445,10 @@ export function Selection({
 
       if (e.key === "s" && !e.metaKey && !e.ctrlKey) {
         setTransform("scale");
+
         if (selected) {
+          // If there is a selected scene object re-calculate it as it might
+          // need to select a different scene object as the transform target.
           const data = findEditorData(
             path,
             selected.sceneObject,
@@ -474,13 +465,21 @@ export function Selection({
     document.addEventListener("keyup", callback);
 
     return () => document.removeEventListener("keyup", callback);
-  }, [onBlur, onJumpTo, onNavigate, selected, sceneObjects, path, objectData]);
+  }, [
+    onBlur,
+    onJumpTo,
+    onNavigate,
+    selected,
+    sceneObjects,
+    path,
+    selectedSceneObjectMeta,
+  ]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onMouseUp = (e: any) => {
     dragging.current = false;
 
-    if (!e || !selected || !objectData) {
+    if (!e || !selected || !selectedSceneObjectMeta) {
       return;
     }
 
@@ -537,7 +536,10 @@ export function Selection({
       {children}
       {selected && (
         <TransformControls
-          enabled={!!objectData && objectData[transform]}
+          enabled={
+            !!selectedSceneObjectTypes &&
+            selectedSceneObjectTypes.transforms[transform]
+          }
           mode={transform}
           object={selected.sceneObject}
           onMouseDown={() => (dragging.current = true)}

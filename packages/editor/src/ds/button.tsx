@@ -19,7 +19,7 @@ export function IconButton({
       onClick={onClick}
       type="submit"
       className={cn([
-        "rounded-md p-1.5 ",
+        "self-start rounded-md p-1.5",
         isSelected
           ? "bg-white/5 text-blue-400"
           : "text-neutral-400 hover:bg-white/5 active:bg-white/10",

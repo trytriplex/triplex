@@ -7,7 +7,6 @@ export {
   getJsxElementProps,
   getJsxElementsPositions,
   getJsxTag,
-  unrollType,
 } from "./jsx";
 export { createProject, type TRIPLEXProject } from "./project";
 export { getExportName, getElementFilePath } from "./module";

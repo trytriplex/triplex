@@ -6,7 +6,9 @@ import Sphere from "./sphere";
 export function SceneAlt() {
   return (
     <>
-      <Box />
+      <Box
+        position={[-0.48868437340157445, 0.5965867294072928, 1.311273188113876]}
+      />
     </>
   );
 }
@@ -23,6 +25,7 @@ export default function Scene() {
           2.1533738875424957, -0.4755261514452274, 0.22680789335122342,
         ]}
         scale={[1, 0.788966027180377, 1.977327619564505]}
+        color={"red"}
       />
       <Cylinder
         position={[-1.566394995899318, 0, -3.7220017011540865]}

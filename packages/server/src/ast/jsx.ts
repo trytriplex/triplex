@@ -1,30 +1,23 @@
 import {
   type JsxSelfClosingElement,
   type SourceFile,
-  type Type,
   JsxElement,
   Node,
   SyntaxKind,
   ts,
   Expression,
+  JsxAttribute,
 } from "ts-morph";
+import { Prop, PropType } from "../types";
+import { getJsxElementPropTypes } from "./type-infer";
 
-export function getJsxAttributeValue(expression: Expression | undefined): {
-  type:
-    | "identifier"
-    | "array"
-    | "string"
-    | "function"
-    | "boolean"
-    | "number"
-    | "unhandled";
-  value: string | number | boolean | (string | number)[];
-} {
+export function getJsxAttributeValue(expression: Expression | undefined): Prop {
   // Value is inside a JSX expression
   if (Node.isIdentifier(expression)) {
+    const text = expression.getText();
     return {
       type: "identifier",
-      value: expression.getText(),
+      value: text === "undefined" ? undefined : text,
     };
   }
 
@@ -77,13 +70,6 @@ export function getJsxAttributeValue(expression: Expression | undefined): {
     };
   }
 
-  if (Node.isArrowFunction(expression)) {
-    return {
-      type: "function",
-      value: "Function",
-    };
-  }
-
   if (!expression) {
     // Implicit boolean!
     return {
@@ -95,60 +81,6 @@ export function getJsxAttributeValue(expression: Expression | undefined): {
   return {
     type: "unhandled",
     value: expression.getText(),
-  };
-}
-
-export function unrollType(type: Type, _nested = false): unknown {
-  const args = type.getTypeArguments();
-  if (args.length) {
-    return args.map((arg) => unrollType(arg, true)) as string[];
-  }
-
-  if (type.isUnion()) {
-    // From the boolean hack above it will return two
-    const types = type
-      .getUnionTypes()
-      .filter((type) => !type.isUndefined())
-      .map((n) => {
-        const value = unrollType(n, true);
-
-        if (n.isTuple()) {
-          return {
-            kind: "tuple",
-            value,
-          };
-        }
-
-        if (n.isArray()) {
-          return {
-            kind: "array",
-            value,
-          };
-        }
-
-        return {
-          kind: "type",
-          value,
-        };
-      });
-
-    if (types.length === 1) {
-      return types[0];
-    }
-
-    return {
-      kind: "union",
-      type: types.map((type) => type.value),
-    };
-  }
-
-  if (_nested) {
-    return type.getText();
-  }
-
-  return {
-    kind: "type",
-    value: type.getText(),
   };
 }
 
@@ -272,51 +204,249 @@ export function getJsxElementsPositions(
   return elements;
 }
 
-export function getAttributes(element: JsxSelfClosingElement | JsxElement) {
+export function getAttributes(
+  element: JsxSelfClosingElement | JsxElement
+): Record<string, JsxAttribute> {
   const attributes = Node.isJsxSelfClosingElement(element)
     ? element.getAttributes()
     : element.getOpeningElement().getAttributes();
 
-  return attributes;
+  const attrs: Record<string, JsxAttribute> = {};
+
+  for (let i = 0; i < attributes.length; i++) {
+    const attr = attributes[i];
+    if (Node.isJsxAttribute(attr)) {
+      attrs[attr.getName()] = attr;
+    }
+  }
+
+  return attrs;
 }
+
+function mergePropTypeValue(prop: Prop, type: PropType) {
+  if (
+    prop.type === "string" ||
+    (prop.type === "identifier" && prop.value === undefined)
+  ) {
+    // We have a simple type that may be defined or not.
+    // If it's a union type let's transform it to be that
+    // So it is displayed as a select in the UI.
+
+    if (type.type.type === "union") {
+      // We are! Let's update the return types.
+      return {
+        type: "union",
+        values: type.type.values,
+        value: prop.value,
+      };
+    }
+  }
+
+  return { type: prop.type, value: prop.value };
+}
+
+function toProp(type: PropType["type"], name: string): Prop {
+  switch (type.type) {
+    case "tuple": {
+      return {
+        type: "array",
+        value: type.values.map((val) => toProp(val, name)),
+      };
+    }
+
+    case "boolean": {
+      return {
+        type: "boolean",
+        value: false,
+      };
+    }
+
+    case "number": {
+      return {
+        type: "number",
+        value: type.value ?? name === "scale" ? 1 : 0,
+      };
+    }
+
+    case "string": {
+      return {
+        type: "string",
+        value: type.value ?? "",
+      };
+    }
+
+    case "union": {
+      return {
+        type: "union",
+        value: "",
+        values: type.values.map((val) => toProp(val, name)),
+      };
+    }
+  }
+
+  return {
+    type: "unhandled",
+    value: "",
+  };
+}
+
+function hasUnhandled(prop: Prop) {
+  return prop.type === "unhandled";
+}
+
+type ElementProp = DeclaredProp | UndeclaredProp;
+
+interface DeclaredProp {
+  declaration: "declared";
+  column: number;
+  description: string | undefined;
+  line: number;
+  name: string;
+  required: boolean;
+  type: string;
+  value: unknown;
+  values?: unknown;
+}
+
+interface UndeclaredProp {
+  declaration: "undeclared";
+  description: string | undefined;
+  name: string;
+  required: boolean;
+  type: string;
+  value: unknown;
+  values?: unknown;
+}
+
+const propsSortList: Record<string, number> = {
+  name: 100,
+  args: 99,
+  position: 98,
+  scale: 97,
+  rotation: 96,
+  visible: 95,
+  castShadow: 94,
+  receiveShadow: 93,
+  color: 92,
+  opacity: 91,
+  transparent: 90,
+  metalness: 89,
+  roughness: 88,
+};
+
+const propsExcludeList: Record<string, true> = {
+  attach: true,
+  id: true,
+  isLineBasicMaterial: true,
+  isLineDashedMaterial: true,
+  isMaterial: true,
+  isMesh: true,
+  isMeshBasicMaterial: true,
+  isMeshDepthMaterial: true,
+  isMeshDistanceMaterial: true,
+  isMeshLambertMaterial: true,
+  isMeshMatcapMaterial: true,
+  isMeshNormalMaterial: true,
+  isMeshPhongMaterial: true,
+  isMeshPhysicalMaterial: true,
+  isMeshStandardMaterial: true,
+  isMeshToonMaterial: true,
+  isObject3D: true,
+  isPointsMaterial: true,
+  isRawShaderMaterial: true,
+  isShaderMaterial: true,
+  isShadowMaterial: true,
+  isSpriteMaterial: true,
+  key: true,
+  matrix: true,
+  matrixAutoUpdate: true,
+  matrixWorldAutoUpdate: true,
+  matrixWorldNeedsUpdate: true,
+  needsUpdate: true,
+  ref: true,
+  steps: true,
+  type: true,
+  up: true,
+  uuid: true,
+  version: true,
+};
 
 export function getJsxElementProps(
   sourceFile: SourceFile,
   element: JsxSelfClosingElement | JsxElement
 ) {
+  const props: ElementProp[] = [];
   const attributes = getAttributes(element);
-  const props = attributes.map((prop) => {
-    const { column, line } = sourceFile.getLineAndColumnAtPos(prop.getStart());
+  const { propTypes } = getJsxElementPropTypes(element);
 
-    if (Node.isJsxSpreadAttribute(prop)) {
-      return {
-        column: column,
-        line: line,
-        name: "",
-        value: `...${prop
-          .getExpressionIfKindOrThrow(SyntaxKind.Identifier)
-          .getText()}`,
-        type: "spread",
-      };
+  for (let i = 0; i < propTypes.length; i++) {
+    const propType = propTypes[i];
+
+    if (propsExcludeList[propType.name]) {
+      continue;
     }
 
-    const initializer = prop.getInitializer();
-    const value = getJsxAttributeValue(
-      Node.isJsxExpression(initializer)
-        ? initializer.getExpressionOrThrow()
-        : initializer
-    );
+    if (propType.declared) {
+      // This prop is statically declared on the jsx element
+      // Let's do some massaging and mix the concrete usage
+      // With the declared type and add it to the return array.
+      const prop = attributes[propType.name];
+      const { column, line } = sourceFile.getLineAndColumnAtPos(
+        prop.getStart()
+      );
+      const initializer = prop.getInitializer();
+      const propName = prop.getChildAtIndex(0).getText();
+      const value = getJsxAttributeValue(
+        Node.isJsxExpression(initializer)
+          ? initializer.getExpressionOrThrow()
+          : initializer
+      );
 
-    return {
-      column: column,
-      line: line,
-      name: prop.getChildAtIndex(0).getText(),
-      value: value.value,
-      type: value.type,
-    };
+      props.push({
+        declaration: "declared",
+        description: propType.description,
+        required: propType.required,
+        column: column,
+        line: line,
+        name: propName,
+        ...mergePropTypeValue(value, propType),
+      });
+    } else {
+      // This prop isn't currently declared - let's do some work and
+      // massage the output to match declared props and add it to the array.
+      const prop = toProp(propType.type, propType.name);
+      if (
+        prop.type === "unhandled" ||
+        (prop.type === "array" &&
+          (prop.value.length === 0 || prop.value.find(hasUnhandled)))
+      ) {
+        continue;
+      }
+
+      props.push({
+        declaration: "undeclared",
+        description: propType.description,
+        required: propType.required,
+        name: propType.name,
+        ...prop,
+      });
+    }
+  }
+
+  return props.sort((propA, propB) => {
+    const aPos = propsSortList[propA.name] ?? -1;
+    const bPos = propsSortList[propB.name] ?? -1;
+
+    if (aPos < bPos) {
+      return 1;
+    }
+
+    if (bPos < aPos) {
+      return -1;
+    }
+
+    return propB.name.localeCompare(propA.name);
   });
-
-  return props;
 }
 
 export function getJsxElementAt(
