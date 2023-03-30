@@ -1,4 +1,5 @@
 import { type ReactNode } from "react";
+import { camelToStartCase } from "../util/string";
 
 export function PropField({
   htmlFor,
@@ -13,12 +14,13 @@ export function PropField({
 }) {
   return (
     <div className="-mt-2 flex w-full flex-shrink gap-2 py-2 px-4 hover:bg-white/[2%]">
-      <div className="h-7 w-[61px] flex-grow overflow-hidden text-ellipsis pt-1 text-right text-sm text-neutral-400">
+      <div className="w-[61px] flex-grow items-center overflow-hidden text-ellipsis text-right text-neutral-400">
         <label
+          className="whitespace-nowrap text-xs text-neutral-400"
           title={description ? `${label} — ${description}` : label}
           htmlFor={htmlFor}
         >
-          {label}
+          {camelToStartCase(label)}
         </label>
       </div>
 
