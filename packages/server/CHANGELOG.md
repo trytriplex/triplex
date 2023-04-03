@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.36.0
+
+### Minor Changes
+
+- f24f2fd: Fixes conditional throwing when extracting types.
+
 ## 0.35.0
 
 ### Minor Changes

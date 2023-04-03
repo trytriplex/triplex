@@ -1,5 +1,13 @@
 # @triplex/client
 
+## 0.36.0
+
+### Patch Changes
+
+- Updated dependencies [f24f2fd]
+  - @triplex/scene@0.36.0
+  - @triplex/editor@0.36.0
+
 ## 0.35.0
 
 ### Patch Changes
