@@ -4,10 +4,11 @@
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
+    "jsx": "react-jsx",
+    "lib": ["dom", "dom.iterable", "es2022"],
     "moduleResolution": "node",
     "skipLibCheck": true,
     "strict": true,
-    "jsx": "react-jsx",
     "types": ["@react-three/fiber"]
   },
   "include": ["."],

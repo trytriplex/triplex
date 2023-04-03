@@ -7,7 +7,7 @@ function useForceRender() {
 }
 
 function isRenderedSceneObject(name: string): boolean {
-  const exclusions = ["Material", "Geometry"];
+  const exclusions = ["Material", "Geometry", "Attribute"];
   if (exclusions.find((n) => name.includes(n))) {
     return false;
   }
