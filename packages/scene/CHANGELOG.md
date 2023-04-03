@@ -1,5 +1,16 @@
 # @triplex/scene
 
+## 0.36.0
+
+### Minor Changes
+
+- f24f2fd: Attribute jsx elements are now excluded from scene objects.
+
+### Patch Changes
+
+- @triplex/bridge@0.36.0
+- @triplex/ws-client@0.36.0
+
 ## 0.35.0
 
 ### Patch Changes

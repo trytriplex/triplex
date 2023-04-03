@@ -1,5 +1,17 @@
 # @triplex/run
 
+## 0.36.0
+
+### Minor Changes
+
+- f24f2fd: Tsconfig templaate now has lib defined for browsers.
+
+### Patch Changes
+
+- Updated dependencies [f24f2fd]
+  - @triplex/server@0.36.0
+  - @triplex/client@0.36.0
+
 ## 0.35.0
 
 ### Patch Changes
