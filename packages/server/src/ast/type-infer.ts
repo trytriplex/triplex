@@ -168,7 +168,7 @@ export function getJsxElementPropTypes(
     propTypes.push({
       name: propName,
       declared: !!attributeDecls[propName],
-      required: !propDeclaration?.hasQuestionToken(),
+      required: !propDeclaration?.hasQuestionToken?.(),
       description: description || undefined,
       type: unrollType(propType, propName),
     });
