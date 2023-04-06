@@ -27,10 +27,11 @@ Then follow the prompts.
 
 Configure your Triplex project using the `config.json` file found in the `.triplex` folder.
 
-| Option      | Type       | Default       | Description                                                                  |
-| ----------- | ---------- | ------------- | ---------------------------------------------------------------------------- |
-| `files`     | `string[]` |               | Relative filepath globs used to mark files that can be opened by the editor. |
-| `publicDir` | `string`   | `"../public"` | Relative path to a folder which contains static assets such as gltf files.   |
+| Option       | Type       | Default       | Description                                                                     |
+| ------------ | ---------- | ------------- | ------------------------------------------------------------------------------- |
+| `files`      | `string[]` |               | Relative filepath globs used to mark files that can be opened by the editor.    |
+| `components` | `string[]` | `[]`          | Relative filepath globs used to mark files that are able to be added to scenes. |
+| `publicDir`  | `string`   | `"../public"` | Relative path to a folder which contains static assets such as gltf files.      |
 
 ## Running the editor
 

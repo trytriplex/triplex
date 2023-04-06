@@ -1,6 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { create } from "zustand";
+import { ComponentType } from "../api-types";
 import { useScene } from "./scene";
 
 export interface Params {
@@ -57,6 +58,27 @@ export function useEditor() {
       redoAvailable: redoStack.length > 0,
     };
   }, []);
+
+  const addComponent = useCallback(
+    async (component: ComponentType) => {
+      const res = await fetch(
+        "http://localhost:8000/scene/" +
+          encodeURIComponent(path) +
+          "/default/object",
+        {
+          method: "POST",
+          body: JSON.stringify({
+            target: component,
+          }),
+        }
+      );
+
+      const result = await res.json();
+
+      return result as { line: number; column: number };
+    },
+    [path]
+  );
 
   const persistPropValue = useCallback(
     (data: PersistPropValue) => {
@@ -180,6 +202,11 @@ export function useEditor() {
   return useMemo(
     () => ({
       /**
+       * Adds the component into the current file.
+       * Is not persisted until `save()` is called.
+       */
+      addComponent,
+      /**
        * Current value of the scene path.
        */
       path,
@@ -231,6 +258,7 @@ export function useEditor() {
       reset,
     }),
     [
+      addComponent,
       encodedProps,
       exportName,
       focus,

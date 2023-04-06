@@ -131,3 +131,16 @@ export interface SceneObjectCustom {
   path: string;
   props: (Prop & BaseProp)[];
 }
+
+export type ComponentType =
+  | {
+      type: "custom";
+      path: string;
+      exportName: string;
+      props: Record<string, unknown>;
+    }
+  | {
+      type: "host";
+      name: string;
+      props: Record<string, unknown>;
+    };

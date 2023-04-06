@@ -1,5 +1,5 @@
-import { listen, send, compose } from "@triplex/bridge/host";
-import { ReactNode, useEffect, useRef, useState } from "react";
+import { listen, compose } from "@triplex/bridge/host";
+import { ReactNode, useEffect, useState } from "react";
 import { useEditor } from "./stores/editor";
 import { useScene } from "./stores/scene";
 
@@ -10,55 +10,21 @@ export interface FocusedObject {
 }
 
 export function SceneFrame({ children }: { children: ReactNode }) {
-  const iframe = useRef<HTMLIFrameElement>(null!);
   const editor = useEditor();
   const [initialPath] = useState(() => editor.path);
   const [initialProps] = useState(() => editor.encodedProps);
   const [initialExportName] = useState(() => editor.exportName);
-  const __set = useScene((prev) => prev.__set);
+  const sceneReady = useScene((prev) => prev.sceneReady);
 
   useEffect(() => {
-    listen("trplx:onConnected", () => {
-      __set({
-        getPropValue(prop) {
-          return send(
-            iframe.current,
-            "trplx:requestSceneObjectPropValue",
-            prop,
-            true
-          );
-        },
-        blur() {
-          send(iframe.current, "trplx:requestBlurSceneObject", undefined);
-        },
-        focus(sceneObject) {
-          send(iframe.current, "trplx:requestFocusSceneObject", sceneObject);
-        },
-        jumpTo() {
-          send(iframe.current, "trplx:requestJumpToSceneObject", undefined);
-        },
-        navigateTo(sceneObject) {
-          send(iframe.current, "trplx:requestNavigateToScene", sceneObject);
-        },
-        setPropValue(data) {
-          send(iframe.current, "trplx:requestSetSceneObjectProp", data);
-        },
-        persistPropValue(data) {
-          send(iframe.current, "trplx:requestPersistSceneObjectProp", data);
-        },
-        setTransform(mode) {
-          send(iframe.current, "trplx:requestTransformChange", { mode });
-        },
-      });
-    });
-  }, [__set]);
+    return listen("trplx:onConnected", sceneReady);
+  }, [sceneReady]);
 
   return (
     <>
       <iframe
         // This should never change during a session as it will do a full page reload.
         src={`/scene.html?path=${initialPath}&props=${initialProps}&exportName=${initialExportName}`}
-        ref={iframe}
         className="absolute h-full w-full border-none"
       />
       <BridgeSendEvents />
@@ -122,6 +88,7 @@ function BridgeReceiveEvents() {
     }
 
     return compose([
+      listen("trplx:onAddNewComponent", editor.addComponent),
       listen("trplx:requestSave", editor.save),
       listen("trplx:requestUndo", editor.undo),
       listen("trplx:requestRedo", editor.redo),

@@ -1,3 +1,4 @@
 {
+  "components": ["../src/(box|cylinder|sphere).tsx"],
   "files": ["../src/**/*.tsx"]
 }

@@ -84,9 +84,30 @@ export function getJsxAttributeValue(expression: Expression | undefined): Prop {
   };
 }
 
-export function getAllJsxElements(sourceFile: SourceFile) {
-  const jsxElements = sourceFile.getDescendantsOfKind(SyntaxKind.JsxElement);
-  const jsxSelfClosing = sourceFile.getDescendantsOfKind(
+/**
+ * Returns all found jsx elements in a source file,
+ * optionally filtered by a specific export.
+ *
+ * @param sourceFile
+ * @param exportName When defined will only return the jsx elements for that export.
+ */
+export function getAllJsxElements(sourceFile: SourceFile, exportName?: string) {
+  let nodeToSearch: Node = sourceFile;
+
+  if (exportName) {
+    const foundExport = sourceFile
+      .getExportSymbols()
+      .find((symbol) => symbol.getName() === exportName);
+
+    if (!foundExport) {
+      throw new Error(`invariant: export ${exportName} not found`);
+    }
+
+    nodeToSearch = getExportDeclaration(foundExport.getDeclarations()[0]);
+  }
+
+  const jsxElements = nodeToSearch.getDescendantsOfKind(SyntaxKind.JsxElement);
+  const jsxSelfClosing = nodeToSearch.getDescendantsOfKind(
     SyntaxKind.JsxSelfClosingElement
   );
 

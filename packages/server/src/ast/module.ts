@@ -50,10 +50,7 @@ export function getElementFilePath(
   return { filePath: "", exportName: "" };
 }
 
-export function getExportName(
-  sourceFile: SourceFile,
-  exportName: string
-): string {
+export function getExportName(sourceFile: SourceFile, exportName: string) {
   const symbols = sourceFile.getExportSymbols();
 
   for (let i = 0; i < symbols.length; i++) {
@@ -70,15 +67,15 @@ export function getExportName(
 
     const declaration = getExportDeclaration(declarations[0]);
     if (Node.isFunctionDeclaration(declaration)) {
-      return declaration.getNameOrThrow();
+      return { declaration, name: declaration.getNameOrThrow() };
     }
 
     if (Node.isVariableDeclaration(declaration)) {
-      return declaration.getName();
+      return { declaration, name: declaration.getName() };
     }
 
     if (Node.isIdentifier(declaration)) {
-      return declaration.getText();
+      return { declaration, name: declaration.getText() };
     }
 
     throw new Error(

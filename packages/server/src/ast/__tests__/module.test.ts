@@ -33,9 +33,9 @@ describe("module", () => {
       join(__dirname, "__mocks__/cylinder.tsx")
     );
 
-    const actual = getExportName(sourceFile, "default");
+    const { name } = getExportName(sourceFile, "default");
 
-    expect(actual).toEqual("Cylinder");
+    expect(name).toEqual("Cylinder");
   });
 
   it("should return the name of the direct default export function", () => {
@@ -48,7 +48,7 @@ describe("module", () => {
 
     const actual = getExportName(sourceFile, "default");
 
-    expect(actual).toEqual("Scene");
+    expect(actual.name).toEqual("Scene");
   });
 
   it("should return the name of the named function declaration", () => {
@@ -61,7 +61,7 @@ describe("module", () => {
 
     const actual = getExportName(sourceFile, "SceneAlt");
 
-    expect(actual).toEqual("SceneAlt");
+    expect(actual.name).toEqual("SceneAlt");
   });
 
   it("should return the name of the named arrow function", () => {
@@ -74,7 +74,7 @@ describe("module", () => {
 
     const actual = getExportName(sourceFile, "SceneArrow");
 
-    expect(actual).toEqual("SceneArrow");
+    expect(actual.name).toEqual("SceneArrow");
   });
 
   it("should return default as the import", () => {

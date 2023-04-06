@@ -1,5 +1,4 @@
 import { Application, isHttpError, Router } from "@oakserver/oak";
-import { Node, SyntaxKind } from "ts-morph";
 import { watch } from "chokidar";
 import {
   createProject,
@@ -13,6 +12,7 @@ import { getParam } from "./util/params";
 import { createServer as createWSS } from "./util/ws-server";
 import { save } from "./services/save";
 import { getAllFiles, getSceneExport } from "./services/file";
+import * as component from "./services/component";
 
 export function createServer({ files }: { files: string[] }) {
   const app = new Application();
@@ -48,39 +48,29 @@ export function createServer({ files }: { files: string[] }) {
     const line = Number(context.params.line);
     const column = Number(context.params.column);
     const { sourceFile } = project.getSourceFile(path);
-    const sceneObject = getJsxElementAt(sourceFile, line, column);
+    const jsxElement = getJsxElementAt(sourceFile, line, column);
 
-    if (!sceneObject) {
+    if (!jsxElement) {
       context.response.status = 404;
       context.response.body = { message: "Not found" };
       return;
     }
 
-    const attribute = sceneObject
-      .getDescendantsOfKind(SyntaxKind.JsxAttribute)
-      .find((prop) => prop.getName() === name);
-
-    let action = "";
-
-    if (attribute) {
-      attribute.setInitializer(`{${value}}`);
-      action = "updated";
-    } else {
-      const newAttribute = {
-        name,
-        initializer: `{${value}}`,
-      };
-
-      if (Node.isJsxElement(sceneObject)) {
-        sceneObject.getOpeningElement().addAttribute(newAttribute);
-      } else {
-        sceneObject.addAttribute(newAttribute);
-      }
-
-      action = "added";
-    }
+    const action = component.upsertProp(jsxElement, name, value);
 
     context.response.body = { message: "success", action };
+  });
+
+  router.post("/scene/:path/:exportName/object", async (context) => {
+    const { exportName, path } = context.params;
+    const { target } = (await context.request.body({ type: "json" }).value) as {
+      target: component.ComponentType;
+    };
+    const { sourceFile } = project.getSourceFile(path);
+
+    const result = await component.add(sourceFile, exportName, target);
+
+    context.response.body = { ...result };
   });
 
   /**
@@ -182,7 +172,6 @@ export function createServer({ files }: { files: string[] }) {
           return {
             name: "[deleted]",
             props: [],
-            propTypes: {},
             type: "host",
           };
         }
@@ -236,9 +225,11 @@ export function createServer({ files }: { files: string[] }) {
         } else {
           return {
             propTypes: {},
-            rotate: false,
-            scale: false,
-            translate: false,
+            transforms: {
+              rotate: false,
+              scale: false,
+              translate: false,
+            },
           };
         }
       }

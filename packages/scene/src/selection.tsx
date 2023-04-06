@@ -107,11 +107,7 @@ function isInScene(
   if (path === node.path) {
     for (let i = 0; i < positions.length; i++) {
       const position = positions[i];
-      if (
-        node.line === position.line &&
-        node.column === position.column &&
-        node.name === position.name
-      ) {
+      if (node.line === position.line && node.column === position.column) {
         return true;
       }
     }

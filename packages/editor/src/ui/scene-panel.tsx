@@ -1,11 +1,13 @@
 import { Fragment, Suspense, useDeferredValue } from "react";
 import { cn } from "../ds/cn";
 import { useLazySubscription } from "@triplex/ws-client";
+import { PlusIcon } from "@radix-ui/react-icons";
 import { getEditorLink } from "../util/ide";
 import { useEditor } from "../stores/editor";
 import { useScene } from "../stores/scene";
 import { ScrollContainer } from "../ds/scroll-container";
 import { ErrorBoundary } from "react-error-boundary";
+import { IconButton } from "../ds/button";
 
 function SceneComponent({
   name,
@@ -66,6 +68,7 @@ export function ScenePanel() {
 
 function SceneContents() {
   const { path, exportName } = useEditor();
+  const { addComponent } = useScene();
   const file = useLazySubscription<{ isSaved: boolean }>(
     `/scene/${encodeURIComponent(path)}`
   );
@@ -81,7 +84,6 @@ function SceneContents() {
         <div className="overflow-hidden text-ellipsis">{scene.name}</div>
         {!file.isSaved && <span aria-label="Unsaved changes">*</span>}
       </h2>
-
       <div className="mb-2.5 -mt-0.5 px-4">
         <a
           className="text-xs text-neutral-400"
@@ -94,6 +96,23 @@ function SceneContents() {
         >
           View source
         </a>
+      </div>
+
+      <div className="h-[1px] bg-neutral-800" />
+
+      <div className="py-1 px-2">
+        <IconButton
+          onClick={() =>
+            addComponent({
+              exportName: "default",
+              type: "custom",
+              path: "/Users/douges/projects/TRIPLEX/apps/geometry/src/box.tsx",
+              props: {},
+            })
+          }
+          icon={PlusIcon}
+          title="Add to scene"
+        />
       </div>
 
       <div className="h-[1px] bg-neutral-800" />

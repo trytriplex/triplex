@@ -1,4 +1,7 @@
 export const scripts = {
+  availableComponents: `
+    export const components = import.meta.glob({{COMPONENTS_FILE_GLOB}});
+  `,
   editor: `
     import { createElement } from "react";
     import { createRoot } from "react-dom/client";

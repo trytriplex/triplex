@@ -8,11 +8,13 @@ import { createHTML } from "./templates";
 import triplexBabelPlugin from "./babel-plugin";
 
 export async function createServer({
+  components,
   open,
   exportName,
   publicDir,
   files,
 }: {
+  components: string[];
   open?: boolean | string;
   exportName?: string;
   publicDir?: string;
@@ -28,7 +30,7 @@ export async function createServer({
     plugins: [
       react({ babel: { plugins: [triplexBabelPlugin] } }),
       glsl(),
-      scenePlugin({ files }),
+      scenePlugin({ files, components }),
       tsconfigPaths({ projects: [tsConfig] }),
     ],
     root: process.cwd(),

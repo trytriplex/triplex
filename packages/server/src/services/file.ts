@@ -16,7 +16,7 @@ export function getSceneExport({
 }) {
   const { sourceFile } = project.getSourceFile(path);
   const jsxElements = getJsxElementsPositions(sourceFile, exportName);
-  const name = getExportName(sourceFile, exportName);
+  const { name } = getExportName(sourceFile, exportName);
 
   return {
     path,

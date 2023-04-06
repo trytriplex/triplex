@@ -21,6 +21,7 @@ import { Selection } from "./selection";
 import { SceneLoader } from "./loader";
 import { ErrorBoundary } from "react-error-boundary";
 import { SceneModule } from "./types";
+import { AddSceneObject } from "./add-scene-object";
 
 const V1 = new Vector3();
 const layers = new Layers();
@@ -168,6 +169,8 @@ export function SceneFrame({
               sceneProps={sceneProps}
               scenes={scenes}
             />
+
+            <AddSceneObject path={path} />
           </Selection>
         </Suspense>
       </ErrorBoundary>
