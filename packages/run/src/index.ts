@@ -55,7 +55,13 @@ program
       joinPosix(process.cwd(), ".triplex", file)
     );
 
+    const components = (config.components || []).map((file) =>
+      // Separators should always be forward slashes for glob compatibility.
+      joinPosix(process.cwd(), ".triplex", file)
+    );
+
     editor({
+      components,
       open,
       publicDir,
       files,

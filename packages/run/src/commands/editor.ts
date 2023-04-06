@@ -6,7 +6,9 @@ export async function editor({
   files,
   publicDir,
   exportName,
+  components,
 }: {
+  components: string[];
   open?: boolean | string;
   publicDir?: string;
   files: string[];
@@ -15,6 +17,7 @@ export async function editor({
   const { default: ora } = await import("ora");
   const spinner = ora("Starting...\n").start();
   const frontendServer = await createFrontendServer({
+    components,
     open,
     publicDir,
     exportName,

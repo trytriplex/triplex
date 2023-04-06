@@ -89,7 +89,7 @@ function useSceneObjectProps(
 }
 
 interface SceneObjectProps {
-  __component: React.ForwardRefExoticComponent<{ ref: unknown }>;
+  __component: React.ForwardRefExoticComponent<{ ref: unknown }> | string;
   __meta: { line: number; column: number; path: string; name: string };
 }
 

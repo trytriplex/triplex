@@ -1,6 +1,18 @@
 export type ClientSendEventName = keyof ClientSendEventData;
 
 export interface ClientSendEventData {
+  "trplx:onAddNewComponent":
+    | {
+        type: "custom";
+        path: string;
+        exportName: string;
+        props: Record<string, unknown>;
+      }
+    | {
+        type: "host";
+        name: string;
+        props: Record<string, unknown>;
+      };
   "trplx:onConnected": undefined;
   "trplx:onConfirmSceneObjectProp": {
     column: number;
@@ -27,9 +39,37 @@ export interface ClientSendEventData {
   "trplx:requestUndo": undefined;
 }
 
+export interface ClientSendEventResponse {
+  "trplx:onAddNewComponent": {
+    line: number;
+    column: number;
+  };
+  "trplx:onConnected": void;
+  "trplx:onConfirmSceneObjectProp": void;
+  "trplx:onSceneObjectBlur": void;
+  "trplx:onSceneObjectFocus": void;
+  "trplx:onTransformChange": void;
+  "trplx:onSceneObjectNavigated": void;
+  "trplx:requestSave": void;
+  "trplx:requestRedo": void;
+  "trplx:requestUndo": void;
+}
+
 export type HostSendEventName = keyof HostSendEventData;
 
 export interface HostSendEventData {
+  "trplx:requestAddNewComponent":
+    | {
+        type: "custom";
+        path: string;
+        exportName: string;
+        props: Record<string, unknown>;
+      }
+    | {
+        type: "host";
+        name: string;
+        props: Record<string, unknown>;
+      };
   "trplx:requestSetSceneObjectProp": {
     column: number;
     line: number;
@@ -76,6 +116,7 @@ export interface HostSendEventData {
 }
 
 export interface HostSendEventResponse {
+  "trplx:requestAddNewComponent": void;
   "trplx:requestBlurSceneObject": void;
   "trplx:requestFocusSceneObject": void;
   "trplx:requestJumpToSceneObject": void;

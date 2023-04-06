@@ -1,3 +1,4 @@
+import { send } from "@triplex/bridge/host";
 import { create } from "zustand";
 
 export interface FocusedObject {
@@ -8,10 +9,28 @@ export interface FocusedObject {
 
 interface BridgeContext {
   /**
+   * Temporarily adds a component to the scene.
+   * When any HMR event is fired any added components are removed from the scene.
+   */
+  addComponent(
+    component:
+      | {
+          type: "custom";
+          path: string;
+          exportName: string;
+          props: Record<string, unknown>;
+        }
+      | {
+          type: "host";
+          name: string;
+          props: Record<string, unknown>;
+        }
+  ): void;
+  /**
    * Returns the persisted prop value.
    * It should not return the current intermediate value.
    */
-  getPropValue(_: {
+  getPropValue(prop: {
     column: number;
     line: number;
     path: string;
@@ -37,7 +56,7 @@ interface BridgeContext {
    * considered the intermediate values during a change.
    * When setting a prop value it is not yet considered "persisted".
    */
-  setPropValue(_: {
+  setPropValue(prop: {
     column: number;
     line: number;
     path: string;
@@ -50,7 +69,7 @@ interface BridgeContext {
    * be called after a change has been "completed", for example
    * during a mouse up event or blur event.
    */
-  persistPropValue(_: {
+  persistPropValue(prop: {
     column: number;
     line: number;
     path: string;
@@ -58,7 +77,9 @@ interface BridgeContext {
     propValue: unknown;
   }): void;
   /**
-   * Navigates the scene frame to the new scene object.
+   * Navigate the scene to the scene object.
+   *
+   * @param sceneObject Navigates to the passed in scene object. When undefined navigates to the currently focused scene object.
    */
   navigateTo(sceneObject?: {
     path: string;
@@ -77,35 +98,38 @@ interface BridgeContext {
   ready: boolean;
 }
 
-export const useScene = create<
-  BridgeContext & { __set: (ctx: Omit<BridgeContext, "ready">) => void }
->((setStore) => ({
-  ready: false,
-  __set(ctx) {
-    setStore({ ...ctx, ready: true });
-  },
-  getPropValue() {
-    throw new Error("invariant");
-  },
-  blur() {
-    throw new Error("invariant");
-  },
-  focus() {
-    throw new Error("invariant");
-  },
-  jumpTo() {
-    throw new Error("invariant");
-  },
-  navigateTo() {
-    throw new Error("invariant");
-  },
-  setPropValue() {
-    throw new Error("invariant");
-  },
-  persistPropValue() {
-    throw new Error("invariant");
-  },
-  setTransform() {
-    throw new Error("invariant");
-  },
-}));
+export const useScene = create<BridgeContext & { sceneReady: () => void }>(
+  (setStore) => ({
+    ready: false,
+    sceneReady() {
+      setStore({ ready: true });
+    },
+    addComponent(component) {
+      send("trplx:requestAddNewComponent", component);
+    },
+    getPropValue(prop) {
+      return send("trplx:requestSceneObjectPropValue", prop, true);
+    },
+    blur() {
+      send("trplx:requestBlurSceneObject", undefined);
+    },
+    focus(sceneObject) {
+      send("trplx:requestFocusSceneObject", sceneObject);
+    },
+    jumpTo() {
+      send("trplx:requestJumpToSceneObject", undefined);
+    },
+    navigateTo(sceneObject) {
+      send("trplx:requestNavigateToScene", sceneObject);
+    },
+    setPropValue(data) {
+      send("trplx:requestSetSceneObjectProp", data);
+    },
+    persistPropValue(data) {
+      send("trplx:requestPersistSceneObjectProp", data);
+    },
+    setTransform(mode) {
+      send("trplx:requestTransformChange", { mode });
+    },
+  })
+);
