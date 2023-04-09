@@ -4,7 +4,7 @@ export interface SceneMeta {
 
 export interface SceneComponent {
   (props: unknown): JSX.Element;
-  triplexMeta: SceneMeta;
+  triplexMeta?: SceneMeta;
 }
 
 export type SceneModule = Record<string, SceneComponent>;

@@ -33,7 +33,7 @@ export function SceneLoader({
     <>
       <SceneComponent {...sceneProps} />
 
-      {triplexMeta.lighting === "default" && (
+      {triplexMeta?.lighting === "default" && (
         <>
           <hemisphereLight
             color="#87CEEB"
