@@ -18,6 +18,7 @@ function decodeParams(params?: Record<string, string> | null) {
 
 interface AliveWebSocket extends WebSocket {
   isAlive: boolean;
+  isHandled: boolean;
 }
 
 export function createServer() {
@@ -57,7 +58,8 @@ export function createServer() {
         const path = rawData.toString();
         const matches = match(route, path);
 
-        if (matches.matches) {
+        if (matches.matches && !ws.isHandled) {
+          ws.isHandled = true;
           const params: P = decodeParams(matches.params) as P;
 
           async function pushMessageToClient(type: "push" | "pull") {

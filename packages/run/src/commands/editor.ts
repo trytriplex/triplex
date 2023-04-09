@@ -23,7 +23,7 @@ export async function editor({
     exportName,
     files,
   });
-  const backendServer = await createBackendServer({ files });
+  const backendServer = await createBackendServer({ files, components });
 
   await frontendServer.listen(3333);
 

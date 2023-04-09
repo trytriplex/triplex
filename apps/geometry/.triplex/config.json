@@ -1,4 +1,4 @@
 {
-  "components": ["../src/(box|cylinder|sphere).tsx"],
+  "components": ["../src/geometry/**/*.tsx"],
   "files": ["../src/**/*.tsx"]
 }

@@ -27,8 +27,8 @@ function useSceneObjectProps(
   // Assign all current top-level props to a ref so we can access it in an effect.
   Object.assign(propsRef.current, props, persistedProps.current);
 
-  if (import.meta.hot) {
-    import.meta.hot.on("vite:afterUpdate", (e) => {
+  useEffect(() => {
+    import.meta.hot?.on("vite:afterUpdate", (e) => {
       const isUpdated = e.updates.find((up) => meta.path.endsWith(up.path));
       if (isUpdated) {
         // On HMR clear out the intermediate state so when it's rendered again
@@ -36,7 +36,7 @@ function useSceneObjectProps(
         intermediateProps.current = {};
       }
     });
-  }
+  }, [meta.path]);
 
   useEffect(() => {
     return compose([

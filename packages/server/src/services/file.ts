@@ -4,6 +4,7 @@ import parent from "glob-parent";
 import anymatch from "anymatch";
 import { readFile } from "fs/promises";
 import { getExportName, TRIPLEXProject, getJsxElementsPositions } from "../ast";
+import { inferExports } from "../util/module";
 
 export function getSceneExport({
   path,
@@ -32,7 +33,11 @@ export async function getAllFiles({
   files: string[];
   cwd?: string;
 }) {
-  const foundFiles: { path: string; name: string; exports: string[] }[] = [];
+  const foundFiles: {
+    path: string;
+    name: string;
+    exports: { exportName: string; name: string }[];
+  }[] = [];
   const roots = files.map((glob) => parent(glob));
 
   for (let i = 0; i < files.length; i++) {
@@ -43,20 +48,7 @@ export async function getAllFiles({
     for await (const entry of readdirp(root)) {
       if (match(entry.fullPath)) {
         const file = await readFile(entry.fullPath, "utf-8");
-        const namedExports = file.matchAll(
-          /export (function|const) ([A-Z]\w+)/g
-        );
-        const hasDefaultExport = !!/export default/.exec(file);
-        const foundExports: string[] = [];
-
-        for (const match of namedExports) {
-          const [, , exportName] = match;
-          foundExports.push(exportName);
-        }
-
-        if (hasDefaultExport) {
-          foundExports.push("default");
-        }
+        const foundExports = inferExports(file);
 
         foundFiles.push({
           path: entry.fullPath,

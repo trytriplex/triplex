@@ -9,14 +9,15 @@ export interface FocusedObject {
 
 interface BridgeContext {
   /**
-   * Temporarily adds a component to the scene.
-   * When any HMR event is fired any added components are removed from the scene.
+   * Adds a component to the scene until any HMR event is fired
+   * whereby all added components are removed.
    */
   addComponent(
     component:
       | {
           type: "custom";
           path: string;
+          name: string;
           exportName: string;
           props: Record<string, unknown>;
         }

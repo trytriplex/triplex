@@ -1,7 +1,9 @@
-import Cylinder from "@/cylinder";
-import Box from "src/box";
+import Box1 from "./geometry/box";
+import { Cylinder as Cylinder1 } from "./geometry/cylinder";
+import Cylinder from "@/geometry/cylinder";
+import Box from "src/geometry/box";
 import { RoundedBox } from "@react-three/drei";
-import Sphere from "./sphere";
+import Sphere from "./geometry/sphere";
 
 export function SceneAlt() {
   return (
@@ -45,6 +47,17 @@ export default function Scene() {
       >
         <meshStandardMaterial color="purple" />
       </RoundedBox>
+
+      <Sphere
+        position={[-0.5399040739791814, 0, 2.954380142041496]}
+        scale={[2.0010624126256222, 1.4896698383444156, 1]}
+      />
+      <Cylinder1 position={[1.4681464869137235, 0, -4.205778397787599]} />
+      <Cylinder1 position={[-5.147492724511148, 0, -2.9618330871711818]} />
+      <Box1
+        position={[1.5434749335272209, 0, 2.38017042735966]}
+        color={"red"}
+      />
     </>
   );
 }

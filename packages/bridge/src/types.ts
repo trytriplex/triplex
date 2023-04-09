@@ -5,6 +5,7 @@ export interface ClientSendEventData {
     | {
         type: "custom";
         path: string;
+        name: string;
         exportName: string;
         props: Record<string, unknown>;
       }
@@ -62,6 +63,7 @@ export interface HostSendEventData {
     | {
         type: "custom";
         path: string;
+        name: string;
         exportName: string;
         props: Record<string, unknown>;
       }

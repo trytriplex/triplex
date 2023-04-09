@@ -107,9 +107,16 @@ function wsQuery<TValue>(path: string) {
   };
 }
 
-export function preloadSubscription(path: string) {
-  const query = wsQuery(path);
-  query.load();
+export function preloadSubscription(path: string | string[]) {
+  if (typeof path === "string") {
+    const query = wsQuery(path);
+    query.load();
+  } else {
+    path.forEach((p) => {
+      const query = wsQuery(p);
+      query.load();
+    });
+  }
 }
 
 export function useLazySubscription<TSubscriptionData>(path: string) {

@@ -51,7 +51,8 @@ describe("component service", () => {
             <mesh
               position={[1.23121231233123, 1.2321231233123, 1.121231213123123]}
             ></mesh>
-          <group /></>
+          
+      <group /></>
         );
       }"
     `);
@@ -103,10 +104,31 @@ describe("component service", () => {
             <mesh
               position={[1.23121231233123, 1.2321231233123, 1.121231213123123]}
             ></mesh>
-          <StubComponent color=\\"red\\"/></>
+          
+      <StubComponent color=\\"red\\"/></>
         );
       }"
     `);
+  });
+
+  it("should alias named import and ensure relative link to nested folder", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx")
+    );
+
+    add(sourceFile, "default", {
+      type: "custom",
+      exportName: "Box",
+      path: join(__dirname, "__mocks__/components/box.tsx"),
+      props: {},
+    });
+
+    expect(sourceFile.getText()).toContain(
+      'import { Box as Box1 } from "./components/box"'
+    );
   });
 
   it("should add component to longhand fragment", () => {
@@ -130,7 +152,8 @@ describe("component service", () => {
     ).declaration.getText();
     expect(result).toMatchInlineSnapshot(`
       "export function FragmentFragment() {
-        return <Fragment><NamedComponent /></Fragment>;
+        return <Fragment>
+      <NamedComponent /></Fragment>;
       }"
     `);
   });
@@ -197,6 +220,47 @@ describe("component service", () => {
 
     expect(sourceFile.getText()).toContain(
       'import { NamedComponent } from "./stub-component";'
+    );
+  });
+
+  it("should reuse default import", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/reuse.tsx")
+    );
+
+    add(sourceFile, "Reuse", {
+      type: "custom",
+      exportName: "default",
+      path: join(__dirname, "__mocks__/add-prop.tsx"),
+      props: {},
+    });
+
+    expect(sourceFile.getText()).toContain('import Scene from "./add-prop";');
+  });
+
+  it("should reuse named import", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx")
+    );
+
+    add(sourceFile, "default", {
+      type: "custom",
+      exportName: "RoundedBox",
+      path: "@react-three/drei",
+      props: {},
+    });
+
+    expect(
+      sourceFile.getText().match(/from "@react-three\/drei"/g)
+    ).toHaveLength(1);
+    expect(sourceFile.getText()).toContain(
+      'import { RoundedBox } from "@react-three/drei";'
     );
   });
 

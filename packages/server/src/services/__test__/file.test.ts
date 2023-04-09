@@ -15,12 +15,30 @@ describe("file", () => {
         {
           name: "box",
           path: join(cwd, "box.tsx"),
-          exports: ["default"],
+          exports: [
+            {
+              exportName: "default",
+              name: "Box",
+            },
+          ],
         },
         {
           name: "scene",
           path: join(cwd, "scene.tsx"),
-          exports: ["SceneDecl", "SceneAlt", "default"],
+          exports: [
+            {
+              exportName: "SceneDecl",
+              name: "SceneDecl",
+            },
+            {
+              exportName: "SceneAlt",
+              name: "SceneAlt",
+            },
+            {
+              exportName: "default",
+              name: "Scene",
+            },
+          ],
         },
       ],
     });

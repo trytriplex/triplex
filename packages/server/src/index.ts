@@ -13,8 +13,15 @@ import { createServer as createWSS } from "./util/ws-server";
 import { save } from "./services/save";
 import { getAllFiles, getSceneExport } from "./services/file";
 import * as component from "./services/component";
+import * as projectService from "./services/project";
 
-export function createServer({ files }: { files: string[] }) {
+export function createServer({
+  files,
+  components,
+}: {
+  files: string[];
+  components: string[];
+}) {
   const app = new Application();
   const router = new Router();
   const project = createProject();
@@ -113,6 +120,40 @@ export function createServer({ files }: { files: string[] }) {
       const watcher = watch(files, { ignoreInitial: true });
       watcher.on("add", push);
       watcher.on("change", push);
+      watcher.on("unlink", push);
+    }
+  );
+
+  wss.message(
+    "/scene/components",
+    async () => {
+      const result = await projectService.foundFolders(components);
+      return result;
+    },
+    (push) => {
+      const watcher = watch(components);
+      watcher.on("addDir", push);
+      watcher.on("unlinkDir", push);
+    }
+  );
+
+  wss.message("/scene/components/host", async () => {
+    const result = projectService.hostElements();
+    return result;
+  });
+
+  wss.message(
+    "/scene/components/:folderPath",
+    async ({ folderPath }) => {
+      const result = await projectService.folderComponents(
+        components,
+        folderPath
+      );
+      return result;
+    },
+    (push) => {
+      const watcher = watch(components);
+      watcher.on("add", push);
       watcher.on("unlink", push);
     }
   );

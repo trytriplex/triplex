@@ -1,5 +1,5 @@
-import Box from "src/box";
-import { Cylinder } from "./cylinder";
+import Box from "src/geometry/box";
+import { Cylinder } from "./geometry/cylinder";
 
 export function Grouped() {
   return (

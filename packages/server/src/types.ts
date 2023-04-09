@@ -131,3 +131,41 @@ export interface SceneObjectCustom {
   path: string;
   props: (Prop & BaseProp)[];
 }
+
+export type ComponentType =
+  | {
+      type: "custom";
+      path: string;
+      name: string;
+      exportName: string;
+      props: Record<string, unknown>;
+    }
+  | {
+      type: "host";
+      name: string;
+      props: Record<string, unknown>;
+    };
+
+export interface ProjectHostComponent {
+  category: string;
+  name: string;
+  type: "host";
+}
+
+export interface ProjectCustomComponent {
+  category: string;
+  exportName: string;
+  path: string;
+  name: string;
+  type: "custom";
+}
+
+export type GetProjectComponents = (
+  | ProjectHostComponent
+  | ProjectCustomComponent
+)[];
+
+export type GetProjectComponentFolders = {
+  name: string;
+  path: string;
+}[];

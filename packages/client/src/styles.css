@@ -12,8 +12,23 @@
   }
 }
 
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0%);
+  }
+}
+
 .slide-in {
   animation-name: slide-in;
+  animation-duration: 100ms;
+}
+
+.slide-up {
+  animation-name: slide-up;
   animation-duration: 100ms;
 }
 
