@@ -17,16 +17,10 @@ export function Drawer({
   title?: string;
 }) {
   return (
-    <Dialog.Root
-      modal={mode === "blocking"}
-      open={open}
-      onOpenChange={(isOpen) => !isOpen && onClose()}
-    >
-      {mode === "blocking" && (
-        <Dialog.Close>
-          <Dialog.Overlay className="fixed inset-0 cursor-default bg-black/20" />
-        </Dialog.Close>
-      )}
+    <Dialog.Root open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
+      <Dialog.Close>
+        <Dialog.Overlay className="fixed inset-0 cursor-default bg-black/20" />
+      </Dialog.Close>
       <Dialog.Portal>
         <Dialog.Content
           className={cn([
@@ -34,7 +28,7 @@ export function Drawer({
             mode === "transparent" && "bg-neutral-900/[97%]",
             attach === "left" && "slide-in top-0 left-0 bottom-0 w-64 border-r",
             attach === "bottom" &&
-              "slide-up left-0 bottom-0 right-0 h-[186px] border-t",
+              "slide-up left-4 bottom-4 right-4 h-[186px] rounded-lg border",
             "fixed flex flex-col border-neutral-800 text-neutral-300 shadow-2xl shadow-black/50 outline-none",
           ])}
         >

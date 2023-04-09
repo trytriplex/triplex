@@ -140,32 +140,38 @@ function ComponentsDrawer({
   return (
     <Drawer mode="transparent" attach="bottom" open onClose={onClose}>
       <div className="flex h-full gap-2">
-        <div className="w-40 flex-shrink-0 py-2 pl-2">
+        <div className="w-40 flex-shrink-0 border-r border-neutral-800">
           <ScrollContainer>
-            <Folder
-              onClick={() => onSelected("host")}
-              isSelected={selected === "host"}
-            >
-              Built-in Elements
-            </Folder>
+            <div className="h-2" />
+            <div className="px-2">
+              <Folder
+                onClick={() => onSelected("host")}
+                isSelected={selected === "host"}
+              >
+                Built-in Elements
+              </Folder>
+            </div>
 
             {componentFolders.length ? (
               <div className="my-2 border-t border-neutral-800" />
             ) : null}
 
-            {componentFolders.map((folder) => (
-              <Folder
-                key={folder.path}
-                onClick={() => onSelected(folder.path)}
-                isSelected={selected === folder.path}
-              >
-                {camelToStartCase(folder.name)}
-              </Folder>
-            ))}
+            <div className="px-2">
+              {componentFolders.map((folder) => (
+                <Folder
+                  key={folder.path}
+                  onClick={() => onSelected(folder.path)}
+                  isSelected={selected === folder.path}
+                >
+                  {camelToStartCase(folder.name)}
+                </Folder>
+              ))}
+            </div>
+            <div className="h-2" />
           </ScrollContainer>
         </div>
         <Suspense fallback={null}>
-          <ComponentFolder onClose={close} folderPath={selected} />
+          <ComponentFolder onClose={onClose} folderPath={selected} />
         </Suspense>
       </div>
     </Drawer>
