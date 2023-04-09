@@ -3,13 +3,18 @@ import { Link } from "react-router-dom";
 import { useLazySubscription } from "@triplex/ws-client";
 import { useEditor } from "../stores/editor";
 import { cn } from "../ds/cn";
-import { Drawer, DrawerContent } from "../ds/drawer";
+import { Drawer } from "../ds/drawer";
 import { useOverlayStore } from "../stores/overlay";
+import { ScrollContainer } from "../ds/scroll-container";
 
 function Scenes() {
   const files = useLazySubscription<{
     cwd: string;
-    scenes: { path: string; name: string; exports: string[] }[];
+    scenes: {
+      path: string;
+      name: string;
+      exports: { name: string; exportName: string }[];
+    }[];
   }>("/scene");
   const { path, exportName } = useEditor();
   const { show } = useOverlayStore();
@@ -28,17 +33,17 @@ function Scenes() {
           </small>
           {file.exports.map((exp) => (
             <Link
-              key={exp}
-              to={{ search: `?path=${file.path}&exportName=${exp}` }}
+              key={exp.exportName}
+              to={{ search: `?path=${file.path}&exportName=${exp.exportName}` }}
               onClick={() => show(false)}
               className={cn([
-                path === file.path && exportName === exp
+                path === file.path && exportName === exp.exportName
                   ? "bg-neutral-800 text-blue-400"
                   : "text-neutral-300",
                 "block select-none px-2 text-base outline-none hover:bg-white/5 active:bg-white/10",
               ])}
             >
-              <div>{exp}</div>
+              <div>{exp.name}</div>
             </Link>
           ))}
         </div>
@@ -51,14 +56,19 @@ export function ScenesDrawer() {
   const { shown, show } = useOverlayStore();
 
   return (
-    <Drawer open={shown === "open-scene"} onClose={() => show(false)}>
-      <DrawerContent title="Files">
-        <Suspense
-          fallback={<div className="p-4 text-neutral-400">Loading...</div>}
-        >
+    <Drawer
+      title="Files"
+      open={shown === "open-scene"}
+      onClose={() => show(false)}
+    >
+      <Suspense
+        fallback={<div className="p-4 text-neutral-400">Loading...</div>}
+      >
+        <ScrollContainer>
           <Scenes />
-        </Suspense>
-      </DrawerContent>
+          <div className="h-2" />
+        </ScrollContainer>
+      </Suspense>
     </Drawer>
   );
 }

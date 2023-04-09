@@ -12,9 +12,6 @@ import { components } from "triplex:components";
 import { ComponentType } from "./api-types";
 import { SceneObject } from "./scene-object";
 
-/**
- * - Blow it away on hot module reload
- */
 export function AddSceneObject({ path }: { path: string }) {
   const [addedComponents, setAddedComponents] = useState<ComponentType[]>([]);
   const [positions, setPositions] = useState<
@@ -30,6 +27,7 @@ export function AddSceneObject({ path }: { path: string }) {
         index = value.length;
         return value.concat(component);
       });
+
       send("trplx:onAddNewComponent", component, true).then((res) => {
         setPositions((prev) => {
           const next = prev.concat([]);
@@ -39,6 +37,15 @@ export function AddSceneObject({ path }: { path: string }) {
       });
     });
   }, []);
+
+  useEffect(() => {
+    import.meta.hot?.on("vite:afterUpdate", (e) => {
+      const isUpdated = e.updates.find((up) => path.endsWith(up.path));
+      if (isUpdated) {
+        setAddedComponents([]);
+      }
+    });
+  }, [path]);
 
   return (
     <>
@@ -87,7 +94,7 @@ export function AddSceneObject({ path }: { path: string }) {
                   __meta={{
                     column: pos.column,
                     line: pos.line,
-                    name: component.exportName,
+                    name: component.name,
                     path,
                   }}
                 />
