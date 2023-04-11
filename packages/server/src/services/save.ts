@@ -5,9 +5,11 @@ import { deleteCommentComponents } from "./component";
 export async function save({
   project,
   path,
+  newPath,
 }: {
   project: TRIPLEXProject;
   path: string;
+  newPath?: string;
 }) {
   const { sourceFile } = project.getSourceFile(path);
 
@@ -38,6 +40,11 @@ export async function save({
       }
     }
 
-    await sourceFile.save();
+    if (newPath) {
+      const result = sourceFile.copy(newPath);
+      await result.save();
+    } else {
+      await sourceFile.save();
+    }
   }
 }

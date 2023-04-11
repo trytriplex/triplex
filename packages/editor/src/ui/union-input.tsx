@@ -10,7 +10,9 @@ export function UnionInput({
   onChange,
   onConfirm,
   path,
+  defaultValue,
 }: {
+  defaultValue?: string | number;
   path: string;
   name: string;
   values: Prop[];
@@ -31,7 +33,7 @@ export function UnionInput({
           onChange={onChange}
           onConfirm={onConfirm}
           path={path}
-          prop={value}
+          prop={Object.assign({}, value, { value: defaultValue })}
         />
       </div>
       <IconButton

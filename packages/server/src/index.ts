@@ -14,6 +14,7 @@ import { save } from "./services/save";
 import { getAllFiles, getSceneExport } from "./services/file";
 import * as component from "./services/component";
 import * as projectService from "./services/project";
+import { join } from "path";
 
 export function createServer({
   files,
@@ -77,6 +78,19 @@ export function createServer({
     context.response.body = { message: "success" };
   });
 
+  router.post("/scene/new/:exportName", (context) => {
+    const { exportName } = context.params;
+    const fileName = join(process.cwd(), "__triplex__new__file.tsx");
+
+    const sourceFile = project.createSourceFile(exportName, fileName);
+
+    context.response.body = {
+      message: "success",
+      exportName,
+      path: sourceFile.getFilePath(),
+    };
+  });
+
   router.post("/scene/:path/object/:line/:column/restore", (context) => {
     const { column, line, path } = context.params;
     const { sourceFile } = project.getSourceFile(path);
@@ -103,8 +117,10 @@ export function createServer({
    */
   router.get("/scene/:path/save", async (context) => {
     const path = context.params.path;
+    const newPath =
+      context.request.url.searchParams.get("newPath") || undefined;
 
-    await save({ path, project });
+    await save({ path, project, newPath });
 
     context.response.body = { message: "success" };
   });

@@ -3,10 +3,11 @@ import { watch } from "chokidar";
 import { Project, ProjectOptions, SourceFile } from "ts-morph";
 
 export interface TRIPLEXProject {
+  createSourceFile(componentName: string, fileName: string): SourceFile;
   getSourceFile(path: string): {
     sourceFile: SourceFile;
   };
-  removeSourceFile(path: string): Promise<void>;
+  removeSourceFile(path: string): void;
 }
 
 export function _createProject(opts: ProjectOptions) {
@@ -34,6 +35,23 @@ export function createProject(): TRIPLEXProject {
     tsConfigFilePath: join(process.cwd(), "tsconfig.json"),
   });
 
+  function createSourceFile(componentName: string, fileName: string) {
+    const existingSourceFile = project.getSourceFile(fileName);
+    if (existingSourceFile) {
+      project.removeSourceFile(existingSourceFile);
+    }
+
+    const template = `export function ${componentName}() {
+  return (
+    <>
+    </>
+  );
+}
+`;
+
+    return project.createSourceFile(fileName, template);
+  }
+
   function getSourceFile(path: string) {
     if (!path.startsWith(process.cwd())) {
       throw new Error("invariant: path is outside of cwd");
@@ -59,13 +77,14 @@ export function createProject(): TRIPLEXProject {
     };
   }
 
-  async function removeSourceFile(path: string) {
+  function removeSourceFile(path: string) {
     const { sourceFile } = getSourceFile(path);
 
     project.removeSourceFile(sourceFile);
   }
 
   return {
+    createSourceFile,
     getSourceFile,
     removeSourceFile,
   };

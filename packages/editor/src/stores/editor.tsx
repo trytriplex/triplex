@@ -2,6 +2,7 @@ import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { create } from "zustand";
 import { ComponentType } from "../api-types";
+import { newFilename } from "../util/file";
 import { useScene } from "./scene";
 
 export interface Params {
@@ -73,7 +74,7 @@ export function useEditor() {
       const res = await fetch(
         "http://localhost:8000/scene/" +
           encodeURIComponent(path) +
-          "/default/object",
+          `/${exportName}/object`,
         {
           method: "POST",
           body: JSON.stringify({
@@ -82,11 +83,21 @@ export function useEditor() {
         }
       );
 
-      const result = await res.json();
+      const result = (await res.json()) as { line: number; column: number };
 
-      return result as { line: number; column: number };
+      requestAnimationFrame(() => {
+        // HACK: This is a shit hack to get the new component focused.
+        // Will need some restructuring to not need to rely on async hacks.
+        scene.focus({
+          column: result.column,
+          line: result.line,
+          ownerPath: path,
+        });
+      });
+
+      return result;
     },
-    [path]
+    [path, exportName, scene]
   );
 
   const deleteComponent = useCallback(() => {
@@ -211,12 +222,6 @@ export function useEditor() {
     }
   }, []);
 
-  const save = useCallback(() => {
-    undoStack.length = 0;
-    redoStack.length = 0;
-    fetch(`http://localhost:8000/scene/${encodeURIComponent(path)}/save`);
-  }, [path]);
-
   const reset = useCallback(() => {
     undoStack.length = 0;
     redoStack.length = 0;
@@ -259,8 +264,68 @@ export function useEditor() {
     [exportName, path, setSearchParams]
   );
 
+  const save = useCallback(async () => {
+    let newPath = "";
+
+    if (path.endsWith(newFilename)) {
+      // New file - ask for a filename!
+      const result = prompt("Filename", "src/untitled.tsx");
+      if (!result) {
+        return;
+      }
+
+      newPath = path.replace(
+        newFilename,
+        result.replace(/\.[a-z]{2,4}$/, "") + ".tsx"
+      );
+    }
+
+    undoStack.length = 0;
+    redoStack.length = 0;
+
+    await fetch(
+      `http://localhost:8000/scene/${encodeURIComponent(
+        path
+      )}/save?newPath=${newPath}`
+    );
+
+    if (newPath) {
+      set({
+        encodedProps: "",
+        exportName,
+        path: newPath,
+      });
+    }
+  }, [exportName, path, set]);
+
+  const newFile = useCallback(async () => {
+    const componentName = prompt("Component name");
+    if (!componentName) {
+      return;
+    }
+
+    const parsedComponentName =
+      componentName[0].toUpperCase() + componentName.slice(1);
+
+    const result = await fetch(
+      `http://localhost:8000/scene/new/${parsedComponentName}`,
+      { method: "POST" }
+    );
+    const data = await result.json();
+
+    set({
+      exportName: data.exportName,
+      path: data.path,
+      encodedProps: "",
+    });
+  }, [set]);
+
   return useMemo(
     () => ({
+      /**
+       * Creates a new intermediate file and transitions the editor to the file.
+       */
+      newFile,
       /**
        * Adds the component into the current file.
        * Is not persisted until `save()` is called.
@@ -343,6 +408,7 @@ export function useEditor() {
       enteredComponent,
       exitComponent,
       exportName,
+      newFile,
       focus,
       getState,
       path,

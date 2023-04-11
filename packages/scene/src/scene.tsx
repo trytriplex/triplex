@@ -99,7 +99,10 @@ export function SceneFrame({
         (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
       ) {
         send("trplx:requestUndo", undefined);
-      } else if (e.key === "Backspace") {
+      } else if (
+        e.key === "Backspace" &&
+        document.activeElement === document.body
+      ) {
         send("trplx:requestDeleteSceneObject", undefined);
       }
     };
@@ -174,7 +177,12 @@ export function SceneFrame({
               scenes={scenes}
             />
 
-            <AddSceneObject components={components} path={path} />
+            <AddSceneObject
+              // Blow this components state away when path changes
+              key={path}
+              components={components}
+              path={path}
+            />
           </Selection>
         </Suspense>
       </ErrorBoundary>
