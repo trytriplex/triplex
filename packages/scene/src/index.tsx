@@ -2,7 +2,7 @@ import { send } from "@triplex/bridge/client";
 import { useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { SceneFrame } from "./scene";
-import { SceneModule } from "./types";
+import { SceneModule, ComponentModule } from "./types";
 import { SceneObject } from "./scene-object";
 
 // Hacking this for fun sorry!
@@ -12,7 +12,9 @@ window.SceneObject = SceneObject;
 
 export function Scene({
   scenes,
+  components,
 }: {
+  components: Record<string, () => Promise<ComponentModule>>;
   scenes: Record<string, () => Promise<SceneModule>>;
 }) {
   useEffect(() => {
@@ -21,7 +23,7 @@ export function Scene({
 
   return (
     <BrowserRouter>
-      <SceneFrame scenes={scenes} />
+      <SceneFrame components={components} scenes={scenes} />
     </BrowserRouter>
   );
 }

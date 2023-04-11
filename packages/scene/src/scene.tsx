@@ -20,7 +20,7 @@ import {
 import { Selection } from "./selection";
 import { SceneLoader } from "./loader";
 import { ErrorBoundary } from "react-error-boundary";
-import { SceneModule } from "./types";
+import { ComponentModule, SceneModule } from "./types";
 import { AddSceneObject } from "./add-scene-object";
 
 const V1 = new Vector3();
@@ -33,8 +33,10 @@ const defaultFocalPoint: { grid: Vector3Tuple; objectCenter: Vector3Tuple } = {
 };
 
 export function SceneFrame({
+  components,
   scenes,
 }: {
+  components: Record<string, () => Promise<ComponentModule>>;
   scenes: Record<string, () => Promise<SceneModule>>;
 }) {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -172,7 +174,7 @@ export function SceneFrame({
               scenes={scenes}
             />
 
-            <AddSceneObject path={path} />
+            <AddSceneObject components={components} path={path} />
           </Selection>
         </Suspense>
       </ErrorBoundary>
