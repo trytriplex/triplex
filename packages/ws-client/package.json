@@ -1,6 +1,6 @@
 {
   "name": "@triplex/ws-client",
-  "version": "0.38.0",
+  "version": "0.39.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "license": "Apache-2.0",
   "main": "./src/index.tsx",

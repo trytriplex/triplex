@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.39.0
+
+### Minor Changes
+
+- ca9807e: Save now supports passing in an option arg to copy the file to another location.
+- ca9807e: New files can now be created through the file menu.
+
 ## 0.38.0
 
 ## 0.37.0

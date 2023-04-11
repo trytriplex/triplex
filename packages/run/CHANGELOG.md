@@ -1,5 +1,14 @@
 # @triplex/run
 
+## 0.39.0
+
+### Patch Changes
+
+- Updated dependencies [ca9807e]
+- Updated dependencies [ca9807e]
+  - @triplex/server@0.39.0
+  - @triplex/client@0.39.0
+
 ## 0.38.0
 
 ### Patch Changes

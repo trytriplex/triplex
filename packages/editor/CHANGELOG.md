@@ -1,5 +1,18 @@
 # @triplex/editor
 
+## 0.39.0
+
+### Minor Changes
+
+- ca9807e: New files can now be created through the file menu.
+- ca9807e: After adding a component it will now be automatically focused.
+- ca9807e: Union input now correctly picks up default value.
+
+### Patch Changes
+
+- @triplex/bridge@0.39.0
+- @triplex/ws-client@0.39.0
+
 ## 0.38.0
 
 ### Patch Changes
