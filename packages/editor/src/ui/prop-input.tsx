@@ -62,6 +62,7 @@ export function PropInput({
     } else {
       return (
         <UnionInput
+          defaultValue={prop.value}
           path={path}
           values={prop.values}
           name={name}

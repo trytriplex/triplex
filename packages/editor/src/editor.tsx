@@ -6,6 +6,7 @@ import { ScenesDrawer } from "./ui/scenes-drawer";
 import { SceneFrame } from "./scence-bridge";
 import { useEditor } from "./stores/editor";
 import { ControlsMenu } from "./ui/controls-menu";
+import { newFilename } from "./util/file";
 
 export function EditorFrame() {
   const { path, save, undo, redo, deleteComponent } = useEditor();
@@ -49,7 +50,10 @@ export function EditorFrame() {
         (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
       ) {
         undo();
-      } else if (e.key === "Backspace") {
+      } else if (
+        e.key === "Backspace" &&
+        document.activeElement === document.body
+      ) {
         deleteComponent();
       }
     };
@@ -63,7 +67,10 @@ export function EditorFrame() {
 
   useEffect(() => {
     if (path) {
-      window.document.title = path.split("/").at(-1) + " • Triplex";
+      const filename = path.split("/").at(-1);
+      const parsedFilename = filename === newFilename ? "Untitled" : filename;
+
+      window.document.title = parsedFilename + " • Triplex";
     }
   }, [path]);
 

@@ -21,7 +21,7 @@ function ShortcutItem({
   children: string;
   disabled?: boolean;
   metaKey?: boolean;
-  onClick: () => void;
+  onClick?: () => void;
   shiftKey?: boolean;
   shortcut: string;
 }) {
@@ -66,7 +66,7 @@ function UndoRedoItems() {
 
 export function EditorMenu() {
   const showOverlay = useOverlayStore((store) => store.show);
-  const { target, save, reset, deleteComponent } = useEditor();
+  const { target, save, reset, deleteComponent, newFile } = useEditor();
   const { blur, jumpTo, navigateTo } = useScene();
 
   return (
@@ -75,6 +75,9 @@ export function EditorMenu() {
         <Menu>
           <Trigger>File</Trigger>
           <MenuContent>
+            <ShortcutItem onClick={newFile} metaKey shortcut="N">
+              New file...
+            </ShortcutItem>
             <ShortcutItem
               metaKey
               shortcut="O"
