@@ -1,5 +1,12 @@
 # @triplex/bridge
 
+## 0.37.0
+
+### Minor Changes
+
+- 23fe64a: Adds delete scene object. Access through the context panel when focusing on a scene object.
+- 1a2ecea: Iframe client bridge can now wait for a response from host.
+
 ## 0.36.0
 
 ## 0.35.0
