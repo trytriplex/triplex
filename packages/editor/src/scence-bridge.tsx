@@ -89,15 +89,19 @@ function BridgeReceiveEvents() {
 
     return compose([
       listen("trplx:onAddNewComponent", editor.addComponent),
+      listen("trplx:requestDeleteSceneObject", editor.deleteComponent),
       listen("trplx:requestSave", editor.save),
       listen("trplx:requestUndo", editor.undo),
       listen("trplx:requestRedo", editor.redo),
       listen("trplx:onSceneObjectNavigated", (data) => {
-        editor.set({
-          path: data.path,
-          exportName: data.exportName,
-          encodedProps: data.encodedProps,
-        });
+        editor.set(
+          {
+            path: data.path,
+            exportName: data.exportName,
+            encodedProps: data.encodedProps,
+          },
+          data.entered
+        );
       }),
       listen("trplx:onConfirmSceneObjectProp", async (data) => {
         const currentPropValue = await scene.getPropValue(data);

@@ -68,6 +68,24 @@ export function createServer({
     context.response.body = { message: "success", action };
   });
 
+  router.post("/scene/:path/object/:line/:column/delete", (context) => {
+    const { column, line, path } = context.params;
+    const { sourceFile } = project.getSourceFile(path);
+
+    component.commentComponent(sourceFile, Number(line), Number(column));
+
+    context.response.body = { message: "success" };
+  });
+
+  router.post("/scene/:path/object/:line/:column/restore", (context) => {
+    const { column, line, path } = context.params;
+    const { sourceFile } = project.getSourceFile(path);
+
+    component.uncommentComponent(sourceFile, Number(line), Number(column));
+
+    context.response.body = { message: "success" };
+  });
+
   router.post("/scene/:path/:exportName/object", async (context) => {
     const { exportName, path } = context.params;
     const { target } = (await context.request.body({ type: "json" }).value) as {

@@ -91,9 +91,32 @@ export default function triplexBabelPlugin() {
           }
         }
 
+        const line = path.node.loc.start.line;
+        // Align to tsc where column numbers start from 1
+        const column = path.node.loc.start.column + 1;
+        let keyNode: t.Expression | undefined;
+        const attributes = path.node.openingElement.attributes.filter(
+          (attr) => {
+            if (attr.type === "JSXAttribute" && attr.name.name === "key") {
+              if (t.isStringLiteral(attr.value)) {
+                keyNode = attr.value;
+              } else if (
+                t.isJSXExpressionContainer(attr.value) &&
+                t.isExpression(attr.value.expression)
+              ) {
+                keyNode = attr.value.expression;
+              }
+
+              return false;
+            }
+
+            return true;
+          }
+        );
+
         const newNode = t.jsxElement(
           t.jsxOpeningElement(t.jsxIdentifier(SCENE_OBJECT_COMPONENT_NAME), [
-            ...path.node.openingElement.attributes,
+            ...attributes,
             t.jsxAttribute(
               t.jsxIdentifier("__component"),
               t.jsxExpressionContainer(
@@ -116,14 +139,25 @@ export default function triplexBabelPlugin() {
                   ),
                   t.objectProperty(
                     t.stringLiteral("line"),
-                    t.numericLiteral(path.node.loc.start.line)
+                    t.numericLiteral(line)
                   ),
                   t.objectProperty(
                     t.stringLiteral("column"),
-                    // Align to tsc where column numbers start from 1
-                    t.numericLiteral(path.node.loc.start.column + 1)
+                    t.numericLiteral(column)
                   ),
                 ])
+              )
+            ),
+            t.jsxAttribute(
+              t.jsxIdentifier("key"),
+              t.jsxExpressionContainer(
+                keyNode
+                  ? t.binaryExpression(
+                      "+",
+                      t.stringLiteral(elementName + line + column),
+                      keyNode
+                    )
+                  : t.stringLiteral(elementName + line + column)
               )
             ),
           ]),

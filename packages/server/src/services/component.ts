@@ -9,6 +9,7 @@ import {
 import { basename, extname, relative } from "path";
 import { getExportName } from "../ast/module";
 import { unique } from "../util/array";
+import { getJsxElementAt } from "../ast/jsx";
 
 function guessComponentNameFromPath(path: string) {
   const name = basename(path)
@@ -280,4 +281,90 @@ export function upsertProp(
   }
 
   return "added";
+}
+
+const DELETED_PRAGMA = "@triplex_deleted";
+const DELETE_PRE = `{/** ${DELETED_PRAGMA} `;
+const DELETE_PRE_SAFE = `_/@@ ${DELETED_PRAGMA} `;
+const DELETE_POST = "*/}";
+const DELETE_POST_SAFE = "@/_";
+
+export function commentComponent(
+  sourceFile: SourceFile,
+  line: number,
+  column: number
+) {
+  const jsxElement = getJsxElementAt(sourceFile, line, column);
+  if (!jsxElement) {
+    throw new Error("invariant: jsx element not found");
+  }
+
+  let safeText = jsxElement.getText();
+
+  if (safeText.includes(DELETED_PRAGMA)) {
+    // There is a child that has been deleted. Replace all comments with other values.
+    safeText = safeText
+      .replaceAll(DELETE_PRE, DELETE_PRE_SAFE)
+      .replaceAll(DELETE_POST, DELETE_POST_SAFE);
+  }
+
+  sourceFile.replaceText(
+    [jsxElement.getStart(), jsxElement.getEnd()],
+    DELETE_PRE + safeText + DELETE_POST
+  );
+}
+
+export function uncommentComponent(
+  sourceFile: SourceFile,
+  line: number,
+  column: number
+) {
+  const node = sourceFile
+    .getDescendantsOfKind(SyntaxKind.JsxExpression)
+    .find((node) => {
+      const pos = sourceFile.getLineAndColumnAtPos(node.getStart());
+      if (
+        pos.line === line &&
+        pos.column === column &&
+        node.getText().includes(DELETED_PRAGMA)
+      ) {
+        return true;
+      }
+
+      return false;
+    });
+
+  if (!node) {
+    throw new Error("invariant: jsx element not found");
+  }
+
+  let text = node.getText().replace(DELETE_PRE, "").replace(DELETE_POST, "");
+
+  const firstPreIndex = text.indexOf(DELETE_PRE_SAFE);
+  const lastPostIndex = text.lastIndexOf(DELETE_POST_SAFE);
+  if (firstPreIndex >= 0 && lastPostIndex >= 0) {
+    text = text.replace(DELETE_PRE_SAFE, DELETE_PRE);
+    text =
+      text.substring(0, lastPostIndex) +
+      DELETE_POST +
+      text.substring(lastPostIndex + DELETE_POST_SAFE.length);
+  }
+
+  sourceFile.replaceText([node.getStart(), node.getEnd()], text);
+}
+
+export function deleteCommentComponents(sourceFile: SourceFile) {
+  const nodes = sourceFile
+    .getDescendantsOfKind(SyntaxKind.JsxExpression)
+    .filter((node) => {
+      if (node.getText().includes(DELETED_PRAGMA)) {
+        return true;
+      }
+
+      return false;
+    });
+
+  nodes.forEach((node) => {
+    node.replaceWithText("");
+  });
 }

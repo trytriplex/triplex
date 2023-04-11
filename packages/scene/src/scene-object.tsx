@@ -96,15 +96,44 @@ interface SceneObjectProps {
 export const SceneObject = forwardRef<unknown, SceneObjectProps>(
   ({ __component: Component, __meta, ...props }, ref) => {
     const reconciledProps = useSceneObjectProps(__meta, props);
+    const [isDeleted, setIsDeleted] = useState(false);
+
+    useEffect(() => {
+      return compose([
+        listen("trplx:requestDeleteSceneObject", (data) => {
+          if (
+            data.column === __meta.column &&
+            data.line === __meta.line &&
+            data.path === __meta.path
+          ) {
+            setIsDeleted(true);
+          }
+        }),
+        listen("trplx:requestRestoreSceneObject", (data) => {
+          if (
+            data.column === __meta.column &&
+            data.line === __meta.line &&
+            data.path === __meta.path
+          ) {
+            setIsDeleted(false);
+          }
+        }),
+      ]);
+    }, [__meta.column, __meta.line, __meta.path]);
 
     if (isRenderedSceneObject(__meta.name)) {
       return (
-        <group userData={{ triplexSceneMeta: { ...__meta, props } }}>
+        <group
+          userData={{ triplexSceneMeta: { ...__meta, props } }}
+          visible={!isDeleted}
+        >
           <Component ref={ref} {...reconciledProps} />
         </group>
       );
-    } else {
+    } else if (!isDeleted) {
       return <Component ref={ref} {...reconciledProps} />;
     }
+
+    return null;
   }
 );

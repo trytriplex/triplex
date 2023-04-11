@@ -30,3 +30,15 @@ export default function Scene() {
 }
 
 export const Box = () => null;
+
+export const Nested = () => (
+  <>
+    <RoundedBox
+      position={[3, 0, 2]}
+      rotation={[0, 0.25, 0]}
+      scale={[1, 1.5, 1]}
+    >
+      <meshStandardMaterial color="purple" />
+    </RoundedBox>
+  </>
+);

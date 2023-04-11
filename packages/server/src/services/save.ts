@@ -1,5 +1,6 @@
 import { resolveConfig, resolveConfigFile, format } from "prettier";
 import type { TRIPLEXProject } from "../ast";
+import { deleteCommentComponents } from "./component";
 
 export async function save({
   project,
@@ -11,6 +12,8 @@ export async function save({
   const { sourceFile } = project.getSourceFile(path);
 
   if (sourceFile) {
+    deleteCommentComponents(sourceFile);
+
     const prettierConfigPath = await resolveConfigFile(process.cwd());
     if (prettierConfigPath) {
       const prettierConfig = await resolveConfig(prettierConfigPath);

@@ -1,9 +1,15 @@
 import { join } from "path";
 import { describe, expect, it } from "vitest";
 import { _createProject } from "../../ast/project";
-import { add, upsertProp } from "../component";
+import {
+  add,
+  upsertProp,
+  commentComponent,
+  uncommentComponent,
+  deleteCommentComponents,
+} from "../component";
 import { getExportName } from "../../ast/module";
-import { getJsxElementAt } from "../../ast/jsx";
+import { getJsxElementAt, getJsxElementsPositions } from "../../ast/jsx";
 
 describe("component service", () => {
   it("should return the line column number of new jsx element in shorthand", () => {
@@ -410,5 +416,145 @@ describe("component service", () => {
               ]}
             />"
     `);
+  });
+
+  it("should comment a jsx element out with deleted pragma", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx")
+    );
+    expect(getJsxElementsPositions(sourceFile, "default").length).toEqual(4);
+
+    commentComponent(sourceFile, 6, 7);
+
+    expect(getJsxElementsPositions(sourceFile, "default").length).toEqual(3);
+    expect(getJsxElementAt(sourceFile, 6, 7)).not.toBeDefined();
+  });
+
+  it("should uncomment a jsx element", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx")
+    );
+    commentComponent(sourceFile, 6, 7);
+
+    uncommentComponent(sourceFile, 6, 7);
+
+    expect(getJsxElementAt(sourceFile, 6, 7)).toBeDefined();
+  });
+
+  it("should delete comment component", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx")
+    );
+    commentComponent(sourceFile, 6, 7);
+
+    deleteCommentComponents(sourceFile);
+
+    expect(getExportName(sourceFile, "default").declaration.getText())
+      .toMatchInlineSnapshot(`
+      "export default function Scene() {
+        return (
+          <>
+            
+            <RoundedBox></RoundedBox>
+
+            <RoundedBox
+              scale={[0.630216523313958, 0.6302165233139577, 0.6302165233139577]}
+              position={[
+                -2.813889551893372, 0.0017712872227060306, 2.1329409413977354,
+              ]}
+            />
+
+            <RoundedBox
+              position={[3, 0, 2]}
+              rotation={[0, 0.25, 0]}
+              scale={[1, 1.5, 1]}
+            >
+              <meshStandardMaterial color=\\"purple\\" />
+            </RoundedBox>
+          </>
+        );
+      }"
+    `);
+  });
+
+  it("should transform commented out child when commenting out parent so it is valid JSX", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx")
+    );
+
+    commentComponent(sourceFile, 41, 7);
+    commentComponent(sourceFile, 36, 5);
+
+    expect(getExportName(sourceFile, "Nested").declaration.getText())
+      .toMatchInlineSnapshot(`
+        "Nested = () => (
+          <>
+            {/** @triplex_deleted <RoundedBox
+              position={[3, 0, 2]}
+              rotation={[0, 0.25, 0]}
+              scale={[1, 1.5, 1]}
+            >
+              _/@@ @triplex_deleted <meshStandardMaterial color=\\"purple\\" />@/_
+            </RoundedBox>*/}
+          </>
+        )"
+      `);
+  });
+
+  it("should transform commented out first child when uncommenting parent", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx")
+    );
+    commentComponent(sourceFile, 41, 7);
+    commentComponent(sourceFile, 36, 5);
+
+    uncommentComponent(sourceFile, 36, 5);
+
+    expect(getExportName(sourceFile, "Nested").declaration.getText())
+      .toMatchInlineSnapshot(`
+        "Nested = () => (
+          <>
+            <RoundedBox
+              position={[3, 0, 2]}
+              rotation={[0, 0.25, 0]}
+              scale={[1, 1.5, 1]}
+            >
+              {/** @triplex_deleted <meshStandardMaterial color=\\"purple\\" />*/}
+            </RoundedBox>
+          </>
+        )"
+      `);
+  });
+
+  it("should find uncommented parent and child", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx")
+    );
+    commentComponent(sourceFile, 41, 7);
+    commentComponent(sourceFile, 36, 5);
+
+    uncommentComponent(sourceFile, 36, 5);
+    uncommentComponent(sourceFile, 41, 7);
+
+    expect(getJsxElementAt(sourceFile, 36, 5)).toBeDefined();
+    expect(getJsxElementAt(sourceFile, 41, 7)).toBeDefined();
   });
 });

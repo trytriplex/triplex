@@ -495,22 +495,6 @@ export function getJsxElementAt(
   }
 }
 
-export function getJsxAttributeAt(
-  sourceFile: SourceFile,
-  line: number,
-  column: number
-) {
-  const pos = sourceFile.compilerNode.getPositionOfLineAndCharacter(
-    line,
-    column
-  );
-  const attribute = sourceFile
-    .getDescendantAtPos(pos)
-    ?.getParentIfKind(SyntaxKind.JsxAttribute);
-
-  return attribute;
-}
-
 /**
  * Do not use in production code, this is slow!
  * Instead prefer direct access via `getJsxElementAt()`.

@@ -92,6 +92,23 @@ interface BridgeContext {
    */
   setTransform(mode: "scale" | "translate" | "rotate"): void;
   /**
+   * Deletes a component from the scene.
+   * Will try to persist state if possible.
+   */
+  deleteComponent(component: {
+    column: number;
+    line: number;
+    path: string;
+  }): void;
+  /**
+   * Restores a component that was previously deleted from the scene.
+   */
+  restoreComponent(component: {
+    column: number;
+    line: number;
+    path: string;
+  }): void;
+  /**
    * Value is `true` when the scene is ready else `false`.
    * If the scene is not ready accessing any of the scene store
    * values will throw an invariant.
@@ -99,6 +116,14 @@ interface BridgeContext {
   ready: boolean;
 }
 
+/**
+ * __useScene()__
+ *
+ * Allows you to imperatively control the scene opened by the editor.
+ * Generally you'll want to use the editor store instead of this one.
+ *
+ * @see {@link ./editor.tsx}
+ */
 export const useScene = create<BridgeContext & { sceneReady: () => void }>(
   (setStore) => ({
     ready: false,
@@ -131,6 +156,12 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     },
     setTransform(mode) {
       send("trplx:requestTransformChange", { mode });
+    },
+    deleteComponent(data) {
+      send("trplx:requestDeleteSceneObject", data);
+    },
+    restoreComponent(data) {
+      send("trplx:requestRestoreSceneObject", data);
     },
   })
 );

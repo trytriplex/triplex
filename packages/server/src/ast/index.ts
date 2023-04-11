@@ -1,7 +1,6 @@
 export {
   getAllJsxElements,
   getAttributes,
-  getJsxAttributeAt,
   getJsxAttributeValue,
   getJsxElementAt,
   getJsxElementProps,

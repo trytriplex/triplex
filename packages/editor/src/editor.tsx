@@ -8,7 +8,7 @@ import { useEditor } from "./stores/editor";
 import { ControlsMenu } from "./ui/controls-menu";
 
 export function EditorFrame() {
-  const { path, save, undo, redo } = useEditor();
+  const { path, save, undo, redo, deleteComponent } = useEditor();
 
   useEffect(() => {
     if (!path) {
@@ -49,6 +49,8 @@ export function EditorFrame() {
         (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
       ) {
         undo();
+      } else if (e.key === "Backspace") {
+        deleteComponent();
       }
     };
 
@@ -57,7 +59,7 @@ export function EditorFrame() {
     return () => {
       document.removeEventListener("keydown", callback);
     };
-  }, [path, redo, save, undo]);
+  }, [deleteComponent, path, redo, save, undo]);
 
   useEffect(() => {
     if (path) {

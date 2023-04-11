@@ -43,11 +43,20 @@ interface UndoRedo {
 const undoStack: UndoRedo[] = [];
 const redoStack: UndoRedo[] = [];
 
+/**
+ * __useEditor()__
+ *
+ * Exposes controls for the editor,
+ * calls out to the scene store when needing to mutate the currently open scene.
+ *
+ * @see {@link ./scene.tsx}
+ */
 export function useEditor() {
   const [searchParams, setSearchParams] = useSearchParams({ path: "" });
   const path = searchParams.get("path") || "";
   const encodedProps = searchParams.get("props") || "";
   const exportName = searchParams.get("exportName") || "";
+  const enteredComponent = !!searchParams.get("entered") || false;
   const focus = useSelectionStore((store) => store.focus);
   const target = useSelectionStore((store) => store.focused);
   const scene = useScene();
@@ -79,6 +88,53 @@ export function useEditor() {
     },
     [path]
   );
+
+  const deleteComponent = useCallback(() => {
+    if (!target) {
+      return;
+    }
+
+    const undoAction = () => {
+      fetch(
+        `http://localhost:8000/scene/${encodeURIComponent(path)}/object/${
+          target.line
+        }/${target.column}/restore`,
+        { method: "POST" }
+      );
+      scene.restoreComponent({
+        line: target.line,
+        column: target.column,
+        path: target.ownerPath,
+      });
+    };
+
+    const redoAction = () => {
+      fetch(
+        `http://localhost:8000/scene/${encodeURIComponent(path)}/object/${
+          target.line
+        }/${target.column}/delete`,
+        { method: "POST" }
+      );
+      scene.deleteComponent({
+        line: target.line,
+        column: target.column,
+        path: target.ownerPath,
+      });
+    };
+
+    // Initiate the deletion
+    redoAction();
+    scene.blur();
+
+    undoStack.push({
+      undo: undoAction,
+      redo: redoAction,
+    });
+  }, [path, scene, target]);
+
+  const exitComponent = useCallback(() => {
+    window.history.back();
+  }, []);
 
   const persistPropValue = useCallback(
     (data: PersistPropValue) => {
@@ -172,7 +228,7 @@ export function useEditor() {
   }
 
   const set = useCallback(
-    (params: Params) => {
+    (params: Params, entered?: boolean) => {
       if (params.path === path && params.exportName === exportName) {
         // Bail if we're already on the same path.
         // If we implement props being able to change
@@ -194,6 +250,10 @@ export function useEditor() {
         newParams.exportName = params.exportName;
       }
 
+      if (entered) {
+        newParams.entered = "true";
+      }
+
       setSearchParams(newParams);
     },
     [exportName, path, setSearchParams]
@@ -206,6 +266,25 @@ export function useEditor() {
        * Is not persisted until `save()` is called.
        */
       addComponent,
+      /**
+       * Will be `true` when entered a component via a owning parent,
+       * else `false`.
+       * Enter a component via `scene.navigateTo()`.
+       *
+       * @see {@link ./scene.tsx}
+       */
+      enteredComponent,
+
+      /**
+       * Exits the currently entered component and goes back to the parent.
+       */
+      exitComponent,
+      /**
+       * Deletes the currently focused scene object.
+       * Able to be undone.
+       * Is not persisted until `save()` is called.
+       */
+      deleteComponent,
       /**
        * Current value of the scene path.
        */
@@ -259,7 +338,10 @@ export function useEditor() {
     }),
     [
       addComponent,
+      deleteComponent,
       encodedProps,
+      enteredComponent,
+      exitComponent,
       exportName,
       focus,
       getState,

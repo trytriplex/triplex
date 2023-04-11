@@ -56,7 +56,7 @@ export function AddSceneObject({ path }: { path: string }) {
           case "host": {
             return (
               <SceneObject
-                key={index}
+                key={component.name + index}
                 {...component.props}
                 __component={component.name}
                 __meta={{
@@ -87,7 +87,7 @@ export function AddSceneObject({ path }: { path: string }) {
             const LazyComponent = lazyRef.current[index];
 
             return (
-              <Suspense key={index} fallback={null}>
+              <Suspense key={component.exportName + index} fallback={null}>
                 <SceneObject
                   {...component.props}
                   __component={LazyComponent}
