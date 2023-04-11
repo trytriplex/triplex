@@ -8,7 +8,6 @@ export function scenePlugin({
   files: string[];
 }) {
   const sceneFrameId = "triplex:scene-frame.tsx";
-  const availableComponentsId = "triplex:components";
 
   return {
     name: "triplex:scene-glob-plugin",
@@ -17,26 +16,22 @@ export function scenePlugin({
       if (id === sceneFrameId) {
         return sceneFrameId;
       }
-
-      if (id === availableComponentsId) {
-        return availableComponentsId;
-      }
     },
     async load(id: string) {
       if (id === sceneFrameId) {
-        return scripts.sceneFrame.replace(
-          "{{SCENE_FILES_GLOB}}",
-          `[${files.map((f) => `'${f.replace(process.cwd(), "")}'`).join(",")}]`
-        );
-      }
-
-      if (id === availableComponentsId) {
-        return scripts.availableComponents.replace(
-          "{{COMPONENTS_FILE_GLOB}}",
-          `[${components
-            .map((f) => `'${f.replace(process.cwd(), "")}'`)
-            .join(",")}]`
-        );
+        return scripts.sceneFrame
+          .replace(
+            "{{SCENE_FILES_GLOB}}",
+            `[${files
+              .map((f) => `'${f.replace(process.cwd(), "")}'`)
+              .join(",")}]`
+          )
+          .replace(
+            "{{COMPONENTS_FILE_GLOB}}",
+            `[${components
+              .map((f) => `'${f.replace(process.cwd(), "")}'`)
+              .join(",")}]`
+          );
       }
     },
   } as const;

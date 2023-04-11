@@ -1,7 +1,4 @@
 export const scripts = {
-  availableComponents: `
-    export const components = import.meta.glob({{COMPONENTS_FILE_GLOB}});
-  `,
   editor: `
     import { createElement } from "react";
     import { createRoot } from "react-dom/client";
@@ -25,9 +22,10 @@ export const scripts = {
     import { Scene as SceneFrame } from "@triplex/scene";
 
     const scenes = import.meta.glob({{SCENE_FILES_GLOB}});
+    const components = import.meta.glob({{COMPONENTS_FILE_GLOB}});
 
     export function Scene() {
-      return <SceneFrame scenes={scenes} />;
+      return <SceneFrame components={components} scenes={scenes} />;
     }
   `,
 };

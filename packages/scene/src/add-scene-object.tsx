@@ -8,11 +8,17 @@ import {
   useRef,
   useState,
 } from "react";
-import { components } from "triplex:components";
 import { ComponentType } from "./api-types";
 import { SceneObject } from "./scene-object";
+import { ComponentModule } from "./types";
 
-export function AddSceneObject({ path }: { path: string }) {
+export function AddSceneObject({
+  components,
+  path,
+}: {
+  components: Record<string, () => Promise<ComponentModule>>;
+  path: string;
+}) {
   const [addedComponents, setAddedComponents] = useState<ComponentType[]>([]);
   const [positions, setPositions] = useState<
     { column: number; line: number }[]
