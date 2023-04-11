@@ -1,5 +1,16 @@
 # @triplex/scene
 
+## 0.38.0
+
+### Minor Changes
+
+- 06471f6: The components virtual module has been removed in favor of passing down as props instead.
+
+### Patch Changes
+
+- @triplex/bridge@0.38.0
+- @triplex/ws-client@0.38.0
+
 ## 0.37.0
 
 ### Minor Changes
