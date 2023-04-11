@@ -66,7 +66,7 @@ function UndoRedoItems() {
 
 export function EditorMenu() {
   const showOverlay = useOverlayStore((store) => store.show);
-  const { target, save, reset } = useEditor();
+  const { target, save, reset, deleteComponent } = useEditor();
   const { blur, jumpTo, navigateTo } = useScene();
 
   return (
@@ -114,17 +114,30 @@ export function EditorMenu() {
             <ShortcutItem disabled={!target} shortcut="ESC" onClick={blur}>
               Deselect
             </ShortcutItem>
+
             <Separator />
+
             <ShortcutItem disabled={!target} shortcut="F" onClick={jumpTo}>
-              Jump to
+              Focus camera
             </ShortcutItem>
+
             <ShortcutItem
               disabled={!target}
               shiftKey
               shortcut="F"
               onClick={navigateTo}
             >
-              Navigate to
+              Enter component
+            </ShortcutItem>
+
+            <Separator />
+
+            <ShortcutItem
+              disabled={!target}
+              shortcut="⌫"
+              onClick={deleteComponent}
+            >
+              Delete
             </ShortcutItem>
           </MenuContent>
         </Menu>

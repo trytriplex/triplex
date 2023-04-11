@@ -7,6 +7,8 @@ import { useScene } from "../stores/scene";
 import { ScrollContainer } from "../ds/scroll-container";
 import { ErrorBoundary } from "react-error-boundary";
 import { ProjectComponents } from "./project-components";
+import { ExitIcon } from "@radix-ui/react-icons";
+import { IconButton } from "../ds/button";
 
 function SceneComponent({
   name,
@@ -66,7 +68,7 @@ export function ScenePanel() {
 }
 
 function SceneContents() {
-  const { path, exportName } = useEditor();
+  const { path, exportName, enteredComponent, exitComponent } = useEditor();
   const file = useLazySubscription<{ isSaved: boolean }>(
     `/scene/${encodeURIComponent(path)}`
   );
@@ -98,8 +100,16 @@ function SceneContents() {
 
       <div className="h-[1px] bg-neutral-800" />
 
-      <div className="py-1 px-2">
+      <div className="flex py-1 px-2">
         <ProjectComponents />
+        {enteredComponent && (
+          <IconButton
+            className="ml-auto -scale-x-100"
+            onClick={exitComponent}
+            icon={ExitIcon}
+            title="Exit component"
+          />
+        )}
       </div>
 
       <div className="h-[1px] bg-neutral-800" />

@@ -97,6 +97,8 @@ export function SceneFrame({
         (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
       ) {
         send("trplx:requestUndo", undefined);
+      } else if (e.key === "Backspace") {
+        send("trplx:requestDeleteSceneObject", undefined);
       }
     };
 
@@ -127,7 +129,7 @@ export function SceneFrame({
         { replace: true }
       );
 
-      send("trplx:onSceneObjectNavigated", selected);
+      send("trplx:onSceneObjectNavigated", { ...selected, entered: true });
     },
     [setSearchParams]
   );

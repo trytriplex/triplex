@@ -24,7 +24,7 @@ export function MenuContent({
     <RadixMenubar.Portal>
       <RadixMenubar.Content
         {...props}
-        className="mt-0.5 min-w-[150px] rounded bg-neutral-900 p-1 shadow-2xl shadow-black/50"
+        className="mt-0.5 min-w-[150px] rounded border border-neutral-800 bg-neutral-900 p-1 shadow-2xl shadow-black/50"
       >
         {children}
       </RadixMenubar.Content>
@@ -52,7 +52,7 @@ export function MenuItem({
       ])}
     >
       {children}
-      {rslot && <div className="ml-auto text-neutral-400">{rslot}</div>}
+      {rslot && <div className="ml-auto pl-7 text-neutral-400">{rslot}</div>}
     </RadixMenubar.Item>
   );
 }

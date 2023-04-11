@@ -8,9 +8,10 @@ export const IconButton = forwardRef<
     icon: ComponentType<IconProps>;
     title: string;
     isSelected?: boolean;
+    className?: string;
     onClick?: () => void;
   }
->(({ icon: Icon, title, isSelected, onClick }, ref) => (
+>(({ icon: Icon, title, isSelected, onClick, className }, ref) => (
   <button
     ref={ref}
     title={title}
@@ -21,6 +22,7 @@ export const IconButton = forwardRef<
       isSelected
         ? "bg-white/5 text-blue-400"
         : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
+      className,
     ])}
   >
     <Icon />

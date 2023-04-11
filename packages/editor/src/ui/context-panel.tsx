@@ -8,10 +8,12 @@ import { PropInput } from "./prop-input";
 import { useScene } from "../stores/scene";
 import { PropField } from "./prop-field";
 import { GetSceneObject } from "../api-types";
+import { Crosshair1Icon, EnterIcon, TrashIcon } from "@radix-ui/react-icons";
+import { IconButton } from "../ds/button";
 
 function SelectedSceneObject({ target }: { target: FocusedObject }) {
-  const { setPropValue, getPropValue } = useScene();
-  const { persistPropValue } = useEditor();
+  const { setPropValue, getPropValue, navigateTo, jumpTo } = useScene();
+  const { persistPropValue, deleteComponent } = useEditor();
   const data = useLazySubscription<GetSceneObject>(
     `/scene/${encodeURIComponent(target.ownerPath)}/object/${target.line}/${
       target.column
@@ -60,6 +62,27 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
             </a>
           </>
         )}
+      </div>
+
+      <div className="h-[1px] bg-neutral-800" />
+
+      <div className="flex py-1 px-2">
+        <IconButton
+          onClick={() => navigateTo()}
+          icon={EnterIcon}
+          title="Enter component [⇧ F]"
+        />
+        <IconButton
+          onClick={jumpTo}
+          icon={Crosshair1Icon}
+          title="Focus camera [F]"
+        />
+        <IconButton
+          className="ml-auto"
+          onClick={deleteComponent}
+          icon={TrashIcon}
+          title="Delete [⌫]"
+        />
       </div>
 
       <div className="h-[1px] bg-neutral-800" />
