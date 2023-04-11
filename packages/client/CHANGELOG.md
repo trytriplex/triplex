@@ -1,5 +1,21 @@
 # @triplex/client
 
+## 0.37.0
+
+### Minor Changes
+
+- 1a2ecea: Components can now be added to the scene through the add component button in the scene panel.
+- 1a2ecea: The triplex config now has a new property called `components` - use to mark files that are able to be added to scenes.
+
+### Patch Changes
+
+- Updated dependencies [0e781ac]
+- Updated dependencies [23fe64a]
+- Updated dependencies [1a2ecea]
+- Updated dependencies [1a2ecea]
+  - @triplex/scene@0.37.0
+  - @triplex/editor@0.37.0
+
 ## 0.36.0
 
 ### Patch Changes

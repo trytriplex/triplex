@@ -1,5 +1,13 @@
 # @triplex/server
 
+## 0.37.0
+
+### Minor Changes
+
+- 23fe64a: Adds delete scene object. Access through the context panel when focusing on a scene object.
+- e480446: Exclude isLight propeties from scene object context panel.
+- 1a2ecea: Adds new endpoint for adding a component to a file.
+
 ## 0.36.0
 
 ### Minor Changes

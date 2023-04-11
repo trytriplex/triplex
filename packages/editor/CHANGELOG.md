@@ -1,5 +1,18 @@
 # @triplex/editor
 
+## 0.37.0
+
+### Minor Changes
+
+- 23fe64a: Adds delete scene object. Access through the context panel when focusing on a scene object.
+
+### Patch Changes
+
+- Updated dependencies [23fe64a]
+- Updated dependencies [1a2ecea]
+  - @triplex/bridge@0.37.0
+  - @triplex/ws-client@0.37.0
+
 ## 0.36.0
 
 ### Patch Changes

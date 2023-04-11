@@ -1,5 +1,21 @@
 # @triplex/scene
 
+## 0.37.0
+
+### Minor Changes
+
+- 0e781ac: Scene no longer assumes `triplexMeta` is always available on the loaded scene component.
+- 23fe64a: Adds delete scene object. Access through the context panel when focusing on a scene object.
+- 1a2ecea: Components can now be added to the scene through the add component button in the scene panel.
+- 1a2ecea: The triplex config now has a new property called `components` - use to mark files that are able to be added to scenes.
+
+### Patch Changes
+
+- Updated dependencies [23fe64a]
+- Updated dependencies [1a2ecea]
+  - @triplex/bridge@0.37.0
+  - @triplex/ws-client@0.37.0
+
 ## 0.36.0
 
 ### Minor Changes
