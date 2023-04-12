@@ -1,3 +1,5 @@
+import { ReactNode } from "react";
+
 export interface EditorLinkOptions {
   path: string;
   line?: number;
@@ -25,4 +27,42 @@ export function getEditorLink({
     case "vscode":
       return `${editor}://file/${path}:${line}:${column}`;
   }
+}
+
+export function IDELink({
+  children,
+  path,
+  column,
+  line,
+  className = "text-xs text-neutral-400",
+  title,
+}: {
+  children: ReactNode;
+  path: string;
+  line: number;
+  column: number;
+  className?: string;
+  title?: string;
+}) {
+  return (
+    <a
+      title={title}
+      className={className}
+      onClick={(e) => {
+        // We prevent default and use window.open() instead of native anchor behaviour
+        // to keep the websocket connections open. Without it they close and never reopen.
+        e.preventDefault();
+        const ctx = window.open(e.currentTarget.href, "_target");
+        ctx?.close();
+      }}
+      href={getEditorLink({
+        path,
+        column,
+        line,
+        editor: "vscode",
+      })}
+    >
+      {children}
+    </a>
+  );
 }

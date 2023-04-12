@@ -1,5 +1,5 @@
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import { getEditorLink } from "../util/ide";
+import { IDELink } from "../util/ide";
 import { ColorInput } from "./color-input";
 import { StringInput } from "./string-input";
 import { BooleanInput } from "./boolean-input";
@@ -127,13 +127,10 @@ export function PropInput({
 
   // Fallback - this is assumed to be controlled in code.
   return (
-    <a
-      href={getEditorLink({
-        path,
-        column,
-        line,
-        editor: "vscode",
-      })}
+    <IDELink
+      path={path}
+      column={column || -1}
+      line={line || -1}
       title="This prop is controlled in code."
       className="flex h-[26px] items-center gap-0.5 overflow-hidden rounded-md border border-transparent bg-white/5 py-0.5 px-1 text-sm hover:bg-white/10 focus-visible:border-blue-400"
     >
@@ -141,6 +138,6 @@ export function PropInput({
       <div className="ml-auto flex-shrink-0 text-orange-300">
         <ExclamationTriangleIcon />
       </div>
-    </a>
+    </IDELink>
   );
 }

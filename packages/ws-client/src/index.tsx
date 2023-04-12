@@ -4,9 +4,8 @@ const valueCache = new Map<string, unknown>();
 const queryCache = new Map<
   string,
   {
-    subscriptions: (() => void)[];
+    subscribe: (onStoreChanged: () => void) => () => void;
     deferred: ReturnType<typeof defer>;
-    ws: WebSocket;
   }
 >();
 
@@ -35,6 +34,29 @@ function wsQuery<TValue>(path: string) {
     const ws = new WebSocket("ws://localhost:3300");
     const deferred = defer();
     const subscriptions: (() => void)[] = [];
+    let cleanupTimeoutId: number | undefined;
+
+    function subscribe(onStoreChanged: () => void) {
+      subscriptions.push(onStoreChanged);
+
+      return () => {
+        // Cleanup
+        window.clearTimeout(cleanupTimeoutId);
+
+        const index = subscriptions.indexOf(onStoreChanged);
+        subscriptions.splice(index, 1);
+
+        cleanupTimeoutId = window.setTimeout(() => {
+          if (subscriptions.length === 0) {
+            // After a period of time if there are no more active connections
+            // Close websocket and clear the cache. It'll be loaded fresh from
+            // The server next time a component tries to access the data.
+            queryCache.delete(path);
+            ws.close();
+          }
+        }, 9999);
+      };
+    }
 
     ws.addEventListener("open", () => {
       ws!.send(path);
@@ -57,8 +79,7 @@ function wsQuery<TValue>(path: string) {
 
     queryCache.set(path, {
       deferred,
-      subscriptions,
-      ws,
+      subscribe,
     });
   }
 
@@ -92,12 +113,7 @@ function wsQuery<TValue>(path: string) {
       throw new Error(`invariant: call load() first for ${path}`);
     }
 
-    query.subscriptions.push(onStoreChanged);
-
-    return () => {
-      const index = query.subscriptions.indexOf(onStoreChanged);
-      query.subscriptions.splice(index, 1);
-    };
+    return query.subscribe(onStoreChanged);
   }
 
   return {
