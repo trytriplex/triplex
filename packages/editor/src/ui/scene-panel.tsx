@@ -1,7 +1,7 @@
 import { Fragment, Suspense, useDeferredValue } from "react";
 import { cn } from "../ds/cn";
 import { useLazySubscription } from "@triplex/ws-client";
-import { getEditorLink } from "../util/ide";
+import { IDELink } from "../util/ide";
 import { useEditor } from "../stores/editor";
 import { useScene } from "../stores/scene";
 import { ScrollContainer } from "../ds/scroll-container";
@@ -85,17 +85,9 @@ function SceneContents() {
         {!file.isSaved && <span aria-label="Unsaved changes">*</span>}
       </h2>
       <div className="mb-2.5 -mt-0.5 px-4">
-        <a
-          className="text-xs text-neutral-400"
-          href={getEditorLink({
-            path,
-            column: 1,
-            line: 1,
-            editor: "vscode",
-          })}
-        >
+        <IDELink path={path} column={1} line={1}>
           View source
-        </a>
+        </IDELink>
       </div>
 
       <div className="h-[1px] bg-neutral-800" />

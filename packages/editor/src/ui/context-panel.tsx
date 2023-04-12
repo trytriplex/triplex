@@ -1,6 +1,6 @@
 import { preloadSubscription, useLazySubscription } from "@triplex/ws-client";
 import { ErrorBoundary } from "react-error-boundary";
-import { getEditorLink } from "../util/ide";
+import { IDELink } from "../util/ide";
 import { Suspense, useEffect } from "react";
 import { useEditor, FocusedObject } from "../stores/editor";
 import { ScrollContainer } from "../ds/scroll-container";
@@ -33,33 +33,21 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
       </h2>
 
       <div className="mb-2.5 -mt-0.5 px-4">
-        <a
-          className="text-xs text-neutral-400"
-          href={getEditorLink({
-            path: target.ownerPath,
-            column: target.column,
-            line: target.line,
-            editor: "vscode",
-          })}
+        <IDELink
+          path={target.ownerPath}
+          column={target.column}
+          line={target.line}
         >
           View usage
-        </a>
+        </IDELink>
 
         {data.type === "custom" && (
           <>
             <span className="mx-1.5 text-xs text-neutral-400">•</span>
 
-            <a
-              className="text-xs text-neutral-400"
-              href={getEditorLink({
-                path: data.path,
-                column: 1,
-                line: 1,
-                editor: "vscode",
-              })}
-            >
+            <IDELink path={data.path} column={1} line={1}>
               View source
-            </a>
+            </IDELink>
           </>
         )}
       </div>
