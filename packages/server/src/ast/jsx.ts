@@ -151,11 +151,42 @@ export function getJsxTag(node: JsxElement | JsxSelfClosingElement) {
 
 export function getExportDeclaration(node: Node<ts.Node>) {
   if (Node.isExportAssignment(node)) {
-    const result = node
+    const declarations = node
       .asKind(SyntaxKind.ExportAssignment)
       ?.getExpression()
       .getSymbol()
-      ?.getDeclarations()[0];
+      ?.getDeclarations()
+      .filter((decl) => {
+        if (
+          Node.isTypeAliasDeclaration(decl) ||
+          Node.isInterfaceDeclaration(decl)
+        ) {
+          // Exclude types and interfaces
+          return false;
+        }
+
+        if (Node.isImportSpecifier(decl)) {
+          if (decl.isTypeOnly()) {
+            // Exclude type import specifiers
+            return false;
+          }
+
+          if (
+            decl
+              .getParent()
+              .getParentIfKindOrThrow(SyntaxKind.ImportClause)
+              .isTypeOnly()
+          ) {
+            // Exclude type clauses
+            return false;
+          }
+        }
+
+        return true;
+      });
+
+    // The result should be the first declaration.
+    const result = declarations?.[0];
 
     if (!result) {
       throw new Error("invariant: could not find export declaration");

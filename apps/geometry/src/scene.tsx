@@ -1,5 +1,4 @@
 import Box1 from "./geometry/box";
-import { Cylinder as Cylinder1 } from "./geometry/cylinder";
 import Cylinder from "@/geometry/cylinder";
 import Box from "src/geometry/box";
 import { RoundedBox } from "@react-three/drei";
@@ -48,8 +47,8 @@ export default function Scene() {
         <meshStandardMaterial color="purple" />
       </RoundedBox>
 
-      <Cylinder1 position={[1.4681464869137235, 0, -4.205778397787599]} />
-      <Cylinder1 position={[-5.147492724511148, 0, -2.9618330871711818]} />
+      <Cylinder position={[1.4681464869137235, 0, -4.205778397787599]} />
+      <Cylinder position={[-5.147492724511148, 0, -2.9618330871711818]} />
       <Box1 color={"red"} />
     </>
   );

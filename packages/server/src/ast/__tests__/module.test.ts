@@ -38,6 +38,58 @@ describe("module", () => {
     expect(name).toEqual("Cylinder");
   });
 
+  it("should ignore shadowed type", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/shadowed-type.tsx")
+    );
+
+    const { name } = getExportName(sourceFile, "default");
+
+    expect(name).toEqual("Plane");
+  });
+
+  it("should ignore shadowed interface", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/shadowed-interface.tsx")
+    );
+
+    const { name } = getExportName(sourceFile, "default");
+
+    expect(name).toEqual("Plane");
+  });
+
+  it("should ignore shadowed type import specifier", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/shadowed-type-import-specifier.tsx")
+    );
+
+    const { name } = getExportName(sourceFile, "default");
+
+    expect(name).toEqual("Plane");
+  });
+
+  it("should ignore shadowed type import", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/shadowed-type-import.tsx")
+    );
+
+    const { name } = getExportName(sourceFile, "default");
+
+    expect(name).toEqual("Plane");
+  });
+
   it("should return the name of the direct default export function", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),

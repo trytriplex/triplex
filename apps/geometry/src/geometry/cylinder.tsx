@@ -1,6 +1,6 @@
-import { Vector3Tuple } from "three";
+import type { Cylinder } from "../types";
 
-export const Cylinder = ({ position }: { position?: Vector3Tuple }) => {
+const Cylinder = ({ position }: Cylinder) => {
   return (
     <mesh position={position}>
       <cylinderGeometry args={[1, 1, 2, 10, 1]} />
