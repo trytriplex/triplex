@@ -104,7 +104,8 @@ describe("init command", () => {
     "editor": "triplex editor"
   },
   "dependencies": {
-    "@react-three/fiber": "^8.11.1",
+    "@react-three/drei": "^9.0.0",
+    "@react-three/fiber": "^8.0.0",
     "@triplex/run": "^0.0.0-local",
     "@types/react": "^18.0.0",
     "@types/three": "^0.148.0",
@@ -244,7 +245,8 @@ describe("init command", () => {
   "name": "app",
   "dependencies": {
     "already-exists": "^1.1.1",
-    "@react-three/fiber": "^8.11.1",
+    "@react-three/drei": "^9.0.0",
+    "@react-three/fiber": "^8.0.0",
     "@triplex/run": "^0.0.0-local",
     "@types/react": "^18.0.0",
     "@types/three": "^0.148.0",
