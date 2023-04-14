@@ -1,5 +1,5 @@
 {
-  "name": "faze",
+  "name": "@example/faze",
   "version": "0.0.0",
   "private": true,
   "scripts": {

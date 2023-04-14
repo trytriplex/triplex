@@ -4,17 +4,17 @@
   "private": true,
   "scripts": {
     "build": "pnpm clean && pnpm --filter @triplex/* build && pnpm typedef",
-    "clean": "pnpm -r exec rm -rf dist",
-    "clean:nm": "pnpm -r exec rm -rf node_modules",
-    "test": "vitest",
-    "typedef": "pnpm --filter @triplex/* typedef",
-    "lint": "eslint ./",
     "ci:publish": "pnpm build && pnpm publish --recursive --access=public && changeset tag",
     "ci:version": "changeset version && pnpm install --lockfile-only",
-    "dev:geometry": "pnpm --filter geometry_example editor",
-    "dev:faze": "pnpm --filter faze editor",
+    "clean:node_modules": "pnpm -r exec rm -rf node_modules",
+    "clean": "pnpm -r exec rm -rf dist",
+    "dev:faze": "pnpm --filter @example/faze editor",
+    "dev:geometry": "pnpm --filter @example/geometry editor",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "triplex": "pnpm --filter geometry_example triplex"
+    "lint": "eslint ./",
+    "test": "vitest",
+    "triplex": "pnpm --filter @example/geometry triplex",
+    "typedef": "pnpm --filter @triplex/* typedef"
   },
   "dependencies": {
     "@changesets/cli": "^2.26.0",
