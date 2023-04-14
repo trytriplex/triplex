@@ -45,7 +45,8 @@ const findTransformedSceneObject = (
   sceneObject: Object3D,
   transform: "translate" | "scale" | "rotate"
 ): Object3D => {
-  let foundSceneObject: Object3D | undefined = undefined;
+  let foundExactSceneObject: Object3D | undefined = undefined;
+  let foundTranslatedSceneObject: Object3D | undefined;
 
   sceneObject.traverse((child: Object3D) => {
     const meta: SceneObjectProps["__meta"] | undefined =
@@ -58,11 +59,20 @@ const findTransformedSceneObject = (
     if (meta && meta[transform]) {
       // The direct child will be the one we're interested in as it is a child
       // of the intermediately placed group in the SceneObject component.
-      foundSceneObject = child.children[0];
+      foundExactSceneObject = child.children[0];
+    }
+
+    // As a backup we mark a the first found translated scene object if present.
+    // We use this if scale and rotate are not found when traversing children.
+    // This means the transform gizmo stays on the scene object instead of moving to [0,0,0].
+    if (meta && meta.translate) {
+      // The direct child will be the one we're interested in as it is a child
+      // of the intermediately placed group in the SceneObject component.
+      foundTranslatedSceneObject = child.children[0];
     }
   });
 
-  return foundSceneObject || sceneObject;
+  return foundExactSceneObject || foundTranslatedSceneObject || sceneObject;
 };
 
 function flatten(
@@ -200,7 +210,11 @@ export function Selection({
   path: string;
   exportName: string;
 }) {
-  const [selected, setSelected] = useState<EditorNodeData>();
+  const [selected, setSelected] = useState<{
+    column: number;
+    line: number;
+    path: string;
+  }>();
   const [transform, setTransform] = useState<"translate" | "rotate" | "scale">(
     "translate"
   );
@@ -231,6 +245,16 @@ export function Selection({
           }/types`
         : ""
     );
+  const selectedObject = selected
+    ? findSceneObjectFromSource(
+        selected.path,
+        scene,
+        selected.line,
+        selected.column,
+        transform,
+        sceneObjects
+      )
+    : null;
 
   useEffect(() => {
     send("trplx:onTransformChange", { mode: transform });
@@ -244,7 +268,7 @@ export function Selection({
 
   useEffect(() => {
     return listen("trplx:requestNavigateToScene", (sceneObject) => {
-      if (!sceneObject && (!selected || !selectedSceneObjectMeta)) {
+      if (!sceneObject && (!selectedObject || !selectedSceneObjectMeta)) {
         return;
       }
 
@@ -253,20 +277,20 @@ export function Selection({
         setSelected(undefined);
         onBlur();
       } else if (
-        selected &&
+        selectedObject &&
         selectedSceneObjectMeta &&
         selectedSceneObjectMeta.type === "custom"
       ) {
         onNavigate({
           path: selectedSceneObjectMeta.path,
           exportName: selectedSceneObjectMeta.exportName,
-          encodedProps: encodeProps(selected),
+          encodedProps: encodeProps(selectedObject),
         });
         setSelected(undefined);
         onBlur();
       }
     });
-  }, [onBlur, onNavigate, selected, selectedSceneObjectMeta]);
+  }, [onBlur, onNavigate, selected, selectedObject, selectedSceneObjectMeta]);
 
   useEffect(() => {
     return listen("trplx:requestBlurSceneObject", () => {
@@ -276,19 +300,19 @@ export function Selection({
   }, []);
 
   useEffect(() => {
-    if (!selected) {
+    if (!selectedObject) {
       return;
     }
 
     return listen("trplx:requestJumpToSceneObject", () => {
-      box.setFromObject(selected.sceneObject);
+      box.setFromObject(selectedObject.sceneObject);
       onJumpTo(
-        selected.sceneObject.getWorldPosition(V1).toArray(),
+        selectedObject.sceneObject.getWorldPosition(V1).toArray(),
         box,
-        selected.sceneObject
+        selectedObject.sceneObject
       );
     });
-  }, [onJumpTo, selected]);
+  }, [onJumpTo, selectedObject]);
 
   useEffect(() => {
     if (!selectedSceneObjectMeta || selectedSceneObjectMeta.type === "host") {
@@ -304,20 +328,11 @@ export function Selection({
 
   useEffect(() => {
     return listen("trplx:requestFocusSceneObject", (data) => {
-      const sceneObject = findSceneObjectFromSource(
-        data.ownerPath,
-        scene,
-        data.line,
-        data.column,
-        transform,
-        sceneObjects
-      );
-
-      if (sceneObject) {
-        setSelected(sceneObject);
-      } else {
-        setSelected(undefined);
-      }
+      setSelected({
+        column: data.column,
+        line: data.line,
+        path: data.ownerPath,
+      });
 
       send("trplx:onSceneObjectFocus", {
         column: data.column,
@@ -331,7 +346,7 @@ export function Selection({
       return;
     }
 
-    if (selected && e.object === selected?.sceneObject) {
+    if (selected && e.object === selectedObject?.sceneObject) {
       // Ignore this event we're already selected.
       return;
     }
@@ -358,13 +373,13 @@ export function Selection({
         onBlur();
       }
 
-      if (selected) {
+      if (selectedObject) {
         // These commands are only available when there is a selected scene object.
         if (e.key === "f") {
           onJumpTo(
-            selected.sceneObject.getWorldPosition(V1).toArray(),
-            box.setFromObject(selected.sceneObject),
-            selected.sceneObject
+            selectedObject.sceneObject.getWorldPosition(V1).toArray(),
+            box.setFromObject(selectedObject.sceneObject),
+            selectedObject.sceneObject
           );
         }
 
@@ -381,63 +396,21 @@ export function Selection({
           onNavigate({
             path: selectedSceneObjectMeta.path,
             exportName: selectedSceneObjectMeta.exportName,
-            encodedProps: encodeProps(selected),
+            encodedProps: encodeProps(selectedObject),
           });
         }
       }
 
       if (e.key === "r") {
         setTransform("rotate");
-
-        if (selected) {
-          // If there is a selected scene object re-calculate it as it might
-          // need to select a different scene object as the transform target.
-          const data = findEditorData(
-            path,
-            selected.sceneObject,
-            "rotate",
-            sceneObjects
-          );
-          if (data) {
-            setSelected(data);
-          }
-        }
       }
 
       if (e.key === "t") {
         setTransform("translate");
-
-        if (selected) {
-          // If there is a selected scene object re-calculate it as it might
-          // need to select a different scene object as the transform target.
-          const data = findEditorData(
-            path,
-            selected.sceneObject,
-            "translate",
-            sceneObjects
-          );
-          if (data) {
-            setSelected(data);
-          }
-        }
       }
 
       if (e.key === "s" && !e.metaKey && !e.ctrlKey) {
         setTransform("scale");
-
-        if (selected) {
-          // If there is a selected scene object re-calculate it as it might
-          // need to select a different scene object as the transform target.
-          const data = findEditorData(
-            path,
-            selected.sceneObject,
-            "scale",
-            sceneObjects
-          );
-          if (data) {
-            setSelected(data);
-          }
-        }
       }
     };
 
@@ -452,25 +425,26 @@ export function Selection({
     sceneObjects,
     path,
     selectedSceneObjectMeta,
+    selectedObject,
   ]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onMouseUp = (e: any) => {
     dragging.current = false;
 
-    if (!e || !selected || !selectedSceneObjectMeta) {
+    if (!e || !selectedObject || !selectedSceneObjectMeta) {
       return;
     }
 
     if (e.mode === "translate") {
       const position =
-        selected.space === "world"
-          ? selected.sceneObject.getWorldPosition(V1).toArray()
-          : selected.sceneObject.position.toArray();
+        selectedObject.space === "world"
+          ? selectedObject.sceneObject.getWorldPosition(V1).toArray()
+          : selectedObject.sceneObject.position.toArray();
 
       send("trplx:onConfirmSceneObjectProp", {
-        column: selected.column,
-        line: selected.line,
+        column: selectedObject.column,
+        line: selectedObject.line,
         path,
         propName: "position",
         propValue: position,
@@ -478,12 +452,12 @@ export function Selection({
     }
 
     if (e.mode === "rotate") {
-      const rotation = selected.sceneObject.rotation.toArray();
+      const rotation = selectedObject.sceneObject.rotation.toArray();
       rotation.pop();
 
       send("trplx:onConfirmSceneObjectProp", {
-        column: selected.column,
-        line: selected.line,
+        column: selectedObject.column,
+        line: selectedObject.line,
         path,
         propName: "rotation",
         propValue: rotation,
@@ -491,11 +465,11 @@ export function Selection({
     }
 
     if (e.mode === "scale") {
-      const scale = selected.sceneObject.scale.toArray();
+      const scale = selectedObject.sceneObject.scale.toArray();
 
       send("trplx:onConfirmSceneObjectProp", {
-        column: selected.column,
-        line: selected.line,
+        column: selectedObject.column,
+        line: selectedObject.line,
         path,
         propName: "scale",
         propValue: scale,
@@ -504,7 +478,7 @@ export function Selection({
   };
 
   useFrame(() => {
-    if (selected && selected.sceneObject.parent === null) {
+    if (selectedObject && selectedObject.sceneObject.parent === null) {
       // If the scene object gets removed from the scene unselect it.
       setSelected(undefined);
     }
@@ -513,14 +487,14 @@ export function Selection({
   return (
     <group onClick={onClick}>
       {children}
-      {selected && (
+      {selectedObject && (
         <TransformControls
           enabled={
             !!selectedSceneObjectTypes &&
             selectedSceneObjectTypes.transforms[transform]
           }
           mode={transform}
-          object={selected.sceneObject}
+          object={selectedObject.sceneObject}
           onMouseDown={() => (dragging.current = true)}
           onMouseUp={onMouseUp}
           ref={transformControls}

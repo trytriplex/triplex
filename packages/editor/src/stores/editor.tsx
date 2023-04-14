@@ -85,14 +85,10 @@ export function useEditor() {
 
       const result = (await res.json()) as { line: number; column: number };
 
-      requestAnimationFrame(() => {
-        // HACK: This is a shit hack to get the new component focused.
-        // Will need some restructuring to not need to rely on async hacks.
-        scene.focus({
-          column: result.column,
-          line: result.line,
-          ownerPath: path,
-        });
+      scene.focus({
+        column: result.column,
+        line: result.line,
+        ownerPath: path,
       });
 
       return result;
