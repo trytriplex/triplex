@@ -1,7 +1,2 @@
 Thanks for being an early adopter!
-
-This folder has been added after initializing Triplex,
-the React Three Fiber framework.
-
-During initial development the repository is private meaning raising issues is only available for [sponsors](https://github.com/sponsors/itsdouges).
-If you are a sponsor you can [raise issues in the repository](https://github.com/triplex-run/triplex/issues).
+This folder holds the configuration for [Triplex](https://github.com/try-triplex/triplex).

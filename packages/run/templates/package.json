@@ -6,7 +6,8 @@
     "editor": "triplex editor"
   },
   "dependencies": {
-    "@react-three/fiber": "^8.11.1",
+    "@react-three/drei": "^9.0.0",
+    "@react-three/fiber": "^8.0.0",
     "@triplex/run": "^{triplex_version}",
     "@types/react": "^18.0.0",
     "@types/three": "^0.148.0",

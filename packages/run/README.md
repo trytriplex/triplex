@@ -1,37 +1,29 @@
-<p align="center">
-  <a href="#">
-    <img width="128" height="128" src="https://user-images.githubusercontent.com/6801309/223384096-4972fb5d-3bdf-4ca8-b488-09260b76ce7e.png" />
-  </a>
-  <h1 align="center">Triplex</h1>
-</p>
+# Triplex
+
+[![Version](https://img.shields.io/npm/v/@triplex/run?style=flat&colorA=000000&colorB=000000)](https://npmjs.com/package/@triplex/run)
+[![Downloads](https://img.shields.io/npm/dt/@triplex/run.svg?style=flat&colorA=000000&colorB=000000)](https://npmjs.com/package/@triplex/run)
+[![Discord](https://img.shields.io/discord/1077806513009197156?style=flat&colorA=000000&colorB=000000&label=discord&logo=discord&logoColor=000000)](https://discord.gg/nBzRBUEs4b)
+
+The [React Three Fiber](https://github.com/pmndrs/react-three-fiber) editor.
 
 ## Getting started
 
-Triplex works standalone and with other frameworks like Next.js or Remix.
-Start by initializing in a folder:
-
-> **Note** - Starting fresh? Create a folder first.
->
-> ```
-> mkdir my-triplex-app
-> cd my-triplex-app
-> ```
+Triplex works with any bundler and framework such as Next.js or Remix.
+Get started by running the init command then follow the prompts.
 
 ```sh
 npx @triplex/run@latest init
 ```
 
-Then follow the prompts.
-
-### Config
+## Config
 
 Configure your Triplex project using the `config.json` file found in the `.triplex` folder.
 
-| Option       | Type       | Default       | Description                                                                     |
-| ------------ | ---------- | ------------- | ------------------------------------------------------------------------------- |
-| `files`      | `string[]` |               | Relative filepath globs used to mark files that can be opened by the editor.    |
-| `components` | `string[]` | `[]`          | Relative filepath globs used to mark files that are able to be added to scenes. |
-| `publicDir`  | `string`   | `"../public"` | Relative path to a folder which contains static assets such as gltf files.      |
+| Option       | Type       | Default       | Description                                                                                         |
+| ------------ | ---------- | ------------- | --------------------------------------------------------------------------------------------------- |
+| `components` | `string[]` | `[]`          | Relative filepath globs used to mark component files that are able to be added to other components. |
+| `files`      | `string[]` |               | Relative filepath globs used to mark component files that can be opened by the editor.              |
+| `publicDir`  | `string`   | `"../public"` | Relative path to a folder which contains static assets such as gltf files.                          |
 
 ## Running the editor
 
@@ -45,5 +37,5 @@ npx triplex editor
 
 | Option                    | Default   | Description                                                 |
 | ------------------------- | --------- | ----------------------------------------------------------- |
-| `-o --open [path]`        |           | Opens your default browser with an optional scene filepath. |
 | `-E --export-name <name>` | `default` | Export to use when opening a file.                          |
+| `-o --open [path]`        |           | Opens your default browser with an optional scene filepath. |

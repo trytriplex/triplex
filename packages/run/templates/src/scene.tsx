@@ -1,5 +1,5 @@
-import Box from "./box";
-import Cylinder from "./cylinder";
+import Box from "./components/box";
+import Cylinder from "./components/cylinder";
 
 export default function Scene() {
   return (
