@@ -45,7 +45,7 @@ export function createServer() {
   >(
     route: R,
     cb: (params: P, state: { type: "push" | "pull" }) => Promise<TData> | TData,
-    pushConstructor?: (push: () => void, params: P) => void
+    pushConstructor?: (push: () => void, params: P) => Promise<void> | void
   ) {
     wss.on("connection", (ws) => {
       let prevSend: string;
@@ -54,7 +54,7 @@ export function createServer() {
         ws.isAlive = true;
       });
 
-      ws.on("message", (rawData) => {
+      ws.on("message", async (rawData) => {
         const path = rawData.toString();
         const matches = match(route, path);
 
@@ -88,7 +88,17 @@ export function createServer() {
           pushMessageToClient("pull");
 
           if (pushConstructor) {
-            pushConstructor(() => pushMessageToClient("push"), params);
+            try {
+              await pushConstructor(() => pushMessageToClient("push"), params);
+            } catch (e) {
+              if (e instanceof Error) {
+                ws.send(JSON.stringify({ error: e.stack || e.message }));
+              } else {
+                ws.send(JSON.stringify({ error: e }));
+              }
+
+              return ws.terminate();
+            }
           }
         }
       });

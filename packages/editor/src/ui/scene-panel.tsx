@@ -5,10 +5,10 @@ import { IDELink } from "../util/ide";
 import { useEditor } from "../stores/editor";
 import { useScene } from "../stores/scene";
 import { ScrollContainer } from "../ds/scroll-container";
-import { ErrorBoundary } from "react-error-boundary";
 import { ProjectComponents } from "./project-components";
 import { ExitIcon } from "@radix-ui/react-icons";
 import { IconButton } from "../ds/button";
+import { ErrorBoundary } from "./error-boundary";
 
 function SceneComponent({
   name,
@@ -51,12 +51,7 @@ export function ScenePanel() {
 
   return (
     <div className="h-full w-52 overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%] shadow-2xl shadow-black/50">
-      <ErrorBoundary
-        resetKeys={[path]}
-        fallbackRender={() => (
-          <div className="p-4 text-neutral-400">Error!</div>
-        )}
-      >
+      <ErrorBoundary keys={[path]}>
         <Suspense
           fallback={<div className="p-4 text-neutral-400">Loading...</div>}
         >
