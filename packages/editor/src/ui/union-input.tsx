@@ -33,7 +33,11 @@ export function UnionInput({
           onChange={onChange}
           onConfirm={onConfirm}
           path={path}
-          prop={Object.assign({}, value, { value: defaultValue })}
+          prop={Object.assign(
+            {},
+            value,
+            defaultValue ? { value: defaultValue } : {}
+          )}
         />
       </div>
       <IconButton

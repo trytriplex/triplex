@@ -70,6 +70,12 @@ export function AddSceneObject({
                   line: pos.line,
                   name: component.name,
                   path,
+                  // Host elements have these set but generally only for
+                  // the elements that have the appropriate transform props explicitly set.
+                  // For this we assume everything is allowed since it's being added.
+                  rotate: true,
+                  scale: true,
+                  translate: true,
                 }}
               />
             );
@@ -102,6 +108,10 @@ export function AddSceneObject({
                     line: pos.line,
                     name: component.name,
                     path,
+                    // Custom elements never have these props set.
+                    rotate: false,
+                    scale: false,
+                    translate: false,
                   }}
                 />
               </Suspense>

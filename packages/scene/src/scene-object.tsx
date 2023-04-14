@@ -85,12 +85,36 @@ function useSceneObjectProps(
     ]);
   }, [meta.column, meta.line, meta.name, meta.path, forceRender]);
 
-  return { ...props, ...intermediateProps.current };
+  const nextProps = { ...props, ...intermediateProps.current };
+
+  for (const key in nextProps) {
+    const value = nextProps[key];
+    if (typeof value === "undefined") {
+      // If the value is undefined we remove it from props altogether.
+      // If props are spread onto the host jsx element in r3f this means it
+      // gets completely removed and r3f will reset its value back to default.
+      // For props directly assigned we instead transform it in the babel plugin
+      // to be conditionally applied instead.
+      delete nextProps[key];
+    }
+  }
+
+  return nextProps;
 }
 
-interface SceneObjectProps {
+export interface SceneObjectProps {
   __component: React.ForwardRefExoticComponent<{ ref: unknown }> | string;
-  __meta: { line: number; column: number; path: string; name: string };
+  __meta: {
+    line: number;
+    column: number;
+    path: string;
+    name: string;
+    // These props are only set if the scene object is a host component
+    // and has {position/scale/rotation} set statically (not through spread props).
+    translate: boolean;
+    scale: boolean;
+    rotate: boolean;
+  };
 }
 
 export const SceneObject = forwardRef<unknown, SceneObjectProps>(

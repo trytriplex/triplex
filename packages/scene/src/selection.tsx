@@ -6,16 +6,14 @@ import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { Box3, Object3D, Vector3, Vector3Tuple } from "three";
 import { TransformControls as TransformControlsImpl } from "three-stdlib";
 import { GetSceneObject, GetSceneObjectTypes } from "./api-types";
+import { SceneObjectProps } from "./scene-object";
 
-export interface EditorNodeData {
-  name: string;
-  line: number;
-  column: number;
-  props: Record<string, unknown>;
+export type EditorNodeData = SceneObjectProps["__meta"] & {
   sceneObject: Object3D;
-  path: string;
   space: "local" | "world";
-}
+  // Unaltered props currently set on the component.
+  props: Record<string, unknown>;
+};
 
 function encodeProps(selected: EditorNodeData): string {
   const props = { ...selected.props };
@@ -47,35 +45,20 @@ const findTransformedSceneObject = (
   sceneObject: Object3D,
   transform: "translate" | "scale" | "rotate"
 ): Object3D => {
-  type ObjectR3F = {
-    __r3f: {
-      memoizedProps: Record<string, unknown>;
-    };
-  } & Object3D;
-
-  const propertyName = {
-    translate: "position",
-    scale: "scale",
-    rotate: "rotation",
-  }[transform];
   let foundSceneObject: Object3D | undefined = undefined;
 
-  sceneObject.traverse((c: unknown) => {
-    const child = c as ObjectR3F;
-
-    // The immediate child can also be a triplex boundary if it is a custom
-    // component - if it is skip and continue traversing to find the scene
-    // object that we're interested in.
-    if (foundSceneObject || child === sceneObject) {
-      return;
-    }
+  sceneObject.traverse((child: Object3D) => {
+    const meta: SceneObjectProps["__meta"] | undefined =
+      child.userData.triplexSceneMeta;
 
     // We need to find out if one of the jsx elements between sceneObject
     // and the next triplex boundary has the transform prop applied - if it
     // does we've found the scene object we're interested in!
-    // NOTE: This relies on r3f internals meaning this is a vector for breaks.
-    if (child && child.__r3f && propertyName in child.__r3f.memoizedProps) {
-      foundSceneObject = child;
+    // This data is set by the @triplex/client babel plugin.
+    if (meta && meta[transform]) {
+      // The direct child will be the one we're interested in as it is a child
+      // of the intermediately placed group in the SceneObject component.
+      foundSceneObject = child.children[0];
     }
   });
 
