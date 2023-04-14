@@ -1,5 +1,4 @@
 import { preloadSubscription, useLazySubscription } from "@triplex/ws-client";
-import { ErrorBoundary } from "react-error-boundary";
 import { IDELink } from "../util/ide";
 import { Suspense, useEffect } from "react";
 import { useEditor, FocusedObject } from "../stores/editor";
@@ -10,6 +9,7 @@ import { PropField } from "./prop-field";
 import { GetSceneObject } from "../api-types";
 import { Crosshair1Icon, EnterIcon, TrashIcon } from "@radix-ui/react-icons";
 import { IconButton } from "../ds/button";
+import { ErrorBoundary } from "./error-boundary";
 
 function SelectedSceneObject({ target }: { target: FocusedObject }) {
   const { setPropValue, getPropValue, navigateTo, jumpTo } = useScene();
@@ -136,12 +136,7 @@ export function ContextPanel() {
     <div className="pointer-events-none absolute top-4 right-4 bottom-4 flex w-72 flex-col gap-3">
       {target && (
         <div className="pointer-events-auto flex h-full flex-col overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%] shadow-2xl shadow-black/50">
-          <ErrorBoundary
-            resetKeys={[target]}
-            fallbackRender={() => (
-              <div className="p-4 text-neutral-400">Error!</div>
-            )}
-          >
+          <ErrorBoundary keys={[target]}>
             <Suspense
               fallback={<div className="p-4 text-neutral-400">Loading...</div>}
             >
