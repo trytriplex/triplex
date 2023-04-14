@@ -1,5 +1,19 @@
 # @triplex/scene
 
+## 0.40.0
+
+### Minor Changes
+
+- dac7c76: Selection for scene objects is now more resilient being able to be set before scene objects are actually available.
+- dac7c76: When selecting a scene object that has disabled transforms the scene frame now tries to find a backup selection so the gizmo stays ontop of the object instead of being moved back to world [0,0,0].
+- a2a2f4b: When unapplying a prop to a component such as performing an undo it is now applied as expected in the scene. Previously only the context panel would be updated with the new value.
+
+### Patch Changes
+
+- Updated dependencies [ee2494b]
+  - @triplex/ws-client@0.40.0
+  - @triplex/bridge@0.40.0
+
 ## 0.39.0
 
 ### Patch Changes

@@ -1,5 +1,15 @@
 # @triplex/run
 
+## 0.40.0
+
+### Patch Changes
+
+- Updated dependencies [bfb0f7a]
+- Updated dependencies [a2a2f4b]
+- Updated dependencies [7aa2ead]
+  - @triplex/server@0.40.0
+  - @triplex/client@0.40.0
+
 ## 0.39.0
 
 ### Patch Changes

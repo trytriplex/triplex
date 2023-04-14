@@ -1,5 +1,21 @@
 # @triplex/editor
 
+## 0.40.0
+
+### Minor Changes
+
+- a2a2f4b: Removes usage of r3f internals.
+- a2a2f4b: Fixes union input accidentally having default value being applied when it shouldn't.
+- dac7c76: Selection for scene objects is now more resilient being able to be set before scene objects are actually available.
+- bfb0f7a: Adds an error boundary ui to replace the basic error text version.
+- ee2494b: When clicking ide links such as view source websocket connections no longer close.
+
+### Patch Changes
+
+- Updated dependencies [ee2494b]
+  - @triplex/ws-client@0.40.0
+  - @triplex/bridge@0.40.0
+
 ## 0.39.0
 
 ### Minor Changes
