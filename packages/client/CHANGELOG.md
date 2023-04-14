@@ -1,5 +1,23 @@
 # @triplex/client
 
+## 0.40.0
+
+### Minor Changes
+
+- a2a2f4b: When unapplying a prop to a component such as performing an undo it is now applied as expected in the scene. Previously only the context panel would be updated with the new value.
+
+### Patch Changes
+
+- Updated dependencies [a2a2f4b]
+- Updated dependencies [a2a2f4b]
+- Updated dependencies [dac7c76]
+- Updated dependencies [dac7c76]
+- Updated dependencies [a2a2f4b]
+- Updated dependencies [bfb0f7a]
+- Updated dependencies [ee2494b]
+  - @triplex/editor@0.40.0
+  - @triplex/scene@0.40.0
+
 ## 0.39.0
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @triplex/ws-client
 
+## 0.40.0
+
+### Minor Changes
+
+- ee2494b: Websocket connections are now cleaned up after a period of time if there are no more subscriptions.
+
 ## 0.39.0
 
 ## 0.38.0

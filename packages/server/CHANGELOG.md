@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.40.0
+
+### Minor Changes
+
+- bfb0f7a: When initializing a websocket loader it now catches any errors thrown and returns them to the client.
+- 7aa2ead: Shadowed types, interfaces, and imports are now excluded when reading an exports name.
+
 ## 0.39.0
 
 ### Minor Changes
