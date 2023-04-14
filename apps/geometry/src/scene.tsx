@@ -50,10 +50,7 @@ export default function Scene() {
 
       <Cylinder1 position={[1.4681464869137235, 0, -4.205778397787599]} />
       <Cylinder1 position={[-5.147492724511148, 0, -2.9618330871711818]} />
-      <Box1
-        position={[1.5434749335272209, 0, 2.38017042735966]}
-        color={"red"}
-      />
+      <Box1 color={"red"} />
     </>
   );
 }

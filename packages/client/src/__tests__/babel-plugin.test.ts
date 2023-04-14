@@ -24,25 +24,37 @@ describe("babel plugin", () => {
         \\"path\\": \\"/box.tsx\\",
         \\"name\\": \\"group\\",
         \\"line\\": 2,
-        \\"column\\": 7
+        \\"column\\": 7,
+        \\"translate\\": false,
+        \\"rotate\\": false,
+        \\"scale\\": true
       }} key={\\"group27\\"}>
               <SceneObject position={[1, 1, 1]} __component={\\"mesh\\"} __meta={{
           \\"path\\": \\"/box.tsx\\",
           \\"name\\": \\"mesh\\",
           \\"line\\": 3,
-          \\"column\\": 9
+          \\"column\\": 9,
+          \\"translate\\": true,
+          \\"rotate\\": false,
+          \\"scale\\": false
         }} key={\\"mesh39\\"}>
                 <SceneObject args={[1, 1, 1]} __component={\\"boxGeometry\\"} __meta={{
             \\"path\\": \\"/box.tsx\\",
             \\"name\\": \\"boxGeometry\\",
             \\"line\\": 4,
-            \\"column\\": 11
+            \\"column\\": 11,
+            \\"translate\\": false,
+            \\"rotate\\": false,
+            \\"scale\\": false
           }} key={\\"boxGeometry411\\"}></SceneObject>
                 <SceneObject color=\\"black\\" __component={\\"standardMaterial\\"} __meta={{
             \\"path\\": \\"/box.tsx\\",
             \\"name\\": \\"standardMaterial\\",
             \\"line\\": 5,
-            \\"column\\": 11
+            \\"column\\": 11,
+            \\"translate\\": false,
+            \\"rotate\\": false,
+            \\"scale\\": false
           }} key={\\"standardMaterial511\\"}></SceneObject>
               </SceneObject>
             </SceneObject>;"
@@ -70,7 +82,10 @@ describe("babel plugin", () => {
           \\"path\\": \\"/box.tsx\\",
           \\"name\\": \\"mesh\\",
           \\"line\\": 4,
-          \\"column\\": 11
+          \\"column\\": 11,
+          \\"translate\\": false,
+          \\"rotate\\": false,
+          \\"scale\\": false
         }} key={\\"mesh411\\"}></SceneObject>;
       }
       HelloWorld.triplexMeta = {
@@ -100,7 +115,10 @@ describe("babel plugin", () => {
           \\"path\\": \\"/box.tsx\\",
           \\"name\\": \\"mesh\\",
           \\"line\\": 4,
-          \\"column\\": 11
+          \\"column\\": 11,
+          \\"translate\\": false,
+          \\"rotate\\": false,
+          \\"scale\\": false
         }} key={\\"mesh411\\"}></SceneObject>;
       };
       HelloWorld.triplexMeta = {
@@ -136,20 +154,29 @@ describe("babel plugin", () => {
             \\"path\\": \\"/box.tsx\\",
             \\"name\\": \\"mesh\\",
             \\"line\\": 5,
-            \\"column\\": 13
+            \\"column\\": 13,
+            \\"translate\\": false,
+            \\"rotate\\": false,
+            \\"scale\\": false
           }} key={\\"mesh513\\"}>
                     <SceneObject __component={\\"boxGeometry\\"} __meta={{
               \\"path\\": \\"/box.tsx\\",
               \\"name\\": \\"boxGeometry\\",
               \\"line\\": 6,
-              \\"column\\": 15
+              \\"column\\": 15,
+              \\"translate\\": false,
+              \\"rotate\\": false,
+              \\"scale\\": false
             }} key={\\"boxGeometry615\\"}></SceneObject>
                   </SceneObject>
                   <SceneObject __component={\\"spotLight\\"} __meta={{
             \\"path\\": \\"/box.tsx\\",
             \\"name\\": \\"spotLight\\",
             \\"line\\": 8,
-            \\"column\\": 13
+            \\"column\\": 13,
+            \\"translate\\": false,
+            \\"rotate\\": false,
+            \\"scale\\": false
           }} key={\\"spotLight813\\"}></SceneObject>
                 </>;
       };
@@ -188,7 +215,10 @@ describe("babel plugin", () => {
           \\"path\\": \\"/box.tsx\\",
           \\"name\\": \\"group\\",
           \\"line\\": 9,
-          \\"column\\": 11
+          \\"column\\": 11,
+          \\"translate\\": false,
+          \\"rotate\\": false,
+          \\"scale\\": false
         }} key={\\"group911\\"}></SceneObject>;
       }
       HelloWorld.triplexMeta = {
@@ -220,7 +250,10 @@ describe("babel plugin", () => {
           \\"path\\": \\"/box.tsx\\",
           \\"name\\": \\"mesh\\",
           \\"line\\": 4,
-          \\"column\\": 11
+          \\"column\\": 11,
+          \\"translate\\": false,
+          \\"rotate\\": false,
+          \\"scale\\": false
         }} key={\\"mesh411\\"}></SceneObject>;
       };
       export default HelloWorld;
@@ -251,7 +284,10 @@ describe("babel plugin", () => {
           \\"path\\": \\"/box.tsx\\",
           \\"name\\": \\"mesh\\",
           \\"line\\": 4,
-          \\"column\\": 11
+          \\"column\\": 11,
+          \\"translate\\": false,
+          \\"rotate\\": false,
+          \\"scale\\": false
         }} key={\\"mesh411\\"}></SceneObject>;
       });
       HelloWorld.triplexMeta = {
@@ -305,7 +341,10 @@ describe("babel plugin", () => {
           \\"path\\": \\"/box.tsx\\",
           \\"name\\": \\"group\\",
           \\"line\\": 9,
-          \\"column\\": 11
+          \\"column\\": 11,
+          \\"translate\\": false,
+          \\"rotate\\": false,
+          \\"scale\\": true
         }} key={\\"group911\\"}>
                   <SceneObject {...ok} userData={{
             hello: true
@@ -313,19 +352,28 @@ describe("babel plugin", () => {
             \\"path\\": \\"/box.tsx\\",
             \\"name\\": \\"mesh\\",
             \\"line\\": 10,
-            \\"column\\": 13
+            \\"column\\": 13,
+            \\"translate\\": true,
+            \\"rotate\\": false,
+            \\"scale\\": false
           }} key={\\"mesh1013\\"}>
                     <SceneObject args={[1, 1, 1]} __component={\\"boxGeometry\\"} __meta={{
               \\"path\\": \\"/box.tsx\\",
               \\"name\\": \\"boxGeometry\\",
               \\"line\\": 18,
-              \\"column\\": 15
+              \\"column\\": 15,
+              \\"translate\\": false,
+              \\"rotate\\": false,
+              \\"scale\\": false
             }} key={\\"boxGeometry1815\\"}></SceneObject>
                     <SceneObject color=\\"#00ff00\\" __component={\\"meshStandardMaterial\\"} __meta={{
               \\"path\\": \\"/box.tsx\\",
               \\"name\\": \\"meshStandardMaterial\\",
               \\"line\\": 19,
-              \\"column\\": 15
+              \\"column\\": 15,
+              \\"translate\\": false,
+              \\"rotate\\": false,
+              \\"scale\\": false
             }} key={\\"meshStandardMaterial1915\\"}></SceneObject>
                   </SceneObject>
                 </SceneObject>;
@@ -353,7 +401,10 @@ describe("babel plugin", () => {
         \\"path\\": \\"/box.tsx\\",
         \\"name\\": \\"CustomComponent\\",
         \\"line\\": 2,
-        \\"column\\": 7
+        \\"column\\": 7,
+        \\"translate\\": false,
+        \\"rotate\\": false,
+        \\"scale\\": false
       }} key={\\"CustomComponent27\\"}></SceneObject>;"
     `);
   });
@@ -374,7 +425,10 @@ describe("babel plugin", () => {
         \\"path\\": \\"/box.tsx\\",
         \\"name\\": \\"CustomComponent\\",
         \\"line\\": 2,
-        \\"column\\": 7
+        \\"column\\": 7,
+        \\"translate\\": false,
+        \\"rotate\\": false,
+        \\"scale\\": false
       }} key={\\"CustomComponent27\\" + \\"existing\\"}></SceneObject>;"
     `);
   });
@@ -395,8 +449,36 @@ describe("babel plugin", () => {
         \\"path\\": \\"/box.tsx\\",
         \\"name\\": \\"CustomComponent\\",
         \\"line\\": 2,
-        \\"column\\": 7
+        \\"column\\": 7,
+        \\"translate\\": false,
+        \\"rotate\\": false,
+        \\"scale\\": false
       }} key={\\"CustomComponent27\\" + 10}></SceneObject>;"
+    `);
+  });
+
+  it("should mark host elements using user data for position prop", () => {
+    // position={position} -> userData={{ __triplexTransform: 'translate' }}
+    const result = transformSync(
+      `
+      <mesh position={position} />
+    `,
+      {
+        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        filename: "/box.tsx",
+      }
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "<SceneObject position={position} __component={\\"mesh\\"} __meta={{
+        \\"path\\": \\"/box.tsx\\",
+        \\"name\\": \\"mesh\\",
+        \\"line\\": 2,
+        \\"column\\": 7,
+        \\"translate\\": true,
+        \\"rotate\\": false,
+        \\"scale\\": false
+      }} key={\\"mesh27\\"}></SceneObject>;"
     `);
   });
 });

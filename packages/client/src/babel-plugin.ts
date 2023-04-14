@@ -82,7 +82,7 @@ export default function triplexBabelPlugin() {
         }
 
         const elementName = path.node.openingElement.name.name;
-        const isCustomElement = /^[A-Z]/.exec(elementName);
+        const elementType = /^[A-Z]/.exec(elementName) ? "custom" : "host";
 
         if (current && elementName.endsWith("Light")) {
           const meta = triplexMeta.get(current);
@@ -94,20 +94,44 @@ export default function triplexBabelPlugin() {
         const line = path.node.loc.start.line;
         // Align to tsc where column numbers start from 1
         const column = path.node.loc.start.column + 1;
+        // We grab the key node if defined and combine it later in the
+        // transform to keep it stable.
         let keyNode: t.Expression | undefined;
+        const transformsFound = {
+          translate: false,
+          scale: false,
+          rotate: false,
+        };
+
         const attributes = path.node.openingElement.attributes.filter(
           (attr) => {
-            if (attr.type === "JSXAttribute" && attr.name.name === "key") {
-              if (t.isStringLiteral(attr.value)) {
-                keyNode = attr.value;
-              } else if (
-                t.isJSXExpressionContainer(attr.value) &&
-                t.isExpression(attr.value.expression)
-              ) {
-                keyNode = attr.value.expression;
+            if (attr.type === "JSXAttribute") {
+              if (attr.name.name === "key") {
+                if (t.isStringLiteral(attr.value)) {
+                  keyNode = attr.value;
+                } else if (
+                  t.isJSXExpressionContainer(attr.value) &&
+                  t.isExpression(attr.value.expression)
+                ) {
+                  keyNode = attr.value.expression;
+                }
+
+                return false;
               }
 
-              return false;
+              if (elementType === "host") {
+                if (attr.name.name === "position") {
+                  transformsFound.translate = true;
+                }
+
+                if (attr.name.name === "rotate") {
+                  transformsFound.rotate = true;
+                }
+
+                if (attr.name.name === "scale") {
+                  transformsFound.scale = true;
+                }
+              }
             }
 
             return true;
@@ -120,7 +144,7 @@ export default function triplexBabelPlugin() {
             t.jsxAttribute(
               t.jsxIdentifier("__component"),
               t.jsxExpressionContainer(
-                isCustomElement
+                elementType === "custom"
                   ? t.identifier(elementName)
                   : t.stringLiteral(elementName)
               )
@@ -144,6 +168,18 @@ export default function triplexBabelPlugin() {
                   t.objectProperty(
                     t.stringLiteral("column"),
                     t.numericLiteral(column)
+                  ),
+                  t.objectProperty(
+                    t.stringLiteral("translate"),
+                    t.booleanLiteral(transformsFound.translate)
+                  ),
+                  t.objectProperty(
+                    t.stringLiteral("rotate"),
+                    t.booleanLiteral(transformsFound.rotate)
+                  ),
+                  t.objectProperty(
+                    t.stringLiteral("scale"),
+                    t.booleanLiteral(transformsFound.scale)
                   ),
                 ])
               )
