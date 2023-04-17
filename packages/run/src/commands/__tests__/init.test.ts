@@ -27,9 +27,10 @@ describe("init command", () => {
         version: "0.0.0-local",
         __fs: stubFs,
         __exec: stubExec,
+        __prompt: vi.fn().mockResolvedValue({ continue: true }),
       });
 
-      expect(openPath).toEqual(join(cwd, "src/scene.tsx"));
+      expect(openPath).toEqual(join(cwd, "fresh-local", "src/scene.tsx"));
     });
 
     it("should copy over static files from template dir", async () => {
@@ -51,24 +52,25 @@ describe("init command", () => {
         version: "0.0.0-local",
         __fs: stubFs,
         __exec: stubExec,
+        __prompt: vi.fn().mockResolvedValue({ continue: true }),
       });
 
       expect(stubFs.copyFile).toHaveBeenCalledWith(
         join(templateDir, "gitignore"),
-        join(cwd, ".gitignore")
+        join(cwd, "fresh-local", ".gitignore")
       );
       expect(stubFs.copyFile).toHaveBeenCalledWith(
         join(templateDir, "tsconfig.json"),
-        join(cwd, "tsconfig.json")
+        join(cwd, "fresh-local", "tsconfig.json")
       );
       expect(stubFs.cp).toHaveBeenCalledWith(
         join(templateDir, "src"),
-        join(cwd, "src"),
+        join(cwd, "fresh-local", "src"),
         { recursive: true }
       );
       expect(stubFs.cp).toHaveBeenCalledWith(
         join(templateDir, ".triplex"),
-        join(cwd, ".triplex"),
+        join(cwd, "fresh-local", ".triplex"),
         { recursive: true }
       );
     });
@@ -92,10 +94,11 @@ describe("init command", () => {
         version: "0.0.0-local",
         __fs: stubFs,
         __exec: stubExec,
+        __prompt: vi.fn().mockResolvedValue({ continue: true }),
       });
 
       expect(stubFs.writeFile).toHaveBeenCalledWith(
-        join(cwd, "package.json"),
+        join(cwd, "fresh-local", "package.json"),
         `{
   "name": "fresh-local",
   "version": "0.0.0",
@@ -139,6 +142,7 @@ describe("init command", () => {
         version: "0.0.0-local",
         __fs: stubFs,
         __exec: stubExec,
+        __prompt: vi.fn().mockResolvedValue({ continue: true }),
       });
 
       expect(stubFs.cp).toHaveBeenCalledWith(
@@ -167,6 +171,7 @@ describe("init command", () => {
         version: "0.0.0-local",
         __fs: stubFs,
         __exec: stubExec,
+        __prompt: vi.fn().mockResolvedValue({ continue: true }),
       });
 
       expect(stubFs.writeFile).toHaveBeenCalledWith(
@@ -208,6 +213,7 @@ describe("init command", () => {
         version: "0.0.0-local",
         __fs: stubFs,
         __exec: stubExec,
+        __prompt: vi.fn().mockResolvedValue({ continue: true }),
       });
 
       expect(stubFs.writeFile).toHaveBeenCalledWith(
@@ -237,6 +243,7 @@ describe("init command", () => {
         version: "0.0.0-local",
         __fs: stubFs,
         __exec: stubExec,
+        __prompt: vi.fn().mockResolvedValue({ continue: true }),
       });
 
       expect(stubFs.writeFile).toHaveBeenCalledWith(
@@ -281,6 +288,7 @@ describe("init command", () => {
         version: "0.0.0-local",
         __fs: stubFs,
         __exec: stubExec,
+        __prompt: vi.fn().mockResolvedValue({ continue: true }),
       });
 
       expect(openPath).toEqual(join(cwd, "src/triplex-examples/scene.tsx"));
@@ -307,6 +315,7 @@ describe("init command", () => {
         version: "0.0.0-local",
         __fs: stubFs,
         __exec: stubExec,
+        __prompt: vi.fn().mockResolvedValue({ continue: true }),
       });
 
       expect(openPath).toEqual(
