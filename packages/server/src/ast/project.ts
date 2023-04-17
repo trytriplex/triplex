@@ -30,9 +30,11 @@ export function _createProject(opts: ProjectOptions) {
   return project;
 }
 
-export function createProject(): TRIPLEXProject {
+export function createProject({
+  tsConfigFilePath = join(process.cwd(), "tsconfig.json"),
+} = {}): TRIPLEXProject {
   const project = _createProject({
-    tsConfigFilePath: join(process.cwd(), "tsconfig.json"),
+    tsConfigFilePath,
   });
 
   function createSourceFile(componentName: string, fileName: string) {

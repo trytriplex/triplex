@@ -8,7 +8,6 @@ import {
 } from "ts-morph";
 import { basename, extname, relative } from "path";
 import { getExportName } from "../ast/module";
-import { unique } from "../util/array";
 import { getJsxElementAt } from "../ast/jsx";
 
 function guessComponentNameFromPath(path: string) {
@@ -203,30 +202,27 @@ export function add(
       });
 
       if (existingImport) {
-        existingImport.set({
-          defaultImport:
-            component.exportName === "default"
-              ? aliasImportName || importName
-              : undefined,
-          namedImports:
-            component.exportName !== "default"
-              ? [
-                  ...existingImport.getNamedImports().map((named) => {
-                    const structure = named.getStructure();
-                    return {
-                      alias: structure.alias,
-                      isTypeOnly: structure.isTypeOnly,
-                      name: structure.name,
-                    };
-                  }),
-                  {
-                    alias: aliasImportName,
-                    isTypeOnly: false,
-                    name: importName,
-                  },
-                ].filter(unique)
-              : undefined,
-        });
+        if (component.exportName === "default") {
+          existingImport.setDefaultImport(aliasImportName || importName);
+        }
+
+        if (component.exportName !== "default") {
+          const preExistingImport = existingImport
+            .getNamedImports()
+            .find(
+              (x) =>
+                x.getAliasNode()?.getText() === aliasImportName &&
+                x.getName() === importName
+            );
+
+          if (!preExistingImport) {
+            existingImport.insertNamedImport(0, {
+              alias: aliasImportName,
+              name: importName,
+              isTypeOnly: false,
+            });
+          }
+        }
       } else {
         // We insert text to prevent pushing out jsx elements onto new lines.
         const defaultImport =

@@ -1,0 +1,4 @@
+{
+  "components": ["../src/components/**/*.tsx"],
+  "files": ["../src/**/*.tsx"]
+}

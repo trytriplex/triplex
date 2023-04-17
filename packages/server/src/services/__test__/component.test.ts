@@ -164,7 +164,7 @@ describe("component service", () => {
     `);
   });
 
-  it("should skip adding a new import if it already exists", () => {
+  it("should skip adding a new import specifier if it already exists", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
@@ -183,7 +183,7 @@ describe("component service", () => {
       sourceFile.getText().match(/from "@react-three\/drei"/g)
     ).toHaveLength(1);
     expect(sourceFile.getText()).toContain(
-      'import { RoundedBox, Sphere } from "@react-three/drei";'
+      'import { Sphere, RoundedBox } from "@react-three/drei";'
     );
   });
 
@@ -203,7 +203,7 @@ describe("component service", () => {
     });
 
     expect(sourceFile.getText()).toContain(
-      'import { RoundedBox, Box as Box1 } from "@react-three/drei"'
+      'import { Box as Box1, RoundedBox } from "@react-three/drei"'
     );
     expect(sourceFile.getText()).not.toContain("<Box>");
     expect(sourceFile.getText()).toContain("<Box1 />");

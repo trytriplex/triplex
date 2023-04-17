@@ -107,7 +107,7 @@ export function createServer({
     };
     const { sourceFile } = project.getSourceFile(path);
 
-    const result = await component.add(sourceFile, exportName, target);
+    const result = component.add(sourceFile, exportName, target);
 
     context.response.body = { ...result };
   });
