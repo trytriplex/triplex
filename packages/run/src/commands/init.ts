@@ -2,36 +2,72 @@ import { exec as execCb } from "child_process";
 import { promisify } from "node:util";
 import fs_dont_use_directly from "fs/promises";
 import { join } from "path";
+import { prompt as prompt_dont_use_directly } from "enquirer";
 
 const exec_dont_use_directly = promisify(execCb);
 const templateDir = join(__dirname, "../../templates");
 
 export async function init({
   name,
-  cwd = process.cwd(),
   version,
   pkgManager,
+  cwd: __cwd = process.cwd(),
   __fs: fs = fs_dont_use_directly,
   __exec: exec = exec_dont_use_directly,
+  __prompt: prompt = prompt_dont_use_directly,
 }: {
   name: string;
   cwd?: string;
   version: string;
   pkgManager: "npm" | "pnpm" | "yarn";
+  __prompt?: typeof import("enquirer").prompt;
   __fs?: typeof import("fs/promises");
   __exec?: typeof exec_dont_use_directly;
 }) {
   const { default: ora } = await import("ora");
-  const spinner = ora("Setting up files...").start();
 
-  const dir = await fs.readdir(cwd);
+  let cwd = __cwd;
+  let dir = await fs.readdir(cwd);
+  let freshInstall = false;
+
+  if (!dir.includes("package.json")) {
+    const response = await prompt<{ continue: boolean }>({
+      name: "continue",
+      type: "confirm",
+      required: true,
+      initial: "Y",
+      message: `Will initialize into a new folder, continue?`,
+    });
+
+    if (!response.continue) {
+      process.exit(0);
+    }
+
+    cwd = join(__cwd, name);
+    freshInstall = true;
+    await fs.mkdir(cwd);
+    // Clear out dir just in case
+    dir = [];
+  } else {
+    const response = await prompt<{ continue: boolean }>({
+      name: "continue",
+      type: "confirm",
+      required: true,
+      initial: "Y",
+      message: `Will initialize into your existing repository, continue?`,
+    });
+
+    if (!response.continue) {
+      process.exit(0);
+    }
+  }
+
+  const spinner = ora("Setting up files...").start();
   const gitIgnorePath = join(cwd, ".gitignore");
   const packageJsonPath = join(cwd, "package.json");
   const readmePath = join(cwd, "README.md");
   const tsconfigPath = join(cwd, "tsconfig.json");
   const examplePath = join(cwd, "src");
-
-  let existing = false;
 
   if (dir.includes(".gitignore")) {
     // Update
@@ -44,8 +80,6 @@ export async function init({
       gitIgnore += ".triplex/tmp\n";
       await fs.writeFile(gitIgnorePath, gitIgnore);
     }
-
-    existing = true;
   } else {
     // Create one
     const templatePath = join(templateDir, "gitignore");
@@ -79,8 +113,6 @@ export async function init({
     );
 
     await fs.writeFile(packageJsonPath, result + "\n");
-
-    existing = true;
   } else {
     // Create
     const pkgJson = await fs.readFile(
@@ -95,7 +127,6 @@ export async function init({
 
   if (dir.includes("README.md")) {
     // Skip
-    existing = true;
   } else {
     const readme = await fs.readFile(join(templateDir, "README.md"), "utf-8");
     await fs.writeFile(
@@ -140,8 +171,6 @@ export async function init({
     }
 
     await fs.writeFile(tsconfigPath, JSON.stringify(parsed, null, 2) + "\n");
-
-    existing = true;
   } else {
     // Create
     const templatePath = join(templateDir, "tsconfig.json");
@@ -164,8 +193,7 @@ export async function init({
       // A previous run already added examples, nothing to do here.
     }
 
-    openPath = join(cwd, "packages/triplex-examples", "scene.tsx");
-    existing = true;
+    openPath = join(__cwd, "packages/triplex-examples", "scene.tsx");
   } else if (dir.includes("src")) {
     const srcDir = await fs.readdir(examplePath);
     if (!srcDir.includes("scene.tsx")) {
@@ -179,7 +207,6 @@ export async function init({
     }
 
     openPath = join(examplePath, "triplex-examples", "scene.tsx");
-    existing = true;
   } else {
     const templatePath = join(templateDir, "src");
     await fs.cp(templatePath, examplePath, { recursive: true });
@@ -188,17 +215,18 @@ export async function init({
 
   if (dir.includes(".triplex")) {
     // Skip creating an example
-    existing = true;
   } else {
     const templatePath = join(templateDir, ".triplex");
-    await fs.cp(templatePath, join(cwd, ".triplex"), { recursive: true });
+    await fs.cp(templatePath, join(cwd, ".triplex"), {
+      recursive: true,
+    });
   }
 
   spinner.text = "Installing dependencies...";
 
   await exec(`${pkgManager} install`);
 
-  if (!existing) {
+  if (freshInstall) {
     spinner.text = "Initializing git...";
 
     await exec(`git init`);
@@ -209,12 +237,13 @@ export async function init({
   spinner.succeed("Successfully initialized!");
 
   console.log(`
-       Run the editor: ${pkgManager} run editor
+          Get started: cd ${name} && ${pkgManager} run editor
            Raise bugs: https://github.com/triplex-run/triplex/issues
   Sponsor development: https://github.com/sponsors/itsdouges
 `);
 
   return {
+    dir: cwd,
     openPath,
   };
 }

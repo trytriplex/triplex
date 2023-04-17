@@ -95,7 +95,7 @@ program
         },
       ]);
 
-      const { openPath } = await init({
+      const { openPath, dir } = await init({
         version,
         pkgManager: response.pkgManager,
         name: response.name,
@@ -112,7 +112,8 @@ program
 
       if (result.start) {
         const p = exec(
-          `${response.pkgManager} run editor --open ${openPath}`,
+          // Execute a sub-shell to not force change the users cwd.
+          `(cd ${dir} && ${response.pkgManager} run editor --open ${openPath})`,
           {}
         );
         const { default: ora } = await import("ora");

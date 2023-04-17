@@ -9,6 +9,7 @@
     "clean:node_modules": "pnpm -r exec rm -rf node_modules",
     "clean": "pnpm -r exec rm -rf dist",
     "dev:caustics": "pnpm --filter @example/caustics editor",
+    "dev:cli": "cd test && triplex",
     "dev:faze": "pnpm --filter @example/faze editor",
     "dev:geometry": "pnpm --filter @example/geometry editor",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
