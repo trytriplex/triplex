@@ -224,14 +224,14 @@ export async function init({
 
   spinner.text = "Installing dependencies...";
 
-  await exec(`${pkgManager} install`);
+  await exec(`(cd ${cwd} && ${pkgManager} install)`);
 
   if (freshInstall) {
     spinner.text = "Initializing git...";
 
-    await exec(`git init`);
-    await exec(`git add .`);
-    await exec(`git commit -m "Initialized Triplex."`);
+    await exec(`(cd ${cwd} && git init)`);
+    await exec(`(cd ${cwd} && git add .)`);
+    await exec(`(cd ${cwd} && git commit -m "Initialized Triplex.")`);
   }
 
   spinner.succeed("Successfully initialized!");
