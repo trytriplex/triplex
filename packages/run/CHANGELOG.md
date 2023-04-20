@@ -1,5 +1,16 @@
 # @triplex/run
 
+## 0.42.0
+
+### Minor Changes
+
+- 02284ff: Commands ran during init now run in the expected directory.
+
+### Patch Changes
+
+- @triplex/client@0.42.0
+- @triplex/server@0.42.0
+
 ## 0.41.0
 
 ### Minor Changes
