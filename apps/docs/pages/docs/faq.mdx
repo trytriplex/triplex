@@ -1,0 +1,34 @@
+# FAQ
+
+<details>
+  <summary>What bundlers does Triplex support?</summary>
+  Triplex works with any bundler by not using your bundler at all. It uses Vite internally
+  when running the editor.
+</details>
+
+<details>
+  <summary>Can I use Triplex with other frameworks?</summary>
+  Yes. Triplex operates on source code just as other frameworks do, you can use the
+  same code across multiple frameworks like Next.js or Remix. If you've used Storybook
+  or another similar devtool it's exactly the same.
+</details>
+
+<details>
+  <summary>
+    Why does my component error when trying to access React context?
+  </summary>
+  Currently Triplex doesn't have a good story for setting React context when opening
+  leaf node components in the editor. This will be resolved in the future.
+</details>
+
+<details>
+  <summary>Why do Triplex projects need TypeScript?</summary>
+  Triplex uses the TypeScript compiler to infer what props are available on components,
+  without it the usefulness of this feature is severely diminished.
+</details>
+
+<details>
+  <summary>Does Triplex support monorepos?</summary>
+  Yes. You can either install it in your root directory or in a specific package.
+  There will be some rough edges, let us know when you find any.
+</details>
