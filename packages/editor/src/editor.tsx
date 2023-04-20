@@ -79,15 +79,20 @@ export function EditorFrame() {
       <SceneFrame>
         <ScenesDrawer />
 
-        <div className="absolute top-4 left-4 bottom-4 flex flex-col gap-3">
-          <EditorMenu />
-          {path && <ScenePanel />}
-        </div>
+        <div className="pointer-events-none absolute top-4 left-4 right-4 bottom-4 flex gap-3">
+          <div className="flex h-full w-52 flex-col gap-3">
+            <EditorMenu />
+            {path && <ScenePanel />}
+          </div>
 
-        <div className="pointer-events-none absolute left-4 right-4 bottom-4 flex justify-center">
-          <ControlsMenu />
+          <div className="mx-auto self-end">
+            <ControlsMenu />
+          </div>
+
+          <div className="flex h-full w-72">
+            <ContextPanel />
+          </div>
         </div>
-        <ContextPanel />
       </SceneFrame>
     </div>
   );

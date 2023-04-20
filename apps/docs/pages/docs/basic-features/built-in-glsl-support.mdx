@@ -1,0 +1,58 @@
+# Built-in GLSL Support
+
+Triplex comes with out-of-the-box support for GLSL shader files thanks to the
+[`vite-plugin-glsl`](https://github.com/UstymUkhman/vite-plugin-glsl) package.
+
+When importing a GLSL file with an extension of `glsl`, `wgsl`, `vert`, `frag`,
+`vs`, or `fs`, they will have all `#include` statements resolved and be returned
+as a string for you to use in Three.js materials.
+
+Import them:
+
+```tsx
+import vert from "./vertex.glsl";
+import frag from "./fragment.glsl";
+```
+
+And use them as needed, for example here it's used with
+[`three-custom-shader-material`](https://github.com/FarazzShaikh/THREE-CustomShaderMaterial):
+
+```jsx
+import CustomShaderMaterial from "three-custom-shader-material";
+
+export function WaterMaterial({
+  color,
+  wavelength = 1,
+  speed = 1,
+}: {
+  color?: Color;
+  wavelength?: number;
+  speed?: number;
+}) {
+  const ref = useRef(null);
+
+  useFrame((_, delta) => {
+    ref.current.uniforms.u_windTime.value +=
+      ref.current.uniforms.u_windSpeed.value * delta;
+  });
+
+  const uniforms = useMemo(() => {
+    return {
+      u_windSpeed: { value: 0.1 * speed },
+      u_windTime: { value: 0.0 },
+    };
+  }, [speed]);
+
+  return (
+    <CustomShaderMaterial
+      baseMaterial={MeshStandardMaterial}
+      color={color}
+      fragmentShader={frag}
+      ref={ref}
+      metalness={0.1}
+      transparent
+      uniforms={uniforms}
+      vertexShader={vert}
+    />
+  );
+```

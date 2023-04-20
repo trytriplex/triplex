@@ -25,6 +25,7 @@ function SceneComponent({
     <button
       type="submit"
       onClick={onClick}
+      title={name}
       style={{ paddingLeft: level === 1 ? 13 : level * 13 }}
       className={cn([
         selected
@@ -50,7 +51,7 @@ export function ScenePanel() {
   const { path } = useEditor();
 
   return (
-    <div className="h-full w-52 overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%] shadow-2xl shadow-black/50">
+    <div className="pointer-events-auto w-full flex-grow overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%] shadow-2xl shadow-black/50">
       <ErrorBoundary keys={[path]}>
         <Suspense
           fallback={<div className="p-4 text-neutral-400">Loading...</div>}

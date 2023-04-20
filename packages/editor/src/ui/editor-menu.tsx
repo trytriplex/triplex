@@ -16,14 +16,14 @@ function ShortcutItem({
   metaKey,
   onClick,
   shiftKey,
-  shortcut,
+  shortcut = "",
 }: {
   children: string;
   disabled?: boolean;
   metaKey?: boolean;
   onClick?: () => void;
   shiftKey?: boolean;
-  shortcut: string;
+  shortcut?: string;
 }) {
   const OS_META_KEY = navigator.platform.match("Mac") ? "⌘" : "CTRL";
   const metaHotkey = metaKey ? `${OS_META_KEY} ` : "";
@@ -70,19 +70,13 @@ export function EditorMenu() {
   const { blur, jumpTo, navigateTo } = useScene();
 
   return (
-    <div className="self-start rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1 shadow-2xl shadow-black/50">
+    <div className="pointer-events-auto self-start rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1 shadow-2xl shadow-black/50">
       <Menubar>
         <Menu>
           <Trigger>File</Trigger>
           <MenuContent>
-            <ShortcutItem onClick={newFile} metaKey shortcut="N">
-              New file...
-            </ShortcutItem>
-            <ShortcutItem
-              metaKey
-              shortcut="O"
-              onClick={() => showOverlay("open-scene")}
-            >
+            <ShortcutItem onClick={newFile}>New file...</ShortcutItem>
+            <ShortcutItem onClick={() => showOverlay("open-scene")}>
               Open
             </ShortcutItem>
             <Separator />
@@ -96,7 +90,7 @@ export function EditorMenu() {
           <MenuContent>
             <UndoRedoItems />
             <Separator />
-            <MenuItem
+            <ShortcutItem
               onClick={() => {
                 const result = confirm(
                   "Will throw away unsaved state, continue?"
@@ -108,7 +102,7 @@ export function EditorMenu() {
               }}
             >
               Reset
-            </MenuItem>
+            </ShortcutItem>
           </MenuContent>
         </Menu>
         <Menu>
