@@ -1,5 +1,21 @@
 # @triplex/run
 
+## 0.41.0
+
+### Minor Changes
+
+- 5d161d8: The tsconfig template now includes more sensible defaults.
+- 6e76c85: Template scene has been updated to use latest components config.
+- 0ffc74e: When initializing into a fresh repository triplex will create a
+  folder instead of installing in the current directory.
+
+### Patch Changes
+
+- Updated dependencies [c399ed8]
+- Updated dependencies [5d161d8]
+  - @triplex/server@0.41.0
+  - @triplex/client@0.41.0
+
 ## 0.40.0
 
 ### Patch Changes
@@ -31,7 +47,8 @@
 
 ### Minor Changes
 
-- 1a2ecea: The triplex config now has a new property called `components` - use to mark files that are able to be added to scenes.
+- 1a2ecea: The triplex config now has a new property called `components` - use
+  to mark files that are able to be added to scenes.
 
 ### Patch Changes
 
@@ -68,7 +85,10 @@
 
 ### Minor Changes
 
-- 2a64658: The context panel now displays all available props on a component even if they aren't yet declared thanks to the TypeScript compiler and ts-morph. Not all prop types are supported currently, if you have one that you expected to be available but isn't please reach out.
+- 2a64658: The context panel now displays all available props on a component
+  even if they aren't yet declared thanks to the TypeScript compiler and
+  ts-morph. Not all prop types are supported currently, if you have one that you
+  expected to be available but isn't please reach out.
 
 ### Patch Changes
 
@@ -131,7 +151,9 @@
 
 ### Minor Changes
 
-- aa1aa8c: Scene transformation using ts-morph has been replaced with Babel significantly speeding up initial load and saving. The need for the `.triplex/tmp` folder is now gone and thus no longer used.
+- aa1aa8c: Scene transformation using ts-morph has been replaced with Babel
+  significantly speeding up initial load and saving. The need for the
+  `.triplex/tmp` folder is now gone and thus no longer used.
 
 ### Patch Changes
 
@@ -238,7 +260,8 @@
 ### Minor Changes
 
 - 70b3365: Adds `publicDir` to config.
-- 70b3365: Rename .gitignore template to gitignore as npm doesn't seem to want to install it.
+- 70b3365: Rename .gitignore template to gitignore as npm doesn't seem to want
+  to install it.
 
 ### Patch Changes
 
@@ -273,7 +296,8 @@
 ### Minor Changes
 
 - 926359a: Extracts templates from strings into their own folder.
-- 2fa7c45: Adds triplex config and files option, an array of globs for triplex to find scenes with.
+- 2fa7c45: Adds triplex config and files option, an array of globs for triplex
+  to find scenes with.
 - 926359a: Server now gracefully exits when closed.
 - 7ff35f3: Upgrades @react-three/fiber to latest.
 - 2fa7c45: Adds author field to package.json.
@@ -362,9 +386,12 @@
 ### Minor Changes
 
 - 7db42bd: Editor now runs on port 3333.
-- 12ecbc4: Adds --open command to the editor command. Optionally pass in a filepath to open that file initially.
-- 12ecbc4: Adds `init` command to the CLI. Run `triplex init` to setup your repository.
-- 12ecbc4: When running from the CLI `triplex` now uses commands. Run `triplex editor` for the same behaviour as when running `triplex` before.
+- 12ecbc4: Adds --open command to the editor command. Optionally pass in a
+  filepath to open that file initially.
+- 12ecbc4: Adds `init` command to the CLI. Run `triplex init` to setup your
+  repository.
+- 12ecbc4: When running from the CLI `triplex` now uses commands. Run
+  `triplex editor` for the same behaviour as when running `triplex` before.
 
 ### Patch Changes
 
@@ -379,7 +406,8 @@
 
 ### Minor Changes
 
-- 387f6cd: Editor now able to use tailwindcss during dev, which is compiled away when packaged to npm.
+- 387f6cd: Editor now able to use tailwindcss during dev, which is compiled away
+  when packaged to npm.
 - 387f6cd: Adds a menu bar to the editor.
 
 ### Patch Changes
