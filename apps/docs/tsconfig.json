@@ -8,10 +8,6 @@
     "skipLibCheck": true,
     "strict": true,
     "jsx": "preserve",
-    "types": ["@react-three/fiber"],
-    "paths": {
-      "@/*": ["./src/*"]
-    },
     "lib": ["dom", "dom.iterable", "esnext"],
     "allowJs": true,
     "noEmit": true,
