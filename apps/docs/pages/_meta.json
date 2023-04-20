@@ -4,7 +4,7 @@
     "type": "page",
     "title": "Home",
     "theme": {
-      "layout": "full"
+      "layout": "raw"
     }
   },
   "docs": {
