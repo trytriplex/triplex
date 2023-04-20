@@ -1,10 +1,24 @@
 # @triplex/client
 
+## 0.41.0
+
+### Minor Changes
+
+- 5d161d8: Move to using system fonts.
+
+### Patch Changes
+
+- Updated dependencies [5d161d8]
+  - @triplex/editor@0.41.0
+  - @triplex/scene@0.41.0
+
 ## 0.40.0
 
 ### Minor Changes
 
-- a2a2f4b: When unapplying a prop to a component such as performing an undo it is now applied as expected in the scene. Previously only the context panel would be updated with the new value.
+- a2a2f4b: When unapplying a prop to a component such as performing an undo it
+  is now applied as expected in the scene. Previously only the context panel
+  would be updated with the new value.
 
 ### Patch Changes
 
@@ -32,7 +46,8 @@
 
 ### Minor Changes
 
-- 06471f6: The components virtual module has been removed in favor of passing down as props instead.
+- 06471f6: The components virtual module has been removed in favor of passing
+  down as props instead.
 
 ### Patch Changes
 
@@ -44,8 +59,10 @@
 
 ### Minor Changes
 
-- 1a2ecea: Components can now be added to the scene through the add component button in the scene panel.
-- 1a2ecea: The triplex config now has a new property called `components` - use to mark files that are able to be added to scenes.
+- 1a2ecea: Components can now be added to the scene through the add component
+  button in the scene panel.
+- 1a2ecea: The triplex config now has a new property called `components` - use
+  to mark files that are able to be added to scenes.
 
 ### Patch Changes
 
@@ -77,7 +94,10 @@
 
 ### Minor Changes
 
-- 2a64658: The context panel now displays all available props on a component even if they aren't yet declared thanks to the TypeScript compiler and ts-morph. Not all prop types are supported currently, if you have one that you expected to be available but isn't please reach out.
+- 2a64658: The context panel now displays all available props on a component
+  even if they aren't yet declared thanks to the TypeScript compiler and
+  ts-morph. Not all prop types are supported currently, if you have one that you
+  expected to be available but isn't please reach out.
 
 ### Patch Changes
 
@@ -149,7 +169,9 @@
 
 ### Minor Changes
 
-- aa1aa8c: Scene transformation using ts-morph has been replaced with Babel significantly speeding up initial load and saving. The need for the `.triplex/tmp` folder is now gone and thus no longer used.
+- aa1aa8c: Scene transformation using ts-morph has been replaced with Babel
+  significantly speeding up initial load and saving. The need for the
+  `.triplex/tmp` folder is now gone and thus no longer used.
 
 ### Patch Changes
 
@@ -195,7 +217,8 @@
 
 ### Minor Changes
 
-- 9c807ac: When running r3f is now deduped and forced to [use the version from project root](https://vitejs.dev/config/shared-options.html#resolve-dedupe).
+- 9c807ac: When running r3f is now deduped and forced to
+  [use the version from project root](https://vitejs.dev/config/shared-options.html#resolve-dedupe).
 
 ### Patch Changes
 
@@ -279,7 +302,8 @@
 
 ### Minor Changes
 
-- c8ab78b: Scene no longer uses its own copied HMR library and instead leans on the vite react plugin offering.
+- c8ab78b: Scene no longer uses its own copied HMR library and instead leans on
+  the vite react plugin offering.
 - 2fa7c45: Adds author field to package.json.
 - 926359a: The temp folder is now located in .triplex/tmp.
 
@@ -376,7 +400,8 @@
 
 ### Minor Changes
 
-- 12ecbc4: Adds --open command to the editor command. Optionally pass in a filepath to open that file initially.
+- 12ecbc4: Adds --open command to the editor command. Optionally pass in a
+  filepath to open that file initially.
 - 7db42bd: Adds slide in animation.
 
 ### Patch Changes

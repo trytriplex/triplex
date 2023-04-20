@@ -1,10 +1,13 @@
 # @triplex/ws-client
 
+## 0.41.0
+
 ## 0.40.0
 
 ### Minor Changes
 
-- ee2494b: Websocket connections are now cleaned up after a period of time if there are no more subscriptions.
+- ee2494b: Websocket connections are now cleaned up after a period of time if
+  there are no more subscriptions.
 
 ## 0.39.0
 
@@ -20,7 +23,10 @@
 
 ### Minor Changes
 
-- 2a64658: The context panel now displays all available props on a component even if they aren't yet declared thanks to the TypeScript compiler and ts-morph. Not all prop types are supported currently, if you have one that you expected to be available but isn't please reach out.
+- 2a64658: The context panel now displays all available props on a component
+  even if they aren't yet declared thanks to the TypeScript compiler and
+  ts-morph. Not all prop types are supported currently, if you have one that you
+  expected to be available but isn't please reach out.
 
 ## 0.33.0
 

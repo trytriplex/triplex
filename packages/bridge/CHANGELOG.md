@@ -1,5 +1,7 @@
 # @triplex/bridge
 
+## 0.41.0
+
 ## 0.40.0
 
 ## 0.39.0
@@ -10,7 +12,8 @@
 
 ### Minor Changes
 
-- 23fe64a: Adds delete scene object. Access through the context panel when focusing on a scene object.
+- 23fe64a: Adds delete scene object. Access through the context panel when
+  focusing on a scene object.
 - 1a2ecea: Iframe client bridge can now wait for a response from host.
 
 ## 0.36.0
@@ -21,7 +24,10 @@
 
 ### Minor Changes
 
-- 2a64658: The context panel now displays all available props on a component even if they aren't yet declared thanks to the TypeScript compiler and ts-morph. Not all prop types are supported currently, if you have one that you expected to be available but isn't please reach out.
+- 2a64658: The context panel now displays all available props on a component
+  even if they aren't yet declared thanks to the TypeScript compiler and
+  ts-morph. Not all prop types are supported currently, if you have one that you
+  expected to be available but isn't please reach out.
 
 ## 0.33.0
 
@@ -33,7 +39,9 @@
 
 ### Minor Changes
 
-- c87a5f3: Undo/redo now available. When manipulating the scene through transform controls or the context panel each persisted manipulation will be able to be undone (and redone) using hotkeys and the edit menu actions.
+- c87a5f3: Undo/redo now available. When manipulating the scene through
+  transform controls or the context panel each persisted manipulation will be
+  able to be undone (and redone) using hotkeys and the edit menu actions.
 
 ## 0.31.0
 
@@ -85,7 +93,8 @@
 
 ### Minor Changes
 
-- e54e0f8: Bridge events now flow unidirectionally enabling the editor ui to initiate events to the scene, such as navigate and focus.
+- e54e0f8: Bridge events now flow unidirectionally enabling the editor ui to
+  initiate events to the scene, such as navigate and focus.
 
 ## 0.14.0
 
@@ -105,7 +114,8 @@
 
 ### Minor Changes
 
-- ac9624f: Fixes client/host race condition where host would send events before the client has connected.
+- ac9624f: Fixes client/host race condition where host would send events before
+  the client has connected.
 
 ## 0.4.0
 

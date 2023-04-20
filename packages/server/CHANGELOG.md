@@ -1,17 +1,27 @@
 # @triplex/server
 
+## 0.41.0
+
+### Minor Changes
+
+- c399ed8: Fixes timing bug by using specific insert and set functions on the
+  import declaration node instead of the generic set.
+
 ## 0.40.0
 
 ### Minor Changes
 
-- bfb0f7a: When initializing a websocket loader it now catches any errors thrown and returns them to the client.
-- 7aa2ead: Shadowed types, interfaces, and imports are now excluded when reading an exports name.
+- bfb0f7a: When initializing a websocket loader it now catches any errors thrown
+  and returns them to the client.
+- 7aa2ead: Shadowed types, interfaces, and imports are now excluded when reading
+  an exports name.
 
 ## 0.39.0
 
 ### Minor Changes
 
-- ca9807e: Save now supports passing in an option arg to copy the file to another location.
+- ca9807e: Save now supports passing in an option arg to copy the file to
+  another location.
 - ca9807e: New files can now be created through the file menu.
 
 ## 0.38.0
@@ -20,7 +30,8 @@
 
 ### Minor Changes
 
-- 23fe64a: Adds delete scene object. Access through the context panel when focusing on a scene object.
+- 23fe64a: Adds delete scene object. Access through the context panel when
+  focusing on a scene object.
 - e480446: Exclude isLight propeties from scene object context panel.
 - 1a2ecea: Adds new endpoint for adding a component to a file.
 
@@ -41,7 +52,10 @@
 
 ### Minor Changes
 
-- 2a64658: The context panel now displays all available props on a component even if they aren't yet declared thanks to the TypeScript compiler and ts-morph. Not all prop types are supported currently, if you have one that you expected to be available but isn't please reach out.
+- 2a64658: The context panel now displays all available props on a component
+  even if they aren't yet declared thanks to the TypeScript compiler and
+  ts-morph. Not all prop types are supported currently, if you have one that you
+  expected to be available but isn't please reach out.
 
 ## 0.33.0
 
@@ -49,15 +63,20 @@
 
 ### Minor Changes
 
-- c87a5f3: Undo/redo now available. When manipulating the scene through transform controls or the context panel each persisted manipulation will be able to be undone (and redone) using hotkeys and the edit menu actions.
-- 3a190f1: API response for prop types now returns an object and works with strict compiler option.
-- c87a5f3: Adds reset command. Use this to throw away all unsaved changes in the scene.
+- c87a5f3: Undo/redo now available. When manipulating the scene through
+  transform controls or the context panel each persisted manipulation will be
+  able to be undone (and redone) using hotkeys and the edit menu actions.
+- 3a190f1: API response for prop types now returns an object and works with
+  strict compiler option.
+- c87a5f3: Adds reset command. Use this to throw away all unsaved changes in the
+  scene.
 
 ## 0.31.0
 
 ### Minor Changes
 
-- dad975f: Watchers have been replaced with ts-morph events where appropriate to prevent race conditions when changing from source.
+- dad975f: Watchers have been replaced with ts-morph events where appropriate to
+  prevent race conditions when changing from source.
 - 6e9b119: Paths passed to globs are now normalized to use POSIX separators.
 
 ## 0.30.0
@@ -72,15 +91,19 @@
 
 ### Minor Changes
 
-- aa1aa8c: Scene transformation using ts-morph has been replaced with Babel significantly speeding up initial load and saving. The need for the `.triplex/tmp` folder is now gone and thus no longer used.
-- aa1aa8c: Line and column numbers for scene objects have been corrected and are now consistent across editor, scene, and server.
+- aa1aa8c: Scene transformation using ts-morph has been replaced with Babel
+  significantly speeding up initial load and saving. The need for the
+  `.triplex/tmp` folder is now gone and thus no longer used.
+- aa1aa8c: Line and column numbers for scene objects have been corrected and are
+  now consistent across editor, scene, and server.
 
 ## 0.27.0
 
 ### Minor Changes
 
 - fa35cde: JSX element type inference has been re-written to be more resilient.
-- fa35cde: JSX element type inference has been removed from the critical path of the scene transform.
+- fa35cde: JSX element type inference has been removed from the critical path of
+  the scene transform.
 - e5a3419: Context panel now supports more prop types.
 
 ## 0.26.0
@@ -89,23 +112,28 @@
 
 - 785050d: Adds unsaved indicator to the editor.
 - 440d427: Server now pings every 30s awaiting a pong from connected clients.
-- b77438d: During transformation any leading trivia found is now stripped from cloned jsx elements.
+- b77438d: During transformation any leading trivia found is now stripped from
+  cloned jsx elements.
 
 ## 0.25.0
 
 ### Minor Changes
 
 - 1be56fe: Scene transform now correctly handles props with dashes.
-- ed6349b: Extracting prop types now returns early instead of throwing for unhandled nodes.
-- aaac9cc: Fix type extraction for jsx elements to handle arrow function components.
+- ed6349b: Extracting prop types now returns early instead of throwing for
+  unhandled nodes.
+- aaac9cc: Fix type extraction for jsx elements to handle arrow function
+  components.
 - 5736992: Server now throws when accessing files outside of cwd.
-- e694cf2: Now override userland config for preserveSymlinks to false to prevent 100% CPU utilization.
+- e694cf2: Now override userland config for preserveSymlinks to false to prevent
+  100% CPU utilization.
 
 ## 0.24.0
 
 ### Minor Changes
 
-- 4f468f6: The server project [ts-morph] now skips adding files from ts config on instantiation.
+- 4f468f6: The server project [ts-morph] now skips adding files from ts config
+  on instantiation.
 
 ## 0.23.0
 
@@ -156,8 +184,10 @@
 
 ### Minor Changes
 
-- 7ff35f3: Context panel no longer throws when navigating between scene and a scene object is selected.
-- 2fa7c45: Adds triplex config and files option, an array of globs for triplex to find scenes with.
+- 7ff35f3: Context panel no longer throws when navigating between scene and a
+  scene object is selected.
+- 2fa7c45: Adds triplex config and files option, an array of globs for triplex
+  to find scenes with.
 - 926359a: Server now gracefully exits when closed.
 - 2fa7c45: Adds author field to package.json.
 - 926359a: The temp folder is now located in .triplex/tmp.
@@ -179,7 +209,8 @@
 
 ### Minor Changes
 
-- 7a8083c: The open rpc has been added back to prevent the "flash of no scene" when transitioning between scenes for the first time.
+- 7a8083c: The open rpc has been added back to prevent the "flash of no scene"
+  when transitioning between scenes for the first time.
 
 ### Patch Changes
 
@@ -190,7 +221,8 @@
 ### Minor Changes
 
 - a4d6882: Adds scene object ws request.
-- 969feab: Adds websocket server and replaces scene and scene components endpoints with it.
+- 969feab: Adds websocket server and replaces scene and scene components
+  endpoints with it.
 - cc917d7: Removes unused apis.
 
 ### Patch Changes
@@ -204,7 +236,8 @@
 
 ### Minor Changes
 
-- 55f0206: Scene components now appear nested when children of other components in the UI.
+- 55f0206: Scene components now appear nested when children of other components
+  in the UI.
 
 ### Patch Changes
 
@@ -226,7 +259,9 @@
 
 ### Minor Changes
 
-- 55e8a52: On save the source file will be formatted with prettier if a prettierrc file was found, else it will be formatted by the TypeScript compiler.
+- 55e8a52: On save the source file will be formatted with prettier if a
+  prettierrc file was found, else it will be formatted by the TypeScript
+  compiler.
 - 7db42bd: Adds /scene route to return all available files in the cwd.
 
 ### Patch Changes
