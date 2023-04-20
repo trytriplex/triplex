@@ -131,23 +131,24 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
 
 export function ContextPanel() {
   const { target } = useEditor();
+  if (!target) {
+    return null;
+  }
 
   return (
-    <div className="pointer-events-none absolute top-4 right-4 bottom-4 flex w-72 flex-col gap-3">
-      {target && (
-        <div className="pointer-events-auto flex h-full flex-col overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%] shadow-2xl shadow-black/50">
-          <ErrorBoundary keys={[target]}>
-            <Suspense
-              fallback={<div className="p-4 text-neutral-400">Loading...</div>}
-            >
-              <SelectedSceneObject
-                key={target.ownerPath + target.column + target.line}
-                target={target}
-              />
-            </Suspense>
-          </ErrorBoundary>
-        </div>
-      )}
+    <div className="pointer-events-none flex w-full flex-col gap-3">
+      <div className="pointer-events-auto flex h-full flex-col overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%] shadow-2xl shadow-black/50">
+        <ErrorBoundary keys={[target]}>
+          <Suspense
+            fallback={<div className="p-4 text-neutral-400">Loading...</div>}
+          >
+            <SelectedSceneObject
+              key={target.ownerPath + target.column + target.line}
+              target={target}
+            />
+          </Suspense>
+        </ErrorBoundary>
+      </div>
     </div>
   );
 }

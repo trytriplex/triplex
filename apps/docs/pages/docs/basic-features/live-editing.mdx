@@ -1,0 +1,72 @@
+import Image from "next/image";
+
+# Live Editing
+
+Triplex two-way syncs between the editor and your source code. Making changes
+inside the editor and saving will update the source file, likewise editing the
+source code and saving will update the editor.
+
+## Opening a Component
+
+![Open a component in the file menu](/open-action.png)
+
+Opening a component can be performed through the file menu `File` > `Open`. Both
+default and named exports can be opened by Triplex.
+
+Components listed in the open drawer are sourced from the `files` glob in the
+config. [Learn more](/docs/api-reference/config) in the config docs.
+
+## Creating a New File
+
+![Create a file in the file menu](/new-file-action.png)
+
+Creating a new file can be performed through the file menu `File` > `New File`.
+Currently you're able to specify the component name which will be used as a
+[named export](https://developer.mozilla.org/en-US/docs/web/javascript/reference/statements/export#using_named_exports).
+On save you will be asked where to save the file to.
+
+## Undo / Redo
+
+![Undo and redo in the edit menu](/undo-action.png)
+
+Undo and redo changes through the edit menu `Edit` > `Undo`. Changes made inside
+the editor don't get persisted to source code until you save. Currently when
+saving the undo/redo stack is cleared.
+
+**Hotkeys**
+
+- MacOS `Cmd` + `Z` / `Shift` + `Cmd` + `Z`
+- Windows `Ctrl` + `Z` / `Shift` + `Ctrl` + `Z`
+
+## Saving
+
+![Save a file in the file menu](/save-action.png)
+
+Saving your changes can be performed through the file menu `File` > `Save. This
+will persist changes to the file system. When modifying source code directly
+however any changes made in the editor will be thrown away, be careful!
+
+**Hotkeys**
+
+- MacOS `Cmd` + `S`
+- Windows `Ctrl` + `S`
+
+## Reset Changes
+
+![Reset your changes in the edit menu](/undo-action.png)
+
+Clear changes you've made in the editor through the edit menu `Edit` > `Reset`.
+This will throw away changes and reload the scene.
+
+## Transform Controls
+
+![Available transforms in the transform panel](/transform-controls.png)
+
+Change the current transform mode by selecting one of the transforms (translate,
+rotate, scale) in this panel.
+
+**Hotkeys**
+
+- Translate `T`
+- Rotate `R`
+- Scale `S`

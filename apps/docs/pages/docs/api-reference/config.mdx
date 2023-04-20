@@ -1,0 +1,51 @@
+# config.json
+
+Your Triplex project can be configured in the `.triplex/config.json` file.
+
+## Options
+
+### Files
+
+The `files` option is a glob array of relative paths used to tell Triplex what
+files it can open. You can define multiple roots. These found files will be
+displayed in the `File` > `Open` menu.
+
+**Example**
+
+```json
+{
+  "files": ["../src/**/*.tsx"]
+}
+```
+
+### Components
+
+The `components` option is a glob array of relative paths used to tell Triplex
+what files should be available to add. You can define multiple roots.
+
+Defaults to `[]`.
+
+**Example**
+
+```json
+{
+  "components": ["../src/components/**/*.tsx"]
+}
+```
+
+### Public directory
+
+The public directory can be used to expose files through the local dev server,
+such as images, videos, and GLTF files. For example if the public directory
+includes a `public/image.png` image it will be made available at
+`http://localhost:3333/image.png`.
+
+Defaults to `"../public"`.
+
+**Example**
+
+```json
+{
+  "publicDir": ["../public"]
+}
+```

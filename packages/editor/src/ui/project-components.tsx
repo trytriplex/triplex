@@ -190,7 +190,7 @@ export function ProjectComponents() {
         onClick={toggle}
         isSelected={isOpen}
         icon={PlusIcon}
-        title="Add to scene"
+        title="Add component"
       />
 
       <Suspense fallback={null}>

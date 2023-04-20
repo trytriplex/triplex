@@ -10,6 +10,7 @@
     "clean": "pnpm -r exec rm -rf dist",
     "dev:caustics": "pnpm --filter @example/caustics editor",
     "dev:cli": "cd test && triplex",
+    "dev:docs": "pnpm --filter @docs/triplex dev",
     "dev:faze": "pnpm --filter @example/faze editor",
     "dev:geometry": "pnpm --filter @example/geometry editor",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
@@ -33,7 +34,10 @@
     "vitest": "^0.29.8"
   },
   "engines": {
-    "node": ">=14.0.0"
+    "node": ">=18.0.0"
   },
-  "packageManager": "pnpm@7.28.0"
+  "packageManager": "pnpm@7.28.0",
+  "volta": {
+    "node": "18.16.0"
+  }
 }

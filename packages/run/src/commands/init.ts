@@ -144,7 +144,7 @@ export async function init({
       parsed.compilerOptions = {};
     }
 
-    parsed.compilerOptions.jsx = "react-jsx";
+    parsed.compilerOptions.jsx = "preserve";
 
     if (!parsed.compilerOptions.types) {
       parsed.compilerOptions.types = [];

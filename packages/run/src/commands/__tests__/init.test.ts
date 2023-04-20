@@ -178,7 +178,7 @@ describe("init command", () => {
         join(cwd, "tsconfig.json"),
         `{
   "compilerOptions": {
-    "jsx": "react-jsx",
+    "jsx": "preserve",
     "types": [
       "@react-three/fiber"
     ]

@@ -1,0 +1,19 @@
+{
+  "get-started": "",
+  "--": {
+    "title": "Editor",
+    "type": "separator"
+  },
+  "basic-features": "Basic Features",
+  "---": {
+    "title": "More",
+    "type": "separator"
+  },
+  "faq": "FAQ",
+  "api-reference": "API Reference",
+  "pmndrs": {
+    "title": "Poimandres ↗",
+    "href": "https://pmnd.rs/",
+    "newWindow": true
+  }
+}
