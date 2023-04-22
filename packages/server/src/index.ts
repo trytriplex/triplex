@@ -97,6 +97,19 @@ export function createServer({
     context.response.body = { exportName, path };
   });
 
+  router.post("/scene/:path/:exportName", async (context) => {
+    const { path, exportName } = context.params;
+    const { sourceFile } = project.getSourceFile(path);
+    const { name: newName } = (await context.request.body({ type: "json" })
+      .value) as {
+      name: string;
+    };
+
+    component.rename(sourceFile, exportName, newName);
+
+    context.response.body = { message: "success" };
+  });
+
   router.post("/scene/:path/object/:line/:column/restore", (context) => {
     const { column, line, path } = context.params;
     const { sourceFile } = project.getSourceFile(path);

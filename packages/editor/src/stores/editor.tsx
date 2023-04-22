@@ -230,12 +230,18 @@ export function useEditor() {
   const set = useCallback(
     (
       componentParams: Params,
-      metaParams: { entered?: boolean; forceSaveAs?: boolean } = {}
+      metaParams: {
+        replace?: true;
+        entered?: true;
+        forceSaveAs?: true;
+        forceRenameOnSave?: true;
+      } = {}
     ) => {
       if (
         componentParams.path === path &&
         componentParams.exportName === exportName &&
-        typeof metaParams.forceSaveAs === "undefined"
+        typeof metaParams.forceSaveAs === "undefined" &&
+        typeof metaParams.forceRenameOnSave === "undefined"
       ) {
         // Bail if we're already on the same path.
         // If we implement props being able to change
@@ -265,41 +271,79 @@ export function useEditor() {
         newParams.forceSaveAs = "true";
       }
 
-      setSearchParams(newParams);
+      if (metaParams.forceRenameOnSave) {
+        newParams.forceRenameOnSave = "true";
+      }
+
+      setSearchParams(newParams, { replace: metaParams.replace });
     },
     [exportName, path, setSearchParams]
   );
 
   const save = useCallback(
     async (saveAs = !!searchParams.get("forceSaveAs")) => {
-      let newPath = "";
+      let actualPath = path;
+      let actualExportName = exportName;
+
       if (saveAs) {
-        newPath = prompt("Filename", path) || "";
-        if (!newPath) {
+        const enteredPath = prompt("Filename", path) || "";
+        if (!enteredPath) {
           // Abort, user cleared filename or cancelled.
           return;
+        } else {
+          actualPath = enteredPath;
         }
       }
 
+      if (searchParams.get("forceRenameOnSave")) {
+        const enteredName = prompt("Component Name", exportName);
+        if (!enteredName) {
+          // Abort, user cleared the name or cancelled.
+          return;
+        }
+
+        if (exportName !== enteredName) {
+          actualExportName = enteredName;
+
+          // The user decided to change the name on save
+          await fetch(
+            `http://localhost:8000/scene/${encodeURIComponent(
+              path
+            )}/${exportName}`,
+            { method: "POST", body: JSON.stringify({ name: enteredName }) }
+          );
+
+          set(
+            {
+              encodedProps: "",
+              exportName: enteredName,
+              path,
+            },
+            { replace: true }
+          );
+        }
+      }
+
+      // Clear the update stack as the line and column numbers of jsx elements
+      // Will most likely change after formatting resulting in the rpc calls not
+      // Working anymore.
       undoStack.length = 0;
       redoStack.length = 0;
 
       await fetch(
         `http://localhost:8000/scene/${encodeURIComponent(
           path
-        )}/save?newPath=${newPath}`
+        )}/save?newPath=${actualPath}`
       );
 
-      if (newPath) {
-        set(
-          {
-            encodedProps: "",
-            exportName,
-            path: newPath,
-          },
-          { forceSaveAs: false }
-        );
-      }
+      set(
+        {
+          encodedProps: "",
+          exportName: actualExportName,
+          path: actualPath,
+        },
+        { replace: true }
+      );
     },
     [exportName, path, searchParams, set]
   );
@@ -316,7 +360,7 @@ export function useEditor() {
         path: data.path,
         encodedProps: "",
       },
-      { forceSaveAs: true }
+      { forceSaveAs: true, forceRenameOnSave: true }
     );
   }, [set]);
 
@@ -327,11 +371,16 @@ export function useEditor() {
     );
     const data = await result.json();
 
-    set({
-      exportName: data.exportName,
-      path: data.path,
-      encodedProps: "",
-    });
+    set(
+      {
+        exportName: data.exportName,
+        path: data.path,
+        encodedProps: "",
+      },
+      {
+        forceRenameOnSave: true,
+      }
+    );
   }, [path, set]);
 
   return useMemo(

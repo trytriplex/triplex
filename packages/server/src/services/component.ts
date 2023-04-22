@@ -390,3 +390,13 @@ export function deleteCommentComponents(sourceFile: SourceFile) {
     node.replaceWithText("");
   });
 }
+
+export function rename(
+  sourceFile: SourceFile,
+  exportName: string,
+  newName: string
+) {
+  const { declaration } = getExportName(sourceFile, exportName);
+
+  declaration.rename(newName);
+}

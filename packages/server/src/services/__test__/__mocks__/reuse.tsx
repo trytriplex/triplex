@@ -7,3 +7,11 @@ export function Reuse() {
     </>
   );
 }
+
+export const NamedExport = () => {
+  return (
+    <>
+      <Reuse></Reuse>
+    </>
+  );
+};

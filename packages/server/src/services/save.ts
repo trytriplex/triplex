@@ -40,7 +40,7 @@ export async function save({
       }
     }
 
-    if (newPath) {
+    if (newPath && newPath !== path) {
       const result = sourceFile.copy(newPath);
       await result.save();
     } else {

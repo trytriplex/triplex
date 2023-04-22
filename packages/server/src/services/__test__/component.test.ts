@@ -7,11 +7,75 @@ import {
   commentComponent,
   uncommentComponent,
   deleteCommentComponents,
+  rename,
 } from "../component";
 import { getExportName } from "../../ast/module";
 import { getJsxElementAt, getJsxElementsPositions } from "../../ast/jsx";
 
 describe("component service", () => {
+  it("should rename a function declaration named export", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/empty.tsx")
+    );
+
+    rename(sourceFile, "EmptyFragment", "MyNewName");
+
+    expect(() => getExportName(sourceFile, "EmptyFragment")).toThrow();
+    expect(() => getExportName(sourceFile, "MyNewName")).not.toThrow();
+  });
+
+  it("should rename a variable declaration named export", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/reuse.tsx")
+    );
+
+    rename(sourceFile, "NamedExport", "NewExport");
+
+    expect(() => getExportName(sourceFile, "NamedExport")).toThrow();
+    expect(() => getExportName(sourceFile, "NewExport")).not.toThrow();
+  });
+
+  it("should rename local usages", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/reuse.tsx")
+    );
+
+    rename(sourceFile, "Reuse", "AnotherOne");
+
+    expect(getExportName(sourceFile, "NamedExport").declaration.getText())
+      .toMatchInlineSnapshot(`
+      "NamedExport = () => {
+        return (
+          <>
+            <AnotherOne></AnotherOne>
+          </>
+        );
+      }"
+    `);
+  });
+
+  it("should rename default export", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx")
+    );
+
+    rename(sourceFile, "default", "MyNewName");
+
+    expect(getExportName(sourceFile, "default").name).toEqual("MyNewName");
+  });
+
   it("should return the line column number of new jsx element in shorthand", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
