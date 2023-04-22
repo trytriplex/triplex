@@ -1,4 +1,4 @@
 {
-  "plugins": ["prettier-plugin-tailwindcss"],
+  "plugins": ["prettier-plugin-jsdoc", "prettier-plugin-tailwindcss"],
   "proseWrap": "always"
 }
