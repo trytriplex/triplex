@@ -100,7 +100,7 @@ function BridgeReceiveEvents() {
             exportName: data.exportName,
             encodedProps: data.encodedProps,
           },
-          { entered: data.entered }
+          data.entered ? { entered: true } : undefined
         );
       }),
       listen("trplx:onConfirmSceneObjectProp", async (data) => {

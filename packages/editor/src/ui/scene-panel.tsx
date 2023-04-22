@@ -84,14 +84,20 @@ function ComponentHeading() {
     e
   ) => {
     const nextValue = e.target.value;
-    if (nextValue === "new-component") {
-      newComponent();
-    } else {
-      set({
-        encodedProps: "",
-        exportName: nextValue,
-        path,
-      });
+
+    switch (nextValue) {
+      case "new-component": {
+        newComponent();
+        break;
+      }
+
+      default: {
+        set({
+          encodedProps: "",
+          exportName: nextValue,
+          path,
+        });
+      }
     }
   };
 
@@ -109,7 +115,7 @@ function ComponentHeading() {
           onChange={onChangeComponentHandler}
           value={exportName}
         >
-          <optgroup className="m-0 text-xs" label={path.split("/").at(-1)}>
+          <optgroup className="text-xs" label={path.split("/").at(-1)}>
             {scene.exports.map((exp) => (
               <option
                 className="text-sm"
@@ -120,15 +126,17 @@ function ComponentHeading() {
               </option>
             ))}
           </optgroup>
-          <option value="new-component" className="text-sm">
-            New component...
-          </option>
+          <optgroup className="text-xs" label="Actions">
+            <option value="new-component" className="text-sm">
+              New Component...
+            </option>
+          </optgroup>
         </select>
       </label>
 
       <span
         aria-label={file.isSaved ? undefined : "Unsaved changes"}
-        title="Unsaved changes"
+        title={file.isSaved ? undefined : "Unsaved changes"}
         className={cn([
           "ml-auto h-2 w-2 flex-shrink-0 rounded-full",
           file.isSaved ? "bg-neutral-800" : "bg-yellow-400",
