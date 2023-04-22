@@ -14,7 +14,6 @@ import { save } from "./services/save";
 import { getAllFiles, getSceneExport } from "./services/file";
 import * as component from "./services/component";
 import * as projectService from "./services/project";
-import { join } from "path";
 
 export function createServer({
   files,
@@ -78,17 +77,24 @@ export function createServer({
     context.response.body = { message: "success" };
   });
 
-  router.post("/scene/new/:exportName", (context) => {
-    const { exportName } = context.params;
-    const fileName = join(process.cwd(), "__triplex__new__file.tsx");
-
-    const sourceFile = project.createSourceFile(exportName, fileName);
+  router.post("/scene/new", (context) => {
+    const exportName = "Untitled";
+    const sourceFile = project.createSourceFile(exportName);
 
     context.response.body = {
       message: "success",
       exportName,
       path: sourceFile.getFilePath(),
     };
+  });
+
+  router.post("/scene/:path/new", async (context) => {
+    const { path } = context.params;
+    const { sourceFile } = project.getSourceFile(path);
+
+    const { exportName } = component.create(sourceFile);
+
+    context.response.body = { exportName, path };
   });
 
   router.post("/scene/:path/object/:line/:column/restore", (context) => {
@@ -197,6 +203,7 @@ export function createServer({
     async ({ path }) => {
       const { sourceFile } = await project.getSourceFile(path);
       const isSaved = sourceFile.isSaved();
+
       return { isSaved };
     },
     async (push, { path }) => {
@@ -207,6 +214,9 @@ export function createServer({
       // When saved
       const watcher = watch(path);
       watcher.on("change", push);
+
+      // When added
+      watcher.on("add", push);
     }
   );
 

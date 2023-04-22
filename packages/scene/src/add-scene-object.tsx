@@ -23,7 +23,7 @@ export function AddSceneObject({
   const [positions, setPositions] = useState<
     { column: number; line: number }[]
   >([]);
-  const lazyRef = useRef<LazyExoticComponent<CT<unknown>>[]>([]);
+  const cachedLazyComponents = useRef<LazyExoticComponent<CT<unknown>>[]>([]);
 
   useEffect(() => {
     return listen("trplx:requestAddNewComponent", (component) => {
@@ -48,7 +48,10 @@ export function AddSceneObject({
     import.meta.hot?.on("vite:afterUpdate", (e) => {
       const isUpdated = e.updates.find((up) => path.endsWith(up.path));
       if (isUpdated) {
+        // The scene has been persisted to source remove all intermediates.
         setAddedComponents([]);
+        setPositions([]);
+        cachedLazyComponents.current = [];
       }
     });
   }, [path]);
@@ -90,13 +93,13 @@ export function AddSceneObject({
               throw new Error("invariant: component not found");
             }
 
-            if (!lazyRef.current[index]) {
-              lazyRef.current[index] = lazy(() =>
+            if (!cachedLazyComponents.current[index]) {
+              cachedLazyComponents.current[index] = lazy(() =>
                 found[1]().then((x) => ({ default: x[component.exportName] }))
               );
             }
 
-            const LazyComponent = lazyRef.current[index];
+            const LazyComponent = cachedLazyComponents.current[index];
 
             return (
               <Suspense key={component.exportName + index} fallback={null}>

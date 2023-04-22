@@ -48,7 +48,7 @@ export function LiteralUnionInput({
         id={name}
         defaultValue={defaultValue}
         onChange={onChangeHandler}
-        className="w-full appearance-none bg-transparent p-0.5 text-sm text-neutral-300 outline-none [color-scheme:dark]"
+        className="w-full appearance-none overflow-hidden text-ellipsis bg-transparent p-0.5 text-sm text-neutral-300 outline-none [color-scheme:dark]"
       >
         {!defaultValue && <option value="">Select value...</option>}
         {values.map((value) => (

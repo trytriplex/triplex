@@ -3,7 +3,7 @@ import { watch } from "chokidar";
 import { Project, ProjectOptions, SourceFile } from "ts-morph";
 
 export interface TRIPLEXProject {
-  createSourceFile(componentName: string, fileName: string): SourceFile;
+  createSourceFile(componentName: string): SourceFile;
   getSourceFile(path: string): {
     sourceFile: SourceFile;
   };
@@ -37,13 +37,19 @@ export function createProject({
     tsConfigFilePath,
   });
 
-  function createSourceFile(componentName: string, fileName: string) {
-    const existingSourceFile = project.getSourceFile(fileName);
-    if (existingSourceFile) {
-      project.removeSourceFile(existingSourceFile);
+  function createSourceFile(componentName: string) {
+    const fs = project.getFileSystem();
+    let count = 0;
+    let filename = join(process.cwd(), "src/untitled.tsx");
+
+    while (project.getSourceFile(filename) || fs.fileExistsSync(filename)) {
+      // Find a filename that doesn't exist
+      count += 1;
+      filename = join(process.cwd(), `src/untitled${count}.tsx`);
     }
 
-    const template = `export function ${componentName}() {
+    const template = `
+export function ${componentName}() {
   return (
     <>
     </>
@@ -51,7 +57,7 @@ export function createProject({
 }
 `;
 
-    return project.createSourceFile(fileName, template);
+    return project.createSourceFile(filename, template);
   }
 
   function getSourceFile(path: string) {

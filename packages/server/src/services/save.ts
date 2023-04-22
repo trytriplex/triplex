@@ -13,7 +13,7 @@ export async function save({
 }) {
   const { sourceFile } = project.getSourceFile(path);
 
-  if (sourceFile) {
+  if (sourceFile && !sourceFile.isSaved()) {
     deleteCommentComponents(sourceFile);
 
     const prettierConfigPath = await resolveConfigFile(process.cwd());

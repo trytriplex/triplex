@@ -9,6 +9,7 @@ import {
 import { basename, extname, relative } from "path";
 import { getExportName } from "../ast/module";
 import { getJsxElementAt } from "../ast/jsx";
+import { inferExports } from "../util/module";
 
 function guessComponentNameFromPath(path: string) {
   const name = basename(path)
@@ -118,6 +119,31 @@ function insertJsxElement(
     // Offset for the new line added in `componentText`.
     line: line + 1,
   };
+}
+
+export function includesComponent(sourceFile: SourceFile, exportName: string) {
+  const foundExports = inferExports(sourceFile.getText());
+
+  return !!foundExports.find((exp) => exp.exportName === exportName);
+}
+
+export function create(sourceFile: SourceFile) {
+  let count = 0;
+  let exportName = "Untitled";
+
+  while (includesComponent(sourceFile, exportName)) {
+    // Find a filename that doesn't exist
+    count += 1;
+    exportName = `Untitled${count}`;
+  }
+
+  sourceFile.addFunction({
+    isExported: true,
+    name: exportName,
+    statements: `return <></>;`,
+  });
+
+  return { exportName };
 }
 
 export function add(

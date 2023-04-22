@@ -3,7 +3,7 @@ import readdirp from "readdirp";
 import parent from "glob-parent";
 import anymatch from "anymatch";
 import { readFile } from "fs/promises";
-import { getExportName, TRIPLEXProject, getJsxElementsPositions } from "../ast";
+import { TRIPLEXProject, getJsxElementsPositions } from "../ast";
 import { inferExports } from "../util/module";
 
 export function getSceneExport({
@@ -17,12 +17,18 @@ export function getSceneExport({
 }) {
   const { sourceFile } = project.getSourceFile(path);
   const jsxElements = getJsxElementsPositions(sourceFile, exportName);
-  const { name } = getExportName(sourceFile, exportName);
+  const foundExports = inferExports(sourceFile.getText());
+  const foundExport = foundExports.find((exp) => exp.exportName === exportName);
+
+  if (!foundExport) {
+    throw new Error("invariant: unexpected");
+  }
 
   return {
+    name: foundExport.name,
     path,
-    name,
     sceneObjects: jsxElements,
+    exports: foundExports,
   };
 }
 

@@ -1,3 +1,4 @@
+import { Fragment } from "react";
 import { suspend } from "suspend-react";
 import { SceneModule } from "./types";
 
@@ -12,22 +13,21 @@ export function SceneLoader({
   sceneProps: Record<string, unknown>;
   exportName: "default" | string;
 }) {
-  const loadModule = Object.entries(scenes).find(([filename]) =>
+  const componentFilename = Object.keys(scenes).find((filename) =>
     path ? path.endsWith(filename) : false
   );
-
-  if (!loadModule || !path || !exportName) {
+  if (!componentFilename || !exportName) {
     return null;
   }
 
   const { SceneComponent, triplexMeta } = suspend(async () => {
-    const resolvedModule = await loadModule[1]();
+    const resolvedModule = await scenes[componentFilename]();
 
     return {
-      SceneComponent: resolvedModule[exportName],
-      triplexMeta: resolvedModule[exportName].triplexMeta,
+      SceneComponent: resolvedModule[exportName] || Fragment,
+      triplexMeta: resolvedModule[exportName]?.triplexMeta,
     };
-  }, [path, exportName]);
+  }, [exportName, scenes, componentFilename]);
 
   return (
     <>

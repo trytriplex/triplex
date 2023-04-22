@@ -83,6 +83,7 @@ export function EditorMenu() {
             <ShortcutItem shortcut="S" metaKey onClick={save}>
               Save
             </ShortcutItem>
+            <ShortcutItem onClick={() => save(true)}>Save as...</ShortcutItem>
           </MenuContent>
         </Menu>
         <Menu>

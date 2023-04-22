@@ -6,10 +6,14 @@ import { ScenesDrawer } from "./ui/scenes-drawer";
 import { SceneFrame } from "./scence-bridge";
 import { useEditor } from "./stores/editor";
 import { ControlsMenu } from "./ui/controls-menu";
-import { newFilename } from "./util/file";
+import { useSubscriptionEffect } from "@triplex/ws-client";
 
 export function EditorFrame() {
   const { path, save, undo, redo, deleteComponent } = useEditor();
+  const file = useSubscriptionEffect<{ isSaved: boolean }>(
+    `/scene/${encodeURIComponent(path)}`
+  );
+  const isSaved = file ? file.isSaved : true;
 
   useEffect(() => {
     if (!path) {
@@ -68,11 +72,10 @@ export function EditorFrame() {
   useEffect(() => {
     if (path) {
       const filename = path.split("/").at(-1);
-      const parsedFilename = filename === newFilename ? "Untitled" : filename;
-
-      window.document.title = parsedFilename + " • Triplex";
+      const suffix = isSaved ? "Triplex" : "Unsaved Changes";
+      window.document.title = filename + " • " + suffix;
     }
-  }, [path]);
+  }, [path, isSaved]);
 
   return (
     <div className="relative h-screen bg-neutral-900">

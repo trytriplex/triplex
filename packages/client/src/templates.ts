@@ -28,6 +28,28 @@ export const scripts = {
       return <SceneFrame components={components} scenes={scenes} />;
     }
   `,
+  // Hides vite-ignored dynamic import so that Vite can skip analysis if no other
+  // dynamic import is present (https://github.com/vitejs/vite/pull/12732)
+  dynamicImportHMR: `
+    export const __hmr_import = (url) => import(/* @vite-ignore */ url);
+  `,
+  invalidateHMRHeader: `
+    import { __hmr_import } from "triplex:hmr-import";
+  `,
+  invalidateHRMFooter: `
+    if (import.meta.hot) {
+      __hmr_import(import.meta.url).then((currentModule) => {
+        import.meta.hot.accept((nextModules) => {
+          const currentKeys = Object.keys(currentModule).sort();
+          const nextKeys = Object.keys(nextModules).sort();
+
+          if (JSON.stringify(currentKeys) !== JSON.stringify(nextKeys)) {
+            import.meta.hot.invalidate();
+          }
+        });
+      });
+    }
+  `,
 };
 
 export const createHTML = (title: string, entry: "scene" | "editor") => `

@@ -1,4 +1,7 @@
 {
   "plugins": ["prettier-plugin-jsdoc", "prettier-plugin-tailwindcss"],
-  "proseWrap": "always"
+  "proseWrap": "always",
+  "jsdocSingleLineComment": false,
+  "jsdocCapitalizeDescription": false,
+  "jsdocPreferCodeFences": true
 }
