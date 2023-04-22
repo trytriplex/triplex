@@ -2,7 +2,6 @@ import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { create } from "zustand";
 import { ComponentType } from "../api-types";
-import { newFilename } from "../util/file";
 import { useScene } from "./scene";
 
 export interface Params {
@@ -45,10 +44,10 @@ const undoStack: UndoRedo[] = [];
 const redoStack: UndoRedo[] = [];
 
 /**
- * __useEditor()__
+ * **useEditor()**
  *
- * Exposes controls for the editor,
- * calls out to the scene store when needing to mutate the currently open scene.
+ * Exposes controls for the editor, calls out to the scene store when needing to
+ * mutate the currently open scene.
  *
  * @see {@link ./scene.tsx}
  */
@@ -229,8 +228,15 @@ export function useEditor() {
   }
 
   const set = useCallback(
-    (params: Params, entered?: boolean) => {
-      if (params.path === path && params.exportName === exportName) {
+    (
+      componentParams: Params,
+      metaParams: { entered?: boolean; forceSaveAs?: boolean } = {}
+    ) => {
+      if (
+        componentParams.path === path &&
+        componentParams.exportName === exportName &&
+        typeof metaParams.forceSaveAs === "undefined"
+      ) {
         // Bail if we're already on the same path.
         // If we implement props being able to change
         // We'll need to do more work here later.
@@ -239,20 +245,24 @@ export function useEditor() {
 
       const newParams: Record<string, string> = {};
 
-      if (params.path) {
-        newParams.path = params.path;
+      if (componentParams.path) {
+        newParams.path = componentParams.path;
       }
 
-      if (params.encodedProps) {
-        newParams.props = params.encodedProps;
+      if (componentParams.encodedProps) {
+        newParams.props = componentParams.encodedProps;
       }
 
-      if (params.exportName) {
-        newParams.exportName = params.exportName;
+      if (componentParams.exportName) {
+        newParams.exportName = componentParams.exportName;
       }
 
-      if (entered) {
+      if (metaParams.entered) {
         newParams.entered = "true";
+      }
+
+      if (metaParams.forceSaveAs) {
+        newParams.forceSaveAs = "true";
       }
 
       setSearchParams(newParams);
@@ -260,51 +270,59 @@ export function useEditor() {
     [exportName, path, setSearchParams]
   );
 
-  const save = useCallback(async () => {
-    let newPath = "";
-
-    if (path.endsWith(newFilename)) {
-      // New file - ask for a filename!
-      const result = prompt("Filename", "src/untitled.tsx");
-      if (!result) {
-        return;
+  const save = useCallback(
+    async (saveAs = !!searchParams.get("forceSaveAs")) => {
+      let newPath = "";
+      if (saveAs) {
+        newPath = prompt("Filename", path) || "";
+        if (!newPath) {
+          // Abort, user cleared filename or cancelled.
+          return;
+        }
       }
 
-      newPath = path.replace(
-        newFilename,
-        result.replace(/\.[a-z]{2,4}$/, "") + ".tsx"
+      undoStack.length = 0;
+      redoStack.length = 0;
+
+      await fetch(
+        `http://localhost:8000/scene/${encodeURIComponent(
+          path
+        )}/save?newPath=${newPath}`
       );
-    }
 
-    undoStack.length = 0;
-    redoStack.length = 0;
-
-    await fetch(
-      `http://localhost:8000/scene/${encodeURIComponent(
-        path
-      )}/save?newPath=${newPath}`
-    );
-
-    if (newPath) {
-      set({
-        encodedProps: "",
-        exportName,
-        path: newPath,
-      });
-    }
-  }, [exportName, path, set]);
+      if (newPath) {
+        set(
+          {
+            encodedProps: "",
+            exportName,
+            path: newPath,
+          },
+          { forceSaveAs: false }
+        );
+      }
+    },
+    [exportName, path, searchParams, set]
+  );
 
   const newFile = useCallback(async () => {
-    const componentName = prompt("Component name");
-    if (!componentName) {
-      return;
-    }
+    const result = await fetch(`http://localhost:8000/scene/new`, {
+      method: "POST",
+    });
+    const data = await result.json();
 
-    const parsedComponentName =
-      componentName[0].toUpperCase() + componentName.slice(1);
+    set(
+      {
+        exportName: data.exportName,
+        path: data.path,
+        encodedProps: "",
+      },
+      { forceSaveAs: true }
+    );
+  }, [set]);
 
+  const newComponent = useCallback(async () => {
     const result = await fetch(
-      `http://localhost:8000/scene/new/${parsedComponentName}`,
+      `http://localhost:8000/scene/${encodeURIComponent(path)}/new`,
       { method: "POST" }
     );
     const data = await result.json();
@@ -314,7 +332,7 @@ export function useEditor() {
       path: data.path,
       encodedProps: "",
     });
-  }, [set]);
+  }, [path, set]);
 
   return useMemo(
     () => ({
@@ -323,27 +341,29 @@ export function useEditor() {
        */
       newFile,
       /**
-       * Adds the component into the current file.
-       * Is not persisted until `save()` is called.
+       * Creates a new intermediate component in the open file and transitions
+       * the editor to it.
+       */
+      newComponent,
+      /**
+       * Adds the component into the current file. Is not persisted until
+       * `save()` is called.
        */
       addComponent,
       /**
-       * Will be `true` when entered a component via a owning parent,
-       * else `false`.
-       * Enter a component via `scene.navigateTo()`.
+       * Will be `true` when entered a component via a owning parent, else
+       * `false`. Enter a component via `scene.navigateTo()`.
        *
        * @see {@link ./scene.tsx}
        */
       enteredComponent,
-
       /**
        * Exits the currently entered component and goes back to the parent.
        */
       exitComponent,
       /**
-       * Deletes the currently focused scene object.
-       * Able to be undone.
-       * Is not persisted until `save()` is called.
+       * Deletes the currently focused scene object. Able to be undone. Is not
+       * persisted until `save()` is called.
        */
       deleteComponent,
       /**
@@ -351,7 +371,8 @@ export function useEditor() {
        */
       path,
       /**
-       * Encoded (via `encodeURIComponent()`) props used to hydrate the loaded scene.
+       * Encoded (via `encodeURIComponent()`) props used to hydrate the loaded
+       * scene.
        */
       encodedProps,
       /**
@@ -359,8 +380,8 @@ export function useEditor() {
        */
       set,
       /**
-       * Focuses the passed scene object.
-       * Will blur the currently focused scene object by passing `null`.
+       * Focuses the passed scene object. Will blur the currently focused scene
+       * object by passing `null`.
        */
       focus,
       /**
@@ -372,7 +393,8 @@ export function useEditor() {
        */
       exportName,
       /**
-       * Calls the web server to save the intermediate scene source to file system.
+       * Calls the web server to save the intermediate scene source to file
+       * system.
        */
       save,
       /**
@@ -381,11 +403,13 @@ export function useEditor() {
        */
       persistPropValue,
       /**
-       * Calls the undo action at the top of the undo stack and then moves it to the redo stack.
+       * Calls the undo action at the top of the undo stack and then moves it to
+       * the redo stack.
        */
       undo,
       /**
-       * Calls the redo action at the top of the redo stack and then moves it to the undo stack.
+       * Calls the redo action at the top of the redo stack and then moves it to
+       * the undo stack.
        */
       redo,
       /**
@@ -404,9 +428,10 @@ export function useEditor() {
       enteredComponent,
       exitComponent,
       exportName,
-      newFile,
       focus,
       getState,
+      newComponent,
+      newFile,
       path,
       persistPropValue,
       redo,
