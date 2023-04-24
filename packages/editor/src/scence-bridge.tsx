@@ -44,16 +44,26 @@ function BridgeSendEvents() {
     }
 
     const callback = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        scene.blur();
-      }
+      switch (e.key) {
+        case "Escape": {
+          const target = e.target as HTMLElement;
+          if (target.tagName !== "INPUT") {
+            scene.blur();
+          }
+          break;
+        }
 
-      if (e.key === "f") {
-        scene.jumpTo();
-      }
+        case "f": {
+          scene.jumpTo();
+          break;
+        }
 
-      if (e.key === "F" && e.shiftKey) {
-        scene.navigateTo();
+        case "F": {
+          if (e.shiftKey) {
+            scene.navigateTo();
+          }
+          break;
+        }
       }
     };
 

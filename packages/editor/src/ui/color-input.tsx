@@ -1,4 +1,4 @@
-import { FormEventHandler, useEffect, useRef } from "react";
+import { FormEventHandler, useEffect, useRef, useState } from "react";
 import tinycolor from "tinycolor2";
 
 export function ColorInput({
@@ -13,7 +13,10 @@ export function ColorInput({
   onConfirm: (value: string) => void;
 }) {
   const ref = useRef<HTMLInputElement>(null);
-  const defaultValueHex = tinycolor(defaultValue).toHexString();
+  const defaultValueHex = defaultValue
+    ? tinycolor(defaultValue).toHexString()
+    : undefined;
+  const [hasChanged, setHasChanged] = useState(false);
 
   useEffect(() => {
     if (!ref.current) {
@@ -40,19 +43,25 @@ export function ColorInput({
 
   const onChangeHandler: FormEventHandler<HTMLInputElement> = (e) => {
     if (e.target instanceof HTMLInputElement) {
+      setHasChanged(true);
       onChange(e.target.value);
     }
   };
 
   return (
-    <input
-      data-testid={`color-${defaultValue}`}
-      id={name}
-      type="color"
-      className="h-7 w-7 rounded-md bg-neutral-700 p-[3px] outline-none [color-scheme:dark]"
-      defaultValue={defaultValueHex}
-      onChange={onChangeHandler}
-      ref={ref}
-    />
+    <div className="relative h-7 w-7">
+      {!defaultValueHex && !hasChanged && (
+        <div className="bg-checker pointer-events-none absolute inset-[3px] rounded-[3px] text-neutral-600 [background-size:20px]" />
+      )}
+      <input
+        data-testid={`color-${defaultValue}`}
+        id={name}
+        type="color"
+        className="h-7 w-7 rounded-md bg-neutral-700 p-[3px] outline-none [color-scheme:dark]"
+        defaultValue={defaultValueHex}
+        onChange={onChangeHandler}
+        ref={ref}
+      />
+    </div>
   );
 }

@@ -150,7 +150,7 @@ function ComponentsDrawer({
   return (
     <Drawer mode="transparent" attach="bottom" open onClose={onClose}>
       <div className="flex h-full flex-col">
-        <div className="flex min-h-0 flex-grow gap-2 border-b border-neutral-800">
+        <div className="flex min-h-0 flex-grow gap-2">
           <div className="w-40 flex-shrink-0 border-r border-neutral-800">
             <ScrollContainer>
               <div className="h-2" />
@@ -185,23 +185,23 @@ function ComponentsDrawer({
             <ComponentFolder onClose={onClose} folderPath={selected} />
           </Suspense>
         </div>
-        <div className="flex flex-grow-0 items-center gap-2 px-4 py-1">
-          <span className="justify-self-center text-sm text-neutral-400">
-            {target
-              ? "Will add to the selected component as a child."
-              : "Will add to the root component as a child."}
-          </span>
+        {target && (
+          <div className="flex flex-grow-0 items-center gap-1 border-t border-neutral-800 px-4">
+            <span className="py-1 text-xs text-neutral-400">
+              Adding to the{" "}
+              <span className="text-blue-400">selected element</span> as a child
+              component.
+            </span>
 
-          {target && (
             <button
               onClick={blur}
               type="submit"
-              className="rounded px-2 text-sm text-neutral-400 hover:bg-white/5 active:bg-white/10"
+              className="rounded px-2 py-0.5 text-xs text-neutral-400 hover:bg-white/5 active:bg-white/10"
             >
               Clear selection
             </button>
-          )}
-        </div>
+          </div>
+        )}
       </div>
     </Drawer>
   );

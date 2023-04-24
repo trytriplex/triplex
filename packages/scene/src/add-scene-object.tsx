@@ -70,14 +70,12 @@ export function AddSceneObject({
   }, [column, line, currentPath, searchParams, path]);
 
   useEffect(() => {
-    import.meta.hot?.on("vite:afterUpdate", (e) => {
-      const isUpdated = e.updates.find((up) => currentPath.endsWith(up.path));
-      if (isUpdated) {
-        // The scene has been persisted to source remove all intermediates.
-        setAddedComponents([]);
-        setPositions([]);
-        cachedLazyComponents.current = [];
-      }
+    import.meta.hot?.on("vite:afterUpdate", () => {
+      // The fs has been updated so we assume the intermediate state isn't
+      // Needed anymore. Blow it away.
+      setAddedComponents([]);
+      setPositions([]);
+      cachedLazyComponents.current = [];
     });
   }, [currentPath]);
 
