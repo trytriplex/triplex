@@ -28,7 +28,7 @@ export function Drawer({
             mode === "transparent" && "bg-neutral-900/[97%]",
             attach === "left" && "slide-in top-0 left-0 bottom-0 w-64 border-r",
             attach === "bottom" &&
-              "slide-up left-4 bottom-4 right-4 h-[186px] rounded-lg border",
+              "slide-up left-4 bottom-4 right-4 h-52 rounded-lg border",
             "fixed flex flex-col border-neutral-800 text-neutral-300 shadow-2xl shadow-black/50 outline-none",
           ])}
         >

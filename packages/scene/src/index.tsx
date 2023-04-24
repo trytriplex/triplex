@@ -4,6 +4,7 @@ import { BrowserRouter } from "react-router-dom";
 import { SceneFrame } from "./scene";
 import { SceneModule, ComponentModule } from "./types";
 import { SceneObject } from "./scene-object";
+import { ComponentProvider, SceneProvider } from "./context";
 
 // Hacking this for fun sorry!
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -23,7 +24,11 @@ export function Scene({
 
   return (
     <BrowserRouter>
-      <SceneFrame components={components} scenes={scenes} />
+      <ComponentProvider value={components}>
+        <SceneProvider value={scenes}>
+          <SceneFrame />
+        </SceneProvider>
+      </ComponentProvider>
     </BrowserRouter>
   );
 }

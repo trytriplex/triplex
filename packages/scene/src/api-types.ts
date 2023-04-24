@@ -67,7 +67,7 @@ export interface BaseProp {
 }
 
 export interface StringProp {
-  value: string;
+  value?: string;
   type: "string";
 }
 
@@ -98,12 +98,12 @@ export interface ArrayProp {
 
 export interface UnionProp {
   values: Prop[];
-  value: string;
+  value?: string;
   type: "union";
 }
 
 export interface NumberProp {
-  value: number;
+  value?: number;
   type: "number";
 }
 
@@ -145,6 +145,25 @@ export type ComponentType =
       name: string;
       props: Record<string, unknown>;
     };
+
+export type ComponentRawType =
+  | {
+      type: "custom";
+      path: string;
+      exportName: string;
+      props: Record<string, unknown>;
+    }
+  | {
+      type: "host";
+      name: string;
+      props: Record<string, unknown>;
+    };
+
+export interface ComponentTarget {
+  line: number;
+  column: number;
+  action: "child";
+}
 
 export interface ProjectHostComponent {
   category: string;

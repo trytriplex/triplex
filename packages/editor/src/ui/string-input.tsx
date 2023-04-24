@@ -6,7 +6,7 @@ export function StringInput({
   onConfirm,
   onChange,
 }: {
-  defaultValue: string;
+  defaultValue?: string;
   name: string;
   onChange: (value: string) => void;
   onConfirm: (value: string) => void;

@@ -12,6 +12,7 @@ import {
   GetProjectComponentFolders,
   GetProjectComponents,
 } from "../api-types";
+import { useEditor } from "../stores/editor";
 
 function Component({
   name,
@@ -22,22 +23,29 @@ function Component({
   data: ComponentType;
   onClick: () => void;
 }) {
+  const { target } = useEditor();
   const { addComponent } = useScene();
 
   const onClickHandler = () => {
+    const targetData = target
+      ? ({ action: "child", column: target.column, line: target.line } as const)
+      : undefined;
+
     if (data.type === "host") {
       addComponent({
-        type: "host",
-        name,
-        props: {},
+        type: { type: "host", name, props: {} },
+        target: targetData,
       });
     } else {
       addComponent({
-        exportName: data.exportName,
-        type: "custom",
-        name: data.name,
-        path: data.path,
-        props: {},
+        type: {
+          exportName: data.exportName,
+          type: "custom",
+          name: data.name,
+          path: data.path,
+          props: {},
+        },
+        target: targetData,
       });
     }
 
@@ -95,8 +103,8 @@ function ComponentFolder({
   );
 
   return (
-    <ScrollContainer>
-      <div className="flex w-full flex-wrap gap-2 py-2 pr-2">
+    <ScrollContainer className="min-h-0">
+      <div className="flex flex-wrap gap-2 py-2 pr-2">
         {folderComponents.map((element) =>
           element.type === "host" ? (
             <Component
@@ -134,51 +142,72 @@ function ComponentsDrawer({
   onSelected: (selected: string) => void;
   selected: string;
 }) {
+  const { target } = useEditor();
+  const { blur } = useScene();
   const componentFolders =
     useLazySubscription<GetProjectComponentFolders>("/scene/components");
 
   return (
     <Drawer mode="transparent" attach="bottom" open onClose={onClose}>
-      <div className="flex h-full gap-2">
-        <div className="w-40 flex-shrink-0 border-r border-neutral-800">
-          <ScrollContainer>
-            <div className="h-2" />
-            <div className="px-2">
-              <Folder
-                onClick={() => onSelected("host")}
-                isSelected={selected === "host"}
-              >
-                Built-in Elements
-              </Folder>
-            </div>
-
-            {componentFolders.length ? (
-              <div className="my-2 border-t border-neutral-800" />
-            ) : null}
-
-            <div className="px-2">
-              {componentFolders.map((folder) => (
+      <div className="flex h-full flex-col">
+        <div className="flex min-h-0 flex-grow gap-2 border-b border-neutral-800">
+          <div className="w-40 flex-shrink-0 border-r border-neutral-800">
+            <ScrollContainer>
+              <div className="h-2" />
+              <div className="px-2">
                 <Folder
-                  key={folder.path}
-                  onClick={() => onSelected(folder.path)}
-                  isSelected={selected === folder.path}
+                  onClick={() => onSelected("host")}
+                  isSelected={selected === "host"}
                 >
-                  {camelToStartCase(folder.name)}
+                  Built-in Elements
                 </Folder>
-              ))}
-            </div>
-            <div className="h-2" />
-          </ScrollContainer>
+              </div>
+
+              {componentFolders.length ? (
+                <div className="my-2 border-t border-neutral-800" />
+              ) : null}
+
+              <div className="px-2">
+                {componentFolders.map((folder) => (
+                  <Folder
+                    key={folder.path}
+                    onClick={() => onSelected(folder.path)}
+                    isSelected={selected === folder.path}
+                  >
+                    {camelToStartCase(folder.name)}
+                  </Folder>
+                ))}
+              </div>
+              <div className="h-2" />
+            </ScrollContainer>
+          </div>
+          <Suspense fallback={null}>
+            <ComponentFolder onClose={onClose} folderPath={selected} />
+          </Suspense>
         </div>
-        <Suspense fallback={null}>
-          <ComponentFolder onClose={onClose} folderPath={selected} />
-        </Suspense>
+        <div className="flex flex-grow-0 items-center gap-2 px-4 py-1">
+          <span className="justify-self-center text-sm text-neutral-400">
+            {target
+              ? "Will add to the selected component as a child."
+              : "Will add to the root component as a child."}
+          </span>
+
+          {target && (
+            <button
+              onClick={blur}
+              type="submit"
+              className="rounded px-2 text-sm text-neutral-400 hover:bg-white/5 active:bg-white/10"
+            >
+              Clear selection
+            </button>
+          )}
+        </div>
       </div>
     </Drawer>
   );
 }
 
-export function ProjectComponents() {
+export function AddComponentDrawer() {
   const [isOpen, setIsOpen] = useState(false);
   const close = () => setIsOpen(false);
   const toggle = () => setIsOpen((prev) => !prev);

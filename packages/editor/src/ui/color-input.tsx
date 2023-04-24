@@ -7,7 +7,7 @@ export function ColorInput({
   onConfirm,
   onChange,
 }: {
-  defaultValue: string;
+  defaultValue?: string;
   name: string;
   onChange: (value: string) => void;
   onConfirm: (value: string) => void;

@@ -1,19 +1,26 @@
 export type ClientSendEventName = keyof ClientSendEventData;
 
 export interface ClientSendEventData {
-  "trplx:onAddNewComponent":
-    | {
-        type: "custom";
-        path: string;
-        name: string;
-        exportName: string;
-        props: Record<string, unknown>;
-      }
-    | {
-        type: "host";
-        name: string;
-        props: Record<string, unknown>;
-      };
+  "trplx:onAddNewComponent": {
+    type:
+      | {
+          type: "custom";
+          path: string;
+          name: string;
+          exportName: string;
+          props: Record<string, unknown>;
+        }
+      | {
+          type: "host";
+          name: string;
+          props: Record<string, unknown>;
+        };
+    target?: {
+      line: number;
+      column: number;
+      action: "child";
+    };
+  };
   "trplx:onConnected": undefined;
   "trplx:onSceneObjectDelete": {
     column: number;
@@ -68,19 +75,26 @@ export interface ClientSendEventResponse {
 export type HostSendEventName = keyof HostSendEventData;
 
 export interface HostSendEventData {
-  "trplx:requestAddNewComponent":
-    | {
-        type: "custom";
-        path: string;
-        name: string;
-        exportName: string;
-        props: Record<string, unknown>;
-      }
-    | {
-        type: "host";
-        name: string;
-        props: Record<string, unknown>;
-      };
+  "trplx:requestAddNewComponent": {
+    type:
+      | {
+          type: "custom";
+          path: string;
+          name: string;
+          exportName: string;
+          props: Record<string, unknown>;
+        }
+      | {
+          type: "host";
+          name: string;
+          props: Record<string, unknown>;
+        };
+    target?: {
+      line: number;
+      column: number;
+      action: "child";
+    };
+  };
   "trplx:requestDeleteSceneObject": {
     column: number;
     line: number;

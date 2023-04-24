@@ -1,5 +1,6 @@
 import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { compose, listen } from "@triplex/bridge/client";
+import { AddSceneObject } from "./add-scene-object";
 
 function useForceRender() {
   const [, setState] = useState(false);
@@ -103,7 +104,9 @@ function useSceneObjectProps(
 }
 
 export interface SceneObjectProps {
-  __component: React.ForwardRefExoticComponent<{ ref: unknown }> | string;
+  __component:
+    | React.ForwardRefExoticComponent<{ ref: unknown; children?: unknown }>
+    | string;
   __meta: {
     line: number;
     column: number;
@@ -119,7 +122,7 @@ export interface SceneObjectProps {
 
 export const SceneObject = forwardRef<unknown, SceneObjectProps>(
   ({ __component: Component, __meta, ...props }, ref) => {
-    const reconciledProps = useSceneObjectProps(__meta, props);
+    const { children, ...reconciledProps } = useSceneObjectProps(__meta, props);
     const [isDeleted, setIsDeleted] = useState(false);
 
     useEffect(() => {
@@ -151,11 +154,27 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
           userData={{ triplexSceneMeta: { ...__meta, props } }}
           visible={!isDeleted}
         >
-          <Component ref={ref} {...reconciledProps} />
+          <Component ref={ref} {...reconciledProps}>
+            {children}
+            <AddSceneObject
+              path={__meta.path}
+              column={__meta.column}
+              line={__meta.line}
+            />
+          </Component>
         </group>
       );
     } else if (!isDeleted) {
-      return <Component ref={ref} {...reconciledProps} />;
+      return (
+        <Component ref={ref} {...reconciledProps}>
+          {children}
+          <AddSceneObject
+            path={__meta.path}
+            column={__meta.column}
+            line={__meta.line}
+          />
+        </Component>
+      );
     }
 
     return null;
