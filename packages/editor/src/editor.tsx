@@ -56,7 +56,8 @@ export function EditorFrame() {
         undo();
       } else if (
         e.key === "Backspace" &&
-        document.activeElement === document.body
+        // Ignore if we're focused inside an input.
+        document.activeElement?.tagName !== "INPUT"
       ) {
         deleteComponent();
       }

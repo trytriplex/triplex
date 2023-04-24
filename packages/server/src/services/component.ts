@@ -10,6 +10,7 @@ import { basename, extname, relative } from "path";
 import { getExportName } from "../ast/module";
 import { getJsxElementAt } from "../ast/jsx";
 import { inferExports } from "../util/module";
+import { ComponentRawType, ComponentTarget } from "../types";
 
 function guessComponentNameFromPath(path: string) {
   const name = basename(path)
@@ -67,19 +68,6 @@ function propsToString(props: Record<string, unknown>) {
   return attributes.join(" ");
 }
 
-export type ComponentType =
-  | {
-      type: "custom";
-      path: string;
-      exportName: string;
-      props: Record<string, unknown>;
-    }
-  | {
-      type: "host";
-      name: string;
-      props: Record<string, unknown>;
-    };
-
 function insertJsxElement(
   sourceFile: SourceFile,
   target: Node<ts.Node>,
@@ -121,6 +109,48 @@ function insertJsxElement(
   };
 }
 
+function addToJsxElement(
+  sourceFile: SourceFile,
+  target: { line: number; column: number; action: "child" },
+  componentName: string,
+  componentProps: Record<string, unknown>
+): { column: number; line: number } {
+  const element = getJsxElementAt(sourceFile, target.line, target.column);
+  if (!element) {
+    throw new Error("invariant: element not found");
+  }
+
+  const componentText = `<${componentName} ${propsToString(componentProps)}/>`;
+
+  if (Node.isJsxElement(element)) {
+    const openingText = element.getOpeningElement().getText();
+    const closingText = element.getClosingElement().getText();
+    const childrenText = element
+      .getJsxChildren()
+      .map((child) => child.getText())
+      .join("");
+
+    element.replaceWithText(
+      openingText + childrenText + componentText + closingText
+    );
+
+    return {
+      line: target.line,
+      column: target.column + openingText.length,
+    };
+  }
+
+  const openingText = element.getText().replace(" />", ">");
+  const closingText = `</${element.getTagNameNode().getText()}>`;
+
+  element.replaceWithText(openingText + componentText + closingText);
+
+  return {
+    line: target.line,
+    column: target.column + openingText.length,
+  };
+}
+
 export function includesComponent(sourceFile: SourceFile, exportName: string) {
   const foundExports = inferExports(sourceFile.getText());
 
@@ -149,18 +179,21 @@ export function create(sourceFile: SourceFile) {
 export function add(
   sourceFile: SourceFile,
   exportName: string,
-  component: ComponentType
+  component: ComponentRawType,
+  target?: ComponentTarget
 ): { line: number; column: number } {
   const { declaration } = getExportName(sourceFile, exportName);
 
   if (Node.isFunctionDeclaration(declaration)) {
     if (component.type === "host") {
-      const { column, line } = insertJsxElement(
-        sourceFile,
-        declaration.getBodyOrThrow(),
-        component.name,
-        component.props
-      );
+      const { column, line } = target
+        ? addToJsxElement(sourceFile, target, component.name, component.props)
+        : insertJsxElement(
+            sourceFile,
+            declaration.getBodyOrThrow(),
+            component.name,
+            component.props
+          );
 
       return {
         column,
@@ -216,12 +249,19 @@ export function add(
         }
       }
 
-      const { column, line } = insertJsxElement(
-        sourceFile,
-        declaration.getBodyOrThrow(),
-        aliasImportName || importName,
-        component.props
-      );
+      const { column, line } = target
+        ? addToJsxElement(
+            sourceFile,
+            target,
+            aliasImportName || importName,
+            component.props
+          )
+        : insertJsxElement(
+            sourceFile,
+            declaration.getBodyOrThrow(),
+            aliasImportName || importName,
+            component.props
+          );
 
       existingImport = sourceFile.getImportDeclaration((decl) => {
         return decl.getModuleSpecifierValue() === moduleSpecifier;

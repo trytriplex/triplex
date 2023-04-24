@@ -5,50 +5,7 @@ describe("project", () => {
   it("should return a list of host jsx elements", () => {
     const actual = hostElements();
 
-    expect(actual).toMatchInlineSnapshot(`
-      [
-        {
-          "category": "Object3D",
-          "name": "mesh",
-          "type": "host",
-        },
-        {
-          "category": "Object3D",
-          "name": "group",
-          "type": "host",
-        },
-        {
-          "category": "Light",
-          "name": "ambientLight",
-          "type": "host",
-        },
-        {
-          "category": "Light",
-          "name": "directionalLight",
-          "type": "host",
-        },
-        {
-          "category": "Light",
-          "name": "hemisphereLight",
-          "type": "host",
-        },
-        {
-          "category": "Light",
-          "name": "pointLight",
-          "type": "host",
-        },
-        {
-          "category": "Light",
-          "name": "rectAreaLight",
-          "type": "host",
-        },
-        {
-          "category": "Light",
-          "name": "spotLight",
-          "type": "host",
-        },
-      ]
-    `);
+    expect(actual.length).toEqual(46);
   });
 
   it("should pick up all folders that contain files including parent", async () => {

@@ -8,17 +8,23 @@ import {
   useRef,
   useState,
 } from "react";
+import { useSearchParams } from "react-router-dom";
 import { ComponentType } from "./api-types";
+import { useComponents } from "./context";
 import { SceneObject } from "./scene-object";
-import { ComponentModule } from "./types";
 
 export function AddSceneObject({
-  components,
   path,
+  line,
+  column,
 }: {
-  components: Record<string, () => Promise<ComponentModule>>;
   path: string;
+  line?: number;
+  column?: number;
 }) {
+  const components = useComponents();
+  const [searchParams] = useSearchParams();
+  const currentPath = searchParams.get("path") || "";
   const [addedComponents, setAddedComponents] = useState<ComponentType[]>([]);
   const [positions, setPositions] = useState<
     { column: number; line: number }[]
@@ -26,15 +32,34 @@ export function AddSceneObject({
   const cachedLazyComponents = useRef<LazyExoticComponent<CT<unknown>>[]>([]);
 
   useEffect(() => {
-    return listen("trplx:requestAddNewComponent", (component) => {
+    return listen("trplx:requestAddNewComponent", ({ type, target }) => {
+      if (
+        (typeof line === "number" || typeof column === "number") &&
+        (target?.column !== column ||
+          target?.line !== line ||
+          path !== currentPath)
+      ) {
+        // This event has a target but we aren't it - abort early.
+        return;
+      }
+
+      if (
+        target &&
+        typeof line === "undefined" &&
+        typeof column === "undefined"
+      ) {
+        // This event has a target but we aren't one - abort early.
+        return;
+      }
+
       let index = -1;
 
       setAddedComponents((value) => {
         index = value.length;
-        return value.concat(component);
+        return value.concat(type);
       });
 
-      send("trplx:onAddNewComponent", component, true).then((res) => {
+      send("trplx:onAddNewComponent", { type, target }, true).then((res) => {
         setPositions((prev) => {
           const next = prev.concat([]);
           next[index] = res;
@@ -42,11 +67,11 @@ export function AddSceneObject({
         });
       });
     });
-  }, []);
+  }, [column, line, currentPath, searchParams, path]);
 
   useEffect(() => {
     import.meta.hot?.on("vite:afterUpdate", (e) => {
-      const isUpdated = e.updates.find((up) => path.endsWith(up.path));
+      const isUpdated = e.updates.find((up) => currentPath.endsWith(up.path));
       if (isUpdated) {
         // The scene has been persisted to source remove all intermediates.
         setAddedComponents([]);
@@ -54,7 +79,7 @@ export function AddSceneObject({
         cachedLazyComponents.current = [];
       }
     });
-  }, [path]);
+  }, [currentPath]);
 
   return (
     <>
@@ -72,7 +97,7 @@ export function AddSceneObject({
                   column: pos.column,
                   line: pos.line,
                   name: component.name,
-                  path,
+                  path: currentPath,
                   // Host elements have these set but generally only for
                   // the elements that have the appropriate transform props explicitly set.
                   // For this we assume everything is allowed since it's being added.
@@ -110,7 +135,7 @@ export function AddSceneObject({
                     column: pos.column,
                     line: pos.line,
                     name: component.name,
-                    path,
+                    path: currentPath,
                     // Custom elements never have these props set.
                     rotate: false,
                     scale: false,

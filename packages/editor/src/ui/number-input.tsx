@@ -6,7 +6,7 @@ export function NumberInput({
   onConfirm,
   onChange,
 }: {
-  defaultValue: number;
+  defaultValue?: number;
   name: string;
   onChange: (value: number) => void;
   onConfirm: (value: number) => void;

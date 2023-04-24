@@ -10,7 +10,7 @@ import { IDELink } from "../util/ide";
 import { useEditor } from "../stores/editor";
 import { useScene } from "../stores/scene";
 import { ScrollContainer } from "../ds/scroll-container";
-import { ProjectComponents } from "./project-components";
+import { AddComponentDrawer } from "./add-component-drawer";
 import { CaretDownIcon, ExitIcon } from "@radix-ui/react-icons";
 import { IconButton } from "../ds/button";
 import { ErrorBoundary } from "./error-boundary";
@@ -169,7 +169,8 @@ function SceneContents() {
       <div className="h-[1px] bg-neutral-800" />
 
       <div className="flex py-1 px-2">
-        <ProjectComponents />
+        <AddComponentDrawer />
+
         {enteredComponent && (
           <IconButton
             className="ml-auto -scale-x-100"

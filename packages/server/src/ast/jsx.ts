@@ -85,11 +85,12 @@ export function getJsxAttributeValue(expression: Expression | undefined): Prop {
 }
 
 /**
- * Returns all found jsx elements in a source file,
- * optionally filtered by a specific export.
+ * Returns all found jsx elements in a source file, optionally filtered by a
+ * specific export.
  *
  * @param sourceFile
- * @param exportName When defined will only return the jsx elements for that export.
+ * @param exportName When defined will only return the jsx elements for that
+ *   export.
  */
 export function getAllJsxElements(sourceFile: SourceFile, exportName?: string) {
   let nodeToSearch: Node = sourceFile;
@@ -316,21 +317,19 @@ function toProp(type: PropType["type"], name: string): Prop {
     case "number": {
       return {
         type: "number",
-        value: type.value ?? name === "scale" ? 1 : 0,
       };
     }
 
     case "string": {
       return {
         type: "string",
-        value: type.value ?? "",
+        value: type.value,
       };
     }
 
     case "union": {
       return {
         type: "union",
-        value: "",
         values: type.values.map((val) => toProp(val, name)),
       };
     }
@@ -366,7 +365,7 @@ interface UndeclaredProp {
   name: string;
   required: boolean;
   type: string;
-  value: unknown;
+  value?: unknown;
   values?: unknown;
 }
 
@@ -524,29 +523,4 @@ export function getJsxElementAt(
   } catch (e) {
     return undefined;
   }
-}
-
-/**
- * Do not use in production code, this is slow!
- * Instead prefer direct access via `getJsxElementAt()`.
- *
- * @private
- */
-export function findJsxElement(
-  sourceFile: SourceFile,
-  name: string,
-  exportName = "default"
-) {
-  const found = getJsxElementsPositions(sourceFile, exportName).flatMap(
-    (x) => x.children
-  );
-
-  for (let i = 0; i < found.length; i++) {
-    const element = found[i];
-    if (element.name === name) {
-      return getJsxElementAt(sourceFile, element.line, element.column);
-    }
-  }
-
-  return undefined;
 }

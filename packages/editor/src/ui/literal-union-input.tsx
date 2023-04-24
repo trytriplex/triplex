@@ -10,7 +10,7 @@ export function LiteralUnionInput({
   onConfirm,
   required,
 }: {
-  defaultValue: string | number;
+  defaultValue?: string | number;
   name: string;
   values: Prop[];
   required?: boolean;

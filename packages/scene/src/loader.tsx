@@ -1,18 +1,17 @@
 import { Fragment } from "react";
 import { suspend } from "suspend-react";
-import { SceneModule } from "./types";
+import { useScenes } from "./context";
 
 export function SceneLoader({
   path,
-  scenes,
   exportName,
   sceneProps,
 }: {
   path: string;
-  scenes: Record<string, () => Promise<SceneModule>>;
   sceneProps: Record<string, unknown>;
   exportName: "default" | string;
 }) {
+  const scenes = useScenes();
   const componentFilename = Object.keys(scenes).find((filename) =>
     path ? path.endsWith(filename) : false
   );

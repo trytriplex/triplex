@@ -42,3 +42,12 @@ export const Nested = () => (
     </RoundedBox>
   </>
 );
+
+export function AddComponent() {
+  return (
+    <>
+      <RoundedBox />
+      <RoundedBox></RoundedBox>
+    </>
+  );
+}

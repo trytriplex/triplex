@@ -14,6 +14,7 @@ import { save } from "./services/save";
 import { getAllFiles, getSceneExport } from "./services/file";
 import * as component from "./services/component";
 import * as projectService from "./services/project";
+import { ComponentTarget, ComponentType } from "./types";
 
 export function createServer({
   files,
@@ -121,12 +122,14 @@ export function createServer({
 
   router.post("/scene/:path/:exportName/object", async (context) => {
     const { exportName, path } = context.params;
-    const { target } = (await context.request.body({ type: "json" }).value) as {
-      target: component.ComponentType;
+    const { type, target } = (await context.request.body({ type: "json" })
+      .value) as {
+      type: ComponentType;
+      target?: ComponentTarget;
     };
     const { sourceFile } = project.getSourceFile(path);
 
-    const result = component.add(sourceFile, exportName, target);
+    const result = component.add(sourceFile, exportName, type, target);
 
     context.response.body = { ...result };
   });

@@ -177,7 +177,7 @@ describe("jsx ast extractor", () => {
           "name": "name",
           "required": true,
           "type": "string",
-          "value": "",
+          "value": undefined,
         },
         {
           "declaration": "undeclared",
@@ -210,7 +210,7 @@ describe("jsx ast extractor", () => {
           "name": "name",
           "required": true,
           "type": "string",
-          "value": "",
+          "value": undefined,
         },
         {
           "declaration": "undeclared",
@@ -258,7 +258,6 @@ describe("jsx ast extractor", () => {
           "name": "opacity",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -276,7 +275,6 @@ describe("jsx ast extractor", () => {
           "name": "metalness",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -284,7 +282,6 @@ describe("jsx ast extractor", () => {
           "name": "roughness",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -292,7 +289,6 @@ describe("jsx ast extractor", () => {
           "name": "alphaTest",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -308,7 +304,6 @@ describe("jsx ast extractor", () => {
           "name": "aoMapIntensity",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -316,7 +311,6 @@ describe("jsx ast extractor", () => {
           "name": "blendDstAlpha",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -324,7 +318,6 @@ describe("jsx ast extractor", () => {
           "name": "blendEquationAlpha",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -332,7 +325,6 @@ describe("jsx ast extractor", () => {
           "name": "blendSrc",
           "required": true,
           "type": "union",
-          "value": "",
           "values": [],
         },
         {
@@ -341,7 +333,6 @@ describe("jsx ast extractor", () => {
           "name": "blendSrcAlpha",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -349,7 +340,6 @@ describe("jsx ast extractor", () => {
           "name": "bumpScale",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -398,7 +388,6 @@ describe("jsx ast extractor", () => {
           "name": "displacementBias",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -406,7 +395,6 @@ describe("jsx ast extractor", () => {
           "name": "displacementScale",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -422,30 +410,25 @@ describe("jsx ast extractor", () => {
           "name": "emissive",
           "required": true,
           "type": "union",
-          "value": "",
           "values": [
             {
               "type": "string",
-              "value": "",
+              "value": undefined,
             },
             {
               "type": "number",
-              "value": 0,
             },
             {
               "type": "array",
               "value": [
                 {
                   "type": "number",
-                  "value": 0,
                 },
                 {
                   "type": "number",
-                  "value": 0,
                 },
                 {
                   "type": "number",
-                  "value": 0,
                 },
               ],
             },
@@ -457,7 +440,6 @@ describe("jsx ast extractor", () => {
           "name": "emissiveIntensity",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -465,7 +447,6 @@ describe("jsx ast extractor", () => {
           "name": "envMapIntensity",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -489,7 +470,6 @@ describe("jsx ast extractor", () => {
           "name": "lightMapIntensity",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -505,7 +485,6 @@ describe("jsx ast extractor", () => {
           "name": "polygonOffsetFactor",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -513,7 +492,6 @@ describe("jsx ast extractor", () => {
           "name": "polygonOffsetUnits",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -521,7 +499,6 @@ describe("jsx ast extractor", () => {
           "name": "precision",
           "required": true,
           "type": "union",
-          "value": "",
           "values": [
             {
               "type": "string",
@@ -551,7 +528,6 @@ describe("jsx ast extractor", () => {
           "name": "stencilFuncMask",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -559,7 +535,6 @@ describe("jsx ast extractor", () => {
           "name": "stencilRef",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -575,7 +550,6 @@ describe("jsx ast extractor", () => {
           "name": "stencilWriteMask",
           "required": true,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -608,7 +582,7 @@ describe("jsx ast extractor", () => {
           "name": "wireframeLinecap",
           "required": true,
           "type": "string",
-          "value": "",
+          "value": undefined,
         },
         {
           "declaration": "undeclared",
@@ -616,7 +590,7 @@ describe("jsx ast extractor", () => {
           "name": "wireframeLinejoin",
           "required": true,
           "type": "string",
-          "value": "",
+          "value": undefined,
         },
         {
           "declaration": "undeclared",
@@ -624,7 +598,6 @@ describe("jsx ast extractor", () => {
           "name": "wireframeLinewidth",
           "required": true,
           "type": "number",
-          "value": 0,
         },
       ]
     `);
@@ -649,26 +622,21 @@ describe("jsx ast extractor", () => {
           "name": "position",
           "required": false,
           "type": "union",
-          "value": "",
           "values": [
             {
               "type": "number",
-              "value": 0,
             },
             {
               "type": "array",
               "value": [
                 {
                   "type": "number",
-                  "value": 0,
                 },
                 {
                   "type": "number",
-                  "value": 0,
                 },
                 {
                   "type": "number",
-                  "value": 0,
                 },
               ],
             },
@@ -680,26 +648,21 @@ describe("jsx ast extractor", () => {
           "name": "scale",
           "required": false,
           "type": "union",
-          "value": "",
           "values": [
             {
               "type": "number",
-              "value": 1,
             },
             {
               "type": "array",
               "value": [
                 {
                   "type": "number",
-                  "value": 1,
                 },
                 {
                   "type": "number",
-                  "value": 1,
                 },
                 {
                   "type": "number",
-                  "value": 1,
                 },
               ],
             },
@@ -714,19 +677,15 @@ describe("jsx ast extractor", () => {
           "value": [
             {
               "type": "number",
-              "value": 0,
             },
             {
               "type": "number",
-              "value": 0,
             },
             {
               "type": "number",
-              "value": 0,
             },
             {
               "type": "union",
-              "value": "",
               "values": [
                 {
                   "type": "string",
@@ -762,7 +721,7 @@ describe("jsx ast extractor", () => {
           "name": "name",
           "required": true,
           "type": "string",
-          "value": "",
+          "value": undefined,
         },
         {
           "column": 11,
@@ -805,7 +764,6 @@ describe("jsx ast extractor", () => {
           "name": "layers",
           "required": false,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -813,7 +771,6 @@ describe("jsx ast extractor", () => {
           "name": "material",
           "required": true,
           "type": "union",
-          "value": "",
           "values": [],
         },
         {
@@ -825,19 +782,15 @@ describe("jsx ast extractor", () => {
           "value": [
             {
               "type": "number",
-              "value": 0,
             },
             {
               "type": "number",
-              "value": 0,
             },
             {
               "type": "number",
-              "value": 0,
             },
             {
               "type": "number",
-              "value": 0,
             },
           ],
         },
@@ -849,7 +802,6 @@ describe("jsx ast extractor", () => {
           "name": "renderOrder",
           "required": true,
           "type": "number",
-          "value": 0,
         },
       ]
     `);
@@ -874,26 +826,21 @@ describe("jsx ast extractor", () => {
           "name": "position",
           "required": false,
           "type": "union",
-          "value": "",
           "values": [
             {
               "type": "number",
-              "value": 0,
             },
             {
               "type": "array",
               "value": [
                 {
                   "type": "number",
-                  "value": 0,
                 },
                 {
                   "type": "number",
-                  "value": 0,
                 },
                 {
                   "type": "number",
-                  "value": 0,
                 },
               ],
             },
@@ -905,26 +852,21 @@ describe("jsx ast extractor", () => {
           "name": "scale",
           "required": false,
           "type": "union",
-          "value": "",
           "values": [
             {
               "type": "number",
-              "value": 1,
             },
             {
               "type": "array",
               "value": [
                 {
                   "type": "number",
-                  "value": 1,
                 },
                 {
                   "type": "number",
-                  "value": 1,
                 },
                 {
                   "type": "number",
-                  "value": 1,
                 },
               ],
             },
@@ -939,19 +881,15 @@ describe("jsx ast extractor", () => {
           "value": [
             {
               "type": "number",
-              "value": 0,
             },
             {
               "type": "number",
-              "value": 0,
             },
             {
               "type": "number",
-              "value": 0,
             },
             {
               "type": "union",
-              "value": "",
               "values": [
                 {
                   "type": "string",
@@ -987,7 +925,7 @@ describe("jsx ast extractor", () => {
           "name": "name",
           "required": true,
           "type": "string",
-          "value": "",
+          "value": undefined,
         },
         {
           "column": 11,
@@ -1032,7 +970,6 @@ describe("jsx ast extractor", () => {
           "name": "layers",
           "required": false,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -1040,7 +977,6 @@ describe("jsx ast extractor", () => {
           "name": "material",
           "required": true,
           "type": "union",
-          "value": "",
           "values": [],
         },
         {
@@ -1052,19 +988,15 @@ describe("jsx ast extractor", () => {
           "value": [
             {
               "type": "number",
-              "value": 0,
             },
             {
               "type": "number",
-              "value": 0,
             },
             {
               "type": "number",
-              "value": 0,
             },
             {
               "type": "number",
-              "value": 0,
             },
           ],
         },
@@ -1076,7 +1008,6 @@ describe("jsx ast extractor", () => {
           "name": "renderOrder",
           "required": true,
           "type": "number",
-          "value": 0,
         },
       ]
     `);
@@ -1205,7 +1136,7 @@ describe("jsx ast extractor", () => {
           "name": "name",
           "required": true,
           "type": "string",
-          "value": "",
+          "value": undefined,
         },
         {
           "declaration": "undeclared",
@@ -1246,7 +1177,6 @@ describe("jsx ast extractor", () => {
           "name": "layers",
           "required": false,
           "type": "number",
-          "value": 0,
         },
         {
           "declaration": "undeclared",
@@ -1254,7 +1184,6 @@ describe("jsx ast extractor", () => {
           "name": "material",
           "required": true,
           "type": "union",
-          "value": "",
           "values": [],
         },
         {
@@ -1266,19 +1195,15 @@ describe("jsx ast extractor", () => {
           "value": [
             {
               "type": "number",
-              "value": 0,
             },
             {
               "type": "number",
-              "value": 0,
             },
             {
               "type": "number",
-              "value": 0,
             },
             {
               "type": "number",
-              "value": 0,
             },
           ],
         },
@@ -1290,7 +1215,6 @@ describe("jsx ast extractor", () => {
           "name": "renderOrder",
           "required": true,
           "type": "number",
-          "value": 0,
         },
       ]
     `);
@@ -1344,15 +1268,12 @@ describe("jsx ast extractor", () => {
           "value": [
             {
               "type": "number",
-              "value": 1,
             },
             {
               "type": "number",
-              "value": 1,
             },
             {
               "type": "number",
-              "value": 1,
             },
           ],
         },

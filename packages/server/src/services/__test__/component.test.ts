@@ -621,4 +621,72 @@ describe("component service", () => {
     expect(getJsxElementAt(sourceFile, 36, 5)).toBeDefined();
     expect(getJsxElementAt(sourceFile, 41, 7)).toBeDefined();
   });
+
+  it("should add component as a child to jsx", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx")
+    );
+
+    const result = add(
+      sourceFile,
+      "default",
+      {
+        type: "custom",
+        exportName: "AddComponent",
+        path: join(__dirname, "stub-component.tsx"),
+        props: { color: "blurple" },
+      },
+      { action: "child", column: 7, line: 50 }
+    );
+
+    expect(result).toEqual({ column: 19, line: 50 });
+    expect(getExportName(sourceFile, "AddComponent").declaration.getText())
+      .toMatchInlineSnapshot(`
+        "export function AddComponent() {
+          return (
+            <>
+              <RoundedBox />
+              <RoundedBox><AddComponent1 color=\\"blurple\\"/></RoundedBox>
+            </>
+          );
+        }"
+      `);
+  });
+
+  it("should add component as a child to self closing jsx", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx")
+    );
+
+    const result = add(
+      sourceFile,
+      "default",
+      {
+        type: "custom",
+        exportName: "AddComponent",
+        path: join(__dirname, "stub-component.tsx"),
+        props: { color: "blurple" },
+      },
+      { action: "child", column: 7, line: 49 }
+    );
+
+    expect(result).toEqual({ column: 19, line: 49 });
+    expect(getExportName(sourceFile, "AddComponent").declaration.getText())
+      .toMatchInlineSnapshot(`
+        "export function AddComponent() {
+          return (
+            <>
+              <RoundedBox><AddComponent1 color=\\"blurple\\"/></RoundedBox>
+              <RoundedBox></RoundedBox>
+            </>
+          );
+        }"
+      `);
+  });
 });

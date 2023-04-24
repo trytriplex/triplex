@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { create } from "zustand";
-import { ComponentType } from "../api-types";
+import { ComponentTarget, ComponentType } from "../api-types";
 import { useScene } from "./scene";
 
 export interface Params {
@@ -69,16 +69,25 @@ export function useEditor() {
   }, []);
 
   const addComponent = useCallback(
-    async (component: ComponentType) => {
+    async ({
+      type,
+      target,
+    }: {
+      type: ComponentType;
+      target?: ComponentTarget;
+    }) => {
+      const body = {
+        target,
+        type,
+      };
+
       const res = await fetch(
         "http://localhost:8000/scene/" +
           encodeURIComponent(path) +
           `/${exportName}/object`,
         {
           method: "POST",
-          body: JSON.stringify({
-            target: component,
-          }),
+          body: JSON.stringify(body),
         }
       );
 
@@ -241,7 +250,8 @@ export function useEditor() {
         componentParams.path === path &&
         componentParams.exportName === exportName &&
         typeof metaParams.forceSaveAs === "undefined" &&
-        typeof metaParams.forceRenameOnSave === "undefined"
+        typeof metaParams.forceRenameOnSave === "undefined" &&
+        typeof metaParams.replace === "undefined"
       ) {
         // Bail if we're already on the same path.
         // If we implement props being able to change
@@ -431,6 +441,10 @@ export function useEditor() {
       /**
        * Focuses the passed scene object. Will blur the currently focused scene
        * object by passing `null`.
+       *
+       * You should probably be calling the scene API instead.
+       *
+       * @see {@link ./scene.tsx}
        */
       focus,
       /**
