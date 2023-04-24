@@ -39,11 +39,20 @@ export const scripts = {
   invalidateHRMFooter: `
     if (import.meta.hot) {
       __hmr_import(import.meta.url).then((currentModule) => {
-        import.meta.hot.accept((nextModules) => {
-          const currentKeys = Object.keys(currentModule).sort();
-          const nextKeys = Object.keys(nextModules).sort();
+        import.meta.hot.accept((nextModule) => {
+          const currentKeys = Object
+            .entries(currentModule)
+            .map(([key, value]) => typeof value.triplexMeta ? key + JSON.stringify(value.triplexMeta) : key)
+            .sort();
+          const nextKeys = Object
+            .entries(nextModule)
+            .map(([key, value]) => typeof value.triplexMeta ? key + JSON.stringify(value.triplexMeta) : key)
+            .sort();
 
           if (JSON.stringify(currentKeys) !== JSON.stringify(nextKeys)) {
+            // If the exports change, or if triplex meta changes, invalidate HMR
+            // And force parents up the chain to refresh flushing changes through
+            // The editor.
             import.meta.hot.invalidate();
           }
         });

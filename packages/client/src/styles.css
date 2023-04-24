@@ -50,3 +50,24 @@ html {
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
 }
+
+.bg-checker {
+  background-position: 0px 0px, 10px 10px;
+  background-size: 20px 20px;
+  background-image: linear-gradient(
+      45deg,
+      currentColor 25%,
+      transparent 25%,
+      transparent 75%,
+      currentColor 75%,
+      currentColor 100%
+    ),
+    linear-gradient(
+      45deg,
+      currentColor 25%,
+      rgb(115 115 115) 25%,
+      rgb(115 115 115) 75%,
+      currentColor 75%,
+      currentColor 100%
+    );
+}

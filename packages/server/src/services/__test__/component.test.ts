@@ -689,4 +689,36 @@ describe("component service", () => {
         }"
       `);
   });
+
+  it("should add multiple components and return the expected pos", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx")
+    );
+
+    add(
+      sourceFile,
+      "default",
+      {
+        type: "host",
+        name: "boxGeometry",
+        props: { color: "blurple" },
+      },
+      { action: "child", column: 7, line: 49 }
+    );
+    const result = add(
+      sourceFile,
+      "default",
+      {
+        type: "host",
+        name: "boxGeometry",
+        props: { color: "blurple" },
+      },
+      { action: "child", column: 7, line: 49 }
+    );
+
+    expect(result).toEqual({ column: 49, line: 49 });
+  });
 });

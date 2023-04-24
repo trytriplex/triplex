@@ -123,20 +123,21 @@ function addToJsxElement(
   const componentText = `<${componentName} ${propsToString(componentProps)}/>`;
 
   if (Node.isJsxElement(element)) {
+    const children = element.getJsxChildren();
     const openingText = element.getOpeningElement().getText();
     const closingText = element.getClosingElement().getText();
-    const childrenText = element
-      .getJsxChildren()
-      .map((child) => child.getText())
-      .join("");
+    const childrenText = children.map((child) => child.getText()).join("");
+    const pos = sourceFile.getLineAndColumnAtPos(
+      element.getClosingElement().getStart()
+    );
 
     element.replaceWithText(
       openingText + childrenText + componentText + closingText
     );
 
     return {
-      line: target.line,
-      column: target.column + openingText.length,
+      line: pos.line,
+      column: pos.column,
     };
   }
 

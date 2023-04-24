@@ -29,7 +29,7 @@ export function Drawer({
             attach === "left" && "slide-in top-0 left-0 bottom-0 w-64 border-r",
             attach === "bottom" &&
               "slide-up left-4 bottom-4 right-4 h-52 rounded-lg border",
-            "fixed flex flex-col border-neutral-800 text-neutral-300 shadow-2xl shadow-black/50 outline-none",
+            "fixed flex flex-col overflow-hidden border-neutral-800 text-neutral-300 shadow-2xl shadow-black/50 outline-none",
           ])}
         >
           {title && (
