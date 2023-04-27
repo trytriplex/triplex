@@ -40,6 +40,7 @@
   },
   "files": [
     "dist",
-    "templates"
+    "templates",
+    "config.schema.json"
   ]
 }
