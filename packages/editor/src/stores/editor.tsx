@@ -2,6 +2,7 @@ import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { create } from "zustand";
 import { ComponentTarget, ComponentType } from "../api-types";
+import { stringify } from "../util/string";
 import { useScene } from "./scene";
 
 export interface Params {
@@ -169,7 +170,7 @@ export function useEditor() {
           `http://localhost:8000/scene/object/${data.line}/${
             data.column
           }/prop?value=${encodeURIComponent(
-            JSON.stringify(data.currentPropValue)
+            stringify(data.currentPropValue)
           )}&path=${encodeURIComponent(data.path)}&name=${encodeURIComponent(
             data.propName
           )}`
@@ -192,7 +193,7 @@ export function useEditor() {
           `http://localhost:8000/scene/object/${data.line}/${
             data.column
           }/prop?value=${encodeURIComponent(
-            JSON.stringify(data.nextPropValue)
+            stringify(data.nextPropValue)
           )}&path=${encodeURIComponent(data.path)}&name=${encodeURIComponent(
             data.propName
           )}`

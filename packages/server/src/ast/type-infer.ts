@@ -3,6 +3,7 @@ import {
   JsxSelfClosingElement,
   Node,
   PropertySignature,
+  ts,
   Type,
 } from "ts-morph";
 import { getAttributes } from "./jsx";
@@ -35,10 +36,16 @@ export function unrollType(type: Type, name?: string): UnrolledType {
 
   if (type.isTuple()) {
     const elements = type.getTupleElements();
+    const labels = ((type.compilerType as ts.TupleType).target as ts.TupleType)
+      .labeledElementDeclarations;
 
     return {
       type: "tuple",
-      values: elements.map((val) => unrollType(val, name)),
+      values: elements.map((val, index) => ({
+        ...unrollType(val, name),
+        label: labels ? labels[index].name.getText() : undefined,
+        required: labels ? !labels[index].questionToken : true,
+      })),
     };
   }
 

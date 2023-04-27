@@ -16,7 +16,7 @@ export default function Scene() {
 }
 
 export const NodeModules = () => {
-  return <RoundedBox />;
+  return <RoundedBox visible={undefined} />;
 };
 
 export const Host = () => (

@@ -11,7 +11,13 @@ export function UnionInput({
   onConfirm,
   path,
   defaultValue,
+  required,
+  line,
+  column,
 }: {
+  line?: number;
+  column?: number;
+  required?: boolean;
   defaultValue?: string | number;
   path: string;
   name: string;
@@ -29,10 +35,13 @@ export function UnionInput({
     <div className="flex gap-1">
       <div className="flex flex-col gap-1">
         <PropInput
+          required={required}
           name={name}
           onChange={onChange}
           onConfirm={onConfirm}
           path={path}
+          line={line}
+          column={column}
           prop={Object.assign(
             {},
             value,
@@ -40,11 +49,13 @@ export function UnionInput({
           )}
         />
       </div>
-      <IconButton
-        icon={SwitchIcon}
-        title="Switch prop type"
-        onClick={incrementIndex}
-      />
+      <div>
+        <IconButton
+          icon={SwitchIcon}
+          title="Switch prop type"
+          onClick={incrementIndex}
+        />
+      </div>
     </div>
   );
 }

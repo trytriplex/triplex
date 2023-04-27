@@ -25,8 +25,8 @@ export default function Scene() {
         rotation={[
           2.1533738875424957, -0.4755261514452274, 0.22680789335122342,
         ]}
-        scale={[1, 0.788966027180377, 1.977327619564505]}
-        color={"red"}
+        scale={[1, 1, 1.977327619564505]}
+        color={undefined}
       />
       <Cylinder
         position={[-1.566394995899318, 0, -3.7220017011540865]}
@@ -43,13 +43,14 @@ export default function Scene() {
         position={[3, 0, 2]}
         rotation={[0, 0.25, 0]}
         scale={[1, 1.5, 1]}
+        visible={undefined}
       >
-        <meshStandardMaterial color="purple" />
+        <meshStandardMaterial color="purple" opacity={0} />
       </RoundedBox>
 
       <Cylinder position={[1.4681464869137235, 0, -4.205778397787599]} />
-      <Cylinder position={[-5.147492724511148, 0, -2.9618330871711818]} />
-      <Box1 color={"red"} />
+      <Cylinder position={[-5.14749272451115, 0, -2.9618330871711818]} />
+      <Box1 color={"blue"} position={1} />
     </>
   );
 }

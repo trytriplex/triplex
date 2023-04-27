@@ -277,22 +277,49 @@ export function getAttributes(
 }
 
 function mergePropTypeValue(prop: Prop, type: PropType) {
-  if (
-    prop.type === "string" ||
-    (prop.type === "identifier" && prop.value === undefined)
-  ) {
-    // We have a simple type that may be defined or not.
-    // If it's a union type let's transform it to be that
-    // So it is displayed as a select in the UI.
-
+  if (prop.type === "identifier" && prop.value === undefined) {
     if (type.type.type === "union") {
-      // We are! Let's update the return types.
       return {
         type: "union",
         values: type.type.values,
         value: prop.value,
       };
     }
+
+    return {
+      type: type.type.type,
+      value: prop.value,
+    };
+  }
+
+  if (
+    prop.type === "string" &&
+    type.type.type === "union" &&
+    type.type.values.every((value) => value.type === "string")
+  ) {
+    return {
+      type: "union",
+      values: type.type.values,
+      value: prop.value,
+    };
+  }
+
+  if (type.type.type === "tuple" && prop.type === "array") {
+    return {
+      type: prop.type,
+      value: type.type.values.map((value, index) => {
+        const actualValue = prop.value[index];
+
+        if (actualValue) {
+          return {
+            ...value,
+            value: actualValue ? actualValue.value : undefined,
+          };
+        }
+
+        return value;
+      }),
+    };
   }
 
   return { type: prop.type, value: prop.value };
@@ -311,12 +338,20 @@ function toProp(type: PropType["type"], name: string): Prop {
       return {
         type: "boolean",
         value: false,
+        ...(typeof type.label === "string" ? { label: type.label } : {}),
+        ...(typeof type.required === "boolean"
+          ? { required: type.required }
+          : {}),
       };
     }
 
     case "number": {
       return {
         type: "number",
+        ...(typeof type.label === "string" ? { label: type.label } : {}),
+        ...(typeof type.required === "boolean"
+          ? { required: type.required }
+          : {}),
       };
     }
 
@@ -324,6 +359,10 @@ function toProp(type: PropType["type"], name: string): Prop {
       return {
         type: "string",
         value: type.value,
+        ...(typeof type.label === "string" ? { label: type.label } : {}),
+        ...(typeof type.required === "boolean"
+          ? { required: type.required }
+          : {}),
       };
     }
 
@@ -387,6 +426,7 @@ const propsSortList: Record<string, number> = [
 
 const propsExcludeList: Record<string, true> = {
   attach: true,
+  children: true,
   id: true,
   isAmbientLight: true,
   isBufferGeometry: true,

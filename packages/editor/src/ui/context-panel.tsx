@@ -20,6 +20,8 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
     }`
   );
 
+  const filteredProps = data.props.filter((prop) => prop.type !== "spread");
+
   useEffect(() => {
     if (data.type === "custom") {
       preloadSubscription(`/scene/${encodeURIComponent(data.path)}`);
@@ -41,7 +43,7 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
           View usage
         </IDELink>
 
-        {data.type === "custom" && (
+        {data.type === "custom" && data.path && (
           <>
             <span className="mx-1.5 text-xs text-neutral-400">•</span>
 
@@ -78,51 +80,55 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
       <ScrollContainer>
         <div className="h-4" />
 
-        {data.props
-          .filter((prop) => prop.type !== "spread")
-          .map((prop) => (
-            <PropField
-              htmlFor={prop.name}
-              label={prop.name}
-              description={prop.description}
-              key={`${prop.name}${prop.column}${prop.line}`}
-            >
-              <PropInput
-                name={prop.name}
-                column={prop.column}
-                line={prop.line}
-                path={target.ownerPath}
-                prop={prop}
-                required={prop.required}
-                onConfirm={async (value) => {
-                  const currentValue = await getPropValue({
-                    column: target.column,
-                    line: target.line,
-                    path: target.ownerPath,
-                    propName: prop.name,
-                  });
+        {filteredProps.length === 0 && (
+          <div className="px-4 text-sm italic text-neutral-400">
+            This element has no props.
+          </div>
+        )}
 
-                  persistPropValue({
-                    column: target.column,
-                    line: target.line,
-                    path: target.ownerPath,
-                    propName: prop.name,
-                    currentPropValue: currentValue.value,
-                    nextPropValue: value,
-                  });
-                }}
-                onChange={(value) =>
-                  setPropValue({
-                    column: target.column,
-                    line: target.line,
-                    path: target.ownerPath,
-                    propName: prop.name,
-                    propValue: value,
-                  })
-                }
-              />
-            </PropField>
-          ))}
+        {filteredProps.map((prop) => (
+          <PropField
+            htmlFor={prop.name}
+            label={prop.name}
+            description={prop.description}
+            key={`${prop.name}${prop.column}${prop.line}`}
+          >
+            <PropInput
+              name={prop.name}
+              column={prop.column}
+              line={prop.line}
+              path={target.ownerPath}
+              prop={prop}
+              required={prop.required}
+              onConfirm={async (value) => {
+                const currentValue = await getPropValue({
+                  column: target.column,
+                  line: target.line,
+                  path: target.ownerPath,
+                  propName: prop.name,
+                });
+
+                persistPropValue({
+                  column: target.column,
+                  line: target.line,
+                  path: target.ownerPath,
+                  propName: prop.name,
+                  currentPropValue: currentValue.value,
+                  nextPropValue: value,
+                });
+              }}
+              onChange={(value) =>
+                setPropValue({
+                  column: target.column,
+                  line: target.line,
+                  path: target.ownerPath,
+                  propName: prop.name,
+                  propValue: value,
+                })
+              }
+            />
+          </PropField>
+        ))}
         <div className="h-2" />
       </ScrollContainer>
     </>

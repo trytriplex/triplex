@@ -158,16 +158,37 @@ describe("jsx ast extractor", () => {
           "type": "array",
           "value": [
             {
+              "label": "width",
+              "required": false,
               "type": "number",
               "value": 1,
             },
             {
+              "label": "height",
+              "required": false,
               "type": "number",
               "value": 1,
             },
             {
+              "label": "depth",
+              "required": false,
               "type": "number",
               "value": 1,
+            },
+            {
+              "label": "widthSegments",
+              "required": false,
+              "type": "number",
+            },
+            {
+              "label": "heightSegments",
+              "required": false,
+              "type": "number",
+            },
+            {
+              "label": "depthSegments",
+              "required": false,
+              "type": "number",
             },
           ],
         },
@@ -186,6 +207,68 @@ describe("jsx ast extractor", () => {
           "required": true,
           "type": "boolean",
           "value": false,
+        },
+      ]
+    `);
+  });
+
+  it("should merge types and props on extracted geometry element", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/cylinder.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 4, 7);
+
+    const props = getJsxElementProps(sourceFile, sceneObject!);
+
+    expect(props[0].value).toMatchInlineSnapshot(`
+      [
+        {
+          "label": "radiusTop",
+          "required": false,
+          "type": "number",
+          "value": undefined,
+        },
+        {
+          "label": "radiusBottom",
+          "required": false,
+          "type": "number",
+          "value": 1,
+        },
+        {
+          "label": "height",
+          "required": false,
+          "type": "number",
+          "value": 2,
+        },
+        {
+          "label": "radialSegments",
+          "required": false,
+          "type": "number",
+          "value": 10,
+        },
+        {
+          "label": "heightSegments",
+          "required": false,
+          "type": "number",
+          "value": 1,
+        },
+        {
+          "label": "openEnded",
+          "required": false,
+          "type": "boolean",
+        },
+        {
+          "label": "thetaStart",
+          "required": false,
+          "type": "number",
+        },
+        {
+          "label": "thetaLength",
+          "required": false,
+          "type": "number",
         },
       ]
     `);
@@ -227,30 +310,8 @@ describe("jsx ast extractor", () => {
           "line": 13,
           "name": "color",
           "required": true,
-          "type": "union",
+          "type": "string",
           "value": "pink",
-          "values": [
-            {
-              "type": "string",
-            },
-            {
-              "type": "number",
-            },
-            {
-              "type": "tuple",
-              "values": [
-                {
-                  "type": "number",
-                },
-                {
-                  "type": "number",
-                },
-                {
-                  "type": "number",
-                },
-              ],
-            },
-          ],
         },
         {
           "declaration": "undeclared",
@@ -422,12 +483,18 @@ describe("jsx ast extractor", () => {
               "type": "array",
               "value": [
                 {
+                  "label": "r",
+                  "required": true,
                   "type": "number",
                 },
                 {
+                  "label": "g",
+                  "required": true,
                   "type": "number",
                 },
                 {
+                  "label": "b",
+                  "required": true,
                   "type": "number",
                 },
               ],
@@ -630,12 +697,18 @@ describe("jsx ast extractor", () => {
               "type": "array",
               "value": [
                 {
+                  "label": "x",
+                  "required": true,
                   "type": "number",
                 },
                 {
+                  "label": "y",
+                  "required": true,
                   "type": "number",
                 },
                 {
+                  "label": "z",
+                  "required": true,
                   "type": "number",
                 },
               ],
@@ -656,12 +729,18 @@ describe("jsx ast extractor", () => {
               "type": "array",
               "value": [
                 {
+                  "label": "x",
+                  "required": true,
                   "type": "number",
                 },
                 {
+                  "label": "y",
+                  "required": true,
                   "type": "number",
                 },
                 {
+                  "label": "z",
+                  "required": true,
                   "type": "number",
                 },
               ],
@@ -676,12 +755,18 @@ describe("jsx ast extractor", () => {
           "type": "array",
           "value": [
             {
+              "label": "x",
+              "required": true,
               "type": "number",
             },
             {
+              "label": "y",
+              "required": true,
               "type": "number",
             },
             {
+              "label": "z",
+              "required": true,
               "type": "number",
             },
             {
@@ -781,15 +866,23 @@ describe("jsx ast extractor", () => {
           "type": "array",
           "value": [
             {
+              "label": "x",
+              "required": true,
               "type": "number",
             },
             {
+              "label": "y",
+              "required": true,
               "type": "number",
             },
             {
+              "label": "z",
+              "required": true,
               "type": "number",
             },
             {
+              "label": "w",
+              "required": true,
               "type": "number",
             },
           ],
@@ -834,12 +927,18 @@ describe("jsx ast extractor", () => {
               "type": "array",
               "value": [
                 {
+                  "label": "x",
+                  "required": true,
                   "type": "number",
                 },
                 {
+                  "label": "y",
+                  "required": true,
                   "type": "number",
                 },
                 {
+                  "label": "z",
+                  "required": true,
                   "type": "number",
                 },
               ],
@@ -860,12 +959,18 @@ describe("jsx ast extractor", () => {
               "type": "array",
               "value": [
                 {
+                  "label": "x",
+                  "required": true,
                   "type": "number",
                 },
                 {
+                  "label": "y",
+                  "required": true,
                   "type": "number",
                 },
                 {
+                  "label": "z",
+                  "required": true,
                   "type": "number",
                 },
               ],
@@ -880,12 +985,18 @@ describe("jsx ast extractor", () => {
           "type": "array",
           "value": [
             {
+              "label": "x",
+              "required": true,
               "type": "number",
             },
             {
+              "label": "y",
+              "required": true,
               "type": "number",
             },
             {
+              "label": "z",
+              "required": true,
               "type": "number",
             },
             {
@@ -987,15 +1098,23 @@ describe("jsx ast extractor", () => {
           "type": "array",
           "value": [
             {
+              "label": "x",
+              "required": true,
               "type": "number",
             },
             {
+              "label": "y",
+              "required": true,
               "type": "number",
             },
             {
+              "label": "z",
+              "required": true,
               "type": "number",
             },
             {
+              "label": "w",
+              "required": true,
               "type": "number",
             },
           ],
@@ -1010,6 +1129,57 @@ describe("jsx ast extractor", () => {
           "type": "number",
         },
       ]
+    `);
+  });
+
+  it("should merge props and types for rounded box", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/type-extraction.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 19, 10);
+
+    const props = getJsxElementProps(sourceFile, sceneObject!);
+
+    expect(props[5]).toMatchInlineSnapshot(`
+      {
+        "column": 22,
+        "declaration": "declared",
+        "description": "Object gets rendered if true.",
+        "line": 19,
+        "name": "visible",
+        "required": true,
+        "type": "boolean",
+        "value": undefined,
+      }
+    `);
+    expect(props[3]).toMatchInlineSnapshot(`
+      {
+        "declaration": "undeclared",
+        "description": undefined,
+        "name": "args",
+        "required": false,
+        "type": "array",
+        "value": [
+          {
+            "label": "width",
+            "required": false,
+            "type": "number",
+          },
+          {
+            "label": "height",
+            "required": false,
+            "type": "number",
+          },
+          {
+            "label": "depth",
+            "required": false,
+            "type": "number",
+          },
+        ],
+      }
     `);
   });
 
@@ -1194,15 +1364,23 @@ describe("jsx ast extractor", () => {
           "type": "array",
           "value": [
             {
+              "label": "x",
+              "required": true,
               "type": "number",
             },
             {
+              "label": "y",
+              "required": true,
               "type": "number",
             },
             {
+              "label": "z",
+              "required": true,
               "type": "number",
             },
             {
+              "label": "w",
+              "required": true,
               "type": "number",
             },
           ],
@@ -1246,14 +1424,20 @@ describe("jsx ast extractor", () => {
           "type": "array",
           "value": [
             {
+              "label": undefined,
+              "required": true,
               "type": "number",
               "value": 0.9223319881614562,
             },
             {
+              "label": undefined,
+              "required": true,
               "type": "number",
               "value": 0,
             },
             {
+              "label": undefined,
+              "required": true,
               "type": "number",
               "value": 4.703084245305494,
             },
@@ -1267,12 +1451,15 @@ describe("jsx ast extractor", () => {
           "type": "array",
           "value": [
             {
+              "required": true,
               "type": "number",
             },
             {
+              "required": true,
               "type": "number",
             },
             {
+              "required": true,
               "type": "number",
             },
           ],
@@ -1287,14 +1474,20 @@ describe("jsx ast extractor", () => {
           "type": "array",
           "value": [
             {
+              "label": undefined,
+              "required": true,
               "type": "number",
               "value": 1.660031347769923,
             },
             {
+              "label": undefined,
+              "required": true,
               "type": "number",
               "value": -0.07873115868670048,
             },
             {
+              "label": undefined,
+              "required": true,
               "type": "number",
               "value": -0.7211124466452248,
             },

@@ -1,5 +1,6 @@
 import { FormEventHandler, useEffect, useRef, useState } from "react";
 import tinycolor from "tinycolor2";
+import { cn } from "../ds/cn";
 
 export function ColorInput({
   defaultValue,
@@ -13,8 +14,9 @@ export function ColorInput({
   onConfirm: (value: string) => void;
 }) {
   const ref = useRef<HTMLInputElement>(null);
-  const defaultValueHex = defaultValue
-    ? tinycolor(defaultValue).toHexString()
+  const defaultValueColor = defaultValue ? tinycolor(defaultValue) : undefined;
+  const defaultValueHex = defaultValueColor
+    ? defaultValueColor.toHexString()
     : undefined;
   const [hasChanged, setHasChanged] = useState(false);
 
@@ -33,7 +35,6 @@ export function ColorInput({
     };
 
     const element = ref.current;
-
     element.addEventListener("change", cb);
 
     return () => {
@@ -57,10 +58,20 @@ export function ColorInput({
         data-testid={`color-${defaultValue}`}
         id={name}
         type="color"
-        className="h-7 w-7 rounded-md bg-neutral-700 p-[3px] outline-none [color-scheme:dark]"
+        className="peer h-7 w-7 rounded-md bg-neutral-700 p-[3px] outline-none [color-scheme:dark]"
         defaultValue={defaultValueHex}
         onChange={onChangeHandler}
         ref={ref}
+      />
+      <div
+        className={cn([
+          defaultValueColor?.isLight()
+            ? // When it's light show dark interaction states
+              "peer-hover:bg-black/10 peer-active:bg-black/20"
+            : // When it's dark (or undefined) show light interaction states
+              "peer-hover:bg-white/10 peer-active:bg-white/20",
+          "pointer-events-none absolute inset-0 rounded-md",
+        ])}
       />
     </div>
   );

@@ -10,8 +10,23 @@ export default function Sphere({
   scale?: Vector3Tuple;
 }) {
   return (
-    <mesh position={position} rotation={rotation} scale={scale}>
-      <sphereGeometry args={[1, 10, 10]} />
+    <mesh
+      position={position}
+      rotation={rotation}
+      scale={scale}
+      name={undefined}
+    >
+      <sphereGeometry
+        args={[
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+          undefined,
+        ]}
+      />
       <meshStandardMaterial color={"#84f4ea"} />
     </mesh>
   );

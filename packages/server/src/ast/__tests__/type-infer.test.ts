@@ -30,12 +30,18 @@ describe("type infer", () => {
             "type": "tuple",
             "values": [
               {
+                "label": undefined,
+                "required": true,
                 "type": "number",
               },
               {
+                "label": undefined,
+                "required": true,
                 "type": "number",
               },
               {
+                "label": undefined,
+                "required": true,
                 "type": "number",
               },
             ],
@@ -50,12 +56,18 @@ describe("type infer", () => {
             "type": "tuple",
             "values": [
               {
+                "label": undefined,
+                "required": true,
                 "type": "number",
               },
               {
+                "label": undefined,
+                "required": true,
                 "type": "number",
               },
               {
+                "label": undefined,
+                "required": true,
                 "type": "number",
               },
             ],
@@ -70,12 +82,18 @@ describe("type infer", () => {
             "type": "tuple",
             "values": [
               {
+                "label": undefined,
+                "required": true,
                 "type": "number",
               },
               {
+                "label": undefined,
+                "required": true,
                 "type": "number",
               },
               {
+                "label": undefined,
+                "required": true,
                 "type": "number",
               },
             ],
@@ -224,12 +242,18 @@ describe("type infer", () => {
             "type": "tuple",
             "values": [
               {
+                "label": "width",
+                "required": false,
                 "type": "number",
               },
               {
+                "label": "height",
+                "required": false,
                 "type": "number",
               },
               {
+                "label": "depth",
+                "required": false,
                 "type": "number",
               },
             ],
@@ -285,12 +309,18 @@ describe("type infer", () => {
                 "type": "tuple",
                 "values": [
                   {
+                    "label": "x",
+                    "required": true,
                     "type": "number",
                   },
                   {
+                    "label": "y",
+                    "required": true,
                     "type": "number",
                   },
                   {
+                    "label": "z",
+                    "required": true,
                     "type": "number",
                   },
                 ],
@@ -325,15 +355,23 @@ describe("type infer", () => {
             "type": "tuple",
             "values": [
               {
+                "label": "x",
+                "required": true,
                 "type": "number",
               },
               {
+                "label": "y",
+                "required": true,
                 "type": "number",
               },
               {
+                "label": "z",
+                "required": true,
                 "type": "number",
               },
               {
+                "label": "order",
+                "required": false,
                 "type": "union",
                 "value": "",
                 "values": [
