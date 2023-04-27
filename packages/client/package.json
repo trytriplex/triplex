@@ -1,6 +1,6 @@
 {
   "name": "@triplex/client",
-  "version": "0.42.0",
+  "version": "0.43.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "license": "Apache-2.0",
   "main": "./src/index.ts",
@@ -15,8 +15,8 @@
   },
   "dependencies": {
     "@babel/core": "^7.20.7",
-    "@triplex/editor": "0.42.0",
-    "@triplex/scene": "0.42.0",
+    "@triplex/editor": "0.43.0",
+    "@triplex/scene": "0.43.0",
     "@vitejs/plugin-react": "^3.0.1",
     "chokidar": "^3.5.3",
     "express": "^4.18.2",

@@ -1,5 +1,38 @@
 # @triplex/client
 
+## 0.43.0
+
+### Minor Changes
+
+- 01cd388: Adds transparent checker bg to color picker when no value is defined.
+- 01cd388: Editor is now flushed when a scene adds or removes lights.
+- 6dfb22d: Fixes a HMR bug when a modules exports change and the editor wasn't
+  being flushed with the new exports.
+
+### Patch Changes
+
+- Updated dependencies [6dfb22d]
+- Updated dependencies [6dfb22d]
+- Updated dependencies [6dfb22d]
+- Updated dependencies [6dfb22d]
+- Updated dependencies [de54812]
+- Updated dependencies [b7bbeba]
+- Updated dependencies [6dfb22d]
+- Updated dependencies [6dfb22d]
+- Updated dependencies [b7bbeba]
+- Updated dependencies [6dfb22d]
+- Updated dependencies [de54812]
+- Updated dependencies [01cd388]
+- Updated dependencies [de54812]
+- Updated dependencies [de54812]
+- Updated dependencies [b7bbeba]
+- Updated dependencies [01cd388]
+- Updated dependencies [facc6aa]
+- Updated dependencies [de54812]
+- Updated dependencies [01cd388]
+  - @triplex/scene@0.43.0
+  - @triplex/editor@0.43.0
+
 ## 0.42.0
 
 ### Patch Changes

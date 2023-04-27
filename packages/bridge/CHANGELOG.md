@@ -1,5 +1,13 @@
 # @triplex/bridge
 
+## 0.43.0
+
+### Minor Changes
+
+- b7bbeba: When adding a new element to the scene if you have a selection it
+  will be added as a child. If you have no selection it will be added to the
+  root component.
+
 ## 0.42.0
 
 ## 0.41.0

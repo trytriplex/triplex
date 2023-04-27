@@ -1,5 +1,26 @@
 # @triplex/server
 
+## 0.43.0
+
+### Minor Changes
+
+- 6dfb22d: Create a component in the current open file through the component
+  switcher.
+- 6dfb22d: A component switcher is now available in the left panel, use it to
+  quickly switch between components in the open file.
+- b7bbeba: String and numbers in props now can have undefined default values.
+- 6dfb22d: Saving is now skipped if there are no changes to save.
+- de54812: Context panel tuple props now show labels when available.
+- b7bbeba: When adding a new element to the scene if you have a selection it
+  will be added as a child. If you have no selection it will be added to the
+  root component.
+- 6dfb22d: The scene ws listener now pushes when the file its interested in is
+  saved to source.
+- b7bbeba: Geometry and material built-in elements are now exposed in the add
+  component drawer.
+- facc6aa: Saving a new component now prompts for a component name.
+- 01cd388: Element pos returned after adding a child element is now correct.
+
 ## 0.42.0
 
 ## 0.41.0
