@@ -6,7 +6,7 @@ import { useScene } from "../stores/scene";
 import { Drawer } from "../ds/drawer";
 import { cn } from "../ds/cn";
 import { ScrollContainer } from "../ds/scroll-container";
-import { camelToStartCase } from "../util/string";
+import { titleCase } from "../util/string";
 import {
   ComponentType,
   GetProjectComponentFolders,
@@ -60,7 +60,7 @@ function Component({
       className="relative h-24 w-24 cursor-pointer rounded bg-white/5 hover:bg-white/10 active:bg-white/20"
     >
       <span className="absolute top-0 bottom-0 left-0 right-0 flex items-center justify-center overflow-hidden text-ellipsis p-1 text-sm text-neutral-400">
-        {camelToStartCase(name)}
+        {titleCase(name)}
       </span>
     </button>
   );
@@ -174,7 +174,7 @@ function ComponentsDrawer({
                     onClick={() => onSelected(folder.path)}
                     isSelected={selected === folder.path}
                   >
-                    {camelToStartCase(folder.name)}
+                    {titleCase(folder.name)}
                   </Folder>
                 ))}
               </div>

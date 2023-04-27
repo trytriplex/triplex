@@ -1,6 +1,8 @@
-import { ChangeEventHandler, MouseEventHandler, useRef } from "react";
+import { ChangeEventHandler, useRef } from "react";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { Prop } from "../api-types";
+import { IconButton } from "../ds/button";
+import { cn } from "../ds/cn";
 
 export function LiteralUnionInput({
   defaultValue,
@@ -18,6 +20,7 @@ export function LiteralUnionInput({
   onConfirm: (value: number | string | undefined) => void;
 }) {
   const ref = useRef<HTMLSelectElement>(null);
+
   const onChangeHandler: ChangeEventHandler<HTMLSelectElement> = (e) => {
     const currentValue = defaultValue ?? undefined;
     const nextValue = e.target.value ?? undefined;
@@ -30,17 +33,14 @@ export function LiteralUnionInput({
     }
   };
 
-  const onClear: MouseEventHandler<HTMLButtonElement> = () => {
+  const onClear = () => {
     ref.current!.value = "";
-
-    if (defaultValue !== undefined) {
-      onChange(undefined);
-      onConfirm(undefined);
-    }
+    onChange(undefined);
+    onConfirm(undefined);
   };
 
   return (
-    <div className="flex w-full items-center rounded-md border border-transparent bg-white/5 px-0.5 focus-within:border-blue-400 hover:bg-white/10">
+    <div className="group flex w-full items-center rounded-md border border-transparent bg-white/5 px-0.5 focus-within:border-blue-400 hover:bg-white/10">
       <select
         key={defaultValue}
         ref={ref}
@@ -48,7 +48,10 @@ export function LiteralUnionInput({
         id={name}
         defaultValue={defaultValue}
         onChange={onChangeHandler}
-        className="w-full appearance-none overflow-hidden text-ellipsis bg-transparent p-0.5 text-sm text-neutral-300 outline-none [color-scheme:dark]"
+        className={cn([
+          defaultValue ? "text-neutral-300" : "text-neutral-500",
+          "w-full appearance-none overflow-hidden text-ellipsis bg-transparent p-0.5 text-sm outline-none [color-scheme:dark]",
+        ])}
       >
         {!defaultValue && <option value="">Select value...</option>}
         {values.map((value) => (
@@ -57,15 +60,13 @@ export function LiteralUnionInput({
       </select>
 
       {!required && defaultValue && (
-        <button
-          type="submit"
-          className="rounded p-0.5 text-neutral-400 hover:bg-white/5 active:bg-white/5"
+        <IconButton
+          className="hidden group-focus-within:block group-hover:block"
           onClick={onClear}
+          size="tight"
+          icon={Cross2Icon}
           title="Clear value"
-          aria-label="Clear"
-        >
-          <Cross2Icon />
-        </button>
+        />
       )}
     </div>
   );

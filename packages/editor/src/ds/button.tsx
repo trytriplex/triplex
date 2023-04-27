@@ -10,21 +10,28 @@ export const IconButton = forwardRef<
     isSelected?: boolean;
     className?: string;
     onClick?: () => void;
+    size?: "default" | "tight";
   }
->(({ icon: Icon, title, isSelected, onClick, className }, ref) => (
-  <button
-    ref={ref}
-    title={title}
-    onClick={onClick}
-    type="submit"
-    className={cn([
-      "self-start rounded-md p-1.5",
-      isSelected
-        ? "bg-white/5 text-blue-400"
-        : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
-      className,
-    ])}
-  >
-    <Icon />
-  </button>
-));
+>(
+  (
+    { icon: Icon, title, isSelected, onClick, className, size = "default" },
+    ref
+  ) => (
+    <button
+      ref={ref}
+      title={title}
+      onClick={onClick}
+      type="submit"
+      className={cn([
+        isSelected
+          ? "bg-white/5 text-blue-400"
+          : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
+        size === "default" && "rounded-md p-1.5",
+        size === "tight" && "rounded p-0.5",
+        className,
+      ])}
+    >
+      <Icon />
+    </button>
+  )
+);

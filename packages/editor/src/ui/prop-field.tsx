@@ -1,5 +1,5 @@
 import { type ReactNode } from "react";
-import { camelToStartCase } from "../util/string";
+import { titleCase } from "../util/string";
 
 export function PropField({
   htmlFor,
@@ -20,7 +20,7 @@ export function PropField({
           title={description ? `${label} — ${description}` : label}
           htmlFor={htmlFor}
         >
-          {camelToStartCase(label)}
+          {titleCase(label)}
         </label>
       </div>
 

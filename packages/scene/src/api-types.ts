@@ -25,15 +25,21 @@ export interface TupleType {
 export interface NumberType {
   type: "number";
   value?: number;
+  label?: string;
+  required?: boolean;
 }
 
 export interface StringType {
   type: "string";
   value?: string;
+  label?: string;
+  required?: boolean;
 }
 
 export interface BooleanType {
   type: "boolean";
+  label?: string;
+  required?: boolean;
 }
 
 export interface UnknownType {
@@ -69,42 +75,53 @@ export interface BaseProp {
 export interface StringProp {
   value?: string;
   type: "string";
+  label?: string;
+  required?: boolean;
 }
 
 export interface UnhandledProp {
   value: string;
   type: "unhandled";
+  required?: boolean;
 }
 
 export interface BooleanProp {
   value: boolean;
   type: "boolean";
+  label?: string;
+  required?: boolean;
 }
 
 export interface IdentifierProp {
   value: string | undefined;
   type: "identifier";
+  required?: boolean;
 }
 
 export interface SpreadProp {
   value: string;
   type: "spread";
+  required?: boolean;
 }
 
 export interface ArrayProp {
   value: Prop[];
   type: "array";
+  required?: boolean;
 }
 
 export interface UnionProp {
   values: Prop[];
   value?: string;
   type: "union";
+  required?: boolean;
 }
 
 export interface NumberProp {
   value?: number;
   type: "number";
+  label?: string;
+  required?: boolean;
 }
 
 export interface GetSceneObjectTypes {

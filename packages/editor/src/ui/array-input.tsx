@@ -17,7 +17,9 @@ export function ArrayInput({
   line,
   onChange,
   onConfirm,
+  required,
 }: {
+  required?: boolean;
   values: ArrayProp["value"];
   name: string;
   path: string;
@@ -45,6 +47,7 @@ export function ArrayInput({
 
         return (
           <PropInput
+            required={"required" in val ? val.required : required}
             path={path}
             key={index}
             onChange={onChangeHandler}

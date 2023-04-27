@@ -62,6 +62,9 @@ export function PropInput({
     } else {
       return (
         <UnionInput
+          line={line}
+          column={column}
+          required={required}
           defaultValue={prop.value}
           path={path}
           values={prop.values}
@@ -76,6 +79,7 @@ export function PropInput({
   if (prop.type === "array") {
     return (
       <ArrayInput
+        required={required}
         values={prop.value}
         name={name}
         path={path}
@@ -90,10 +94,12 @@ export function PropInput({
   if (prop.type === "number") {
     return (
       <NumberInput
+        required={required}
         defaultValue={prop.value}
         name={name}
         onChange={onChange}
         onConfirm={onConfirm}
+        label={prop.label}
       />
     );
   } else if (prop.type === "boolean") {
@@ -103,6 +109,7 @@ export function PropInput({
         name={name}
         onChange={onChange}
         onConfirm={onConfirm}
+        label={prop.label}
       />
     );
   } else if (prop.type === "string" && isColorProp(name)) {
@@ -117,25 +124,26 @@ export function PropInput({
   } else if (prop.type === "string") {
     return (
       <StringInput
+        required={required}
         defaultValue={prop.value}
         name={name}
         onChange={onChange}
         onConfirm={onConfirm}
+        label={prop.label}
       />
     );
   }
 
-  // Fallback - this is assumed to be controlled in code.
   return (
     <IDELink
       path={path}
       column={column || -1}
       line={line || -1}
-      title="This prop is controlled in code."
+      title="This prop is controlled by code."
       className="flex h-[26px] items-center gap-0.5 overflow-hidden rounded-md border border-transparent bg-white/5 py-0.5 px-1 text-sm hover:bg-white/10 focus-visible:border-blue-400"
     >
       <span className="overflow-hidden text-ellipsis whitespace-nowrap text-neutral-400">{`{${prop.value}}`}</span>
-      <div className="ml-auto flex-shrink-0 text-orange-300">
+      <div className="ml-auto flex-shrink-0 text-orange-600">
         <ExclamationTriangleIcon />
       </div>
     </IDELink>
