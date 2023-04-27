@@ -1,5 +1,25 @@
 # @triplex/scene
 
+## 0.43.0
+
+### Minor Changes
+
+- 6dfb22d: The add scene component now cleans up all intermediate state when a
+  file has been saved.
+- 6dfb22d: The scene loader nolonger holds onto a stale module reference if the
+  module changes during HMR.
+- 01cd388: Intermediate state when adding components to a scene is blown away
+  when any hmr after event occurs.
+- b7bbeba: When adding a new element to the scene if you have a selection it
+  will be added as a child. If you have no selection it will be added to the
+  root component.
+
+### Patch Changes
+
+- Updated dependencies [b7bbeba]
+  - @triplex/bridge@0.43.0
+  - @triplex/ws-client@0.43.0
+
 ## 0.42.0
 
 ### Patch Changes

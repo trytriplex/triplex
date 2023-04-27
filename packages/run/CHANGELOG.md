@@ -1,5 +1,29 @@
 # @triplex/run
 
+## 0.43.0
+
+### Minor Changes
+
+- 71ffcba: JSON schema for Triplex config now generated at build time.
+
+### Patch Changes
+
+- Updated dependencies [6dfb22d]
+- Updated dependencies [01cd388]
+- Updated dependencies [6dfb22d]
+- Updated dependencies [01cd388]
+- Updated dependencies [b7bbeba]
+- Updated dependencies [6dfb22d]
+- Updated dependencies [de54812]
+- Updated dependencies [b7bbeba]
+- Updated dependencies [6dfb22d]
+- Updated dependencies [b7bbeba]
+- Updated dependencies [6dfb22d]
+- Updated dependencies [facc6aa]
+- Updated dependencies [01cd388]
+  - @triplex/server@0.43.0
+  - @triplex/client@0.43.0
+
 ## 0.42.0
 
 ### Minor Changes

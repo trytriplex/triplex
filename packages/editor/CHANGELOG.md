@@ -1,5 +1,40 @@
 # @triplex/editor
 
+## 0.43.0
+
+### Minor Changes
+
+- 6dfb22d: Save as action now available in the menubar. Use to save the current
+  open file to another location.
+- 6dfb22d: Scroll container thumb scroll areas now take up less space.
+- 6dfb22d: Create a component in the current open file through the component
+  switcher.
+- de54812: Color inputs now show a transparent background when undefined.
+- b7bbeba: Deleting the selected element with backspace now works when focused
+  on any element other than an input.
+- 6dfb22d: A component switcher is now available in the left panel, use it to
+  quickly switch between components in the open file.
+- 6dfb22d: The browser tab title now changes when there are unsaved changes.
+- b7bbeba: String and numbers in props now can have undefined default values.
+- de54812: Prop inputs now are able to be cleared through the ui.
+- de54812: Context panel tuple props now show labels when available.
+- de54812: Checkbox now renders using a custom icon.
+- b7bbeba: When adding a new element to the scene if you have a selection it
+  will be added as a child. If you have no selection it will be added to the
+  root component.
+- 01cd388: Adds context panel indicator to the add component drawer when an
+  element is selected.
+- facc6aa: Saving a new component now prompts for a component name.
+- de54812: Fixed save prop serializing undefined to null.
+- 01cd388: Fixes the context panel unexpectedly when closing the color picker
+  with escape.
+
+### Patch Changes
+
+- Updated dependencies [b7bbeba]
+  - @triplex/bridge@0.43.0
+  - @triplex/ws-client@0.43.0
+
 ## 0.42.0
 
 ### Patch Changes
