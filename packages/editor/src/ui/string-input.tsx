@@ -3,11 +3,13 @@ import type { ChangeEventHandler, FocusEventHandler } from "react";
 import { IconButton } from "../ds/button";
 import { sentenceCase } from "../util/string";
 
+const noop = () => {};
+
 export function StringInput({
   defaultValue,
   name,
-  onConfirm,
-  onChange,
+  onConfirm = noop,
+  onChange = noop,
   required,
   label,
 }: {
@@ -15,8 +17,8 @@ export function StringInput({
   defaultValue?: string;
   required?: boolean;
   name: string;
-  onChange: (value: string | undefined) => void;
-  onConfirm: (value: string | undefined) => void;
+  onChange?: (value: string | undefined) => void;
+  onConfirm?: (value: string | undefined) => void;
 }) {
   const emptyValue = required ? "" : undefined;
 
@@ -40,6 +42,7 @@ export function StringInput({
   return (
     <div className="group flex w-full items-center rounded-md border border-transparent bg-white/5 focus-within:border-blue-400 hover:bg-white/10">
       <input
+        aria-label={label}
         placeholder={label ? sentenceCase(label) : undefined}
         required={required}
         key={defaultValue}
