@@ -230,8 +230,12 @@ export function useEditor() {
   const reset = useCallback(() => {
     undoStack.length = 0;
     redoStack.length = 0;
+
+    scene.blur();
+    scene.reset();
+
     fetch(`http://localhost:8000/scene/${encodeURIComponent(path)}/reset`);
-  }, [path]);
+  }, [path, scene]);
 
   if (path && !exportName) {
     throw new Error("invariant: exportName is undefined");

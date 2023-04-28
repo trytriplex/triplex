@@ -97,6 +97,13 @@ interface BridgeContext {
    * ready accessing any of the scene store values will throw an invariant.
    */
   ready: boolean;
+  /**
+   * Clears out the scene of any intermediate state. Generally you'll want to
+   * use the editor store instead of this one directly.
+   *
+   * @see {@link ./editor.tsx}
+   */
+  reset(): void;
 }
 
 /**
@@ -145,6 +152,9 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     },
     restoreComponent(data) {
       send("trplx:requestRestoreSceneObject", data);
+    },
+    reset() {
+      send("trplx:requestReset", undefined);
     },
   })
 );
