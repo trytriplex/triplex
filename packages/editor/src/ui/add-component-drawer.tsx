@@ -13,6 +13,7 @@ import {
   GetProjectComponents,
 } from "../api-types";
 import { useEditor } from "../stores/editor";
+import { StringInput } from "./string-input";
 
 function Component({
   name,
@@ -81,9 +82,9 @@ function Folder({
       type="button"
       className={cn([
         isSelected
-          ? "bg-white/5 text-blue-400"
+          ? "cursor-default bg-white/5 text-blue-400"
           : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
-        "w-full rounded px-2 py-1 text-start text-sm",
+        "w-full rounded-md px-2 py-1 text-start text-sm",
       ])}
     >
       {children}
@@ -94,18 +95,25 @@ function Folder({
 function ComponentFolder({
   folderPath,
   onClose,
+  filter,
 }: {
+  filter: string;
   folderPath: string;
   onClose: () => void;
 }) {
-  const folderComponents = useLazySubscription<GetProjectComponents>(
+  const components = useLazySubscription<GetProjectComponents>(
     `/scene/components/${encodeURIComponent(folderPath)}`
+  );
+  const normalizedFilter = filter.replace(/ /g, "");
+  const filteredComponents = components.filter((component) =>
+    // Ensure the name is lower case and has no spaces
+    component.name.toLowerCase().replace(/ /g, "").includes(normalizedFilter)
   );
 
   return (
     <ScrollContainer className="min-h-0">
       <div className="flex flex-wrap gap-2 py-2 pr-2">
-        {folderComponents.map((element) =>
+        {filteredComponents.map((element) =>
           element.type === "host" ? (
             <Component
               onClick={onClose}
@@ -144,14 +152,30 @@ function ComponentsDrawer({
 }) {
   const { target } = useEditor();
   const { blur } = useScene();
+  const [filter, setFilter] = useState("");
+
   const componentFolders =
     useLazySubscription<GetProjectComponentFolders>("/scene/components");
+
+  const handleFilterChange = (value: string | undefined) => {
+    setFilter(value || "");
+  };
 
   return (
     <Drawer mode="transparent" attach="bottom" open onClose={onClose}>
       <div className="flex h-full flex-col">
         <div className="flex min-h-0 flex-grow gap-2">
           <div className="w-40 flex-shrink-0 border-r border-neutral-800">
+            <div className="p-2">
+              <StringInput
+                onChange={handleFilterChange}
+                label="Filter elements..."
+                name="filter-elements"
+              />
+            </div>
+
+            <div className="border-t border-neutral-800" />
+
             <ScrollContainer>
               <div className="h-2" />
               <div className="px-2">
@@ -161,13 +185,7 @@ function ComponentsDrawer({
                 >
                   Built-in Elements
                 </Folder>
-              </div>
 
-              {componentFolders.length ? (
-                <div className="my-2 border-t border-neutral-800" />
-              ) : null}
-
-              <div className="px-2">
                 {componentFolders.map((folder) => (
                   <Folder
                     key={folder.path}
@@ -182,7 +200,11 @@ function ComponentsDrawer({
             </ScrollContainer>
           </div>
           <Suspense fallback={null}>
-            <ComponentFolder onClose={onClose} folderPath={selected} />
+            <ComponentFolder
+              filter={filter}
+              onClose={onClose}
+              folderPath={selected}
+            />
           </Suspense>
         </div>
         {target && (
@@ -219,7 +241,7 @@ export function AddComponentDrawer() {
         onClick={toggle}
         isSelected={isOpen}
         icon={PlusIcon}
-        title="Add component"
+        title="Add Element"
       />
 
       <Suspense fallback={null}>
