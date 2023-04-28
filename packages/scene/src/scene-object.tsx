@@ -41,6 +41,12 @@ function useSceneObjectProps(
 
   useEffect(() => {
     return compose([
+      listen("trplx:requestReset", () => {
+        if (Object.keys(intermediateProps.current).length) {
+          intermediateProps.current = {};
+          forceRender();
+        }
+      }),
       listen("trplx:requestSceneObjectPropValue", (data) => {
         if (
           data.column === meta.column &&
@@ -127,6 +133,9 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
 
     useEffect(() => {
       return compose([
+        listen("trplx:requestReset", () => {
+          setIsDeleted(false);
+        }),
         listen("trplx:requestDeleteSceneObject", (data) => {
           if (
             data.column === __meta.column &&

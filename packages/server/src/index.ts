@@ -155,7 +155,6 @@ export function createServer({
     const { sourceFile } = await project.getSourceFile(path);
 
     await sourceFile.refreshFromFileSystem();
-    await save({ path, project });
 
     context.response.body = { message: "success" };
   });

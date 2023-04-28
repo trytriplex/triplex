@@ -148,18 +148,20 @@ export interface HostSendEventData {
   };
   "trplx:requestJumpToSceneObject": undefined;
   "trplx:requestBlurSceneObject": undefined;
+  "trplx:requestReset": undefined;
 }
 
 export interface HostSendEventResponse {
   "trplx:requestAddNewComponent": void;
   "trplx:requestBlurSceneObject": void;
   "trplx:requestDeleteSceneObject": void;
-  "trplx:requestRestoreSceneObject": void;
   "trplx:requestFocusSceneObject": void;
   "trplx:requestJumpToSceneObject": void;
   "trplx:requestNavigateToScene": void;
   "trplx:requestPersistSceneObjectProp": void;
+  "trplx:requestReset": void;
   "trplx:requestResetSceneObjectProp": void;
+  "trplx:requestRestoreSceneObject": void;
   "trplx:requestSceneObjectPropValue": { value: unknown };
   "trplx:requestSetSceneObjectProp": void;
   "trplx:requestTransformChange": void;
