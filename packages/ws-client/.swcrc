@@ -1,5 +1,7 @@
 {
   "$schema": "https://json.schemastore.org/swcrc",
+  "minify": true,
+  "sourceMaps": false,
   "jsc": {
     "target": "es2017",
     "parser": {
