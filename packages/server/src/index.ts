@@ -17,15 +17,17 @@ import * as projectService from "./services/project";
 import { ComponentTarget, ComponentType } from "./types";
 
 export function createServer({
+  cwd = process.cwd(),
   files,
   components,
 }: {
+  cwd?: string;
   files: string[];
   components: string[];
 }) {
   const app = new Application();
   const router = new Router();
-  const project = createProject();
+  const project = createProject({ cwd });
   const wss = createWSS();
 
   app.use(async (ctx, next) => {
@@ -168,7 +170,7 @@ export function createServer({
   wss.message(
     "/scene",
     async () => {
-      const result = await getAllFiles({ files });
+      const result = await getAllFiles({ cwd: project.cwd(), files });
       return result;
     },
     (push) => {
@@ -350,7 +352,7 @@ export function createServer({
   return {
     listen: (port = 8000) => {
       const controller = new AbortController();
-      const promise = app.listen({ port, signal: controller.signal });
+      app.listen({ port, signal: controller.signal });
 
       const close = () => {
         controller.abort();
@@ -360,7 +362,7 @@ export function createServer({
       process.once("SIGINT", close);
       process.once("SIGTERM", close);
 
-      return promise;
+      return close;
     },
   };
 }

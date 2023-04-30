@@ -8,6 +8,7 @@
     "ci:version": "changeset version && pnpm install --lockfile-only",
     "clean:node_modules": "pnpm -r exec rm -rf node_modules",
     "clean": "pnpm -r exec rm -rf dist",
+    "dev": "pnpm --filter @triplex/app start",
     "dev:caustics": "pnpm --filter @example/caustics editor",
     "dev:cli": "cd test && triplex",
     "dev:docs": "pnpm --filter @docs/triplex dev",

@@ -34,3 +34,7 @@ yarn-error.log*
 
 # turbo
 .turbo
+
+
+# Electron-Forge
+out/

@@ -1,9 +1,11 @@
 import { scripts } from "./templates";
 
 export function scenePlugin({
+  cwd,
   components,
   files,
 }: {
+  cwd: string;
   components: string[];
   files: string[];
 }) {
@@ -28,15 +30,11 @@ export function scenePlugin({
         return scripts.sceneFrame
           .replace(
             "{{SCENE_FILES_GLOB}}",
-            `[${files
-              .map((f) => `'${f.replace(process.cwd(), "")}'`)
-              .join(",")}]`
+            `[${files.map((f) => `'${f.replace(cwd, "")}'`).join(",")}]`
           )
           .replace(
             "{{COMPONENTS_FILE_GLOB}}",
-            `[${components
-              .map((f) => `'${f.replace(process.cwd(), "")}'`)
-              .join(",")}]`
+            `[${components.map((f) => `'${f.replace(cwd, "")}'`).join(",")}]`
           );
       }
 

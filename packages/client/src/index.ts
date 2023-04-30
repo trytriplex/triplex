@@ -13,14 +13,16 @@ export async function createServer({
   exportName,
   publicDir,
   files,
+  cwd = process.cwd(),
 }: {
+  cwd?: string;
   components: string[];
   open?: boolean | string;
   exportName?: string;
   publicDir?: string;
   files: string[];
 }) {
-  const tsConfig = join(process.cwd(), "tsconfig.json");
+  const tsConfig = join(cwd, "tsconfig.json");
   const app = express();
   const { createServer: createViteServer } = await import("vite");
   const { default: glsl } = await import("vite-plugin-glsl");
@@ -30,10 +32,10 @@ export async function createServer({
     plugins: [
       react({ babel: { plugins: [triplexBabelPlugin] } }),
       glsl(),
-      scenePlugin({ files, components }),
+      scenePlugin({ cwd, files, components }),
       tsconfigPaths({ projects: [tsConfig] }),
     ],
-    root: process.cwd(),
+    root: cwd,
     appType: "custom",
     publicDir,
     logLevel: "error",
@@ -102,24 +104,30 @@ export async function createServer({
   return {
     listen: async (port: number) => {
       const server = await app.listen(port);
+
       if (open) {
         const searchParam = typeof open === "string" ? `?path=${open}` : "";
+
         await openBrowser(
           `http://localhost:${port}/${searchParam}&exportName=${exportName}`
         );
       }
 
-      const close = async () => {
+      const close = async ({ forceExit = true } = {}) => {
         try {
           await server.close();
           await vite.close();
         } finally {
-          process.exit(0);
+          if (forceExit) {
+            process.exit(0);
+          }
         }
       };
 
       process.once("SIGINT", close);
       process.once("SIGTERM", close);
+
+      return close;
     },
   };
 }

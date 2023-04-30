@@ -16,7 +16,7 @@ export async function save({
   if (sourceFile && !sourceFile.isSaved()) {
     deleteCommentComponents(sourceFile);
 
-    const prettierConfigPath = await resolveConfigFile(process.cwd());
+    const prettierConfigPath = await resolveConfigFile(project.cwd());
     if (prettierConfigPath) {
       const prettierConfig = await resolveConfig(prettierConfigPath);
       if (prettierConfig) {
