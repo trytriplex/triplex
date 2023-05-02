@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@keyframes slide-in {
+  from {
+    transform: translateX(-100%);
+  }
+
+  to {
+    transform: translateX(0%);
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+  }
+
+  to {
+    transform: translateY(0%);
+  }
+}
+
+.slide-in {
+  animation-name: slide-in;
+  animation-duration: 100ms;
+}
+
+.slide-up {
+  animation-name: slide-up;
+  animation-duration: 100ms;
+}
+
+input[type="color"]::-moz-color-swatch {
+  border: none;
+  border-radius: 3px;
+}
+
+input[type="color"]::-webkit-color-swatch-wrapper {
+  padding: 0;
+  border-radius: 0;
+}
+
+input[type="color"]::-webkit-color-swatch {
+  border: none;
+}
+
+html {
+  -moz-osx-font-smoothing: grayscale;
+  font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+}
+
+.bg-checker {
+  background-position: 0px 0px, 10px 10px;
+  background-size: 20px 20px;
+  background-image: linear-gradient(
+      45deg,
+      currentColor 25%,
+      transparent 25%,
+      transparent 75%,
+      currentColor 75%,
+      currentColor 100%
+    ),
+    linear-gradient(
+      45deg,
+      currentColor 25%,
+      rgb(115 115 115) 25%,
+      rgb(115 115 115) 75%,
+      currentColor 75%,
+      currentColor 100%
+    );
+}

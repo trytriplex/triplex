@@ -24,7 +24,7 @@ export function SceneFrame({ children }: { children: ReactNode }) {
     <>
       <iframe
         // This should never change during a session as it will do a full page reload.
-        src={`/scene.html?path=${initialPath}&props=${initialProps}&exportName=${initialExportName}`}
+        src={`http://localhost:3333/scene.html?path=${initialPath}&props=${initialProps}&exportName=${initialExportName}`}
         className="absolute h-full w-full border-none"
       />
       <BridgeSendEvents />
