@@ -1,5 +1,16 @@
 # @triplex/app
 
+## 0.45.0
+
+### Minor Changes
+
+- 1aadeb8: App now marked as private.
+
+### Patch Changes
+
+- @triplex/client@0.45.0
+- @triplex/server@0.45.0
+
 ## 0.44.0
 
 ### Patch Changes
