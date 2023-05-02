@@ -1,5 +1,23 @@
 # @triplex/editor
 
+## 0.44.0
+
+### Minor Changes
+
+- 0242833: Scene now removes intermediate state when resetting.
+- 56b17f0: Adds filter for add element drawer.
+- 4d8d9cc: Builds are now minified.
+- 557648e: Editor has been extracted out of the client dev server and now is
+  bundled when published to npm.
+
+### Patch Changes
+
+- Updated dependencies [0242833]
+- Updated dependencies [4d8d9cc]
+- Updated dependencies [557648e]
+  - @triplex/bridge@0.44.0
+  - @triplex/ws-client@0.44.0
+
 ## 0.43.0
 
 ### Minor Changes
