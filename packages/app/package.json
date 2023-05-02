@@ -1,5 +1,6 @@
 {
   "name": "@triplex/app",
+  "private": true,
   "productName": "Triplex",
   "description": "The React Three Fiber editor.",
   "version": "0.44.0",
@@ -14,7 +15,7 @@
     "build": "pnpm swc ./src -d ./dist",
     "package": "electron-forge package",
     "make": "electron-forge make",
-    "publish": "electron-forge publish"
+    "cut": "electron-forge publish"
   },
   "dependencies": {
     "@triplex/client": "0.44.0",
