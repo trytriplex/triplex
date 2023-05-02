@@ -38,7 +38,7 @@ export function send<TEvent extends ClientSendEventName>(
   data: ClientSendEventData[TEvent],
   awaitResponse = false
 ): Promise<ClientSendEventResponse[TEvent]> {
-  window.top?.postMessage({ eventName, data });
+  window.top?.postMessage({ eventName, data }, "*");
 
   if (awaitResponse) {
     return new Promise((resolve) => {
@@ -58,7 +58,7 @@ function respond<TEvent extends keyof HostSendEventResponse>(
   eventName: TEvent,
   data: HostSendEventResponse[TEvent]
 ) {
-  window.top?.postMessage({ eventName: `${eventName}Response`, data });
+  window.top?.postMessage({ eventName: `${eventName}Response`, data }, "*");
 }
 
 export { compose } from "./compose";

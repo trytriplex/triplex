@@ -1,14 +1,4 @@
 export const scripts = {
-  editor: `
-    import { createElement } from "react";
-    import { createRoot } from "react-dom/client";
-    import { Editor } from "@triplex/editor";
-    import 'triplex:styles.css';
-
-    createRoot(document.getElementById("root")).render(
-      createElement(Editor)
-    );
-  `,
   scene: `
     import { createElement } from "react";
     import { createRoot } from "react-dom/client";
@@ -61,7 +51,7 @@ export const scripts = {
   `,
 };
 
-export const createHTML = (title: string, entry: "scene" | "editor") => `
+export const createHTML = (title: string) => `
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -73,7 +63,7 @@ export const createHTML = (title: string, entry: "scene" | "editor") => `
   <body>
     <div id="root"></div>
     <script type="module">
-      ${scripts[entry]}
+      ${scripts.scene}
     </script>
   </body>
 </html>

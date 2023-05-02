@@ -39,10 +39,13 @@ export function send<TEvent extends HostSendEventName>(
   awaitResponse = false
 ): Promise<HostSendEventResponse[TEvent]> {
   const iframe = document.getElementsByTagName("iframe")[0];
-  iframe.contentWindow?.postMessage({
-    eventName,
-    data,
-  });
+  iframe.contentWindow?.postMessage(
+    {
+      eventName,
+      data,
+    },
+    "*"
+  );
 
   if (awaitResponse) {
     return new Promise((resolve) => {
@@ -63,10 +66,13 @@ function respond<TEvent extends keyof ClientSendEventResponse>(
   data: ClientSendEventResponse[TEvent]
 ) {
   const iframe = document.getElementsByTagName("iframe")[0];
-  iframe.contentWindow?.postMessage({
-    eventName: `${eventName}Response`,
-    data,
-  });
+  iframe.contentWindow?.postMessage(
+    {
+      eventName: `${eventName}Response`,
+      data,
+    },
+    "*"
+  );
 }
 
 export { compose } from "./compose";

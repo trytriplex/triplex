@@ -1,5 +1,8 @@
 import { createServer as createBackendServer } from "@triplex/server";
 import { createServer as createFrontendServer } from "@triplex/client";
+import { createDevServer } from "@triplex/editor";
+import express from "express";
+import openBrowser from "open";
 
 export async function editor({
   open,
@@ -16,6 +19,7 @@ export async function editor({
 }) {
   const { default: ora } = await import("ora");
   const spinner = ora("Starting...\n").start();
+
   const frontendServer = await createFrontendServer({
     components,
     open,
@@ -24,14 +28,36 @@ export async function editor({
     files,
   });
   const backendServer = await createBackendServer({ files, components });
+  const editorPort = 5754;
 
   await frontendServer.listen(3333);
+  await backendServer.listen(8000);
+
+  if (process.env.TRIPLEX_ENV === "development") {
+    const devServer = await createDevServer();
+    await devServer.listen(editorPort);
+  } else {
+    const app = express();
+    const path = require
+      .resolve("@triplex/editor/dist/index.html")
+      .replace("index.html", "");
+
+    app.use(express.static(path));
+
+    await app.listen(editorPort);
+  }
+
+  if (open) {
+    const searchParam = typeof open === "string" ? `?path=${open}` : "";
+
+    await openBrowser(
+      `http://localhost:${editorPort}/${searchParam}&exportName=${exportName}`
+    );
+  }
 
   spinner.succeed(
     open
-      ? "Now open at http://localhost:3333"
-      : "Now available at http://localhost:3333"
+      ? `Now open at http://localhost:${editorPort}`
+      : `Now available at http://localhost:${editorPort}`
   );
-
-  await backendServer.listen(8000);
 }

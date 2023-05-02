@@ -1,10 +1,10 @@
 import { BrowserRouter } from "react-router-dom";
+import { createRoot } from "react-dom/client";
 import { EditorFrame } from "./editor";
+import "./styles.css";
 
-export function Editor() {
-  return (
-    <BrowserRouter>
-      <EditorFrame />
-    </BrowserRouter>
-  );
-}
+createRoot(document.getElementById("root")!).render(
+  <BrowserRouter>
+    <EditorFrame />
+  </BrowserRouter>
+);

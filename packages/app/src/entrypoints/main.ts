@@ -95,16 +95,12 @@ function prepareApp() {
             width: 1028,
             height: 768,
           });
-
-          const project = await startProject(cwd);
-          closeProject = project.close;
-          currentWindow.loadURL(project.url);
-          currentWindow.webContents.openDevTools();
-        } else {
-          const project = await startProject(cwd);
-          closeProject = project.close;
-          currentWindow.reload();
         }
+
+        const project = await startProject(cwd);
+        closeProject = project.close;
+        currentWindow.loadURL(project.url);
+        currentWindow.webContents.openDevTools();
       }
     },
     onCloseProject() {
@@ -117,7 +113,7 @@ function prepareApp() {
 
   Menu.setApplicationMenu(menu);
 
-  app.focus();
+  app.focus({ steal: process.env.TRIPLEX_ENV === "development" });
 }
 
 app.on("ready", prepareApp);
