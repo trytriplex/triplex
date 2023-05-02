@@ -1,5 +1,11 @@
 # @triplex/ws-client
 
+## 0.44.0
+
+### Minor Changes
+
+- 4d8d9cc: Builds are now minified.
+
 ## 0.43.0
 
 ## 0.42.0

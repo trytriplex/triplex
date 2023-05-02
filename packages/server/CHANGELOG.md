@@ -1,5 +1,13 @@
 # @triplex/server
 
+## 0.44.0
+
+### Minor Changes
+
+- 0242833: Scene now removes intermediate state when resetting.
+- 5039e39: Adds `cwd` to servers to allow setting it to a new location.
+- 4d8d9cc: Builds are now minified.
+
 ## 0.43.0
 
 ### Minor Changes

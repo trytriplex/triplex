@@ -1,5 +1,22 @@
 # @triplex/client
 
+## 0.44.0
+
+### Minor Changes
+
+- 0242833: Scene now removes intermediate state when resetting.
+- 5039e39: Adds `cwd` to servers to allow setting it to a new location.
+- 4d8d9cc: Builds are now minified.
+- 5039e39: Adds CSP meta tag to client HTML.
+- 557648e: Editor has been extracted out of the client dev server and now is
+  bundled when published to npm.
+
+### Patch Changes
+
+- Updated dependencies [0242833]
+- Updated dependencies [4d8d9cc]
+  - @triplex/scene@0.44.0
+
 ## 0.43.0
 
 ### Minor Changes

@@ -2,7 +2,7 @@
   "name": "@triplex/app",
   "productName": "Triplex",
   "description": "The React Three Fiber editor.",
-  "version": "0.43.0",
+  "version": "0.44.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "license": "Apache-2.0",
   "main": "./hook.js",
@@ -17,8 +17,8 @@
     "publish": "electron-forge publish"
   },
   "dependencies": {
-    "@triplex/client": "0.43.0",
-    "@triplex/server": "0.43.0",
+    "@triplex/client": "0.44.0",
+    "@triplex/server": "0.44.0",
     "electron-squirrel-startup": "^1.0.0"
   },
   "devDependencies": {
