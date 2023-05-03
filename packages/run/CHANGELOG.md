@@ -1,5 +1,16 @@
 # @triplex/run
 
+## 0.45.1
+
+### Patch Changes
+
+- dfc04b6: Open now declared as a dependency.
+- dfc04b6: Editor dependency now uses inline require to prevent it being
+  evaluated when running the production build.
+  - @triplex/client@0.45.1
+  - @triplex/editor@0.45.1
+  - @triplex/server@0.45.1
+
 ## 0.45.0
 
 ### Patch Changes

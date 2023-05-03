@@ -1,5 +1,12 @@
 # @triplex/app
 
+## 0.45.1
+
+### Patch Changes
+
+- @triplex/client@0.45.1
+- @triplex/server@0.45.1
+
 ## 0.45.0
 
 ### Minor Changes
