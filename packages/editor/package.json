@@ -3,9 +3,9 @@
   "version": "0.45.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "license": "Apache-2.0",
-  "main": "./src/main.ts",
-  "module": "./src/main.ts",
-  "types": "./src/main.ts",
+  "main": "./src/main-dev-only.ts",
+  "module": "./src/main-dev-only.ts",
+  "types": "./src/main-dev-only.ts",
   "publishConfig": {
     "types": "",
     "module": "",

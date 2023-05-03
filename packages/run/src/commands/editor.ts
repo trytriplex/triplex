@@ -1,6 +1,5 @@
 import { createServer as createBackendServer } from "@triplex/server";
 import { createServer as createFrontendServer } from "@triplex/client";
-import { createDevServer } from "@triplex/editor";
 import express from "express";
 import openBrowser from "open";
 
@@ -34,6 +33,7 @@ export async function editor({
   await backendServer.listen(8000);
 
   if (process.env.TRIPLEX_ENV === "development") {
+    const { createDevServer } = require("@triplex/editor");
     const devServer = await createDevServer();
     await devServer.listen(editorPort);
   } else {
