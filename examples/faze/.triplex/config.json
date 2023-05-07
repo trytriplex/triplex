@@ -1,0 +1,8 @@
+{
+  "$schema": "https://unpkg.com/@triplex/run/config.schema.json",
+  "files": [
+    "../src/scenes/*.tsx",
+    "../src/meshes/*.tsx",
+    "../src/entities/*.tsx"
+  ]
+}
