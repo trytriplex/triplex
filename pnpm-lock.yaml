@@ -36,26 +36,6 @@ importers:
       typescript: 4.9.4
       vitest: 0.30.1_jsdom@21.1.0
 
-  apps/caustics:
-    specifiers:
-      '@react-three/drei': ^9.56.27
-      '@react-three/fiber': ^8.11.1
-      '@triplex/run': ^0.45.1
-      '@types/react': ^18.0.0
-      '@types/three': ^0.148.0
-      react: ^18.0.0
-      react-dom: ^18.0.0
-      three: ^0.148.0
-    dependencies:
-      '@react-three/drei': 9.56.27_shbtut7xdhjhg5dci6s3kf2zpq
-      '@react-three/fiber': 8.11.1_4tzez3c2xpzuefjrvhpyy55bva
-      '@triplex/run': link:../../packages/run
-      '@types/react': 18.0.27
-      '@types/three': 0.148.0
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-      three: 0.148.0
-
   apps/docs:
     specifiers:
       autoprefixer: ^10.4.14
@@ -105,7 +85,27 @@ importers:
       ts-node: 10.9.1_z2gohzj7ezvk2u6pomqjxbcaty
       typescript: 4.9.4
 
-  apps/faze:
+  examples/caustics:
+    specifiers:
+      '@react-three/drei': ^9.56.27
+      '@react-three/fiber': ^8.11.1
+      '@triplex/run': ^0.45.1
+      '@types/react': ^18.0.0
+      '@types/three': ^0.148.0
+      react: ^18.0.0
+      react-dom: ^18.0.0
+      three: ^0.148.0
+    dependencies:
+      '@react-three/drei': 9.56.27_shbtut7xdhjhg5dci6s3kf2zpq
+      '@react-three/fiber': 8.11.1_4tzez3c2xpzuefjrvhpyy55bva
+      '@triplex/run': link:../../packages/run
+      '@types/react': 18.0.27
+      '@types/three': 0.148.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      three: 0.148.0
+
+  examples/faze:
     specifiers:
       '@react-three/drei': ^9.56.27
       '@react-three/fiber': ^8.11.1
@@ -135,7 +135,7 @@ importers:
       three-stdlib: 2.21.8_three@0.148.0
       tunnel-rat: 0.1.1_react@18.2.0
 
-  apps/geometry:
+  examples/geometry:
     specifiers:
       '@react-three/drei': ^9.56.27
       '@react-three/fiber': ^8.11.1
