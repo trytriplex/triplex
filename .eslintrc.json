@@ -10,7 +10,7 @@
     "plugin:react-hooks/recommended",
     "plugin:@typescript-eslint/recommended"
   ],
-  "ignorePatterns": ["dist"],
+  "ignorePatterns": ["dist", "build"],
   "overrides": [
     {
       "files": ["**/__test__/**", "**/__tests__/**"],
@@ -42,8 +42,10 @@
         "devDependencies": [
           "**/__test__/**",
           "**/__tests__/**",
-          "**/hook.js",
-          "**/main-dev-only.ts"
+          "**/*hook.js",
+          "**/main-dev-only.ts",
+          "**/*.config.mjs",
+          "**/*.config.js"
         ]
       }
     ],

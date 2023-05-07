@@ -1,19 +1,14 @@
-name: Test
+name: Electron
 
-on:
-  push:
-    branches:
-      - main
-
-  pull_request:
-
-env:
-  CI: true
-  PNPM_CACHE_FOLDER: .pnpm-store
+on: push
 
 jobs:
-  test:
-    runs-on: ubuntu-latest
+  build:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
 
     steps:
       - name: Checkout
@@ -39,8 +34,8 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - name: Test packages
-        run: pnpm test
+      - name: Build packages
+        run: pnpm --filter @triplex/* build
 
-      - name: Lint packages
-        run: pnpm lint
+      - name: Build target
+        run: pnpm electron:build-target

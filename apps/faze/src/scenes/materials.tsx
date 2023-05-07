@@ -1,5 +1,5 @@
 import { CascadedShadowMap } from "../utils/cascaded-shadow-map";
-import { degToRad } from "three/src/math/MathUtils";
+import { MathUtils } from "three";
 import { WaterMaterial } from "../materials/water";
 import { Tree } from "../meshes/tree";
 
@@ -8,7 +8,7 @@ export function MaterialsScene() {
     <>
       <mesh
         name="ground"
-        rotation={[degToRad(-90), 0, 0]}
+        rotation={[MathUtils.degToRad(-90), 0, 0]}
         receiveShadow
         position={[7.434537952443046, -0.8352476302767253, -4.0473018380238575]}
       >

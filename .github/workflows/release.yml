@@ -1,4 +1,4 @@
-name: Release packages
+name: Release
 
 on:
   push:
@@ -34,7 +34,7 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         with:
-          version: 7.21.0
+          version: 7.28.0
 
       - name: Setup pnpm config
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER

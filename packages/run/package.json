@@ -13,9 +13,9 @@
     "triplex": "./hook.js"
   },
   "scripts": {
-    "build": "pnpm swc ./src -d ./dist && pnpm build:config-schema",
+    "build": "pnpm swc ./src -d ./dist",
     "build:config-schema": "ts-json-schema-generator --additional-properties true --path './src/types.ts' --type 'TRIPLEXConfig' > config.schema.json",
-    "typedef": "tsc"
+    "typedef": "tsc && pnpm build:config-schema"
   },
   "dependencies": {
     "@triplex/client": "0.45.1",

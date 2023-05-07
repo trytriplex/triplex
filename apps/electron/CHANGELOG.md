@@ -1,4 +1,4 @@
-# @triplex/app
+# @triplex/electron
 
 ## 0.45.1
 

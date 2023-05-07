@@ -1,7 +1,12 @@
+// eslint-disable-next-line import/no-extraneous-dependencies
 import { app, BrowserWindow, dialog, Menu } from "electron";
-import { join } from "path";
-import { readdir } from "fs/promises";
-import { startProject } from "../util/project";
+import { readdir } from "node:fs/promises";
+import { join } from "node:path";
+import process from "node:process";
+import { fork } from "../util/fork";
+import { logger } from "../util/log";
+
+const log = logger("main");
 
 if (require("electron-squirrel-startup")) {
   // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -75,39 +80,62 @@ async function openProjectDialog(
 
 function prepareApp() {
   let currentWindow: BrowserWindow | undefined;
-  let closeProject: (() => void) | undefined;
+  let cleanup: (() => void) | undefined;
 
   const menu = buildMenu({
     async onOpenProject() {
       const cwd = await openProjectDialog();
       if (cwd) {
-        if (closeProject) {
-          closeProject?.();
-          closeProject = undefined;
+        log("selected", cwd);
+
+        if (cleanup) {
+          cleanup?.();
+          cleanup = undefined;
         }
 
         if (!currentWindow) {
           currentWindow = new BrowserWindow({
             backgroundColor: "#171717",
-            webPreferences: {
-              preload: join(__dirname, "preload.ts"),
-            },
+            webPreferences: {},
             width: 1028,
             height: 768,
           });
         }
 
-        const project = await startProject(cwd);
-        closeProject = project.close;
-        currentWindow.loadURL(project.url);
-        currentWindow.webContents.openDevTools();
+        log("forking");
+
+        const p = await fork(join(__dirname, "./project.ts"), { cwd });
+
+        cleanup = () => {
+          p.kill();
+        };
+
+        if (process.env.TRIPLEX_ENV === "development") {
+          const { createDevServer } = require("@triplex/editor");
+          const editorPort = 5754;
+          const devServer = await createDevServer();
+
+          await devServer.listen(editorPort);
+          await currentWindow.loadURL(`http://localhost:${editorPort}`);
+        } else {
+          await currentWindow.loadFile(
+            require.resolve("@triplex/editor/dist/index.html")
+          );
+        }
+
+        if (
+          process.env.TRIPLEX_ENV === "development" ||
+          process.env.NODE_ENV?.includes("triplex")
+        ) {
+          currentWindow.webContents.openDevTools();
+        }
       }
     },
     onCloseProject() {
-      closeProject?.();
+      cleanup?.();
       currentWindow?.close();
       currentWindow = undefined;
-      closeProject = undefined;
+      cleanup = undefined;
     },
   });
 

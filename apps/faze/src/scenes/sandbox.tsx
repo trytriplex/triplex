@@ -1,7 +1,7 @@
 import { useTexture } from "@react-three/drei";
 import { CascadedShadowMap } from "../utils/cascaded-shadow-map";
 import { useState } from "react";
-import { degToRad } from "three/src/math/MathUtils";
+import { MathUtils } from "three";
 import { BoundingBox } from "../systems/bounding-box";
 import { ElevatorEntity } from "../entities/elevator-entity";
 import { StaticEntity } from "../entities/static-entity";
@@ -54,7 +54,7 @@ export function Terrain() {
         layers={TERRAIN}
         name="floor"
         receiveShadow
-        rotation={[degToRad(10), 0, 0]}
+        rotation={[MathUtils.degToRad(10), 0, 0]}
         position={[-10, 0.3, -10]}
       >
         {geo}

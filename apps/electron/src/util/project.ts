@@ -1,17 +1,19 @@
 import { createServer as createFrontend } from "@triplex/client";
 import { createServer as createBackend } from "@triplex/server";
-import { getConfig } from "../config";
+import { getConfig } from "./config";
 
-export async function startProject(cwd: string) {
-  const port = 3333;
+export async function startProject(
+  cwd: string,
+  { frontendPort = 3333, backendPort = 8000 } = {}
+) {
   const config = await getConfig(cwd);
   const frontend = await createFrontend(config);
   const backend = await createBackend(config);
-  const closeFrontend = await frontend.listen(port);
-  const closeBackend = await backend.listen(8000);
+  const closeFrontend = await frontend.listen(frontendPort);
+  const closeBackend = await backend.listen(backendPort);
 
   return {
-    url: `http://localhost:${port}`,
+    url: `http://localhost:${frontendPort}`,
     close: async () => {
       await closeFrontend({ forceExit: false });
       await closeBackend();
