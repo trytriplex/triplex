@@ -13,6 +13,9 @@ env:
 
 jobs:
   release:
+    # Currently disabling building CI as it's expensive.
+    if: ${{ false }}
+
     runs-on: macos-latest
 
     steps:
@@ -30,6 +33,12 @@ jobs:
         id: nvm
         if: steps.check.outcome == 'success'
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        if: steps.check.outcome == 'success'
+        with:
+          version: 7.28.0
+
       - name: Setup node
         uses: actions/setup-node@v3
         if: steps.check.outcome == 'success'
@@ -37,22 +46,12 @@ jobs:
           node-version: ${{ steps.nvm.outputs.NVMRC }}
           cache: "pnpm"
 
-      - name: Setup pnpm
-        uses: pnpm/action-setup@v2
-        if: steps.check.outcome == 'success'
-        with:
-          version: 7.28.0
-
       - name: Setup pnpm config
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER
         if: steps.check.outcome == 'success'
 
       - name: Install dependencies
         run: pnpm i
-        if: steps.check.outcome == 'success'
-
-      - name: Build packages
-        run: pnpm --filter @triplex/* build
         if: steps.check.outcome == 'success'
 
       - name: Release targets

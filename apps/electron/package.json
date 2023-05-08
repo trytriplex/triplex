@@ -1,5 +1,6 @@
 {
   "name": "@triplex/electron",
+  "productName": "Triplex",
   "private": true,
   "description": "The React Three Fiber editor.",
   "version": "0.46.2",
@@ -20,18 +21,20 @@
     "files": [
       "dist"
     ],
-    "productName": "Triplex",
+    "mac": {
+      "category": "public.app-category.developer-tools"
+    },
     "publish": [
       "github"
     ]
   },
   "scripts": {
-    "build-targets": "pnpm prep-workspace && electron-builder --publish never --mac --win --dir && pnpm cleanup-workspace",
+    "build-targets": "pnpm prep-workspace && electron-builder --publish never --mac --win --arm64 --x64 --dir && pnpm cleanup-workspace",
     "build": "pnpm swc ./src -d ./dist",
     "cleanup-workspace": "git checkout ../../packages/*/package.json",
     "dev": "electron .",
     "prep-workspace": "pnpm -r exec node ../../scripts/apply-publish-config.js",
-    "release": "pnpm prep-workspace && electron-builder --mac --win --publish always && pnpm cleanup-workspace"
+    "release": "pnpm prep-workspace && electron-builder --mac --win --arm64 --x64 --publish always && pnpm cleanup-workspace"
   },
   "dependencies": {
     "@triplex/client": "0.46.2",

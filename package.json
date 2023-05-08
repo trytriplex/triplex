@@ -5,7 +5,7 @@
   "scripts": {
     "build": "pnpm clean && pnpm --filter @triplex/* build && pnpm typedef",
     "ci:publish": "pnpm build && pnpm publish --recursive --access=public && changeset tag",
-    "ci:release-electron": "pnpm --filter @triplex/electron release",
+    "ci:release-electron": "pnpm --filter @triplex/* build && pnpm --filter @triplex/electron release",
     "ci:version": "changeset version && pnpm install --lockfile-only",
     "clean:node_modules": "rm -rf node_modules && pnpm -r exec rm -rf node_modules",
     "clean": "pnpm -r exec rm -rf dist build",
