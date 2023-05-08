@@ -1,5 +1,21 @@
 # @triplex/electron
 
+## 0.46.0
+
+### Minor Changes
+
+- d67f998: The built electron app now can actually be ran on macOS.
+- d67f998: Replaced electron-forge with electron-builder.
+- d6dedf5: Moves logger to electron-logger.
+
+### Patch Changes
+
+- Updated dependencies [d67f998]
+- Updated dependencies [c808957]
+  - @triplex/client@0.46.0
+  - @triplex/editor@0.46.0
+  - @triplex/server@0.46.0
+
 ## 0.45.1
 
 ### Patch Changes

@@ -1,5 +1,18 @@
 # @triplex/client
 
+## 0.46.0
+
+### Minor Changes
+
+- d67f998: Three package resolutions in the client server now are forcibly
+  resolved from the cwd.
+- c808957: Removes redundant package alias for `three`.
+
+### Patch Changes
+
+- Updated dependencies [d67f998]
+  - @triplex/scene@0.46.0
+
 ## 0.45.1
 
 ### Patch Changes
