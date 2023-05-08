@@ -2,7 +2,7 @@
   "name": "@triplex/electron",
   "private": true,
   "description": "The React Three Fiber editor.",
-  "version": "0.46.1",
+  "version": "0.46.2",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "license": "Apache-2.0",
   "main": "./hook.js",
@@ -34,9 +34,9 @@
     "release": "pnpm prep-workspace && electron-builder --mac --win --publish always && pnpm cleanup-workspace"
   },
   "dependencies": {
-    "@triplex/client": "0.46.1",
-    "@triplex/editor": "0.46.1",
-    "@triplex/server": "0.46.1",
+    "@triplex/client": "0.46.2",
+    "@triplex/editor": "0.46.2",
+    "@triplex/server": "0.46.2",
     "electron-squirrel-startup": "^1.0.0",
     "electron-updater": "^5.3.0",
     "electron-log": "^5.0.0-beta.23"
