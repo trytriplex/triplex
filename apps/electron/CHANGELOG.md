@@ -1,5 +1,15 @@
 # @triplex/electron
 
+## 0.46.3
+
+### Patch Changes
+
+- 275d931: Adds error reporting.
+- d4c6ce4: Now builds missing x64 architecture.
+  - @triplex/client@0.46.3
+  - @triplex/editor@0.46.3
+  - @triplex/server@0.46.3
+
 ## 0.46.2
 
 ### Patch Changes
