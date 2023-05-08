@@ -1,5 +1,13 @@
 # @triplex/scene
 
+## 0.46.0
+
+### Patch Changes
+
+- d67f998: Removes unused deps
+  - @triplex/bridge@0.46.0
+  - @triplex/ws-client@0.46.0
+
 ## 0.45.1
 
 ### Patch Changes
