@@ -8,7 +8,7 @@
     "ci:release-electron": "pnpm --filter @triplex/* build && pnpm --filter @triplex/electron release",
     "ci:version": "changeset version && pnpm install --lockfile-only",
     "clean:node_modules": "rm -rf node_modules && pnpm -r exec rm -rf node_modules",
-    "clean": "pnpm -r exec rm -rf dist build",
+    "clean": "pnpm -r exec rm -rf dist",
     "dev:caustics": "pnpm --filter @example/caustics editor",
     "dev:cli": "cd test && triplex",
     "dev:docs": "pnpm --filter @docs/triplex dev",
