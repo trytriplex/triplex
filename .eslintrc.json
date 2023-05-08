@@ -42,7 +42,7 @@
         "devDependencies": [
           "**/__test__/**",
           "**/__tests__/**",
-          "**/*hook.js",
+          "**/hook*.js",
           "**/main-dev-only.ts",
           "**/*.config.mjs",
           "**/*.config.js"

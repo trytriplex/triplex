@@ -22,7 +22,7 @@ export function fork(
 
     fork = forkChild(filename, [], {
       env: {
-        NODE_OPTIONS: `-r ${join(process.cwd(), "ts-hook.js")}`,
+        NODE_OPTIONS: `-r ${join(process.cwd(), "hook-fork.js")}`,
         NODE_PATH: process.cwd(),
         TRIPLEX_ENV: "development",
       },
@@ -52,7 +52,9 @@ export function fork(
               fork.send(message);
             },
             kill() {
-              fork.kill("SIGTERM");
+              if (!fork.kill("SIGTERM")) {
+                log.error("could not kill fork");
+              }
             },
           });
         }

@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/electron/main";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { app, BrowserWindow, dialog, Menu } from "electron";
 import { readdir } from "node:fs/promises";
@@ -6,6 +7,10 @@ import process from "node:process";
 import { autoUpdater } from "electron-updater";
 import { fork } from "../util/fork";
 import { logger } from "../util/log";
+
+Sentry.init({
+  dsn: "https://2dda5a93222a45468f0d672d11f356a7@o4505148024356864.ingest.sentry.io/4505148028092416",
+});
 
 const log = logger("main");
 autoUpdater.logger = logger("auto-update");
@@ -98,7 +103,9 @@ function prepareApp() {
         if (!currentWindow) {
           currentWindow = new BrowserWindow({
             backgroundColor: "#171717",
-            webPreferences: {},
+            webPreferences: {
+              preload: require.resolve("./preload.js"),
+            },
             width: 1028,
             height: 768,
           });

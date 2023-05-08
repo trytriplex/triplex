@@ -6,17 +6,19 @@
   "version": "0.46.2",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "license": "Apache-2.0",
-  "main": "./hook.js",
+  "main": "./hook-main.js",
   "repository": "https://github.com/try-triplex/releases",
   "scripts": {
-    "build-targets": "rm -rf targets && pnpm prep-workspace && electron-builder --publish never --mac dir:x64 dir:arm64 --win dir:x64 && pnpm cleanup-workspace",
+    "build-targets": "rm -rf targets && pnpm prep-workspace && USE_HARD_LINKS=false electron-builder --publish never --mac dir:x64 dir:arm64 --win dir:x64 && pnpm cleanup-workspace",
     "build": "pnpm swc ./src -d ./dist",
     "cleanup-workspace": "git checkout ../../packages/*/package.json",
     "dev": "electron .",
     "prep-workspace": "pnpm -r exec node ../../scripts/apply-publish-config.js",
-    "release": "rm -rf targets && pnpm prep-workspace && electron-builder --mac zip:x64 zip:arm64 dmg:x64 dmg:arm64 --win nsis:x64 --publish always && pnpm cleanup-workspace"
+    "release": "rm -rf targets && pnpm prep-workspace && USE_HARD_LINKS=false electron-builder --mac zip:x64 zip:arm64 dmg:x64 dmg:arm64 --win nsis:x64 --publish always && pnpm cleanup-workspace"
   },
   "dependencies": {
+    "@sentry/electron": "^4.5.0",
+    "@sentry/node": "^7.51.0",
     "@triplex/client": "0.46.2",
     "@triplex/editor": "0.46.2",
     "@triplex/server": "0.46.2",
