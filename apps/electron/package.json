@@ -8,33 +8,13 @@
   "license": "Apache-2.0",
   "main": "./hook.js",
   "repository": "https://github.com/try-triplex/releases",
-  "build": {
-    "appId": "dev.triplex.app",
-    "asar": false,
-    "copyright": "Copyright © 2023 Michael Dougall",
-    "directories": {
-      "output": "targets"
-    },
-    "extraMetadata": {
-      "main": "./dist/entrypoints/main.js"
-    },
-    "files": [
-      "dist"
-    ],
-    "mac": {
-      "category": "public.app-category.developer-tools"
-    },
-    "publish": [
-      "github"
-    ]
-  },
   "scripts": {
-    "build-targets": "pnpm prep-workspace && electron-builder --publish never --mac --win --arm64 --x64 --dir && pnpm cleanup-workspace",
+    "build-targets": "rm -rf targets && pnpm prep-workspace && electron-builder --publish never --mac dir:x64 dir:arm64 --win dir:x64 && pnpm cleanup-workspace",
     "build": "pnpm swc ./src -d ./dist",
     "cleanup-workspace": "git checkout ../../packages/*/package.json",
     "dev": "electron .",
     "prep-workspace": "pnpm -r exec node ../../scripts/apply-publish-config.js",
-    "release": "pnpm prep-workspace && electron-builder --mac --win --arm64 --x64 --publish always && pnpm cleanup-workspace"
+    "release": "rm -rf targets && pnpm prep-workspace && electron-builder --mac zip:x64 zip:arm64 dmg:x64 dmg:arm64 --win nsis:x64 --publish always && pnpm cleanup-workspace"
   },
   "dependencies": {
     "@triplex/client": "0.46.2",

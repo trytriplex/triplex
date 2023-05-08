@@ -1,0 +1,18 @@
+appId: dev.triplex.app
+asar: false
+copyright: Copyright © 2023 Michael Dougall
+
+directories:
+  output: targets
+
+extraMetadata:
+  main: ./dist/entrypoints/main.js
+
+files:
+  - dist
+
+mac:
+  category: public.app-category.developer-tools
+
+publish:
+  - github
