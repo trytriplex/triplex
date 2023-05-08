@@ -4,8 +4,14 @@ on:
   push:
     branches:
       - main
+    paths:
+      - apps/electron/**
+      - packages/**
 
   pull_request:
+    paths:
+      - apps/electron/**
+      - packages/**
 
 env:
   CI: true

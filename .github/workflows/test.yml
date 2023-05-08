@@ -4,8 +4,14 @@ on:
   push:
     branches:
       - main
+    paths:
+      - apps/**
+      - packages/**
 
   pull_request:
+    paths:
+      - apps/**
+      - packages/**
 
 env:
   CI: true

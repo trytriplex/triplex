@@ -1,9 +1,8 @@
 name: Electron
 
 on:
-  push:
-    tags:
-      - "@triplex/electron@**"
+  # Triggers the workflow on push or pull request events but only for the main branch
+  create:
 
 env:
   CI: true
@@ -11,6 +10,8 @@ env:
 
 jobs:
   release:
+    if: ${{ startsWith(github.ref, 'refs/tags/@triplex/electron') }}
+
     runs-on: macos-latest
 
     steps:
