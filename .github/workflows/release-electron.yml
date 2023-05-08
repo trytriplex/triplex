@@ -42,3 +42,5 @@ jobs:
 
       - name: Release targets
         run: pnpm ci:release-electron
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
