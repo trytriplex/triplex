@@ -2,6 +2,8 @@ appId: dev.triplex.app
 asar: false
 copyright: Copyright © 2023 Michael Dougall
 
+afterSign: electron-builder-notarize
+
 directories:
   output: targets
 
@@ -13,6 +15,8 @@ files:
 
 mac:
   category: public.app-category.developer-tools
+  hardenedRuntime: true
+  entitlements: ./build/entitlements.mac.plist
 
 publish:
   - github
