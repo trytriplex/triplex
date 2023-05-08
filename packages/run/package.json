@@ -1,7 +1,7 @@
 {
   "name": "@triplex/run",
   "description": "The React Three Fiber editor.",
-  "version": "0.46.2",
+  "version": "0.46.3",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "license": "Apache-2.0",
   "publishConfig": {
@@ -18,9 +18,9 @@
     "typedef": "tsc && pnpm build:config-schema"
   },
   "dependencies": {
-    "@triplex/client": "0.46.2",
-    "@triplex/editor": "0.46.2",
-    "@triplex/server": "0.46.2",
+    "@triplex/client": "0.46.3",
+    "@triplex/editor": "0.46.3",
+    "@triplex/server": "0.46.3",
     "@commander-js/extra-typings": "^10.0.2",
     "express": "^4.18.2",
     "commander": "^10.0.0",

@@ -1,5 +1,13 @@
 # @triplex/run
 
+## 0.46.3
+
+### Patch Changes
+
+- @triplex/client@0.46.3
+- @triplex/editor@0.46.3
+- @triplex/server@0.46.3
+
 ## 0.46.2
 
 ### Patch Changes
