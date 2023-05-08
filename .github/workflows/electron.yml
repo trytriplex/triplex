@@ -1,13 +1,6 @@
 name: Electron
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - apps/electron/**
-      - packages/**
-
   pull_request:
     paths:
       - apps/electron/**
@@ -26,7 +19,7 @@ jobs:
         uses: actions/checkout@master
 
       - name: Read node version
-        run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+        run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_OUTPUT
         id: nvm
 
       - name: Setup node

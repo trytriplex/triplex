@@ -1,8 +1,11 @@
 name: Electron
 
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  create:
+  push:
+    branches:
+      - main
+    paths:
+      - apps/electron/**
 
 env:
   CI: true
@@ -10,38 +13,49 @@ env:
 
 jobs:
   release:
-    if: ${{ startsWith(github.ref, 'refs/tags/@triplex/electron') }}
-
     runs-on: macos-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@master
 
+      - name: Check for changesets
+        continue-on-error: true
+        run: "bash ./scripts/check-changesets.sh"
+        id: check
+        shell: bash
+
       - name: Read node version
-        run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+        run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_OUTPUT
         id: nvm
+        if: steps.check.outcome == 'success'
 
       - name: Setup node
         uses: actions/setup-node@v3
+        if: steps.check.outcome == 'success'
         with:
           node-version: ${{ steps.nvm.outputs.NVMRC }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
+        if: steps.check.outcome == 'success'
         with:
           version: 7.28.0
 
       - name: Setup pnpm config
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+        if: steps.check.outcome == 'success'
 
       - name: Install dependencies
         run: pnpm i
+        if: steps.check.outcome == 'success'
 
       - name: Build packages
         run: pnpm --filter @triplex/* build
+        if: steps.check.outcome == 'success'
 
       - name: Release targets
         run: pnpm ci:release-electron
+        if: steps.check.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}

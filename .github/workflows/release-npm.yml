@@ -11,8 +11,8 @@ env:
 
 jobs:
   release:
-    name: Release
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout
         uses: actions/checkout@master
@@ -23,7 +23,7 @@ jobs:
           persist-credentials: false
 
       - name: Read node version
-        run: echo ::set-output name=NVMRC::$(cat .nvmrc)
+        run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_OUTPUT
         id: nvm
 
       - name: Setup node
