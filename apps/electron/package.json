@@ -26,7 +26,7 @@
     ]
   },
   "scripts": {
-    "build-target": "pnpm prep-workspace && electron-builder --mac --win && pnpm cleanup-workspace",
+    "build-targets": "pnpm prep-workspace && electron-builder --mac --win && pnpm cleanup-workspace",
     "build": "pnpm swc ./src -d ./dist",
     "cleanup-workspace": "git checkout ../../packages/*/package.json",
     "dev": "electron .",

@@ -19,8 +19,6 @@ export async function createServer({
   publicDir?: string;
   files: string[];
 }) {
-  const resolveFromProject = (name: string) =>
-    require.resolve(name, { paths: [join(cwd, "node_modules")] });
   const tsConfig = join(cwd, "tsconfig.json");
   const app = express();
   const { createServer: createViteServer } = await import("vite");
@@ -41,15 +39,11 @@ export async function createServer({
       middlewareMode: true,
     },
     resolve: {
-      dedupe: ["@react-three/fiber"],
+      dedupe: ["@react-three/fiber", "three"],
       alias: {
         // The consuming app doesn't have @triplex/scene as a direct dependency
         // So we use `require.resolve()` to find it from this location instead.
         "@triplex/scene": require.resolve("@triplex/scene"),
-        // Force the dependencies inside @triplex/scene to resolve
-        // to the loaded projects dependencies instead.
-        "@react-three/fiber": resolveFromProject("@react-three/fiber"),
-        three: resolveFromProject("three"),
       },
     },
   });
