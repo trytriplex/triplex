@@ -1,5 +1,14 @@
 # @triplex/electron
 
+## 0.46.4
+
+### Patch Changes
+
+- 59301bf: The macOS target now is notarized during release.
+  - @triplex/client@0.46.4
+  - @triplex/editor@0.46.4
+  - @triplex/server@0.46.4
+
 ## 0.46.3
 
 ### Patch Changes

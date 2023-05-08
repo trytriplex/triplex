@@ -1,5 +1,11 @@
 # @triplex/client
 
+## 0.46.4
+
+### Patch Changes
+
+- @triplex/scene@0.46.4
+
 ## 0.46.3
 
 ### Patch Changes
