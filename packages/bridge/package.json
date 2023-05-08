@@ -1,6 +1,6 @@
 {
   "name": "@triplex/bridge",
-  "version": "0.46.1",
+  "version": "0.46.2",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "license": "Apache-2.0",
   "exports": {
