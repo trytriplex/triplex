@@ -1,5 +1,14 @@
 # @triplex/electron
 
+## 0.46.1
+
+### Patch Changes
+
+- 111fd6c: Release action now looks for the create tag event.
+  - @triplex/client@0.46.1
+  - @triplex/editor@0.46.1
+  - @triplex/server@0.46.1
+
 ## 0.46.0
 
 ### Minor Changes
