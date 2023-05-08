@@ -1,19 +1,17 @@
-name: Packages
+name: Electron
 
 on:
   push:
-    branches:
-      - main
-
-  pull_request:
+    tags:
+      - "@triplex/electron@**"
 
 env:
   CI: true
   PNPM_CACHE_FOLDER: .pnpm-store
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  release:
+    runs-on: macos-latest
 
     steps:
       - name: Checkout
@@ -42,5 +40,5 @@ jobs:
       - name: Build packages
         run: pnpm --filter @triplex/* build
 
-      - name: Type check
-        run: pnpm typedef
+      - name: Release targets
+        run: pnpm ci:release-electron

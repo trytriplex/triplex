@@ -1,12 +1,10 @@
 import { startProject } from "../util/project";
-import { attachFSLogger, logger } from "../util/log";
+import { logger } from "../util/log";
 
 const log = logger("project");
 
 async function main() {
-  attachFSLogger(process.cwd());
-
-  log("start project", process.cwd());
+  log.info("start project", process.cwd());
 
   try {
     await startProject(process.cwd());
@@ -14,7 +12,7 @@ async function main() {
   } catch (e) {
     const err = e as Error;
 
-    log(err.message);
+    log.error(err.message);
 
     throw e;
   }

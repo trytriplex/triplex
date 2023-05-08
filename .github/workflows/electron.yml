@@ -1,14 +1,19 @@
 name: Electron
 
-on: push
+on:
+  push:
+    branches:
+      - main
+
+  pull_request:
+
+env:
+  CI: true
+  PNPM_CACHE_FOLDER: .pnpm-store
 
 jobs:
   build:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [macos-latest, windows-latest]
+    runs-on: macos-latest
 
     steps:
       - name: Checkout
@@ -37,5 +42,5 @@ jobs:
       - name: Build packages
         run: pnpm --filter @triplex/* build
 
-      - name: Build target
-        run: pnpm electron:build-target
+      - name: Build targets
+        run: pnpm electron:build-targets

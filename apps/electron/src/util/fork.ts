@@ -18,7 +18,7 @@ export function fork(
   let fork: ReturnType<typeof forkChild>;
 
   if (process.env.TRIPLEX_ENV === "development") {
-    log("starting dev");
+    log.info("starting dev fork");
 
     fork = forkChild(filename, [], {
       env: {
@@ -29,7 +29,7 @@ export function fork(
       cwd,
     });
   } else {
-    log("starting prod");
+    log.info("starting prod fork");
 
     fork = forkChild(filename.replace(".ts", ".js"), [], {
       env: { NODE_PATH: process.cwd(), DEBUG: "triplex" },

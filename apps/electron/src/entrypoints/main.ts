@@ -3,10 +3,12 @@ import { app, BrowserWindow, dialog, Menu } from "electron";
 import { readdir } from "node:fs/promises";
 import { join } from "node:path";
 import process from "node:process";
+import { autoUpdater } from "electron-updater";
 import { fork } from "../util/fork";
 import { logger } from "../util/log";
 
 const log = logger("main");
+autoUpdater.logger = logger("auto-update");
 
 if (require("electron-squirrel-startup")) {
   // Handle creating/removing shortcuts on Windows when installing/uninstalling.
@@ -86,7 +88,7 @@ function prepareApp() {
     async onOpenProject() {
       const cwd = await openProjectDialog();
       if (cwd) {
-        log("selected", cwd);
+        log.info("selected", cwd);
 
         if (cleanup) {
           cleanup?.();
@@ -102,7 +104,7 @@ function prepareApp() {
           });
         }
 
-        log("forking");
+        log.info("forking");
 
         const p = await fork(join(__dirname, "./project.ts"), { cwd });
 
@@ -144,7 +146,10 @@ function prepareApp() {
   app.focus({ steal: process.env.TRIPLEX_ENV === "development" });
 }
 
-app.on("ready", prepareApp);
+app.on("ready", () => {
+  autoUpdater.checkForUpdatesAndNotify();
+  prepareApp();
+});
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits
