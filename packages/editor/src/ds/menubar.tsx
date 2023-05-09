@@ -67,6 +67,6 @@ export function Menubar({ children }: RadixMenubar.MenubarProps) {
 
 export function Separator() {
   return (
-    <RadixMenubar.Separator className="my-1 -mx-1 h-[1px] bg-neutral-800" />
+    <RadixMenubar.Separator className="-mx-1 my-1 h-[1px] bg-neutral-800" />
   );
 }

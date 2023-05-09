@@ -26,14 +26,17 @@ export function Drawer({
           className={cn([
             mode === "blocking" && "bg-neutral-900",
             mode === "transparent" && "bg-neutral-900/[97%]",
-            attach === "left" && "slide-in top-0 left-0 bottom-0 w-64 border-r",
+            attach === "left" && "slide-in bottom-0 left-0 w-64 border-r",
+            attach === "left" && __TRIPLEX_TARGET__ === "electron"
+              ? "top-8"
+              : "top-0",
             attach === "bottom" &&
-              "slide-up left-4 bottom-4 right-4 h-52 rounded-lg border",
+              "slide-up bottom-4 left-4 right-4 h-52 rounded-lg border",
             "fixed flex flex-col overflow-hidden border-neutral-800 text-neutral-300 shadow-2xl shadow-black/50 outline-none",
           ])}
         >
           {title && (
-            <Dialog.DialogTitle className="mt-6 mb-2 px-4 text-2xl font-medium text-neutral-100">
+            <Dialog.DialogTitle className="mb-2 mt-6 px-4 text-2xl font-medium text-neutral-100">
               {title}
             </Dialog.DialogTitle>
           )}
