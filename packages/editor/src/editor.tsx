@@ -6,14 +6,14 @@ import { ScenesDrawer } from "./ui/scenes-drawer";
 import { SceneFrame } from "./scence-bridge";
 import { useEditor } from "./stores/editor";
 import { ControlsMenu } from "./ui/controls-menu";
-import { useSubscriptionEffect } from "@triplex/ws-client";
+import { useLazySubscription } from "@triplex/ws-client";
+import { cn } from "./ds/cn";
 
 export function EditorFrame() {
   const { path, save, undo, redo, deleteComponent } = useEditor();
-  const file = useSubscriptionEffect<{ isSaved: boolean }>(
-    `/scene/${encodeURIComponent(path)}`
-  );
-  const isSaved = file ? file.isSaved : true;
+  const { name } = useLazySubscription<{ name: string }>("/folder");
+  const filename = path.split("/").at(-1);
+  const windowTitle = filename ? filename + " — " + name : name;
 
   useEffect(() => {
     if (!path) {
@@ -71,20 +71,29 @@ export function EditorFrame() {
   }, [deleteComponent, path, redo, save, undo]);
 
   useEffect(() => {
-    if (path) {
-      const filename = path.split("/").at(-1);
-      const suffix = isSaved ? "Triplex" : "Unsaved Changes";
-      window.document.title = filename + " • " + suffix;
+    if (windowTitle) {
+      window.document.title = windowTitle;
     }
-  }, [path, isSaved]);
+  }, [windowTitle]);
 
   return (
     <div className="relative h-screen bg-neutral-900">
       <SceneFrame>
-        <ScenesDrawer />
+        <div
+          className={cn([
+            "pointer-events-none absolute inset-0 grid grid-cols-[14rem_auto_18rem] gap-3 pb-3",
+            __TRIPLEX_TARGET__ === "electron"
+              ? "grid-rows-[32px_auto]"
+              : "pt-3",
+          ])}
+        >
+          {__TRIPLEX_TARGET__ === "electron" && (
+            <div className="z-50 col-span-full row-start-1 flex h-8 select-none items-center justify-center border-b border-neutral-800 bg-neutral-900 [-webkit-app-region:drag]">
+              <span className="text-sm text-neutral-300">{windowTitle}</span>
+            </div>
+          )}
 
-        <div className="pointer-events-none absolute top-4 left-4 right-4 bottom-4 flex gap-3">
-          <div className="flex h-full w-52 flex-col gap-3">
+          <div className="row-auto flex flex-col gap-3 overflow-hidden pl-3">
             <EditorMenu />
             {path && <ScenePanel />}
           </div>
@@ -93,10 +102,12 @@ export function EditorFrame() {
             <ControlsMenu />
           </div>
 
-          <div className="flex h-full w-72">
+          <div className="flex overflow-hidden pr-3">
             <ContextPanel />
           </div>
         </div>
+
+        <ScenesDrawer />
       </SceneFrame>
     </div>
   );

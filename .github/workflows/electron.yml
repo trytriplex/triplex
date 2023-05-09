@@ -39,8 +39,5 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - name: Build packages
-        run: pnpm --filter @triplex/* build
-
       - name: Build targets
         run: pnpm electron:build-targets

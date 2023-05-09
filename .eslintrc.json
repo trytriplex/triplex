@@ -43,6 +43,7 @@
           "**/__test__/**",
           "**/__tests__/**",
           "**/hook*.js",
+          "**/*.d.ts",
           "**/main-dev-only.ts",
           "**/*.config.mjs",
           "**/*.config.js"

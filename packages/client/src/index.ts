@@ -33,6 +33,7 @@ export async function createServer({
       tsconfigPaths({ projects: [tsConfig] }),
     ],
     root: cwd,
+    logLevel: "error",
     appType: "custom",
     publicDir,
     server: {

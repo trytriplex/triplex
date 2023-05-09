@@ -1,5 +1,6 @@
 import { Application, isHttpError, Router } from "@oakserver/oak";
 import { watch } from "chokidar";
+import { basename } from "node:path";
 import {
   createProject,
   getJsxElementPropTypes,
@@ -214,6 +215,10 @@ export function createServer({
       watcher.on("unlink", push);
     }
   );
+
+  wss.message("/folder", async () => {
+    return { name: basename(cwd) };
+  });
 
   wss.message(
     "/scene/:path",

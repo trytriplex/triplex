@@ -12,7 +12,7 @@
     "build-targets": "rm -rf targets && pnpm prep-workspace && USE_HARD_LINKS=false electron-builder --publish never --mac dir:x64 dir:arm64 --win dir:x64 && pnpm cleanup-workspace",
     "build": "pnpm swc ./src -d ./dist",
     "cleanup-workspace": "git checkout ../../packages/*/package.json",
-    "dev": "electron .",
+    "dev": "TRIPLEX_TARGET=electron electron .",
     "prep-workspace": "pnpm -r exec node ../../scripts/apply-publish-config.js",
     "release": "rm -rf targets && pnpm prep-workspace && USE_HARD_LINKS=false electron-builder --mac zip:x64 zip:arm64 dmg:x64 dmg:arm64 --win nsis:x64 --publish always && pnpm cleanup-workspace"
   },
@@ -22,9 +22,8 @@
     "@triplex/client": "0.46.4",
     "@triplex/editor": "0.46.4",
     "@triplex/server": "0.46.4",
-    "electron-squirrel-startup": "^1.0.0",
-    "electron-updater": "^5.3.0",
-    "electron-log": "^5.0.0-beta.23"
+    "electron-log": "^5.0.0-beta.23",
+    "electron-updater": "^5.3.0"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.59",
@@ -32,7 +31,7 @@
     "@types/node": "^18.11.18",
     "electron-builder": "^23.6.0",
     "electron-builder-notarize": "^1.5.1",
-    "electron": "24.1.3",
+    "electron": "24.2.0",
     "ts-node": "^10.9.1",
     "typescript": "^4.9.4"
   }

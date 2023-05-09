@@ -36,7 +36,7 @@ function SceneComponent({
         selected
           ? "border-l-blue-400 bg-white/5 text-blue-400"
           : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
-        "block w-[208px] cursor-default overflow-hidden text-ellipsis border-l-2 border-transparent py-1.5 px-3 text-left text-sm -outline-offset-1",
+        "block w-[208px] cursor-default overflow-hidden text-ellipsis border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
       ])}
     >
       {name}
@@ -138,7 +138,7 @@ function ComponentHeading() {
         aria-label={file.isSaved ? undefined : "Unsaved changes"}
         title={file.isSaved ? undefined : "Unsaved changes"}
         className={cn([
-          "ml-auto h-2 w-2 flex-shrink-0 rounded-full",
+          "ml-auto h-2.5 w-2.5 flex-shrink-0 rounded-full",
           file.isSaved ? "bg-neutral-800" : "bg-yellow-400",
         ])}
       />
@@ -160,7 +160,7 @@ function SceneContents() {
     <div className="flex h-full flex-shrink flex-col">
       <ComponentHeading />
 
-      <div className="mb-2.5 -mt-0.5 px-4">
+      <div className="-mt-0.5 mb-2.5 px-4">
         <IDELink path={path} column={1} line={1}>
           View source
         </IDELink>
@@ -168,7 +168,7 @@ function SceneContents() {
 
       <div className="h-[1px] bg-neutral-800" />
 
-      <div className="flex py-1 px-2">
+      <div className="flex px-2 py-1">
         <AddComponentDrawer />
 
         {enteredComponent && (
