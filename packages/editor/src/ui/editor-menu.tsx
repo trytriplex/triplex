@@ -75,9 +75,10 @@ function findMenuItem(
 
 export function EditorMenu() {
   const showOverlay = useOverlayStore((store) => store.show);
-  const { target, save, reset, deleteComponent, newFile } = useEditor();
+  const { target, save, reset, deleteComponent, path, newFile } = useEditor();
   const { blur, jumpTo, navigateTo } = useScene();
   const { undo, redo, getState } = useEditor();
+  const isEditable = !!path;
 
   const revertFile = useCallback(() => {
     const result = confirm("Will throw away unsaved state, continue?");
@@ -120,18 +121,21 @@ export function EditorMenu() {
             {
               label: "Save",
               id: "save",
+              enabled: isEditable,
               accelerator: shortcut("S", { meta: true }),
               click: () => save(),
             },
             {
               label: "Save As...",
               id: "save-as",
+              enabled: isEditable,
               accelerator: shortcut("S", { meta: true, shift: true }),
               click: () => save(true),
             },
             { type: "separator" },
             {
               id: "reset",
+              enabled: isEditable,
               label: "Revert File",
               click: () => revertFile(),
             },
@@ -151,14 +155,14 @@ export function EditorMenu() {
             {
               id: "undo",
               label: "Undo",
-              enabled: getState().redoAvailable,
+              enabled: getState().redoAvailable && isEditable,
               click: () => undo(),
               accelerator: shortcut("Z", { meta: true }),
             },
             {
               id: "redo",
               label: "Redo",
-              enabled: getState().redoAvailable,
+              enabled: getState().redoAvailable && isEditable,
               click: () => redo(),
               accelerator: shortcut("Z", { meta: true, shift: true }),
             },
@@ -171,7 +175,7 @@ export function EditorMenu() {
             {
               label: "Deselect",
               id: "deselect",
-              enabled: !!target,
+              enabled: !!target && isEditable,
               accelerator: shortcut("ESC"),
               click: () => blur(),
             },
@@ -181,14 +185,14 @@ export function EditorMenu() {
             {
               label: "Focus camera",
               id: "focus-camera",
-              enabled: !!target,
+              enabled: !!target && isEditable,
               accelerator: shortcut("F"),
               click: () => jumpTo(),
             },
             {
               label: "Enter component",
               id: "enter-component",
-              enabled: !!target,
+              enabled: !!target && isEditable,
               accelerator: shortcut("F", { shift: true }),
               click: () => navigateTo(),
             },
@@ -198,7 +202,7 @@ export function EditorMenu() {
             {
               label: "Delete",
               id: "delete",
-              enabled: !!target,
+              enabled: !!target && isEditable,
               accelerator: shortcut("Backspace"),
               click: () => deleteComponent(),
             },
@@ -238,6 +242,7 @@ export function EditorMenu() {
       blur,
       deleteComponent,
       getState,
+      isEditable,
       jumpTo,
       navigateTo,
       newFile,

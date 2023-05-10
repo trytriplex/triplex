@@ -111,26 +111,16 @@ function ComponentHeading() {
         <CaretDownIcon className="flex-shrink-0" />
 
         <select
-          className="absolute inset-0 opacity-0 [width:-moz-available]"
+          className="absolute inset-0 text-sm opacity-0 [width:-moz-available]"
           onChange={onChangeComponentHandler}
           value={exportName}
         >
-          <optgroup className="text-xs" label={path.split("/").at(-1)}>
-            {scene.exports.map((exp) => (
-              <option
-                className="text-sm"
-                key={exp.exportName}
-                value={exp.exportName}
-              >
-                {exp.name}
-              </option>
-            ))}
-          </optgroup>
-          <optgroup className="text-xs" label="Actions">
-            <option value="new-component" className="text-sm">
-              New Component...
+          {scene.exports.map((exp) => (
+            <option key={exp.exportName} value={exp.exportName}>
+              {exp.name}
             </option>
-          </optgroup>
+          ))}
+          <option value="new-component">New Component...</option>
         </select>
       </label>
 
