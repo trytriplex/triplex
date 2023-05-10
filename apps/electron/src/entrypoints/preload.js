@@ -3,6 +3,8 @@ const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("triplex", {
   setMenu: (menu) => ipcRenderer.send("set-menu-bar", menu),
+  showSaveDialog: (filename) =>
+    ipcRenderer.invoke("show-save-dialog", filename),
   handleMenuItemPress: (callback) => {
     const listener = (_, id) => {
       callback(id);

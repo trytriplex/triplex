@@ -4,6 +4,7 @@ import {
   app,
   BrowserWindow,
   dialog,
+  ipcMain,
   Menu,
   MenuItemConstructorOptions,
   shell,
@@ -139,6 +140,24 @@ async function openProjectDialog(
   }
 }
 
+async function showSaveDialog(
+  activeWindow: BrowserWindow,
+  defaultPath: string
+) {
+  const { filePath } = await dialog.showSaveDialog(activeWindow, {
+    properties: ["showOverwriteConfirmation", "dontAddToRecent"],
+    defaultPath,
+  });
+
+  return filePath;
+}
+
+function applyIpcHandlers(activeWindow: BrowserWindow) {
+  ipcMain.handle("show-save-dialog", (_, filename: string) => {
+    return showSaveDialog(activeWindow, filename);
+  });
+}
+
 function main() {
   let activeWindow: BrowserWindow | undefined;
   let cleanup: (() => void) | undefined;
@@ -163,22 +182,21 @@ function main() {
         cleanup = undefined;
       }
 
-      if (!activeWindow) {
-        activeWindow = new BrowserWindow({
-          backgroundColor: "#171717",
-          titleBarStyle: "hidden",
-          titleBarOverlay: {
-            height: 32,
-          },
-          webPreferences: {
-            preload: require.resolve("./preload.js"),
-          },
-          width: 1028,
-          height: 768,
-        });
+      activeWindow = new BrowserWindow({
+        backgroundColor: "#171717",
+        titleBarStyle: "hidden",
+        titleBarOverlay: {
+          height: 32,
+        },
+        webPreferences: {
+          preload: require.resolve("./preload.js"),
+        },
+        width: 1028,
+        height: 768,
+      });
 
-        connectMenuToRenderer(activeWindow);
-      }
+      connectMenuToRenderer(activeWindow);
+      applyIpcHandlers(activeWindow);
 
       log.info("forking");
 

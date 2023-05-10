@@ -2,6 +2,7 @@ import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { create } from "zustand";
 import { ComponentTarget, ComponentType } from "../api-types";
+import { showSaveDialog } from "../util/prompt";
 import { stringify } from "../util/string";
 import { useScene } from "./scene";
 
@@ -301,41 +302,12 @@ export function useEditor() {
       let actualExportName = exportName;
 
       if (saveAs) {
-        const enteredPath = prompt("Filename", path) || "";
+        const enteredPath = await showSaveDialog(path);
         if (!enteredPath) {
           // Abort, user cleared filename or cancelled.
           return;
         } else {
           actualPath = enteredPath;
-        }
-      }
-
-      if (searchParams.get("forceRenameOnSave")) {
-        const enteredName = prompt("Component Name", exportName);
-        if (!enteredName) {
-          // Abort, user cleared the name or cancelled.
-          return;
-        }
-
-        if (exportName !== enteredName) {
-          actualExportName = enteredName;
-
-          // The user decided to change the name on save
-          await fetch(
-            `http://localhost:8000/scene/${encodeURIComponent(
-              path
-            )}/${exportName}`,
-            { method: "POST", body: JSON.stringify({ name: enteredName }) }
-          );
-
-          set(
-            {
-              encodedProps: "",
-              exportName: enteredName,
-              path,
-            },
-            { replace: true }
-          );
         }
       }
 
