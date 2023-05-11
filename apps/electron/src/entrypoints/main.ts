@@ -15,6 +15,7 @@ import process from "node:process";
 import { autoUpdater } from "electron-updater";
 import { fork } from "../util/fork";
 import { logger } from "../util/log";
+import { ensureDepsInstall } from "../util/deps";
 
 if (process.env.TRIPLEX_ENV !== "development") {
   Sentry.init({
@@ -216,11 +217,15 @@ async function main() {
       if (cleanup) {
         cleanup?.();
         cleanup = undefined;
+        activeWindow?.close();
+        activeWindow = undefined;
       }
 
       activeWindow = new BrowserWindow({
         backgroundColor: "#171717",
         titleBarStyle: "hidden",
+        show: false,
+        paintWhenInitiallyHidden: false,
         titleBarOverlay: {
           height: 32,
         },
@@ -231,6 +236,16 @@ async function main() {
         height: 768,
       });
 
+      if (!(await ensureDepsInstall(cwd, activeWindow))) {
+        await dialog.showErrorBox(
+          "Could not install dependencies",
+          "Please ensure your package manager is installed and functional."
+        );
+        return;
+      }
+
+      activeWindow.show();
+
       connectMenuToRenderer(activeWindow);
       applyWindowIpcHandlers(activeWindow);
 
@@ -240,8 +255,6 @@ async function main() {
 
       cleanup = () => {
         p.kill();
-        activeWindow?.close();
-        activeWindow = undefined;
       };
 
       const searchParams = `?path=${p.data?.path}&exportName=${p.data?.exportName}`;
