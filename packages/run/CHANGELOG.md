@@ -1,5 +1,29 @@
 # @triplex/run
 
+## 0.47.0
+
+### Minor Changes
+
+- 4164026: Add support for the scene to know what environment it is running in
+  (either web or electron).
+
+### Patch Changes
+
+- Updated dependencies [daa2697]
+- Updated dependencies [1fc7657]
+- Updated dependencies [1fc7657]
+- Updated dependencies [1fc7657]
+- Updated dependencies [4164026]
+- Updated dependencies [1fc7657]
+- Updated dependencies [e8cf76f]
+- Updated dependencies [1fc7657]
+- Updated dependencies [e8cf76f]
+- Updated dependencies [4164026]
+- Updated dependencies [4164026]
+  - @triplex/editor@0.47.0
+  - @triplex/client@0.47.0
+  - @triplex/server@0.47.0
+
 ## 0.46.4
 
 ### Patch Changes

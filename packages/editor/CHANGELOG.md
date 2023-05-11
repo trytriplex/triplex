@@ -1,5 +1,24 @@
 # @triplex/editor
 
+## 0.47.0
+
+### Minor Changes
+
+- daa2697: Adds a welcome screen to the electron app.
+- 1fc7657: Menu bar is now native when ran in the electron app.
+- 1fc7657: Electron app now uses a custom title bar.
+- e8cf76f: Adds native save dialog support.
+- 1fc7657: Window title now uses both the folder name and file name if open.
+- 4164026: Undo/redo menu items now correctly display as enabled or disabled
+  when appropriate.
+
+### Patch Changes
+
+- 4164026: Editor is now typechecked again.
+- e8cf76f: When no file is open irrelevant menu items are now disabled.
+  - @triplex/bridge@0.47.0
+  - @triplex/ws-client@0.47.0
+
 ## 0.46.4
 
 ### Patch Changes
