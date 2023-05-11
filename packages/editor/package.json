@@ -6,7 +6,8 @@
   "main": "./src/main-dev-only.ts",
   "types": "./src/main-dev-only.ts",
   "scripts": {
-    "build": "vite build"
+    "build": "vite build",
+    "typedef": "tsc"
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.3",

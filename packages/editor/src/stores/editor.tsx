@@ -5,6 +5,7 @@ import { ComponentTarget, ComponentType } from "../api-types";
 import { showSaveDialog } from "../util/prompt";
 import { stringify } from "../util/string";
 import { useScene } from "./scene";
+import { useUndoRedoState } from "./undo-redo";
 
 export interface Params {
   encodedProps: string;
@@ -37,14 +38,6 @@ const useSelectionStore = create<SelectionState>((set) => ({
   focus: (sceneObject) => set({ focused: sceneObject }),
 }));
 
-interface UndoRedo {
-  undo: () => void;
-  redo: () => void;
-}
-
-const undoStack: UndoRedo[] = [];
-const redoStack: UndoRedo[] = [];
-
 /**
  * **useEditor()**
  *
@@ -62,13 +55,10 @@ export function useEditor() {
   const focus = useSelectionStore((store) => store.focus);
   const target = useSelectionStore((store) => store.focused);
   const scene = useScene();
-
-  const getState = useCallback(() => {
-    return {
-      undoAvailable: undoStack.length > 0,
-      redoAvailable: redoStack.length > 0,
-    };
-  }, []);
+  const performUndoableEvent = useUndoRedoState(
+    (store) => store.performUndoableEvent
+  );
+  const clearUndoRedo = useUndoRedoState((store) => store.clearUndoRedo);
 
   const addComponent = useCallback(
     async ({
@@ -139,15 +129,13 @@ export function useEditor() {
       });
     };
 
-    // Initiate the deletion
-    redoAction();
-    scene.blur();
-
-    undoStack.push({
+    performUndoableEvent({
       undo: undoAction,
       redo: redoAction,
     });
-  }, [path, scene, target]);
+
+    scene.blur();
+  }, [path, performUndoableEvent, scene, target]);
 
   const exitComponent = useCallback(() => {
     window.history.back();
@@ -201,42 +189,22 @@ export function useEditor() {
         );
       };
 
-      undoStack.push({
+      performUndoableEvent({
         undo: undoAction,
         redo: redoAction,
       });
-      redoStack.length = 0;
-
-      redoAction();
     },
-    [scene]
+    [performUndoableEvent, scene]
   );
 
-  const undo = useCallback(() => {
-    const action = undoStack.pop();
-    if (action) {
-      action.undo();
-      redoStack.push(action);
-    }
-  }, []);
-
-  const redo = useCallback(() => {
-    const action = redoStack.pop();
-    if (action) {
-      action.redo();
-      undoStack.push(action);
-    }
-  }, []);
-
   const reset = useCallback(() => {
-    undoStack.length = 0;
-    redoStack.length = 0;
+    clearUndoRedo();
 
     scene.blur();
     scene.reset();
 
     fetch(`http://localhost:8000/scene/${encodeURIComponent(path)}/reset`);
-  }, [path, scene]);
+  }, [clearUndoRedo, path, scene]);
 
   if (path && !exportName) {
     throw new Error("invariant: exportName is undefined");
@@ -308,8 +276,7 @@ export function useEditor() {
       // Clear the update stack as the line and column numbers of jsx elements
       // Will most likely change after formatting resulting in the rpc calls not
       // Working anymore.
-      undoStack.length = 0;
-      redoStack.length = 0;
+      clearUndoRedo();
 
       await fetch(
         `http://localhost:8000/scene/${encodeURIComponent(
@@ -326,7 +293,7 @@ export function useEditor() {
         { replace: true }
       );
     },
-    [exportName, path, searchParams, set]
+    [clearUndoRedo, exportName, path, searchParams, set]
   );
 
   const newFile = useCallback(async () => {
@@ -432,20 +399,6 @@ export function useEditor() {
        */
       persistPropValue,
       /**
-       * Calls the undo action at the top of the undo stack and then moves it to
-       * the redo stack.
-       */
-      undo,
-      /**
-       * Calls the redo action at the top of the redo stack and then moves it to
-       * the undo stack.
-       */
-      redo,
-      /**
-       * Returns the current state of editor internals when called.
-       */
-      getState,
-      /**
        * Resets the scene throwing away any unsaved state.
        */
       reset,
@@ -458,17 +411,14 @@ export function useEditor() {
       exitComponent,
       exportName,
       focus,
-      getState,
       newComponent,
       newFile,
       path,
       persistPropValue,
-      redo,
       reset,
       save,
       set,
       target,
-      undo,
     ]
   );
 }

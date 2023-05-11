@@ -2,6 +2,7 @@ import { listen, compose } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
 import { useEditor } from "./stores/editor";
 import { useScene } from "./stores/scene";
+import { useUndoRedoState } from "./stores/undo-redo";
 
 export interface FocusedObject {
   line: number;
@@ -90,6 +91,8 @@ function BridgeSendEvents() {
 function BridgeReceiveEvents() {
   const editor = useEditor();
   const scene = useScene();
+  const undo = useUndoRedoState((store) => store.undo);
+  const redo = useUndoRedoState((store) => store.redo);
 
   useEffect(() => {
     if (!scene.ready) {
@@ -100,8 +103,8 @@ function BridgeReceiveEvents() {
       listen("trplx:onAddNewComponent", editor.addComponent),
       listen("trplx:requestDeleteSceneObject", editor.deleteComponent),
       listen("trplx:requestSave", editor.save),
-      listen("trplx:requestUndo", editor.undo),
-      listen("trplx:requestRedo", editor.redo),
+      listen("trplx:requestUndo", undo),
+      listen("trplx:requestRedo", redo),
       listen("trplx:onSceneObjectNavigated", (data) => {
         editor.set(
           {
@@ -135,7 +138,7 @@ function BridgeReceiveEvents() {
         editor.focus(null);
       }),
     ]);
-  }, [scene, editor]);
+  }, [scene, editor, undo, redo]);
 
   return null;
 }

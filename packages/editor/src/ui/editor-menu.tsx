@@ -9,6 +9,7 @@ import {
   Separator,
 } from "../ds/menubar";
 import { useOverlayStore } from "../stores/overlay";
+import { useUndoRedoState } from "../stores/undo-redo";
 import { useScene } from "../stores/scene";
 import { useCallback, useEffect, useMemo } from "react";
 
@@ -77,7 +78,7 @@ export function EditorMenu() {
   const showOverlay = useOverlayStore((store) => store.show);
   const { target, save, reset, deleteComponent, path, newFile } = useEditor();
   const { blur, jumpTo, navigateTo } = useScene();
-  const { undo, redo, getState } = useEditor();
+  const { redo, undo, redoAvailable, undoAvailable } = useUndoRedoState();
   const isEditable = !!path;
 
   const revertFile = useCallback(() => {
@@ -155,14 +156,14 @@ export function EditorMenu() {
             {
               id: "undo",
               label: "Undo",
-              enabled: getState().redoAvailable && isEditable,
+              enabled: undoAvailable && isEditable,
               click: () => undo(),
               accelerator: shortcut("Z", { meta: true }),
             },
             {
               id: "redo",
               label: "Redo",
-              enabled: getState().redoAvailable && isEditable,
+              enabled: redoAvailable && isEditable,
               click: () => redo(),
               accelerator: shortcut("Z", { meta: true, shift: true }),
             },
@@ -241,17 +242,18 @@ export function EditorMenu() {
     [
       blur,
       deleteComponent,
-      getState,
       isEditable,
       jumpTo,
       navigateTo,
       newFile,
       redo,
+      redoAvailable,
       revertFile,
       save,
       showOverlay,
       target,
       undo,
+      undoAvailable,
     ]
   );
 
