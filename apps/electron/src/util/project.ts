@@ -13,6 +13,7 @@ export async function startProject(
   const closeBackend = await backend.listen(backendPort);
 
   return {
+    config,
     url: `http://localhost:${frontendPort}`,
     close: async () => {
       await closeFrontend({ forceExit: false });

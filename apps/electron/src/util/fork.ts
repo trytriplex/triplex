@@ -14,7 +14,11 @@ const log = logger("fork");
 export function fork(
   filename: string,
   { cwd }: { cwd: string }
-): Promise<{ send(message: Record<string, unknown>): void; kill(): void }> {
+): Promise<{
+  send(message: Record<string, unknown>): void;
+  kill(): void;
+  data?: Record<string, unknown>;
+}> {
   let fork: ReturnType<typeof forkChild>;
 
   if (process.env.TRIPLEX_ENV === "development") {
@@ -44,10 +48,14 @@ export function fork(
   return new Promise((resolve) => {
     fork.on("message", (e) => {
       if (typeof e === "object") {
-        const eventObject = e as { eventName: string };
+        const eventObject = e as {
+          eventName: string;
+          data?: Record<string, unknown>;
+        };
 
         if (eventObject.eventName === "ready") {
           resolve({
+            data: eventObject.data,
             send(message: Record<string, unknown>) {
               fork.send(message);
             },

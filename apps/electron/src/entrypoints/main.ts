@@ -22,8 +22,15 @@ if (process.env.TRIPLEX_ENV !== "development") {
   });
 }
 
+const EDITOR_DEV_PORT = 5754;
 const log = logger("main");
+
 autoUpdater.logger = logger("auto-update");
+// Stub out the menu ASAP to prevent a flash.
+// It is filled in after the electron app is ready.
+Menu.setApplicationMenu(
+  Menu.buildFromTemplate([{ role: "appMenu" }, { role: "fileMenu" }])
+);
 
 function prepareMenu() {
   const listeners: ((id: string) => void)[] = [];
@@ -152,17 +159,46 @@ async function showSaveDialog(
   return filePath;
 }
 
-function applyIpcHandlers(activeWindow: BrowserWindow) {
-  ipcMain.handle("show-save-dialog", (_, filename: string) => {
-    return showSaveDialog(activeWindow, filename);
-  });
+function applyWindowIpcHandlers(activeWindow: BrowserWindow) {
+  activeWindow.webContents.ipc.handle(
+    "show-save-dialog",
+    (_, filename: string) => {
+      return showSaveDialog(activeWindow, filename);
+    }
+  );
 }
 
-function main() {
-  let activeWindow: BrowserWindow | undefined;
-  let cleanup: (() => void) | undefined;
+async function openWelcomeScreen() {
+  const window = new BrowserWindow({
+    backgroundColor: "#171717",
+    titleBarStyle: "hidden",
+    titleBarOverlay: {
+      height: 32,
+    },
+    maximizable: false,
+    minimizable: false,
+    webPreferences: {
+      preload: require.resolve("./preload.js"),
+    },
+    width: 520,
+    height: 408,
+  });
 
+  if (process.env.TRIPLEX_ENV === "development") {
+    await window.loadURL(`http://localhost:${EDITOR_DEV_PORT}/welcome.html`);
+  } else {
+    await window.loadFile(require.resolve("@triplex/editor/dist/welcome.html"));
+  }
+
+  return window;
+}
+
+async function main() {
   const { onMenuItemPress, resetMenu, connectMenuToRenderer } = prepareMenu();
+
+  let activeWindow: BrowserWindow | undefined;
+  let welcomeWindow: BrowserWindow | undefined;
+  let cleanup: (() => void) | undefined;
 
   function onCloseProject() {
     cleanup?.();
@@ -196,7 +232,7 @@ function main() {
       });
 
       connectMenuToRenderer(activeWindow);
-      applyIpcHandlers(activeWindow);
+      applyWindowIpcHandlers(activeWindow);
 
       log.info("forking");
 
@@ -204,26 +240,64 @@ function main() {
 
       cleanup = () => {
         p.kill();
+        activeWindow?.close();
+        activeWindow = undefined;
       };
 
-      if (process.env.TRIPLEX_ENV === "development") {
-        const { createDevServer } = require("@triplex/editor");
-        const editorPort = 5754;
-        const devServer = await createDevServer();
+      const searchParams = `?path=${p.data?.path}&exportName=${p.data?.exportName}`;
 
-        await devServer.listen(editorPort);
-        await activeWindow.loadURL(`http://localhost:${editorPort}`);
+      if (process.env.TRIPLEX_ENV === "development") {
+        await activeWindow.loadURL(
+          `http://localhost:${EDITOR_DEV_PORT}${searchParams}`
+        );
       } else {
         await activeWindow.loadFile(
-          require.resolve("@triplex/editor/dist/index.html")
+          require.resolve(`@triplex/editor/dist/index.html`),
+          {
+            search: searchParams,
+          }
         );
       }
 
       if (process.env.TRIPLEX_ENV === "development") {
         activeWindow.webContents.openDevTools();
       }
+
+      return true;
     }
+
+    return false;
   }
+
+  function applyGlobalIpcHandlers() {
+    ipcMain.on("open-link", (_, url: string) => {
+      shell.openExternal(url);
+    });
+
+    ipcMain.on("send-command", async (_, id: string) => {
+      switch (id) {
+        case "open-project":
+          if ((await onOpenProject()) && welcomeWindow) {
+            welcomeWindow.close();
+            welcomeWindow = undefined;
+          }
+          break;
+
+        default:
+          break;
+      }
+    });
+  }
+
+  if (process.env.TRIPLEX_ENV === "development") {
+    const { createDevServer } = require("@triplex/editor");
+    const devServer = await createDevServer();
+    await devServer.listen(EDITOR_DEV_PORT);
+  }
+
+  welcomeWindow = await openWelcomeScreen();
+
+  applyGlobalIpcHandlers();
 
   onMenuItemPress((menuItemId) => {
     switch (menuItemId) {
@@ -255,10 +329,9 @@ function main() {
   });
 }
 
-main();
-
 app.on("ready", () => {
   autoUpdater.checkForUpdatesAndNotify();
+  main();
   app.focus({ steal: process.env.TRIPLEX_ENV === "development" });
 });
 

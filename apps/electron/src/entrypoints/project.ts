@@ -1,6 +1,7 @@
 import * as Sentry from "@sentry/node";
 import { startProject } from "../util/project";
 import { logger } from "../util/log";
+import { getFirstFoundFile } from "../util/files";
 
 if (process.env.TRIPLEX_ENV !== "development") {
   Sentry.init({
@@ -14,8 +15,16 @@ async function main() {
   log.info("start project", process.cwd());
 
   try {
-    await startProject(process.cwd());
-    process.send?.({ eventName: "ready" });
+    const { config } = await startProject(process.cwd());
+    const file = await getFirstFoundFile({ files: config.files });
+
+    process.send?.({
+      eventName: "ready",
+      data: {
+        path: file ? file.path : "",
+        exportName: file ? file.exports[0].exportName : "",
+      },
+    });
   } catch (e) {
     const err = e as Error;
 
