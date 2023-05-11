@@ -1,5 +1,5 @@
 import { listen, compose } from "@triplex/bridge/host";
-import { ReactNode, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useEditor } from "./stores/editor";
 import { useScene } from "./stores/scene";
 
@@ -9,7 +9,7 @@ export interface FocusedObject {
   ownerPath: string;
 }
 
-export function SceneFrame({ children }: { children: ReactNode }) {
+export function SceneFrame() {
   const editor = useEditor();
   const [initialPath] = useState(() => editor.path);
   const [initialProps] = useState(() => editor.encodedProps);
@@ -29,7 +29,6 @@ export function SceneFrame({ children }: { children: ReactNode }) {
       />
       <BridgeSendEvents />
       <BridgeReceiveEvents />
-      {children}
     </>
   );
 }

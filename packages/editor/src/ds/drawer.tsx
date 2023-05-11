@@ -18,10 +18,8 @@ export function Drawer({
 }) {
   return (
     <Dialog.Root open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
-      <Dialog.Close>
-        <Dialog.Overlay className="fixed inset-0 cursor-default bg-black/20" />
-      </Dialog.Close>
       <Dialog.Portal>
+        <Dialog.Overlay className="fixed inset-0 cursor-default bg-black/20" />
         <Dialog.Content
           className={cn([
             mode === "blocking" && "bg-neutral-900",

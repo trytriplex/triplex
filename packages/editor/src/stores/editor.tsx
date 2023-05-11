@@ -249,14 +249,12 @@ export function useEditor() {
         replace?: true;
         entered?: true;
         forceSaveAs?: true;
-        forceRenameOnSave?: true;
       } = {}
     ) => {
       if (
         componentParams.path === path &&
         componentParams.exportName === exportName &&
         typeof metaParams.forceSaveAs === "undefined" &&
-        typeof metaParams.forceRenameOnSave === "undefined" &&
         typeof metaParams.replace === "undefined"
       ) {
         // Bail if we're already on the same path.
@@ -285,10 +283,6 @@ export function useEditor() {
 
       if (metaParams.forceSaveAs) {
         newParams.forceSaveAs = "true";
-      }
-
-      if (metaParams.forceRenameOnSave) {
-        newParams.forceRenameOnSave = "true";
       }
 
       setSearchParams(newParams, { replace: metaParams.replace });
@@ -347,7 +341,7 @@ export function useEditor() {
         path: data.path,
         encodedProps: "",
       },
-      { forceSaveAs: true, forceRenameOnSave: true }
+      { forceSaveAs: true }
     );
   }, [set]);
 
@@ -358,16 +352,11 @@ export function useEditor() {
     );
     const data = await result.json();
 
-    set(
-      {
-        exportName: data.exportName,
-        path: data.path,
-        encodedProps: "",
-      },
-      {
-        forceRenameOnSave: true,
-      }
-    );
+    set({
+      exportName: data.exportName,
+      path: data.path,
+      encodedProps: "",
+    });
   }, [path, set]);
 
   return useMemo(
