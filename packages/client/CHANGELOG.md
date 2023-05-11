@@ -1,5 +1,19 @@
 # @triplex/client
 
+## 0.47.0
+
+### Minor Changes
+
+- 4164026: Add support for the scene to know what environment it is running in
+  (either web or electron).
+
+### Patch Changes
+
+- 1fc7657: The client has had its CSP removed.
+- 1fc7657: Log level now set to error.
+- Updated dependencies [4164026]
+  - @triplex/scene@0.47.0
+
 ## 0.46.4
 
 ### Patch Changes

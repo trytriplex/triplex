@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.47.0
+
+### Minor Changes
+
+- 1fc7657: Window title now uses both the folder name and file name if open.
+
 ## 0.46.4
 
 ## 0.46.3

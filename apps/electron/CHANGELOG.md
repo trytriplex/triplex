@@ -1,5 +1,36 @@
 # @triplex/electron
 
+## 0.47.0
+
+### Minor Changes
+
+- daa2697: Adds a welcome screen to the electron app.
+- 1fc7657: Menu bar is now native when ran in the electron app.
+- 1fc7657: Electron app now uses a custom title bar.
+- 1fc7657: Menu bar now contains view, window, and help.
+- e8cf76f: Adds native save dialog support.
+- 4164026: Add support for the scene to know what environment it is running in
+  (either web or electron).
+- daa2697: When opening a project the first found file and export are now
+  immediately opened.
+
+### Patch Changes
+
+- Updated dependencies [daa2697]
+- Updated dependencies [1fc7657]
+- Updated dependencies [1fc7657]
+- Updated dependencies [1fc7657]
+- Updated dependencies [4164026]
+- Updated dependencies [1fc7657]
+- Updated dependencies [e8cf76f]
+- Updated dependencies [1fc7657]
+- Updated dependencies [e8cf76f]
+- Updated dependencies [4164026]
+- Updated dependencies [4164026]
+  - @triplex/editor@0.47.0
+  - @triplex/client@0.47.0
+  - @triplex/server@0.47.0
+
 ## 0.46.4
 
 ### Patch Changes
