@@ -54,7 +54,12 @@ export function SceneFrame() {
   }
 
   useEffect(() => {
-    if (!path) {
+    if (!path || __TRIPLEX_TARGET__ === "electron") {
+      // When in electron all shortcuts are handled by accelerators meaning
+      // We don't need to set any hotkeys in app. We need to refactor this and
+      // We need to clean up hotkey usage across the scene by instead of handling
+      // events directly we forward the hotkey press to the editor and it can figure
+      // it out.
       return;
     }
 
@@ -76,7 +81,12 @@ export function SceneFrame() {
   }, [path]);
 
   useEffect(() => {
-    if (!path) {
+    if (!path || __TRIPLEX_TARGET__ === "electron") {
+      // When in electron all shortcuts are handled by accelerators meaning
+      // We don't need to set any hotkeys in app. We need to refactor this and
+      // We need to clean up hotkey usage across the scene by instead of handling
+      // events directly we forward the hotkey press to the editor and it can figure
+      // it out.
       return;
     }
 

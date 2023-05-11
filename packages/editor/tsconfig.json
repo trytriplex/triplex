@@ -5,6 +5,8 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "./dist",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "emitDeclarationOnly": false,
+    "noEmit": true
   }
 }

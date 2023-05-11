@@ -11,7 +11,9 @@ export async function createServer({
   publicDir,
   files,
   cwd = process.cwd(),
+  target,
 }: {
+  target: "web" | "electron";
   cwd?: string;
   components: string[];
   open?: boolean | string;
@@ -32,6 +34,9 @@ export async function createServer({
       scenePlugin({ cwd, files, components }),
       tsconfigPaths({ projects: [tsConfig] }),
     ],
+    define: {
+      __TRIPLEX_TARGET__: `"${target}"`,
+    },
     root: cwd,
     logLevel: "error",
     appType: "custom",
