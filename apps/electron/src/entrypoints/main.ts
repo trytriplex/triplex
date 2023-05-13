@@ -27,10 +27,15 @@ const EDITOR_DEV_PORT = 5754;
 const log = logger("main");
 
 autoUpdater.logger = logger("auto-update");
+
 // Stub out the menu ASAP to prevent a flash.
 // It is filled in after the electron app is ready.
 Menu.setApplicationMenu(
-  Menu.buildFromTemplate([{ role: "appMenu" }, { role: "fileMenu" }])
+  Menu.buildFromTemplate(
+    process.platform === "darwin"
+      ? [{ role: "appMenu" }, { role: "fileMenu" }]
+      : [{ role: "fileMenu" }]
+  )
 );
 
 function prepareMenu() {
@@ -94,7 +99,11 @@ function prepareMenu() {
   }
 
   function resetMenu() {
-    const defaultMenu = Menu.buildFromTemplate([appMenu, defaultFileMenu]);
+    const defaultMenu = Menu.buildFromTemplate(
+      process.platform === "darwin"
+        ? [appMenu, defaultFileMenu]
+        : [defaultFileMenu]
+    );
     Menu.setApplicationMenu(defaultMenu);
     setMenuClickHandlers();
   }
@@ -112,7 +121,11 @@ function prepareMenu() {
     resetMenu,
     connectMenuToRenderer(activeWindow: BrowserWindow) {
       const callback = (_: unknown, data: MenuItemConstructorOptions[]) => {
-        Menu.setApplicationMenu(Menu.buildFromTemplate([appMenu, ...data]));
+        const menu = Menu.buildFromTemplate(
+          process.platform === "darwin" ? [appMenu, ...data] : data
+        );
+
+        Menu.setApplicationMenu(menu);
         setMenuClickHandlers();
       };
 
@@ -178,6 +191,7 @@ async function openWelcomeScreen() {
     },
     maximizable: false,
     minimizable: false,
+    fullscreenable: false,
     webPreferences: {
       preload: require.resolve("./preload.js"),
     },
@@ -223,7 +237,7 @@ async function main() {
 
       activeWindow = new BrowserWindow({
         backgroundColor: "#171717",
-        titleBarStyle: "hidden",
+        titleBarStyle: process.platform === "darwin" ? "hidden" : "default",
         show: false,
         paintWhenInitiallyHidden: false,
         titleBarOverlay: {

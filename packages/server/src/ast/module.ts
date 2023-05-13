@@ -1,4 +1,5 @@
 import { JsxElement, JsxSelfClosingElement, Node, SourceFile } from "ts-morph";
+import { normalize } from "node:path";
 import { getExportDeclaration } from "./jsx";
 
 export function getElementFilePath(
@@ -10,7 +11,7 @@ export function getElementFilePath(
 
   const jsxType = tagNode.getType();
   const declaration = jsxType.getSymbolOrThrow().getDeclarations()[0];
-  const filePath = declaration.getSourceFile().getFilePath();
+  const filePath = normalize(declaration.getSourceFile().getFilePath());
 
   if (filePath.includes("node_modules")) {
     return { filePath: "", exportName: "" };

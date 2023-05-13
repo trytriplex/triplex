@@ -11,10 +11,12 @@ export function SceneLoader({
   sceneProps: Record<string, unknown>;
   exportName: "default" | string;
 }) {
+  const normalizedPath = path.replaceAll("\\", "/");
   const scenes = useScenes();
   const componentFilename = Object.keys(scenes).find((filename) =>
-    path ? path.endsWith(filename) : false
+    normalizedPath ? normalizedPath.endsWith(filename) : false
   );
+
   if (!componentFilename || !exportName) {
     return null;
   }

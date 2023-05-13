@@ -20,7 +20,10 @@ function guessComponentNameFromPath(path: string) {
 }
 
 function extractPath(dirPath: string, targetPath: string) {
-  const isSrc = targetPath.startsWith(".") || targetPath.startsWith("/");
+  const isSrc =
+    targetPath.startsWith(".") ||
+    targetPath.startsWith("/") ||
+    targetPath.match(/^[A-Z]:\\/);
 
   if (isSrc) {
     const targetFilename = `${basename(targetPath).replace(
@@ -205,6 +208,7 @@ export function add(
         sourceFile.getDirectoryPath(),
         component.path
       );
+
       let existingImport = sourceFile.getImportDeclaration((decl) => {
         return decl.getModuleSpecifierValue() === moduleSpecifier;
       });

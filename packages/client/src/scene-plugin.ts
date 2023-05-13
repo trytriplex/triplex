@@ -30,11 +30,15 @@ export function scenePlugin({
         return scripts.sceneFrame
           .replace(
             "{{SCENE_FILES_GLOB}}",
-            `[${files.map((f) => `'${f.replace(cwd, "")}'`).join(",")}]`
+            `[${files
+              .map((f) => `'${f.replace(cwd.replaceAll("\\", "/"), "")}'`)
+              .join(",")}]`
           )
           .replace(
             "{{COMPONENTS_FILE_GLOB}}",
-            `[${components.map((f) => `'${f.replace(cwd, "")}'`).join(",")}]`
+            `[${components
+              .map((f) => `'${f.replace(cwd.replaceAll("\\", "/"), "")}'`)
+              .join(",")}]`
           );
       }
 

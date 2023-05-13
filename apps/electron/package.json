@@ -9,12 +9,13 @@
   "main": "./hook-main.js",
   "repository": "https://github.com/try-triplex/releases",
   "scripts": {
-    "build-targets": "rm -rf targets && pnpm prep-workspace && USE_HARD_LINKS=false electron-builder --publish never --mac dir:x64 dir:arm64 --win dir:x64 && pnpm cleanup-workspace",
+    "build-target": "rimraf targets && pnpm prep-workspace && cross-env USE_HARD_LINKS=false electron-builder --publish never && pnpm cleanup-workspace",
+    "build-targets": "rimraf targets && pnpm prep-workspace && cross-env USE_HARD_LINKS=false electron-builder --publish never --mac dir:x64 dir:arm64 --win dir:x64 && pnpm cleanup-workspace",
     "build": "pnpm swc ./src -d ./dist",
     "cleanup-workspace": "git checkout ../../packages/*/package.json",
-    "dev": "TRIPLEX_TARGET=electron electron .",
+    "dev": "cross-env TRIPLEX_TARGET=electron electron .",
     "prep-workspace": "pnpm -r exec node ../../scripts/apply-publish-config.js",
-    "release": "rm -rf targets && pnpm prep-workspace && USE_HARD_LINKS=false electron-builder --mac zip:x64 zip:arm64 dmg:x64 dmg:arm64 --win nsis:x64 --publish always && pnpm cleanup-workspace"
+    "release": "rimraf targets && pnpm prep-workspace && cross-env USE_HARD_LINKS=false electron-builder --mac zip:x64 zip:arm64 dmg:x64 dmg:arm64 --win nsis:x64 --publish always && pnpm cleanup-workspace"
   },
   "dependencies": {
     "@sentry/electron": "^4.5.0",

@@ -17,12 +17,12 @@ export async function getConfig(cwd: string) {
 
   const files = config.files.map((file: string) =>
     // Separators should always be forward slashes for glob compatibility.
-    joinPosix(cwd, ".triplex", file)
+    joinPosix(cwd, ".triplex", file).replaceAll("\\", "/")
   );
 
   const components = (config.components || []).map((file: string) =>
     // Separators should always be forward slashes for glob compatibility.
-    joinPosix(cwd, ".triplex", file)
+    joinPosix(cwd, ".triplex", file).replaceAll("\\", "/")
   );
 
   return {

@@ -52,12 +52,12 @@ program
 
     const files = config.files.map((file) =>
       // Separators should always be forward slashes for glob compatibility.
-      joinPosix(process.cwd(), ".triplex", file)
+      joinPosix(process.cwd(), ".triplex", file).replaceAll("\\", "/")
     );
 
     const components = (config.components || []).map((file) =>
       // Separators should always be forward slashes for glob compatibility.
-      joinPosix(process.cwd(), ".triplex", file)
+      joinPosix(process.cwd(), ".triplex", file).replaceAll("\\", "/")
     );
 
     editor({

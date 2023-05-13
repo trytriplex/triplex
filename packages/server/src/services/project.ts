@@ -1,5 +1,5 @@
 import readdirp from "readdirp";
-import { basename, dirname } from "path";
+import { basename, dirname, sep } from "path";
 import parent from "glob-parent";
 import anymatch from "anymatch";
 import { inferExports } from "../util/module";
@@ -60,13 +60,13 @@ export function hostElements() {
 
 export async function foundFolders(globs: string[]) {
   const foundFolders: Record<string, { path: string; name: string }> = {};
-  const roots = globs.map((glob) => parent(glob));
+  const roots = globs.map((glob) => parent(glob.replaceAll("\\", "/")));
 
   for (let i = 0; i < globs.length; i++) {
     const root = roots[i];
 
     for await (const entry of readdirp(root, { type: "files" })) {
-      const path = entry.fullPath.replace("/" + entry.basename, "");
+      const path = entry.fullPath.replace(sep + entry.basename, "");
 
       foundFolders[dirname(entry.fullPath)] = {
         path,
@@ -79,7 +79,7 @@ export async function foundFolders(globs: string[]) {
 }
 
 export async function folderComponents(globs: string[], folder: string) {
-  const match = anymatch(globs);
+  const match = anymatch(globs.map((glob) => glob.replaceAll("\\", "/")));
   const foundComponents: { name: string; exportName: string; path: string }[] =
     [];
 

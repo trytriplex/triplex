@@ -44,10 +44,12 @@ export async function getAllFiles({
     name: string;
     exports: { exportName: string; name: string }[];
   }[] = [];
+  // Handle Windows separators being invalid in globs.
+  const parsedFiles = files.map((file) => file.replaceAll("\\", "/"));
   const roots = files.map((glob) => parent(glob));
 
-  for (let i = 0; i < files.length; i++) {
-    const glob = files[i];
+  for (let i = 0; i < parsedFiles.length; i++) {
+    const glob = parsedFiles[i];
     const root = roots[i];
     const match = anymatch(glob);
 

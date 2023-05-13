@@ -1,6 +1,21 @@
 import { describe, expect, it } from "vitest";
-import { transformSync } from "@babel/core";
+import {
+  TransformOptions,
+  transformSync as babelTransformSync,
+} from "@babel/core";
 import plugin from "../babel-plugin";
+
+const transformSync = (code: string, opts?: TransformOptions) => {
+  const result = babelTransformSync(code, opts);
+  if (!result) {
+    return null;
+  }
+
+  return {
+    ...result,
+    code: result.code?.replace(/[A-Z]:\\\\/g, "/"),
+  };
+};
 
 describe("babel plugin", () => {
   it("should transform scene with wrapped groups", () => {

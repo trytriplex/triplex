@@ -20,7 +20,7 @@ describe("module", () => {
     const path = getElementFilePath(sceneObject);
 
     expect(path).toEqual({
-      filePath: join(__dirname, "__mocks__/box.tsx"),
+      filePath: join(__dirname, "__mocks__", "box.tsx"),
       exportName: "default",
     });
   });

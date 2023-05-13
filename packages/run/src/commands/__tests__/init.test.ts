@@ -1,7 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
-import { readFile, readdir } from "fs/promises";
+import { readFile, readdir } from "node:fs/promises";
+import { EOL } from "node:os";
 import { init } from "../init";
-import { join } from "path";
+import { join } from "node:path";
 
 type FS = typeof import("fs/promises");
 const templateDir = join(__dirname, "../../../templates");
@@ -117,7 +118,7 @@ describe("init command", () => {
     "three": "^0.148.0"
   }
 }
-`
+`.replaceAll("\n", EOL)
       );
     });
   });
@@ -220,7 +221,7 @@ describe("init command", () => {
         join(cwd, ".gitignore"),
         `node_modules
 .triplex/tmp
-`
+`.replace("\n", EOL)
       );
     });
 

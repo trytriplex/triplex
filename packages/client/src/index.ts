@@ -58,7 +58,7 @@ export async function createServer({
 
   app.get("/scene.html", async (_, res, next) => {
     try {
-      const template = createHTML("Scene");
+      const template = createHTML();
       const html = await vite.transformIndexHtml("scene", template);
 
       res.status(200).set({ "Content-Type": "text/html" }).end(html);

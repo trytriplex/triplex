@@ -1,5 +1,6 @@
 import { describe, expect, it } from "vitest";
 import { hostElements, foundFolders, folderComponents } from "../project";
+import { join } from "path";
 
 describe("project", () => {
   it("should return a list of host jsx elements", () => {
@@ -15,15 +16,15 @@ describe("project", () => {
 
     expect(actual).toEqual([
       {
-        path: __dirname + "/__mocks__/components",
+        path: join(__dirname, "__mocks__", "components"),
         name: "components",
       },
       {
-        path: __dirname + "/__mocks__/components/objects",
+        path: join(__dirname, "__mocks__", "components", "objects"),
         name: "objects",
       },
       {
-        path: __dirname + "/__mocks__/components/materials",
+        path: join(__dirname, "__mocks__", "components", "materials"),
         name: "materials",
       },
     ]);
@@ -39,17 +40,23 @@ describe("project", () => {
       {
         exportName: "default",
         name: "Cylinder",
-        path: __dirname + "/__mocks__/components/objects/default.tsx",
+        path: join(
+          __dirname,
+          "__mocks__",
+          "components",
+          "objects",
+          "default.tsx"
+        ),
       },
       {
         exportName: "Sphere",
         name: "Sphere",
-        path: __dirname + "/__mocks__/components/objects/test.tsx",
+        path: join(__dirname, "__mocks__", "components", "objects", "test.tsx"),
       },
       {
         exportName: "default",
         name: "Box",
-        path: __dirname + "/__mocks__/components/objects/test.tsx",
+        path: join(__dirname, "__mocks__", "components", "objects", "test.tsx"),
       },
     ]);
   });
