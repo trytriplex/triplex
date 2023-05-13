@@ -1,5 +1,19 @@
 # @triplex/run
 
+## 0.48.0
+
+### Minor Changes
+
+- 6fe34af: Windows support is here. Now TRIPLEX cli and electron can be ran on
+  Windows, as well as the local dev loop now being functional.
+
+### Patch Changes
+
+- Updated dependencies [6fe34af]
+  - @triplex/client@0.48.0
+  - @triplex/editor@0.48.0
+  - @triplex/server@0.48.0
+
 ## 0.47.0
 
 ### Minor Changes
