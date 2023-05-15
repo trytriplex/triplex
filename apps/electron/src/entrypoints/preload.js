@@ -5,6 +5,17 @@ contextBridge.exposeInMainWorld("triplex", {
   platform: process.platform,
   openLink: (url) => ipcRenderer.send("open-link", url),
   setMenu: (menu) => ipcRenderer.send("set-menu-bar", menu),
+  handleProgressBarChange: (callback) => {
+    const listener = (_, state) => {
+      callback(state);
+    };
+
+    ipcRenderer.on("progress-bar-change", listener);
+
+    return () => {
+      ipcRenderer.removeListener("progress-bar-change", listener);
+    };
+  },
   sendCommand: (id) => ipcRenderer.send("send-command", id),
   showSaveDialog: (filename) =>
     ipcRenderer.invoke("show-save-dialog", filename),

@@ -71,3 +71,22 @@ html {
       currentColor 100%
     );
 }
+
+@keyframes indeterminate {
+  0% {
+    transform: translateX(0) scaleX(0);
+  }
+  40% {
+    transform: translateX(0%) scaleX(0.2);
+  }
+  100% {
+    transform: translateX(100%) scaleX(1);
+  }
+}
+
+.indeterminate {
+  transform-origin: 0% 50%;
+  animation-duration: 1.5s;
+  animation-iteration-count: infinite;
+  animation-name: indeterminate;
+}

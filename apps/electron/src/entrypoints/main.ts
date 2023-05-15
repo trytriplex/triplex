@@ -201,6 +201,7 @@ async function openWelcomeScreen() {
 
   if (process.env.TRIPLEX_ENV === "development") {
     await window.loadURL(`http://localhost:${EDITOR_DEV_PORT}/welcome.html`);
+    window.webContents.openDevTools();
   } else {
     await window.loadFile(require.resolve("@triplex/editor/dist/welcome.html"));
   }
@@ -213,6 +214,7 @@ async function main() {
 
   let activeWindow: BrowserWindow | undefined;
   let welcomeWindow: BrowserWindow | undefined;
+  let abortContoller: AbortController | undefined;
   let cleanup: (() => void) | undefined;
 
   function onCloseProject() {
@@ -228,12 +230,14 @@ async function main() {
     if (cwd) {
       log.info("selected", cwd);
 
-      if (cleanup) {
-        cleanup?.();
-        cleanup = undefined;
-        activeWindow?.close();
-        activeWindow = undefined;
-      }
+      cleanup?.();
+      cleanup = undefined;
+      activeWindow?.close();
+      activeWindow = undefined;
+      abortContoller?.abort();
+      abortContoller = undefined;
+
+      abortContoller = new AbortController();
 
       activeWindow = new BrowserWindow({
         backgroundColor: "#171717",
@@ -250,11 +254,27 @@ async function main() {
         height: 768,
       });
 
-      if (!(await ensureDepsInstall(cwd, activeWindow))) {
-        await dialog.showErrorBox(
-          "Could not install dependencies",
-          "Please ensure your package manager is installed and functional."
-        );
+      if (
+        !(await ensureDepsInstall(
+          cwd,
+          welcomeWindow || activeWindow,
+          abortContoller.signal
+        ))
+      ) {
+        const { response } = await dialog.showMessageBox({
+          defaultId: 0,
+          buttons: ["OK", "Learn more"],
+          message: "Could not install dependencies",
+          detail:
+            "Please ensure your package manager is installed and functional.",
+        });
+
+        if (response === 1) {
+          shell.openExternal(
+            "https://triplex.dev/docs/supporting/installing-dependencies"
+          );
+        }
+
         return;
       }
 
