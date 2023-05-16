@@ -5,21 +5,23 @@ import { join } from "path";
 import { prompt as prompt_dont_use_directly } from "enquirer";
 
 const exec_dont_use_directly = promisify(execCb);
-const templateDir = join(__dirname, "../../templates");
+const templateDir = join(__dirname, "../templates");
 
 export async function init({
   name,
   version,
   pkgManager,
+  mode = "interactive",
   cwd: __cwd = process.cwd(),
   __fs: fs = fs_dont_use_directly,
   __exec: exec = exec_dont_use_directly,
   __prompt: prompt = prompt_dont_use_directly,
 }: {
+  mode?: "non-interactive" | "interactive";
   name: string;
   cwd?: string;
   version: string;
-  pkgManager: "npm" | "pnpm" | "yarn";
+  pkgManager: string;
   __prompt?: typeof import("enquirer").prompt;
   __fs?: typeof import("fs/promises");
   __exec?: typeof exec_dont_use_directly;
@@ -31,16 +33,18 @@ export async function init({
   let freshInstall = false;
 
   if (!dir.includes("package.json")) {
-    const response = await prompt<{ continue: boolean }>({
-      name: "continue",
-      type: "confirm",
-      required: true,
-      initial: "Y",
-      message: `Will initialize into a new folder, continue?`,
-    });
+    if (mode === "interactive") {
+      const response = await prompt<{ continue: boolean }>({
+        name: "continue",
+        type: "confirm",
+        required: true,
+        initial: "Y",
+        message: `Will initialize into a new folder, continue?`,
+      });
 
-    if (!response.continue) {
-      process.exit(0);
+      if (!response.continue) {
+        process.exit(0);
+      }
     }
 
     cwd = join(__cwd, name);
@@ -49,16 +53,18 @@ export async function init({
     // Clear out dir just in case
     dir = [];
   } else {
-    const response = await prompt<{ continue: boolean }>({
-      name: "continue",
-      type: "confirm",
-      required: true,
-      initial: "Y",
-      message: `Will initialize into your existing repository, continue?`,
-    });
+    if (mode === "interactive") {
+      const response = await prompt<{ continue: boolean }>({
+        name: "continue",
+        type: "confirm",
+        required: true,
+        initial: "Y",
+        message: `Will initialize into your existing repository, continue?`,
+      });
 
-    if (!response.continue) {
-      process.exit(0);
+      if (!response.continue) {
+        process.exit(0);
+      }
     }
   }
 

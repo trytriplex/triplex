@@ -9,6 +9,7 @@ importers:
       '@triplex/run': workspace:*
       '@typescript-eslint/eslint-plugin': ^5.52.0
       '@typescript-eslint/parser': ^5.52.0
+      create-triplex-project: workspace:*
       cross-env: ^7.0.3
       eslint: ^8.34.0
       eslint-plugin-import: ^2.27.5
@@ -27,6 +28,7 @@ importers:
       '@triplex/run': link:packages/run
       '@typescript-eslint/eslint-plugin': 5.52.0_2facupdxlvm55gtp63dnpqcawi
       '@typescript-eslint/parser': 5.52.0_ehfyfk7qbmgzg5nk6xmobqdh3a
+      create-triplex-project: link:packages/create-triplex-project
       cross-env: 7.0.3
       eslint: 8.34.0
       eslint-plugin-import: 2.27.5_mcvs2y73sfmcxqzpjj5lr7a2m4
@@ -218,6 +220,41 @@ importers:
       '@types/node': 18.11.18
       typescript: 4.9.4
 
+  packages/create-triplex-project:
+    specifiers:
+      '@commander-js/extra-typings': ^10.0.2
+      '@react-three/fiber': ^8.11.1
+      '@swc/cli': ^0.1.59
+      '@swc/core': ^1.3.28
+      '@types/node': ^18.11.18
+      '@types/react': ^18.0.27
+      commander: ^10.0.0
+      enquirer: ^2.3.6
+      open: ^8.4.0
+      ora: ^6.1.2
+      react: ^18.2.0
+      react-dom: ^18.2.0
+      three: ^0.148.0
+      ts-node: ^10.9.1
+      typescript: ^4.9.4
+    dependencies:
+      '@commander-js/extra-typings': 10.0.2_commander@10.0.0
+      commander: 10.0.0
+      enquirer: 2.3.6
+      open: 8.4.2
+      ora: 6.1.2
+    devDependencies:
+      '@react-three/fiber': 8.11.1_4tzez3c2xpzuefjrvhpyy55bva
+      '@swc/cli': 0.1.59_@swc+core@1.3.28
+      '@swc/core': 1.3.28
+      '@types/node': 18.11.18
+      '@types/react': 18.0.27
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      three: 0.148.0
+      ts-node: 10.9.1_z2gohzj7ezvk2u6pomqjxbcaty
+      typescript: 4.9.4
+
   packages/editor:
     specifiers:
       '@radix-ui/react-dialog': ^1.0.3
@@ -278,7 +315,6 @@ importers:
   packages/run:
     specifiers:
       '@commander-js/extra-typings': ^10.0.2
-      '@react-three/fiber': ^8.11.1
       '@swc/cli': ^0.1.59
       '@swc/core': ^1.3.28
       '@triplex/client': 0.48.0
@@ -286,15 +322,10 @@ importers:
       '@triplex/server': 0.48.0
       '@types/express': ^4.17.17
       '@types/node': ^18.11.18
-      '@types/react': ^18.0.27
       commander: ^10.0.0
-      enquirer: ^2.3.6
       express: ^4.18.2
       open: ^8.4.0
       ora: ^6.1.2
-      react: ^18.2.0
-      react-dom: ^18.2.0
-      three: ^0.148.0
       ts-json-schema-generator: ^1.2.0
       ts-node: ^10.9.1
       typescript: ^4.9.4
@@ -304,20 +335,14 @@ importers:
       '@triplex/editor': link:../editor
       '@triplex/server': link:../server
       commander: 10.0.0
-      enquirer: 2.3.6
       express: 4.18.2
       open: 8.4.2
       ora: 6.1.2
     devDependencies:
-      '@react-three/fiber': 8.11.1_4tzez3c2xpzuefjrvhpyy55bva
       '@swc/cli': 0.1.59_@swc+core@1.3.28
       '@swc/core': 1.3.28
       '@types/express': 4.17.17
       '@types/node': 18.11.18
-      '@types/react': 18.0.27
-      react: 18.2.0
-      react-dom: 18.2.0_react@18.2.0
-      three: 0.148.0
       ts-json-schema-generator: 1.2.0
       ts-node: 10.9.1_z2gohzj7ezvk2u6pomqjxbcaty
       typescript: 4.9.4

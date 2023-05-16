@@ -1,11 +1,11 @@
 import { describe, expect, it, vi } from "vitest";
 import { readFile, readdir } from "node:fs/promises";
 import { EOL } from "node:os";
-import { init } from "../init";
 import { join } from "node:path";
+import { init } from "../init";
 
 type FS = typeof import("fs/promises");
-const templateDir = join(__dirname, "../../../templates");
+const templateDir = join(__dirname, "../../templates");
 
 describe("init command", () => {
   describe("fresh init", () => {

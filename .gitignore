@@ -18,6 +18,7 @@ out/
 *.pem
 .pnpm-store
 .npmrc
+tsconfig.tsbuildinfo
 
 # debug
 npm-debug.log*
