@@ -1,17 +1,11 @@
 #!/usr/bin/env node
 import { program } from "@commander-js/extra-typings";
-import { prompt } from "enquirer";
-import { exec as execCb } from "child_process";
-import { promisify } from "util";
 import { readFile } from "fs/promises";
-import { description, version } from "../package.json";
-import { editor } from "./commands/editor";
-import { init } from "./commands/init";
 import { join } from "path";
 import { join as joinPosix } from "path/posix";
+import { description, version } from "../package.json";
+import { editor } from "./commands/editor";
 import { TRIPLEXConfig } from "./types";
-
-const exec = promisify(execCb);
 
 /* eslint-disable no-irregular-whitespace */
 console.log(`
@@ -67,70 +61,6 @@ program
       files,
       exportName,
     });
-  });
-
-program
-  .command("init")
-  .description("initialize Triplex in this directory")
-  .action(async () => {
-    try {
-      const response = await prompt<{
-        name: string;
-        continue?: boolean;
-        pkgManager: "npm" | "pnpm" | "yarn";
-      }>([
-        {
-          name: "name",
-          type: "text",
-          required: true,
-          initial: "my-triplex-project",
-          message: "What should we call your project?",
-        },
-        {
-          name: "pkgManager",
-          type: "select",
-          required: true,
-          choices: ["npm", "pnpm", "yarn"],
-          message: "What package manager do you use?",
-        },
-      ]);
-
-      const { openPath, dir } = await init({
-        version,
-        pkgManager: response.pkgManager,
-        name: response.name,
-      });
-
-      const result = await prompt<{ start: boolean }>([
-        {
-          message: "Open an example scene in the editor?",
-          type: "confirm",
-          name: "start",
-          initial: "Y",
-        },
-      ]);
-
-      if (result.start) {
-        const p = exec(
-          // Execute a sub-shell to not force change the users cwd.
-          `(cd ${dir} && ${response.pkgManager} run editor --open ${openPath})`,
-          {}
-        );
-        const { default: ora } = await import("ora");
-
-        const spinner = ora("Opening example scene....\n").start();
-
-        setTimeout(() => {
-          // TODO: Move to spawn so we don't need to fake this :-).
-          spinner.succeed("Now open at http://localhost:3333");
-        }, 2000);
-
-        await p;
-      }
-    } catch (e) {
-      console.log(e);
-      process.exit(1);
-    }
   });
 
 program.parse();
