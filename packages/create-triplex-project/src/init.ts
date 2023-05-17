@@ -12,6 +12,7 @@ export async function init({
   version,
   pkgManager,
   mode = "interactive",
+  createFolder = true,
   cwd: __cwd = process.cwd(),
   __fs: fs = fs_dont_use_directly,
   __exec: exec = exec_dont_use_directly,
@@ -20,6 +21,7 @@ export async function init({
   mode?: "non-interactive" | "interactive";
   name: string;
   cwd?: string;
+  createFolder?: boolean;
   version: string;
   pkgManager: string;
   __prompt?: typeof import("enquirer").prompt;
@@ -30,7 +32,6 @@ export async function init({
 
   let cwd = __cwd;
   let dir = await fs.readdir(cwd);
-  let freshInstall = false;
 
   if (!dir.includes("package.json")) {
     if (mode === "interactive") {
@@ -39,7 +40,9 @@ export async function init({
         type: "confirm",
         required: true,
         initial: "Y",
-        message: `Will initialize into a new folder, continue?`,
+        message: createFolder
+          ? `Will initialize into a new folder, continue?`
+          : "Will initialize into the current folder, continue?",
       });
 
       if (!response.continue) {
@@ -47,11 +50,12 @@ export async function init({
       }
     }
 
-    cwd = join(__cwd, name);
-    freshInstall = true;
-    await fs.mkdir(cwd);
-    // Clear out dir just in case
-    dir = [];
+    if (createFolder) {
+      cwd = join(__cwd, name);
+      await fs.mkdir(cwd, { recursive: true });
+      // Clear out dir since we're now in a new folder.
+      dir = [];
+    }
   } else {
     if (mode === "interactive") {
       const response = await prompt<{ continue: boolean }>({
@@ -208,11 +212,12 @@ export async function init({
       await fs.cp(templatePath, join(examplePath, "triplex-examples"), {
         recursive: true,
       });
+
+      openPath = join(examplePath, "triplex-examples", "scene.tsx");
     } else {
       // A previous run already added examples, nothing to do here.
+      openPath = join(examplePath, "scene.tsx");
     }
-
-    openPath = join(examplePath, "triplex-examples", "scene.tsx");
   } else {
     const templatePath = join(templateDir, "src");
     await fs.cp(templatePath, examplePath, { recursive: true });
@@ -230,20 +235,23 @@ export async function init({
 
   spinner.text = "Installing dependencies...";
 
-  await exec(`(cd ${cwd} && ${pkgManager} install)`);
-
-  if (freshInstall) {
-    spinner.text = "Initializing git...";
-
-    await exec(`(cd ${cwd} && git init)`);
-    await exec(`(cd ${cwd} && git add .)`);
-    await exec(`(cd ${cwd} && git commit -m "Initialized Triplex.")`);
-  }
+  await exec(`${pkgManager} install`, {
+    cwd,
+    env: {
+      // Ensure volta is available on PATH just in case.
+      // See: https://github.com/volta-cli/volta/issues/1007
+      PATH: `${process.env.HOME}/.volta/bin:${process.env.PATH}`,
+    },
+  });
 
   spinner.succeed("Successfully initialized!");
 
   console.log(`
-          Get started: cd ${name} && ${pkgManager} run editor
+          Get started: ${
+            cwd === __cwd
+              ? `${pkgManager} run editor`
+              : `cd ${name} && ${pkgManager} run editor`
+          }
            Raise bugs: https://github.com/triplex-run/triplex/issues
   Sponsor development: https://github.com/sponsors/itsdouges
 `);
