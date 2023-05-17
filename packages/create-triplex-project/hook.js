@@ -4,4 +4,4 @@ require("ts-node").register({ project: __dirname + "/tsconfig.json" });
 
 process.env.TRIPLEX_ENV = "development";
 
-require("./src/index.ts");
+require("./src/main.ts");

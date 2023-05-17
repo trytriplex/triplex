@@ -42,23 +42,35 @@ export const Button = forwardRef<
     icon?: ComponentType<IconProps>;
     isSelected?: boolean;
     className?: string;
+    disabled?: boolean;
     onClick?: () => void;
     children: string;
     size?: "default" | "tight";
   }
 >(
   (
-    { icon: Icon, children, isSelected, onClick, className, size = "default" },
+    {
+      icon: Icon,
+      children,
+      disabled,
+      isSelected,
+      onClick,
+      className,
+      size = "default",
+    },
     ref
   ) => (
     <button
       ref={ref}
       onClick={onClick}
       type="submit"
+      disabled={disabled}
       className={cn([
-        isSelected
-          ? "text-blue-400 hover:bg-white/5 active:bg-white/10"
-          : "text-neutral-300 hover:bg-white/5 active:bg-white/10",
+        disabled && "cursor-not-allowed text-neutral-500",
+        !disabled &&
+          (isSelected
+            ? "text-blue-400 hover:bg-white/5 active:bg-white/10"
+            : "text-neutral-300 hover:bg-white/5 active:bg-white/10"),
         size === "default" && "rounded-md p-1.5 px-4",
         size === "tight" && "rounded px-2 py-0.5",
         "flex items-center gap-1.5 text-sm",
