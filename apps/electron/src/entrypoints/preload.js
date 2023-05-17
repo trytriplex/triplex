@@ -30,4 +30,15 @@ contextBridge.exposeInMainWorld("triplex", {
       ipcRenderer.removeListener("menu-item-press", listener);
     };
   },
+  handleWindowStateChange: (callback) => {
+    const listener = (_, state) => {
+      callback(state);
+    };
+
+    ipcRenderer.on("window-state-change", listener);
+
+    return () => {
+      ipcRenderer.removeListener("window-state-change", listener);
+    };
+  },
 });

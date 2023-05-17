@@ -16,6 +16,7 @@ import { autoUpdater } from "electron-updater";
 import { fork } from "../util/fork";
 import { logger } from "../util/log";
 import { ensureDepsInstall } from "../util/deps";
+import { createProject, showCreateDialog } from "../util/create";
 
 if (process.env.TRIPLEX_ENV !== "development") {
   Sentry.init({
@@ -157,7 +158,9 @@ async function openProjectDialog(
       return path;
     }
 
-    return openProjectDialog("Folder hasn't been initialized with Triplex.");
+    return openProjectDialog(
+      "Folder hasn't been initialized yet, create a project first."
+    );
   }
 }
 
@@ -212,34 +215,34 @@ async function openWelcomeScreen() {
 async function main() {
   const { onMenuItemPress, resetMenu, connectMenuToRenderer } = prepareMenu();
 
-  let activeWindow: BrowserWindow | undefined;
+  let activeProjectWindow: BrowserWindow | undefined;
   let welcomeWindow: BrowserWindow | undefined;
   let abortContoller: AbortController | undefined;
   let cleanup: (() => void) | undefined;
 
   function onCloseProject() {
     cleanup?.();
-    activeWindow?.close();
-    activeWindow = undefined;
+    activeProjectWindow?.close();
+    activeProjectWindow = undefined;
     cleanup = undefined;
     resetMenu();
   }
 
-  async function onOpenProject() {
-    const cwd = await openProjectDialog();
+  async function onOpenProject(forceCwd?: string) {
+    const cwd = forceCwd || (await openProjectDialog());
     if (cwd) {
       log.info("selected", cwd);
 
       cleanup?.();
       cleanup = undefined;
-      activeWindow?.close();
-      activeWindow = undefined;
+      activeProjectWindow?.close();
+      activeProjectWindow = undefined;
       abortContoller?.abort();
       abortContoller = undefined;
 
       abortContoller = new AbortController();
 
-      activeWindow = new BrowserWindow({
+      activeProjectWindow = new BrowserWindow({
         backgroundColor: "#171717",
         titleBarStyle: process.platform === "darwin" ? "hidden" : "default",
         show: false,
@@ -257,14 +260,14 @@ async function main() {
       if (
         !(await ensureDepsInstall(
           cwd,
-          welcomeWindow || activeWindow,
+          welcomeWindow || activeProjectWindow,
           abortContoller.signal
         ))
       ) {
         const { response } = await dialog.showMessageBox({
           defaultId: 0,
           buttons: ["OK", "Learn more"],
-          message: "Could not install dependencies",
+          message: "Could not install project dependencies",
           detail:
             "Please ensure your package manager is installed and functional.",
         });
@@ -278,10 +281,10 @@ async function main() {
         return;
       }
 
-      activeWindow.show();
+      activeProjectWindow.show();
 
-      connectMenuToRenderer(activeWindow);
-      applyWindowIpcHandlers(activeWindow);
+      connectMenuToRenderer(activeProjectWindow);
+      applyWindowIpcHandlers(activeProjectWindow);
 
       log.info("forking");
 
@@ -294,11 +297,11 @@ async function main() {
       const searchParams = `?path=${p.data?.path}&exportName=${p.data?.exportName}`;
 
       if (process.env.TRIPLEX_ENV === "development") {
-        await activeWindow.loadURL(
+        await activeProjectWindow.loadURL(
           `http://localhost:${EDITOR_DEV_PORT}${searchParams}`
         );
       } else {
-        await activeWindow.loadFile(
+        await activeProjectWindow.loadFile(
           require.resolve(`@triplex/editor/dist/index.html`),
           {
             search: searchParams,
@@ -307,7 +310,7 @@ async function main() {
       }
 
       if (process.env.TRIPLEX_ENV === "development") {
-        activeWindow.webContents.openDevTools();
+        activeProjectWindow.webContents.openDevTools();
       }
 
       return true;
@@ -329,6 +332,33 @@ async function main() {
             welcomeWindow = undefined;
           }
           break;
+
+        case "create-project": {
+          if (welcomeWindow) {
+            const filename = await showCreateDialog();
+            if (filename) {
+              const result = await createProject(welcomeWindow, filename);
+              if (result) {
+                await onOpenProject(result);
+              } else {
+                const { response } = await dialog.showMessageBox({
+                  defaultId: 0,
+                  buttons: ["OK", "Learn more"],
+                  message: "Project partially initialized",
+                  detail:
+                    "We couldn't install project dependencies, please ensure your package manager is installed and functional.",
+                });
+
+                if (response === 1) {
+                  shell.openExternal(
+                    "https://triplex.dev/docs/supporting/installing-dependencies"
+                  );
+                }
+              }
+            }
+          }
+          break;
+        }
 
         default:
           break;
@@ -361,13 +391,13 @@ async function main() {
         break;
 
       case "devtools":
-        activeWindow?.webContents.openDevTools();
+        activeProjectWindow?.webContents.openDevTools();
         break;
 
       default: {
-        if (activeWindow) {
+        if (activeProjectWindow) {
           // Send the event to the current active window.
-          activeWindow.webContents.send("menu-item-press", menuItemId);
+          activeProjectWindow.webContents.send("menu-item-press", menuItemId);
         }
 
         break;
@@ -377,8 +407,12 @@ async function main() {
 }
 
 app.on("ready", () => {
-  autoUpdater.checkForUpdatesAndNotify();
+  if (process.env.TRIPLEX_ENV !== "development") {
+    autoUpdater.checkForUpdatesAndNotify();
+  }
+
   main();
+
   app.focus({ steal: process.env.TRIPLEX_ENV === "development" });
 });
 

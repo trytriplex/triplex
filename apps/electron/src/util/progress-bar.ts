@@ -1,6 +1,6 @@
 import type { BrowserWindow } from "electron";
 
-export function indeterminate(window: BrowserWindow, signal: AbortSignal) {
+export function indeterminate(window: BrowserWindow, signal?: AbortSignal) {
   let timeoutId: NodeJS.Timeout | undefined = undefined;
 
   function increment(progress: number) {
@@ -23,7 +23,7 @@ export function indeterminate(window: BrowserWindow, signal: AbortSignal) {
     }, 100);
   }
 
-  signal.addEventListener("abort", () => {
+  signal?.addEventListener("abort", () => {
     clearTimeout(timeoutId);
     window.setProgressBar(-1);
     window.webContents.send("progress-bar-change", -1);

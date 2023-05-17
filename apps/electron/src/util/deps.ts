@@ -1,7 +1,7 @@
 import { readdir } from "node:fs/promises";
-import { exec } from "node:child_process";
 // eslint-disable-next-line import/no-extraneous-dependencies
-import { BrowserWindow } from "electron";
+import { BrowserWindow, Notification } from "electron";
+import { exec } from "./exec";
 import { logger } from "./log";
 import { indeterminate } from "./progress-bar";
 
@@ -10,16 +10,10 @@ const log = logger("deps");
 async function install(
   cmd: string,
   { signal, cwd }: { cwd: string; signal: AbortSignal }
-): Promise<boolean> {
-  return new Promise<boolean>((resolve) => {
-    exec(`${cmd} install`, { cwd, signal }, (err) => {
-      if (err) {
-        log.error(`There was an error installing deps with ${cmd}`);
-        log.error(err);
-        resolve(false);
-      }
-      resolve(true);
-    });
+) {
+  return exec(`${cmd} install`, {
+    cwd,
+    signal,
   });
 }
 
@@ -35,17 +29,27 @@ export async function ensureDepsInstall(
 
   const complete = indeterminate(window, signal);
 
-  let success: boolean;
+  new Notification({
+    title: "Installing dependencies",
+    body: "Hold tight we're installing dependencies for your project.",
+  }).show();
 
-  if (dir.includes("yarn.lock")) {
-    success = await install("yarn", { cwd, signal });
-  } else if (dir.includes("pnpm-lock.yaml")) {
-    success = await install("pnpm", { cwd, signal });
-  } else {
-    success = await install("npm", { cwd, signal });
+  try {
+    if (dir.includes("yarn.lock")) {
+      await install("yarn", { cwd, signal });
+    } else if (dir.includes("pnpm-lock.yaml")) {
+      await install("pnpm", { cwd, signal });
+    } else {
+      await install("npm", { cwd, signal });
+    }
+  } catch (err) {
+    log.error(`There was an error installing deps.`);
+    log.error(err);
+
+    return false;
+  } finally {
+    complete();
   }
 
-  complete();
-
-  return success;
+  return true;
 }
