@@ -15,6 +15,7 @@ importers:
       eslint-plugin-import: ^2.27.5
       eslint-plugin-react: ^7.32.2
       eslint-plugin-react-hooks: ^4.6.0
+      husky: ^8.0.3
       jsdom: ^21.1.0
       prettier: ^2.8.3
       prettier-plugin-jsdoc: ^0.4.2
@@ -34,6 +35,7 @@ importers:
       eslint-plugin-import: 2.27.5_mcvs2y73sfmcxqzpjj5lr7a2m4
       eslint-plugin-react: 7.32.2_eslint@8.34.0
       eslint-plugin-react-hooks: 4.6.0_eslint@8.34.0
+      husky: 8.0.3
       jsdom: 21.1.0
       prettier: 2.8.3
       prettier-plugin-jsdoc: 0.4.2_prettier@2.8.3
@@ -5945,6 +5947,12 @@ packages:
 
   /human-id/1.0.2:
     resolution: {integrity: sha512-UNopramDEhHJD+VR+ehk8rOslwSfByxPIZyJRfV739NDhN5LF1fa1MqnzKm2lGTQRjNrjK19Q5fhkgIfjlVUKw==}
+    dev: false
+
+  /husky/8.0.3:
+    resolution: {integrity: sha512-+dQSyqPh4x1hlO1swXBiNb2HzTDN1I2IGLQx1GrBuiqFJfoMrnZWwVmatvSiO+Iz8fBUnf+lekwNo4c2LlXItg==}
+    engines: {node: '>=14'}
+    hasBin: true
     dev: false
 
   /iconv-corefoundation/1.1.7:

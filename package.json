@@ -20,7 +20,8 @@
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "lint": "eslint ./",
     "test": "vitest",
-    "typedef": "pnpm --filter @triplex/* --filter create-triplex-project typedef"
+    "typedef": "pnpm --filter @triplex/* --filter create-triplex-project typedef",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@changesets/cli": "^2.26.0",
@@ -30,17 +31,18 @@
     "@typescript-eslint/parser": "^5.52.0",
     "create-triplex-project": "workspace:*",
     "cross-env": "^7.0.3",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-react-hooks": "^4.6.0",
-    "eslint-plugin-react": "^7.32.2",
     "eslint": "^8.34.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "husky": "^8.0.3",
     "jsdom": "^21.1.0",
+    "prettier": "^2.8.3",
     "prettier-plugin-jsdoc": "^0.4.2",
     "prettier-plugin-tailwindcss": "^0.2.2",
-    "prettier": "^2.8.3",
+    "rimraf": "^5.0.0",
     "typescript": "^4.9.4",
-    "vitest": "^0.30.1",
-    "rimraf": "^5.0.0"
+    "vitest": "^0.30.1"
   },
   "engines": {
     "node": ">=18.0.0"

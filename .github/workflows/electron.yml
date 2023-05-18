@@ -12,6 +12,9 @@ env:
 
 jobs:
   build:
+    # Currently disabling building CI as it's expensive.
+    if: ${{ false }}
+
     runs-on: macos-latest
 
     steps:
