@@ -3,6 +3,10 @@
   "minify": true,
   "sourceMaps": false,
   "jsc": {
+    "minify": {
+      "compress": true,
+      "mangle": true
+    },
     "target": "es2017",
     "parser": {
       "syntax": "typescript"
