@@ -1,5 +1,29 @@
 # @triplex/electron
 
+## 0.49.0
+
+### Minor Changes
+
+- 3eae131: When installing deps fails a learn more button is now available to
+  help troubleshoot.
+- f2be7c9: Windows now also targets 32 bit nsis installer.
+- 3eae131: Welcome screen now shows a progress bar when installing node modules.
+- 8c5611d: Adds create project action to the welcome screen.
+
+### Patch Changes
+
+- 3eae131: Dependency installation is now aborted when opening another project
+- Updated dependencies [8c5611d]
+- Updated dependencies [9f0fa17]
+- Updated dependencies [9f0fa17]
+- Updated dependencies [3eae131]
+- Updated dependencies [8c5611d]
+- Updated dependencies [3eae131]
+  - create-triplex-project@0.49.0
+  - @triplex/editor@0.49.0
+  - @triplex/client@0.49.0
+  - @triplex/server@0.49.0
+
 ## 0.48.0
 
 ### Minor Changes

@@ -1,5 +1,18 @@
 # @triplex/editor
 
+## 0.49.0
+
+### Minor Changes
+
+- 3eae131: Welcome screen now shows a progress bar when installing node modules.
+- 8c5611d: Adds create project action to the welcome screen.
+- 3eae131: Welcome screen now is draggable using the top invisible title bar.
+
+### Patch Changes
+
+- @triplex/bridge@0.49.0
+- @triplex/ws-client@0.49.0
+
 ## 0.48.0
 
 ### Minor Changes

@@ -1,5 +1,23 @@
 # @triplex/run
 
+## 0.49.0
+
+### Minor Changes
+
+- 9f0fa17: When running the cli if passing args will now run in non-interactive
+  mode.
+- 9f0fa17: The init command has been extracted to the create-triplex-project
+  package.
+
+### Patch Changes
+
+- Updated dependencies [3eae131]
+- Updated dependencies [8c5611d]
+- Updated dependencies [3eae131]
+  - @triplex/editor@0.49.0
+  - @triplex/client@0.49.0
+  - @triplex/server@0.49.0
+
 ## 0.48.0
 
 ### Minor Changes
