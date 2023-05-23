@@ -1,4 +1,4 @@
-# TRIPLEX
+# Triplex
 
 [![Version](https://img.shields.io/npm/v/@triplex/run?style=flat&colorA=000000&colorB=000000)](https://npmjs.com/package/@triplex/run)
 [![Downloads](https://img.shields.io/npm/dt/@triplex/run.svg?style=flat&colorA=000000&colorB=000000)](https://npmjs.com/package/@triplex/run)

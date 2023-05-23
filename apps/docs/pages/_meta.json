@@ -1,15 +1,32 @@
 {
+  "*": {
+    "type": "page"
+  },
   "index": {
     "display": "hidden",
-    "type": "page",
     "title": "Home",
     "theme": {
       "layout": "raw"
     }
   },
   "docs": {
-    "type": "page",
     "title": "Documentation",
     "href": "/docs"
+  },
+  "faq": {
+    "title": "FAQ",
+    "href": "/docs/faq",
+    "route": "#"
+  },
+  "releases": {
+    "title": "Releases",
+    "href": "https://github.com/try-triplex/releases/releases",
+    "newWindow": true
+  },
+  "download": {
+    "title": "Download"
+  },
+  "license": {
+    "display": "hidden"
   }
 }

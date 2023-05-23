@@ -6,7 +6,7 @@
 
 ### Minor Changes
 
-- 6fe34af: Windows support is here. Now TRIPLEX cli and electron can be ran on
+- 6fe34af: Windows support is here. Now Triplex cli and electron can be ran on
   Windows, as well as the local dev loop now being functional.
 
 ## 0.47.0
