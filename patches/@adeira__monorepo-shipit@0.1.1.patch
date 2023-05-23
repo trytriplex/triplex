@@ -1,5 +1,5 @@
 diff --git a/src/RepoGit.js b/src/RepoGit.js
-index e7d47adf5816d234c8832f6eafb6909b9c340e38..a759a9dc071dba4096a8be9d4280c37c866cacd4 100644
+index e7d47adf5816d234c8832f6eafb6909b9c340e38..8ceaa46946ceab33efeffe39ccf1a64e057710f1 100644
 --- a/src/RepoGit.js
 +++ b/src/RepoGit.js
 @@ -144,12 +144,22 @@ class RepoGit {
@@ -27,6 +27,15 @@ index e7d47adf5816d234c8832f6eafb6909b9c340e38..a759a9dc071dba4096a8be9d4280c37c
      });
      (0, _defineProperty2.default)(this, "commitPatch", changeset => {
        if (changeset.getDiffs().size === 0) {
+@@ -158,7 +168,7 @@ class RepoGit {
+       } else {
+         const diff = this.renderPatch(changeset);
+         try {
+-          this._gitCommand('am', '--keep-non-patch', '--keep-cr').setStdin(diff).runSynchronously();
++          this._gitCommand('am', '--keep-non-patch', '--keep-cr', '--committer-date-is-author-date').setStdin(diff).runSynchronously();
+         } catch (error) {
+           this._gitCommand('am', '--show-current-patch').setOutputToScreen().runSynchronously();
+           this._gitCommand('am', '--abort').setOutputToScreen().runSynchronously();
 diff --git a/src/phases/createSyncPhase.js b/src/phases/createSyncPhase.js
 index c4b0d461195bba65c3635136237c859af2f28bc6..7312e0f64ff6af52682ebec88bd455a08c7ad4b1 100644
 --- a/src/phases/createSyncPhase.js
