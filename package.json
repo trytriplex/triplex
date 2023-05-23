@@ -40,9 +40,9 @@
     "husky": "^8.0.3",
     "jsdom": "^21.1.0",
     "lint-staged": "^13.2.2",
+    "prettier": "^2.8.3",
     "prettier-plugin-jsdoc": "^0.4.2",
     "prettier-plugin-tailwindcss": "^0.2.2",
-    "prettier": "^2.8.3",
     "rimraf": "^5.0.0",
     "typescript": "^4.9.4",
     "vitest": "^0.30.1"
@@ -55,12 +55,17 @@
     "packages/{client,editor,scene,server}/**/*.{ts,tsx}": "pnpm electron:build-targets"
   },
   "workspaces": [
-     "apps/*",
-     "examples/*",
-     "packages/*"
+    "apps/*",
+    "examples/*",
+    "packages/*"
   ],
   "packageManager": "pnpm@7.28.0",
   "volta": {
     "node": "18.16.0"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@adeira/monorepo-shipit@0.1.1": "patches/@adeira__monorepo-shipit@0.1.1.patch"
+    }
   }
 }

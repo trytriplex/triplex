@@ -1,0 +1,66 @@
+diff --git a/src/RepoGit.js b/src/RepoGit.js
+index e7d47adf5816d234c8832f6eafb6909b9c340e38..a759a9dc071dba4096a8be9d4280c37c866cacd4 100644
+--- a/src/RepoGit.js
++++ b/src/RepoGit.js
+@@ -144,12 +144,22 @@ class RepoGit {
+       };
+     });
+     // TODO: originally `findNextCommit` - pls reconsider
+-    (0, _defineProperty2.default)(this, "findDescendantsPath", (baseRevision, headRevision, roots) => {
++    (0, _defineProperty2.default)(this, "findDescendantsPath", (baseRevision, headRevision, roots, includeBaseRevision) => {
+       const log = this._gitCommand('log', '--reverse', '--ancestry-path', '--no-merges', '--pretty=tformat:%H', `${baseRevision}..${headRevision}`, '--',
+       // separates paths from revisions (so you can use non-existent paths)
+       ...roots).runSynchronously().getStdout();
+       const trimmedLog = log.trim();
+-      return trimmedLog === '' ? null : trimmedLog.split('\n');
++      if (trimmedLog === '') {
++        return null;
++      }
++
++      const descendants = trimmedLog.split('\n');
++
++      if (includeBaseRevision === true) {
++        descendants.unshift(baseRevision);
++      }
++
++      return descendants;
+     });
+     (0, _defineProperty2.default)(this, "commitPatch", changeset => {
+       if (changeset.getDiffs().size === 0) {
+diff --git a/src/phases/createSyncPhase.js b/src/phases/createSyncPhase.js
+index c4b0d461195bba65c3635136237c859af2f28bc6..7312e0f64ff6af52682ebec88bd455a08c7ad4b1 100644
+--- a/src/phases/createSyncPhase.js
++++ b/src/phases/createSyncPhase.js
+@@ -19,13 +19,15 @@ function createSyncPhase(config) {
+     const destinationRepo = _getDestinationRepo();
+     const sourceRepo = _getSourceRepo();
+     let initialRevision = destinationRepo.findLastSourceCommit(config.getDestinationRoots());
++    let isNewRepo = false;
+     if (initialRevision === null) {
+       // Seems like it's a new repo so there is no signed commit.
+       // Let's take the first one from our source repo instead.
+       initialRevision = sourceRepo.findFirstAvailableCommit();
++      isNewRepo = true;
+     }
+     const sourceChangesets = new Set();
+-    const descendantsPath = sourceRepo.findDescendantsPath(initialRevision, config.getSourceBranch(), config.getSourceRoots());
++    const descendantsPath = sourceRepo.findDescendantsPath(initialRevision, config.getSourceBranch(), config.getSourceRoots(), isNewRepo);
+     if (descendantsPath !== null) {
+       descendantsPath.forEach(revision => {
+         sourceChangesets.add(sourceRepo.getChangesetFromID(revision));
+diff --git a/src/phases/createVerifyRepoPhase.js b/src/phases/createVerifyRepoPhase.js
+index 47b021babff6494d7ee1d99dce579dd4ff96486a..fba059e639d7ceab9f80c4591ae539cc0bad0065 100644
+--- a/src/phases/createVerifyRepoPhase.js
++++ b/src/phases/createVerifyRepoPhase.js
+@@ -53,9 +53,9 @@ function createVerifyRepoPhase(config) {
+     new _shellCommand.ShellCommand(filteredRepoPath, 'git', 'remote', 'add', 'shipit_destination', config.destinationPath) // notice we don't use URL here but locally updated repo instead
+     .runSynchronously();
+     new _shellCommand.ShellCommand(filteredRepoPath, 'git', 'fetch', 'shipit_destination').runSynchronously();
+-    const diffStats = new _shellCommand.ShellCommand(filteredRepoPath, 'git', '--no-pager', 'diff', '--stat', 'HEAD', 'shipit_destination/master').runSynchronously().getStdout().trim();
++    const diffStats = new _shellCommand.ShellCommand(filteredRepoPath, 'git', '--no-pager', 'diff', '--stat', 'HEAD', `shipit_destination/${config.getDestinationBranch()}`).runSynchronously().getStdout().trim();
+     if (diffStats !== '') {
+-      const diff = new _shellCommand.ShellCommand(filteredRepoPath, 'git', 'diff', '--full-index', '--binary', '--no-color', 'shipit_destination/master', 'HEAD').runSynchronously().getStdout();
++      const diff = new _shellCommand.ShellCommand(filteredRepoPath, 'git', 'diff', '--full-index', '--binary', '--no-color', `shipit_destination/${config.getDestinationBranch()}`, 'HEAD').runSynchronously().getStdout();
+       console.error(diff);
+       throw new Error('❌ Repository is out of SYNC!');
+     }
