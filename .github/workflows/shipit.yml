@@ -1,0 +1,54 @@
+name: Shipit
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  CI: true
+  PNPM_CACHE_FOLDER: .pnpm-store
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          # Shipit requires all history.
+          fetch-depth: 0
+
+      - name: Read node version
+        run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+        id: nvm
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 7.28.0
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ steps.nvm.outputs.NVMRC }}
+          cache: "pnpm"
+
+      - name: Setup pnpm config
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Prepare Shipit
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_SHIPIT_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H 'github.com' >> ~/.ssh/known_hosts
+
+      - name: Run Shipit
+        run:
+          npx monorepo-shipit --committer-name triplex-bot --committer-email
+          124734075+triplex-bot@users.noreply.github.com
