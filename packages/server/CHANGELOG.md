@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.50.0
+
+### Minor Changes
+
+- 8ea575b: Built output is now mangled.
+
 ## 0.49.0
 
 ## 0.48.0

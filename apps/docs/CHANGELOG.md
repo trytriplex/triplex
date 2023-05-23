@@ -1,5 +1,11 @@
 # @docs/triplex
 
+## 0.2.0
+
+### Minor Changes
+
+- 8ea575b: Built output is now mangled.
+
 ## 0.1.0
 
 ### Minor Changes

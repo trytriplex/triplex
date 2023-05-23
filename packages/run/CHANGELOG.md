@@ -1,5 +1,18 @@
 # @triplex/run
 
+## 0.50.0
+
+### Minor Changes
+
+- 8ea575b: Built output is now mangled.
+
+### Patch Changes
+
+- Updated dependencies [8ea575b]
+  - @triplex/client@0.50.0
+  - @triplex/editor@0.50.0
+  - @triplex/server@0.50.0
+
 ## 0.49.0
 
 ### Minor Changes
