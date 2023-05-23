@@ -54,7 +54,11 @@
     "apps/electron/**/*.{ts,tsx,yml}": "pnpm electron:build-targets",
     "packages/{client,editor,scene,server}/**/*.{ts,tsx}": "pnpm electron:build-targets"
   },
-  "workspaces": [],
+  "workspaces": [
+     "apps/*",
+     "examples/*",
+     "packages/*"
+  ],
   "packageManager": "pnpm@7.28.0",
   "volta": {
     "node": "18.16.0"
