@@ -1,0 +1,43 @@
+# Troubleshooting Context Not Found
+
+You have duplicate dependencies somewhere caused by your package manager.
+
+## pnpm
+
+When pnpm@8 was introduced it set a new config `dedupe-peer-dependents` to
+`true`. This results in undefined behavior with some peer dependencies being
+duplicated.
+
+Create a `.npmrc` file in the root of your project with this content:
+
+```
+dedupe-peer-dependents=false
+```
+
+And then run `pnpm install` to refresh node_modules.
+
+If the problem persists try deduplicating your dependencies:
+
+```sh
+pnpm dedupe
+```
+
+## Yarn
+
+Try and deduplicate your dependencies.
+
+```sh
+npx yarn-deduplicate # yarn@1
+```
+
+```sh
+yarn dedupe # yarn@2+
+```
+
+## npm
+
+Try and deduplicate your dependencies.
+
+```
+npm dedupe
+```

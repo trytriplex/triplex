@@ -14,7 +14,9 @@ const SceneContext = createContext<Record<
 export function useComponents() {
   const components = useContext(ComponentContext);
   if (!components) {
-    throw new Error("invariant");
+    throw new Error(
+      "invariant: Context not found, your installed packages have duplicates. See: https://triplex.dev/docs/supporting/context-not-found"
+    );
   }
 
   return components;
@@ -23,7 +25,9 @@ export function useComponents() {
 export function useScenes() {
   const scenes = useContext(SceneContext);
   if (!scenes) {
-    throw new Error("invariant");
+    throw new Error(
+      "invariant: Context could not be found, your installed packages have duplicates. See: https://triplex.dev/docs/supporting/context-not-found"
+    );
   }
 
   return scenes;
