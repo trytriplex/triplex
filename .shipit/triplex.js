@@ -25,7 +25,7 @@ module.exports = {
   },
   getBranchConfig() {
     return {
-      source: "main",
+      source: "origin/main",
       destination: "test",
     };
   },
