@@ -1,18 +1,37 @@
 {
-  "get-started": "",
-  "--": {
-    "title": "Editor",
-    "type": "separator"
+  "overview": "",
+  "setup": "Setup",
+  "user-guide": "User Guide",
+  "faq": {
+    "title": "FAQ",
+    "display": "hidden",
+    "theme": {
+      "breadcrumb": false,
+      "pagination": false
+    }
   },
-  "basic-features": "Basic Features",
+  "api-reference": {
+    "title": "API Reference"
+  },
+  "supporting": {
+    "type": "page",
+    "title": "Supporting",
+    "display": "hidden",
+    "theme": {
+      "pagination": false
+    }
+  },
   "---": {
-    "title": "More",
+    "title": "",
     "type": "separator"
   },
-  "faq": "FAQ",
-  "api-reference": "API Reference",
+  "sponsor": {
+    "title": "Sponsor",
+    "href": "https://github.com/sponsors/itsdouges",
+    "newWindow": true
+  },
   "pmndrs": {
-    "title": "Poimandres ↗",
+    "title": "Poimandres",
     "href": "https://pmnd.rs/",
     "newWindow": true
   }

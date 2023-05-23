@@ -1,0 +1,8 @@
+{
+  "*": {
+    "display": "hidden",
+    "theme": {
+      "breadcrumb": false
+    }
+  }
+}

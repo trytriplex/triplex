@@ -15,6 +15,9 @@ const config: ThemeConfig = {
       </span>
     ),
   },
+  sidebar: {
+    defaultMenuCollapseLevel: 1,
+  },
   docsRepositoryBase:
     "https://github.com/try-triplex/triplex/tree/main/apps/docs",
   logo: <h1 className="text-2xl font-medium">Triplex</h1>,
@@ -26,7 +29,7 @@ const config: ThemeConfig = {
     const { asPath } = useRouter();
     if (asPath !== "/") {
       return {
-        titleTemplate: "%s • Triplex",
+        titleTemplate: "%s — Triplex",
       };
     }
 
