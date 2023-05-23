@@ -1,5 +1,17 @@
 # @triplex/scene
 
+## 0.50.0
+
+### Minor Changes
+
+- 8ea575b: Built output is now mangled.
+
+### Patch Changes
+
+- Updated dependencies [8ea575b]
+  - @triplex/bridge@0.50.0
+  - @triplex/ws-client@0.50.0
+
 ## 0.49.0
 
 ### Patch Changes
