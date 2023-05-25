@@ -113,7 +113,7 @@ function WelcomeScreen() {
             size="tight"
             onClick={() =>
               window.triplex.openLink(
-                "https://github.com/try-triplex/releases/releases"
+                "https://github.com/try-triplex/triplex/releases"
               )
             }
           >

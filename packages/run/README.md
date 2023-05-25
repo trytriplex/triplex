@@ -1,4 +1,4 @@
-# Triplex
+# @triplex/run
 
 [![Version](https://img.shields.io/npm/v/@triplex/run?style=flat&colorA=000000&colorB=000000)](https://npmjs.com/package/@triplex/run)
 [![Downloads](https://img.shields.io/npm/dt/@triplex/run.svg?style=flat&colorA=000000&colorB=000000)](https://npmjs.com/package/@triplex/run)
@@ -8,4 +8,4 @@ The [React Three Fiber](https://github.com/pmndrs/react-three-fiber) editor.
 
 ## Getting started
 
-Visit https://triplex.dev/docs to get started with Triplex.
+Visit https://triplex.dev/docs/setup/nodejs to get started with Triplex.

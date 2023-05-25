@@ -7,7 +7,7 @@
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "license": "Apache-2.0",
   "main": "./hook-main.js",
-  "repository": "https://github.com/try-triplex/releases",
+  "repository": "https://github.com/try-triplex/triplex",
   "scripts": {
     "build-target": "rimraf targets && pnpm prep-workspace && cross-env USE_HARD_LINKS=false electron-builder --publish never && pnpm cleanup-workspace",
     "build-targets": "rimraf targets && pnpm prep-workspace && cross-env USE_HARD_LINKS=false electron-builder --publish never --mac dir:x64 dir:arm64 --win dir:x64 dir:ia32 && pnpm cleanup-workspace",
