@@ -1,7 +1,7 @@
 # CLI
 
 The Triplex CLI allows you to start your app, follow
-[getting started](/docs/getting-started) to make it available.
+[setup Node.js](/docs/setup/nodejs) to make it available.
 
 The get a list of available commands run the following command inside your
 project directory:
@@ -23,34 +23,8 @@ Options:
 
 Commands:
   editor [options]  start the editor
-  init              initialize Triplex in this directory
   help [command]    display help for command
 ```
-
-## Init
-
-The easiest way to get started with Triplex is by using `triplex init`. It
-initializes Triplex inside a new or pre-existing repository. If the repository
-is new it will create a new folder for you, if it's pre-existing it will
-configure your repository and install example files.
-
-### Interactive
-
-You can create a project interactively by running:
-
-```bash
-npx @triplex/run@latest init
-```
-
-You will be asked a series of prompts:
-
-```bash
-? What should we call your project? …
-? What package manager do you use? …
-? Will initialize into your existing repository, continue? (Y/n) › true
-```
-
-And then be presented the option to open the editor with the example scene.
 
 ## Editor
 

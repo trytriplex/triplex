@@ -1,4 +1,5 @@
 {
-  "cli": {},
+  "cli": "@triplex/run",
+  "create-triplex-project": "create-triplex-project",
   "config": "config.json"
 }
