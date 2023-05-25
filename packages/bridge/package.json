@@ -27,7 +27,7 @@
     }
   },
   "scripts": {
-    "build": "pnpm swc ./src -d ./dist",
+    "build": "swc ./src -d ./dist",
     "typedef": "tsc"
   },
   "devDependencies": {

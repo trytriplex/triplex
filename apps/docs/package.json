@@ -3,7 +3,9 @@
   "version": "0.2.0",
   "private": true,
   "scripts": {
-    "dev": "pnpm next"
+    "build": "echo \"Not implemented\"",
+    "dev": "next",
+    "typedef": "echo \"Not implemented\""
   },
   "dependencies": {
     "autoprefixer": "^10.4.14",
