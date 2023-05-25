@@ -12,7 +12,7 @@
     "main": "./dist/index.js"
   },
   "scripts": {
-    "build": "pnpm swc ./src -d ./dist",
+    "build": "swc ./src -d ./dist",
     "typedef": "tsc"
   },
   "dependencies": {

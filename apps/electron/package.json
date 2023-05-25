@@ -11,7 +11,7 @@
   "scripts": {
     "build-target": "rimraf targets && pnpm prep-workspace && cross-env USE_HARD_LINKS=false electron-builder --publish never && pnpm cleanup-workspace",
     "build-targets": "rimraf targets && pnpm prep-workspace && cross-env USE_HARD_LINKS=false electron-builder --publish never --mac dir:x64 dir:arm64 --win dir:x64 dir:ia32 && pnpm cleanup-workspace",
-    "build": "pnpm swc ./src -d ./dist",
+    "build": "swc ./src -d ./dist",
     "cleanup-workspace": "git checkout ../../packages/*/package.json",
     "dev": "cross-env TRIPLEX_TARGET=electron electron .",
     "prep-workspace": "pnpm -r exec node ../../scripts/apply-publish-config.js",

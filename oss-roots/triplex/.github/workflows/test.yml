@@ -1,0 +1,41 @@
+name: Packages
+
+on:
+  pull_request:
+
+  push:
+    branches:
+      - main
+
+env:
+  CI: true
+
+jobs:
+  test:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Read node version
+        run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+        id: nvm
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ steps.nvm.outputs.NVMRC }}
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Test packages
+        run: yarn test
+
+      - name: Lint packages
+        run: yarn lint

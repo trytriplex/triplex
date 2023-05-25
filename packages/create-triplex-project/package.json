@@ -17,7 +17,7 @@
     "create-triplex-project": "./hook.js"
   },
   "scripts": {
-    "build": "pnpm swc ./src -d ./dist",
+    "build": "swc ./src -d ./dist",
     "typedef": "tsc && tsc --project ./templates/tsconfig.json"
   },
   "dependencies": {

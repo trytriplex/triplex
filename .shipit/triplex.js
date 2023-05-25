@@ -6,27 +6,25 @@ module.exports = {
   },
   getPathMappings() {
     return new Map([
-      ["apps", "apps"],
+      [".changeset", ".changeset"],
+      [".tsconfig", ".tsconfig"],
+      [".vscode", ".vscode"],
+      ["apps/docs", "apps/docs"],
       ["examples", "examples"],
       ["packages", "packages"],
+      ["oss-roots/triplex/", ""],
     ]);
   },
   getStrippedFiles() {
     return new Set([
-      /^\.github\/workflows\/release-electron\.yml/,
-      /^.shipit/,
-      /^apps\/electron/,
-      /^packages\/bridge/,
-      /^packages\/client/,
-      /^packages\/server/,
-      /^packages\/ws-client/,
-      /^scripts/,
+      /^.github\/workflows\/(electron|shipit|release)/,
+      /^packages\/(client|server|ws-client)/,
     ]);
   },
   getBranchConfig() {
     return {
       source: "origin/main",
-      destination: "test",
+      destination: "main",
     };
   },
 };
