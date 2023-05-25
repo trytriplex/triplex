@@ -13,7 +13,7 @@ We recommend initializing Triplex with the CLI which sets everything up for you,
 including when ran in pre-existing repositories. To initialize, run:
 
 ```bash
-npx @triplex/run@latest init
+npx create-triplex-project
 ```
 
 And follow the prompts. Triplex will initialize a
@@ -111,3 +111,9 @@ After the set up is complete:
 - Edit a component in the editor and see the updated result in your code
 
 ## Common questions
+
+### Does the Triplex native app use this packages version?
+
+No the native app and installed package are separate, when the native app is
+updated you should also update your installed package. We recommend using the
+native app exclusively to not worry about upgrade drift.
