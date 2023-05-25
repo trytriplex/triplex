@@ -3,7 +3,9 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
+    "build": "echo \"Not implemented\"",
     "triplex": "triplex",
+    "typedef": "echo \"Not implemented\"",
     "editor": "triplex editor"
   },
   "dependencies": {
