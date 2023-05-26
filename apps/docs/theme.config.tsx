@@ -4,6 +4,9 @@ import { Footer } from "./components/footer";
 
 const config: ThemeConfig = {
   darkMode: false,
+  nextThemes: {
+    forcedTheme: "dark",
+  },
   primaryHue: 200,
   chat: {
     link: "https://discord.gg/nBzRBUEs4b",
