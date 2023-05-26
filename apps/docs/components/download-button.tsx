@@ -44,7 +44,7 @@ export function DownloadButton() {
       <a
         href={assets[0]?.browser_download_url}
         target="_blank"
-        className="mt-10 min-w-[280px] cursor-pointer rounded-full bg-blue-400 px-12 py-3 text-center font-semibold text-neutral-900 hover:bg-blue-500 active:bg-blue-600"
+        className="mb-2 rounded-full bg-blue-400 px-10 py-4 text-2xl font-bold text-neutral-900"
       >
         Download for {platform}
       </a>
@@ -54,7 +54,7 @@ export function DownloadButton() {
           key={asset.name}
           href={asset.browser_download_url}
           target="_blank"
-          className="pt-2 text-center text-sm text-neutral-500 hover:text-neutral-300"
+          className="pt-3 text-center text-sm text-neutral-500 hover:text-neutral-300"
         >
           {asset.name}
         </a>
