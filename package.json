@@ -8,7 +8,7 @@
     "ci:release-electron": "pnpm i --force && cross-env TRIPLEX_TARGET=electron pnpm --filter @triplex/* --filter create-triplex-project build && pnpm --filter @triplex/electron release",
     "ci:version": "changeset version && pnpm install --lockfile-only",
     "clean:drop-dist-tests": "pnpm -r exec rimraf --glob dist/**/__tests__ dist/**/__test__",
-    "clean:node_modules": "rimraf node_modules && pnpm -r exec rimraf node_modules",
+    "clean:node_modules": "pnpm -r exec rimraf node_modules && rimraf node_modules",
     "clean": "pnpm -r exec rimraf dist",
     "dev:caustics": "pnpm --filter @example/caustics editor",
     "dev:cli": "cd test && triplex",
