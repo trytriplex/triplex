@@ -157,33 +157,55 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
       ]);
     }, [__meta.column, __meta.line, __meta.path]);
 
-    if (isRenderedSceneObject(__meta.name)) {
-      return (
-        <group
-          userData={{ triplexSceneMeta: { ...__meta, props } }}
-          visible={!isDeleted}
-        >
-          <Component ref={ref} {...reconciledProps}>
+    const componentJsx = (
+      <Component ref={ref} {...reconciledProps}>
+        {typeof children === "function" ? (
+          (...args: unknown[]) => {
+            // Children is a function.
+            // Resolve and render it if something was returned.
+            const resolvedChildren = children(...args);
+
+            if (resolvedChildren) {
+              return (
+                <>
+                  {resolvedChildren}
+                  <AddSceneObject
+                    path={__meta.path}
+                    column={__meta.column}
+                    line={__meta.line}
+                  />
+                </>
+              );
+            }
+
+            return resolvedChildren;
+          }
+        ) : children ? (
+          // Children isn't a function.
+          // Render it if it's not undefined
+          <>
             {children}
             <AddSceneObject
               path={__meta.path}
               column={__meta.column}
               line={__meta.line}
             />
-          </Component>
+          </>
+        ) : undefined}
+      </Component>
+    );
+
+    if (isRenderedSceneObject(__meta.name)) {
+      return (
+        <group
+          userData={{ triplexSceneMeta: { ...__meta, props } }}
+          visible={!isDeleted}
+        >
+          {componentJsx}
         </group>
       );
     } else if (!isDeleted) {
-      return (
-        <Component ref={ref} {...reconciledProps}>
-          {children}
-          <AddSceneObject
-            path={__meta.path}
-            column={__meta.column}
-            line={__meta.line}
-          />
-        </Component>
-      );
+      return componentJsx;
     }
 
     return null;
