@@ -10,7 +10,7 @@ const config: ThemeConfig = {
   },
   footer: {
     component: (
-      <div className="flex gap-14 border-t border-neutral-800 px-14 py-14 lg:gap-32">
+      <div className="mx-auto flex justify-center gap-14 border-t border-neutral-800 px-6 py-10 lg:gap-32">
         <div className="">
           <span className="text-sm font-medium text-neutral-400">Triplex</span>{" "}
           <span className="text-sm text-neutral-400">
