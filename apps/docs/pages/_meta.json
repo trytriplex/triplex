@@ -19,12 +19,15 @@
     "route": "#"
   },
   "releases": {
-    "title": "Releases",
+    "title": "Changelog",
     "href": "https://github.com/try-triplex/triplex/releases",
     "newWindow": true
   },
   "download": {
-    "title": "Download"
+    "title": "Download",
+    "theme": {
+      "layout": "raw"
+    }
   },
   "license": {
     "display": "hidden"
