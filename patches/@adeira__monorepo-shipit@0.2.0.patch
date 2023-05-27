@@ -1,0 +1,13 @@
+diff --git a/src/requireAndValidateConfig.js b/src/requireAndValidateConfig.js
+index 98034afa4f644ee4619579a1168bb4d53fbbd891..419b8a2b156ed991426a9c7c0f68c75f849a933d 100644
+--- a/src/requireAndValidateConfig.js
++++ b/src/requireAndValidateConfig.js
+@@ -28,7 +28,7 @@ function requireAndValidateConfig(configFile) {
+   const config = require(configFile);
+   const allowedFields = new Map([
+   // filed name => is required
+-  ['getBranchConfig', false], ['getStaticConfig', true], ['getPathMappings', true], ['getStrippedFiles', false]]);
++  ['getBranchConfig', false], ['getStaticConfig', true], ['getPathMappings', true], ['getStrippedFiles', false], ['transformCommitMessage', false]]);
+ 
+   // TODO: consider Ajv but with good error messages!
+   validateObjectKeys(config, allowedFields);

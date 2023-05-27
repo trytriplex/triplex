@@ -62,5 +62,10 @@
   "packageManager": "pnpm@7.28.0",
   "volta": {
     "node": "18.16.0"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@adeira/monorepo-shipit@0.2.0": "patches/@adeira__monorepo-shipit@0.2.0.patch"
+    }
   }
 }
