@@ -1,3 +1,16 @@
+diff --git a/src/Changeset.js b/src/Changeset.js
+index f3e5f25c2cf55b59b691e8ea47020209c725ec34..102bd32201e235da29092f481d8f47e12460bc74 100644
+--- a/src/Changeset.js
++++ b/src/Changeset.js
+@@ -49,7 +49,7 @@ class Changeset {
+     });
+   }
+   getSubject() {
+-    return this.subject;
++    return this.descriptionTransformer(this.subject);
+   }
+   withSubject(subject) {
+     return this.__clone({
 diff --git a/src/requireAndValidateConfig.js b/src/requireAndValidateConfig.js
 index 98034afa4f644ee4619579a1168bb4d53fbbd891..419b8a2b156ed991426a9c7c0f68c75f849a933d 100644
 --- a/src/requireAndValidateConfig.js
