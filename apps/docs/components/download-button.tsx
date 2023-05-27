@@ -44,7 +44,7 @@ export function DownloadButton() {
       <a
         href={assets[0]?.browser_download_url}
         target="_blank"
-        className="mb-2 rounded-full bg-blue-400 px-10 py-4 text-2xl font-bold text-neutral-900"
+        className="mb-2 rounded-full bg-blue-400 px-10 py-4 text-2xl font-semibold text-neutral-900"
       >
         Download for {platform}
       </a>
