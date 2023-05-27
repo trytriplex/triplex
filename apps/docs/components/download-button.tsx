@@ -16,7 +16,7 @@ export function DownloadButton() {
   useEffect(() => {
     async function req() {
       const res = await fetch(
-        "https://api.github.com/repos/try-triplex/releases/releases/latest"
+        "https://api.github.com/repos/try-triplex/triplex/releases/latest"
       );
       const json = await res.json();
 
