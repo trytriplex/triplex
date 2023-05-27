@@ -4,6 +4,9 @@ module.exports = {
       repository: "git@github.com:try-triplex/triplex.git",
     };
   },
+  transformCommitMessage: (message) => {
+    return message.replace(/\(#\d+\)/, "").trim();
+  },
   getPathMappings() {
     return new Map([
       [".changeset", ".changeset"],
