@@ -1,8 +1,13 @@
 {
   "name": "react-three-test",
+  "version": "0.0.0",
   "private": true,
   "main": "src/index.ts",
   "types": "src/index.ts",
+  "scripts": {
+    "build": "echo \"not implemented\"",
+    "typedef": "echo \"not implemented\""
+  },
   "dependencies": {
     "@react-three/test-renderer": "^8.1.2"
   },

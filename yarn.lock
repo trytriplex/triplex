@@ -1405,6 +1405,11 @@
     suspend-react "^0.0.8"
     zustand "^3.7.1"
 
+"@react-three/test-renderer@^8.1.2":
+  version "8.1.2"
+  resolved "https://registry.yarnpkg.com/@react-three/test-renderer/-/test-renderer-8.1.2.tgz#85b8fde2249b7d3743e7fb6afaebe25873079182"
+  integrity sha512-1penh4ydTUXsWNtU6TpfxGebqx949GYDS0cwEWQH580/xkuKoXsnPTayKOcOxuhN+iaD2ySackNjxpQ1YolmZA==
+
 "@remix-run/router@1.6.2":
   version "1.6.2"
   resolved "https://registry.yarnpkg.com/@remix-run/router/-/router-1.6.2.tgz#bbe75f8c59e0b7077584920ce2cc76f8f354934d"
