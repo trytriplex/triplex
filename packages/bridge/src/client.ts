@@ -22,6 +22,10 @@ export function listen<TEvent extends HostSendEventName>(
 
       if (typeof value !== "undefined") {
         respond(eventName, value);
+      } else if (process.env.NODE_ENV === "test") {
+        // Always respond in a test environment so we can assert that the event was called
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        respond(eventName, undefined as any);
       }
     }
   };
