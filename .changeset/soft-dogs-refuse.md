@@ -1,5 +1,5 @@
 ---
-"@triplex/scene": minor
+"@triplex/scene": patch
 ---
 
 Scene components now better handle edge cases. When children as function the
