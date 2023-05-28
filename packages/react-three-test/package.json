@@ -1,0 +1,14 @@
+{
+  "name": "react-three-test",
+  "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "dependencies": {
+    "@react-three/test-renderer": "^8.1.2"
+  },
+  "peerDependencies": {
+    "@react-three/fiber": "^8.11.1",
+    "three": "^0.148.0",
+    "react": "^18.0.0"
+  }
+}

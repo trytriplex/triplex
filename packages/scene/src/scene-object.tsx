@@ -165,24 +165,30 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
             // Resolve and render it if something was returned.
             const resolvedChildren = children(...args);
 
-            if (resolvedChildren) {
-              return (
-                <>
-                  {resolvedChildren}
-                  <AddSceneObject
-                    path={__meta.path}
-                    column={__meta.column}
-                    line={__meta.line}
-                  />
-                </>
-              );
-            }
-
-            return resolvedChildren;
+            // This is not semantically correct as we're always injecting
+            // children to every scene object in preparation for an added scene object.
+            // If the component is userland has default behavior when children is undefined
+            // We are breaking that behavior by forcing our children to be rendered. If/when
+            // This becomes a problem we can instead conditionally render the children only
+            // When confirming an added scene object, however that will be a large refactor.
+            return (
+              <>
+                {resolvedChildren}
+                <AddSceneObject
+                  path={__meta.path}
+                  column={__meta.column}
+                  line={__meta.line}
+                />
+              </>
+            );
           }
-        ) : children ? (
-          // Children isn't a function.
-          // Render it if it's not undefined
+        ) : (
+          // This is not semantically correct as we're always injecting
+          // children to every scene object in preparation for an added scene object.
+          // If the component is userland has default behavior when children is undefined
+          // We are breaking that behavior by forcing our children to be rendered. If/when
+          // This becomes a problem we can instead conditionally render the children only
+          // When confirming an added scene object, however that will be a large refactor.
           <>
             {children}
             <AddSceneObject
@@ -191,7 +197,7 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
               line={__meta.line}
             />
           </>
-        ) : undefined}
+        )}
       </Component>
     );
 

@@ -33,13 +33,25 @@ export function listen<TEvent extends ClientSendEventName>(
   };
 }
 
+function getMessageWindow() {
+  const iframe = document.getElementsByTagName("iframe")[0];
+  const messageWindow =
+    process.env.NODE_ENV === "test"
+      ? // In a test environment there won't be an iframe so we just return the window
+        window
+      : iframe.contentWindow;
+
+  return messageWindow;
+}
+
 export function send<TEvent extends HostSendEventName>(
   eventName: TEvent,
   data: HostSendEventData[TEvent],
   awaitResponse = false
 ): Promise<HostSendEventResponse[TEvent]> {
-  const iframe = document.getElementsByTagName("iframe")[0];
-  iframe.contentWindow?.postMessage(
+  const messageWindow = getMessageWindow();
+
+  messageWindow?.postMessage(
     {
       eventName,
       data,
@@ -65,8 +77,9 @@ function respond<TEvent extends keyof ClientSendEventResponse>(
   eventName: TEvent,
   data: ClientSendEventResponse[TEvent]
 ) {
-  const iframe = document.getElementsByTagName("iframe")[0];
-  iframe.contentWindow?.postMessage(
+  const messageWindow = getMessageWindow();
+
+  messageWindow?.postMessage(
     {
       eventName: `${eventName}Response`,
       data,
