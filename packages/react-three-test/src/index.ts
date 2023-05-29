@@ -30,18 +30,20 @@ export async function render(jsx: JSX.Element) {
   return {
     ...controls,
     act: renderer.act,
-    getByType(type: string) {
-      const tree = controls.toTree();
-      if (!tree) {
-        throw new Error("invariant");
-      }
+    tree: {
+      getByType(type: string) {
+        const tree = controls.toTree();
+        if (!tree) {
+          throw new Error("invariant");
+        }
 
-      const result = find(tree, (node) => node.type === type);
-      if (!result) {
-        throw new Error("invariant");
-      }
+        const result = find(tree, (node) => node.type === type);
+        if (!result) {
+          throw new Error("invariant");
+        }
 
-      return result;
+        return result;
+      },
     },
   };
 }

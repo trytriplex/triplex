@@ -1,6 +1,7 @@
 import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { compose, listen } from "@triplex/bridge/client";
 import { AddSceneObject } from "./add-scene-object";
+import { Object3DProps } from "@react-three/fiber";
 
 function useForceRender() {
   const [, setState] = useState(false);
@@ -109,7 +110,7 @@ function useSceneObjectProps(
   return nextProps;
 }
 
-export interface SceneObjectProps {
+export interface SceneObjectProps extends Object3DProps {
   __component:
     | React.ForwardRefExoticComponent<{ ref: unknown; children?: unknown }>
     | string;

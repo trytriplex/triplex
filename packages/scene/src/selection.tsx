@@ -56,7 +56,7 @@ const findTransformedSceneObject = (
     // and the next triplex boundary has the transform prop applied - if it
     // does we've found the scene object we're interested in!
     // This data is set by the @triplex/client babel plugin.
-    if (meta && meta[transform]) {
+    if (!foundExactSceneObject && meta && meta[transform]) {
       // The direct child will be the one we're interested in as it is a child
       // of the intermediately placed group in the SceneObject component.
       foundExactSceneObject = child.children[0];
@@ -65,7 +65,7 @@ const findTransformedSceneObject = (
     // As a backup we mark a the first found translated scene object if present.
     // We use this if scale and rotate are not found when traversing children.
     // This means the transform gizmo stays on the scene object instead of moving to [0,0,0].
-    if (meta && meta.translate) {
+    if (!foundTranslatedSceneObject && meta && meta.translate) {
       // The direct child will be the one we're interested in as it is a child
       // of the intermediately placed group in the SceneObject component.
       foundTranslatedSceneObject = child.children[0];
@@ -178,7 +178,7 @@ const findSceneObjectFromSource = (
   return nodeData;
 };
 
-interface JsxElementPositions {
+export interface JsxElementPositions {
   column: number;
   line: number;
   name: string;
@@ -485,7 +485,7 @@ export function Selection({
   });
 
   return (
-    <group onClick={onClick}>
+    <group name="selection-group" onClick={onClick}>
       {children}
       {selectedObject && (
         <TransformControls

@@ -45,7 +45,7 @@ describe("scene object component", () => {
   });
 
   it("should inject a box geometry to the mesh scene object", async () => {
-    const { act, getByType } = await render(
+    const { act, tree } = await render(
       <MemoryRouter>
         <ComponentProvider value={{}}>
           <SceneObject
@@ -79,7 +79,7 @@ describe("scene object component", () => {
       );
     });
 
-    expect(getByType("boxGeometry").props).toMatchInlineSnapshot(`
+    expect(tree.getByType("boxGeometry").props).toMatchInlineSnapshot(`
       {
         "args": [
           1,
