@@ -1,11 +1,13 @@
+const { stripGithubLinksFilter } = require("./filters/github");
+
 module.exports = {
+  customShipitFilter(changeset) {
+    return stripGithubLinksFilter(changeset);
+  },
   getStaticConfig() {
     return {
       repository: "git@github.com:try-triplex/triplex.git",
     };
-  },
-  transformCommitMessage: (message) => {
-    return message.replace(/\(#\d+\)/, "").trim();
   },
   getPathMappings() {
     return new Map([
@@ -22,9 +24,6 @@ module.exports = {
       ["packages/scene", "packages/scene"],
       ["oss-roots/triplex/", ""],
     ]);
-  },
-  getStrippedFiles() {
-    return new Set([/^.github\/workflows\/(electron|shipit|release)/]);
   },
   getBranchConfig() {
     return {
