@@ -1,5 +1,12 @@
 # @triplex/editor
 
+## 0.50.1
+
+### Patch Changes
+
+- @triplex/bridge@0.50.1
+- @triplex/ws-client@0.50.1
+
 ## 0.50.0
 
 ### Minor Changes

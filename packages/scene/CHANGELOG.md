@@ -1,5 +1,18 @@
 # @triplex/scene
 
+## 0.50.1
+
+### Patch Changes
+
+- b7c966c: The scene traversal that takes place during a selection now stops at
+  the first found object instead of continuing until no children remain. Any odd
+  scene transforms should now be fixed.
+- 3c19632: Scene components now better handle edge cases. When children as
+  function the function behavior is respected. When children end up being falsy
+  we no longer render the intermediate scene elements.
+  - @triplex/bridge@0.50.1
+  - @triplex/ws-client@0.50.1
+
 ## 0.50.0
 
 ### Minor Changes
