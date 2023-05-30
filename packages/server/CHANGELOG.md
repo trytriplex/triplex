@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.50.1
+
+### Patch Changes
+
+- a101545: The fs watcher used for the save indicator endpoint now uses polling
+  to work around a timing bug.
+
 ## 0.50.0
 
 ### Minor Changes

@@ -1,5 +1,16 @@
 # @triplex/electron
 
+## 0.50.1
+
+### Patch Changes
+
+- dfced86: Distributable now comes with an icon.
+- Updated dependencies [a101545]
+  - @triplex/server@0.50.1
+  - @triplex/client@0.50.1
+  - @triplex/editor@0.50.1
+  - create-triplex-project@0.50.1
+
 ## 0.50.0
 
 ### Minor Changes
