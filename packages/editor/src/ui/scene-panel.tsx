@@ -56,7 +56,7 @@ export function ScenePanel() {
   const { path, exportName } = useEditor();
 
   return (
-    <div className="pointer-events-auto w-full flex-grow overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%] shadow-2xl shadow-black/50">
+    <div className="pointer-events-auto w-full flex-grow overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%]">
       <ErrorBoundary keys={[path, exportName]}>
         <Suspense
           fallback={<div className="p-4 text-neutral-400">Loading...</div>}
@@ -111,7 +111,7 @@ function ComponentHeading() {
         <CaretDownIcon className="flex-shrink-0" />
 
         <select
-          className="absolute inset-0 text-sm opacity-0 [width:-moz-available]"
+          className="absolute inset-0 text-sm opacity-0 [width:-moz-available] [color-scheme:dark]"
           onChange={onChangeComponentHandler}
           value={exportName}
         >

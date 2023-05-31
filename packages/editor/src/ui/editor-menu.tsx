@@ -30,10 +30,13 @@ interface MenuItem {
 }
 
 const shortcut = (key: string, { meta = false, shift = false } = {}) => {
-  if (__TRIPLEX_TARGET__ === "electron") {
+  if (
+    __TRIPLEX_TARGET__ === "electron" &&
+    window.triplex.platform === "darwin"
+  ) {
     const META_KEY = "CommandOrControl";
     const metaHotkey = meta ? META_KEY : "";
-    const shiftHotkey = shift ? "SHIFT" : "";
+    const shiftHotkey = shift ? "Shift" : "";
     const accelerator = [shiftHotkey, metaHotkey, key]
       .filter(Boolean)
       .join("+");
@@ -41,16 +44,25 @@ const shortcut = (key: string, { meta = false, shift = false } = {}) => {
     return accelerator;
   }
 
-  const keyMap: Record<string, string> = {
-    Backspace: "⌫",
+  const keyMap: Record<string, string | undefined> = {
+    Backspace: navigator.platform.match("Mac") ? "⌫" : undefined,
   };
 
-  const OS_META_KEY = navigator.platform.match("Mac") ? "⌘" : "CTRL";
-  const metaHotkey = meta ? `${OS_META_KEY} ` : "";
-  const shiftHotkey = shift ? "⇧ " : "";
-  const hotkey = `${shiftHotkey}${metaHotkey}${keyMap[key] || key}`;
+  const keys: string[] = [];
 
-  return hotkey;
+  if (meta) {
+    const OS_META_KEY = navigator.platform.match("Mac") ? "⌘" : "Ctrl";
+    keys.push(OS_META_KEY);
+  }
+
+  if (shift) {
+    const OS_SHIFT_KEY = navigator.platform.match("Mac") ? "⇧" : "Shift";
+    keys.push(OS_SHIFT_KEY);
+  }
+
+  keys.push(keyMap[key] || key);
+
+  return keys.join(navigator.platform.match("Mac") ? " " : "+");
 };
 
 function findMenuItem(
@@ -117,6 +129,7 @@ export function EditorMenu() {
               label: "Open Project...",
               id: "open-project",
               visible: __TRIPLEX_TARGET__ === "electron",
+              click: () => window.triplex.sendCommand("open-project"),
             },
             { type: "separator" },
             {
@@ -145,6 +158,7 @@ export function EditorMenu() {
               label: "Close Project",
               id: "close-project",
               visible: __TRIPLEX_TARGET__ === "electron",
+              click: () => window.triplex.sendCommand("close-project"),
             },
           ],
         },
@@ -177,7 +191,7 @@ export function EditorMenu() {
               label: "Deselect",
               id: "deselect",
               enabled: !!target && isEditable,
-              accelerator: shortcut("ESC"),
+              accelerator: shortcut("Escape"),
               click: () => blur(),
             },
             {
@@ -218,23 +232,28 @@ export function EditorMenu() {
             {
               id: "devtools",
               label: "Show Developer Tools",
+              click: () => window.triplex.sendCommand("show-devtools"),
             },
           ],
         },
         {
           id: "window-menu",
-          visible: __TRIPLEX_TARGET__ === "electron",
+          visible:
+            __TRIPLEX_TARGET__ === "electron" &&
+            window.triplex.platform === "darwin",
           role: "windowMenu",
         },
         {
           id: "help-menu",
-          visible: __TRIPLEX_TARGET__ === "electron",
           label: "Help",
+          visible: __TRIPLEX_TARGET__ === "electron",
           submenu: [
             {
               id: "documentation",
               role: "help",
               label: "Documentation",
+              click: () =>
+                window.triplex.openLink("https://triplex.dev/docs/overview"),
             },
           ],
         },
@@ -277,12 +296,15 @@ export function EditorMenu() {
     }
   }, [menubar]);
 
-  if (__TRIPLEX_TARGET__ === "electron") {
+  if (
+    __TRIPLEX_TARGET__ === "electron" &&
+    window.triplex.platform === "darwin"
+  ) {
     return null;
   }
 
   return (
-    <div className="pointer-events-auto self-start rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1 shadow-2xl shadow-black/50">
+    <div className="py-0.5 pl-1.5 [-webkit-app-region:no-drag]">
       <Menubar>
         {menubar.map((menu) => {
           if (menu.visible === false) {

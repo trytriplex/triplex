@@ -1,6 +1,7 @@
 import { useLazySubscription } from "@triplex/ws-client";
 import { useEffect } from "react";
 import { useEditor } from "../stores/editor";
+import { EditorMenu } from "./editor-menu";
 
 export function TitleBar() {
   const { path } = useEditor();
@@ -14,18 +15,15 @@ export function TitleBar() {
     }
   }, [windowTitle]);
 
-  if (__TRIPLEX_TARGET__ === "electron") {
-    if (window.triplex.platform === "win32") {
-      // Don't render the titlebar on windows for now, we use the default one.
-      return null;
-    }
-
-    return (
-      <div className="z-50 col-span-full row-start-1 flex h-8 select-none items-center justify-center border-b border-neutral-800 bg-neutral-900 [-webkit-app-region:drag]">
-        <span className="text-sm text-neutral-300">{windowTitle}</span>
+  return (
+    <div className="z-50 col-span-full row-start-1 grid h-[33px] select-none grid-cols-3 items-center border-b border-neutral-800 bg-neutral-900 [-webkit-app-region:drag]">
+      <div>
+        <EditorMenu />
       </div>
-    );
-  }
-
-  return null;
+      <span className="place-self-center text-sm text-neutral-300">
+        {windowTitle}
+      </span>
+      <div />
+    </div>
+  );
 }

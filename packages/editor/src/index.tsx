@@ -10,9 +10,7 @@ createRoot(document.getElementById("root")!).render(
     <div
       className={cn([
         "fixed inset-0 grid select-none grid-cols-[14rem_auto_18rem] gap-3 bg-neutral-900 pb-3",
-        __TRIPLEX_TARGET__ === "electron" && window.triplex.platform !== "win32"
-          ? "grid-rows-[32px_auto]"
-          : "pt-3",
+        "grid-rows-[32px_auto]",
       ])}
     >
       <TitleBar />

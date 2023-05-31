@@ -191,6 +191,8 @@ async function openWelcomeScreen() {
     titleBarStyle: "hidden",
     titleBarOverlay: {
       height: 32,
+      color: "#171717",
+      symbolColor: "#A3A3A3",
     },
     maximizable: false,
     minimizable: false,
@@ -204,7 +206,6 @@ async function openWelcomeScreen() {
 
   if (process.env.TRIPLEX_ENV === "development") {
     await window.loadURL(`http://localhost:${EDITOR_DEV_PORT}/welcome.html`);
-    window.webContents.openDevTools();
   } else {
     await window.loadFile(require.resolve("@triplex/editor/dist/welcome.html"));
   }
@@ -244,11 +245,13 @@ async function main() {
 
       activeProjectWindow = new BrowserWindow({
         backgroundColor: "#171717",
-        titleBarStyle: process.platform === "darwin" ? "hidden" : "default",
+        titleBarStyle: "hidden",
         show: false,
         paintWhenInitiallyHidden: false,
         titleBarOverlay: {
           height: 32,
+          color: "#171717",
+          symbolColor: "#A3A3A3",
         },
         webPreferences: {
           preload: require.resolve("./preload.js"),
@@ -309,10 +312,6 @@ async function main() {
         );
       }
 
-      if (process.env.TRIPLEX_ENV === "development") {
-        activeProjectWindow.webContents.openDevTools();
-      }
-
       return true;
     }
 
@@ -326,12 +325,22 @@ async function main() {
 
     ipcMain.on("send-command", async (_, id: string) => {
       switch (id) {
-        case "open-project":
-          if ((await onOpenProject()) && welcomeWindow) {
+        case "close-project":
+          onCloseProject();
+          break;
+
+        case "show-devtools":
+          activeProjectWindow?.webContents.openDevTools();
+          break;
+
+        case "open-project": {
+          const opened = await onOpenProject();
+          if (opened && welcomeWindow) {
             welcomeWindow.close();
             welcomeWindow = undefined;
           }
           break;
+        }
 
         case "create-project": {
           if (welcomeWindow) {
@@ -377,31 +386,9 @@ async function main() {
   applyGlobalIpcHandlers();
 
   onMenuItemPress((menuItemId) => {
-    switch (menuItemId) {
-      case "open-project":
-        onOpenProject();
-        break;
-
-      case "close-project":
-        onCloseProject();
-        break;
-
-      case "documentation":
-        shell.openExternal("https://triplex.dev/docs");
-        break;
-
-      case "devtools":
-        activeProjectWindow?.webContents.openDevTools();
-        break;
-
-      default: {
-        if (activeProjectWindow) {
-          // Send the event to the current active window.
-          activeProjectWindow.webContents.send("menu-item-press", menuItemId);
-        }
-
-        break;
-      }
+    if (activeProjectWindow) {
+      // Send the event to the current active window.
+      activeProjectWindow.webContents.send("menu-item-press", menuItemId);
     }
   });
 }
