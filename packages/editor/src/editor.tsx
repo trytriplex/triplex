@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { ContextPanel } from "./ui/context-panel";
-import { EditorMenu } from "./ui/editor-menu";
 import { ScenePanel } from "./ui/scene-panel";
 import { ScenesDrawer } from "./ui/scenes-drawer";
 import { SceneFrame } from "./scence-bridge";
@@ -77,7 +76,6 @@ export function EditorFrame() {
       <SceneFrame />
 
       <div className="z-10 row-auto flex flex-col gap-3 overflow-hidden pl-3">
-        <EditorMenu />
         {path && <ScenePanel />}
       </div>
 

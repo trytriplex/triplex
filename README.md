@@ -8,4 +8,4 @@ The [React Three Fiber](https://github.com/pmndrs/react-three-fiber) editor.
 
 ## Getting started
 
-Visit https://triplex.dev/docs to get started with Triplex.
+Visit https://triplex.dev/docs/overview to get started with Triplex.

@@ -93,7 +93,9 @@ function WelcomeScreen() {
           <Button
             size="tight"
             icon={ReaderIcon}
-            onClick={() => window.triplex.openLink("https://triplex.dev/docs")}
+            onClick={() =>
+              window.triplex.openLink("https://triplex.dev/docs/overview")
+            }
           >
             Documentation
           </Button>

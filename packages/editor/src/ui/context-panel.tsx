@@ -34,7 +34,7 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
         <div className="overflow-hidden text-ellipsis">{data.name}</div>
       </h2>
 
-      <div className="mb-2.5 -mt-0.5 px-4">
+      <div className="-mt-0.5 mb-2.5 px-4">
         <IDELink
           path={target.ownerPath}
           column={target.column}
@@ -56,7 +56,7 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
 
       <div className="h-[1px] bg-neutral-800" />
 
-      <div className="flex py-1 px-2">
+      <div className="flex px-2 py-1">
         <IconButton
           onClick={() => navigateTo()}
           icon={EnterIcon}
@@ -143,7 +143,7 @@ export function ContextPanel() {
 
   return (
     <div className="pointer-events-none flex w-full flex-col gap-3">
-      <div className="pointer-events-auto flex h-full flex-col overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%] shadow-2xl shadow-black/50">
+      <div className="pointer-events-auto flex h-full flex-col overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%]">
         <ErrorBoundary keys={[target]}>
           <Suspense
             fallback={<div className="p-4 text-neutral-400">Loading...</div>}
