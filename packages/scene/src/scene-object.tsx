@@ -8,9 +8,17 @@ function useForceRender() {
   return useCallback(() => setState((prev) => !prev), []);
 }
 
-function isRenderedSceneObject(name: string): boolean {
+function isRenderedSceneObject(
+  name: string,
+  props: Record<string, unknown>
+): boolean {
   const exclusions = ["Material", "Geometry", "Attribute"];
-  if (exclusions.find((n) => name.includes(n))) {
+  if (
+    // If the scene object has an attach prop it's not actually rendered to the scene
+    // But instead attached to the parent object in the R3F tree.
+    !props.attach &&
+    exclusions.find((n) => name.includes(n))
+  ) {
     return false;
   }
 
@@ -202,7 +210,7 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
       </Component>
     );
 
-    if (isRenderedSceneObject(__meta.name)) {
+    if (isRenderedSceneObject(__meta.name, props)) {
       return (
         <group
           userData={{ triplexSceneMeta: { ...__meta, props } }}
