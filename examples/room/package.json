@@ -1,0 +1,22 @@
+{
+  "name": "@example/room",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "echo \"Not implemented\"",
+    "editor": "triplex editor",
+    "triplex": "triplex",
+    "typedef": "echo \"Not implemented\""
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.56.27",
+    "@react-three/fiber": "^8.11.1",
+    "@triplex/run": "^0.50.1",
+    "@types/react": "^18.0.0",
+    "@types/three": "^0.148.0",
+    "maath": "^0.6.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "three": "^0.148.0"
+  }
+}
