@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.51.0
+
+### Patch Changes
+
+- c97e359: Fixes tuple types inside union types not being marked as required
+  when declared as a prop on a component.
+
 ## 0.50.1
 
 ### Patch Changes

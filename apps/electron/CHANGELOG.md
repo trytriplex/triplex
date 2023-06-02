@@ -1,5 +1,27 @@
 # @triplex/electron
 
+## 0.51.0
+
+### Minor Changes
+
+- b61dc2a: The editor menu bar is now displayed in the title bar for Windows and
+  Node.js.
+
+### Patch Changes
+
+- b61dc2a: The title bar overlay now has a dark background and white text.
+- b61dc2a: Menu bar events now originate from the editor source instead of being
+  some in the electron app and some in the editor.
+- Updated dependencies [c97e359]
+- Updated dependencies [b61dc2a]
+- Updated dependencies [b61dc2a]
+- Updated dependencies [b61dc2a]
+- Updated dependencies [c97e359]
+  - @triplex/server@0.51.0
+  - @triplex/editor@0.51.0
+  - @triplex/client@0.51.0
+  - create-triplex-project@0.51.0
+
 ## 0.50.1
 
 ### Patch Changes
