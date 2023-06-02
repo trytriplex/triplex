@@ -19,24 +19,34 @@ export function NumberInput({
   onChange: (value: number | undefined) => void;
   onConfirm: (value: number | undefined) => void;
 }) {
-  const emptyValue = required ? (name === "scale" ? 1 : 0) : undefined;
-
   const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     e.target.focus();
-    const nextValue = e.target.valueAsNumber || emptyValue;
+
+    const nextValue = Number.isNaN(e.target.valueAsNumber)
+      ? undefined
+      : e.target.valueAsNumber;
+
     onChange(nextValue);
   };
 
   const onBlurHandler: FocusEventHandler<HTMLInputElement> = (e) => {
-    const nextValue = e.target.valueAsNumber || emptyValue;
+    const nextValue = Number.isNaN(e.target.valueAsNumber)
+      ? undefined
+      : e.target.valueAsNumber;
+
+    if (nextValue === undefined && required) {
+      // Skip handler if the next value is undefined and it's required
+      return;
+    }
+
     if (defaultValue !== nextValue) {
       onConfirm(nextValue);
     }
   };
 
   const onClear = () => {
-    onChange(emptyValue);
-    onConfirm(emptyValue);
+    onChange(undefined);
+    onConfirm(undefined);
   };
 
   return (
@@ -56,10 +66,10 @@ export function NumberInput({
         defaultValue={defaultValue}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
-        className="w-full bg-transparent py-0.5 text-sm text-neutral-300 outline-none [color-scheme:dark] [appearance:textfield] placeholder:italic placeholder:text-neutral-500"
+        className="w-full bg-transparent py-0.5 text-sm text-neutral-300 outline-none [appearance:textfield] [color-scheme:dark] placeholder:italic placeholder:text-neutral-500"
       />
 
-      {typeof defaultValue !== "undefined" && (
+      {!required && (
         <IconButton
           className="hidden group-focus-within:block group-hover:block"
           onClick={onClear}

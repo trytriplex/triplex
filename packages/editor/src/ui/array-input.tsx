@@ -1,3 +1,4 @@
+import { useRef } from "react";
 import { ArrayProp, Prop } from "../api-types";
 import { PropInput } from "./prop-input";
 
@@ -9,6 +10,21 @@ function reduceValue(value: Prop): string | number | boolean | undefined {
   return value.value;
 }
 
+function merge(a: unknown[], b: Record<string, unknown>) {
+  const c = [...a];
+
+  for (const key in b) {
+    const index = Number(key);
+    if (Number.isNaN(index)) {
+      throw new Error("invariant");
+    }
+
+    c[index] = b[index];
+  }
+
+  return c;
+}
+
 export function ArrayInput({
   values,
   path,
@@ -17,7 +33,6 @@ export function ArrayInput({
   line,
   onChange,
   onConfirm,
-  required,
 }: {
   required?: boolean;
   values: ArrayProp["value"];
@@ -29,25 +44,41 @@ export function ArrayInput({
   onConfirm: (value: unknown[]) => void;
 }) {
   const isUnhandled = !!values.find((val) => val.type === "unhandled");
+  const intermediateValues = useRef<Record<string, unknown>>({});
 
   return (
     <>
       {values.map((val, index) => {
         const onChangeHandler = (value: unknown) => {
+          intermediateValues.current[index] = value;
+
           const currentValue: unknown[] = values.map(reduceValue);
-          currentValue[index] = value;
-          onChange(currentValue);
+          const nextValue = merge(currentValue, intermediateValues.current);
+
+          if (val.required && nextValue.includes(undefined)) {
+            return;
+          }
+
+          onChange(nextValue);
         };
 
         const onConfirmHandler = (value: unknown) => {
+          intermediateValues.current[index] = value;
+
           const currentValue: unknown[] = values.map(reduceValue);
-          currentValue[index] = value;
-          onConfirm(currentValue);
+          const nextValue = merge(currentValue, intermediateValues.current);
+
+          if (val.required && nextValue.includes(undefined)) {
+            return;
+          }
+
+          onConfirm(nextValue);
+          intermediateValues.current = {};
         };
 
         return (
           <PropInput
-            required={"required" in val ? val.required : required}
+            required={val.required}
             path={path}
             key={index}
             onChange={onChangeHandler}

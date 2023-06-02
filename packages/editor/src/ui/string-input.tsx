@@ -20,23 +20,31 @@ export function StringInput({
   onChange?: (value: string | undefined) => void;
   onConfirm?: (value: string | undefined) => void;
 }) {
-  const emptyValue = required ? "" : undefined;
-
   const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const nextValue = e.target.value || emptyValue;
+    const nextValue = e.target.value || undefined;
+    if (nextValue === undefined && required) {
+      // Ignore calling back if it's required
+      return;
+    }
+
     onChange(nextValue);
   };
 
   const onBlurHandler: FocusEventHandler<HTMLInputElement> = (e) => {
-    const nextValue = e.target.value || emptyValue;
+    const nextValue = e.target.value || undefined;
+    if (nextValue === undefined && required) {
+      // Ignore calling back if it's required
+      return;
+    }
+
     if (defaultValue !== nextValue) {
       onConfirm(nextValue);
     }
   };
 
   const onClear = () => {
-    onChange(emptyValue);
-    onConfirm(emptyValue);
+    onChange(undefined);
+    onConfirm(undefined);
   };
 
   return (
@@ -52,10 +60,10 @@ export function StringInput({
         defaultValue={defaultValue}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
-        className="w-full bg-transparent py-0.5 px-1 text-sm text-neutral-300 outline-none [color-scheme:dark] placeholder:italic placeholder:text-neutral-500"
+        className="w-full bg-transparent px-1 py-0.5 text-sm text-neutral-300 outline-none [color-scheme:dark] placeholder:italic placeholder:text-neutral-500"
       />
 
-      {defaultValue && (
+      {!required && (
         <IconButton
           className="hidden group-focus-within:block group-hover:block"
           onClick={onClear}

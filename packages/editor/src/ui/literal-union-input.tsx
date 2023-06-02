@@ -25,7 +25,12 @@ export function LiteralUnionInput({
     const currentValue = defaultValue ?? undefined;
     const nextValue = e.target.value ?? undefined;
 
-    if (currentValue !== nextValue && nextValue) {
+    if (nextValue === undefined && required) {
+      // Skip handler if the next value is undefined and it's required
+      return;
+    }
+
+    if (currentValue !== nextValue) {
       // If next value is defined we callback else we abort.
       // This is because the clear event handler handles empty values.
       onChange(nextValue);
@@ -59,7 +64,7 @@ export function LiteralUnionInput({
         ))}
       </select>
 
-      {!required && defaultValue && (
+      {!required && (
         <IconButton
           className="hidden group-focus-within:block group-hover:block"
           onClick={onClear}

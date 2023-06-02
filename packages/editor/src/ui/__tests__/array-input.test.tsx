@@ -52,4 +52,93 @@ describe("array input", () => {
 
     expect(confirm).toHaveBeenCalledWith([100, 6]);
   });
+
+  it("should not callback when required and values are partially undefined", () => {
+    const change = vi.fn();
+    const confirm = vi.fn();
+    const { getByTestId } = render(
+      <ArrayInput
+        column={0}
+        line={0}
+        values={[
+          { type: "number", value: 99, required: true },
+          { type: "number", value: 100, required: true },
+        ]}
+        name="array"
+        path="/box.tsx"
+        onChange={change}
+        onConfirm={confirm}
+      />
+    );
+
+    const element = getByTestId("number-99");
+
+    fireEvent.change(element, { target: { value: "" } });
+    fireEvent.blur(element, { target: { value: "" } });
+
+    expect(confirm).not.toBeCalled();
+    expect(change).not.toHaveBeenCalled();
+  });
+
+  it("should callback when required and after being filled with numbers", () => {
+    const change = vi.fn();
+    const confirm = vi.fn();
+    const { getByTestId } = render(
+      <ArrayInput
+        column={0}
+        line={0}
+        values={[
+          { type: "number", value: 200, required: true },
+          { type: "number", value: 201, required: true },
+        ]}
+        name="array"
+        path="/box.tsx"
+        onChange={change}
+        onConfirm={confirm}
+      />
+    );
+
+    const first = getByTestId("number-200");
+    const second = getByTestId("number-201");
+
+    fireEvent.change(first, { target: { value: "" } });
+    fireEvent.blur(first, { target: { value: "" } });
+    fireEvent.change(second, { target: { value: "" } });
+    fireEvent.blur(second, { target: { value: "" } });
+    fireEvent.change(first, { target: { value: 1 } });
+    fireEvent.blur(first, { target: { value: 1 } });
+    fireEvent.change(second, { target: { value: 2 } });
+    fireEvent.blur(second, { target: { value: 2 } });
+
+    expect(change).toHaveBeenCalledTimes(1);
+    expect(change).toHaveBeenCalledWith([1, 2]);
+    expect(confirm).toHaveBeenCalledTimes(1);
+    expect(confirm).toHaveBeenCalledWith([1, 2]);
+  });
+
+  it("should callback when optional", () => {
+    const change = vi.fn();
+    const confirm = vi.fn();
+    const { getByTestId } = render(
+      <ArrayInput
+        column={0}
+        line={0}
+        values={[
+          { type: "number", value: 22 },
+          { type: "number", value: 33 },
+        ]}
+        name="array"
+        path="/box.tsx"
+        onChange={change}
+        onConfirm={confirm}
+      />
+    );
+    const first = getByTestId("number-22");
+
+    fireEvent.change(first, { target: { value: "" } });
+    fireEvent.blur(first, { target: { value: "" } });
+
+    expect(change).toHaveBeenCalledWith([undefined, 33]);
+    expect(confirm).toHaveBeenCalledWith([undefined, 33]);
+  });
 });
