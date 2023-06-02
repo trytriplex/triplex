@@ -1,5 +1,22 @@
 # @triplex/editor
 
+## 0.51.0
+
+### Minor Changes
+
+- b61dc2a: The editor menu bar is now displayed in the title bar for Windows and
+  Node.js.
+
+### Patch Changes
+
+- b61dc2a: Hotkeys on Windows are now title case.
+- b61dc2a: Menu bar events now originate from the editor source instead of being
+  some in the electron app and some in the editor.
+- c97e359: Inputs no longer call change and confirm handlers with `undefined`
+  values when required.
+  - @triplex/bridge@0.51.0
+  - @triplex/ws-client@0.51.0
+
 ## 0.50.1
 
 ### Patch Changes

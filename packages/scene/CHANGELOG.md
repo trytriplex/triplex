@@ -1,5 +1,14 @@
 # @triplex/scene
 
+## 0.51.0
+
+### Patch Changes
+
+- 6179fef: Scene objects that are attached to a parent are no longer wrapped in
+  a triplex group.
+  - @triplex/bridge@0.51.0
+  - @triplex/ws-client@0.51.0
+
 ## 0.50.1
 
 ### Patch Changes
