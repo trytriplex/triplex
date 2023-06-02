@@ -8,7 +8,7 @@ import {
   Expression,
   JsxAttribute,
 } from "ts-morph";
-import { Prop, PropType } from "../types";
+import { Prop, PropType, TupleType } from "../types";
 import { getJsxElementPropTypes } from "./type-infer";
 
 export function getJsxAttributeValue(expression: Expression | undefined): Prop {
@@ -320,6 +320,29 @@ function mergePropTypeValue(prop: Prop, type: PropType) {
         return value;
       }),
     };
+  }
+
+  if (type.type.type === "union" && prop.type === "array") {
+    // Find the type that matches the value.
+    const matchingType = type.type.values.find((value): value is TupleType => {
+      if (value.type === "tuple") {
+        return value.values.every(
+          (val, index) => prop.value[index].type === val.type
+        );
+      }
+
+      return false;
+    });
+
+    if (matchingType) {
+      return {
+        type: prop.type,
+        value: prop.value.map((value, index) => ({
+          ...value,
+          ...matchingType.values[index],
+        })),
+      };
+    }
   }
 
   return { type: prop.type, value: prop.value };

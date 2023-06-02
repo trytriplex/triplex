@@ -5,7 +5,7 @@ export default function Box({
 }: {
   position?: [number, number, number];
   rotation?: [number, number, number];
-  scale?: [number, number, number];
+  scale?: [x: number, y: number, z: number] | number;
 }) {
   return (
     <mesh position={position} rotation={rotation} scale={scale}>
@@ -13,4 +13,8 @@ export default function Box({
       <meshStandardMaterial color="pink" />
     </mesh>
   );
+}
+
+export function UseBox() {
+  return <Box position={[0, 0, 0]} scale={[1, 1, 1]} />;
 }

@@ -79,22 +79,31 @@ describe("type infer", () => {
           "name": "scale",
           "required": false,
           "type": {
-            "type": "tuple",
+            "type": "union",
+            "value": "",
             "values": [
               {
-                "label": undefined,
-                "required": true,
                 "type": "number",
               },
               {
-                "label": undefined,
-                "required": true,
-                "type": "number",
-              },
-              {
-                "label": undefined,
-                "required": true,
-                "type": "number",
+                "type": "tuple",
+                "values": [
+                  {
+                    "label": "x",
+                    "required": true,
+                    "type": "number",
+                  },
+                  {
+                    "label": "y",
+                    "required": true,
+                    "type": "number",
+                  },
+                  {
+                    "label": "z",
+                    "required": true,
+                    "type": "number",
+                  },
+                ],
               },
             ],
           },

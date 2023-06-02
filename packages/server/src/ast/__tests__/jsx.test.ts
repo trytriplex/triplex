@@ -670,6 +670,85 @@ describe("jsx ast extractor", () => {
     `);
   });
 
+  it("should extract a declared tuple inside a union prop and mark them as required", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/box.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 19, 10);
+
+    const props = getJsxElementProps(sourceFile, sceneObject!);
+
+    expect(props[1]).toMatchInlineSnapshot(`
+      {
+        "column": 36,
+        "declaration": "declared",
+        "description": undefined,
+        "line": 19,
+        "name": "scale",
+        "required": false,
+        "type": "array",
+        "value": [
+          {
+            "label": "x",
+            "required": true,
+            "type": "number",
+            "value": 1,
+          },
+          {
+            "label": "y",
+            "required": true,
+            "type": "number",
+            "value": 1,
+          },
+          {
+            "label": "z",
+            "required": true,
+            "type": "number",
+            "value": 1,
+          },
+        ],
+      }
+    `);
+  });
+
+  it("should extract a declared tuple prop and mark them as required", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/box.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 19, 10);
+
+    const props = getJsxElementProps(sourceFile, sceneObject!);
+
+    expect(props[0].value).toMatchInlineSnapshot(`
+      [
+        {
+          "label": undefined,
+          "required": true,
+          "type": "number",
+          "value": 0,
+        },
+        {
+          "label": undefined,
+          "required": true,
+          "type": "number",
+          "value": 0,
+        },
+        {
+          "label": undefined,
+          "required": true,
+          "type": "number",
+          "value": 0,
+        },
+      ]
+    `);
+  });
+
   it("should extract implicit boolean props", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
@@ -1448,19 +1527,30 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "scale",
           "required": false,
-          "type": "array",
-          "value": [
+          "type": "union",
+          "values": [
             {
-              "required": true,
               "type": "number",
             },
             {
-              "required": true,
-              "type": "number",
-            },
-            {
-              "required": true,
-              "type": "number",
+              "type": "array",
+              "value": [
+                {
+                  "label": "x",
+                  "required": true,
+                  "type": "number",
+                },
+                {
+                  "label": "y",
+                  "required": true,
+                  "type": "number",
+                },
+                {
+                  "label": "z",
+                  "required": true,
+                  "type": "number",
+                },
+              ],
             },
           ],
         },
