@@ -13,7 +13,7 @@ export function exec(
         env: {
           // Ensure volta is available on PATH just in case.
           // See: https://github.com/volta-cli/volta/issues/1007
-          PATH: `${process.env.HOME}/.volta/bin:${process.env.PATH}`,
+          PATH: `${process.env.HOME}/.volta/bin:${process.env.PATH}:/usr/local/bin`,
         },
       },
       (err) => {

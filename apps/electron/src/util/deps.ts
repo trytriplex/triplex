@@ -2,10 +2,7 @@ import { readdir } from "node:fs/promises";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { BrowserWindow, Notification } from "electron";
 import { exec } from "./exec";
-import { logger } from "./log";
 import { indeterminate } from "./progress-bar";
-
-const log = logger("deps");
 
 async function install(
   cmd: string,
@@ -29,12 +26,12 @@ export async function ensureDepsInstall(
 
   const complete = indeterminate(window, signal);
 
-  new Notification({
-    title: "Installing dependencies",
-    body: "Hold tight we're installing dependencies for your project.",
-  }).show();
-
   try {
+    new Notification({
+      title: "Installing dependencies",
+      body: "Hold tight we're installing dependencies for your project.",
+    }).show();
+
     if (dir.includes("yarn.lock")) {
       await install("yarn", { cwd, signal });
     } else if (dir.includes("pnpm-lock.yaml")) {
@@ -42,14 +39,7 @@ export async function ensureDepsInstall(
     } else {
       await install("npm", { cwd, signal });
     }
-  } catch (err) {
-    log.error(`There was an error installing deps.`);
-    log.error(err);
-
-    return false;
   } finally {
     complete();
   }
-
-  return true;
 }

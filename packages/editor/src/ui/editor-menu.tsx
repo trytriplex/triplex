@@ -234,6 +234,11 @@ export function EditorMenu() {
               label: "Show Developer Tools",
               click: () => window.triplex.sendCommand("show-devtools"),
             },
+            {
+              id: "view-logs",
+              label: "Logs",
+              click: () => window.triplex.sendCommand("view-logs"),
+            },
           ],
         },
         {

@@ -4,6 +4,7 @@ import {
   ReaderIcon,
   HeartFilledIcon,
   GlobeIcon,
+  ActivityLogIcon,
 } from "@radix-ui/react-icons";
 import "./styles.css";
 import { Button } from "./ds/button";
@@ -57,7 +58,7 @@ function WelcomeScreen() {
           className="select bg-black"
           draggable="false"
         />
-        <span className="absolute right-0 top-0 ml-auto flex h-8 items-center pr-2.5 text-xs text-neutral-300">
+        <span className="absolute bottom-0 right-0 ml-auto flex h-8 items-center pr-2.5 text-xs text-neutral-300">
           {version}
         </span>
 
@@ -89,7 +90,7 @@ function WelcomeScreen() {
       </div>
 
       <div className="mt-auto flex gap-5 px-10">
-        <div className="-mx-2 flex basis-1/2 flex-col">
+        <div className="-mx-2 flex basis-1/2 flex-col justify-end">
           <Button
             size="tight"
             icon={ReaderIcon}
@@ -107,6 +108,14 @@ function WelcomeScreen() {
             }
           >
             Join Discord
+          </Button>
+          <Button
+            icon={ActivityLogIcon}
+            disabled={windowState === "disabled"}
+            size="tight"
+            onClick={() => window.triplex.sendCommand("view-logs")}
+          >
+            View Logs
           </Button>
         </div>
         <div className="-mx-2 flex basis-1/2 flex-col justify-end">

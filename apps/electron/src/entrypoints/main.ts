@@ -14,7 +14,7 @@ import { join } from "node:path";
 import process from "node:process";
 import { autoUpdater } from "electron-updater";
 import { fork } from "../util/fork";
-import { logger } from "../util/log";
+import { logger, getLogPath } from "../util/log";
 import { ensureDepsInstall } from "../util/deps";
 import { createProject, showCreateDialog } from "../util/create";
 
@@ -260,19 +260,22 @@ async function main() {
         height: 768,
       });
 
-      if (
-        !(await ensureDepsInstall(
+      try {
+        await ensureDepsInstall(
           cwd,
           welcomeWindow || activeProjectWindow,
           abortContoller.signal
-        ))
-      ) {
+        );
+      } catch (e) {
+        const error = e as Error;
         const { response } = await dialog.showMessageBox({
           defaultId: 0,
           buttons: ["OK", "Learn more"],
           message: "Could not install project dependencies",
+          type: "error",
           detail:
-            "Please ensure your package manager is installed and functional.",
+            "Please ensure your package manager is installed and functional. \n\n" +
+            error.message,
         });
 
         if (response === 1) {
@@ -325,6 +328,10 @@ async function main() {
 
     ipcMain.on("send-command", async (_, id: string) => {
       switch (id) {
+        case "view-logs":
+          shell.openPath(getLogPath());
+          break;
+
         case "close-project":
           onCloseProject();
           break;
@@ -346,16 +353,18 @@ async function main() {
           if (welcomeWindow) {
             const filename = await showCreateDialog();
             if (filename) {
-              const result = await createProject(welcomeWindow, filename);
-              if (result) {
-                await onOpenProject(result);
-              } else {
+              try {
+                await createProject(welcomeWindow, filename);
+              } catch (e) {
+                const error = e as Error;
                 const { response } = await dialog.showMessageBox({
                   defaultId: 0,
+                  type: "error",
                   buttons: ["OK", "Learn more"],
-                  message: "Project partially initialized",
+                  message: "Project partially created",
                   detail:
-                    "We couldn't install project dependencies, please ensure your package manager is installed and functional.",
+                    "There was an error during project creation, please check your package manager. \n\n" +
+                    error.message,
                 });
 
                 if (response === 1) {
@@ -363,7 +372,11 @@ async function main() {
                     "https://triplex.dev/docs/supporting/installing-dependencies"
                   );
                 }
+
+                return;
               }
+
+              await onOpenProject(filename);
             }
           }
           break;
