@@ -16,7 +16,7 @@ function isRenderedSceneObject(
   if (
     // If the scene object has an attach prop it's not actually rendered to the scene
     // But instead attached to the parent object in the R3F tree.
-    !props.attach &&
+    props.attach ||
     exclusions.find((n) => name.includes(n))
   ) {
     return false;
