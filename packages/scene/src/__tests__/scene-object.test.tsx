@@ -44,6 +44,49 @@ describe("scene object component", () => {
     `);
   });
 
+  it("should not render an attached element as a scene object", async () => {
+    let error: Error | undefined = undefined;
+
+    try {
+      await render(
+        <MemoryRouter>
+          <ComponentProvider value={{}}>
+            <SceneObject
+              __component="directionalLight"
+              __meta={{
+                rotate: false,
+                scale: false,
+                translate: false,
+                column: 10,
+                line: 99,
+                name: "directionalLight",
+                path: "",
+              }}
+            >
+              <SceneObject
+                __component="orthographicCamera"
+                __meta={{
+                  rotate: true,
+                  scale: true,
+                  translate: true,
+                  column: 10,
+                  line: 100,
+                  name: "orthographicCamera",
+                  path: "",
+                }}
+                attach="shadow-camera"
+              />
+            </SceneObject>
+          </ComponentProvider>
+        </MemoryRouter>
+      );
+    } catch (e) {
+      error = e as Error;
+    } finally {
+      expect(error).toBeUndefined();
+    }
+  });
+
   it("should inject a box geometry to the mesh scene object", async () => {
     const { act, tree } = await render(
       <MemoryRouter>
