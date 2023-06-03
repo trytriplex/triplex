@@ -1,5 +1,13 @@
 # @triplex/scene
 
+## 0.51.1
+
+### Patch Changes
+
+- 753dba5: Fixes attached scene objects throwing.
+  - @triplex/bridge@0.51.1
+  - @triplex/ws-client@0.51.1
+
 ## 0.51.0
 
 ### Patch Changes
