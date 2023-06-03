@@ -54,6 +54,7 @@ importers:
 
   apps/docs:
     specifiers:
+      '@vercel/analytics': ^1.0.1
       autoprefixer: ^10.4.14
       next: ^13.3.0
       nextra: ^2.5.2
@@ -64,6 +65,7 @@ importers:
       tailwindcss: ^3.2.4
       typescript: ^4.9.4
     dependencies:
+      '@vercel/analytics': 1.0.1
       autoprefixer: 10.4.14_postcss@8.4.23
       next: 13.3.0_biqbaboplfbrettd7655fr4n2y
       nextra: 2.5.2_yucv4tfv7v7nrkw2uguegj6e7e
@@ -3074,6 +3076,10 @@ packages:
     dependencies:
       '@use-gesture/core': 10.2.24
       react: 18.2.0
+
+  /@vercel/analytics/1.0.1:
+    resolution: {integrity: sha512-Ux0c9qUfkcPqng3vrR0GTrlQdqNJ2JREn/2ydrVuKwM3RtMfF2mWX31Ijqo1opSjNAq6rK76PwtANw6kl6TAow==}
+    dev: false
 
   /@vitejs/plugin-react/3.0.1_vite@4.3.3:
     resolution: {integrity: sha512-mx+QvYwIbbpOIJw+hypjnW1lAbKDHtWK5ibkF/V1/oMBu8HU/chb+SnqJDAsLq1+7rGqjktCEomMTM5KShzUKQ==}

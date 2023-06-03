@@ -8,6 +8,7 @@
     "typedef": "echo \"Not implemented\""
   },
   "dependencies": {
+    "@vercel/analytics": "^1.0.1",
     "autoprefixer": "^10.4.14",
     "next": "^13.3.0",
     "nextra": "^2.5.2",
