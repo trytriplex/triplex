@@ -1,4 +1,5 @@
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { MathUtils } from "three";
 import { IDELink } from "../util/ide";
 import { ColorInput } from "./color-input";
 import { StringInput } from "./string-input";
@@ -91,7 +92,27 @@ export function PropInput({
     );
   }
 
-  if (prop.type === "number") {
+  if (prop.type === "number" && name.startsWith("rotation")) {
+    // We handle rotation differently because we need to convert rads to degs.
+    return (
+      <NumberInput
+        required={required}
+        defaultValue={prop.value}
+        name={name}
+        onChange={onChange}
+        onConfirm={onConfirm}
+        label={prop.label}
+        // There may be cases where this isn't desirable. Perhaps someone
+        // Already does this in userland and it will result in a double conversion.
+        // If this becomes a problem we can add the ability to turn it off but that
+        // Will require a larger overall refactor for how we handle prop inputs.
+        transformValue={{
+          in: (value) => value && MathUtils.radToDeg(value),
+          out: (value) => value && MathUtils.degToRad(value),
+        }}
+      />
+    );
+  } else if (prop.type === "number") {
     return (
       <NumberInput
         required={required}
@@ -140,7 +161,7 @@ export function PropInput({
       column={column || -1}
       line={line || -1}
       title="This prop is controlled by code."
-      className="flex h-[26px] items-center gap-0.5 overflow-hidden rounded-md border border-transparent bg-white/5 py-0.5 px-1 text-sm hover:bg-white/10 focus-visible:border-blue-400"
+      className="flex h-[26px] items-center gap-0.5 overflow-hidden rounded-md border border-transparent bg-white/5 px-1 py-0.5 text-sm hover:bg-white/10 focus-visible:border-blue-400"
     >
       <span className="overflow-hidden text-ellipsis whitespace-nowrap text-neutral-400">{`{${prop.value}}`}</span>
       <div className="ml-auto flex-shrink-0 text-orange-600">

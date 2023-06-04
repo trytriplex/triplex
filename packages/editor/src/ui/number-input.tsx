@@ -11,6 +11,7 @@ export function NumberInput({
   onChange,
   required,
   label,
+  transformValue = { in: (value) => value, out: (value) => value },
 }: {
   required?: boolean;
   label?: string;
@@ -18,6 +19,10 @@ export function NumberInput({
   name: string;
   onChange: (value: number | undefined) => void;
   onConfirm: (value: number | undefined) => void;
+  transformValue?: {
+    in: (value: number | undefined) => number | undefined;
+    out: (value: number | undefined) => number | undefined;
+  };
 }) {
   const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     e.target.focus();
@@ -26,7 +31,7 @@ export function NumberInput({
       ? undefined
       : e.target.valueAsNumber;
 
-    onChange(nextValue);
+    onChange(transformValue.out(nextValue));
   };
 
   const onBlurHandler: FocusEventHandler<HTMLInputElement> = (e) => {
@@ -40,7 +45,7 @@ export function NumberInput({
     }
 
     if (defaultValue !== nextValue) {
-      onConfirm(nextValue);
+      onConfirm(transformValue.out(nextValue));
     }
   };
 
@@ -63,7 +68,7 @@ export function NumberInput({
         data-testid={`number-${defaultValue}`}
         id={name}
         type="number"
-        defaultValue={defaultValue}
+        defaultValue={transformValue.in(defaultValue)}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
         className="w-full bg-transparent py-0.5 text-sm text-neutral-300 outline-none [appearance:textfield] [color-scheme:dark] placeholder:italic placeholder:text-neutral-500"
