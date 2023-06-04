@@ -39,6 +39,11 @@ Menu.setApplicationMenu(
   )
 );
 
+if (process.platform === "win32") {
+  // This ensures published notifications use the app name on Windows.
+  app.setAppUserModelId(app.name);
+}
+
 function prepareMenu() {
   const listeners: ((id: string) => void)[] = [];
 

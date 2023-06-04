@@ -23,7 +23,7 @@ export async function createProject(window: BrowserWindow, path: string) {
 
   try {
     new Notification({
-      title: "Creating Triplex project",
+      title: "Creating project",
       body: "Hold tight we're creating your new project and installing dependencies.",
     }).show();
 
