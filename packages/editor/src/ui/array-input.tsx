@@ -25,6 +25,51 @@ function merge(a: unknown[], b: Record<string, unknown>) {
   return c;
 }
 
+function isAnyRequiredValueUndefined(
+  valueDef: ArrayProp["value"],
+  nextValues: unknown[]
+) {
+  for (let i = 0; i < nextValues.length; i++) {
+    const value = nextValues[i];
+    const isUndefinedOrEmptyString =
+      typeof value === "undefined" || value === "";
+
+    if (isUndefinedOrEmptyString && valueDef[i].required) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function dropUnneededOptionalValues(
+  valueDef: ArrayProp["value"],
+  nextValues: unknown[]
+) {
+  const clearedValues: unknown[] = [];
+
+  let foundDefinedValue = false;
+
+  for (let i = nextValues.length - 1; i >= 0; i--) {
+    const value = nextValues[i];
+    const isUndefinedOrEmptyString =
+      typeof value === "undefined" || value === "";
+
+    if (
+      !foundDefinedValue &&
+      isUndefinedOrEmptyString &&
+      !valueDef[i].required
+    ) {
+      // While we haven't found any defined values, we can skip undefined optional ones
+    } else {
+      foundDefinedValue = true;
+      clearedValues.unshift(value);
+    }
+  }
+
+  return clearedValues;
+}
+
 export function ArrayInput({
   values,
   path,
@@ -55,11 +100,11 @@ export function ArrayInput({
           const currentValue: unknown[] = values.map(reduceValue);
           const nextValue = merge(currentValue, intermediateValues.current);
 
-          if (val.required && nextValue.includes(undefined)) {
+          if (isAnyRequiredValueUndefined(values, nextValue)) {
             return;
           }
 
-          onChange(nextValue);
+          onChange(dropUnneededOptionalValues(values, nextValue));
         };
 
         const onConfirmHandler = (value: unknown) => {
@@ -68,11 +113,11 @@ export function ArrayInput({
           const currentValue: unknown[] = values.map(reduceValue);
           const nextValue = merge(currentValue, intermediateValues.current);
 
-          if (val.required && nextValue.includes(undefined)) {
+          if (isAnyRequiredValueUndefined(values, nextValue)) {
             return;
           }
 
-          onConfirm(nextValue);
+          onConfirm(dropUnneededOptionalValues(values, nextValue));
           intermediateValues.current = {};
         };
 
