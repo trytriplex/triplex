@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { EditorFrame } from "./editor";
 import { TitleBar } from "./ui/title-bar";
 import { cn } from "./ds/cn";
+import { ErrorOverlay } from "./ui/error-overlay";
 import "./styles.css";
 
 createRoot(document.getElementById("root")!).render(
@@ -15,6 +16,7 @@ createRoot(document.getElementById("root")!).render(
     >
       <TitleBar />
       <EditorFrame />
+      <ErrorOverlay />
     </div>
   </BrowserRouter>
 );

@@ -7,6 +7,16 @@ module.exports = {
   content: [join(__dirname, "./src/**/*.tsx"), join(__dirname, "./index.html")],
   theme: {
     fontFamily: {
+      mono: [
+        "ui-monospace",
+        "SFMono-Regular",
+        "Menlo",
+        "Monaco",
+        "Consolas",
+        "Liberation Mono",
+        "Courier New",
+        "monospace",
+      ],
       sans: [
         "ui-sans-serif",
         "system-ui",

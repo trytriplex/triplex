@@ -19,8 +19,8 @@ import {
 } from "three";
 import { Selection } from "./selection";
 import { SceneLoader } from "./loader";
-import { ErrorBoundary } from "react-error-boundary";
 import { AddSceneObject } from "./add-scene-object";
+import { SceneErrorBoundary } from "./error-boundary";
 
 const V1 = new Vector3();
 const layers = new Layers();
@@ -163,7 +163,7 @@ export function SceneFrame() {
       />
       <OrbitControls makeDefault target={target} />
 
-      <ErrorBoundary resetKeys={[path, exportName]} fallbackRender={() => null}>
+      <SceneErrorBoundary>
         <Suspense fallback={null}>
           <Selection
             path={path}
@@ -186,7 +186,7 @@ export function SceneFrame() {
             />
           </Selection>
         </Suspense>
-      </ErrorBoundary>
+      </SceneErrorBoundary>
 
       <Grid
         sectionColor="#9d4b4b"

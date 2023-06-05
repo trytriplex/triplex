@@ -8,24 +8,47 @@ export const IconButton = forwardRef<
     icon: ComponentType<IconProps>;
     title: string;
     isSelected?: boolean;
+    isDisabled?: boolean;
     className?: string;
     onClick?: () => void;
     size?: "default" | "tight";
+    variant?: "default" | "inverse";
   }
 >(
   (
-    { icon: Icon, title, isSelected, onClick, className, size = "default" },
+    {
+      icon: Icon,
+      title,
+      isSelected,
+      onClick,
+      className,
+      isDisabled,
+      variant = "default",
+      size = "default",
+    },
     ref
   ) => (
     <button
       ref={ref}
       title={title}
+      disabled={isDisabled}
       onClick={onClick}
       type="submit"
       className={cn([
-        isSelected
-          ? "bg-white/5 text-blue-400"
-          : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
+        isDisabled && [
+          "cursor-not-allowed opacity-50",
+          variant === "default" && "bg-white/5 text-neutral-400",
+          variant === "inverse" && "bg-black/5 text-neutral-800",
+        ],
+        !isDisabled &&
+          (isSelected
+            ? "bg-white/5 text-blue-400"
+            : [
+                variant === "default" &&
+                  "text-neutral-400 hover:bg-white/5 active:bg-white/10",
+                variant === "inverse" &&
+                  "bg-black/5 text-neutral-800 hover:bg-black/10 active:bg-black/20",
+              ]),
         size === "default" && "rounded-md p-1.5",
         size === "tight" && "rounded p-0.5",
         className,
@@ -43,6 +66,7 @@ export const Button = forwardRef<
     isSelected?: boolean;
     className?: string;
     disabled?: boolean;
+    variant?: "default" | "inverse";
     onClick?: () => void;
     children: string;
     size?: "default" | "tight";
@@ -56,6 +80,7 @@ export const Button = forwardRef<
       isSelected,
       onClick,
       className,
+      variant = "default",
       size = "default",
     },
     ref
@@ -70,7 +95,12 @@ export const Button = forwardRef<
         !disabled &&
           (isSelected
             ? "text-blue-400 hover:bg-white/5 active:bg-white/10"
-            : "text-neutral-300 hover:bg-white/5 active:bg-white/10"),
+            : [
+                variant === "default" &&
+                  "text-neutral-300 hover:bg-white/5 active:bg-white/10",
+                variant === "inverse" &&
+                  "bg-black/5 text-neutral-800 hover:bg-black/10 active:bg-black/20",
+              ]),
         size === "default" && "rounded-md p-1.5 px-4",
         size === "tight" && "rounded px-2 py-0.5",
         "flex items-center gap-1.5 text-sm",
