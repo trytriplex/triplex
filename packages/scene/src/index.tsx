@@ -29,7 +29,9 @@ export function Scene({
         source: e.filename
           .replace(__TRIPLEX_BASE_URL__, __TRIPLEX_CWD__)
           .replace(/\?.+/, ""),
-        stack: e.error.stack.replace(/\?.+:/g, ":"),
+        stack: e.error.stack
+          .replaceAll(__TRIPLEX_BASE_URL__, __TRIPLEX_CWD__)
+          .replace(/\?.+:/g, ":"),
       });
     };
 

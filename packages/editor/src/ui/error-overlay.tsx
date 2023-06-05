@@ -1,7 +1,12 @@
 import { compose, listen } from "@triplex/bridge/host";
 import { useEffect, useRef, useState } from "react";
 import { IconButton } from "../ds/button";
-import { ArrowLeftIcon, ArrowRightIcon, CodeIcon } from "@radix-ui/react-icons";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  CodeIcon,
+  Cross2Icon,
+} from "@radix-ui/react-icons";
 import { getEditorLink } from "../util/ide";
 import { ScrollContainer } from "../ds/scroll-container";
 
@@ -86,6 +91,7 @@ export function ErrorOverlay() {
         <div className="mr-auto px-1 text-xs text-neutral-800 [font-variant-numeric:tabular-nums]">
           {index + 1} of {errors.length} errors in the scene
         </div>
+
         <IconButton
           onClick={() => {
             const context = window.open(
@@ -98,10 +104,15 @@ export function ErrorOverlay() {
 
             context?.close();
           }}
-          className="ml-auto"
           variant="inverse"
           title="View source"
           icon={CodeIcon}
+        />
+        <IconButton
+          onClick={() => setErrors([])}
+          variant="inverse"
+          title="Dismiss errors"
+          icon={Cross2Icon}
         />
       </div>
       <div className="px-2 text-sm text-neutral-800">{error.message}</div>
