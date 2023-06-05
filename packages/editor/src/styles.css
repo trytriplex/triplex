@@ -22,6 +22,23 @@
   }
 }
 
+@keyframes fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fade-in {
+  animation-name: fade-in;
+  animation-duration: 100ms;
+}
+
 .slide-in {
   animation-name: slide-in;
   animation-duration: 100ms;

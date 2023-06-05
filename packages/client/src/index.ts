@@ -36,12 +36,17 @@ export async function createServer({
     ],
     define: {
       __TRIPLEX_TARGET__: `"${target}"`,
+      __TRIPLEX_CWD__: `"${cwd}"`,
+      __TRIPLEX_BASE_URL__: `"http://localhost:3333"`,
     },
     root: cwd,
     logLevel: "error",
     appType: "custom",
     publicDir,
     server: {
+      hmr: {
+        overlay: false,
+      },
       middlewareMode: true,
     },
     resolve: {

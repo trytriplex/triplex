@@ -20,6 +20,38 @@ export function Scene({
 }) {
   useEffect(() => {
     send("trplx:onConnected", undefined);
+
+    const errorCallback = (e: ErrorEvent) => {
+      send("trplx:onError", {
+        message: e.message,
+        line: e.lineno,
+        col: e.colno,
+        source: e.filename
+          .replace(__TRIPLEX_BASE_URL__, __TRIPLEX_CWD__)
+          .replace(/\?.+/, ""),
+        stack: e.error.stack.replace(/\?.+:/g, ":"),
+      });
+    };
+
+    window.addEventListener("error", errorCallback);
+
+    import.meta.hot?.on("vite:error", (e) => {
+      send("trplx:onError", {
+        message: e.err.message,
+        line: e.err.loc?.line || -1,
+        col: e.err.loc?.column || -1,
+        source: e.err.id || "unknown",
+        stack: e.err.stack,
+      });
+    });
+
+    import.meta.hot?.on("vite:beforeUpdate", () => {
+      send("trplx:onOpenFileHmr", undefined);
+    });
+
+    return () => {
+      window.removeEventListener("error", errorCallback);
+    };
   }, []);
 
   return (

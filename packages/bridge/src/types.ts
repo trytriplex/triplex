@@ -1,6 +1,14 @@
 export type ClientSendEventName = keyof ClientSendEventData;
 
 export interface ClientSendEventData {
+  "trplx:onOpenFileHmr": undefined;
+  "trplx:onError": {
+    message: string;
+    line: number;
+    col: number;
+    source: string;
+    stack: string;
+  };
   "trplx:onAddNewComponent": {
     type:
       | {
@@ -55,10 +63,12 @@ export interface ClientSendEventData {
 }
 
 export interface ClientSendEventResponse {
+  "trplx:onOpenFileHmr": void;
   "trplx:onAddNewComponent": {
     line: number;
     column: number;
   };
+  "trplx:onError": void;
   "trplx:onConnected": void;
   "trplx:onConfirmSceneObjectProp": void;
   "trplx:onSceneObjectBlur": void;

@@ -20,19 +20,21 @@ const WhiteBox = forwardRef(() => (
   </>
 ));
 
-export const AnotherBox = memo(() => (
-  <mesh
-    position-x={-2}
-    rotation={[0, 0, 0]}
-    position={undefined}
-    visible={true}
-    castShadow={undefined}
-    receiveShadow={undefined}
-  >
-    <boxGeometry args={[1, 1, 1]} />
-    <meshStandardMaterial color="pink" />
-  </mesh>
-));
+export const AnotherBox = memo(() => {
+  return (
+    <mesh
+      position-x={-2}
+      rotation={[0, 0, 0]}
+      position={undefined}
+      visible={true}
+      castShadow={undefined}
+      receiveShadow={undefined}
+    >
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color="pink" />
+    </mesh>
+  );
+});
 
 export function Empty() {
   return (
