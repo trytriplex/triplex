@@ -85,6 +85,7 @@ export interface ClientSendEventResponse {
 export type HostSendEventName = keyof HostSendEventData;
 
 export interface HostSendEventData {
+  "trplx:requestRefresh": undefined;
   "trplx:requestAddNewComponent": {
     type:
       | {
@@ -162,6 +163,7 @@ export interface HostSendEventData {
 }
 
 export interface HostSendEventResponse {
+  "trplx:requestRefresh": void;
   "trplx:requestAddNewComponent": void;
   "trplx:requestBlurSceneObject": void;
   "trplx:requestDeleteSceneObject": void;

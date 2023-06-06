@@ -89,7 +89,7 @@ function findMenuItem(
 export function EditorMenu() {
   const showOverlay = useOverlayStore((store) => store.show);
   const { target, save, reset, deleteComponent, path, newFile } = useEditor();
-  const { blur, jumpTo, navigateTo } = useScene();
+  const { blur, jumpTo, navigateTo, refresh } = useScene();
   const { redo, undo, redoAvailable, undoAvailable } = useUndoRedoState();
   const isEditable = !!path;
 
@@ -153,6 +153,13 @@ export function EditorMenu() {
               label: "Revert File",
               click: () => revertFile(),
             },
+            {
+              id: "refresh-scene",
+              label: "Refresh Scene",
+              accelerator: shortcut("R", { meta: true }),
+              click: () => refresh(),
+            },
+            { type: "separator" },
             {
               // Menu item only displayed in native
               label: "Close Project",
@@ -272,6 +279,7 @@ export function EditorMenu() {
       newFile,
       redo,
       redoAvailable,
+      refresh,
       revertFile,
       save,
       showOverlay,
