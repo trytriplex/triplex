@@ -1,5 +1,31 @@
 # @triplex/electron
 
+## 0.52.0
+
+### Minor Changes
+
+- fe90482: Logs are now accessible through the View > Logs menubar action.
+
+### Patch Changes
+
+- 8f73338: Windows notifications will now display the correct app name.
+- fe90482: Errors during project creation now bubble up and are exposed to
+  users.
+- 16bf49e: When calling `exec` nvm's potential location is now accounted for.
+- fe90482: Errors during dependency installation now bubble up and are exposed
+  to users.
+- fe90482: The `/usr/local/bin` folder is now forcibly exposed on the PATH
+  environment variable when executing shell commands.
+- Updated dependencies [48016ba]
+- Updated dependencies [16d2c14]
+- Updated dependencies [fe90482]
+- Updated dependencies [8d532f5]
+- Updated dependencies [120f9ef]
+  - @triplex/editor@0.52.0
+  - create-triplex-project@0.52.0
+  - @triplex/client@0.52.0
+  - @triplex/server@0.52.0
+
 ## 0.51.1
 
 ### Patch Changes

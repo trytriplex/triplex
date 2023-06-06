@@ -1,5 +1,16 @@
 # @triplex/client
 
+## 0.52.0
+
+### Minor Changes
+
+- 8d532f5: Editor now shows build time and runtime errors in an error overlay.
+
+### Patch Changes
+
+- Updated dependencies [8d532f5]
+  - @triplex/scene@0.52.0
+
 ## 0.51.1
 
 ### Patch Changes

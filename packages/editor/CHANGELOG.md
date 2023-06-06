@@ -1,5 +1,23 @@
 # @triplex/editor
 
+## 0.52.0
+
+### Minor Changes
+
+- 48016ba: Rotation props are now displayed as degrees in the UI and saved to
+  code as radians. Previously it was all radians which was confusing for pretty
+  much everyone.
+- fe90482: Logs are now accessible through the View > Logs menubar action.
+- 8d532f5: Editor now shows build time and runtime errors in an error overlay.
+
+### Patch Changes
+
+- 120f9ef: When updating array inputs undefined optional values are now ignored
+  and discarded.
+- Updated dependencies [8d532f5]
+  - @triplex/bridge@0.52.0
+  - @triplex/ws-client@0.52.0
+
 ## 0.51.1
 
 ### Patch Changes

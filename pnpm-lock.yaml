@@ -120,19 +120,19 @@ importers:
         specifier: ^7.51.0
         version: 7.51.0
       '@triplex/client':
-        specifier: 0.51.1
+        specifier: 0.52.0
         version: link:../../packages/client
       '@triplex/editor':
-        specifier: 0.51.1
+        specifier: 0.52.0
         version: link:../../packages/editor
       '@triplex/server':
-        specifier: 0.51.1
+        specifier: 0.52.0
         version: link:../../packages/server
       anymatch:
         specifier: ^3.1.3
         version: 3.1.3
       create-triplex-project:
-        specifier: 0.51.1
+        specifier: 0.52.0
         version: link:../../packages/create-triplex-project
       electron-log:
         specifier: ^5.0.0-beta.23
@@ -181,7 +181,7 @@ importers:
         specifier: ^8.11.1
         version: 8.11.1(react-dom@18.2.0)(react@18.2.0)(three@0.148.0)
       '@triplex/run':
-        specifier: ^0.51.1
+        specifier: ^0.52.0
         version: link:../../packages/run
       '@types/react':
         specifier: ^18.0.0
@@ -208,7 +208,7 @@ importers:
         specifier: ^8.11.1
         version: 8.11.1(react-dom@18.2.0)(react@18.2.0)(three@0.148.0)
       '@triplex/run':
-        specifier: ^0.51.1
+        specifier: ^0.52.0
         version: link:../../packages/run
       '@types/react':
         specifier: ^18.0.0
@@ -250,7 +250,7 @@ importers:
         specifier: ^8.11.1
         version: 8.11.1(react-dom@18.2.0)(react@18.2.0)(three@0.148.0)
       '@triplex/run':
-        specifier: ^0.51.1
+        specifier: ^0.52.0
         version: link:../../packages/run
       '@types/react':
         specifier: ^18.0.0
@@ -277,7 +277,7 @@ importers:
         specifier: ^8.11.1
         version: 8.11.1(react-dom@18.2.0)(react@18.2.0)(three@0.148.0)
       '@triplex/run':
-        specifier: ^0.51.1
+        specifier: ^0.52.0
         version: link:../../packages/run
       '@types/react':
         specifier: ^18.0.0
@@ -319,7 +319,7 @@ importers:
         specifier: ^7.21.2
         version: 7.21.2
       '@triplex/scene':
-        specifier: 0.51.1
+        specifier: 0.52.0
         version: link:../scene
       '@vitejs/plugin-react':
         specifier: ^3.0.1
@@ -426,10 +426,10 @@ importers:
         specifier: ^8.11.1
         version: 8.11.1(react-dom@18.2.0)(react@18.2.0)(three@0.148.0)
       '@triplex/bridge':
-        specifier: 0.51.1
+        specifier: 0.52.0
         version: link:../bridge
       '@triplex/ws-client':
-        specifier: 0.51.1
+        specifier: 0.52.0
         version: link:../ws-client
       react:
         specifier: ^18.2.0
@@ -511,13 +511,13 @@ importers:
         specifier: ^10.0.2
         version: 10.0.2(commander@10.0.1)
       '@triplex/client':
-        specifier: 0.51.1
+        specifier: 0.52.0
         version: link:../client
       '@triplex/editor':
-        specifier: 0.51.1
+        specifier: 0.52.0
         version: link:../editor
       '@triplex/server':
-        specifier: 0.51.1
+        specifier: 0.52.0
         version: link:../server
       commander:
         specifier: ^10.0.0
@@ -560,10 +560,10 @@ importers:
         specifier: ^9.54.0
         version: 9.56.27(@react-three/fiber@8.11.1)(@types/three@0.148.0)(react-dom@18.2.0)(react@18.2.0)(three@0.148.0)
       '@triplex/bridge':
-        specifier: 0.51.1
+        specifier: 0.52.0
         version: link:../bridge
       '@triplex/ws-client':
-        specifier: 0.51.1
+        specifier: 0.52.0
         version: link:../ws-client
       react-error-boundary:
         specifier: ^3.1.4
@@ -3018,6 +3018,7 @@ packages:
 
   /@types/plist@3.0.2:
     resolution: {integrity: sha512-ULqvZNGMv0zRFvqn8/4LSPtnmN4MfhlPNtJCTpKuIIxGVGZ2rYWzFXrvEBoh9CVyqSE7D6YFRJ1hydLHI6kbWw==}
+    requiresBuild: true
     dependencies:
       '@types/node': 18.11.18
       xmlbuilder: 15.1.1
@@ -3101,6 +3102,7 @@ packages:
 
   /@types/verror@1.10.6:
     resolution: {integrity: sha512-NNm+gdePAX1VGvPcGZCDKQZKYSiAWigKhKaz5KF94hG6f2s8de9Ow5+7AbXoeKxL8gavZfk4UquSAygOF2duEQ==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -3617,6 +3619,7 @@ packages:
   /assert-plus@1.0.0:
     resolution: {integrity: sha512-NfJ4UzBCcQGLDlQq7nHxH+tv3kyZ0hHQqF5BO6J7tNJeP5do1llPr8dZ8zHonfhAu0PHAdMkSo+8o0wxg9lZWw==}
     engines: {node: '>=0.8'}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4364,6 +4367,7 @@ packages:
 
   /core-util-is@1.0.2:
     resolution: {integrity: sha512-3lqz5YjWTYnW6dlDa5TLaTCcShfar1e40rmcJVwCBJC6mWlFuj0eCHIElmG1g5kyuJ/GD+8Wn4FFCcz4gJPfaQ==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -4372,6 +4376,7 @@ packages:
 
   /crc@3.8.0:
     resolution: {integrity: sha512-iX3mfgcTMIq3ZKLIsVFAbv7+Mc10kxabAGQb8HvjA1o3T1PIYprbakQ65d3I+2HGHt6nSKkM9PYjgoJO2KcFBQ==}
+    requiresBuild: true
     dependencies:
       buffer: 5.7.1
     dev: true
@@ -5641,6 +5646,7 @@ packages:
   /extsprintf@1.4.1:
     resolution: {integrity: sha512-Wrk35e8ydCKDj/ArClo1VrPVmN8zph5V4AtHwIuHhvMXsKf73UT3BOD+azBIW+3wOJ4FhEH7zyaJCFvChjYvMA==}
     engines: {'0': node >=0.6.0}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -6457,6 +6463,7 @@ packages:
     resolution: {integrity: sha512-T10qvkw0zz4wnm560lOEg0PovVqUXuOFhhHAkixw8/sycy7TJt7v/RrkEKEQnAw2viPSJu6iAkErxnzR0g8PpQ==}
     engines: {node: ^8.11.2 || >=10}
     os: [darwin]
+    requiresBuild: true
     dependencies:
       cli-truncate: 2.1.0
       node-addon-api: 1.7.2
@@ -8328,6 +8335,7 @@ packages:
 
   /node-addon-api@1.7.2:
     resolution: {integrity: sha512-ibPK3iA+vaY1eEjESkQkM0BbCqFOaZMiXRTtdB0u7b4djtY6JnsjvPdUHVMg6xQt3B8fpTTWHI9A+ADjM9frzg==}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -9886,6 +9894,7 @@ packages:
   /slice-ansi@3.0.0:
     resolution: {integrity: sha512-pSyv7bSTC7ig9Dcgbw9AuRNUb5k5V6oDudjZoMBSr13qpLBG7tB+zgCkARjq7xIUgdz5P1Qe8u+rSGdouOOIyQ==}
     engines: {node: '>=8'}
+    requiresBuild: true
     dependencies:
       ansi-styles: 4.3.0
       astral-regex: 2.0.0
@@ -9911,6 +9920,7 @@ packages:
   /smart-buffer@4.2.0:
     resolution: {integrity: sha512-94hK0Hh8rPqQl2xXc3HsaBoOXKV20MToPkcXvwbISWLEs+64sBq5kFgn2kJDHb1Pry9yrP0dxrCI9RRci7RXKg==}
     engines: {node: '>= 6.0.0', npm: '>= 3.0.0'}
+    requiresBuild: true
     dev: true
     optional: true
 
@@ -11079,6 +11089,7 @@ packages:
   /verror@1.10.1:
     resolution: {integrity: sha512-veufcmxri4e3XSrT0xwfUR7kguIkaxBeosDg00yDWhk49wdwkSUrvvsm7nc75e1PUyvIeZj6nS8VQRYz2/S4Xg==}
     engines: {node: '>=0.6.0'}
+    requiresBuild: true
     dependencies:
       assert-plus: 1.0.0
       core-util-is: 1.0.2
@@ -11439,6 +11450,7 @@ packages:
   /xmlbuilder@15.1.1:
     resolution: {integrity: sha512-yMqGBqtXyeN1e3TGYvgNgDVZ3j84W4cwkOXQswghol6APgZWaff9lnbvN7MHYJOiXsvGPXtjTYJEiC9J2wv9Eg==}
     engines: {node: '>=8.0'}
+    requiresBuild: true
     dev: true
 
   /xmlchars@2.2.0:
