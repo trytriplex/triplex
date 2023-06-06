@@ -1,4 +1,4 @@
-import { send } from "@triplex/bridge/client";
+import { listen, send } from "@triplex/bridge/client";
 import { useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { SceneFrame } from "./scene";
@@ -54,6 +54,12 @@ export function Scene({
     return () => {
       window.removeEventListener("error", errorCallback);
     };
+  }, []);
+
+  useEffect(() => {
+    return listen("trplx:requestRefresh", () => {
+      window.location.reload();
+    });
   }, []);
 
   return (

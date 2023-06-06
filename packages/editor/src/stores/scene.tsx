@@ -104,6 +104,10 @@ interface BridgeContext {
    * @see {@link ./editor.tsx}
    */
   reset(): void;
+  /**
+   * Refreshes the scene.
+   */
+  refresh(): void;
 }
 
 /**
@@ -155,6 +159,9 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     },
     reset() {
       send("trplx:requestReset", undefined);
+    },
+    refresh() {
+      send("trplx:requestRefresh", undefined);
     },
   })
 );
