@@ -11,6 +11,7 @@ export function exec(
         cwd,
         signal,
         env: {
+          // If changing this make sure to also update init.ts inside create-triplex-project.
           PATH: [
             process.env.PATH,
             // Ensure volta is available on PATH just in case.
