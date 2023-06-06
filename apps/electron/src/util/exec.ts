@@ -11,9 +11,16 @@ export function exec(
         cwd,
         signal,
         env: {
-          // Ensure volta is available on PATH just in case.
-          // See: https://github.com/volta-cli/volta/issues/1007
-          PATH: `${process.env.HOME}/.volta/bin:${process.env.PATH}:/usr/local/bin`,
+          PATH: [
+            process.env.PATH,
+            // Ensure volta is available on PATH just in case.
+            // See: https://github.com/volta-cli/volta/issues/1007
+            `${process.env.HOME}/.volta/bin`,
+            // Ensure the default location for npm is available on PATH.
+            "/usr/local/bin",
+            // Ensure nvm is available on PATH.
+            `${process.env.HOME}/.nvm`,
+          ].join(":"),
         },
       },
       (err) => {
