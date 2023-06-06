@@ -1,5 +1,12 @@
 # create-triplex-project
 
+## 0.52.0
+
+### Patch Changes
+
+- 16d2c14: When installing dependencies the path env var now looks at the
+  default location for node and nvm.
+
 ## 0.51.1
 
 ## 0.51.0
