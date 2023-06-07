@@ -21,6 +21,7 @@ export function exec(
             "/usr/local/bin",
             // Ensure nvm is available on PATH.
             `${process.env.HOME}/.nvm`,
+            "/opt/homebrew/bin",
           ].join(":"),
         },
       },
