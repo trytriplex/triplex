@@ -3,6 +3,7 @@ import { type BrowserWindow, dialog, Notification } from "electron";
 import { basename } from "node:path";
 import { create } from "create-triplex-project";
 import { indeterminate } from "./progress-bar";
+import { createPkgManagerDialog } from "./dialog";
 
 export async function showCreateDialog() {
   const { canceled, filePaths } = await dialog.showOpenDialog({
@@ -19,16 +20,32 @@ export async function showCreateDialog() {
 
 export async function createProject(window: BrowserWindow, path: string) {
   const name = basename(path);
+
+  let command: "npm" | "yarn" | "pnpm";
+
+  const result = await createPkgManagerDialog(window, {
+    message: "Select a package manager",
+    detail: "If you're unsure select npm.",
+  });
+
+  if (result === false) {
+    return false;
+  }
+
+  command = result;
+
   const complete = indeterminate(window);
 
-  try {
-    new Notification({
-      title: "Creating project",
-      body: "Hold tight we're creating your new project and installing dependencies.",
-    }).show();
+  new Notification({
+    title: "Creating project",
+    body: "Hold tight we're creating your new project and installing dependencies.",
+  }).show();
 
-    window.webContents.send("window-state-change", "disabled");
-    await create({ name, cwd: path });
+  window.webContents.send("window-state-change", "disabled");
+
+  try {
+    await create({ name, cwd: path, packageManager: command });
+    return true;
   } finally {
     window.webContents.send("window-state-change", "active");
     complete();

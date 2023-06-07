@@ -6,7 +6,7 @@ export function exec(
 ) {
   return new Promise<void>((resolve, reject) => {
     execSync(
-      `${cmd} install`,
+      cmd,
       {
         cwd,
         signal,

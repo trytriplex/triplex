@@ -266,11 +266,16 @@ async function main() {
       });
 
       try {
-        await ensureDepsInstall(
+        const result = await ensureDepsInstall(
           cwd,
           welcomeWindow || activeProjectWindow,
           abortContoller.signal
         );
+
+        if (result === false) {
+          // Install was aborted, return.
+          return;
+        }
       } catch (e) {
         const error = e as Error;
         const { response } = await dialog.showMessageBox({
@@ -278,9 +283,8 @@ async function main() {
           buttons: ["OK", "Learn more"],
           message: "Could not install project dependencies",
           type: "error",
-          detail:
-            "Please ensure your package manager is installed and functional. \n\n" +
-            error.message,
+          detail: error.message,
+          cancelId: -1,
         });
 
         if (response === 1) {
@@ -359,7 +363,10 @@ async function main() {
             const filename = await showCreateDialog();
             if (filename) {
               try {
-                await createProject(welcomeWindow, filename);
+                const result = await createProject(welcomeWindow, filename);
+                if (result === false) {
+                  return;
+                }
               } catch (e) {
                 const error = e as Error;
                 const { response } = await dialog.showMessageBox({
@@ -370,6 +377,7 @@ async function main() {
                   detail:
                     "There was an error during project creation, please check your package manager. \n\n" +
                     error.message,
+                  cancelId: -1,
                 });
 
                 if (response === 1) {

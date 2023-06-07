@@ -3,16 +3,7 @@ import { readdir } from "node:fs/promises";
 import { BrowserWindow, Notification } from "electron";
 import { exec } from "./exec";
 import { indeterminate } from "./progress-bar";
-
-async function install(
-  cmd: string,
-  { signal, cwd }: { cwd: string; signal: AbortSignal }
-) {
-  return exec(`${cmd} install`, {
-    cwd,
-    signal,
-  });
-}
+import { createPkgManagerDialog } from "./dialog";
 
 export async function ensureDepsInstall(
   cwd: string,
@@ -24,22 +15,46 @@ export async function ensureDepsInstall(
     return true;
   }
 
+  let command: "npm" | "yarn" | "pnpm";
+
+  if (dir.includes("yarn.lock")) {
+    command = "yarn";
+  } else if (dir.includes("pnpm-lock.yaml")) {
+    command = "pnpm";
+  } else if (dir.includes("package-lock.json")) {
+    command = "npm";
+  } else {
+    // Unknown package manager, ask what package manager to use.
+    const result = await createPkgManagerDialog(window, {
+      message: "Select a package manager",
+      detail:
+        "We couldn't detect the package manager to use, if you're unsure select npm.",
+    });
+    if (result === false) {
+      return false;
+    }
+
+    command = result;
+  }
+
   const complete = indeterminate(window, signal);
 
-  try {
-    new Notification({
-      title: "Installing dependencies",
-      body: "Hold tight we're installing dependencies for your project.",
-    }).show();
+  new Notification({
+    title: "Installing dependencies",
+    body: "Hold tight we're installing dependencies for your project.",
+  }).show();
 
-    if (dir.includes("yarn.lock")) {
-      await install("yarn", { cwd, signal });
-    } else if (dir.includes("pnpm-lock.yaml")) {
-      await install("pnpm", { cwd, signal });
-    } else {
-      await install("npm", { cwd, signal });
-    }
+  window.webContents.send("window-state-change", "disabled");
+
+  try {
+    await exec(`${command} install`, {
+      cwd,
+      signal,
+    });
+
+    return true;
   } finally {
+    window.webContents.send("window-state-change", "active");
     complete();
   }
 }
