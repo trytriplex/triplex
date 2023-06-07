@@ -116,7 +116,6 @@ function WelcomeScreen() {
           </Button>
           <Button
             icon={ActivityLogIcon}
-            disabled={windowState === "disabled"}
             size="tight"
             onClick={() => window.triplex.sendCommand("view-logs")}
           >
