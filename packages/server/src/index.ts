@@ -230,19 +230,14 @@ export function createServer({
     async (push, { path }) => {
       // When modified
       const { sourceFile } = await project.getSourceFile(path);
-      sourceFile.onModified(() => {
-        push();
-      });
+      sourceFile.onModified(push);
 
       // When running on windows there is a timing issue where the saved indicator
       // Never gets unset after a save. Using polling alleviates this but isn't an
       // Ideal solution. Watch out for a better one, for example moving to watchman.
       const watcher = watch(path, { usePolling: process.platform === "win32" });
-      watcher
-        // When saved (fs change event) we push an update to connected clients.
-        .on("change", () => {
-          push();
-        });
+      // When saved (fs change event) we push an update to connected clients.
+      watcher.on("change", push);
     }
   );
 
@@ -310,8 +305,11 @@ export function createServer({
       };
     },
     async (push, { path }) => {
-      const { sourceFile } = await project.getSourceFile(path);
+      const { sourceFile, onDependencyModified } = await project.getSourceFile(
+        path
+      );
       sourceFile.onModified(push);
+      onDependencyModified(push);
     }
   );
 

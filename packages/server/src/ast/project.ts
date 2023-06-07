@@ -7,8 +7,9 @@ export interface TRIPLEXProject {
   createSourceFile(componentName: string): SourceFile;
   getSourceFile(path: string): {
     sourceFile: SourceFile;
+    onDependencyModified: (cb: () => void) => () => void;
+    cleanup(): void;
   };
-  removeSourceFile(path: string): void;
 }
 
 export function _createProject(opts: ProjectOptions) {
@@ -37,6 +38,31 @@ export function createProject({
 } = {}): TRIPLEXProject {
   const project = _createProject({
     tsConfigFilePath,
+  });
+  const dependencyModifiedCallbacks = new Map<string, (() => void)[]>();
+
+  // Watch the all files inside cwd and watch for changes.
+  // If any changes have been made refresh the source file.
+  const watcher = watch(cwd, { ignoreInitial: true });
+  watcher.on("change", async (path) => {
+    const sourceFile = project.getSourceFile(path);
+    if (!sourceFile) {
+      // We're only interested in source files that have been
+      // added to the project graph. This is why we use project
+      // directly and not the abstraction that creates it if missing.
+      return;
+    }
+
+    await sourceFile.refreshFromFileSystem();
+
+    sourceFile.getReferencingSourceFiles().forEach((refFile) => {
+      const path = refFile.getFilePath();
+      const callbacks = dependencyModifiedCallbacks.get(path);
+
+      if (callbacks) {
+        callbacks.forEach((cb) => cb());
+      }
+    });
   });
 
   function createSourceFile(componentName: string) {
@@ -67,30 +93,33 @@ export function ${componentName}() {
       throw new Error("invariant: path is outside of cwd");
     }
 
-    const existingSourceFile = project.getSourceFile(path);
-    if (!existingSourceFile) {
-      // New source file! Set up watchers for when it changes.
-
-      const sourceFile = project.addSourceFileAtPath(path);
-      const watcher = watch(path);
-      watcher.on("change", () => {
-        sourceFile.refreshFromFileSystem();
-      });
-
-      return {
-        sourceFile: sourceFile,
-      };
-    }
+    const sourceFile =
+      project.getSourceFile(path) || project.addSourceFileAtPath(path);
 
     return {
-      sourceFile: existingSourceFile,
+      sourceFile,
+      cleanup: () => {
+        const { sourceFile } = getSourceFile(path);
+        project.removeSourceFile(sourceFile);
+        dependencyModifiedCallbacks.delete(sourceFile.getFilePath());
+      },
+      onDependencyModified: (cb: () => void) => {
+        const callbacks = dependencyModifiedCallbacks.get(path) || [];
+        dependencyModifiedCallbacks.set(path, [...callbacks, cb]);
+
+        return () => {
+          const callbacks = dependencyModifiedCallbacks.get(path);
+          if (!callbacks) {
+            return;
+          }
+
+          dependencyModifiedCallbacks.set(
+            path,
+            callbacks.filter((callback) => callback !== cb)
+          );
+        };
+      },
     };
-  }
-
-  function removeSourceFile(path: string) {
-    const { sourceFile } = getSourceFile(path);
-
-    project.removeSourceFile(sourceFile);
   }
 
   return {
@@ -99,6 +128,5 @@ export function ${componentName}() {
     },
     createSourceFile,
     getSourceFile,
-    removeSourceFile,
   };
 }
