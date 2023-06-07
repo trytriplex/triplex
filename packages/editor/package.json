@@ -1,10 +1,13 @@
 {
   "name": "@triplex/editor",
   "version": "0.52.0",
-  "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "license": "Apache-2.0",
+  "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "main": "./src/main-dev-only.ts",
   "types": "./src/main-dev-only.ts",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "vite build",
     "typedef": "tsc"
@@ -14,25 +17,20 @@
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-menubar": "^1.0.2",
     "@radix-ui/react-scroll-area": "^1.0.3",
-    "@react-three/fiber": "^8.11.1",
     "@triplex/bridge": "0.52.0",
     "@triplex/ws-client": "0.52.0",
     "react-dom": "^18.2.0",
-    "react-router-dom": "^6.7.0",
     "react-error-boundary": "^3.1.4",
-    "react": "^18.2.0",
+    "react-router-dom": "^6.7.0",
     "tinycolor2": "^1.6.0",
     "zustand": "^4.3.2"
-  },
-  "peerDependencies": {
-    "three": "^0.148.0"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.3.28",
     "@testing-library/react": "^14.0.0",
-    "@types/react-dom": "^18.0.10",
     "@types/react": "^18.0.27",
+    "@types/react-dom": "^18.0.10",
     "@types/three": "^0.148.0",
     "@types/tinycolor2": "^1.4.3",
     "@vitejs/plugin-react": "^3.0.1",
@@ -42,7 +40,9 @@
     "typescript": "^4.9.4",
     "vite": "^4.0.4"
   },
-  "files": [
-    "dist"
-  ]
+  "peerDependencies": {
+    "@react-three/fiber": "^8.0.0",
+    "react": "^18.0.0",
+    "three": ">=0.148.0"
+  }
 }
