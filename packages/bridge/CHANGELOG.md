@@ -1,5 +1,12 @@
 # @triplex/bridge
 
+## 0.53.0
+
+### Minor Changes
+
+- c71412b: Adds refresh scene action available in the File menubar and through
+  cmd/ctrl + r.
+
 ## 0.52.0
 
 ### Minor Changes

@@ -1,5 +1,13 @@
 # @triplex/server
 
+## 0.53.0
+
+### Patch Changes
+
+- 049ac2c: Changes to prop types are now correctly propagating to all
+  referencing modules that import them, previously you would have to restart
+  triplex for the change to be applied.
+
 ## 0.52.0
 
 ## 0.51.1

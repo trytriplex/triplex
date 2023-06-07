@@ -1,5 +1,15 @@
 # create-triplex-project
 
+## 0.53.0
+
+### Minor Changes
+
+- aa3a982: Template dependencies now use the latest versions available.
+
+### Patch Changes
+
+- 399953b: Adds homebrew to path for dependency installation.
+
 ## 0.52.0
 
 ### Patch Changes

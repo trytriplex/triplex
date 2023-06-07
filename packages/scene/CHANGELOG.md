@@ -1,5 +1,21 @@
 # @triplex/scene
 
+## 0.53.0
+
+### Minor Changes
+
+- c71412b: Adds refresh scene action available in the File menubar and through
+  cmd/ctrl + r.
+
+### Patch Changes
+
+- aa3a982: Fixed three peer dependency not being loose enough and
+  react-three-fiber and react being missing from peer dependencies.
+- Updated dependencies [aa3a982]
+- Updated dependencies [c71412b]
+  - @triplex/ws-client@0.53.0
+  - @triplex/bridge@0.53.0
+
 ## 0.52.0
 
 ### Minor Changes

@@ -1,5 +1,29 @@
 # @triplex/electron
 
+## 0.53.0
+
+### Minor Changes
+
+- b488d29: When installing dependencies a dialog is presented to select a
+  package manager if it could not be inferred.
+
+### Patch Changes
+
+- 399953b: Adds homebrew to path for dependency installation.
+- b488d29: Fix installing dependencies with yarn.
+- Updated dependencies [aa3a982]
+- Updated dependencies [399953b]
+- Updated dependencies [aa3a982]
+- Updated dependencies [aa3a982]
+- Updated dependencies [bddac75]
+- Updated dependencies [aa3a982]
+- Updated dependencies [049ac2c]
+- Updated dependencies [c71412b]
+  - @triplex/editor@0.53.0
+  - create-triplex-project@0.53.0
+  - @triplex/server@0.53.0
+  - @triplex/client@0.53.0
+
 ## 0.52.0
 
 ### Minor Changes

@@ -1,5 +1,12 @@
 # @triplex/ws-client
 
+## 0.53.0
+
+### Patch Changes
+
+- aa3a982: Fixed three peer dependency not being loose enough and
+  react-three-fiber and react being missing from peer dependencies.
+
 ## 0.52.0
 
 ## 0.51.1
