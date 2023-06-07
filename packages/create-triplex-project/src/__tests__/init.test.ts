@@ -108,14 +108,14 @@ describe("init command", () => {
     "editor": "triplex editor"
   },
   "dependencies": {
-    "@react-three/drei": "^9.0.0",
-    "@react-three/fiber": "^8.0.0",
+    "@react-three/drei": "^9.74.6",
+    "@react-three/fiber": "^8.13.0",
     "@triplex/run": "^0.0.0-local",
-    "@types/react": "^18.0.0",
-    "@types/three": "^0.148.0",
-    "react-dom": "^18.0.0",
-    "react": "^18.0.0",
-    "three": "^0.148.0"
+    "@types/react": "^18.2.8",
+    "@types/three": "^0.152.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "three": "^0.153.0"
   }
 }
 `.replaceAll("\n", EOL)
@@ -253,14 +253,14 @@ describe("init command", () => {
   "name": "app",
   "dependencies": {
     "already-exists": "^1.1.1",
-    "@react-three/drei": "^9.0.0",
-    "@react-three/fiber": "^8.0.0",
+    "@react-three/drei": "^9.74.6",
+    "@react-three/fiber": "^8.13.0",
     "@triplex/run": "^0.0.0-local",
-    "@types/react": "^18.0.0",
-    "@types/three": "^0.148.0",
-    "react-dom": "^18.0.0",
-    "react": "^18.0.0",
-    "three": "^0.148.0"
+    "@types/react": "^18.2.8",
+    "@types/three": "^0.152.1",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "three": "^0.153.0"
   },
   "scripts": {
     "editor": "triplex editor"
