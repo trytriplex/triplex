@@ -53,11 +53,7 @@ function WelcomeScreen() {
     <div className="flex h-screen w-screen select-none flex-col gap-8">
       <div className="absolute left-0 right-0 top-0 z-50 h-8 [-webkit-app-region:drag]"></div>
       <div className="relative">
-        <img
-          src="banner-r3f.jpg"
-          className="select bg-black"
-          draggable="false"
-        />
+        <img src="banner-r3f.jpg" className="bg-black" draggable="false" />
         <span
           className={cn([
             window.triplex.platform === "darwin" ? "top-0" : "bottom-0",
