@@ -58,7 +58,12 @@ function WelcomeScreen() {
           className="select bg-black"
           draggable="false"
         />
-        <span className="absolute bottom-0 right-0 ml-auto flex h-8 items-center pr-2.5 text-xs text-neutral-300">
+        <span
+          className={cn([
+            window.triplex.platform === "darwin" ? "top-0" : "bottom-0",
+            "absolute right-0 ml-auto flex h-8 items-center pr-2.5 text-xs text-neutral-300",
+          ])}
+        >
           {version}
         </span>
 
