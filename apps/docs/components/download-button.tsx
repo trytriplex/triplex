@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { cn } from "../util/cn";
 
 interface Asset {
   browser_download_url: string;
@@ -10,7 +11,13 @@ export function DownloadButton() {
   const [assets, setAssets] = useState<Asset[]>([]);
 
   useEffect(() => {
-    setPlatform(navigator.platform.match("Mac") ? "macOS" : "Windows");
+    if (navigator.platform.match("Mac")) {
+      setPlatform("macOS");
+    } else if (navigator.platform.match("Win")) {
+      setPlatform("Windows");
+    } else {
+      setPlatform("Unsupported");
+    }
   }, []);
 
   useEffect(() => {
@@ -20,18 +27,17 @@ export function DownloadButton() {
       );
       const json = await res.json();
 
-      const macOS: Asset[] = json.assets.filter((asset: Asset) =>
-        asset.name.endsWith(".dmg")
-      );
-      const windows: Asset[] = json.assets.filter((asset: Asset) =>
-        asset.name.endsWith(".exe")
-      );
+      if (navigator.platform.match("Mac")) {
+        const macOS: Asset[] = json.assets.filter((asset: Asset) =>
+          asset.name.endsWith(".dmg")
+        );
 
-      const isMac = !!navigator.platform.match("Mac");
-
-      if (isMac) {
         setAssets(macOS);
-      } else {
+      } else if (navigator.platform.match("Win")) {
+        const windows: Asset[] = json.assets.filter((asset: Asset) =>
+          asset.name.endsWith(".exe")
+        );
+
         setAssets(windows);
       }
     }
@@ -42,12 +48,25 @@ export function DownloadButton() {
   return (
     <>
       <a
-        href={assets[0]?.browser_download_url}
+        href={assets[0] ? assets[0].browser_download_url : "#"}
         target="_blank"
-        className="mb-2 rounded-full bg-blue-400 px-10 py-4 text-2xl font-semibold text-neutral-900"
+        className={cn([
+          platform === "Unsupported"
+            ? "cursor-not-allowed bg-neutral-500/80"
+            : "cursor-pointer bg-blue-400",
+          "mb-2 w-80 rounded-full py-4 text-center text-xl font-semibold text-neutral-900 md:text-2xl",
+        ])}
       >
-        Download for {platform}
+        {platform === "Unsupported"
+          ? "Unsupported Platform"
+          : `Download for ${platform}`}
       </a>
+
+      {platform === "Unsupported" && (
+        <p className="pt-3 text-center text-sm text-neutral-500">
+          Triplex supports macOS and Windows.
+        </p>
+      )}
 
       {assets.map((asset) => (
         <a
