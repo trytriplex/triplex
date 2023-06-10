@@ -2,6 +2,7 @@
 import { type BrowserWindow, dialog, Notification } from "electron";
 import { basename } from "node:path";
 import { create } from "create-triplex-project";
+import { env } from "./env";
 import { indeterminate } from "./progress-bar";
 import { createPkgManagerDialog } from "./dialog";
 
@@ -44,7 +45,7 @@ export async function createProject(window: BrowserWindow, path: string) {
   window.webContents.send("window-state-change", "disabled");
 
   try {
-    await create({ name, cwd: path, packageManager: command });
+    await create({ name, env, cwd: path, packageManager: command });
     return true;
   } finally {
     window.webContents.send("window-state-change", "active");

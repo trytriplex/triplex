@@ -5,13 +5,16 @@ export function create({
   name,
   packageManager = "npm",
   cwd = process.cwd(),
+  env,
 }: {
   name: string;
   packageManager?: "npm" | "yarn" | "pnpm";
   cwd?: string;
+  env?: Record<string, string>;
 }) {
   return init({
     name,
+    env,
     version,
     pkgManager: packageManager,
     cwd,
