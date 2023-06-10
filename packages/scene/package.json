@@ -14,13 +14,12 @@
     "typedef": "tsc"
   },
   "dependencies": {
-    "@react-three/drei": "^9.54.0",
     "@triplex/bridge": "0.53.0",
     "@triplex/ws-client": "0.53.0",
     "react-error-boundary": "^3.1.4",
     "react-router-dom": "^6.7.0",
     "suspend-react": "^0.0.9",
-    "three-stdlib": "^2.21.5"
+    "triplex-drei": "npm:@react-three/drei@9.54.0"
   },
   "devDependencies": {
     "@react-three/fiber": "^8.11.1",

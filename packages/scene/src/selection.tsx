@@ -1,10 +1,9 @@
-import { TransformControls } from "@react-three/drei";
+import { TransformControls } from "triplex-drei";
 import { ThreeEvent, useFrame, useThree } from "@react-three/fiber";
 import { listen, send } from "@triplex/bridge/client";
 import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws-client";
 import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
 import { Box3, Object3D, Vector3, Vector3Tuple } from "three";
-import { TransformControls as TransformControlsImpl } from "three-stdlib";
 import { GetSceneObject, GetSceneObjectTypes } from "./api-types";
 import { SceneObjectProps } from "./scene-object";
 
@@ -218,7 +217,8 @@ export function Selection({
   const [transform, setTransform] = useState<"translate" | "rotate" | "scale">(
     "translate"
   );
-  const transformControls = useRef<TransformControlsImpl>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const transformControls = useRef<any>(null);
   const dragging = useRef(false);
   const scene = useThree((store) => store.scene);
   const sceneData = useSubscriptionEffect<{

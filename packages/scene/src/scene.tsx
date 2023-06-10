@@ -1,7 +1,7 @@
 import { useSearchParams } from "react-router-dom";
 import { send } from "@triplex/bridge/client";
 import { Canvas } from "./canvas";
-import { OrbitControls, PerspectiveCamera, Grid } from "@react-three/drei";
+import { OrbitControls, PerspectiveCamera, Grid } from "triplex-drei";
 import {
   Suspense,
   useCallback,
