@@ -14,6 +14,7 @@ export async function init({
   mode = "interactive",
   createFolder = true,
   cwd: __cwd = process.cwd(),
+  env,
   __fs: fs = fs_dont_use_directly,
   __exec: exec = exec_dont_use_directly,
   __prompt: prompt = prompt_dont_use_directly,
@@ -21,6 +22,7 @@ export async function init({
   mode?: "non-interactive" | "interactive";
   name: string;
   cwd?: string;
+  env?: Record<string, string>;
   createFolder?: boolean;
   version: string;
   pkgManager: string;
@@ -237,22 +239,7 @@ export async function init({
 
   await exec(`${pkgManager} install`, {
     cwd,
-    // If changing this make sure to also update exec.ts inside the electron app.
-    env: {
-      // Ensure volta is available on PATH just in case.
-      // See: https://github.com/volta-cli/volta/issues/1007
-      PATH: [
-        process.env.PATH,
-        // Ensure volta is available on PATH just in case.
-        // See: https://github.com/volta-cli/volta/issues/1007
-        `${process.env.HOME}/.volta/bin`,
-        // Ensure the default location for npm is available on PATH.
-        "/usr/local/bin",
-        // Ensure nvm is available on PATH.
-        `${process.env.HOME}/.nvm`,
-        "/opt/homebrew/bin",
-      ].join(":"),
-    },
+    env,
   });
 
   spinner.succeed("Successfully initialized!");
