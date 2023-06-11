@@ -1,5 +1,11 @@
 # create-triplex-project
 
+## 0.53.1
+
+### Patch Changes
+
+- c891574: Add `env` to the js api.
+
 ## 0.53.0
 
 ### Minor Changes

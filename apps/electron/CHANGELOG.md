@@ -1,5 +1,17 @@
 # @triplex/electron
 
+## 0.53.1
+
+### Patch Changes
+
+- c891574: Replace hardcoded PATH environment variable with values from
+  `shell-env`.
+- Updated dependencies [c891574]
+  - create-triplex-project@0.53.1
+  - @triplex/client@0.53.1
+  - @triplex/editor@0.53.1
+  - @triplex/server@0.53.1
+
 ## 0.53.0
 
 ### Minor Changes
