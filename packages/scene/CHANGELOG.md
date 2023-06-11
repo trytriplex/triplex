@@ -1,5 +1,13 @@
 # @triplex/scene
 
+## 0.53.1
+
+### Patch Changes
+
+- 4ddb52e: Remove direct usage of @react-three/drei with an alias.
+  - @triplex/bridge@0.53.1
+  - @triplex/ws-client@0.53.1
+
 ## 0.53.0
 
 ### Minor Changes

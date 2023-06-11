@@ -11,7 +11,7 @@
   "dependencies": {
     "@react-three/drei": "^9.56.27",
     "@react-three/fiber": "^8.11.1",
-    "@triplex/run": "^0.53.0",
+    "@triplex/run": "^0.53.1",
     "@types/react": "^18.0.0",
     "@types/three": "^0.148.0",
     "react-dom": "^18.0.0",

@@ -1,6 +1,6 @@
 {
   "name": "@triplex/editor",
-  "version": "0.53.0",
+  "version": "0.53.1",
   "license": "Apache-2.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "main": "./src/main-dev-only.ts",
@@ -17,8 +17,8 @@
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-menubar": "^1.0.2",
     "@radix-ui/react-scroll-area": "^1.0.3",
-    "@triplex/bridge": "0.53.0",
-    "@triplex/ws-client": "0.53.0",
+    "@triplex/bridge": "0.53.1",
+    "@triplex/ws-client": "0.53.1",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^3.1.4",
     "react-router-dom": "^6.7.0",
