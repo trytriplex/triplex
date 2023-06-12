@@ -73,6 +73,10 @@ interface BridgeContext {
     exportName: string;
   }): void;
   /**
+   * Sets the scene camera type.
+   */
+  setCameraType(type: "perspective" | "orthographic"): void;
+  /**
    * Sets the scene transform control mode.
    */
   setTransform(mode: "scale" | "translate" | "rotate"): void;
@@ -144,6 +148,9 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     },
     setPropValue(data) {
       send("trplx:requestSetSceneObjectProp", data);
+    },
+    setCameraType(type) {
+      send("trplx:requestCameraTypeChange", { type });
     },
     persistPropValue(data) {
       send("trplx:requestPersistSceneObjectProp", data);

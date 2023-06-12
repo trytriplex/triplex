@@ -50,6 +50,9 @@ export interface ClientSendEventData {
   "trplx:onTransformChange": {
     mode: "translate" | "scale" | "rotate";
   };
+  "trplx:onCameraTypeChange": {
+    type: "perspective" | "orthographic";
+  };
   "trplx:onSceneObjectNavigated": {
     path: string;
     exportName: string;
@@ -75,6 +78,7 @@ export interface ClientSendEventResponse {
   "trplx:onSceneObjectDelete": void;
   "trplx:onSceneObjectFocus": void;
   "trplx:onTransformChange": void;
+  "trplx:onCameraTypeChange": void;
   "trplx:onSceneObjectNavigated": void;
   "trplx:requestSave": void;
   "trplx:requestRedo": void;
@@ -133,6 +137,9 @@ export interface HostSendEventData {
   "trplx:requestTransformChange": {
     mode: "translate" | "scale" | "rotate";
   };
+  "trplx:requestCameraTypeChange": {
+    type: "perspective" | "orthographic";
+  };
   "trplx:requestResetSceneObjectProp": {
     column: number;
     line: number;
@@ -177,4 +184,5 @@ export interface HostSendEventResponse {
   "trplx:requestSceneObjectPropValue": { value: unknown };
   "trplx:requestSetSceneObjectProp": void;
   "trplx:requestTransformChange": void;
+  "trplx:requestCameraTypeChange": void;
 }
