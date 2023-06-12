@@ -1,5 +1,10 @@
-import { AllSidesIcon, TransformIcon, AngleIcon } from "@radix-ui/react-icons";
-import { listen } from "@triplex/bridge/host";
+import {
+  AllSidesIcon,
+  TransformIcon,
+  AngleIcon,
+  GridIcon,
+} from "@radix-ui/react-icons";
+import { listen, compose } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
 import { IconButton } from "../ds/button";
 import { useScene } from "../stores/scene";
@@ -8,12 +13,20 @@ export function ControlsMenu() {
   const [mode, setMode] = useState<"translate" | "scale" | "rotate" | null>(
     null
   );
-  const { setTransform } = useScene();
+  const [camera, setCamera] = useState<"perspective" | "orthographic" | null>(
+    null
+  );
+  const { setTransform, setCameraType } = useScene();
 
   useEffect(() => {
-    return listen("trplx:onTransformChange", ({ mode }) => {
-      setMode(mode);
-    });
+    return compose([
+      listen("trplx:onCameraTypeChange", ({ type }) => {
+        setCamera(type);
+      }),
+      listen("trplx:onTransformChange", ({ mode }) => {
+        setMode(mode);
+      }),
+    ]);
   });
 
   return (
@@ -35,6 +48,30 @@ export function ControlsMenu() {
         title="Scale [s]"
         icon={TransformIcon}
         onClick={() => setTransform("scale")}
+      />
+      <div className="-my-1 mx-1 w-[1px] bg-neutral-800" />
+      <IconButton
+        onClick={() =>
+          setCameraType(
+            camera === "perspective" ? "orthographic" : "perspective"
+          )
+        }
+        title={
+          camera === "perspective"
+            ? "Switch to orthographic"
+            : "Switch to perspective"
+        }
+        icon={() => (
+          <div
+            className={
+              camera === "perspective"
+                ? "[transform:perspective(30px)_rotateX(45deg)]"
+                : undefined
+            }
+          >
+            <GridIcon />
+          </div>
+        )}
       />
     </div>
   );

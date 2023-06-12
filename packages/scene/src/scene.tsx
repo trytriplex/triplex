@@ -1,26 +1,14 @@
 import { useSearchParams } from "react-router-dom";
 import { send } from "@triplex/bridge/client";
 import { Canvas } from "./canvas";
-import { OrbitControls, PerspectiveCamera, Grid } from "triplex-drei";
-import {
-  Suspense,
-  useCallback,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import {
-  Box3,
-  Layers,
-  PerspectiveCamera as PC,
-  Vector3,
-  Vector3Tuple,
-} from "three";
+import { OrbitControls, Grid } from "triplex-drei";
+import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import { Box3, Layers, Vector3, Vector3Tuple } from "three";
 import { Selection } from "./selection";
 import { SceneLoader } from "./loader";
 import { AddSceneObject } from "./add-scene-object";
 import { SceneErrorBoundary } from "./error-boundary";
+import { Camera } from "./components/camera";
 
 const V1 = new Vector3();
 const layers = new Layers();
@@ -47,7 +35,6 @@ export function SceneFrame() {
     actualCameraPosition[2] += 7;
     return { target: focalPoint.objectCenter, position: actualCameraPosition };
   }, [focalPoint]);
-  const camera = useRef<PC>(null);
 
   if (path && !exportName) {
     throw new Error("invariant: exportName is undefined");
@@ -155,12 +142,7 @@ export function SceneFrame() {
 
   return (
     <Canvas>
-      <PerspectiveCamera
-        ref={camera}
-        makeDefault
-        layers={layers}
-        position={position}
-      />
+      <Camera target={target} position={position} layers={layers} />
       <OrbitControls makeDefault target={target} />
 
       <SceneErrorBoundary>
