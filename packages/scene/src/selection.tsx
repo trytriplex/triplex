@@ -1,4 +1,3 @@
-import { TransformControls } from "triplex-drei";
 import { ThreeEvent, useFrame, useThree } from "@react-three/fiber";
 import { listen, send } from "@triplex/bridge/client";
 import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws-client";
@@ -13,6 +12,7 @@ import {
   useState,
 } from "react";
 import { Box3, Object3D, Vector3, Vector3Tuple } from "three";
+import { TransformControls } from "./components/transform-controls";
 import { GetSceneObject, GetSceneObjectTypes } from "./api-types";
 import { SceneObjectProps } from "./scene-object";
 
