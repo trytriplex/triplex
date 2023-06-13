@@ -17,6 +17,7 @@
     "@triplex/bridge": "0.53.1",
     "@triplex/ws-client": "0.53.1",
     "react-error-boundary": "^3.1.4",
+    "react-merge-refs": "^1.1.0",
     "react-router-dom": "^6.7.0",
     "suspend-react": "^0.0.9",
     "triplex-drei": "npm:@react-three/drei@9.54.0"

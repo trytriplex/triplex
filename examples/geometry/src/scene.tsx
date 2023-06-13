@@ -1,7 +1,7 @@
 import Box1 from "./geometry/box";
 import Cylinder from "@/geometry/cylinder";
 import Box from "src/geometry/box";
-import { RoundedBox } from "@react-three/drei";
+import { RoundedBox, PerspectiveCamera } from "@react-three/drei";
 import Sphere from "./geometry/sphere";
 
 export function SceneAlt() {
@@ -51,6 +51,12 @@ export default function Scene() {
       <Cylinder position={[1.4681464869137235, 0, -4.205778397787599]} />
       <Cylinder position={[-5.14749272451115, 0, -2.9618330871711818]} />
       <Box1 color={"blue"} position={1} />
+      <PerspectiveCamera
+        rotation={[-0.19198621771937624, -0.002030757867083124, 0]}
+        scale={[1, 1, 1]}
+        position={[0, 0.6261170942410695, -0.09817127237896273]}
+        zoom={1}
+      />
     </>
   );
 }

@@ -2,12 +2,14 @@
 import { ThreeEvent, useFrame } from "@react-three/fiber";
 import { useLayoutEffect, useRef, useState } from "react";
 import { Object3D } from "three";
+import "./camera-helper";
 
 type Helper =
   | "spotLightHelper"
   | "directionalLightHelper"
   | "pointLightHelper"
-  | "hemisphereLightHelper";
+  | "hemisphereLightHelper"
+  | "triplexCameraHelper";
 
 type HelperInstance = Object3D & { update: () => void; dispose: () => void };
 
@@ -34,6 +36,12 @@ export const getHelperForElement = (
     case "directionalLight":
       return ["directionalLightHelper", []];
 
+    case "perspectiveCamera":
+    case "orthographicCamera":
+    case "PerspectiveCamera":
+    case "OrthographicCamera":
+      return ["triplexCameraHelper", []];
+
     default:
       return undefined;
   }
@@ -51,7 +59,7 @@ export function Helper({
   onClick: (e: ThreeEvent<MouseEvent>) => void;
 }) {
   const [target, setTarget] = useState<any | null>(null);
-  const helperRef = useRef<HelperInstance>(null!);
+  const helperRef = useRef<HelperInstance>(null);
   const altHelperRef = useRef<HelperInstance>(null);
 
   useLayoutEffect(() => {
@@ -61,7 +69,7 @@ export function Helper({
   }, [parentObject]);
 
   useFrame(() => {
-    helperRef.current.update();
+    helperRef.current?.update();
     altHelperRef.current?.update();
   });
 

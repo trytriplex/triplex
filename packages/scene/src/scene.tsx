@@ -1,9 +1,9 @@
 import { useSearchParams } from "react-router-dom";
 import { send } from "@triplex/bridge/client";
-import { Canvas } from "./canvas";
-import { OrbitControls, Grid } from "triplex-drei";
+import { Grid } from "triplex-drei";
 import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
 import { Box3, Layers, Vector3, Vector3Tuple } from "three";
+import { Canvas } from "./canvas";
 import { Selection } from "./selection";
 import { SceneLoader } from "./loader";
 import { AddSceneObject } from "./add-scene-object";
@@ -143,8 +143,6 @@ export function SceneFrame() {
   return (
     <Canvas>
       <Camera target={target} position={position} layers={layers} />
-      <OrbitControls makeDefault target={target} />
-
       <SceneErrorBoundary>
         <Suspense fallback={null}>
           <Selection

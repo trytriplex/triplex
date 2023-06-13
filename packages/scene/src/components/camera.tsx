@@ -2,9 +2,20 @@
  * Heavily inspired from @nickyvanurk gist on switching between camera modes.
  * https://gist.github.com/nickyvanurk/9ac33a6aff7dd7bd5cd5b8a20d4db0dc
  */
-import { useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { useThree } from "@react-three/fiber";
-import { OrthographicCamera, PerspectiveCamera } from "triplex-drei";
+import {
+  OrbitControls,
+  OrthographicCamera,
+  PerspectiveCamera,
+} from "triplex-drei";
 import { Layers, Vector3, Vector3Tuple } from "three";
 import { listen, send } from "@triplex/bridge/client";
 
@@ -25,21 +36,38 @@ function frustumWidthAtDistance(
 
 const V1 = new Vector3();
 
+const CameraContext = createContext<{
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  controls: React.MutableRefObject<any | null>;
+}>({
+  controls: { current: null },
+});
+
+export const useCameraRefs = () => {
+  const context = useContext(CameraContext);
+  return context;
+};
+
 export function Camera({
   position,
   layers,
   target,
 }: {
   position: Vector3Tuple;
-  layers: Layers;
+  layers?: Layers;
   target: Vector3Tuple;
 }) {
   const [type, setType] = useState<"perspective" | "orthographic">(
     "perspective"
   );
+  const defaultCamera = useThree((three) => three.camera);
   const prevType = useRef<"perspective" | "orthographic">();
   const orthographicRef = useRef<THREE.OrthographicCamera>(null!);
   const perspectiveRef = useRef<THREE.PerspectiveCamera>(null!);
+  const refs = useCameraRefs();
+  const [activeCamera, setActiveCamera] = useState<
+    THREE.OrthographicCamera | THREE.PerspectiveCamera | undefined
+  >(undefined);
   const set = useThree((three) => three.set);
 
   useEffect(() => {
@@ -63,7 +91,6 @@ export function Camera({
       orthographicRef.current.left = -halfWidth;
       orthographicRef.current.right = halfWidth;
       orthographicRef.current.zoom = 1;
-
       orthographicRef.current.lookAt(vtarget);
       orthographicRef.current.updateProjectionMatrix();
 
@@ -71,6 +98,7 @@ export function Camera({
       send("trplx:onCameraTypeChange", { type });
 
       prevType.current = "orthographic";
+      setActiveCamera(orthographicRef.current);
     } else if (type === "perspective") {
       if (prevType.current === "orthographic") {
         const oldY = perspectiveRef.current.position.y;
@@ -83,6 +111,7 @@ export function Camera({
       send("trplx:onCameraTypeChange", { type });
 
       prevType.current = "perspective";
+      setActiveCamera(perspectiveRef.current);
     }
   }, [set, target, type]);
 
@@ -94,6 +123,17 @@ export function Camera({
         ref={perspectiveRef}
       />
       <OrthographicCamera layers={layers} ref={orthographicRef} />
+      {activeCamera && (
+        <OrbitControls
+          // We don't want user land cameras to be able to be affected by these controls
+          // So we explicitly set the camera instead of relying on "default camera" behaviour.
+          camera={activeCamera}
+          // Disable controls if someone has set a default camera.
+          enabled={defaultCamera === activeCamera}
+          target={target}
+          ref={refs.controls}
+        />
+      )}
     </>
   );
 }
