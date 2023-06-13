@@ -1,7 +1,10 @@
 import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { compose, listen } from "@triplex/bridge/client";
-import { AddSceneObject } from "./add-scene-object";
 import { Object3DProps } from "@react-three/fiber";
+import { AddSceneObject } from "./add-scene-object";
+import { Helper, getHelperForElement } from "./components/helper";
+import { Group } from "three";
+import { useSelectSceneObject } from "./selection";
 
 function useForceRender() {
   const [, setState] = useState(false);
@@ -139,6 +142,8 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
   ({ __component: Component, __meta, ...props }, ref) => {
     const { children, ...reconciledProps } = useSceneObjectProps(__meta, props);
     const [isDeleted, setIsDeleted] = useState(false);
+    const parentRef = useRef<Group>(null);
+    const selectSceneObject = useSelectSceneObject();
 
     useEffect(() => {
       return compose([
@@ -211,13 +216,33 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
     );
 
     if (isRenderedSceneObject(__meta.name, props)) {
+      const helper = getHelperForElement(__meta.name);
+
       return (
-        <group
-          userData={{ triplexSceneMeta: { ...__meta, props } }}
-          visible={!isDeleted}
-        >
-          {componentJsx}
-        </group>
+        <>
+          <group
+            userData={{ triplexSceneMeta: { ...__meta, props } }}
+            visible={!isDeleted}
+            ref={parentRef}
+          >
+            {componentJsx}
+          </group>
+          {helper && !isDeleted && (
+            <Helper
+              parentObject={parentRef}
+              helperName={helper[0]}
+              args={helper[1]}
+              onClick={(e) => {
+                if (e.delta > 1) {
+                  return;
+                }
+
+                e.stopPropagation();
+                selectSceneObject(__meta);
+              }}
+            />
+          )}
+        </>
       );
     } else if (!isDeleted) {
       return componentJsx;

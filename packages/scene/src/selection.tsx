@@ -2,7 +2,16 @@ import { TransformControls } from "triplex-drei";
 import { ThreeEvent, useFrame, useThree } from "@react-three/fiber";
 import { listen, send } from "@triplex/bridge/client";
 import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws-client";
-import { ReactNode, useEffect, useMemo, useRef, useState } from "react";
+import {
+  ReactNode,
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { Box3, Object3D, Vector3, Vector3Tuple } from "three";
 import { GetSceneObject, GetSceneObjectTypes } from "./api-types";
 import { SceneObjectProps } from "./scene-object";
@@ -187,6 +196,20 @@ export interface JsxElementPositions {
 
 const V1 = new Vector3();
 const box = new Box3();
+const noop = () => {};
+const SelectionContext =
+  createContext<
+    (select: { line: number; column: number; path: string }) => void
+  >(noop);
+
+export const useSelectSceneObject = () => {
+  const select = useContext(SelectionContext);
+  if (process.env.NODE_ENV !== "test" && select === noop) {
+    throw new Error("invariant");
+  }
+
+  return select;
+};
 
 export function Selection({
   children,
@@ -484,9 +507,30 @@ export function Selection({
     }
   });
 
+  const selectSceneObject = useCallback(
+    (obj: { path: string; column: number; line: number }) => {
+      send("trplx:onSceneObjectFocus", {
+        column: obj.column,
+        line: obj.line,
+      });
+
+      setSelected(obj);
+    },
+    []
+  );
+
   return (
-    <group name="selection-group" onClick={onClick}>
-      {children}
+    <group
+      name="selection-group"
+      // TODO: Since we've implemented the selection context we can technically
+      // Remove this entire group and handle it inside the scene object component.
+      // Let's do it in a follow up PR.
+      onClick={onClick}
+    >
+      <SelectionContext.Provider value={selectSceneObject}>
+        {children}
+      </SelectionContext.Provider>
+
       {selectedObject && (
         <TransformControls
           enabled={
