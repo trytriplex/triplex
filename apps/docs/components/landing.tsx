@@ -13,12 +13,28 @@ export function Landing() {
             Save your changes straight back to source code.
           </span>
 
-          <Link
-            href="/docs/overview"
-            className="rounded-full border-[3px] border-blue-400 px-10 py-4 text-xl font-semibold text-blue-400 hover:bg-blue-400 hover:text-neutral-900 md:ml-auto lg:text-2xl xl:mr-28"
-          >
-            Get Started →
-          </Link>
+          <div className="flex flex-col gap-4 md:flex-row md:gap-8">
+            <Link
+              href="/download"
+              className="flex h-[54px] w-[250px] items-center justify-center rounded-full bg-blue-400 text-xl font-bold text-neutral-900"
+            >
+              Get Early Access
+            </Link>
+
+            <a
+              href="https://www.producthunt.com/posts/triplex?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-triplex"
+              target="_blank"
+            >
+              <img
+                src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=397798&theme=neutral"
+                alt="Triplex - The&#0032;React&#0032;three&#0032;fiber&#0032;editor | Product Hunt"
+                style={{ width: "250px", height: "54px" }}
+                className="rounded-full"
+                width="250"
+                height="54"
+              />
+            </a>
+          </div>
         </div>
       </div>
     </div>

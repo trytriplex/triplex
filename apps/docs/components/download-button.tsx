@@ -54,12 +54,12 @@ export function DownloadButton() {
           platform === "Unsupported"
             ? "cursor-not-allowed bg-neutral-500/80"
             : "cursor-pointer bg-blue-400",
-          "mb-2 w-80 rounded-full py-4 text-center text-xl font-semibold text-neutral-900 md:text-2xl",
+          "mb-2 w-80 rounded-full py-4 text-center text-xl font-bold text-neutral-900",
         ])}
       >
         {platform === "Unsupported"
           ? "Unsupported Platform"
-          : `Download for ${platform}`}
+          : `Download For ${platform}`}
       </a>
 
       {platform === "Unsupported" && (
