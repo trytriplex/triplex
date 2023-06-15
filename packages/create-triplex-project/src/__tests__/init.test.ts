@@ -25,6 +25,7 @@ describe("init command", () => {
         cwd,
         name: "fresh-local",
         pkgManager: "npm",
+        target: "node",
         version: "0.0.0-local",
         __fs: stubFs,
         __exec: stubExec,
@@ -50,6 +51,7 @@ describe("init command", () => {
         cwd,
         name: "fresh-local",
         pkgManager: "npm",
+        target: "node",
         version: "0.0.0-local",
         __fs: stubFs,
         __exec: stubExec,
@@ -92,6 +94,7 @@ describe("init command", () => {
         cwd,
         name: "fresh-local",
         pkgManager: "npm",
+        target: "node",
         version: "0.0.0-local",
         __fs: stubFs,
         __exec: stubExec,
@@ -140,6 +143,7 @@ describe("init command", () => {
         cwd,
         name: "",
         pkgManager: "npm",
+        target: "node",
         version: "0.0.0-local",
         __fs: stubFs,
         __exec: stubExec,
@@ -169,6 +173,7 @@ describe("init command", () => {
         cwd,
         name: "",
         pkgManager: "npm",
+        target: "node",
         version: "0.0.0-local",
         __fs: stubFs,
         __exec: stubExec,
@@ -195,7 +200,7 @@ describe("init command", () => {
       );
     });
 
-    it("should update git ignore", async () => {
+    it("should skip git ignore", async () => {
       const stubFs: FS = {
         readdir,
         readFile,
@@ -211,17 +216,15 @@ describe("init command", () => {
         cwd,
         name: "",
         pkgManager: "npm",
+        target: "node",
         version: "0.0.0-local",
         __fs: stubFs,
         __exec: stubExec,
         __prompt: vi.fn().mockResolvedValue({ continue: true }),
       });
 
-      expect(stubFs.writeFile).toHaveBeenCalledWith(
-        join(cwd, ".gitignore"),
-        `node_modules
-.triplex/tmp
-`.replace("\n", EOL)
+      expect(stubFs.writeFile).not.toHaveBeenCalledWith(
+        join(cwd, ".gitignore")
       );
     });
 
@@ -241,6 +244,7 @@ describe("init command", () => {
         cwd,
         name: "",
         pkgManager: "npm",
+        target: "node",
         version: "0.0.0-local",
         __fs: stubFs,
         __exec: stubExec,
@@ -286,6 +290,7 @@ describe("init command", () => {
         cwd,
         name: "fresh-local",
         pkgManager: "npm",
+        target: "node",
         version: "0.0.0-local",
         __fs: stubFs,
         __exec: stubExec,
@@ -313,6 +318,7 @@ describe("init command", () => {
         cwd,
         name: "fresh-local",
         pkgManager: "npm",
+        target: "node",
         version: "0.0.0-local",
         __fs: stubFs,
         __exec: stubExec,

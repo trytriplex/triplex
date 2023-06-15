@@ -88,6 +88,7 @@ async function main() {
           version,
           pkgManager: packageManager,
           name: projectName,
+          target: "node",
           mode,
           cwd,
         });

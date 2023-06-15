@@ -1,3 +1,4 @@
-.triplex/tmp
 node_modules
 tsconfig.tsbuildinfo
+build
+dist

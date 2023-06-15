@@ -12,6 +12,7 @@ export async function init({
   version,
   pkgManager,
   mode = "interactive",
+  target,
   createFolder = true,
   cwd: __cwd = process.cwd(),
   env,
@@ -23,6 +24,7 @@ export async function init({
   name: string;
   cwd?: string;
   env?: Record<string, string>;
+  target: "node" | "app";
   createFolder?: boolean;
   version: string;
   pkgManager: string;
@@ -82,16 +84,7 @@ export async function init({
   const examplePath = join(cwd, "src");
 
   if (dir.includes(".gitignore")) {
-    // Update
-    let gitIgnore = await fs.readFile(gitIgnorePath, "utf-8");
-
-    if (gitIgnore.includes(".triplex/tmp")) {
-      // Abort
-    } else {
-      // Add ignore
-      gitIgnore += ".triplex/tmp\n";
-      await fs.writeFile(gitIgnorePath, gitIgnore);
-    }
+    // Nothing to do
   } else {
     // Create one
     const templatePath = join(templateDir, "gitignore");
@@ -103,7 +96,7 @@ export async function init({
     const packageJson = await fs.readFile(packageJsonPath, "utf-8");
     const parsed = JSON.parse(packageJson);
     const pkgJSON = await fs.readFile(
-      join(templateDir, "package.json"),
+      join(templateDir, `package_${target}.json`),
       "utf-8"
     );
     const pkgJSONParsed = JSON.parse(pkgJSON);
@@ -128,7 +121,7 @@ export async function init({
   } else {
     // Create
     const pkgJson = await fs.readFile(
-      join(templateDir, "package.json"),
+      join(templateDir, `package_${target}.json`),
       "utf-8"
     );
     await fs.writeFile(
@@ -140,7 +133,10 @@ export async function init({
   if (dir.includes("README.md")) {
     // Skip
   } else {
-    const readme = await fs.readFile(join(templateDir, "README.md"), "utf-8");
+    const readme = await fs.readFile(
+      join(templateDir, `README_${target}.md`),
+      "utf-8"
+    );
     await fs.writeFile(
       readmePath,
       readme.replace("{pkg_manager}", pkgManager).replace("{app_name}", name)
