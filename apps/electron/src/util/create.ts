@@ -45,7 +45,13 @@ export async function createProject(window: BrowserWindow, path: string) {
   window.webContents.send("window-state-change", "disabled");
 
   try {
-    await create({ name, env, cwd: path, packageManager: command });
+    await create({
+      name,
+      env,
+      target: "app",
+      cwd: path,
+      packageManager: command,
+    });
     return true;
   } finally {
     window.webContents.send("window-state-change", "active");

@@ -8,6 +8,8 @@
   },
   "compilerOptions": {
     "baseUrl": ".",
-    "outDir": "./dist"
+    "outDir": "./dist",
+    "emitDeclarationOnly": false,
+    "noEmit": true
   }
 }
