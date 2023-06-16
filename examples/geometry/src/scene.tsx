@@ -52,6 +52,8 @@ export default function Scene() {
       <Cylinder position={[-5.14749272451115, 0, -2.9618330871711818]} />
       <Box1 color={"blue"} position={1} />
       <PerspectiveCamera
+        name="user-perspective"
+        makeDefault
         rotation={[-0.19198621771937624, -0.002030757867083124, 0]}
         scale={[1, 1, 1]}
         position={[0, 0.6261170942410695, -0.09817127237896273]}
