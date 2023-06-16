@@ -1,5 +1,5 @@
 import { ThreeEvent, useFrame, useThree } from "@react-three/fiber";
-import { listen, send } from "@triplex/bridge/client";
+import { compose, listen, send } from "@triplex/bridge/client";
 import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws-client";
 import {
   ReactNode,
@@ -11,10 +11,17 @@ import {
   useRef,
   useState,
 } from "react";
-import { Box3, Object3D, Vector3, Vector3Tuple } from "three";
+import {
+  Box3,
+  Object3D,
+  PerspectiveCamera,
+  Vector3,
+  Vector3Tuple,
+} from "three";
 import { TransformControls } from "./components/transform-controls";
 import { GetSceneObject, GetSceneObjectTypes } from "./api-types";
 import { SceneObjectProps } from "./scene-object";
+import { useCamera } from "./components/camera";
 
 export type EditorNodeData = SceneObjectProps["__meta"] & {
   sceneObject: Object3D;
@@ -244,6 +251,7 @@ export function Selection({
   const transformControls = useRef<any>(null);
   const dragging = useRef(false);
   const scene = useThree((store) => store.scene);
+  const { setCamera } = useCamera();
   const sceneData = useSubscriptionEffect<{
     sceneObjects: JsxElementPositions[];
   }>(
@@ -313,7 +321,7 @@ export function Selection({
         onBlur();
       }
     });
-  }, [onBlur, onNavigate, selected, selectedObject, selectedSceneObjectMeta]);
+  }, [onBlur, onNavigate, selectedObject, selectedSceneObjectMeta]);
 
   useEffect(() => {
     return listen("trplx:requestBlurSceneObject", () => {
@@ -350,19 +358,34 @@ export function Selection({
   }, [selectedSceneObjectMeta]);
 
   useEffect(() => {
-    return listen("trplx:requestFocusSceneObject", (data) => {
-      setSelected({
-        column: data.column,
-        line: data.line,
-        path: data.ownerPath,
-      });
+    return compose([
+      listen("trplx:requestAction", ({ action }) => {
+        if (
+          action === "viewFocusedCamera" &&
+          selectedObject &&
+          "isCamera" in selectedObject.sceneObject
+        ) {
+          setCamera(selectedObject.sceneObject as PerspectiveCamera, {
+            column: selectedObject.column,
+            line: selectedObject.line,
+            path: selectedObject.path,
+          });
+        }
+      }),
+      listen("trplx:requestFocusSceneObject", (data) => {
+        setSelected({
+          column: data.column,
+          line: data.line,
+          path: data.ownerPath,
+        });
 
-      send("trplx:onSceneObjectFocus", {
-        column: data.column,
-        line: data.line,
-      });
-    });
-  }, [scene, transform, sceneObjects]);
+        send("trplx:onSceneObjectFocus", {
+          column: data.column,
+          line: data.line,
+        });
+      }),
+    ]);
+  }, [selectedObject, setCamera]);
 
   const onClick = async (e: ThreeEvent<MouseEvent>) => {
     if (e.delta > 1) {
@@ -445,10 +468,8 @@ export function Selection({
     onJumpTo,
     onNavigate,
     selected,
-    sceneObjects,
-    path,
-    selectedSceneObjectMeta,
     selectedObject,
+    selectedSceneObjectMeta,
   ]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

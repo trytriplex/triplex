@@ -7,10 +7,11 @@ import {
   useContext,
   useEffect,
   useLayoutEffect,
+  useMemo,
   useRef,
   useState,
 } from "react";
-import { useThree } from "@react-three/fiber";
+import { useFrame } from "@react-three/fiber";
 import {
   OrbitControls,
   OrthographicCamera,
@@ -36,14 +37,20 @@ function frustumWidthAtDistance(
 
 const V1 = new Vector3();
 
-const CameraContext = createContext<{
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  controls: React.MutableRefObject<any | null>;
-}>({
+interface CameraContextType {
+  controls: React.MutableRefObject<{ enabled: boolean } | null>;
+  setCamera: (
+    camera: THREE.OrthographicCamera | THREE.PerspectiveCamera,
+    data: { line: number; column: number; path: string }
+  ) => void;
+}
+
+const CameraContext = createContext<CameraContextType>({
   controls: { current: null },
+  setCamera: () => {},
 });
 
-export const useCameraRefs = () => {
+export const useCamera = () => {
   const context = useContext(CameraContext);
   return context;
 };
@@ -52,23 +59,28 @@ export function Camera({
   position,
   layers,
   target,
+  children,
 }: {
   position: Vector3Tuple;
   layers?: Layers;
   target: Vector3Tuple;
+  children?: React.ReactNode;
 }) {
-  const [type, setType] = useState<"perspective" | "orthographic">(
+  // This is the source of truth for what camera is active.
+  // When this is set it propagates to the editor frame in the effect.
+  const [type, setType] = useState<"perspective" | "orthographic" | "user">(
     "perspective"
   );
-  const defaultCamera = useThree((three) => three.camera);
   const prevType = useRef<"perspective" | "orthographic">();
   const orthographicRef = useRef<THREE.OrthographicCamera>(null!);
   const perspectiveRef = useRef<THREE.PerspectiveCamera>(null!);
-  const refs = useCameraRefs();
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const controlsRef = useRef<any>(null);
   const [activeCamera, setActiveCamera] = useState<
     THREE.OrthographicCamera | THREE.PerspectiveCamera | undefined
   >(undefined);
-  const set = useThree((three) => three.set);
+  const isTriplexCamera =
+    activeCamera && activeCamera.name === "__triplex_camera";
 
   useEffect(() => {
     return listen("trplx:requestCameraTypeChange", ({ type }) => {
@@ -94,7 +106,6 @@ export function Camera({
       orthographicRef.current.lookAt(vtarget);
       orthographicRef.current.updateProjectionMatrix();
 
-      set({ camera: orthographicRef.current });
       send("trplx:onCameraTypeChange", { type });
 
       prevType.current = "orthographic";
@@ -107,33 +118,57 @@ export function Camera({
         perspectiveRef.current.updateProjectionMatrix();
       }
 
-      set({ camera: perspectiveRef.current });
       send("trplx:onCameraTypeChange", { type });
 
       prevType.current = "perspective";
       setActiveCamera(perspectiveRef.current);
     }
-  }, [set, target, type]);
+  }, [target, type]);
+
+  useFrame((state) => {
+    if (activeCamera) {
+      // Force the Triplex active camera to be the active camera.
+      // We sidestep the R3F state management here because we want to be able to
+      // control which camera is active (userland vs. Triplex).
+      state.camera = activeCamera;
+    }
+  });
+
+  const context: CameraContextType = useMemo(
+    () => ({
+      controls: controlsRef,
+      setCamera: (camera, data) => {
+        send("trplx:onStateChange", { change: "userCamera", data });
+        setActiveCamera(camera);
+        setType("user");
+      },
+    }),
+    []
+  );
 
   return (
-    <>
+    <CameraContext.Provider value={context}>
       <PerspectiveCamera
+        name="__triplex_camera"
         layers={layers}
         position={position}
         ref={perspectiveRef}
       />
-      <OrthographicCamera layers={layers} ref={orthographicRef} />
-      {activeCamera && (
+      <OrthographicCamera
+        name="__triplex_camera"
+        layers={layers}
+        ref={orthographicRef}
+      />
+      {isTriplexCamera && (
         <OrbitControls
           // We don't want user land cameras to be able to be affected by these controls
           // So we explicitly set the camera instead of relying on "default camera" behaviour.
           camera={activeCamera}
-          // Disable controls if someone has set a default camera.
-          enabled={defaultCamera === activeCamera}
           target={target}
-          ref={refs.controls}
+          ref={controlsRef}
         />
       )}
-    </>
+      {children}
+    </CameraContext.Provider>
   );
 }
