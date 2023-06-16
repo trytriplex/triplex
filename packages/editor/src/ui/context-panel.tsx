@@ -7,19 +7,25 @@ import { PropInput } from "./prop-input";
 import { useScene } from "../stores/scene";
 import { PropField } from "./prop-field";
 import { GetSceneObject } from "../api-types";
-import { Crosshair1Icon, EnterIcon, TrashIcon } from "@radix-ui/react-icons";
+import {
+  CameraIcon,
+  Crosshair1Icon,
+  EnterIcon,
+  TrashIcon,
+} from "@radix-ui/react-icons";
 import { IconButton } from "../ds/button";
 import { ErrorBoundary } from "./error-boundary";
 
 function SelectedSceneObject({ target }: { target: FocusedObject }) {
-  const { setPropValue, getPropValue, navigateTo, jumpTo } = useScene();
+  const { setPropValue, getPropValue, navigateTo, jumpTo, viewFocusedCamera } =
+    useScene();
   const { persistPropValue, deleteComponent } = useEditor();
   const data = useLazySubscription<GetSceneObject>(
     `/scene/${encodeURIComponent(target.ownerPath)}/object/${target.line}/${
       target.column
     }`
   );
-
+  const isCamera = data.name.endsWith("Camera");
   const filteredProps = data.props.filter((prop) => prop.type !== "spread");
 
   useEffect(() => {
@@ -60,18 +66,26 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
         <IconButton
           onClick={() => navigateTo()}
           icon={EnterIcon}
-          title="Enter component [⇧ F]"
+          isDisabled={data.type === "host" || !data.path}
+          title="Enter component"
         />
         <IconButton
           onClick={jumpTo}
           icon={Crosshair1Icon}
-          title="Focus camera [F]"
+          title="Focus camera"
         />
+        {isCamera && (
+          <IconButton
+            onClick={viewFocusedCamera}
+            icon={CameraIcon}
+            title="View camera"
+          />
+        )}
         <IconButton
           className="ml-auto"
           onClick={deleteComponent}
           icon={TrashIcon}
-          title="Delete [⌫]"
+          title="Delete"
         />
       </div>
 

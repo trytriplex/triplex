@@ -63,6 +63,10 @@ export interface ClientSendEventData {
   "trplx:requestRedo": undefined;
   "trplx:requestUndo": undefined;
   "trplx:requestDeleteSceneObject": undefined;
+  "trplx:onStateChange": {
+    change: "userCamera";
+    data: { line: number; column: number; path: string };
+  };
 }
 
 export interface ClientSendEventResponse {
@@ -84,11 +88,13 @@ export interface ClientSendEventResponse {
   "trplx:requestRedo": void;
   "trplx:requestUndo": void;
   "trplx:requestDeleteSceneObject": void;
+  "trplx:onStateChange": void;
 }
 
 export type HostSendEventName = keyof HostSendEventData;
 
 export interface HostSendEventData {
+  "trplx:requestAction": { action: "viewFocusedCamera" | "resetCamera" };
   "trplx:requestRefresh": undefined;
   "trplx:requestAddNewComponent": {
     type:
@@ -185,4 +191,5 @@ export interface HostSendEventResponse {
   "trplx:requestSetSceneObjectProp": void;
   "trplx:requestTransformChange": void;
   "trplx:requestCameraTypeChange": void;
+  "trplx:requestAction": void;
 }

@@ -142,29 +142,30 @@ export function SceneFrame() {
 
   return (
     <Canvas>
-      <Camera target={target} position={position} layers={layers} />
       <SceneErrorBoundary>
         <Suspense fallback={null}>
-          <Selection
-            path={path}
-            onBlur={onBlurObject}
-            onFocus={onFocus}
-            onJumpTo={onJumpTo}
-            onNavigate={onNavigate}
-            exportName={exportName}
-          >
-            <SceneLoader
+          <Camera target={target} position={position} layers={layers}>
+            <Selection
               path={path}
+              onBlur={onBlurObject}
+              onFocus={onFocus}
+              onJumpTo={onJumpTo}
+              onNavigate={onNavigate}
               exportName={exportName}
-              sceneProps={sceneProps}
-            />
+            >
+              <SceneLoader
+                path={path}
+                exportName={exportName}
+                sceneProps={sceneProps}
+              />
 
-            <AddSceneObject
-              // Blow this components state away when path changes
-              key={path}
-              path={path}
-            />
-          </Selection>
+              <AddSceneObject
+                // Blow this components state away when path changes
+                key={path}
+                path={path}
+              />
+            </Selection>
+          </Camera>
         </Suspense>
       </SceneErrorBoundary>
 

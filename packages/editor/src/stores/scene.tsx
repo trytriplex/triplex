@@ -112,6 +112,15 @@ interface BridgeContext {
    * Refreshes the scene.
    */
   refresh(): void;
+  /**
+   * Switches the triplex camera to the currently focused camera. If the focused
+   * scene object is not a camera is noops.
+   */
+  viewFocusedCamera(): void;
+  /**
+   * Resets the triplex camera back to the editor default.
+   */
+  resetCamera(): void;
 }
 
 /**
@@ -125,6 +134,12 @@ interface BridgeContext {
 export const useScene = create<BridgeContext & { sceneReady: () => void }>(
   (setStore) => ({
     ready: false,
+    viewFocusedCamera() {
+      send("trplx:requestAction", { action: "viewFocusedCamera" });
+    },
+    resetCamera() {
+      send("trplx:requestAction", { action: "resetCamera" });
+    },
     sceneReady() {
       setStore({ ready: true });
     },

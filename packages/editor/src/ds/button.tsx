@@ -37,7 +37,7 @@ export const IconButton = forwardRef<
       className={cn([
         isDisabled && [
           "cursor-not-allowed opacity-50",
-          variant === "default" && "bg-white/5 text-neutral-400",
+          variant === "default" && "text-neutral-400",
           variant === "inverse" && "bg-black/5 text-neutral-800",
         ],
         !isDisabled &&

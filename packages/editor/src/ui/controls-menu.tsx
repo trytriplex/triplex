@@ -3,25 +3,39 @@ import {
   TransformIcon,
   AngleIcon,
   GridIcon,
+  CameraIcon,
 } from "@radix-ui/react-icons";
 import { listen, compose } from "@triplex/bridge/host";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { IconButton } from "../ds/button";
 import { useScene } from "../stores/scene";
 
+const cameraTitles = {
+  perspective: "Switch to orthographic",
+  orthographic: "Switch to perspective",
+  user: "Exit camera",
+};
+
 export function ControlsMenu() {
-  const [mode, setMode] = useState<"translate" | "scale" | "rotate" | null>(
-    null
-  );
-  const [camera, setCamera] = useState<"perspective" | "orthographic" | null>(
-    null
-  );
+  const [mode, setMode] = useState<
+    "translate" | "scale" | "rotate" | undefined
+  >();
+  const [camera, setCamera] = useState<
+    "perspective" | "orthographic" | "user" | undefined
+  >();
+  const lastKnownTriplexCamera = useRef<"perspective" | "orthographic">();
   const { setTransform, setCameraType } = useScene();
 
   useEffect(() => {
     return compose([
+      listen("trplx:onStateChange", ({ change }) => {
+        if (change === "userCamera") {
+          setCamera("user");
+        }
+      }),
       listen("trplx:onCameraTypeChange", ({ type }) => {
         setCamera(type);
+        lastKnownTriplexCamera.current = type;
       }),
       listen("trplx:onTransformChange", ({ mode }) => {
         setMode(mode);
@@ -33,45 +47,51 @@ export function ControlsMenu() {
     <div className="pointer-events-auto flex self-end rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1">
       <IconButton
         isSelected={mode === "translate"}
-        title="Translate [t]"
+        title="Translate"
         icon={AllSidesIcon}
         onClick={() => setTransform("translate")}
       />
       <IconButton
         isSelected={mode === "rotate"}
-        title="Rotate [r]"
+        title="Rotate"
         icon={AngleIcon}
         onClick={() => setTransform("rotate")}
       />
       <IconButton
         isSelected={mode === "scale"}
-        title="Scale [s]"
+        title="Scale"
         icon={TransformIcon}
         onClick={() => setTransform("scale")}
       />
       <div className="-my-1 mx-1 w-[1px] bg-neutral-800" />
       <IconButton
-        onClick={() =>
-          setCameraType(
-            camera === "perspective" ? "orthographic" : "perspective"
-          )
+        isSelected={camera === "user"}
+        onClick={() => {
+          if (camera === "user" && lastKnownTriplexCamera.current) {
+            setCameraType(lastKnownTriplexCamera.current);
+          } else {
+            const nextCamera =
+              camera === "perspective" ? "orthographic" : "perspective";
+            setCameraType(nextCamera);
+            lastKnownTriplexCamera.current = nextCamera;
+          }
+        }}
+        title={camera ? cameraTitles[camera] : ""}
+        icon={
+          camera === "user"
+            ? CameraIcon
+            : () => (
+                <div
+                  className={
+                    camera === "perspective"
+                      ? "[transform:perspective(30px)_rotateX(45deg)]"
+                      : undefined
+                  }
+                >
+                  <GridIcon />
+                </div>
+              )
         }
-        title={
-          camera === "perspective"
-            ? "Switch to orthographic"
-            : "Switch to perspective"
-        }
-        icon={() => (
-          <div
-            className={
-              camera === "perspective"
-                ? "[transform:perspective(30px)_rotateX(45deg)]"
-                : undefined
-            }
-          >
-            <GridIcon />
-          </div>
-        )}
       />
     </div>
   );
