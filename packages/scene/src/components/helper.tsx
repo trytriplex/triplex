@@ -74,21 +74,21 @@ export function Helper({
   });
 
   if (target) {
+    const isExcluded = HELPER_EXCLUSIONS.includes(HelperElement);
+
     return (
       <>
-        {HELPER_EXCLUSIONS.includes(HelperElement) && (
+        {isExcluded && (
           <pointLightHelper
             ref={altHelperRef as any}
-            onClick={onClick}
             args={[target, LIGHT_HELPER_SIZE]}
+            onClick={onClick}
           />
         )}
 
         <HelperElement
           ref={helperRef as any}
-          onClick={
-            HELPER_EXCLUSIONS.includes(HelperElement) ? undefined : onClick
-          }
+          onClick={isExcluded ? undefined : onClick}
           // @ts-expect-error - Hacking, sorry!
           args={[target, ...args]}
         />

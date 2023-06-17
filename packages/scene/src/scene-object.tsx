@@ -217,14 +217,11 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
 
     if (isRenderedSceneObject(__meta.name, props)) {
       const helper = getHelperForElement(__meta.name);
+      const userData = { triplexSceneMeta: { ...__meta, props } };
 
       return (
         <>
-          <group
-            userData={{ triplexSceneMeta: { ...__meta, props } }}
-            visible={!isDeleted}
-            ref={parentRef}
-          >
+          <group userData={userData} visible={!isDeleted} ref={parentRef}>
             {componentJsx}
           </group>
           {helper && !isDeleted && (
@@ -233,12 +230,12 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
               helperName={helper[0]}
               args={helper[1]}
               onClick={(e) => {
-                if (e.delta > 1) {
+                if (e.delta > 1 || !parentRef.current) {
                   return;
                 }
 
                 e.stopPropagation();
-                selectSceneObject(__meta);
+                selectSceneObject(parentRef.current.children[0]);
               }}
             />
           )}
