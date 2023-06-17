@@ -22,7 +22,7 @@ export function useTargetController() {
         onWorldEvent = noop,
       } = entities[i];
 
-      if (equal(sceneObject.position, target)) {
+      if (equal(sceneObject.current.position, target)) {
         continue;
       }
 
@@ -30,10 +30,13 @@ export function useTargetController() {
         // We set the target Y axis for rigid bodies as they can't move along the Y axis.
         // This ends up making the Y axis irrelevant for rigid bodies but still allows kinematic
         // bodies to move along the Y axis.
-        target.y = sceneObject.position.y;
+        target.y = sceneObject.current.position.y;
       }
 
-      if (Math.abs(distanceToSquared(sceneObject.position, target)) <= delta) {
+      if (
+        Math.abs(distanceToSquared(sceneObject.current.position, target)) <=
+        delta
+      ) {
         // We'll reach the target in the next frame, we're done!
         if (entities[i].state !== "idle") {
           entities[i].state = "idle";
@@ -41,14 +44,17 @@ export function useTargetController() {
           onWorldEvent("move-stop");
           onWorldEvent("target-reached");
 
-          copy(target, sceneObject.position);
+          copy(target, sceneObject.current.position);
           reset(velocity);
         }
 
         continue;
       }
 
-      const nextVelocityVector = sub(copy(V1, target), sceneObject.position)
+      const nextVelocityVector = sub(
+        copy(V1, target),
+        sceneObject.current.position
+      )
         .normalize()
         .multiplyScalar(speed || 1);
 

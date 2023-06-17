@@ -37,13 +37,13 @@ export function useRigidBody() {
       const displacement = copy(V1, velocity).multiplyScalar(delta);
 
       // Commit the XYZ movement
-      add(sceneObject.position, displacement);
+      add(sceneObject.current.position, displacement);
 
       // Check if the movement caused this entity to intersect with any other entity
       const intersectingBox = box.intersecting();
       if (intersectingBox) {
         // Revert the XZ movement before intersecting
-        sub2(sceneObject.position, displacement);
+        sub2(sceneObject.current.position, displacement);
 
         if (entity.state !== "idle") {
           // Force the entity to stop moving.
@@ -77,7 +77,7 @@ export function useRigidBody() {
           const distanceFromEntityBase = intersect.distance - height / 2;
           if (distanceFromEntityBase < 0) {
             // We are clipping through the ground! Let's lift the entity back up.
-            sceneObject.position.y -= distanceFromEntityBase;
+            sceneObject.current.position.y -= distanceFromEntityBase;
 
             if (entity.gravityAcceleration !== undefined) {
               entity.gravityAcceleration = 0;

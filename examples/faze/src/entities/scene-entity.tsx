@@ -1,4 +1,5 @@
-import { useMemo, useState } from "react";
+/* eslint-disable @typescript-eslint/no-explicit-any */
+import { useMemo, useRef } from "react";
 import { Vector3Tuple } from "three";
 import { Component, Entity } from "../ecs/store";
 import { fromArray, empty } from "../math/vectors";
@@ -15,8 +16,8 @@ export const SceneEntity = ({
   speed?: number;
   position: Vector3Tuple;
 }) => {
-  const [initialPosition] = useState(() => position);
   const nextPosition = useMemo(() => fromArray(position), [position]);
+  const ref = useRef<any>(null);
 
   return (
     <Entity>
@@ -26,8 +27,8 @@ export const SceneEntity = ({
       <Component name="state" data="idle" />
 
       <RigidBody>
-        <Component name="sceneObject">
-          <group position={initialPosition} name="camera-target">
+        <Component name="sceneObject" data={ref as any}>
+          <group position={position} ref={ref} name="camera-target">
             {children}
           </group>
         </Component>

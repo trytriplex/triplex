@@ -25,7 +25,7 @@ export function useKinematicBody() {
       const displacement = copy(V1, velocity).multiplyScalar(delta);
 
       // Commit the movement
-      add(sceneObject.position, displacement);
+      add(sceneObject.current.position, displacement);
 
       if (entities[i].state !== "moving") {
         // First tick that we've started moving - notify wold events!

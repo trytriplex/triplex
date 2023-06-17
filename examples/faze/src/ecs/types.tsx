@@ -44,7 +44,7 @@ export interface EntityComponents {
   parent?: EntityComponents;
   playerNear?: boolean;
   rest?: number;
-  sceneObject?: Object3D;
+  sceneObject?: { current: Object3D };
   speed?: number;
   state?: "moving" | "idle";
   target?: VectorXyz;

@@ -22,8 +22,8 @@ export function usePlayerApproach() {
       for (let n = 0; n < players.length; n++) {
         const player = players[n];
         const distance = distanceToSquared(
-          sceneObject.position,
-          player.sceneObject.position
+          sceneObject.current.position,
+          player.sceneObject.current.position
         );
 
         if (distance < activateDistance && !entity.playerNear) {

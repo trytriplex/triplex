@@ -12,7 +12,9 @@ export function useBillboard() {
 
   useFrame(() => {
     for (const { sceneObject } of entities) {
-      sceneObject.quaternion.copy(camera.sceneObject.quaternion);
+      sceneObject.current.quaternion.copy(
+        camera.sceneObject.current.quaternion
+      );
     }
   });
 }

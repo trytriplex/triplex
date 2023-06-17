@@ -14,16 +14,16 @@ export function useDialogController() {
   useFrame(() => {
     for (const { parent, sceneObject } of entities) {
       if (!parent.box || !parent.sceneObject || !parent.focused) {
-        sceneObject.visible = false;
+        sceneObject.current.visible = false;
         continue;
       }
 
       const npcSize = parent.box.box.getSize(V1);
 
-      copy(sceneObject.position, parent.sceneObject.position);
+      copy(sceneObject.current.position, parent.sceneObject.current.position);
 
-      sceneObject.position.y += npcSize.y * 1.6;
-      sceneObject.visible = true;
+      sceneObject.current.position.y += npcSize.y * 1.6;
+      sceneObject.current.visible = true;
     }
   });
 }
