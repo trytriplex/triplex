@@ -143,8 +143,8 @@ export function SceneFrame() {
   return (
     <Canvas>
       <SceneErrorBoundary>
-        <Suspense fallback={null}>
-          <Camera target={target} position={position} layers={layers}>
+        <Camera target={target} position={position} layers={layers}>
+          <Suspense fallback={null}>
             <Selection
               path={path}
               onBlur={onBlurObject}
@@ -165,8 +165,8 @@ export function SceneFrame() {
                 path={path}
               />
             </Selection>
-          </Camera>
-        </Suspense>
+          </Suspense>
+        </Camera>
       </SceneErrorBoundary>
 
       <Grid
