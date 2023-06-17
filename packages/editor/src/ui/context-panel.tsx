@@ -25,7 +25,10 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
       target.column
     }`
   );
-  const isCamera = data.name.endsWith("Camera");
+  // Most likely a camera component. It might not though be though.
+  // A better implementation later would be to traverse this scene objects children
+  // And see if a camera exists, if it does enable the button.
+  const isCamera = data.name.includes("Camera");
   const filteredProps = data.props.filter((prop) => prop.type !== "spread");
 
   useEffect(() => {

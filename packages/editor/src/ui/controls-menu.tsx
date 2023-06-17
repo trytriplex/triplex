@@ -3,7 +3,7 @@ import {
   TransformIcon,
   AngleIcon,
   GridIcon,
-  CameraIcon,
+  ExitIcon,
 } from "@radix-ui/react-icons";
 import { listen, compose } from "@triplex/bridge/host";
 import { useEffect, useRef, useState } from "react";
@@ -79,7 +79,7 @@ export function ControlsMenu() {
         title={camera ? cameraTitles[camera] : ""}
         icon={
           camera === "user"
-            ? CameraIcon
+            ? ExitIcon
             : () => (
                 <div
                   className={

@@ -62,6 +62,7 @@ const findTransformedSceneObject = (
 ): Object3D => {
   let foundExactSceneObject: Object3D | undefined = undefined;
   let foundTranslatedSceneObject: Object3D | undefined;
+  let foundPositionedSceneObject: Object3D | undefined;
 
   sceneObject.traverse((child: Object3D) => {
     const meta: SceneObjectProps["__meta"] | undefined =
@@ -85,9 +86,20 @@ const findTransformedSceneObject = (
       // of the intermediately placed group in the SceneObject component.
       foundTranslatedSceneObject = child.children[0];
     }
+
+    if (!foundPositionedSceneObject && child.position.lengthSq() > 0) {
+      // As as last ditch effort to find a scene object we look for the first scene object
+      // That has been positioned and save it for use later.
+      foundPositionedSceneObject = child;
+    }
   });
 
-  return foundExactSceneObject || foundTranslatedSceneObject || sceneObject;
+  return (
+    foundExactSceneObject ||
+    foundTranslatedSceneObject ||
+    foundPositionedSceneObject ||
+    sceneObject
+  );
 };
 
 function flatten(
@@ -204,10 +216,7 @@ export interface JsxElementPositions {
 const V1 = new Vector3();
 const box = new Box3();
 const noop = () => {};
-const SelectionContext =
-  createContext<
-    (select: { line: number; column: number; path: string }) => void
-  >(noop);
+const SelectionContext = createContext<(select: Object3D) => void>(noop);
 
 export const useSelectSceneObject = () => {
   const select = useContext(SelectionContext);
@@ -529,25 +538,18 @@ export function Selection({
   });
 
   const selectSceneObject = useCallback(
-    (obj: { path: string; column: number; line: number }) => {
-      send("trplx:onSceneObjectFocus", {
-        column: obj.column,
-        line: obj.line,
-      });
-
-      setSelected(obj);
+    (object: Object3D) => {
+      const data = findEditorData(path, object, transform, sceneObjects);
+      if (data) {
+        setSelected(data);
+        onFocus(data);
+      }
     },
-    []
+    [onFocus, path, sceneObjects, transform]
   );
 
   return (
-    <group
-      name="selection-group"
-      // TODO: Since we've implemented the selection context we can technically
-      // Remove this entire group and handle it inside the scene object component.
-      // Let's do it in a follow up PR.
-      onClick={onClick}
-    >
+    <group name="selection-group" onClick={onClick}>
       <SelectionContext.Provider value={selectSceneObject}>
         {children}
       </SelectionContext.Provider>
