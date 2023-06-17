@@ -21,26 +21,26 @@ export function useCamera() {
     .at(-1);
 
   useLayoutEffect(() => {
-    if (!target) {
+    if (!target || !target.sceneObject.current || !camera.sceneObject.current) {
       return;
     }
 
-    const targetPosition = V1.copy(target.sceneObject.position);
+    const targetPosition = V1.copy(target.sceneObject.current.position);
     if (camera.offset) {
       add(targetPosition, camera.offset);
     }
 
-    camera.sceneObject.position.copy(targetPosition);
+    camera.sceneObject.current.position.copy(targetPosition);
   }, [camera, target]);
 
   useFrame((_, delta) => {
-    if (!target) {
+    if (!target || !target.sceneObject.current || !camera.sceneObject.current) {
       return;
     }
 
-    const targetPosition = V1.copy(target.sceneObject.position);
-    const cameraObject: PerspectiveCamera =
-      camera.sceneObject as PerspectiveCamera;
+    const targetPosition = V1.copy(target.sceneObject.current.position);
+    const cameraObject: PerspectiveCamera = camera.sceneObject
+      .current as PerspectiveCamera;
 
     if (!cameraObject.isPerspectiveCamera) {
       return;

@@ -39,7 +39,7 @@ export function useTerrainPointer() {
       const [x, y] = pointerPosition.current;
 
       if (parent && parent.sceneObject) {
-        PLANE.constant = -parent.sceneObject.position.y;
+        PLANE.constant = -parent.sceneObject.current.position.y;
       }
 
       raycaster.setFromCamera({ x, y }, camera);
@@ -61,7 +61,7 @@ export function useTerrainPointer() {
 
         const intersect = intersects[0];
         if (intersect) {
-          sceneObject.position.copy(intersect.point);
+          sceneObject.current.position.copy(intersect.point);
         }
       }
     }
