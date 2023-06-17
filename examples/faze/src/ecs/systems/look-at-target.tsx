@@ -14,13 +14,13 @@ export function useLookAtTarget() {
       const { target, sceneObject } = entities[i];
 
       const targetv = copy(V1, target);
-      targetv.y = sceneObject.position.y;
+      targetv.y = sceneObject.current.position.y;
 
-      if (equal2(targetv, sceneObject.position)) {
+      if (equal2(targetv, sceneObject.current.position)) {
         continue;
       }
 
-      sceneObject.lookAt(targetv);
+      sceneObject.current.lookAt(targetv);
     }
   });
 }

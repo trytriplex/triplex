@@ -16,11 +16,10 @@ const anims = {
 const DEFAULT_POSITION: Vector3Tuple = [0, 0, 0];
 
 export function PlayerEntity({
-  position: initialPosition = DEFAULT_POSITION,
+  position = DEFAULT_POSITION,
 }: {
   position?: Vector3Tuple;
 }) {
-  const [position, setPosition] = useState<Vector3Tuple>(initialPosition);
   const { scene, animations } = useGLTF("/chkn/scene.gltf");
   const { ref, actions } = useAnimations(animations);
   const [inventoryOpen, setInventoryOpen] = useState(false);
@@ -64,7 +63,7 @@ export function PlayerEntity({
                 <Component name="zoom" data={1.5} />
               </>
             ) : (
-              <PointerEntity onClick={setPosition} />
+              <PointerEntity onClick={() => {}} />
             )}
 
             <Component name="inventory" initialData={{}} />
