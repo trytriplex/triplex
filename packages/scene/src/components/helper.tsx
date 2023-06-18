@@ -1,7 +1,6 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ThreeEvent, useFrame } from "@react-three/fiber";
 import { useLayoutEffect, useRef, useState } from "react";
-import { Object3D } from "three";
+import { Mesh, Object3D } from "three";
 import "./camera-helper";
 
 type Helper =
@@ -13,8 +12,7 @@ type Helper =
 
 type HelperInstance = Object3D & { update: () => void; dispose: () => void };
 
-const LIGHT_HELPER_SIZE = 0.2;
-const HELPER_EXCLUSIONS = ["directionalLightHelper", "spotLightHelper"];
+const HELPER_SIZE = 0.2;
 
 export const getHelperForElement = (
   name: string
@@ -25,10 +23,10 @@ export const getHelperForElement = (
     case "rectAreaLight":
     case "pointLight":
     case "ambientLight":
-      return ["pointLightHelper", [LIGHT_HELPER_SIZE]];
+      return ["pointLightHelper", [HELPER_SIZE]];
 
     case "hemisphereLight":
-      return ["hemisphereLightHelper", [LIGHT_HELPER_SIZE]];
+      return ["hemisphereLightHelper", [HELPER_SIZE]];
 
     case "spotLight":
       return ["spotLightHelper", []];
@@ -47,20 +45,40 @@ export const getHelperForElement = (
   }
 };
 
+function HelperIcon({
+  target,
+  onClick,
+}: {
+  target: Object3D;
+  onClick: (e: ThreeEvent<MouseEvent>) => void;
+}) {
+  const ref = useRef<Mesh>(null!);
+
+  useFrame(() => {
+    ref.current.position.copy(target.position);
+  });
+
+  return (
+    <mesh onClick={onClick} ref={ref}>
+      <boxGeometry args={[HELPER_SIZE, HELPER_SIZE, HELPER_SIZE]} />
+      <meshBasicMaterial transparent opacity={0} />
+    </mesh>
+  );
+}
+
 export function Helper({
   args = [],
   parentObject,
   helperName: HelperElement,
   onClick,
 }: {
-  args?: any[];
+  args?: unknown[];
   parentObject: React.MutableRefObject<Object3D | null>;
   helperName: Helper;
   onClick: (e: ThreeEvent<MouseEvent>) => void;
 }) {
-  const [target, setTarget] = useState<any | null>(null);
+  const [target, setTarget] = useState<Object3D | null>(null);
   const helperRef = useRef<HelperInstance>(null);
-  const altHelperRef = useRef<HelperInstance>(null);
 
   useLayoutEffect(() => {
     if (parentObject && parentObject?.current) {
@@ -70,25 +88,15 @@ export function Helper({
 
   useFrame(() => {
     helperRef.current?.update();
-    altHelperRef.current?.update();
   });
 
   if (target) {
-    const isExcluded = HELPER_EXCLUSIONS.includes(HelperElement);
-
     return (
       <>
-        {isExcluded && (
-          <pointLightHelper
-            ref={altHelperRef as any}
-            args={[target, LIGHT_HELPER_SIZE]}
-            onClick={onClick}
-          />
-        )}
-
+        <HelperIcon target={target} onClick={onClick} />
         <HelperElement
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ref={helperRef as any}
-          onClick={isExcluded ? undefined : onClick}
           // @ts-expect-error - Hacking, sorry!
           args={[target, ...args]}
         />
