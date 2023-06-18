@@ -2,7 +2,7 @@
   "name": "create-triplex-project",
   "version": "0.54.0",
   "description": "The React Three Fiber editor.",
-  "license": "Apache-2.0",
+  "license": "GPL-3.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
