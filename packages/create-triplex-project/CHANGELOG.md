@@ -1,5 +1,12 @@
 # create-triplex-project
 
+## 0.54.0
+
+### Minor Changes
+
+- c9fcf24: Template used during project creation now decides how to configure
+  based on app or node.
+
 ## 0.53.1
 
 ### Patch Changes

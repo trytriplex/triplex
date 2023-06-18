@@ -1,5 +1,25 @@
 # @triplex/scene
 
+## 0.54.0
+
+### Minor Changes
+
+- 36c2d9c: Adds camera helpers for perspective and orthographic cameras rendered
+  in the scene.
+- d2d40f6: Helpers for lights are now shown in the editor.
+- 8fad65a: Adds camera type to controls menu, allowing you to switch between
+  perspective and orthographic camera.
+- e0038f6: Add support for viewing through a user land camera.
+
+### Patch Changes
+
+- 36c2d9c: Editor controls no longer affect user land cameras when they have
+  been set with `makeDefault={true}`.
+- Updated dependencies [8fad65a]
+- Updated dependencies [e0038f6]
+  - @triplex/bridge@0.54.0
+  - @triplex/ws-client@0.54.0
+
 ## 0.53.1
 
 ### Patch Changes

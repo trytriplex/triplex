@@ -1,5 +1,23 @@
 # @triplex/electron
 
+## 0.54.0
+
+### Minor Changes
+
+- c9fcf24: Template used during project creation now decides how to configure
+  based on app or node.
+
+### Patch Changes
+
+- Updated dependencies [e0038f6]
+- Updated dependencies [8fad65a]
+- Updated dependencies [e0038f6]
+- Updated dependencies [c9fcf24]
+  - @triplex/editor@0.54.0
+  - create-triplex-project@0.54.0
+  - @triplex/client@0.54.0
+  - @triplex/server@0.54.0
+
 ## 0.53.1
 
 ### Patch Changes
