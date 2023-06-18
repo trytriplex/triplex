@@ -18,7 +18,7 @@ export function Scene() {
       <PlayerEntity position={[0, 0, 0]} />
 
       <PerspectiveCamera
-        position={[-0.14164693646901694, 1.7321220378277902, 2.068985775667036]}
+        position={[-0.14164693646901694, 1.73212203782779, 2.068985775667036]}
         rotation={[-0.24980476564436316, 0, 0]}
       />
 
@@ -30,12 +30,14 @@ export function Scene() {
         <meshStandardMaterial />
       </mesh>
       <pointLight
-        position={[-1.997110931458752, 5.560439855681761, -0.9603405372967642]}
+        position={[
+          -1.2699541074706056, 1.4174759550931917, -0.9603405372967642,
+        ]}
         castShadow={true}
         color={"#a8cfd7"}
       />
 
-      <ambientLight intensity={0.2} />
+      <ambientLight intensity={0.2} position={[0, 0.17922755199149176, 0]} />
     </>
   );
 }
