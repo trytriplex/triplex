@@ -23,7 +23,7 @@ export function BooleanInput({
 
   return (
     <div className="flex items-center gap-1">
-      <div className="relative h-3.5 w-3.5 rounded bg-neutral-700 after:pointer-events-none after:absolute after:inset-0 after:rounded hover:after:bg-white/5 active:after:bg-white/10">
+      <div className="relative h-3.5 w-3.5 rounded bg-neutral-700 outline-1 outline-blue-400 after:pointer-events-none after:absolute after:inset-0 after:rounded focus-within:outline hover:after:bg-white/5 active:after:bg-white/10">
         <input
           key={`${defaultValue}`}
           data-testid={`boolean-${defaultValue}`}
