@@ -3,8 +3,8 @@
   "version": "0.54.0",
   "private": true,
   "description": "The React Three Fiber editor.",
-  "repository": "https://github.com/try-triplex/triplex",
-  "license": "Apache-2.0",
+  "repository": "https://github.com/try-triplex/triplex-monorepo",
+  "license": "GPL-3.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "main": "./hook-main.js",
   "scripts": {

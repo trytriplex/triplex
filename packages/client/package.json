@@ -1,14 +1,14 @@
 {
   "name": "@triplex/client",
   "version": "0.54.0",
+  "repository": "https://github.com/try-triplex/triplex-monorepo",
+  "license": "GPL-3.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
-  "license": "Apache-2.0",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
-  "publishConfig": {
-    "main": "./dist/index.js",
-    "types": "./dist/index.d.ts"
-  },
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "build": "swc ./src -d ./dist",
     "typedef": "tsc"
@@ -19,9 +19,9 @@
     "@triplex/scene": "0.54.0",
     "@vitejs/plugin-react": "^3.0.1",
     "express": "^4.18.2",
+    "vite": "^4.0.4",
     "vite-plugin-glsl": "^1.1.2",
-    "vite-tsconfig-paths": "^4.0.5",
-    "vite": "^4.0.4"
+    "vite-tsconfig-paths": "^4.0.5"
   },
   "devDependencies": {
     "@babel/plugin-syntax-jsx": "^7.18.6",
@@ -32,7 +32,8 @@
     "@types/node": "^18.11.18",
     "typescript": "^4.9.4"
   },
-  "files": [
-    "dist"
-  ]
+  "publishConfig": {
+    "main": "./dist/index.js",
+    "types": "./dist/index.d.ts"
+  }
 }
