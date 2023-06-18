@@ -33,10 +33,11 @@ function SceneComponent({
       title={name}
       style={{ paddingLeft: level === 1 ? 13 : level * 13 }}
       className={cn([
+        "outline-2 -outline-offset-2 outline-blue-400 focus-visible:outline",
         selected
           ? "border-l-blue-400 bg-white/5 text-blue-400"
           : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
-        "block w-[208px] cursor-default overflow-hidden text-ellipsis border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
+        "block w-[209px] cursor-default overflow-hidden text-ellipsis border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
       ])}
     >
       {name}
@@ -103,7 +104,7 @@ function ComponentHeading() {
 
   return (
     <h2 className="flex flex-row items-center pl-2 pr-4 pt-3 text-2xl font-medium text-neutral-300">
-      <label className="relative flex items-center gap-1.5 overflow-hidden rounded pl-2 pr-1 hover:bg-white/5 active:bg-white/10">
+      <label className="relative flex items-center gap-1.5 overflow-hidden rounded pl-2 pr-1 outline-2 outline-offset-2 outline-blue-400 focus-within:outline hover:bg-white/5 active:bg-white/10">
         <span className="overflow-hidden text-ellipsis rounded">
           {scene.name}
         </span>
@@ -111,7 +112,7 @@ function ComponentHeading() {
         <CaretDownIcon className="flex-shrink-0" />
 
         <select
-          className="absolute inset-0 text-sm opacity-0 [width:-moz-available] [color-scheme:dark]"
+          className="absolute inset-0 text-sm opacity-0 [color-scheme:dark] [width:-moz-available]"
           onChange={onChangeComponentHandler}
           value={exportName}
         >

@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import { cn } from "../ds/cn";
 
 export interface EditorLinkOptions {
   path: string;
@@ -47,7 +48,10 @@ export function IDELink({
   return (
     <a
       title={title}
-      className={className}
+      className={cn([
+        "rounded-sm outline-2 outline-offset-2 outline-blue-400 focus-visible:outline",
+        className,
+      ])}
       onClick={(e) => {
         // We prevent default and use window.open() instead of native anchor behaviour
         // to keep the websocket connections open. Without it they close and never reopen.
