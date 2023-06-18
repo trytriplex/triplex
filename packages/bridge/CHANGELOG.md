@@ -1,5 +1,13 @@
 # @triplex/bridge
 
+## 0.54.0
+
+### Minor Changes
+
+- 8fad65a: Adds camera type to controls menu, allowing you to switch between
+  perspective and orthographic camera.
+- e0038f6: Add support for viewing through a user land camera.
+
 ## 0.53.1
 
 ## 0.53.0

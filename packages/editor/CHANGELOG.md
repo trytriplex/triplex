@@ -1,5 +1,21 @@
 # @triplex/editor
 
+## 0.54.0
+
+### Minor Changes
+
+- 8fad65a: Adds camera type to controls menu, allowing you to switch between
+  perspective and orthographic camera.
+- e0038f6: Add support for viewing through a user land camera.
+
+### Patch Changes
+
+- e0038f6: Disable enter component for node modules dependencies.
+- Updated dependencies [8fad65a]
+- Updated dependencies [e0038f6]
+  - @triplex/bridge@0.54.0
+  - @triplex/ws-client@0.54.0
+
 ## 0.53.1
 
 ### Patch Changes
