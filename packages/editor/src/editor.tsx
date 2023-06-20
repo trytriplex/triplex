@@ -39,7 +39,11 @@ export function EditorFrame() {
   }, [path, save]);
 
   useEffect(() => {
-    if (!path) {
+    if (!path || __TRIPLEX_TARGET__ === "electron") {
+      // When in electron all shortcuts are handled by accelerators meaning
+      // We don't need to set any hotkeys in app. We need to refactor this and
+      // We need to clean up hotkey usage across the editor and consolidate it
+      // To one location where appropriate (e.g. menubar for menubar).
       return;
     }
 
