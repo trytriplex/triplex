@@ -158,6 +158,7 @@ export function Camera({
         name="__triplex_camera"
         layers={layers}
         ref={orthographicRef}
+        near={-10}
       />
       {isTriplexCamera && (
         <OrbitControls
