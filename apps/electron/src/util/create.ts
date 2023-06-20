@@ -55,6 +55,6 @@ export async function createProject(window: BrowserWindow, path: string) {
     return true;
   } finally {
     window.webContents.send("window-state-change", "active");
-    complete();
+    await complete();
   }
 }

@@ -33,17 +33,20 @@ export function indeterminate(window: BrowserWindow, signal?: AbortSignal) {
   increment(0);
 
   return () => {
-    clearTimeout(timeoutId);
-    window.setProgressBar(1);
-    window.webContents.send("progress-bar-change", 1);
+    return new Promise<void>((resolve) => {
+      clearTimeout(timeoutId);
+      window.setProgressBar(1);
+      window.webContents.send("progress-bar-change", 1);
 
-    setTimeout(() => {
-      if (window.isDestroyed()) {
-        return;
-      }
+      setTimeout(() => {
+        if (window.isDestroyed()) {
+          return;
+        }
 
-      window.setProgressBar(-1);
-      window.webContents.send("progress-bar-change", -1);
-    }, 200);
+        window.setProgressBar(-1);
+        window.webContents.send("progress-bar-change", -1);
+        resolve();
+      }, 200);
+    });
   };
 }

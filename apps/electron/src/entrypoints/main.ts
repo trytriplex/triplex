@@ -234,100 +234,98 @@ async function main() {
     resetMenu();
   }
 
-  async function onOpenProject(forceCwd?: string) {
-    const cwd = forceCwd || (await openProjectDialog());
-    if (cwd) {
-      log.info("selected", cwd);
+  async function onOpenProject(cwd: string) {
+    log.info("selected", cwd);
 
-      cleanup?.();
-      cleanup = undefined;
-      activeProjectWindow?.close();
-      activeProjectWindow = undefined;
-      abortContoller?.abort();
-      abortContoller = undefined;
+    cleanup?.();
+    cleanup = undefined;
+    activeProjectWindow?.close();
+    activeProjectWindow = undefined;
+    abortContoller?.abort();
+    abortContoller = undefined;
 
-      abortContoller = new AbortController();
+    abortContoller = new AbortController();
 
-      activeProjectWindow = new BrowserWindow({
-        backgroundColor: "#171717",
-        titleBarStyle: "hidden",
-        show: false,
-        paintWhenInitiallyHidden: false,
-        titleBarOverlay: {
-          height: 32,
-          color: "#171717",
-          symbolColor: "#A3A3A3",
-        },
-        webPreferences: {
-          preload: require.resolve("./preload.js"),
-        },
-        width: 1028,
-        height: 768,
-      });
+    activeProjectWindow = new BrowserWindow({
+      backgroundColor: "#171717",
+      titleBarStyle: "hidden",
+      show: false,
+      paintWhenInitiallyHidden: false,
+      titleBarOverlay: {
+        height: 32,
+        color: "#171717",
+        symbolColor: "#A3A3A3",
+      },
+      webPreferences: {
+        preload: require.resolve("./preload.js"),
+      },
+      width: 1028,
+      height: 768,
+    });
 
-      try {
-        const result = await ensureDepsInstall(
-          cwd,
-          welcomeWindow || activeProjectWindow,
-          abortContoller.signal
-        );
+    try {
+      const result = await ensureDepsInstall(
+        cwd,
+        welcomeWindow || activeProjectWindow,
+        abortContoller.signal
+      );
 
-        if (result === false) {
-          // Install was aborted, return.
-          return;
-        }
-      } catch (e) {
-        const error = e as Error;
-        const { response } = await dialog.showMessageBox({
-          defaultId: 0,
-          buttons: ["OK", "Learn more"],
-          message: "Could not install project dependencies",
-          type: "error",
-          detail: error.message,
-          cancelId: -1,
-        });
-
-        if (response === 1) {
-          shell.openExternal(
-            "https://triplex.dev/docs/supporting/installing-dependencies"
-          );
-        }
-
+      if (result === false) {
+        // Install was aborted, return.
         return;
       }
+    } catch (e) {
+      const error = e as Error;
+      const { response } = await dialog.showMessageBox({
+        defaultId: 0,
+        buttons: ["OK", "Learn more"],
+        message: "Could not install project dependencies",
+        type: "error",
+        detail: error.message,
+        cancelId: -1,
+      });
 
-      activeProjectWindow.show();
-
-      connectMenuToRenderer(activeProjectWindow);
-      applyWindowIpcHandlers(activeProjectWindow);
-
-      log.info("forking");
-
-      const p = await fork(join(__dirname, "./project.ts"), { cwd });
-
-      cleanup = () => {
-        p.kill();
-      };
-
-      const searchParams = `?path=${p.data?.path}&exportName=${p.data?.exportName}`;
-
-      if (process.env.TRIPLEX_ENV === "development") {
-        await activeProjectWindow.loadURL(
-          `http://localhost:${EDITOR_DEV_PORT}${searchParams}`
-        );
-      } else {
-        await activeProjectWindow.loadFile(
-          require.resolve(`@triplex/editor/dist/index.html`),
-          {
-            search: searchParams,
-          }
+      if (response === 1) {
+        shell.openExternal(
+          "https://triplex.dev/docs/supporting/installing-dependencies"
         );
       }
 
-      return true;
+      return;
     }
 
-    return false;
+    if (welcomeWindow) {
+      welcomeWindow.close();
+      welcomeWindow = undefined;
+    }
+
+    activeProjectWindow.show();
+
+    connectMenuToRenderer(activeProjectWindow);
+    applyWindowIpcHandlers(activeProjectWindow);
+
+    log.info("forking");
+
+    const p = await fork(join(__dirname, "./project.ts"), { cwd });
+
+    cleanup = () => {
+      p.kill();
+    };
+
+    const searchParams = `?path=${p.data?.path}&exportName=${p.data?.exportName}`;
+
+    if (process.env.TRIPLEX_ENV === "development") {
+      await activeProjectWindow.loadURL(
+        `http://localhost:${EDITOR_DEV_PORT}${searchParams}`
+      );
+    } else {
+      await activeProjectWindow.loadFile(
+        require.resolve(`@triplex/editor/dist/index.html`),
+        {
+          search: searchParams,
+        }
+      );
+    }
   }
 
   function applyGlobalIpcHandlers() {
@@ -350,10 +348,9 @@ async function main() {
           break;
 
         case "open-project": {
-          const opened = await onOpenProject();
-          if (opened && welcomeWindow) {
-            welcomeWindow.close();
-            welcomeWindow = undefined;
+          const projectDir = await openProjectDialog();
+          if (projectDir) {
+            await onOpenProject(projectDir);
           }
           break;
         }

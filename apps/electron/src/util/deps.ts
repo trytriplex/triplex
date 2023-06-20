@@ -55,6 +55,6 @@ export async function ensureDepsInstall(
     return true;
   } finally {
     window.webContents.send("window-state-change", "active");
-    complete();
+    await complete();
   }
 }
