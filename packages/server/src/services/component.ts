@@ -79,15 +79,15 @@ function insertJsxElement(
 ) {
   const jsxFrag = target.getFirstDescendantByKind(SyntaxKind.JsxFragment);
   const jsxEle = target.getFirstDescendantByKind(SyntaxKind.JsxElement);
-  let line;
 
-  const componentText = `\n<${componentName} ${propsToString(
-    componentProps
-  )}/>`;
+  let line: number;
+  let column: number;
+
+  const componentText = `<${componentName} ${propsToString(componentProps)}/>`;
 
   if (jsxFrag) {
     const pos = jsxFrag.getClosingFragment().getStart();
-    ({ line } = sourceFile.getLineAndColumnAtPos(pos));
+    ({ column, line } = sourceFile.getLineAndColumnAtPos(pos));
     sourceFile.insertText(pos, componentText);
   } else if (jsxEle) {
     const jsxElementName = jsxEle
@@ -99,16 +99,15 @@ function insertJsxElement(
     }
 
     const pos = jsxEle.getClosingElement().getStart();
-    ({ line } = sourceFile.getLineAndColumnAtPos(pos));
+    ({ column, line } = sourceFile.getLineAndColumnAtPos(pos));
     sourceFile.insertText(pos, componentText);
   } else {
     throw new Error("invariant: could not find jsx element to add to");
   }
 
   return {
-    column: 1,
-    // Offset for the new line added in `componentText`.
-    line: line + 1,
+    column,
+    line,
   };
 }
 
@@ -254,20 +253,6 @@ export function add(
         }
       }
 
-      const { column, line } = target
-        ? addToJsxElement(
-            sourceFile,
-            target,
-            aliasImportName || importName,
-            component.props
-          )
-        : insertJsxElement(
-            sourceFile,
-            declaration.getBodyOrThrow(),
-            aliasImportName || importName,
-            component.props
-          );
-
       existingImport = sourceFile.getImportDeclaration((decl) => {
         return decl.getModuleSpecifierValue() === moduleSpecifier;
       });
@@ -312,6 +297,32 @@ export function add(
 
         sourceFile.insertText(0, importDeclaration);
       }
+
+      // Less than ideal but we need to find the declaration again because of the
+      // Mutation we've done above for import statements. Not the end of the world
+      // But might be a performance pitfall. This is a note for later to see if there
+      // Are improvements to be made.
+      const { declaration } = getExportName(sourceFile, exportName);
+
+      if (!Node.isFunctionDeclaration(declaration)) {
+        throw new Error("invariant");
+      }
+
+      // We add the JSX element after adding/updating imports so line/cols are always correct
+      // For the freshly added JSX element.
+      const { column, line } = target
+        ? addToJsxElement(
+            sourceFile,
+            target,
+            aliasImportName || importName,
+            component.props
+          )
+        : insertJsxElement(
+            sourceFile,
+            declaration.getBodyOrThrow(),
+            aliasImportName || importName,
+            component.props
+          );
 
       return {
         column,

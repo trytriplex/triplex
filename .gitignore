@@ -8,6 +8,7 @@ dist
 
 # testing
 coverage
+**/__test__/tmp
 
 # next.js
 .next/

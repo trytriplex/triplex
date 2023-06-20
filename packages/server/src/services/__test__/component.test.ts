@@ -1,6 +1,7 @@
 import { join } from "path";
-import { describe, expect, it } from "vitest";
-import { _createProject } from "../../ast/project";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { rmSync } from "node:fs";
+import { _createProject, createProject } from "../../ast/project";
 import {
   add,
   upsertProp,
@@ -11,8 +12,21 @@ import {
 } from "../component";
 import { getExportName } from "../../ast/module";
 import { getJsxElementAt, getJsxElementsPositions } from "../../ast/jsx";
+import { save } from "../save";
+import { getJsxElementPropTypes } from "../../ast/type-infer";
+
+const cleanTmpDir = () => {
+  try {
+    rmSync(join(__dirname, "tmp"), { recursive: true, force: true });
+  } catch (e) {
+    return;
+  }
+};
 
 describe("component service", () => {
+  beforeEach(cleanTmpDir);
+  afterEach(cleanTmpDir);
+
   it("should rename a function declaration named export", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
@@ -121,8 +135,7 @@ describe("component service", () => {
             <mesh
               position={[1.23121231233123, 1.2321231233123, 1.121231213123123]}
             ></mesh>
-          
-      <group /></>
+          <group /></>
         );
       }"
     `);
@@ -174,8 +187,7 @@ describe("component service", () => {
             <mesh
               position={[1.23121231233123, 1.2321231233123, 1.121231213123123]}
             ></mesh>
-          
-      <StubComponent color=\\"red\\"/></>
+          <StubComponent color=\\"red\\"/></>
         );
       }"
     `);
@@ -222,8 +234,7 @@ describe("component service", () => {
     ).declaration.getText();
     expect(result).toMatchInlineSnapshot(`
       "export function FragmentFragment() {
-        return <Fragment>
-      <NamedComponent /></Fragment>;
+        return <Fragment><NamedComponent /></Fragment>;
       }"
     `);
   });
@@ -721,4 +732,42 @@ describe("component service", () => {
 
     expect(result).toEqual({ column: 49, line: 49 });
   });
+
+  it("should add components without losing track of line and columns", async () => {
+    const project = createProject({
+      cwd: join(__dirname, "tmp"),
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.createSourceFile("Untitled");
+    const saveFile = () => save({ project, path: sourceFile.getFilePath() });
+    const addComponent = async (exportName: string) => {
+      const pos = add(sourceFile, "Untitled", {
+        type: "custom",
+        exportName,
+        path: join(__dirname, "__mocks__", "room.tsx"),
+        props: {},
+      });
+      const element = getJsxElementAt(sourceFile, pos.line, pos.column);
+      if (!element) {
+        console.log(
+          `${exportName}@${pos.line}:${pos.column}\n`,
+          sourceFile.getText()
+        );
+        throw new Error(
+          `could not find at ${exportName}@${pos.line}:${pos.column}`
+        );
+      }
+      getJsxElementPropTypes(element);
+      await saveFile();
+    };
+
+    await addComponent("Wall");
+    await addComponent("Floor");
+    await addComponent("BackWall");
+    await addComponent("Table");
+    await addComponent("CollectionOfCans");
+    await addComponent("TableBox");
+    await addComponent("WallpaperAndLights");
+    await addComponent("Lamps");
+  }, 30000);
 });

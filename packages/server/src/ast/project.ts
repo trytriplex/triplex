@@ -1,4 +1,4 @@
-import { join } from "path";
+import { join, normalize } from "path";
 import { watch } from "chokidar";
 import { Project, ProjectOptions, SourceFile } from "ts-morph";
 
@@ -89,7 +89,7 @@ export function ${componentName}() {
   }
 
   function getSourceFile(path: string) {
-    if (!path.startsWith(cwd)) {
+    if (!normalize(path).startsWith(normalize(cwd))) {
       throw new Error("invariant: path is outside of cwd");
     }
 
