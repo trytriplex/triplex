@@ -8,7 +8,7 @@ import {
 } from "ts-morph";
 import { basename, extname, relative } from "path";
 import { getExportName } from "../ast/module";
-import { getJsxElementAt } from "../ast/jsx";
+import { getAttributes, getJsxElementAt } from "../ast/jsx";
 import { inferExports } from "../util/module";
 import { ComponentRawType, ComponentTarget } from "../types";
 
@@ -339,14 +339,12 @@ export function upsertProp(
   propName: string,
   propValue: string
 ) {
-  const attribute = jsxElement
-    .getDescendantsOfKind(SyntaxKind.JsxAttribute)
-    .find((prop) => prop.getName() === propName);
-
+  const attribute = getAttributes(jsxElement)[propName];
   if (attribute) {
     attribute.setInitializer(`{${propValue}}`);
     return "updated";
   }
+
   const newAttribute = {
     name: propName,
     initializer: `{${propValue}}`,

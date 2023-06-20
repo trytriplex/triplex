@@ -14,6 +14,7 @@ import { getExportName } from "../../ast/module";
 import { getJsxElementAt, getJsxElementsPositions } from "../../ast/jsx";
 import { save } from "../save";
 import { getJsxElementPropTypes } from "../../ast/type-infer";
+import { SyntaxKind } from "ts-morph";
 
 const cleanTmpDir = () => {
   try {
@@ -425,6 +426,28 @@ describe("component service", () => {
               ]} scale={[2, 3, 4]}
             />"
     `);
+  });
+
+  it("should update mesh without affecting children that declare the same prop", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/magic-box.tsx")
+    );
+    const jsxElement = getJsxElementAt(sourceFile, 4, 3);
+    if (!jsxElement) {
+      throw new Error("invariant");
+    }
+    const openingElement = jsxElement
+      .asKindOrThrow(SyntaxKind.JsxElement)
+      .getOpeningElement();
+
+    upsertProp(jsxElement, "rotation", "[11, 22, 33]");
+
+    expect(openingElement.getText()).toMatchInlineSnapshot(
+      '"<mesh castShadow receiveShadow rotation={[11, 22, 33]}>"'
+    );
   });
 
   it("should add a prop to a component and not move it to another line", () => {
