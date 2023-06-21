@@ -1,5 +1,16 @@
 # @triplex/server
 
+## 0.54.1
+
+### Patch Changes
+
+- 76fd3f3: Fixes a bug on Windows where it would throw assuming you were opening
+  a file out of the open project.
+- cdd6234: On save unused identifiers are now removed.
+- 76fd3f3: Adding custom components to a scene no longer results in mismatches
+  causing the context panel to error.
+- f77c830: Fix prop upsert affecting children jsx elements unexpectedly.
+
 ## 0.54.0
 
 ## 0.53.1

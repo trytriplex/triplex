@@ -1,5 +1,14 @@
 # @triplex/client
 
+## 0.54.1
+
+### Patch Changes
+
+- ad66cc8: Add support for scene objects to be passed transform props
+  (`position`, `rotation`, and `scale`) via spread props.
+- Updated dependencies [3711009]
+  - @triplex/scene@0.54.1
+
 ## 0.54.0
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@triplex/scene",
-  "version": "0.54.0",
+  "version": "0.54.1",
   "description": "The React Three Fiber editor.",
   "license": "GPL-3.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
@@ -15,8 +15,8 @@
     "typedef": "tsc"
   },
   "dependencies": {
-    "@triplex/bridge": "0.54.0",
-    "@triplex/ws-client": "0.54.0",
+    "@triplex/bridge": "0.54.1",
+    "@triplex/ws-client": "0.54.1",
     "react-error-boundary": "^3.1.4",
     "react-merge-refs": "^1.1.0",
     "react-router-dom": "^6.7.0",

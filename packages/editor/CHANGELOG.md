@@ -1,5 +1,17 @@
 # @triplex/editor
 
+## 0.54.1
+
+### Patch Changes
+
+- d58e0b0: During save a route transition will only occur if saving the file to
+  another path.
+- 8afea84: Focus state is now handled across the app.
+- cdd6234: Delete and undo/redo actions are no longer double fired when using
+  the hotkey in the editor.
+  - @triplex/bridge@0.54.1
+  - @triplex/ws-client@0.54.1
+
 ## 0.54.0
 
 ### Minor Changes

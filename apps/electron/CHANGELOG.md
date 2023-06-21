@@ -1,5 +1,24 @@
 # @triplex/electron
 
+## 0.54.1
+
+### Patch Changes
+
+- a2a8d1e: The welcome screen is now closed as early as possible instead of
+  waiting for the scene to completly open.
+- Updated dependencies [d58e0b0]
+- Updated dependencies [8afea84]
+- Updated dependencies [ad66cc8]
+- Updated dependencies [76fd3f3]
+- Updated dependencies [cdd6234]
+- Updated dependencies [cdd6234]
+- Updated dependencies [76fd3f3]
+- Updated dependencies [f77c830]
+  - @triplex/editor@0.54.1
+  - @triplex/client@0.54.1
+  - @triplex/server@0.54.1
+  - create-triplex-project@0.54.1
+
 ## 0.54.0
 
 ### Minor Changes
