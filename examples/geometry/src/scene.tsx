@@ -1,3 +1,4 @@
+import { ThisSpreadProps } from "./geometry/spread";
 import Box1 from "./geometry/box";
 import Cylinder from "@/geometry/cylinder";
 import Box from "src/geometry/box";
@@ -10,6 +11,7 @@ export function SceneAlt() {
       <Box
         position={[-0.48868437340157445, 0.5965867294072928, 1.311273188113876]}
       />
+      <ThisSpreadProps position={[-4.740835822745279, 0, -3.280281099034365]} />
     </>
   );
 }
