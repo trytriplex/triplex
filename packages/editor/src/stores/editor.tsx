@@ -261,7 +261,6 @@ export function useEditor() {
   const save = useCallback(
     async (saveAs = !!searchParams.get("forceSaveAs")) => {
       let actualPath = path;
-      let actualExportName = exportName;
 
       if (saveAs) {
         const enteredPath = await showSaveDialog(path);
@@ -284,16 +283,19 @@ export function useEditor() {
         )}/save?newPath=${actualPath}`
       );
 
-      set(
-        {
-          encodedProps: "",
-          exportName: actualExportName,
-          path: actualPath,
-        },
-        { replace: true }
-      );
+      if (actualPath !== path) {
+        // The path has changed so we need to update the URL to reflect that.
+        set(
+          {
+            encodedProps,
+            exportName,
+            path: actualPath,
+          },
+          { replace: true }
+        );
+      }
     },
-    [clearUndoRedo, exportName, path, searchParams, set]
+    [clearUndoRedo, encodedProps, exportName, path, searchParams, set]
   );
 
   const newFile = useCallback(async () => {
