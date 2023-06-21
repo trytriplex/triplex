@@ -1,5 +1,14 @@
 # @triplex/scene
 
+## 0.54.1
+
+### Patch Changes
+
+- 3711009: The Triplex orthographic cameras near plane has been decreased to
+  ensure objects stay within view in the scene.
+  - @triplex/bridge@0.54.1
+  - @triplex/ws-client@0.54.1
+
 ## 0.54.0
 
 ### Minor Changes
