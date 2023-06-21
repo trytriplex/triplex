@@ -6,19 +6,53 @@ export default function triplexBabelPlugin() {
   const triplexMeta = new Map<string, { lighting: "default" | "custom" }>();
   const SCENE_OBJECT_COMPONENT_NAME = "SceneObject";
 
-  let current: string | undefined = undefined;
+  let currentFunction:
+    | {
+        name: string;
+        props: { spreadIdentifier?: string; destructured: string[] };
+      }
+    | undefined = undefined;
 
   const plugin: PluginObj = {
     visitor: {
       FunctionDeclaration: {
         enter(path) {
           if (path.node.id && /^[A-Z]/.exec(path.node.id.name)) {
-            current = path.node.id.name;
+            const propsArg = path.node.params[0];
+            let destructured: string[] = [];
+            let spreadIdentifier: string | undefined = undefined;
+
+            switch (propsArg?.type) {
+              case "Identifier":
+                spreadIdentifier = propsArg.name;
+                break;
+
+              case "ObjectPattern":
+                propsArg.properties.forEach((prop) => {
+                  if (
+                    prop.type === "ObjectProperty" &&
+                    prop.key.type === "Identifier"
+                  ) {
+                    destructured.push(prop.key.name);
+                  } else if (
+                    prop.type === "RestElement" &&
+                    prop.argument.type === "Identifier"
+                  ) {
+                    spreadIdentifier = prop.argument.name;
+                  }
+                });
+                break;
+            }
+
+            currentFunction = {
+              name: path.node.id.name,
+              props: { destructured, spreadIdentifier },
+            };
           }
         },
         exit(path) {
-          if (path.node.id && path.node.id.name === current) {
-            current = undefined;
+          if (path.node.id && path.node.id.name === currentFunction?.name) {
+            currentFunction = undefined;
           }
         },
       },
@@ -28,15 +62,49 @@ export default function triplexBabelPlugin() {
             path.node.id.type === "Identifier" &&
             /^[A-Z]/.exec(path.node.id.name)
           ) {
-            current = path.node.id.name;
+            let destructured: string[] = [];
+            let spreadIdentifier: string | undefined = undefined;
+
+            path.traverse({
+              ArrowFunctionExpression(innerPath) {
+                const propsArg = innerPath.node.params[0];
+
+                switch (propsArg?.type) {
+                  case "Identifier":
+                    spreadIdentifier = propsArg.name;
+                    break;
+
+                  case "ObjectPattern":
+                    propsArg.properties.forEach((prop) => {
+                      if (
+                        prop.type === "ObjectProperty" &&
+                        prop.key.type === "Identifier"
+                      ) {
+                        destructured.push(prop.key.name);
+                      } else if (
+                        prop.type === "RestElement" &&
+                        prop.argument.type === "Identifier"
+                      ) {
+                        spreadIdentifier = prop.argument.name;
+                      }
+                    });
+                    break;
+                }
+              },
+            });
+
+            currentFunction = {
+              name: path.node.id.name,
+              props: { destructured, spreadIdentifier },
+            };
           }
         },
         exit(path) {
           if (
             path.node.id.type === "Identifier" &&
-            path.node.id.name === current
+            path.node.id.name === currentFunction?.name
           ) {
-            current = undefined;
+            currentFunction = undefined;
           }
         },
       },
@@ -77,15 +145,15 @@ export default function triplexBabelPlugin() {
 
         cache.add(path.node);
 
-        if (current && !triplexMeta.has(current)) {
-          triplexMeta.set(current, { lighting: "default" });
+        if (currentFunction && !triplexMeta.has(currentFunction.name)) {
+          triplexMeta.set(currentFunction.name, { lighting: "default" });
         }
 
         const elementName = path.node.openingElement.name.name;
         const elementType = /^[A-Z]/.exec(elementName) ? "custom" : "host";
 
-        if (current && elementName.endsWith("Light")) {
-          const meta = triplexMeta.get(current);
+        if (currentFunction && elementName.endsWith("Light")) {
+          const meta = triplexMeta.get(currentFunction.name);
           if (meta) {
             meta.lighting = "custom";
           }
@@ -129,6 +197,24 @@ export default function triplexBabelPlugin() {
                 }
 
                 if (attr.name.name === "scale") {
+                  transformsFound.scale = true;
+                }
+              }
+            } else {
+              // Spread attribute
+              if (
+                attr.argument.type === "Identifier" &&
+                attr.argument.name === currentFunction?.props.spreadIdentifier
+              ) {
+                if (!currentFunction.props.destructured.includes("position")) {
+                  transformsFound.translate = true;
+                }
+
+                if (!currentFunction.props.destructured.includes("rotation")) {
+                  transformsFound.rotate = true;
+                }
+
+                if (!currentFunction.props.destructured.includes("scale")) {
                   transformsFound.scale = true;
                 }
               }

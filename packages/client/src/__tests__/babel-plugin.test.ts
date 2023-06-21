@@ -496,4 +496,239 @@ describe("babel plugin", () => {
       }} key={\\"mesh27\\"}></SceneObject>;"
     `);
   });
+
+  it("should handle basic spread props", () => {
+    const result = transformSync(
+      `
+      function Component(props) {
+        return <mesh {...props} />
+      }
+    `,
+      {
+        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        filename: "/box.tsx",
+      }
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "function Component(props) {
+        return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
+          \\"path\\": \\"/box.tsx\\",
+          \\"name\\": \\"mesh\\",
+          \\"line\\": 3,
+          \\"column\\": 16,
+          \\"translate\\": true,
+          \\"rotate\\": true,
+          \\"scale\\": true
+        }} key={\\"mesh316\\"}></SceneObject>;
+      }
+      Component.triplexMeta = {
+        \\"lighting\\": \\"default\\"
+      };"
+    `);
+  });
+
+  it("should handle basic spread props from a arrow function", () => {
+    const result = transformSync(
+      `
+      const Component = forwardRef((props) => {
+        return <mesh {...props} />
+      });
+    `,
+      {
+        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        filename: "/box.tsx",
+      }
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "const Component = forwardRef(props => {
+        return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
+          \\"path\\": \\"/box.tsx\\",
+          \\"name\\": \\"mesh\\",
+          \\"line\\": 3,
+          \\"column\\": 16,
+          \\"translate\\": true,
+          \\"rotate\\": true,
+          \\"scale\\": true
+        }} key={\\"mesh316\\"}></SceneObject>;
+      });
+      Component.triplexMeta = {
+        \\"lighting\\": \\"default\\"
+      };"
+    `);
+  });
+
+  it("should handle destructured spread props", () => {
+    const result = transformSync(
+      `
+      function Component({ name, ...props }) {
+        return <mesh {...props} />
+      }
+    `,
+      {
+        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        filename: "/box.tsx",
+      }
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "function Component({
+        name,
+        ...props
+      }) {
+        return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
+          \\"path\\": \\"/box.tsx\\",
+          \\"name\\": \\"mesh\\",
+          \\"line\\": 3,
+          \\"column\\": 16,
+          \\"translate\\": true,
+          \\"rotate\\": true,
+          \\"scale\\": true
+        }} key={\\"mesh316\\"}></SceneObject>;
+      }
+      Component.triplexMeta = {
+        \\"lighting\\": \\"default\\"
+      };"
+    `);
+  });
+
+  it("should handle destructured spread props from a arrow function", () => {
+    const result = transformSync(
+      `
+      const Component = forwardRef(({ name, ...props }) => {
+        return <mesh {...props} />
+      });
+    `,
+      {
+        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        filename: "/box.tsx",
+      }
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "const Component = forwardRef(({
+        name,
+        ...props
+      }) => {
+        return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
+          \\"path\\": \\"/box.tsx\\",
+          \\"name\\": \\"mesh\\",
+          \\"line\\": 3,
+          \\"column\\": 16,
+          \\"translate\\": true,
+          \\"rotate\\": true,
+          \\"scale\\": true
+        }} key={\\"mesh316\\"}></SceneObject>;
+      });
+      Component.triplexMeta = {
+        \\"lighting\\": \\"default\\"
+      };"
+    `);
+  });
+
+  it('should bail out if the spread props does not include "position", "rotation" or "scale"', () => {
+    const result = transformSync(
+      `
+      function Component({ name, position, rotation, scale, ...props }) {
+        return <mesh {...props} />
+      }
+    `,
+      {
+        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        filename: "/box.tsx",
+      }
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "function Component({
+        name,
+        position,
+        rotation,
+        scale,
+        ...props
+      }) {
+        return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
+          \\"path\\": \\"/box.tsx\\",
+          \\"name\\": \\"mesh\\",
+          \\"line\\": 3,
+          \\"column\\": 16,
+          \\"translate\\": false,
+          \\"rotate\\": false,
+          \\"scale\\": false
+        }} key={\\"mesh316\\"}></SceneObject>;
+      }
+      Component.triplexMeta = {
+        \\"lighting\\": \\"default\\"
+      };"
+    `);
+  });
+
+  it('should bail out if the spread props does not include "position", "rotation" or "scale" as an arrow function', () => {
+    const result = transformSync(
+      `
+      const Component = forwardRef(({ name, position, rotation, scale, ...props }) => {
+        return <mesh {...props} />
+      });
+    `,
+      {
+        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        filename: "/box.tsx",
+      }
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "const Component = forwardRef(({
+        name,
+        position,
+        rotation,
+        scale,
+        ...props
+      }) => {
+        return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
+          \\"path\\": \\"/box.tsx\\",
+          \\"name\\": \\"mesh\\",
+          \\"line\\": 3,
+          \\"column\\": 16,
+          \\"translate\\": false,
+          \\"rotate\\": false,
+          \\"scale\\": false
+        }} key={\\"mesh316\\"}></SceneObject>;
+      });
+      Component.triplexMeta = {
+        \\"lighting\\": \\"default\\"
+      };"
+    `);
+  });
+
+  it("should handle a function inside a variable declarator", () => {
+    const result = transformSync(
+      `
+      const Component = forwardRef(function Hello(props) {
+        return <mesh {...props} />
+      });
+    `,
+      {
+        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        filename: "/box.tsx",
+      }
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "const Component = forwardRef(function Hello(props) {
+        return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
+          \\"path\\": \\"/box.tsx\\",
+          \\"name\\": \\"mesh\\",
+          \\"line\\": 3,
+          \\"column\\": 16,
+          \\"translate\\": false,
+          \\"rotate\\": false,
+          \\"scale\\": false
+        }} key={\\"mesh316\\"}></SceneObject>;
+      });
+      Component.triplexMeta = {
+        \\"lighting\\": \\"default\\"
+      };"
+    `);
+  });
 });
