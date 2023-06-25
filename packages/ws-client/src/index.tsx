@@ -59,7 +59,7 @@ function wsQuery<TValue>(path: string) {
     }
 
     ws.addEventListener("open", () => {
-      ws!.send(path);
+      ws.send(path);
     });
 
     ws.addEventListener("message", (e) => {
