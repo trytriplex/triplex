@@ -1,11 +1,8 @@
 #!/usr/bin/env node
 import { program } from "@commander-js/extra-typings";
-import { readFile } from "fs/promises";
-import { join } from "path";
-import { join as joinPosix } from "path/posix";
+import { getConfig } from "@triplex/server";
 import { description, version } from "../package.json";
 import { editor } from "./commands/editor";
-import { TRIPLEXConfig } from "./types";
 
 /* eslint-disable no-irregular-whitespace */
 console.log(`
@@ -25,40 +22,11 @@ program
     "specify the export name when opening a file [default]"
   )
   .action(async ({ open, exportName = "default" }) => {
-    let config: TRIPLEXConfig;
-
-    try {
-      const conf = await readFile(
-        join(process.cwd(), ".triplex/config.json"),
-        "utf-8"
-      );
-      config = JSON.parse(conf);
-    } catch (e) {
-      console.log("Could not find config! Run triplex init to generate one.\n");
-      return;
-    }
-
-    const publicDir = join(
-      process.cwd(),
-      ".triplex",
-      config.publicDir || "../public"
-    );
-
-    const files = config.files.map((file) =>
-      // Separators should always be forward slashes for glob compatibility.
-      joinPosix(process.cwd(), ".triplex", file).replaceAll("\\", "/")
-    );
-
-    const components = (config.components || []).map((file) =>
-      // Separators should always be forward slashes for glob compatibility.
-      joinPosix(process.cwd(), ".triplex", file).replaceAll("\\", "/")
-    );
+    const config = await getConfig(process.cwd());
 
     editor({
-      components,
+      ...config,
       open,
-      publicDir,
-      files,
       exportName,
     });
   });

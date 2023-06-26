@@ -9,12 +9,14 @@ export async function editor({
   publicDir,
   exportName,
   components,
+  assetsDir,
 }: {
   components: string[];
   open?: boolean | string;
   publicDir?: string;
   files: string[];
   exportName?: string;
+  assetsDir: string;
 }) {
   const { default: ora } = await import("ora");
   const spinner = ora("Starting...\n").start();
@@ -27,7 +29,11 @@ export async function editor({
     exportName,
     files,
   });
-  const backendServer = await createBackendServer({ files, components });
+  const backendServer = await createBackendServer({
+    files,
+    components,
+    assetsDir,
+  });
   const editorPort = 5754;
 
   await frontendServer.listen(3333);

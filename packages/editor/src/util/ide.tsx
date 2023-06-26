@@ -49,7 +49,7 @@ export function IDELink({
     <a
       title={title}
       className={cn([
-        "rounded-sm outline-2 outline-offset-2 outline-blue-400 focus-visible:outline",
+        "rounded-sm outline-1 outline-offset-1 outline-blue-400 focus-visible:outline",
         className,
       ])}
       onClick={(e) => {

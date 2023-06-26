@@ -35,7 +35,7 @@ export const IconButton = forwardRef<
       onClick={onClick}
       type="submit"
       className={cn([
-        "outline-2 outline-offset-2 outline-blue-400 focus-visible:outline",
+        "outline-1 outline-offset-1 outline-blue-400 focus-visible:outline",
         isDisabled && [
           "cursor-not-allowed opacity-50",
           variant === "default" && "text-neutral-400",
@@ -92,7 +92,7 @@ export const Button = forwardRef<
       type="submit"
       disabled={disabled}
       className={cn([
-        "outline-2 outline-offset-2 outline-blue-400 focus-visible:outline",
+        "outline-1 outline-offset-1 outline-blue-400 focus-visible:outline",
         disabled && "cursor-not-allowed text-neutral-500",
         !disabled &&
           (isSelected

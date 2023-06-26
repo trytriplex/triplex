@@ -201,7 +201,11 @@ export type GetProjectComponents = (
   | ProjectCustomComponent
 )[];
 
-export type GetProjectComponentFolders = {
+export interface Folder {
   name: string;
   path: string;
-}[];
+  files: number;
+  children: Folder[];
+}
+
+export type GetProjectComponentFolders = Folder[];

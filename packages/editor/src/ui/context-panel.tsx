@@ -95,7 +95,7 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
       <div className="h-[1px] bg-neutral-800" />
 
       <ScrollContainer>
-        <div className="h-4" />
+        <div className="h-3" />
 
         {filteredProps.length === 0 && (
           <div className="px-4 text-sm italic text-neutral-400">
@@ -146,7 +146,7 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
             />
           </PropField>
         ))}
-        <div className="h-2" />
+        <div className="h-1" />
       </ScrollContainer>
     </>
   );
