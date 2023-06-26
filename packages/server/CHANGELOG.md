@@ -1,5 +1,13 @@
 # @triplex/server
 
+## 0.54.2
+
+### Patch Changes
+
+- a060d2c: Fix websocket server connection listener being called on every router
+  handler setup.
+- 9100a37: Revert remove unused on save as it was causing issues.
+
 ## 0.54.1
 
 ### Patch Changes

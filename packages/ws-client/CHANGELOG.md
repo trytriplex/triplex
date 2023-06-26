@@ -1,5 +1,12 @@
 # @triplex/ws-client
 
+## 0.54.2
+
+### Patch Changes
+
+- a060d2c: Fix websocket server connection listener being called on every router
+  handler setup.
+
 ## 0.54.1
 
 ## 0.54.0

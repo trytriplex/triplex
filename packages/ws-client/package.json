@@ -1,6 +1,6 @@
 {
   "name": "@triplex/ws-client",
-  "version": "0.54.1",
+  "version": "0.54.2",
   "description": "The React Three Fiber editor.",
   "license": "GPL-3.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
