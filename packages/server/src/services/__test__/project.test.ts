@@ -9,7 +9,7 @@ describe("project", () => {
     expect(actual.length).toEqual(46);
   });
 
-  it("should pick up all folders that contain files including parent", async () => {
+  it("should pick up all folders that contain files in a nested structure", async () => {
     const actual = await foundFolders([
       __dirname + "/__mocks__/components/**/*.tsx",
     ]);
@@ -18,14 +18,48 @@ describe("project", () => {
       {
         path: join(__dirname, "__mocks__", "components"),
         name: "components",
-      },
-      {
-        path: join(__dirname, "__mocks__", "components", "objects"),
-        name: "objects",
-      },
-      {
-        path: join(__dirname, "__mocks__", "components", "materials"),
-        name: "materials",
+        files: 2,
+        children: [
+          {
+            files: 1,
+            path: join(__dirname, "__mocks__", "components", "materials"),
+            name: "materials",
+            children: [
+              {
+                files: 1,
+                path: join(
+                  __dirname,
+                  "__mocks__",
+                  "components",
+                  "materials",
+                  "water"
+                ),
+                name: "water",
+                children: [
+                  {
+                    files: 1,
+                    path: join(
+                      __dirname,
+                      "__mocks__",
+                      "components",
+                      "materials",
+                      "water",
+                      "concrete"
+                    ),
+                    name: "concrete",
+                    children: [],
+                  },
+                ],
+              },
+            ],
+          },
+          {
+            files: 2,
+            path: join(__dirname, "__mocks__", "components", "objects"),
+            name: "objects",
+            children: [],
+          },
+        ],
       },
     ]);
   });

@@ -18,10 +18,12 @@ import * as projectService from "./services/project";
 import { ComponentTarget, ComponentType } from "./types";
 
 export function createServer({
+  assetsDir,
   cwd = process.cwd(),
   files,
   components,
 }: {
+  assetsDir: string;
   cwd?: string;
   files: string[];
   components: string[];
@@ -192,6 +194,36 @@ export function createServer({
       const watcher = watch(components);
       watcher.on("addDir", push);
       watcher.on("unlinkDir", push);
+      watcher.on("add", push);
+      watcher.on("unlink", push);
+    }
+  );
+
+  wss.message(
+    "/scene/assets",
+    async () => {
+      const result = await projectService.foundFolders([assetsDir]);
+      return result;
+    },
+    (push) => {
+      const watcher = watch(assetsDir);
+      watcher.on("addDir", push);
+      watcher.on("unlinkDir", push);
+      watcher.on("add", push);
+      watcher.on("unlink", push);
+    }
+  );
+
+  wss.message(
+    "/scene/assets/:folderPath",
+    async ({ folderPath }) => {
+      const result = await projectService.folderAssets([assetsDir], folderPath);
+      return result;
+    },
+    (push, { folderPath }) => {
+      const watcher = watch(folderPath);
+      watcher.on("add", push);
+      watcher.on("unlink", push);
     }
   );
 
@@ -209,8 +241,8 @@ export function createServer({
       );
       return result;
     },
-    (push) => {
-      const watcher = watch(components);
+    (push, { folderPath }) => {
+      const watcher = watch(folderPath);
       watcher.on("add", push);
       watcher.on("unlink", push);
     }
@@ -373,3 +405,5 @@ export function createServer({
     },
   };
 }
+
+export { getConfig } from "./util/config";

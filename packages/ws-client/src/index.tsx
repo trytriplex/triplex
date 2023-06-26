@@ -148,6 +148,17 @@ export function useLazySubscription<TSubscriptionData>(path: string) {
   return data;
 }
 
+export function useSubscription<TSubscriptionData>(path: string) {
+  const query = wsQuery<TSubscriptionData>(path);
+
+  const data = useSyncExternalStore<TSubscriptionData>(
+    useCallback((onStoreChanged) => query.subscribe(onStoreChanged), [query]),
+    query.read
+  );
+
+  return data;
+}
+
 export function useSubscriptionEffect<TSubscriptionData>(
   path: string
 ): TSubscriptionData | null {

@@ -1,6 +1,5 @@
 import { createServer as createFrontend } from "@triplex/client";
-import { createServer as createBackend } from "@triplex/server";
-import { getConfig } from "./config";
+import { createServer as createBackend, getConfig } from "@triplex/server";
 
 export async function startProject(
   cwd: string,

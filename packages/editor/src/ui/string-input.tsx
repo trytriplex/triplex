@@ -1,5 +1,9 @@
 import { Cross2Icon } from "@radix-ui/react-icons";
-import type { ChangeEventHandler, FocusEventHandler } from "react";
+import {
+  useState,
+  type ChangeEventHandler,
+  type FocusEventHandler,
+} from "react";
 import { IconButton } from "../ds/button";
 import { sentenceCase } from "../util/string";
 
@@ -20,6 +24,8 @@ export function StringInput({
   onChange?: (value: string | undefined) => void;
   onConfirm?: (value: string | undefined) => void;
 }) {
+  const [value, setValue] = useState(defaultValue);
+
   const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     const nextValue = e.target.value || undefined;
     if (nextValue === undefined && required) {
@@ -28,6 +34,7 @@ export function StringInput({
     }
 
     onChange(nextValue);
+    setValue(nextValue);
   };
 
   const onBlurHandler: FocusEventHandler<HTMLInputElement> = (e) => {
@@ -63,7 +70,7 @@ export function StringInput({
         className="w-full bg-transparent px-1 py-0.5 text-sm text-neutral-300 outline-none [color-scheme:dark] placeholder:italic placeholder:text-neutral-500"
       />
 
-      {!required && (
+      {!required && value && (
         <IconButton
           className="hidden group-focus-within:block group-hover:block"
           onClick={onClear}

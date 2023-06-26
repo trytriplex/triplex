@@ -10,7 +10,7 @@ import { IDELink } from "../util/ide";
 import { useEditor } from "../stores/editor";
 import { useScene } from "../stores/scene";
 import { ScrollContainer } from "../ds/scroll-container";
-import { AddComponentDrawer } from "./add-component-drawer";
+import { AssetsDrawer } from "./assets-drawer";
 import { CaretDownIcon, ExitIcon } from "@radix-ui/react-icons";
 import { IconButton } from "../ds/button";
 import { ErrorBoundary } from "./error-boundary";
@@ -33,7 +33,7 @@ function SceneComponent({
       title={name}
       style={{ paddingLeft: level === 1 ? 13 : level * 13 }}
       className={cn([
-        "outline-2 -outline-offset-2 outline-blue-400 focus-visible:outline",
+        "outline-1 -outline-offset-1 outline-blue-400 focus-visible:outline",
         selected
           ? "border-l-blue-400 bg-white/5 text-blue-400"
           : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
@@ -104,7 +104,7 @@ function ComponentHeading() {
 
   return (
     <h2 className="flex flex-row items-center pl-2 pr-4 pt-3 text-2xl font-medium text-neutral-300">
-      <label className="relative flex items-center gap-1.5 overflow-hidden rounded pl-2 pr-1 outline-2 outline-offset-2 outline-blue-400 focus-within:outline hover:bg-white/5 active:bg-white/10">
+      <label className="relative flex items-center gap-1.5 overflow-hidden rounded pl-2 pr-1 outline-1 outline-offset-1 outline-blue-400 focus-within:outline hover:bg-white/5 active:bg-white/10">
         <span className="overflow-hidden text-ellipsis rounded">
           {scene.name}
         </span>
@@ -160,7 +160,7 @@ function SceneContents() {
       <div className="h-[1px] bg-neutral-800" />
 
       <div className="flex px-2 py-1">
-        <AddComponentDrawer />
+        <AssetsDrawer />
 
         {enteredComponent && (
           <IconButton
@@ -175,9 +175,9 @@ function SceneContents() {
       <div className="h-[1px] bg-neutral-800" />
 
       <ScrollContainer>
-        <div className="h-2" />
+        <div className="h-1" />
         <SceneObjectButtons sceneObjects={scene.sceneObjects} />
-        <div className="h-2" />
+        <div className="h-1" />
       </ScrollContainer>
     </div>
   );

@@ -1,6 +1,8 @@
 import { readFile } from "fs/promises";
 import { join } from "path";
-import { join as joinPosix } from "path/posix";
+import { join as joinPosix, normalize } from "path/posix";
+
+const STATIC_ASSETS = ["glb", "gltf"];
 
 export async function getConfig(cwd: string) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -13,16 +15,29 @@ export async function getConfig(cwd: string) {
     throw new Error("invariant: could not fetch config");
   }
 
-  const publicDir = join(cwd, ".triplex", config.publicDir || "../public");
+  const publicDir: string = join(
+    cwd,
+    ".triplex",
+    config.publicDir || "../public"
+  );
 
-  const files = config.files.map((file: string) =>
+  const files: string[] = config.files.map((file: string) =>
     // Separators should always be forward slashes for glob compatibility.
     joinPosix(cwd, ".triplex", file).replaceAll("\\", "/")
   );
 
-  const components = (config.components || []).map((file: string) =>
+  const components: string[] = (config.components || []).map((file: string) =>
     // Separators should always be forward slashes for glob compatibility.
     joinPosix(cwd, ".triplex", file).replaceAll("\\", "/")
+  );
+
+  const assetsDir = normalize(
+    // Separators should always be forward slashes for glob compatibility.
+    joinPosix(
+      publicDir,
+      config.assetsDir || "assets",
+      `/**/*.(${STATIC_ASSETS.join("|")})`
+    )
   );
 
   return {
@@ -30,5 +45,6 @@ export async function getConfig(cwd: string) {
     publicDir,
     files,
     components,
+    assetsDir,
   };
 }

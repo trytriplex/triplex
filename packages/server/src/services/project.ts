@@ -1,9 +1,10 @@
 import readdirp from "readdirp";
-import { basename, dirname, sep } from "path";
+import { basename, dirname, join, normalize } from "node:path";
+import { readFile, readdir } from "node:fs/promises";
 import parent from "glob-parent";
 import anymatch from "anymatch";
 import { inferExports } from "../util/module";
-import { readFile } from "fs/promises";
+import { Folder } from "../types";
 
 const hElements = [
   { category: "Object3D", type: "host", name: "mesh" },
@@ -59,23 +60,61 @@ export function hostElements() {
 }
 
 export async function foundFolders(globs: string[]) {
-  const foundFolders: Record<string, { path: string; name: string }> = {};
+  const folders: Folder[] = [];
+  const match = anymatch(globs.map((glob) => glob.replaceAll("\\", "/")));
   const roots = globs.map((glob) => parent(glob.replaceAll("\\", "/")));
+  const foldersCache: Record<string, Folder> = {};
+
+  async function countDirFiles(path: string) {
+    const dir = await readdir(path);
+    let count = 0;
+
+    for (let i = 0; i < dir.length; i++) {
+      const file = dir[i];
+
+      if (match(join(path, file))) {
+        count += 1;
+      }
+    }
+
+    return count;
+  }
 
   for (let i = 0; i < globs.length; i++) {
-    const root = roots[i];
+    const root = normalize(roots[i]);
+    const rootFolder: Folder = {
+      path: root,
+      name: basename(root),
+      files: await countDirFiles(root),
+      children: [],
+    };
 
-    for await (const entry of readdirp(root, { type: "files" })) {
-      const path = entry.fullPath.replace(sep + entry.basename, "");
+    foldersCache[root] = rootFolder;
+    folders.push(rootFolder);
 
-      foundFolders[dirname(entry.fullPath)] = {
+    for await (const entry of readdirp(root, { type: "directories" })) {
+      const path = entry.fullPath;
+      const parentFolderName = dirname(entry.fullPath);
+
+      const folder: Folder = {
         path,
         name: basename(path),
+        files: await countDirFiles(path),
+        children: [],
       };
+
+      foldersCache[path] = folder;
+
+      if (foldersCache[parentFolderName]) {
+        // We've found a child of the current folder
+        foldersCache[parentFolderName].children.push(folder);
+      } else {
+        folders.push(folder);
+      }
     }
   }
 
-  return Object.values(foundFolders);
+  return folders;
 }
 
 export async function folderComponents(globs: string[], folder: string) {
@@ -99,4 +138,21 @@ export async function folderComponents(globs: string[], folder: string) {
   }
 
   return foundComponents;
+}
+
+export async function folderAssets(globs: string[], folder: string) {
+  const match = anymatch(globs.map((glob) => glob.replaceAll("\\", "/")));
+  const foundAssets: { name: string; path: string; type: "asset" }[] = [];
+
+  for await (const entry of readdirp(folder, { depth: 0 })) {
+    if (match(entry.fullPath)) {
+      foundAssets.push({
+        name: entry.basename,
+        path: entry.fullPath,
+        type: "asset",
+      });
+    }
+  }
+
+  return foundAssets;
 }
