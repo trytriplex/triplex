@@ -1,5 +1,13 @@
 # @triplex/scene
 
+## 0.54.2
+
+### Patch Changes
+
+- Updated dependencies [a060d2c]
+  - @triplex/ws-client@0.54.2
+  - @triplex/bridge@0.54.2
+
 ## 0.54.1
 
 ### Patch Changes
