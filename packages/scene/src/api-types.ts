@@ -52,6 +52,7 @@ export interface PropType {
   declared: boolean;
   description: string | undefined;
   type: Type;
+  tags: Record<string, string | boolean | number>;
 }
 
 export type Prop =
@@ -70,6 +71,7 @@ export interface BaseProp {
   name: string;
   required: boolean;
   description: string | undefined;
+  tags: Record<string, string | number | boolean>;
 }
 
 export interface StringProp {
