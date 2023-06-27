@@ -3,6 +3,7 @@ import {
   JsxSelfClosingElement,
   Node,
   PropertySignature,
+  Symbol as SymbolType,
   ts,
   Type,
 } from "ts-morph";
@@ -131,6 +132,47 @@ function getJsxDeclProps(element: JsxSelfClosingElement | JsxElement) {
   }
 }
 
+function toPrimitive(value?: string): string | boolean | number {
+  if (value === undefined || value === "true") {
+    return true;
+  }
+
+  const valueAsNumber = Number(value);
+
+  if (Number.isNaN(valueAsNumber)) {
+    return value;
+  }
+
+  return valueAsNumber;
+}
+
+function extractJSDoc(symbol: SymbolType) {
+  const decls = symbol.getDeclarations().filter(Node.isJSDocable);
+
+  const tags: Record<string, string | boolean | number> = {};
+  let description: string[] = [];
+
+  for (let i = 0; i < decls.length; i++) {
+    const decl = decls[i];
+    const jsdocs = decl.getJsDocs();
+
+    jsdocs.forEach((doc) => {
+      description.push(doc.getDescription().trim());
+      doc.getTags().map((tag) => {
+        const name = tag.getTagName();
+        const value = tag.getCommentText();
+
+        tags[name] = toPrimitive(value);
+      });
+    });
+  }
+
+  return {
+    description: description.length ? description.join("\n") : undefined,
+    tags,
+  };
+}
+
 export function getJsxElementPropTypes(
   element: JsxSelfClosingElement | JsxElement
 ) {
@@ -156,13 +198,7 @@ export function getJsxElementPropTypes(
     const propDeclaration = declarations[0] as PropertySignature;
     const propName = prop.getName();
     const propType = prop.getTypeAtLocation(declaration);
-    const description = prop
-      .getDeclarations()
-      .filter(Node.isJSDocable)
-      .map((declaration) =>
-        declaration.getJsDocs().map((doc) => doc.getDescription().trim())
-      )
-      .join("\n");
+    const { description, tags } = extractJSDoc(prop);
 
     if (propName === "rotation") {
       rotate = true;
@@ -178,6 +214,7 @@ export function getJsxElementPropTypes(
       required: !propDeclaration?.hasQuestionToken?.(),
       description: description || undefined,
       type: unrollType(propType, propName),
+      tags,
     });
   }
 

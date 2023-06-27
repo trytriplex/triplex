@@ -418,6 +418,7 @@ interface DeclaredProp {
   required: boolean;
   type: string;
   value: unknown;
+  tags: Record<string, string | number | boolean>;
   values?: unknown;
 }
 
@@ -427,6 +428,7 @@ interface UndeclaredProp {
   name: string;
   required: boolean;
   type: string;
+  tags: Record<string, string | number | boolean>;
   value?: unknown;
   values?: unknown;
 }
@@ -531,6 +533,7 @@ export function getJsxElementProps(
         column: column,
         line: line,
         name: propName,
+        tags: propType.tags,
         ...mergePropTypeValue(value, propType),
       });
     } else {
@@ -550,6 +553,7 @@ export function getJsxElementProps(
         description: propType.description,
         required: propType.required,
         name: propType.name,
+        tags: propType.tags,
         ...prop,
       });
     }

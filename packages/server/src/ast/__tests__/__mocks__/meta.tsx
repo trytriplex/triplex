@@ -18,3 +18,19 @@ export default function MetaDefault() {
     </mesh>
   );
 }
+
+function JsDocMeta(_: {
+  /**
+   * @min -10
+   * @max 10
+   * @another true
+   * @test yes
+   */
+  posX: number;
+}) {
+  return null;
+}
+
+export function UseJsDocMeta() {
+  return <JsDocMeta posX={5} />;
+}

@@ -26,6 +26,7 @@ describe("type infer", () => {
           "description": undefined,
           "name": "position",
           "required": false,
+          "tags": {},
           "type": {
             "type": "tuple",
             "values": [
@@ -52,6 +53,7 @@ describe("type infer", () => {
           "description": undefined,
           "name": "rotation",
           "required": false,
+          "tags": {},
           "type": {
             "type": "tuple",
             "values": [
@@ -78,6 +80,7 @@ describe("type infer", () => {
           "description": undefined,
           "name": "scale",
           "required": false,
+          "tags": {},
           "type": {
             "type": "union",
             "value": "",
@@ -134,6 +137,7 @@ describe("type infer", () => {
             "description": undefined,
             "name": "color",
             "required": false,
+            "tags": {},
             "type": {
               "type": "string",
             },
@@ -185,6 +189,7 @@ describe("type infer", () => {
           "description": undefined,
           "name": "value",
           "required": true,
+          "tags": {},
           "type": {
             "type": "boolean",
           },
@@ -194,6 +199,7 @@ describe("type infer", () => {
           "description": undefined,
           "name": "children",
           "required": false,
+          "tags": {},
           "type": {
             "type": "unknown",
           },
@@ -247,6 +253,7 @@ describe("type infer", () => {
           "description": undefined,
           "name": "args",
           "required": false,
+          "tags": {},
           "type": {
             "type": "tuple",
             "values": [
@@ -307,6 +314,7 @@ describe("type infer", () => {
           "description": undefined,
           "name": "scale",
           "required": false,
+          "tags": {},
           "type": {
             "type": "union",
             "value": "",
@@ -340,6 +348,38 @@ describe("type infer", () => {
       `);
   });
 
+  it("should collect meta from jsdoc", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/meta.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 35, 10);
+
+    const { propTypes } = getJsxElementPropTypes(sceneObject!);
+
+    expect(propTypes).toMatchInlineSnapshot(`
+      [
+        {
+          "declared": true,
+          "description": undefined,
+          "name": "posX",
+          "required": true,
+          "tags": {
+            "another": true,
+            "max": 10,
+            "min": -10,
+            "test": "yes",
+          },
+          "type": {
+            "type": "number",
+          },
+        },
+      ]
+    `);
+  });
+
   it("should show union fourth arg from rotation", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
@@ -360,6 +400,7 @@ describe("type infer", () => {
           "description": undefined,
           "name": "rotation",
           "required": false,
+          "tags": {},
           "type": {
             "type": "tuple",
             "values": [

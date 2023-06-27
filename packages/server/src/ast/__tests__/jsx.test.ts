@@ -155,6 +155,7 @@ describe("jsx ast extractor", () => {
           "line": 12,
           "name": "args",
           "required": false,
+          "tags": {},
           "type": "array",
           "value": [
             {
@@ -197,6 +198,9 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "name",
           "required": true,
+          "tags": {
+            "default": "''",
+          },
           "type": "string",
           "value": undefined,
         },
@@ -205,6 +209,9 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "morphTargetsRelative",
           "required": true,
+          "tags": {
+            "default": "false",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -292,6 +299,9 @@ describe("jsx ast extractor", () => {
           "description": "Material name. Default is an empty string.",
           "name": "name",
           "required": true,
+          "tags": {
+            "default": "''",
+          },
           "type": "string",
           "value": undefined,
         },
@@ -300,6 +310,9 @@ describe("jsx ast extractor", () => {
           "description": "Defines whether this material is visible. Default is true.",
           "name": "visible",
           "required": true,
+          "tags": {
+            "default": true,
+          },
           "type": "boolean",
           "value": false,
         },
@@ -310,6 +323,9 @@ describe("jsx ast extractor", () => {
           "line": 13,
           "name": "color",
           "required": true,
+          "tags": {
+            "default": "new THREE.Color( 0xffffff )",
+          },
           "type": "string",
           "value": "pink",
         },
@@ -318,6 +334,9 @@ describe("jsx ast extractor", () => {
           "description": "Opacity. Default is 1.",
           "name": "opacity",
           "required": true,
+          "tags": {
+            "default": 1,
+          },
           "type": "number",
         },
         {
@@ -327,6 +346,9 @@ describe("jsx ast extractor", () => {
       Default is false.",
           "name": "transparent",
           "required": true,
+          "tags": {
+            "default": "false",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -335,6 +357,9 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "metalness",
           "required": true,
+          "tags": {
+            "default": 0,
+          },
           "type": "number",
         },
         {
@@ -342,6 +367,9 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "roughness",
           "required": true,
+          "tags": {
+            "default": 1,
+          },
           "type": "number",
         },
         {
@@ -349,6 +377,9 @@ describe("jsx ast extractor", () => {
           "description": "Sets the alpha value to be used when running an alpha test. Default is 0.",
           "name": "alphaTest",
           "required": true,
+          "tags": {
+            "default": 0,
+          },
           "type": "number",
         },
         {
@@ -356,6 +387,9 @@ describe("jsx ast extractor", () => {
           "description": "Enables alpha to coverage. Can only be used with MSAA-enabled rendering contexts.",
           "name": "alphaToCoverage",
           "required": true,
+          "tags": {
+            "default": "false",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -364,6 +398,9 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "aoMapIntensity",
           "required": true,
+          "tags": {
+            "default": 1,
+          },
           "type": "number",
         },
         {
@@ -371,6 +408,9 @@ describe("jsx ast extractor", () => {
           "description": "The tranparency of the .blendDst. Default is null.",
           "name": "blendDstAlpha",
           "required": true,
+          "tags": {
+            "default": "null",
+          },
           "type": "number",
         },
         {
@@ -378,6 +418,9 @@ describe("jsx ast extractor", () => {
           "description": "The tranparency of the .blendEquation. Default is null.",
           "name": "blendEquationAlpha",
           "required": true,
+          "tags": {
+            "default": "null",
+          },
           "type": "number",
         },
         {
@@ -385,6 +428,9 @@ describe("jsx ast extractor", () => {
           "description": "Blending source. It's one of the blending mode constants defined in Three.js. Default is {@link SrcAlphaFactor}.",
           "name": "blendSrc",
           "required": true,
+          "tags": {
+            "default": "THREE.SrcAlphaFactor",
+          },
           "type": "union",
           "values": [],
         },
@@ -393,6 +439,9 @@ describe("jsx ast extractor", () => {
           "description": "The tranparency of the .blendSrc. Default is null.",
           "name": "blendSrcAlpha",
           "required": true,
+          "tags": {
+            "default": "null",
+          },
           "type": "number",
         },
         {
@@ -400,6 +449,9 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "bumpScale",
           "required": true,
+          "tags": {
+            "default": 1,
+          },
           "type": "number",
         },
         {
@@ -407,6 +459,9 @@ describe("jsx ast extractor", () => {
           "description": "Changes the behavior of clipping planes so that only their intersection is clipped, rather than their union. Default is false.",
           "name": "clipIntersection",
           "required": true,
+          "tags": {
+            "default": "false",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -415,6 +470,9 @@ describe("jsx ast extractor", () => {
           "description": "Defines whether to clip shadows according to the clipping planes specified on this material. Default is false.",
           "name": "clipShadows",
           "required": true,
+          "tags": {
+            "default": "false",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -423,6 +481,9 @@ describe("jsx ast extractor", () => {
           "description": "Whether to render the material's color. This can be used in conjunction with a mesh's .renderOrder property to create invisible objects that occlude other objects. Default is true.",
           "name": "colorWrite",
           "required": true,
+          "tags": {
+            "default": true,
+          },
           "type": "boolean",
           "value": false,
         },
@@ -431,6 +492,9 @@ describe("jsx ast extractor", () => {
           "description": "Whether to have depth test enabled when rendering this material. Default is true.",
           "name": "depthTest",
           "required": true,
+          "tags": {
+            "default": true,
+          },
           "type": "boolean",
           "value": false,
         },
@@ -440,6 +504,9 @@ describe("jsx ast extractor", () => {
       When drawing 2D overlays it can be useful to disable the depth writing in order to layer several things together without creating z-index artifacts.",
           "name": "depthWrite",
           "required": true,
+          "tags": {
+            "default": true,
+          },
           "type": "boolean",
           "value": false,
         },
@@ -448,6 +515,9 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "displacementBias",
           "required": true,
+          "tags": {
+            "default": 0,
+          },
           "type": "number",
         },
         {
@@ -455,6 +525,9 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "displacementScale",
           "required": true,
+          "tags": {
+            "default": 1,
+          },
           "type": "number",
         },
         {
@@ -462,6 +535,9 @@ describe("jsx ast extractor", () => {
           "description": "Whether to apply dithering to the color to remove the appearance of banding. Default is false.",
           "name": "dithering",
           "required": true,
+          "tags": {
+            "default": "false",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -470,6 +546,9 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "emissive",
           "required": true,
+          "tags": {
+            "default": "new THREE.Color( 0x000000 )",
+          },
           "type": "union",
           "values": [
             {
@@ -506,6 +585,9 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "emissiveIntensity",
           "required": true,
+          "tags": {
+            "default": 1,
+          },
           "type": "number",
         },
         {
@@ -513,6 +595,9 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "envMapIntensity",
           "required": true,
+          "tags": {
+            "default": 1,
+          },
           "type": "number",
         },
         {
@@ -520,6 +605,9 @@ describe("jsx ast extractor", () => {
           "description": "Define whether the material is rendered with flat shading. Default is false.",
           "name": "flatShading",
           "required": true,
+          "tags": {
+            "default": "false",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -528,6 +616,9 @@ describe("jsx ast extractor", () => {
           "description": "Whether the material is affected by fog. Default is true.",
           "name": "fog",
           "required": true,
+          "tags": {
+            "default": "fog",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -536,6 +627,9 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "lightMapIntensity",
           "required": true,
+          "tags": {
+            "default": 1,
+          },
           "type": "number",
         },
         {
@@ -543,6 +637,9 @@ describe("jsx ast extractor", () => {
           "description": "Whether to use polygon offset. Default is false. This corresponds to the POLYGON_OFFSET_FILL WebGL feature.",
           "name": "polygonOffset",
           "required": true,
+          "tags": {
+            "default": "false",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -551,6 +648,9 @@ describe("jsx ast extractor", () => {
           "description": "Sets the polygon offset factor. Default is 0.",
           "name": "polygonOffsetFactor",
           "required": true,
+          "tags": {
+            "default": 0,
+          },
           "type": "number",
         },
         {
@@ -558,6 +658,9 @@ describe("jsx ast extractor", () => {
           "description": "Sets the polygon offset units. Default is 0.",
           "name": "polygonOffsetUnits",
           "required": true,
+          "tags": {
+            "default": 0,
+          },
           "type": "number",
         },
         {
@@ -565,6 +668,9 @@ describe("jsx ast extractor", () => {
           "description": "Override the renderer's default precision for this material. Can be \\"highp\\", \\"mediump\\" or \\"lowp\\". Defaults is null.",
           "name": "precision",
           "required": true,
+          "tags": {
+            "default": "null",
+          },
           "type": "union",
           "values": [
             {
@@ -586,6 +692,9 @@ describe("jsx ast extractor", () => {
           "description": "Whether to premultiply the alpha (transparency) value. See WebGL / Materials / Transparency for an example of the difference. Default is false.",
           "name": "premultipliedAlpha",
           "required": true,
+          "tags": {
+            "default": "false",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -594,6 +703,9 @@ describe("jsx ast extractor", () => {
           "description": "The bit mask to use when comparing against the stencil buffer. Default is *0xFF*.",
           "name": "stencilFuncMask",
           "required": true,
+          "tags": {
+            "default": 255,
+          },
           "type": "number",
         },
         {
@@ -601,6 +713,9 @@ describe("jsx ast extractor", () => {
           "description": "The value to use when performing stencil comparisons or stencil operations. Default is *0*.",
           "name": "stencilRef",
           "required": true,
+          "tags": {
+            "default": 0,
+          },
           "type": "number",
         },
         {
@@ -608,6 +723,9 @@ describe("jsx ast extractor", () => {
           "description": "Whether rendering this material has any effect on the stencil buffer. Default is *false*.",
           "name": "stencilWrite",
           "required": true,
+          "tags": {
+            "default": "false",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -616,6 +734,9 @@ describe("jsx ast extractor", () => {
           "description": "The bit mask to use when writing to the stencil buffer. Default is *0xFF*.",
           "name": "stencilWriteMask",
           "required": true,
+          "tags": {
+            "default": 255,
+          },
           "type": "number",
         },
         {
@@ -624,6 +745,9 @@ describe("jsx ast extractor", () => {
       Default is true.",
           "name": "toneMapped",
           "required": true,
+          "tags": {
+            "default": true,
+          },
           "type": "boolean",
           "value": false,
         },
@@ -632,6 +756,9 @@ describe("jsx ast extractor", () => {
           "description": "Defines whether vertex coloring is used. Default is false.",
           "name": "vertexColors",
           "required": true,
+          "tags": {
+            "default": "false",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -640,6 +767,9 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "wireframe",
           "required": true,
+          "tags": {
+            "default": "false",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -648,6 +778,9 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "wireframeLinecap",
           "required": true,
+          "tags": {
+            "default": "'round'",
+          },
           "type": "string",
           "value": undefined,
         },
@@ -656,6 +789,9 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "wireframeLinejoin",
           "required": true,
+          "tags": {
+            "default": "'round'",
+          },
           "type": "string",
           "value": undefined,
         },
@@ -664,6 +800,9 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "wireframeLinewidth",
           "required": true,
+          "tags": {
+            "default": 1,
+          },
           "type": "number",
         },
       ]
@@ -689,6 +828,7 @@ describe("jsx ast extractor", () => {
         "line": 19,
         "name": "scale",
         "required": false,
+        "tags": {},
         "type": "array",
         "value": [
           {
@@ -767,6 +907,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "position",
           "required": false,
+          "tags": {},
           "type": "union",
           "values": [
             {
@@ -799,6 +940,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "scale",
           "required": false,
+          "tags": {},
           "type": "union",
           "values": [
             {
@@ -831,6 +973,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "rotation",
           "required": false,
+          "tags": {},
           "type": "array",
           "value": [
             {
@@ -884,6 +1027,9 @@ describe("jsx ast extractor", () => {
           "description": "Optional name of the object (doesn't need to be unique).",
           "name": "name",
           "required": true,
+          "tags": {
+            "default": "''",
+          },
           "type": "string",
           "value": undefined,
         },
@@ -894,6 +1040,9 @@ describe("jsx ast extractor", () => {
           "line": 4,
           "name": "visible",
           "required": true,
+          "tags": {
+            "default": true,
+          },
           "type": "boolean",
           "value": true,
         },
@@ -902,6 +1051,9 @@ describe("jsx ast extractor", () => {
           "description": "Gets rendered into shadow map.",
           "name": "castShadow",
           "required": true,
+          "tags": {
+            "default": "false",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -910,6 +1062,9 @@ describe("jsx ast extractor", () => {
           "description": "Material gets baked in shadow receiving.",
           "name": "receiveShadow",
           "required": true,
+          "tags": {
+            "default": "false",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -919,6 +1074,9 @@ describe("jsx ast extractor", () => {
       If set to false the object gets rendered every frame even if it is not in the frustum of the camera.",
           "name": "frustumCulled",
           "required": true,
+          "tags": {
+            "default": true,
+          },
           "type": "boolean",
           "value": false,
         },
@@ -927,6 +1085,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "layers",
           "required": false,
+          "tags": {},
           "type": "number",
         },
         {
@@ -934,6 +1093,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "material",
           "required": true,
+          "tags": {},
           "type": "union",
           "values": [],
         },
@@ -942,6 +1102,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "quaternion",
           "required": false,
+          "tags": {},
           "type": "array",
           "value": [
             {
@@ -973,6 +1134,9 @@ describe("jsx ast extractor", () => {
       When this property is set for an instance of Group, all descendants objects will be sorted and rendered together.",
           "name": "renderOrder",
           "required": true,
+          "tags": {
+            "default": 0,
+          },
           "type": "number",
         },
       ]
@@ -997,6 +1161,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "position",
           "required": false,
+          "tags": {},
           "type": "union",
           "values": [
             {
@@ -1029,6 +1194,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "scale",
           "required": false,
+          "tags": {},
           "type": "union",
           "values": [
             {
@@ -1061,6 +1227,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "rotation",
           "required": false,
+          "tags": {},
           "type": "array",
           "value": [
             {
@@ -1114,6 +1281,9 @@ describe("jsx ast extractor", () => {
           "description": "Optional name of the object (doesn't need to be unique).",
           "name": "name",
           "required": true,
+          "tags": {
+            "default": "''",
+          },
           "type": "string",
           "value": undefined,
         },
@@ -1124,6 +1294,9 @@ describe("jsx ast extractor", () => {
           "line": 14,
           "name": "visible",
           "required": true,
+          "tags": {
+            "default": true,
+          },
           "type": "boolean",
           "value": true,
         },
@@ -1134,6 +1307,9 @@ describe("jsx ast extractor", () => {
           "line": 14,
           "name": "castShadow",
           "required": true,
+          "tags": {
+            "default": "false",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -1142,6 +1318,9 @@ describe("jsx ast extractor", () => {
           "description": "Material gets baked in shadow receiving.",
           "name": "receiveShadow",
           "required": true,
+          "tags": {
+            "default": "false",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -1151,6 +1330,9 @@ describe("jsx ast extractor", () => {
       If set to false the object gets rendered every frame even if it is not in the frustum of the camera.",
           "name": "frustumCulled",
           "required": true,
+          "tags": {
+            "default": true,
+          },
           "type": "boolean",
           "value": false,
         },
@@ -1159,6 +1341,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "layers",
           "required": false,
+          "tags": {},
           "type": "number",
         },
         {
@@ -1166,6 +1349,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "material",
           "required": true,
+          "tags": {},
           "type": "union",
           "values": [],
         },
@@ -1174,6 +1358,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "quaternion",
           "required": false,
+          "tags": {},
           "type": "array",
           "value": [
             {
@@ -1205,6 +1390,9 @@ describe("jsx ast extractor", () => {
       When this property is set for an instance of Group, all descendants objects will be sorted and rendered together.",
           "name": "renderOrder",
           "required": true,
+          "tags": {
+            "default": 0,
+          },
           "type": "number",
         },
       ]
@@ -1230,6 +1418,9 @@ describe("jsx ast extractor", () => {
         "line": 19,
         "name": "visible",
         "required": true,
+        "tags": {
+          "default": true,
+        },
         "type": "boolean",
         "value": undefined,
       }
@@ -1240,6 +1431,7 @@ describe("jsx ast extractor", () => {
         "description": undefined,
         "name": "args",
         "required": false,
+        "tags": {},
         "type": "array",
         "value": [
           {
@@ -1282,6 +1474,7 @@ describe("jsx ast extractor", () => {
           "line": 35,
           "name": "color",
           "required": true,
+          "tags": {},
           "type": "union",
           "value": "black",
           "values": [
@@ -1319,6 +1512,7 @@ describe("jsx ast extractor", () => {
           "line": 36,
           "name": "color",
           "required": false,
+          "tags": {},
           "type": "union",
           "value": undefined,
           "values": [
@@ -1356,6 +1550,7 @@ describe("jsx ast extractor", () => {
           "line": 11,
           "name": "position",
           "required": false,
+          "tags": {},
           "type": "identifier",
           "value": "position",
         },
@@ -1366,6 +1561,7 @@ describe("jsx ast extractor", () => {
           "line": 11,
           "name": "scale",
           "required": false,
+          "tags": {},
           "type": "identifier",
           "value": "scale",
         },
@@ -1376,6 +1572,7 @@ describe("jsx ast extractor", () => {
           "line": 11,
           "name": "rotation",
           "required": false,
+          "tags": {},
           "type": "identifier",
           "value": "rotation",
         },
@@ -1384,6 +1581,9 @@ describe("jsx ast extractor", () => {
           "description": "Optional name of the object (doesn't need to be unique).",
           "name": "name",
           "required": true,
+          "tags": {
+            "default": "''",
+          },
           "type": "string",
           "value": undefined,
         },
@@ -1392,6 +1592,9 @@ describe("jsx ast extractor", () => {
           "description": "Object gets rendered if true.",
           "name": "visible",
           "required": true,
+          "tags": {
+            "default": true,
+          },
           "type": "boolean",
           "value": false,
         },
@@ -1400,6 +1603,9 @@ describe("jsx ast extractor", () => {
           "description": "Gets rendered into shadow map.",
           "name": "castShadow",
           "required": true,
+          "tags": {
+            "default": "false",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -1408,6 +1614,9 @@ describe("jsx ast extractor", () => {
           "description": "Material gets baked in shadow receiving.",
           "name": "receiveShadow",
           "required": true,
+          "tags": {
+            "default": "false",
+          },
           "type": "boolean",
           "value": false,
         },
@@ -1417,6 +1626,9 @@ describe("jsx ast extractor", () => {
       If set to false the object gets rendered every frame even if it is not in the frustum of the camera.",
           "name": "frustumCulled",
           "required": true,
+          "tags": {
+            "default": true,
+          },
           "type": "boolean",
           "value": false,
         },
@@ -1425,6 +1637,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "layers",
           "required": false,
+          "tags": {},
           "type": "number",
         },
         {
@@ -1432,6 +1645,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "material",
           "required": true,
+          "tags": {},
           "type": "union",
           "values": [],
         },
@@ -1440,6 +1654,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "quaternion",
           "required": false,
+          "tags": {},
           "type": "array",
           "value": [
             {
@@ -1471,6 +1686,9 @@ describe("jsx ast extractor", () => {
       When this property is set for an instance of Group, all descendants objects will be sorted and rendered together.",
           "name": "renderOrder",
           "required": true,
+          "tags": {
+            "default": 0,
+          },
           "type": "number",
         },
       ]
@@ -1500,6 +1718,7 @@ describe("jsx ast extractor", () => {
           "line": 20,
           "name": "position",
           "required": false,
+          "tags": {},
           "type": "array",
           "value": [
             {
@@ -1527,6 +1746,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "name": "scale",
           "required": false,
+          "tags": {},
           "type": "union",
           "values": [
             {
@@ -1561,6 +1781,7 @@ describe("jsx ast extractor", () => {
           "line": 21,
           "name": "rotation",
           "required": false,
+          "tags": {},
           "type": "array",
           "value": [
             {
