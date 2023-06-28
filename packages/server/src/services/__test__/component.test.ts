@@ -793,4 +793,73 @@ describe("component service", () => {
     await addComponent("WallpaperAndLights");
     await addComponent("Lamps");
   }, 30000);
+
+  it("should add a jsx element to an array function", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/empty.tsx")
+    );
+
+    add(sourceFile, "EmptyArrowFunction", {
+      type: "host",
+      name: "group",
+      props: {},
+    });
+
+    expect(
+      getExportName(sourceFile, "EmptyArrowFunction").declaration.getText()
+    ).toMatchInlineSnapshot('"EmptyArrowFunction = () => <><group /></>"');
+  });
+
+  it.todo(
+    "should add a jsx element to arrow func that short hand returns group",
+    () => {
+      const project = _createProject({
+        tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+      });
+      const sourceFile = project.addSourceFileAtPath(
+        join(__dirname, "__mocks__/empty.tsx")
+      );
+
+      add(sourceFile, "ArrowFuncReturnGroup", {
+        type: "host",
+        name: "group",
+        props: {},
+      });
+
+      expect(
+        getExportName(sourceFile, "EmptyArrowFunction").declaration.getText()
+      ).toMatchInlineSnapshot(`
+        "EmptyArrowFunction = () => (
+          <>
+            <group />
+            <group />
+          </>
+        )"`);
+    }
+  );
+
+  it.todo("should add a jsx element to func that returns group", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/empty.tsx")
+    );
+
+    add(sourceFile, "EmptyGroup", {
+      type: "host",
+      name: "group",
+      props: {},
+    });
+
+    expect(getExportName(sourceFile, "EmptyGroup").declaration.getText())
+      .toMatchInlineSnapshot(`
+      "export function EmptyGroup() {
+        return <><group /><group></group></>;
+      }"
+    `);
+  });
 });

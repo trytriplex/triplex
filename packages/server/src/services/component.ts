@@ -94,8 +94,9 @@ function insertJsxElement(
       .getOpeningElement()
       .getTagNameNode()
       .getText();
-    if (!["Fragment", "group"].includes(jsxElementName)) {
-      throw new Error("invariant: can only add to a fragment or group");
+
+    if (jsxElementName !== "Fragment") {
+      throw new Error("invariant: can only add to a fragment");
     }
 
     const pos = jsxEle.getClosingElement().getStart();
@@ -187,13 +188,16 @@ export function add(
 ): { line: number; column: number } {
   const { declaration } = getExportName(sourceFile, exportName);
 
-  if (Node.isFunctionDeclaration(declaration)) {
+  if (
+    Node.isFunctionDeclaration(declaration) ||
+    Node.isVariableDeclaration(declaration)
+  ) {
     if (component.type === "host") {
       const { column, line } = target
         ? addToJsxElement(sourceFile, target, component.name, component.props)
         : insertJsxElement(
             sourceFile,
-            declaration.getBodyOrThrow(),
+            declaration,
             component.name,
             component.props
           );
@@ -319,7 +323,7 @@ export function add(
           )
         : insertJsxElement(
             sourceFile,
-            declaration.getBodyOrThrow(),
+            declaration,
             aliasImportName || importName,
             component.props
           );
