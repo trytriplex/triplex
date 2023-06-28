@@ -231,6 +231,15 @@ export async function init({
     });
   }
 
+  if (dir.includes("public")) {
+    // Skip creating a public dir
+  } else {
+    const templatePath = join(templateDir, "public");
+    await fs.cp(templatePath, join(cwd, "public"), {
+      recursive: true,
+    });
+  }
+
   spinner.text = "Installing dependencies...";
 
   await exec(`${pkgManager} install`, {
