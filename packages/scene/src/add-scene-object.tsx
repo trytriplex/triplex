@@ -113,7 +113,9 @@ export function AddSceneObject({
             );
 
             if (!found) {
-              throw new Error("invariant: component not found");
+              throw new Error(
+                `invariant: custom component "${component.exportName}" from "${component.path}" not available in registry.`
+              );
             }
 
             if (!cachedLazyComponents.current[index]) {

@@ -12,21 +12,23 @@ import { cn } from "../ds/cn";
 import { ScrollContainer } from "../ds/scroll-container";
 import { titleCase } from "../util/string";
 import {
-  ComponentType,
   Folder as FolderType,
   GetProjectComponentFolders,
   GetProjectComponents,
+  ProjectAsset as ProjectAssetType,
+  ProjectCustomComponent,
+  ProjectHostComponent,
 } from "../api-types";
 import { useEditor } from "../stores/editor";
 import { StringInput } from "./string-input";
 
-function Component({
+function ProjectAsset({
   name,
-  data,
+  asset,
   onClick,
 }: {
   name: string;
-  data: ComponentType;
+  asset: ProjectHostComponent | ProjectCustomComponent | ProjectAssetType;
   onClick: () => void;
 }) {
   const { target } = useEditor();
@@ -37,22 +39,38 @@ function Component({
       ? ({ action: "child", column: target.column, line: target.line } as const)
       : undefined;
 
-    if (data.type === "host") {
-      addComponent({
-        type: { type: "host", name, props: {} },
-        target: targetData,
-      });
-    } else {
-      addComponent({
-        type: {
-          exportName: data.exportName,
-          type: "custom",
-          name: data.name,
-          path: data.path,
-          props: {},
-        },
-        target: targetData,
-      });
+    switch (asset.type) {
+      case "host":
+        addComponent({
+          type: { type: "host", name, props: {} },
+          target: targetData,
+        });
+        break;
+
+      case "custom":
+        addComponent({
+          type: {
+            exportName: asset.exportName,
+            type: "custom",
+            name: asset.name,
+            path: asset.path,
+            props: {},
+          },
+          target: targetData,
+        });
+        break;
+
+      case "asset":
+        addComponent({
+          type: {
+            type: "custom",
+            exportName: "Gltf",
+            name: "Gltf",
+            path: "@react-three/drei",
+            props: { src: asset.path },
+          },
+        });
+        break;
     }
 
     onClick();
@@ -66,7 +84,7 @@ function Component({
       className="relative h-24 w-24 cursor-default rounded bg-white/5 outline-1 outline-offset-1 outline-blue-400 hover:bg-white/10 focus-visible:outline active:bg-white/20"
     >
       <span className="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center overflow-hidden text-ellipsis p-1 text-sm text-neutral-400">
-        {titleCase(name)}
+        {asset.type === "asset" ? name : titleCase(name)}
       </span>
     </button>
   );
@@ -99,23 +117,25 @@ function Folder({
         onClick={() => {
           if (hasChildrenFolders) {
             if (filesCount > 0 && !isSelected) {
-              // Do nothing
+              // Skip expanding but allow onClick to be called.
+              onClick?.();
             } else {
+              // Expand but don't allow onClick to be called.
               setExpanded((prev) => !prev);
             }
+          } else {
+            onClick?.();
           }
-
-          onClick?.();
         }}
         type="button"
         style={{ paddingLeft: (level + 1) * 8 }}
         className={cn([
-          "outline-1 -outline-offset-1 outline-blue-400 focus:outline",
+          "outline-1 -outline-offset-1 outline-blue-400 focus-visible:outline",
           children ? "px-1" : "px-2",
           isSelected
-            ? "bg-white/5 text-blue-400"
+            ? "bg-white/5 text-blue-400 before:absolute before:bottom-0 before:left-0 before:top-0 before:w-0.5 before:bg-blue-400"
             : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
-          "flex w-full cursor-default items-center gap-0.5 whitespace-nowrap py-1 text-start text-sm",
+          "relative flex w-full cursor-default items-center gap-0.5 whitespace-nowrap py-1 text-start text-sm",
         ])}
       >
         {hasChildrenFolders ? (
@@ -147,7 +167,7 @@ function Folder({
 
 function renderFolder(
   folder: FolderType,
-  { onClick, selected }: { onClick: (path: string) => void; selected: string }
+  { onClick, selected }: { onClick: (path: string) => void; selected?: string }
 ) {
   return (
     <Folder
@@ -155,7 +175,7 @@ function renderFolder(
       text={folder.name}
       isSelected={folder.path === selected}
       filesCount={folder.files}
-      onClick={folder.files > 0 ? () => onClick(folder.path) : undefined}
+      onClick={() => onClick(folder.path)}
     >
       {folder.children.map((child) =>
         renderFolder(child, { onClick, selected })
@@ -185,29 +205,39 @@ function ComponentFolder({
   return (
     <ScrollContainer className="min-h-0">
       <div className="flex flex-wrap gap-2 px-2 py-2">
-        {filteredComponents.map((element) =>
-          element.type === "host" ? (
-            <Component
-              onClick={onClose}
-              data={{ type: "host", name: element.name, props: {} }}
-              name={element.name}
-              key={element.name}
-            />
-          ) : (
-            <Component
-              key={element.path + element.exportName}
-              onClick={onClose}
-              name={element.name}
-              data={{
-                exportName: element.exportName,
-                path: element.path,
-                name: element.name,
-                props: {},
-                type: "custom",
-              }}
-            />
-          )
-        )}
+        {filteredComponents.map((element) => {
+          switch (element.type) {
+            case "asset":
+              return (
+                <ProjectAsset
+                  key={element.path}
+                  onClick={onClose}
+                  name={element.name}
+                  asset={element}
+                />
+              );
+
+            case "custom":
+              return (
+                <ProjectAsset
+                  key={element.path + element.exportName}
+                  onClick={onClose}
+                  name={element.name}
+                  asset={element}
+                />
+              );
+
+            case "host":
+              return (
+                <ProjectAsset
+                  onClick={onClose}
+                  asset={element}
+                  name={element.name}
+                  key={element.name}
+                />
+              );
+          }
+        })}
       </div>
     </ScrollContainer>
   );
@@ -220,7 +250,7 @@ function ComponentsDrawer({
 }: {
   onClose: () => void;
   onSelected: (_: { path: string; category: "components" | "assets" }) => void;
-  selected: { path: string; category: "components" | "assets" };
+  selected?: { path: string; category: "components" | "assets" };
 }) {
   const { target } = useEditor();
   const { blur } = useScene();
@@ -256,7 +286,7 @@ function ComponentsDrawer({
                 <Folder text="Assets">
                   {assetFolders.map((folder) =>
                     renderFolder(folder, {
-                      selected: selected.path,
+                      selected: selected?.path,
                       onClick: (path: string) =>
                         onSelected({ path, category: "assets" }),
                     })
@@ -268,13 +298,13 @@ function ComponentsDrawer({
                     onClick={() =>
                       onSelected({ path: "host", category: "components" })
                     }
-                    isSelected={selected.path === "host"}
-                    text="Built-in elements"
+                    isSelected={selected?.path === "host"}
+                    text="built-in"
                   />
 
                   {componentFolders.map((folder) =>
                     renderFolder(folder, {
-                      selected: selected.path,
+                      selected: selected?.path,
                       onClick: (path: string) =>
                         onSelected({ path, category: "components" }),
                     })
@@ -285,11 +315,13 @@ function ComponentsDrawer({
             </ScrollContainer>
           </div>
           <Suspense fallback={null}>
-            <ComponentFolder
-              filter={filter}
-              onClose={onClose}
-              folderPath={selected}
-            />
+            {selected && (
+              <ComponentFolder
+                filter={filter}
+                onClose={onClose}
+                folderPath={selected}
+              />
+            )}
           </Suspense>
         </div>
         {target && (
@@ -321,7 +353,7 @@ export function AssetsDrawer() {
   const [selectedFolder, setSelectedFolder] = useState<{
     path: string;
     category: "components" | "assets";
-  }>({ path: "host", category: "components" });
+  }>();
 
   preloadSubscription(["/scene/assets", "/scene/components"]);
 
