@@ -32,7 +32,7 @@ export function UnionInput({
   };
 
   return (
-    <div className="flex gap-1">
+    <div className="flex items-center gap-1">
       <div className="flex flex-col gap-1">
         <PropInput
           required={required}

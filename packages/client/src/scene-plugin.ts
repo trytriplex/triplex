@@ -27,6 +27,9 @@ export function scenePlugin({
     },
     async load(id: string) {
       if (id === sceneFrameId) {
+        // TODO: Users should be able to specify what node modules they want to make available.
+        const nodeImports = ["@react-three/drei"];
+
         return scripts.sceneFrame
           .replace(
             "{{SCENE_FILES_GLOB}}",
@@ -39,6 +42,14 @@ export function scenePlugin({
             `[${components
               .map((f) => `'${f.replace(cwd.replaceAll("\\", "/"), "")}'`)
               .join(",")}]`
+          )
+          .replace(
+            "{{NODE_IMPORTS}}",
+            `{
+            ${nodeImports
+              .map((imp) => `'${imp}': () => import('${imp}')`)
+              .join(",")}
+            }`
           );
       }
 

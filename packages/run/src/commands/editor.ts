@@ -13,7 +13,7 @@ export async function editor({
 }: {
   components: string[];
   open?: boolean | string;
-  publicDir?: string;
+  publicDir: string;
   files: string[];
   exportName?: string;
   assetsDir: string;
@@ -30,6 +30,7 @@ export async function editor({
     files,
   });
   const backendServer = await createBackendServer({
+    publicDir,
     files,
     components,
     assetsDir,

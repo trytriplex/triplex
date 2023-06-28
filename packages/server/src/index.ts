@@ -18,11 +18,13 @@ import * as projectService from "./services/project";
 import { ComponentTarget, ComponentType } from "./types";
 
 export function createServer({
+  publicDir,
   assetsDir,
   cwd = process.cwd(),
   files,
   components,
 }: {
+  publicDir: string;
   assetsDir: string;
   cwd?: string;
   files: string[];
@@ -218,7 +220,9 @@ export function createServer({
     "/scene/assets/:folderPath",
     async ({ folderPath }) => {
       const result = await projectService.folderAssets([assetsDir], folderPath);
-      return result;
+      return result.map((asset) =>
+        Object.assign(asset, { path: asset.path.replace(publicDir, "") })
+      );
     },
     (push, { folderPath }) => {
       const watcher = watch(folderPath);

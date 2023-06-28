@@ -198,9 +198,17 @@ export interface ProjectCustomComponent {
   type: "custom";
 }
 
+export interface ProjectAsset {
+  path: string;
+  name: string;
+  type: "asset";
+  extname: string;
+}
+
 export type GetProjectComponents = (
   | ProjectHostComponent
   | ProjectCustomComponent
+  | ProjectAsset
 )[];
 
 export interface Folder {

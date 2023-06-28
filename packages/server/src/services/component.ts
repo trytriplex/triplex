@@ -308,10 +308,6 @@ export function add(
       // Are improvements to be made.
       const { declaration } = getExportName(sourceFile, exportName);
 
-      if (!Node.isFunctionDeclaration(declaration)) {
-        throw new Error("invariant");
-      }
-
       // We add the JSX element after adding/updating imports so line/cols are always correct
       // For the freshly added JSX element.
       const { column, line } = target

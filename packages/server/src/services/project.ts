@@ -1,12 +1,17 @@
 import readdirp from "readdirp";
-import { basename, dirname, join, normalize } from "node:path";
+import { basename, dirname, join, normalize, extname } from "node:path";
 import { readFile, readdir } from "node:fs/promises";
 import parent from "glob-parent";
 import anymatch from "anymatch";
 import { inferExports } from "../util/module";
-import { Folder } from "../types";
+import {
+  Folder,
+  ProjectAsset,
+  ProjectCustomComponent,
+  ProjectHostComponent,
+} from "../types";
 
-const hElements = [
+const hElements: ProjectHostComponent[] = [
   { category: "Object3D", type: "host", name: "mesh" },
   { category: "Object3D", type: "host", name: "group" },
   { category: "Light", type: "host", name: "ambientLight" },
@@ -56,7 +61,16 @@ const hElements = [
 ];
 
 export function hostElements() {
-  return hElements;
+  const elements: ProjectHostComponent[] = hElements;
+  return elements;
+}
+
+async function safeReaddir(path: string) {
+  try {
+    return await readdir(path);
+  } catch (e) {
+    return [];
+  }
 }
 
 export async function foundFolders(globs: string[]) {
@@ -66,7 +80,7 @@ export async function foundFolders(globs: string[]) {
   const foldersCache: Record<string, Folder> = {};
 
   async function countDirFiles(path: string) {
-    const dir = await readdir(path);
+    const dir = await safeReaddir(path);
     let count = 0;
 
     for (let i = 0; i < dir.length; i++) {
@@ -119,8 +133,7 @@ export async function foundFolders(globs: string[]) {
 
 export async function folderComponents(globs: string[], folder: string) {
   const match = anymatch(globs.map((glob) => glob.replaceAll("\\", "/")));
-  const foundComponents: { name: string; exportName: string; path: string }[] =
-    [];
+  const foundComponents: ProjectCustomComponent[] = [];
 
   for await (const entry of readdirp(folder, { depth: 1 })) {
     if (match(entry.fullPath)) {
@@ -129,6 +142,8 @@ export async function folderComponents(globs: string[], folder: string) {
 
       foundExports.forEach((exp) =>
         foundComponents.push({
+          category: "Unknown",
+          type: "custom",
           exportName: exp.exportName,
           name: exp.name,
           path: entry.fullPath,
@@ -142,13 +157,14 @@ export async function folderComponents(globs: string[], folder: string) {
 
 export async function folderAssets(globs: string[], folder: string) {
   const match = anymatch(globs.map((glob) => glob.replaceAll("\\", "/")));
-  const foundAssets: { name: string; path: string; type: "asset" }[] = [];
+  const foundAssets: ProjectAsset[] = [];
 
   for await (const entry of readdirp(folder, { depth: 0 })) {
     if (match(entry.fullPath)) {
       foundAssets.push({
         name: entry.basename,
         path: entry.fullPath,
+        extname: extname(entry.fullPath),
         type: "asset",
       });
     }

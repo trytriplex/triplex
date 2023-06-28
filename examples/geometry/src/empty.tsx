@@ -1,3 +1,4 @@
+import { Gltf } from "@react-three/drei";
 import { forwardRef, memo } from "react";
 
 const WhiteBox = forwardRef(() => (
@@ -22,17 +23,19 @@ const WhiteBox = forwardRef(() => (
 
 export const AnotherBox = memo(() => {
   return (
-    <mesh
-      position-x={-2}
-      rotation={[0, 0, 0]}
-      position={undefined}
-      visible={true}
-      castShadow={undefined}
-      receiveShadow={undefined}
-    >
-      <boxGeometry args={[1, 1, 1]} />
-      <meshStandardMaterial color="pink" />
-    </mesh>
+    <>
+      <mesh
+        position-x={-2}
+        rotation={[0, 0, 0]}
+        position={undefined}
+        visible={true}
+        castShadow={undefined}
+        receiveShadow={undefined}
+      >
+        <boxGeometry args={[1, 1, 1]} />
+        <meshStandardMaterial color="pink" />
+      </mesh>
+    </>
   );
 });
 
@@ -55,3 +58,16 @@ export function Empty() {
 }
 
 export default WhiteBox;
+
+export function Untitled() {
+  return (
+    <>
+      <Gltf src="/assets/pmndrs.glb" />
+      <ambientLight intensity={0.2} />
+      <pointLight
+        position={[3.6061279737327556, 4.738121655802967, 2.498021229073046]}
+        color={"#f57a7a"}
+      />
+    </>
+  );
+}

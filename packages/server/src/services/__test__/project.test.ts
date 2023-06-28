@@ -1,5 +1,10 @@
 import { describe, expect, it } from "vitest";
-import { hostElements, foundFolders, folderComponents } from "../project";
+import {
+  hostElements,
+  foundFolders,
+  folderComponents,
+  folderAssets,
+} from "../project";
 import { join } from "path";
 
 describe("project", () => {
@@ -72,8 +77,10 @@ describe("project", () => {
 
     expect(actual).toEqual([
       {
+        category: "Unknown",
         exportName: "default",
         name: "Cylinder",
+        type: "custom",
         path: join(
           __dirname,
           "__mocks__",
@@ -83,14 +90,46 @@ describe("project", () => {
         ),
       },
       {
+        category: "Unknown",
         exportName: "Sphere",
         name: "Sphere",
+        type: "custom",
         path: join(__dirname, "__mocks__", "components", "objects", "test.tsx"),
       },
       {
+        category: "Unknown",
         exportName: "default",
         name: "Box",
+        type: "custom",
         path: join(__dirname, "__mocks__", "components", "objects", "test.tsx"),
+      },
+    ]);
+  });
+
+  it("should return a folders assets", async () => {
+    const actual = await folderAssets(
+      [__dirname + "/__mocks__/components/**/*.tsx"],
+      __dirname + "/__mocks__/components/objects"
+    );
+
+    expect(actual).toEqual([
+      {
+        name: "default.tsx",
+        path: join(
+          __dirname,
+          "__mocks__",
+          "components",
+          "objects",
+          "default.tsx"
+        ),
+        extname: ".tsx",
+        type: "asset",
+      },
+      {
+        name: "test.tsx",
+        path: join(__dirname, "__mocks__", "components", "objects", "test.tsx"),
+        extname: ".tsx",
+        type: "asset",
       },
     ]);
   });
