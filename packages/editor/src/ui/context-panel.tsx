@@ -3,7 +3,7 @@ import { IDELink } from "../util/ide";
 import { Suspense, useEffect } from "react";
 import { useEditor, FocusedObject } from "../stores/editor";
 import { ScrollContainer } from "../ds/scroll-container";
-import { PropInput } from "./prop-input";
+import { PropInput, PropTagContext } from "./prop-input";
 import { useScene } from "../stores/scene";
 import { PropField } from "./prop-field";
 import { GetSceneObject } from "../api-types";
@@ -110,40 +110,42 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
             description={prop.description}
             key={`${prop.name}${prop.column}${prop.line}`}
           >
-            <PropInput
-              name={prop.name}
-              column={prop.column}
-              line={prop.line}
-              path={target.ownerPath}
-              prop={prop}
-              required={prop.required}
-              onConfirm={async (value) => {
-                const currentValue = await getPropValue({
-                  column: target.column,
-                  line: target.line,
-                  path: target.ownerPath,
-                  propName: prop.name,
-                });
+            <PropTagContext.Provider value={prop.tags}>
+              <PropInput
+                name={prop.name}
+                column={prop.column}
+                line={prop.line}
+                path={target.ownerPath}
+                prop={prop}
+                required={prop.required}
+                onConfirm={async (value) => {
+                  const currentValue = await getPropValue({
+                    column: target.column,
+                    line: target.line,
+                    path: target.ownerPath,
+                    propName: prop.name,
+                  });
 
-                persistPropValue({
-                  column: target.column,
-                  line: target.line,
-                  path: target.ownerPath,
-                  propName: prop.name,
-                  currentPropValue: currentValue.value,
-                  nextPropValue: value,
-                });
-              }}
-              onChange={(value) =>
-                setPropValue({
-                  column: target.column,
-                  line: target.line,
-                  path: target.ownerPath,
-                  propName: prop.name,
-                  propValue: value,
-                })
-              }
-            />
+                  persistPropValue({
+                    column: target.column,
+                    line: target.line,
+                    path: target.ownerPath,
+                    propName: prop.name,
+                    currentPropValue: currentValue.value,
+                    nextPropValue: value,
+                  });
+                }}
+                onChange={(value) =>
+                  setPropValue({
+                    column: target.column,
+                    line: target.line,
+                    path: target.ownerPath,
+                    propName: prop.name,
+                    propValue: value,
+                  })
+                }
+              />
+            </PropTagContext.Provider>
           </PropField>
         ))}
         <div className="h-1" />

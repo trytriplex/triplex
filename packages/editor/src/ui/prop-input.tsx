@@ -9,6 +9,15 @@ import { ArrayInput } from "./array-input";
 import { LiteralUnionInput } from "./literal-union-input";
 import { UnionInput } from "./union-input";
 import { Prop } from "../api-types";
+import { createContext, useContext } from "react";
+
+export const PropTagContext = createContext<
+  Record<string, string | number | boolean>
+>({});
+
+export const usePropTags = () => {
+  return useContext(PropTagContext);
+};
 
 function isColorProp(name: string) {
   const includeList = ["emissive"];

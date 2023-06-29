@@ -3,6 +3,7 @@ import type { FocusEventHandler, ChangeEventHandler } from "react";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 import { sentenceCase } from "../util/string";
+import { usePropTags } from "./prop-input";
 
 export function NumberInput({
   defaultValue,
@@ -24,6 +25,8 @@ export function NumberInput({
     out: (value: number | undefined) => number | undefined;
   };
 }) {
+  const tags = usePropTags();
+
   const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     e.target.focus();
 
@@ -62,6 +65,8 @@ export function NumberInput({
       ])}
     >
       <input
+        max={typeof tags.max === "boolean" ? undefined : tags.max}
+        min={typeof tags.min === "boolean" ? undefined : tags.min}
         placeholder={label ? sentenceCase(label) : undefined}
         required={required}
         key={defaultValue}
