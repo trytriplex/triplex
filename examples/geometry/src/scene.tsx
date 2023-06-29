@@ -52,7 +52,7 @@ export default function Scene() {
 
       <Cylinder position={[1.4681464869137235, 0, -4.205778397787599]} />
       <Cylinder position={[-5.14749272451115, 0, -2.9618330871711818]} />
-      <Box1 color={"blue"} position={1} />
+      <Box1 color={"blue"} position={1} size={1} />
       <PerspectiveCamera
         name="user-perspective"
         makeDefault

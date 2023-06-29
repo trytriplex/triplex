@@ -5,7 +5,13 @@ function Box({
   rotation,
   scale,
   color,
+  size = 1,
 }: {
+  /**
+   * @min 1
+   * @max 2
+   */
+  size?: number;
   position?: Vector3Tuple | number;
   rotation?: Vector3Tuple;
   scale?: Vector3Tuple | number;
@@ -23,7 +29,7 @@ function Box({
         position={position}
         rotation={rotation}
       >
-        <boxGeometry args={[1, 1, 1]} />
+        <boxGeometry args={[size, size, size]} />
         <meshStandardMaterial key={color} color={color} />
       </mesh>
     </group>
