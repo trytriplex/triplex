@@ -55,7 +55,7 @@ export function LiteralUnionInput({
         onChange={onChangeHandler}
         className={cn([
           defaultValue ? "text-neutral-300" : "text-neutral-500",
-          "w-full appearance-none overflow-hidden text-ellipsis bg-transparent p-0.5 text-sm outline-none [color-scheme:dark]",
+          "w-full appearance-none overflow-hidden text-ellipsis bg-transparent px-1 py-0.5 text-sm outline-none [color-scheme:dark]",
         ])}
       >
         {!defaultValue && <option value="">Select value...</option>}
