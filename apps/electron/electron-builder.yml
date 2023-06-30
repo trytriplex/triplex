@@ -12,6 +12,7 @@ extraMetadata:
 
 files:
   - dist
+  - "!**/@triplex/**/src"
 
 mac:
   category: public.app-category.developer-tools
