@@ -108,6 +108,7 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
             htmlFor={prop.name}
             label={prop.name}
             description={prop.description}
+            tags={prop.tags}
             key={`${prop.name}${prop.column}${prop.line}`}
           >
             <PropTagContext.Provider value={prop.tags}>

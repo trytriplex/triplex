@@ -63,6 +63,11 @@ input[type="color"]::-webkit-color-swatch {
   border: none;
 }
 
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  appearance: none;
+}
+
 html {
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;

@@ -67,7 +67,7 @@ export function StringInput({
         defaultValue={defaultValue}
         onChange={onChangeHandler}
         onBlur={onBlurHandler}
-        className="w-full bg-transparent px-1 py-0.5 text-sm text-neutral-300 outline-none [color-scheme:dark] placeholder:italic placeholder:text-neutral-500"
+        className="w-full bg-transparent px-1.5 py-0.5 text-sm text-neutral-300 outline-none [color-scheme:dark] placeholder:italic placeholder:text-neutral-500"
       />
 
       {!required && value && (
