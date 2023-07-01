@@ -92,7 +92,7 @@ export function NumberInput({
     [isPointerLock, onChangeHandler]
   );
 
-  const onMouseUpHandler: MouseEventHandler = useCallback(() => {
+  const onMouseUpHandler: MouseEventHandler = useCallback(async () => {
     if (!isDragging.current) {
       // A drag was never started so focus on the input instead.
       ref.current.focus();
@@ -100,9 +100,9 @@ export function NumberInput({
     }
 
     if (isPointerLock) {
+      await document.exitPointerLock();
       setIsPointerLock(false);
       onBlurHandler();
-      document.exitPointerLock();
     } else {
       // The pointer lock was aborted with escape, nothing to do.
     }
@@ -112,7 +112,13 @@ export function NumberInput({
 
   const onMouseDownHandler: MouseEventHandler = useCallback(async (e) => {
     e.preventDefault();
-    await ref.current.requestPointerLock();
+    // @ts-expect-error Unadjusted movement isn't available in DOM types currently.
+    // We use unadjusted movement as on Windows odd behaviour occurs without it
+    // Such as mouse move events being fired before moving the mouse, and HUGE values
+    // For e.movementX.
+    await ref.current.requestPointerLock({
+      unadjustedMovement: true,
+    });
     setIsPointerLock(true);
   }, []);
 
