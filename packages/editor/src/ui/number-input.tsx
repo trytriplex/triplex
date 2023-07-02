@@ -15,6 +15,45 @@ import { cn } from "../ds/cn";
 import { sentenceCase } from "../util/string";
 import { usePropTags } from "./prop-input";
 
+function stepModifier(modifiers: { ctrl: boolean; shift: boolean }) {
+  let step = 0.02;
+
+  if (modifiers.ctrl) {
+    step *= 25;
+  }
+
+  if (modifiers.shift) {
+    step /= 10;
+  }
+
+  return step;
+}
+
+function getStepFunc(delta: number, element: HTMLInputElement) {
+  if (delta > 0) {
+    return () => element.stepUp();
+  }
+
+  if (delta < 0) {
+    return () => element.stepDown();
+  }
+
+  return () => {};
+}
+
+function getIterations(
+  delta: number,
+  modifiers: { ctrl: boolean; shift: boolean }
+) {
+  let iterations = Math.abs(delta);
+
+  if (modifiers.ctrl) {
+    return 1;
+  }
+
+  return iterations;
+}
+
 export function NumberInput({
   defaultValue,
   label,
@@ -36,7 +75,8 @@ export function NumberInput({
   };
 }) {
   const [isPointerLock, setIsPointerLock] = useState(false);
-  const [step] = useState(0.2);
+  const [modifier, setModifier] = useState({ shift: false, ctrl: false });
+  const step = stepModifier(modifier);
   const isDragging = useRef(false);
   const ref = useRef<HTMLInputElement>(null!);
   const tags = usePropTags();
@@ -74,12 +114,10 @@ export function NumberInput({
     (e) => {
       if (isPointerLock) {
         isDragging.current = true;
-        const stepFunc =
-          e.movementX > 0
-            ? () => ref.current.stepUp()
-            : () => ref.current.stepDown();
+        const iterations = getIterations(e.movementX, modifier);
+        const stepFunc = getStepFunc(e.movementX, ref.current);
 
-        for (let i = 0; i < Math.abs(e.movementX); i++) {
+        for (let i = 0; i < iterations; i++) {
           // Call the step function for each pixel of movement.
           // The further the distance the more times the step func
           // Is called.
@@ -89,7 +127,7 @@ export function NumberInput({
         onChangeHandler();
       }
     },
-    [isPointerLock, onChangeHandler]
+    [isPointerLock, modifier, onChangeHandler]
   );
 
   const onMouseUpHandler: MouseEventHandler = useCallback(async () => {
@@ -112,6 +150,14 @@ export function NumberInput({
 
   const onMouseDownHandler: MouseEventHandler = useCallback(async (e) => {
     e.preventDefault();
+
+    if (document.activeElement?.tagName === "IFRAME") {
+      // If it's an iframe blur so the events get captured for mouse down / mouse up.
+      const element: HTMLIFrameElement =
+        document.activeElement as HTMLIFrameElement;
+      element.blur();
+    }
+
     // @ts-expect-error Unadjusted movement isn't available in DOM types currently.
     // We use unadjusted movement as on Windows odd behaviour occurs without it
     // Such as mouse move events being fired before moving the mouse, and HUGE values
@@ -140,6 +186,7 @@ export function NumberInput({
     const callback = () => {
       if (document.pointerLockElement !== ref.current) {
         setIsPointerLock(false);
+
         if (typeof transformedDefaultValue === "number") {
           ref.current.valueAsNumber = transformedDefaultValue;
         } else {
@@ -156,6 +203,34 @@ export function NumberInput({
       document.removeEventListener("pointerlockchange", callback);
     };
   }, [isPointerLock, onChangeHandler, transformedDefaultValue]);
+
+  useEffect(() => {
+    if (!isPointerLock) {
+      return;
+    }
+
+    const keydownHandler = (e: KeyboardEvent) => {
+      if (e.ctrlKey) {
+        setModifier((prev) => ({ ...prev, ctrl: true }));
+      }
+
+      if (e.shiftKey) {
+        setModifier((prev) => ({ ...prev, shift: true }));
+      }
+    };
+
+    const keyupHandler = (e: KeyboardEvent) => {
+      setModifier({ ctrl: e.ctrlKey, shift: e.shiftKey });
+    };
+
+    document.addEventListener("keydown", keydownHandler);
+    document.addEventListener("keyup", keyupHandler);
+
+    return () => {
+      document.removeEventListener("keydown", keydownHandler);
+      document.removeEventListener("keyup", keyupHandler);
+    };
+  }, [isPointerLock]);
 
   return (
     <div
