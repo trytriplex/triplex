@@ -1,5 +1,23 @@
 # @triplex/run
 
+## 0.55.0
+
+### Patch Changes
+
+- ab909b4: Consoldate config into a single module.
+- Updated dependencies [3be2782]
+- Updated dependencies [3be2782]
+- Updated dependencies [ab909b4]
+- Updated dependencies [b6970aa]
+- Updated dependencies [ab909b4]
+- Updated dependencies [4fa9018]
+- Updated dependencies [f7d2d9a]
+- Updated dependencies [44faed1]
+- Updated dependencies [b6970aa]
+  - @triplex/editor@0.55.0
+  - @triplex/server@0.55.0
+  - @triplex/client@0.55.0
+
 ## 0.54.2
 
 ### Patch Changes

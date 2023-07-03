@@ -1,5 +1,23 @@
 # @triplex/editor
 
+## 0.55.0
+
+### Minor Changes
+
+- 3be2782: Add support for adding a gltf static asset to the scene.
+- b6970aa: Adds prop tags to context to be picked up by inputs.
+- ab909b4: Static assets are now available through the assets drawer.
+- 4fa9018: The number input has been re-written to improve its UX.
+- 44faed1: Jsdoc tags are now returned in the jsx element type response.
+- b6970aa: Number input can now have a min/max value set using `@min` and `@max`
+  jsdoc tags respectively. E.g. `@min 1` will cap the input value to 1.
+
+### Patch Changes
+
+- Updated dependencies [ab909b4]
+  - @triplex/ws-client@0.55.0
+  - @triplex/bridge@0.55.0
+
 ## 0.54.2
 
 ### Patch Changes
