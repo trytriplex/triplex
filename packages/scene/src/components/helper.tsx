@@ -95,6 +95,10 @@ export function Helper({
       <>
         <HelperIcon target={target} onClick={onClick} />
         <HelperElement
+          // This will be ignored by the selection component when a click event
+          // Has been captured. We do this as we don't want the helper to be the
+          // Bounding box but instead the helper icon above.
+          name="triplex_ignore"
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ref={helperRef as any}
           // @ts-expect-error - Hacking, sorry!
