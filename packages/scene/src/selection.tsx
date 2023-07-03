@@ -397,7 +397,12 @@ export function Selection({
   }, [selectedObject, setCamera]);
 
   const onClick = async (e: ThreeEvent<MouseEvent>) => {
-    if (e.delta > 1) {
+    if (
+      e.delta > 1 ||
+      // Any scene objects that have this in their name will be excluded
+      // Currently that's just the helpers inside ./components/helper.tsx
+      e.object.name.includes("triplex_ignore")
+    ) {
       return;
     }
 
