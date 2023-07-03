@@ -1,5 +1,18 @@
 # @triplex/client
 
+## 0.55.0
+
+### Minor Changes
+
+- 3be2782: Add support for packages when adding components to scene.
+
+### Patch Changes
+
+- Updated dependencies [3be2782]
+- Updated dependencies [111a1f2]
+- Updated dependencies [44faed1]
+  - @triplex/scene@0.55.0
+
 ## 0.54.2
 
 ### Patch Changes

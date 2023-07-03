@@ -1,5 +1,19 @@
 # @triplex/scene
 
+## 0.55.0
+
+### Minor Changes
+
+- 3be2782: Add support for adding a gltf static asset to the scene.
+- 44faed1: Jsdoc tags are now returned in the jsx element type response.
+
+### Patch Changes
+
+- 111a1f2: Scene helpers are now excluded inside the selection handler.
+- Updated dependencies [ab909b4]
+  - @triplex/ws-client@0.55.0
+  - @triplex/bridge@0.55.0
+
 ## 0.54.2
 
 ### Patch Changes

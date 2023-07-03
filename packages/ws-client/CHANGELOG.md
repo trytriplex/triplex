@@ -1,5 +1,11 @@
 # @triplex/ws-client
 
+## 0.55.0
+
+### Minor Changes
+
+- ab909b4: Add useSubscription hook.
+
 ## 0.54.2
 
 ### Patch Changes
