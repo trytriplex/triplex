@@ -1,8 +1,14 @@
 {
   "$schema": "https://unpkg.com/@triplex/run/config.schema.json",
   "files": [
-    "../src/scenes/*.tsx",
+    "../src/entities/*.tsx",
     "../src/meshes/*.tsx",
-    "../src/entities/*.tsx"
-  ]
+    "../src/scenes/*.tsx"
+  ],
+  "components": [
+    "../src/entities/*.tsx",
+    "../src/materials/**/*.tsx",
+    "../src/meshes/*.tsx"
+  ],
+  "assetsDir": "mesh"
 }
