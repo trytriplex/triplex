@@ -5,7 +5,6 @@
  * file in the root directory of this source tree.
  */
 import { useFrame } from "@react-three/fiber";
-import { Color } from "@react-three/fiber";
 import { useMemo, useRef } from "react";
 import { Color as Color3, MeshStandardMaterial } from "three";
 import CustomShaderMaterial from "three-custom-shader-material";
@@ -14,16 +13,22 @@ import vert from "./vertex.glsl";
 import frag from "./fragment.glsl";
 
 export function WaterMaterial({
-  color,
   opacity = 1.0,
   transparent,
   wavelength = 1,
   speed = 1,
 }: {
-  color?: Color;
+  /**
+   * @min 0
+   * @max 1
+   */
   opacity?: number;
   transparent?: boolean;
   wavelength?: number;
+  /**
+   * @min 1
+   * @max 5
+   */
   speed?: number;
 }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -51,7 +56,6 @@ export function WaterMaterial({
   return (
     <CustomShaderMaterial
       baseMaterial={MeshStandardMaterial}
-      color={color}
       fragmentShader={frag}
       ref={ref}
       metalness={0.1}
