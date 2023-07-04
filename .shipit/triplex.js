@@ -28,8 +28,8 @@ module.exports = {
   },
   getStrippedFiles() {
     return new Set([
-      "scripts/apply-publish-config.js",
-      "scripts/check-changesets.sh",
+      /scripts\/apply-publish-config.js/,
+      /scripts\/check-changesets.sh/,
     ]);
   },
   getBranchConfig() {
