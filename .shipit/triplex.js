@@ -26,6 +26,12 @@ module.exports = {
       ["scripts", "scripts"],
     ]);
   },
+  getStrippedFiles() {
+    return new Set([
+      "scripts/apply-publish-config.js",
+      "scripts/check-changesets.sh",
+    ]);
+  },
   getBranchConfig() {
     return {
       source: "origin/main",
