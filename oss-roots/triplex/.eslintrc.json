@@ -53,6 +53,6 @@
     "no-inner-declarations": "off",
     "prefer-const": "off",
     "react-hooks/exhaustive-deps": "error",
-    "header/header": ["error", "config/header.js"]
+    "header/header": ["error", "scripts/header.js"]
   }
 }
