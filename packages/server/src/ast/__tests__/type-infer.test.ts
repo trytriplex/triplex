@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Michael Dougall. All rights reserved.
+ *
+ * This source code is licensed under the GPL-3.0 license found in the LICENSE
+ * file in the root directory of this source tree.
+ */
 import { join } from "path";
 import { describe, expect, it } from "vitest";
 import { getJsxElementAt } from "../jsx";
@@ -12,7 +18,7 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/import-named.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 12, 7);
+    const sceneObject = getJsxElementAt(sourceFile, 18, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -122,7 +128,7 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/import-named.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 20, 7);
+    const sceneObject = getJsxElementAt(sourceFile, 26, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -159,7 +165,7 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/type-extraction.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 19, 10);
+    const sceneObject = getJsxElementAt(sourceFile, 25, 10);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -176,7 +182,7 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/variables.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 38, 7);
+    const sceneObject = getJsxElementAt(sourceFile, 44, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -215,7 +221,7 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/scene.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 28, 7);
+    const sceneObject = getJsxElementAt(sourceFile, 34, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -240,7 +246,7 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/type-extraction.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 19, 10);
+    const sceneObject = getJsxElementAt(sourceFile, 25, 10);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -285,7 +291,7 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/type-extraction.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 24, 5);
+    const sceneObject = getJsxElementAt(sourceFile, 30, 5);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -301,7 +307,7 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/type-extraction.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 24, 5);
+    const sceneObject = getJsxElementAt(sourceFile, 30, 5);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -355,7 +361,7 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/meta.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 35, 10);
+    const sceneObject = getJsxElementAt(sourceFile, 41, 10);
 
     const { propTypes } = getJsxElementPropTypes(sceneObject!);
 
@@ -387,7 +393,7 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/type-extraction.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 24, 5);
+    const sceneObject = getJsxElementAt(sourceFile, 30, 5);
     if (!sceneObject) {
       throw new Error("not found");
     }

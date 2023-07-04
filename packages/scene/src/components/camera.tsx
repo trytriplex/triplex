@@ -1,6 +1,8 @@
 /**
- * Heavily inspired from @nickyvanurk gist on switching between camera modes.
- * https://gist.github.com/nickyvanurk/9ac33a6aff7dd7bd5cd5b8a20d4db0dc
+ * Copyright (c) Michael Dougall. All rights reserved.
+ *
+ * This source code is licensed under the GPL-3.0 license found in the LICENSE
+ * file in the root directory of this source tree.
  */
 import {
   createContext,

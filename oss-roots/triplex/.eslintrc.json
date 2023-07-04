@@ -24,7 +24,7 @@
     "ecmaVersion": "latest",
     "sourceType": "module"
   },
-  "plugins": ["@typescript-eslint", "import", "react"],
+  "plugins": ["@typescript-eslint", "import", "react", "header"],
   "rules": {
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-explicit-any": "error",
@@ -52,6 +52,7 @@
     ],
     "no-inner-declarations": "off",
     "prefer-const": "off",
-    "react-hooks/exhaustive-deps": "error"
+    "react-hooks/exhaustive-deps": "error",
+    "header/header": ["error", "config/header.js"]
   }
 }

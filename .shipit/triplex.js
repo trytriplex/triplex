@@ -23,6 +23,7 @@ module.exports = {
       ["packages/run", "packages/run"],
       ["packages/scene", "packages/scene"],
       ["oss-roots/triplex/", ""],
+      ["scripts", "scripts"],
     ]);
   },
   getBranchConfig() {

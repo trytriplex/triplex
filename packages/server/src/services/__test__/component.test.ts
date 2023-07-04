@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Michael Dougall. All rights reserved.
+ *
+ * This source code is licensed under the GPL-3.0 license found in the LICENSE
+ * file in the root directory of this source tree.
+ */
 import { join } from "path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { rmSync } from "node:fs";
@@ -411,7 +417,7 @@ describe("component service", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/add-prop.tsx")
     );
-    const jsxElement = getJsxElementAt(sourceFile, 6, 7);
+    const jsxElement = getJsxElementAt(sourceFile, 12, 7);
     if (!jsxElement) {
       throw new Error("invariant");
     }
@@ -435,7 +441,7 @@ describe("component service", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/magic-box.tsx")
     );
-    const jsxElement = getJsxElementAt(sourceFile, 4, 3);
+    const jsxElement = getJsxElementAt(sourceFile, 10, 3);
     if (!jsxElement) {
       throw new Error("invariant");
     }
@@ -457,7 +463,7 @@ describe("component service", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/add-prop.tsx")
     );
-    const jsxElement = getJsxElementAt(sourceFile, 6, 7);
+    const jsxElement = getJsxElementAt(sourceFile, 12, 7);
     if (!jsxElement) {
       throw new Error("invariant");
     }
@@ -468,7 +474,7 @@ describe("component service", () => {
       "[2.1533738875412312312312324957, -0.4755261123123123123514452274, 0.22680781231231231239335122342]"
     );
 
-    expect(getJsxElementAt(sourceFile, 21, 7)).toBeDefined();
+    expect(getJsxElementAt(sourceFile, 27, 7)).toBeDefined();
   });
 
   it("should update a prop to a component and not move it to another line", () => {
@@ -478,7 +484,7 @@ describe("component service", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/add-prop.tsx")
     );
-    const jsxElement = getJsxElementAt(sourceFile, 6, 7);
+    const jsxElement = getJsxElementAt(sourceFile, 12, 7);
     if (!jsxElement) {
       throw new Error("invariant");
     }
@@ -489,7 +495,7 @@ describe("component service", () => {
       "[2.1533738871232135412312324957, -0.4755261212312332131514452274, 0.22680121231233123789335122342]"
     );
 
-    expect(getJsxElementAt(sourceFile, 21, 7)).toBeDefined();
+    expect(getJsxElementAt(sourceFile, 27, 7)).toBeDefined();
   });
 
   it("should update a prop to a component", () => {
@@ -499,7 +505,7 @@ describe("component service", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/add-prop.tsx")
     );
-    const jsxElement = getJsxElementAt(sourceFile, 6, 7);
+    const jsxElement = getJsxElementAt(sourceFile, 12, 7);
     if (!jsxElement) {
       throw new Error("invariant");
     }
@@ -525,10 +531,10 @@ describe("component service", () => {
     );
     expect(getJsxElementsPositions(sourceFile, "default").length).toEqual(4);
 
-    commentComponent(sourceFile, 6, 7);
+    commentComponent(sourceFile, 12, 7);
 
     expect(getJsxElementsPositions(sourceFile, "default").length).toEqual(3);
-    expect(getJsxElementAt(sourceFile, 6, 7)).not.toBeDefined();
+    expect(getJsxElementAt(sourceFile, 12, 7)).not.toBeDefined();
   });
 
   it("should uncomment a jsx element", () => {
@@ -538,11 +544,11 @@ describe("component service", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/add-prop.tsx")
     );
-    commentComponent(sourceFile, 6, 7);
+    commentComponent(sourceFile, 12, 7);
 
-    uncommentComponent(sourceFile, 6, 7);
+    uncommentComponent(sourceFile, 12, 7);
 
-    expect(getJsxElementAt(sourceFile, 6, 7)).toBeDefined();
+    expect(getJsxElementAt(sourceFile, 12, 7)).toBeDefined();
   });
 
   it("should delete comment component", () => {
@@ -552,7 +558,7 @@ describe("component service", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/add-prop.tsx")
     );
-    commentComponent(sourceFile, 6, 7);
+    commentComponent(sourceFile, 12, 7);
 
     deleteCommentComponents(sourceFile);
 
@@ -592,8 +598,8 @@ describe("component service", () => {
       join(__dirname, "__mocks__/add-prop.tsx")
     );
 
-    commentComponent(sourceFile, 41, 7);
-    commentComponent(sourceFile, 36, 5);
+    commentComponent(sourceFile, 47, 7);
+    commentComponent(sourceFile, 42, 5);
 
     expect(getExportName(sourceFile, "Nested").declaration.getText())
       .toMatchInlineSnapshot(`
@@ -618,10 +624,10 @@ describe("component service", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/add-prop.tsx")
     );
-    commentComponent(sourceFile, 41, 7);
-    commentComponent(sourceFile, 36, 5);
+    commentComponent(sourceFile, 47, 7);
+    commentComponent(sourceFile, 42, 5);
 
-    uncommentComponent(sourceFile, 36, 5);
+    uncommentComponent(sourceFile, 42, 5);
 
     expect(getExportName(sourceFile, "Nested").declaration.getText())
       .toMatchInlineSnapshot(`
@@ -646,14 +652,14 @@ describe("component service", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/add-prop.tsx")
     );
-    commentComponent(sourceFile, 41, 7);
-    commentComponent(sourceFile, 36, 5);
+    commentComponent(sourceFile, 47, 7);
+    commentComponent(sourceFile, 42, 5);
 
-    uncommentComponent(sourceFile, 36, 5);
-    uncommentComponent(sourceFile, 41, 7);
+    uncommentComponent(sourceFile, 42, 5);
+    uncommentComponent(sourceFile, 47, 7);
 
-    expect(getJsxElementAt(sourceFile, 36, 5)).toBeDefined();
-    expect(getJsxElementAt(sourceFile, 41, 7)).toBeDefined();
+    expect(getJsxElementAt(sourceFile, 42, 5)).toBeDefined();
+    expect(getJsxElementAt(sourceFile, 47, 7)).toBeDefined();
   });
 
   it("should add component as a child to jsx", () => {
@@ -673,10 +679,10 @@ describe("component service", () => {
         path: join(__dirname, "stub-component.tsx"),
         props: { color: "blurple" },
       },
-      { action: "child", column: 7, line: 50 }
+      { action: "child", column: 7, line: 56 }
     );
 
-    expect(result).toEqual({ column: 19, line: 50 });
+    expect(result).toEqual({ column: 19, line: 56 });
     expect(getExportName(sourceFile, "AddComponent").declaration.getText())
       .toMatchInlineSnapshot(`
         "export function AddComponent() {
@@ -707,10 +713,10 @@ describe("component service", () => {
         path: join(__dirname, "stub-component.tsx"),
         props: { color: "blurple" },
       },
-      { action: "child", column: 7, line: 49 }
+      { action: "child", column: 7, line: 55 }
     );
 
-    expect(result).toEqual({ column: 19, line: 49 });
+    expect(result).toEqual({ column: 19, line: 55 });
     expect(getExportName(sourceFile, "AddComponent").declaration.getText())
       .toMatchInlineSnapshot(`
         "export function AddComponent() {
@@ -740,7 +746,7 @@ describe("component service", () => {
         name: "boxGeometry",
         props: { color: "blurple" },
       },
-      { action: "child", column: 7, line: 49 }
+      { action: "child", column: 7, line: 55 }
     );
     const result = add(
       sourceFile,
@@ -750,10 +756,10 @@ describe("component service", () => {
         name: "boxGeometry",
         props: { color: "blurple" },
       },
-      { action: "child", column: 7, line: 49 }
+      { action: "child", column: 7, line: 55 }
     );
 
-    expect(result).toEqual({ column: 49, line: 49 });
+    expect(result).toEqual({ column: 49, line: 55 });
   });
 
   it("should add components without losing track of line and columns", async () => {

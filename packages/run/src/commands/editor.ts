@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Michael Dougall. All rights reserved.
+ *
+ * This source code is licensed under the GPL-3.0 license found in the LICENSE
+ * file in the root directory of this source tree.
+ */
 import { createServer as createBackendServer } from "@triplex/server";
 import { createServer as createFrontendServer } from "@triplex/client";
 import express from "express";

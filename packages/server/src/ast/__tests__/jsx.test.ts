@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Michael Dougall. All rights reserved.
+ *
+ * This source code is licensed under the GPL-3.0 license found in the LICENSE
+ * file in the root directory of this source tree.
+ */
 import { join } from "path";
 import { describe, it, expect } from "vitest";
 import {
@@ -18,43 +24,45 @@ describe("jsx ast extractor", () => {
 
     const elements = getJsxElementsPositions(sourceFile, "default");
 
-    expect(elements).toEqual([
-      {
-        children: [],
-        column: 7,
-        line: 19,
-        name: "Box",
-        type: "custom",
-      },
-      {
-        children: [],
-        column: 7,
-        line: 25,
-        name: "Cylinder",
-        type: "custom",
-      },
-      {
-        children: [],
-        column: 7,
-        line: 28,
-        name: "SceneAlt",
-        type: "custom",
-      },
-      {
-        children: [],
-        column: 7,
-        line: 29,
-        name: "SceneWrapped",
-        type: "custom",
-      },
-      {
-        children: [],
-        column: 7,
-        line: 30,
-        name: "SceneArrow",
-        type: "custom",
-      },
-    ]);
+    expect(elements).toMatchInlineSnapshot(`
+      [
+        {
+          "children": [],
+          "column": 7,
+          "line": 25,
+          "name": "Box",
+          "type": "custom",
+        },
+        {
+          "children": [],
+          "column": 7,
+          "line": 31,
+          "name": "Cylinder",
+          "type": "custom",
+        },
+        {
+          "children": [],
+          "column": 7,
+          "line": 34,
+          "name": "SceneAlt",
+          "type": "custom",
+        },
+        {
+          "children": [],
+          "column": 7,
+          "line": 35,
+          "name": "SceneWrapped",
+          "type": "custom",
+        },
+        {
+          "children": [],
+          "column": 7,
+          "line": 36,
+          "name": "SceneArrow",
+          "type": "custom",
+        },
+      ]
+    `);
   });
 
   it("should return top level components for named export", async () => {
@@ -67,15 +75,17 @@ describe("jsx ast extractor", () => {
 
     const elements = getJsxElementsPositions(sourceFile, "SceneAlt");
 
-    expect(elements).toEqual([
-      {
-        children: [],
-        column: 10,
-        line: 7,
-        name: "Box",
-        type: "custom",
-      },
-    ]);
+    expect(elements).toMatchInlineSnapshot(`
+      [
+        {
+          "children": [],
+          "column": 10,
+          "line": 13,
+          "name": "Box",
+          "type": "custom",
+        },
+      ]
+    `);
   });
 
   it("should return top level components for named arrow export", async () => {
@@ -88,15 +98,17 @@ describe("jsx ast extractor", () => {
 
     const elements = getJsxElementsPositions(sourceFile, "SceneArrow");
 
-    expect(elements).toEqual([
-      {
-        children: [],
-        column: 33,
-        line: 4,
-        name: "Box",
-        type: "custom",
-      },
-    ]);
+    expect(elements).toMatchInlineSnapshot(`
+      [
+        {
+          "children": [],
+          "column": 33,
+          "line": 10,
+          "name": "Box",
+          "type": "custom",
+        },
+      ]
+    `);
   });
 
   it("should return jsx information nested", () => {
@@ -109,30 +121,32 @@ describe("jsx ast extractor", () => {
 
     const elements = getJsxElementsPositions(sourceFile, "default");
 
-    expect(elements).toEqual([
-      {
-        column: 5,
-        line: 11,
-        name: "mesh",
-        type: "host",
-        children: [
-          {
-            column: 7,
-            line: 12,
-            name: "boxGeometry",
-            type: "host",
-            children: [],
-          },
-          {
-            column: 7,
-            line: 13,
-            name: "meshStandardMaterial",
-            type: "host",
-            children: [],
-          },
-        ],
-      },
-    ]);
+    expect(elements).toMatchInlineSnapshot(`
+      [
+        {
+          "children": [
+            {
+              "children": [],
+              "column": 7,
+              "line": 18,
+              "name": "boxGeometry",
+              "type": "host",
+            },
+            {
+              "children": [],
+              "column": 7,
+              "line": 19,
+              "name": "meshStandardMaterial",
+              "type": "host",
+            },
+          ],
+          "column": 5,
+          "line": 17,
+          "name": "mesh",
+          "type": "host",
+        },
+      ]
+    `);
   });
 
   it("should extract tuple props from a host jsx element", () => {
@@ -142,7 +156,7 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/box.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 12, 7);
+    const sceneObject = getJsxElementAt(sourceFile, 18, 7);
 
     const elements = getJsxElementProps(sourceFile, sceneObject!);
 
@@ -152,7 +166,7 @@ describe("jsx ast extractor", () => {
           "column": 20,
           "declaration": "declared",
           "description": undefined,
-          "line": 12,
+          "line": 18,
           "name": "args",
           "required": false,
           "tags": {},
@@ -226,7 +240,7 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/cylinder.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 4, 7);
+    const sceneObject = getJsxElementAt(sourceFile, 10, 7);
 
     const props = getJsxElementProps(sourceFile, sceneObject!);
 
@@ -288,7 +302,7 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/box.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 13, 7);
+    const sceneObject = getJsxElementAt(sourceFile, 19, 7);
 
     const elements = getJsxElementProps(sourceFile, sceneObject!);
 
@@ -320,7 +334,7 @@ describe("jsx ast extractor", () => {
           "column": 29,
           "declaration": "declared",
           "description": undefined,
-          "line": 13,
+          "line": 19,
           "name": "color",
           "required": true,
           "tags": {
@@ -816,7 +830,7 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/box.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 19, 10);
+    const sceneObject = getJsxElementAt(sourceFile, 25, 10);
 
     const props = getJsxElementProps(sourceFile, sceneObject!);
 
@@ -825,7 +839,7 @@ describe("jsx ast extractor", () => {
         "column": 36,
         "declaration": "declared",
         "description": undefined,
-        "line": 19,
+        "line": 25,
         "name": "scale",
         "required": false,
         "tags": {},
@@ -861,7 +875,7 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/box.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 19, 10);
+    const sceneObject = getJsxElementAt(sourceFile, 25, 10);
 
     const props = getJsxElementProps(sourceFile, sceneObject!);
 
@@ -896,7 +910,7 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/with-comments.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 4, 5);
+    const sceneObject = getJsxElementAt(sourceFile, 10, 5);
 
     const elements = getJsxElementProps(sourceFile, sceneObject!);
 
@@ -1037,7 +1051,7 @@ describe("jsx ast extractor", () => {
           "column": 11,
           "declaration": "declared",
           "description": "Object gets rendered if true.",
-          "line": 4,
+          "line": 10,
           "name": "visible",
           "required": true,
           "tags": {
@@ -1150,7 +1164,7 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/with-comments.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 14, 5);
+    const sceneObject = getJsxElementAt(sourceFile, 20, 5);
 
     const elements = getJsxElementProps(sourceFile, sceneObject!);
 
@@ -1291,7 +1305,7 @@ describe("jsx ast extractor", () => {
           "column": 11,
           "declaration": "declared",
           "description": "Object gets rendered if true.",
-          "line": 14,
+          "line": 20,
           "name": "visible",
           "required": true,
           "tags": {
@@ -1304,7 +1318,7 @@ describe("jsx ast extractor", () => {
           "column": 26,
           "declaration": "declared",
           "description": "Gets rendered into shadow map.",
-          "line": 14,
+          "line": 20,
           "name": "castShadow",
           "required": true,
           "tags": {
@@ -1406,7 +1420,7 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/type-extraction.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 19, 10);
+    const sceneObject = getJsxElementAt(sourceFile, 25, 10);
 
     const props = getJsxElementProps(sourceFile, sceneObject!);
 
@@ -1415,7 +1429,7 @@ describe("jsx ast extractor", () => {
         "column": 22,
         "declaration": "declared",
         "description": "Object gets rendered if true.",
-        "line": 19,
+        "line": 25,
         "name": "visible",
         "required": true,
         "tags": {
@@ -1461,7 +1475,7 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/type-extraction.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 35, 5);
+    const sceneObject = getJsxElementAt(sourceFile, 41, 5);
 
     const elements = getJsxElementProps(sourceFile, sceneObject!);
 
@@ -1471,7 +1485,7 @@ describe("jsx ast extractor", () => {
           "column": 12,
           "declaration": "declared",
           "description": undefined,
-          "line": 35,
+          "line": 41,
           "name": "color",
           "required": true,
           "tags": {},
@@ -1499,7 +1513,7 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/type-extraction.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 36, 5);
+    const sceneObject = getJsxElementAt(sourceFile, 42, 5);
 
     const elements = getJsxElementProps(sourceFile, sceneObject!);
 
@@ -1509,7 +1523,7 @@ describe("jsx ast extractor", () => {
           "column": 20,
           "declaration": "declared",
           "description": undefined,
-          "line": 36,
+          "line": 42,
           "name": "color",
           "required": false,
           "tags": {},
@@ -1537,7 +1551,7 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/box.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 11, 5);
+    const sceneObject = getJsxElementAt(sourceFile, 17, 5);
 
     const elements = getJsxElementProps(sourceFile, sceneObject!);
 
@@ -1547,7 +1561,7 @@ describe("jsx ast extractor", () => {
           "column": 11,
           "declaration": "declared",
           "description": undefined,
-          "line": 11,
+          "line": 17,
           "name": "position",
           "required": false,
           "tags": {},
@@ -1558,7 +1572,7 @@ describe("jsx ast extractor", () => {
           "column": 51,
           "declaration": "declared",
           "description": undefined,
-          "line": 11,
+          "line": 17,
           "name": "scale",
           "required": false,
           "tags": {},
@@ -1569,7 +1583,7 @@ describe("jsx ast extractor", () => {
           "column": 31,
           "declaration": "declared",
           "description": undefined,
-          "line": 11,
+          "line": 17,
           "name": "rotation",
           "required": false,
           "tags": {},
@@ -1702,7 +1716,7 @@ describe("jsx ast extractor", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/scene.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 19, 7);
+    const sceneObject = getJsxElementAt(sourceFile, 25, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -1715,7 +1729,7 @@ describe("jsx ast extractor", () => {
           "column": 9,
           "declaration": "declared",
           "description": undefined,
-          "line": 20,
+          "line": 26,
           "name": "position",
           "required": false,
           "tags": {},
@@ -1778,7 +1792,7 @@ describe("jsx ast extractor", () => {
           "column": 9,
           "declaration": "declared",
           "description": undefined,
-          "line": 21,
+          "line": 27,
           "name": "rotation",
           "required": false,
           "tags": {},
@@ -1818,38 +1832,40 @@ describe("jsx ast extractor", () => {
 
     const elements = getJsxElementsPositions(sourceFile, "default");
 
-    expect(elements).toEqual([
-      {
-        column: 5,
-        line: 3,
-        name: "group",
-        type: "host",
-        children: [
-          {
-            children: [
-              {
-                children: [],
-                column: 9,
-                line: 5,
-                name: "boxGeometry",
-                type: "host",
-              },
-              {
-                column: 9,
-                line: 6,
-                name: "meshBasicMaterial",
-                type: "host",
-                children: [],
-              },
-            ],
-            column: 7,
-            line: 4,
-            name: "mesh",
-            type: "host",
-          },
-        ],
-      },
-    ]);
+    expect(elements).toMatchInlineSnapshot(`
+      [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "column": 9,
+                  "line": 11,
+                  "name": "boxGeometry",
+                  "type": "host",
+                },
+                {
+                  "children": [],
+                  "column": 9,
+                  "line": 12,
+                  "name": "meshBasicMaterial",
+                  "type": "host",
+                },
+              ],
+              "column": 7,
+              "line": 10,
+              "name": "mesh",
+              "type": "host",
+            },
+          ],
+          "column": 5,
+          "line": 9,
+          "name": "group",
+          "type": "host",
+        },
+      ]
+    `);
   });
 
   it("should extract jsx positions from a separated export", () => {
@@ -1869,20 +1885,20 @@ describe("jsx ast extractor", () => {
             {
               "children": [],
               "column": 7,
-              "line": 4,
+              "line": 10,
               "name": "cylinderGeometry",
               "type": "host",
             },
             {
               "children": [],
               "column": 7,
-              "line": 5,
+              "line": 11,
               "name": "meshStandardMaterial",
               "type": "host",
             },
           ],
           "column": 5,
-          "line": 3,
+          "line": 9,
           "name": "mesh",
           "type": "host",
         },

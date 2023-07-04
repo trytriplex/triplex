@@ -1,4 +1,10 @@
 #!/usr/bin/env node
+/**
+ * Copyright (c) Michael Dougall. All rights reserved.
+ *
+ * This source code is licensed under the GPL-3.0 license found in the LICENSE
+ * file in the root directory of this source tree.
+ */
 import { prompt } from "enquirer";
 import { exec as execCb } from "child_process";
 import { promisify } from "util";
