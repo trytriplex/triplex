@@ -17,7 +17,6 @@ import {
   MouseEventHandler,
 } from "react";
 import { IconButton } from "../ds/button";
-import { cn } from "../ds/cn";
 import { sentenceCase } from "../util/string";
 import { usePropTags } from "./prop-input";
 
@@ -60,6 +59,21 @@ function getIterations(
   return iterations;
 }
 
+function toNumber(
+  num: string | number | boolean | undefined,
+  defaultValue: number
+): number {
+  if (typeof num === "number") {
+    return num;
+  }
+
+  if (typeof num === "string") {
+    return Number(num);
+  }
+
+  return defaultValue;
+}
+
 export function NumberInput({
   defaultValue,
   label,
@@ -86,42 +100,63 @@ export function NumberInput({
   const isDragging = useRef(false);
   const ref = useRef<HTMLInputElement>(null!);
   const tags = usePropTags();
+  const max = toNumber(tags.max, Infinity);
+  const min = toNumber(tags.min, -Infinity);
   const transformedDefaultValue = transformValue.in(defaultValue);
 
   const onChangeHandler = useCallback(() => {
     const nextValue = Number.isNaN(ref.current.valueAsNumber)
       ? undefined
-      : ref.current.valueAsNumber;
+      : transformValue.out(ref.current.valueAsNumber);
 
-    onChange(transformValue.out(nextValue));
-  }, [onChange, transformValue]);
+    if (typeof nextValue === "number" && (min > nextValue || max < nextValue)) {
+      // Next value is outside the min / max range so skip the handler.
+      return;
+    }
+
+    onChange(nextValue);
+  }, [max, min, onChange, transformValue]);
 
   const onBlurHandler = useCallback(() => {
     const nextValue = Number.isNaN(ref.current.valueAsNumber)
       ? undefined
-      : ref.current.valueAsNumber;
+      : transformValue.out(ref.current.valueAsNumber);
 
     if (nextValue === undefined && required) {
       // Skip handler if the next value is undefined and it's required
       return;
     }
 
-    if (defaultValue !== nextValue) {
-      onConfirm(transformValue.out(nextValue));
+    if (typeof nextValue === "number" && (min > nextValue || max < nextValue)) {
+      // Next value is outside the min / max range so skip the handler.
+      return;
     }
-  }, [defaultValue, onConfirm, required, transformValue]);
+
+    if (transformedDefaultValue !== nextValue) {
+      onConfirm(nextValue);
+    }
+  }, [transformValue, required, min, max, transformedDefaultValue, onConfirm]);
 
   const clearInputValue = useCallback(() => {
-    onChange(undefined);
-    onConfirm(undefined);
-  }, [onChange, onConfirm]);
+    if (defaultValue !== undefined) {
+      onChange(undefined);
+      onConfirm(undefined);
+    }
+
+    ref.current.focus();
+  }, [defaultValue, onChange, onConfirm]);
 
   const onMouseMoveHandler: MouseEventHandler = useCallback(
     (e) => {
       if (isPointerLock) {
         isDragging.current = true;
-        const iterations = getIterations(e.movementX, modifier);
-        const stepFunc = getStepFunc(e.movementX, ref.current);
+        const movement =
+          // When running tests we use clientX purely as JSDOM doesn't support
+          // Setting movementX. It's shit but at least this let's test things.
+          // See: https://github.com/jsdom/jsdom/issues/3209
+          process.env.NODE_ENV === "test" ? e.clientX : e.movementX;
+        const iterations = getIterations(movement, modifier);
+        const stepFunc = getStepFunc(movement, ref.current);
 
         for (let i = 0; i < iterations; i++) {
           // Call the step function for each pixel of movement.
@@ -144,7 +179,7 @@ export function NumberInput({
     }
 
     if (isPointerLock) {
-      await document.exitPointerLock();
+      await document.exitPointerLock?.();
       setIsPointerLock(false);
       onBlurHandler();
     } else {
@@ -155,6 +190,11 @@ export function NumberInput({
   }, [isPointerLock, onBlurHandler]);
 
   const onMouseDownHandler: MouseEventHandler = useCallback(async (e) => {
+    if (document.activeElement === ref.current) {
+      // We're focused in the input already, bail out!
+      return;
+    }
+
     e.preventDefault();
 
     if (document.activeElement?.tagName === "IFRAME") {
@@ -168,7 +208,7 @@ export function NumberInput({
     // We use unadjusted movement as on Windows odd behaviour occurs without it
     // Such as mouse move events being fired before moving the mouse, and HUGE values
     // For e.movementX.
-    await ref.current.requestPointerLock({
+    await ref.current.requestPointerLock?.({
       unadjustedMovement: true,
     });
     setIsPointerLock(true);
@@ -240,13 +280,8 @@ export function NumberInput({
 
   return (
     <div
-      className={cn([
-        "group relative flex w-full items-center rounded-md border border-transparent bg-white/5 focus-within:border-blue-400 hover:bg-white/10",
-        !required
-          ? "focus-within:pl-1 focus-within:pr-0.5"
-          : "focus-within:px-1",
-        "pl-4 pr-4",
-      ])}
+      data-testid={isPointerLock ? "pointer-lock" : undefined}
+      className="group relative flex w-full items-center rounded-md border border-transparent bg-white/5 px-4 focus-within:border-blue-400 focus-within:pl-1 focus-within:pr-0.5 hover:bg-white/10"
     >
       <input
         className="peer w-full cursor-col-resize text-ellipsis bg-transparent py-0.5 text-center text-sm text-neutral-300 outline-none [color-scheme:dark] [font-variant-numeric:tabular-nums] placeholder:italic placeholder:text-neutral-500 focus:cursor-text focus:text-left"
@@ -254,8 +289,8 @@ export function NumberInput({
         defaultValue={transformedDefaultValue}
         id={name}
         key={defaultValue}
-        max={typeof tags.max === "boolean" ? undefined : tags.max}
-        min={typeof tags.min === "boolean" ? undefined : tags.min}
+        max={max}
+        min={min}
         onBlur={onBlurHandler}
         onChange={onChangeHandler}
         onMouseDown={onMouseDownHandler}
@@ -268,8 +303,11 @@ export function NumberInput({
         type="number"
       />
 
+      <div className="pointer-events-none absolute -inset-[1px] hidden rounded-md border border-red-400 border-transparent peer-invalid:block peer-focus:hidden" />
+
       <button
-        className="absolute bottom-0 left-0 top-0 flex w-4 cursor-default items-center justify-center text-neutral-400 opacity-30 hover:bg-white/5 hover:opacity-100 focus:opacity-100 active:bg-white/10 peer-hover:opacity-100 peer-focus:opacity-0"
+        aria-label={`Decrease by ${step}`}
+        className="absolute bottom-0 left-0 top-0 flex w-4 cursor-default items-center justify-center text-neutral-300 opacity-20 hover:block hover:bg-white/5 hover:opacity-100 focus:block active:bg-white/10 peer-hover:opacity-100 peer-focus:hidden"
         onBlur={onBlurHandler}
         onClick={incrementDown}
         tabIndex={-1}
@@ -279,7 +317,8 @@ export function NumberInput({
       </button>
 
       <button
-        className="absolute bottom-0 right-0 top-0 flex w-4 cursor-default items-center justify-center text-neutral-400 opacity-30 hover:bg-white/5 hover:opacity-100 focus:opacity-100 active:bg-white/10 peer-hover:opacity-100 peer-focus:opacity-0"
+        aria-label={`Increase by ${step}`}
+        className="absolute bottom-0 right-0 top-0 flex w-4 cursor-default items-center justify-center text-neutral-300 opacity-20 hover:block hover:bg-white/5 hover:opacity-100 focus:block active:bg-white/10 peer-hover:opacity-100 peer-focus:hidden"
         onBlur={onBlurHandler}
         onClick={incrementUp}
         tabIndex={-1}
@@ -290,7 +329,7 @@ export function NumberInput({
 
       {!required && (
         <IconButton
-          className="hidden peer-focus:block"
+          className="z-50 hidden group-focus-within:block"
           icon={Cross2Icon}
           onClick={clearInputValue}
           size="tight"

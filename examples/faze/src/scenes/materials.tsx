@@ -9,12 +9,17 @@ import { WaterMaterial } from "../materials/water";
 export function MaterialsScene() {
   return (
     <>
-      <mesh receiveShadow castShadow position={[-0.4, 2.224, -0.5]}>
+      <mesh
+        receiveShadow
+        castShadow
+        position={[-0.4, 2.224, -0.5]}
+        name={"hello"}
+      >
         <boxGeometry args={[10, 1, 10, 10, 1, 10]} />
         <WaterMaterial
           wavelength={50}
           speed={1}
-          opacity={1}
+          opacity={undefined}
           transparent={true}
         />
       </mesh>

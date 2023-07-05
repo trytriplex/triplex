@@ -18,7 +18,7 @@ import { Prop } from "../api-types";
 import { createContext, useContext } from "react";
 
 export const PropTagContext = createContext<
-  Record<string, string | number | boolean>
+  Record<string, string | number | boolean | undefined>
 >({});
 
 export const usePropTags = () => {

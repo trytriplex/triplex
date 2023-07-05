@@ -37,6 +37,7 @@ export const IconButton = forwardRef<
     <button
       ref={ref}
       title={title}
+      aria-label={title}
       disabled={isDisabled}
       onClick={onClick}
       type="submit"
