@@ -1,5 +1,16 @@
 # @triplex/run
 
+## 0.55.1
+
+### Patch Changes
+
+- ea86fdc: Add license banner.
+- Updated dependencies [ea86fdc]
+- Updated dependencies [b3d2fa9]
+  - @triplex/client@0.55.1
+  - @triplex/editor@0.55.1
+  - @triplex/server@0.55.1
+
 ## 0.55.0
 
 ### Patch Changes

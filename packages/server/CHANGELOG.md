@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.55.1
+
+### Patch Changes
+
+- ea86fdc: Add license banner.
+
 ## 0.55.0
 
 ### Minor Changes

@@ -1,5 +1,19 @@
 # @triplex/electron
 
+## 0.55.1
+
+### Patch Changes
+
+- ea86fdc: Add license banner.
+- b3d2fa9: Number input no longer calls change and confirm handlers if the value
+  is outside the min/max range.
+- Updated dependencies [ea86fdc]
+- Updated dependencies [b3d2fa9]
+  - create-triplex-project@0.55.1
+  - @triplex/client@0.55.1
+  - @triplex/editor@0.55.1
+  - @triplex/server@0.55.1
+
 ## 0.55.0
 
 ### Patch Changes

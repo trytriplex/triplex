@@ -1,5 +1,13 @@
 # @triplex/client
 
+## 0.55.1
+
+### Patch Changes
+
+- ea86fdc: Add license banner.
+- Updated dependencies [ea86fdc]
+  - @triplex/scene@0.55.1
+
 ## 0.55.0
 
 ### Minor Changes
