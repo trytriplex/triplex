@@ -1,5 +1,11 @@
 # create-triplex-project
 
+## 0.55.1
+
+### Patch Changes
+
+- ea86fdc: Add license banner.
+
 ## 0.55.0
 
 ## 0.54.2

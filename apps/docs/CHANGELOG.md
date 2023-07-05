@@ -1,5 +1,11 @@
 # @docs/triplex
 
+## 0.2.1
+
+### Patch Changes
+
+- ea86fdc: Add license banner.
+
 ## 0.2.0
 
 ### Minor Changes
