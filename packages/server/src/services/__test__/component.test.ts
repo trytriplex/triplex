@@ -819,6 +819,33 @@ describe("component service", () => {
     ).toMatchInlineSnapshot('"EmptyArrowFunction = () => <><group /></>"');
   });
 
+  it("should not lose track of line col @edgecase", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/docs.tsx")
+    );
+    const result = add(
+      sourceFile,
+      "HeroScene",
+      {
+        type: "host",
+        name: "meshStandardMaterial",
+        props: {},
+      },
+      { action: "child", column: 7, line: 31 }
+    );
+
+    const createdElement = getJsxElementAt(
+      sourceFile,
+      result.line,
+      result.column
+    );
+
+    expect(createdElement).toBeDefined();
+  });
+
   it.todo(
     "should add a jsx element to arrow func that short hand returns group",
     () => {

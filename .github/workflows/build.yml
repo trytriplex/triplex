@@ -33,7 +33,6 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ steps.nvm.outputs.NVMRC }}
-          cache: "pnpm"
 
       - name: Setup pnpm config
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER

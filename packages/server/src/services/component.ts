@@ -132,21 +132,14 @@ function addToJsxElement(
   const componentText = `<${componentName} ${propsToString(componentProps)}/>`;
 
   if (Node.isJsxElement(element)) {
-    const children = element.getJsxChildren();
-    const openingText = element.getOpeningElement().getText();
-    const closingText = element.getClosingElement().getText();
-    const childrenText = children.map((child) => child.getText()).join("");
-    const pos = sourceFile.getLineAndColumnAtPos(
-      element.getClosingElement().getStart()
-    );
+    const insertStartPos = element.getClosingElement().getStart();
+    const insertedLineCol = sourceFile.getLineAndColumnAtPos(insertStartPos);
 
-    element.replaceWithText(
-      openingText + childrenText + componentText + closingText
-    );
+    sourceFile.insertText(insertStartPos, componentText);
 
     return {
-      line: pos.line,
-      column: pos.column,
+      line: insertedLineCol.line,
+      column: insertedLineCol.column,
     };
   }
 
