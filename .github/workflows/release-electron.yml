@@ -44,7 +44,6 @@ jobs:
         if: steps.check.outcome == 'success'
         with:
           node-version: ${{ steps.nvm.outputs.NVMRC }}
-          cache: "pnpm"
 
       - name: Setup pnpm config
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER
