@@ -1,5 +1,7 @@
 # create-triplex-project
 
+## 0.55.2
+
 ## 0.55.1
 
 ### Patch Changes
