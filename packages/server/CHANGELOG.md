@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.55.2
+
+### Patch Changes
+
+- ed3ef0a: Fixes the editor losing track of an inserted jsx element as a child.
+
 ## 0.55.1
 
 ### Patch Changes
