@@ -1,5 +1,11 @@
 # create-triplex-project
 
+## 0.55.3
+
+### Patch Changes
+
+- cd3efc1: Remove copyright banner from templates.
+
 ## 0.55.2
 
 ## 0.55.1
