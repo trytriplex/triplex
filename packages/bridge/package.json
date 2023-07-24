@@ -1,6 +1,6 @@
 {
   "name": "@triplex/bridge",
-  "version": "0.55.2",
+  "version": "0.55.3",
   "description": "The React Three Fiber editor.",
   "license": "GPL-3.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
