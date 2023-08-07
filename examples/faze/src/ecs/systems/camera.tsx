@@ -27,7 +27,12 @@ export function useCamera() {
     .at(-1);
 
   useLayoutEffect(() => {
-    if (!target || !target.sceneObject.current || !camera.sceneObject.current) {
+    if (
+      !target ||
+      !target.sceneObject ||
+      !target.sceneObject.current ||
+      !camera.sceneObject.current
+    ) {
       return;
     }
 
@@ -40,7 +45,12 @@ export function useCamera() {
   }, [camera, target]);
 
   useFrame((_, delta) => {
-    if (!target || !target.sceneObject.current || !camera.sceneObject.current) {
+    if (
+      !target ||
+      !target.sceneObject ||
+      !target.sceneObject.current ||
+      !camera.sceneObject.current
+    ) {
       return;
     }
 
