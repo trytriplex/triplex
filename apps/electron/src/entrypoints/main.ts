@@ -265,6 +265,8 @@ async function main() {
       webPreferences: {
         preload: require.resolve("./preload.js"),
       },
+      // width: 477,
+      // height: 848,
       width: 1280,
       height: 720,
     });

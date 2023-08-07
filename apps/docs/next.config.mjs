@@ -1,9 +1,18 @@
+/**
+ * Copyright (c) Michael Dougall. All rights reserved.
+ *
+ * This source code is licensed under the GPL-3.0 license found in the LICENSE
+ * file in the root directory of this source tree.
+ */
 import nextra from "nextra";
 
 const withNextra = nextra({
   staticImage: true,
-  theme: "nextra-theme-docs",
-  themeConfig: "./theme.config.tsx",
+  theme: "./nextra-triplex",
 });
 
-export default withNextra();
+export default withNextra({
+  typescript: {
+    ignoreBuildErrors: true,
+  },
+});

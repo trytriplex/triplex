@@ -2,6 +2,44 @@
 title: Triplex — The React Three Fiber Editor
 ---
 
-import { Landing } from "../components/landing";
+import { LazyCanvas } from "../components/three";
+import { Hero, BigDownloadLink, DownloadLink } from "../components/hero";
+import { ValueProp } from "../components/value-prop";
+import { Tweets } from "../components/tweets";
+import { IntroVideo } from "../components/intro-video";
 
-<Landing />
+<Hero />
+
+<IntroVideo />
+
+<ValueProp
+  index={0}
+  title="Your code is source of truth."
+  text="No proprietary data formats or extra dependencies."
+/>
+
+<ValueProp
+  index={1}
+  title="Visually edit components."
+  text="Use scene controls to update components in real-time."
+/>
+
+<ValueProp
+  index={2}
+  title="Your code and the editor are synchronized."
+  text="Save changes and the other updates."
+/>
+
+<ValueProp
+  index={3}
+  title="Provide hints and tune your experience."
+  text="Declare tags needed for your use case."
+/>
+
+<Tweets />
+
+<div className="my-40 flex justify-center">
+  <BigDownloadLink variant="bold" />
+</div>
+
+<LazyCanvas />
