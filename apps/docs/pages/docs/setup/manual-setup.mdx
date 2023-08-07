@@ -1,0 +1,77 @@
+---
+title: Manual Setup
+---
+
+If you'd prefer to set up your project manually instead of using the "Create
+project" in Triplex you can do so following this guide.
+
+## Install dependencies
+
+Install `react`, `@types/react`, `three`, `@types/three`, and
+`@react-three/fiber` in your project.
+
+```
+npm install react @types/react three @types/three @react-three/fiber
+```
+
+Alternatively you can use your package manager of choice such as `pnpm` or
+`yarn`.
+
+## Configure TypeScript
+
+Open or create a `tsconfig.json` and add the following:
+
+```json
+{
+  "compilerOptions": {
+    "baseUrl": ".",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "incremental": true,
+    "isolatedModules": true,
+    "jsx": "preserve",
+    "lib": ["dom", "dom.iterable", "es2022"],
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmit": true,
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "strict": true,
+    "types": ["@react-three/fiber"]
+  },
+  "include": ["."],
+  "exclude": ["node_modules"]
+}
+```
+
+## Configure Triplex
+
+Create a `.triplex/config.json` file and add the following:
+
+```json
+{
+  "components": ["../src/components/**/*.tsx"],
+  "files": ["../src/**/*.tsx"]
+}
+```
+
+## Add an example
+
+Create an example file `src/scene.tsx` and add the following:
+
+```tsx
+export default function Scene() {
+  return (
+    <mesh>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color="red" />
+    </mesh>
+  );
+}
+```
+
+After set up is complete:
+
+- Run the Triplex executable to start and open the editor
+- Edit the component in `src/scene.tsx` and see it updated in the editor
+- Edit the component in the editor and see it updated in your code

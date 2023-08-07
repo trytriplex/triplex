@@ -18,7 +18,7 @@ export function DownloadButton() {
 
   useEffect(() => {
     if (navigator.platform.match("Mac")) {
-      setPlatform("macOS");
+      setPlatform("macOS (ARM64)");
     } else if (navigator.platform.match("Win")) {
       setPlatform("Windows");
     } else {
@@ -60,16 +60,16 @@ export function DownloadButton() {
           platform === "Unsupported"
             ? "cursor-not-allowed bg-neutral-500/80"
             : "cursor-pointer bg-blue-400",
-          "mb-2 w-80 rounded-full py-4 text-center text-xl font-bold text-neutral-900",
+          "mb-2 rounded-full px-12 py-4 text-center text-xl font-bold tracking-tight text-neutral-900",
         ])}
       >
         {platform === "Unsupported"
           ? "Unsupported Platform"
-          : `Download For ${platform}`}
+          : `Download for ${platform}`}
       </a>
 
       {platform === "Unsupported" && (
-        <p className="pt-3 text-center text-sm text-neutral-500">
+        <p className="pt-3 text-center text-sm text-neutral-400">
           Triplex supports macOS and Windows.
         </p>
       )}
@@ -79,7 +79,7 @@ export function DownloadButton() {
           key={asset.name}
           href={asset.browser_download_url}
           target="_blank"
-          className="pt-3 text-center text-sm text-neutral-500 hover:text-neutral-300"
+          className="pt-3 text-center text-sm text-neutral-400 hover:text-neutral-300"
         >
           {asset.name}
         </a>

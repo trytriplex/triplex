@@ -369,7 +369,7 @@ export function AssetsDrawer() {
         onClick={toggle}
         isSelected={isOpen}
         icon={PlusIcon}
-        title="Add Element"
+        title="Add element"
       />
 
       <Suspense fallback={null}>
