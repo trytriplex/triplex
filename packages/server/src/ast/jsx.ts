@@ -145,14 +145,31 @@ export interface HostJsxElementPosition {
 }
 
 export function getJsxTag(node: JsxElement | JsxSelfClosingElement) {
+  const attributes = getAttributes(node);
   const name = Node.isJsxElement(node)
     ? node.getOpeningElement().getTagNameNode().getText()
     : node.getTagNameNode().getText();
   const type: "host" | "custom" = /^[a-z]/.exec(name) ? "host" : "custom";
 
+  if (type === "host" && attributes.name) {
+    const nameInitializer = attributes.name.getInitializer();
+    const initializerValue = Node.isJsxExpression(nameInitializer)
+      ? nameInitializer.getExpression()
+      : nameInitializer;
+
+    if (Node.isStringLiteral(initializerValue)) {
+      return {
+        name: initializerValue.getLiteralText(),
+        tagName: name,
+        type,
+      };
+    }
+  }
+
   return {
-    name,
+    tagName: name,
     type,
+    name: undefined,
   };
 }
 
@@ -232,14 +249,14 @@ export function getJsxElementsPositions(
           ? {
               column: column,
               line: line,
-              name: tag.name,
+              name: tag.tagName,
               children: [],
               type: "custom",
             }
           : {
               column: column,
               line: line,
-              name: tag.name,
+              name: tag.name ? `${tag.name} (${tag.tagName})` : tag.tagName,
               children: [],
               type: "host",
             };

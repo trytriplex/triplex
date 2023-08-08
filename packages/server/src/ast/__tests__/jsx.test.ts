@@ -10,6 +10,7 @@ import {
   getJsxElementAt,
   getJsxElementProps,
   getJsxElementsPositions,
+  getJsxTag,
 } from "../jsx";
 import { _createProject } from "../project";
 
@@ -1886,7 +1887,7 @@ describe("jsx ast extractor", () => {
               "children": [],
               "column": 7,
               "line": 10,
-              "name": "cylinderGeometry",
+              "name": "geo-hi (cylinderGeometry)",
               "type": "host",
             },
             {
@@ -1899,10 +1900,46 @@ describe("jsx ast extractor", () => {
           ],
           "column": 5,
           "line": 9,
-          "name": "mesh",
+          "name": "this-is-cilly (mesh)",
           "type": "host",
         },
       ]
     `);
+  });
+
+  it("should get the tag name from a string literal for a named group", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/cylinder.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 9, 5);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const tag = getJsxTag(sceneObject);
+
+    expect(tag.tagName).toEqual("mesh");
+    expect(tag.name).toEqual("this-is-cilly");
+  });
+
+  it("should get the tag name from a jsx expression string literal for a named group", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/cylinder.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 10, 7);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const tag = getJsxTag(sceneObject);
+
+    expect(tag.tagName).toEqual("cylinderGeometry");
+    expect(tag.name).toEqual("geo-hi");
   });
 });

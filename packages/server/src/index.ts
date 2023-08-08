@@ -333,7 +333,7 @@ export function createServer({
 
         return {
           exportName: elementPath.exportName,
-          name: tag.name,
+          name: tag.tagName,
           path: elementPath.filePath,
           props,
           type: tag.type,
@@ -341,7 +341,7 @@ export function createServer({
       }
 
       return {
-        name: tag.name,
+        name: tag.tagName,
         props,
         type: tag.type,
       };

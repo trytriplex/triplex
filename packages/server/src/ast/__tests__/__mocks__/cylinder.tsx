@@ -6,8 +6,8 @@
  */
 function Cylinder({ position }: { position?: [number, number, number] }) {
   return (
-    <mesh position={position}>
-      <cylinderGeometry args={[undefined, 1, 2, 10, 1]} />
+    <mesh position={position} name="this-is-cilly">
+      <cylinderGeometry args={[undefined, 1, 2, 10, 1]} name={"geo-hi"} />
       <meshStandardMaterial color="red" />
     </mesh>
   );
