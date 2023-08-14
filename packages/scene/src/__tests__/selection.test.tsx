@@ -20,7 +20,8 @@ describe("selection", () => {
     const path = "box.tsx";
     const exportName = "default";
     mockUseSubscriptionEffect(
-      `/scene/${encodeURIComponent(path)}/${exportName}`,
+      "/scene/:path/:exportName",
+      { exportName, path },
       {
         sceneObjects: [
           {
@@ -79,7 +80,8 @@ describe("selection", () => {
     const path = "box.tsx";
     const exportName = "default";
     mockUseSubscriptionEffect(
-      `/scene/${encodeURIComponent(path)}/${exportName}`,
+      "/scene/:path/:exportName",
+      { exportName, path },
       {
         sceneObjects: [
           {
@@ -162,7 +164,8 @@ describe("selection", () => {
     const path = "box.tsx";
     const exportName = "default";
     mockUseSubscriptionEffect(
-      `/scene/${encodeURIComponent(path)}/${exportName}`,
+      "/scene/:path/:exportName",
+      { exportName, path },
       {
         sceneObjects: [
           {

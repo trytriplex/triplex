@@ -5,8 +5,35 @@
  * file in the root directory of this source tree.
  */
 import { WebSocketServer, WebSocket } from "ws";
-import { RouteParams } from "@oakserver/oak";
 import { match } from "node-match-path";
+
+export type UnionToIntersection<U> = (
+  U extends unknown ? (k: U) => void : never
+) extends (k: infer I) => void
+  ? I
+  : never;
+
+type ValidateShape<T, Shape> = T extends Shape
+  ? Exclude<keyof T, keyof Shape> extends never
+    ? T
+    : never
+  : never;
+
+type ExtractParams<TRoute extends string> =
+  TRoute extends `${infer TStart}/${infer TEnd}`
+    ? ExtractParams<TStart> & ExtractParams<TEnd>
+    : TRoute extends `:${infer TParam}`
+    ? { [P in TParam]: string }
+    : // eslint-disable-next-line @typescript-eslint/ban-types
+      {};
+
+export type RouteParams<TRoute extends string> = ValidateShape<
+  ExtractParams<TRoute>,
+  // eslint-disable-next-line @typescript-eslint/ban-types
+  {}
+> extends never
+  ? ExtractParams<TRoute>
+  : never;
 
 function decodeParams(params?: Record<string, string> | null) {
   if (!params) {
@@ -26,7 +53,7 @@ interface AliveWebSocket extends WebSocket {
   isAlive: boolean;
 }
 
-export function createServer() {
+export function createTWS() {
   const wss = new WebSocketServer<AliveWebSocket>({ port: 3300 });
   const routeHandlers: ((
     path: string
@@ -66,19 +93,27 @@ export function createServer() {
 
   function route<
     TData,
-    R extends string,
-    P extends RouteParams<R> = RouteParams<R>
+    TRoute extends `/${string}`,
+    TRouteParams extends RouteParams<TRoute>
   >(
-    route: R,
-    cb: (params: P, state: { type: "push" | "pull" }) => Promise<TData> | TData,
-    pushConstructor?: (push: () => void, params: P) => Promise<void> | void
-  ) {
+    route: TRoute,
+    cb: (
+      params: TRouteParams,
+      state: { type: "push" | "pull" }
+    ) => Promise<TData> | TData,
+    pushConstructor?: (
+      push: () => void,
+      params: TRouteParams
+    ) => Promise<void> | void
+  ): Record<TRoute, { data: TData; params: TRouteParams }> {
     const handler = (path: string) => {
       const matches = match(route, path);
 
       if (matches.matches) {
         return async (ws: WebSocket) => {
-          const params: P = decodeParams(matches.params) as P;
+          const params: TRouteParams = decodeParams(
+            matches.params
+          ) as TRouteParams;
 
           async function sendMessage(type: "push" | "pull") {
             let data;
@@ -120,10 +155,24 @@ export function createServer() {
     };
 
     routeHandlers.push(handler);
+
+    // This is opaque, purely used to return what the types are.
+    // Accessing it at runtime won't do anything.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return {} as any;
+  }
+
+  function router<TRoutes extends Array<Record<string, unknown>>>(
+    _: TRoutes
+  ): UnionToIntersection<TRoutes[number]> {
+    // This is opaque, purely used to return what the types are.
+    // Accessing it at runtime won't do anything.
+    return {} as UnionToIntersection<TRoutes[number]>;
   }
 
   return {
-    message: route,
+    router,
+    route,
     close: wss.close.bind(wss),
   };
 }

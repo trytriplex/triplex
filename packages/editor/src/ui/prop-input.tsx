@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import type { Prop } from "@triplex/server";
 import { MathUtils } from "three";
 import { IDELink } from "../util/ide";
 import { ColorInput } from "./color-input";
@@ -14,7 +15,6 @@ import { NumberInput } from "./number-input";
 import { ArrayInput } from "./array-input";
 import { LiteralUnionInput } from "./literal-union-input";
 import { UnionInput } from "./union-input";
-import { Prop } from "../api-types";
 import { createContext, useContext } from "react";
 
 export const PropTagContext = createContext<

@@ -11,7 +11,7 @@ import { EditorMenu } from "./editor-menu";
 
 export function TitleBar() {
   const { path } = useEditor();
-  const { name } = useLazySubscription<{ name: string }>("/folder");
+  const { name } = useLazySubscription("/folder");
   const filename = path.replaceAll("\\", "/").split("/").at(-1);
   const windowTitle = filename ? filename + " — " + name : name;
 

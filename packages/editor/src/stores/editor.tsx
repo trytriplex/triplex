@@ -4,10 +4,10 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import type { ComponentTarget, ComponentType } from "@triplex/server";
 import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { create } from "zustand";
-import { ComponentTarget, ComponentType } from "../api-types";
 import { showSaveDialog } from "../util/prompt";
 import { stringify } from "../util/string";
 import { useScene } from "./scene";

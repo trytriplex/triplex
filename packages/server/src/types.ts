@@ -71,15 +71,6 @@ export type Prop =
   | UnionProp
   | UnhandledProp;
 
-export interface BaseProp {
-  column: number;
-  line: number;
-  name: string;
-  required: boolean;
-  description: string | undefined;
-  tags: Record<string, string | number | boolean>;
-}
-
 export interface StringProp {
   value?: string;
   type: "string";
@@ -130,31 +121,6 @@ export interface NumberProp {
   type: "number";
   label?: string;
   required?: boolean;
-}
-
-export interface GetSceneObjectTypes {
-  propTypes: PropType[];
-  transforms: {
-    translate: boolean;
-    rotate: boolean;
-    scale: boolean;
-  };
-}
-
-export type GetSceneObject = SceneObjectHost | SceneObjectCustom;
-
-export interface SceneObjectHost {
-  name: string;
-  type: "host";
-  props: (Prop & BaseProp)[];
-}
-
-export interface SceneObjectCustom {
-  exportName: string;
-  name: string;
-  type: "custom";
-  path: string;
-  props: (Prop & BaseProp)[];
 }
 
 export type ComponentType =
@@ -211,12 +177,6 @@ export interface ProjectAsset {
   extname: string;
 }
 
-export type GetProjectComponents = (
-  | ProjectHostComponent
-  | ProjectCustomComponent
-  | ProjectAsset
-)[];
-
 export interface Folder {
   name: string;
   path: string;
@@ -224,4 +184,22 @@ export interface Folder {
   children: Folder[];
 }
 
-export type GetProjectComponentFolders = Folder[];
+export type ElementProp = (DeclaredProp & Prop) | (UndeclaredProp & Prop);
+
+export interface DeclaredProp {
+  column: number;
+  declaration: "declared";
+  description: string | undefined;
+  line: number;
+  name: string;
+  required: boolean;
+  tags: Record<string, string | number | boolean>;
+}
+
+export interface UndeclaredProp {
+  declaration: "undeclared";
+  description: string | undefined;
+  name: string;
+  required: boolean;
+  tags: Record<string, string | number | boolean>;
+}

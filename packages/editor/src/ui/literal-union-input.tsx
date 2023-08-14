@@ -6,7 +6,7 @@
  */
 import { ChangeEventHandler, useRef } from "react";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { Prop } from "../api-types";
+import type { Prop } from "@triplex/server";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 

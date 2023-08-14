@@ -5,6 +5,11 @@
  * file in the root directory of this source tree.
  */
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import type { TWSRouteDefinition } from "@triplex/server";
+
+export type RemapWithNumber<TObject> = {
+  [P in keyof TObject]: string | number | undefined;
+};
 
 const valueCache = new Map<string, unknown>();
 const queryCache = new Map<
@@ -129,24 +134,51 @@ function wsQuery<TValue>(path: string) {
   };
 }
 
-export function preloadSubscription(path: string | string[]) {
-  if (typeof path === "string") {
-    const query = wsQuery(path);
-    query.load();
-  } else {
-    path.forEach((p) => {
-      const query = wsQuery(p);
-      query.load();
-    });
+export function buildPath(
+  route: string,
+  params: Record<string, string | number | boolean | undefined>
+): string {
+  let path = route;
+
+  for (const param in params) {
+    const rawValue = params[param];
+    const value =
+      typeof rawValue === "undefined" ? "" : encodeURIComponent(rawValue);
+    path = path.replace(`:${param}`, value);
   }
+
+  return path;
 }
 
-export function useLazySubscription<TSubscriptionData>(path: string) {
-  const query = wsQuery<TSubscriptionData>(path);
+export function preloadSubscription<TRoute extends keyof TWSRouteDefinition>(
+  ...args: TWSRouteDefinition[TRoute]["params"] extends never
+    ? [route: TRoute]
+    : [
+        route: TRoute,
+        params: RemapWithNumber<TWSRouteDefinition[TRoute]["params"]>
+      ]
+): void {
+  const [route, params = {}] = args;
+  const query = wsQuery(buildPath(route, params));
+  query.load();
+}
+
+export function useLazySubscription<TRoute extends keyof TWSRouteDefinition>(
+  ...args: TWSRouteDefinition[TRoute]["params"] extends never
+    ? [route: TRoute]
+    : [
+        route: TRoute,
+        params: RemapWithNumber<TWSRouteDefinition[TRoute]["params"]>
+      ]
+): TWSRouteDefinition[TRoute]["data"] {
+  const [route, params = {}] = args;
+  const query = wsQuery<TWSRouteDefinition[TRoute]["data"]>(
+    buildPath(route, params)
+  );
 
   query.load();
 
-  const data = useSyncExternalStore<TSubscriptionData>(
+  const data = useSyncExternalStore<TWSRouteDefinition[TRoute]["data"]>(
     useCallback((onStoreChanged) => query.subscribe(onStoreChanged), [query]),
     query.read
   );
@@ -154,10 +186,20 @@ export function useLazySubscription<TSubscriptionData>(path: string) {
   return data;
 }
 
-export function useSubscription<TSubscriptionData>(path: string) {
-  const query = wsQuery<TSubscriptionData>(path);
+export function useSubscription<TRoute extends keyof TWSRouteDefinition>(
+  ...args: TWSRouteDefinition[TRoute]["params"] extends never
+    ? [route: TRoute]
+    : [
+        route: TRoute,
+        params: RemapWithNumber<TWSRouteDefinition[TRoute]["params"]>
+      ]
+): TWSRouteDefinition[TRoute]["data"] {
+  const [route, params = {}] = args;
+  const query = wsQuery<TWSRouteDefinition[TRoute]["data"]>(
+    buildPath(route, params)
+  );
 
-  const data = useSyncExternalStore<TSubscriptionData>(
+  const data = useSyncExternalStore<TWSRouteDefinition[TRoute]["data"]>(
     useCallback((onStoreChanged) => query.subscribe(onStoreChanged), [query]),
     query.read
   );
@@ -165,25 +207,36 @@ export function useSubscription<TSubscriptionData>(path: string) {
   return data;
 }
 
-export function useSubscriptionEffect<TSubscriptionData>(
-  path: string
-): TSubscriptionData | null {
-  const [value, setValue] = useState<TSubscriptionData | null>(null);
+export function useSubscriptionEffect<TRoute extends keyof TWSRouteDefinition>(
+  ...args: TWSRouteDefinition[TRoute]["params"] extends never
+    ? [route: TRoute, params?: { disabled?: boolean }]
+    : [
+        route: TRoute,
+        params: RemapWithNumber<TWSRouteDefinition[TRoute]["params"]> & {
+          disabled?: boolean;
+        }
+      ]
+): TWSRouteDefinition[TRoute]["data"] | null {
+  const [route, params = {}] = args;
+  const [value, setValue] = useState<TWSRouteDefinition[TRoute]["data"] | null>(
+    null
+  );
+  const path = buildPath(route, params);
 
   useEffect(() => {
-    if (path === "") {
+    if (params.disabled) {
       setValue(null);
       return;
     }
 
-    const query = wsQuery<TSubscriptionData | null>(path);
+    const query = wsQuery<TWSRouteDefinition[TRoute]["data"] | null>(path);
     query.load();
     setValue(query.read(false));
 
     return query.subscribe(() => {
       setValue(query.read(false));
     });
-  }, [path]);
+  }, [params.disabled, path]);
 
   return value;
 }

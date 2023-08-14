@@ -14,7 +14,7 @@ import {
   Expression,
   JsxAttribute,
 } from "ts-morph";
-import { Prop, PropType, TupleType } from "../types";
+import { ElementProp, Prop, PropType, TupleType } from "../types";
 import { getJsxElementPropTypes } from "./type-infer";
 
 export function getJsxAttributeValue(expression: Expression | undefined): Prop {
@@ -299,12 +299,15 @@ export function getAttributes(
   return attrs;
 }
 
-function mergePropTypeValue(prop: Prop, type: PropType) {
+function mergePropTypeValue(prop: Prop, type: PropType): Prop {
+  // TODO: This whole function is coerced and a nightmare. In the follow up
+  // Pull request we need to re-write it from scratch taking into consideration
+  // The props vs. types flow. Hopefully we can bridge them together.
   if (prop.type === "identifier" && prop.value === undefined) {
     if (type.type.type === "union") {
       return {
         type: "union",
-        values: type.type.values,
+        values: type.type.values.map((v) => toProp(v)),
         value: prop.value,
       };
     }
@@ -312,7 +315,7 @@ function mergePropTypeValue(prop: Prop, type: PropType) {
     return {
       type: type.type.type,
       value: prop.value,
-    };
+    } as Prop;
   }
 
   if (
@@ -324,7 +327,7 @@ function mergePropTypeValue(prop: Prop, type: PropType) {
       type: "union",
       values: type.type.values,
       value: prop.value,
-    };
+    } as Prop;
   }
 
   if (type.type.type === "tuple" && prop.type === "array") {
@@ -342,7 +345,7 @@ function mergePropTypeValue(prop: Prop, type: PropType) {
 
         return value;
       }),
-    };
+    } as Prop;
   }
 
   if (type.type.type === "union" && prop.type === "array") {
@@ -364,19 +367,19 @@ function mergePropTypeValue(prop: Prop, type: PropType) {
           ...value,
           ...matchingType.values[index],
         })),
-      };
+      } as Prop;
     }
   }
 
-  return { type: prop.type, value: prop.value };
+  return { type: prop.type, value: prop.value } as Prop;
 }
 
-function toProp(type: PropType["type"], name: string): Prop {
+function toProp(type: PropType["type"]): Prop {
   switch (type.type) {
     case "tuple": {
       return {
         type: "array",
-        value: type.values.map((val) => toProp(val, name)),
+        value: type.values.map((val) => toProp(val)),
       };
     }
 
@@ -415,7 +418,7 @@ function toProp(type: PropType["type"], name: string): Prop {
     case "union": {
       return {
         type: "union",
-        values: type.values.map((val) => toProp(val, name)),
+        values: type.values.map((val) => toProp(val)),
       };
     }
   }
@@ -428,32 +431,6 @@ function toProp(type: PropType["type"], name: string): Prop {
 
 function hasUnhandled(prop: Prop) {
   return prop.type === "unhandled";
-}
-
-type ElementProp = DeclaredProp | UndeclaredProp;
-
-interface DeclaredProp {
-  declaration: "declared";
-  column: number;
-  description: string | undefined;
-  line: number;
-  name: string;
-  required: boolean;
-  type: string;
-  value: unknown;
-  tags: Record<string, string | number | boolean>;
-  values?: unknown;
-}
-
-interface UndeclaredProp {
-  declaration: "undeclared";
-  description: string | undefined;
-  name: string;
-  required: boolean;
-  type: string;
-  tags: Record<string, string | number | boolean>;
-  value?: unknown;
-  values?: unknown;
 }
 
 const propsSortList: Record<string, number> = [
@@ -562,7 +539,7 @@ export function getJsxElementProps(
     } else {
       // This prop isn't currently declared - let's do some work and
       // massage the output to match declared props and add it to the array.
-      const prop = toProp(propType.type, propType.name);
+      const prop = toProp(propType.type);
       if (
         prop.type === "unhandled" ||
         (prop.type === "array" &&

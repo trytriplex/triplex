@@ -16,12 +16,19 @@ import {
   getElementFilePath,
 } from "./ast";
 import { getParam } from "./util/params";
-import { createServer as createWSS } from "./util/ws-server";
+import { createTWS } from "./util/ws-server";
 import { save } from "./services/save";
 import { getAllFiles, getSceneExport } from "./services/file";
 import * as component from "./services/component";
 import * as projectService from "./services/project";
-import { ComponentTarget, ComponentType } from "./types";
+import {
+  ComponentTarget,
+  ComponentType,
+  ElementProp,
+  ProjectAsset,
+} from "./types";
+
+export * from "./types";
 
 export function createServer({
   publicDir,
@@ -39,7 +46,7 @@ export function createServer({
   const app = new Application();
   const router = new Router();
   const project = createProject({ cwd });
-  const wss = createWSS();
+  const tws = createTWS();
 
   app.use(async (ctx, next) => {
     try {
@@ -175,237 +182,226 @@ export function createServer({
   app.use(router.routes());
   app.use(router.allowedMethods());
 
-  /**
-   * Return all found scene files in a project.
-   */
-  wss.message(
-    "/scene",
-    async () => {
-      const result = await getAllFiles({ cwd: project.cwd(), files });
-      return result;
-    },
-    (push) => {
-      const watcher = watch(files, { ignoreInitial: true });
-      watcher.on("add", push);
-      watcher.on("change", push);
-      watcher.on("unlink", push);
-    }
-  );
+  const wsRoutesDef = tws.router([
+    tws.route(
+      "/scene",
+      async () => {
+        const result = await getAllFiles({ cwd: project.cwd(), files });
+        return result;
+      },
+      (push) => {
+        const watcher = watch(files, { ignoreInitial: true });
+        watcher.on("add", push);
+        watcher.on("change", push);
+        watcher.on("unlink", push);
+      }
+    ),
+    tws.route(
+      "/scene/components",
+      async () => {
+        const result = await projectService.foundFolders(components);
+        return result;
+      },
+      (push) => {
+        const watcher = watch(components);
+        watcher.on("addDir", push);
+        watcher.on("unlinkDir", push);
+        watcher.on("add", push);
+        watcher.on("unlink", push);
+      }
+    ),
+    tws.route(
+      "/scene/assets",
+      async () => {
+        const result = await projectService.foundFolders([assetsDir]);
+        return result;
+      },
+      (push) => {
+        const watcher = watch(assetsDir);
+        watcher.on("addDir", push);
+        watcher.on("unlinkDir", push);
+        watcher.on("add", push);
+        watcher.on("unlink", push);
+      }
+    ),
+    tws.route(
+      "/scene/assets/:folderPath",
+      async ({ folderPath }) => {
+        const result = await projectService.folderAssets(
+          [assetsDir],
+          folderPath
+        );
 
-  wss.message(
-    "/scene/components",
-    async () => {
-      const result = await projectService.foundFolders(components);
-      return result;
-    },
-    (push) => {
-      const watcher = watch(components);
-      watcher.on("addDir", push);
-      watcher.on("unlinkDir", push);
-      watcher.on("add", push);
-      watcher.on("unlink", push);
-    }
-  );
+        const parsed: ProjectAsset[] = result.map((asset) =>
+          Object.assign(asset, { path: asset.path.replace(publicDir, "") })
+        );
 
-  wss.message(
-    "/scene/assets",
-    async () => {
-      const result = await projectService.foundFolders([assetsDir]);
-      return result;
-    },
-    (push) => {
-      const watcher = watch(assetsDir);
-      watcher.on("addDir", push);
-      watcher.on("unlinkDir", push);
-      watcher.on("add", push);
-      watcher.on("unlink", push);
-    }
-  );
+        return parsed;
+      },
+      (push, { folderPath }) => {
+        const watcher = watch(folderPath);
+        watcher.on("add", push);
+        watcher.on("unlink", push);
+      }
+    ),
+    tws.route(
+      "/scene/components/:folderPath",
+      async ({ folderPath }) => {
+        if (folderPath === "host") {
+          const result = projectService.hostElements();
+          return result;
+        }
 
-  wss.message(
-    "/scene/assets/:folderPath",
-    async ({ folderPath }) => {
-      const result = await projectService.folderAssets([assetsDir], folderPath);
-      return result.map((asset) =>
-        Object.assign(asset, { path: asset.path.replace(publicDir, "") })
-      );
-    },
-    (push, { folderPath }) => {
-      const watcher = watch(folderPath);
-      watcher.on("add", push);
-      watcher.on("unlink", push);
-    }
-  );
+        const result = await projectService.folderComponents(
+          components,
+          folderPath
+        );
+        return result;
+      },
+      (push, { folderPath }) => {
+        const watcher = watch(folderPath);
+        watcher.on("add", push);
+        watcher.on("unlink", push);
+      }
+    ),
+    tws.route("/folder", async () => {
+      return { name: basename(cwd) };
+    }),
+    tws.route(
+      "/scene/:path",
+      async ({ path }) => {
+        const { sourceFile } = await project.getSourceFile(path);
+        const isSaved = sourceFile.isSaved();
+        return { isSaved };
+      },
+      async (push, { path }) => {
+        // When modified
+        const { sourceFile } = await project.getSourceFile(path);
+        sourceFile.onModified(push);
 
-  wss.message("/scene/components/host", async () => {
-    const result = projectService.hostElements();
-    return result;
-  });
+        // When running on windows there is a timing issue where the saved indicator
+        // Never gets unset after a save. Using polling alleviates this but isn't an
+        // Ideal solution. Watch out for a better one, for example moving to watchman.
+        const watcher = watch(path, {
+          usePolling: process.platform === "win32",
+        });
+        // When saved (fs change event) we push an update to connected clients.
+        watcher.on("change", push);
+      }
+    ),
+    tws.route(
+      "/scene/:path/:exportName",
+      async ({ path, exportName }) => {
+        const result = await getSceneExport({ path, project, exportName });
+        return result;
+      },
+      async (push, { path }) => {
+        const { sourceFile } = await project.getSourceFile(path);
+        sourceFile.onModified(push);
+      }
+    ),
+    tws.route(
+      "/scene/:path/object/:line/:column",
+      (params, { type }) => {
+        const path = params.path;
+        const line = Number(params.line);
+        const column = Number(params.column);
+        const { sourceFile } = project.getSourceFile(path);
+        const sceneObject = getJsxElementAt(sourceFile, line, column);
 
-  wss.message(
-    "/scene/components/:folderPath",
-    async ({ folderPath }) => {
-      const result = await projectService.folderComponents(
-        components,
-        folderPath
-      );
-      return result;
-    },
-    (push, { folderPath }) => {
-      const watcher = watch(folderPath);
-      watcher.on("add", push);
-      watcher.on("unlink", push);
-    }
-  );
+        if (!sceneObject) {
+          if (type === "pull") {
+            // Initial request - throw an error.
+            throw new Error(
+              `invariant: component at ${line}:${column} not found`
+            );
+          } else {
+            return {
+              name: "[deleted]",
+              props: [] as ElementProp[],
+              type: "host",
+            } as const;
+          }
+        }
 
-  wss.message("/folder", async () => {
-    return { name: basename(cwd) };
-  });
+        const tag = getJsxTag(sceneObject);
+        const props = getJsxElementProps(sourceFile, sceneObject);
 
-  wss.message(
-    "/scene/:path",
-    async ({ path }) => {
-      const { sourceFile } = await project.getSourceFile(path);
-      const isSaved = sourceFile.isSaved();
-      return { isSaved };
-    },
-    async (push, { path }) => {
-      // When modified
-      const { sourceFile } = await project.getSourceFile(path);
-      sourceFile.onModified(push);
+        if (tag.type === "custom") {
+          const elementPath = getElementFilePath(sceneObject);
 
-      // When running on windows there is a timing issue where the saved indicator
-      // Never gets unset after a save. Using polling alleviates this but isn't an
-      // Ideal solution. Watch out for a better one, for example moving to watchman.
-      const watcher = watch(path, { usePolling: process.platform === "win32" });
-      // When saved (fs change event) we push an update to connected clients.
-      watcher.on("change", push);
-    }
-  );
-
-  /**
-   * Return details about a scene.
-   */
-  wss.message(
-    "/scene/:path/:exportName",
-    async ({ path, exportName }) => {
-      const result = await getSceneExport({ path, project, exportName });
-      return result;
-    },
-    async (push, { path }) => {
-      const { sourceFile } = await project.getSourceFile(path);
-      sourceFile.onModified(push);
-    }
-  );
-
-  /**
-   * Return details about a jsx element inside a scene.
-   */
-  wss.message(
-    "/scene/:path/object/:line/:column",
-    (params, { type }) => {
-      const path = params.path;
-      const line = Number(params.line);
-      const column = Number(params.column);
-      const { sourceFile } = project.getSourceFile(path);
-      const sceneObject = getJsxElementAt(sourceFile, line, column);
-
-      if (!sceneObject) {
-        if (type === "pull") {
-          // Initial request - throw an error.
-          throw new Error(
-            `invariant: component at ${line}:${column} not found`
-          );
-        } else {
           return {
-            name: "[deleted]",
-            props: [],
-            type: "host",
+            exportName: elementPath.exportName,
+            name: tag.tagName,
+            path: elementPath.filePath,
+            props,
+            type: tag.type,
           };
         }
-      }
-
-      const tag = getJsxTag(sceneObject);
-      const props = getJsxElementProps(sourceFile, sceneObject);
-
-      if (tag.type === "custom") {
-        const elementPath = getElementFilePath(sceneObject);
 
         return {
-          exportName: elementPath.exportName,
           name: tag.tagName,
-          path: elementPath.filePath,
           props,
           type: tag.type,
-        };
+        } as const;
+      },
+      async (push, { path }) => {
+        const { sourceFile, onDependencyModified } =
+          await project.getSourceFile(path);
+        sourceFile.onModified(push);
+        onDependencyModified(push);
       }
+    ),
+    tws.route(
+      "/scene/:path/object/:line/:column/types",
+      (params, { type }) => {
+        const path = params.path;
+        const line = Number(params.line);
+        const column = Number(params.column);
+        const { sourceFile } = project.getSourceFile(path);
+        const sceneObject = getJsxElementAt(sourceFile, line, column);
 
-      return {
-        name: tag.tagName,
-        props,
-        type: tag.type,
-      };
-    },
-    async (push, { path }) => {
-      const { sourceFile, onDependencyModified } = await project.getSourceFile(
-        path
-      );
-      sourceFile.onModified(push);
-      onDependencyModified(push);
-    }
-  );
-
-  /**
-   * Return type information for a jsx element.
-   */
-  wss.message(
-    "/scene/:path/object/:line/:column/types",
-    (params, { type }) => {
-      const path = params.path;
-      const line = Number(params.line);
-      const column = Number(params.column);
-      const { sourceFile } = project.getSourceFile(path);
-      const sceneObject = getJsxElementAt(sourceFile, line, column);
-
-      if (!sceneObject) {
-        if (type === "pull") {
-          // Initial request - throw an error.
-          throw new Error(
-            `invariant: component at ${line}:${column} not found`
-          );
-        } else {
-          return {
-            propTypes: {},
-            transforms: {
-              rotate: false,
-              scale: false,
-              translate: false,
-            },
-          };
+        if (!sceneObject) {
+          if (type === "pull") {
+            // Initial request - throw an error.
+            throw new Error(
+              `invariant: component at ${line}:${column} not found`
+            );
+          } else {
+            return {
+              propTypes: {},
+              transforms: {
+                rotate: false,
+                scale: false,
+                translate: false,
+              },
+            };
+          }
         }
+
+        const propTypes = getJsxElementPropTypes(sceneObject);
+
+        return {
+          propTypes: propTypes.propTypes,
+          transforms: propTypes.transforms,
+        };
+      },
+      async (push, { path }) => {
+        const { sourceFile } = await project.getSourceFile(path);
+        sourceFile.onModified(push);
       }
-
-      const propTypes = getJsxElementPropTypes(sceneObject);
-
-      return {
-        propTypes: propTypes.propTypes,
-        transforms: propTypes.transforms,
-      };
-    },
-    async (push, { path }) => {
-      const { sourceFile } = await project.getSourceFile(path);
-      sourceFile.onModified(push);
-    }
-  );
+    ),
+  ]);
 
   return {
+    twsDefinition: wsRoutesDef,
     listen: (port = 8000) => {
       const controller = new AbortController();
       app.listen({ port, signal: controller.signal });
 
       const close = () => {
         controller.abort();
-        wss.close();
+        tws.close();
       };
 
       process.once("SIGINT", close);
@@ -417,3 +413,7 @@ export function createServer({
 }
 
 export { getConfig } from "./util/config";
+
+export type TWSRouteDefinition = ReturnType<
+  typeof createServer
+>["twsDefinition"];

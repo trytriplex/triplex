@@ -5,8 +5,8 @@
  * file in the root directory of this source tree.
  */
 import { send } from "@triplex/bridge/host";
+import type { ComponentTarget, ComponentType } from "@triplex/server";
 import { create } from "zustand";
-import { ComponentTarget, ComponentType } from "../api-types";
 
 export interface FocusedObject {
   line: number;
