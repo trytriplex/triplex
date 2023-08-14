@@ -12,7 +12,6 @@ import { ScrollContainer } from "../ds/scroll-container";
 import { PropInput, PropTagContext } from "./prop-input";
 import { useScene } from "../stores/scene";
 import { PropField } from "./prop-field";
-import { GetSceneObject } from "../api-types";
 import {
   CameraIcon,
   Crosshair1Icon,
@@ -26,11 +25,13 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
   const { setPropValue, getPropValue, navigateTo, jumpTo, viewFocusedCamera } =
     useScene();
   const { persistPropValue, deleteComponent } = useEditor();
-  const data = useLazySubscription<GetSceneObject>(
-    `/scene/${encodeURIComponent(target.ownerPath)}/object/${target.line}/${
-      target.column
-    }`
-  );
+
+  const data = useLazySubscription("/scene/:path/object/:line/:column", {
+    column: target.column,
+    line: target.line,
+    path: target.ownerPath,
+  });
+
   // Most likely a camera component. It might not though be though.
   // A better implementation later would be to traverse this scene objects children
   // And see if a camera exists, if it does enable the button.
@@ -38,8 +39,8 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
   const filteredProps = data.props.filter((prop) => prop.type !== "spread");
 
   useEffect(() => {
-    if (data.type === "custom") {
-      preloadSubscription(`/scene/${encodeURIComponent(data.path)}`);
+    if (data.type === "custom" && data.path) {
+      preloadSubscription("/scene/:path", { path: data.path });
     }
   }, [data]);
 
@@ -109,52 +110,57 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
           </div>
         )}
 
-        {filteredProps.map((prop) => (
-          <PropField
-            htmlFor={prop.name}
-            label={prop.name}
-            description={prop.description}
-            tags={prop.tags}
-            key={`${prop.name}${prop.column}${prop.line}`}
-          >
-            <PropTagContext.Provider value={prop.tags}>
-              <PropInput
-                name={prop.name}
-                column={prop.column}
-                line={prop.line}
-                path={target.ownerPath}
-                prop={prop}
-                required={prop.required}
-                onConfirm={async (value) => {
-                  const currentValue = await getPropValue({
-                    column: target.column,
-                    line: target.line,
-                    path: target.ownerPath,
-                    propName: prop.name,
-                  });
+        {filteredProps.map((prop) => {
+          const column = prop.declaration === "declared" ? prop.column : -1;
+          const line = prop.declaration === "declared" ? prop.line : -1;
 
-                  persistPropValue({
-                    column: target.column,
-                    line: target.line,
-                    path: target.ownerPath,
-                    propName: prop.name,
-                    currentPropValue: currentValue.value,
-                    nextPropValue: value,
-                  });
-                }}
-                onChange={(value) =>
-                  setPropValue({
-                    column: target.column,
-                    line: target.line,
-                    path: target.ownerPath,
-                    propName: prop.name,
-                    propValue: value,
-                  })
-                }
-              />
-            </PropTagContext.Provider>
-          </PropField>
-        ))}
+          return (
+            <PropField
+              htmlFor={prop.name}
+              label={prop.name}
+              description={prop.description}
+              tags={prop.tags}
+              key={`${prop.name}${column}${line}`}
+            >
+              <PropTagContext.Provider value={prop.tags}>
+                <PropInput
+                  name={prop.name}
+                  column={column}
+                  line={line}
+                  path={target.ownerPath}
+                  prop={prop}
+                  required={prop.required}
+                  onConfirm={async (value) => {
+                    const currentValue = await getPropValue({
+                      column: target.column,
+                      line: target.line,
+                      path: target.ownerPath,
+                      propName: prop.name,
+                    });
+
+                    persistPropValue({
+                      column: target.column,
+                      line: target.line,
+                      path: target.ownerPath,
+                      propName: prop.name,
+                      currentPropValue: currentValue.value,
+                      nextPropValue: value,
+                    });
+                  }}
+                  onChange={(value) =>
+                    setPropValue({
+                      column: target.column,
+                      line: target.line,
+                      path: target.ownerPath,
+                      propName: prop.name,
+                      propValue: value,
+                    })
+                  }
+                />
+              </PropTagContext.Provider>
+            </PropField>
+          );
+        })}
         <div className="h-1" />
       </ScrollContainer>
     </>

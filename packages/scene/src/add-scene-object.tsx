@@ -15,7 +15,7 @@ import {
   useState,
 } from "react";
 import { useSearchParams } from "react-router-dom";
-import { ComponentType } from "./api-types";
+import type { ComponentType } from "@triplex/server";
 import { useComponents } from "./context";
 import { SceneObject } from "./scene-object";
 

@@ -25,7 +25,6 @@ import {
   Vector3Tuple,
 } from "three";
 import { TransformControls } from "./components/transform-controls";
-import { GetSceneObject, GetSceneObjectTypes } from "./api-types";
 import { SceneObjectProps } from "./scene-object";
 import { useCamera } from "./components/camera";
 
@@ -267,30 +266,33 @@ export function Selection({
   const dragging = useRef(false);
   const scene = useThree((store) => store.scene);
   const { setCamera } = useCamera();
-  const sceneData = useSubscriptionEffect<{
-    sceneObjects: JsxElementPositions[];
-  }>(
-    path && exportName ? `/scene/${encodeURIComponent(path)}/${exportName}` : ""
-  );
+  const sceneData = useSubscriptionEffect("/scene/:path/:exportName", {
+    path,
+    exportName,
+    disabled: !path || !exportName,
+  });
   const sceneObjects = useMemo(
     () => flatten(sceneData?.sceneObjects || []),
     [sceneData]
   );
-  const selectedSceneObjectMeta = useSubscriptionEffect<GetSceneObject | null>(
-    selected
-      ? `/scene/${encodeURIComponent(path)}/object/${selected.line}/${
-          selected.column
-        }`
-      : ""
+  const selectedSceneObjectMeta = useSubscriptionEffect(
+    "/scene/:path/object/:line/:column",
+    {
+      path,
+      line: selected?.line,
+      column: selected?.column,
+      disabled: !selected,
+    }
   );
-  const selectedSceneObjectTypes =
-    useSubscriptionEffect<GetSceneObjectTypes | null>(
-      selected
-        ? `/scene/${encodeURIComponent(path)}/object/${selected.line}/${
-            selected.column
-          }/types`
-        : ""
-    );
+  const selectedSceneObjectTypes = useSubscriptionEffect(
+    "/scene/:path/object/:line/:column/types",
+    {
+      path,
+      line: selected?.line,
+      column: selected?.column,
+      disabled: !selected,
+    }
+  );
   const selectedObject = selected
     ? findSceneObjectFromSource(
         selected.path,
@@ -365,11 +367,10 @@ export function Selection({
       return;
     }
 
-    preloadSubscription(
-      `/scene/${encodeURIComponent(selectedSceneObjectMeta.path)}/${
-        selectedSceneObjectMeta.exportName
-      }`
-    );
+    preloadSubscription("/scene/:path/:exportName", {
+      path: selectedSceneObjectMeta.path,
+      exportName: selectedSceneObjectMeta.exportName,
+    });
   }, [selectedSceneObjectMeta]);
 
   useEffect(() => {

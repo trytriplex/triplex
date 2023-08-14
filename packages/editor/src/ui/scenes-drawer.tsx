@@ -14,14 +14,7 @@ import { useOverlayStore } from "../stores/overlay";
 import { ScrollContainer } from "../ds/scroll-container";
 
 function Scenes() {
-  const files = useLazySubscription<{
-    cwd: string;
-    scenes: {
-      path: string;
-      name: string;
-      exports: { name: string; exportName: string }[];
-    }[];
-  }>("/scene");
+  const files = useLazySubscription("/scene");
   const { path, exportName } = useEditor();
   const { show } = useOverlayStore();
 

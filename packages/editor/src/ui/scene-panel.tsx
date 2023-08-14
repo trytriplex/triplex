@@ -77,15 +77,11 @@ export function ScenePanel() {
 
 function ComponentHeading() {
   const { path, exportName, newComponent, set } = useEditor();
-  const file = useLazySubscription<{ isSaved: boolean }>(
-    `/scene/${encodeURIComponent(path)}`
-  );
-  const scene = useLazySubscription<{
-    path: string;
-    name: string;
-    sceneObjects: JsxElementPositions[];
-    exports: { name: string; exportName: string }[];
-  }>(`/scene/${encodeURIComponent(path)}/${exportName}`);
+  const file = useLazySubscription("/scene/:path", { path });
+  const scene = useLazySubscription("/scene/:path/:exportName", {
+    path,
+    exportName,
+  });
 
   const onChangeComponentHandler: ChangeEventHandler<HTMLSelectElement> = (
     e
@@ -145,13 +141,10 @@ function ComponentHeading() {
 
 function SceneContents() {
   const { path, exportName, enteredComponent, exitComponent } = useEditor();
-
-  const scene = useLazySubscription<{
-    path: string;
-    name: string;
-    sceneObjects: JsxElementPositions[];
-    exports: { name: string; exportName: string }[];
-  }>(`/scene/${encodeURIComponent(path)}/${exportName}`);
+  const scene = useLazySubscription("/scene/:path/:exportName", {
+    path,
+    exportName,
+  });
 
   return (
     <div className="flex h-full flex-shrink flex-col">

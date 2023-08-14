@@ -17,14 +17,12 @@ import { Drawer } from "../ds/drawer";
 import { cn } from "../ds/cn";
 import { ScrollContainer } from "../ds/scroll-container";
 import { titleCase } from "../util/string";
-import {
+import type {
   Folder as FolderType,
-  GetProjectComponentFolders,
-  GetProjectComponents,
   ProjectAsset as ProjectAssetType,
   ProjectCustomComponent,
   ProjectHostComponent,
-} from "../api-types";
+} from "@triplex/server";
 import { useEditor } from "../stores/editor";
 import { StringInput } from "./string-input";
 
@@ -199,19 +197,28 @@ function ComponentFolder({
   folderPath: { path: string; category: "components" | "assets" };
   onClose: () => void;
 }) {
-  const components = useLazySubscription<GetProjectComponents>(
-    `/scene/${folderPath.category}/${encodeURIComponent(folderPath.path)}`
+  const components = useLazySubscription(
+    `/scene/${folderPath.category}/:folderPath`,
+    {
+      folderPath: folderPath.path,
+    }
   );
   const normalizedFilter = filter.replace(/ /g, "");
-  const filteredComponents = components.filter((component) =>
+  const filteredComponents = components.map((component) =>
     // Ensure the name is lower case and has no spaces
     component.name.toLowerCase().replace(/ /g, "").includes(normalizedFilter)
+      ? component
+      : null
   );
 
   return (
     <ScrollContainer className="min-h-0">
       <div className="flex flex-wrap gap-2 px-2 py-2">
         {filteredComponents.map((element) => {
+          if (element === null) {
+            return null;
+          }
+
           switch (element.type) {
             case "asset":
               return (
@@ -262,10 +269,8 @@ function ComponentsDrawer({
   const { blur } = useScene();
   const [filter, setFilter] = useState("");
 
-  const componentFolders =
-    useSubscription<GetProjectComponentFolders>("/scene/components");
-  const assetFolders =
-    useSubscription<GetProjectComponentFolders>("/scene/assets");
+  const componentFolders = useSubscription("/scene/components");
+  const assetFolders = useSubscription("/scene/assets");
 
   const handleFilterChange = (value: string | undefined) => {
     setFilter(value || "");
@@ -361,7 +366,8 @@ export function AssetsDrawer() {
     category: "components" | "assets";
   }>();
 
-  preloadSubscription(["/scene/assets", "/scene/components"]);
+  preloadSubscription("/scene/assets");
+  preloadSubscription("/scene/components");
 
   return (
     <>

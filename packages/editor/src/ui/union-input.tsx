@@ -6,9 +6,9 @@
  */
 import { useState } from "react";
 import { SwitchIcon } from "@radix-ui/react-icons";
+import type { Prop } from "@triplex/server";
 import { PropInput } from "./prop-input";
 import { IconButton } from "../ds/button";
-import { Prop } from "../api-types";
 
 export function UnionInput({
   values,
