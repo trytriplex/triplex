@@ -52,6 +52,7 @@ export function PropInput({
   onChange,
   onConfirm,
   required,
+  testId,
 }: {
   name: string;
   column?: number;
@@ -61,6 +62,7 @@ export function PropInput({
   required?: boolean;
   onChange: (value: unknown) => void;
   onConfirm: (value: unknown) => void;
+  testId?: string;
 }) {
   if (prop.kind === "union") {
     const isLiteralUnion = prop.shape.every(
@@ -123,6 +125,7 @@ export function PropInput({
         onChange={onChange}
         onConfirm={onConfirm}
         label={prop.label}
+        testId={testId}
         // There may be cases where this isn't desirable. Perhaps someone
         // Already does this in userland and it will result in a double conversion.
         // If this becomes a problem we can add the ability to turn it off but that
@@ -136,6 +139,7 @@ export function PropInput({
   } else if (prop.kind === "number") {
     return (
       <NumberInput
+        testId={testId}
         required={required}
         defaultValue={"value" in prop ? prop.value : undefined}
         name={name}

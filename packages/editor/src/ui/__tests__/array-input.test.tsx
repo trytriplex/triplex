@@ -224,4 +224,32 @@ describe("array input", () => {
 
     expect(element.valueAsNumber).toEqual(1);
   });
+
+  it("should not callback when partial values after switching from single value", () => {
+    const change = vi.fn();
+    const confirm = vi.fn();
+    const { getByTestId } = render(
+      <TupleInput
+        column={0}
+        line={0}
+        testId="position"
+        values={[
+          { kind: "number", required: true },
+          { kind: "number", required: true },
+          { kind: "number", required: true },
+        ]}
+        value={1}
+        name="array"
+        path="/box.tsx"
+        onChange={change}
+        onConfirm={confirm}
+      />
+    );
+    const element = getByTestId("position[1]") as HTMLInputElement;
+
+    fireEvent.change(element, { target: { value: 10 } });
+
+    expect(change).not.toHaveBeenCalled();
+    expect(confirm).not.toHaveBeenCalled();
+  });
 });
