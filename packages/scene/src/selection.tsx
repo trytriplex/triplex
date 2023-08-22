@@ -285,7 +285,7 @@ export function Selection({
     }
   );
   const selectedSceneObjectTypes = useSubscriptionEffect(
-    "/scene/:path/object/:line/:column/types",
+    "/scene/:path/object/:line/:column",
     {
       path,
       line: selected?.line,

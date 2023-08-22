@@ -6,7 +6,7 @@
  */
 import { ChangeEventHandler, useRef } from "react";
 import { Cross2Icon } from "@radix-ui/react-icons";
-import type { Prop } from "@triplex/server";
+import type { StringLiteralType, NumberLiteralType } from "@triplex/server";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 
@@ -20,7 +20,7 @@ export function LiteralUnionInput({
 }: {
   defaultValue?: string | number;
   name: string;
-  values: Prop[];
+  values: (StringLiteralType | NumberLiteralType)[];
   required?: boolean;
   onChange: (value: number | string | undefined) => void;
   onConfirm: (value: number | string | undefined) => void;
@@ -66,7 +66,7 @@ export function LiteralUnionInput({
       >
         {!defaultValue && <option value="">Select value...</option>}
         {values.map((value) => (
-          <option key={`${value.value}`}>{`${value.value}`}</option>
+          <option key={`${value.literal}`}>{`${value.literal}`}</option>
         ))}
       </select>
 

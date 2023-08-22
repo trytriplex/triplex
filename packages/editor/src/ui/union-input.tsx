@@ -6,7 +6,7 @@
  */
 import { useState } from "react";
 import { SwitchIcon } from "@radix-ui/react-icons";
-import type { Prop } from "@triplex/server";
+import type { Type } from "@triplex/server";
 import { PropInput } from "./prop-input";
 import { IconButton } from "../ds/button";
 
@@ -27,7 +27,7 @@ export function UnionInput({
   defaultValue?: string | number;
   path: string;
   name: string;
-  values: Prop[];
+  values: Type[];
   onChange: (value: unknown) => void;
   onConfirm: (value: unknown) => void;
 }) {
@@ -48,14 +48,17 @@ export function UnionInput({
           path={path}
           line={line}
           column={column}
-          prop={Object.assign(
-            {},
-            value,
-            defaultValue ? { value: defaultValue } : {}
-          )}
+          prop={
+            Object.assign(
+              {},
+              value,
+              defaultValue ? { value: defaultValue } : {}
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ) as any
+          }
         />
       </div>
-      <div>
+      <div className="self-start">
         <IconButton
           icon={SwitchIcon}
           title="Switch prop type"
