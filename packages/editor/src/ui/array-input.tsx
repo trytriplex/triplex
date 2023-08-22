@@ -24,14 +24,14 @@ function merge(a: unknown[], b: Record<string, unknown>) {
 }
 
 function isAnyRequiredValueUndefined(
-  valueDef: TupleType["shape"],
-  nextValues: unknown[]
+  tupleTypes: TupleType["shape"],
+  nextValue: unknown[]
 ) {
-  for (let i = 0; i < nextValues.length; i++) {
-    const value = nextValues[i];
+  for (let i = 0; i < tupleTypes.length; i++) {
+    const type = tupleTypes[i];
+    const value = nextValue[i];
     const isUndefinedOrEmptyString =
       typeof value === "undefined" || value === "";
-    const type = valueDef[i];
 
     if (isUndefinedOrEmptyString && "required" in type && type.required) {
       return true;
@@ -79,6 +79,7 @@ export function TupleInput({
   line,
   onChange,
   onConfirm,
+  testId,
 }: {
   value: unknown[] | unknown;
   required?: boolean;
@@ -89,6 +90,7 @@ export function TupleInput({
   line?: number;
   onChange: (value: unknown[]) => void;
   onConfirm: (value: unknown[]) => void;
+  testId?: string;
 }) {
   const defaultValue = Array.isArray(value) ? value : [value];
   const intermediateValues = useRef<Record<string, unknown>>({});
@@ -130,6 +132,7 @@ export function TupleInput({
             onConfirm={onConfirmHandler}
             column={column}
             line={line}
+            testId={testId ? `${testId}[${index}]` : undefined}
             name={name + index}
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             prop={{ ...val, value: defaultValue[index] as string } as any}

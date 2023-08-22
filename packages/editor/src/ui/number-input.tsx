@@ -75,6 +75,7 @@ function toNumber(
 }
 
 export function NumberInput({
+  testId,
   defaultValue,
   label,
   name,
@@ -83,6 +84,7 @@ export function NumberInput({
   required,
   transformValue = { in: (value) => value, out: (value) => value },
 }: {
+  testId?: string;
   defaultValue?: number;
   label?: string;
   name: string;
@@ -285,7 +287,7 @@ export function NumberInput({
     >
       <input
         className="peer w-full cursor-col-resize text-ellipsis bg-transparent py-0.5 text-center text-sm text-neutral-300 outline-none [color-scheme:dark] [font-variant-numeric:tabular-nums] placeholder:italic placeholder:text-neutral-500 focus:cursor-text focus:text-left"
-        data-testid={`number-${defaultValue}`}
+        data-testid={testId || `number-${defaultValue}`}
         defaultValue={transformedDefaultValue}
         id={name}
         key={defaultValue}
