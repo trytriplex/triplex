@@ -6,122 +6,93 @@
  */
 export type Type =
   | UnionType
-  | UndefinedType
   | TupleType
   | NumberType
+  | NumberLiteralType
   | StringType
+  | StringLiteralType
   | BooleanType
-  | UnknownType;
+  | UnhandledType;
 
 export interface UnionType {
-  type: "union";
-  value: string;
-  values: Type[];
-}
-
-export interface UndefinedType {
-  type: "undefined";
+  kind: "union";
+  shape: Type[];
 }
 
 export interface TupleType {
-  type: "tuple";
-  values: Type[];
+  kind: "tuple";
+  shape: Type[];
 }
 
 export interface NumberType {
-  type: "number";
-  value?: number;
+  kind: "number";
   label?: string;
   required?: boolean;
 }
 
 export interface StringType {
-  type: "string";
-  value?: string;
+  kind: "string";
+  label?: string;
+  required?: boolean;
+}
+
+export interface StringLiteralType {
+  kind: "string";
+  literal: string;
+  label?: string;
+  required?: boolean;
+}
+
+export interface NumberLiteralType {
+  kind: "number";
+  literal: number;
   label?: string;
   required?: boolean;
 }
 
 export interface BooleanType {
-  type: "boolean";
+  kind: "boolean";
   label?: string;
   required?: boolean;
 }
 
-export interface UnknownType {
-  type: "unknown";
+export interface UnhandledType {
+  kind: "unhandled";
 }
 
-export interface PropType {
+type TupleValue = string | number | boolean | TupleValue[];
+
+export interface TypeValueMap {
+  unhandled: { value: string };
+  boolean: { value: boolean };
+  string: { value: string };
+  number: { value: number };
+  tuple: { value: TupleValue[] };
+  union: { value: string | number };
+}
+
+export type PropWithValue<TType extends Type> = {
+  column: number;
+  line: number;
+  description: string | undefined;
   name: string;
   required: boolean;
-  declared: boolean;
+  tags: Record<string, string | number | boolean>;
+} & TType &
+  TypeValueMap[TType["kind"]];
+
+export type RemapPropWithValue<TType> = TType extends Type
+  ? PropWithValue<TType>
+  : never;
+
+export type DeclaredProp = RemapPropWithValue<Type>;
+
+export type Prop = {
   description: string | undefined;
-  type: Type;
-  tags: Record<string, string | boolean | number>;
-}
-
-export type Prop =
-  | StringProp
-  | IdentifierProp
-  | ArrayProp
-  | NumberProp
-  | BooleanProp
-  | SpreadProp
-  | UnionProp
-  | UnhandledProp;
-
-export interface StringProp {
-  value?: string;
-  type: "string";
-  label?: string;
-  required?: boolean;
-}
-
-export interface UnhandledProp {
-  value: string;
-  type: "unhandled";
-  required?: boolean;
-}
-
-export interface BooleanProp {
-  value: boolean;
-  type: "boolean";
-  label?: string;
-  required?: boolean;
-}
-
-export interface IdentifierProp {
-  value: string | undefined;
-  type: "identifier";
-  required?: boolean;
-}
-
-export interface SpreadProp {
-  value: string;
-  type: "spread";
-  required?: boolean;
-}
-
-export interface ArrayProp {
-  value: Prop[];
-  type: "array";
-  required?: boolean;
-}
-
-export interface UnionProp {
-  values: Prop[];
-  value?: string;
-  type: "union";
-  required?: boolean;
-}
-
-export interface NumberProp {
-  value?: number;
-  type: "number";
-  label?: string;
-  required?: boolean;
-}
+  name: string;
+  required: boolean;
+  tags: Record<string, string | number | boolean>;
+} & Type;
 
 export type ComponentType =
   | {
@@ -182,24 +153,4 @@ export interface Folder {
   path: string;
   files: number;
   children: Folder[];
-}
-
-export type ElementProp = (DeclaredProp & Prop) | (UndeclaredProp & Prop);
-
-export interface DeclaredProp {
-  column: number;
-  declaration: "declared";
-  description: string | undefined;
-  line: number;
-  name: string;
-  required: boolean;
-  tags: Record<string, string | number | boolean>;
-}
-
-export interface UndeclaredProp {
-  declaration: "undeclared";
-  description: string | undefined;
-  name: string;
-  required: boolean;
-  tags: Record<string, string | number | boolean>;
 }

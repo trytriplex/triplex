@@ -5,14 +5,19 @@
  * file in the root directory of this source tree.
  */
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
-import type { Prop } from "@triplex/server";
+import type {
+  DeclaredProp,
+  NumberLiteralType,
+  Prop,
+  StringLiteralType,
+} from "@triplex/server";
 import { MathUtils } from "three";
 import { IDELink } from "../util/ide";
 import { ColorInput } from "./color-input";
 import { StringInput } from "./string-input";
 import { BooleanInput } from "./boolean-input";
 import { NumberInput } from "./number-input";
-import { ArrayInput } from "./array-input";
+import { TupleInput } from "./array-input";
 import { LiteralUnionInput } from "./literal-union-input";
 import { UnionInput } from "./union-input";
 import { createContext, useContext } from "react";
@@ -51,25 +56,25 @@ export function PropInput({
   name: string;
   column?: number;
   line?: number;
-  prop: Prop;
+  prop: DeclaredProp | Prop;
   path: string;
   required?: boolean;
   onChange: (value: unknown) => void;
   onConfirm: (value: unknown) => void;
 }) {
-  if (prop.type === "union") {
-    const isLiteralUnion = prop.values.every(
-      (value) =>
-        (value.type === "string" || value.type === "number") &&
-        value.value !== undefined
+  if (prop.kind === "union") {
+    const isLiteralUnion = prop.shape.every(
+      (value): value is NumberLiteralType | StringLiteralType =>
+        (value.kind === "string" || value.kind === "number") &&
+        "literal" in value
     );
 
     if (isLiteralUnion) {
       return (
         <LiteralUnionInput
           required={required}
-          defaultValue={prop.value}
-          values={prop.values}
+          defaultValue={"value" in prop ? prop.value : undefined}
+          values={prop.shape as (NumberLiteralType | StringLiteralType)[]}
           name={name}
           onChange={onChange}
           onConfirm={onConfirm}
@@ -81,9 +86,9 @@ export function PropInput({
           line={line}
           column={column}
           required={required}
-          defaultValue={prop.value}
+          defaultValue={"value" in prop ? prop.value : undefined}
           path={path}
-          values={prop.values}
+          values={prop.shape}
           name={name}
           onChange={onChange}
           onConfirm={onConfirm}
@@ -92,12 +97,13 @@ export function PropInput({
     }
   }
 
-  if (prop.type === "array") {
+  if (prop.kind === "tuple") {
     return (
-      <ArrayInput
+      <TupleInput
         required={required}
-        values={prop.value}
+        values={prop.shape}
         name={name}
+        value={"value" in prop ? prop.value : []}
         path={path}
         column={column}
         line={line}
@@ -107,12 +113,12 @@ export function PropInput({
     );
   }
 
-  if (prop.type === "number" && name.startsWith("rotation")) {
+  if (prop.kind === "number" && name.startsWith("rotation")) {
     // We handle rotation differently because we need to convert rads to degs.
     return (
       <NumberInput
         required={required}
-        defaultValue={prop.value}
+        defaultValue={"value" in prop ? prop.value : undefined}
         name={name}
         onChange={onChange}
         onConfirm={onConfirm}
@@ -127,41 +133,41 @@ export function PropInput({
         }}
       />
     );
-  } else if (prop.type === "number") {
+  } else if (prop.kind === "number") {
     return (
       <NumberInput
         required={required}
-        defaultValue={prop.value}
+        defaultValue={"value" in prop ? prop.value : undefined}
         name={name}
         onChange={onChange}
         onConfirm={onConfirm}
         label={prop.label}
       />
     );
-  } else if (prop.type === "boolean") {
+  } else if (prop.kind === "boolean") {
     return (
       <BooleanInput
-        defaultValue={prop.value}
+        defaultValue={"value" in prop ? prop.value : false}
         name={name}
         onChange={onChange}
         onConfirm={onConfirm}
         label={prop.label}
       />
     );
-  } else if (prop.type === "string" && isColorProp(name)) {
+  } else if (prop.kind === "string" && isColorProp(name)) {
     return (
       <ColorInput
-        defaultValue={prop.value}
+        defaultValue={"value" in prop ? prop.value : undefined}
         name={name}
         onChange={onChange}
         onConfirm={onConfirm}
       />
     );
-  } else if (prop.type === "string") {
+  } else if (prop.kind === "string") {
     return (
       <StringInput
         required={required}
-        defaultValue={prop.value}
+        defaultValue={"value" in prop ? prop.value : undefined}
         name={name}
         onChange={onChange}
         onConfirm={onConfirm}
@@ -175,10 +181,20 @@ export function PropInput({
       path={path}
       column={column || -1}
       line={line || -1}
-      title="This prop is controlled by code."
+      title={
+        "value" in prop && prop.value
+          ? "This prop is controlled by code."
+          : "This field is not supported, please raise an issue on Github."
+      }
       className="flex h-[26px] items-center gap-0.5 overflow-hidden rounded-md border border-transparent bg-white/5 px-1 py-0.5 text-sm hover:bg-white/10 focus-visible:border-blue-400"
     >
-      <span className="overflow-hidden text-ellipsis whitespace-nowrap text-neutral-400">{`{${prop.value}}`}</span>
+      <span className="overflow-hidden text-ellipsis whitespace-nowrap text-neutral-400">
+        {"value" in prop && prop.value ? (
+          `{${prop.value}}`
+        ) : (
+          <i className="text-neutral-500">Unsupported</i>
+        )}
+      </span>
       <div className="ml-auto flex-shrink-0 text-orange-600">
         <ExclamationTriangleIcon />
       </div>

@@ -23,99 +23,103 @@ describe("type infer", () => {
       throw new Error("not found");
     }
 
-    const { propTypes } = getJsxElementPropTypes(sceneObject);
+    const { props } = getJsxElementPropTypes(sceneObject);
 
-    expect(propTypes).toMatchInlineSnapshot(`
+    expect(props).toMatchInlineSnapshot(`
       [
         {
-          "declared": true,
+          "column": 9,
           "description": undefined,
+          "kind": "tuple",
+          "line": 19,
           "name": "position",
           "required": false,
+          "shape": [
+            {
+              "kind": "number",
+              "label": undefined,
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": undefined,
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": undefined,
+              "required": true,
+            },
+          ],
           "tags": {},
-          "type": {
-            "type": "tuple",
-            "values": [
-              {
-                "label": undefined,
-                "required": true,
-                "type": "number",
-              },
-              {
-                "label": undefined,
-                "required": true,
-                "type": "number",
-              },
-              {
-                "label": undefined,
-                "required": true,
-                "type": "number",
-              },
-            ],
-          },
+          "value": [
+            0.9223319881614562,
+            0,
+            4.703084245305494,
+          ],
         },
         {
-          "declared": true,
+          "column": 9,
           "description": undefined,
+          "kind": "tuple",
+          "line": 20,
           "name": "rotation",
           "required": false,
+          "shape": [
+            {
+              "kind": "number",
+              "label": undefined,
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": undefined,
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": undefined,
+              "required": true,
+            },
+          ],
           "tags": {},
-          "type": {
-            "type": "tuple",
-            "values": [
-              {
-                "label": undefined,
-                "required": true,
-                "type": "number",
-              },
-              {
-                "label": undefined,
-                "required": true,
-                "type": "number",
-              },
-              {
-                "label": undefined,
-                "required": true,
-                "type": "number",
-              },
-            ],
-          },
+          "value": [
+            1.660031347769923,
+            -0.07873115868670048,
+            -0.7211124466452248,
+          ],
         },
         {
-          "declared": false,
           "description": undefined,
+          "kind": "union",
           "name": "scale",
           "required": false,
+          "shape": [
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "tuple",
+              "shape": [
+                {
+                  "kind": "number",
+                  "label": "x",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "y",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "z",
+                  "required": true,
+                },
+              ],
+            },
+          ],
           "tags": {},
-          "type": {
-            "type": "union",
-            "value": "",
-            "values": [
-              {
-                "type": "number",
-              },
-              {
-                "type": "tuple",
-                "values": [
-                  {
-                    "label": "x",
-                    "required": true,
-                    "type": "number",
-                  },
-                  {
-                    "label": "y",
-                    "required": true,
-                    "type": "number",
-                  },
-                  {
-                    "label": "z",
-                    "required": true,
-                    "type": "number",
-                  },
-                ],
-              },
-            ],
-          },
         },
       ]
     `);
@@ -137,16 +141,13 @@ describe("type infer", () => {
 
     expect(types).toMatchInlineSnapshot(`
       {
-        "propTypes": [
+        "props": [
           {
-            "declared": false,
             "description": undefined,
+            "kind": "string",
             "name": "color",
             "required": false,
             "tags": {},
-            "type": {
-              "type": "string",
-            },
           },
         ],
         "transforms": {
@@ -186,29 +187,26 @@ describe("type infer", () => {
     if (!sceneObject) {
       throw new Error("not found");
     }
-    const { propTypes } = getJsxElementPropTypes(sceneObject);
+    const { props } = getJsxElementPropTypes(sceneObject);
 
-    expect(propTypes).toMatchInlineSnapshot(`
+    expect(props).toMatchInlineSnapshot(`
       [
         {
-          "declared": true,
+          "column": 35,
           "description": undefined,
+          "kind": "boolean",
+          "line": 44,
           "name": "value",
           "required": true,
           "tags": {},
-          "type": {
-            "type": "boolean",
-          },
+          "value": "null",
         },
         {
-          "declared": false,
           "description": undefined,
+          "kind": "unhandled",
           "name": "children",
           "required": false,
           "tags": {},
-          "type": {
-            "type": "unknown",
-          },
         },
       ]
     `);
@@ -229,7 +227,7 @@ describe("type infer", () => {
 
     expect(propTypes).toMatchInlineSnapshot(`
       {
-        "propTypes": [],
+        "props": [],
         "transforms": {
           "rotate": false,
           "scale": false,
@@ -250,38 +248,34 @@ describe("type infer", () => {
     if (!sceneObject) {
       throw new Error("not found");
     }
-    const { propTypes } = getJsxElementPropTypes(sceneObject);
+    const { props } = getJsxElementPropTypes(sceneObject);
 
-    expect(propTypes.find((type) => type.name === "args"))
-      .toMatchInlineSnapshot(`
-        {
-          "declared": false,
-          "description": undefined,
-          "name": "args",
-          "required": false,
-          "tags": {},
-          "type": {
-            "type": "tuple",
-            "values": [
-              {
-                "label": "width",
-                "required": false,
-                "type": "number",
-              },
-              {
-                "label": "height",
-                "required": false,
-                "type": "number",
-              },
-              {
-                "label": "depth",
-                "required": false,
-                "type": "number",
-              },
-            ],
+    expect(props.find((type) => type.name === "args")).toMatchInlineSnapshot(`
+      {
+        "description": undefined,
+        "kind": "tuple",
+        "name": "args",
+        "required": false,
+        "shape": [
+          {
+            "kind": "number",
+            "label": "width",
+            "required": false,
           },
-        }
-      `);
+          {
+            "kind": "number",
+            "label": "height",
+            "required": false,
+          },
+          {
+            "kind": "number",
+            "label": "depth",
+            "required": false,
+          },
+        ],
+        "tags": {},
+      }
+    `);
   });
 
   it("should infer host component types", () => {
@@ -311,47 +305,42 @@ describe("type infer", () => {
     if (!sceneObject) {
       throw new Error("not found");
     }
-    const { propTypes } = getJsxElementPropTypes(sceneObject);
+    const { props } = getJsxElementPropTypes(sceneObject);
 
-    expect(propTypes.find((type) => type.name === "scale"))
-      .toMatchInlineSnapshot(`
-        {
-          "declared": false,
-          "description": undefined,
-          "name": "scale",
-          "required": false,
-          "tags": {},
-          "type": {
-            "type": "union",
-            "value": "",
-            "values": [
+    expect(props.find((type) => type.name === "scale")).toMatchInlineSnapshot(`
+      {
+        "description": undefined,
+        "kind": "union",
+        "name": "scale",
+        "required": false,
+        "shape": [
+          {
+            "kind": "number",
+          },
+          {
+            "kind": "tuple",
+            "shape": [
               {
-                "type": "number",
+                "kind": "number",
+                "label": "x",
+                "required": true,
               },
               {
-                "type": "tuple",
-                "values": [
-                  {
-                    "label": "x",
-                    "required": true,
-                    "type": "number",
-                  },
-                  {
-                    "label": "y",
-                    "required": true,
-                    "type": "number",
-                  },
-                  {
-                    "label": "z",
-                    "required": true,
-                    "type": "number",
-                  },
-                ],
+                "kind": "number",
+                "label": "y",
+                "required": true,
+              },
+              {
+                "kind": "number",
+                "label": "z",
+                "required": true,
               },
             ],
           },
-        }
-      `);
+        ],
+        "tags": {},
+      }
+    `);
   });
 
   it("should collect meta from jsdoc", () => {
@@ -363,13 +352,15 @@ describe("type infer", () => {
     );
     const sceneObject = getJsxElementAt(sourceFile, 41, 10);
 
-    const { propTypes } = getJsxElementPropTypes(sceneObject!);
+    const { props } = getJsxElementPropTypes(sceneObject!);
 
-    expect(propTypes).toMatchInlineSnapshot(`
+    expect(props).toMatchInlineSnapshot(`
       [
         {
-          "declared": true,
+          "column": 21,
           "description": undefined,
+          "kind": "number",
+          "line": 41,
           "name": "posX",
           "required": true,
           "tags": {
@@ -378,12 +369,96 @@ describe("type infer", () => {
             "min": -10,
             "test": "yes",
           },
-          "type": {
-            "type": "number",
-          },
+          "value": 5,
         },
       ]
     `);
+  });
+
+  it("should sort union types to match the defined tuple value", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/union-type-sorting.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 8, 10);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const { props } = getJsxElementPropTypes(sceneObject);
+    const prop = props.find((type) => type.name === "position");
+
+    expect(prop && prop.kind === "union" && prop.shape[0])
+      .toMatchInlineSnapshot(`
+        {
+          "kind": "tuple",
+          "shape": [
+            {
+              "kind": "number",
+              "label": "x",
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": "y",
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": "z",
+              "required": true,
+            },
+          ],
+        }
+      `);
+  });
+
+  it("should sort union types to match the defined number value", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/union-type-sorting.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 12, 10);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const { props } = getJsxElementPropTypes(sceneObject);
+    const prop = props.find((type) => type.name === "position");
+
+    expect(prop && prop.kind === "union" && prop.shape[0])
+      .toMatchInlineSnapshot(`
+        {
+          "kind": "number",
+        }
+      `);
+  });
+
+  it("should sort union types to match the defined string value", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/union-type-sorting.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 20, 10);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const { props } = getJsxElementPropTypes(sceneObject);
+    const prop = props.find((type) => type.name === "value");
+
+    expect(prop && prop.kind === "union" && prop.shape[0])
+      .toMatchInlineSnapshot(`
+        {
+          "kind": "string",
+        }
+      `);
   });
 
   it("should show union fourth arg from rotation", () => {
@@ -397,68 +472,64 @@ describe("type infer", () => {
     if (!sceneObject) {
       throw new Error("not found");
     }
-    const { propTypes } = getJsxElementPropTypes(sceneObject);
+    const { props } = getJsxElementPropTypes(sceneObject);
 
-    expect(propTypes.find((type) => type.name === "rotation"))
+    expect(props.find((type) => type.name === "rotation"))
       .toMatchInlineSnapshot(`
         {
-          "declared": false,
           "description": undefined,
+          "kind": "tuple",
           "name": "rotation",
           "required": false,
+          "shape": [
+            {
+              "kind": "number",
+              "label": "x",
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": "y",
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": "z",
+              "required": true,
+            },
+            {
+              "kind": "union",
+              "label": "order",
+              "required": false,
+              "shape": [
+                {
+                  "kind": "string",
+                  "literal": "XYZ",
+                },
+                {
+                  "kind": "string",
+                  "literal": "YXZ",
+                },
+                {
+                  "kind": "string",
+                  "literal": "ZXY",
+                },
+                {
+                  "kind": "string",
+                  "literal": "ZYX",
+                },
+                {
+                  "kind": "string",
+                  "literal": "YZX",
+                },
+                {
+                  "kind": "string",
+                  "literal": "XZY",
+                },
+              ],
+            },
+          ],
           "tags": {},
-          "type": {
-            "type": "tuple",
-            "values": [
-              {
-                "label": "x",
-                "required": true,
-                "type": "number",
-              },
-              {
-                "label": "y",
-                "required": true,
-                "type": "number",
-              },
-              {
-                "label": "z",
-                "required": true,
-                "type": "number",
-              },
-              {
-                "label": "order",
-                "required": false,
-                "type": "union",
-                "value": "",
-                "values": [
-                  {
-                    "type": "string",
-                    "value": "XYZ",
-                  },
-                  {
-                    "type": "string",
-                    "value": "YXZ",
-                  },
-                  {
-                    "type": "string",
-                    "value": "ZXY",
-                  },
-                  {
-                    "type": "string",
-                    "value": "ZYX",
-                  },
-                  {
-                    "type": "string",
-                    "value": "YZX",
-                  },
-                  {
-                    "type": "string",
-                    "value": "XZY",
-                  },
-                ],
-              },
-            ],
-          },
         }
       `);
   });

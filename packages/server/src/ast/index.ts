@@ -7,7 +7,6 @@
 export {
   getAllJsxElements,
   getAttributes,
-  getJsxAttributeValue,
   getJsxElementAt,
   getJsxElementProps,
   getJsxElementsPositions,

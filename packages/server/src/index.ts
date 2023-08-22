@@ -9,7 +9,6 @@ import { watch } from "chokidar";
 import { basename } from "node:path";
 import {
   createProject,
-  getJsxElementPropTypes,
   getJsxElementAt,
   getJsxElementProps,
   getJsxTag,
@@ -24,8 +23,9 @@ import * as projectService from "./services/project";
 import {
   ComponentTarget,
   ComponentType,
-  ElementProp,
+  DeclaredProp,
   ProjectAsset,
+  Prop,
 } from "./types";
 
 export * from "./types";
@@ -318,14 +318,18 @@ export function createServer({
           } else {
             return {
               name: "[deleted]",
-              props: [] as ElementProp[],
+              props: [] as (Prop | DeclaredProp)[],
+              transforms: { rotate: false, scale: false, translate: false },
               type: "host",
             } as const;
           }
         }
 
         const tag = getJsxTag(sceneObject);
-        const props = getJsxElementProps(sourceFile, sceneObject);
+        const { props, transforms } = getJsxElementProps(
+          sourceFile,
+          sceneObject
+        );
 
         if (tag.type === "custom") {
           const elementPath = getElementFilePath(sceneObject);
@@ -335,6 +339,7 @@ export function createServer({
             name: tag.tagName,
             path: elementPath.filePath,
             props,
+            transforms,
             type: tag.type,
           };
         }
@@ -342,6 +347,7 @@ export function createServer({
         return {
           name: tag.tagName,
           props,
+          transforms,
           type: tag.type,
         } as const;
       },
@@ -350,45 +356,6 @@ export function createServer({
           await project.getSourceFile(path);
         sourceFile.onModified(push);
         onDependencyModified(push);
-      }
-    ),
-    tws.route(
-      "/scene/:path/object/:line/:column/types",
-      (params, { type }) => {
-        const path = params.path;
-        const line = Number(params.line);
-        const column = Number(params.column);
-        const { sourceFile } = project.getSourceFile(path);
-        const sceneObject = getJsxElementAt(sourceFile, line, column);
-
-        if (!sceneObject) {
-          if (type === "pull") {
-            // Initial request - throw an error.
-            throw new Error(
-              `invariant: component at ${line}:${column} not found`
-            );
-          } else {
-            return {
-              propTypes: {},
-              transforms: {
-                rotate: false,
-                scale: false,
-                translate: false,
-              },
-            };
-          }
-        }
-
-        const propTypes = getJsxElementPropTypes(sceneObject);
-
-        return {
-          propTypes: propTypes.propTypes,
-          transforms: propTypes.transforms,
-        };
-      },
-      async (push, { path }) => {
-        const { sourceFile } = await project.getSourceFile(path);
-        sourceFile.onModified(push);
       }
     ),
   ]);

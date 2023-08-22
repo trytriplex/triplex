@@ -4,17 +4,9 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import type { ArrayProp, Prop } from "@triplex/server";
+import type { TupleType } from "@triplex/server";
 import { useRef } from "react";
 import { PropInput } from "./prop-input";
-
-function reduceValue(value: Prop): string | number | boolean | undefined {
-  if (Array.isArray(value.value)) {
-    return reduceValue(value.value[0]);
-  }
-
-  return value.value;
-}
 
 function merge(a: unknown[], b: Record<string, unknown>) {
   const c = [...a];
@@ -32,15 +24,16 @@ function merge(a: unknown[], b: Record<string, unknown>) {
 }
 
 function isAnyRequiredValueUndefined(
-  valueDef: ArrayProp["value"],
+  valueDef: TupleType["shape"],
   nextValues: unknown[]
 ) {
   for (let i = 0; i < nextValues.length; i++) {
     const value = nextValues[i];
     const isUndefinedOrEmptyString =
       typeof value === "undefined" || value === "";
+    const type = valueDef[i];
 
-    if (isUndefinedOrEmptyString && valueDef[i].required) {
+    if (isUndefinedOrEmptyString && "required" in type && type.required) {
       return true;
     }
   }
@@ -49,7 +42,7 @@ function isAnyRequiredValueUndefined(
 }
 
 function dropUnneededOptionalValues(
-  valueDef: ArrayProp["value"],
+  valueDef: TupleType["shape"],
   nextValues: unknown[]
 ) {
   const clearedValues: unknown[] = [];
@@ -60,11 +53,12 @@ function dropUnneededOptionalValues(
     const value = nextValues[i];
     const isUndefinedOrEmptyString =
       typeof value === "undefined" || value === "";
+    const type = valueDef[i];
 
     if (
       !foundDefinedValue &&
       isUndefinedOrEmptyString &&
-      !valueDef[i].required
+      ("required" in type ? !type.required : true)
     ) {
       // While we haven't found any defined values, we can skip undefined optional ones
     } else {
@@ -76,8 +70,9 @@ function dropUnneededOptionalValues(
   return clearedValues;
 }
 
-export function ArrayInput({
+export function TupleInput({
   values,
+  value,
   path,
   name,
   column,
@@ -85,8 +80,9 @@ export function ArrayInput({
   onChange,
   onConfirm,
 }: {
+  value: unknown[] | unknown;
   required?: boolean;
-  values: ArrayProp["value"];
+  values: TupleType["shape"];
   name: string;
   path: string;
   column?: number;
@@ -94,7 +90,7 @@ export function ArrayInput({
   onChange: (value: unknown[]) => void;
   onConfirm: (value: unknown[]) => void;
 }) {
-  const isUnhandled = !!values.find((val) => val.type === "unhandled");
+  const defaultValue = Array.isArray(value) ? value : [value];
   const intermediateValues = useRef<Record<string, unknown>>({});
 
   return (
@@ -103,8 +99,7 @@ export function ArrayInput({
         const onChangeHandler = (value: unknown) => {
           intermediateValues.current[index] = value;
 
-          const currentValue: unknown[] = values.map(reduceValue);
-          const nextValue = merge(currentValue, intermediateValues.current);
+          const nextValue = merge(defaultValue, intermediateValues.current);
 
           if (isAnyRequiredValueUndefined(values, nextValue)) {
             return;
@@ -116,8 +111,7 @@ export function ArrayInput({
         const onConfirmHandler = (value: unknown) => {
           intermediateValues.current[index] = value;
 
-          const currentValue: unknown[] = values.map(reduceValue);
-          const nextValue = merge(currentValue, intermediateValues.current);
+          const nextValue = merge(defaultValue, intermediateValues.current);
 
           if (isAnyRequiredValueUndefined(values, nextValue)) {
             return;
@@ -129,7 +123,7 @@ export function ArrayInput({
 
         return (
           <PropInput
-            required={val.required}
+            required={"required" in val ? val.required : false}
             path={path}
             key={index}
             onChange={onChangeHandler}
@@ -137,9 +131,8 @@ export function ArrayInput({
             column={column}
             line={line}
             name={name + index}
-            prop={
-              isUnhandled ? { type: "unhandled", value: `${val.value}` } : val
-            }
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            prop={{ ...val, value: defaultValue[index] as string } as any}
           />
         );
       })}

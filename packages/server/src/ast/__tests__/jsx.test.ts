@@ -159,76 +159,73 @@ describe("jsx ast extractor", () => {
     );
     const sceneObject = getJsxElementAt(sourceFile, 18, 7);
 
-    const elements = getJsxElementProps(sourceFile, sceneObject!);
+    const { props } = getJsxElementProps(sourceFile, sceneObject!);
 
-    expect(elements).toMatchInlineSnapshot(`
+    expect(props).toMatchInlineSnapshot(`
       [
         {
           "column": 20,
-          "declaration": "declared",
           "description": undefined,
+          "kind": "tuple",
           "line": 18,
           "name": "args",
           "required": false,
-          "tags": {},
-          "type": "array",
-          "value": [
+          "shape": [
             {
+              "kind": "number",
               "label": "width",
               "required": false,
-              "type": "number",
-              "value": 1,
             },
             {
+              "kind": "number",
               "label": "height",
               "required": false,
-              "type": "number",
-              "value": 1,
             },
             {
+              "kind": "number",
               "label": "depth",
               "required": false,
-              "type": "number",
-              "value": 1,
             },
             {
+              "kind": "number",
               "label": "widthSegments",
               "required": false,
-              "type": "number",
             },
             {
+              "kind": "number",
               "label": "heightSegments",
               "required": false,
-              "type": "number",
             },
             {
+              "kind": "number",
               "label": "depthSegments",
               "required": false,
-              "type": "number",
             },
+          ],
+          "tags": {},
+          "value": [
+            1,
+            1,
+            1,
           ],
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "string",
           "name": "name",
           "required": true,
           "tags": {
             "default": "''",
           },
-          "type": "string",
-          "value": undefined,
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "boolean",
           "name": "morphTargetsRelative",
           "required": true,
           "tags": {
             "default": "false",
           },
-          "type": "boolean",
-          "value": false,
         },
       ]
     `);
@@ -243,56 +240,67 @@ describe("jsx ast extractor", () => {
     );
     const sceneObject = getJsxElementAt(sourceFile, 10, 7);
 
-    const props = getJsxElementProps(sourceFile, sceneObject!);
+    const { props } = getJsxElementProps(sourceFile, sceneObject!);
 
-    expect(props[0].value).toMatchInlineSnapshot(`
-      [
-        {
-          "label": "radiusTop",
-          "required": false,
-          "type": "number",
-          "value": undefined,
-        },
-        {
-          "label": "radiusBottom",
-          "required": false,
-          "type": "number",
-          "value": 1,
-        },
-        {
-          "label": "height",
-          "required": false,
-          "type": "number",
-          "value": 2,
-        },
-        {
-          "label": "radialSegments",
-          "required": false,
-          "type": "number",
-          "value": 10,
-        },
-        {
-          "label": "heightSegments",
-          "required": false,
-          "type": "number",
-          "value": 1,
-        },
-        {
-          "label": "openEnded",
-          "required": false,
-          "type": "boolean",
-        },
-        {
-          "label": "thetaStart",
-          "required": false,
-          "type": "number",
-        },
-        {
-          "label": "thetaLength",
-          "required": false,
-          "type": "number",
-        },
-      ]
+    expect(props[0]).toMatchInlineSnapshot(`
+      {
+        "column": 25,
+        "description": undefined,
+        "kind": "tuple",
+        "line": 10,
+        "name": "args",
+        "required": false,
+        "shape": [
+          {
+            "kind": "number",
+            "label": "radiusTop",
+            "required": false,
+          },
+          {
+            "kind": "number",
+            "label": "radiusBottom",
+            "required": false,
+          },
+          {
+            "kind": "number",
+            "label": "height",
+            "required": false,
+          },
+          {
+            "kind": "number",
+            "label": "radialSegments",
+            "required": false,
+          },
+          {
+            "kind": "number",
+            "label": "heightSegments",
+            "required": false,
+          },
+          {
+            "kind": "boolean",
+            "label": "openEnded",
+            "required": false,
+          },
+          {
+            "kind": "number",
+            "label": "thetaStart",
+            "required": false,
+          },
+          {
+            "kind": "number",
+            "label": "thetaLength",
+            "required": false,
+          },
+        ],
+        "tags": {},
+        "value": [
+          undefined,
+          1,
+          2,
+          10,
+          1,
+        ],
+      }
     `);
   });
 
@@ -305,520 +313,497 @@ describe("jsx ast extractor", () => {
     );
     const sceneObject = getJsxElementAt(sourceFile, 19, 7);
 
-    const elements = getJsxElementProps(sourceFile, sceneObject!);
+    const { props } = getJsxElementProps(sourceFile, sceneObject!);
 
-    expect(elements).toMatchInlineSnapshot(`
+    expect(props).toMatchInlineSnapshot(`
       [
         {
-          "declaration": "undeclared",
+          "description": undefined,
+          "kind": "tuple",
+          "name": "args",
+          "required": false,
+          "shape": [
+            {
+              "kind": "unhandled",
+              "label": undefined,
+              "required": true,
+            },
+          ],
+          "tags": {},
+        },
+        {
           "description": "Material name. Default is an empty string.",
+          "kind": "string",
           "name": "name",
           "required": true,
           "tags": {
             "default": "''",
           },
-          "type": "string",
-          "value": undefined,
         },
         {
-          "declaration": "undeclared",
           "description": "Defines whether this material is visible. Default is true.",
+          "kind": "boolean",
           "name": "visible",
           "required": true,
           "tags": {
             "default": true,
           },
-          "type": "boolean",
-          "value": false,
         },
         {
           "column": 29,
-          "declaration": "declared",
           "description": undefined,
+          "kind": "union",
           "line": 19,
           "name": "color",
           "required": true,
+          "shape": [
+            {
+              "kind": "string",
+            },
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "tuple",
+              "shape": [
+                {
+                  "kind": "number",
+                  "label": "r",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "g",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "b",
+                  "required": true,
+                },
+              ],
+            },
+          ],
           "tags": {
             "default": "new THREE.Color( 0xffffff )",
           },
-          "type": "string",
           "value": "pink",
         },
         {
-          "declaration": "undeclared",
           "description": "Opacity. Default is 1.",
+          "kind": "number",
           "name": "opacity",
           "required": true,
           "tags": {
             "default": 1,
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": "Defines whether this material is transparent. This has an effect on rendering as transparent objects need special treatment and are rendered after non-transparent objects.
       When set to true, the extent to which the material is transparent is controlled by setting it's .opacity property.
       Default is false.",
+          "kind": "boolean",
           "name": "transparent",
           "required": true,
           "tags": {
             "default": "false",
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "number",
           "name": "metalness",
           "required": true,
           "tags": {
             "default": 0,
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "number",
           "name": "roughness",
           "required": true,
           "tags": {
             "default": 1,
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": "Sets the alpha value to be used when running an alpha test. Default is 0.",
+          "kind": "number",
           "name": "alphaTest",
           "required": true,
           "tags": {
             "default": 0,
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": "Enables alpha to coverage. Can only be used with MSAA-enabled rendering contexts.",
+          "kind": "boolean",
           "name": "alphaToCoverage",
           "required": true,
           "tags": {
             "default": "false",
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "number",
           "name": "aoMapIntensity",
           "required": true,
           "tags": {
             "default": 1,
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": "The tranparency of the .blendDst. Default is null.",
+          "kind": "number",
           "name": "blendDstAlpha",
           "required": true,
           "tags": {
             "default": "null",
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": "The tranparency of the .blendEquation. Default is null.",
+          "kind": "number",
           "name": "blendEquationAlpha",
           "required": true,
           "tags": {
             "default": "null",
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": "Blending source. It's one of the blending mode constants defined in Three.js. Default is {@link SrcAlphaFactor}.",
+          "kind": "union",
           "name": "blendSrc",
           "required": true,
+          "shape": [],
           "tags": {
             "default": "THREE.SrcAlphaFactor",
           },
-          "type": "union",
-          "values": [],
         },
         {
-          "declaration": "undeclared",
           "description": "The tranparency of the .blendSrc. Default is null.",
+          "kind": "number",
           "name": "blendSrcAlpha",
           "required": true,
           "tags": {
             "default": "null",
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "number",
           "name": "bumpScale",
           "required": true,
           "tags": {
             "default": 1,
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": "Changes the behavior of clipping planes so that only their intersection is clipped, rather than their union. Default is false.",
+          "kind": "boolean",
           "name": "clipIntersection",
           "required": true,
           "tags": {
             "default": "false",
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": "Defines whether to clip shadows according to the clipping planes specified on this material. Default is false.",
+          "kind": "boolean",
           "name": "clipShadows",
           "required": true,
           "tags": {
             "default": "false",
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": "Whether to render the material's color. This can be used in conjunction with a mesh's .renderOrder property to create invisible objects that occlude other objects. Default is true.",
+          "kind": "boolean",
           "name": "colorWrite",
           "required": true,
           "tags": {
             "default": true,
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": "Whether to have depth test enabled when rendering this material. Default is true.",
+          "kind": "boolean",
           "name": "depthTest",
           "required": true,
           "tags": {
             "default": true,
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": "Whether rendering this material has any effect on the depth buffer. Default is true.
       When drawing 2D overlays it can be useful to disable the depth writing in order to layer several things together without creating z-index artifacts.",
+          "kind": "boolean",
           "name": "depthWrite",
           "required": true,
           "tags": {
             "default": true,
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "number",
           "name": "displacementBias",
           "required": true,
           "tags": {
             "default": 0,
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "number",
           "name": "displacementScale",
           "required": true,
           "tags": {
             "default": 1,
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": "Whether to apply dithering to the color to remove the appearance of banding. Default is false.",
+          "kind": "boolean",
           "name": "dithering",
           "required": true,
           "tags": {
             "default": "false",
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "union",
           "name": "emissive",
           "required": true,
-          "tags": {
-            "default": "new THREE.Color( 0x000000 )",
-          },
-          "type": "union",
-          "values": [
+          "shape": [
             {
-              "type": "string",
-              "value": undefined,
+              "kind": "string",
             },
             {
-              "type": "number",
+              "kind": "number",
             },
             {
-              "type": "array",
-              "value": [
+              "kind": "tuple",
+              "shape": [
                 {
+                  "kind": "number",
                   "label": "r",
                   "required": true,
-                  "type": "number",
                 },
                 {
+                  "kind": "number",
                   "label": "g",
                   "required": true,
-                  "type": "number",
                 },
                 {
+                  "kind": "number",
                   "label": "b",
                   "required": true,
-                  "type": "number",
                 },
               ],
             },
           ],
+          "tags": {
+            "default": "new THREE.Color( 0x000000 )",
+          },
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "number",
           "name": "emissiveIntensity",
           "required": true,
           "tags": {
             "default": 1,
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "number",
           "name": "envMapIntensity",
           "required": true,
           "tags": {
             "default": 1,
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": "Define whether the material is rendered with flat shading. Default is false.",
+          "kind": "boolean",
           "name": "flatShading",
           "required": true,
           "tags": {
             "default": "false",
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": "Whether the material is affected by fog. Default is true.",
+          "kind": "boolean",
           "name": "fog",
           "required": true,
           "tags": {
             "default": "fog",
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "number",
           "name": "lightMapIntensity",
           "required": true,
           "tags": {
             "default": 1,
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": "Whether to use polygon offset. Default is false. This corresponds to the POLYGON_OFFSET_FILL WebGL feature.",
+          "kind": "boolean",
           "name": "polygonOffset",
           "required": true,
           "tags": {
             "default": "false",
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": "Sets the polygon offset factor. Default is 0.",
+          "kind": "number",
           "name": "polygonOffsetFactor",
           "required": true,
           "tags": {
             "default": 0,
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": "Sets the polygon offset units. Default is 0.",
+          "kind": "number",
           "name": "polygonOffsetUnits",
           "required": true,
           "tags": {
             "default": 0,
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": "Override the renderer's default precision for this material. Can be \\"highp\\", \\"mediump\\" or \\"lowp\\". Defaults is null.",
+          "kind": "union",
           "name": "precision",
           "required": true,
+          "shape": [
+            {
+              "kind": "string",
+              "literal": "highp",
+            },
+            {
+              "kind": "string",
+              "literal": "mediump",
+            },
+            {
+              "kind": "string",
+              "literal": "lowp",
+            },
+          ],
           "tags": {
             "default": "null",
           },
-          "type": "union",
-          "values": [
-            {
-              "type": "string",
-              "value": "highp",
-            },
-            {
-              "type": "string",
-              "value": "mediump",
-            },
-            {
-              "type": "string",
-              "value": "lowp",
-            },
-          ],
         },
         {
-          "declaration": "undeclared",
           "description": "Whether to premultiply the alpha (transparency) value. See WebGL / Materials / Transparency for an example of the difference. Default is false.",
+          "kind": "boolean",
           "name": "premultipliedAlpha",
           "required": true,
           "tags": {
             "default": "false",
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": "The bit mask to use when comparing against the stencil buffer. Default is *0xFF*.",
+          "kind": "number",
           "name": "stencilFuncMask",
           "required": true,
           "tags": {
             "default": 255,
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": "The value to use when performing stencil comparisons or stencil operations. Default is *0*.",
+          "kind": "number",
           "name": "stencilRef",
           "required": true,
           "tags": {
             "default": 0,
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": "Whether rendering this material has any effect on the stencil buffer. Default is *false*.",
+          "kind": "boolean",
           "name": "stencilWrite",
           "required": true,
           "tags": {
             "default": "false",
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": "The bit mask to use when writing to the stencil buffer. Default is *0xFF*.",
+          "kind": "number",
           "name": "stencilWriteMask",
           "required": true,
           "tags": {
             "default": 255,
           },
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": "Defines whether this material is tone mapped according to the renderer's toneMapping setting.
       Default is true.",
+          "kind": "boolean",
           "name": "toneMapped",
           "required": true,
           "tags": {
             "default": true,
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": "Defines whether vertex coloring is used. Default is false.",
+          "kind": "boolean",
           "name": "vertexColors",
           "required": true,
           "tags": {
             "default": "false",
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "boolean",
           "name": "wireframe",
           "required": true,
           "tags": {
             "default": "false",
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "string",
           "name": "wireframeLinecap",
           "required": true,
           "tags": {
             "default": "'round'",
           },
-          "type": "string",
-          "value": undefined,
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "string",
           "name": "wireframeLinejoin",
           "required": true,
           "tags": {
             "default": "'round'",
           },
-          "type": "string",
-          "value": undefined,
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "number",
           "name": "wireframeLinewidth",
           "required": true,
           "tags": {
             "default": 1,
           },
-          "type": "number",
         },
       ]
     `);
@@ -833,37 +818,46 @@ describe("jsx ast extractor", () => {
     );
     const sceneObject = getJsxElementAt(sourceFile, 25, 10);
 
-    const props = getJsxElementProps(sourceFile, sceneObject!);
+    const { props } = getJsxElementProps(sourceFile, sceneObject!);
 
     expect(props[1]).toMatchInlineSnapshot(`
       {
         "column": 36,
-        "declaration": "declared",
         "description": undefined,
+        "kind": "union",
         "line": 25,
         "name": "scale",
         "required": false,
+        "shape": [
+          {
+            "kind": "tuple",
+            "shape": [
+              {
+                "kind": "number",
+                "label": "x",
+                "required": true,
+              },
+              {
+                "kind": "number",
+                "label": "y",
+                "required": true,
+              },
+              {
+                "kind": "number",
+                "label": "z",
+                "required": true,
+              },
+            ],
+          },
+          {
+            "kind": "number",
+          },
+        ],
         "tags": {},
-        "type": "array",
         "value": [
-          {
-            "label": "x",
-            "required": true,
-            "type": "number",
-            "value": 1,
-          },
-          {
-            "label": "y",
-            "required": true,
-            "type": "number",
-            "value": 1,
-          },
-          {
-            "label": "z",
-            "required": true,
-            "type": "number",
-            "value": 1,
-          },
+          1,
+          1,
+          1,
         ],
       }
     `);
@@ -878,29 +872,40 @@ describe("jsx ast extractor", () => {
     );
     const sceneObject = getJsxElementAt(sourceFile, 25, 10);
 
-    const props = getJsxElementProps(sourceFile, sceneObject!);
+    const { props } = getJsxElementProps(sourceFile, sceneObject!);
 
-    expect(props[0].value).toMatchInlineSnapshot(`
-      [
-        {
-          "label": undefined,
-          "required": true,
-          "type": "number",
-          "value": 0,
-        },
-        {
-          "label": undefined,
-          "required": true,
-          "type": "number",
-          "value": 0,
-        },
-        {
-          "label": undefined,
-          "required": true,
-          "type": "number",
-          "value": 0,
-        },
-      ]
+    expect(props[0]).toMatchInlineSnapshot(`
+      {
+        "column": 15,
+        "description": undefined,
+        "kind": "tuple",
+        "line": 25,
+        "name": "position",
+        "required": false,
+        "shape": [
+          {
+            "kind": "number",
+            "label": undefined,
+            "required": true,
+          },
+          {
+            "kind": "number",
+            "label": undefined,
+            "required": true,
+          },
+          {
+            "kind": "number",
+            "label": undefined,
+            "required": true,
+          },
+        ],
+        "tags": {},
+        "value": [
+          0,
+          0,
+          0,
+        ],
+      }
     `);
   });
 
@@ -913,246 +918,252 @@ describe("jsx ast extractor", () => {
     );
     const sceneObject = getJsxElementAt(sourceFile, 10, 5);
 
-    const elements = getJsxElementProps(sourceFile, sceneObject!);
+    const { props } = getJsxElementProps(sourceFile, sceneObject!);
 
-    expect(elements).toMatchInlineSnapshot(`
+    expect(props).toMatchInlineSnapshot(`
       [
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "union",
           "name": "position",
           "required": false,
-          "tags": {},
-          "type": "union",
-          "values": [
+          "shape": [
             {
-              "type": "number",
+              "kind": "number",
             },
             {
-              "type": "array",
-              "value": [
+              "kind": "tuple",
+              "shape": [
                 {
+                  "kind": "number",
                   "label": "x",
                   "required": true,
-                  "type": "number",
                 },
                 {
+                  "kind": "number",
                   "label": "y",
                   "required": true,
-                  "type": "number",
                 },
                 {
+                  "kind": "number",
                   "label": "z",
                   "required": true,
-                  "type": "number",
                 },
               ],
             },
           ],
+          "tags": {},
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "union",
           "name": "scale",
           "required": false,
-          "tags": {},
-          "type": "union",
-          "values": [
+          "shape": [
             {
-              "type": "number",
+              "kind": "number",
             },
             {
-              "type": "array",
-              "value": [
+              "kind": "tuple",
+              "shape": [
                 {
+                  "kind": "number",
                   "label": "x",
                   "required": true,
-                  "type": "number",
                 },
                 {
+                  "kind": "number",
                   "label": "y",
                   "required": true,
-                  "type": "number",
                 },
                 {
+                  "kind": "number",
                   "label": "z",
                   "required": true,
-                  "type": "number",
                 },
               ],
             },
           ],
+          "tags": {},
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "tuple",
           "name": "rotation",
           "required": false,
-          "tags": {},
-          "type": "array",
-          "value": [
+          "shape": [
             {
+              "kind": "number",
               "label": "x",
               "required": true,
-              "type": "number",
             },
             {
+              "kind": "number",
               "label": "y",
               "required": true,
-              "type": "number",
             },
             {
+              "kind": "number",
               "label": "z",
               "required": true,
-              "type": "number",
             },
             {
-              "type": "union",
-              "values": [
+              "kind": "union",
+              "label": "order",
+              "required": false,
+              "shape": [
                 {
-                  "type": "string",
-                  "value": "XYZ",
+                  "kind": "string",
+                  "literal": "XYZ",
                 },
                 {
-                  "type": "string",
-                  "value": "YXZ",
+                  "kind": "string",
+                  "literal": "YXZ",
                 },
                 {
-                  "type": "string",
-                  "value": "ZXY",
+                  "kind": "string",
+                  "literal": "ZXY",
                 },
                 {
-                  "type": "string",
-                  "value": "ZYX",
+                  "kind": "string",
+                  "literal": "ZYX",
                 },
                 {
-                  "type": "string",
-                  "value": "YZX",
+                  "kind": "string",
+                  "literal": "YZX",
                 },
                 {
-                  "type": "string",
-                  "value": "XZY",
+                  "kind": "string",
+                  "literal": "XZY",
                 },
               ],
             },
           ],
+          "tags": {},
         },
         {
-          "declaration": "undeclared",
+          "description": undefined,
+          "kind": "tuple",
+          "name": "args",
+          "required": false,
+          "shape": [
+            {
+              "kind": "unhandled",
+              "label": "geometry",
+              "required": false,
+            },
+            {
+              "kind": "union",
+              "label": "material",
+              "required": false,
+              "shape": [],
+            },
+          ],
+          "tags": {},
+        },
+        {
           "description": "Optional name of the object (doesn't need to be unique).",
+          "kind": "string",
           "name": "name",
           "required": true,
           "tags": {
             "default": "''",
           },
-          "type": "string",
-          "value": undefined,
         },
         {
           "column": 11,
-          "declaration": "declared",
           "description": "Object gets rendered if true.",
+          "kind": "boolean",
           "line": 10,
           "name": "visible",
           "required": true,
           "tags": {
             "default": true,
           },
-          "type": "boolean",
           "value": true,
         },
         {
-          "declaration": "undeclared",
           "description": "Gets rendered into shadow map.",
+          "kind": "boolean",
           "name": "castShadow",
           "required": true,
           "tags": {
             "default": "false",
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": "Material gets baked in shadow receiving.",
+          "kind": "boolean",
           "name": "receiveShadow",
           "required": true,
           "tags": {
             "default": "false",
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": "When this is set, it checks every frame if the object is in the frustum of the camera before rendering the object.
       If set to false the object gets rendered every frame even if it is not in the frustum of the camera.",
+          "kind": "boolean",
           "name": "frustumCulled",
           "required": true,
           "tags": {
             "default": true,
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "number",
           "name": "layers",
           "required": false,
           "tags": {},
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "union",
           "name": "material",
           "required": true,
+          "shape": [],
           "tags": {},
-          "type": "union",
-          "values": [],
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "tuple",
           "name": "quaternion",
           "required": false,
-          "tags": {},
-          "type": "array",
-          "value": [
+          "shape": [
             {
+              "kind": "number",
               "label": "x",
               "required": true,
-              "type": "number",
             },
             {
+              "kind": "number",
               "label": "y",
               "required": true,
-              "type": "number",
             },
             {
+              "kind": "number",
               "label": "z",
               "required": true,
-              "type": "number",
             },
             {
+              "kind": "number",
               "label": "w",
               "required": true,
-              "type": "number",
             },
           ],
+          "tags": {},
         },
         {
-          "declaration": "undeclared",
           "description": "Overrides the default rendering order of scene graph objects, from lowest to highest renderOrder.
       Opaque and transparent objects remain sorted independently though.
       When this property is set for an instance of Group, all descendants objects will be sorted and rendered together.",
+          "kind": "number",
           "name": "renderOrder",
           "required": true,
           "tags": {
             "default": 0,
           },
-          "type": "number",
         },
       ]
     `);
@@ -1167,248 +1178,255 @@ describe("jsx ast extractor", () => {
     );
     const sceneObject = getJsxElementAt(sourceFile, 20, 5);
 
-    const elements = getJsxElementProps(sourceFile, sceneObject!);
+    const { props } = getJsxElementProps(sourceFile, sceneObject!);
 
-    expect(elements).toMatchInlineSnapshot(`
+    expect(props).toMatchInlineSnapshot(`
       [
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "union",
           "name": "position",
           "required": false,
-          "tags": {},
-          "type": "union",
-          "values": [
+          "shape": [
             {
-              "type": "number",
+              "kind": "number",
             },
             {
-              "type": "array",
-              "value": [
+              "kind": "tuple",
+              "shape": [
                 {
+                  "kind": "number",
                   "label": "x",
                   "required": true,
-                  "type": "number",
                 },
                 {
+                  "kind": "number",
                   "label": "y",
                   "required": true,
-                  "type": "number",
                 },
                 {
+                  "kind": "number",
                   "label": "z",
                   "required": true,
-                  "type": "number",
                 },
               ],
             },
           ],
+          "tags": {},
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "union",
           "name": "scale",
           "required": false,
-          "tags": {},
-          "type": "union",
-          "values": [
+          "shape": [
             {
-              "type": "number",
+              "kind": "number",
             },
             {
-              "type": "array",
-              "value": [
+              "kind": "tuple",
+              "shape": [
                 {
+                  "kind": "number",
                   "label": "x",
                   "required": true,
-                  "type": "number",
                 },
                 {
+                  "kind": "number",
                   "label": "y",
                   "required": true,
-                  "type": "number",
                 },
                 {
+                  "kind": "number",
                   "label": "z",
                   "required": true,
-                  "type": "number",
                 },
               ],
             },
           ],
+          "tags": {},
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "tuple",
           "name": "rotation",
           "required": false,
-          "tags": {},
-          "type": "array",
-          "value": [
+          "shape": [
             {
+              "kind": "number",
               "label": "x",
               "required": true,
-              "type": "number",
             },
             {
+              "kind": "number",
               "label": "y",
               "required": true,
-              "type": "number",
             },
             {
+              "kind": "number",
               "label": "z",
               "required": true,
-              "type": "number",
             },
             {
-              "type": "union",
-              "values": [
+              "kind": "union",
+              "label": "order",
+              "required": false,
+              "shape": [
                 {
-                  "type": "string",
-                  "value": "XYZ",
+                  "kind": "string",
+                  "literal": "XYZ",
                 },
                 {
-                  "type": "string",
-                  "value": "YXZ",
+                  "kind": "string",
+                  "literal": "YXZ",
                 },
                 {
-                  "type": "string",
-                  "value": "ZXY",
+                  "kind": "string",
+                  "literal": "ZXY",
                 },
                 {
-                  "type": "string",
-                  "value": "ZYX",
+                  "kind": "string",
+                  "literal": "ZYX",
                 },
                 {
-                  "type": "string",
-                  "value": "YZX",
+                  "kind": "string",
+                  "literal": "YZX",
                 },
                 {
-                  "type": "string",
-                  "value": "XZY",
+                  "kind": "string",
+                  "literal": "XZY",
                 },
               ],
             },
           ],
+          "tags": {},
         },
         {
-          "declaration": "undeclared",
+          "description": undefined,
+          "kind": "tuple",
+          "name": "args",
+          "required": false,
+          "shape": [
+            {
+              "kind": "unhandled",
+              "label": "geometry",
+              "required": false,
+            },
+            {
+              "kind": "union",
+              "label": "material",
+              "required": false,
+              "shape": [],
+            },
+          ],
+          "tags": {},
+        },
+        {
           "description": "Optional name of the object (doesn't need to be unique).",
+          "kind": "string",
           "name": "name",
           "required": true,
           "tags": {
             "default": "''",
           },
-          "type": "string",
-          "value": undefined,
         },
         {
           "column": 11,
-          "declaration": "declared",
           "description": "Object gets rendered if true.",
+          "kind": "boolean",
           "line": 20,
           "name": "visible",
           "required": true,
           "tags": {
             "default": true,
           },
-          "type": "boolean",
           "value": true,
         },
         {
           "column": 26,
-          "declaration": "declared",
           "description": "Gets rendered into shadow map.",
+          "kind": "boolean",
           "line": 20,
           "name": "castShadow",
           "required": true,
           "tags": {
             "default": "false",
           },
-          "type": "boolean",
           "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": "Material gets baked in shadow receiving.",
+          "kind": "boolean",
           "name": "receiveShadow",
           "required": true,
           "tags": {
             "default": "false",
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": "When this is set, it checks every frame if the object is in the frustum of the camera before rendering the object.
       If set to false the object gets rendered every frame even if it is not in the frustum of the camera.",
+          "kind": "boolean",
           "name": "frustumCulled",
           "required": true,
           "tags": {
             "default": true,
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "number",
           "name": "layers",
           "required": false,
           "tags": {},
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "union",
           "name": "material",
           "required": true,
+          "shape": [],
           "tags": {},
-          "type": "union",
-          "values": [],
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "tuple",
           "name": "quaternion",
           "required": false,
-          "tags": {},
-          "type": "array",
-          "value": [
+          "shape": [
             {
+              "kind": "number",
               "label": "x",
               "required": true,
-              "type": "number",
             },
             {
+              "kind": "number",
               "label": "y",
               "required": true,
-              "type": "number",
             },
             {
+              "kind": "number",
               "label": "z",
               "required": true,
-              "type": "number",
             },
             {
+              "kind": "number",
               "label": "w",
               "required": true,
-              "type": "number",
             },
           ],
+          "tags": {},
         },
         {
-          "declaration": "undeclared",
           "description": "Overrides the default rendering order of scene graph objects, from lowest to highest renderOrder.
       Opaque and transparent objects remain sorted independently though.
       When this property is set for an instance of Group, all descendants objects will be sorted and rendered together.",
+          "kind": "number",
           "name": "renderOrder",
           "required": true,
           "tags": {
             "default": 0,
           },
-          "type": "number",
         },
       ]
     `);
@@ -1423,48 +1441,46 @@ describe("jsx ast extractor", () => {
     );
     const sceneObject = getJsxElementAt(sourceFile, 25, 10);
 
-    const props = getJsxElementProps(sourceFile, sceneObject!);
+    const { props } = getJsxElementProps(sourceFile, sceneObject!);
 
     expect(props[5]).toMatchInlineSnapshot(`
       {
         "column": 22,
-        "declaration": "declared",
         "description": "Object gets rendered if true.",
+        "kind": "boolean",
         "line": 25,
         "name": "visible",
         "required": true,
         "tags": {
           "default": true,
         },
-        "type": "boolean",
         "value": undefined,
       }
     `);
     expect(props[3]).toMatchInlineSnapshot(`
       {
-        "declaration": "undeclared",
         "description": undefined,
+        "kind": "tuple",
         "name": "args",
         "required": false,
-        "tags": {},
-        "type": "array",
-        "value": [
+        "shape": [
           {
+            "kind": "number",
             "label": "width",
             "required": false,
-            "type": "number",
           },
           {
+            "kind": "number",
             "label": "height",
             "required": false,
-            "type": "number",
           },
           {
+            "kind": "number",
             "label": "depth",
             "required": false,
-            "type": "number",
           },
         ],
+        "tags": {},
       }
     `);
   });
@@ -1478,30 +1494,29 @@ describe("jsx ast extractor", () => {
     );
     const sceneObject = getJsxElementAt(sourceFile, 41, 5);
 
-    const elements = getJsxElementProps(sourceFile, sceneObject!);
+    const { props } = getJsxElementProps(sourceFile, sceneObject!);
 
-    expect(elements).toMatchInlineSnapshot(`
+    expect(props).toMatchInlineSnapshot(`
       [
         {
           "column": 12,
-          "declaration": "declared",
           "description": undefined,
+          "kind": "union",
           "line": 41,
           "name": "color",
           "required": true,
-          "tags": {},
-          "type": "union",
-          "value": "black",
-          "values": [
+          "shape": [
             {
-              "type": "string",
-              "value": "black",
+              "kind": "string",
+              "literal": "white",
             },
             {
-              "type": "string",
-              "value": "white",
+              "kind": "string",
+              "literal": "black",
             },
           ],
+          "tags": {},
+          "value": "black",
         },
       ]
     `);
@@ -1516,30 +1531,29 @@ describe("jsx ast extractor", () => {
     );
     const sceneObject = getJsxElementAt(sourceFile, 42, 5);
 
-    const elements = getJsxElementProps(sourceFile, sceneObject!);
+    const { props } = getJsxElementProps(sourceFile, sceneObject!);
 
-    expect(elements).toMatchInlineSnapshot(`
+    expect(props).toMatchInlineSnapshot(`
       [
         {
           "column": 20,
-          "declaration": "declared",
           "description": undefined,
+          "kind": "union",
           "line": 42,
           "name": "color",
           "required": false,
-          "tags": {},
-          "type": "union",
-          "value": undefined,
-          "values": [
+          "shape": [
             {
-              "type": "string",
-              "value": "black",
+              "kind": "string",
+              "literal": "black",
             },
             {
-              "type": "string",
-              "value": "white",
+              "kind": "string",
+              "literal": "white",
             },
           ],
+          "tags": {},
+          "value": undefined,
         },
       ]
     `);
@@ -1554,157 +1568,258 @@ describe("jsx ast extractor", () => {
     );
     const sceneObject = getJsxElementAt(sourceFile, 17, 5);
 
-    const elements = getJsxElementProps(sourceFile, sceneObject!);
+    const { props } = getJsxElementProps(sourceFile, sceneObject!);
 
-    expect(elements).toMatchInlineSnapshot(`
+    expect(props).toMatchInlineSnapshot(`
       [
         {
           "column": 11,
-          "declaration": "declared",
           "description": undefined,
+          "kind": "union",
           "line": 17,
           "name": "position",
           "required": false,
+          "shape": [
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "tuple",
+              "shape": [
+                {
+                  "kind": "number",
+                  "label": "x",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "y",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "z",
+                  "required": true,
+                },
+              ],
+            },
+          ],
           "tags": {},
-          "type": "identifier",
           "value": "position",
         },
         {
           "column": 51,
-          "declaration": "declared",
           "description": undefined,
+          "kind": "union",
           "line": 17,
           "name": "scale",
           "required": false,
+          "shape": [
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "tuple",
+              "shape": [
+                {
+                  "kind": "number",
+                  "label": "x",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "y",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "z",
+                  "required": true,
+                },
+              ],
+            },
+          ],
           "tags": {},
-          "type": "identifier",
           "value": "scale",
         },
         {
           "column": 31,
-          "declaration": "declared",
           "description": undefined,
+          "kind": "tuple",
           "line": 17,
           "name": "rotation",
           "required": false,
+          "shape": [
+            {
+              "kind": "number",
+              "label": "x",
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": "y",
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": "z",
+              "required": true,
+            },
+            {
+              "kind": "union",
+              "label": "order",
+              "required": false,
+              "shape": [
+                {
+                  "kind": "string",
+                  "literal": "XYZ",
+                },
+                {
+                  "kind": "string",
+                  "literal": "YXZ",
+                },
+                {
+                  "kind": "string",
+                  "literal": "ZXY",
+                },
+                {
+                  "kind": "string",
+                  "literal": "ZYX",
+                },
+                {
+                  "kind": "string",
+                  "literal": "YZX",
+                },
+                {
+                  "kind": "string",
+                  "literal": "XZY",
+                },
+              ],
+            },
+          ],
           "tags": {},
-          "type": "identifier",
           "value": "rotation",
         },
         {
-          "declaration": "undeclared",
+          "description": undefined,
+          "kind": "tuple",
+          "name": "args",
+          "required": false,
+          "shape": [
+            {
+              "kind": "unhandled",
+              "label": "geometry",
+              "required": false,
+            },
+            {
+              "kind": "union",
+              "label": "material",
+              "required": false,
+              "shape": [],
+            },
+          ],
+          "tags": {},
+        },
+        {
           "description": "Optional name of the object (doesn't need to be unique).",
+          "kind": "string",
           "name": "name",
           "required": true,
           "tags": {
             "default": "''",
           },
-          "type": "string",
-          "value": undefined,
         },
         {
-          "declaration": "undeclared",
           "description": "Object gets rendered if true.",
+          "kind": "boolean",
           "name": "visible",
           "required": true,
           "tags": {
             "default": true,
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": "Gets rendered into shadow map.",
+          "kind": "boolean",
           "name": "castShadow",
           "required": true,
           "tags": {
             "default": "false",
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": "Material gets baked in shadow receiving.",
+          "kind": "boolean",
           "name": "receiveShadow",
           "required": true,
           "tags": {
             "default": "false",
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": "When this is set, it checks every frame if the object is in the frustum of the camera before rendering the object.
       If set to false the object gets rendered every frame even if it is not in the frustum of the camera.",
+          "kind": "boolean",
           "name": "frustumCulled",
           "required": true,
           "tags": {
             "default": true,
           },
-          "type": "boolean",
-          "value": false,
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "number",
           "name": "layers",
           "required": false,
           "tags": {},
-          "type": "number",
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "union",
           "name": "material",
           "required": true,
+          "shape": [],
           "tags": {},
-          "type": "union",
-          "values": [],
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "tuple",
           "name": "quaternion",
           "required": false,
-          "tags": {},
-          "type": "array",
-          "value": [
+          "shape": [
             {
+              "kind": "number",
               "label": "x",
               "required": true,
-              "type": "number",
             },
             {
+              "kind": "number",
               "label": "y",
               "required": true,
-              "type": "number",
             },
             {
+              "kind": "number",
               "label": "z",
               "required": true,
-              "type": "number",
             },
             {
+              "kind": "number",
               "label": "w",
               "required": true,
-              "type": "number",
             },
           ],
+          "tags": {},
         },
         {
-          "declaration": "undeclared",
           "description": "Overrides the default rendering order of scene graph objects, from lowest to highest renderOrder.
       Opaque and transparent objects remain sorted independently though.
       When this property is set for an instance of Group, all descendants objects will be sorted and rendered together.",
+          "kind": "number",
           "name": "renderOrder",
           "required": true,
           "tags": {
             "default": 0,
           },
-          "type": "number",
         },
       ]
     `);
@@ -1722,101 +1837,102 @@ describe("jsx ast extractor", () => {
       throw new Error("not found");
     }
 
-    const elements = getJsxElementProps(sourceFile, sceneObject);
+    const { props } = getJsxElementProps(sourceFile, sceneObject);
 
-    expect(elements).toMatchInlineSnapshot(`
+    expect(props).toMatchInlineSnapshot(`
       [
         {
           "column": 9,
-          "declaration": "declared",
           "description": undefined,
+          "kind": "tuple",
           "line": 26,
           "name": "position",
           "required": false,
+          "shape": [
+            {
+              "kind": "number",
+              "label": undefined,
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": undefined,
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": undefined,
+              "required": true,
+            },
+          ],
           "tags": {},
-          "type": "array",
           "value": [
-            {
-              "label": undefined,
-              "required": true,
-              "type": "number",
-              "value": 0.9223319881614562,
-            },
-            {
-              "label": undefined,
-              "required": true,
-              "type": "number",
-              "value": 0,
-            },
-            {
-              "label": undefined,
-              "required": true,
-              "type": "number",
-              "value": 4.703084245305494,
-            },
+            0.9223319881614562,
+            0,
+            4.703084245305494,
           ],
         },
         {
-          "declaration": "undeclared",
           "description": undefined,
+          "kind": "union",
           "name": "scale",
           "required": false,
-          "tags": {},
-          "type": "union",
-          "values": [
+          "shape": [
             {
-              "type": "number",
+              "kind": "number",
             },
             {
-              "type": "array",
-              "value": [
+              "kind": "tuple",
+              "shape": [
                 {
+                  "kind": "number",
                   "label": "x",
                   "required": true,
-                  "type": "number",
                 },
                 {
+                  "kind": "number",
                   "label": "y",
                   "required": true,
-                  "type": "number",
                 },
                 {
+                  "kind": "number",
                   "label": "z",
                   "required": true,
-                  "type": "number",
                 },
               ],
             },
           ],
+          "tags": {},
         },
         {
           "column": 9,
-          "declaration": "declared",
           "description": undefined,
+          "kind": "tuple",
           "line": 27,
           "name": "rotation",
           "required": false,
+          "shape": [
+            {
+              "kind": "number",
+              "label": undefined,
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": undefined,
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": undefined,
+              "required": true,
+            },
+          ],
           "tags": {},
-          "type": "array",
           "value": [
-            {
-              "label": undefined,
-              "required": true,
-              "type": "number",
-              "value": 1.660031347769923,
-            },
-            {
-              "label": undefined,
-              "required": true,
-              "type": "number",
-              "value": -0.07873115868670048,
-            },
-            {
-              "label": undefined,
-              "required": true,
-              "type": "number",
-              "value": -0.7211124466452248,
-            },
+            1.660031347769923,
+            -0.07873115868670048,
+            -0.7211124466452248,
           ],
         },
       ]

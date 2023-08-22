@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import {
+  Expression,
   JsxElement,
   JsxSelfClosingElement,
   Node,
@@ -14,30 +15,24 @@ import {
   Type,
 } from "ts-morph";
 import { getAttributes } from "./jsx";
-import type { PropType, Type as UnrolledType } from "../types";
+import type { DeclaredProp, Prop, Type as UnrolledType } from "../types";
 
-export function unrollType(type: Type, name?: string): UnrolledType {
-  if (type.isUndefined()) {
-    return {
-      type: "undefined",
-    };
-  }
-
+export function unrollType(type: Type): UnrolledType {
   if (type.isNumber()) {
     return {
-      type: "number",
+      kind: "number",
     };
   }
 
   if (type.isString()) {
     return {
-      type: "string",
+      kind: "string",
     };
   }
 
   if (type.isBoolean() || type.isBooleanLiteral()) {
     return {
-      type: "boolean",
+      kind: "boolean",
     };
   }
 
@@ -47,9 +42,9 @@ export function unrollType(type: Type, name?: string): UnrolledType {
       .labeledElementDeclarations;
 
     return {
-      type: "tuple",
-      values: elements.map((val, index) => ({
-        ...unrollType(val, name),
+      kind: "tuple",
+      shape: elements.map((val, index) => ({
+        ...unrollType(val),
         label: labels ? labels[index].name.getText() : undefined,
         required: labels ? !labels[index].questionToken : true,
       })),
@@ -58,38 +53,44 @@ export function unrollType(type: Type, name?: string): UnrolledType {
 
   if (type.isUnion()) {
     const types = type.getUnionTypes();
-    const values = types
-      .map((val) => unrollType(val, name))
+    const shape = types
+      .map((val) => unrollType(val))
       // Filter out unknown values - if its unknown we don't want to handle it.
-      .filter((val) => val.type !== "unknown")
+      .filter((val) => val.kind !== "unhandled")
       .filter(
         // Remove duplicates if any exist
         (v, i, a) =>
           a.findIndex((v2) => JSON.stringify(v2) === JSON.stringify(v)) === i
       );
 
-    if (values.length === 1) {
+    if (shape.length === 1) {
       // After filter if there is only one value let's throw away the union and return the
       // only value inside it. Easier for us to handle on the client that way.
-      return values[0];
+      return shape[0];
     }
 
     return {
-      type: "union",
-      value: "",
-      values,
+      kind: "union",
+      shape,
     };
   }
 
   if (type.isStringLiteral()) {
     return {
-      type: "string",
-      value: `${type.getLiteralValueOrThrow()}`,
+      kind: "string",
+      literal: `${type.getLiteralValueOrThrow()}`,
+    };
+  }
+
+  if (type.isNumberLiteral()) {
+    return {
+      kind: "number",
+      literal: Number(`${type.getLiteralValueOrThrow()}`),
     };
   }
 
   return {
-    type: "unknown",
+    kind: "unhandled",
   };
 }
 
@@ -179,21 +180,71 @@ function extractJSDoc(symbol: SymbolType) {
   };
 }
 
+type AttributeValue = number | string | boolean | undefined | AttributeValue[];
+
+export function getJsxAttributeValue(
+  expression: Expression | undefined
+): AttributeValue {
+  // Value is inside a JSX expression
+  if (Node.isIdentifier(expression)) {
+    const text = expression.getText();
+    return text === "undefined" ? undefined : text;
+  }
+
+  if (Node.isArrayLiteralExpression(expression)) {
+    // Hack around types too lazy to figure this out atm.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const value = expression.getElements().map(getJsxAttributeValue);
+    return value;
+  }
+
+  if (Node.isStringLiteral(expression)) {
+    return expression.getLiteralText();
+  }
+
+  if (Node.isNumericLiteral(expression)) {
+    return Number(expression.getLiteralText());
+  }
+
+  if (Node.isPrefixUnaryExpression(expression)) {
+    const operand = expression.getOperand();
+    if (Node.isNumericLiteral(operand)) {
+      return -Number(operand.getLiteralText());
+    }
+  }
+
+  if (Node.isTrueLiteral(expression)) {
+    return true;
+  }
+
+  if (Node.isFalseLiteral(expression)) {
+    return false;
+  }
+
+  if (!expression) {
+    // Implicit boolean!
+    return true;
+  }
+
+  return expression.getText();
+}
+
 export function getJsxElementPropTypes(
   element: JsxSelfClosingElement | JsxElement
 ) {
-  const propTypes: PropType[] = [];
-  const attributeDecls = getAttributes(element);
+  const props: (Prop | DeclaredProp)[] = [];
+  const attributes = getAttributes(element);
   const jsxDecl = getJsxDeclProps(element);
 
   if (!jsxDecl) {
     return {
-      propTypes: [],
+      props: [],
       transforms: { rotate: false, scale: false, translate: false },
     };
   }
 
   const { declaration, properties } = jsxDecl;
+
   let rotate = false;
   let scale = false;
   let translate = false;
@@ -201,8 +252,9 @@ export function getJsxElementPropTypes(
   for (let i = 0; i < properties.length; i++) {
     const prop = properties[i];
     const declarations = prop.getDeclarations();
-    const propDeclaration = declarations[0] as PropertySignature;
     const propName = prop.getName();
+    const declaredProp = attributes[propName];
+    const propDeclaration = declarations[0] as PropertySignature;
     const propType = prop.getTypeAtLocation(declaration);
     const { description, tags } = extractJSDoc(prop);
 
@@ -214,15 +266,97 @@ export function getJsxElementPropTypes(
       scale = true;
     }
 
-    propTypes.push({
-      name: propName,
-      declared: !!attributeDecls[propName],
-      required: !propDeclaration?.hasQuestionToken?.(),
-      description: description || undefined,
-      type: unrollType(propType, propName),
-      tags,
-    });
+    if (declaredProp) {
+      const initializer = declaredProp.getInitializer();
+      const value = getJsxAttributeValue(
+        Node.isJsxExpression(initializer)
+          ? initializer.getExpressionOrThrow()
+          : initializer
+      );
+      const { column, line } = element
+        .getSourceFile()
+        .getLineAndColumnAtPos(declaredProp.getStart());
+
+      const type = unrollType(propType);
+
+      if (type.kind === "union") {
+        const typeOfValue = typeof value;
+        const isValueAnArray = Array.isArray(value);
+
+        // Sort the union values to have the one that matches the first
+        // value as the first option.
+        type.shape.sort((typeA, typeB) => {
+          if (typeOfValue === typeA.kind) {
+            return -1;
+          }
+
+          if (typeOfValue === typeB.kind) {
+            return 1;
+          }
+
+          if (isValueAnArray) {
+            if (typeA.kind === "tuple") {
+              let partialMatch = true;
+
+              for (let i = 0; i < value.length; i++) {
+                const typeofElValue = typeof value[i];
+                const elType = typeA.shape[i];
+
+                if (elType.kind !== typeofElValue) {
+                  partialMatch = false;
+                  break;
+                }
+              }
+
+              if (partialMatch) {
+                return -1;
+              }
+            }
+
+            if (typeB.kind === "tuple") {
+              let partialMatch = true;
+
+              for (let i = 0; i < value.length; i++) {
+                const typeofElValue = typeof value[i];
+                const elType = typeB.shape[i];
+
+                if (elType.kind !== typeofElValue) {
+                  partialMatch = false;
+                  break;
+                }
+              }
+
+              if (partialMatch) {
+                return 1;
+              }
+            }
+          }
+
+          return 0;
+        });
+      }
+
+      props.push({
+        ...type,
+        name: propName,
+        required: !propDeclaration?.hasQuestionToken?.(),
+        description: description || undefined,
+        tags,
+        column,
+        line,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        value: value as any,
+      });
+    } else {
+      props.push({
+        ...unrollType(propType),
+        name: propName,
+        required: !propDeclaration?.hasQuestionToken?.(),
+        description: description || undefined,
+        tags,
+      });
+    }
   }
 
-  return { propTypes, transforms: { rotate, translate, scale } };
+  return { props, transforms: { rotate, translate, scale } };
 }

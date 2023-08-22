@@ -11,7 +11,7 @@ interface ChildrenProps {
   playerNear: boolean;
 }
 
-function Placeholder() {
+export function Placeholder() {
   const map = useTexture("/textures/purple/texture_06.png");
 
   return (

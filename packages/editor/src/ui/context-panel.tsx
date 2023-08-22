@@ -36,7 +36,7 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
   // A better implementation later would be to traverse this scene objects children
   // And see if a camera exists, if it does enable the button.
   const isCamera = data.name.includes("Camera");
-  const filteredProps = data.props.filter((prop) => prop.type !== "spread");
+  const filteredProps = data.props;
 
   useEffect(() => {
     if (data.type === "custom" && data.path) {
@@ -111,8 +111,8 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
         )}
 
         {filteredProps.map((prop) => {
-          const column = prop.declaration === "declared" ? prop.column : -1;
-          const line = prop.declaration === "declared" ? prop.line : -1;
+          const column = "column" in prop ? prop.column : -1;
+          const line = "line" in prop ? prop.line : -1;
 
           return (
             <PropField
