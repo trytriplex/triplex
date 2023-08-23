@@ -90,6 +90,9 @@ export function PropInput({
           required={required}
           defaultValue={"value" in prop ? prop.value : undefined}
           path={path}
+          // If the order of the values change blow re-mount the component so
+          // it resets to displaying the first element in the shape array.
+          key={JSON.stringify(prop.shape[0])}
           values={prop.shape}
           name={name}
           onChange={onChange}
