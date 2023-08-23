@@ -25,10 +25,9 @@ export function sentenceCase(string: string) {
 }
 
 /**
- * Equivalent to JSON.stringify except it also persists `undefined` values
- * instead of replacing with `null`.
+ * Converts an object to JSON while ensuring undefined values are preserved.
  */
-export function stringify(value: unknown): string {
+export function stringifyJSON(value: unknown): string {
   const str = JSON.stringify(value, (_k, v) =>
     v === undefined ? "__UNDEFINED__" : v
   );
