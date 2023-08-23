@@ -9,7 +9,7 @@ import { useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { create } from "zustand";
 import { showSaveDialog } from "../util/prompt";
-import { stringify } from "../util/string";
+import { stringifyJSON } from "../util/string";
 import { useScene } from "./scene";
 import { useUndoRedoState } from "./undo-redo";
 
@@ -165,7 +165,7 @@ export function useEditor() {
           `http://localhost:8000/scene/object/${data.line}/${
             data.column
           }/prop?value=${encodeURIComponent(
-            stringify(data.currentPropValue)
+            stringifyJSON(data.currentPropValue)
           )}&path=${encodeURIComponent(data.path)}&name=${encodeURIComponent(
             data.propName
           )}`
@@ -188,7 +188,7 @@ export function useEditor() {
           `http://localhost:8000/scene/object/${data.line}/${
             data.column
           }/prop?value=${encodeURIComponent(
-            stringify(data.nextPropValue)
+            stringifyJSON(data.nextPropValue)
           )}&path=${encodeURIComponent(data.path)}&name=${encodeURIComponent(
             data.propName
           )}`

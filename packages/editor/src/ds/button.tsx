@@ -15,6 +15,7 @@ export const IconButton = forwardRef<
     title: string;
     isSelected?: boolean;
     isDisabled?: boolean;
+    testId?: string;
     className?: string;
     onClick?: () => void;
     size?: "default" | "tight";
@@ -28,6 +29,7 @@ export const IconButton = forwardRef<
       isSelected,
       onClick,
       className,
+      testId,
       isDisabled,
       variant = "default",
       size = "default",
@@ -35,6 +37,7 @@ export const IconButton = forwardRef<
     ref
   ) => (
     <button
+      data-testid={testId}
       ref={ref}
       title={title}
       aria-label={title}

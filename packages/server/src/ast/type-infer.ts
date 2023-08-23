@@ -192,8 +192,6 @@ export function getJsxAttributeValue(
   }
 
   if (Node.isArrayLiteralExpression(expression)) {
-    // Hack around types too lazy to figure this out atm.
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const value = expression.getElements().map(getJsxAttributeValue);
     return value;
   }

@@ -6,6 +6,7 @@
  */
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import type { TWSRouteDefinition } from "@triplex/server";
+import { parseJSON } from "./string";
 
 export type RemapWithNumber<TObject> = {
   [P in keyof TObject]: string | number | undefined;
@@ -74,7 +75,7 @@ function wsQuery<TValue>(path: string) {
     });
 
     ws.addEventListener("message", (e) => {
-      const parsed = JSON.parse(e.data);
+      const parsed = parseJSON(e.data);
       valueCache.set(path, parsed);
       subscriptions.forEach((cb) => cb());
       deferred.resolve();

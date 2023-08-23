@@ -36,7 +36,6 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
   // A better implementation later would be to traverse this scene objects children
   // And see if a camera exists, if it does enable the button.
   const isCamera = data.name.includes("Camera");
-  const filteredProps = data.props;
 
   useEffect(() => {
     if (data.type === "custom" && data.path) {
@@ -104,13 +103,13 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
       <ScrollContainer>
         <div className="h-3" />
 
-        {filteredProps.length === 0 && (
+        {data.props.length === 0 && (
           <div className="px-4 text-sm italic text-neutral-400">
             This element has no props.
           </div>
         )}
 
-        {filteredProps.map((prop) => {
+        {data.props.map((prop) => {
           const column = "column" in prop ? prop.column : -1;
           const line = "line" in prop ? prop.line : -1;
 
@@ -147,15 +146,15 @@ function SelectedSceneObject({ target }: { target: FocusedObject }) {
                       nextPropValue: value,
                     });
                   }}
-                  onChange={(value) =>
+                  onChange={(value) => {
                     setPropValue({
                       column: target.column,
                       line: target.line,
                       path: target.ownerPath,
                       propName: prop.name,
                       propValue: value,
-                    })
-                  }
+                    });
+                  }}
                 />
               </PropTagContext.Provider>
             </PropField>

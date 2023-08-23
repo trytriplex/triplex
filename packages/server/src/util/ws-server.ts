@@ -6,6 +6,7 @@
  */
 import { WebSocketServer, WebSocket } from "ws";
 import { match } from "node-match-path";
+import { stringifyJSON } from "./string";
 
 export type UnionToIntersection<U> = (
   U extends unknown ? (k: U) => void : never
@@ -130,7 +131,7 @@ export function createTWS() {
               return ws.terminate();
             }
 
-            ws.send(JSON.stringify(data));
+            ws.send(stringifyJSON(data));
           }
 
           sendMessage("pull");

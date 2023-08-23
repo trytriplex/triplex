@@ -313,6 +313,7 @@ export function NumberInput({
         onBlur={onBlurHandler}
         onClick={incrementDown}
         tabIndex={-1}
+        data-testid={testId && `${testId}-decrement`}
         type="button"
       >
         <CaretLeftIcon />
@@ -325,6 +326,7 @@ export function NumberInput({
         onClick={incrementUp}
         tabIndex={-1}
         type="button"
+        data-testid={testId && `${testId}-increment`}
       >
         <CaretRightIcon />
       </button>
@@ -336,6 +338,7 @@ export function NumberInput({
           onClick={clearInputValue}
           size="tight"
           title="Clear value"
+          testId={testId && `${testId}-clear`}
         />
       )}
     </div>
