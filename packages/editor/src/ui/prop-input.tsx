@@ -64,6 +64,38 @@ export function PropInput({
   onConfirm: (value: unknown) => void;
   testId?: string;
 }) {
+  const isUnhandled =
+    ("valueKind" in prop &&
+      (prop.valueKind === "unhandled" || prop.valueKind === "identifier")) ||
+    prop.kind === "unhandled";
+
+  if (isUnhandled) {
+    return (
+      <IDELink
+        path={path}
+        column={column || -1}
+        line={line || -1}
+        title={
+          "value" in prop && prop.value
+            ? "This prop is controlled by code."
+            : "This field is not supported, please raise an issue on Github."
+        }
+        className="flex h-[26px] items-center gap-0.5 overflow-hidden rounded-md border border-transparent bg-white/5 px-1 py-0.5 text-sm hover:bg-white/10 focus-visible:border-blue-400"
+      >
+        <span className="overflow-hidden text-ellipsis whitespace-nowrap text-neutral-400">
+          {"value" in prop && prop.value ? (
+            `{${prop.value}}`
+          ) : (
+            <i className="text-neutral-500">Unsupported</i>
+          )}
+        </span>
+        <div className="ml-auto flex-shrink-0 text-orange-600">
+          <ExclamationTriangleIcon />
+        </div>
+      </IDELink>
+    );
+  }
+
   if (prop.kind === "union") {
     const isLiteralUnion = prop.shape.every(
       (value): value is NumberLiteralType | StringLiteralType =>
@@ -161,17 +193,19 @@ export function PropInput({
         label={prop.label}
       />
     );
-  } else if (prop.kind === "string" && isColorProp(name)) {
-    return (
-      <ColorInput
-        defaultValue={"value" in prop ? prop.value : undefined}
-        name={name}
-        required={prop.required}
-        onChange={onChange}
-        onConfirm={onConfirm}
-      />
-    );
   } else if (prop.kind === "string") {
+    if (isColorProp(name)) {
+      return (
+        <ColorInput
+          defaultValue={"value" in prop ? prop.value : undefined}
+          required={prop.required}
+          name={name}
+          onChange={onChange}
+          onConfirm={onConfirm}
+        />
+      );
+    }
+
     return (
       <StringInput
         required={required}
@@ -184,28 +218,5 @@ export function PropInput({
     );
   }
 
-  return (
-    <IDELink
-      path={path}
-      column={column || -1}
-      line={line || -1}
-      title={
-        "value" in prop && prop.value
-          ? "This prop is controlled by code."
-          : "This field is not supported, please raise an issue on Github."
-      }
-      className="flex h-[26px] items-center gap-0.5 overflow-hidden rounded-md border border-transparent bg-white/5 px-1 py-0.5 text-sm hover:bg-white/10 focus-visible:border-blue-400"
-    >
-      <span className="overflow-hidden text-ellipsis whitespace-nowrap text-neutral-400">
-        {"value" in prop && prop.value ? (
-          `{${prop.value}}`
-        ) : (
-          <i className="text-neutral-500">Unsupported</i>
-        )}
-      </span>
-      <div className="ml-auto flex-shrink-0 text-orange-600">
-        <ExclamationTriangleIcon />
-      </div>
-    </IDELink>
-  );
+  throw new Error("invariant");
 }
