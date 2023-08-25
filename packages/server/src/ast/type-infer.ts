@@ -15,7 +15,12 @@ import {
   Type,
 } from "ts-morph";
 import { getAttributes } from "./jsx";
-import type { DeclaredProp, Prop, Type as UnrolledType } from "../types";
+import type {
+  DeclaredProp,
+  Prop,
+  Type as UnrolledType,
+  ValueKind,
+} from "../types";
 
 export function unrollType(type: Type): UnrolledType {
   if (type.isNumber()) {
@@ -182,49 +187,66 @@ function extractJSDoc(symbol: SymbolType) {
 
 type AttributeValue = number | string | boolean | undefined | AttributeValue[];
 
-export function getJsxAttributeValue(
-  expression: Expression | undefined
-): AttributeValue {
+export function getJsxAttributeValue(expression: Expression | undefined): {
+  kind: ValueKind;
+  value: AttributeValue;
+} {
   // Value is inside a JSX expression
   if (Node.isIdentifier(expression)) {
     const text = expression.getText();
-    return text === "undefined" ? undefined : text;
+    if (text === "undefined") {
+      return { kind: "undefined", value: undefined };
+    }
+
+    return { kind: "identifier", value: text };
   }
 
   if (Node.isArrayLiteralExpression(expression)) {
-    const value = expression.getElements().map(getJsxAttributeValue);
-    return value;
+    const elements = expression.getElements();
+    const value: AttributeValue[] = [];
+
+    for (let i = 0; i < elements.length; i++) {
+      const nextElement = elements[i];
+      const nextValue = getJsxAttributeValue(nextElement);
+      if (nextValue.kind === "unhandled") {
+        return { kind: "unhandled", value: expression.getText() };
+      }
+
+      value.push(nextValue.value);
+    }
+
+    return { kind: "array", value };
   }
 
   if (Node.isStringLiteral(expression)) {
-    return expression.getLiteralText();
+    return { kind: "string", value: expression.getLiteralText() };
   }
 
   if (Node.isNumericLiteral(expression)) {
-    return Number(expression.getLiteralText());
+    return { kind: "number", value: Number(expression.getLiteralText()) };
   }
 
   if (Node.isPrefixUnaryExpression(expression)) {
     const operand = expression.getOperand();
     if (Node.isNumericLiteral(operand)) {
-      return -Number(operand.getLiteralText());
+      return { kind: "number", value: -Number(operand.getLiteralText()) };
     }
   }
 
   if (Node.isTrueLiteral(expression)) {
-    return true;
+    return { kind: "boolean", value: true };
   }
 
   if (Node.isFalseLiteral(expression)) {
-    return false;
+    return { kind: "boolean", value: false };
   }
 
   if (!expression) {
     // Implicit boolean!
-    return true;
+    return { kind: "boolean", value: true };
   }
 
-  return expression.getText();
+  return { kind: "unhandled", value: expression.getText() };
 }
 
 export function getJsxElementPropTypes(
@@ -278,8 +300,9 @@ export function getJsxElementPropTypes(
       const type = unrollType(propType);
 
       if (type.kind === "union") {
-        const typeOfValue = typeof value;
-        const isValueAnArray = Array.isArray(value);
+        const actualValue = value.value;
+        const typeOfValue = typeof actualValue;
+        const isValueAnArray = Array.isArray(actualValue);
 
         // Sort the union values to have the one that matches the first
         // value as the first option.
@@ -296,8 +319,8 @@ export function getJsxElementPropTypes(
             if (typeA.kind === "tuple") {
               let partialMatch = true;
 
-              for (let i = 0; i < value.length; i++) {
-                const typeofElValue = typeof value[i];
+              for (let i = 0; i < actualValue.length; i++) {
+                const typeofElValue = typeof actualValue[i];
                 const elType = typeA.shape[i];
 
                 if (elType.kind !== typeofElValue) {
@@ -314,8 +337,8 @@ export function getJsxElementPropTypes(
             if (typeB.kind === "tuple") {
               let partialMatch = true;
 
-              for (let i = 0; i < value.length; i++) {
-                const typeofElValue = typeof value[i];
+              for (let i = 0; i < actualValue.length; i++) {
+                const typeofElValue = typeof actualValue[i];
                 const elType = typeB.shape[i];
 
                 if (elType.kind !== typeofElValue) {
@@ -342,8 +365,8 @@ export function getJsxElementPropTypes(
         tags,
         column,
         line,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        value: value as any,
+        valueKind: value.kind,
+        value: value.value as string,
       });
     } else {
       props.push({

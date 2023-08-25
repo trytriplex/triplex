@@ -57,6 +57,7 @@ describe("type infer", () => {
             0,
             4.703084245305494,
           ],
+          "valueKind": "array",
         },
         {
           "column": 9,
@@ -88,6 +89,7 @@ describe("type infer", () => {
             -0.07873115868670048,
             -0.7211124466452248,
           ],
+          "valueKind": "array",
         },
         {
           "description": undefined,
@@ -200,6 +202,7 @@ describe("type infer", () => {
           "required": true,
           "tags": {},
           "value": "null",
+          "valueKind": "unhandled",
         },
         {
           "description": undefined,
@@ -370,6 +373,7 @@ describe("type infer", () => {
             "test": "yes",
           },
           "value": 5,
+          "valueKind": "number",
         },
       ]
     `);

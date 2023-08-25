@@ -71,12 +71,22 @@ export interface TypeValueMap {
   union: { value: string | number };
 }
 
+export type ValueKind =
+  | "unhandled"
+  | "identifier"
+  | "string"
+  | "boolean"
+  | "number"
+  | "undefined"
+  | "array";
+
 export type PropWithValue<TType extends Type> = {
   column: number;
   line: number;
   description: string | undefined;
   name: string;
   required: boolean;
+  valueKind: ValueKind;
   tags: Record<string, string | number | boolean>;
 } & TType &
   TypeValueMap[TType["kind"]];

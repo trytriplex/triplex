@@ -208,6 +208,7 @@ describe("jsx ast extractor", () => {
             1,
             1,
           ],
+          "valueKind": "array",
         },
         {
           "description": undefined,
@@ -300,6 +301,7 @@ describe("jsx ast extractor", () => {
           10,
           1,
         ],
+        "valueKind": "array",
       }
     `);
   });
@@ -388,6 +390,7 @@ describe("jsx ast extractor", () => {
             "default": "new THREE.Color( 0xffffff )",
           },
           "value": "pink",
+          "valueKind": "string",
         },
         {
           "description": "Opacity. Default is 1.",
@@ -859,6 +862,7 @@ describe("jsx ast extractor", () => {
           1,
           1,
         ],
+        "valueKind": "array",
       }
     `);
   });
@@ -905,6 +909,7 @@ describe("jsx ast extractor", () => {
           0,
           0,
         ],
+        "valueKind": "array",
       }
     `);
   });
@@ -1081,6 +1086,7 @@ describe("jsx ast extractor", () => {
             "default": true,
           },
           "value": true,
+          "valueKind": "boolean",
         },
         {
           "description": "Gets rendered into shadow map.",
@@ -1341,6 +1347,7 @@ describe("jsx ast extractor", () => {
             "default": true,
           },
           "value": true,
+          "valueKind": "boolean",
         },
         {
           "column": 26,
@@ -1353,6 +1360,7 @@ describe("jsx ast extractor", () => {
             "default": "false",
           },
           "value": false,
+          "valueKind": "boolean",
         },
         {
           "description": "Material gets baked in shadow receiving.",
@@ -1455,6 +1463,7 @@ describe("jsx ast extractor", () => {
           "default": true,
         },
         "value": undefined,
+        "valueKind": "undefined",
       }
     `);
     expect(props[3]).toMatchInlineSnapshot(`
@@ -1517,6 +1526,7 @@ describe("jsx ast extractor", () => {
           ],
           "tags": {},
           "value": "black",
+          "valueKind": "string",
         },
       ]
     `);
@@ -1554,6 +1564,7 @@ describe("jsx ast extractor", () => {
           ],
           "tags": {},
           "value": undefined,
+          "valueKind": "undefined",
         },
       ]
     `);
@@ -1606,6 +1617,7 @@ describe("jsx ast extractor", () => {
           ],
           "tags": {},
           "value": "position",
+          "valueKind": "identifier",
         },
         {
           "column": 51,
@@ -1641,6 +1653,7 @@ describe("jsx ast extractor", () => {
           ],
           "tags": {},
           "value": "scale",
+          "valueKind": "identifier",
         },
         {
           "column": 31,
@@ -1699,6 +1712,7 @@ describe("jsx ast extractor", () => {
           ],
           "tags": {},
           "value": "rotation",
+          "valueKind": "identifier",
         },
         {
           "description": undefined,
@@ -1871,6 +1885,7 @@ describe("jsx ast extractor", () => {
             0,
             4.703084245305494,
           ],
+          "valueKind": "array",
         },
         {
           "description": undefined,
@@ -1934,6 +1949,7 @@ describe("jsx ast extractor", () => {
             -0.07873115868670048,
             -0.7211124466452248,
           ],
+          "valueKind": "array",
         },
       ]
     `);
