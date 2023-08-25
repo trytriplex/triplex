@@ -166,6 +166,7 @@ export function PropInput({
       <ColorInput
         defaultValue={"value" in prop ? prop.value : undefined}
         name={name}
+        required={prop.required}
         onChange={onChange}
         onConfirm={onConfirm}
       />
