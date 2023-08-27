@@ -1,5 +1,23 @@
 # @triplex/server
 
+## 0.56.0
+
+### Minor Changes
+
+- 3724bf9: Name props declared on host elements now take precedence over the
+  element name.
+- 463789f: Adds end-to-end typesafe ws router.
+- 32a110f: Add top-level scene component to the scene panel. When selected users
+  can modify the props during their seession to see what happens.
+- 47483b9: The data that powers the context panel props is now sourced from
+  types first instead of defined props first, resulting in tuple type data no
+  longer being lost after a prop has been set.
+
+### Patch Changes
+
+- 5f7e78f: Undefined values are now preseved across the websocket server.
+- 2e53a2e: Turn off type declaration maps.
+
 ## 0.55.3
 
 ## 0.55.2

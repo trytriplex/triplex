@@ -1,5 +1,23 @@
 # @triplex/electron
 
+## 0.56.0
+
+### Patch Changes
+
+- 2e53a2e: Turn off type declaration maps.
+- Updated dependencies [3724bf9]
+- Updated dependencies [463789f]
+- Updated dependencies [d674f26]
+- Updated dependencies [5f7e78f]
+- Updated dependencies [47483b9]
+- Updated dependencies [32a110f]
+- Updated dependencies [2e53a2e]
+- Updated dependencies [47483b9]
+  - @triplex/server@0.56.0
+  - @triplex/editor@0.56.0
+  - @triplex/client@0.56.0
+  - create-triplex-project@0.56.0
+
 ## 0.55.3
 
 ### Patch Changes

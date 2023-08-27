@@ -1,5 +1,16 @@
 # @triplex/ws-client
 
+## 0.56.0
+
+### Minor Changes
+
+- 463789f: Adds end-to-end typesafe ws router.
+
+### Patch Changes
+
+- 5f7e78f: Undefined values are now preseved across the websocket server.
+- 2e53a2e: Turn off type declaration maps.
+
 ## 0.55.3
 
 ## 0.55.2

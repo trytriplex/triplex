@@ -1,5 +1,16 @@
 # @triplex/client
 
+## 0.56.0
+
+### Patch Changes
+
+- 2e53a2e: Turn off type declaration maps.
+- Updated dependencies [463789f]
+- Updated dependencies [32a110f]
+- Updated dependencies [2e53a2e]
+- Updated dependencies [47483b9]
+  - @triplex/scene@0.56.0
+
 ## 0.55.3
 
 ### Patch Changes
