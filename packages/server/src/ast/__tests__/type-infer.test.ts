@@ -8,7 +8,7 @@ import { join } from "path";
 import { describe, expect, it } from "vitest";
 import { getJsxElementAt } from "../jsx";
 import { _createProject } from "../project";
-import { getJsxElementPropTypes } from "../type-infer";
+import { getFunctionPropTypes, getJsxElementPropTypes } from "../type-infer";
 
 describe("type infer", () => {
   it("should return types of a imported component", () => {
@@ -536,5 +536,96 @@ describe("type infer", () => {
           "tags": {},
         }
       `);
+  });
+
+  it("should infer prop types from a function", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/type-extraction.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 30, 5);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const { props } = getFunctionPropTypes(sourceFile, "UnionOptional");
+
+    expect(props).toMatchInlineSnapshot(`
+      [
+        {
+          "description": undefined,
+          "kind": "union",
+          "name": "color",
+          "required": false,
+          "shape": [
+            {
+              "kind": "string",
+              "literal": "black",
+            },
+            {
+              "kind": "string",
+              "literal": "white",
+            },
+          ],
+          "tags": {},
+        },
+      ]
+    `);
+  });
+
+  it("should infer prop types from arrow function", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/type-extraction.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 30, 5);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const { props } = getFunctionPropTypes(sourceFile, "ArrowFunc");
+
+    expect(props).toMatchInlineSnapshot(`
+      [
+        {
+          "description": undefined,
+          "kind": "string",
+          "name": "color",
+          "required": true,
+          "tags": {},
+        },
+      ]
+    `);
+  });
+
+  it("should infer prop types from wrapped arrow function", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/type-extraction.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 30, 5);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const { props } = getFunctionPropTypes(sourceFile, "WrappedFunc");
+
+    expect(props).toMatchInlineSnapshot(`
+      [
+        {
+          "description": undefined,
+          "kind": "string",
+          "name": "name",
+          "required": true,
+          "tags": {},
+        },
+      ]
+    `);
   });
 });

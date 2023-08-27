@@ -10,6 +10,7 @@ import {
   JsxSelfClosingElement,
   Node,
   PropertySignature,
+  SourceFile,
   Symbol as SymbolType,
   ts,
   Type,
@@ -21,6 +22,7 @@ import type {
   Type as UnrolledType,
   ValueKind,
 } from "../types";
+import { getExportName } from "./module";
 
 export function unrollType(type: Type): UnrolledType {
   if (type.isNumber()) {
@@ -380,4 +382,73 @@ export function getJsxElementPropTypes(
   }
 
   return { props, transforms: { rotate, translate, scale } };
+}
+
+export function getFunctionPropTypes(
+  sourceFile: SourceFile,
+  exportName: string
+) {
+  const propTypes: Prop[] = [];
+  const empty = {
+    props: propTypes,
+    transforms: { rotate: false, translate: false, scale: false },
+  };
+  const { declaration } = getExportName(sourceFile, exportName);
+  const type = declaration.getType();
+  const signatures = type.getCallSignatures();
+
+  if (signatures.length === 0) {
+    // No signatures for this call-like node found.
+    return empty;
+  }
+
+  const [props] = signatures[0].getParameters();
+  if (!props) {
+    // No props arg
+    return empty;
+  }
+
+  const valueDeclaration = props.getValueDeclaration();
+  if (!valueDeclaration) {
+    // No decl found!
+    return empty;
+  }
+
+  const propsType = sourceFile
+    .getProject()
+    .getTypeChecker()
+    .getTypeOfSymbolAtLocation(props, valueDeclaration);
+
+  const properties = propsType.getApparentProperties();
+
+  let rotate = false;
+  let scale = false;
+  let translate = false;
+
+  for (let i = 0; i < properties.length; i++) {
+    const prop = properties[i];
+    const declarations = prop.getDeclarations();
+    const propDeclaration = declarations[0] as PropertySignature;
+    const propName = prop.getName();
+    const propType = prop.getTypeAtLocation(declaration);
+    const { description, tags } = extractJSDoc(prop);
+
+    if (propName === "rotation") {
+      rotate = true;
+    } else if (propName === "position") {
+      translate = true;
+    } else if (propName === "scale") {
+      scale = true;
+    }
+
+    propTypes.push({
+      ...unrollType(propType),
+      name: propName,
+      required: !propDeclaration?.hasQuestionToken?.(),
+      description: description || undefined,
+      tags,
+    });
+  }
+
+  return { props: propTypes, transforms: { rotate, translate, scale } };
 }

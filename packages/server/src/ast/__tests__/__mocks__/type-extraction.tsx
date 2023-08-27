@@ -43,6 +43,12 @@ export const Um = () => (
   </group>
 );
 
-function UnionOptional(_: { color?: "black" | "white" }) {
+export function UnionOptional(_: { color?: "black" | "white" }) {
   return null;
 }
+
+export const ArrowFunc = (_: { color: string }) => null;
+
+const identity = <T extends unknown>(id: T) => id;
+
+export const WrappedFunc = identity((_: { name: string }) => null);

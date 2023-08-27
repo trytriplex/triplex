@@ -27,6 +27,7 @@ import {
   ProjectAsset,
   Prop,
 } from "./types";
+import { getFunctionProps } from "./ast/jsx";
 
 export * from "./types";
 
@@ -298,6 +299,20 @@ export function createServer({
       async (push, { path }) => {
         const { sourceFile } = await project.getSourceFile(path);
         sourceFile.onModified(push);
+      }
+    ),
+    tws.route(
+      "/scene/:path/:exportName/props",
+      async ({ path, exportName }) => {
+        const { sourceFile } = await project.getSourceFile(path);
+        const props = getFunctionProps(sourceFile, exportName);
+        return props;
+      },
+      async (push, { path }) => {
+        const { sourceFile, onDependencyModified } =
+          await project.getSourceFile(path);
+        sourceFile.onModified(push);
+        onDependencyModified(push);
       }
     ),
     tws.route(

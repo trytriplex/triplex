@@ -4,9 +4,50 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { Fragment } from "react";
+import { listen } from "@triplex/bridge/client";
+import { ComponentType, Fragment, useEffect, useState } from "react";
 import { suspend } from "suspend-react";
 import { useScenes } from "./context";
+import { SceneObject } from "./scene-object";
+
+function RenderSceneObject({
+  path,
+  exportName,
+  staticSceneProps,
+  component: SceneComponent,
+}: {
+  path: string;
+  exportName: string;
+  staticSceneProps: Record<string, unknown>;
+  component: ComponentType<unknown>;
+}) {
+  const [overriddenProps, setProps] = useState<Record<string, unknown>>({});
+
+  useEffect(() => {
+    return listen("trplx:requestSetSceneObjectProp", (data) => {
+      if (data.column === -1 && data.line === -1 && data.path === path) {
+        setProps((prev) => ({ ...prev, [data.propName]: data.propValue }));
+      }
+    });
+  });
+
+  return (
+    <SceneObject
+      __meta={{
+        column: -1,
+        line: -1,
+        name: exportName,
+        path: path,
+        rotate: true,
+        scale: true,
+        translate: true,
+      }}
+      __component={SceneComponent}
+      {...staticSceneProps}
+      {...overriddenProps}
+    />
+  );
+}
 
 export function SceneLoader({
   path,
@@ -38,7 +79,12 @@ export function SceneLoader({
 
   return (
     <>
-      <SceneComponent {...sceneProps} />
+      <RenderSceneObject
+        path={path}
+        exportName={exportName}
+        component={SceneComponent}
+        staticSceneProps={sceneProps}
+      />
 
       {triplexMeta?.lighting === "default" && (
         <>

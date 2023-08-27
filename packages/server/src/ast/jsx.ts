@@ -13,7 +13,7 @@ import {
   ts,
   JsxAttribute,
 } from "ts-morph";
-import { getJsxElementPropTypes } from "./type-infer";
+import { getFunctionPropTypes, getJsxElementPropTypes } from "./type-infer";
 
 /**
  * Returns all found jsx elements in a source file, optionally filtered by a
@@ -308,6 +308,27 @@ export function getJsxElementProps(
 
       return propA.name.localeCompare(propB.name);
     });
+
+  return { props: sortedProps, transforms };
+}
+
+export function getFunctionProps(sourceFile: SourceFile, exportName: string) {
+  const { props, transforms } = getFunctionPropTypes(sourceFile, exportName);
+
+  const sortedProps = props.sort((propA, propB) => {
+    const aPos = propsSortList[propA.name] ?? -1;
+    const bPos = propsSortList[propB.name] ?? -1;
+
+    if (aPos < bPos) {
+      return 1;
+    }
+
+    if (bPos < aPos) {
+      return -1;
+    }
+
+    return propA.name.localeCompare(propB.name);
+  });
 
   return { props: sortedProps, transforms };
 }

@@ -4,12 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import {
-  ChangeEventHandler,
-  Fragment,
-  Suspense,
-  useDeferredValue,
-} from "react";
+import { ChangeEventHandler, Fragment, Suspense, ComponentType } from "react";
 import { cn } from "../ds/cn";
 import { useLazySubscription } from "@triplex/ws-client";
 import { IDELink } from "../util/ide";
@@ -17,20 +12,29 @@ import { useEditor } from "../stores/editor";
 import { useScene } from "../stores/scene";
 import { ScrollContainer } from "../ds/scroll-container";
 import { AssetsDrawer } from "./assets-drawer";
-import { CaretDownIcon, ExitIcon } from "@radix-ui/react-icons";
+import {
+  CaretDownIcon,
+  ExitIcon,
+  MixerHorizontalIcon,
+} from "@radix-ui/react-icons";
 import { IconButton } from "../ds/button";
 import { ErrorBoundary } from "./error-boundary";
+import { IconProps } from "@radix-ui/react-icons/dist/types";
+import { useSceneState } from "../stores/scene-state";
 
 function SceneComponent({
   name,
   selected,
   onClick,
   level = 1,
+  iconRight: IconRight,
 }: {
   name: string;
   selected: boolean;
   onClick: () => void;
   level?: number;
+  children?: React.ReactNode;
+  iconRight?: ComponentType<IconProps>;
 }) {
   return (
     <button
@@ -43,10 +47,13 @@ function SceneComponent({
         selected
           ? "border-l-blue-400 bg-white/5 text-blue-400"
           : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
-        "block w-[209px] cursor-default overflow-hidden text-ellipsis border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
+        "flex w-[242px] cursor-default items-center justify-between border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
       ])}
     >
-      {name}
+      <span className="overflow-hidden text-ellipsis whitespace-nowrap">
+        {name}
+      </span>
+      {IconRight ? <IconRight className="flex-shrink-0" /> : null}
     </button>
   );
 }
@@ -156,10 +163,11 @@ function SceneContents() {
         </IDELink>
       </div>
 
-      <div className="h-[1px] bg-neutral-800" />
+      <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
 
       <div className="flex px-2 py-1">
         <AssetsDrawer />
+        <ComponentSandboxButton />
 
         {enteredComponent && (
           <IconButton
@@ -171,27 +179,49 @@ function SceneContents() {
         )}
       </div>
 
-      <div className="h-[1px] bg-neutral-800" />
+      <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
 
       <ScrollContainer>
         <div className="h-1" />
-        <SceneObjectButtons sceneObjects={scene.sceneObjects} />
+        <SceneObjectButtons level={1} sceneObjects={scene.sceneObjects} />
         <div className="h-1" />
       </ScrollContainer>
     </div>
   );
 }
 
+function ComponentSandboxButton() {
+  const { focus, blur } = useScene();
+  const { target, path, exportName } = useEditor();
+  const hasState = useSceneState((store) => store.hasState(path + exportName));
+  const isSelected = target?.column === -1 && target?.line === -1;
+
+  return (
+    <IconButton
+      isSelected={isSelected}
+      className={hasState ? "text-blue-400" : undefined}
+      onClick={() => {
+        if (isSelected) {
+          blur();
+        } else {
+          focus({ column: -1, line: -1, ownerPath: path });
+        }
+      }}
+      icon={MixerHorizontalIcon}
+      title="Live edit props"
+    />
+  );
+}
+
 function SceneObjectButtons({
   sceneObjects,
-  level = 1,
+  level,
 }: {
   sceneObjects: JsxElementPositions[];
-  level?: number;
+  level: number;
 }) {
   const { focus } = useScene();
   const { target, path } = useEditor();
-  const deferredFocus = useDeferredValue(target);
 
   return (
     <>
@@ -207,9 +237,9 @@ function SceneObjectButtons({
             }}
             level={level}
             selected={
-              !!deferredFocus &&
-              deferredFocus.column === child.column &&
-              deferredFocus.line === child.line
+              !!target &&
+              target.column === child.column &&
+              target.line === child.line
             }
             name={child.name}
           />
