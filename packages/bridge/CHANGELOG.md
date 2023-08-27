@@ -1,5 +1,16 @@
 # @triplex/bridge
 
+## 0.56.0
+
+### Minor Changes
+
+- 32a110f: Add top-level scene component to the scene panel. When selected users
+  can modify the props during their seession to see what happens.
+
+### Patch Changes
+
+- 2e53a2e: Turn off type declaration maps.
+
 ## 0.55.3
 
 ## 0.55.2

@@ -1,5 +1,29 @@
 # @triplex/editor
 
+## 0.56.0
+
+### Minor Changes
+
+- 463789f: Adds end-to-end typesafe ws router.
+- 32a110f: Add top-level scene component to the scene panel. When selected users
+  can modify the props during their seession to see what happens.
+- 47483b9: The data that powers the context panel props is now sourced from
+  types first instead of defined props first, resulting in tuple type data no
+  longer being lost after a prop has been set.
+
+### Patch Changes
+
+- d674f26: Color input can now be cleared when not required.
+- 47483b9: Tuple input no longer fires when required values are only partially
+  filled out.
+- 2e53a2e: Turn off type declaration maps.
+- Updated dependencies [463789f]
+- Updated dependencies [5f7e78f]
+- Updated dependencies [32a110f]
+- Updated dependencies [2e53a2e]
+  - @triplex/ws-client@0.56.0
+  - @triplex/bridge@0.56.0
+
 ## 0.55.3
 
 ### Patch Changes
