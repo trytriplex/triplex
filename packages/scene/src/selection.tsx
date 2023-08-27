@@ -275,22 +275,13 @@ export function Selection({
     () => flatten(sceneData?.sceneObjects || []),
     [sceneData]
   );
-  const selectedSceneObjectMeta = useSubscriptionEffect(
+  const selectedSceneObject = useSubscriptionEffect(
     "/scene/:path/object/:line/:column",
     {
       path,
       line: selected?.line,
       column: selected?.column,
-      disabled: !selected,
-    }
-  );
-  const selectedSceneObjectTypes = useSubscriptionEffect(
-    "/scene/:path/object/:line/:column",
-    {
-      path,
-      line: selected?.line,
-      column: selected?.column,
-      disabled: !selected,
+      disabled: !selected || (selected?.line === -1 && selected?.column === -1),
     }
   );
   const selectedObject = selected
@@ -316,7 +307,7 @@ export function Selection({
 
   useEffect(() => {
     return listen("trplx:requestNavigateToScene", (sceneObject) => {
-      if (!sceneObject && (!selectedObject || !selectedSceneObjectMeta)) {
+      if (!sceneObject && (!selectedObject || !selectedSceneObject)) {
         return;
       }
 
@@ -326,19 +317,19 @@ export function Selection({
         onBlur();
       } else if (
         selectedObject &&
-        selectedSceneObjectMeta &&
-        selectedSceneObjectMeta.type === "custom"
+        selectedSceneObject &&
+        selectedSceneObject.type === "custom"
       ) {
         onNavigate({
-          path: selectedSceneObjectMeta.path,
-          exportName: selectedSceneObjectMeta.exportName,
+          path: selectedSceneObject.path,
+          exportName: selectedSceneObject.exportName,
           encodedProps: encodeProps(selectedObject),
         });
         setSelected(undefined);
         onBlur();
       }
     });
-  }, [onBlur, onNavigate, selectedObject, selectedSceneObjectMeta]);
+  }, [onBlur, onNavigate, selectedObject, selectedSceneObject]);
 
   useEffect(() => {
     return listen("trplx:requestBlurSceneObject", () => {
@@ -363,15 +354,15 @@ export function Selection({
   }, [onJumpTo, selectedObject]);
 
   useEffect(() => {
-    if (!selectedSceneObjectMeta || selectedSceneObjectMeta.type === "host") {
+    if (!selectedSceneObject || selectedSceneObject.type === "host") {
       return;
     }
 
     preloadSubscription("/scene/:path/:exportName", {
-      path: selectedSceneObjectMeta.path,
-      exportName: selectedSceneObjectMeta.exportName,
+      path: selectedSceneObject.path,
+      exportName: selectedSceneObject.exportName,
     });
-  }, [selectedSceneObjectMeta]);
+  }, [selectedSceneObject]);
 
   useEffect(() => {
     return compose([
@@ -454,15 +445,15 @@ export function Selection({
           e.key === "F" &&
           e.shiftKey &&
           selected &&
-          selectedSceneObjectMeta &&
-          selectedSceneObjectMeta.type === "custom"
+          selectedSceneObject &&
+          selectedSceneObject.type === "custom"
         ) {
           // Only navigate if there is a path to navigate to.
           setSelected(undefined);
           onBlur();
           onNavigate({
-            path: selectedSceneObjectMeta.path,
-            exportName: selectedSceneObjectMeta.exportName,
+            path: selectedSceneObject.path,
+            exportName: selectedSceneObject.exportName,
             encodedProps: encodeProps(selectedObject),
           });
         }
@@ -490,14 +481,14 @@ export function Selection({
     onNavigate,
     selected,
     selectedObject,
-    selectedSceneObjectMeta,
+    selectedSceneObject,
   ]);
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const onMouseUp = (e: any) => {
     dragging.current = false;
 
-    if (!e || !selectedObject || !selectedSceneObjectMeta) {
+    if (!e || !selectedObject || !selectedSceneObject) {
       return;
     }
 
@@ -569,8 +560,7 @@ export function Selection({
       {selectedObject && (
         <TransformControls
           enabled={
-            !!selectedSceneObjectTypes &&
-            selectedSceneObjectTypes.transforms[transform]
+            !!selectedSceneObject && selectedSceneObject.transforms[transform]
           }
           mode={transform}
           object={selectedObject.sceneObject}

@@ -80,6 +80,7 @@ function useSceneObjectProps(
       }),
       listen("trplx:requestSetSceneObjectProp", (data) => {
         if (
+          "column" in data &&
           data.column === meta.column &&
           data.line === meta.line &&
           data.path === meta.path
@@ -129,7 +130,7 @@ function useSceneObjectProps(
 
 export interface SceneObjectProps extends Object3DProps {
   __component:
-    | React.ForwardRefExoticComponent<{ ref: unknown; children?: unknown }>
+    | React.ComponentType<{ ref?: unknown; children?: unknown }>
     | string;
   __meta: {
     line: number;
