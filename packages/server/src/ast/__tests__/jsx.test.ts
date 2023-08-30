@@ -15,6 +15,44 @@ import {
 import { _createProject } from "../project";
 
 describe("jsx ast extractor", () => {
+  it("should return jsx positions for a expression export", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/expression.tsx")
+    );
+
+    const elements = getJsxElementsPositions(sourceFile, "default");
+
+    expect(elements).toMatchInlineSnapshot(`
+      [
+        {
+          "children": [
+            {
+              "children": [],
+              "column": 7,
+              "line": 14,
+              "name": "boxGeometry",
+              "type": "host",
+            },
+            {
+              "children": [],
+              "column": 7,
+              "line": 15,
+              "name": "meshStandardMaterial",
+              "type": "host",
+            },
+          ],
+          "column": 5,
+          "line": 13,
+          "name": "mesh",
+          "type": "host",
+        },
+      ]
+    `);
+  });
+
   it("should return top level components for default export", async () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),

@@ -35,7 +35,7 @@ export function getAllJsxElements(sourceFile: SourceFile, exportName?: string) {
       throw new Error(`invariant: export ${exportName} not found`);
     }
 
-    nodeToSearch = getExportDeclaration(foundExport.getDeclarations()[0]);
+    nodeToSearch = resolveExportDeclaration(foundExport.getDeclarations()[0]);
   }
 
   const jsxElements = nodeToSearch.getDescendantsOfKind(SyntaxKind.JsxElement);
@@ -98,41 +98,51 @@ export function getJsxTag(node: JsxElement | JsxSelfClosingElement) {
   };
 }
 
-export function getExportDeclaration(node: Node<ts.Node>) {
+export function resolveExportDeclaration(node: Node<ts.Node>) {
   if (Node.isExportAssignment(node)) {
-    const declarations = node
-      .asKind(SyntaxKind.ExportAssignment)
-      ?.getExpression()
-      .getSymbol()
-      ?.getDeclarations()
-      .filter((decl) => {
-        if (
-          Node.isTypeAliasDeclaration(decl) ||
-          Node.isInterfaceDeclaration(decl)
-        ) {
-          // Exclude types and interfaces
+    const expression = node.getExpression();
+    let declarations: Node<ts.Node>[] | undefined;
+
+    if (Node.isCallExpression(expression)) {
+      declarations = expression
+        // We make an assumption that the first argument is the component.
+        // If anyone uses a custom HOC this won't resolve correctly.
+        // Let's cross that bridge later if it comes to it.
+        .getArguments()[0]
+        .getSymbol()
+        ?.getDeclarations();
+    } else {
+      declarations = expression.getSymbol()?.getDeclarations();
+    }
+
+    declarations = declarations?.filter((decl) => {
+      if (
+        Node.isTypeAliasDeclaration(decl) ||
+        Node.isInterfaceDeclaration(decl)
+      ) {
+        // Exclude types and interfaces
+        return false;
+      }
+
+      if (Node.isImportSpecifier(decl)) {
+        if (decl.isTypeOnly()) {
+          // Exclude type import specifiers
           return false;
         }
 
-        if (Node.isImportSpecifier(decl)) {
-          if (decl.isTypeOnly()) {
-            // Exclude type import specifiers
-            return false;
-          }
-
-          if (
-            decl
-              .getParent()
-              .getParentIfKindOrThrow(SyntaxKind.ImportClause)
-              .isTypeOnly()
-          ) {
-            // Exclude type clauses
-            return false;
-          }
+        if (
+          decl
+            .getParent()
+            .getParentIfKindOrThrow(SyntaxKind.ImportClause)
+            .isTypeOnly()
+        ) {
+          // Exclude type clauses
+          return false;
         }
+      }
 
-        return true;
-      });
+      return true;
+    });
 
     // The result should be the first declaration.
     const result = declarations?.[0];
@@ -161,7 +171,9 @@ export function getJsxElementsPositions(
     throw new Error(`invariant: export ${exportName} not found`);
   }
 
-  const declaration = getExportDeclaration(foundExport.getDeclarations()[0]);
+  const declaration = resolveExportDeclaration(
+    foundExport.getDeclarations()[0]
+  );
 
   declaration.forEachDescendant((node) => {
     if (Node.isJsxElement(node) || Node.isJsxSelfClosingElement(node)) {

@@ -6,7 +6,7 @@
  */
 import { JsxElement, JsxSelfClosingElement, Node, SourceFile } from "ts-morph";
 import { normalize } from "node:path";
-import { getExportDeclaration } from "./jsx";
+import { resolveExportDeclaration } from "./jsx";
 
 export function getElementFilePath(
   element: JsxSelfClosingElement | JsxElement
@@ -72,7 +72,7 @@ export function getExportName(sourceFile: SourceFile, exportName: string) {
       throw new Error("invariant: default export should be a single function");
     }
 
-    const declaration = getExportDeclaration(declarations[0]);
+    const declaration = resolveExportDeclaration(declarations[0]);
     if (Node.isFunctionDeclaration(declaration)) {
       return { declaration, name: declaration.getNameOrThrow() };
     }
