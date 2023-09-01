@@ -15,7 +15,7 @@ import { ComponentProvider } from "../context";
 import { CustomBoxGroup } from "./__stubs__/custom";
 
 describe("selection", () => {
-  it("should select a direct node", async () => {
+  it("should select a direct host node", async () => {
     const onFocus = vi.fn();
     const path = "box.tsx";
     const exportName = "default";
@@ -47,7 +47,80 @@ describe("selection", () => {
           >
             <SceneObject
               __meta={{
-                name: "mesh",
+                name: "group",
+                path,
+                column: 0,
+                line: 1,
+                rotate: false,
+                scale: false,
+                translate: false,
+              }}
+              __component="group"
+            >
+              <SceneObject
+                __meta={{
+                  name: "mesh",
+                  path,
+                  column: 0,
+                  line: 1,
+                  rotate: true,
+                  scale: true,
+                  translate: true,
+                }}
+                __component="mesh"
+              >
+                <boxGeometry />
+              </SceneObject>
+            </SceneObject>
+          </Selection>
+        </ComponentProvider>
+      </MemoryRouter>
+    );
+    const selectionGroup = scene.findByProps({ name: "selection-group" });
+    const groupElement = scene.findAllByType("Group")[2];
+
+    await fireEvent(selectionGroup, "onClick", {
+      delta: 0,
+      object: groupElement.instance,
+    });
+
+    expect(onFocus.mock.calls.length).toEqual(1);
+    expect(onFocus.mock.calls[0][0].sceneObject).toBe(groupElement.instance);
+  });
+
+  it("should select a direct custom node", async () => {
+    const onFocus = vi.fn();
+    const path = "box.tsx";
+    const exportName = "default";
+    mockUseSubscriptionEffect(
+      "/scene/:path/:exportName",
+      { exportName, path },
+      {
+        sceneObjects: [
+          {
+            name: "mesh",
+            column: 0,
+            line: 1,
+            type: "host",
+            children: [],
+          },
+        ],
+      }
+    );
+    const { fireEvent, scene } = await render(
+      <MemoryRouter>
+        <ComponentProvider value={{}}>
+          <Selection
+            exportName={exportName}
+            path={path}
+            onBlur={vi.fn()}
+            onJumpTo={vi.fn()}
+            onFocus={onFocus}
+            onNavigate={vi.fn()}
+          >
+            <SceneObject
+              __meta={{
+                name: "Mesh",
                 path,
                 column: 0,
                 line: 1,
@@ -116,7 +189,7 @@ describe("selection", () => {
             <SceneObject
               name="parent-group"
               __meta={{
-                name: "group",
+                name: "Box",
                 path,
                 column: 0,
                 line: 1,
@@ -202,7 +275,7 @@ describe("selection", () => {
               name="custom-box"
               position={[1, 1, 1]}
               __meta={{
-                name: "group",
+                name: "CustomBoxGroup",
                 path: "box.tsx",
                 column: 0,
                 line: 1,

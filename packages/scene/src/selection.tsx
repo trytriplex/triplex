@@ -156,10 +156,16 @@ const findEditorData = (
       !data &&
       isInScene(path, parent.userData.triplexSceneMeta, positions)
     ) {
+      const isHostElement = !!/^[a-z]/.exec(
+        parent.userData.triplexSceneMeta.name
+      );
+
       // Keep traversing up the tree to find the top most wrapped scene object.
       data = {
         ...parent.userData.triplexSceneMeta,
-        sceneObject: findTransformedSceneObject(parent.children[0], transform),
+        sceneObject: isHostElement
+          ? parent.children[0]
+          : findTransformedSceneObject(parent.children[0], transform),
         space: "world",
       } as EditorNodeData;
     }
