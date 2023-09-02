@@ -1,5 +1,14 @@
 # @triplex/scene
 
+## 0.56.1
+
+### Patch Changes
+
+- e4345ef: Selecting scene objects now bails out from traversing the Three.js
+  scene when it is a host element inside the currently open file.
+  - @triplex/ws-client@0.56.1
+  - @triplex/bridge@0.56.1
+
 ## 0.56.0
 
 ### Minor Changes

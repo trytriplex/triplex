@@ -150,19 +150,19 @@ importers:
         specifier: ^7.51.0
         version: 7.51.0
       '@triplex/client':
-        specifier: 0.56.0
+        specifier: 0.56.1
         version: link:../../packages/client
       '@triplex/editor':
-        specifier: 0.56.0
+        specifier: 0.56.1
         version: link:../../packages/editor
       '@triplex/server':
-        specifier: 0.56.0
+        specifier: 0.56.1
         version: link:../../packages/server
       anymatch:
         specifier: ^3.1.3
         version: 3.1.3
       create-triplex-project:
-        specifier: 0.56.0
+        specifier: 0.56.1
         version: link:../../packages/create-triplex-project
       electron-log:
         specifier: ^5.0.0-beta.23
@@ -214,7 +214,7 @@ importers:
         specifier: ^8.11.1
         version: 8.11.1(react-dom@18.2.0)(react@18.2.0)(three@0.148.0)
       '@triplex/run':
-        specifier: ^0.56.0
+        specifier: ^0.56.1
         version: link:../../packages/run
       '@types/react':
         specifier: ^18.0.0
@@ -241,7 +241,7 @@ importers:
         specifier: ^8.11.1
         version: 8.11.1(react-dom@18.2.0)(react@18.2.0)(three@0.148.0)
       '@triplex/run':
-        specifier: ^0.56.0
+        specifier: ^0.56.1
         version: link:../../packages/run
       '@types/react':
         specifier: ^18.0.0
@@ -283,7 +283,7 @@ importers:
         specifier: ^8.11.1
         version: 8.11.1(react-dom@18.2.0)(react@18.2.0)(three@0.148.0)
       '@triplex/run':
-        specifier: ^0.56.0
+        specifier: ^0.56.1
         version: link:../../packages/run
       '@types/react':
         specifier: ^18.0.0
@@ -310,7 +310,7 @@ importers:
         specifier: ^8.11.1
         version: 8.11.1(react-dom@18.2.0)(react@18.2.0)(three@0.153.0)
       '@triplex/run':
-        specifier: ^0.56.0
+        specifier: ^0.56.1
         version: link:../../packages/run
       '@types/react':
         specifier: ^18.0.0
@@ -340,7 +340,7 @@ importers:
         specifier: ^8.11.1
         version: 8.11.1(react-dom@18.2.0)(react@18.2.0)(three@0.148.0)
       '@triplex/run':
-        specifier: ^0.56.0
+        specifier: ^0.56.1
         version: link:../../packages/run
       '@types/react':
         specifier: ^18.0.0
@@ -382,7 +382,7 @@ importers:
         specifier: ^7.21.2
         version: 7.21.2
       '@triplex/scene':
-        specifier: 0.56.0
+        specifier: 0.56.1
         version: link:../scene
       '@vitejs/plugin-react':
         specifier: ^3.0.1
@@ -474,10 +474,10 @@ importers:
         specifier: ^8.0.0
         version: 8.11.1(react-dom@18.2.0)(react@18.2.0)(three@0.148.0)
       '@triplex/bridge':
-        specifier: 0.56.0
+        specifier: 0.56.1
         version: link:../bridge
       '@triplex/ws-client':
-        specifier: 0.56.0
+        specifier: 0.56.1
         version: link:../ws-client
       react:
         specifier: ^18.0.0
@@ -508,7 +508,7 @@ importers:
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
       '@triplex/server':
-        specifier: ^0.56.0
+        specifier: ^0.56.1
         version: link:../server
       '@types/react':
         specifier: ^18.0.27
@@ -562,13 +562,13 @@ importers:
         specifier: ^10.0.2
         version: 10.0.2(commander@10.0.1)
       '@triplex/client':
-        specifier: 0.56.0
+        specifier: 0.56.1
         version: link:../client
       '@triplex/editor':
-        specifier: 0.56.0
+        specifier: 0.56.1
         version: link:../editor
       '@triplex/server':
-        specifier: 0.56.0
+        specifier: 0.56.1
         version: link:../server
       commander:
         specifier: ^10.0.0
@@ -608,10 +608,10 @@ importers:
   packages/scene:
     dependencies:
       '@triplex/bridge':
-        specifier: 0.56.0
+        specifier: 0.56.1
         version: link:../bridge
       '@triplex/ws-client':
-        specifier: 0.56.0
+        specifier: 0.56.1
         version: link:../ws-client
       react-error-boundary:
         specifier: ^3.1.4
@@ -639,7 +639,7 @@ importers:
         specifier: ^1.3.28
         version: 1.3.28
       '@triplex/server':
-        specifier: 0.56.0
+        specifier: 0.56.1
         version: link:../server
       '@types/react':
         specifier: ^18.0.27
@@ -758,7 +758,7 @@ importers:
         specifier: ^1.3.28
         version: 1.3.28
       '@triplex/server':
-        specifier: 0.56.0
+        specifier: 0.56.1
         version: link:../server
       '@types/react':
         specifier: ^18.0.27

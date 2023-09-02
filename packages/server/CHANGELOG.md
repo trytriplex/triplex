@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.56.1
+
+### Patch Changes
+
+- baf33b9: Exports that export a call expression now resolve correctly when
+  opened.
+
 ## 0.56.0
 
 ### Minor Changes

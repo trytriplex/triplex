@@ -1,5 +1,12 @@
 # @triplex/client
 
+## 0.56.1
+
+### Patch Changes
+
+- Updated dependencies [e4345ef]
+  - @triplex/scene@0.56.1
+
 ## 0.56.0
 
 ### Patch Changes
