@@ -80,6 +80,9 @@ const components: Components = {
   ),
   table: ({ children }) => <table className="mt-5">{children}</table>,
   td: ({ children }) => <td className="text-neutral-300">{children}</td>,
+  Video: ({ src }) => (
+    <video className="mt-8 w-full rounded-xl" controls src={src} />
+  ),
 };
 
 function renderDocsItem(
