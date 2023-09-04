@@ -85,6 +85,14 @@ const components: Components = {
   ),
 };
 
+const friendlyDate = (date: string): string => {
+  return new Date(date).toLocaleDateString("en-US", {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  });
+};
+
 function renderDocsItem(
   link: ReturnType<typeof normalizePages>["docsDirectories"][0],
   route: string,
@@ -302,7 +310,7 @@ function SearchModal({
 }
 
 function Layout({ pageOpts, children }: NextraThemeLayoutProps) {
-  const { title, pageMap, headings, route } = pageOpts;
+  const { title, pageMap, frontMatter, headings, route } = pageOpts;
 
   const [isNavMenuOpen, setNavOpen] = useState(false);
   const searchOpen = useSearchStore((store) => store.isOpen);
@@ -393,9 +401,28 @@ function Layout({ pageOpts, children }: NextraThemeLayoutProps) {
         ])}
       >
         {result.activeThemeContext.layout !== "raw" && (
-          <h1 className="text-6xl font-extrabold tracking-tight text-neutral-300">
-            {title}
-          </h1>
+          <>
+            <h1 className="text-6xl font-extrabold tracking-tight text-neutral-300">
+              {title}
+            </h1>
+            {frontMatter.date && (
+              <>
+                (
+                <time className="text-neutral-400" dateTime={frontMatter.date}>
+                  {friendlyDate(frontMatter.date)}
+                </time>
+                <span className="text-neutral-400"> · </span>
+                <a
+                  className="text-neutral-400 hover:text-neutral-200"
+                  href="https://twitter.com/_douges"
+                  target="_blank"
+                >
+                  Michael Dougall
+                </a>
+                )
+              </>
+            )}
+          </>
         )}
 
         {children}
