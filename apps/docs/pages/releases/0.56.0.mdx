@@ -1,11 +1,12 @@
 ---
 title: 0.56.0 Release
+date: 2023-08-27
 ---
 
 ▵ Triplex 0.56.0 introduces developer experience improvements and fixes some
 bugs.
 
-## Edit props
+## Live edit props
 
 Edit props given to the component you have open to test it in out over different
 states. Changed props only last during your session however — so when you close
@@ -20,7 +21,7 @@ Use keyboard modifiers (shift/ctrl) to control how fine grained it should be!
 
 <Video src="https://github.com/try-triplex/triplex/assets/6801309/0add7c1f-c973-4f1c-a44b-11fdd539a462" />
 
-## Prop tags
+## Set constraints with prop description tags
 
 Declare JSDoc tags in your prop descriptions and Triplex will use them where
 supported.
@@ -40,7 +41,7 @@ interface CameraEntityProps {
 
 <Video src="https://github.com/try-triplex/triplex/assets/6801309/c956f81d-c978-489a-af4d-a32ed420aa82" />
 
-## GLTF asset support
+## Adding GLTF assets to your scene
 
 GLTF is a common asset exported from 3D software like Blender. Now you can add
 them to your components straight through Triplex without needing to write out
@@ -48,7 +49,7 @@ the code for it.
 
 <Video src="https://github.com/try-triplex/triplex/assets/6801309/8727a6e3-ceed-45ee-8795-cfdaf4f42707" />
 
-## Host element names
+## Set host element names
 
 Host elements such as mesh can now be labelled using the name prop. When set
 they are used as the name shown in the scene panel.
