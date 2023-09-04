@@ -53,9 +53,7 @@
     "type": "hidden"
   },
   "releases": {
-    "title": "Releases",
-    "href": "https://github.com/try-triplex/triplex/releases",
-    "newWindow": true
+    "title": "Releases"
   },
   "license": {
     "type": "hidden"
