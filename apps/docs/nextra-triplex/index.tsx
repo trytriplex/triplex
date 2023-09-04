@@ -345,7 +345,7 @@ function Layout({ pageOpts, children }: NextraThemeLayoutProps) {
         {result.topLevelNavbarItems.map((item) => (
           <HeaderItem
             key={item.title}
-            href={item.href || item.firstChildRoute || item.route}
+            href={item.firstChildRoute || item.href || item.route}
           >
             {item.title}
           </HeaderItem>
