@@ -5,6 +5,11 @@
  * file in the root directory of this source tree.
  */
 export const scripts = {
+  defaultProvider: `
+    export default function EmptyProvider({ children }) {
+      return children;
+    }
+  `,
   scene: `
     import { createElement } from "react";
     import { createRoot } from "react-dom/client";
@@ -16,6 +21,7 @@ export const scripts = {
   `,
   sceneFrame: `
     import { Scene as SceneFrame } from "@triplex/scene";
+    import Provider from "{{PROVIDER_PATH}}";
 
     const scenes = import.meta.glob({{SCENE_FILES_GLOB}});
     const localImports = import.meta.glob({{COMPONENTS_FILE_GLOB}});
@@ -23,7 +29,11 @@ export const scripts = {
     const components = { ...localImports, ...nodeImports };
 
     export function Scene() {
-      return <SceneFrame components={components} scenes={scenes} />;
+      return (
+        <Provider>
+          <SceneFrame components={components} scenes={scenes} />
+        </Provider>
+      );
     }
   `,
   // Hides vite-ignored dynamic import so that Vite can skip analysis if no other

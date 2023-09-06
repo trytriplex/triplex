@@ -27,6 +27,10 @@ export async function getConfig(cwd: string) {
     config.publicDir || "../public"
   );
 
+  const provider: string | undefined =
+    config.provider &&
+    joinPosix(cwd, ".triplex", config.provider).replaceAll("\\", "/");
+
   const files: string[] = config.files.map((file: string) =>
     // Separators should always be forward slashes for glob compatibility.
     joinPosix(cwd, ".triplex", file).replaceAll("\\", "/")
@@ -52,5 +56,6 @@ export async function getConfig(cwd: string) {
     files,
     components,
     assetsDir,
+    provider,
   };
 }

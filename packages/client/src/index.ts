@@ -18,14 +18,14 @@ export async function createServer({
   files,
   cwd = process.cwd(),
   target,
+  provider,
 }: {
   target: "web" | "electron";
   cwd?: string;
   components: string[];
-  open?: boolean | string;
-  exportName?: string;
   publicDir?: string;
   files: string[];
+  provider?: string;
 }) {
   const tsConfig = join(cwd, "tsconfig.json");
   const app = express();
@@ -37,7 +37,7 @@ export async function createServer({
     plugins: [
       react({ babel: { plugins: [triplexBabelPlugin] } }),
       glsl(),
-      scenePlugin({ cwd, files, components }),
+      scenePlugin({ cwd, files, components, provider }),
       tsconfigPaths({ projects: [tsConfig] }),
     ],
     define: {

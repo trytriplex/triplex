@@ -6,9 +6,9 @@
  */
 export interface TRIPLEXConfig {
   /**
-   * Folder inside the `publicDir` folder where Triplex maintains static assets
-   * such as GLTF and GLB files. Files inside this directory are made available
-   * to be added to the open component as a `<primitive>` element.
+   * Folder inside the {@link publicDir} folder where Triplex maintains static
+   * assets such as GLTF and GLB files. Files inside this directory are made
+   * available to be added to the open component as a `<primitive>` element.
    *
    * Defaults to `"assets"`.
    */
@@ -31,4 +31,16 @@ export interface TRIPLEXConfig {
    * the `"/image.png"` URL.
    */
   publicDir?: string;
+  /**
+   * Path to a provider component that can hold all React providers needed
+   * during runtime. The component must be the default export and return
+   * children.
+   *
+   * ```ts
+   * export default function Provider({ children }) {
+   *   return children;
+   * }
+   * ```
+   */
+  provider?: string;
 }

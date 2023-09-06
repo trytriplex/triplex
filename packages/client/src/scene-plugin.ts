@@ -6,18 +6,21 @@
  */
 import { scripts } from "./templates";
 
+const sceneFrameId = "triplex:scene-frame.tsx";
+const emptyProviderId = "triplex:empty-provider.tsx";
+const hmrImportId = "triplex:hmr-import";
+
 export function scenePlugin({
   cwd,
   components,
   files,
+  provider = emptyProviderId,
 }: {
   cwd: string;
   components: string[];
   files: string[];
+  provider: string | undefined;
 }) {
-  const sceneFrameId = "triplex:scene-frame.tsx";
-  const hmrImportId = "triplex:hmr-import";
-
   return {
     name: "triplex:scene-glob-plugin",
     enforce: "pre",
@@ -30,8 +33,16 @@ export function scenePlugin({
         // Return the id as a virtual module so no other plugins transform it.
         return "\0" + hmrImportId;
       }
+
+      if (id === emptyProviderId) {
+        return emptyProviderId;
+      }
     },
     async load(id: string) {
+      if (id === emptyProviderId) {
+        return scripts.defaultProvider;
+      }
+
       if (id === sceneFrameId) {
         // TODO: Users should be able to specify what node modules they want to make available.
         const nodeImports = ["@react-three/drei"];
@@ -56,7 +67,8 @@ export function scenePlugin({
               .map((imp) => `'${imp}': () => import('${imp}')`)
               .join(",")}
             }`
-          );
+          )
+          .replace("{{PROVIDER_PATH}}", provider);
       }
 
       if (id === "\0" + hmrImportId) {
