@@ -6,6 +6,7 @@
  */
 import { Gltf } from "@react-three/drei";
 import { forwardRef, memo } from "react";
+import { useProvider } from "./provider";
 
 const WhiteBox = forwardRef(() => (
   <>
@@ -28,6 +29,8 @@ const WhiteBox = forwardRef(() => (
 ));
 
 export const AnotherBox = memo(() => {
+  useProvider();
+
   return (
     <>
       <mesh visible={true} rotation={[0, 0, 0]}>
@@ -39,6 +42,8 @@ export const AnotherBox = memo(() => {
 });
 
 export function Empty() {
+  useProvider();
+
   return (
     <>
       <mesh
@@ -59,6 +64,8 @@ export function Empty() {
 export default WhiteBox;
 
 export function Untitled() {
+  useProvider();
+
   return (
     <>
       <Gltf src="/assets/pmndrs.glb" />
