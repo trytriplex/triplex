@@ -14,6 +14,7 @@ import {
   JsxAttribute,
 } from "ts-morph";
 import { getFunctionPropTypes, getJsxElementPropTypes } from "./type-infer";
+import { getElementFilePath } from "./module";
 
 /**
  * Returns all found jsx elements in a source file, optionally filtered by a
@@ -57,6 +58,11 @@ export interface CustomJsxElementPosition {
   column: number;
   line: number;
   name: string;
+  /**
+   * Path will be defined if the jsx element exists in local source code.
+   */
+  path?: string;
+  exportName: string;
   children: JsxElementPositions[];
   type: "custom";
 }
@@ -181,22 +187,28 @@ export function getJsxElementsPositions(
         node.getStart()
       );
       const tag = getJsxTag(node);
-      const positions: JsxElementPositions =
-        tag.type === "custom"
-          ? {
-              column: column,
-              line: line,
-              name: tag.tagName,
-              children: [],
-              type: "custom",
-            }
-          : {
-              column: column,
-              line: line,
-              name: tag.name ? `${tag.name} (${tag.tagName})` : tag.tagName,
-              children: [],
-              type: "host",
-            };
+      let positions: JsxElementPositions;
+
+      if (tag.type === "custom") {
+        const paths = getElementFilePath(node);
+        positions = {
+          column: column,
+          line: line,
+          name: tag.tagName,
+          children: [],
+          exportName: paths.exportName,
+          path: paths.filePath,
+          type: "custom",
+        };
+      } else {
+        positions = {
+          column: column,
+          line: line,
+          name: tag.name ? `${tag.name} (${tag.tagName})` : tag.tagName,
+          children: [],
+          type: "host",
+        };
+      }
 
       const parentElement = node.getParentIfKind(SyntaxKind.JsxElement);
       if (parentElement) {

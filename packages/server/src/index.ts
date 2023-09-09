@@ -16,7 +16,6 @@ import {
 } from "./ast";
 import { getParam } from "./util/params";
 import { createTWS } from "./util/ws-server";
-import { save } from "./services/save";
 import { getAllFiles, getSceneExport } from "./services/file";
 import * as component from "./services/component";
 import * as projectService from "./services/project";
@@ -76,8 +75,8 @@ export function createServer({
     const name = getParam(context, "name");
     const line = Number(context.params.line);
     const column = Number(context.params.column);
-    const { sourceFile } = project.getSourceFile(path);
-    const jsxElement = getJsxElementAt(sourceFile, line, column);
+    const sourceFile = project.getSourceFile(path);
+    const jsxElement = getJsxElementAt(sourceFile.edit(), line, column);
 
     if (!jsxElement) {
       context.response.status = 404;
@@ -92,9 +91,9 @@ export function createServer({
 
   router.post("/scene/:path/object/:line/:column/delete", (context) => {
     const { column, line, path } = context.params;
-    const { sourceFile } = project.getSourceFile(path);
+    const sourceFile = project.getSourceFile(path);
 
-    component.commentComponent(sourceFile, Number(line), Number(column));
+    component.commentComponent(sourceFile.edit(), Number(line), Number(column));
 
     context.response.body = { message: "success" };
   });
@@ -112,45 +111,47 @@ export function createServer({
 
   router.post("/scene/:path/new", async (context) => {
     const { path } = context.params;
-    const { sourceFile } = project.getSourceFile(path);
+    const sourceFile = project.getSourceFile(path);
 
-    const { exportName } = component.create(sourceFile);
+    const { exportName } = component.create(sourceFile.edit());
 
     context.response.body = { exportName, path };
   });
 
   router.post("/scene/:path/:exportName", async (context) => {
     const { path, exportName } = context.params;
-    const { sourceFile } = project.getSourceFile(path);
-    const { name: newName } = (await context.request.body({ type: "json" })
-      .value) as {
-      name: string;
-    };
+    const sourceFile = project.getSourceFile(path);
+    const body = await context.request.body({ type: "json" }).value;
+    const { name: newName } = body as { name: string };
 
-    component.rename(sourceFile, exportName, newName);
+    component.rename(sourceFile.edit(), exportName, newName);
 
     context.response.body = { message: "success" };
   });
 
   router.post("/scene/:path/object/:line/:column/restore", (context) => {
     const { column, line, path } = context.params;
-    const { sourceFile } = project.getSourceFile(path);
+    const sourceFile = project.getSourceFile(path);
 
-    component.uncommentComponent(sourceFile, Number(line), Number(column));
+    component.uncommentComponent(
+      sourceFile.edit(),
+      Number(line),
+      Number(column)
+    );
 
     context.response.body = { message: "success" };
   });
 
   router.post("/scene/:path/:exportName/object", async (context) => {
     const { exportName, path } = context.params;
-    const { type, target } = (await context.request.body({ type: "json" })
-      .value) as {
+    const body = await context.request.body({ type: "json" }).value;
+    const { type, target } = body as {
       type: ComponentType;
       target?: ComponentTarget;
     };
-    const { sourceFile } = project.getSourceFile(path);
+    const sourceFile = project.getSourceFile(path);
 
-    const result = component.add(sourceFile, exportName, type, target);
+    const result = component.add(sourceFile.edit(), exportName, type, target);
 
     context.response.body = { ...result };
   });
@@ -159,11 +160,7 @@ export function createServer({
    * Persist the in-memory scene to fs.
    */
   router.get("/scene/:path/save", async (context) => {
-    const path = context.params.path;
-    const newPath =
-      context.request.url.searchParams.get("newPath") || undefined;
-
-    await save({ path, project, newPath });
+    await project.save();
 
     context.response.body = { message: "success" };
   });
@@ -173,9 +170,9 @@ export function createServer({
    */
   router.get("/scene/:path/reset", async (context) => {
     const path = context.params.path;
-    const { sourceFile } = await project.getSourceFile(path);
+    const sourceFile = await project.getSourceFile(path);
 
-    await sourceFile.refreshFromFileSystem();
+    await sourceFile.read().refreshFromFileSystem();
 
     context.response.body = { message: "success" };
   });
@@ -269,25 +266,12 @@ export function createServer({
       return { name: basename(cwd) };
     }),
     tws.route(
-      "/scene/:path",
-      async ({ path }) => {
-        const { sourceFile } = await project.getSourceFile(path);
-        const isSaved = sourceFile.isSaved();
-        return { isSaved };
+      "/project/state",
+      async () => {
+        return project.getState();
       },
-      async (push, { path }) => {
-        // When modified
-        const { sourceFile } = await project.getSourceFile(path);
-        sourceFile.onModified(push);
-
-        // When running on windows there is a timing issue where the saved indicator
-        // Never gets unset after a save. Using polling alleviates this but isn't an
-        // Ideal solution. Watch out for a better one, for example moving to watchman.
-        const watcher = watch(path, {
-          usePolling: process.platform === "win32",
-        });
-        // When saved (fs change event) we push an update to connected clients.
-        watcher.on("change", push);
+      async (push) => {
+        project.onStateChange(push);
       }
     ),
     tws.route(
@@ -297,22 +281,21 @@ export function createServer({
         return result;
       },
       async (push, { path }) => {
-        const { sourceFile } = await project.getSourceFile(path);
-        sourceFile.onModified(push);
+        const sourceFile = await project.getSourceFile(path);
+        sourceFile.read().onModified(push);
       }
     ),
     tws.route(
       "/scene/:path/:exportName/props",
       async ({ path, exportName }) => {
-        const { sourceFile } = await project.getSourceFile(path);
-        const props = getFunctionProps(sourceFile, exportName);
+        const sourceFile = await project.getSourceFile(path);
+        const props = getFunctionProps(sourceFile.read(), exportName);
         return props;
       },
       async (push, { path }) => {
-        const { sourceFile, onDependencyModified } =
-          await project.getSourceFile(path);
-        sourceFile.onModified(push);
-        onDependencyModified(push);
+        const sourceFile = await project.getSourceFile(path);
+        sourceFile.read().onModified(push);
+        sourceFile.onDependencyModified(push);
       }
     ),
     tws.route(
@@ -321,8 +304,8 @@ export function createServer({
         const path = params.path;
         const line = Number(params.line);
         const column = Number(params.column);
-        const { sourceFile } = project.getSourceFile(path);
-        const sceneObject = getJsxElementAt(sourceFile, line, column);
+        const sourceFile = project.getSourceFile(path);
+        const sceneObject = getJsxElementAt(sourceFile.read(), line, column);
 
         if (!sceneObject) {
           if (type === "pull") {
@@ -342,7 +325,7 @@ export function createServer({
 
         const tag = getJsxTag(sceneObject);
         const { props, transforms } = getJsxElementProps(
-          sourceFile,
+          sourceFile.read(),
           sceneObject
         );
 
@@ -367,10 +350,9 @@ export function createServer({
         } as const;
       },
       async (push, { path }) => {
-        const { sourceFile, onDependencyModified } =
-          await project.getSourceFile(path);
-        sourceFile.onModified(push);
-        onDependencyModified(push);
+        const sourceFile = await project.getSourceFile(path);
+        sourceFile.read().onModified(push);
+        sourceFile.onDependencyModified(push);
       }
     ),
   ]);

@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { describe, expect, it } from "vitest";
+import { describe, expect, it, vitest } from "vitest";
 import { createProject } from "../project";
 import { join } from "path";
 
@@ -13,23 +13,105 @@ describe("project ast", () => {
     const project = createProject({
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
-    const { sourceFile } = project.getSourceFile(
+    const sourceFile = project.getSourceFile(
       join(__dirname, "__mocks__", "box.tsx")
     );
 
-    expect(sourceFile.isSaved()).toEqual(true);
+    expect(sourceFile.edit().isSaved()).toEqual(true);
   });
 
   it("should return unsaved state", () => {
     const project = createProject({
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
-    const { sourceFile } = project.getSourceFile(
+    const sourceFile = project.getSourceFile(
       join(__dirname, "__mocks__", "box.tsx")
     );
 
-    sourceFile.addFunction({});
+    sourceFile.edit().addFunction({});
 
-    expect(sourceFile.isSaved()).toEqual(false);
+    expect(sourceFile.edit().isSaved()).toEqual(false);
+  });
+
+  it("should return default project state", () => {
+    const project = createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+
+    expect(project.getState()).toEqual({
+      dirtySourceFiles: [],
+      isDirty: false,
+    });
+  });
+
+  it("should return edited project state", () => {
+    const project = createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+    const sourceFile = project.getSourceFile(
+      join(__dirname, "__mocks__", "box.tsx")
+    );
+
+    sourceFile.edit();
+    sourceFile.edit();
+    sourceFile.edit();
+
+    expect(project.getState()).toEqual({
+      dirtySourceFiles: [
+        join(
+          process.cwd(),
+          "packages/server/src/ast/__tests__/__mocks__/box.tsx"
+        ).replaceAll("\\", "/"),
+      ],
+      isDirty: true,
+    });
+  });
+
+  it("should reset project state when savings", () => {
+    const project = createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+    const sourceFile = project.getSourceFile(
+      join(__dirname, "__mocks__", "box.tsx")
+    );
+    sourceFile.edit();
+
+    project.save();
+
+    expect(project.getState()).toEqual({
+      dirtySourceFiles: [],
+      isDirty: false,
+    });
+  });
+
+  it("should callback when state changes", () => {
+    const project = createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+    const sourceFile = project.getSourceFile(
+      join(__dirname, "__mocks__", "box.tsx")
+    );
+    const cb = vitest.fn();
+    project.onStateChange(cb);
+
+    sourceFile.edit();
+
+    expect(cb).toHaveBeenCalled();
+  });
+
+  it("should cleanup state change callback", () => {
+    const project = createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+    const sourceFile = project.getSourceFile(
+      join(__dirname, "__mocks__", "box.tsx")
+    );
+    const cb = vitest.fn();
+    const cleanup = project.onStateChange(cb);
+
+    cleanup();
+    sourceFile.edit();
+
+    expect(cb).not.toHaveBeenCalled();
   });
 });

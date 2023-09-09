@@ -22,7 +22,7 @@ export interface Params {
 export interface FocusedObject {
   line: number;
   column: number;
-  ownerPath: string;
+  path: string;
 }
 
 interface SelectionState {
@@ -94,7 +94,7 @@ export function useEditor() {
       scene.focus({
         column: result.column,
         line: result.line,
-        ownerPath: path,
+        path,
       });
 
       return result;
@@ -117,7 +117,7 @@ export function useEditor() {
       scene.restoreComponent({
         line: target.line,
         column: target.column,
-        path: target.ownerPath,
+        path: target.path,
       });
     };
 
@@ -131,7 +131,7 @@ export function useEditor() {
       scene.deleteComponent({
         line: target.line,
         column: target.column,
-        path: target.ownerPath,
+        path: target.path,
       });
     };
 

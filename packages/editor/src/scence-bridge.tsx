@@ -13,7 +13,7 @@ import { useUndoRedoState } from "./stores/undo-redo";
 export interface FocusedObject {
   line: number;
   column: number;
-  ownerPath: string;
+  path: string;
 }
 
 export function SceneFrame() {
@@ -137,7 +137,7 @@ function BridgeReceiveEvents() {
         editor.focus({
           column: data.column,
           line: data.line,
-          ownerPath: editor.path,
+          path: data.path,
         });
       }),
       listen("trplx:onSceneObjectBlur", () => {

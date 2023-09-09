@@ -18,7 +18,6 @@ import {
 } from "../component";
 import { getExportName } from "../../ast/module";
 import { getJsxElementAt, getJsxElementsPositions } from "../../ast/jsx";
-import { save } from "../save";
 import { getJsxElementPropTypes } from "../../ast/type-infer";
 import { SyntaxKind } from "ts-morph";
 
@@ -768,7 +767,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.createSourceFile("Untitled");
-    const saveFile = () => save({ project, path: sourceFile.getFilePath() });
+    const saveFile = () => project.save();
     const addComponent = async (exportName: string) => {
       const pos = add(sourceFile, "Untitled", {
         type: "custom",

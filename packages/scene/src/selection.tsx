@@ -244,12 +244,12 @@ export function Selection({
   onFocus,
   onJumpTo,
   onNavigate,
-  path,
+  path: rootPath,
   exportName,
 }: {
   children?: ReactNode;
   onBlur: () => void;
-  onFocus: (node: { column: number; line: number }) => void;
+  onFocus: (node: { column: number; line: number; path: string }) => void;
   onJumpTo: (v: Vector3Tuple, bb: Box3, obj: Object3D) => void;
   onNavigate: (node: {
     path: string;
@@ -273,9 +273,9 @@ export function Selection({
   const scene = useThree((store) => store.scene);
   const { setCamera } = useCamera();
   const sceneData = useSubscriptionEffect("/scene/:path/:exportName", {
-    path,
+    path: rootPath,
     exportName,
-    disabled: !path || !exportName,
+    disabled: !rootPath || !exportName,
   });
   const sceneObjects = useMemo(
     () => flatten(sceneData?.sceneObjects || []),
@@ -284,7 +284,7 @@ export function Selection({
   const selectedSceneObject = useSubscriptionEffect(
     "/scene/:path/object/:line/:column",
     {
-      path,
+      path: selected?.path,
       line: selected?.line,
       column: selected?.column,
       disabled: !selected || (selected?.line === -1 && selected?.column === -1),
@@ -389,12 +389,13 @@ export function Selection({
         setSelected({
           column: data.column,
           line: data.line,
-          path: data.ownerPath,
+          path: data.path,
         });
 
         send("trplx:onSceneObjectFocus", {
           column: data.column,
           line: data.line,
+          path: data.path,
         });
       }),
     ]);
@@ -417,7 +418,7 @@ export function Selection({
 
     // TODO: If clicking on a scene object when a selection is already
     // made this will fire A LOT OF TIMES. Need to investigate why.
-    const data = findEditorData(path, e.object, transform, sceneObjects);
+    const data = findEditorData(rootPath, e.object, transform, sceneObjects);
     if (data) {
       e.stopPropagation();
       setSelected(data);
@@ -507,7 +508,7 @@ export function Selection({
       send("trplx:onConfirmSceneObjectProp", {
         column: selectedObject.column,
         line: selectedObject.line,
-        path,
+        path: selectedObject.path,
         propName: "position",
         propValue: position,
       });
@@ -520,7 +521,7 @@ export function Selection({
       send("trplx:onConfirmSceneObjectProp", {
         column: selectedObject.column,
         line: selectedObject.line,
-        path,
+        path: selectedObject.path,
         propName: "rotation",
         propValue: rotation,
       });
@@ -532,7 +533,7 @@ export function Selection({
       send("trplx:onConfirmSceneObjectProp", {
         column: selectedObject.column,
         line: selectedObject.line,
-        path,
+        path: selectedObject.path,
         propName: "scale",
         propValue: scale,
       });
@@ -548,13 +549,13 @@ export function Selection({
 
   const selectSceneObject = useCallback(
     (object: Object3D) => {
-      const data = findEditorData(path, object, transform, sceneObjects);
+      const data = findEditorData(rootPath, object, transform, sceneObjects);
       if (data) {
         setSelected(data);
         onFocus(data);
       }
     },
-    [onFocus, path, sceneObjects, transform]
+    [onFocus, rootPath, sceneObjects, transform]
   );
 
   return (

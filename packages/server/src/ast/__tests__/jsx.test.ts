@@ -63,45 +63,68 @@ describe("jsx ast extractor", () => {
 
     const elements = getJsxElementsPositions(sourceFile, "default");
 
-    expect(elements).toMatchInlineSnapshot(`
-      [
-        {
-          "children": [],
-          "column": 7,
-          "line": 25,
-          "name": "Box",
-          "type": "custom",
-        },
-        {
-          "children": [],
-          "column": 7,
-          "line": 31,
-          "name": "Cylinder",
-          "type": "custom",
-        },
-        {
-          "children": [],
-          "column": 7,
-          "line": 34,
-          "name": "SceneAlt",
-          "type": "custom",
-        },
-        {
-          "children": [],
-          "column": 7,
-          "line": 35,
-          "name": "SceneWrapped",
-          "type": "custom",
-        },
-        {
-          "children": [],
-          "column": 7,
-          "line": 36,
-          "name": "SceneArrow",
-          "type": "custom",
-        },
-      ]
-    `);
+    expect(elements).toEqual([
+      {
+        children: [],
+        column: 7,
+        line: 25,
+        name: "Box",
+        type: "custom",
+        exportName: "default",
+        path: join(
+          process.cwd(),
+          "packages/server/src/ast/__tests__/__mocks__/box.tsx"
+        ),
+      },
+      {
+        children: [],
+        column: 7,
+        line: 31,
+        name: "Cylinder",
+        type: "custom",
+        exportName: "default",
+        path: join(
+          process.cwd(),
+          "packages/server/src/ast/__tests__/__mocks__/cylinder.tsx"
+        ),
+      },
+      {
+        children: [],
+        column: 7,
+        line: 34,
+        name: "SceneAlt",
+        exportName: "SceneAlt",
+        type: "custom",
+        path: join(
+          process.cwd(),
+          "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
+        ),
+      },
+      {
+        children: [],
+        column: 7,
+        line: 35,
+        name: "SceneWrapped",
+        type: "custom",
+        exportName: "SceneWrapped",
+        path: join(
+          process.cwd(),
+          "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
+        ),
+      },
+      {
+        children: [],
+        column: 7,
+        line: 36,
+        name: "SceneArrow",
+        exportName: "SceneArrow",
+        type: "custom",
+        path: join(
+          process.cwd(),
+          "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
+        ),
+      },
+    ]);
   });
 
   it("should return top level components for named export", async () => {
@@ -114,17 +137,18 @@ describe("jsx ast extractor", () => {
 
     const elements = getJsxElementsPositions(sourceFile, "SceneAlt");
 
-    expect(elements).toMatchInlineSnapshot(`
-      [
-        {
-          "children": [],
-          "column": 10,
-          "line": 13,
-          "name": "Box",
-          "type": "custom",
-        },
-      ]
-    `);
+    expect(elements[0]).toEqual({
+      children: [],
+      column: 10,
+      line: 13,
+      name: "Box",
+      type: "custom",
+      exportName: "default",
+      path: join(
+        process.cwd(),
+        "packages/server/src/ast/__tests__/__mocks__/box.tsx"
+      ),
+    });
   });
 
   it("should return top level components for named arrow export", async () => {
@@ -137,17 +161,18 @@ describe("jsx ast extractor", () => {
 
     const elements = getJsxElementsPositions(sourceFile, "SceneArrow");
 
-    expect(elements).toMatchInlineSnapshot(`
-      [
-        {
-          "children": [],
-          "column": 33,
-          "line": 10,
-          "name": "Box",
-          "type": "custom",
-        },
-      ]
-    `);
+    expect(elements[0]).toEqual({
+      children: [],
+      column: 33,
+      exportName: "default",
+      line: 10,
+      name: "Box",
+      path: join(
+        process.cwd(),
+        "packages/server/src/ast/__tests__/__mocks__/box.tsx"
+      ),
+      type: "custom",
+    });
   });
 
   it("should return jsx information nested", () => {

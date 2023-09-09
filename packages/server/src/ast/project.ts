@@ -7,16 +7,10 @@
 import { join, normalize } from "path";
 import { watch } from "chokidar";
 import { Project, ProjectOptions, SourceFile } from "ts-morph";
+import { deleteCommentComponents } from "../services/component";
+import { format, resolveConfig, resolveConfigFile } from "prettier";
 
-export interface TRIPLEXProject {
-  cwd(): string;
-  createSourceFile(componentName: string): SourceFile;
-  getSourceFile(path: string): {
-    sourceFile: SourceFile;
-    onDependencyModified: (cb: () => void) => () => void;
-    cleanup(): void;
-  };
-}
+export type TRIPLEXProject = ReturnType<typeof createProject>;
 
 export function _createProject(opts: ProjectOptions) {
   const project = new Project({
@@ -38,14 +32,62 @@ export function _createProject(opts: ProjectOptions) {
   return project;
 }
 
+async function persistSourceFile({
+  sourceFile,
+  newPath,
+  cwd,
+}: {
+  sourceFile: SourceFile;
+  newPath?: string;
+  cwd: string;
+}) {
+  if (sourceFile && !sourceFile.isSaved()) {
+    deleteCommentComponents(sourceFile);
+
+    // TODO: Move config resolution out of this function.
+    const prettierConfigPath = await resolveConfigFile(cwd);
+    if (prettierConfigPath) {
+      const prettierConfig = await resolveConfig(prettierConfigPath);
+      if (prettierConfig) {
+        // A prettier config was found so we will use that to format.
+        const source = format(sourceFile.getText(), {
+          ...prettierConfig,
+          filepath: sourceFile.getFilePath(),
+        });
+        sourceFile.replaceText(
+          [sourceFile.getStart(true), sourceFile.getEnd()],
+          source
+        );
+      } else {
+        // No prettier config was found - so we'll use the default ts formatter.
+        sourceFile.formatText({
+          convertTabsToSpaces: true,
+          indentSize: 2,
+          trimTrailingWhitespace: true,
+          ensureNewLineAtEndOfFile: true,
+        });
+      }
+    }
+
+    if (newPath && newPath !== sourceFile.getFilePath()) {
+      const result = sourceFile.copy(newPath);
+      await result.save();
+    } else {
+      await sourceFile.save();
+    }
+  }
+}
+
 export function createProject({
   cwd = process.cwd(),
   tsConfigFilePath = join(cwd, "tsconfig.json"),
-} = {}): TRIPLEXProject {
+} = {}) {
   const project = _createProject({
     tsConfigFilePath,
   });
   const dependencyModifiedCallbacks = new Map<string, (() => void)[]>();
+  const onStateChangeCallbacks = new Set<() => void>();
+  const modifiedSourceFiles = new Set<SourceFile>();
 
   // Watch the all files inside cwd and watch for changes.
   // If any changes have been made refresh the source file.
@@ -103,9 +145,13 @@ export function ${componentName}() {
       project.getSourceFile(path) || project.addSourceFileAtPath(path);
 
     return {
-      sourceFile,
+      read: () => sourceFile,
+      edit: () => {
+        modifiedSourceFiles.add(sourceFile);
+        onStateChangeCallbacks.forEach((cb) => cb());
+        return sourceFile;
+      },
       cleanup: () => {
-        const { sourceFile } = getSourceFile(path);
         project.removeSourceFile(sourceFile);
         dependencyModifiedCallbacks.delete(sourceFile.getFilePath());
       },
@@ -128,11 +174,50 @@ export function ${componentName}() {
     };
   }
 
+  async function save() {
+    const promises = Array.from(modifiedSourceFiles).map((sourceFile) =>
+      persistSourceFile({
+        sourceFile,
+        cwd,
+      })
+    );
+
+    modifiedSourceFiles.clear();
+    onStateChangeCallbacks.forEach((cb) => cb());
+
+    await Promise.all(promises);
+  }
+
+  function getState() {
+    const dirtySourceFiles = Array.from(modifiedSourceFiles).map((sourceFile) =>
+      sourceFile.getFilePath()
+    );
+
+    return {
+      isDirty: dirtySourceFiles.length > 0,
+      dirtySourceFiles,
+    };
+  }
+
+  function onStateChange(callback: () => void) {
+    onStateChangeCallbacks.add(callback);
+
+    return () => {
+      const callbacks = onStateChangeCallbacks.has(callback);
+      if (!callbacks) {
+        return;
+      }
+
+      onStateChangeCallbacks.delete(callback);
+    };
+  }
+
   return {
-    cwd() {
-      return cwd;
-    },
+    cwd: () => cwd,
     createSourceFile,
     getSourceFile,
+    save,
+    getState,
+    onStateChange,
   };
 }

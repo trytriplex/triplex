@@ -4,9 +4,9 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { preloadSubscription, useLazySubscription } from "@triplex/ws-client";
+import { useLazySubscription } from "@triplex/ws-client";
 import { IDELink } from "../util/ide";
-import { Suspense, useEffect } from "react";
+import { Suspense } from "react";
 import { useEditor, FocusedObject } from "../stores/editor";
 import { ScrollContainer } from "../ds/scroll-container";
 import { PropInput, PropTagContext } from "./prop-input";
@@ -32,19 +32,13 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
   const data = useLazySubscription("/scene/:path/object/:line/:column", {
     column: target.column,
     line: target.line,
-    path: target.ownerPath,
+    path: target.path,
   });
 
   // Most likely a camera component. It might not though be though.
   // A better implementation later would be to traverse this scene objects children
   // And see if a camera exists, if it does enable the button.
   const isCamera = data.name.includes("Camera");
-
-  useEffect(() => {
-    if (data.type === "custom" && data.path) {
-      preloadSubscription("/scene/:path", { path: data.path });
-    }
-  }, [data]);
 
   return (
     <>
@@ -53,11 +47,7 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
       </h2>
 
       <div className="-mt-0.5 mb-2.5 px-4">
-        <IDELink
-          path={target.ownerPath}
-          column={target.column}
-          line={target.line}
-        >
+        <IDELink path={target.path} column={target.column} line={target.line}>
           View usage
         </IDELink>
 
@@ -129,21 +119,21 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
                   name={prop.name}
                   column={column}
                   line={line}
-                  path={target.ownerPath}
+                  path={target.path}
                   prop={prop}
                   required={prop.required}
                   onConfirm={async (value) => {
                     const currentValue = await getPropValue({
                       column: target.column,
                       line: target.line,
-                      path: target.ownerPath,
+                      path: target.path,
                       propName: prop.name,
                     });
 
                     persistPropValue({
                       column: target.column,
                       line: target.line,
-                      path: target.ownerPath,
+                      path: target.path,
                       propName: prop.name,
                       currentPropValue: currentValue.value,
                       nextPropValue: value,
@@ -153,7 +143,7 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
                     setPropValue({
                       column: target.column,
                       line: target.line,
-                      path: target.ownerPath,
+                      path: target.path,
                       propName: prop.name,
                       propValue: value,
                     });
@@ -296,7 +286,7 @@ export function ContextPanel() {
           >
             {isSceneObject ? (
               <SelectedSceneObjectPanel
-                key={target.ownerPath + target.column + target.line}
+                key={target.path + target.column + target.line}
                 target={target}
               />
             ) : (
