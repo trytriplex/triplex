@@ -52,6 +52,7 @@ export interface ClientSendEventData {
   "trplx:onSceneObjectFocus": {
     line: number;
     column: number;
+    path: string;
   };
   "trplx:onTransformChange": {
     mode: "translate" | "scale" | "rotate";
@@ -168,7 +169,7 @@ export interface HostSendEventData {
   "trplx:requestFocusSceneObject": {
     column: number;
     line: number;
-    ownerPath: string;
+    path: string;
   };
   "trplx:requestSceneObjectPropValue": {
     column: number;

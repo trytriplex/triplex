@@ -4,7 +4,13 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { ChangeEventHandler, Fragment, Suspense, ComponentType } from "react";
+import {
+  ChangeEventHandler,
+  Fragment,
+  Suspense,
+  useState,
+  useTransition,
+} from "react";
 import { cn } from "../ds/cn";
 import { useLazySubscription } from "@triplex/ws-client";
 import { IDELink } from "../util/ide";
@@ -14,54 +20,21 @@ import { ScrollContainer } from "../ds/scroll-container";
 import { AssetsDrawer } from "./assets-drawer";
 import {
   CaretDownIcon,
+  CaretRightIcon,
   ExitIcon,
   MixerHorizontalIcon,
 } from "@radix-ui/react-icons";
 import { IconButton } from "../ds/button";
 import { ErrorBoundary } from "./error-boundary";
-import { IconProps } from "@radix-ui/react-icons/dist/types";
 import { useSceneState } from "../stores/scene-state";
-
-function SceneComponent({
-  name,
-  selected,
-  onClick,
-  level = 1,
-  iconRight: IconRight,
-}: {
-  name: string;
-  selected: boolean;
-  onClick: () => void;
-  level?: number;
-  children?: React.ReactNode;
-  iconRight?: ComponentType<IconProps>;
-}) {
-  return (
-    <button
-      type="submit"
-      onClick={onClick}
-      title={name}
-      style={{ paddingLeft: level === 1 ? 13 : level * 13 }}
-      className={cn([
-        "outline-1 -outline-offset-1 outline-blue-400 focus-visible:outline",
-        selected
-          ? "border-l-blue-400 bg-white/5 text-blue-400"
-          : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
-        "flex w-[242px] cursor-default items-center justify-between border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
-      ])}
-    >
-      <span className="overflow-hidden text-ellipsis whitespace-nowrap">
-        {name}
-      </span>
-      {IconRight ? <IconRight className="flex-shrink-0" /> : null}
-    </button>
-  );
-}
+import { Pressable } from "../ds/pressable";
 
 interface JsxElementPositions {
   column: number;
   line: number;
   name: string;
+  path?: string;
+  exportName?: string;
   children: JsxElementPositions[];
   type: "host" | "custom";
 }
@@ -84,7 +57,7 @@ export function ScenePanel() {
 
 function ComponentHeading() {
   const { path, exportName, newComponent, set } = useEditor();
-  const file = useLazySubscription("/scene/:path", { path });
+  const projectState = useLazySubscription("/project/state");
   const scene = useLazySubscription("/scene/:path/:exportName", {
     path,
     exportName,
@@ -135,11 +108,11 @@ function ComponentHeading() {
       </label>
 
       <span
-        aria-label={file.isSaved ? undefined : "Unsaved changes"}
-        title={file.isSaved ? undefined : "Unsaved changes"}
+        aria-label={projectState.isDirty ? "Unsaved changes" : undefined}
+        title={projectState.isDirty ? "Unsaved changes" : undefined}
         className={cn([
           "ml-auto h-2.5 w-2.5 flex-shrink-0 rounded-full",
-          file.isSaved ? "bg-neutral-800" : "bg-yellow-400",
+          projectState.isDirty ? "bg-yellow-400" : "bg-neutral-800",
         ])}
       />
     </h2>
@@ -183,7 +156,14 @@ function SceneContents() {
 
       <ScrollContainer>
         <div className="h-1" />
-        <SceneObjectButtons level={1} sceneObjects={scene.sceneObjects} />
+        {scene.sceneObjects.map((element) => (
+          <JsxElementButton
+            path={path}
+            key={element.name + element.column + element.line}
+            level={1}
+            element={element}
+          />
+        ))}
         <div className="h-1" />
       </ScrollContainer>
     </div>
@@ -204,7 +184,7 @@ function ComponentSandboxButton() {
         if (isSelected) {
           blur();
         } else {
-          focus({ column: -1, line: -1, ownerPath: path });
+          focus({ column: -1, line: -1, path });
         }
       }}
       icon={MixerHorizontalIcon}
@@ -213,39 +193,112 @@ function ComponentSandboxButton() {
   );
 }
 
-function SceneObjectButtons({
-  sceneObjects,
+function JsxElements({
+  path,
+  exportName,
   level,
 }: {
-  sceneObjects: JsxElementPositions[];
+  path: string;
+  exportName: string;
   level: number;
 }) {
-  const { focus } = useScene();
-  const { target, path } = useEditor();
+  const scene = useLazySubscription("/scene/:path/:exportName", {
+    path,
+    exportName,
+  });
 
   return (
     <>
-      {sceneObjects.map((child) => (
-        <Fragment key={child.name + child.column + child.line}>
-          <SceneComponent
-            onClick={() => {
-              focus({
-                column: child.column,
-                line: child.line,
-                ownerPath: path,
-              });
-            }}
-            level={level}
-            selected={
-              !!target &&
-              target.column === child.column &&
-              target.line === child.line
-            }
-            name={child.name}
-          />
-          <SceneObjectButtons sceneObjects={child.children} level={level + 1} />
-        </Fragment>
+      {scene.sceneObjects.map((element) => (
+        <JsxElementButton
+          path={path}
+          key={element.name + element.column + element.line}
+          level={level}
+          element={element}
+        />
       ))}
     </>
+  );
+}
+
+function JsxElementButton({
+  element,
+  path,
+  level,
+}: {
+  element: JsxElementPositions;
+  path: string;
+  level: number;
+}) {
+  const { focus } = useScene();
+  const { target } = useEditor();
+  const selected =
+    !!target &&
+    target.column === element.column &&
+    target.line === element.line;
+  const showExpander =
+    element.type === "custom" && element.exportName && element.path;
+  const [isExpanded, setIsExpanded] = useState(false);
+  const [, startTransition] = useTransition();
+
+  return (
+    <Fragment>
+      <Suspense>
+        <Pressable
+          onPress={() => {
+            focus({
+              column: element.column,
+              line: element.line,
+              path,
+            });
+          }}
+          title={element.name}
+          style={{ paddingLeft: level === 1 ? 13 : level * 13 }}
+          className={cn([
+            selected
+              ? "border-l-blue-400 bg-white/5 text-blue-400"
+              : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
+            "flex w-[242px] cursor-default items-center gap-1 border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
+          ])}
+        >
+          {showExpander ? (
+            <Pressable
+              title={isExpanded ? "Hide child elements" : "View child elements"}
+              onPress={() => {
+                startTransition(() => {
+                  setIsExpanded((prev) => !prev);
+                });
+              }}
+              className="-ml-1 rounded px-0.5 py-0.5 text-inherit hover:bg-white/5 active:bg-white/10"
+            >
+              {isExpanded ? <CaretDownIcon /> : <CaretRightIcon />}
+            </Pressable>
+          ) : (
+            <span className="w-4" />
+          )}
+
+          <span className="overflow-hidden text-ellipsis whitespace-nowrap">
+            {element.name}
+          </span>
+        </Pressable>
+
+        {isExpanded && showExpander && (
+          <JsxElements
+            level={level + 1}
+            exportName={element.exportName!}
+            path={element.path!}
+          />
+        )}
+      </Suspense>
+
+      {element.children.map((child) => (
+        <JsxElementButton
+          element={child}
+          path={path}
+          key={child.name + child.column + child.line}
+          level={level + 1}
+        />
+      ))}
+    </Fragment>
   );
 }

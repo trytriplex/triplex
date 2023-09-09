@@ -11,7 +11,7 @@ import { create } from "zustand";
 export interface FocusedObject {
   line: number;
   column: number;
-  ownerPath: string;
+  path: string;
 }
 
 interface BridgeContext {

@@ -135,12 +135,16 @@ export function SceneFrame() {
     [setSearchParams]
   );
 
-  const onFocus = useCallback((data: { column: number; line: number }) => {
-    send("trplx:onSceneObjectFocus", {
-      column: data.column,
-      line: data.line,
-    });
-  }, []);
+  const onFocus = useCallback(
+    (data: { column: number; line: number; path: string }) => {
+      send("trplx:onSceneObjectFocus", {
+        column: data.column,
+        line: data.line,
+        path: data.path,
+      });
+    },
+    []
+  );
 
   const onBlurObject = useCallback(() => {
     send("trplx:onSceneObjectBlur", undefined);
