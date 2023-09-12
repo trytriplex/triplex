@@ -13,9 +13,10 @@ import {
   ts,
   JsxAttribute,
 } from "ts-morph";
+import { normalize } from "node:path";
 import { getFunctionPropTypes, getJsxElementPropTypes } from "./type-infer";
 import { getElementFilePath } from "./module";
-
+import type { JsxElementPositions } from "../types";
 /**
  * Returns all found jsx elements in a source file, optionally filtered by a
  * specific export.
@@ -48,31 +49,6 @@ export function getAllJsxElements(sourceFile: SourceFile, exportName?: string) {
   elements.push(...jsxSelfClosing, ...jsxElements);
 
   return elements;
-}
-
-export type JsxElementPositions =
-  | CustomJsxElementPosition
-  | HostJsxElementPosition;
-
-export interface CustomJsxElementPosition {
-  column: number;
-  line: number;
-  name: string;
-  /**
-   * Path will be defined if the jsx element exists in local source code.
-   */
-  path?: string;
-  exportName: string;
-  children: JsxElementPositions[];
-  type: "custom";
-}
-
-export interface HostJsxElementPosition {
-  column: number;
-  line: number;
-  name: string;
-  children: JsxElementPositions[];
-  type: "host";
 }
 
 export function getJsxTag(node: JsxElement | JsxSelfClosingElement) {
@@ -169,6 +145,7 @@ export function getJsxElementsPositions(
 ): JsxElementPositions[] {
   const elements: JsxElementPositions[] = [];
   const parentPointers = new Map<Node, JsxElementPositions>();
+  const parentPath = normalize(sourceFile.getFilePath());
   const foundExport = sourceFile
     .getExportSymbols()
     .find((symbol) => symbol.getName() === exportName);
@@ -199,6 +176,7 @@ export function getJsxElementsPositions(
           exportName: paths.exportName,
           path: paths.filePath,
           type: "custom",
+          parentPath,
         };
       } else {
         positions = {
@@ -207,6 +185,7 @@ export function getJsxElementsPositions(
           name: tag.name ? `${tag.name} (${tag.tagName})` : tag.tagName,
           children: [],
           type: "host",
+          parentPath,
         };
       }
 

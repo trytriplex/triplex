@@ -106,7 +106,7 @@ describe("scene object component", () => {
               column: 10,
               line: 100,
               name: "mesh",
-              path: "",
+              path: "box.tsx",
             }}
           />
         </ComponentProvider>
@@ -117,7 +117,13 @@ describe("scene object component", () => {
       await send(
         "trplx:requestAddNewComponent",
         {
-          target: { action: "child", column: 10, line: 100 },
+          target: {
+            action: "child",
+            column: 10,
+            line: 100,
+            path: "box.tsx",
+            exportName: "default",
+          },
           type: {
             type: "host",
             name: "boxGeometry",

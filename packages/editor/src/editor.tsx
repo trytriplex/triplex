@@ -12,6 +12,7 @@ import { SceneFrame } from "./scence-bridge";
 import { useEditor } from "./stores/editor";
 import { ControlsMenu } from "./ui/controls-menu";
 import { useUndoRedoState } from "./stores/undo-redo";
+import { AssetsDrawer } from "./ui/assets-drawer";
 
 export function EditorFrame() {
   const undo = useUndoRedoState((store) => store.undo);
@@ -98,6 +99,7 @@ export function EditorFrame() {
       </div>
 
       <ScenesDrawer />
+      <AssetsDrawer />
     </>
   );
 }

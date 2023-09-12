@@ -23,6 +23,7 @@ export interface FocusedObject {
   line: number;
   column: number;
   path: string;
+  parentPath: string;
 }
 
 interface SelectionState {
@@ -74,27 +75,33 @@ export function useEditor() {
       type: ComponentType;
       target?: ComponentTarget;
     }) => {
-      const body = {
-        target,
-        type,
-      };
+      const componentPath = target ? target.path : path;
+      const componentExportName = target ? target.exportName : exportName;
 
       const res = await fetch(
         "http://localhost:8000/scene/" +
-          encodeURIComponent(path) +
-          `/${exportName}/object`,
+          encodeURIComponent(componentPath) +
+          `/${componentExportName}/object`,
         {
           method: "POST",
-          body: JSON.stringify(body),
+          body: JSON.stringify({
+            target,
+            type,
+          }),
         }
       );
 
-      const result = (await res.json()) as { line: number; column: number };
+      const result = (await res.json()) as {
+        line: number;
+        column: number;
+        path: string;
+      };
 
       scene.focus({
         column: result.column,
         line: result.line,
-        path,
+        path: componentPath,
+        parentPath: componentPath,
       });
 
       return result;
@@ -117,7 +124,7 @@ export function useEditor() {
       scene.restoreComponent({
         line: target.line,
         column: target.column,
-        path: target.path,
+        parentPath: target.parentPath,
       });
     };
 
@@ -131,7 +138,7 @@ export function useEditor() {
       scene.deleteComponent({
         line: target.line,
         column: target.column,
-        path: target.path,
+        parentPath: target.parentPath,
       });
     };
 

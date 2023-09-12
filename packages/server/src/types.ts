@@ -134,7 +134,9 @@ export type ComponentRawType =
 export interface ComponentTarget {
   line: number;
   column: number;
+  path: string;
   action: "child";
+  exportName: string;
 }
 
 export interface ProjectHostComponent {
@@ -163,4 +165,31 @@ export interface Folder {
   path: string;
   files: number;
   children: Folder[];
+}
+
+export type JsxElementPositions =
+  | CustomJsxElementPosition
+  | HostJsxElementPosition;
+
+export interface CustomJsxElementPosition {
+  column: number;
+  line: number;
+  name: string;
+  /**
+   * Path will be defined if the jsx element exists in local source code.
+   */
+  path?: string;
+  exportName: string;
+  children: JsxElementPositions[];
+  type: "custom";
+  parentPath: string;
+}
+
+export interface HostJsxElementPosition {
+  column: number;
+  line: number;
+  name: string;
+  children: JsxElementPositions[];
+  type: "host";
+  parentPath: string;
 }

@@ -30,7 +30,7 @@ export function AddSceneObject({
 }) {
   const components = useComponents();
   const [searchParams] = useSearchParams();
-  const currentPath = searchParams.get("path") || "";
+  const rootPath = searchParams.get("path") || "";
   const [addedComponents, setAddedComponents] = useState<ComponentType[]>([]);
   const [positions, setPositions] = useState<
     { column: number; line: number }[]
@@ -39,41 +39,30 @@ export function AddSceneObject({
 
   useEffect(() => {
     return listen("trplx:requestAddNewComponent", ({ type, target }) => {
-      if (
-        (typeof line === "number" || typeof column === "number") &&
-        (target?.column !== column ||
-          target?.line !== line ||
-          path !== currentPath)
-      ) {
-        // This event has a target but we aren't it - abort early.
-        return;
-      }
+      const isMatchingLineCol =
+        target?.column === column && target?.line === line;
+      const isMatchingPath = target?.path && path === target?.path;
+      const isInstanceForTarget = target && isMatchingLineCol && isMatchingPath;
+      const isInstanceForNoTarget = !target && isMatchingLineCol;
 
-      if (
-        target &&
-        typeof line === "undefined" &&
-        typeof column === "undefined"
-      ) {
-        // This event has a target but we aren't one - abort early.
-        return;
-      }
+      if (isInstanceForTarget || isInstanceForNoTarget) {
+        let index = -1;
 
-      let index = -1;
-
-      setAddedComponents((value) => {
-        index = value.length;
-        return value.concat(type);
-      });
-
-      send("trplx:onAddNewComponent", { type, target }, true).then((res) => {
-        setPositions((prev) => {
-          const next = prev.concat([]);
-          next[index] = res;
-          return next;
+        setAddedComponents((value) => {
+          index = value.length;
+          return value.concat(type);
         });
-      });
+
+        send("trplx:onAddNewComponent", { type, target }, true).then((res) => {
+          setPositions((prev) => {
+            const next = prev.concat([]);
+            next[index] = res;
+            return next;
+          });
+        });
+      }
     });
-  }, [column, line, currentPath, searchParams, path]);
+  }, [column, line, searchParams, path]);
 
   useEffect(() => {
     import.meta.hot?.on("vite:afterUpdate", () => {
@@ -83,12 +72,12 @@ export function AddSceneObject({
       setPositions([]);
       cachedLazyComponents.current = [];
     });
-  }, [currentPath]);
+  }, [rootPath]);
 
   return (
     <>
       {addedComponents.map((component, index) => {
-        const pos = positions[index] || { column: -1, line: -1 };
+        const pos = positions[index] || { column: -10, line: -10 };
 
         switch (component.type) {
           case "host": {
@@ -101,7 +90,7 @@ export function AddSceneObject({
                   column: pos.column,
                   line: pos.line,
                   name: component.name,
-                  path: currentPath,
+                  path: rootPath,
                   // Host elements have these set but generally only for
                   // the elements that have the appropriate transform props explicitly set.
                   // For this we assume everything is allowed since it's being added.
@@ -141,7 +130,7 @@ export function AddSceneObject({
                     column: pos.column,
                     line: pos.line,
                     name: component.name,
-                    path: currentPath,
+                    path: rootPath,
                     // Custom elements never have these props set.
                     rotate: false,
                     scale: false,

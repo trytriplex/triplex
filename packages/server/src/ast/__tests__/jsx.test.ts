@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { join } from "path";
+import { fromCwd } from "../../util/path";
 import { describe, it, expect } from "vitest";
 import {
   getJsxElementAt,
@@ -25,32 +26,39 @@ describe("jsx ast extractor", () => {
 
     const elements = getJsxElementsPositions(sourceFile, "default");
 
-    expect(elements).toMatchInlineSnapshot(`
-      [
-        {
-          "children": [
-            {
-              "children": [],
-              "column": 7,
-              "line": 14,
-              "name": "boxGeometry",
-              "type": "host",
-            },
-            {
-              "children": [],
-              "column": 7,
-              "line": 15,
-              "name": "meshStandardMaterial",
-              "type": "host",
-            },
-          ],
-          "column": 5,
-          "line": 13,
-          "name": "mesh",
-          "type": "host",
-        },
-      ]
-    `);
+    expect(elements).toEqual([
+      {
+        children: [
+          {
+            children: [],
+            column: 7,
+            line: 14,
+            name: "boxGeometry",
+            type: "host",
+            parentPath: fromCwd(
+              "/packages/server/src/ast/__tests__/__mocks__/expression.tsx"
+            ),
+          },
+          {
+            children: [],
+            column: 7,
+            line: 15,
+            name: "meshStandardMaterial",
+            type: "host",
+            parentPath: fromCwd(
+              "/packages/server/src/ast/__tests__/__mocks__/expression.tsx"
+            ),
+          },
+        ],
+        column: 5,
+        line: 13,
+        name: "mesh",
+        type: "host",
+        parentPath: fromCwd(
+          "/packages/server/src/ast/__tests__/__mocks__/expression.tsx"
+        ),
+      },
+    ]);
   });
 
   it("should return top level components for default export", async () => {
@@ -71,9 +79,9 @@ describe("jsx ast extractor", () => {
         name: "Box",
         type: "custom",
         exportName: "default",
-        path: join(
-          process.cwd(),
-          "packages/server/src/ast/__tests__/__mocks__/box.tsx"
+        path: fromCwd("packages/server/src/ast/__tests__/__mocks__/box.tsx"),
+        parentPath: fromCwd(
+          "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
         ),
       },
       {
@@ -83,9 +91,11 @@ describe("jsx ast extractor", () => {
         name: "Cylinder",
         type: "custom",
         exportName: "default",
-        path: join(
-          process.cwd(),
+        path: fromCwd(
           "packages/server/src/ast/__tests__/__mocks__/cylinder.tsx"
+        ),
+        parentPath: fromCwd(
+          "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
         ),
       },
       {
@@ -95,8 +105,8 @@ describe("jsx ast extractor", () => {
         name: "SceneAlt",
         exportName: "SceneAlt",
         type: "custom",
-        path: join(
-          process.cwd(),
+        path: fromCwd("packages/server/src/ast/__tests__/__mocks__/scene.tsx"),
+        parentPath: fromCwd(
           "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
         ),
       },
@@ -107,8 +117,8 @@ describe("jsx ast extractor", () => {
         name: "SceneWrapped",
         type: "custom",
         exportName: "SceneWrapped",
-        path: join(
-          process.cwd(),
+        path: fromCwd("packages/server/src/ast/__tests__/__mocks__/scene.tsx"),
+        parentPath: fromCwd(
           "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
         ),
       },
@@ -119,8 +129,8 @@ describe("jsx ast extractor", () => {
         name: "SceneArrow",
         exportName: "SceneArrow",
         type: "custom",
-        path: join(
-          process.cwd(),
+        path: fromCwd("packages/server/src/ast/__tests__/__mocks__/scene.tsx"),
+        parentPath: fromCwd(
           "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
         ),
       },
@@ -144,9 +154,9 @@ describe("jsx ast extractor", () => {
       name: "Box",
       type: "custom",
       exportName: "default",
-      path: join(
-        process.cwd(),
-        "packages/server/src/ast/__tests__/__mocks__/box.tsx"
+      path: fromCwd("packages/server/src/ast/__tests__/__mocks__/box.tsx"),
+      parentPath: fromCwd(
+        "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
       ),
     });
   });
@@ -167,9 +177,9 @@ describe("jsx ast extractor", () => {
       exportName: "default",
       line: 10,
       name: "Box",
-      path: join(
-        process.cwd(),
-        "packages/server/src/ast/__tests__/__mocks__/box.tsx"
+      path: fromCwd("packages/server/src/ast/__tests__/__mocks__/box.tsx"),
+      parentPath: fromCwd(
+        "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
       ),
       type: "custom",
     });
@@ -185,32 +195,39 @@ describe("jsx ast extractor", () => {
 
     const elements = getJsxElementsPositions(sourceFile, "default");
 
-    expect(elements).toMatchInlineSnapshot(`
-      [
-        {
-          "children": [
-            {
-              "children": [],
-              "column": 7,
-              "line": 18,
-              "name": "boxGeometry",
-              "type": "host",
-            },
-            {
-              "children": [],
-              "column": 7,
-              "line": 19,
-              "name": "meshStandardMaterial",
-              "type": "host",
-            },
-          ],
-          "column": 5,
-          "line": 17,
-          "name": "mesh",
-          "type": "host",
-        },
-      ]
-    `);
+    expect(elements).toEqual([
+      {
+        children: [
+          {
+            children: [],
+            column: 7,
+            line: 18,
+            name: "boxGeometry",
+            type: "host",
+            parentPath: fromCwd(
+              "/packages/server/src/ast/__tests__/__mocks__/box.tsx"
+            ),
+          },
+          {
+            children: [],
+            column: 7,
+            line: 19,
+            name: "meshStandardMaterial",
+            type: "host",
+            parentPath: fromCwd(
+              "/packages/server/src/ast/__tests__/__mocks__/box.tsx"
+            ),
+          },
+        ],
+        column: 5,
+        line: 17,
+        name: "mesh",
+        type: "host",
+        parentPath: fromCwd(
+          "/packages/server/src/ast/__tests__/__mocks__/box.tsx"
+        ),
+      },
+    ]);
   });
 
   it("should extract tuple props from a host jsx element", () => {
@@ -2028,40 +2045,50 @@ describe("jsx ast extractor", () => {
 
     const elements = getJsxElementsPositions(sourceFile, "default");
 
-    expect(elements).toMatchInlineSnapshot(`
-      [
-        {
-          "children": [
-            {
-              "children": [
-                {
-                  "children": [],
-                  "column": 9,
-                  "line": 11,
-                  "name": "boxGeometry",
-                  "type": "host",
-                },
-                {
-                  "children": [],
-                  "column": 9,
-                  "line": 12,
-                  "name": "meshBasicMaterial",
-                  "type": "host",
-                },
-              ],
-              "column": 7,
-              "line": 10,
-              "name": "mesh",
-              "type": "host",
-            },
-          ],
-          "column": 5,
-          "line": 9,
-          "name": "group",
-          "type": "host",
-        },
-      ]
-    `);
+    expect(elements).toEqual([
+      {
+        children: [
+          {
+            children: [
+              {
+                children: [],
+                column: 9,
+                line: 11,
+                name: "boxGeometry",
+                type: "host",
+                parentPath: fromCwd(
+                  "/packages/server/src/ast/__tests__/__mocks__/nested.tsx"
+                ),
+              },
+              {
+                children: [],
+                column: 9,
+                line: 12,
+                name: "meshBasicMaterial",
+                type: "host",
+                parentPath: fromCwd(
+                  "/packages/server/src/ast/__tests__/__mocks__/nested.tsx"
+                ),
+              },
+            ],
+            column: 7,
+            line: 10,
+            name: "mesh",
+            type: "host",
+            parentPath: fromCwd(
+              "/packages/server/src/ast/__tests__/__mocks__/nested.tsx"
+            ),
+          },
+        ],
+        column: 5,
+        line: 9,
+        name: "group",
+        type: "host",
+        parentPath: fromCwd(
+          "/packages/server/src/ast/__tests__/__mocks__/nested.tsx"
+        ),
+      },
+    ]);
   });
 
   it("should extract jsx positions from a separated export", () => {
@@ -2074,32 +2101,39 @@ describe("jsx ast extractor", () => {
 
     const elements = getJsxElementsPositions(sourceFile, "default");
 
-    expect(elements).toMatchInlineSnapshot(`
-      [
-        {
-          "children": [
-            {
-              "children": [],
-              "column": 7,
-              "line": 10,
-              "name": "geo-hi (cylinderGeometry)",
-              "type": "host",
-            },
-            {
-              "children": [],
-              "column": 7,
-              "line": 11,
-              "name": "meshStandardMaterial",
-              "type": "host",
-            },
-          ],
-          "column": 5,
-          "line": 9,
-          "name": "this-is-cilly (mesh)",
-          "type": "host",
-        },
-      ]
-    `);
+    expect(elements).toEqual([
+      {
+        children: [
+          {
+            children: [],
+            column: 7,
+            line: 10,
+            name: "geo-hi (cylinderGeometry)",
+            type: "host",
+            parentPath: fromCwd(
+              "/packages/server/src/ast/__tests__/__mocks__/cylinder.tsx"
+            ),
+          },
+          {
+            children: [],
+            column: 7,
+            line: 11,
+            name: "meshStandardMaterial",
+            type: "host",
+            parentPath: fromCwd(
+              "/packages/server/src/ast/__tests__/__mocks__/cylinder.tsx"
+            ),
+          },
+        ],
+        column: 5,
+        line: 9,
+        name: "this-is-cilly (mesh)",
+        type: "host",
+        parentPath: fromCwd(
+          "/packages/server/src/ast/__tests__/__mocks__/cylinder.tsx"
+        ),
+      },
+    ]);
   });
 
   it("should get the tag name from a string literal for a named group", () => {

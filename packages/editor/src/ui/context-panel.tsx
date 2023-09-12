@@ -32,7 +32,7 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
   const data = useLazySubscription("/scene/:path/object/:line/:column", {
     column: target.column,
     line: target.line,
-    path: target.path,
+    path: target.parentPath,
   });
 
   // Most likely a camera component. It might not though be though.
@@ -47,7 +47,11 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
       </h2>
 
       <div className="-mt-0.5 mb-2.5 px-4">
-        <IDELink path={target.path} column={target.column} line={target.line}>
+        <IDELink
+          path={target.parentPath}
+          column={target.column}
+          line={target.line}
+        >
           View usage
         </IDELink>
 

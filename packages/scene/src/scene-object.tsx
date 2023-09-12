@@ -161,7 +161,7 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
           if (
             data.column === __meta.column &&
             data.line === __meta.line &&
-            data.path === __meta.path
+            data.parentPath === __meta.path
           ) {
             setIsDeleted(true);
           }
@@ -170,7 +170,7 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
           if (
             data.column === __meta.column &&
             data.line === __meta.line &&
-            data.path === __meta.path
+            data.parentPath === __meta.path
           ) {
             setIsDeleted(false);
           }

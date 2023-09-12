@@ -8,6 +8,8 @@ import {
   ChangeEventHandler,
   Fragment,
   Suspense,
+  useEffect,
+  useRef,
   useState,
   useTransition,
 } from "react";
@@ -17,27 +19,19 @@ import { IDELink } from "../util/ide";
 import { useEditor } from "../stores/editor";
 import { useScene } from "../stores/scene";
 import { ScrollContainer } from "../ds/scroll-container";
-import { AssetsDrawer } from "./assets-drawer";
 import {
   CaretDownIcon,
   CaretRightIcon,
   ExitIcon,
   MixerHorizontalIcon,
+  PlusIcon,
 } from "@radix-ui/react-icons";
+import type { JsxElementPositions } from "@triplex/server";
 import { IconButton } from "../ds/button";
 import { ErrorBoundary } from "./error-boundary";
 import { useSceneState } from "../stores/scene-state";
 import { Pressable } from "../ds/pressable";
-
-interface JsxElementPositions {
-  column: number;
-  line: number;
-  name: string;
-  path?: string;
-  exportName?: string;
-  children: JsxElementPositions[];
-  type: "host" | "custom";
-}
+import { useAssetsDrawer } from "../stores/assets-drawer";
 
 export function ScenePanel() {
   const { path, exportName } = useEditor();
@@ -119,12 +113,14 @@ function ComponentHeading() {
   );
 }
 
+function AssetsDrawerButton() {
+  const show = useAssetsDrawer((store) => () => store.show());
+
+  return <IconButton onClick={show} icon={PlusIcon} title="Add element" />;
+}
+
 function SceneContents() {
   const { path, exportName, enteredComponent, exitComponent } = useEditor();
-  const scene = useLazySubscription("/scene/:path/:exportName", {
-    path,
-    exportName,
-  });
 
   return (
     <div className="flex h-full flex-shrink flex-col">
@@ -139,7 +135,7 @@ function SceneContents() {
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
 
       <div className="flex px-2 py-1">
-        <AssetsDrawer />
+        <AssetsDrawerButton />
         <ComponentSandboxButton />
 
         {enteredComponent && (
@@ -156,14 +152,7 @@ function SceneContents() {
 
       <ScrollContainer>
         <div className="h-1" />
-        {scene.sceneObjects.map((element) => (
-          <JsxElementButton
-            path={path}
-            key={element.name + element.column + element.line}
-            level={1}
-            element={element}
-          />
-        ))}
+        <JsxElements exportName={exportName} level={1} path={path} />
         <div className="h-1" />
       </ScrollContainer>
     </div>
@@ -184,7 +173,7 @@ function ComponentSandboxButton() {
         if (isSelected) {
           blur();
         } else {
-          focus({ column: -1, line: -1, path });
+          focus({ column: -1, line: -1, path, parentPath: "" });
         }
       }}
       icon={MixerHorizontalIcon}
@@ -211,7 +200,7 @@ function JsxElements({
     <>
       {scene.sceneObjects.map((element) => (
         <JsxElementButton
-          path={path}
+          exportName={exportName}
           key={element.name + element.column + element.line}
           level={level}
           element={element}
@@ -223,11 +212,11 @@ function JsxElements({
 
 function JsxElementButton({
   element,
-  path,
   level,
+  exportName,
 }: {
+  exportName: string;
   element: JsxElementPositions;
-  path: string;
   level: number;
 }) {
   const { focus } = useScene();
@@ -235,21 +224,32 @@ function JsxElementButton({
   const selected =
     !!target &&
     target.column === element.column &&
-    target.line === element.line;
+    target.line === element.line &&
+    target.parentPath === element.parentPath;
   const showExpander =
     element.type === "custom" && element.exportName && element.path;
   const [isExpanded, setIsExpanded] = useState(false);
   const [, startTransition] = useTransition();
+  const show = useAssetsDrawer((store) => store.show);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (selected) {
+      ref.current?.scrollIntoView({ block: "nearest" });
+    }
+  }, [selected]);
 
   return (
     <Fragment>
       <Suspense>
         <Pressable
+          ref={ref}
           onPress={() => {
             focus({
               column: element.column,
               line: element.line,
-              path,
+              parentPath: element.parentPath,
+              path: "path" in element ? element.path || "" : "",
             });
           }}
           title={element.name}
@@ -258,7 +258,7 @@ function JsxElementButton({
             selected
               ? "border-l-blue-400 bg-white/5 text-blue-400"
               : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
-            "flex w-[242px] cursor-default items-center gap-1 border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
+            "group flex w-[242px] cursor-default items-center gap-1 border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
           ])}
         >
           {showExpander ? (
@@ -280,21 +280,36 @@ function JsxElementButton({
           <span className="overflow-hidden text-ellipsis whitespace-nowrap">
             {element.name}
           </span>
+
+          <Pressable
+            onPress={() =>
+              show({
+                exportName,
+                path: element.parentPath,
+                column: element.column,
+                line: element.line,
+              })
+            }
+            title="Add child element"
+            className="ml-auto rounded px-0.5 py-0.5 text-inherit opacity-0 hover:bg-white/5 focus:opacity-100 active:bg-white/10 group-hover:opacity-100"
+          >
+            <PlusIcon />
+          </Pressable>
         </Pressable>
 
-        {isExpanded && showExpander && (
+        {isExpanded && showExpander && element.path && (
           <JsxElements
             level={level + 1}
-            exportName={element.exportName!}
-            path={element.path!}
+            exportName={element.exportName}
+            path={element.path}
           />
         )}
       </Suspense>
 
       {element.children.map((child) => (
         <JsxElementButton
+          exportName={exportName}
           element={child}
-          path={path}
           key={child.name + child.column + child.line}
           level={level + 1}
         />

@@ -678,7 +678,7 @@ describe("component service", () => {
         path: join(__dirname, "stub-component.tsx"),
         props: { color: "blurple" },
       },
-      { action: "child", column: 7, line: 56 }
+      { action: "child", column: 7, line: 56, path: "", exportName: "" }
     );
 
     expect(result).toEqual({ column: 19, line: 56 });
@@ -712,7 +712,7 @@ describe("component service", () => {
         path: join(__dirname, "stub-component.tsx"),
         props: { color: "blurple" },
       },
-      { action: "child", column: 7, line: 55 }
+      { action: "child", column: 7, line: 55, path: "", exportName: "" }
     );
 
     expect(result).toEqual({ column: 19, line: 55 });
@@ -745,7 +745,7 @@ describe("component service", () => {
         name: "boxGeometry",
         props: { color: "blurple" },
       },
-      { action: "child", column: 7, line: 55 }
+      { action: "child", column: 7, line: 55, path: "", exportName: "" }
     );
     const result = add(
       sourceFile,
@@ -755,7 +755,7 @@ describe("component service", () => {
         name: "boxGeometry",
         props: { color: "blurple" },
       },
-      { action: "child", column: 7, line: 55 }
+      { action: "child", column: 7, line: 55, path: "", exportName: "" }
     );
 
     expect(result).toEqual({ column: 49, line: 55 });
@@ -833,7 +833,7 @@ describe("component service", () => {
         name: "meshStandardMaterial",
         props: {},
       },
-      { action: "child", column: 7, line: 31 }
+      { action: "child", column: 7, line: 31, path: "", exportName: "" }
     );
 
     const createdElement = getJsxElementAt(

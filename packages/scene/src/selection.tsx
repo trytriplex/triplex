@@ -7,6 +7,7 @@
 import { ThreeEvent, useFrame, useThree } from "@react-three/fiber";
 import { compose, listen, send } from "@triplex/bridge/client";
 import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws-client";
+import type { JsxElementPositions } from "@triplex/server";
 import {
   ReactNode,
   createContext,
@@ -33,6 +34,7 @@ export type EditorNodeData = SceneObjectProps["__meta"] & {
   space: "local" | "world";
   // Unaltered props currently set on the component.
   props: Record<string, unknown>;
+  parentPath: string;
 };
 
 function encodeProps(selected: EditorNodeData): string {
@@ -183,7 +185,11 @@ const findEditorData = (
     }
   }
 
-  return data;
+  if (data) {
+    return { ...data, parentPath: path };
+  }
+
+  return null;
 };
 
 const findSceneObjectFromSource = (
@@ -216,14 +222,6 @@ const findSceneObjectFromSource = (
   return nodeData;
 };
 
-export interface JsxElementPositions {
-  column: number;
-  line: number;
-  name: string;
-  children: JsxElementPositions[];
-  type: "host" | "custom";
-}
-
 const V1 = new Vector3();
 const box = new Box3();
 const noop = () => {};
@@ -249,7 +247,12 @@ export function Selection({
 }: {
   children?: ReactNode;
   onBlur: () => void;
-  onFocus: (node: { column: number; line: number; path: string }) => void;
+  onFocus: (node: {
+    column: number;
+    line: number;
+    path: string;
+    parentPath: string;
+  }) => void;
   onJumpTo: (v: Vector3Tuple, bb: Box3, obj: Object3D) => void;
   onNavigate: (node: {
     path: string;
@@ -263,6 +266,7 @@ export function Selection({
     column: number;
     line: number;
     path: string;
+    parentPath: string;
   }>();
   const [transform, setTransform] = useState<"translate" | "rotate" | "scale">(
     "translate"
@@ -284,7 +288,7 @@ export function Selection({
   const selectedSceneObject = useSubscriptionEffect(
     "/scene/:path/object/:line/:column",
     {
-      path: selected?.path,
+      path: selected?.parentPath,
       line: selected?.line,
       column: selected?.column,
       disabled: !selected || (selected?.line === -1 && selected?.column === -1),
@@ -292,7 +296,7 @@ export function Selection({
   );
   const selectedObject = selected
     ? findSceneObjectFromSource(
-        selected.path,
+        selected.parentPath,
         scene,
         selected.line,
         selected.column,
@@ -386,17 +390,8 @@ export function Selection({
         }
       }),
       listen("trplx:requestFocusSceneObject", (data) => {
-        setSelected({
-          column: data.column,
-          line: data.line,
-          path: data.path,
-        });
-
-        send("trplx:onSceneObjectFocus", {
-          column: data.column,
-          line: data.line,
-          path: data.path,
-        });
+        setSelected(data);
+        send("trplx:onSceneObjectFocus", data);
       }),
     ]);
   }, [selectedObject, setCamera]);
@@ -422,7 +417,12 @@ export function Selection({
     if (data) {
       e.stopPropagation();
       setSelected(data);
-      onFocus(data);
+      onFocus({
+        column: data.column,
+        line: data.line,
+        parentPath: data.parentPath,
+        path: data.path,
+      });
     }
   };
 
@@ -552,7 +552,13 @@ export function Selection({
       const data = findEditorData(rootPath, object, transform, sceneObjects);
       if (data) {
         setSelected(data);
-        onFocus(data);
+        // Create a new object to pick only what we need as it will be serialized later
+        onFocus({
+          column: data.column,
+          line: data.line,
+          path: data.path,
+          parentPath: rootPath,
+        });
       }
     },
     [onFocus, rootPath, sceneObjects, transform]

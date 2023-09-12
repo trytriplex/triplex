@@ -4,14 +4,13 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { CaretDownIcon, CaretRightIcon, PlusIcon } from "@radix-ui/react-icons";
+import { CaretDownIcon, CaretRightIcon } from "@radix-ui/react-icons";
 import { Suspense, createContext, useContext, useState } from "react";
 import {
   useLazySubscription,
   useSubscription,
   preloadSubscription,
 } from "@triplex/ws-client";
-import { IconButton } from "../ds/button";
 import { useScene } from "../stores/scene";
 import { Drawer } from "../ds/drawer";
 import { cn } from "../ds/cn";
@@ -23,8 +22,8 @@ import type {
   ProjectCustomComponent,
   ProjectHostComponent,
 } from "@triplex/server";
-import { useEditor } from "../stores/editor";
 import { StringInput } from "./string-input";
+import { useAssetsDrawer } from "../stores/assets-drawer";
 
 function ProjectAsset({
   name,
@@ -35,13 +34,14 @@ function ProjectAsset({
   asset: ProjectHostComponent | ProjectCustomComponent | ProjectAssetType;
   onClick: () => void;
 }) {
-  const { target } = useEditor();
   const { addComponent } = useScene();
+  const target = useAssetsDrawer((store) => store.shown);
 
   const onClickHandler = () => {
-    const targetData = target
-      ? ({ action: "child", column: target.column, line: target.line } as const)
-      : undefined;
+    const targetData =
+      typeof target === "object"
+        ? ({ action: "child", ...target } as const)
+        : undefined;
 
     switch (asset.type) {
       case "host":
@@ -265,10 +265,7 @@ function ComponentsDrawer({
   onSelected: (_: { path: string; category: "components" | "assets" }) => void;
   selected?: { path: string; category: "components" | "assets" };
 }) {
-  const { target } = useEditor();
-  const { blur } = useScene();
   const [filter, setFilter] = useState("");
-
   const componentFolders = useSubscription("/scene/components");
   const assetFolders = useSubscription("/scene/assets");
 
@@ -335,32 +332,14 @@ function ComponentsDrawer({
             )}
           </Suspense>
         </div>
-        {target && (
-          <div className="flex flex-grow-0 items-center gap-1 border-t border-neutral-800 px-2">
-            <span className="py-1 text-xs text-neutral-400">
-              Adding to the{" "}
-              <span className="text-blue-400">selected element</span> as a child
-              component.
-            </span>
-
-            <button
-              onClick={blur}
-              type="submit"
-              className="rounded px-2 py-0.5 text-xs text-neutral-400 hover:bg-white/5 active:bg-white/10"
-            >
-              Clear selection
-            </button>
-          </div>
-        )}
       </div>
     </Drawer>
   );
 }
 
 export function AssetsDrawer() {
-  const [isOpen, setIsOpen] = useState(false);
-  const close = () => setIsOpen(false);
-  const toggle = () => setIsOpen((prev) => !prev);
+  const isShown = useAssetsDrawer((store) => store.shown);
+  const close = useAssetsDrawer((store) => store.hide);
   const [selectedFolder, setSelectedFolder] = useState<{
     path: string;
     category: "components" | "assets";
@@ -370,23 +349,14 @@ export function AssetsDrawer() {
   preloadSubscription("/scene/components");
 
   return (
-    <>
-      <IconButton
-        onClick={toggle}
-        isSelected={isOpen}
-        icon={PlusIcon}
-        title="Add element"
-      />
-
-      <Suspense fallback={null}>
-        {isOpen && (
-          <ComponentsDrawer
-            onClose={close}
-            onSelected={setSelectedFolder}
-            selected={selectedFolder}
-          />
-        )}
-      </Suspense>
-    </>
+    <Suspense fallback={null}>
+      {isShown && (
+        <ComponentsDrawer
+          onClose={close}
+          onSelected={setSelectedFolder}
+          selected={selectedFolder}
+        />
+      )}
+    </Suspense>
   );
 }

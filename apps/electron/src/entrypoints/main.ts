@@ -207,6 +207,7 @@ async function openWelcomeScreen() {
     },
     maximizable: false,
     minimizable: false,
+    resizable: false,
     fullscreenable: false,
     webPreferences: {
       preload: require.resolve("./preload.js"),
