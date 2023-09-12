@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLazySubscription } from "@triplex/ws-client";
 import { useEditor } from "../stores/editor";
@@ -12,15 +12,20 @@ import { cn } from "../ds/cn";
 import { Drawer } from "../ds/drawer";
 import { useOverlayStore } from "../stores/overlay";
 import { ScrollContainer } from "../ds/scroll-container";
+import { StringInput } from "./string-input";
 
-function Scenes() {
+function Scenes({ filter = "" }: { filter?: string }) {
   const files = useLazySubscription("/scene");
   const { path, exportName } = useEditor();
   const { show } = useOverlayStore();
 
+  const components = files.scenes.filter((scene) =>
+    scene.name.includes(filter)
+  );
+
   return (
     <div className="flex flex-col gap-2 px-2 pt-2">
-      {files?.scenes.map((file) => (
+      {components.map((file) => (
         <div
           className={cn([
             path === file.path && "rounded-md bg-neutral-800/50 py-1",
@@ -53,18 +58,30 @@ function Scenes() {
 
 export function ScenesDrawer() {
   const { shown, show } = useOverlayStore();
+  const [filter, setFilter] = useState<string | undefined>();
 
   return (
     <Drawer
       title="Files"
       open={shown === "open-scene"}
-      onClose={() => show(false)}
+      onClose={() => {
+        show(false);
+        setFilter(undefined);
+      }}
     >
       <Suspense
         fallback={<div className="p-4 text-neutral-400">Loading...</div>}
       >
+        <div className="p-2">
+          <StringInput
+            name="search"
+            onChange={setFilter}
+            label="Filter components..."
+          />
+        </div>
+        <div className="flex-shrink-0 border-t border-neutral-800" />
         <ScrollContainer>
-          <Scenes />
+          <Scenes filter={filter} />
           <div className="h-2" />
         </ScrollContainer>
       </Suspense>
