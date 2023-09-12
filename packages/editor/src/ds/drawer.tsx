@@ -20,7 +20,7 @@ export function Drawer({
   mode?: "blocking" | "transparent";
   onClose: () => void;
   open: boolean;
-  title?: string;
+  title: string;
 }) {
   return (
     <Dialog.Root open={open} onOpenChange={(isOpen) => !isOpen && onClose()}>
@@ -38,11 +38,7 @@ export function Drawer({
             "fixed flex flex-col overflow-hidden border-neutral-800 text-neutral-300 shadow-2xl shadow-black/50 outline-none",
           ])}
         >
-          {title && (
-            <Dialog.DialogTitle className="mb-2 mt-6 px-4 text-2xl font-medium text-neutral-100">
-              {title}
-            </Dialog.DialogTitle>
-          )}
+          <Dialog.DialogTitle className="sr-only">{title}</Dialog.DialogTitle>
           {children}
         </Dialog.Content>
       </Dialog.Portal>

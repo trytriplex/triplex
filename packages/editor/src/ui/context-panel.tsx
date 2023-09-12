@@ -130,14 +130,14 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
                     const currentValue = await getPropValue({
                       column: target.column,
                       line: target.line,
-                      path: target.path,
+                      path: target.parentPath,
                       propName: prop.name,
                     });
 
                     persistPropValue({
                       column: target.column,
                       line: target.line,
-                      path: target.path,
+                      path: target.parentPath,
                       propName: prop.name,
                       currentPropValue: currentValue.value,
                       nextPropValue: value,
@@ -147,7 +147,7 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
                     setPropValue({
                       column: target.column,
                       line: target.line,
-                      path: target.path,
+                      path: target.parentPath,
                       propName: prop.name,
                       propValue: value,
                     });

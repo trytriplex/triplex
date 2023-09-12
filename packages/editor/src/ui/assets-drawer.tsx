@@ -274,7 +274,13 @@ function ComponentsDrawer({
   };
 
   return (
-    <Drawer mode="transparent" attach="bottom" open onClose={onClose}>
+    <Drawer
+      mode="transparent"
+      title="assets"
+      attach="bottom"
+      open
+      onClose={onClose}
+    >
       <div className="flex h-full flex-col">
         <div className="flex min-h-0 flex-grow">
           <div className="flex w-60 flex-shrink-0 flex-col border-r border-neutral-800">
