@@ -30,6 +30,7 @@ describe("selection", () => {
             line: 1,
             type: "host",
             children: [],
+            parentPath: "",
           },
         ],
       }
@@ -85,7 +86,12 @@ describe("selection", () => {
     });
 
     expect(onFocus.mock.calls.length).toEqual(1);
-    expect(onFocus.mock.calls[0][0].sceneObject).toBe(groupElement.instance);
+    expect(onFocus.mock.calls[0][0]).toEqual({
+      column: 0,
+      line: 1,
+      parentPath: "box.tsx",
+      path: "box.tsx",
+    });
   });
 
   it("should select a direct custom node", async () => {
@@ -99,10 +105,11 @@ describe("selection", () => {
         sceneObjects: [
           {
             name: "mesh",
-            column: 0,
-            line: 1,
+            column: 22,
+            line: 33,
             type: "host",
             children: [],
+            parentPath: "",
           },
         ],
       }
@@ -122,8 +129,8 @@ describe("selection", () => {
               __meta={{
                 name: "Mesh",
                 path,
-                column: 0,
-                line: 1,
+                column: 22,
+                line: 33,
                 rotate: true,
                 scale: true,
                 translate: true,
@@ -145,7 +152,12 @@ describe("selection", () => {
     });
 
     expect(onFocus.mock.calls.length).toEqual(1);
-    expect(onFocus.mock.calls[0][0].sceneObject).toBe(meshElement.instance);
+    expect(onFocus.mock.calls[0][0]).toEqual({
+      column: 22,
+      line: 33,
+      parentPath: "box.tsx",
+      path: "box.tsx",
+    });
   });
 
   it("should select the child mesh when the parent group has no assigned transform", async () => {
@@ -162,6 +174,7 @@ describe("selection", () => {
             column: 0,
             line: 1,
             type: "host",
+            parentPath: "",
             children: [
               {
                 name: "mesh",
@@ -169,6 +182,7 @@ describe("selection", () => {
                 line: 2,
                 type: "host",
                 children: [],
+                parentPath: "",
               },
             ],
           },
@@ -221,7 +235,6 @@ describe("selection", () => {
     );
     const selectionGroup = scene.findByProps({ name: "selection-group" });
     const groupElement = scene.findByProps({ name: "parent-group" });
-    const meshElement = scene.findByProps({ name: "child-mesh" });
 
     await fireEvent(selectionGroup, "onClick", {
       delta: 0,
@@ -229,7 +242,12 @@ describe("selection", () => {
     });
 
     expect(onFocus.mock.calls.length).toEqual(1);
-    expect(onFocus.mock.calls[0][0].sceneObject).toBe(meshElement.instance);
+    expect(onFocus.mock.calls[0][0]).toEqual({
+      column: 0,
+      line: 1,
+      parentPath: "box.tsx",
+      path: "box.tsx",
+    });
   });
 
   it("should select the parent group when the it has an assigned transform", async () => {
@@ -243,9 +261,10 @@ describe("selection", () => {
         sceneObjects: [
           {
             name: "group",
-            column: 0,
-            line: 1,
+            column: 11,
+            line: 22,
             type: "host",
+            parentPath: "",
             children: [
               {
                 name: "mesh",
@@ -253,6 +272,7 @@ describe("selection", () => {
                 line: 2,
                 type: "host",
                 children: [],
+                parentPath: "",
               },
             ],
           },
@@ -277,8 +297,8 @@ describe("selection", () => {
               __meta={{
                 name: "CustomBoxGroup",
                 path: "box.tsx",
-                column: 0,
-                line: 1,
+                column: 11,
+                line: 22,
                 rotate: false,
                 scale: false,
                 translate: true,
@@ -291,7 +311,6 @@ describe("selection", () => {
       </MemoryRouter>
     );
     const selectionGroup = scene.findByProps({ name: "selection-group" });
-    const groupElement = scene.findByProps({ name: "custom-box-group" });
     const meshElement = scene.findByProps({ name: "custom-box-mesh" });
 
     await fireEvent(selectionGroup, "onClick", {
@@ -300,8 +319,11 @@ describe("selection", () => {
     });
 
     expect(onFocus.mock.calls.length).toEqual(1);
-    expect(onFocus.mock.calls[0][0].sceneObject.name).toEqual(
-      groupElement.instance.name
-    );
+    expect(onFocus.mock.calls[0][0]).toEqual({
+      column: 11,
+      line: 22,
+      parentPath: "box.tsx",
+      path: "box.tsx",
+    });
   });
 });

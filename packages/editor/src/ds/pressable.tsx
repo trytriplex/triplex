@@ -4,22 +4,24 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { KeyboardEventHandler, MouseEventHandler, useCallback } from "react";
+import {
+  forwardRef,
+  KeyboardEventHandler,
+  MouseEventHandler,
+  useCallback,
+} from "react";
 import { cn } from "./cn";
 
-export function Pressable({
-  onPress,
-  children,
-  className,
-  title,
-  style,
-}: {
-  onPress?: () => void;
-  children?: React.ReactNode;
-  className?: string;
-  title?: string;
-  style?: React.CSSProperties;
-}) {
+export const Pressable = forwardRef<
+  HTMLDivElement,
+  {
+    onPress?: () => void;
+    children?: React.ReactNode;
+    className?: string;
+    title?: string;
+    style?: React.CSSProperties;
+  }
+>(({ onPress, children, className, title, style }, ref) => {
   const onKeyDownHandler: KeyboardEventHandler = useCallback(
     (e) => {
       if (e.key === "Enter") {
@@ -50,6 +52,7 @@ export function Pressable({
 
   return (
     <div
+      ref={ref}
       style={style}
       role="button"
       title={title}
@@ -65,4 +68,4 @@ export function Pressable({
       {children}
     </div>
   );
-}
+});

@@ -134,11 +134,7 @@ function BridgeReceiveEvents() {
         });
       }),
       listen("trplx:onSceneObjectFocus", (data) => {
-        editor.focus({
-          column: data.column,
-          line: data.line,
-          path: data.path,
-        });
+        editor.focus(data);
       }),
       listen("trplx:onSceneObjectBlur", () => {
         editor.focus(null);

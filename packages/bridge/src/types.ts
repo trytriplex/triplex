@@ -32,15 +32,12 @@ export interface ClientSendEventData {
     target?: {
       line: number;
       column: number;
+      path: string;
+      exportName: string;
       action: "child";
     };
   };
   "trplx:onConnected": undefined;
-  "trplx:onSceneObjectDelete": {
-    column: number;
-    line: number;
-    path: string;
-  };
   "trplx:onConfirmSceneObjectProp": {
     column: number;
     line: number;
@@ -53,6 +50,7 @@ export interface ClientSendEventData {
     line: number;
     column: number;
     path: string;
+    parentPath: string;
   };
   "trplx:onTransformChange": {
     mode: "translate" | "scale" | "rotate";
@@ -81,12 +79,12 @@ export interface ClientSendEventResponse {
   "trplx:onAddNewComponent": {
     line: number;
     column: number;
+    path: string;
   };
   "trplx:onError": void;
   "trplx:onConnected": void;
   "trplx:onConfirmSceneObjectProp": void;
   "trplx:onSceneObjectBlur": void;
-  "trplx:onSceneObjectDelete": void;
   "trplx:onSceneObjectFocus": void;
   "trplx:onTransformChange": void;
   "trplx:onCameraTypeChange": void;
@@ -120,18 +118,20 @@ export interface HostSendEventData {
     target?: {
       line: number;
       column: number;
+      path: string;
+      exportName: string;
       action: "child";
     };
   };
   "trplx:requestDeleteSceneObject": {
     column: number;
     line: number;
-    path: string;
+    parentPath: string;
   };
   "trplx:requestRestoreSceneObject": {
     column: number;
     line: number;
-    path: string;
+    parentPath: string;
   };
   "trplx:requestSetSceneObjectProp": {
     column: number;
@@ -170,6 +170,7 @@ export interface HostSendEventData {
     column: number;
     line: number;
     path: string;
+    parentPath: string;
   };
   "trplx:requestSceneObjectPropValue": {
     column: number;

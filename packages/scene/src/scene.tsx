@@ -136,10 +136,17 @@ export function SceneFrame() {
   );
 
   const onFocus = useCallback(
-    (data: { column: number; line: number; path: string }) => {
+    (data: {
+      column: number;
+      line: number;
+      path: string;
+      parentPath: string;
+    }) => {
+      // This will be serialized so we create a new object just in case.
       send("trplx:onSceneObjectFocus", {
         column: data.column,
         line: data.line,
+        parentPath: data.parentPath,
         path: data.path,
       });
     },

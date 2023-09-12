@@ -12,6 +12,7 @@ export interface FocusedObject {
   line: number;
   column: number;
   path: string;
+  parentPath: string;
 }
 
 interface BridgeContext {
@@ -92,7 +93,7 @@ interface BridgeContext {
   deleteComponent(component: {
     column: number;
     line: number;
-    path: string;
+    parentPath: string;
   }): void;
   /**
    * Restores a component that was previously deleted from the scene.
@@ -100,7 +101,7 @@ interface BridgeContext {
   restoreComponent(component: {
     column: number;
     line: number;
-    path: string;
+    parentPath: string;
   }): void;
   /**
    * Value is `true` when the scene is ready else `false`. If the scene is not
