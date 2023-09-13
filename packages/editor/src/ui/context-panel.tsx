@@ -6,7 +6,7 @@
  */
 import { useLazySubscription } from "@triplex/ws-client";
 import { IDELink } from "../util/ide";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { useEditor, FocusedObject } from "../stores/editor";
 import { ScrollContainer } from "../ds/scroll-container";
 import { PropInput, PropTagContext } from "./prop-input";
@@ -23,11 +23,13 @@ import {
 } from "@radix-ui/react-icons";
 import { IconButton } from "../ds/button";
 import { ErrorBoundary } from "./error-boundary";
+import { StringInput } from "./string-input";
 
 function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
   const { setPropValue, getPropValue, navigateTo, jumpTo, viewFocusedCamera } =
     useScene();
   const { persistPropValue, deleteComponent } = useEditor();
+  const [filter, setFilter] = useState<string | undefined>();
 
   const data = useLazySubscription("/scene/:path/object/:line/:column", {
     column: target.column,
@@ -97,16 +99,28 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
 
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
 
-      <ScrollContainer>
-        <div className="h-3" />
+      {data.props.length > 0 && (
+        <div className="px-3 py-2">
+          <StringInput
+            onChange={setFilter}
+            label="Filter props..."
+            name="prop-filter"
+          />
+        </div>
+      )}
 
+      <ScrollContainer>
         {data.props.length === 0 && (
-          <div className="px-4 text-sm italic text-neutral-400">
+          <div className="px-4 py-3 text-sm italic text-neutral-400">
             This element has no props.
           </div>
         )}
 
         {data.props.map((prop) => {
+          if (!prop.name.toLowerCase().includes(filter?.toLowerCase() || "")) {
+            return null;
+          }
+
           const column = "column" in prop ? prop.column : -1;
           const line = "line" in prop ? prop.line : -1;
 
@@ -175,6 +189,7 @@ function ComponentSandboxPanel() {
   const setValues = useSceneState((state) => state.set);
   const hasValues = useSceneState((state) => state.hasState(storeKey));
   const clearValues = useSceneState((state) => state.clear);
+  const [filter, setFilter] = useState<string | undefined>();
 
   return (
     <>
@@ -211,16 +226,28 @@ function ComponentSandboxPanel() {
 
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
 
-      <ScrollContainer>
-        <div className="h-3" />
+      {data.props.length > 0 && (
+        <div className="px-3 py-2">
+          <StringInput
+            onChange={setFilter}
+            label="Filter props..."
+            name="prop-filter"
+          />
+        </div>
+      )}
 
+      <ScrollContainer>
         {data.props.length === 0 && (
-          <div className="px-4 text-sm italic text-neutral-400">
+          <div className="px-4 py-3 text-sm italic text-neutral-400">
             This component has no props.
           </div>
         )}
 
         {data.props.map((prop) => {
+          if (!prop.name.toLowerCase().includes(filter?.toLowerCase() || "")) {
+            return null;
+          }
+
           return (
             <PropField
               htmlFor={prop.name}
@@ -278,7 +305,7 @@ export function ContextPanel() {
     <div className="pointer-events-none flex w-full flex-col gap-3">
       <div className="pointer-events-auto relative flex h-full flex-col overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%]">
         <IconButton
-          className="absolute -left-10 top-0"
+          className="absolute right-1 top-1"
           onClick={blur}
           icon={Cross2Icon}
           title="Close"

@@ -32,6 +32,7 @@ import { ErrorBoundary } from "./error-boundary";
 import { useSceneState } from "../stores/scene-state";
 import { Pressable } from "../ds/pressable";
 import { useAssetsDrawer } from "../stores/assets-drawer";
+import { StringInput } from "./string-input";
 
 export function ScenePanel() {
   const { path, exportName } = useEditor();
@@ -121,6 +122,7 @@ function AssetsDrawerButton() {
 
 function SceneContents() {
   const { path, exportName, enteredComponent, exitComponent } = useEditor();
+  const [filter, setFilter] = useState<string | undefined>();
 
   return (
     <div className="flex h-full flex-shrink flex-col">
@@ -150,9 +152,21 @@ function SceneContents() {
 
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
 
+      <div className="px-3 py-2">
+        <StringInput
+          onChange={setFilter}
+          name="filter-elements"
+          label="Filter elements..."
+        />
+      </div>
+
       <ScrollContainer>
-        <div className="h-1" />
-        <JsxElements exportName={exportName} level={1} path={path} />
+        <JsxElements
+          filter={filter}
+          exportName={exportName}
+          level={1}
+          path={path}
+        />
         <div className="h-1" />
       </ScrollContainer>
     </div>
@@ -182,14 +196,28 @@ function ComponentSandboxButton() {
   );
 }
 
+function matchesFilter(filter: string, element: JsxElementPositions): boolean {
+  if (filter === "") {
+    return true;
+  }
+
+  if (element.name.toLowerCase().includes(filter.toLowerCase())) {
+    return true;
+  }
+
+  return element.children.some((child) => matchesFilter(filter, child));
+}
+
 function JsxElements({
   path,
   exportName,
   level,
+  filter = "",
 }: {
   path: string;
   exportName: string;
   level: number;
+  filter?: string;
 }) {
   const scene = useLazySubscription("/scene/:path/:exportName", {
     path,
@@ -198,14 +226,20 @@ function JsxElements({
 
   return (
     <>
-      {scene.sceneObjects.map((element) => (
-        <JsxElementButton
-          exportName={exportName}
-          key={element.name + element.column + element.line}
-          level={level}
-          element={element}
-        />
-      ))}
+      {scene.sceneObjects.map((element) => {
+        if (!matchesFilter(filter, element)) {
+          return null;
+        }
+
+        return (
+          <JsxElementButton
+            exportName={exportName}
+            key={element.name + element.column + element.line}
+            level={level}
+            element={element}
+          />
+        );
+      })}
     </>
   );
 }
