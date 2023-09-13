@@ -27,7 +27,8 @@ export async function createServer({
   files: string[];
   provider?: string;
 }) {
-  const tsConfig = join(cwd, "tsconfig.json");
+  const normalizedCwd = cwd.replaceAll("\\", "/");
+  const tsConfig = join(normalizedCwd, "tsconfig.json");
   const app = express();
   const { createServer: createViteServer } = await import("vite");
   const { default: glsl } = await import("vite-plugin-glsl");
@@ -37,15 +38,15 @@ export async function createServer({
     plugins: [
       react({ babel: { plugins: [triplexBabelPlugin] } }),
       glsl(),
-      scenePlugin({ cwd, files, components, provider }),
+      scenePlugin({ cwd: normalizedCwd, files, components, provider }),
       tsconfigPaths({ projects: [tsConfig] }),
     ],
     define: {
       __TRIPLEX_TARGET__: `"${target}"`,
-      __TRIPLEX_CWD__: `"${cwd}"`,
+      __TRIPLEX_CWD__: `"${normalizedCwd}"`,
       __TRIPLEX_BASE_URL__: `"http://localhost:3333"`,
     },
-    root: cwd,
+    root: normalizedCwd,
     logLevel: "error",
     appType: "custom",
     publicDir,
