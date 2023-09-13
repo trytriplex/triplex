@@ -19,39 +19,44 @@ function Scenes({ filter = "" }: { filter?: string }) {
   const { path, exportName } = useEditor();
   const { show } = useOverlayStore();
 
-  const components = files.scenes.filter((scene) =>
-    scene.name.includes(filter)
-  );
-
   return (
     <div className="flex flex-col gap-2 px-2 pt-2">
-      {components.map((file) => (
-        <div
-          className={cn([
-            path === file.path && "rounded-md bg-neutral-800/50 py-1",
-          ])}
-          key={file.path}
-        >
-          <small className="block px-2 text-xs text-neutral-400">
-            {file.path.replace(files.cwd + "/", "")}
-          </small>
-          {file.exports.map((exp) => (
-            <Link
-              key={exp.exportName}
-              to={{ search: `?path=${file.path}&exportName=${exp.exportName}` }}
-              onClick={() => show(false)}
-              className={cn([
-                path === file.path && exportName === exp.exportName
-                  ? "bg-neutral-800 text-blue-400"
-                  : "text-neutral-300",
-                "block select-none px-2 text-base outline-none hover:bg-white/5 active:bg-white/10",
-              ])}
-            >
-              <div>{exp.name}</div>
-            </Link>
-          ))}
-        </div>
-      ))}
+      {files.scenes.map((file) => {
+        if (!file.name.toLowerCase().includes(filter.toLowerCase())) {
+          return null;
+        }
+
+        return (
+          <div
+            className={cn([
+              path === file.path && "-my-1 rounded-md bg-neutral-800/50 py-1",
+            ])}
+            key={file.path}
+          >
+            <small className="block px-2 text-xs text-neutral-400">
+              {file.path.replace(files.cwd + "/", "")}
+            </small>
+
+            {file.exports.map((exp) => (
+              <Link
+                key={exp.exportName}
+                to={{
+                  search: `?path=${file.path}&exportName=${exp.exportName}`,
+                }}
+                onClick={() => show(false)}
+                className={cn([
+                  path === file.path && exportName === exp.exportName
+                    ? "bg-neutral-800 text-blue-400"
+                    : "text-neutral-300",
+                  "block select-none px-2 text-base outline-none hover:bg-white/5 active:bg-white/10",
+                ])}
+              >
+                <div>{exp.name}</div>
+              </Link>
+            ))}
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -72,14 +77,14 @@ export function ScenesDrawer() {
       <Suspense
         fallback={<div className="p-4 text-neutral-400">Loading...</div>}
       >
-        <div className="p-2">
+        <div className="px-3 py-2">
           <StringInput
-            name="search"
+            name="component-filter"
             onChange={setFilter}
             label="Filter components..."
           />
         </div>
-        <div className="flex-shrink-0 border-t border-neutral-800" />
+
         <ScrollContainer>
           <Scenes filter={filter} />
           <div className="h-2" />

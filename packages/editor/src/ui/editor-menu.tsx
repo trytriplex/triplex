@@ -201,6 +201,16 @@ export function EditorMenu() {
           id: "select-menu",
           submenu: [
             {
+              label: "Select all",
+              id: "select-all",
+              accelerator: shortcut("A", { meta: true }),
+              click: () => {
+                if (document.activeElement?.tagName === "INPUT") {
+                  document.execCommand("selectAll");
+                }
+              },
+            },
+            {
               label: "Deselect",
               id: "deselect",
               enabled: !!target && isEditable,
