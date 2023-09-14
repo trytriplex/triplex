@@ -280,14 +280,6 @@ export function getJsxElementPropTypes(
     const propType = prop.getTypeAtLocation(declaration);
     const { description, tags } = extractJSDoc(prop);
 
-    if (propName === "rotation") {
-      rotate = true;
-    } else if (propName === "position") {
-      translate = true;
-    } else if (propName === "scale") {
-      scale = true;
-    }
-
     if (declaredProp) {
       const initializer = declaredProp.getInitializer();
       const value = getJsxAttributeValue(
@@ -298,8 +290,17 @@ export function getJsxElementPropTypes(
       const { column, line } = element
         .getSourceFile()
         .getLineAndColumnAtPos(declaredProp.getStart());
-
       const type = unrollType(propType);
+
+      if (value.kind !== "unhandled" && value.kind !== "identifier") {
+        if (propName === "rotation") {
+          rotate = true;
+        } else if (propName === "position") {
+          translate = true;
+        } else if (propName === "scale") {
+          scale = true;
+        }
+      }
 
       if (type.kind === "union") {
         const actualValue = value.value;
@@ -371,6 +372,14 @@ export function getJsxElementPropTypes(
         value: value.value as string,
       });
     } else {
+      if (propName === "rotation") {
+        rotate = true;
+      } else if (propName === "position") {
+        translate = true;
+      } else if (propName === "scale") {
+        scale = true;
+      }
+
       props.push({
         ...unrollType(propType),
         name: propName,

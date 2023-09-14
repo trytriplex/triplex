@@ -11,6 +11,27 @@ import { _createProject } from "../project";
 import { getFunctionPropTypes, getJsxElementPropTypes } from "../type-infer";
 
 describe("type infer", () => {
+  it("should disable transforms if controlled in code", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/named.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 17, 5);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const { transforms } = getJsxElementPropTypes(sceneObject);
+
+    expect(transforms).toEqual({
+      rotate: false,
+      scale: false,
+      translate: false,
+    });
+  });
+
   it("should return types of a imported component", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
