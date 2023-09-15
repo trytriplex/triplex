@@ -75,12 +75,12 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
           onClick={() => navigateTo()}
           icon={EnterIcon}
           isDisabled={data.type === "host" || !data.path}
-          title="Enter component"
+          title="Enter component (⇧ + F)"
         />
         <IconButton
           onClick={jumpTo}
           icon={Crosshair1Icon}
-          title="Focus camera"
+          title="Focus camera (F)"
         />
         {isCamera && (
           <IconButton
@@ -93,7 +93,7 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
           className="ml-auto"
           onClick={deleteComponent}
           icon={TrashIcon}
-          title="Delete"
+          title="Delete (⌫)"
         />
       </div>
 
@@ -305,10 +305,10 @@ export function ContextPanel() {
     <div className="pointer-events-none flex w-full flex-col gap-3">
       <div className="pointer-events-auto relative flex h-full flex-col overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%]">
         <IconButton
-          className="absolute right-1 top-1"
+          className="absolute right-2 top-3"
           onClick={blur}
           icon={Cross2Icon}
-          title="Close"
+          title="Close (ESC)"
         />
 
         <ErrorBoundary keys={[target]}>
