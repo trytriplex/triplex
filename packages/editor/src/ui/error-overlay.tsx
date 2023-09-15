@@ -15,6 +15,7 @@ import {
 } from "@radix-ui/react-icons";
 import { getEditorLink } from "../util/ide";
 import { ScrollContainer } from "../ds/scroll-container";
+import { cn } from "../ds/cn";
 
 interface TriplexError {
   message: string;
@@ -76,25 +77,25 @@ export function ErrorOverlay() {
 
   return (
     <div
-      className="fixed right-3 top-11 z-50 flex w-96 flex-col gap-1 rounded bg-red-400 p-2"
+      className={cn([
+        "highlight-danger fixed bottom-6 left-6 z-50 flex w-96 flex-col gap-1 rounded-md border border-neutral-600 bg-neutral-800 p-2",
+      ])}
       key={error.message}
     >
-      <div className="flex items-center gap-1">
+      <div className="flex items-center">
         <IconButton
           isDisabled={index === 0}
           onClick={() => setIndex((prev) => prev - 1)}
-          variant="inverse"
           title="Previous error"
           icon={ArrowLeftIcon}
         />
         <IconButton
           isDisabled={index === errors.length - 1}
           onClick={() => setIndex((prev) => prev + 1)}
-          variant="inverse"
           title="Next error"
           icon={ArrowRightIcon}
         />
-        <div className="mr-auto px-1 text-xs text-neutral-800 [font-variant-numeric:tabular-nums]">
+        <div className="mr-auto px-2 text-xs text-neutral-400 [font-variant-numeric:tabular-nums]">
           {index + 1} of {errors.length} errors in the scene
         </div>
 
@@ -110,18 +111,18 @@ export function ErrorOverlay() {
 
             context?.close();
           }}
-          variant="inverse"
           title="View source"
           icon={CodeIcon}
         />
         <IconButton
           onClick={() => setErrors([])}
-          variant="inverse"
           title="Dismiss errors"
           icon={Cross2Icon}
         />
       </div>
-      <div className="px-2 text-sm text-neutral-800">{error.message}</div>
+      <div className="mb-1 line-clamp-2 px-2 text-sm font-medium text-neutral-300">
+        {error.message}
+      </div>
       <StackTrace>{error.stack}</StackTrace>
     </div>
   );
@@ -129,12 +130,10 @@ export function ErrorOverlay() {
 
 function StackTrace({ children }: { children: string }) {
   return (
-    <div className="rounded bg-black/10 text-left text-xs text-neutral-800/80">
-      <ScrollContainer>
-        <div className="max-h-52 px-2 pt-1 font-mono after:block after:h-1">
-          {children}
-        </div>
-      </ScrollContainer>
-    </div>
+    <ScrollContainer className="rounded bg-white/5">
+      <div className="max-h-20 px-2 pt-1.5 text-left font-mono text-xs text-neutral-400 after:block after:h-1.5">
+        {children}
+      </div>
+    </ScrollContainer>
   );
 }

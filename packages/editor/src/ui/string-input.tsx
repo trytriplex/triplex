@@ -22,6 +22,7 @@ export function StringInput({
   onChange = noop,
   required,
   label,
+  autoFocus,
 }: {
   label?: string;
   defaultValue?: string;
@@ -29,6 +30,7 @@ export function StringInput({
   name: string;
   onChange?: (value: string | undefined) => void;
   onConfirm?: (value: string | undefined) => void;
+  autoFocus?: boolean;
 }) {
   const [value, setValue] = useState(defaultValue);
 
@@ -63,6 +65,7 @@ export function StringInput({
   return (
     <div className="group flex w-full items-center rounded-md border border-transparent bg-white/5 focus-within:border-blue-400 hover:bg-white/10">
       <input
+        autoFocus={autoFocus}
         aria-label={label}
         placeholder={label ? sentenceCase(label) : undefined}
         required={required}

@@ -133,7 +133,12 @@ export function ${componentName}() {
 }
 `;
 
-    return project.createSourceFile(filename, template);
+    const sourceFile = project.createSourceFile(filename, template);
+
+    modifiedSourceFiles.add(sourceFile);
+    onStateChangeCallbacks.forEach((cb) => cb());
+
+    return sourceFile;
   }
 
   function getSourceFile(path: string) {

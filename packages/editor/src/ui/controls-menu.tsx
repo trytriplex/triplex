@@ -53,19 +53,19 @@ export function ControlsMenu() {
     <div className="pointer-events-auto flex self-end rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1">
       <IconButton
         isSelected={mode === "translate"}
-        title="Translate"
+        title="Translate (T)"
         icon={AllSidesIcon}
         onClick={() => setTransform("translate")}
       />
       <IconButton
         isSelected={mode === "rotate"}
-        title="Rotate"
+        title="Rotate (R)"
         icon={AngleIcon}
         onClick={() => setTransform("rotate")}
       />
       <IconButton
         isSelected={mode === "scale"}
-        title="Scale"
+        title="Scale (S)"
         icon={TransformIcon}
         onClick={() => setTransform("scale")}
       />

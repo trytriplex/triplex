@@ -196,16 +196,23 @@ function ComponentSandboxButton() {
   );
 }
 
-function matchesFilter(filter: string, element: JsxElementPositions): boolean {
-  if (filter === "") {
-    return true;
+function matchesFilter(
+  filter: string | undefined,
+  element: JsxElementPositions
+) {
+  if (!filter || element.name.toLowerCase().includes(filter.toLowerCase())) {
+    return "exact";
   }
 
-  if (element.name.toLowerCase().includes(filter.toLowerCase())) {
-    return true;
+  const childMatches = element.children.some((child) =>
+    matchesFilter(filter, child)
+  );
+
+  if (childMatches) {
+    return "child";
   }
 
-  return element.children.some((child) => matchesFilter(filter, child));
+  return false;
 }
 
 function JsxElements({
@@ -227,12 +234,9 @@ function JsxElements({
   return (
     <>
       {scene.sceneObjects.map((element) => {
-        if (!matchesFilter(filter, element)) {
-          return null;
-        }
-
         return (
           <JsxElementButton
+            filter={filter}
             exportName={exportName}
             key={element.name + element.column + element.line}
             level={level}
@@ -248,10 +252,13 @@ function JsxElementButton({
   element,
   level,
   exportName,
+
+  filter,
 }: {
   exportName: string;
   element: JsxElementPositions;
   level: number;
+  filter?: string;
 }) {
   const { focus } = useScene();
   const { target } = useEditor();
@@ -266,6 +273,7 @@ function JsxElementButton({
   const [, startTransition] = useTransition();
   const show = useAssetsDrawer((store) => store.show);
   const ref = useRef<HTMLDivElement>(null);
+  const match = matchesFilter(filter, element);
 
   useEffect(() => {
     if (selected) {
@@ -289,6 +297,7 @@ function JsxElementButton({
           title={element.name}
           style={{ paddingLeft: level === 1 ? 13 : level * 13 }}
           className={cn([
+            match === false && "hidden",
             selected
               ? "border-l-blue-400 bg-white/5 text-blue-400"
               : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
@@ -333,6 +342,7 @@ function JsxElementButton({
 
         {isExpanded && showExpander && element.path && (
           <JsxElements
+            filter={filter}
             level={level + 1}
             exportName={element.exportName}
             path={element.path}
@@ -342,6 +352,7 @@ function JsxElementButton({
 
       {element.children.map((child) => (
         <JsxElementButton
+          filter={filter}
           exportName={exportName}
           element={child}
           key={child.name + child.column + child.line}
