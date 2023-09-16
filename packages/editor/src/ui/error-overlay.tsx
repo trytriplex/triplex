@@ -120,7 +120,7 @@ export function ErrorOverlay() {
           icon={Cross2Icon}
         />
       </div>
-      <div className="mb-1 line-clamp-2 px-2 text-sm font-medium text-neutral-300">
+      <div className="mb-2 line-clamp-2 px-2 text-sm font-medium text-neutral-300">
         {error.message}
       </div>
       <StackTrace>{error.stack}</StackTrace>

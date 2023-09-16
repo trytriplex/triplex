@@ -67,7 +67,7 @@ describe("project ast", () => {
     });
   });
 
-  it("should reset project state when savings", () => {
+  it("should reset project state when saving", async () => {
     const project = createProject({
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
@@ -76,7 +76,7 @@ describe("project ast", () => {
     );
     sourceFile.edit();
 
-    project.save();
+    await project.save({});
 
     expect(project.getState()).toEqual({
       dirtySourceFiles: [],

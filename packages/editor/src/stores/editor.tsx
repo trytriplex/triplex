@@ -290,11 +290,12 @@ export function useEditor() {
       // Working anymore.
       clearUndoRedo();
 
-      await fetch(
-        `http://localhost:8000/scene/${encodeURIComponent(
-          path
-        )}/save?newPath=${actualPath}`
-      );
+      await fetch("http://localhost:8000/project/save", {
+        method: "POST",
+        body: JSON.stringify({
+          rename: path !== actualPath ? { [path]: actualPath } : {},
+        }),
+      });
 
       if (actualPath !== path) {
         // The path has changed so we need to update the URL to reflect that.

@@ -159,8 +159,14 @@ export function createServer({
   /**
    * Persist the in-memory scene to fs.
    */
-  router.get("/scene/:path/save", async (context) => {
-    await project.save();
+  router.post("/project/save", async (context) => {
+    const body: { rename: Record<string, string> } = await context.request.body(
+      {
+        type: "json",
+      }
+    ).value;
+
+    await project.save(body);
 
     context.response.body = { message: "success" };
   });

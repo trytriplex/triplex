@@ -41,7 +41,8 @@ async function persistSourceFile({
   newPath?: string;
   cwd: string;
 }) {
-  if (sourceFile && !sourceFile.isSaved()) {
+  if (!sourceFile.isSaved()) {
+    // Only delete + format if the file is modified.
     deleteCommentComponents(sourceFile);
 
     // TODO: Move config resolution out of this function.
@@ -68,13 +69,15 @@ async function persistSourceFile({
         });
       }
     }
+  }
 
-    if (newPath && newPath !== sourceFile.getFilePath()) {
-      const result = sourceFile.copy(newPath);
-      await result.save();
-    } else {
-      await sourceFile.save();
-    }
+  if (newPath && newPath !== sourceFile.getFilePath()) {
+    // Force save even if it isn't modified
+    const result = sourceFile.copy(newPath);
+    await result.save();
+  } else if (!sourceFile.isSaved()) {
+    // Save only if the file is modified
+    await sourceFile.save();
   }
 }
 
@@ -179,18 +182,31 @@ export function ${componentName}() {
     };
   }
 
-  async function save() {
+  async function save({ rename = {} }: { rename?: Record<string, string> }) {
+    const renamePaths = Object.keys(rename);
+
+    // Ensure all source files that are staged to be renamed are available.
+    renamePaths.forEach((path) => {
+      const sourceFile = getSourceFile(path);
+      if (modifiedSourceFiles.has(sourceFile.read())) {
+        return;
+      }
+
+      modifiedSourceFiles.add(sourceFile.read());
+    });
+
     const promises = Array.from(modifiedSourceFiles).map((sourceFile) =>
       persistSourceFile({
         sourceFile,
         cwd,
+        newPath: rename[sourceFile.getFilePath()],
       })
     );
 
+    await Promise.all(promises);
+
     modifiedSourceFiles.clear();
     onStateChangeCallbacks.forEach((cb) => cb());
-
-    await Promise.all(promises);
   }
 
   function getState() {
