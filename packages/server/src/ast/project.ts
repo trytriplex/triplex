@@ -153,6 +153,11 @@ export function ${componentName}() {
       project.getSourceFile(path) || project.addSourceFileAtPath(path);
 
     return {
+      reset: async () => {
+        await sourceFile.refreshFromFileSystem();
+        modifiedSourceFiles.delete(sourceFile);
+        onStateChangeCallbacks.forEach((cb) => cb());
+      },
       read: () => sourceFile,
       edit: () => {
         modifiedSourceFiles.add(sourceFile);

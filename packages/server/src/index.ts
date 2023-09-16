@@ -178,7 +178,7 @@ export function createServer({
     const path = context.params.path;
     const sourceFile = await project.getSourceFile(path);
 
-    await sourceFile.read().refreshFromFileSystem();
+    await sourceFile.reset();
 
     context.response.body = { message: "success" };
   });
