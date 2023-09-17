@@ -1,5 +1,14 @@
 # @triplex/bridge
 
+## 0.57.0
+
+### Minor Changes
+
+- 5c1fc3d: Add editing child jsx elements through the Triplex UI.
+- 2b61384: Adding an asset is now contextual, the original button adds to the
+  open component, while the add buttons on each element in the left scene panel
+  add to it as a child.
+
 ## 0.56.1
 
 ## 0.56.0
