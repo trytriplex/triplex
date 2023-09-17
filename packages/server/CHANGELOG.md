@@ -1,5 +1,21 @@
 # @triplex/server
 
+## 0.57.0
+
+### Minor Changes
+
+- 5c1fc3d: Add editing child jsx elements through the Triplex UI.
+- 6da8bae: Adds context provider support using the `provider` config property.
+- 2b61384: Adding an asset is now contextual, the original button adds to the
+  open component, while the add buttons on each element in the left scene panel
+  add to it as a child.
+
+### Patch Changes
+
+- bcf7cae: Default export component names are now displayed correctly in the
+  open component drawer.
+- 730fa7c: Transform controls are now disabled when controlled by code.
+
 ## 0.56.1
 
 ### Patch Changes

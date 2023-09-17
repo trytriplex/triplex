@@ -1,5 +1,20 @@
 # @triplex/client
 
+## 0.57.0
+
+### Minor Changes
+
+- 6da8bae: Adds context provider support using the `provider` config property.
+
+### Patch Changes
+
+- 5c7ba21: Windows no longer throws when opening projects that have escape
+  characters in them.
+- Updated dependencies [5c1fc3d]
+- Updated dependencies [046cf78]
+- Updated dependencies [2b61384]
+  - @triplex/scene@0.57.0
+
 ## 0.56.1
 
 ### Patch Changes

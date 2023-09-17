@@ -1,5 +1,29 @@
 # @triplex/run
 
+## 0.57.0
+
+### Minor Changes
+
+- 6da8bae: Adds context provider support using the `provider` config property.
+
+### Patch Changes
+
+- 466bf48: JSON schema now gets served from the docs website.
+- Updated dependencies [5c1fc3d]
+- Updated dependencies [046cf78]
+- Updated dependencies [6da8bae]
+- Updated dependencies [628646e]
+- Updated dependencies [7673ae8]
+- Updated dependencies [2b61384]
+- Updated dependencies [bcf7cae]
+- Updated dependencies [730fa7c]
+- Updated dependencies [5c7ba21]
+- Updated dependencies [2b61384]
+- Updated dependencies [628646e]
+  - @triplex/editor@0.57.0
+  - @triplex/server@0.57.0
+  - @triplex/client@0.57.0
+
 ## 0.56.1
 
 ### Patch Changes

@@ -1,5 +1,26 @@
 # @triplex/electron
 
+## 0.57.0
+
+### Patch Changes
+
+- 2b61384: The welcome screen is no longer resizable.
+- Updated dependencies [5c1fc3d]
+- Updated dependencies [046cf78]
+- Updated dependencies [6da8bae]
+- Updated dependencies [628646e]
+- Updated dependencies [7673ae8]
+- Updated dependencies [2b61384]
+- Updated dependencies [bcf7cae]
+- Updated dependencies [730fa7c]
+- Updated dependencies [5c7ba21]
+- Updated dependencies [2b61384]
+- Updated dependencies [628646e]
+  - @triplex/editor@0.57.0
+  - @triplex/server@0.57.0
+  - @triplex/client@0.57.0
+  - create-triplex-project@0.57.0
+
 ## 0.56.1
 
 ### Patch Changes

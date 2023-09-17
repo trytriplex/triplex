@@ -1,5 +1,29 @@
 # @triplex/editor
 
+## 0.57.0
+
+### Minor Changes
+
+- 5c1fc3d: Add editing child jsx elements through the Triplex UI.
+- 628646e: Context panel now has a filter for props.
+- 7673ae8: A search input filter is now available when opening a component.
+- 2b61384: Adding an asset is now contextual, the original button adds to the
+  open component, while the add buttons on each element in the left scene panel
+  add to it as a child.
+
+### Patch Changes
+
+- 046cf78: Error notification is now displayed in the bottom left and is
+  emphasized less.
+- 2b61384: When adding new elements to the scene the left scene panel now
+  scrolls to the added element if needed.
+- 628646e: Inputs can now have their content selected with the select all
+  command (cmd + a).
+- Updated dependencies [5c1fc3d]
+- Updated dependencies [2b61384]
+  - @triplex/bridge@0.57.0
+  - @triplex/ws-client@0.57.0
+
 ## 0.56.1
 
 ### Patch Changes
