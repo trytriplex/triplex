@@ -63,7 +63,7 @@ export function ParkScene() {
 
   return (
     <>
-      <PlayerEntity position={[7.880951061776439, 0.3, 11]} />
+      <PlayerEntity position={[7.880951061776439, 0.012977683819411279, 11]} />
 
       <ItemDrop item="woodStump" position={[7, 0, 10.774701506059406]}>
         <StaticEntity collidable={false} position={[7, 1, 12]}>

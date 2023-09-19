@@ -4,25 +4,18 @@ title: Triplex FAQ
 
 ## What version of React does Triplex use?
 
-Triplex uses _your_ React versions, not its own, even when running Triplex as a
-native app! That means it stays up-to-date with your code and you choose when to
-upgrade. This is also the case for React Three Fiber and Three.js.
+Triplex uses _your_ React, React Three Fiber, and Three.js installed packages,
+not its own. That means it stays up-to-date with your code and you choose when
+to upgrade.
 
 ## What bundlers does Triplex support?
 
-Triplex works with any bundler by not using your bundler at all. It uses Vite
-internally when running the editor.
+Triplex works with any bundler by not using your bundler at all.
 
 ## Can I use Triplex with other frameworks?
 
 Yes. Triplex operates on source code just as other frameworks do, you can use
-the same code across multiple frameworks like Next.js or Remix. If you've used
-Storybook or another similar devtool it's exactly the same.
-
-## Why does my component error when trying to access React context?
-
-Currently Triplex doesn't have a good story for setting React context when
-opening leaf node components in the editor. This will be resolved in the future.
+the same code across multiple frameworks like Next.js or Remix.
 
 ## Why do Triplex projects need TypeScript?
 

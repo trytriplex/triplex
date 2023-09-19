@@ -63,12 +63,28 @@ export function Tweets() {
 
       <div className="flex gap-4 overflow-hidden pl-10 xl:pl-28">
         <Tweet
+          name="TresJS"
+          tag="@tresjs_dev"
+          content="This is an incredible tool for the 3D web community, Congrats to the team behind it @_douges 👏🏻"
+          tweetUrl="https://x.com/tresjs_dev/status/1696460634894872672?s=20"
+          date="7:51 PM · Aug 29, 2023"
+          avatarUrl="/avatars/tresjs-avatar.jpg"
+        />
+        <Tweet
           name="Guillermo Rauch"
           tag="@rauchg"
           content="Was just looking at this yesterday. Looks really good"
           tweetUrl="https://twitter.com/rauchg/status/1670874573062144001"
           date="12:18 PM · Jun 20, 2023"
-          avatarUrl="/rauch-avatar.jpg"
+          avatarUrl="/avatars/rauch-avatar.jpg"
+        />
+        <Tweet
+          name="Alvaro 사부"
+          tag="@alvarosabu"
+          content="Man this is incredible fun to play with I love it. Kudos @_douges 👏🏻🔥"
+          tweetUrl="https://x.com/alvarosabu/status/1696460264772657306?s=20"
+          date="7:50 PM · Aug 29, 2023"
+          avatarUrl="/avatars/alvaro-avatar.png"
         />
         <Tweet
           name="Julian"
@@ -76,7 +92,7 @@ export function Tweets() {
           date="3:14 AM · Jun 5, 2023"
           content="Wait, whaaaat? Is this really 3D software running on node and react?"
           tweetUrl="https://twitter.com/julianboolean/status/1665421727768227842"
-          avatarUrl="/julian-avatar.jpg"
+          avatarUrl="/avatars/julian-avatar.jpg"
         />
         <Tweet
           name="Wesley LeMahieu"
@@ -84,7 +100,7 @@ export function Tweets() {
           date="4:21 AM · Jun 20, 2023"
           content={'"Wow." - me'}
           tweetUrl="https://twitter.com/WesleyLeMahieu/status/1665196223744344064"
-          avatarUrl="/wesley-avatar.jpg"
+          avatarUrl="/avatars/wesley-avatar.jpg"
         />
         <Tweet
           name="LokLok (Wong Lok 黃樂)"
@@ -92,7 +108,7 @@ export function Tweets() {
           date="7:28 AM · Jun 22, 2023"
           content="LOVE IT!!!!!"
           tweetUrl="https://twitter.com/WongLok831/status/1671646218303463424"
-          avatarUrl="/loklok-avatar.jpg"
+          avatarUrl="/avatars/loklok-avatar.jpg"
         />
         <Tweet
           name="perfectfm.jsx"
@@ -100,7 +116,7 @@ export function Tweets() {
           date="1:53 AM · Jun 4, 2023"
           content="Amazing 🤩"
           tweetUrl="https://twitter.com/perfectedfm/status/1665038936589082628"
-          avatarUrl="/perfectfm-avatar.jpg"
+          avatarUrl="/avatars/perfectfm-avatar.jpg"
         />
       </div>
     </section>
