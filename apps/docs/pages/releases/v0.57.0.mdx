@@ -1,0 +1,70 @@
+---
+title: 0.57.0 Release
+date: 2023-09-19
+---
+
+▵ Triplex 0.57.0 brings much needed quality of life improvements.
+
+## Edit any child element in the scene panel
+
+Previously only elements that were declared in the open component could be
+edited, now any child element in the component tree can be edited and saved back
+to source code.
+
+![Edit children through the Triplex scene panel](/releases/57/1.png)
+
+## Filter components, elements, and props
+
+Scrolling through large lists of components, elements, and props has been
+cumbersome for everyone. Now you can filter through them and find exactly what
+you're looking for.
+
+![Filter props through the Triplex context panel](/releases/57/2.png)
+
+## Declare a global React provider
+
+For those who are heavy users of
+[React Context](https://react.dev/reference/react/createContext#provider) you
+can now declare a global provider component, opening the door to more advanced
+use cases.
+
+```js
+// .triplex/provider.ts
+import { XR } from "@react-three/xr";
+
+export default function Provider({ children }) {
+  return <XR>{children}</XR>;
+}
+```
+
+```diff
+// .triplex/config.json
+{
++  "provider": "./provider.ts"
+}
+```
+
+## Contextually add elements to a component
+
+Adding an element to a component was confusing, depending if you had an element
+selected or not you'd end up with unexpected behavior. Now it's contextual, the
+add button in the actions list adds to the root of the component and the add
+button on elements adds as a child.
+
+![Add a child component to an element through the Triplex scene panel](/releases/57/3.png)
+
+## Bug fixes
+
+- Windows no longer throws when opening projects that have escape characters in
+  their path.
+- Default export component names are now displayed correctly in the open
+  component drawer.
+- Transform controls are now disabled when the props are controlled by code.
+- Error notification is now displayed in the bottom left and is de-emphasized.
+- Editor inputs can now have their content selected with the select all command.
+- The scene panel now scrolls to the selected element when out of view.
+- JSON schema now gets served from the docs website
+  (https://triplex.dev/config.schema.json) — make sure to update your local
+  schema!
+- The editor scene now remains functional if an error occured during render.
+- The welcome screen is no longer resizable.
