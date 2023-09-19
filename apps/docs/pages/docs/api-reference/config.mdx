@@ -51,3 +51,24 @@ Defaults to `"../public"`.
   "publicDir": ["../public"]
 }
 ```
+
+### Provider
+
+The `provider` option is used to configure a global
+[React Context provider](https://react.dev/reference/react/createContext#provider)
+component, such as the XR component. It can be written in either TypeScript or
+JavaScript.
+
+```json
+{
+  "provider": "./provider.ts"
+}
+```
+
+```js
+import { XR } from "@react-three/xr";
+
+export default function Provider({ children }) {
+  return <XR>{children}</XR>;
+}
+```

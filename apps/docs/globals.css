@@ -11,4 +11,12 @@
     -moz-osx-font-smoothing: grayscale;
     font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
   }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  [data-nimg] {
+    border-radius: 0.75rem;
+  }
 }

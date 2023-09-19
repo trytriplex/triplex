@@ -65,7 +65,7 @@ const components: Components = {
     </Link>
   ),
   pre: ({ children }) => (
-    <pre className="mt-5 whitespace-break-spaces rounded-md bg-white/10 p-3 text-lg text-neutral-300 md:text-base">
+    <pre className="mt-5 whitespace-break-spaces rounded-xl bg-white/5 p-3 text-lg text-neutral-300 md:text-base">
       {children}
     </pre>
   ),
@@ -387,7 +387,9 @@ function Layout({ pageOpts, children }: NextraThemeLayoutProps) {
           aria-label="pages navigation"
           className="col-span-3 hidden w-full max-w-[280px] justify-self-end md:block"
         >
-          {result.docsDirectories.map((item) => renderDocsItem(item, route))}
+          <div className="sticky top-10">
+            {result.docsDirectories.map((item) => renderDocsItem(item, route))}
+          </div>
         </nav>
       )}
 
@@ -459,21 +461,23 @@ function Layout({ pageOpts, children }: NextraThemeLayoutProps) {
       {result.activeThemeContext.layout !== "raw" && headings.length && (
         <nav
           aria-label="page contents"
-          className="sticky top-10 col-span-3 hidden justify-self-start pr-10 xl:block"
+          className="col-span-3 hidden justify-self-start pr-10 xl:block"
         >
-          <span className="text-sm font-extrabold text-neutral-300">
-            Content
-          </span>
-          {headings.map((h) => (
-            <div style={{ paddingLeft: (h.depth - 2) * 8 }} key={h.id}>
-              <Link
-                className="text-sm text-neutral-300 hover:text-neutral-100"
-                href={`#${h.id}`}
-              >
-                {h.value}
-              </Link>
-            </div>
-          ))}
+          <div className="sticky top-10">
+            <span className="text-sm font-extrabold text-neutral-300">
+              Content
+            </span>
+            {headings.map((h) => (
+              <div style={{ paddingLeft: (h.depth - 2) * 8 }} key={h.id}>
+                <Link
+                  className="text-sm text-neutral-300 hover:text-neutral-100"
+                  href={`#${h.id}`}
+                >
+                  {h.value}
+                </Link>
+              </div>
+            ))}
+          </div>
         </nav>
       )}
 
