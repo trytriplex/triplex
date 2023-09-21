@@ -55,7 +55,7 @@ export function Header({
             className="font text-[2.5rem] text-white/90"
             href="/"
           >
-            <svg width="2rem" viewBox="0 0 200 200">
+            <svg width="32px" viewBox="0 0 200 200">
               <polygon
                 className="fill-none stroke-current [stroke-width:0.8rem]"
                 points="183,172 26,172 100,28"
