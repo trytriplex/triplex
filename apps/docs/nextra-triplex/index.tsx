@@ -22,6 +22,7 @@ import { normalizePages } from "nextra/normalize-pages";
 import { Header, HeaderItem } from "../components/header";
 import { cn } from "../util/cn";
 import { useSearchStore } from "../stores/search";
+import { BASE_URL } from "../util/url";
 
 const components: Components = {
   h1: () => (
@@ -496,12 +497,34 @@ export default function TriplexTheme({
   pageProps,
   themeConfig,
 }: NextraThemeLayoutProps) {
-  const { title } = pageOpts;
+  const { title, frontMatter } = pageOpts;
+
+  const imgTitle = encodeURIComponent(frontMatter.ogTitle || title);
+  const imgDate = frontMatter.date
+    ? encodeURIComponent(friendlyDate(frontMatter.date))
+    : "";
+  const imgSubTitle = encodeURIComponent(frontMatter.description || "");
+  const ogImageUrl = `${BASE_URL}/api/og?title=${imgTitle}&subtitle=${imgSubTitle}&date=${imgDate}`;
 
   return (
     <div className="relative grid grid-cols-12 gap-x-10 gap-y-20">
       <Head>
         <title>{title}</title>
+        <meta property="og:title" content={title} />
+        {frontMatter.description && (
+          <>
+            <meta property="og:description" content={frontMatter.description} />
+            <meta
+              name="twitter:description"
+              content={frontMatter.description}
+            />
+          </>
+        )}
+        <meta property="og:image" content={ogImageUrl} />
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:image" content={ogImageUrl} />
+        <meta name="twitter:site" content="@_douges" />
+        <meta name="twitter:title" content={title} />
       </Head>
 
       <Layout
