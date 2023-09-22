@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { listen, send } from "@triplex/bridge/client";
-import { useEffect } from "react";
+import { useEffect, type PropsWithChildren } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { SceneFrame } from "./scene";
 import { SceneModule, ComponentModule } from "./types";
@@ -18,9 +18,11 @@ import { ComponentProvider, SceneProvider } from "./context";
 window.SceneObject = SceneObject;
 
 export function Scene({
+  provider,
   scenes,
   components,
 }: {
+  provider: (props: PropsWithChildren) => JSX.Element;
   components: Record<string, () => Promise<ComponentModule>>;
   scenes: Record<string, () => Promise<SceneModule>>;
 }) {
@@ -72,7 +74,7 @@ export function Scene({
     <BrowserRouter>
       <ComponentProvider value={components}>
         <SceneProvider value={scenes}>
-          <SceneFrame />
+          <SceneFrame provider={provider} />
         </SceneProvider>
       </ComponentProvider>
     </BrowserRouter>
