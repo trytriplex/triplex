@@ -6,8 +6,10 @@
  */
 import type { PluginObj } from "@babel/core";
 import * as t from "@babel/types";
+import { toNamespacedPath } from "path";
 
-export default function triplexBabelPlugin() {
+export default function triplexBabelPlugin(_ignore: string[] = []) {
+  const ignoreFiles = _ignore.map(toNamespacedPath);
   const cache = new WeakSet();
   const triplexMeta = new Map<string, { lighting: "default" | "custom" }>();
   const SCENE_OBJECT_COMPONENT_NAME = "SceneObject";
@@ -115,6 +117,14 @@ export default function triplexBabelPlugin() {
         },
       },
       Program: {
+        enter(path, pass) {
+          if (
+            pass.filename &&
+            ignoreFiles.includes(toNamespacedPath(pass.filename))
+          ) {
+            path.skip();
+          }
+        },
         exit(path) {
           for (const [key, value] of triplexMeta) {
             path.pushContainer(

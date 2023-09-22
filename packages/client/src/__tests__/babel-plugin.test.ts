@@ -24,6 +24,20 @@ const transformSync = (code: string, opts?: TransformOptions) => {
 };
 
 describe("babel plugin", () => {
+  it("should ignore a file and not transform anything", () => {
+    const result = transformSync(
+      `
+      <group scale={scale} />
+    `,
+      {
+        plugins: [plugin(["/hello.tsx"]), "@babel/plugin-syntax-jsx"],
+        filename: "/hello.tsx",
+      }
+    );
+
+    expect(result?.code).toMatchInlineSnapshot('"<group scale={scale} />;"');
+  });
+
   it("should transform scene with wrapped groups", () => {
     const result = transformSync(
       `
@@ -35,7 +49,7 @@ describe("babel plugin", () => {
       </group>
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );
@@ -92,7 +106,7 @@ describe("babel plugin", () => {
       }
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );
@@ -125,7 +139,7 @@ describe("babel plugin", () => {
       }
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );
@@ -163,7 +177,7 @@ describe("babel plugin", () => {
       }
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );
@@ -222,7 +236,7 @@ describe("babel plugin", () => {
       }
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );
@@ -260,7 +274,7 @@ describe("babel plugin", () => {
       export default HelloWorld;
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );
@@ -294,7 +308,7 @@ describe("babel plugin", () => {
       });
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );
@@ -346,7 +360,7 @@ describe("babel plugin", () => {
       export default Box;
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );
@@ -412,7 +426,7 @@ describe("babel plugin", () => {
       <CustomComponent />
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );
@@ -436,7 +450,7 @@ describe("babel plugin", () => {
       <CustomComponent key="existing" />
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );
@@ -460,7 +474,7 @@ describe("babel plugin", () => {
       <CustomComponent key={10} />
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );
@@ -485,7 +499,7 @@ describe("babel plugin", () => {
       <mesh position={position} />
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );
@@ -511,7 +525,7 @@ describe("babel plugin", () => {
       }
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );
@@ -542,7 +556,7 @@ describe("babel plugin", () => {
       });
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );
@@ -573,7 +587,7 @@ describe("babel plugin", () => {
       }
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );
@@ -607,7 +621,7 @@ describe("babel plugin", () => {
       });
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );
@@ -641,7 +655,7 @@ describe("babel plugin", () => {
       }
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );
@@ -678,7 +692,7 @@ describe("babel plugin", () => {
       });
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );
@@ -715,7 +729,7 @@ describe("babel plugin", () => {
       });
     `,
       {
-        plugins: [plugin, "@babel/plugin-syntax-jsx"],
+        plugins: [plugin(), "@babel/plugin-syntax-jsx"],
         filename: "/box.tsx",
       }
     );

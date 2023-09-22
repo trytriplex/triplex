@@ -36,7 +36,9 @@ export async function createServer({
   const vite = await createViteServer({
     configFile: false,
     plugins: [
-      react({ babel: { plugins: [triplexBabelPlugin] } }),
+      react({
+        babel: { plugins: [triplexBabelPlugin(provider ? [provider] : [])] },
+      }),
       glsl(),
       scenePlugin({ cwd: normalizedCwd, files, components, provider }),
       tsconfigPaths({ projects: [tsConfig] }),

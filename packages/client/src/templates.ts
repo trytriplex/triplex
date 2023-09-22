@@ -30,9 +30,7 @@ export const scripts = {
 
     export function Scene() {
       return (
-        <Provider>
-          <SceneFrame components={components} scenes={scenes} />
-        </Provider>
+        <SceneFrame provider={Provider} components={components} scenes={scenes} />
       );
     }
   `,

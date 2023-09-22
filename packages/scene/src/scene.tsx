@@ -7,7 +7,14 @@
 import { useSearchParams } from "react-router-dom";
 import { send } from "@triplex/bridge/client";
 import { Grid } from "triplex-drei";
-import { Suspense, useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Suspense,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  type PropsWithChildren,
+} from "react";
 import { Box3, Layers, Vector3, Vector3Tuple } from "three";
 import { Canvas } from "./canvas";
 import { Selection } from "./selection";
@@ -25,7 +32,11 @@ const defaultFocalPoint: { grid: Vector3Tuple; objectCenter: Vector3Tuple } = {
   objectCenter: [0, 0, 0],
 };
 
-export function SceneFrame() {
+export function SceneFrame({
+  provider: Provider,
+}: {
+  provider: (props: PropsWithChildren) => JSX.Element;
+}) {
   const [searchParams, setSearchParams] = useSearchParams();
   const path = searchParams.get("path") || "";
   const props = searchParams.get("props") || "";
@@ -170,12 +181,14 @@ export function SceneFrame() {
             exportName={exportName}
           >
             <SceneErrorBoundary>
-              <SceneLoader
-                path={path}
-                exportName={exportName}
-                sceneProps={sceneProps}
-              />
-              <AddSceneObject key={path} path={path} />
+              <Provider>
+                <SceneLoader
+                  path={path}
+                  exportName={exportName}
+                  sceneProps={sceneProps}
+                />
+                <AddSceneObject key={path} path={path} />
+              </Provider>
             </SceneErrorBoundary>
           </Selection>
         </Suspense>
