@@ -1,5 +1,15 @@
 # @triplex/scene
 
+## 0.57.1
+
+### Patch Changes
+
+- d32cf94: Fixes bugs with the new Triplex provider, previously it would be
+  rendered outside the Canvas element as well as being unintentionally
+  transformed into a scene object.
+  - @triplex/bridge@0.57.1
+  - @triplex/ws-client@0.57.1
+
 ## 0.57.0
 
 ### Minor Changes
