@@ -2,7 +2,8 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "types": ["@react-three/fiber"],
-    "strict": true
+    "strict": true,
+    "esModuleInterop": true
   },
   "include": ["."]
 }

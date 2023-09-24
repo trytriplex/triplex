@@ -13,6 +13,7 @@ import {
   useState,
   useTransition,
 } from "react";
+import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary";
 import { cn } from "../ds/cn";
 import { useLazySubscription } from "@triplex/ws-client";
 import { IDELink } from "../util/ide";
@@ -161,12 +162,25 @@ function SceneContents() {
       </div>
 
       <ScrollContainer>
-        <JsxElements
-          filter={filter}
-          exportName={exportName}
-          level={1}
-          path={path}
-        />
+        <ReactErrorBoundary
+          resetKeys={[path, exportName]}
+          fallbackRender={(e) => (
+            <div
+              title={e.error.message}
+              className="bg-red-500/10 py-1 text-center text-xs italic text-red-400"
+            >
+              Error loading elements
+            </div>
+          )}
+        >
+          <JsxElements
+            filter={filter}
+            exportName={exportName}
+            level={1}
+            path={path}
+          />
+        </ReactErrorBoundary>
+
         <div className="h-1" />
       </ScrollContainer>
     </div>
@@ -252,7 +266,6 @@ function JsxElementButton({
   element,
   level,
   exportName,
-
   filter,
 }: {
   exportName: string;
@@ -341,12 +354,24 @@ function JsxElementButton({
         </Pressable>
 
         {isExpanded && showExpander && element.path && (
-          <JsxElements
-            filter={filter}
-            level={level + 1}
-            exportName={element.exportName}
-            path={element.path}
-          />
+          <ReactErrorBoundary
+            resetKeys={[element.path, element.exportName]}
+            fallbackRender={(e) => (
+              <div
+                title={e.error.message}
+                className="bg-red-500/10 py-1 text-center text-xs italic text-red-400"
+              >
+                Error loading elements
+              </div>
+            )}
+          >
+            <JsxElements
+              filter={filter}
+              level={level + 1}
+              exportName={element.exportName}
+              path={element.path}
+            />
+          </ReactErrorBoundary>
         )}
       </Suspense>
 

@@ -37,9 +37,16 @@ export function unrollType(type: Type): UnrolledType {
     };
   }
 
-  if (type.isBoolean() || type.isBooleanLiteral()) {
+  if (type.isBoolean()) {
     return {
       kind: "boolean",
+    };
+  }
+
+  if (type.isBooleanLiteral()) {
+    return {
+      kind: "boolean",
+      literal: !!type.getLiteralValue(),
     };
   }
 
@@ -131,7 +138,13 @@ function getJsxDeclProps(element: JsxSelfClosingElement | JsxElement) {
       // No decl found!
       return null;
     }
-    const declaration = jsxType.getSymbolOrThrow().getDeclarations()[0];
+
+    const symbol = jsxType.getSymbol() || jsxType.getAliasSymbol();
+    if (!symbol) {
+      throw new Error("invariant: could not find symbol");
+    }
+
+    const declaration = symbol.getDeclarations()[0];
     const propsType = element
       .getProject()
       .getTypeChecker()

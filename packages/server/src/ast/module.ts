@@ -16,7 +16,21 @@ export function getElementFilePath(
     : element.getOpeningElement().getTagNameNode();
 
   const jsxType = tagNode.getType();
-  const declaration = jsxType.getSymbolOrThrow().getDeclarations()[0];
+  if (jsxType.isAny()) {
+    throw new Error(
+      `invariant: ${tagNode.getText()} resolved to any, check node_modules.`
+    );
+  }
+
+  const symbol = jsxType.getSymbol() || jsxType.getAliasSymbol();
+
+  if (!symbol) {
+    throw new Error(
+      `invariant: could not find symbol for ${tagNode.getText()}`
+    );
+  }
+
+  const declaration = symbol.getDeclarations()[0];
   const filePath = normalize(declaration.getSourceFile().getFilePath());
 
   if (filePath.includes("node_modules")) {

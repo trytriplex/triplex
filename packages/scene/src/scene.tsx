@@ -181,14 +181,16 @@ export function SceneFrame({
             exportName={exportName}
           >
             <SceneErrorBoundary>
-              <Provider>
-                <SceneLoader
-                  path={path}
-                  exportName={exportName}
-                  sceneProps={sceneProps}
-                />
-                <AddSceneObject key={path} path={path} />
-              </Provider>
+              <Suspense fallback={null}>
+                <Provider>
+                  <SceneLoader
+                    path={path}
+                    exportName={exportName}
+                    sceneProps={sceneProps}
+                  />
+                  <AddSceneObject key={path} path={path} />
+                </Provider>
+              </Suspense>
             </SceneErrorBoundary>
           </Selection>
         </Suspense>

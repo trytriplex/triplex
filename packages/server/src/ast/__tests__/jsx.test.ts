@@ -16,6 +16,31 @@ import {
 import { _createProject } from "../project";
 
 describe("jsx ast extractor", () => {
+  it("should infer paths for rapier", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/n_modules.tsx")
+    );
+
+    const elements = getJsxElementsPositions(sourceFile, "default");
+    elements[0].children = [];
+
+    expect(elements[0]).toEqual({
+      children: [],
+      column: 5,
+      exportName: "",
+      line: 19,
+      name: "RigidBody",
+      parentPath: fromCwd(
+        "packages/server/src/ast/__tests__/__mocks__/n_modules.tsx"
+      ),
+      path: "",
+      type: "custom",
+    });
+  });
+
   it("should return jsx positions for a expression export", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),

@@ -12,6 +12,7 @@ export type Type =
   | StringType
   | StringLiteralType
   | BooleanType
+  | BooleanLiteralType
   | UnhandledType;
 
 export interface UnionType {
@@ -39,6 +40,13 @@ export interface StringType {
 export interface StringLiteralType {
   kind: "string";
   literal: string;
+  label?: string;
+  required?: boolean;
+}
+
+export interface BooleanLiteralType {
+  kind: "boolean";
+  literal: boolean;
   label?: string;
   required?: boolean;
 }
