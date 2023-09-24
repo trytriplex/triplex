@@ -409,7 +409,7 @@ function Layout({ pageOpts, children }: NextraThemeLayoutProps) {
               {title}
             </h1>
             {frontMatter.date && (
-              <>
+              <div className="mt-2">
                 (
                 <time className="text-neutral-400" dateTime={frontMatter.date}>
                   {friendlyDate(frontMatter.date)}
@@ -423,7 +423,7 @@ function Layout({ pageOpts, children }: NextraThemeLayoutProps) {
                   Michael Dougall
                 </a>
                 )
-              </>
+              </div>
             )}
           </>
         )}
