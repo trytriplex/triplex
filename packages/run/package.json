@@ -1,6 +1,6 @@
 {
   "name": "@triplex/run",
-  "version": "0.57.1",
+  "version": "0.57.2",
   "private": true,
   "description": "The React Three Fiber editor.",
   "license": "GPL-3.0",
@@ -20,9 +20,9 @@
   },
   "dependencies": {
     "@commander-js/extra-typings": "^10.0.2",
-    "@triplex/client": "0.57.1",
-    "@triplex/editor": "0.57.1",
-    "@triplex/server": "0.57.1",
+    "@triplex/client": "0.57.2",
+    "@triplex/editor": "0.57.2",
+    "@triplex/server": "0.57.2",
     "commander": "^10.0.0",
     "express": "^4.18.2",
     "open": "^8.4.0",

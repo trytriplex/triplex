@@ -1,5 +1,13 @@
 # @triplex/scene
 
+## 0.57.2
+
+### Patch Changes
+
+- f5bbeda: Fix server throwing when symbols for jsx elements were not resolved.
+  - @triplex/ws-client@0.57.2
+  - @triplex/bridge@0.57.2
+
 ## 0.57.1
 
 ### Patch Changes

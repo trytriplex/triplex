@@ -1,5 +1,14 @@
 # @triplex/editor
 
+## 0.57.2
+
+### Patch Changes
+
+- f5bbeda: Literal union input now supports boolean literals.
+- f5bbeda: Fix server throwing when symbols for jsx elements were not resolved.
+  - @triplex/ws-client@0.57.2
+  - @triplex/bridge@0.57.2
+
 ## 0.57.1
 
 ### Patch Changes

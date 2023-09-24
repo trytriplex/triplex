@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.57.2
+
+### Patch Changes
+
+- f5bbeda: Fix server throwing when symbols for jsx elements were not resolved.
+
 ## 0.57.1
 
 ## 0.57.0
