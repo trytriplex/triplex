@@ -6,6 +6,7 @@
  */
 import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import type {
+  BooleanLiteralType,
   DeclaredProp,
   NumberLiteralType,
   Prop,
@@ -98,8 +99,12 @@ export function PropInput({
 
   if (prop.kind === "union") {
     const isLiteralUnion = prop.shape.every(
-      (value): value is NumberLiteralType | StringLiteralType =>
-        (value.kind === "string" || value.kind === "number") &&
+      (
+        value
+      ): value is NumberLiteralType | StringLiteralType | BooleanLiteralType =>
+        (value.kind === "string" ||
+          value.kind === "number" ||
+          value.kind === "boolean") &&
         "literal" in value
     );
 
