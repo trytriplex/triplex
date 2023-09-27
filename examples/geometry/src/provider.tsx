@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { createContext, ReactNode, useContext } from "react";
+import { Physics } from "@react-three/rapier";
 
 const Context = createContext<boolean | null>(null);
 
@@ -15,6 +16,20 @@ export function useProvider() {
   }
 }
 
-export default function Provider({ children }: { children: ReactNode }) {
-  return <Context.Provider value>{children}</Context.Provider>;
+export default function Provider({
+  children,
+  paused = false,
+  debug = true,
+}: {
+  children: ReactNode;
+  paused?: boolean;
+  debug?: boolean;
+}) {
+  return (
+    <Context.Provider value>
+      <Physics paused={paused} debug={debug}>
+        {children}
+      </Physics>
+    </Context.Provider>
+  );
 }

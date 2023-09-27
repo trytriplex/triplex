@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { RigidBody } from "@react-three/rapier";
 import { Vector3Tuple } from "three";
 
 export default function Sphere({
@@ -16,24 +17,17 @@ export default function Sphere({
   scale?: Vector3Tuple;
 }) {
   return (
-    <mesh
+    <RigidBody
       position={position}
       rotation={rotation}
       scale={scale}
-      name={undefined}
+      colliders={"ball"}
+      canSleep={false}
     >
-      <sphereGeometry
-        args={[
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-          undefined,
-        ]}
-      />
-      <meshStandardMaterial color={"#84f4ea"} />
-    </mesh>
+      <mesh castShadow={true} receiveShadow={true}>
+        <sphereGeometry />
+        <meshStandardMaterial color={"#84f4ea"} />
+      </mesh>
+    </RigidBody>
   );
 }

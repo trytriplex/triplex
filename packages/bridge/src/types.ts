@@ -100,7 +100,7 @@ export type HostSendEventName = keyof HostSendEventData;
 
 export interface HostSendEventData {
   "trplx:requestAction": { action: "viewFocusedCamera" | "resetCamera" };
-  "trplx:requestRefresh": undefined;
+  "trplx:requestRefresh": { hard?: boolean };
   "trplx:requestAddNewComponent": {
     type:
       | {
