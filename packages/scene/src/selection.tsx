@@ -396,35 +396,45 @@ export function Selection({
     ]);
   }, [selectedObject, setCamera]);
 
-  const onClick = async (e: ThreeEvent<MouseEvent>) => {
-    if (
-      e.delta > 1 ||
-      // Any scene objects that have this in their name will be excluded
-      // Currently that's just the helpers inside ./components/helper.tsx
-      e.object.name.includes("triplex_ignore")
-    ) {
-      return;
-    }
+  const onClick = useCallback(
+    async (e: ThreeEvent<MouseEvent>) => {
+      if (
+        e.delta > 1 ||
+        // Any scene objects that have this in their name will be excluded
+        // Currently that's just the helpers inside ./components/helper.tsx
+        e.object.name.includes("triplex_ignore")
+      ) {
+        return;
+      }
 
-    if (selected && e.object === selectedObject?.sceneObject) {
-      // Ignore this event we're already selected.
-      return;
-    }
+      if (selected && e.object === selectedObject?.sceneObject) {
+        // Ignore this event we're already selected.
+        return;
+      }
 
-    // TODO: If clicking on a scene object when a selection is already
-    // made this will fire A LOT OF TIMES. Need to investigate why.
-    const data = findEditorData(rootPath, e.object, transform, sceneObjects);
-    if (data) {
-      e.stopPropagation();
-      setSelected(data);
-      onFocus({
-        column: data.column,
-        line: data.line,
-        parentPath: data.parentPath,
-        path: data.path,
-      });
-    }
-  };
+      // TODO: If clicking on a scene object when a selection is already
+      // made this will fire A LOT OF TIMES. Need to investigate why.
+      const data = findEditorData(rootPath, e.object, transform, sceneObjects);
+      if (data) {
+        e.stopPropagation();
+        setSelected(data);
+        onFocus({
+          column: data.column,
+          line: data.line,
+          parentPath: data.parentPath,
+          path: data.path,
+        });
+      }
+    },
+    [
+      onFocus,
+      rootPath,
+      sceneObjects,
+      selected,
+      selectedObject?.sceneObject,
+      transform,
+    ]
+  );
 
   useEffect(() => {
     const callback = (e: KeyboardEvent) => {
@@ -466,16 +476,18 @@ export function Selection({
         }
       }
 
-      if (e.key === "r") {
-        setTransform("rotate");
-      }
+      if (!e.metaKey) {
+        if (e.key === "r") {
+          setTransform("rotate");
+        }
 
-      if (e.key === "t") {
-        setTransform("translate");
-      }
+        if (e.key === "t") {
+          setTransform("translate");
+        }
 
-      if (e.key === "s" && !e.metaKey && !e.ctrlKey) {
-        setTransform("scale");
+        if (e.key === "s" && !e.metaKey && !e.ctrlKey) {
+          setTransform("scale");
+        }
       }
     };
 
@@ -491,54 +503,57 @@ export function Selection({
     selectedSceneObject,
   ]);
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const onMouseUp = (e: any) => {
-    dragging.current = false;
+  const onMouseUp = useCallback(
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    (e: any) => {
+      dragging.current = false;
 
-    if (!e || !selectedObject || !selectedSceneObject) {
-      return;
-    }
+      if (!e || !selectedObject || !selectedSceneObject) {
+        return;
+      }
 
-    if (e.mode === "translate") {
-      const position =
-        selectedObject.space === "world"
-          ? selectedObject.sceneObject.getWorldPosition(V1).toArray()
-          : selectedObject.sceneObject.position.toArray();
+      if (e.mode === "translate") {
+        const position =
+          selectedObject.space === "world"
+            ? selectedObject.sceneObject.getWorldPosition(V1).toArray()
+            : selectedObject.sceneObject.position.toArray();
 
-      send("trplx:onConfirmSceneObjectProp", {
-        column: selectedObject.column,
-        line: selectedObject.line,
-        path: selectedObject.path,
-        propName: "position",
-        propValue: position,
-      });
-    }
+        send("trplx:onConfirmSceneObjectProp", {
+          column: selectedObject.column,
+          line: selectedObject.line,
+          path: selectedObject.path,
+          propName: "position",
+          propValue: position,
+        });
+      }
 
-    if (e.mode === "rotate") {
-      const rotation = selectedObject.sceneObject.rotation.toArray();
-      rotation.pop();
+      if (e.mode === "rotate") {
+        const rotation = selectedObject.sceneObject.rotation.toArray();
+        rotation.pop();
 
-      send("trplx:onConfirmSceneObjectProp", {
-        column: selectedObject.column,
-        line: selectedObject.line,
-        path: selectedObject.path,
-        propName: "rotation",
-        propValue: rotation,
-      });
-    }
+        send("trplx:onConfirmSceneObjectProp", {
+          column: selectedObject.column,
+          line: selectedObject.line,
+          path: selectedObject.path,
+          propName: "rotation",
+          propValue: rotation,
+        });
+      }
 
-    if (e.mode === "scale") {
-      const scale = selectedObject.sceneObject.scale.toArray();
+      if (e.mode === "scale") {
+        const scale = selectedObject.sceneObject.scale.toArray();
 
-      send("trplx:onConfirmSceneObjectProp", {
-        column: selectedObject.column,
-        line: selectedObject.line,
-        path: selectedObject.path,
-        propName: "scale",
-        propValue: scale,
-      });
-    }
-  };
+        send("trplx:onConfirmSceneObjectProp", {
+          column: selectedObject.column,
+          line: selectedObject.line,
+          path: selectedObject.path,
+          propName: "scale",
+          propValue: scale,
+        });
+      }
+    },
+    [selectedObject, selectedSceneObject]
+  );
 
   useFrame(() => {
     if (selectedObject && selectedObject.sceneObject.parent === null) {

@@ -118,7 +118,7 @@ interface BridgeContext {
   /**
    * Refreshes the scene.
    */
-  refresh(): void;
+  refresh(opts?: { hard?: boolean }): void;
   /**
    * Switches the triplex camera to the currently focused camera. If the focused
    * scene object is not a camera is noops.
@@ -189,8 +189,8 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     reset() {
       send("trplx:requestReset", undefined);
     },
-    refresh() {
-      send("trplx:requestRefresh", undefined);
+    refresh({ hard }: { hard?: boolean } = {}) {
+      send("trplx:requestRefresh", { hard });
     },
   })
 );

@@ -38,6 +38,40 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot('"<group scale={scale} />;"');
   });
 
+  it("should flag a component declared in node_modules as transformed", () => {
+    const result = transformSync(
+      `
+      import { RigidBody } from '@react-three/rapier';
+      <RigidBody
+        name="box"
+        type="dynamic"
+        position={position}
+        colliders="cuboid"
+        canSleep={false}
+      >
+      </RigidBody>
+    `,
+      {
+        plugins: [plugin([]), "@babel/plugin-syntax-jsx"],
+        filename: "/hello.tsx",
+      }
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "import { RigidBody } from '@react-three/rapier';
+      <SceneObject name=\\"box\\" type=\\"dynamic\\" position={position} colliders=\\"cuboid\\" canSleep={false} __component={RigidBody} __meta={{
+        \\"path\\": \\"/hello.tsx\\",
+        \\"name\\": \\"RigidBody\\",
+        \\"line\\": 3,
+        \\"column\\": 7,
+        \\"translate\\": true,
+        \\"rotate\\": false,
+        \\"scale\\": false
+      }} key={\\"RigidBody37\\"}>
+            </SceneObject>;"
+    `);
+  });
+
   it("should transform scene with wrapped groups", () => {
     const result = transformSync(
       `

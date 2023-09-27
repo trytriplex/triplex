@@ -4,9 +4,23 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import type { PluginObj } from "@babel/core";
+import type { NodePath, PluginObj } from "@babel/core";
 import * as t from "@babel/types";
 import { toNamespacedPath } from "path";
+
+function isNodeModulesComponent(path: NodePath, elementName: string) {
+  try {
+    const binding = path.scope.getBinding(elementName);
+    if (binding && binding.path.parent.type === "ImportDeclaration") {
+      const location = require.resolve(binding.path.parent.source.value);
+      return location.includes("node_modules");
+    }
+  } catch (e) {
+    // Ignore
+  }
+
+  return false;
+}
 
 export default function triplexBabelPlugin(_ignore: string[] = []) {
   const ignoreFiles = _ignore.map(toNamespacedPath);
@@ -203,7 +217,10 @@ export default function triplexBabelPlugin(_ignore: string[] = []) {
                 return false;
               }
 
-              if (elementType === "host") {
+              if (
+                elementType === "host" ||
+                isNodeModulesComponent(path, elementName)
+              ) {
                 if (attr.name.name === "position") {
                   transformsFound.translate = true;
                 }

@@ -165,6 +165,12 @@ export function EditorMenu() {
               accelerator: shortcut("R", { meta: true }),
               click: () => refresh(),
             },
+            {
+              id: "hard-refresh-scene",
+              label: "Reload Scene",
+              accelerator: shortcut("R", { meta: true, shift: true }),
+              click: () => refresh({ hard: true }),
+            },
             { type: "separator" },
             {
               // Menu item only displayed in native

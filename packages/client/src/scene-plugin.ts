@@ -90,7 +90,11 @@ export function scenePlugin({
       // This forces modules with JSX to invalidate themselves if their exports change.
       // This will force the triplex:scene-frame.tsx virtual module to load itself again
       // Thus flushing the editor with the new (or removed!) export/s.
-      return scripts.invalidateHMRHeader + code + scripts.invalidateHRMFooter;
+      return (
+        scripts.invalidateHMRHeader +
+        code +
+        scripts.invalidateHRMFooter(provider.replace(process.cwd(), ""))
+      );
     },
   } as const;
 }

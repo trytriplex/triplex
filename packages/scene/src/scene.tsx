@@ -5,13 +5,14 @@
  * file in the root directory of this source tree.
  */
 import { useSearchParams } from "react-router-dom";
-import { send } from "@triplex/bridge/client";
+import { listen, send } from "@triplex/bridge/client";
 import { Grid } from "triplex-drei";
 import {
   Suspense,
   useCallback,
   useEffect,
   useMemo,
+  useReducer,
   useState,
   type PropsWithChildren,
 } from "react";
@@ -37,6 +38,7 @@ export function SceneFrame({
 }: {
   provider: (props: PropsWithChildren) => JSX.Element;
 }) {
+  const [resetCount, incrementReset] = useReducer((s: number) => s + 1, 0);
   const [searchParams, setSearchParams] = useSearchParams();
   const path = searchParams.get("path") || "";
   const props = searchParams.get("props") || "";
@@ -168,6 +170,16 @@ export function SceneFrame({
     send("trplx:onSceneObjectBlur", undefined);
   }, []);
 
+  useEffect(() => {
+    return listen("trplx:requestRefresh", (data) => {
+      if (data.hard) {
+        return;
+      }
+
+      incrementReset();
+    });
+  }, []);
+
   return (
     <Canvas>
       <Camera target={target} position={position} layers={layers}>
@@ -182,7 +194,7 @@ export function SceneFrame({
           >
             <SceneErrorBoundary>
               <Suspense fallback={null}>
-                <Provider>
+                <Provider key={resetCount}>
                   <SceneLoader
                     path={path}
                     exportName={exportName}

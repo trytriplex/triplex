@@ -42,10 +42,18 @@ export const scripts = {
   invalidateHMRHeader: `
     import { __hmr_import } from "triplex:hmr-import";
   `,
-  invalidateHRMFooter: `
+  invalidateHRMFooter: (providerPath: string) => `
     if (import.meta.hot) {
       __hmr_import(import.meta.url).then((currentModule) => {
+
         import.meta.hot.accept((nextModule) => {
+          if (import.meta.url.includes("${providerPath}")) {
+            // The provider has changed - we want to flush it through the whole app.
+            import.meta.hot.invalidate();
+            return;
+          }
+
+
           const currentKeys = Object
             .entries(currentModule)
             .map(([key, value]) => typeof value.triplexMeta ? key + JSON.stringify(value.triplexMeta) : key)

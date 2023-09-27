@@ -114,6 +114,10 @@ export function createProject({
         callbacks.forEach((cb) => cb());
       }
     });
+
+    // Since we've refreshed from the file system the source file is no longer modified
+    modifiedSourceFiles.delete(sourceFile);
+    onStateChangeCallbacks.forEach((cb) => cb());
   });
 
   function createSourceFile(componentName: string) {

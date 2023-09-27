@@ -65,8 +65,10 @@ export function Scene({
   }, []);
 
   useEffect(() => {
-    return listen("trplx:requestRefresh", () => {
-      window.location.reload();
+    return listen("trplx:requestRefresh", (data) => {
+      if (data.hard) {
+        window.location.reload();
+      }
     });
   }, []);
 
