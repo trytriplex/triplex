@@ -52,7 +52,7 @@ function Scenes({ filter = "" }: { filter?: string }) {
         return (
           <div
             className={cn([
-              path === file.path && "-my-1 rounded-md bg-neutral-800/50 py-1",
+              path === file.path && "-my-1 rounded-lg bg-neutral-800/50 py-1",
             ])}
             key={file.path}
           >
@@ -71,7 +71,7 @@ function Scenes({ filter = "" }: { filter?: string }) {
                   path === file.path && exportName === exp.exportName
                     ? "bg-neutral-800 text-blue-400"
                     : "text-neutral-300",
-                  "block select-none rounded-sm px-2 text-base outline-1 outline-blue-400 hover:bg-white/5 focus-visible:outline active:bg-white/10",
+                  "block select-none rounded-sm px-2 py-0.5 text-base outline-1 outline-blue-400 hover:bg-white/5 focus-visible:outline active:bg-white/10",
                 ])}
               >
                 <div>{exp.name}</div>

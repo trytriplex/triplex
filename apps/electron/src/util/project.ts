@@ -19,7 +19,9 @@ export async function startProject(
 
   return {
     config,
-    url: `http://localhost:${frontendPort}`,
+    sceneUrl: `http://localhost:${frontendPort}`,
+    serverUrl: `http://localhost:${backendPort}`,
+    wsUrl: `ws://localhost:${backendPort}`,
     close: async () => {
       await closeFrontend({ forceExit: false });
       await closeBackend();

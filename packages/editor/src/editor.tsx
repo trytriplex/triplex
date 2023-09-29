@@ -13,6 +13,7 @@ import { useEditor } from "./stores/editor";
 import { ControlsMenu } from "./ui/controls-menu";
 import { useUndoRedoState } from "./stores/undo-redo";
 import { AssetsDrawer } from "./ui/assets-drawer";
+import { ProviderConfig } from "./ui/provider-config";
 
 export function EditorFrame() {
   const undo = useUndoRedoState((store) => store.undo);
@@ -90,7 +91,8 @@ export function EditorFrame() {
         {path && <ScenePanel />}
       </div>
 
-      <div className="z-10 mx-auto self-end">
+      <div className="pointer-events-none z-10 flex flex-col">
+        <ProviderConfig />
         <ControlsMenu />
       </div>
 

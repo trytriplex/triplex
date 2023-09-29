@@ -25,6 +25,7 @@ import {
   CaretRightIcon,
   ExitIcon,
   MixerHorizontalIcon,
+  MixerVerticalIcon,
   PlusIcon,
 } from "@radix-ui/react-icons";
 import type { JsxElementPositions } from "@triplex/server";
@@ -34,6 +35,7 @@ import { useSceneState } from "../stores/scene-state";
 import { Pressable } from "../ds/pressable";
 import { useAssetsDrawer } from "../stores/assets-drawer";
 import { StringInput } from "./string-input";
+import { useProviderStore } from "../stores/provider";
 
 export function ScenePanel() {
   const { path, exportName } = useEditor();
@@ -140,15 +142,15 @@ function SceneContents() {
       <div className="flex px-2 py-1">
         <AssetsDrawerButton />
         <ComponentSandboxButton />
-
-        {enteredComponent && (
-          <IconButton
-            className="ml-auto -scale-x-100"
-            onClick={exitComponent}
-            icon={ExitIcon}
-            title="Exit component"
-          />
-        )}
+        <div className="ml-auto" />
+        <IconButton
+          isDisabled={!enteredComponent}
+          className="-scale-x-100"
+          onClick={exitComponent}
+          icon={ExitIcon}
+          title="Exit component"
+        />
+        <ProviderConfigButton />
       </div>
 
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
@@ -195,8 +197,7 @@ function ComponentSandboxButton() {
 
   return (
     <IconButton
-      isSelected={isSelected}
-      className={hasState ? "text-blue-400" : undefined}
+      isSelected={isSelected || (hasState ? "partial" : false)}
       onClick={() => {
         if (isSelected) {
           blur();
@@ -206,6 +207,22 @@ function ComponentSandboxButton() {
       }}
       icon={MixerHorizontalIcon}
       title="Live edit props"
+    />
+  );
+}
+
+function ProviderConfigButton() {
+  const key = "__provider__";
+  const hasState = useSceneState((store) => store.hasState(key));
+  const isOpen = useProviderStore((store) => store.shown);
+  const toggle = useProviderStore((store) => store.toggle);
+
+  return (
+    <IconButton
+      onClick={toggle}
+      isSelected={isOpen || (hasState ? "partial" : false)}
+      icon={MixerVerticalIcon}
+      title="View global config"
     />
   );
 }

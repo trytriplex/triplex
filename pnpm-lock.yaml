@@ -479,6 +479,9 @@ importers:
       react-router-dom:
         specifier: ^6.7.0
         version: 6.7.0(react-dom@18.2.0)(react@18.2.0)
+      suspend-react:
+        specifier: ^0.0.9
+        version: 0.0.9(react@18.2.0)
       tinycolor2:
         specifier: ^1.6.0
         version: 1.6.0
@@ -616,6 +619,9 @@ importers:
       triplex-drei:
         specifier: npm:@react-three/drei@9.54.0
         version: /@react-three/drei@9.54.0(@react-three/fiber@8.11.1)(@types/three@0.148.0)(react-dom@18.2.0)(react@18.2.0)(three@0.148.0)
+      zustand:
+        specifier: ^4.3.2
+        version: 4.3.2(react@18.2.0)
     devDependencies:
       '@react-three/fiber':
         specifier: ^8.11.1

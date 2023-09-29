@@ -11,6 +11,8 @@ import { TitleBar } from "./ui/title-bar";
 import { cn } from "./ds/cn";
 import { ErrorOverlay } from "./ui/error-overlay";
 import "./styles.css";
+import { Suspense } from "react";
+import { Environment } from "./environment";
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
@@ -20,9 +22,13 @@ createRoot(document.getElementById("root")!).render(
         "grid-rows-[32px_auto]",
       ])}
     >
-      <TitleBar />
-      <EditorFrame />
-      <ErrorOverlay />
+      <Suspense>
+        <Environment>
+          <TitleBar />
+          <EditorFrame />
+          <ErrorOverlay />
+        </Environment>
+      </Suspense>
     </div>
   </BrowserRouter>
 );

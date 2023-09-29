@@ -317,6 +317,10 @@ async function main() {
 
     const p = await fork(join(__dirname, "./project.ts"), { cwd });
 
+    activeProjectWindow.webContents.ipc.handle("get-triplex-env", () => ({
+      ...p.data,
+    }));
+
     cleanup = () => {
       p.kill();
     };

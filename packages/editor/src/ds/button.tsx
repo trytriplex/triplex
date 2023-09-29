@@ -13,7 +13,7 @@ export const IconButton = forwardRef<
   {
     icon: ComponentType<IconProps>;
     title: string;
-    isSelected?: boolean;
+    isSelected?: boolean | "partial";
     isDisabled?: boolean;
     testId?: string;
     className?: string;
@@ -53,7 +53,9 @@ export const IconButton = forwardRef<
         ],
         !isDisabled &&
           (isSelected
-            ? "bg-white/5 text-blue-400"
+            ? isSelected === "partial"
+              ? "text-blue-400 hover:bg-white/5 active:bg-white/10"
+              : "bg-white/5 text-blue-400 active:bg-white/10"
             : [
                 variant === "default" &&
                   "text-neutral-400 hover:bg-white/5 active:bg-white/10",

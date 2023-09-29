@@ -23,6 +23,8 @@ import { SceneLoader } from "./loader";
 import { AddSceneObject } from "./add-scene-object";
 import { SceneErrorBoundary } from "./error-boundary";
 import { Camera } from "./components/camera";
+import { ManualEditableSceneObject } from "./manual-editable";
+import { useEnvironment } from "./environment";
 
 const V1 = new Vector3();
 const layers = new Layers();
@@ -47,6 +49,7 @@ export function SceneFrame({
     () => (props ? JSON.parse(decodeURIComponent(props)) : {}),
     [props]
   );
+  const env = useEnvironment();
   const [focalPoint, setFocalPoint] = useState(defaultFocalPoint);
   const { target, position } = useMemo(() => {
     const actualCameraPosition: Vector3Tuple = [...focalPoint.objectCenter];
@@ -194,14 +197,20 @@ export function SceneFrame({
           >
             <SceneErrorBoundary>
               <Suspense fallback={null}>
-                <Provider key={resetCount}>
+                <ManualEditableSceneObject
+                  key={resetCount}
+                  component={Provider}
+                  exportName="default"
+                  id={-999}
+                  path={env.config.provider}
+                >
                   <SceneLoader
                     path={path}
                     exportName={exportName}
                     sceneProps={sceneProps}
                   />
                   <AddSceneObject key={path} path={path} />
-                </Provider>
+                </ManualEditableSceneObject>
               </Suspense>
             </SceneErrorBoundary>
           </Selection>

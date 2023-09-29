@@ -22,7 +22,8 @@
     "react-merge-refs": "^1.1.0",
     "react-router-dom": "^6.7.0",
     "suspend-react": "^0.0.9",
-    "triplex-drei": "npm:@react-three/drei@9.54.0"
+    "triplex-drei": "npm:@react-three/drei@9.54.0",
+    "zustand": "^4.3.2"
   },
   "devDependencies": {
     "@react-three/fiber": "^8.11.1",

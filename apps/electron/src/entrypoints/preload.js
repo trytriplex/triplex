@@ -9,6 +9,7 @@ const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("triplex", {
   platform: process.platform,
+  getEnv: () => ipcRenderer.invoke("get-triplex-env"),
   openLink: (url) => ipcRenderer.send("open-link", url),
   setMenu: (menu) => ipcRenderer.send("set-menu-bar", menu),
   handleProgressBarChange: (callback) => {

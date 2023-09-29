@@ -21,12 +21,18 @@ async function main() {
   log.info("start project", process.cwd());
 
   try {
-    const { config } = await startProject(process.cwd());
+    const { config, sceneUrl, serverUrl, wsUrl } = await startProject(
+      process.cwd()
+    );
     const file = await getFirstFoundFile({ files: config.files });
 
     process.send?.({
       eventName: "ready",
       data: {
+        config,
+        sceneUrl,
+        serverUrl,
+        wsUrl,
         path: file ? file.path : "",
         exportName: file ? file.exports[0].exportName : "",
       },
