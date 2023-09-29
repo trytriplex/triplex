@@ -50,7 +50,7 @@ export function ControlsMenu() {
   });
 
   return (
-    <div className="pointer-events-auto flex self-end rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1">
+    <div className="pointer-events-auto mx-auto mt-auto flex rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1">
       <IconButton
         isSelected={mode === "translate"}
         title="Translate (T)"

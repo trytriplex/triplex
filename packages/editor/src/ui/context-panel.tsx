@@ -196,9 +196,16 @@ function ComponentSandboxPanel() {
       <h2 className="px-4 pt-3 text-xl font-medium text-neutral-300">
         <div className="overflow-hidden text-ellipsis">Live Edit Props</div>
       </h2>
-      <div className="mt-1 px-4 pb-3 text-xs text-neutral-400">
-        Editing values here will modify the props given to {exportName} and
-        persist only for the duration of this session.
+      <div className="mt-1 px-4 pb-3 text-sm text-neutral-400">
+        Modify props given to {exportName} that only persist for this session.{" "}
+        <a
+          href="#"
+          className="text-blue-400"
+          onClick={() => window.triplex.openLink("https://triplex.dev")}
+        >
+          Learn more
+        </a>
+        .
       </div>
 
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />

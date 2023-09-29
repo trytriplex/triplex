@@ -9,6 +9,14 @@ declare type WindowState = "active" | "inactive" | "disabled";
 declare interface Window {
   triplex: {
     platform: typeof process.platform;
+    getEnv: () => Promise<{
+      config: {
+        provider: string;
+        sceneUrl: string;
+        serverUrl: string;
+        wsUrl: string;
+      };
+    }>;
     handleProgressBarChange: (
       callback: (progress: number) => void
     ) => () => void;

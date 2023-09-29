@@ -6,6 +6,7 @@
  */
 import { listen, compose } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
+import { useEnvironment } from "./environment";
 import { useEditor } from "./stores/editor";
 import { useScene } from "./stores/scene";
 import { useUndoRedoState } from "./stores/undo-redo";
@@ -22,6 +23,7 @@ export function SceneFrame() {
   const [initialProps] = useState(() => editor.encodedProps);
   const [initialExportName] = useState(() => editor.exportName);
   const sceneReady = useScene((prev) => prev.sceneReady);
+  const env = useEnvironment();
 
   useEffect(() => {
     return listen("trplx:onConnected", sceneReady);
@@ -31,7 +33,9 @@ export function SceneFrame() {
     <>
       <iframe
         // This should never change during a session as it will do a full page reload.
-        src={`http://localhost:3333/scene.html?path=${initialPath}&props=${initialProps}&exportName=${initialExportName}`}
+        src={`http://localhost:3333/scene.html?path=${initialPath}&props=${initialProps}&exportName=${initialExportName}&env=${encodeURIComponent(
+          JSON.stringify(env)
+        )}`}
         className="absolute h-full w-full border-none"
       />
       <BridgeSendEvents />

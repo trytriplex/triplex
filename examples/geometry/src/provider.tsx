@@ -18,16 +18,16 @@ export function useProvider() {
 
 export default function Provider({
   children,
-  paused = false,
-  debug = true,
+  enablePhysics = false,
+  debugPhysics = false,
 }: {
   children: ReactNode;
-  paused?: boolean;
-  debug?: boolean;
+  enablePhysics?: boolean;
+  debugPhysics?: boolean;
 }) {
   return (
     <Context.Provider value>
-      <Physics paused={paused} debug={debug}>
+      <Physics paused={!enablePhysics} debug={debugPhysics}>
         {children}
       </Physics>
     </Context.Provider>
