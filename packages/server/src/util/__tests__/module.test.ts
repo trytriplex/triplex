@@ -10,9 +10,9 @@ import { inferExports } from "../module";
 describe("module", () => {
   it("should return names in a module", () => {
     const actual = inferExports(`
-        export const HelloWorlds = () => {};
+        export const HelloWorlds = memo(() => {});
 
-        const HealthPickup = () => {};
+        const HealthPickup = memo(() => {});
 
         export default HealthPickup;
     `);
@@ -29,5 +29,13 @@ describe("module", () => {
     `);
 
     expect(actual).toEqual([{ exportName: "default", name: "UhhOkay" }]);
+  });
+
+  it("should infer export default memo", () => {
+    const actual = inferExports(`
+        export default memo(HelloWorld);
+    `);
+
+    expect(actual).toEqual([{ exportName: "default", name: "HelloWorld" }]);
   });
 });
