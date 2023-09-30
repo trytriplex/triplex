@@ -222,7 +222,7 @@ function ProviderConfigButton() {
       onClick={toggle}
       isSelected={isOpen || (hasState ? "partial" : false)}
       icon={MixerVerticalIcon}
-      title="View global config"
+      title="View provider config"
     />
   );
 }
