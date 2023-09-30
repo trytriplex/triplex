@@ -138,11 +138,12 @@ export function SceneFrame({
   const onNavigate = useCallback(
     (selected: { path: string; exportName: string; encodedProps: string }) => {
       setSearchParams(
-        {
+        (prev) => ({
+          ...Object.fromEntries(prev.entries()),
           path: selected.path,
           exportName: selected.exportName,
           props: selected.encodedProps,
-        },
+        }),
         { replace: true }
       );
 
