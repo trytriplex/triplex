@@ -1,7 +1,7 @@
 # {app_name}
 
-Thanks for being an early adopter! Please think about
-[sponsoring development](https://github.com/sponsors/itsdouges). With every new
+Thanks for being an early adopter! Please
+[sponsor development](https://github.com/sponsors/itsdouges). With every new
 sponsor more time can be dedicated to implementing features, fixing bugs, and
 improving your experience.
 
