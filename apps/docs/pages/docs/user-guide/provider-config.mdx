@@ -1,0 +1,18 @@
+When [defining a provider in config](/docs/api-reference/config#provider) any
+props that it takes can be modified in the UI, allowing you to tailor your
+project configuration to your needs.
+
+Access it through the "global config" action in the scene panel.
+
+![Triplex UI](/ui/provider-config.png)
+
+As an example if your provider declares `debugPhysics` and `enablePhysics`
+boolean props they will be available for you to toggle in the UI.
+
+```tsx
+export default function Provider(props: {
+  debugPhysics: boolean;
+  enablePhysics: boolean;
+  children: React.ReactNode;
+}): JSX.Element;
+```

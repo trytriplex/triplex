@@ -35,7 +35,11 @@ function Inputs() {
           <a
             href="#"
             className="text-blue-400"
-            onClick={() => window.triplex.openLink("https://triplex.dev")}
+            onClick={() =>
+              window.triplex.openLink(
+                "https://triplex.dev/docs/user-guide/provider-config"
+              )
+            }
           >
             Learn more
           </a>

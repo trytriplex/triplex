@@ -1,8 +1,8 @@
 # magic-box
 
-Thanks for being an early adopter!
-If you find Triplex useful think about [sponsoring the project](https://github.com/sponsors/itsdouges),
-with more sponsors more time can be spent on development.
+Thanks for being an early adopter! If you find Triplex useful please
+[sponsor the project](https://github.com/sponsors/itsdouges), with more sponsors
+more time can be spent on development.
 
 ## Commands
 
@@ -14,11 +14,12 @@ npx triplex
 
 ### Editor
 
-Triplex ships with an embedded editor to visually build out your React Three Fiber components:
+Triplex ships with an embedded editor to visually build out your React Three
+Fiber components:
 
 ```bash
 pnpm run editor
 ```
 
-Using the `--open [path]` option you can have the editor open in your default browser immediately.
-The optional `[path]` flag opens a specific file.
+Using the `--open [path]` option you can have the editor open in your default
+browser immediately. The optional `[path]` flag opens a specific file.
