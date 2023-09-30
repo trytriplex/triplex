@@ -54,21 +54,25 @@ Defaults to `"../public"`.
 
 ### Provider
 
-The `provider` option is used to configure a global
+Use the `provider` property to point to a component that can declare any extra
+elements that should be rendered to the scene, such as
 [React Context provider](https://react.dev/reference/react/createContext#provider)
-component, such as the XR component. It can be written in either TypeScript or
-JavaScript.
+components like the XR component from `@react-three/xr`. Props your provider
+takes can be set in the Triplex UI,
+[learn more](/docs/user-guide/provider-config).
+
+The provider component **must** be the default export and return children.
 
 ```json
 {
-  "provider": "./provider.ts"
+  "provider": "./provider.tsx"
 }
 ```
 
 ```js
 import { XR } from "@react-three/xr";
 
-export default function Provider({ children }) {
+export default function Provider({ children }: { children: React.ReactNode }}) {
   return <XR>{children}</XR>;
 }
 ```

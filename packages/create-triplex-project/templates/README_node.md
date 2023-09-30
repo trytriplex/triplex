@@ -1,8 +1,8 @@
 # {app_name}
 
-Thanks for being an early adopter! If you find Triplex useful think about
-[sponsoring the project](https://github.com/sponsors/itsdouges), with more
-sponsors more time can be spent on development.
+Thanks for being an early adopter! If you find Triplex useful please
+[sponsor the project](https://github.com/sponsors/itsdouges), with more sponsors
+more time can be spent on development.
 
 ## Next steps
 

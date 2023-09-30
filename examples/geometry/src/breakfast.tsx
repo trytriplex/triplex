@@ -12,7 +12,11 @@
  */
 import { Clone, useGLTF } from "@react-three/drei";
 import { Vector3Tuple } from "three";
-import { CuboidCollider, RigidBody } from "@react-three/rapier";
+import {
+  CuboidCollider,
+  CylinderCollider,
+  RigidBody,
+} from "@react-three/rapier";
 
 export function Frypan({
   position,
@@ -126,8 +130,10 @@ export function Pancake({
   const { nodes } = useGLTF("/assets/breakfast.glb");
 
   return (
-    <RigidBody rotation={rotation} position={position} colliders={"cuboid"}>
-      <Clone object={nodes[variant]} />
+    <RigidBody rotation={rotation} position={position} colliders={false}>
+      <CylinderCollider args={[0.07, 0.54]}>
+        <Clone object={nodes[variant]} />
+      </CylinderCollider>
     </RigidBody>
   );
 }
@@ -248,7 +254,7 @@ export function Breakfast() {
       >
         <Berry
           position={[
-            -0.9926267834726091, 1.6155004431233018, 0.24966135358083713,
+            -1.0143258493350351, 1.6155004431233018, 0.18077933787745476,
           ]}
           variant={"raspberry"}
         />
@@ -266,7 +272,7 @@ export function Breakfast() {
         />
         <Berry
           position={[
-            -1.0593856218647735, 1.6155004431233018, 0.39223569372676026,
+            -1.0373627979094773, 1.6155004431233018, 0.4964366525983276,
           ]}
           variant={"raspberry"}
           rotation={[3.141592653589793, -1.4517589119805536, 3.141592653589793]}
