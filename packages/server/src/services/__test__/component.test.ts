@@ -894,4 +894,74 @@ describe("component service", () => {
       }"
     `);
   });
+
+  it("should keep prop value on the same line(s) after an small upsert", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/breakfast.tsx")
+    );
+    const element = getJsxElementAt(sourceFile, 16, 7)!;
+
+    upsertProp(element, "position", "[]");
+
+    // The sibling elements should remain on the same lines.
+    expect(getJsxElementAt(sourceFile, 15, 7)).toBeDefined();
+    expect(getJsxElementAt(sourceFile, 22, 7)).toBeDefined();
+    expect(getExportName(sourceFile, "Scene").declaration.getText())
+      .toMatchInlineSnapshot(`
+        "export function Scene() {
+          return (
+            <>
+              <Berry position={[0, 0, 0]} variant=\\"blueberry\\" />
+              <Berry
+                position={[]}
+
+
+                variant={\\"raspberry\\"}
+              />
+              <Berry position={[0, 0, 0]} variant=\\"blueberry\\" />
+            </>
+          );
+        }"
+      `);
+  });
+
+  it("should keep prop value on the same line(s) after a large upsert", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/breakfast.tsx")
+    );
+    const element = getJsxElementAt(sourceFile, 16, 7)!;
+
+    upsertProp(
+      element,
+      "position",
+      "[-12225343900291231231231232192334,122262112312312312355004431233018,222224123123123123966135358083713]"
+    );
+
+    // The sibling elements should remain on the same lines.
+    expect(getJsxElementAt(sourceFile, 15, 7)).toBeDefined();
+    expect(getJsxElementAt(sourceFile, 22, 7)).toBeDefined();
+    expect(getExportName(sourceFile, "Scene").declaration.getText())
+      .toMatchInlineSnapshot(`
+        "export function Scene() {
+          return (
+            <>
+              <Berry position={[0, 0, 0]} variant=\\"blueberry\\" />
+              <Berry
+                position={[-12225343900291231231231232192334,122262112312312312355004431233018,222224123123123123966135358083713]}
+
+
+                variant={\\"raspberry\\"}
+              />
+              <Berry position={[0, 0, 0]} variant=\\"blueberry\\" />
+            </>
+          );
+        }"
+      `);
+  });
 });

@@ -13,3 +13,7 @@ export function stringifyJSON(value: unknown): string {
     v === undefined ? "__UNDEFINED__" : v
   );
 }
+
+export function padLines(num: number) {
+  return "".padEnd(num, "\n");
+}

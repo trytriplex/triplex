@@ -17,6 +17,7 @@ import { getExportName } from "../ast/module";
 import { getAttributes, getJsxElementAt } from "../ast/jsx";
 import { inferExports } from "../util/module";
 import { ComponentRawType, ComponentTarget } from "../types";
+import { padLines } from "../util/string";
 
 function guessComponentNameFromPath(path: string) {
   const name = basename(path)
@@ -340,7 +341,18 @@ export function upsertProp(
 ) {
   const attribute = getAttributes(jsxElement)[propName];
   if (attribute) {
+    const prevLineSpan =
+      attribute.getEndLineNumber() - attribute.getStartLineNumber();
     attribute.setInitializer(`{${propValue}}`);
+    const nextLineSpan =
+      attribute.getEndLineNumber() - attribute.getStartLineNumber();
+
+    if (nextLineSpan !== prevLineSpan) {
+      // We need to update the lines so they remain the same, cut the difference and add it as new lines.
+      const lines = prevLineSpan - nextLineSpan;
+      attribute.setInitializer(`{${propValue}}${padLines(lines)}`);
+    }
+
     return "updated";
   }
 
