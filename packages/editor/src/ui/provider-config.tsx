@@ -13,6 +13,7 @@ import { useSceneState } from "../stores/scene-state";
 import { PropField } from "./prop-field";
 import { PropInput, PropTagContext } from "./prop-input";
 import { useEnvironment } from "../environment";
+import { IDELink } from "../util/ide";
 
 function Inputs() {
   const providerPath = useEnvironment().config.provider;
@@ -30,20 +31,8 @@ function Inputs() {
     <ScrollContainer>
       <div className="h-3" />
       {props.length === 0 && (
-        <div className="px-4 py-1.5 text-sm italic text-neutral-400">
-          Props declared on your provider component will appear here.{" "}
-          <a
-            href="#"
-            className="text-blue-400"
-            onClick={() =>
-              window.triplex.openLink(
-                "https://triplex.dev/docs/user-guide/provider-config"
-              )
-            }
-          >
-            Learn more
-          </a>
-          .
+        <div className="px-4 pb-2.5 text-sm italic text-neutral-400">
+          Props declared on your provider component will appear here.
         </div>
       )}
 
@@ -90,18 +79,58 @@ function Inputs() {
 
 export function ProviderConfig() {
   const isOpen = useProviderStore((store) => store.shown);
+  const providerPath = useEnvironment().config.provider;
+
   if (!isOpen) {
     return null;
   }
 
   return (
-    <Suspense>
-      <div className="pointer-events-auto w-64 self-start rounded-lg border border-neutral-800 bg-neutral-900 text-white">
-        <h2 className="-mb-2 px-4 pt-4 text-lg font-medium text-neutral-300">
-          Provider
-        </h2>
-        <Inputs />
+    <div className="pointer-events-auto w-64 self-start overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900 text-white">
+      <h2 className="text-md px-4 pt-2.5 font-medium text-neutral-300">
+        Provider config
+      </h2>
+      <div className="-mt-0.5 mb-2 px-4">
+        {providerPath && (
+          <>
+            <IDELink path={providerPath} column={1} line={1}>
+              View source
+            </IDELink>
+            <span className="mx-1.5 text-xs text-neutral-400">•</span>
+          </>
+        )}
+
+        <a
+          href="#"
+          className="text-xs text-neutral-400"
+          onClick={() =>
+            window.triplex.openLink(
+              "https://triplex.dev/docs/user-guide/provider-config"
+            )
+          }
+        >
+          Learn more
+        </a>
       </div>
-    </Suspense>
+
+      <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
+
+      {providerPath ? (
+        <Suspense
+          fallback={
+            <div className="px-4 py-2.5 text-sm italic text-neutral-400">
+              Loading...
+            </div>
+          }
+        >
+          <Inputs />
+        </Suspense>
+      ) : (
+        <div className="px-4 py-2.5 text-sm italic text-neutral-400">
+          Set up a provider component to have its props appear here to
+          configure.
+        </div>
+      )}
+    </div>
   );
 }
