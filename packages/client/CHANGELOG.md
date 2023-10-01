@@ -1,5 +1,18 @@
 # @triplex/client
 
+## 0.58.0
+
+### Patch Changes
+
+- 3e1e081: Changes to provider are now flushed throughout the scene during hmr.
+- 3e1e081: Components sourced from node modules now can be flagged as
+  transformed.
+- Updated dependencies [37bf36d]
+- Updated dependencies [3e1e081]
+- Updated dependencies [3e1e081]
+- Updated dependencies [3e1e081]
+  - @triplex/scene@0.58.0
+
 ## 0.57.2
 
 ### Patch Changes

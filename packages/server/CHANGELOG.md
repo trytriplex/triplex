@@ -1,5 +1,15 @@
 # @triplex/server
 
+## 0.58.0
+
+### Patch Changes
+
+- 3e1e081: Modified marker is now reset when changes from the file system occur.
+- 221e6a7: Fix default export module names not being inferred correctly when
+  called in a function.
+- 37849fe: Upsert prop no longer shifts sibling elements line numbers if the
+  prop value was smaller than the current value.
+
 ## 0.57.2
 
 ### Patch Changes
