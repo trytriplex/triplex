@@ -1,5 +1,18 @@
 # @triplex/editor
 
+## 0.58.0
+
+### Minor Changes
+
+- 37bf36d: Add provider props as config to the ui.
+- 3e1e081: Separate soft refresh from hard refresh.
+
+### Patch Changes
+
+- Updated dependencies [3e1e081]
+  - @triplex/bridge@0.58.0
+  - @triplex/ws-client@0.58.0
+
 ## 0.57.2
 
 ### Patch Changes

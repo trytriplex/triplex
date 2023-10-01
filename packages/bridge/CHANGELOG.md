@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.58.0
+
+### Minor Changes
+
+- 3e1e081: Separate soft refresh from hard refresh.
+
 ## 0.57.2
 
 ## 0.57.1

@@ -1,5 +1,20 @@
 # @triplex/run
 
+## 0.58.0
+
+### Patch Changes
+
+- Updated dependencies [3e1e081]
+- Updated dependencies [37bf36d]
+- Updated dependencies [221e6a7]
+- Updated dependencies [37849fe]
+- Updated dependencies [3e1e081]
+- Updated dependencies [3e1e081]
+- Updated dependencies [3e1e081]
+  - @triplex/server@0.58.0
+  - @triplex/editor@0.58.0
+  - @triplex/client@0.58.0
+
 ## 0.57.2
 
 ### Patch Changes
