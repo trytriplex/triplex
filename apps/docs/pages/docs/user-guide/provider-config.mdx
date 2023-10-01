@@ -10,9 +10,27 @@ As an example if your provider declares `debugPhysics` and `enablePhysics`
 boolean props they will be available for you to toggle in the UI.
 
 ```tsx
-export default function Provider(props: {
+export default function Provider({
+  children,
+  debugPhysics = false,
+  enablePhysics = false,
+}: {
+  children: React.ReactNode;
   debugPhysics: boolean;
   enablePhysics: boolean;
+}): JSX.Element;
+```
+
+All props that Triplex supports work here, including
+[prop tags](/docs/user-guide/prop-tags). For example defining a string literal
+union will present a dropdown menu in the UI:
+
+```tsx
+export default function Provider({
+  children,
+  environment = "city",
+}: {
+  environment: "ocean" | "city" | "country";
   children: React.ReactNode;
 }): JSX.Element;
 ```
