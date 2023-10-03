@@ -52,3 +52,23 @@ export const ArrowFunc = (_: { color: string }) => null;
 const identity = <T extends unknown>(id: T) => id;
 
 export const WrappedFunc = identity((_: { name: string }) => null);
+
+export const DefaultProps = identity(
+  ({
+    name: _ = "foo",
+    test: __ = true,
+  }: {
+    test: boolean;
+    name: "foo" | "bar";
+  }) => null
+);
+
+export function Provider({
+  enablePhysics = false,
+  debugPhysics = false,
+}: {
+  enablePhysics?: boolean;
+  debugPhysics?: boolean;
+}) {
+  return [enablePhysics, debugPhysics];
+}

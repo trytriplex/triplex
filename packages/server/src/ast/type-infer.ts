@@ -201,11 +201,14 @@ function extractJSDoc(symbol: SymbolType) {
 }
 
 type AttributeValue = number | string | boolean | undefined | AttributeValue[];
-
-export function getJsxAttributeValue(expression: Expression | undefined): {
+type ExpressionValue = {
   kind: ValueKind;
   value: AttributeValue;
-} {
+};
+
+export function resolveExpressionValue(
+  expression: Expression | undefined
+): ExpressionValue {
   // Value is inside a JSX expression
   if (Node.isIdentifier(expression)) {
     const text = expression.getText();
@@ -222,7 +225,7 @@ export function getJsxAttributeValue(expression: Expression | undefined): {
 
     for (let i = 0; i < elements.length; i++) {
       const nextElement = elements[i];
-      const nextValue = getJsxAttributeValue(nextElement);
+      const nextValue = resolveExpressionValue(nextElement);
       if (nextValue.kind === "unhandled") {
         return { kind: "unhandled", value: expression.getText() };
       }
@@ -295,7 +298,7 @@ export function getJsxElementPropTypes(
 
     if (declaredProp) {
       const initializer = declaredProp.getInitializer();
-      const value = getJsxAttributeValue(
+      const value = resolveExpressionValue(
         Node.isJsxExpression(initializer)
           ? initializer.getExpressionOrThrow()
           : initializer
@@ -410,7 +413,7 @@ export function getFunctionPropTypes(
   sourceFile: SourceFile,
   exportName: string
 ) {
-  const propTypes: Prop[] = [];
+  const propTypes: (Prop & { defaultValue?: ExpressionValue })[] = [];
   const empty = {
     props: propTypes,
     transforms: { rotate: false, translate: false, scale: false },
@@ -446,6 +449,29 @@ export function getFunctionPropTypes(
   let rotate = false;
   let scale = false;
   let translate = false;
+  const defaultValues: Record<string, ExpressionValue> = {};
+
+  if (Node.isParameterDeclaration(valueDeclaration)) {
+    const nameNode = valueDeclaration.getNameNode();
+    const objectBinding = Node.isObjectBindingPattern(nameNode) && nameNode;
+    if (objectBinding) {
+      objectBinding.getElements().forEach((element) => {
+        const name = element.getPropertyNameNode() || element.getNameNode();
+        if (!name) {
+          return;
+        }
+
+        const propertyName = name.getText();
+        const initializer = element.getInitializer();
+
+        if (!initializer) {
+          return;
+        }
+
+        defaultValues[propertyName] = resolveExpressionValue(initializer);
+      });
+    }
+  }
 
   for (let i = 0; i < properties.length; i++) {
     const prop = properties[i];
@@ -463,12 +489,15 @@ export function getFunctionPropTypes(
       scale = true;
     }
 
+    const defaultValue = defaultValues[propName];
+
     propTypes.push({
       ...unrollType(propType),
       name: propName,
       required: !propDeclaration?.hasQuestionToken?.(),
       description: description || undefined,
       tags,
+      ...(defaultValue ? { defaultValue } : undefined),
     });
   }
 

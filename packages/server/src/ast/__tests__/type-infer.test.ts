@@ -566,10 +566,6 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/type-extraction.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 30, 5);
-    if (!sceneObject) {
-      throw new Error("not found");
-    }
 
     const { props } = getFunctionPropTypes(sourceFile, "UnionOptional");
 
@@ -603,10 +599,6 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/type-extraction.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 30, 5);
-    if (!sceneObject) {
-      throw new Error("not found");
-    }
 
     const { props } = getFunctionPropTypes(sourceFile, "ArrowFunc");
 
@@ -630,10 +622,6 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/type-extraction.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 30, 5);
-    if (!sceneObject) {
-      throw new Error("not found");
-    }
 
     const { props } = getFunctionPropTypes(sourceFile, "WrappedFunc");
 
@@ -644,6 +632,92 @@ describe("type infer", () => {
           "kind": "string",
           "name": "name",
           "required": true,
+          "tags": {},
+        },
+      ]
+    `);
+  });
+
+  it("should return function type default prop values", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/type-extraction.tsx")
+    );
+
+    const { props } = getFunctionPropTypes(sourceFile, "Provider");
+
+    expect(props).toMatchInlineSnapshot(`
+      [
+        {
+          "defaultValue": {
+            "kind": "boolean",
+            "value": false,
+          },
+          "description": undefined,
+          "kind": "boolean",
+          "name": "enablePhysics",
+          "required": false,
+          "tags": {},
+        },
+        {
+          "defaultValue": {
+            "kind": "boolean",
+            "value": false,
+          },
+          "description": undefined,
+          "kind": "boolean",
+          "name": "debugPhysics",
+          "required": false,
+          "tags": {},
+        },
+      ]
+    `);
+  });
+
+  it("should return arrow function type default prop values", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/type-extraction.tsx")
+    );
+
+    const { props } = getFunctionPropTypes(sourceFile, "DefaultProps");
+
+    expect(props).toMatchInlineSnapshot(`
+      [
+        {
+          "defaultValue": {
+            "kind": "boolean",
+            "value": true,
+          },
+          "description": undefined,
+          "kind": "boolean",
+          "name": "test",
+          "required": true,
+          "tags": {},
+        },
+        {
+          "defaultValue": {
+            "kind": "string",
+            "value": "foo",
+          },
+          "description": undefined,
+          "kind": "union",
+          "name": "name",
+          "required": true,
+          "shape": [
+            {
+              "kind": "string",
+              "literal": "foo",
+            },
+            {
+              "kind": "string",
+              "literal": "bar",
+            },
+          ],
           "tags": {},
         },
       ]
