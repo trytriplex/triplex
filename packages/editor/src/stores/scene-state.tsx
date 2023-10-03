@@ -40,7 +40,7 @@ export const useSceneState = create<SceneState>((setStore, get) => ({
       },
     };
 
-    if (!value) {
+    if (value === undefined) {
       delete nextValue.__internalState[key][name];
     }
 

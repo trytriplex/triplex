@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { useLazySubscription } from "@triplex/ws-client";
-import { Suspense } from "react";
+import { Suspense, useMemo } from "react";
 import { ScrollContainer } from "../ds/scroll-container";
 import { useProviderStore } from "../stores/provider";
 import { useScene } from "../stores/scene";
@@ -26,6 +26,22 @@ function Inputs() {
   const setValues = useSceneState((state) => state.set);
   const values = useSceneState((state) => state.get(storeKey));
   const props = data.props.filter((prop) => prop.name !== "children");
+  const defaultValues: Record<string, unknown> = useMemo(
+    () =>
+      data.props.reduce((acc, prop) => {
+        const value =
+          prop.defaultValue && prop.defaultValue.kind !== "unhandled"
+            ? prop.defaultValue.value
+            : undefined;
+
+        if (value !== undefined) {
+          return Object.assign(acc, { [prop.name]: value });
+        }
+
+        return acc;
+      }, {}),
+    [data.props]
+  );
 
   return (
     <ScrollContainer>
@@ -37,6 +53,9 @@ function Inputs() {
       )}
 
       {props.map((prop) => {
+        const value =
+          prop.name in values ? values[prop.name] : defaultValues[prop.name];
+
         return (
           <PropField
             htmlFor={prop.name}
@@ -49,11 +68,7 @@ function Inputs() {
               <PropInput
                 name={prop.name}
                 path={providerPath}
-                prop={Object.assign(
-                  {},
-                  prop,
-                  values[prop.name] ? { value: values[prop.name] } : {}
-                )}
+                prop={Object.assign({}, prop, value ? { value } : {})}
                 required={prop.required}
                 onConfirm={(value) => {
                   setValues(storeKey, prop.name, value);

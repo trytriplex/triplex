@@ -6,6 +6,7 @@
  */
 import { createContext, ReactNode, useContext } from "react";
 import { Physics } from "@react-three/rapier";
+import type { PresetsType } from "@react-three/drei/helpers/environment-assets";
 
 const Context = createContext<boolean | null>(null);
 
@@ -19,9 +20,11 @@ export function useProvider() {
 export default function Provider({
   children,
   enablePhysics = false,
-  debugPhysics = false,
+  debugPhysics = true,
+  environment: _ = "city",
 }: {
   children: ReactNode;
+  environment?: PresetsType;
   enablePhysics?: boolean;
   debugPhysics?: boolean;
 }) {
