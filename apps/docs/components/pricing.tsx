@@ -20,7 +20,7 @@ function PricingPanel({
 }: {
   name: string;
   description: string;
-  price: [number];
+  price?: [number];
   perMonthLabel: string;
   cta: ReactNode;
   highlight?: boolean;
@@ -42,15 +42,16 @@ function PricingPanel({
         {description}
       </p>
 
-      <p className="mt-6 flex items-center justify-center text-center font-medium">
-        <span className="text-2xl text-neutral-300">$</span>
-        <span className="text-5xl text-white/90">{price[0]}</span>
-      </p>
+      {price && (
+        <p className="mt-6 flex items-center justify-center text-center font-medium">
+          <span className="text-2xl text-neutral-300">$</span>
+          <span className="text-5xl text-white/90">{price[0]}</span>
+        </p>
+      )}
 
       <p className="mb-8 text-center text-sm text-neutral-300">
         {perMonthLabel}
       </p>
-
       <div className="w-full self-end">{cta}</div>
 
       {children}
@@ -113,15 +114,14 @@ export function Pricing() {
       <PricingPanel
         name="Team"
         highlight
-        description="For individuals and small teams with big goals."
-        price={[11]}
-        perMonthLabel="per user, every month"
+        description="Paid plans available 2024. Contact us for expression of interest."
+        perMonthLabel=""
         cta={
           <Link
             className="block rounded bg-blue-400 py-2 text-center font-bold text-neutral-800"
-            href="https://github.com/sponsors/itsdouges/sponsorships?sponsor=itsdouges&preview=true&frequency=recurring&amount=11"
+            href="mailto:team@triplex.dev"
           >
-            Continue with Team
+            Contact Us
           </Link>
         }
       >
@@ -131,14 +131,8 @@ export function Pricing() {
           </li>
           <li>
             <DetailsSummary
-              summary="Premium support"
-              details="Get support fast with a 24-hour SLA on raised tickets."
-            />
-          </li>
-          <li>
-            <DetailsSummary
-              summary="Early access to new features"
-              details="Gain access to new features before they're released."
+              summary="We're currently cooking the features"
+              details="Available features are still being developed. Have a burning feature you'd pay for? Contact us and let us know."
             />
           </li>
         </ul>
