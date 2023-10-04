@@ -1,6 +1,6 @@
 {
   "name": "@triplex/client",
-  "version": "0.58.0",
+  "version": "0.58.1",
   "repository": "https://github.com/try-triplex/triplex-monorepo",
   "license": "GPL-3.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
@@ -16,7 +16,7 @@
   "dependencies": {
     "@babel/core": "^7.20.7",
     "@babel/types": "^7.21.2",
-    "@triplex/scene": "0.58.0",
+    "@triplex/scene": "0.58.1",
     "@vitejs/plugin-react": "^3.0.1",
     "express": "^4.18.2",
     "vite": "^4.0.4",

@@ -1,5 +1,13 @@
 # @triplex/scene
 
+## 0.58.1
+
+### Patch Changes
+
+- e645e5c: Fix provider ui not respecting default props.
+  - @triplex/ws-client@0.58.1
+  - @triplex/bridge@0.58.1
+
 ## 0.58.0
 
 ### Minor Changes

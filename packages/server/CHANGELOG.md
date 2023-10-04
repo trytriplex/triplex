@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.58.1
+
+### Patch Changes
+
+- e645e5c: Fix provider ui not respecting default props.
+
 ## 0.58.0
 
 ### Patch Changes

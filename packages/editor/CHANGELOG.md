@@ -1,5 +1,14 @@
 # @triplex/editor
 
+## 0.58.1
+
+### Patch Changes
+
+- e645e5c: Fix provider ui not respecting default props.
+- f1656e0: Provider config now takes up slightly more space.
+  - @triplex/ws-client@0.58.1
+  - @triplex/bridge@0.58.1
+
 ## 0.58.0
 
 ### Minor Changes
