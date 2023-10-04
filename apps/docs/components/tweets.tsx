@@ -4,7 +4,6 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { ArrowBottomRightIcon as Arrow } from "@radix-ui/react-icons";
 import Image from "next/image";
 
 export function Tweet({
@@ -18,7 +17,7 @@ export function Tweet({
   name: string;
   tag: string;
   date: string;
-  content: string;
+  content: React.ReactNode;
   tweetUrl: string;
   avatarUrl: string;
 }) {
@@ -57,18 +56,14 @@ export function Tweet({
 export function Tweets() {
   return (
     <section className="pb-20 pt-10">
-      <p className="mb-2 flex items-center gap-1 pl-10 text-base font-semibold text-neutral-300 xl:pl-28">
-        See what others are saying <Arrow className="mt-1" />
-      </p>
-
-      <div className="flex gap-4 overflow-hidden pl-10 xl:pl-28">
+      <div className="mx-auto flex max-w-7xl flex-wrap justify-center gap-4">
         <Tweet
-          name="TresJS"
-          tag="@tresjs_dev"
-          content="This is an incredible tool for the 3D web community, Congrats to the team behind it @_douges 👏🏻"
-          tweetUrl="https://x.com/tresjs_dev/status/1696460634894872672?s=20"
-          date="7:51 PM · Aug 29, 2023"
-          avatarUrl="/avatars/tresjs-avatar.jpg"
+          name="kitze 🚀"
+          tag="@thekitze"
+          content="this is closest we've been to something exciting happening in the world of react/frontend. make more visual editor thingies please."
+          tweetUrl="https://twitter.com/thekitze/status/1709220529280872866"
+          date="1:55 AM · Oct 4, 2023"
+          avatarUrl="/avatars/kitze-avatar.jpg"
         />
         <Tweet
           name="Guillermo Rauch"
@@ -77,6 +72,22 @@ export function Tweets() {
           tweetUrl="https://twitter.com/rauchg/status/1670874573062144001"
           date="12:18 PM · Jun 20, 2023"
           avatarUrl="/avatars/rauch-avatar.jpg"
+        />
+        <Tweet
+          name="lil uzi perf"
+          tag="@ken_wheeler"
+          content="Holy shit"
+          tweetUrl="https://twitter.com/ken_wheeler/status/1709518398328127860"
+          date="9:38 PM · Oct 4, 2023"
+          avatarUrl="/avatars/ken-avatar.jpg"
+        />
+        <Tweet
+          name="TresJS"
+          tag="@tresjs_dev"
+          content="This is an incredible tool for the 3D web community, Congrats to the team behind it @_douges 👏🏻"
+          tweetUrl="https://x.com/tresjs_dev/status/1696460634894872672?s=20"
+          date="7:51 PM · Aug 29, 2023"
+          avatarUrl="/avatars/tresjs-avatar.jpg"
         />
         <Tweet
           name="Alvaro 사부"
