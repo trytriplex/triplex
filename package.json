@@ -3,24 +3,12 @@
   "version": "0.0.0",
   "private": true,
   "workspaces": [
-    "../../apps/docs",
-    "../../examples/*",
-    "../../packages/bridge",
-    "../../packages/create-triplex-project",
-    "../../packages/editor",
-    "../../packages/run",
-    "../../packages/scene",
-    "../../packages/react-three-test",
     "apps/docs",
     "examples/*",
-    "packages/bridge",
-    "packages/create-triplex-project",
-    "packages/editor",
-    "packages/run",
-    "packages/scene",
-    "packages/react-three-test"
+    "packages/*"
   ],
   "scripts": {
+    "dev": "node ./scripts/dev.js",
     "build": "yarn clean && yarn workspaces run build",
     "clean": "yarn workspaces run rimraf dist",
     "clean:node_modules": "rimraf node_modules && yarn workspaces run rimraf node_modules",
