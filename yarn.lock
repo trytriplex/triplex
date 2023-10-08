@@ -1430,9 +1430,9 @@
     zustand "^3.5.13"
 
 "@react-three/fiber@^8.11.1", "@react-three/fiber@^8.13.0":
-  version "8.14.4"
-  resolved "https://registry.yarnpkg.com/@react-three/fiber/-/fiber-8.14.4.tgz#44f05d91f98fc52441874c696dd9b607a6eb7fdf"
-  integrity sha512-opkLsfO9sxTFlI26ycKcTsXViRtOa1v+0AQoeP6yQ59dkhABn+UKhGrx6/zWrH5mUxzg812zJd7sTJflZQmLgA==
+  version "8.14.5"
+  resolved "https://registry.yarnpkg.com/@react-three/fiber/-/fiber-8.14.5.tgz#1a971b29e19c7c600e54c75f45d22a23929fd919"
+  integrity sha512-Ee5OQyftkc076oh9ANgr2PpjBs8lXg/kt60DBiBE8l+TYDhfqdvEKEw8YF4wTz0xEmUQU5ULyX6PHShBLVaR7g==
   dependencies:
     "@babel/runtime" "^7.17.8"
     "@types/react-reconciler" "^0.26.7"
@@ -1979,14 +1979,7 @@
   resolved "https://registry.yarnpkg.com/@types/stats.js/-/stats.js-0.17.1.tgz#3066e95031f013b0e01d723fb7207c79fd75e6a0"
   integrity sha512-OgfYE1x2w1jRUXzzKABX+kOdwz2y9PE0uSwnZabkWfJTWOzm7Pvfm4JI2xqRE0q2nwUe2jZLWcrcnhd9lQU63w==
 
-"@types/three@^0.148.0":
-  version "0.148.1"
-  resolved "https://registry.yarnpkg.com/@types/three/-/three-0.148.1.tgz#e999a1a4840c12da8723187c315d8c8781d1066b"
-  integrity sha512-gZwIyTBMxKXqJHXmZ0dzvDieuQ4hz8MPNHtkRrAwER/xPlAh9eP2WIfaolvQY+wJAzlNV5a9ceS4JT+i/jybsw==
-  dependencies:
-    "@types/webxr" "*"
-
-"@types/three@^0.152.1":
+"@types/three@0.152.1", "@types/three@^0.148.0", "@types/three@^0.152.1":
   version "0.152.1"
   resolved "https://registry.yarnpkg.com/@types/three/-/three-0.152.1.tgz#6f2ce49f7647c78855bc32544cc3e72145aa65cb"
   integrity sha512-PMOCQnx9JRmq+2OUGTPoY9h1hTWD2L7/nmuW/SyNq1Vbq3Lwt3MNdl3wYSa4DvLTGv62NmIXD9jYdAOwohwJyw==
@@ -8028,15 +8021,10 @@ three-stdlib@^2.20.4, three-stdlib@^2.21.5, three-stdlib@^2.23.9:
     potpack "^1.0.1"
     zstddec "^0.0.2"
 
-three@^0.148.0:
-  version "0.148.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.148.0.tgz#b6f62f9c84227f8d51c151bf17b67984ded8e4d7"
-  integrity sha512-8uzVV+qhTPi0bOFs/3te3RW6hb3urL8jYEl6irjCWo/l6sr8MPNMcClFev/MMYeIxr0gmDcoXTy/8LXh/LXkfw==
-
-three@^0.153.0:
-  version "0.153.0"
-  resolved "https://registry.yarnpkg.com/three/-/three-0.153.0.tgz#d8f2aab7b49ae4ac947fd0e24cebec11378758f0"
-  integrity sha512-OCP2/uQR6GcDpSLnJt/3a4mdS0kNWcbfUXIwLoEMgLzEUIVIYsSDwskpmOii/AkDM+BBwrl6+CKgrjX9+E2aWg==
+three@0.152.1, three@^0.148.0, three@^0.153.0:
+  version "0.152.1"
+  resolved "https://registry.yarnpkg.com/three/-/three-0.152.1.tgz#943f1056b4dd140a44ec2d0c8f8b035f483e0f20"
+  integrity sha512-6812YuxSnsCQ3DgI27jtuwIW0cgn/ooVshPIcKpuPQ2kygeDTOQtRkYffl4E1IcQElEyHbPjyQznE2jti7fXoA==
 
 through2@^0.6.3:
   version "0.6.5"
