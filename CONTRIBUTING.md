@@ -1,8 +1,8 @@
 # Contributing to Triplex
 
-Thanks for contributing to Triplex, the React Three Fiber editor. Not all
-Triplex is open source. Issue filters below are for issues with the open source
-parts of Triplex.
+Thanks for contributing to Triplex, the React Three Fiber editor. Not all of
+Triplex is open source. Issue filters below only contain issues appropriate for
+resolving in the open source parts.
 
 - [View good first issues](https://github.com/try-triplex/triplex/issues?q=is%3Aissue+is%3Aopen+label%3A%22Good+first+issue%22+)
 - [View contribution wanted issues](https://github.com/try-triplex/triplex/issues?q=is%3Aissue+is%3Aopen+label%3A%22Contribution+wanted%22+)
