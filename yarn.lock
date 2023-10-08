@@ -1438,10 +1438,10 @@
     three-stdlib "2.23.9"
     use-asset "1.0.4"
 
-"@react-three/test-renderer@^8.1.2":
-  version "8.1.2"
-  resolved "https://registry.yarnpkg.com/@react-three/test-renderer/-/test-renderer-8.1.2.tgz#85b8fde2249b7d3743e7fb6afaebe25873079182"
-  integrity sha512-1penh4ydTUXsWNtU6TpfxGebqx949GYDS0cwEWQH580/xkuKoXsnPTayKOcOxuhN+iaD2ySackNjxpQ1YolmZA==
+"@react-three/test-renderer@^8.2.0":
+  version "8.2.0"
+  resolved "https://registry.yarnpkg.com/@react-three/test-renderer/-/test-renderer-8.2.0.tgz#ac69e4f9abc0f21f341378f3235bfeece4a7f782"
+  integrity sha512-sYTW/9AkU0f03M/rilYaCB9ORD3tS96bUhM+WRsx/QLtOKdUNCWrWwnxutm5M0orON0A0O84gbUosnqvCAKTsw==
 
 "@remix-run/router@1.6.2":
   version "1.6.2"
