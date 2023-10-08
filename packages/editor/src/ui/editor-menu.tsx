@@ -4,7 +4,6 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import type { MenuItemConstructorOptions } from "electron";
 import { useEditor } from "../stores/editor";
 import {
   Menubar,
@@ -20,14 +19,14 @@ import { useScene } from "../stores/scene";
 import { useCallback, useEffect, useMemo } from "react";
 
 interface MenuItem {
-  role?: MenuItemConstructorOptions["role"];
+  role?: "fileMenu" | "editMenu" | "viewMenu" | "windowMenu" | "help";
   label?: string;
   id: string;
   click?: () => void;
   submenu?: (
     | MenuItem
     | {
-        type: MenuItemConstructorOptions["type"];
+        type: "separator";
       }
   )[];
   accelerator?: string;

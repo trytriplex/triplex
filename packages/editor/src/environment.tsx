@@ -7,9 +7,9 @@
 import { createContext, ReactNode, useContext } from "react";
 import { suspend } from "suspend-react";
 
-const Context = createContext<Awaited<
-  ReturnType<typeof window.triplex.getEnv>
-> | null>(null);
+type Env = Awaited<ReturnType<typeof window.triplex.getEnv>>;
+
+const Context = createContext<Env | null>(null);
 
 export function useEnvironment() {
   const context = useContext(Context);
@@ -21,7 +21,15 @@ export function useEnvironment() {
 }
 
 export function Environment({ children }: { children: ReactNode }) {
-  const data = suspend(() => window.triplex.getEnv(), []);
+  const data: Env = suspend(
+    () =>
+      __TRIPLEX_TARGET__ === "electron"
+        ? window.triplex.getEnv()
+        : Promise.resolve({
+            config: { provider: "", sceneUrl: "", serverUrl: "", wsUrl: "" },
+          }),
+    []
+  );
 
   return <Context.Provider value={data}>{children}</Context.Provider>;
 }

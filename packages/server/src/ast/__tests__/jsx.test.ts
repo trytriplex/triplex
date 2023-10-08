@@ -316,21 +316,21 @@ describe("jsx ast extractor", () => {
           "valueKind": "array",
         },
         {
-          "description": undefined,
+          "description": "Optional name for this {@link THREE.BufferGeometry | BufferGeometry} instance.",
           "kind": "string",
           "name": "name",
           "required": true,
           "tags": {
-            "default": "''",
+            "defaultValue": "\`''\`",
           },
         },
         {
-          "description": undefined,
+          "description": "Used to control the morph target behavior; when set to true, the morph target data is treated as relative offsets, rather than as absolute positions/normals.",
           "kind": "boolean",
           "name": "morphTargetsRelative",
           "required": true,
           "tags": {
-            "default": "false",
+            "defaultValue": "\`false\`",
           },
         },
       ]
@@ -563,12 +563,94 @@ describe("jsx ast extractor", () => {
           },
         },
         {
+          "description": "Blending destination. It's one of the blending mode constants defined in Three.js. Default is {@link OneMinusSrcAlphaFactor}.",
+          "kind": "union",
+          "name": "blendDst",
+          "required": true,
+          "shape": [
+            {
+              "kind": "number",
+              "literal": 200,
+            },
+            {
+              "kind": "number",
+              "literal": 201,
+            },
+            {
+              "kind": "number",
+              "literal": 202,
+            },
+            {
+              "kind": "number",
+              "literal": 203,
+            },
+            {
+              "kind": "number",
+              "literal": 204,
+            },
+            {
+              "kind": "number",
+              "literal": 205,
+            },
+            {
+              "kind": "number",
+              "literal": 206,
+            },
+            {
+              "kind": "number",
+              "literal": 207,
+            },
+            {
+              "kind": "number",
+              "literal": 208,
+            },
+            {
+              "kind": "number",
+              "literal": 209,
+            },
+          ],
+          "tags": {
+            "default": "THREE.OneMinusSrcAlphaFactor",
+          },
+        },
+        {
           "description": "The tranparency of the .blendDst. Default is null.",
           "kind": "number",
           "name": "blendDstAlpha",
           "required": true,
           "tags": {
             "default": "null",
+          },
+        },
+        {
+          "description": "Blending equation to use when applying blending. It's one of the constants defined in Three.js. Default is {@link AddEquation}.",
+          "kind": "union",
+          "name": "blendEquation",
+          "required": true,
+          "shape": [
+            {
+              "kind": "number",
+              "literal": 100,
+            },
+            {
+              "kind": "number",
+              "literal": 101,
+            },
+            {
+              "kind": "number",
+              "literal": 102,
+            },
+            {
+              "kind": "number",
+              "literal": 103,
+            },
+            {
+              "kind": "number",
+              "literal": 104,
+            },
+          ],
+          "tags": {
+            "default": "THREE.AddEquation",
           },
         },
         {
@@ -581,11 +663,91 @@ describe("jsx ast extractor", () => {
           },
         },
         {
+          "description": "Which blending to use when displaying objects with this material. Default is {@link NormalBlending}.",
+          "kind": "union",
+          "name": "blending",
+          "required": true,
+          "shape": [
+            {
+              "kind": "number",
+              "literal": 0,
+            },
+            {
+              "kind": "number",
+              "literal": 1,
+            },
+            {
+              "kind": "number",
+              "literal": 2,
+            },
+            {
+              "kind": "number",
+              "literal": 3,
+            },
+            {
+              "kind": "number",
+              "literal": 4,
+            },
+            {
+              "kind": "number",
+              "literal": 5,
+            },
+          ],
+          "tags": {
+            "default": "THREE.NormalBlending",
+          },
+        },
+        {
           "description": "Blending source. It's one of the blending mode constants defined in Three.js. Default is {@link SrcAlphaFactor}.",
           "kind": "union",
           "name": "blendSrc",
           "required": true,
-          "shape": [],
+          "shape": [
+            {
+              "kind": "number",
+              "literal": 200,
+            },
+            {
+              "kind": "number",
+              "literal": 201,
+            },
+            {
+              "kind": "number",
+              "literal": 202,
+            },
+            {
+              "kind": "number",
+              "literal": 203,
+            },
+            {
+              "kind": "number",
+              "literal": 204,
+            },
+            {
+              "kind": "number",
+              "literal": 205,
+            },
+            {
+              "kind": "number",
+              "literal": 206,
+            },
+            {
+              "kind": "number",
+              "literal": 207,
+            },
+            {
+              "kind": "number",
+              "literal": 208,
+            },
+            {
+              "kind": "number",
+              "literal": 209,
+            },
+            {
+              "kind": "number",
+              "literal": 210,
+            },
+          ],
           "tags": {
             "default": "THREE.SrcAlphaFactor",
           },
@@ -633,6 +795,49 @@ describe("jsx ast extractor", () => {
           "required": true,
           "tags": {
             "default": true,
+          },
+        },
+        {
+          "description": "Which depth function to use. Default is {@link LessEqualDepth}. See the depth mode constants for all possible values.",
+          "kind": "union",
+          "name": "depthFunc",
+          "required": true,
+          "shape": [
+            {
+              "kind": "number",
+              "literal": 0,
+            },
+            {
+              "kind": "number",
+              "literal": 1,
+            },
+            {
+              "kind": "number",
+              "literal": 2,
+            },
+            {
+              "kind": "number",
+              "literal": 3,
+            },
+            {
+              "kind": "number",
+              "literal": 4,
+            },
+            {
+              "kind": "number",
+              "literal": 5,
+            },
+            {
+              "kind": "number",
+              "literal": 6,
+            },
+            {
+              "kind": "number",
+              "literal": 7,
+            },
+          ],
+          "tags": {
+            "default": "THREE.LessEqualDepth",
           },
         },
         {
@@ -756,11 +961,39 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": undefined,
+          "kind": "boolean",
+          "name": "forceSinglePass",
+          "required": true,
+          "tags": {
+            "default": "false",
+          },
+        },
+        {
+          "description": undefined,
           "kind": "number",
           "name": "lightMapIntensity",
           "required": true,
           "tags": {
             "default": 1,
+          },
+        },
+        {
+          "description": undefined,
+          "kind": "union",
+          "name": "normalMapType",
+          "required": true,
+          "shape": [
+            {
+              "kind": "number",
+              "literal": 0,
+            },
+            {
+              "kind": "number",
+              "literal": 1,
+            },
+          ],
+          "tags": {
+            "default": "THREE.TangentSpaceNormalMap",
           },
         },
         {
@@ -823,6 +1056,140 @@ describe("jsx ast extractor", () => {
           },
         },
         {
+          "description": "Defines which of the face sides will cast shadows. Default is *null*.
+      If *null*, the value is opposite that of side, above.",
+          "kind": "union",
+          "name": "shadowSide",
+          "required": true,
+          "shape": [
+            {
+              "kind": "number",
+              "literal": 0,
+            },
+            {
+              "kind": "number",
+              "literal": 1,
+            },
+            {
+              "kind": "number",
+              "literal": 2,
+            },
+          ],
+          "tags": {
+            "default": "null",
+          },
+        },
+        {
+          "description": "Defines which of the face sides will be rendered - front, back or both.
+      Default is {@link THREE.FrontSide}. Other options are {@link THREE.BackSide} and {@link THREE.DoubleSide}.",
+          "kind": "union",
+          "name": "side",
+          "required": true,
+          "shape": [
+            {
+              "kind": "number",
+              "literal": 0,
+            },
+            {
+              "kind": "number",
+              "literal": 1,
+            },
+            {
+              "kind": "number",
+              "literal": 2,
+            },
+          ],
+          "tags": {
+            "default": "{@link THREE.FrontSide }",
+          },
+        },
+        {
+          "description": "Which stencil operation to perform when the comparison function returns false. Default is {@link KeepStencilOp}. See the stencil operation constants for all possible values.",
+          "kind": "union",
+          "name": "stencilFail",
+          "required": true,
+          "shape": [
+            {
+              "kind": "number",
+              "literal": 0,
+            },
+            {
+              "kind": "number",
+              "literal": 7680,
+            },
+            {
+              "kind": "number",
+              "literal": 7681,
+            },
+            {
+              "kind": "number",
+              "literal": 7682,
+            },
+            {
+              "kind": "number",
+              "literal": 7283,
+            },
+            {
+              "kind": "number",
+              "literal": 34055,
+            },
+            {
+              "kind": "number",
+              "literal": 34056,
+            },
+            {
+              "kind": "number",
+              "literal": 5386,
+            },
+          ],
+          "tags": {
+            "default": "THREE.KeepStencilOp",
+          },
+        },
+        {
+          "description": "The stencil comparison function to use. Default is {@link AlwaysStencilFunc}. See stencil operation constants for all possible values.",
+          "kind": "union",
+          "name": "stencilFunc",
+          "required": true,
+          "shape": [
+            {
+              "kind": "number",
+              "literal": 512,
+            },
+            {
+              "kind": "number",
+              "literal": 513,
+            },
+            {
+              "kind": "number",
+              "literal": 514,
+            },
+            {
+              "kind": "number",
+              "literal": 515,
+            },
+            {
+              "kind": "number",
+              "literal": 516,
+            },
+            {
+              "kind": "number",
+              "literal": 517,
+            },
+            {
+              "kind": "number",
+              "literal": 518,
+            },
+            {
+              "kind": "number",
+              "literal": 519,
+            },
+          ],
+          "tags": {
+            "default": "THREE.AlwaysStencilFunc",
+          },
+        },
+        {
           "description": "The bit mask to use when comparing against the stencil buffer. Default is *0xFF*.",
           "kind": "number",
           "name": "stencilFuncMask",
@@ -856,6 +1223,96 @@ describe("jsx ast extractor", () => {
           "required": true,
           "tags": {
             "default": 255,
+          },
+        },
+        {
+          "description": "Which stencil operation to perform when the comparison function returns true but the depth test fails.
+      Default is {@link KeepStencilOp}.
+      See the stencil operation constants for all possible values.",
+          "kind": "union",
+          "name": "stencilZFail",
+          "required": true,
+          "shape": [
+            {
+              "kind": "number",
+              "literal": 0,
+            },
+            {
+              "kind": "number",
+              "literal": 7680,
+            },
+            {
+              "kind": "number",
+              "literal": 7681,
+            },
+            {
+              "kind": "number",
+              "literal": 7682,
+            },
+            {
+              "kind": "number",
+              "literal": 7283,
+            },
+            {
+              "kind": "number",
+              "literal": 34055,
+            },
+            {
+              "kind": "number",
+              "literal": 34056,
+            },
+            {
+              "kind": "number",
+              "literal": 5386,
+            },
+          ],
+          "tags": {
+            "default": "THREE.KeepStencilOp",
+          },
+        },
+        {
+          "description": "Which stencil operation to perform when the comparison function returns true and the depth test passes.
+      Default is {@link KeepStencilOp}.
+      See the stencil operation constants for all possible values.",
+          "kind": "union",
+          "name": "stencilZPass",
+          "required": true,
+          "shape": [
+            {
+              "kind": "number",
+              "literal": 0,
+            },
+            {
+              "kind": "number",
+              "literal": 7680,
+            },
+            {
+              "kind": "number",
+              "literal": 7681,
+            },
+            {
+              "kind": "number",
+              "literal": 7682,
+            },
+            {
+              "kind": "number",
+              "literal": 7283,
+            },
+            {
+              "kind": "number",
+              "literal": 34055,
+            },
+            {
+              "kind": "number",
+              "literal": 34056,
+            },
+            {
+              "kind": "number",
+              "literal": 5386,
+            },
+          ],
+          "tags": {
+            "default": "THREE.KeepStencilOp",
           },
         },
         {
@@ -1172,53 +1629,54 @@ describe("jsx ast extractor", () => {
           "tags": {},
         },
         {
-          "description": "Optional name of the object (doesn't need to be unique).",
+          "description": "Optional name of the object",
           "kind": "string",
           "name": "name",
           "required": true,
           "tags": {
-            "default": "''",
+            "defaultValue": "\`\\"\\"\`",
+            "remarks": "_(doesn't need to be unique)_.",
           },
         },
         {
           "column": 11,
-          "description": "Object gets rendered if true.",
+          "description": "Object gets rendered if \`true\`.",
           "kind": "boolean",
           "line": 10,
           "name": "visible",
           "required": true,
           "tags": {
-            "default": true,
+            "defaultValue": "\`true\`",
           },
           "value": true,
           "valueKind": "boolean",
         },
         {
-          "description": "Gets rendered into shadow map.",
+          "description": "Whether the object gets rendered into shadow map.",
           "kind": "boolean",
           "name": "castShadow",
           "required": true,
           "tags": {
-            "default": "false",
+            "defaultValue": "\`false\`",
           },
         },
         {
-          "description": "Material gets baked in shadow receiving.",
+          "description": "Whether the material receives shadows.",
           "kind": "boolean",
           "name": "receiveShadow",
           "required": true,
           "tags": {
-            "default": "false",
+            "defaultValue": "\`false\`",
           },
         },
         {
           "description": "When this is set, it checks every frame if the object is in the frustum of the camera before rendering the object.
-      If set to false the object gets rendered every frame even if it is not in the frustum of the camera.",
+      If set to \`false\` the object gets rendered every frame even if it is not in the frustum of the camera.",
           "kind": "boolean",
           "name": "frustumCulled",
           "required": true,
           "tags": {
-            "default": true,
+            "defaultValue": "\`true\`",
           },
         },
         {
@@ -1229,12 +1687,14 @@ describe("jsx ast extractor", () => {
           "tags": {},
         },
         {
-          "description": undefined,
+          "description": "An instance of material derived from the {@link THREE.Material | Material} base class or an array of materials, defining the object's appearance.",
           "kind": "union",
           "name": "material",
           "required": true,
           "shape": [],
-          "tags": {},
+          "tags": {
+            "defaultValue": "{@link THREE.MeshBasicMaterial | \`new THREE.MeshBasicMaterial()\`}.",
+          },
         },
         {
           "description": undefined,
@@ -1266,14 +1726,14 @@ describe("jsx ast extractor", () => {
           "tags": {},
         },
         {
-          "description": "Overrides the default rendering order of scene graph objects, from lowest to highest renderOrder.
-      Opaque and transparent objects remain sorted independently though.
-      When this property is set for an instance of Group, all descendants objects will be sorted and rendered together.",
+          "description": "This value allows the default rendering order of {@link https://en.wikipedia.org/wiki/Scene_graph | scene graph}
+      objects to be overridden although opaque and transparent objects remain sorted independently.",
           "kind": "number",
           "name": "renderOrder",
           "required": true,
           "tags": {
-            "default": 0,
+            "defaultValue": "\`0\`",
+            "remarks": "Sorting is from lowest to highest renderOrder.",
           },
         },
       ]
@@ -1433,57 +1893,58 @@ describe("jsx ast extractor", () => {
           "tags": {},
         },
         {
-          "description": "Optional name of the object (doesn't need to be unique).",
+          "description": "Optional name of the object",
           "kind": "string",
           "name": "name",
           "required": true,
           "tags": {
-            "default": "''",
+            "defaultValue": "\`\\"\\"\`",
+            "remarks": "_(doesn't need to be unique)_.",
           },
         },
         {
           "column": 11,
-          "description": "Object gets rendered if true.",
+          "description": "Object gets rendered if \`true\`.",
           "kind": "boolean",
           "line": 20,
           "name": "visible",
           "required": true,
           "tags": {
-            "default": true,
+            "defaultValue": "\`true\`",
           },
           "value": true,
           "valueKind": "boolean",
         },
         {
           "column": 26,
-          "description": "Gets rendered into shadow map.",
+          "description": "Whether the object gets rendered into shadow map.",
           "kind": "boolean",
           "line": 20,
           "name": "castShadow",
           "required": true,
           "tags": {
-            "default": "false",
+            "defaultValue": "\`false\`",
           },
           "value": false,
           "valueKind": "boolean",
         },
         {
-          "description": "Material gets baked in shadow receiving.",
+          "description": "Whether the material receives shadows.",
           "kind": "boolean",
           "name": "receiveShadow",
           "required": true,
           "tags": {
-            "default": "false",
+            "defaultValue": "\`false\`",
           },
         },
         {
           "description": "When this is set, it checks every frame if the object is in the frustum of the camera before rendering the object.
-      If set to false the object gets rendered every frame even if it is not in the frustum of the camera.",
+      If set to \`false\` the object gets rendered every frame even if it is not in the frustum of the camera.",
           "kind": "boolean",
           "name": "frustumCulled",
           "required": true,
           "tags": {
-            "default": true,
+            "defaultValue": "\`true\`",
           },
         },
         {
@@ -1494,12 +1955,14 @@ describe("jsx ast extractor", () => {
           "tags": {},
         },
         {
-          "description": undefined,
+          "description": "An instance of material derived from the {@link THREE.Material | Material} base class or an array of materials, defining the object's appearance.",
           "kind": "union",
           "name": "material",
           "required": true,
           "shape": [],
-          "tags": {},
+          "tags": {
+            "defaultValue": "{@link THREE.MeshBasicMaterial | \`new THREE.MeshBasicMaterial()\`}.",
+          },
         },
         {
           "description": undefined,
@@ -1531,14 +1994,14 @@ describe("jsx ast extractor", () => {
           "tags": {},
         },
         {
-          "description": "Overrides the default rendering order of scene graph objects, from lowest to highest renderOrder.
-      Opaque and transparent objects remain sorted independently though.
-      When this property is set for an instance of Group, all descendants objects will be sorted and rendered together.",
+          "description": "This value allows the default rendering order of {@link https://en.wikipedia.org/wiki/Scene_graph | scene graph}
+      objects to be overridden although opaque and transparent objects remain sorted independently.",
           "kind": "number",
           "name": "renderOrder",
           "required": true,
           "tags": {
-            "default": 0,
+            "defaultValue": "\`0\`",
+            "remarks": "Sorting is from lowest to highest renderOrder.",
           },
         },
       ]
@@ -1559,13 +2022,13 @@ describe("jsx ast extractor", () => {
     expect(props[5]).toMatchInlineSnapshot(`
       {
         "column": 22,
-        "description": "Object gets rendered if true.",
+        "description": "Object gets rendered if \`true\`.",
         "kind": "boolean",
         "line": 25,
         "name": "visible",
         "required": true,
         "tags": {
-          "default": true,
+          "defaultValue": "\`true\`",
         },
         "value": undefined,
         "valueKind": "undefined",
@@ -1840,49 +2303,50 @@ describe("jsx ast extractor", () => {
           "tags": {},
         },
         {
-          "description": "Optional name of the object (doesn't need to be unique).",
+          "description": "Optional name of the object",
           "kind": "string",
           "name": "name",
           "required": true,
           "tags": {
-            "default": "''",
+            "defaultValue": "\`\\"\\"\`",
+            "remarks": "_(doesn't need to be unique)_.",
           },
         },
         {
-          "description": "Object gets rendered if true.",
+          "description": "Object gets rendered if \`true\`.",
           "kind": "boolean",
           "name": "visible",
           "required": true,
           "tags": {
-            "default": true,
+            "defaultValue": "\`true\`",
           },
         },
         {
-          "description": "Gets rendered into shadow map.",
+          "description": "Whether the object gets rendered into shadow map.",
           "kind": "boolean",
           "name": "castShadow",
           "required": true,
           "tags": {
-            "default": "false",
+            "defaultValue": "\`false\`",
           },
         },
         {
-          "description": "Material gets baked in shadow receiving.",
+          "description": "Whether the material receives shadows.",
           "kind": "boolean",
           "name": "receiveShadow",
           "required": true,
           "tags": {
-            "default": "false",
+            "defaultValue": "\`false\`",
           },
         },
         {
           "description": "When this is set, it checks every frame if the object is in the frustum of the camera before rendering the object.
-      If set to false the object gets rendered every frame even if it is not in the frustum of the camera.",
+      If set to \`false\` the object gets rendered every frame even if it is not in the frustum of the camera.",
           "kind": "boolean",
           "name": "frustumCulled",
           "required": true,
           "tags": {
-            "default": true,
+            "defaultValue": "\`true\`",
           },
         },
         {
@@ -1893,12 +2357,14 @@ describe("jsx ast extractor", () => {
           "tags": {},
         },
         {
-          "description": undefined,
+          "description": "An instance of material derived from the {@link THREE.Material | Material} base class or an array of materials, defining the object's appearance.",
           "kind": "union",
           "name": "material",
           "required": true,
           "shape": [],
-          "tags": {},
+          "tags": {
+            "defaultValue": "{@link THREE.MeshBasicMaterial | \`new THREE.MeshBasicMaterial()\`}.",
+          },
         },
         {
           "description": undefined,
@@ -1930,14 +2396,14 @@ describe("jsx ast extractor", () => {
           "tags": {},
         },
         {
-          "description": "Overrides the default rendering order of scene graph objects, from lowest to highest renderOrder.
-      Opaque and transparent objects remain sorted independently though.
-      When this property is set for an instance of Group, all descendants objects will be sorted and rendered together.",
+          "description": "This value allows the default rendering order of {@link https://en.wikipedia.org/wiki/Scene_graph | scene graph}
+      objects to be overridden although opaque and transparent objects remain sorted independently.",
           "kind": "number",
           "name": "renderOrder",
           "required": true,
           "tags": {
-            "default": 0,
+            "defaultValue": "\`0\`",
+            "remarks": "Sorting is from lowest to highest renderOrder.",
           },
         },
       ]
