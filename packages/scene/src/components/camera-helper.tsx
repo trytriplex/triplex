@@ -17,8 +17,10 @@ import {
   OrthographicCamera,
 } from "three";
 
+class CameraInstance extends Camera {}
+
 const _vector = new Vector3();
-const _camera = new Camera();
+const _camera = new CameraInstance();
 
 declare module "@react-three/fiber" {
   interface ThreeElements {
@@ -91,6 +93,7 @@ class TriplexCameraHelper extends LineSegments {
 
     super(geometry, material);
 
+    // @ts-expect-error - We forcibly change the type to be "CameraHelper".
     this.type = "CameraHelper";
 
     this.camera = camera;
