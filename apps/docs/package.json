@@ -14,7 +14,7 @@
     "@react-three/drei": "^9.74.6",
     "@react-three/fiber": "^8.13.0",
     "@types/flexsearch": "^0.7.3",
-    "@types/three": "^0.152.1",
+    "@types/three": "^0.153.0",
     "@vercel/analytics": "^1.0.1",
     "@vercel/og": "^0.5.9",
     "autoprefixer": "^10.4.14",

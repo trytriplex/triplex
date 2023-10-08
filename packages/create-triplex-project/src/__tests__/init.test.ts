@@ -121,7 +121,7 @@ describe("init command", () => {
     "@react-three/fiber": "^8.13.0",
     "@triplex/run": "^0.0.0-local",
     "@types/react": "^18.2.8",
-    "@types/three": "^0.152.1",
+    "@types/three": "^0.153.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "three": "^0.153.0"
@@ -267,7 +267,7 @@ describe("init command", () => {
     "@react-three/fiber": "^8.13.0",
     "@triplex/run": "^0.0.0-local",
     "@types/react": "^18.2.8",
-    "@types/three": "^0.152.1",
+    "@types/three": "^0.153.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "three": "^0.153.0"
