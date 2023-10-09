@@ -7,5 +7,6 @@
 export const BASE_URL =
   process.env.NODE_ENV === "production"
     ? "https://triplex.dev"
-    : `https://${process.env.NEXT_PUBLIC_VERCEL_URL}` ||
-      "http://localhost:3000";
+    : process.env.NEXT_PUBLIC_VERCEL_URL
+    ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`
+    : "http://localhost:3000";
