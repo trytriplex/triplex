@@ -48,7 +48,7 @@ function useSceneObjectProps(
 
   useEffect(() => {
     import.meta.hot?.on("vite:afterUpdate", (e) => {
-      const isUpdated = e.updates.find((up) => meta.path.endsWith(up.path));
+      const isUpdated = e.updates.find((up) => meta.path?.endsWith(up.path));
       if (isUpdated) {
         // On HMR clear out the intermediate state so when it's rendered again
         // It'll use the latest values from source.

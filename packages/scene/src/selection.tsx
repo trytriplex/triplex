@@ -69,7 +69,6 @@ const findTransformedSceneObject = (
 ): Object3D => {
   let foundExactSceneObject: Object3D | undefined = undefined;
   let foundTranslatedSceneObject: Object3D | undefined;
-  let foundPositionedSceneObject: Object3D | undefined;
 
   sceneObject.traverse((child: Object3D) => {
     const meta: SceneObjectProps["__meta"] | undefined =
@@ -93,20 +92,9 @@ const findTransformedSceneObject = (
       // of the intermediately placed group in the SceneObject component.
       foundTranslatedSceneObject = child.children[0];
     }
-
-    if (!foundPositionedSceneObject && child.position.lengthSq() > 0) {
-      // As as last ditch effort to find a scene object we look for the first scene object
-      // That has been positioned and save it for use later.
-      foundPositionedSceneObject = child;
-    }
   });
 
-  return (
-    foundExactSceneObject ||
-    foundTranslatedSceneObject ||
-    foundPositionedSceneObject ||
-    sceneObject
-  );
+  return foundExactSceneObject || foundTranslatedSceneObject || sceneObject;
 };
 
 function flatten(
