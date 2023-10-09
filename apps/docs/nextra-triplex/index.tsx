@@ -130,7 +130,7 @@ function renderDocsItem(
           route === url
             ? "text-blue-400"
             : "text-neutral-300 hover:text-neutral-100",
-          "block overflow-hidden text-ellipsis whitespace-nowrap rounded py-1 pl-10 pr-6 text-base",
+          "block rounded py-1 pl-10 pr-6 text-base",
         ])}
         href={url}
       >
