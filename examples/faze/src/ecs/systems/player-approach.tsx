@@ -20,9 +20,9 @@ export function usePlayerApproach() {
     for (let i = 0; i < entities.length; i++) {
       const entity = entities[i];
       const {
-        sceneObject,
-        onWorldEvent = noop,
         activateDistance = 30,
+        onWorldEvent = noop,
+        sceneObject,
       } = entity;
 
       for (let n = 0; n < players.length; n++) {

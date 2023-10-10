@@ -4,27 +4,27 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { ArrowLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { ReactNode } from "react";
-import { ArrowLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { cn } from "../util/cn";
 
 function PricingPanel({
-  name,
-  description,
-  price,
-  perMonthLabel,
-  cta,
-  highlight,
   children,
+  cta,
+  description,
+  highlight,
+  name,
+  perMonthLabel,
+  price,
 }: {
-  name: string;
-  description: string;
-  price?: [number];
-  perMonthLabel: string;
-  cta: ReactNode;
-  highlight?: boolean;
   children?: React.ReactNode;
+  cta: ReactNode;
+  description: string;
+  highlight?: boolean;
+  name: string;
+  perMonthLabel: string;
+  price?: [number];
 }) {
   return (
     <li
@@ -63,10 +63,6 @@ export function Pricing() {
   return (
     <ul className="mt-16 flex w-full max-w-7xl flex-col items-center justify-center gap-6 px-10 lg:flex-row lg:items-stretch">
       <PricingPanel
-        name="Free"
-        description="The bare essentials for individuals."
-        price={[0]}
-        perMonthLabel="per month, forever"
         cta={
           <>
             <Link
@@ -83,39 +79,39 @@ export function Pricing() {
             </div>
           </>
         }
+        description="The bare essentials for individuals."
+        name="Free"
+        perMonthLabel="per month, forever"
+        price={[0]}
       >
         <ul className="-mx-4 -mb-4 mt-4 flex flex-col gap-3 border-t border-neutral-800 p-4">
           <li>
             <DetailsSummary
-              summary="Visual editor for macOS & Windows"
               details="Develop with Triplex on your OS of choice."
+              summary="Visual editor for macOS & Windows"
             />
           </li>
           <li>
             <DetailsSummary
-              summary="Unlimited projects"
               details="Create as many Triplex projects as you want through the editor."
+              summary="Unlimited projects"
             />
           </li>
           <li>
             <DetailsSummary
-              summary="Automatic editor updates"
               details="Stay secure by receiving the latest updates automatically."
+              summary="Automatic editor updates"
             />
           </li>
           <li>
             <DetailsSummary
-              summary="Web-based support"
               details="Create support tickets through Github."
+              summary="Web-based support"
             />
           </li>
         </ul>
       </PricingPanel>
       <PricingPanel
-        name="Team"
-        highlight
-        description="Paid plans available 2024. Contact us for expression of interest."
-        perMonthLabel=""
         cta={
           <Link
             className="block rounded bg-blue-400 py-2 text-center font-bold text-neutral-800"
@@ -124,6 +120,10 @@ export function Pricing() {
             Contact Us
           </Link>
         }
+        description="Paid plans available 2024. Contact us for expression of interest."
+        highlight
+        name="Team"
+        perMonthLabel=""
       >
         <ul className="-mx-4 -mb-4 mt-4 flex flex-col gap-3 border-t border-neutral-800 p-4">
           <li className="flex items-center gap-4 text-neutral-300">
@@ -131,8 +131,8 @@ export function Pricing() {
           </li>
           <li>
             <DetailsSummary
-              summary="We're currently cooking the features"
               details="Available features are still being developed. Have a burning feature you'd pay for? Contact us and let us know."
+              summary="We're currently cooking the features"
             />
           </li>
         </ul>
@@ -142,11 +142,11 @@ export function Pricing() {
 }
 
 function DetailsSummary({
-  summary,
   details,
+  summary,
 }: {
-  summary: string;
   details: string;
+  summary: string;
 }) {
   return (
     <details className="group">

@@ -4,7 +4,6 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { DOM } from "../utils/tunnel";
 import { Text } from "@react-three/drei";
 import { useEffect, useState } from "react";
 import { MeshBasicMaterial } from "three";
@@ -20,6 +19,7 @@ import {
 } from "../ecs/store";
 import { Vector3Tuple } from "../types";
 import { useCacheWhile } from "../utils/functions";
+import { DOM } from "../utils/tunnel";
 import { useParentNpcController } from "./npc-entity";
 
 const personas = {
@@ -34,17 +34,17 @@ interface DialogProps {
 }
 
 type DialogResponseProps = {
-  successText: string;
-  when: "item";
-  itemName: Item;
   count?: number;
   failureText?: string;
+  itemName: Item;
   onSuccess?: (
     | ["take"]
     | ["give", Item]
     | ["stop", number?]
     | ["move", [Vector3Tuple, ...Vector3Tuple[]]]
   )[];
+  successText: string;
+  when: "item";
 };
 
 function toActionMap(children: JSX.Element | JSX.Element[]) {
@@ -76,8 +76,8 @@ function toDialogs(children: JSX.Element | JSX.Element[]) {
 const textMaterial = new MeshBasicMaterial({ depthTest: false });
 
 export function DialogEntity({
-  persona = "default",
   children = [],
+  persona = "default",
 }: {
   children?: JSX.Element | JSX.Element[];
   persona?: keyof typeof personas;
@@ -161,20 +161,20 @@ export function DialogEntity({
 
   return (
     <Entity>
-      <Component name="billboard" data={true} />
-      <Component name="dialog" data={true} />
-      <Component name="parent" data={parent} />
+      <Component data={true} name="billboard" />
+      <Component data={true} name="dialog" />
+      <Component data={parent} name="parent" />
 
       <Component name="sceneObject">
         <Text
-          position={[-1000, -1000, -1000]}
+          color="black"
+          depthOffset={9999}
+          font="/font/rainyhearts.ttf"
+          fontSize={0.28}
+          material={textMaterial}
           outlineColor="white"
           outlineWidth={0.01}
-          font="/font/rainyhearts.ttf"
-          color="black"
-          material={textMaterial}
-          depthOffset={9999}
-          fontSize={0.28}
+          position={[-1000, -1000, -1000]}
         >
           {dialogMessage}
         </Text>
@@ -183,7 +183,6 @@ export function DialogEntity({
       {isParentActive && (
         <DOM>
           <div
-            style={{ position: "absolute", inset: 0, cursor: "pointer" }}
             onClick={() => {
               const next = dialogIndex + 1;
               if (!cachedActiveItem && dialogs[next]) {
@@ -192,6 +191,7 @@ export function DialogEntity({
                 world.removeComponent(parent, "focused");
               }
             }}
+            style={{ cursor: "pointer", inset: 0, position: "absolute" }}
           />
         </DOM>
       )}

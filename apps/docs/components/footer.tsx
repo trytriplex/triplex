@@ -19,10 +19,11 @@ export function Footer() {
           </div>
           <div className="mt-4 flex gap-2">
             <a
-              className="-mt-0.5 text-neutral-400 hover:text-neutral-200"
-              target="_blank"
               aria-label="Github"
+              className="-mt-0.5 text-neutral-400 hover:text-neutral-200"
               href="https://github.com/try-triplex/triplex"
+              rel="noreferrer"
+              target="_blank"
             >
               <svg
                 fill="none"
@@ -51,10 +52,11 @@ export function Footer() {
               </svg>
             </a>
             <a
-              className="text-neutral-400 hover:text-neutral-200"
-              target="_blank"
               aria-label="Twitter"
+              className="text-neutral-400 hover:text-neutral-200"
               href="https://twitter.com/_douges"
+              rel="noreferrer"
+              target="_blank"
             >
               <svg
                 aria-label="twitter"
@@ -76,32 +78,32 @@ export function Footer() {
             <span className="text-sm font-bold text-neutral-200">Product</span>
             <li>
               <Link
-                href="/docs/setup/overview"
                 className="text-sm text-neutral-400 hover:text-neutral-200"
+                href="/docs/setup/overview"
               >
                 Setup
               </Link>
             </li>
             <li>
               <Link
-                href="/docs/get-started/user-interface"
                 className="text-sm text-neutral-400 hover:text-neutral-200"
+                href="/docs/get-started/user-interface"
               >
                 User Interface
               </Link>
             </li>
             <li>
               <Link
-                href="/docs/get-started/settings"
                 className="text-sm text-neutral-400 hover:text-neutral-200"
+                href="/docs/get-started/settings"
               >
                 Settings
               </Link>
             </li>
             <li>
               <Link
-                href="https://github.com/try-triplex/triplex/releases"
                 className="text-sm text-neutral-400 hover:text-neutral-200"
+                href="https://github.com/try-triplex/triplex/releases"
               >
                 Changelog
               </Link>
@@ -114,24 +116,24 @@ export function Footer() {
             </span>
             <li>
               <Link
-                href="https://discord.gg/nBzRBUEs4b"
                 className="text-sm text-neutral-400 hover:text-neutral-200"
+                href="https://discord.gg/nBzRBUEs4b"
               >
                 Community
               </Link>
             </li>
             <li>
               <Link
-                href="https://github.com/try-triplex/triplex/issues/new"
                 className="text-sm text-neutral-400 hover:text-neutral-200"
+                href="https://github.com/try-triplex/triplex/issues/new"
               >
                 Raise an Issue
               </Link>
             </li>
             <li>
               <Link
-                href="/docs/faq"
                 className="text-sm text-neutral-400 hover:text-neutral-200"
+                href="/docs/faq"
               >
                 FAQ
               </Link>
@@ -144,16 +146,16 @@ export function Footer() {
             </span>
             <li>
               <Link
-                href="https://github.com/try-triplex/triplex"
                 className="text-sm text-neutral-400 hover:text-neutral-200"
+                href="https://github.com/try-triplex/triplex"
               >
                 Github
               </Link>
             </li>
             <li>
               <Link
-                href="/license"
                 className="text-sm text-neutral-400 hover:text-neutral-200"
+                href="/license"
               >
                 License
               </Link>

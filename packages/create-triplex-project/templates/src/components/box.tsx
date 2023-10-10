@@ -10,8 +10,8 @@ export default function Box({
   return (
     <mesh
       castShadow
-      receiveShadow
       position={position}
+      receiveShadow
       rotation={rotation}
       scale={scale}
     >

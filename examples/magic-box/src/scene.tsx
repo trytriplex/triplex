@@ -4,15 +4,15 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { ReactNode, useRef } from "react";
-import { useFrame } from "@react-three/fiber";
 import {
-  useGLTF,
   Edges,
-  MeshPortalMaterial,
   Environment,
+  MeshPortalMaterial,
   PerspectiveCamera,
+  useGLTF,
 } from "@react-three/drei";
+import { useFrame } from "@react-three/fiber";
+import { ReactNode, useRef } from "react";
 import { type Mesh } from "three";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -23,56 +23,61 @@ export const App = () => (
     <mesh castShadow receiveShadow>
       <boxGeometry args={[2, 2, 2]} />
       <Edges />
-      <SideMaterial rotation={[0, 0, 0]} bgColor="orange" index={0}>
+      <SideMaterial bgColor="orange" index={0} rotation={[0, 0, 0]}>
         <torusGeometry args={[0.65, 0.3, 64]} />
       </SideMaterial>
-      <SideMaterial rotation={[0, Math.PI, 0]} bgColor="lightblue" index={1}>
+      <SideMaterial bgColor="lightblue" index={1} rotation={[0, Math.PI, 0]}>
         <torusKnotGeometry args={[0.55, 0.2, 128, 32]} />
       </SideMaterial>
       <SideMaterial
-        rotation={[0, Math.PI / 2, Math.PI / 2]}
         bgColor="lightgreen"
         index={2}
+        rotation={[0, Math.PI / 2, Math.PI / 2]}
       >
         <boxGeometry args={[1.15, 1.15, 1.15]} />
       </SideMaterial>
       <SideMaterial
-        rotation={[0, Math.PI / 2, -Math.PI / 2]}
         bgColor="aquamarine"
         index={3}
+        rotation={[0, Math.PI / 2, -Math.PI / 2]}
       >
         <octahedronGeometry />
       </SideMaterial>
       <SideMaterial
-        rotation={[0, -Math.PI / 2, 0]}
         bgColor={"#c8a2a2"}
         index={4}
+        rotation={[0, -Math.PI / 2, 0]}
       >
         <icosahedronGeometry />
       </SideMaterial>
-      <SideMaterial rotation={[0, Math.PI / 2, 0]} bgColor="hotpink" index={5}>
+      <SideMaterial bgColor="hotpink" index={5} rotation={[0, Math.PI / 2, 0]}>
         <dodecahedronGeometry />
       </SideMaterial>
     </mesh>
 
     <PerspectiveCamera
       makeDefault
-      position={[3.3175771908742, 2.52707900391801, 4.3064592356361]}
-      rotation={[-0.45065750159131274, 0.6030828856212243, 0.2034902345149883]}
+      position={[
+        3.317_577_190_874_2, 2.527_079_003_918_01, 4.306_459_235_636_1,
+      ]}
+      rotation={[
+        -0.450_657_501_591_312_74, 0.603_082_885_621_224_3,
+        0.203_490_234_514_988_3,
+      ]}
     />
   </>
 );
 
 export function SideMaterial({
-  rotation = [0, 0, 0],
   bgColor = "#f0f0f0",
   children,
   index,
+  rotation = [0, 0, 0],
 }: {
-  rotation: [number, number, number];
   bgColor: string;
   children: ReactNode;
   index: number;
+  rotation: [number, number, number];
 }) {
   const mesh = useRef<Mesh>(null!);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -83,29 +88,29 @@ export function SideMaterial({
   });
 
   return (
-    <FixedMeshPortalMaterial worldUnits={false} attach={`material-${index}`}>
+    <FixedMeshPortalMaterial attach={`material-${index}`} worldUnits={false}>
       <ambientLight intensity={0.5} />
       <Environment preset="city" />
       <mesh
         castShadow
+        geometry={nodes.Cube.geometry}
         receiveShadow
         rotation={rotation}
-        geometry={nodes.Cube.geometry}
       >
         <meshStandardMaterial
-          aoMapIntensity={1}
           aoMap={nodes.Cube.material.aoMap}
+          aoMapIntensity={1}
           color={bgColor}
         />
         <spotLight
+          angle={0.15}
           castShadow
           color={bgColor}
           intensity={2}
-          position={[10, 10, 10]}
-          angle={0.15}
           penumbra={1}
-          shadow-normalBias={0.05}
+          position={[10, 10, 10]}
           shadow-bias={0.0001}
+          shadow-normalBias={0.05}
         />
       </mesh>
       <mesh castShadow receiveShadow ref={mesh}>

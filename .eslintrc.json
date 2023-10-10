@@ -1,15 +1,6 @@
 {
-  "env": {
-    "browser": true,
-    "es2021": true,
-    "node": true
-  },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/jsx-runtime",
-    "plugin:react-hooks/recommended",
-    "plugin:@typescript-eslint/recommended"
-  ],
+  "extends": ["@nkzw"],
+  "plugins": ["header"],
   "ignorePatterns": ["dist", "build"],
   "overrides": [
     {
@@ -25,23 +16,15 @@
       }
     }
   ],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaVersion": "latest",
-    "sourceType": "module"
-  },
-  "plugins": ["@typescript-eslint", "import", "react", "header"],
   "rules": {
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-inferrable-types": "off",
-    "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-unnecessary-type-constraint": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       { "argsIgnorePattern": "^_" }
     ],
-    "@typescript-eslint/no-var-requires": "off",
     "import/no-extraneous-dependencies": [
       "error",
       {
@@ -57,8 +40,6 @@
       }
     ],
     "no-inner-declarations": "off",
-    "prefer-const": "off",
-    "react-hooks/exhaustive-deps": "error",
     "header/header": ["error", "scripts/header.js"]
   }
 }

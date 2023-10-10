@@ -54,14 +54,15 @@ export function DownloadButton() {
   return (
     <>
       <a
-        href={assets[0] ? assets[0].browser_download_url : "#"}
-        target="_blank"
         className={cn([
           platform === "Unsupported"
             ? "cursor-not-allowed bg-neutral-500/80"
             : "cursor-pointer bg-blue-400",
           "mb-2 rounded-full px-12 py-4 text-center text-xl font-bold tracking-tight text-neutral-900",
         ])}
+        href={assets[0] ? assets[0].browser_download_url : "#"}
+        rel="noreferrer"
+        target="_blank"
       >
         {platform === "Unsupported"
           ? "Unsupported Platform"
@@ -76,10 +77,11 @@ export function DownloadButton() {
 
       {assets.map((asset) => (
         <a
-          key={asset.name}
-          href={asset.browser_download_url}
-          target="_blank"
           className="pt-3 text-center text-sm text-neutral-400 hover:text-neutral-300"
+          href={asset.browser_download_url}
+          key={asset.name}
+          rel="noreferrer"
+          target="_blank"
         >
           {asset.name}
         </a>

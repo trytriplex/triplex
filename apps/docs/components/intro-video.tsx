@@ -23,15 +23,15 @@ export function IntroVideo() {
           </svg>
         </button> */}
         <Image
-          fill
-          className="object-contain md:hidden"
           alt="Screenshot of the Triplex user interface running on macOS"
+          className="object-contain md:hidden"
+          fill
           src="/landing-ui_sm.png"
         />
         <Image
-          fill
-          className="hidden object-contain md:block"
           alt="Screenshot of the Triplex user interface running on macOS"
+          className="hidden object-contain md:block"
+          fill
           src="/landing-ui.png"
         />
       </div>

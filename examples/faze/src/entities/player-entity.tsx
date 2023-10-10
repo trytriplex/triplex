@@ -5,14 +5,14 @@
  * file in the root directory of this source tree.
  */
 import { useAnimations } from "@react-three/drei";
-import { useGLTF } from "../utils/gltf";
 import { useCallback, useEffect, useState } from "react";
 import { Component } from "../ecs/store";
-import { SceneEntity } from "./scene-entity";
-import { InventoryIcon } from "../systems/inventory";
 import { OnWorldEventHandler } from "../ecs/types";
-import { PointerEntity } from "./pointer-entity";
+import { InventoryIcon } from "../systems/inventory";
 import { Vector3Tuple } from "../types";
+import { useGLTF } from "../utils/gltf";
+import { PointerEntity } from "./pointer-entity";
+import { SceneEntity } from "./scene-entity";
 
 const anims = {
   idle: "chicken_with_animation_1",
@@ -26,8 +26,8 @@ export function PlayerEntity({
 }: {
   position?: Vector3Tuple;
 }) {
-  const { scene, animations } = useGLTF("/chkn/scene.gltf");
-  const { ref, actions } = useAnimations(animations);
+  const { animations, scene } = useGLTF("/chkn/scene.gltf");
+  const { actions, ref } = useAnimations(animations);
   const [inventoryOpen, setInventoryOpen] = useState(false);
   const [state, setState] = useState<"idle" | "moving">("idle");
 
@@ -65,30 +65,30 @@ export function PlayerEntity({
           <>
             {inventoryOpen ? (
               <>
-                <Component name="offset" data={{ x: 0, y: -0.75, z: 0 }} />
-                <Component name="zoom" data={1.5} />
+                <Component data={{ x: 0, y: -0.75, z: 0 }} name="offset" />
+                <Component data={1.5} name="zoom" />
               </>
             ) : (
               <PointerEntity onClick={() => {}} />
             )}
 
-            <Component name="inventory" initialData={{}} />
-            <Component name="player" data={true} />
-            <Component name="focused" data={true} />
-            <Component name="onWorldEvent" data={onWorldEvent} />
+            <Component initialData={{}} name="inventory" />
+            <Component data={true} name="player" />
+            <Component data={true} name="focused" />
+            <Component data={onWorldEvent} name="onWorldEvent" />
           </>
         }
-        speed={5}
         position={position}
+        speed={5}
       >
         <group scale={[0.5, 0.5, 0.5]}>
-          <primitive name="player" ref={ref} object={scene} />
+          <primitive name="player" object={scene} ref={ref} />
         </group>
       </SceneEntity>
 
       <InventoryIcon
-        open={inventoryOpen}
         onToggle={() => setInventoryOpen((prev) => !prev)}
+        open={inventoryOpen}
       />
     </>
   );

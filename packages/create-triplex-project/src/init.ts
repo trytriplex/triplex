@@ -4,39 +4,39 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { exec as execCb } from "child_process";
+import { exec as execCb } from "node:child_process";
+import fs_dont_use_directly from "node:fs/promises";
+import { join } from "node:path";
 import { promisify } from "node:util";
-import fs_dont_use_directly from "fs/promises";
-import { join } from "path";
 import { prompt as prompt_dont_use_directly } from "enquirer";
 
 const exec_dont_use_directly = promisify(execCb);
 const templateDir = join(__dirname, "../templates");
 
 export async function init({
-  name,
-  version,
-  pkgManager,
-  mode = "interactive",
-  target,
+  __exec: exec = exec_dont_use_directly,
+  __fs: fs = fs_dont_use_directly,
+  __prompt: prompt = prompt_dont_use_directly,
   createFolder = true,
   cwd: __cwd = process.cwd(),
   env,
-  __fs: fs = fs_dont_use_directly,
-  __exec: exec = exec_dont_use_directly,
-  __prompt: prompt = prompt_dont_use_directly,
+  mode = "interactive",
+  name,
+  pkgManager,
+  target,
+  version,
 }: {
-  mode?: "non-interactive" | "interactive";
-  name: string;
+  __exec?: typeof exec_dont_use_directly;
+  __fs?: typeof import("fs/promises");
+  __prompt?: typeof import("enquirer").prompt;
+  createFolder?: boolean;
   cwd?: string;
   env?: Record<string, string>;
-  target: "node" | "app";
-  createFolder?: boolean;
-  version: string;
+  mode?: "non-interactive" | "interactive";
+  name: string;
   pkgManager: string;
-  __prompt?: typeof import("enquirer").prompt;
-  __fs?: typeof import("fs/promises");
-  __exec?: typeof exec_dont_use_directly;
+  target: "node" | "app";
+  version: string;
 }) {
   const { default: ora } = await import("ora");
 
@@ -46,13 +46,13 @@ export async function init({
   if (!dir.includes("package.json")) {
     if (mode === "interactive") {
       const response = await prompt<{ continue: boolean }>({
-        name: "continue",
-        type: "confirm",
-        required: true,
         initial: "Y",
         message: createFolder
           ? `Will initialize into a new folder, continue?`
           : "Will initialize into the current folder, continue?",
+        name: "continue",
+        required: true,
+        type: "confirm",
       });
 
       if (!response.continue) {
@@ -69,11 +69,11 @@ export async function init({
   } else {
     if (mode === "interactive") {
       const response = await prompt<{ continue: boolean }>({
-        name: "continue",
-        type: "confirm",
-        required: true,
         initial: "Y",
         message: `Will initialize into your existing repository, continue?`,
+        name: "continue",
+        required: true,
+        type: "confirm",
       });
 
       if (!response.continue) {
@@ -99,11 +99,11 @@ export async function init({
 
   if (dir.includes("package.json")) {
     // Update
-    const packageJson = await fs.readFile(packageJsonPath, "utf-8");
+    const packageJson = await fs.readFile(packageJsonPath, "utf8");
     const parsed = JSON.parse(packageJson);
     const pkgJSON = await fs.readFile(
       join(templateDir, `package_${target}.json`),
-      "utf-8"
+      "utf8"
     );
     const pkgJSONParsed = JSON.parse(pkgJSON);
 
@@ -128,7 +128,7 @@ export async function init({
     // Create
     const pkgJson = await fs.readFile(
       join(templateDir, `package_${target}.json`),
-      "utf-8"
+      "utf8"
     );
     await fs.writeFile(
       packageJsonPath,
@@ -141,7 +141,7 @@ export async function init({
   } else {
     const readme = await fs.readFile(
       join(templateDir, `README_${target}.md`),
-      "utf-8"
+      "utf8"
     );
     await fs.writeFile(
       readmePath,
@@ -151,7 +151,7 @@ export async function init({
 
   if (dir.includes("tsconfig.json")) {
     // Ensure r3f is in types
-    const tsconfig = await fs.readFile(tsconfigPath, "utf-8");
+    const tsconfig = await fs.readFile(tsconfigPath, "utf8");
     const parsed = JSON.parse(tsconfig);
 
     if (!parsed.compilerOptions) {
@@ -255,6 +255,7 @@ export async function init({
 
   spinner.succeed("Successfully initialized!");
 
+  // eslint-disable-next-line no-console
   console.log(`
           Get started: ${
             cwd === __cwd

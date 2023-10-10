@@ -24,7 +24,7 @@ async function getAssets() {
   return Promise.all([imageData, extraBold, medium]);
 }
 
-export default async function (request: Request) {
+export default async function(request: Request) {
   const [imageData, extraBold, medium] = await getAssets();
 
   const { searchParams } = new URL(request.url);
@@ -38,35 +38,35 @@ export default async function (request: Request) {
 
   return new ImageResponse(
     (
-      <div style={{ height: "100%", width: "100%", display: "flex" }}>
+      <div style={{ display: "flex", height: "100%", width: "100%" }}>
         <img
-          style={{
-            position: "absolute",
-            inset: 0,
-          }}
           src={imageData}
+          style={{
+            inset: 0,
+            position: "absolute",
+          }}
         />
         <div
           style={{
-            width: "100%",
-            height: "100%",
             display: "flex",
-            justifyContent: "center",
             flexDirection: "column",
             gap: 20,
+            height: "100%",
+            justifyContent: "center",
+            maxWidth: 1150,
             paddingLeft: 80,
             paddingRight: 80,
-            maxWidth: 1150,
+            width: "100%",
           }}
         >
           {date && (
             <span
               style={{
-                fontFamily: "Karla-Medium",
                 color: "white",
-                opacity: 0.7,
+                fontFamily: "Karla-Medium",
                 fontSize: 28,
                 letterSpacing: "-.025em",
+                opacity: 0.7,
               }}
             >
               {date}
@@ -74,23 +74,23 @@ export default async function (request: Request) {
           )}
           <span
             style={{
-              fontFamily: "Karla-ExtraBold",
               color: "white",
+              fontFamily: "Karla-ExtraBold",
               fontSize: 110,
+              letterSpacing: "-.05em",
               lineHeight: 1,
               opacity: 0.9,
-              letterSpacing: "-.05em",
             }}
           >
             {title}
           </span>
           <span
             style={{
-              fontFamily: "Karla-Medium",
               color: "white",
-              opacity: 0.8,
+              fontFamily: "Karla-Medium",
               fontSize: 36,
               letterSpacing: "-.025em",
+              opacity: 0.8,
             }}
           >
             {subtitle}
@@ -99,20 +99,20 @@ export default async function (request: Request) {
       </div>
     ),
     {
-      width: 1280,
-      height: 720,
       fonts: [
         {
-          name: "Karla-ExtraBold",
           data: extraBold,
+          name: "Karla-ExtraBold",
           style: "normal",
         },
         {
-          name: "Karla-Medium",
           data: medium,
+          name: "Karla-Medium",
           style: "normal",
         },
       ],
+      height: 720,
+      width: 1280,
     }
   );
 }

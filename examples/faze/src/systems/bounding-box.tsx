@@ -28,11 +28,9 @@ export interface BoundingBoxRef {
 const findMesh = (objs: Object3D[]): Mesh => {
   for (let i = 0; i < objs.length; i++) {
     const obj = objs[i];
-    if (obj.type === "Group" || obj.type === "Mesh") {
-      return obj as Mesh;
-    } else {
-      return findMesh(obj.children);
-    }
+    return obj.type === "Group" || obj.type === "Mesh"
+      ? (obj as Mesh)
+      : findMesh(obj.children);
   }
 
   throw new Error("invariant");
@@ -41,7 +39,7 @@ const findMesh = (objs: Object3D[]): Mesh => {
 export const BoundingBox = forwardRef<
   BoundingBoxRef,
   | { children: JSX.Element; skip?: boolean }
-  | { position: Vector3Tuple; width: number; height: number; depth: number }
+  | { depth: number; height: number; position: Vector3Tuple; width: number }
 >(function BoundingBox(props, ref) {
   const [box] = useState(() => new Box3());
   const cachedMeshRef = useRef<Mesh>();
@@ -60,9 +58,6 @@ export const BoundingBox = forwardRef<
     ref,
     () => ({
       box,
-      update: () => {
-        box.setFromObject(cachedMeshRef.current!);
-      },
       intersecting: () => {
         if (skip) {
           return false;
@@ -82,6 +77,9 @@ export const BoundingBox = forwardRef<
         }
 
         return false;
+      },
+      update: () => {
+        box.setFromObject(cachedMeshRef.current!);
       },
     }),
     [box, skip]

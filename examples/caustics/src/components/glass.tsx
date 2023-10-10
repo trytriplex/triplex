@@ -4,34 +4,38 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import * as THREE from "three";
-import { useGLTF, Caustics, MeshTransmissionMaterial } from "@react-three/drei";
-import { Vector3Tuple } from "three";
+import { Caustics, MeshTransmissionMaterial, useGLTF } from "@react-three/drei";
 import { useLayoutEffect, useMemo } from "react";
+import {
+  AdditiveBlending,
+  FrontSide,
+  MeshStandardMaterial,
+  Vector3Tuple,
+} from "three";
 
 export function Glass({
-  scale,
   position,
   rotation,
+  scale,
 }: {
-  scale?: Vector3Tuple;
   position?: Vector3Tuple;
   rotation?: Vector3Tuple;
+  scale?: Vector3Tuple;
 }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const { nodes } = useGLTF("/glass-transformed.glb") as any;
   const innerMaterial = useMemo(
     () =>
-      new THREE.MeshStandardMaterial({
-        transparent: true,
-        opacity: 1,
+      new MeshStandardMaterial({
+        blending: AdditiveBlending,
         color: "black",
-        roughness: 0,
-        side: THREE.FrontSide,
-        blending: THREE.AdditiveBlending,
+        envMapIntensity: 2,
+        opacity: 1,
         polygonOffset: true,
         polygonOffsetFactor: 1,
-        envMapIntensity: 2,
+        roughness: 0,
+        side: FrontSide,
+        transparent: true,
       }),
     []
   );
@@ -47,45 +51,48 @@ export function Glass({
   ]);
 
   return (
-    <group scale={scale} position={position} rotation={rotation}>
+    <group position={position} rotation={rotation} scale={scale}>
       <Caustics
         // Props don't match currently.
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         backside={false}
+        backsideIOR={1.26}
         causticsOnly={false}
         color={[1, 0.8, 0.8]}
-        lightSource={[-2, 2.5, -2.5]}
         intensity={0.005}
-        worldRadius={0.66 / 10}
-        backsideIOR={1.26}
         ior={0.6}
+        lightSource={[-2, 2.5, -2.5]}
+        worldRadius={0.66 / 10}
       >
         <mesh
-          dispose={null}
           castShadow
-          receiveShadow
+          dispose={null}
           geometry={nodes.glass.geometry}
+          receiveShadow
         >
           <MeshTransmissionMaterial
+            anisotropy={1.5}
+            chromaticAberration={0.05}
+            clearcoat={1}
+            clearcoatRoughness={0.2}
             distortionScale={1}
+            envMapIntensity={3}
             forceSinglePass={false}
             temporalDistortion={1}
             thickness={0.2}
-            chromaticAberration={0.05}
-            anisotropy={1.5}
-            clearcoat={1}
-            clearcoatRoughness={0.2}
-            envMapIntensity={3}
           />
         </mesh>
       </Caustics>
 
-      {/** Some hacks to get some back face reflections, otherwise the glass would look fake */}
+      {/**
+       * Some hacks to get some back face reflections, otherwise the glass would look
+       * fake
+       */}
       <mesh
         dispose={null}
-        scale={[0.95, 1, 0.95]}
         geometry={nodes.glass_back.geometry}
         material={innerMaterial}
+        scale={[0.95, 1, 0.95]}
       />
       <mesh
         dispose={null}
