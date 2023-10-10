@@ -5,20 +5,20 @@
  * file in the root directory of this source tree.
  */
 import { useEffect } from "react";
-import { ContextPanel } from "./ui/context-panel";
-import { ScenePanel } from "./ui/scene-panel";
-import { ScenesDrawer } from "./ui/scenes-drawer";
 import { SceneFrame } from "./scence-bridge";
 import { useEditor } from "./stores/editor";
-import { ControlsMenu } from "./ui/controls-menu";
 import { useUndoRedoState } from "./stores/undo-redo";
 import { AssetsDrawer } from "./ui/assets-drawer";
+import { ContextPanel } from "./ui/context-panel";
+import { ControlsMenu } from "./ui/controls-menu";
 import { ProviderConfig } from "./ui/provider-config";
+import { ScenePanel } from "./ui/scene-panel";
+import { ScenesDrawer } from "./ui/scenes-drawer";
 
 export function EditorFrame() {
   const undo = useUndoRedoState((store) => store.undo);
   const redo = useUndoRedoState((store) => store.redo);
-  const { path, save, deleteComponent } = useEditor();
+  const { deleteComponent, path, save } = useEditor();
 
   useEffect(() => {
     if (!path || __TRIPLEX_TARGET__ === "electron") {

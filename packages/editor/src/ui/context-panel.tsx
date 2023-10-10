@@ -4,15 +4,6 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useLazySubscription } from "@triplex/ws-client";
-import { IDELink } from "../util/ide";
-import { Suspense, useState } from "react";
-import { useEditor, FocusedObject } from "../stores/editor";
-import { ScrollContainer } from "../ds/scroll-container";
-import { PropInput, PropTagContext } from "./prop-input";
-import { useScene } from "../stores/scene";
-import { useSceneState } from "../stores/scene-state";
-import { PropField } from "./prop-field";
 import {
   CameraIcon,
   Cross2Icon,
@@ -21,14 +12,23 @@ import {
   EraserIcon,
   TrashIcon,
 } from "@radix-ui/react-icons";
+import { useLazySubscription } from "@triplex/ws-client";
+import { Suspense, useState } from "react";
 import { IconButton } from "../ds/button";
+import { ScrollContainer } from "../ds/scroll-container";
+import { FocusedObject, useEditor } from "../stores/editor";
+import { useScene } from "../stores/scene";
+import { useSceneState } from "../stores/scene-state";
+import { IDELink } from "../util/ide";
 import { ErrorBoundary } from "./error-boundary";
+import { PropField } from "./prop-field";
+import { PropInput, PropTagContext } from "./prop-input";
 import { StringInput } from "./string-input";
 
 function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
-  const { setPropValue, getPropValue, navigateTo, jumpTo, viewFocusedCamera } =
+  const { getPropValue, jumpTo, navigateTo, setPropValue, viewFocusedCamera } =
     useScene();
-  const { persistPropValue, deleteComponent } = useEditor();
+  const { deleteComponent, persistPropValue } = useEditor();
   const [filter, setFilter] = useState<string | undefined>();
 
   const data = useLazySubscription("/scene/:path/object/:line/:column", {
@@ -50,9 +50,9 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
 
       <div className="-mt-0.5 mb-2.5 px-4">
         <IDELink
-          path={target.parentPath}
           column={target.column}
           line={target.line}
+          path={target.parentPath}
         >
           View usage
         </IDELink>
@@ -61,7 +61,7 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
           <>
             <span className="mx-1.5 text-xs text-neutral-400">•</span>
 
-            <IDELink path={data.path} column={1} line={1}>
+            <IDELink column={1} line={1} path={data.path}>
               View source
             </IDELink>
           </>
@@ -72,27 +72,27 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
 
       <div className="flex px-2 py-1">
         <IconButton
-          onClick={() => navigateTo()}
           icon={EnterIcon}
           isDisabled={data.type === "host" || !data.path}
+          onClick={() => navigateTo()}
           title="Enter component (⇧ + F)"
         />
         <IconButton
-          onClick={jumpTo}
           icon={Crosshair1Icon}
+          onClick={jumpTo}
           title="Focus camera (F)"
         />
         {isCamera && (
           <IconButton
-            onClick={viewFocusedCamera}
             icon={CameraIcon}
+            onClick={viewFocusedCamera}
             title="View camera"
           />
         )}
         <IconButton
           className="ml-auto"
-          onClick={deleteComponent}
           icon={TrashIcon}
+          onClick={deleteComponent}
           title="Delete (⌫)"
         />
       </div>
@@ -102,9 +102,9 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
       {data.props.length > 0 && (
         <div className="px-3 py-2">
           <StringInput
-            onChange={setFilter}
             label="Filter props..."
             name="prop-filter"
+            onChange={setFilter}
           />
         </div>
       )}
@@ -126,20 +126,26 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
 
           return (
             <PropField
-              htmlFor={prop.name}
-              label={prop.name}
               description={prop.description}
-              tags={prop.tags}
+              htmlFor={prop.name}
               key={`${prop.name}${column}${line}`}
+              label={prop.name}
+              tags={prop.tags}
             >
               <PropTagContext.Provider value={prop.tags}>
                 <PropInput
-                  name={prop.name}
                   column={column}
                   line={line}
-                  path={target.path}
-                  prop={prop}
-                  required={prop.required}
+                  name={prop.name}
+                  onChange={(value) => {
+                    setPropValue({
+                      column: target.column,
+                      line: target.line,
+                      path: target.parentPath,
+                      propName: prop.name,
+                      propValue: value,
+                    });
+                  }}
                   onConfirm={async (value) => {
                     const currentValue = await getPropValue({
                       column: target.column,
@@ -150,22 +156,16 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
 
                     persistPropValue({
                       column: target.column,
-                      line: target.line,
-                      path: target.parentPath,
-                      propName: prop.name,
                       currentPropValue: currentValue.value,
-                      nextPropValue: value,
-                    });
-                  }}
-                  onChange={(value) => {
-                    setPropValue({
-                      column: target.column,
                       line: target.line,
+                      nextPropValue: value,
                       path: target.parentPath,
                       propName: prop.name,
-                      propValue: value,
                     });
                   }}
+                  path={target.path}
+                  prop={prop}
+                  required={prop.required}
                 />
               </PropTagContext.Provider>
             </PropField>
@@ -178,10 +178,10 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
 }
 
 function ComponentSandboxPanel() {
-  const { path, exportName } = useEditor();
+  const { exportName, path } = useEditor();
   const data = useLazySubscription("/scene/:path/:exportName/props", {
-    path,
     exportName,
+    path,
   });
   const storeKey = path + exportName;
   const { setPropValue } = useScene();
@@ -199,8 +199,8 @@ function ComponentSandboxPanel() {
       <div className="mt-1 px-4 pb-3 text-sm text-neutral-400">
         Modify props given to {exportName} that only persist for this session.{" "}
         <a
-          href="#"
           className="text-blue-400"
+          href="#"
           onClick={() =>
             window.triplex.openLink(
               "https://triplex.dev/docs/user-guide/live-edit-props"
@@ -216,6 +216,8 @@ function ComponentSandboxPanel() {
 
       <div className="flex px-2 py-1">
         <IconButton
+          icon={EraserIcon}
+          isDisabled={!hasValues}
           onClick={() => {
             Object.keys(values).forEach((key) => {
               setPropValue({
@@ -229,8 +231,6 @@ function ComponentSandboxPanel() {
 
             clearValues(storeKey);
           }}
-          icon={EraserIcon}
-          isDisabled={!hasValues}
           title="Clear props"
         />
       </div>
@@ -240,9 +240,9 @@ function ComponentSandboxPanel() {
       {data.props.length > 0 && (
         <div className="px-3 py-2">
           <StringInput
-            onChange={setFilter}
             label="Filter props..."
             name="prop-filter"
+            onChange={setFilter}
           />
         </div>
       )}
@@ -261,28 +261,18 @@ function ComponentSandboxPanel() {
 
           return (
             <PropField
-              htmlFor={prop.name}
-              label={prop.name}
               description={prop.description}
-              tags={prop.tags}
+              htmlFor={prop.name}
               key={prop.name}
+              label={prop.name}
+              tags={prop.tags}
             >
               <PropTagContext.Provider value={prop.tags}>
                 <PropInput
-                  name={prop.name}
                   column={-1}
-                  line={-1}
-                  path={path}
                   key={String(values[prop.name])}
-                  prop={Object.assign(
-                    {},
-                    prop,
-                    values[prop.name] ? { value: values[prop.name] } : {}
-                  )}
-                  required={prop.required}
-                  onConfirm={(value) => {
-                    setValues(storeKey, prop.name, value);
-                  }}
+                  line={-1}
+                  name={prop.name}
                   onChange={(value) => {
                     setPropValue({
                       column: -1,
@@ -292,6 +282,16 @@ function ComponentSandboxPanel() {
                       propValue: value,
                     });
                   }}
+                  onConfirm={(value) => {
+                    setValues(storeKey, prop.name, value);
+                  }}
+                  path={path}
+                  prop={Object.assign(
+                    {},
+                    prop,
+                    values[prop.name] ? { value: values[prop.name] } : {}
+                  )}
+                  required={prop.required}
                 />
               </PropTagContext.Provider>
             </PropField>
@@ -317,8 +317,8 @@ export function ContextPanel() {
       <div className="pointer-events-auto relative flex h-full flex-col overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%]">
         <IconButton
           className="absolute right-2 top-3"
-          onClick={blur}
           icon={Cross2Icon}
+          onClick={blur}
           title="Close (ESC)"
         />
 

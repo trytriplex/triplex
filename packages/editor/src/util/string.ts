@@ -7,7 +7,7 @@
 const groups = /([a-z][A-Z])|([a-z]-[a-z])/g;
 
 export function titleCase(string: string) {
-  const result = string.replace(groups, (match) => {
+  const result = string.replaceAll(groups, (match) => {
     const parsed = match.replace("-", "");
     return parsed[0] + " " + parsed[1].toUpperCase();
   });
@@ -16,7 +16,7 @@ export function titleCase(string: string) {
 }
 
 export function sentenceCase(string: string) {
-  const result = string.replace(groups, (match) => {
+  const result = string.replaceAll(groups, (match) => {
     const parsed = match.replace("-", "");
     return parsed[0] + " " + parsed[1].toLowerCase();
   });

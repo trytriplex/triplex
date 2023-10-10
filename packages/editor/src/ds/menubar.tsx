@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+// eslint-disable-next-line import/no-namespace
 import * as RadixMenubar from "@radix-ui/react-menubar";
 import { ReactNode } from "react";
 import { cn } from "./cn";
@@ -39,23 +40,23 @@ export function MenuContent({
 }
 
 export function MenuItem({
-  rslot,
   children,
   disabled,
   onClick,
+  rslot,
   ...props
 }: RadixMenubar.MenuItemProps & { rslot?: ReactNode }) {
   return (
     <RadixMenubar.Item
       {...props}
-      onClick={disabled ? undefined : onClick}
-      disabled={disabled}
       className={cn([
         disabled
           ? "cursor-not-allowed opacity-60"
           : "hover:bg-white/5 active:bg-white/10",
         "flex select-none rounded px-2 py-1 text-sm text-neutral-300 outline-none",
       ])}
+      disabled={disabled}
+      onClick={disabled ? undefined : onClick}
     >
       {children}
       {rslot && <div className="ml-auto pl-7 text-neutral-400">{rslot}</div>}

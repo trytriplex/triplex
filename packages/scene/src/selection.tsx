@@ -6,11 +6,11 @@
  */
 import { ThreeEvent, useFrame, useThree } from "@react-three/fiber";
 import { compose, listen, send } from "@triplex/bridge/client";
-import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws-client";
 import type { JsxElementPositions } from "@triplex/server";
+import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws-client";
 import {
-  ReactNode,
   createContext,
+  ReactNode,
   useCallback,
   useContext,
   useEffect,
@@ -25,16 +25,16 @@ import {
   Vector3,
   Vector3Tuple,
 } from "three";
+import { useCamera } from "./components/camera";
 import { TransformControls } from "./components/transform-controls";
 import { SceneObjectProps } from "./scene-object";
-import { useCamera } from "./components/camera";
 
 export type EditorNodeData = SceneObjectProps["__meta"] & {
-  sceneObject: Object3D;
-  space: "local" | "world";
+  parentPath: string;
   // Unaltered props currently set on the component.
   props: Record<string, unknown>;
-  parentPath: string;
+  sceneObject: Object3D;
+  space: "local" | "world";
 };
 
 function encodeProps(selected: EditorNodeData): string {
@@ -226,35 +226,35 @@ export const useSelectSceneObject = () => {
 
 export function Selection({
   children,
+  exportName,
   onBlur,
   onFocus,
   onJumpTo,
   onNavigate,
   path: rootPath,
-  exportName,
 }: {
   children?: ReactNode;
+  exportName: string;
   onBlur: () => void;
   onFocus: (node: {
     column: number;
     line: number;
-    path: string;
     parentPath: string;
+    path: string;
   }) => void;
   onJumpTo: (v: Vector3Tuple, bb: Box3, obj: Object3D) => void;
   onNavigate: (node: {
-    path: string;
-    exportName: string;
     encodedProps: string;
+    exportName: string;
+    path: string;
   }) => void;
   path: string;
-  exportName: string;
 }) {
   const [selected, setSelected] = useState<{
     column: number;
     line: number;
-    path: string;
     parentPath: string;
+    path: string;
   }>();
   const [transform, setTransform] = useState<"translate" | "rotate" | "scale">(
     "translate"
@@ -265,9 +265,9 @@ export function Selection({
   const scene = useThree((store) => store.scene);
   const { setCamera } = useCamera();
   const sceneData = useSubscriptionEffect("/scene/:path/:exportName", {
-    path: rootPath,
-    exportName,
     disabled: !rootPath || !exportName,
+    exportName,
+    path: rootPath,
   });
   const sceneObjects = useMemo(
     () => flatten(sceneData?.sceneObjects || []),
@@ -276,10 +276,10 @@ export function Selection({
   const selectedSceneObject = useSubscriptionEffect(
     "/scene/:path/object/:line/:column",
     {
-      path: selected?.parentPath,
-      line: selected?.line,
       column: selected?.column,
       disabled: !selected || (selected?.line === -1 && selected?.column === -1),
+      line: selected?.line,
+      path: selected?.parentPath,
     }
   );
   const selectedObject = selected
@@ -319,9 +319,9 @@ export function Selection({
         selectedSceneObject.type === "custom"
       ) {
         onNavigate({
-          path: selectedSceneObject.path,
-          exportName: selectedSceneObject.exportName,
           encodedProps: encodeProps(selectedObject),
+          exportName: selectedSceneObject.exportName,
+          path: selectedSceneObject.path,
         });
         setSelected(undefined);
         onBlur();
@@ -357,8 +357,8 @@ export function Selection({
     }
 
     preloadSubscription("/scene/:path/:exportName", {
-      path: selectedSceneObject.path,
       exportName: selectedSceneObject.exportName,
+      path: selectedSceneObject.path,
     });
   }, [selectedSceneObject]);
 
@@ -457,9 +457,9 @@ export function Selection({
           setSelected(undefined);
           onBlur();
           onNavigate({
-            path: selectedSceneObject.path,
-            exportName: selectedSceneObject.exportName,
             encodedProps: encodeProps(selectedObject),
+            exportName: selectedSceneObject.exportName,
+            path: selectedSceneObject.path,
           });
         }
       }
@@ -559,8 +559,8 @@ export function Selection({
         onFocus({
           column: data.column,
           line: data.line,
-          path: data.path,
           parentPath: rootPath,
+          path: data.path,
         });
       }
     },

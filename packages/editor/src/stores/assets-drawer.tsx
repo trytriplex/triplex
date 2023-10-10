@@ -7,20 +7,20 @@
 import { create } from "zustand";
 
 interface AssetsDrawer {
+  hide: () => void;
   show: (target?: {
-    path: string;
+    column: number;
     exportName: string;
     line: number;
-    column: number;
+    path: string;
   }) => void;
-  hide: () => void;
   shown:
     | boolean
-    | { exportName: string; path: string; line: number; column: number };
+    | { column: number; exportName: string; line: number; path: string };
 }
 
 export const useAssetsDrawer = create<AssetsDrawer>((set) => ({
-  shown: false,
-  show: (object) => set({ shown: object || true }),
   hide: () => set({ shown: false }),
+  show: (object) => set({ shown: object || true }),
+  shown: false,
 }));

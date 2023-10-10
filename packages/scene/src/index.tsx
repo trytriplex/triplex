@@ -7,11 +7,11 @@
 import { listen, send } from "@triplex/bridge/client";
 import { useEffect, type PropsWithChildren } from "react";
 import { BrowserRouter } from "react-router-dom";
-import { SceneFrame } from "./scene";
-import { SceneModule, ComponentModule } from "./types";
-import { SceneObject } from "./scene-object";
 import { ComponentProvider, SceneProvider } from "./context";
 import { Environment } from "./environment";
+import { SceneFrame } from "./scene";
+import { SceneObject } from "./scene-object";
+import { ComponentModule, SceneModule } from "./types";
 
 // Hacking this for fun sorry!
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -19,12 +19,12 @@ import { Environment } from "./environment";
 window.SceneObject = SceneObject;
 
 export function Scene({
+  components,
   provider,
   scenes,
-  components,
 }: {
-  provider: (props: PropsWithChildren) => JSX.Element;
   components: Record<string, () => Promise<ComponentModule>>;
+  provider: (props: PropsWithChildren) => JSX.Element;
   scenes: Record<string, () => Promise<SceneModule>>;
 }) {
   useEffect(() => {
@@ -32,15 +32,15 @@ export function Scene({
 
     const errorCallback = (e: ErrorEvent) => {
       send("trplx:onError", {
-        message: e.message,
-        line: e.lineno,
         col: e.colno,
+        line: e.lineno,
+        message: e.message,
         source: e.filename
           .replace(__TRIPLEX_BASE_URL__, __TRIPLEX_CWD__)
           .replace(/\?.+/, ""),
         stack: e.error.stack
           .replaceAll(__TRIPLEX_BASE_URL__, __TRIPLEX_CWD__)
-          .replace(/\?.+:/g, ":"),
+          .replaceAll(/\?.+:/g, ":"),
       });
     };
 
@@ -48,9 +48,9 @@ export function Scene({
 
     import.meta.hot?.on("vite:error", (e) => {
       send("trplx:onError", {
-        message: e.err.message,
-        line: e.err.loc?.line || -1,
         col: e.err.loc?.column || -1,
+        line: e.err.loc?.line || -1,
+        message: e.err.message,
         source: e.err.id || "unknown",
         stack: e.err.stack,
       });

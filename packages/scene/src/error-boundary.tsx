@@ -17,7 +17,7 @@ export function SceneErrorBoundary({
   const exportName = searchParams.get("exportName") || "";
 
   return (
-    <ErrorBoundary resetKeys={[path, exportName]} fallbackRender={() => null}>
+    <ErrorBoundary fallbackRender={() => null} resetKeys={[path, exportName]}>
       {children}
     </ErrorBoundary>
   );

@@ -16,7 +16,7 @@ type Helper =
   | "hemisphereLightHelper"
   | "triplexCameraHelper";
 
-type HelperInstance = Object3D & { update: () => void; dispose: () => void };
+type HelperInstance = Object3D & { dispose: () => void; update: () => void };
 
 const HELPER_SIZE = 0.2;
 
@@ -52,11 +52,11 @@ export const getHelperForElement = (
 };
 
 function HelperIcon({
-  target,
   onClick,
+  target,
 }: {
-  target: Object3D;
   onClick: (e: ThreeEvent<MouseEvent>) => void;
+  target: Object3D;
 }) {
   const ref = useRef<Mesh>(null!);
 
@@ -67,21 +67,21 @@ function HelperIcon({
   return (
     <mesh onClick={onClick} ref={ref}>
       <boxGeometry args={[HELPER_SIZE, HELPER_SIZE, HELPER_SIZE]} />
-      <meshBasicMaterial transparent opacity={0} />
+      <meshBasicMaterial opacity={0} transparent />
     </mesh>
   );
 }
 
 export function Helper({
   args = [],
-  parentObject,
   helperName: HelperElement,
   onClick,
+  parentObject,
 }: {
   args?: unknown[];
-  parentObject: React.MutableRefObject<Object3D | null>;
   helperName: Helper;
   onClick: (e: ThreeEvent<MouseEvent>) => void;
+  parentObject: React.MutableRefObject<Object3D | null>;
 }) {
   const [target, setTarget] = useState<Object3D | null>(null);
   const helperRef = useRef<HelperInstance>(null);
@@ -99,16 +99,16 @@ export function Helper({
   if (target) {
     return (
       <>
-        <HelperIcon target={target} onClick={onClick} />
+        <HelperIcon onClick={onClick} target={target} />
         <HelperElement
           // This will be ignored by the selection component when a click event
           // Has been captured. We do this as we don't want the helper to be the
           // Bounding box but instead the helper icon above.
+          // @ts-expect-error - Hacking, sorry!
+          args={[target, ...args]}
           name="triplex_ignore"
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           ref={helperRef as any}
-          // @ts-expect-error - Hacking, sorry!
-          args={[target, ...args]}
         />
       </>
     );

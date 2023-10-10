@@ -4,32 +4,32 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useState } from "react";
 import { SwitchIcon } from "@radix-ui/react-icons";
 import type { Type } from "@triplex/server";
-import { PropInput } from "./prop-input";
+import { useState } from "react";
 import { IconButton } from "../ds/button";
+import { PropInput } from "./prop-input";
 
 export function UnionInput({
-  values,
+  column,
+  defaultValue,
+  line,
   name,
   onChange,
   onConfirm,
   path,
-  defaultValue,
   required,
-  line,
-  column,
+  values,
 }: {
-  line?: number;
   column?: number;
-  required?: boolean;
   defaultValue?: string | number;
-  path: string;
+  line?: number;
   name: string;
-  values: Type[];
   onChange: (value: unknown) => void;
   onConfirm: (value: unknown) => void;
+  path: string;
+  required?: boolean;
+  values: Type[];
 }) {
   const [index, setIndex] = useState(0);
   const value = values[index % values.length];
@@ -41,13 +41,12 @@ export function UnionInput({
     <div className="flex items-center gap-1">
       <div className="flex flex-col gap-1">
         <PropInput
-          required={required}
+          column={column}
+          line={line}
           name={name}
           onChange={onChange}
           onConfirm={onConfirm}
           path={path}
-          line={line}
-          column={column}
           prop={
             Object.assign(
               {},
@@ -56,13 +55,14 @@ export function UnionInput({
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
             ) as any
           }
+          required={required}
         />
       </div>
       <div className="self-start">
         <IconButton
           icon={SwitchIcon}
-          title="Switch prop type"
           onClick={incrementIndex}
+          title="Switch prop type"
         />
       </div>
     </div>

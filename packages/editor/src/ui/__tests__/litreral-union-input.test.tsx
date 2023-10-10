@@ -5,9 +5,9 @@
  * file in the root directory of this source tree.
  */
 // @vitest-environment jsdom
+import { cleanup, fireEvent, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { LiteralUnionInput } from "../literal-union-input";
-import { render, fireEvent, cleanup } from "@testing-library/react";
 
 describe("literal union input", () => {
   afterEach(cleanup);
@@ -60,8 +60,8 @@ describe("literal union input", () => {
     const onConfirm = vi.fn();
     const { getByTestId } = render(
       <LiteralUnionInput
-        name="union"
         defaultValue={false}
+        name="union"
         onChange={onChange}
         onConfirm={onConfirm}
         values={[
@@ -82,8 +82,8 @@ describe("literal union input", () => {
     const onConfirm = vi.fn();
     const { getByTestId } = render(
       <LiteralUnionInput
-        name="union"
         defaultValue={false}
+        name="union"
         onChange={onChange}
         onConfirm={onConfirm}
         values={[
@@ -104,8 +104,8 @@ describe("literal union input", () => {
     const onConfirm = vi.fn();
     const { getByTestId } = render(
       <LiteralUnionInput
-        name="union"
         defaultValue={false}
+        name="union"
         onChange={onChange}
         onConfirm={onConfirm}
         values={[

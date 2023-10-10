@@ -19,15 +19,15 @@ import { cn } from "../ds/cn";
 export function ColorInput({
   defaultValue,
   name,
-  onConfirm,
   onChange,
+  onConfirm,
   required,
 }: {
   defaultValue?: string;
   name: string;
-  required?: boolean;
   onChange: (value: string | undefined) => void;
   onConfirm: (value: string | undefined) => void;
+  required?: boolean;
 }) {
   const ref = useRef<HTMLInputElement>(null);
   const defaultValueColor = defaultValue ? tinycolor(defaultValue) : undefined;
@@ -80,13 +80,13 @@ export function ColorInput({
           <div className="bg-checker pointer-events-none absolute inset-[3px] rounded-[3px] text-neutral-600 [background-size:20px]" />
         )}
         <input
-          data-testid={`color-${defaultValue}`}
-          id={name}
-          type="color"
           className="peer h-7 w-7 rounded-md bg-neutral-700 p-[3px] outline-none [color-scheme:dark]"
+          data-testid={`color-${defaultValue}`}
           defaultValue={defaultValueHex}
+          id={name}
           onChange={onChangeHandler}
           ref={ref}
+          type="color"
         />
         <div
           className={cn([

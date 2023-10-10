@@ -5,13 +5,15 @@
  * file in the root directory of this source tree.
  */
 // @vitest-environment jsdom
-import { describe, expect, it, vi } from "vitest";
-import { render } from "react-three-test";
-import { MemoryRouter } from "react-router-dom";
+// We need the mock to be the first imported one.
+// prettier-ignore
 import { mockUseSubscriptionEffect } from "./utils/subscriptions";
-import { Selection } from "../selection";
-import { SceneObject } from "../scene-object";
+import { MemoryRouter } from "react-router-dom";
+import { render } from "react-three-test";
+import { describe, expect, it, vi } from "vitest";
 import { ComponentProvider } from "../context";
+import { SceneObject } from "../scene-object";
+import { Selection } from "../selection";
 import { CustomBoxGroup } from "./__stubs__/custom";
 
 describe("selection", () => {
@@ -25,12 +27,12 @@ describe("selection", () => {
       {
         sceneObjects: [
           {
-            name: "mesh",
+            children: [],
             column: 0,
             line: 1,
-            type: "host",
-            children: [],
+            name: "mesh",
             parentPath: "",
+            type: "host",
           },
         ],
       }
@@ -40,35 +42,35 @@ describe("selection", () => {
         <ComponentProvider value={{}}>
           <Selection
             exportName={exportName}
-            path={path}
             onBlur={vi.fn()}
-            onJumpTo={vi.fn()}
             onFocus={onFocus}
+            onJumpTo={vi.fn()}
             onNavigate={vi.fn()}
+            path={path}
           >
             <SceneObject
+              __component="group"
               __meta={{
-                name: "group",
-                path,
                 column: 0,
                 line: 1,
+                name: "group",
+                path,
                 rotate: false,
                 scale: false,
                 translate: false,
               }}
-              __component="group"
             >
               <SceneObject
+                __component="mesh"
                 __meta={{
-                  name: "mesh",
-                  path,
                   column: 0,
                   line: 1,
+                  name: "mesh",
+                  path,
                   rotate: true,
                   scale: true,
                   translate: true,
                 }}
-                __component="mesh"
               >
                 <boxGeometry />
               </SceneObject>
@@ -104,12 +106,12 @@ describe("selection", () => {
       {
         sceneObjects: [
           {
-            name: "mesh",
+            children: [],
             column: 22,
             line: 33,
-            type: "host",
-            children: [],
+            name: "mesh",
             parentPath: "",
+            type: "host",
           },
         ],
       }
@@ -119,23 +121,23 @@ describe("selection", () => {
         <ComponentProvider value={{}}>
           <Selection
             exportName={exportName}
-            path={path}
             onBlur={vi.fn()}
-            onJumpTo={vi.fn()}
             onFocus={onFocus}
+            onJumpTo={vi.fn()}
             onNavigate={vi.fn()}
+            path={path}
           >
             <SceneObject
+              __component="mesh"
               __meta={{
-                name: "Mesh",
-                path,
                 column: 22,
                 line: 33,
+                name: "Mesh",
+                path,
                 rotate: true,
                 scale: true,
                 translate: true,
               }}
-              __component="mesh"
             >
               <boxGeometry />
             </SceneObject>
@@ -170,21 +172,21 @@ describe("selection", () => {
       {
         sceneObjects: [
           {
-            name: "group",
-            column: 0,
-            line: 1,
-            type: "host",
-            parentPath: "",
             children: [
               {
-                name: "mesh",
+                children: [],
                 column: 0,
                 line: 2,
-                type: "host",
-                children: [],
+                name: "mesh",
                 parentPath: "",
+                type: "host",
               },
             ],
+            column: 0,
+            line: 1,
+            name: "group",
+            parentPath: "",
+            type: "host",
           },
         ],
       }
@@ -194,37 +196,37 @@ describe("selection", () => {
         <ComponentProvider value={{}}>
           <Selection
             exportName={exportName}
-            path={path}
             onBlur={vi.fn()}
-            onJumpTo={vi.fn()}
             onFocus={onFocus}
+            onJumpTo={vi.fn()}
             onNavigate={vi.fn()}
+            path={path}
           >
             <SceneObject
-              name="parent-group"
+              __component="group"
               __meta={{
-                name: "Box",
-                path,
                 column: 0,
                 line: 1,
+                name: "Box",
+                path,
                 rotate: true,
                 scale: true,
                 translate: true,
               }}
-              __component="group"
+              name="parent-group"
             >
               <SceneObject
-                name="child-mesh"
+                __component="mesh"
                 __meta={{
-                  name: "mesh",
-                  path,
                   column: 0,
                   line: 2,
+                  name: "mesh",
+                  path,
                   rotate: true,
                   scale: true,
                   translate: true,
                 }}
-                __component="mesh"
+                name="child-mesh"
               >
                 <boxGeometry />
               </SceneObject>
@@ -260,21 +262,21 @@ describe("selection", () => {
       {
         sceneObjects: [
           {
-            name: "group",
-            column: 11,
-            line: 22,
-            type: "host",
-            parentPath: "",
             children: [
               {
-                name: "mesh",
+                children: [],
                 column: 0,
                 line: 2,
-                type: "host",
-                children: [],
+                name: "mesh",
                 parentPath: "",
+                type: "host",
               },
             ],
+            column: 11,
+            line: 22,
+            name: "group",
+            parentPath: "",
+            type: "host",
           },
         ],
       }
@@ -285,26 +287,26 @@ describe("selection", () => {
         <ComponentProvider value={{}}>
           <Selection
             exportName={exportName}
-            path={path}
             onBlur={vi.fn()}
-            onJumpTo={vi.fn()}
             onFocus={onFocus}
+            onJumpTo={vi.fn()}
             onNavigate={vi.fn()}
+            path={path}
           >
             <SceneObject
-              name="custom-box"
-              position={[1, 1, 1]}
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              __component={CustomBoxGroup as any}
               __meta={{
-                name: "CustomBoxGroup",
-                path: "box.tsx",
                 column: 11,
                 line: 22,
+                name: "CustomBoxGroup",
+                path: "box.tsx",
                 rotate: false,
                 scale: false,
                 translate: true,
               }}
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              __component={CustomBoxGroup as any}
+              name="custom-box"
+              position={[1, 1, 1]}
             />
           </Selection>
         </ComponentProvider>

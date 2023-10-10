@@ -25,13 +25,6 @@ export interface TRIPLEXConfig {
    */
   files: string[];
   /**
-   * Relative path to a folder used to expose files through the local dev
-   * server, such as images, videos, and GLTF/GLB files. For example if the
-   * public directory has a `image.png` file then it will be made available at
-   * the `"/image.png"` URL.
-   */
-  publicDir?: string;
-  /**
    * Path to a provider component that can hold all React providers needed
    * during runtime. The component must be the default export and return
    * children.
@@ -43,4 +36,11 @@ export interface TRIPLEXConfig {
    * ```
    */
   provider?: string;
+  /**
+   * Relative path to a folder used to expose files through the local dev
+   * server, such as images, videos, and GLTF/GLB files. For example if the
+   * public directory has a `image.png` file then it will be made available at
+   * the `"/image.png"` URL.
+   */
+  publicDir?: string;
 }

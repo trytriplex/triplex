@@ -41,7 +41,7 @@ export function useTerrainPointer() {
   }, [canvasSize.height, canvasSize.width]);
 
   useFrame(() => {
-    for (const { sceneObject, parent } of entities) {
+    for (const { parent, sceneObject } of entities) {
       const [x, y] = pointerPosition.current;
 
       if (parent && parent.sceneObject) {

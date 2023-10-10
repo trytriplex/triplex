@@ -21,11 +21,11 @@ export function useTargetController() {
   useFrame((_, delta) => {
     for (let i = 0; i < entities.length; i++) {
       const {
-        target,
-        velocity,
+        onWorldEvent = noop,
         sceneObject,
         speed,
-        onWorldEvent = noop,
+        target,
+        velocity,
       } = entities[i];
 
       if (equal(sceneObject.current.position, target)) {

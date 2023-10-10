@@ -5,8 +5,8 @@
  * file in the root directory of this source tree.
  */
 // @vitest-environment jsdom
+import { cleanup, fireEvent, render } from "@testing-library/react";
 import { afterEach, describe, expect, it, vi } from "vitest";
-import { render, fireEvent, cleanup } from "@testing-library/react";
 import { TupleInput } from "../array-input";
 
 describe("array input", () => {
@@ -19,12 +19,12 @@ describe("array input", () => {
       <TupleInput
         column={0}
         line={0}
-        values={[{ kind: "number" }, { kind: "number" }]}
-        value={[1, 2]}
         name="array"
-        path="/box.tsx"
         onChange={change}
         onConfirm={confirm}
+        path="/box.tsx"
+        value={[1, 2]}
+        values={[{ kind: "number" }, { kind: "number" }]}
       />
     );
     const result = getByTestId("number-1");
@@ -42,12 +42,12 @@ describe("array input", () => {
       <TupleInput
         column={0}
         line={0}
-        values={[{ kind: "number" }, { kind: "number" }]}
-        value={[5, 6]}
         name="array"
-        path="/box.tsx"
         onChange={change}
         onConfirm={confirm}
+        path="/box.tsx"
+        value={[5, 6]}
+        values={[{ kind: "number" }, { kind: "number" }]}
       />
     );
     const result = getByTestId("number-5");
@@ -64,15 +64,15 @@ describe("array input", () => {
       <TupleInput
         column={0}
         line={0}
+        name="array"
+        onChange={change}
+        onConfirm={confirm}
+        path="/box.tsx"
+        value={[99, 100]}
         values={[
           { kind: "number", required: true },
           { kind: "number", required: true },
         ]}
-        value={[99, 100]}
-        name="array"
-        path="/box.tsx"
-        onChange={change}
-        onConfirm={confirm}
       />
     );
 
@@ -92,15 +92,15 @@ describe("array input", () => {
       <TupleInput
         column={0}
         line={0}
+        name="array"
+        onChange={change}
+        onConfirm={confirm}
+        path="/box.tsx"
+        value={[200, 201]}
         values={[
           { kind: "number", required: true },
           { kind: "number", required: true },
         ]}
-        value={[200, 201]}
-        name="array"
-        path="/box.tsx"
-        onChange={change}
-        onConfirm={confirm}
       />
     );
 
@@ -129,12 +129,12 @@ describe("array input", () => {
       <TupleInput
         column={0}
         line={0}
-        values={[{ kind: "number" }, { kind: "number" }]}
-        value={[22, 33]}
         name="array"
-        path="/box.tsx"
         onChange={change}
         onConfirm={confirm}
+        path="/box.tsx"
+        value={[22, 33]}
+        values={[{ kind: "number" }, { kind: "number" }]}
       />
     );
     const first = getByTestId("number-22");
@@ -153,16 +153,16 @@ describe("array input", () => {
       <TupleInput
         column={0}
         line={0}
+        name="array"
+        onChange={change}
+        onConfirm={confirm}
+        path="/box.tsx"
+        value={[66, 77, undefined]}
         values={[
           { kind: "number", required: true },
           { kind: "number", required: true },
           { kind: "string" },
         ]}
-        value={[66, 77, undefined]}
-        name="array"
-        path="/box.tsx"
-        onChange={change}
-        onConfirm={confirm}
       />
     );
     const first = getByTestId("number-66");
@@ -181,17 +181,17 @@ describe("array input", () => {
       <TupleInput
         column={0}
         line={0}
+        name="array"
+        onChange={change}
+        onConfirm={confirm}
+        path="/box.tsx"
+        value={[888, undefined, 999, undefined]}
         values={[
           { kind: "number", required: true },
           { kind: "number", required: false },
           { kind: "number", required: true },
           { kind: "string" },
         ]}
-        value={[888, undefined, 999, undefined]}
-        name="array"
-        path="/box.tsx"
-        onChange={change}
-        onConfirm={confirm}
       />
     );
     const first = getByTestId("number-888");
@@ -208,16 +208,16 @@ describe("array input", () => {
       <TupleInput
         column={0}
         line={0}
+        name="array"
+        onChange={vi.fn()}
+        onConfirm={vi.fn()}
+        path="/box.tsx"
+        value={1}
         values={[
           { kind: "number", required: true },
           { kind: "number", required: true },
           { kind: "number", required: true },
         ]}
-        value={1}
-        name="array"
-        path="/box.tsx"
-        onChange={vi.fn()}
-        onConfirm={vi.fn()}
       />
     );
     const element = getByTestId("number-1") as HTMLInputElement;
@@ -232,17 +232,17 @@ describe("array input", () => {
       <TupleInput
         column={0}
         line={0}
+        name="array"
+        onChange={change}
+        onConfirm={confirm}
+        path="/box.tsx"
         testId="position"
+        value={1}
         values={[
           { kind: "number", required: true },
           { kind: "number", required: true },
           { kind: "number", required: true },
         ]}
-        value={1}
-        name="array"
-        path="/box.tsx"
-        onChange={change}
-        onConfirm={confirm}
       />
     );
     const element = getByTestId("position[1]") as HTMLInputElement;

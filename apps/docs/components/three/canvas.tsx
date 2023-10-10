@@ -18,10 +18,10 @@ function Content() {
 export default function HeroCanvas() {
   return (
     <Canvas
-      shadows
-      eventSource={document.documentElement}
       className="inset-0 -z-10"
-      style={{ position: "fixed", pointerEvents: "none" }}
+      eventSource={document.documentElement}
+      shadows
+      style={{ pointerEvents: "none", position: "fixed" }}
     >
       <Content />
     </Canvas>

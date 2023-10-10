@@ -12,16 +12,16 @@ import type {
   Prop,
   StringLiteralType,
 } from "@triplex/server";
+import { createContext, useContext } from "react";
 import { MathUtils } from "three";
 import { IDELink } from "../util/ide";
-import { ColorInput } from "./color-input";
-import { StringInput } from "./string-input";
-import { BooleanInput } from "./boolean-input";
-import { NumberInput } from "./number-input";
 import { TupleInput } from "./array-input";
+import { BooleanInput } from "./boolean-input";
+import { ColorInput } from "./color-input";
 import { LiteralUnionInput } from "./literal-union-input";
+import { NumberInput } from "./number-input";
+import { StringInput } from "./string-input";
 import { UnionInput } from "./union-input";
-import { createContext, useContext } from "react";
 
 export const PropTagContext = createContext<
   Record<string, string | number | boolean | undefined>
@@ -45,24 +45,24 @@ function isColorProp(name: string) {
 }
 
 export function PropInput({
-  prop,
-  path,
-  name,
   column,
   line,
+  name,
   onChange,
   onConfirm,
+  path,
+  prop,
   required,
   testId,
 }: {
-  name: string;
   column?: number;
   line?: number;
-  prop: DeclaredProp | Prop;
-  path: string;
-  required?: boolean;
+  name: string;
   onChange: (value: unknown) => void;
   onConfirm: (value: unknown) => void;
+  path: string;
+  prop: DeclaredProp | Prop;
+  required?: boolean;
   testId?: string;
 }) {
   const isUnhandled =
@@ -73,15 +73,15 @@ export function PropInput({
   if (isUnhandled) {
     return (
       <IDELink
-        path={path}
+        className="flex h-[26px] items-center gap-0.5 overflow-hidden rounded-md border border-transparent bg-white/5 px-1 py-0.5 text-sm hover:bg-white/10 focus-visible:border-blue-400"
         column={column || -1}
         line={line || -1}
+        path={path}
         title={
           "value" in prop && prop.value
             ? "This prop is controlled by code."
             : "This field is not supported, please raise an issue on Github."
         }
-        className="flex h-[26px] items-center gap-0.5 overflow-hidden rounded-md border border-transparent bg-white/5 px-1 py-0.5 text-sm hover:bg-white/10 focus-visible:border-blue-400"
       >
         <span className="overflow-hidden text-ellipsis whitespace-nowrap text-neutral-400">
           {"value" in prop && prop.value ? (
@@ -111,29 +111,29 @@ export function PropInput({
     if (isLiteralUnion) {
       return (
         <LiteralUnionInput
-          required={required}
           defaultValue={"value" in prop ? prop.value : undefined}
-          values={prop.shape as (NumberLiteralType | StringLiteralType)[]}
           name={name}
           onChange={onChange}
           onConfirm={onConfirm}
+          required={required}
+          values={prop.shape as (NumberLiteralType | StringLiteralType)[]}
         />
       );
     } else {
       return (
         <UnionInput
-          line={line}
           column={column}
-          required={required}
           defaultValue={"value" in prop ? prop.value : undefined}
-          path={path}
           // If the order of the values change blow re-mount the component so
           // it resets to displaying the first element in the shape array.
           key={JSON.stringify(prop.shape[0])}
-          values={prop.shape}
+          line={line}
           name={name}
           onChange={onChange}
           onConfirm={onConfirm}
+          path={path}
+          required={required}
+          values={prop.shape}
         />
       );
     }
@@ -142,15 +142,15 @@ export function PropInput({
   if (prop.kind === "tuple") {
     return (
       <TupleInput
-        required={required}
-        values={prop.shape}
-        name={name}
-        value={"value" in prop ? prop.value : []}
-        path={path}
         column={column}
         line={line}
+        name={name}
         onChange={onChange}
         onConfirm={onConfirm}
+        path={path}
+        required={required}
+        value={"value" in prop ? prop.value : []}
+        values={prop.shape}
       />
     );
   }
@@ -159,12 +159,12 @@ export function PropInput({
     // We handle rotation differently because we need to convert rads to degs.
     return (
       <NumberInput
-        required={required}
         defaultValue={"value" in prop ? prop.value : undefined}
+        label={prop.label}
         name={name}
         onChange={onChange}
         onConfirm={onConfirm}
-        label={prop.label}
+        required={required}
         testId={testId}
         // There may be cases where this isn't desirable. Perhaps someone
         // Already does this in userland and it will result in a double conversion.
@@ -179,23 +179,23 @@ export function PropInput({
   } else if (prop.kind === "number") {
     return (
       <NumberInput
-        testId={testId}
-        required={required}
         defaultValue={"value" in prop ? prop.value : undefined}
+        label={prop.label}
         name={name}
         onChange={onChange}
         onConfirm={onConfirm}
-        label={prop.label}
+        required={required}
+        testId={testId}
       />
     );
   } else if (prop.kind === "boolean") {
     return (
       <BooleanInput
         defaultValue={"value" in prop ? prop.value : false}
+        label={prop.label}
         name={name}
         onChange={onChange}
         onConfirm={onConfirm}
-        label={prop.label}
       />
     );
   } else if (prop.kind === "string") {
@@ -203,22 +203,22 @@ export function PropInput({
       return (
         <ColorInput
           defaultValue={"value" in prop ? prop.value : undefined}
-          required={prop.required}
           name={name}
           onChange={onChange}
           onConfirm={onConfirm}
+          required={prop.required}
         />
       );
     }
 
     return (
       <StringInput
-        required={required}
         defaultValue={"value" in prop ? prop.value : undefined}
+        label={prop.label}
         name={name}
         onChange={onChange}
         onConfirm={onConfirm}
-        label={prop.label}
+        required={required}
       />
     );
   }

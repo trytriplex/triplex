@@ -4,40 +4,40 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { createServer as createBackendServer } from "@triplex/server";
 import { createServer as createFrontendServer } from "@triplex/client";
+import { createServer as createBackendServer } from "@triplex/server";
 import express from "express";
 import openBrowser from "open";
 
 export async function editor({
-  open,
-  files,
-  publicDir,
-  exportName,
-  components,
   assetsDir,
+  components,
+  exportName,
+  files,
+  open,
+  publicDir,
 }: {
+  assetsDir: string;
   components: string[];
+  exportName?: string;
+  files: string[];
   open?: boolean | string;
   publicDir: string;
-  files: string[];
-  exportName?: string;
-  assetsDir: string;
 }) {
   const { default: ora } = await import("ora");
   const spinner = ora("Starting...\n").start();
 
   const frontendServer = await createFrontendServer({
-    target: "web",
     components,
-    publicDir,
     files,
+    publicDir,
+    target: "web",
   });
   const backendServer = await createBackendServer({
-    publicDir,
-    files,
-    components,
     assetsDir,
+    components,
+    files,
+    publicDir,
   });
   const editorPort = 5754;
 

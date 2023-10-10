@@ -9,16 +9,16 @@ import { useLayoutEffect } from "react";
 import { Vector3Tuple } from "three";
 
 export function Straw({
-  scale,
   position,
   rotation,
+  scale,
 }: {
-  scale?: Vector3Tuple;
   position?: Vector3Tuple;
   rotation?: Vector3Tuple;
+  scale?: Vector3Tuple;
 }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const { nodes, materials } = useGLTF("/glass-transformed.glb") as any;
+  const { materials, nodes } = useGLTF("/glass-transformed.glb") as any;
 
   useLayoutEffect(() => {
     nodes.straw_1.geometry.center();
@@ -26,16 +26,16 @@ export function Straw({
   }, [nodes.straw_1.geometry, nodes.straw_2.geometry]);
 
   return (
-    <group scale={scale} position={position} rotation={rotation}>
+    <group position={position} rotation={rotation} scale={scale}>
       <mesh
-        dispose={null}
         castShadow
+        dispose={null}
         geometry={nodes.straw_1.geometry}
         material={materials.straw_2}
       />
       <mesh
-        dispose={null}
         castShadow
+        dispose={null}
         geometry={nodes.straw_2.geometry}
         material={materials.straw_1}
       />

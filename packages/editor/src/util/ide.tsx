@@ -8,17 +8,17 @@ import { ReactNode } from "react";
 import { cn } from "../ds/cn";
 
 export interface EditorLinkOptions {
-  path: string;
-  line?: number;
   column?: number;
   editor?: "sublime" | "phpstorm" | "atom" | "vscode-insiders" | "vscode";
+  line?: number;
+  path: string;
 }
 
 export function getEditorLink({
-  path,
-  line = 0,
   column = 0,
   editor = "vscode",
+  line = 0,
+  path,
 }: EditorLinkOptions) {
   switch (editor) {
     case "sublime":
@@ -38,26 +38,31 @@ export function getEditorLink({
 
 export function IDELink({
   children,
-  path,
+  className = "text-xs text-neutral-400",
   column,
   line,
-  className = "text-xs text-neutral-400",
+  path,
   title,
 }: {
   children: ReactNode;
-  path: string;
-  line: number;
-  column: number;
   className?: string;
+  column: number;
+  line: number;
+  path: string;
   title?: string;
 }) {
   return (
     <a
-      title={title}
       className={cn([
         "rounded-sm outline-1 outline-offset-1 outline-blue-400 focus-visible:outline",
         className,
       ])}
+      href={getEditorLink({
+        column,
+        editor: "vscode",
+        line,
+        path,
+      })}
       onClick={(e) => {
         // We prevent default and use window.open() instead of native anchor behaviour
         // to keep the websocket connections open. Without it they close and never reopen.
@@ -65,12 +70,7 @@ export function IDELink({
         const ctx = window.open(e.currentTarget.href, "_target");
         ctx?.close();
       }}
-      href={getEditorLink({
-        path,
-        column,
-        line,
-        editor: "vscode",
-      })}
+      title={title}
     >
       {children}
     </a>

@@ -9,10 +9,10 @@ import type { ComponentTarget, ComponentType } from "@triplex/server";
 import { create } from "zustand";
 
 export interface FocusedObject {
-  line: number;
   column: number;
-  path: string;
+  line: number;
   parentPath: string;
+  path: string;
 }
 
 interface BridgeContext {
@@ -20,7 +20,24 @@ interface BridgeContext {
    * Adds a component to the scene until any HMR event is fired whereby all
    * added components are removed.
    */
-  addComponent(data: { type: ComponentType; target?: ComponentTarget }): void;
+  addComponent(data: { target?: ComponentTarget; type: ComponentType }): void;
+  /**
+   * Removes focus from the currently selected scene object.
+   */
+  blur(): void;
+  /**
+   * Deletes a component from the scene. Will try to persist state if possible.
+   */
+  deleteComponent(component: {
+    column: number;
+    line: number;
+    parentPath: string;
+  }): void;
+  /**
+   * Focuses the passed in scene object. This will open the context panel and
+   * enable some editor capabilities for the selected scene object.
+   */
+  focus(sceneObject: FocusedObject): void;
   /**
    * Returns the persisted prop value. It should not return the current
    * intermediate value.
@@ -32,29 +49,19 @@ interface BridgeContext {
     propName: string;
   }): Promise<{ value: unknown }>;
   /**
-   * Removes focus from the currently selected scene object.
-   */
-  blur(): void;
-  /**
-   * Focuses the passed in scene object. This will open the context panel and
-   * enable some editor capabilities for the selected scene object.
-   */
-  focus(sceneObject: FocusedObject): void;
-  /**
    * Jumps the scene camera to the currently focused scene object.
    */
   jumpTo(): void;
   /**
-   * Sets the value of a prop in the scene frame. This can be set as frequently
-   * as needed as is considered the intermediate values during a change. When
-   * setting a prop value it is not yet considered "persisted".
+   * Navigate the scene to the scene object.
+   *
+   * @param sceneObject Navigates to the passed in scene object. When undefined
+   *   navigates to the currently focused scene object.
    */
-  setPropValue(prop: {
-    column: number;
-    line: number;
+  navigateTo(sceneObject?: {
+    encodedProps: string;
+    exportName: string;
     path: string;
-    propName: string;
-    propValue: unknown;
   }): void;
   /**
    * Persists the value of a prop which tells the editor that this is now the
@@ -69,32 +76,25 @@ interface BridgeContext {
     propValue: unknown;
   }): void;
   /**
-   * Navigate the scene to the scene object.
+   * Value is `true` when the scene is ready else `false`. If the scene is not
+   * ready accessing any of the scene store values will throw an invariant.
+   */
+  ready: boolean;
+  /**
+   * Refreshes the scene.
+   */
+  refresh(opts?: { hard?: boolean }): void;
+  /**
+   * Clears out the scene of any intermediate state. Generally you'll want to
+   * use the editor store instead of this one directly.
    *
-   * @param sceneObject Navigates to the passed in scene object. When undefined
-   *   navigates to the currently focused scene object.
+   * @see {@link ./editor.tsx}
    */
-  navigateTo(sceneObject?: {
-    path: string;
-    encodedProps: string;
-    exportName: string;
-  }): void;
+  reset(): void;
   /**
-   * Sets the scene camera type.
+   * Resets the triplex camera back to the editor default.
    */
-  setCameraType(type: "perspective" | "orthographic"): void;
-  /**
-   * Sets the scene transform control mode.
-   */
-  setTransform(mode: "scale" | "translate" | "rotate"): void;
-  /**
-   * Deletes a component from the scene. Will try to persist state if possible.
-   */
-  deleteComponent(component: {
-    column: number;
-    line: number;
-    parentPath: string;
-  }): void;
+  resetCamera(): void;
   /**
    * Restores a component that was previously deleted from the scene.
    */
@@ -104,30 +104,30 @@ interface BridgeContext {
     parentPath: string;
   }): void;
   /**
-   * Value is `true` when the scene is ready else `false`. If the scene is not
-   * ready accessing any of the scene store values will throw an invariant.
+   * Sets the scene camera type.
    */
-  ready: boolean;
+  setCameraType(type: "perspective" | "orthographic"): void;
   /**
-   * Clears out the scene of any intermediate state. Generally you'll want to
-   * use the editor store instead of this one directly.
-   *
-   * @see {@link ./editor.tsx}
+   * Sets the value of a prop in the scene frame. This can be set as frequently
+   * as needed as is considered the intermediate values during a change. When
+   * setting a prop value it is not yet considered "persisted".
    */
-  reset(): void;
+  setPropValue(prop: {
+    column: number;
+    line: number;
+    path: string;
+    propName: string;
+    propValue: unknown;
+  }): void;
   /**
-   * Refreshes the scene.
+   * Sets the scene transform control mode.
    */
-  refresh(opts?: { hard?: boolean }): void;
+  setTransform(mode: "scale" | "translate" | "rotate"): void;
   /**
    * Switches the triplex camera to the currently focused camera. If the focused
    * scene object is not a camera is noops.
    */
   viewFocusedCamera(): void;
-  /**
-   * Resets the triplex camera back to the editor default.
-   */
-  resetCamera(): void;
 }
 
 /**
@@ -140,27 +140,20 @@ interface BridgeContext {
  */
 export const useScene = create<BridgeContext & { sceneReady: () => void }>(
   (setStore) => ({
-    ready: false,
-    viewFocusedCamera() {
-      send("trplx:requestAction", { action: "viewFocusedCamera" });
-    },
-    resetCamera() {
-      send("trplx:requestAction", { action: "resetCamera" });
-    },
-    sceneReady() {
-      setStore({ ready: true });
-    },
     addComponent(data) {
       send("trplx:requestAddNewComponent", data);
-    },
-    getPropValue(prop) {
-      return send("trplx:requestSceneObjectPropValue", prop, true);
     },
     blur() {
       send("trplx:requestBlurSceneObject", undefined);
     },
+    deleteComponent(data) {
+      send("trplx:requestDeleteSceneObject", data);
+    },
     focus(sceneObject) {
       send("trplx:requestFocusSceneObject", sceneObject);
+    },
+    getPropValue(prop) {
+      return send("trplx:requestSceneObjectPropValue", prop, true);
     },
     jumpTo() {
       send("trplx:requestJumpToSceneObject", undefined);
@@ -168,29 +161,36 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     navigateTo(sceneObject) {
       send("trplx:requestNavigateToScene", sceneObject);
     },
-    setPropValue(data) {
-      send("trplx:requestSetSceneObjectProp", data);
-    },
-    setCameraType(type) {
-      send("trplx:requestCameraTypeChange", { type });
-    },
     persistPropValue(data) {
       send("trplx:requestPersistSceneObjectProp", data);
     },
-    setTransform(mode) {
-      send("trplx:requestTransformChange", { mode });
-    },
-    deleteComponent(data) {
-      send("trplx:requestDeleteSceneObject", data);
-    },
-    restoreComponent(data) {
-      send("trplx:requestRestoreSceneObject", data);
+    ready: false,
+    refresh({ hard }: { hard?: boolean } = {}) {
+      send("trplx:requestRefresh", { hard });
     },
     reset() {
       send("trplx:requestReset", undefined);
     },
-    refresh({ hard }: { hard?: boolean } = {}) {
-      send("trplx:requestRefresh", { hard });
+    resetCamera() {
+      send("trplx:requestAction", { action: "resetCamera" });
+    },
+    restoreComponent(data) {
+      send("trplx:requestRestoreSceneObject", data);
+    },
+    sceneReady() {
+      setStore({ ready: true });
+    },
+    setCameraType(type) {
+      send("trplx:requestCameraTypeChange", { type });
+    },
+    setPropValue(data) {
+      send("trplx:requestSetSceneObjectProp", data);
+    },
+    setTransform(mode) {
+      send("trplx:requestTransformChange", { mode });
+    },
+    viewFocusedCamera() {
+      send("trplx:requestAction", { action: "viewFocusedCamera" });
     },
   })
 );

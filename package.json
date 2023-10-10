@@ -8,36 +8,34 @@
     "packages/*"
   ],
   "scripts": {
-    "dev": "node ./scripts/dev.js",
     "build": "yarn clean && yarn workspaces run build",
     "clean": "yarn workspaces run rimraf dist",
     "clean:node_modules": "rimraf node_modules && yarn workspaces run rimraf node_modules",
+    "dev": "node ./scripts/dev.js",
     "lint": "eslint ./",
     "test": "vitest",
     "typedef": "yarn workspaces run typedef"
   },
+  "resolutions": {
+    "@types/three": "^0.153.0",
+    "three": "^0.153.0"
+  },
   "dependencies": {
     "@changesets/cli": "^2.26.0",
+    "@ianvs/prettier-plugin-sort-imports": "^4.1.0",
+    "@nkzw/eslint-config": "^1.8.0",
     "@swc/core": "^1.3.28",
-    "@typescript-eslint/eslint-plugin": "^5.52.0",
-    "@typescript-eslint/parser": "^5.52.0",
-    "eslint": "^8.34.0",
+    "eslint": "^8.51.0",
     "eslint-plugin-header": "^3.1.1",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
     "jsdom": "^21.1.0",
     "prettier": "^2.8.3",
     "prettier-plugin-jsdoc": "^0.4.2",
+    "prettier-plugin-packagejson": "^2.4.3",
     "prettier-plugin-tailwindcss": "^0.2.2",
     "react-three-test": "*",
     "rimraf": "^5.0.0",
     "typescript": "^4.9.4",
     "vitest": "^0.30.1"
-  },
-  "resolutions": {
-    "@types/three": "^0.153.0",
-    "three": "^0.153.0"
   },
   "packageManager": "yarn@1.22.19",
   "engines": {

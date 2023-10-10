@@ -5,21 +5,21 @@
  * file in the root directory of this source tree.
  */
 import { useTexture } from "@react-three/drei";
-import { CascadedShadowMap } from "../utils/cascaded-shadow-map";
 import { useState } from "react";
 import { MathUtils } from "three";
-import { BoundingBox } from "../systems/bounding-box";
+import {
+  DialogAction,
+  DialogEntity,
+  DialogMessage,
+} from "../entities/dialog-entity";
 import { ElevatorEntity } from "../entities/elevator-entity";
-import { StaticEntity } from "../entities/static-entity";
+import { ItemEntity } from "../entities/item-entity";
 import { NPCEntity } from "../entities/npc-entity";
 import { PlayerEntity } from "../entities/player-entity";
-import { ItemEntity } from "../entities/item-entity";
-import {
-  DialogMessage,
-  DialogEntity,
-  DialogAction,
-} from "../entities/dialog-entity";
+import { StaticEntity } from "../entities/static-entity";
 import { Tree } from "../meshes/tree";
+import { BoundingBox } from "../systems/bounding-box";
+import { CascadedShadowMap } from "../utils/cascaded-shadow-map";
 import { TERRAIN } from "../utils/layers";
 
 export function Terrain() {
@@ -35,49 +35,49 @@ export function Terrain() {
 
   return (
     <group>
-      <BoundingBox position={[-15, 0, -14]} width={30} height={10} depth={1} />
-      <BoundingBox position={[-15, 0, 14]} width={30} height={10} depth={1} />
-      <BoundingBox position={[-15, 0, -14]} width={1} height={10} depth={28} />
-      <BoundingBox position={[13, 0, -14]} width={1} height={10} depth={28} />
+      <BoundingBox depth={1} height={10} position={[-15, 0, -14]} width={30} />
+      <BoundingBox depth={1} height={10} position={[-15, 0, 14]} width={30} />
+      <BoundingBox depth={28} height={10} position={[-15, 0, -14]} width={1} />
+      <BoundingBox depth={28} height={10} position={[13, 0, -14]} width={1} />
 
-      <mesh layers={TERRAIN} receiveShadow position={[0, -height, 0]}>
+      <mesh layers={TERRAIN} position={[0, -height, 0]} receiveShadow>
         {geo}
       </mesh>
-      <mesh layers={TERRAIN} receiveShadow position={[-10, -lowHeight, 0]}>
+      <mesh layers={TERRAIN} position={[-10, -lowHeight, 0]} receiveShadow>
         {geo}
       </mesh>
-      <mesh layers={TERRAIN} receiveShadow position={[10, -lowHeight, 0]}>
+      <mesh layers={TERRAIN} position={[10, -lowHeight, 0]} receiveShadow>
         {geo}
       </mesh>
-      <mesh layers={TERRAIN} receiveShadow position={[-7.5, 4, -13]}>
+      <mesh layers={TERRAIN} position={[-7.5, 4, -13]} receiveShadow>
         <boxGeometry args={[10, 0.2, 10]} />
         <meshStandardMaterial map={tex} />
       </mesh>
-      <mesh layers={TERRAIN} receiveShadow position={[-10, -height, -10]}>
+      <mesh layers={TERRAIN} position={[-10, -height, -10]} receiveShadow>
         {geo}
       </mesh>
       <mesh
         layers={TERRAIN}
         name="floor"
+        position={[-10, 0.3, -10]}
         receiveShadow
         rotation={[MathUtils.degToRad(10), 0, 0]}
-        position={[-10, 0.3, -10]}
       >
         {geo}
       </mesh>
-      <mesh layers={TERRAIN} receiveShadow position={[10, -height, -10]}>
+      <mesh layers={TERRAIN} position={[10, -height, -10]} receiveShadow>
         {geo}
       </mesh>
-      <mesh layers={TERRAIN} receiveShadow position={[0, -lowHeight, 10]}>
+      <mesh layers={TERRAIN} position={[0, -lowHeight, 10]} receiveShadow>
         {geo}
       </mesh>
-      <mesh layers={TERRAIN} receiveShadow position={[0, -lowHeight, -10]}>
+      <mesh layers={TERRAIN} position={[0, -lowHeight, -10]} receiveShadow>
         {geo}
       </mesh>
-      <mesh layers={TERRAIN} receiveShadow position={[10, -height, 10]}>
+      <mesh layers={TERRAIN} position={[10, -height, 10]} receiveShadow>
         {geo}
       </mesh>
-      <mesh layers={TERRAIN} receiveShadow position={[-10, -height, 10]}>
+      <mesh layers={TERRAIN} position={[-10, -height, 10]} receiveShadow>
         {geo}
       </mesh>
     </group>
@@ -108,99 +108,104 @@ export function SandboxScene() {
       <Terrain />
       <StaticEntity onClick={onClickLever} position={[0, 0.5, -10]} />
       <ElevatorEntity
-        position={[0, 0.25, -10]}
-        levels={[0.25, 2.5, 5]}
         level={level}
+        levels={[0.25, 2.5, 5]}
+        position={[0, 0.25, -10]}
       />
 
       <Tree position={[7, -0.35, -3]} />
       <NPCEntity
-        speed={5}
-        position={[1.4622019307180276, 0, 0.31658175916090947]}
+        position={[1.462_201_930_718_027_6, 0, 0.316_581_759_160_909_47]}
         positionCycle={[
           [-5, 0, 0],
           [-5, 0, 5],
           [0, 0, 5],
           [10, 0, 5],
         ]}
+        speed={5}
       >
         <DialogEntity>
           <DialogMessage text="EXCUSE ME I'm running here !!!!" />
           <DialogAction
-            when="item"
             itemName="gumStick"
-            successText="Oh now I've got gum on my shoe..."
             onSuccess={[["stop", 5]]}
+            successText="Oh now I've got gum on my shoe..."
+            when="item"
           />
         </DialogEntity>
       </NPCEntity>
 
       <NPCEntity
-        speed={10}
         position={[-8, 0, -2]}
         positionCycle={[[-8, 0, -10]]}
+        speed={10}
       />
 
       <NPCEntity position={[4, 0, -5]}>
         <DialogEntity>
           <DialogMessage text="MMMmm... hungry..." />
           <DialogAction
-            when="item"
-            itemName="bone"
             count={2}
             failureText="NO! ME WANT TWO BONES!"
-            successText="BONES!!!!! Thankey £"
+            itemName="bone"
             onSuccess={[["take"], ["give", "key"]]}
-          />
-        </DialogEntity>
-      </NPCEntity>
-
-      <NPCEntity position={[2.009005080231767, 0, -0.9881268012650954]}>
-        <DialogEntity>
-          <DialogMessage text="AHHH hello!!!" />
-          <DialogMessage text="How are you going today!" />
-          <DialogMessage text="There's something behind that tree..." />
-          <DialogAction
+            successText="BONES!!!!! Thankey £"
             when="item"
-            itemName="key"
-            successText="Oh, a key! I can use this..."
-            onSuccess={[["take"], ["move", [[5, 0, -1]]]]}
           />
         </DialogEntity>
       </NPCEntity>
 
       <NPCEntity
-        speed={10}
+        position={[2.009_005_080_231_767, 0, -0.988_126_801_265_095_4]}
+      >
+        <DialogEntity>
+          <DialogMessage text="AHHH hello!!!" />
+          <DialogMessage text="How are you going today!" />
+          <DialogMessage text="There's something behind that tree..." />
+          <DialogAction
+            itemName="key"
+            onSuccess={[["take"], ["move", [[5, 0, -1]]]]}
+            successText="Oh, a key! I can use this..."
+            when="item"
+          />
+        </DialogEntity>
+      </NPCEntity>
+
+      <NPCEntity
         position={[-10, 0, 10]}
         positionCycle={[[-3, 0, 10]]}
+        speed={10}
       />
 
       <ItemEntity
         id={"bone"}
-        position={[-2.93770120975288, 1, -0.20588456170343328]}
+        position={[-2.937_701_209_752_88, 1, -0.205_884_561_703_433_28]}
       />
       <ItemEntity id="bone" position={[-7.5, 5, -13]} />
 
       <ItemEntity
         id="gum"
-        position={[-4.187484792352585, 1, -3.267958833236561]}
+        position={[-4.187_484_792_352_585, 1, -3.267_958_833_236_561]}
       />
       <ItemEntity
         id="stick"
-        position={[-7.405874236287305, 0.5685185565842982, -5.306576506353176]}
+        position={[
+          -7.405_874_236_287_305, 0.568_518_556_584_298_2,
+          -5.306_576_506_353_176,
+        ]}
       />
 
       <hemisphereLight
         color="#87CEEB"
-        intensity={0.3}
         groundColor={"#362907"}
+        intensity={0.3}
       />
       <ambientLight intensity={0.3} />
       <directionalLight
-        position={[1.5977056043375601, 8.047348851185415, 5]}
         intensity={0.5}
+        position={[1.597_705_604_337_560_1, 8.047_348_851_185_415, 5]}
       />
-      <pointLight position={[-10, 0, -20]} color="#eef4aa" intensity={0.5} />
+      <pointLight color="#eef4aa" intensity={0.5} position={[-10, 0, -20]} />
       <CascadedShadowMap />
     </>
   );

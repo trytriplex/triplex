@@ -4,12 +4,12 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
-import { compose, listen } from "@triplex/bridge/client";
 import { Object3DProps } from "@react-three/fiber";
-import { AddSceneObject } from "./add-scene-object";
-import { Helper, getHelperForElement } from "./components/helper";
+import { compose, listen } from "@triplex/bridge/client";
+import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { Group } from "three";
+import { AddSceneObject } from "./add-scene-object";
+import { getHelperForElement, Helper } from "./components/helper";
 import { useSelectSceneObject } from "./selection";
 
 function useForceRender() {
@@ -26,7 +26,7 @@ function isRenderedSceneObject(
     // If the scene object has an attach prop it's not actually rendered to the scene
     // But instead attached to the parent object in the R3F tree.
     props.attach ||
-    exclusions.find((n) => name.includes(n))
+    exclusions.some((n) => name.includes(n))
   ) {
     return false;
   }
@@ -115,7 +115,7 @@ function useSceneObjectProps(
 
   for (const key in nextProps) {
     const value = nextProps[key];
-    if (typeof value === "undefined") {
+    if (value === undefined) {
       // If the value is undefined we remove it from props altogether.
       // If props are spread onto the host jsx element in r3f this means it
       // gets completely removed and r3f will reset its value back to default.
@@ -130,18 +130,18 @@ function useSceneObjectProps(
 
 export interface SceneObjectProps extends Object3DProps {
   __component:
-    | React.ComponentType<{ ref?: unknown; children?: unknown }>
+    | React.ComponentType<{ children?: unknown; ref?: unknown }>
     | string;
   __meta: {
-    line: number;
     column: number;
-    path: string;
+    line: number;
     name: string;
+    path: string;
+    rotate: boolean;
+    scale: boolean;
     // These props are only set if the scene object is a host component
     // and has {position/scale/rotation} set statically (not through spread props).
     translate: boolean;
-    scale: boolean;
-    rotate: boolean;
   };
 }
 
@@ -196,9 +196,9 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
               <>
                 {resolvedChildren}
                 <AddSceneObject
-                  path={__meta.path}
                   column={__meta.column}
                   line={__meta.line}
+                  path={__meta.path}
                 />
               </>
             );
@@ -213,9 +213,9 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
           <>
             {children}
             <AddSceneObject
-              path={__meta.path}
               column={__meta.column}
               line={__meta.line}
+              path={__meta.path}
             />
           </>
         )}
@@ -228,14 +228,13 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
 
       return (
         <>
-          <group userData={userData} visible={!isDeleted} ref={parentRef}>
+          <group ref={parentRef} userData={userData} visible={!isDeleted}>
             {componentJsx}
           </group>
           {helper && !isDeleted && (
             <Helper
-              parentObject={parentRef}
-              helperName={helper[0]}
               args={helper[1]}
+              helperName={helper[0]}
               onClick={(e) => {
                 if (e.delta > 1 || !parentRef.current) {
                   return;
@@ -244,6 +243,7 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
                 e.stopPropagation();
                 selectSceneObject(parentRef.current.children[0]);
               }}
+              parentObject={parentRef}
             />
           )}
         </>
@@ -255,3 +255,5 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
     return null;
   }
 );
+
+SceneObject.displayName = "SceneObject";

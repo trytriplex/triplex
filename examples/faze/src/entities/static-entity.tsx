@@ -65,16 +65,16 @@ export function StaticEntity({
 
   return (
     <Entity>
-      <Component name="velocity" initialData={empty()} />
+      <Component initialData={empty()} name="velocity" />
 
       {components}
 
       {childrenJsx && (
         <>
-          {onClick && <Component name="onWorldEvent" data={onWorldEvent} />}
-          <Component name="playerNear" data={false} />
-          <Component name="activateDistance" data={activateDistance} />
-          <Component name={body} data={true} />
+          {onClick && <Component data={onWorldEvent} name="onWorldEvent" />}
+          <Component data={false} name="playerNear" />
+          <Component data={activateDistance} name="activateDistance" />
+          <Component data={true} name={body} />
           <Component name="box">
             <BoundingBox skip={!collidable}>
               <Component name="sceneObject">

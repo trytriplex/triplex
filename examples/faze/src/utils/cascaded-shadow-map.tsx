@@ -60,18 +60,18 @@ class CSMProxy {
 }
 
 export function CascadedShadowMap({
-  maxFar = 50,
-  shadowMapSize = 1024,
-  lightIntensity = 0.25,
   cascades = 2,
+  customSplitsCallback,
   fade,
   lightDirection = [1, -1, 1],
-  shadowBias = 0.000001,
-  customSplitsCallback,
   lightFar,
+  lightIntensity = 0.25,
   lightMargin,
   lightNear,
+  maxFar = 50,
   mode,
+  shadowBias = 0.000_001,
+  shadowMapSize = 1024,
 }: CascadedShadowMapProps) {
   const camera = useThree((three) => three.camera);
   const parent = useThree((three) => three.scene);
@@ -127,10 +127,10 @@ export function CascadedShadowMap({
 
   return (
     <primitive
-      object={proxyInstance}
       camera={camera}
       fade={fade}
       lightDirection={lightDirection}
+      object={proxyInstance}
     />
   );
 }

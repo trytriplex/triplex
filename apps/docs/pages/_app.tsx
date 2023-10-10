@@ -10,16 +10,16 @@ import { Karla } from "next/font/google";
 import "../globals.css";
 
 const karla = Karla({
-  weight: ["400", "500", "600", "700", "800"],
-  subsets: ["latin"],
   display: "swap",
   fallback: ["serif"],
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
 });
 
 export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
-      <style jsx global>{`
+      <style global jsx>{`
         html {
           font-family: ${karla.style.fontFamily};
         }

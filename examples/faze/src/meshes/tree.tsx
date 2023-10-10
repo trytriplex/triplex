@@ -5,9 +5,9 @@
  * file in the root directory of this source tree.
  */
 import { Clone, useTexture } from "@react-three/drei";
-import { useGLTF } from "../utils/gltf";
 import { FoliageMaterial } from "../materials/foliage";
 import { Vector3Tuple } from "../types";
+import { useGLTF } from "../utils/gltf";
 
 export function Tree({
   position,
@@ -22,18 +22,18 @@ export function Tree({
   const trunk = useTexture("/textures/shaders/trunk.png");
 
   return (
-    <group name="tree" rotation={rotation} position={position} scale={scale}>
+    <group name="tree" position={position} rotation={rotation} scale={scale}>
       <Clone
-        receiveShadow
         castShadow
-        object={tree.nodes.trunk}
         inject={<meshBasicMaterial map={trunk} />}
+        object={tree.nodes.trunk}
+        receiveShadow
       />
       <Clone
-        receiveShadow
         castShadow
-        object={tree.nodes.foliage}
         inject={<FoliageMaterial />}
+        object={tree.nodes.foliage}
+        receiveShadow
       />
     </group>
   );

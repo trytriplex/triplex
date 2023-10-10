@@ -27,7 +27,7 @@ export function useCursor(cursor = "pointer") {
   };
 
   return {
-    onPointerOver,
     onPointerOut,
+    onPointerOver,
   };
 }

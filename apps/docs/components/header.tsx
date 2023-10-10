@@ -4,20 +4,20 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { ReactNode, useEffect } from "react";
-import { MagnifyingGlassIcon, HamburgerMenuIcon } from "@radix-ui/react-icons";
-import { cn } from "../util/cn";
 import { useSearchStore } from "../stores/search";
+import { cn } from "../util/cn";
 
 export function Header({
+  appearance = "default",
   children,
   onShowNav,
-  appearance = "default",
 }: {
+  appearance?: "default" | "transparent";
   children: ReactNode;
   onShowNav: () => void;
-  appearance?: "default" | "transparent";
 }) {
   const showSearch = useSearchStore((store) => () => store.setIsOpen(true));
 
@@ -55,7 +55,7 @@ export function Header({
             className="font text-[2.5rem] text-white/90"
             href="/"
           >
-            <svg width="32px" viewBox="0 0 200 200">
+            <svg viewBox="0 0 200 200" width="32px">
               <polygon
                 className="fill-none stroke-current [stroke-width:0.8rem]"
                 points="183,172 26,172 100,28"
@@ -65,8 +65,8 @@ export function Header({
         </span>
 
         <Link
-          href="/download"
           className="flex h-full items-center bg-blue-400 px-6 py-3 text-lg font-semibold text-neutral-950 md:text-base"
+          href="/download"
         >
           Download
         </Link>
@@ -75,9 +75,9 @@ export function Header({
           <div className="ml-auto md:hidden" />
 
           <button
+            className="relative flex h-8 flex-shrink-0 cursor-default items-center rounded px-3 text-sm text-neutral-400 -outline-offset-1 outline-blue-400 hover:bg-white/5 focus-visible:outline focus-visible:outline-1 active:bg-white/10 md:hidden"
             onClick={onShowNav}
             type="submit"
-            className="relative flex h-8 flex-shrink-0 cursor-default items-center rounded px-3 text-sm text-neutral-400 -outline-offset-1 outline-blue-400 hover:bg-white/5 focus-visible:outline focus-visible:outline-1 active:bg-white/10 md:hidden"
           >
             <HamburgerMenuIcon className="flex-shrink-0" />
           </button>
@@ -85,8 +85,8 @@ export function Header({
           <div className="hidden md:contents">{children}</div>
 
           <button
-            onClick={showSearch}
             className="relative flex h-8 cursor-default items-center rounded-md border-neutral-700 px-3 text-sm text-neutral-400 -outline-offset-1 outline-blue-400 hover:bg-white/5 focus-visible:outline focus-visible:outline-1 active:bg-white/10 md:ml-auto md:w-64 md:cursor-text md:border md:pl-3 md:pr-1.5"
+            onClick={showSearch}
             type="button"
           >
             <MagnifyingGlassIcon className="flex-shrink-0 md:hidden" />

@@ -11,6 +11,7 @@ import { description, version } from "../package.json";
 import { editor } from "./commands/editor";
 
 /* eslint-disable no-irregular-whitespace */
+// eslint-disable-next-line no-console
 console.log(`
  ▀█▀ █▀█ █ █▀█ █░░ █▀▀ ▀▄▀
  ░█░ █▀▄ █ █▀▀ █▄▄ ██▄ █░█
@@ -27,13 +28,13 @@ program
     "-E --export-name <name>",
     "specify the export name when opening a file [default]"
   )
-  .action(async ({ open, exportName = "default" }) => {
+  .action(async ({ exportName = "default", open }) => {
     const config = await getConfig(process.cwd());
 
     editor({
       ...config,
-      open,
       exportName,
+      open,
     });
   });
 

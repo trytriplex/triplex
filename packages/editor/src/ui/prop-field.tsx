@@ -20,29 +20,29 @@ function stringifyTags(tags: Record<string, string | number | boolean>) {
 }
 
 export function PropField({
+  children,
+  description,
   htmlFor,
   label,
-  description,
-  children,
   tags,
 }: {
-  label: string;
-  htmlFor: string;
-  tags: Record<string, string | number | boolean>;
-  description?: string;
   children: ReactNode;
+  description?: string;
+  htmlFor: string;
+  label: string;
+  tags: Record<string, string | number | boolean>;
 }) {
   return (
     <div className="group -mt-2 flex w-full flex-shrink gap-2 px-4 py-2 first-of-type:mt-0 hover:bg-white/[2%]">
       <div className="flex w-[100px] flex-grow items-center justify-end text-neutral-400">
         <label
           className="overflow-hidden text-ellipsis whitespace-nowrap text-right text-xs text-neutral-400"
+          htmlFor={htmlFor}
           title={
             description
               ? `${label} — ${description}`
               : label + stringifyTags(tags)
           }
-          htmlFor={htmlFor}
         >
           {titleCase(label)}
         </label>

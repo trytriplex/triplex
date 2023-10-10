@@ -10,15 +10,14 @@ import { ErrorBoundary as ErrorBound } from "react-error-boundary";
 function humanize(message: string) {
   if (message.includes("path is outside of cwd")) {
     return {
-      title: "Unable to Load",
       description:
         "Only files within the directory that you ran Triplex in can be opened.",
+      title: "Unable to Load",
     };
   }
 
   if (message.includes("not found")) {
     return {
-      title: "Not Found",
       description: (
         <span>
           This file or export does not exist. Try opening another through the{" "}
@@ -28,13 +27,14 @@ function humanize(message: string) {
           menu.
         </span>
       ),
+      title: "Not Found",
     };
   }
 
   return {
-    title: "An Error Occurred",
     description:
       "This was unexpected please raise an issue on Github or Discord.",
+    title: "An Error Occurred",
   };
 }
 
@@ -47,7 +47,6 @@ export function ErrorBoundary({
 }) {
   return (
     <ErrorBound
-      resetKeys={keys}
       fallbackRender={(e) => {
         const message = humanize(e.error.message);
         return (
@@ -66,6 +65,7 @@ export function ErrorBoundary({
           </div>
         );
       }}
+      resetKeys={keys}
     >
       {children}
     </ErrorBound>

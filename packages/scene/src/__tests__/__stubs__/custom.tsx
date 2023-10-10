@@ -13,33 +13,33 @@ export function CustomBoxGroup({
 }) {
   return (
     <SceneObject
-      name="custom-box-group"
-      position={position}
+      __component="group"
       __meta={{
-        name: "group",
-        path: "custom-box.tsx",
         column: 0,
         line: 1,
+        name: "group",
+        path: "custom-box.tsx",
         rotate: false,
         scale: false,
         // Position is statically defined therefore this is true.
         translate: true,
       }}
-      __component="group"
+      name="custom-box-group"
+      position={position}
     >
       <SceneObject
-        name="custom-box-mesh"
-        position={[1, 1, 1]}
+        __component="mesh"
         __meta={{
-          name: "mesh",
-          path: "custom-box.tsx",
           column: 0,
           line: 2,
+          name: "mesh",
+          path: "custom-box.tsx",
           rotate: false,
           scale: false,
           translate: true,
         }}
-        __component="mesh"
+        name="custom-box-mesh"
+        position={[1, 1, 1]}
       >
         <boxGeometry />
       </SceneObject>

@@ -11,39 +11,33 @@ import { cn } from "./cn";
 export const IconButton = forwardRef<
   HTMLButtonElement,
   {
-    icon: ComponentType<IconProps>;
-    title: string;
-    isSelected?: boolean | "partial";
-    isDisabled?: boolean;
-    testId?: string;
     className?: string;
+    icon: ComponentType<IconProps>;
+    isDisabled?: boolean;
+    isSelected?: boolean | "partial";
     onClick?: () => void;
     size?: "default" | "tight";
+    testId?: string;
+    title: string;
     variant?: "default" | "inverse";
   }
 >(
   (
     {
+      className,
       icon: Icon,
-      title,
+      isDisabled,
       isSelected,
       onClick,
-      className,
-      testId,
-      isDisabled,
-      variant = "default",
       size = "default",
+      testId,
+      title,
+      variant = "default",
     },
     ref
   ) => (
     <button
-      data-testid={testId}
-      ref={ref}
-      title={title}
       aria-label={title}
-      disabled={isDisabled}
-      onClick={onClick}
-      type="submit"
       className={cn([
         "cursor-default outline-1 outline-offset-1 outline-blue-400 focus-visible:outline",
         isDisabled && [
@@ -66,43 +60,47 @@ export const IconButton = forwardRef<
         size === "tight" && "rounded p-0.5",
         className,
       ])}
+      data-testid={testId}
+      disabled={isDisabled}
+      onClick={onClick}
+      ref={ref}
+      title={title}
+      type="submit"
     >
       <Icon />
     </button>
   )
 );
 
+IconButton.displayName = "IconButton";
+
 export const Button = forwardRef<
   HTMLButtonElement,
   {
-    icon?: ComponentType<IconProps>;
-    isSelected?: boolean;
+    children: string;
     className?: string;
     disabled?: boolean;
-    variant?: "default" | "inverse";
+    icon?: ComponentType<IconProps>;
+    isSelected?: boolean;
     onClick?: () => void;
-    children: string;
     size?: "default" | "tight";
+    variant?: "default" | "inverse";
   }
 >(
   (
     {
-      icon: Icon,
       children,
+      className,
       disabled,
+      icon: Icon,
       isSelected,
       onClick,
-      className,
-      variant = "default",
       size = "default",
+      variant = "default",
     },
     ref
   ) => (
     <button
-      ref={ref}
-      onClick={onClick}
-      type="submit"
-      disabled={disabled}
       className={cn([
         "cursor-default outline-1 outline-offset-1 outline-blue-400 focus-visible:outline",
         disabled && "cursor-not-allowed text-neutral-500",
@@ -120,9 +118,15 @@ export const Button = forwardRef<
         "flex items-center gap-1.5 text-sm",
         className,
       ])}
+      disabled={disabled}
+      onClick={onClick}
+      ref={ref}
+      type="submit"
     >
       {Icon && <Icon />}
       {children}
     </button>
   )
 );
+
+Button.displayName = "Button";

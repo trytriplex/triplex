@@ -7,37 +7,31 @@
 export type ClientSendEventName = keyof ClientSendEventData;
 
 export interface ClientSendEventData {
-  "trplx:onOpenFileHmr": undefined;
-  "trplx:onError": {
-    message: string;
-    line: number;
-    col: number;
-    source: string;
-    stack: string;
-  };
   "trplx:onAddNewComponent": {
+    target?: {
+      action: "child";
+      column: number;
+      exportName: string;
+      line: number;
+      path: string;
+    };
     type:
       | {
-          type: "custom";
-          path: string;
-          name: string;
           exportName: string;
+          name: string;
+          path: string;
           props: Record<string, unknown>;
+          type: "custom";
         }
       | {
-          type: "host";
           name: string;
           props: Record<string, unknown>;
+          type: "host";
         };
-    target?: {
-      line: number;
-      column: number;
-      path: string;
-      exportName: string;
-      action: "child";
-    };
   };
-  "trplx:onConnected": undefined;
+  "trplx:onCameraTypeChange": {
+    type: "perspective" | "orthographic";
+  };
   "trplx:onConfirmSceneObjectProp": {
     column: number;
     line: number;
@@ -45,102 +39,139 @@ export interface ClientSendEventData {
     propName: string;
     propValue: unknown;
   };
+  "trplx:onConnected": undefined;
+  "trplx:onError": {
+    col: number;
+    line: number;
+    message: string;
+    source: string;
+    stack: string;
+  };
+  "trplx:onOpenFileHmr": undefined;
   "trplx:onSceneObjectBlur": undefined;
   "trplx:onSceneObjectFocus": {
-    line: number;
     column: number;
-    path: string;
+    line: number;
     parentPath: string;
+    path: string;
+  };
+  "trplx:onSceneObjectNavigated": {
+    encodedProps: string;
+    entered?: boolean;
+    exportName: string;
+    path: string;
+  };
+  "trplx:onStateChange": {
+    change: "userCamera";
+    data: { column: number; line: number; path: string };
   };
   "trplx:onTransformChange": {
     mode: "translate" | "scale" | "rotate";
   };
-  "trplx:onCameraTypeChange": {
-    type: "perspective" | "orthographic";
-  };
-  "trplx:onSceneObjectNavigated": {
-    path: string;
-    exportName: string;
-    encodedProps: string;
-    entered?: boolean;
-  };
-  "trplx:requestSave": undefined;
-  "trplx:requestRedo": undefined;
-  "trplx:requestUndo": undefined;
   "trplx:requestDeleteSceneObject": undefined;
-  "trplx:onStateChange": {
-    change: "userCamera";
-    data: { line: number; column: number; path: string };
-  };
+  "trplx:requestRedo": undefined;
+  "trplx:requestSave": undefined;
+  "trplx:requestUndo": undefined;
 }
 
 export interface ClientSendEventResponse {
-  "trplx:onOpenFileHmr": void;
   "trplx:onAddNewComponent": {
-    line: number;
     column: number;
+    line: number;
     path: string;
   };
-  "trplx:onError": void;
-  "trplx:onConnected": void;
+  "trplx:onCameraTypeChange": void;
   "trplx:onConfirmSceneObjectProp": void;
+  "trplx:onConnected": void;
+  "trplx:onError": void;
+  "trplx:onOpenFileHmr": void;
   "trplx:onSceneObjectBlur": void;
   "trplx:onSceneObjectFocus": void;
-  "trplx:onTransformChange": void;
-  "trplx:onCameraTypeChange": void;
   "trplx:onSceneObjectNavigated": void;
-  "trplx:requestSave": void;
-  "trplx:requestRedo": void;
-  "trplx:requestUndo": void;
-  "trplx:requestDeleteSceneObject": void;
   "trplx:onStateChange": void;
+  "trplx:onTransformChange": void;
+  "trplx:requestDeleteSceneObject": void;
+  "trplx:requestRedo": void;
+  "trplx:requestSave": void;
+  "trplx:requestUndo": void;
 }
 
 export type HostSendEventName = keyof HostSendEventData;
 
 export interface HostSendEventData {
   "trplx:requestAction": { action: "viewFocusedCamera" | "resetCamera" };
-  "trplx:requestRefresh": { hard?: boolean };
   "trplx:requestAddNewComponent": {
+    target?: {
+      action: "child";
+      column: number;
+      exportName: string;
+      line: number;
+      path: string;
+    };
     type:
       | {
-          type: "custom";
-          path: string;
-          name: string;
           exportName: string;
+          name: string;
+          path: string;
           props: Record<string, unknown>;
+          type: "custom";
         }
       | {
-          type: "host";
           name: string;
           props: Record<string, unknown>;
+          type: "host";
         };
-    target?: {
-      line: number;
-      column: number;
-      path: string;
-      exportName: string;
-      action: "child";
-    };
+  };
+  "trplx:requestBlurSceneObject": undefined;
+  "trplx:requestCameraTypeChange": {
+    type: "perspective" | "orthographic";
   };
   "trplx:requestDeleteSceneObject": {
     column: number;
     line: number;
     parentPath: string;
   };
-  "trplx:requestRestoreSceneObject": {
+  "trplx:requestFocusSceneObject": {
     column: number;
     line: number;
     parentPath: string;
+    path: string;
   };
-  "trplx:requestSetSceneObjectProp": {
+  "trplx:requestJumpToSceneObject": undefined;
+  "trplx:requestNavigateToScene":
+    | {
+        encodedProps: string;
+        exportName: string;
+        path: string;
+      }
+    | undefined;
+  "trplx:requestPersistSceneObjectProp": {
     column: number;
     line: number;
     path: string;
     propName: string;
     propValue: unknown;
   };
-  "trplx:requestPersistSceneObjectProp": {
+  "trplx:requestRefresh": { hard?: boolean };
+  "trplx:requestReset": undefined;
+  "trplx:requestResetSceneObjectProp": {
+    column: number;
+    line: number;
+    path: string;
+    propName: string;
+  };
+  "trplx:requestRestoreSceneObject": {
+    column: number;
+    line: number;
+    parentPath: string;
+  };
+  "trplx:requestSceneObjectPropValue": {
+    column: number;
+    line: number;
+    path: string;
+    propName: string;
+  };
+  "trplx:requestSetSceneObjectProp": {
     column: number;
     line: number;
     path: string;
@@ -150,54 +181,23 @@ export interface HostSendEventData {
   "trplx:requestTransformChange": {
     mode: "translate" | "scale" | "rotate";
   };
-  "trplx:requestCameraTypeChange": {
-    type: "perspective" | "orthographic";
-  };
-  "trplx:requestResetSceneObjectProp": {
-    column: number;
-    line: number;
-    path: string;
-    propName: string;
-  };
-  "trplx:requestNavigateToScene":
-    | {
-        path: string;
-        encodedProps: string;
-        exportName: string;
-      }
-    | undefined;
-  "trplx:requestFocusSceneObject": {
-    column: number;
-    line: number;
-    path: string;
-    parentPath: string;
-  };
-  "trplx:requestSceneObjectPropValue": {
-    column: number;
-    line: number;
-    path: string;
-    propName: string;
-  };
-  "trplx:requestJumpToSceneObject": undefined;
-  "trplx:requestBlurSceneObject": undefined;
-  "trplx:requestReset": undefined;
 }
 
 export interface HostSendEventResponse {
-  "trplx:requestRefresh": void;
+  "trplx:requestAction": void;
   "trplx:requestAddNewComponent": void;
   "trplx:requestBlurSceneObject": void;
+  "trplx:requestCameraTypeChange": void;
   "trplx:requestDeleteSceneObject": void;
   "trplx:requestFocusSceneObject": void;
   "trplx:requestJumpToSceneObject": void;
   "trplx:requestNavigateToScene": void;
   "trplx:requestPersistSceneObjectProp": void;
+  "trplx:requestRefresh": void;
   "trplx:requestReset": void;
   "trplx:requestResetSceneObjectProp": void;
   "trplx:requestRestoreSceneObject": void;
   "trplx:requestSceneObjectPropValue": { value: unknown };
   "trplx:requestSetSceneObjectProp": void;
   "trplx:requestTransformChange": void;
-  "trplx:requestCameraTypeChange": void;
-  "trplx:requestAction": void;
 }

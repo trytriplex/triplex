@@ -7,18 +7,15 @@
 import { create } from "zustand";
 
 interface SceneState {
+  __internalState: Record<string, Record<string, unknown>>;
   clear(key: string): void;
-  set(key: string, name: string, value: unknown): void;
   get(key: string): Record<string, unknown>;
   hasState(key: string): boolean;
-  __internalState: Record<string, Record<string, unknown>>;
+  set(key: string, name: string, value: unknown): void;
 }
 
 export const useSceneState = create<SceneState>((setStore, get) => ({
-  hasState(key) {
-    const current = get();
-    return Object.keys(current.__internalState[key] || {}).length > 0;
-  },
+  __internalState: {},
   clear(key) {
     const current = get();
     setStore({
@@ -27,6 +24,14 @@ export const useSceneState = create<SceneState>((setStore, get) => ({
         [key]: {},
       },
     });
+  },
+  get(key) {
+    const current = get();
+    return current.__internalState[key] || {};
+  },
+  hasState(key) {
+    const current = get();
+    return Object.keys(current.__internalState[key] || {}).length > 0;
   },
   set(key, name, value) {
     const current = get();
@@ -46,9 +51,4 @@ export const useSceneState = create<SceneState>((setStore, get) => ({
 
     setStore(nextValue);
   },
-  get(key) {
-    const current = get();
-    return current.__internalState[key] || {};
-  },
-  __internalState: {},
 }));

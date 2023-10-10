@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { useTexture } from "@react-three/drei";
 import {
   createContext,
   useCallback,
@@ -13,14 +14,13 @@ import {
   useRef,
   useState,
 } from "react";
-import { useTexture } from "@react-three/drei";
 import { Component, Entity, world } from "../ecs/store";
-import { useCursor } from "../utils/use-cursor";
 import { OnWorldEventHandler } from "../ecs/types";
-import { Vector3Tuple } from "../types";
 import { empty, fromArray } from "../math/vectors";
-import { noop } from "../utils/functions";
 import { BoundingBox } from "../systems/bounding-box";
+import { Vector3Tuple } from "../types";
+import { noop } from "../utils/functions";
+import { useCursor } from "../utils/use-cursor";
 
 interface ChildrenProps {
   playerNear: boolean;
@@ -30,7 +30,7 @@ function Placeholder() {
   const map = useTexture("/textures/purple/texture_06.png");
 
   return (
-    <mesh castShadow receiveShadow position={[0, 0.5, 0]}>
+    <mesh castShadow position={[0, 0.5, 0]} receiveShadow>
       <boxGeometry args={[0.5, 1, 0.5]} />
       <meshStandardMaterial map={map} />
     </mesh>
@@ -57,23 +57,23 @@ const defaultChildren = () => <Placeholder />;
 
 export function NPCEntity({
   activateDistance = 30,
+  body = "rigidBody",
+  cameraOffset,
   children,
   mesh = defaultChildren,
   position,
   positionCycle: positions,
   speed = 1,
-  cameraOffset,
-  body = "rigidBody",
 }: {
   activateDistance?: number;
+  body?: "kinematicBody" | "rigidBody";
+  cameraOffset?: Vector3Tuple;
   children?: JSX.Element | JSX.Element[];
   mesh?: (opts: ChildrenProps) => JSX.Element;
-  positionCycle?: [Vector3Tuple, ...Vector3Tuple[]];
-  position: Vector3Tuple;
-  speed?: number;
   name?: string;
-  cameraOffset?: Vector3Tuple;
-  body?: "kinematicBody" | "rigidBody";
+  position: Vector3Tuple;
+  positionCycle?: [Vector3Tuple, ...Vector3Tuple[]];
+  speed?: number;
 }) {
   const [index, setIndex] = useState(0);
   const [playerNear, setPlayerNear] = useState(false);
@@ -146,28 +146,28 @@ export function NPCEntity({
 
   return (
     <Entity ref={entity}>
-      <Component name="activateDistance" data={activateDistance} />
-      <Component name="npc" data={true} />
-      <Component name="onWorldEvent" data={onWorldEvent} />
-      <Component name="playerNear" data={false} />
-      <Component name="speed" data={speed} />
-      <Component name="state" data="idle" />
-      <Component name="target" data={nextPosition} />
-      <Component name="velocity" initialData={empty()} />
-      <Component name="zoom" data={1.25} />
+      <Component data={activateDistance} name="activateDistance" />
+      <Component data={true} name="npc" />
+      <Component data={onWorldEvent} name="onWorldEvent" />
+      <Component data={false} name="playerNear" />
+      <Component data={speed} name="speed" />
+      <Component data="idle" name="state" />
+      <Component data={nextPosition} name="target" />
+      <Component initialData={empty()} name="velocity" />
+      <Component data={1.25} name="zoom" />
       {cameraOffset && (
-        <Component name="offset" data={fromArray(cameraOffset)} />
+        <Component data={fromArray(cameraOffset)} name="offset" />
       )}
 
-      <Component name={body} data={true} />
+      <Component data={true} name={body} />
       <Component name="box">
         <BoundingBox>
           <Component name="sceneObject">
             <group
-              position={position}
+              onClick={playerNear ? onClickHandler : undefined}
               onPointerOut={playerNear ? onPointerOut : undefined}
               onPointerOver={playerNear ? onPointerOver : undefined}
-              onClick={playerNear ? onClickHandler : undefined}
+              position={position}
             >
               {mesh({ playerNear })}
             </group>

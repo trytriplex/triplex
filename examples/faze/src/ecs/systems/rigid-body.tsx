@@ -26,9 +26,9 @@ export function useRigidBody() {
     for (const entity of entities) {
       const {
         box,
-        onWorldEvent = noop,
-        npc,
         focused,
+        npc,
+        onWorldEvent = noop,
         sceneObject,
         velocity,
       } = entity;

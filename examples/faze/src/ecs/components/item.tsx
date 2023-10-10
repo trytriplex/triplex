@@ -9,51 +9,51 @@ export type Item = keyof typeof items;
 type Items<TItem extends string> = {
   [Property in TItem]:
     | {
-        name: string;
         description: string;
+        name: string;
       }
     | {
-        name: string;
-        description: string;
         combineWith: TItem;
         creates: TItem;
+        description: string;
+        name: string;
       };
 };
 
 export const items: Items<
   "key" | "bone" | "gum" | "stick" | "gumStick" | "woodStump" | "apple"
 > = {
-  key: {
-    name: "Key",
-    description: "A key to someones heart...",
+  apple: {
+    description: "It's an apple! You can eat it?",
+    name: "Apple",
   },
   bone: {
-    name: "Bone",
     description: "A bone! Duh! Could someone hungry want this?",
+    name: "Bone",
   },
   gum: {
-    name: "Gum",
-    description: `Uhh, don't drop this on the ground...`,
     combineWith: "stick",
     creates: "gumStick",
-  },
-  stick: {
-    name: "Stick",
-    description: `What's brown and sticky?`,
-    combineWith: "gum",
-    creates: "gumStick",
+    description: `Uhh, don't drop this on the ground...`,
+    name: "Gum",
   },
   gumStick: {
-    name: "Gummy stick",
     description: `What's brown, sticky, and isn't edible anymore?`,
+    name: "Gummy stick",
+  },
+  key: {
+    description: "A key to someones heart...",
+    name: "Key",
+  },
+  stick: {
+    combineWith: "gum",
+    creates: "gumStick",
+    description: `What's brown and sticky?`,
+    name: "Stick",
   },
   woodStump: {
-    name: "Wood stump",
     description:
       "A piece of wood that can be used to reach things in high places.",
-  },
-  apple: {
-    name: "Apple",
-    description: "It's an apple! You can eat it?",
+    name: "Wood stump",
   },
 };

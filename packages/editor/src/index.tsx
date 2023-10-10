@@ -4,12 +4,12 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { BrowserRouter } from "react-router-dom";
 import { createRoot } from "react-dom/client";
-import { EditorFrame } from "./editor";
-import { TitleBar } from "./ui/title-bar";
+import { BrowserRouter } from "react-router-dom";
 import { cn } from "./ds/cn";
+import { EditorFrame } from "./editor";
 import { ErrorOverlay } from "./ui/error-overlay";
+import { TitleBar } from "./ui/title-bar";
 import "./styles.css";
 import { Suspense } from "react";
 import { Environment } from "./environment";

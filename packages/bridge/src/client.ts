@@ -26,7 +26,7 @@ export function listen<TEvent extends HostSendEventName>(
     if (typeof e.data === "object" && e.data.eventName === eventName) {
       const value = await callback(e.data.data);
 
-      if (typeof value !== "undefined") {
+      if (value !== undefined) {
         respond(eventName, value);
       } else if (process.env.NODE_ENV === "test") {
         // Always respond in a test environment so we can assert that the event was called
@@ -48,7 +48,7 @@ export function send<TEvent extends ClientSendEventName>(
   data: ClientSendEventData[TEvent],
   awaitResponse = false
 ): Promise<ClientSendEventResponse[TEvent]> {
-  window.top?.postMessage({ eventName, data }, "*");
+  window.top?.postMessage({ data, eventName }, "*");
 
   if (awaitResponse) {
     return new Promise((resolve) => {
@@ -68,7 +68,7 @@ function respond<TEvent extends keyof HostSendEventResponse>(
   eventName: TEvent,
   data: HostSendEventResponse[TEvent]
 ) {
-  window.top?.postMessage({ eventName: `${eventName}Response`, data }, "*");
+  window.top?.postMessage({ data, eventName: `${eventName}Response` }, "*");
 }
 
 export { compose } from "./compose";

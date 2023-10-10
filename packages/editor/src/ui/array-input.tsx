@@ -30,8 +30,7 @@ function isAnyRequiredValueUndefined(
   for (let i = 0; i < tupleTypes.length; i++) {
     const type = tupleTypes[i];
     const value = nextValue[i];
-    const isUndefinedOrEmptyString =
-      typeof value === "undefined" || value === "";
+    const isUndefinedOrEmptyString = value === undefined || value === "";
 
     if (isUndefinedOrEmptyString && "required" in type && type.required) {
       return true;
@@ -51,8 +50,7 @@ function dropUnneededOptionalValues(
 
   for (let i = nextValues.length - 1; i >= 0; i--) {
     const value = nextValues[i];
-    const isUndefinedOrEmptyString =
-      typeof value === "undefined" || value === "";
+    const isUndefinedOrEmptyString = value === undefined || value === "";
     const type = valueDef[i];
 
     if (
@@ -71,26 +69,26 @@ function dropUnneededOptionalValues(
 }
 
 export function TupleInput({
-  values,
-  value,
-  path,
-  name,
   column,
   line,
+  name,
   onChange,
   onConfirm,
+  path,
   testId,
+  value,
+  values,
 }: {
-  value: unknown[] | unknown;
-  required?: boolean;
-  values: TupleType["shape"];
-  name: string;
-  path: string;
   column?: number;
   line?: number;
+  name: string;
   onChange: (value: unknown[]) => void;
   onConfirm: (value: unknown[]) => void;
+  path: string;
+  required?: boolean;
   testId?: string;
+  value: unknown[] | unknown;
+  values: TupleType["shape"];
 }) {
   const defaultValue = Array.isArray(value) ? value : [value];
   const intermediateValues = useRef<Record<string, unknown>>({});
@@ -125,17 +123,17 @@ export function TupleInput({
 
         return (
           <PropInput
-            required={"required" in val ? val.required : false}
-            path={path}
+            column={column}
             key={index}
+            line={line}
+            name={name + index}
             onChange={onChangeHandler}
             onConfirm={onConfirmHandler}
-            column={column}
-            line={line}
-            testId={testId ? `${testId}[${index}]` : undefined}
-            name={name + index}
+            path={path}
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             prop={{ ...val, value: defaultValue[index] as string } as any}
+            required={"required" in val ? val.required : false}
+            testId={testId ? `${testId}[${index}]` : undefined}
           />
         );
       })}

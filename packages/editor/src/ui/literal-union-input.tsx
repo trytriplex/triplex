@@ -4,33 +4,33 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { ChangeEventHandler, useRef } from "react";
 import { Cross2Icon } from "@radix-ui/react-icons";
 import type {
-  StringLiteralType,
-  NumberLiteralType,
   BooleanLiteralType,
+  NumberLiteralType,
+  StringLiteralType,
 } from "@triplex/server";
+import { ChangeEventHandler, useRef } from "react";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 
 export function LiteralUnionInput({
   defaultValue,
-  values,
   name,
   onChange,
   onConfirm,
   required,
+  values,
 }: {
   defaultValue?: string | number | boolean;
   name: string;
-  values: (StringLiteralType | NumberLiteralType | BooleanLiteralType)[];
-  required?: boolean;
   onChange: (value: number | string | boolean | undefined) => void;
   onConfirm: (value: number | string | boolean | undefined) => void;
+  required?: boolean;
+  values: (StringLiteralType | NumberLiteralType | BooleanLiteralType)[];
 }) {
   const ref = useRef<HTMLSelectElement>(null);
-  const isValueDefined = typeof defaultValue !== "undefined";
+  const isValueDefined = defaultValue !== undefined;
 
   const onChangeHandler: ChangeEventHandler<HTMLSelectElement> = (e) => {
     const currentValue = defaultValue ?? undefined;
@@ -59,22 +59,22 @@ export function LiteralUnionInput({
   return (
     <div className="group flex w-full items-center rounded-md border border-transparent bg-white/5 px-0.5 focus-within:border-blue-400 hover:bg-white/10">
       <select
-        key={`${defaultValue}`}
-        ref={ref}
-        data-testid={`select-${name}`}
-        id={name}
-        defaultValue={values.findIndex((v) => v.literal === defaultValue)}
-        onChange={onChangeHandler}
         className={cn([
           isValueDefined ? "text-neutral-300" : "text-neutral-500",
           "w-full appearance-none overflow-hidden text-ellipsis bg-transparent px-1 py-0.5 text-sm outline-none [color-scheme:dark]",
         ])}
+        data-testid={`select-${name}`}
+        defaultValue={values.findIndex((v) => v.literal === defaultValue)}
+        id={name}
+        key={`${defaultValue}`}
+        onChange={onChangeHandler}
+        ref={ref}
       >
         {!isValueDefined && <option value="">Select value...</option>}
         {values.map((value, index) => (
           <option
-            value={index}
             key={`${value.literal}`}
+            value={index}
           >{`${value.literal}`}</option>
         ))}
       </select>
@@ -82,9 +82,9 @@ export function LiteralUnionInput({
       {!required && (
         <IconButton
           className="hidden group-focus-within:block group-hover:block"
+          icon={Cross2Icon}
           onClick={onClear}
           size="tight"
-          icon={Cross2Icon}
           title="Clear value"
         />
       )}

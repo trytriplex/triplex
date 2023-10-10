@@ -5,33 +5,33 @@
  * file in the root directory of this source tree.
  */
 import { CaretDownIcon, CaretRightIcon } from "@radix-ui/react-icons";
-import { Suspense, createContext, useContext, useState } from "react";
-import {
-  useLazySubscription,
-  useSubscription,
-  preloadSubscription,
-} from "@triplex/ws-client";
-import { useScene } from "../stores/scene";
-import { Drawer } from "../ds/drawer";
-import { cn } from "../ds/cn";
-import { ScrollContainer } from "../ds/scroll-container";
-import { titleCase } from "../util/string";
 import type {
   Folder as FolderType,
   ProjectAsset as ProjectAssetType,
   ProjectCustomComponent,
   ProjectHostComponent,
 } from "@triplex/server";
-import { StringInput } from "./string-input";
+import {
+  preloadSubscription,
+  useLazySubscription,
+  useSubscription,
+} from "@triplex/ws-client";
+import { createContext, Suspense, useContext, useState } from "react";
+import { cn } from "../ds/cn";
+import { Drawer } from "../ds/drawer";
+import { ScrollContainer } from "../ds/scroll-container";
 import { useAssetsDrawer } from "../stores/assets-drawer";
+import { useScene } from "../stores/scene";
+import { titleCase } from "../util/string";
+import { StringInput } from "./string-input";
 
 function ProjectAsset({
-  name,
   asset,
+  name,
   onClick,
 }: {
-  name: string;
   asset: ProjectHostComponent | ProjectCustomComponent | ProjectAssetType;
+  name: string;
   onClick: () => void;
 }) {
   const { addComponent } = useScene();
@@ -46,32 +46,32 @@ function ProjectAsset({
     switch (asset.type) {
       case "host":
         addComponent({
-          type: { type: "host", name, props: {} },
           target: targetData,
+          type: { name, props: {}, type: "host" },
         });
         break;
 
       case "custom":
         addComponent({
+          target: targetData,
           type: {
             exportName: asset.exportName,
-            type: "custom",
             name: asset.name,
             path: asset.path,
             props: {},
+            type: "custom",
           },
-          target: targetData,
         });
         break;
 
       case "asset":
         addComponent({
           type: {
-            type: "custom",
             exportName: "Gltf",
             name: "Gltf",
             path: "@react-three/drei",
             props: { src: asset.path },
+            type: "custom",
           },
         });
         break;
@@ -82,10 +82,10 @@ function ProjectAsset({
 
   return (
     <button
-      onClick={onClickHandler}
-      type="button"
-      title={name}
       className="relative h-24 w-24 cursor-default rounded bg-white/5 outline-1 outline-offset-1 outline-blue-400 hover:bg-white/10 focus-visible:outline active:bg-white/20"
+      onClick={onClickHandler}
+      title={name}
+      type="button"
     >
       <span className="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center overflow-hidden text-ellipsis p-1 text-sm text-neutral-400">
         {asset.type === "asset" ? name : titleCase(name)}
@@ -97,17 +97,17 @@ function ProjectAsset({
 const FolderContext = createContext(0);
 
 function Folder({
-  isSelected,
   children = [],
+  filesCount = 0,
+  isSelected,
   onClick,
   text,
-  filesCount = 0,
 }: {
-  isSelected?: boolean;
   children?: (JSX.Element | JSX.Element[])[];
-  text: string;
-  onClick?: () => void;
   filesCount?: number;
+  isSelected?: boolean;
+  onClick?: () => void;
+  text: string;
 }) {
   const defaultExpanded =
     Array.isArray(children) && children.length > 5 ? false : true;
@@ -118,6 +118,14 @@ function Folder({
   return (
     <FolderContext.Provider value={level + 1}>
       <button
+        className={cn([
+          "outline-1 -outline-offset-1 outline-blue-400 focus-visible:outline",
+          children ? "px-1" : "px-2",
+          isSelected
+            ? "bg-white/5 text-blue-400 before:absolute before:bottom-0 before:left-0 before:top-0 before:w-0.5 before:bg-blue-400"
+            : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
+          "relative flex w-full cursor-default items-center gap-0.5 whitespace-nowrap py-1 text-start text-sm",
+        ])}
         onClick={() => {
           if (hasChildrenFolders) {
             if (filesCount > 0 && !isSelected) {
@@ -131,16 +139,8 @@ function Folder({
             onClick?.();
           }
         }}
-        type="button"
         style={{ paddingLeft: (level + 1) * 8 }}
-        className={cn([
-          "outline-1 -outline-offset-1 outline-blue-400 focus-visible:outline",
-          children ? "px-1" : "px-2",
-          isSelected
-            ? "bg-white/5 text-blue-400 before:absolute before:bottom-0 before:left-0 before:top-0 before:w-0.5 before:bg-blue-400"
-            : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
-          "relative flex w-full cursor-default items-center gap-0.5 whitespace-nowrap py-1 text-start text-sm",
-        ])}
+        type="button"
       >
         {hasChildrenFolders ? (
           <>
@@ -175,11 +175,11 @@ function renderFolder(
 ) {
   return (
     <Folder
-      key={folder.path}
-      text={folder.name}
-      isSelected={folder.path === selected}
       filesCount={folder.files}
+      isSelected={folder.path === selected}
+      key={folder.path}
       onClick={() => onClick(folder.path)}
+      text={folder.name}
     >
       {folder.children.map((child) =>
         renderFolder(child, { onClick, selected })
@@ -189,12 +189,12 @@ function renderFolder(
 }
 
 function ComponentFolder({
+  filter,
   folderPath,
   onClose,
-  filter,
 }: {
   filter: string;
-  folderPath: { path: string; category: "components" | "assets" };
+  folderPath: { category: "components" | "assets"; path: string };
   onClose: () => void;
 }) {
   const components = useLazySubscription(
@@ -203,10 +203,10 @@ function ComponentFolder({
       folderPath: folderPath.path,
     }
   );
-  const normalizedFilter = filter.replace(/ /g, "");
+  const normalizedFilter = filter.replaceAll(" ", "");
   const filteredComponents = components.map((component) =>
     // Ensure the name is lower case and has no spaces
-    component.name.toLowerCase().replace(/ /g, "").includes(normalizedFilter)
+    component.name.toLowerCase().replaceAll(" ", "").includes(normalizedFilter)
       ? component
       : null
   );
@@ -223,30 +223,30 @@ function ComponentFolder({
             case "asset":
               return (
                 <ProjectAsset
-                  key={element.path}
-                  onClick={onClose}
-                  name={element.name}
                   asset={element}
+                  key={element.path}
+                  name={element.name}
+                  onClick={onClose}
                 />
               );
 
             case "custom":
               return (
                 <ProjectAsset
-                  key={element.path + element.exportName}
-                  onClick={onClose}
-                  name={element.name}
                   asset={element}
+                  key={element.path + element.exportName}
+                  name={element.name}
+                  onClick={onClose}
                 />
               );
 
             case "host":
               return (
                 <ProjectAsset
-                  onClick={onClose}
                   asset={element}
-                  name={element.name}
                   key={element.name}
+                  name={element.name}
+                  onClick={onClose}
                 />
               );
           }
@@ -257,13 +257,13 @@ function ComponentFolder({
 }
 
 function ComponentsDrawer({
-  onSelected,
   onClose,
+  onSelected,
   selected,
 }: {
   onClose: () => void;
-  onSelected: (_: { path: string; category: "components" | "assets" }) => void;
-  selected?: { path: string; category: "components" | "assets" };
+  onSelected: (_: { category: "components" | "assets"; path: string }) => void;
+  selected?: { category: "components" | "assets"; path: string };
 }) {
   const [filter, setFilter] = useState("");
   const componentFolders = useSubscription("/scene/components");
@@ -275,20 +275,20 @@ function ComponentsDrawer({
 
   return (
     <Drawer
-      mode="transparent"
-      title="assets"
       attach="bottom"
-      open
+      mode="transparent"
       onClose={onClose}
+      open
+      title="assets"
     >
       <div className="flex h-full flex-col">
         <div className="flex min-h-0 flex-grow">
           <div className="flex w-60 flex-shrink-0 flex-col border-r border-neutral-800">
             <div className="p-2">
               <StringInput
-                onChange={handleFilterChange}
                 label="Filter selection..."
                 name="filter-elements"
+                onChange={handleFilterChange}
               />
             </div>
 
@@ -300,27 +300,27 @@ function ComponentsDrawer({
                 <Folder text="Assets">
                   {assetFolders.map((folder) =>
                     renderFolder(folder, {
-                      selected: selected?.path,
                       onClick: (path: string) =>
-                        onSelected({ path, category: "assets" }),
+                        onSelected({ category: "assets", path }),
+                      selected: selected?.path,
                     })
                   )}
                 </Folder>
 
                 <Folder text="Components">
                   <Folder
-                    onClick={() =>
-                      onSelected({ path: "host", category: "components" })
-                    }
                     isSelected={selected?.path === "host"}
+                    onClick={() =>
+                      onSelected({ category: "components", path: "host" })
+                    }
                     text="built-in"
                   />
 
                   {componentFolders.map((folder) =>
                     renderFolder(folder, {
-                      selected: selected?.path,
                       onClick: (path: string) =>
-                        onSelected({ path, category: "components" }),
+                        onSelected({ category: "components", path }),
+                      selected: selected?.path,
                     })
                   )}
                 </Folder>
@@ -332,8 +332,8 @@ function ComponentsDrawer({
             {selected && (
               <ComponentFolder
                 filter={filter}
-                onClose={onClose}
                 folderPath={selected}
+                onClose={onClose}
               />
             )}
           </Suspense>
@@ -347,8 +347,8 @@ export function AssetsDrawer() {
   const isShown = useAssetsDrawer((store) => store.shown);
   const close = useAssetsDrawer((store) => store.hide);
   const [selectedFolder, setSelectedFolder] = useState<{
-    path: string;
     category: "components" | "assets";
+    path: string;
   }>();
 
   preloadSubscription("/scene/assets");

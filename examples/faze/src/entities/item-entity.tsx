@@ -56,14 +56,14 @@ export function ItemEntity({
     <StaticEntity
       activateDistance={activateDistance}
       body={body}
-      onClick={activeItem ? undefined : onClickHandler}
-      position={position}
       components={
         <>
-          <Component name="item" data={true} />
-          <Component name="name" data={id} />
+          <Component data={true} name="item" />
+          <Component data={id} name="name" />
         </>
       }
+      onClick={activeItem ? undefined : onClickHandler}
+      position={position}
     >
       {() => children}
     </StaticEntity>
