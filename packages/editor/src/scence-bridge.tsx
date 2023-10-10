@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { listen, compose } from "@triplex/bridge/host";
+import { compose, listen } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
 import { useEnvironment } from "./environment";
 import { useEditor } from "./stores/editor";
@@ -12,8 +12,8 @@ import { useScene } from "./stores/scene";
 import { useUndoRedoState } from "./stores/undo-redo";
 
 export interface FocusedObject {
-  line: number;
   column: number;
+  line: number;
   path: string;
 }
 
@@ -33,10 +33,10 @@ export function SceneFrame() {
     <>
       <iframe
         // This should never change during a session as it will do a full page reload.
+        className="absolute h-full w-full border-none"
         src={`http://localhost:3333/scene.html?path=${initialPath}&props=${initialProps}&exportName=${initialExportName}&env=${encodeURIComponent(
           JSON.stringify(env)
         )}`}
-        className="absolute h-full w-full border-none"
       />
       <BridgeSendEvents />
       <BridgeReceiveEvents />
@@ -89,9 +89,9 @@ function BridgeSendEvents() {
 
     // This handles the browser history being updated and propagating to the scene.
     scene.navigateTo({
-      path: editor.path,
       encodedProps: editor.encodedProps,
       exportName: editor.exportName,
+      path: editor.path,
     });
   }, [editor.encodedProps, editor.exportName, editor.path, scene]);
 
@@ -118,9 +118,9 @@ function BridgeReceiveEvents() {
       listen("trplx:onSceneObjectNavigated", (data) => {
         editor.set(
           {
-            path: data.path,
-            exportName: data.exportName,
             encodedProps: data.encodedProps,
+            exportName: data.exportName,
+            path: data.path,
           },
           data.entered ? { entered: true } : undefined
         );
@@ -130,11 +130,11 @@ function BridgeReceiveEvents() {
 
         editor.persistPropValue({
           column: data.column,
+          currentPropValue: currentPropValue.value,
           line: data.line,
+          nextPropValue: data.propValue,
           path: data.path,
           propName: data.propName,
-          nextPropValue: data.propValue,
-          currentPropValue: currentPropValue.value,
         });
       }),
       listen("trplx:onSceneObjectFocus", (data) => {

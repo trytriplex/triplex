@@ -9,15 +9,15 @@ import { env } from "./env";
 
 export async function exec(
   cmd: string,
-  { signal, cwd }: { signal?: AbortSignal; cwd?: string }
+  { cwd, signal }: { cwd?: string; signal?: AbortSignal }
 ) {
   return new Promise<void>((resolve, reject) => {
     execCb(
       cmd,
       {
         cwd,
-        signal,
         env,
+        signal,
       },
       (err) => {
         if (err) {

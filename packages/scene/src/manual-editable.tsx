@@ -14,19 +14,19 @@ import { useSceneState } from "./stores/scene-state";
  * Used for bespoke use cases such as the loaded scene or the global provider.
  */
 export function ManualEditableSceneObject({
+  children,
+  component: SceneComponent,
+  exportName,
   id,
   path,
-  exportName,
   staticSceneProps = {},
-  component: SceneComponent,
-  children,
 }: {
+  children?: React.ReactNode;
+  component: ComponentType<Record<string, unknown>>;
+  exportName: string;
   id: number;
   path: string;
-  exportName: string;
   staticSceneProps?: Record<string, unknown>;
-  component: ComponentType<Record<string, unknown>>;
-  children?: React.ReactNode;
 }) {
   const storeKey = `${id}:${path}:${exportName}`;
   const overriddenProps = useSceneState((state) => state.get(storeKey));
@@ -42,19 +42,20 @@ export function ManualEditableSceneObject({
 
   return (
     <SceneObject
+      __component={SceneComponent}
       __meta={{
         column: id,
         line: id,
         name: exportName,
-        path: path,
+        path,
         rotate: false,
         scale: false,
         translate: false,
       }}
-      __component={SceneComponent}
-      children={children}
       {...staticSceneProps}
       {...overriddenProps}
-    />
+    >
+      {children}
+    </SceneObject>
   );
 }

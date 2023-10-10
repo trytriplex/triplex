@@ -21,9 +21,9 @@ export function fork(
   filename: string,
   { cwd }: { cwd: string }
 ): Promise<{
-  send(message: Record<string, unknown>): void;
-  kill(): void;
   data?: Record<string, unknown>;
+  kill(): void;
+  send(message: Record<string, unknown>): void;
 }> {
   let fork: ReturnType<typeof forkChild>;
 
@@ -31,19 +31,19 @@ export function fork(
     log.info("starting dev fork");
 
     fork = forkChild(filename, [], {
+      cwd,
       env: {
         NODE_OPTIONS: `-r ${join(process.cwd(), "hook-fork.js")}`,
         NODE_PATH: process.cwd(),
         TRIPLEX_ENV: "development",
       },
-      cwd,
     });
   } else {
     log.info("starting prod fork");
 
     fork = forkChild(filename.replace(".ts", ".js"), [], {
-      env: { NODE_PATH: process.cwd(), DEBUG: "triplex" },
       cwd,
+      env: { DEBUG: "triplex", NODE_PATH: process.cwd() },
     });
   }
 
@@ -55,20 +55,20 @@ export function fork(
     fork.on("message", (e) => {
       if (typeof e === "object") {
         const eventObject = e as {
-          eventName: string;
           data?: Record<string, unknown>;
+          eventName: string;
         };
 
         if (eventObject.eventName === "ready") {
           resolve({
             data: eventObject.data,
-            send(message: Record<string, unknown>) {
-              fork.send(message);
-            },
             kill() {
               if (!fork.kill("SIGTERM")) {
                 log.error("could not kill fork");
               }
+            },
+            send(message: Record<string, unknown>) {
+              fork.send(message);
             },
           });
         }

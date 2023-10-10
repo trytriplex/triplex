@@ -7,11 +7,11 @@
 export function inferExports(file: string) {
   const namedExports = file.matchAll(/export (function|const|let) ([A-Z]\w+)/g);
   const defaultExport = /export default \w*? ?\(?([A-Z]\w+)/.exec(file);
-  const foundExports: { name: string; exportName: string }[] = [];
+  const foundExports: { exportName: string, name: string; }[] = [];
 
   for (const match of namedExports) {
     const [, , exportName] = match;
-    foundExports.push({ name: exportName, exportName });
+    foundExports.push({ exportName, name: exportName });
   }
 
   if (defaultExport) {

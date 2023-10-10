@@ -7,24 +7,28 @@
 import { create } from "zustand";
 
 interface UndoableEvent {
-  undo: () => void;
   redo: () => void;
+  undo: () => void;
 }
 
 interface UndoRedoState {
-  stack: { undo: UndoableEvent[]; redo: UndoableEvent[] };
-  undoAvailable: boolean;
-  redoAvailable: boolean;
-  undo(): void;
-  redo(): void;
-  performUndoableEvent(event: UndoableEvent): void;
   clearUndoRedo(): void;
+  performUndoableEvent(event: UndoableEvent): void;
+  redo(): void;
+  redoAvailable: boolean;
+  stack: { redo: UndoableEvent[]; undo: UndoableEvent[] };
+  undo(): void;
+  undoAvailable: boolean;
 }
 
 export const useUndoRedoState = create<UndoRedoState>((set, getState) => ({
-  undoAvailable: false,
-  redoAvailable: false,
-  stack: { undo: [], redo: [] },
+  clearUndoRedo() {
+    set({
+      redoAvailable: false,
+      stack: { redo: [], undo: [] },
+      undoAvailable: false,
+    });
+  },
   performUndoableEvent(event) {
     const state = getState();
     state.stack.undo.push(event);
@@ -32,23 +36,9 @@ export const useUndoRedoState = create<UndoRedoState>((set, getState) => ({
     event.redo();
 
     set({
-      undoAvailable: true,
       redoAvailable: false,
+      undoAvailable: true,
     });
-  },
-  undo() {
-    const state = getState();
-    const action = state.stack.undo.pop();
-
-    if (action) {
-      action.undo();
-      state.stack.redo.push(action);
-
-      set({
-        undoAvailable: state.stack.undo.length > 0,
-        redoAvailable: state.stack.redo.length > 0,
-      });
-    }
   },
   redo() {
     const state = getState();
@@ -59,16 +49,26 @@ export const useUndoRedoState = create<UndoRedoState>((set, getState) => ({
       state.stack.undo.push(action);
 
       set({
-        undoAvailable: state.stack.undo.length > 0,
         redoAvailable: state.stack.redo.length > 0,
+        undoAvailable: state.stack.undo.length > 0,
       });
     }
   },
-  clearUndoRedo() {
-    set({
-      undoAvailable: false,
-      redoAvailable: false,
-      stack: { undo: [], redo: [] },
-    });
+  redoAvailable: false,
+  stack: { redo: [], undo: [] },
+  undo() {
+    const state = getState();
+    const action = state.stack.undo.pop();
+
+    if (action) {
+      action.undo();
+      state.stack.redo.push(action);
+
+      set({
+        redoAvailable: state.stack.redo.length > 0,
+        undoAvailable: state.stack.undo.length > 0,
+      });
+    }
   },
+  undoAvailable: false,
 }));

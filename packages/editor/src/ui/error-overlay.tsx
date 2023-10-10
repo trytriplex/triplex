@@ -4,23 +4,23 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { compose, listen } from "@triplex/bridge/host";
-import { useEffect, useRef, useState } from "react";
-import { IconButton } from "../ds/button";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
   CodeIcon,
   Cross2Icon,
 } from "@radix-ui/react-icons";
-import { getEditorLink } from "../util/ide";
-import { ScrollContainer } from "../ds/scroll-container";
+import { compose, listen } from "@triplex/bridge/host";
+import { useEffect, useRef, useState } from "react";
+import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
+import { ScrollContainer } from "../ds/scroll-container";
+import { getEditorLink } from "../util/ide";
 
 interface TriplexError {
-  message: string;
-  line: number;
   col: number;
+  line: number;
+  message: string;
   source: string;
   stack: string;
 }
@@ -84,40 +84,40 @@ export function ErrorOverlay() {
     >
       <div className="flex items-center">
         <IconButton
+          icon={ArrowLeftIcon}
           isDisabled={index === 0}
           onClick={() => setIndex((prev) => prev - 1)}
           title="Previous error"
-          icon={ArrowLeftIcon}
         />
         <IconButton
+          icon={ArrowRightIcon}
           isDisabled={index === errors.length - 1}
           onClick={() => setIndex((prev) => prev + 1)}
           title="Next error"
-          icon={ArrowRightIcon}
         />
         <div className="mr-auto px-2 text-xs text-neutral-400 [font-variant-numeric:tabular-nums]">
           {index + 1} of {errors.length} errors in the scene
         </div>
 
         <IconButton
+          icon={CodeIcon}
           onClick={() => {
             const context = window.open(
               getEditorLink({
-                path: error.source,
                 column: error.col,
                 line: error.line,
+                path: error.source,
               })
             );
 
             context?.close();
           }}
           title="View source"
-          icon={CodeIcon}
         />
         <IconButton
+          icon={Cross2Icon}
           onClick={() => setErrors([])}
           title="Dismiss errors"
-          icon={Cross2Icon}
         />
       </div>
       <div className="mb-2 line-clamp-2 px-2 text-sm font-medium text-neutral-300">

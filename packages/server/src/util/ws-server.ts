@@ -4,8 +4,8 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { WebSocketServer, WebSocket } from "ws";
 import { match } from "node-match-path";
+import { WebSocket, WebSocketServer } from "ws";
 import { stringifyJSON } from "./string";
 
 export type UnionToIntersection<U> = (
@@ -54,6 +54,14 @@ interface AliveWebSocket extends WebSocket {
   isAlive: boolean;
 }
 
+function router<TRoutes extends Array<Record<string, unknown>>>(
+  _: TRoutes
+): UnionToIntersection<TRoutes[number]> {
+  // This is opaque, purely used to return what the types are.
+  // Accessing it at runtime won't do anything.
+  return {} as UnionToIntersection<TRoutes[number]>;
+}
+
 export function createTWS() {
   const wss = new WebSocketServer<AliveWebSocket>({ port: 3300 });
   const routeHandlers: ((
@@ -72,7 +80,7 @@ export function createTWS() {
   }
 
   // Every 30s ping all connected clients to make sure they are alive.
-  setInterval(ping, 30000);
+  setInterval(ping, 30_000);
 
   wss.on("connection", (ws) => {
     ws.on("pong", () => {
@@ -121,11 +129,13 @@ export function createTWS() {
 
             try {
               data = await cb(params, { type });
-            } catch (e) {
-              if (e instanceof Error) {
-                ws.send(JSON.stringify({ error: e.stack || e.message }));
+            } catch (error) {
+              if (error instanceof Error) {
+                ws.send(
+                  JSON.stringify({ error: error.stack || error.message })
+                );
               } else {
-                ws.send(JSON.stringify({ error: e }));
+                ws.send(JSON.stringify({ error }));
               }
 
               return ws.terminate();
@@ -139,11 +149,13 @@ export function createTWS() {
           if (pushConstructor) {
             try {
               await pushConstructor(() => sendMessage("push"), params);
-            } catch (e) {
-              if (e instanceof Error) {
-                ws.send(JSON.stringify({ error: e.stack || e.message }));
+            } catch (error) {
+              if (error instanceof Error) {
+                ws.send(
+                  JSON.stringify({ error: error.stack || error.message })
+                );
               } else {
-                ws.send(JSON.stringify({ error: e }));
+                ws.send(JSON.stringify({ error }));
               }
 
               return ws.terminate();
@@ -163,17 +175,9 @@ export function createTWS() {
     return {} as any;
   }
 
-  function router<TRoutes extends Array<Record<string, unknown>>>(
-    _: TRoutes
-  ): UnionToIntersection<TRoutes[number]> {
-    // This is opaque, purely used to return what the types are.
-    // Accessing it at runtime won't do anything.
-    return {} as UnionToIntersection<TRoutes[number]>;
-  }
-
   return {
-    router,
-    route,
     close: wss.close.bind(wss),
+    route,
+    router,
   };
 }

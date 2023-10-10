@@ -4,9 +4,9 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useSubscriptionEffect, buildPath } from "@triplex/ws-client";
 import type { TWSRouteDefinition } from "@triplex/server";
-import { type Mock, vi } from "vitest";
+import { buildPath, useSubscriptionEffect } from "@triplex/ws-client";
+import { vi, type Mock } from "vitest";
 
 vi.mock("@triplex/ws-client", async () => {
   const client = (await vi.importActual(

@@ -153,8 +153,8 @@ function getJsxDeclProps(element: JsxSelfClosingElement | JsxElement) {
     const properties = propsType.getApparentProperties();
 
     return {
-      properties,
       declaration,
+      properties,
     };
   }
 }
@@ -177,7 +177,7 @@ function extractJSDoc(symbol: SymbolType) {
   const decls = symbol.getDeclarations().filter(Node.isJSDocable);
 
   const tags: Record<string, string | boolean | number> = {};
-  let description: string[] = [];
+  const description: string[] = [];
 
   for (let i = 0; i < decls.length; i++) {
     const decl = decls[i];
@@ -378,14 +378,14 @@ export function getJsxElementPropTypes(
 
       props.push({
         ...type,
+        column,
+        description: description || undefined,
+        line,
         name: propName,
         required: !propDeclaration?.hasQuestionToken?.(),
-        description: description || undefined,
         tags,
-        column,
-        line,
-        valueKind: value.kind,
         value: value.value as string,
+        valueKind: value.kind,
       });
     } else {
       if (propName === "rotation") {
@@ -398,15 +398,15 @@ export function getJsxElementPropTypes(
 
       props.push({
         ...unrollType(propType),
+        description: description || undefined,
         name: propName,
         required: !propDeclaration?.hasQuestionToken?.(),
-        description: description || undefined,
         tags,
       });
     }
   }
 
-  return { props, transforms: { rotate, translate, scale } };
+  return { props, transforms: { rotate, scale, translate } };
 }
 
 export function getFunctionPropTypes(
@@ -416,7 +416,7 @@ export function getFunctionPropTypes(
   const propTypes: (Prop & { defaultValue?: ExpressionValue })[] = [];
   const empty = {
     props: propTypes,
-    transforms: { rotate: false, translate: false, scale: false },
+    transforms: { rotate: false, scale: false, translate: false },
   };
   const { declaration } = getExportName(sourceFile, exportName);
   const type = declaration.getType();
@@ -493,13 +493,13 @@ export function getFunctionPropTypes(
 
     propTypes.push({
       ...unrollType(propType),
+      description: description || undefined,
       name: propName,
       required: !propDeclaration?.hasQuestionToken?.(),
-      description: description || undefined,
       tags,
       ...(defaultValue ? { defaultValue } : undefined),
     });
   }
 
-  return { props: propTypes, transforms: { rotate, translate, scale } };
+  return { props: propTypes, transforms: { rotate, scale, translate } };
 }

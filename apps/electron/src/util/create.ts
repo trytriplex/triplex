@@ -4,18 +4,18 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { type BrowserWindow, dialog, Notification } from "electron";
 import { basename } from "node:path";
 import { create } from "create-triplex-project";
+// eslint-disable-next-line import/no-extraneous-dependencies
+import { dialog, Notification, type BrowserWindow } from "electron";
+import { createPkgManagerDialog } from "./dialog";
 import { env } from "./env";
 import { indeterminate } from "./progress-bar";
-import { createPkgManagerDialog } from "./dialog";
 
 export async function showCreateDialog() {
   const { canceled, filePaths } = await dialog.showOpenDialog({
-    properties: ["createDirectory", "openDirectory"],
     buttonLabel: "Create",
+    properties: ["createDirectory", "openDirectory"],
   });
 
   if (canceled || !filePaths[0]) {
@@ -31,8 +31,8 @@ export async function createProject(window: BrowserWindow, path: string) {
   let command: "npm" | "yarn" | "pnpm";
 
   const result = await createPkgManagerDialog(window, {
-    message: "Select a package manager",
     detail: "If you're unsure select npm.",
+    message: "Select a package manager",
   });
 
   if (result === false) {
@@ -44,19 +44,19 @@ export async function createProject(window: BrowserWindow, path: string) {
   const complete = indeterminate(window);
 
   new Notification({
-    title: "Creating project",
     body: "Hold tight we're creating your new project and installing dependencies.",
+    title: "Creating project",
   }).show();
 
   window.webContents.send("window-state-change", "disabled");
 
   try {
     await create({
-      name,
-      env,
-      target: "app",
       cwd: path,
+      env,
+      name,
       packageManager: command,
+      target: "app",
     });
     return true;
   } finally {

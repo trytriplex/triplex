@@ -11,6 +11,7 @@ module.exports = {
     "./nextra-triplex/**/*.{tsx,mdx}",
     "./theme.config.tsx",
   ],
+  plugins: [],
   theme: {
     fontFamily: {
       mono: [
@@ -43,5 +44,4 @@ module.exports = {
       ],
     },
   },
-  plugins: [],
 };

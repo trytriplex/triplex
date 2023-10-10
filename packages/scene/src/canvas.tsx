@@ -11,7 +11,7 @@ export function Canvas({ children }: { children: React.ReactNode }) {
     <RCanvas
       id="editor-canvas"
       shadows
-      style={{ position: "absolute", inset: 0 }}
+      style={{ inset: 0, position: "absolute" }}
     >
       {children}
     </RCanvas>

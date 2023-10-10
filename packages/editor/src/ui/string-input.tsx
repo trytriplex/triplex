@@ -16,21 +16,21 @@ import { sentenceCase } from "../util/string";
 const noop = () => {};
 
 export function StringInput({
-  defaultValue,
-  name,
-  onConfirm = noop,
-  onChange = noop,
-  required,
-  label,
   autoFocus,
+  defaultValue,
+  label,
+  name,
+  onChange = noop,
+  onConfirm = noop,
+  required,
 }: {
-  label?: string;
+  autoFocus?: boolean;
   defaultValue?: string;
-  required?: boolean;
+  label?: string;
   name: string;
   onChange?: (value: string | undefined) => void;
   onConfirm?: (value: string | undefined) => void;
-  autoFocus?: boolean;
+  required?: boolean;
 }) {
   const [value, setValue] = useState(defaultValue);
 
@@ -65,26 +65,26 @@ export function StringInput({
   return (
     <div className="group flex w-full items-center rounded-md border border-transparent bg-white/5 focus-within:border-blue-400 hover:bg-white/10">
       <input
-        autoFocus={autoFocus}
         aria-label={label}
+        autoFocus={autoFocus}
+        className="w-full bg-transparent px-1.5 py-0.5 text-sm text-neutral-300 outline-none [color-scheme:dark] placeholder:italic placeholder:text-neutral-500"
+        data-testid={`string-${defaultValue}`}
+        defaultValue={defaultValue}
+        id={name}
+        key={defaultValue}
+        onBlur={onBlurHandler}
+        onChange={onChangeHandler}
         placeholder={label ? sentenceCase(label) : undefined}
         required={required}
-        key={defaultValue}
-        data-testid={`string-${defaultValue}`}
-        id={name}
         type="text"
-        defaultValue={defaultValue}
-        onChange={onChangeHandler}
-        onBlur={onBlurHandler}
-        className="w-full bg-transparent px-1.5 py-0.5 text-sm text-neutral-300 outline-none [color-scheme:dark] placeholder:italic placeholder:text-neutral-500"
       />
 
       {!required && value && (
         <IconButton
           className="hidden group-focus-within:block group-hover:block"
+          icon={Cross2Icon}
           onClick={onClear}
           size="tight"
-          icon={Cross2Icon}
           title="Clear value"
         />
       )}

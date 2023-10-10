@@ -4,14 +4,14 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { useLazySubscription } from "@triplex/ws-client";
 import { Suspense, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useLazySubscription } from "@triplex/ws-client";
-import { useEditor } from "../stores/editor";
 import { cn } from "../ds/cn";
 import { Drawer } from "../ds/drawer";
-import { useOverlayStore } from "../stores/overlay";
 import { ScrollContainer } from "../ds/scroll-container";
+import { useEditor } from "../stores/editor";
+import { useOverlayStore } from "../stores/overlay";
 import { StringInput } from "./string-input";
 
 function normalize(str: string | undefined): string {
@@ -24,7 +24,7 @@ function normalize(str: string | undefined): string {
 
 function Scenes({ filter = "" }: { filter?: string }) {
   const files = useLazySubscription("/scene");
-  const { path, exportName } = useEditor();
+  const { exportName, path } = useEditor();
   const { show } = useOverlayStore();
 
   function matchesFilter(
@@ -35,7 +35,7 @@ function Scenes({ filter = "" }: { filter?: string }) {
       return true;
     }
 
-    if (file.exports.find((exp) => normalize(exp.name).includes(filter))) {
+    if (file.exports.some((exp) => normalize(exp.name).includes(filter))) {
       return true;
     }
 
@@ -62,17 +62,17 @@ function Scenes({ filter = "" }: { filter?: string }) {
 
             {file.exports.map((exp) => (
               <Link
-                key={exp.exportName}
-                to={{
-                  search: `?path=${file.path}&exportName=${exp.exportName}`,
-                }}
-                onClick={() => show(false)}
                 className={cn([
                   path === file.path && exportName === exp.exportName
                     ? "bg-neutral-800 text-blue-400"
                     : "text-neutral-300",
                   "block select-none rounded-sm px-2 py-0.5 text-base outline-1 outline-blue-400 hover:bg-white/5 focus-visible:outline active:bg-white/10",
                 ])}
+                key={exp.exportName}
+                onClick={() => show(false)}
+                to={{
+                  search: `?path=${file.path}&exportName=${exp.exportName}`,
+                }}
               >
                 <div>{exp.name}</div>
               </Link>
@@ -85,7 +85,7 @@ function Scenes({ filter = "" }: { filter?: string }) {
 }
 
 export function ScenesDrawer() {
-  const { shown, show } = useOverlayStore();
+  const { show, shown } = useOverlayStore();
   const [filter, setFilter] = useState<string | undefined>();
 
   useEffect(() => {
@@ -96,11 +96,11 @@ export function ScenesDrawer() {
 
   return (
     <Drawer
-      title="Files"
-      open={shown === "open-scene"}
       onClose={() => {
         show(false);
       }}
+      open={shown === "open-scene"}
+      title="Files"
     >
       <Suspense
         fallback={<div className="p-4 text-neutral-400">Loading...</div>}
@@ -108,9 +108,9 @@ export function ScenesDrawer() {
         <div className="px-3 py-2">
           <StringInput
             autoFocus
+            label="Filter components..."
             name="component-filter"
             onChange={(value) => setFilter(normalize(value))}
-            label="Filter components..."
           />
         </div>
 

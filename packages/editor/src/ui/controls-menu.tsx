@@ -6,19 +6,19 @@
  */
 import {
   AllSidesIcon,
-  TransformIcon,
   AngleIcon,
-  GridIcon,
   ExitIcon,
+  GridIcon,
+  TransformIcon,
 } from "@radix-ui/react-icons";
-import { listen, compose } from "@triplex/bridge/host";
+import { compose, listen } from "@triplex/bridge/host";
 import { useEffect, useRef, useState } from "react";
 import { IconButton } from "../ds/button";
 import { useScene } from "../stores/scene";
 
 const cameraTitles = {
-  perspective: "Switch to orthographic",
   orthographic: "Switch to perspective",
+  perspective: "Switch to orthographic",
   user: "Exit camera",
 };
 
@@ -30,7 +30,7 @@ export function ControlsMenu() {
     "perspective" | "orthographic" | "user" | undefined
   >();
   const lastKnownTriplexCamera = useRef<"perspective" | "orthographic">();
-  const { setTransform, setCameraType } = useScene();
+  const { setCameraType, setTransform } = useScene();
 
   useEffect(() => {
     return compose([
@@ -52,37 +52,25 @@ export function ControlsMenu() {
   return (
     <div className="pointer-events-auto mx-auto mt-auto flex rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1">
       <IconButton
-        isSelected={mode === "translate"}
-        title="Translate (T)"
         icon={AllSidesIcon}
+        isSelected={mode === "translate"}
         onClick={() => setTransform("translate")}
+        title="Translate (T)"
       />
       <IconButton
-        isSelected={mode === "rotate"}
-        title="Rotate (R)"
         icon={AngleIcon}
+        isSelected={mode === "rotate"}
         onClick={() => setTransform("rotate")}
+        title="Rotate (R)"
       />
       <IconButton
-        isSelected={mode === "scale"}
-        title="Scale (S)"
         icon={TransformIcon}
+        isSelected={mode === "scale"}
         onClick={() => setTransform("scale")}
+        title="Scale (S)"
       />
       <div className="-my-1 mx-1 w-[1px] bg-neutral-800" />
       <IconButton
-        isSelected={camera === "user"}
-        onClick={() => {
-          if (camera === "user" && lastKnownTriplexCamera.current) {
-            setCameraType(lastKnownTriplexCamera.current);
-          } else {
-            const nextCamera =
-              camera === "perspective" ? "orthographic" : "perspective";
-            setCameraType(nextCamera);
-            lastKnownTriplexCamera.current = nextCamera;
-          }
-        }}
-        title={camera ? cameraTitles[camera] : ""}
         icon={
           camera === "user"
             ? ExitIcon
@@ -98,6 +86,18 @@ export function ControlsMenu() {
                 </div>
               )
         }
+        isSelected={camera === "user"}
+        onClick={() => {
+          if (camera === "user" && lastKnownTriplexCamera.current) {
+            setCameraType(lastKnownTriplexCamera.current);
+          } else {
+            const nextCamera =
+              camera === "perspective" ? "orthographic" : "perspective";
+            setCameraType(nextCamera);
+            lastKnownTriplexCamera.current = nextCamera;
+          }
+        }}
+        title={camera ? cameraTitles[camera] : ""}
       />
     </div>
   );

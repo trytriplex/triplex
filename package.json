@@ -25,28 +25,24 @@
     "electron:build-targets": " cross-env TRIPLEX_TARGET=electron pnpm --filter @triplex/* --filter create-triplex-project build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false pnpm --filter @triplex/electron build-targets",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "install-git-hooks": "husky install",
-    "lint": "eslint ./",
+    "lint": "eslint ./ --cache",
     "test": "vitest",
     "typedef": "pnpm --filter @triplex/* --filter create-triplex-project typedef"
   },
   "lint-staged": {
-    "apps/electron/**/*.{ts,tsx,yml}": "pnpm electron:build-targets",
-    "packages/{client,editor,scene,server}/**/*.{ts,tsx}": "pnpm electron:build-targets"
+    "*.{ts,tsx}": "eslint ./ --cache --fix"
   },
   "dependencies": {
     "@adeira/monorepo-shipit": "^0.4.0",
     "@changesets/cli": "^2.26.0",
+    "@ianvs/prettier-plugin-sort-imports": "^4.1.0",
+    "@nkzw/eslint-config": "^1.8.0",
     "@swc/core": "^1.3.28",
     "@triplex/run": "workspace:*",
-    "@typescript-eslint/eslint-plugin": "^5.52.0",
-    "@typescript-eslint/parser": "^5.52.0",
     "create-triplex-project": "workspace:*",
     "cross-env": "^7.0.3",
-    "eslint": "^8.34.0",
+    "eslint": "^8.51.0",
     "eslint-plugin-header": "^3.1.1",
-    "eslint-plugin-import": "^2.27.5",
-    "eslint-plugin-react": "^7.32.2",
-    "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.3",
     "jsdom": "^21.1.0",
     "lint-staged": "^13.2.2",
@@ -57,7 +53,7 @@
     "react-three-test": "*",
     "rimraf": "^5.0.0",
     "typescript": "^4.9.4",
-    "vitest": "^0.30.1"
+    "vitest": "^0.34.6"
   },
   "packageManager": "pnpm@8.6.1",
   "engines": {

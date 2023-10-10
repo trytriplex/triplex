@@ -7,9 +7,9 @@
 import { readdir } from "node:fs/promises";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import { BrowserWindow, Notification } from "electron";
+import { createPkgManagerDialog } from "./dialog";
 import { exec } from "./exec";
 import { indeterminate } from "./progress-bar";
-import { createPkgManagerDialog } from "./dialog";
 
 export async function ensureDepsInstall(
   cwd: string,
@@ -32,9 +32,9 @@ export async function ensureDepsInstall(
   } else {
     // Unknown package manager, ask what package manager to use.
     const result = await createPkgManagerDialog(window, {
-      message: "Select a package manager",
       detail:
         "We couldn't detect the package manager to use, if you're unsure select npm.",
+      message: "Select a package manager",
     });
     if (result === false) {
       return false;
@@ -46,8 +46,8 @@ export async function ensureDepsInstall(
   const complete = indeterminate(window, signal);
 
   new Notification({
-    title: "Installing dependencies",
     body: "Hold tight we're installing dependencies for your project.",
+    title: "Installing dependencies",
   }).show();
 
   window.webContents.send("window-state-change", "disabled");

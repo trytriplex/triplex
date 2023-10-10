@@ -11,33 +11,18 @@ const emptyProviderId = "triplex:empty-provider.tsx";
 const hmrImportId = "triplex:hmr-import";
 
 export function scenePlugin({
-  cwd,
   components,
+  cwd,
   files,
   provider = emptyProviderId,
 }: {
-  cwd: string;
   components: string[];
+  cwd: string;
   files: string[];
   provider: string | undefined;
 }) {
   return {
-    name: "triplex:scene-glob-plugin",
     enforce: "pre",
-    resolveId(id: string) {
-      if (id === sceneFrameId) {
-        return sceneFrameId;
-      }
-
-      if (id === hmrImportId) {
-        // Return the id as a virtual module so no other plugins transform it.
-        return "\0" + hmrImportId;
-      }
-
-      if (id === emptyProviderId) {
-        return emptyProviderId;
-      }
-    },
     async load(id: string) {
       if (id === emptyProviderId) {
         return scripts.defaultProvider;
@@ -73,6 +58,21 @@ export function scenePlugin({
 
       if (id === "\0" + hmrImportId) {
         return scripts.dynamicImportHMR;
+      }
+    },
+    name: "triplex:scene-glob-plugin",
+    resolveId(id: string) {
+      if (id === sceneFrameId) {
+        return sceneFrameId;
+      }
+
+      if (id === hmrImportId) {
+        // Return the id as a virtual module so no other plugins transform it.
+        return "\0" + hmrImportId;
+      }
+
+      if (id === emptyProviderId) {
+        return emptyProviderId;
       }
     },
     transform(code: string, id: string) {

@@ -22,43 +22,43 @@ export interface OnWorldEventHandler {
 
 export interface EntityComponents {
   /**
-   * Entity tags
-   */
-  billboard?: true;
-  camera?: true;
-  dialog?: true;
-  focused?: true;
-  followPointer?: true;
-  item?: true;
-  kinematicBody?: true;
-  npc?: true;
-  player?: true;
-  pointer?: true;
-  rigidBody?: true;
-
-  /**
    * Entity components
    */
   activateDistance?: number;
+  /**
+   * Entity tags
+   */
+  billboard?: true;
   box?: BoundingBoxRef;
+  camera?: true;
   count?: number;
   description?: string;
+  dialog?: true;
+  focused?: true;
+  followPointer?: true;
   gravityAcceleration?: number;
   inventory?: Partial<Record<Item, number>>;
+
+  item?: true;
+  kinematicBody?: true;
   name?: string;
+  npc?: true;
   offset?: VectorXyz;
+  /**
+   * Entity callbacks
+   */
+  onWorldEvent?: OnWorldEventHandler;
   parent?: EntityComponents;
+  player?: true;
   playerNear?: boolean;
+  pointer?: true;
   rest?: number;
+  rigidBody?: true;
   sceneObject?: { current: Object3D };
   speed?: number;
   state?: "moving" | "idle";
   target?: VectorXyz;
   velocity?: VectorXyz;
-  zoom?: number;
 
-  /**
-   * Entity callbacks
-   */
-  onWorldEvent?: OnWorldEventHandler;
+  zoom?: number;
 }

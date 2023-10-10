@@ -5,14 +5,15 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { prompt } from "enquirer";
-import { exec as execCb } from "child_process";
-import { promisify } from "util";
+import { exec as execCb } from "node:child_process";
+import { promisify } from "node:util";
 import { program } from "@commander-js/extra-typings";
+import { prompt } from "enquirer";
 import { version } from "../package.json";
 import { init } from "./init";
 
 /* eslint-disable no-irregular-whitespace */
+// eslint-disable-next-line no-console
 console.log(`
  ▀█▀ █▀█ █ █▀█ █░░ █▀▀ ▀▄▀
  ░█░ █▀▄ █ █▀▀ █▄▄ ██▄ █░█
@@ -69,18 +70,18 @@ async function main() {
           pkgManager: "npm" | "pnpm" | "yarn";
         }>([
           {
-            name: "name",
-            type: "text",
-            required: true,
             initial: "my-triplex-project",
             message: "What should we call your project?",
+            name: "name",
+            required: true,
+            type: "text",
           },
           {
-            name: "pkgManager",
-            type: "select",
-            required: true,
             choices: ["npm", "pnpm", "yarn"],
             message: "What package manager do you use?",
+            name: "pkgManager",
+            required: true,
+            type: "select",
           },
         ]);
 
@@ -90,13 +91,13 @@ async function main() {
       }
 
       try {
-        const { openPath, dir } = await init({
-          version,
-          pkgManager: packageManager,
-          name: projectName,
-          target: "node",
-          mode,
+        const { dir, openPath } = await init({
           cwd,
+          mode,
+          name: projectName,
+          pkgManager: packageManager,
+          target: "node",
+          version,
         });
 
         if (mode === "non-interactive") {
@@ -105,10 +106,10 @@ async function main() {
 
         const result = await prompt<{ start: boolean }>([
           {
-            message: "Open an example scene in the editor?",
-            type: "confirm",
-            name: "start",
             initial: "Y",
+            message: "Open an example scene in the editor?",
+            name: "start",
+            type: "confirm",
           },
         ]);
 
@@ -126,8 +127,9 @@ async function main() {
 
           await p;
         }
-      } catch (e) {
-        console.log(e);
+      } catch (error) {
+        // eslint-disable-next-line no-console
+        console.log(error);
         process.exit(1);
       }
     });

@@ -9,8 +9,8 @@ import { Vector3Tuple, type Group } from "three";
 import { useRefs } from "../../use-refs";
 
 interface ExplodingBoxProps {
-  rotation?: Vector3Tuple;
   position?: Vector3Tuple;
+  rotation?: Vector3Tuple;
   stage?: boolean;
 }
 
@@ -18,7 +18,7 @@ const increments = Array(100)
   .fill(undefined)
   .map((_, index) => (1 / 100) * (index + 1));
 
-export function ExplodingBox({ rotation, stage, position }: ExplodingBoxProps) {
+export function ExplodingBox({ position, rotation, stage }: ExplodingBoxProps) {
   const [side1, side2, side3, side4, side5, side6] = useRefs<Group>();
 
   useLayoutEffect(() => {
@@ -83,19 +83,19 @@ export function ExplodingBox({ rotation, stage, position }: ExplodingBoxProps) {
   }, [side1, side2, side3, side4, side5, side6]);
 
   return (
-    <group scale={4} rotation={rotation} position={position}>
+    <group position={position} rotation={rotation} scale={4}>
       <group ref={side1}>
-        <mesh receiveShadow castShadow position={[0, 0, 0.5]}>
+        <mesh castShadow position={[0, 0, 0.5]} receiveShadow>
           <boxGeometry />
           <meshStandardMaterial color={"#739dd3"} />
         </mesh>
       </group>
       <group ref={side2}>
         <mesh
-          receiveShadow
           castShadow
-          rotation={[-1.5707963267948966, 0, 0]}
           position={[0, 1, -0.5]}
+          receiveShadow
+          rotation={[-1.570_796_326_794_896_6, 0, 0]}
         >
           <boxGeometry />
           <meshStandardMaterial color={"#739dd3"} />
@@ -103,12 +103,13 @@ export function ExplodingBox({ rotation, stage, position }: ExplodingBoxProps) {
       </group>
       <group ref={side3}>
         <mesh
-          receiveShadow
           castShadow
-          rotation={[
-            -1.570796326794897, 1.5707963267948966, -1.570796326794897,
-          ]}
           position={[1, 0, -0.5]}
+          receiveShadow
+          rotation={[
+            -1.570_796_326_794_897, 1.570_796_326_794_896_6,
+            -1.570_796_326_794_897,
+          ]}
         >
           <boxGeometry />
           <meshStandardMaterial color={"#739dd3"} />
@@ -116,10 +117,11 @@ export function ExplodingBox({ rotation, stage, position }: ExplodingBoxProps) {
       </group>
       <group ref={side4}>
         <mesh
-          rotation={[0, -1.5707963267948966, 0]}
           position={[
-            0.1673300519996433, 0.45803043058036, -0.08266994800035676,
+            0.167_330_051_999_643_3, 0.458_030_430_580_36,
+            -0.082_669_948_000_356_76,
           ]}
+          rotation={[0, -1.570_796_326_794_896_6, 0]}
         >
           <boxGeometry />
           <meshStandardMaterial color={"#739dd3"} />
@@ -127,10 +129,11 @@ export function ExplodingBox({ rotation, stage, position }: ExplodingBoxProps) {
       </group>
       <group ref={side5}>
         <mesh
-          rotation={[3.141592653589793, 0, 0]}
           position={[
-            0.4319990347831031, 0.45614565417260733, -0.318000965216897,
+            0.431_999_034_783_103_1, 0.456_145_654_172_607_33,
+            -0.318_000_965_216_897,
           ]}
+          rotation={[3.141_592_653_589_793, 0, 0]}
         >
           <boxGeometry />
           <meshStandardMaterial color={"#739dd3"} />
@@ -138,10 +141,11 @@ export function ExplodingBox({ rotation, stage, position }: ExplodingBoxProps) {
       </group>
       <group ref={side6}>
         <mesh
-          rotation={[1.5707963267948966, 0, 0]}
           position={[
-            0.293634022734962, 0.4037441758220694, -0.20636597726503814,
+            0.293_634_022_734_962, 0.403_744_175_822_069_4,
+            -0.206_365_977_265_038_14,
           ]}
+          rotation={[1.570_796_326_794_896_6, 0, 0]}
         >
           <boxGeometry />
           <meshStandardMaterial color={"#739dd3"} />

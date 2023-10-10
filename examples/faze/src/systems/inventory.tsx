@@ -4,7 +4,6 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { DOM } from "../utils/tunnel";
 import { useEntities } from "miniplex/react";
 import { useEffect, useState } from "react";
 import { Item, items } from "../ecs/components/item";
@@ -14,6 +13,7 @@ import {
   useActivePlayerInventory,
   world,
 } from "../ecs/store";
+import { DOM } from "../utils/tunnel";
 
 function ItemButton({
   count,
@@ -45,12 +45,12 @@ function ItemButton({
       world.remove(activeItem);
     } else {
       world.add({
-        name: id,
         count,
         focused: true,
-        item: true,
-        pointer: true,
         followPointer: true,
+        item: true,
+        name: id,
+        pointer: true,
       });
     }
   };
@@ -58,10 +58,7 @@ function ItemButton({
   return (
     <button
       onClick={onItemClickHandler}
-      title={itemData.description}
       style={{
-        userSelect: "none",
-        cursor: "pointer",
         background: `linear-gradient(
           to top left,
           rgba(0,0,0,0) 0%,
@@ -79,9 +76,12 @@ function ItemButton({
           rgba(0,0,0,0) 100%
         )`,
         border: "2px solid black",
+        cursor: "pointer",
         height: 100,
+        userSelect: "none",
         width: 100,
       }}
+      title={itemData.description}
     >
       {itemData.name} {count > 1 ? `(${count})` : undefined}
     </button>
@@ -124,10 +124,10 @@ function Inventory({ onClose }: { onClose: () => void }) {
       {playerItems.length === 0 && "No items!"}
       {playerItems.map(([key, itemCount]) => (
         <ItemButton
-          onCombined={() => forceRefresh((prev) => prev + 1)}
-          key={key}
-          id={key as Item}
           count={itemCount}
+          id={key as Item}
+          key={key}
+          onCombined={() => forceRefresh((prev) => prev + 1)}
         />
       ))}
     </div>
@@ -135,11 +135,11 @@ function Inventory({ onClose }: { onClose: () => void }) {
 }
 
 export function InventoryIcon({
-  open,
   onToggle,
+  open,
 }: {
-  open: boolean;
   onToggle: () => void;
+  open: boolean;
 }) {
   const { entities } = useEntities(world.with("npc", "focused"));
   const disableInventory = entities.length > 0;
@@ -165,7 +165,6 @@ export function InventoryIcon({
           disabled={disableInventory}
           onClick={onToggle}
           style={{
-            userSelect: "none",
             background: `linear-gradient(
               to top left,
               rgba(0,0,0,0) 0%,
@@ -183,11 +182,12 @@ export function InventoryIcon({
               rgba(0,0,0,0) 100%
             )`,
             border: "2px solid black",
-            height: 100,
-            width: 100,
-            opacity: disableInventory ? 0 : 1,
             cursor: disableInventory ? "not-allowed" : "pointer",
+            height: 100,
+            opacity: disableInventory ? 0 : 1,
             pointerEvents: "auto",
+            userSelect: "none",
+            width: 100,
           }}
         />
       </div>

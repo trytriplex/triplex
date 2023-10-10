@@ -4,28 +4,28 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { join } from "node:path";
 import react from "@vitejs/plugin-react";
 import express from "express";
-import { join } from "path";
 import tsconfigPaths from "vite-tsconfig-paths";
+import triplexBabelPlugin from "./babel-plugin";
 import { scenePlugin } from "./scene-plugin";
 import { createHTML } from "./templates";
-import triplexBabelPlugin from "./babel-plugin";
 
 export async function createServer({
   components,
-  publicDir,
-  files,
   cwd = process.cwd(),
-  target,
+  files,
   provider,
+  publicDir,
+  target,
 }: {
-  target: "web" | "electron";
-  cwd?: string;
   components: string[];
-  publicDir?: string;
+  cwd?: string;
   files: string[];
   provider?: string;
+  publicDir?: string;
+  target: "web" | "electron";
 }) {
   const normalizedCwd = cwd.replaceAll("\\", "/");
   const tsConfig = join(normalizedCwd, "tsconfig.json");
@@ -34,37 +34,37 @@ export async function createServer({
   const { default: glsl } = await import("vite-plugin-glsl");
 
   const vite = await createViteServer({
+    appType: "custom",
     configFile: false,
+    define: {
+      __TRIPLEX_BASE_URL__: `"http://localhost:3333"`,
+      __TRIPLEX_CWD__: `"${normalizedCwd}"`,
+      __TRIPLEX_TARGET__: `"${target}"`,
+    },
+    logLevel: "error",
     plugins: [
       react({
         babel: { plugins: [triplexBabelPlugin(provider ? [provider] : [])] },
       }),
       glsl(),
-      scenePlugin({ cwd: normalizedCwd, files, components, provider }),
+      scenePlugin({ components, cwd: normalizedCwd, files, provider }),
       tsconfigPaths({ projects: [tsConfig] }),
     ],
-    define: {
-      __TRIPLEX_TARGET__: `"${target}"`,
-      __TRIPLEX_CWD__: `"${normalizedCwd}"`,
-      __TRIPLEX_BASE_URL__: `"http://localhost:3333"`,
-    },
-    root: normalizedCwd,
-    logLevel: "error",
-    appType: "custom",
     publicDir,
-    server: {
-      hmr: {
-        overlay: false,
-      },
-      middlewareMode: true,
-    },
     resolve: {
-      dedupe: ["@react-three/fiber", "three"],
       alias: {
         // The consuming app doesn't have @triplex/scene as a direct dependency
         // So we use `require.resolve()` to find it from this location instead.
         "@triplex/scene": require.resolve("@triplex/scene"),
       },
+      dedupe: ["@react-three/fiber", "three"],
+    },
+    root: normalizedCwd,
+    server: {
+      hmr: {
+        overlay: false,
+      },
+      middlewareMode: true,
     },
   });
 
@@ -76,9 +76,9 @@ export async function createServer({
       const html = await vite.transformIndexHtml("scene", template);
 
       res.status(200).set({ "Content-Type": "text/html" }).end(html);
-    } catch (e) {
-      vite.ssrFixStacktrace(e as Error);
-      next(e);
+    } catch (error) {
+      vite.ssrFixStacktrace(error as Error);
+      next(error);
     }
   });
 

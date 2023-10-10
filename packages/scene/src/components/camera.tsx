@@ -4,6 +4,8 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { useFrame } from "@react-three/fiber";
+import { listen, send } from "@triplex/bridge/client";
 import {
   createContext,
   useContext,
@@ -13,14 +15,12 @@ import {
   useRef,
   useState,
 } from "react";
-import { useFrame } from "@react-three/fiber";
+import { Layers, Vector3, Vector3Tuple } from "three";
 import {
   OrbitControls,
   OrthographicCamera,
   PerspectiveCamera,
 } from "triplex-drei";
-import { Layers, Vector3, Vector3Tuple } from "three";
-import { listen, send } from "@triplex/bridge/client";
 
 function frustumHeightAtDistance(
   camera: THREE.PerspectiveCamera,
@@ -43,7 +43,7 @@ interface CameraContextType {
   controls: React.MutableRefObject<{ enabled: boolean } | null>;
   setCamera: (
     camera: THREE.OrthographicCamera | THREE.PerspectiveCamera,
-    data: { line: number; column: number; path: string }
+    data: { column: number; line: number; path: string }
   ) => void;
 }
 
@@ -58,15 +58,15 @@ export const useCamera = () => {
 };
 
 export function Camera({
-  position,
-  layers,
-  target,
   children,
+  layers,
+  position,
+  target,
 }: {
-  position: Vector3Tuple;
-  layers?: Layers;
-  target: Vector3Tuple;
   children?: React.ReactNode;
+  layers?: Layers;
+  position: Vector3Tuple;
+  target: Vector3Tuple;
 }) {
   // This is the source of truth for what camera is active.
   // When this is set it propagates to the editor frame in the effect.
@@ -151,24 +151,24 @@ export function Camera({
   return (
     <CameraContext.Provider value={context}>
       <PerspectiveCamera
-        name="__triplex_camera"
         layers={layers}
+        name="__triplex_camera"
         position={position}
         ref={perspectiveRef}
       />
       <OrthographicCamera
-        name="__triplex_camera"
         layers={layers}
-        ref={orthographicRef}
+        name="__triplex_camera"
         near={-10}
+        ref={orthographicRef}
       />
       {isTriplexCamera && (
         <OrbitControls
           // We don't want user land cameras to be able to be affected by these controls
           // So we explicitly set the camera instead of relying on "default camera" behaviour.
           camera={activeCamera}
-          target={target}
           ref={controlsRef}
+          target={target}
         />
       )}
       {children}

@@ -9,6 +9,7 @@ dist
 # testing
 coverage
 **/__test__/tmp
+.eslintcache
 
 # next.js
 .next/

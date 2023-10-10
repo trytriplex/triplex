@@ -18,11 +18,11 @@ export default function Sphere({
 }) {
   return (
     <RigidBody
+      canSleep={false}
+      colliders={"ball"}
       position={position}
       rotation={rotation}
       scale={scale}
-      colliders={"ball"}
-      canSleep={false}
     >
       <mesh castShadow={true} receiveShadow={true}>
         <sphereGeometry />

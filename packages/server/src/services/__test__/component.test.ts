@@ -4,27 +4,27 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { join } from "path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { rmSync } from "node:fs";
+import { join } from "node:path";
+import { SyntaxKind } from "ts-morph";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { getJsxElementAt, getJsxElementsPositions } from "../../ast/jsx";
+import { getExportName } from "../../ast/module";
 import { _createProject, createProject } from "../../ast/project";
+import { getJsxElementPropTypes } from "../../ast/type-infer";
 import {
   add,
-  upsertProp,
   commentComponent,
-  uncommentComponent,
   deleteCommentComponents,
   rename,
+  uncommentComponent,
+  upsertProp,
 } from "../component";
-import { getExportName } from "../../ast/module";
-import { getJsxElementAt, getJsxElementsPositions } from "../../ast/jsx";
-import { getJsxElementPropTypes } from "../../ast/type-infer";
-import { SyntaxKind } from "ts-morph";
 
 const cleanTmpDir = () => {
   try {
-    rmSync(join(__dirname, "tmp"), { recursive: true, force: true });
-  } catch (e) {
+    rmSync(join(__dirname, "tmp"), { force: true, recursive: true });
+  } catch {
     return;
   }
 };
@@ -105,10 +105,10 @@ describe("component service", () => {
     );
 
     const result = add(sourceFile, "EmptyFragment", {
-      type: "custom",
       exportName: "default",
       path: join(__dirname, "stub-component.tsx"),
       props: { color: "blurple" },
+      type: "custom",
     });
 
     expect(
@@ -125,9 +125,9 @@ describe("component service", () => {
     );
 
     add(sourceFile, "EmptyFragment", {
-      type: "host",
       name: "group",
       props: {},
+      type: "host",
     });
 
     const result = getExportName(
@@ -139,7 +139,7 @@ describe("component service", () => {
         return (
           <>
             <mesh
-              position={[1.23121231233123, 1.2321231233123, 1.121231213123123]}
+              position={[1.231_212_312_331_23, 1.232_123_123_312_3, 1.121_231_213_123_123]}
             ></mesh>
           <group /></>
         );
@@ -156,10 +156,10 @@ describe("component service", () => {
     );
 
     const result = add(sourceFile, "FragmentFragment", {
-      type: "custom",
       exportName: "default",
       path: join(__dirname, "stub-component.tsx"),
       props: { color: "red" },
+      type: "custom",
     });
 
     expect(
@@ -176,10 +176,10 @@ describe("component service", () => {
     );
 
     add(sourceFile, "EmptyFragment", {
-      type: "custom",
       exportName: "default",
       path: join(__dirname, "stub-component.tsx"),
       props: { color: "red" },
+      type: "custom",
     });
 
     const result = getExportName(
@@ -191,7 +191,7 @@ describe("component service", () => {
         return (
           <>
             <mesh
-              position={[1.23121231233123, 1.2321231233123, 1.121231213123123]}
+              position={[1.231_212_312_331_23, 1.232_123_123_312_3, 1.121_231_213_123_123]}
             ></mesh>
           <StubComponent color=\\"red\\"/></>
         );
@@ -208,10 +208,10 @@ describe("component service", () => {
     );
 
     add(sourceFile, "default", {
-      type: "custom",
       exportName: "Box",
       path: join(__dirname, "__mocks__/components/box.tsx"),
       props: {},
+      type: "custom",
     });
 
     expect(sourceFile.getText()).toContain(
@@ -228,10 +228,10 @@ describe("component service", () => {
     );
 
     add(sourceFile, "FragmentFragment", {
-      type: "custom",
       exportName: "NamedComponent",
       path: join(__dirname, "stub-component.tsx"),
       props: {},
+      type: "custom",
     });
 
     const result = getExportName(
@@ -254,10 +254,10 @@ describe("component service", () => {
     );
 
     add(sourceFile, "default", {
-      type: "custom",
       exportName: "Sphere",
       path: "@react-three/drei",
       props: {},
+      type: "custom",
     });
 
     expect(
@@ -277,10 +277,10 @@ describe("component service", () => {
     );
 
     add(sourceFile, "default", {
-      type: "custom",
       exportName: "Box",
       path: "@react-three/drei",
       props: {},
+      type: "custom",
     });
 
     expect(sourceFile.getText()).toContain(
@@ -299,10 +299,10 @@ describe("component service", () => {
     );
 
     add(sourceFile, "FragmentFragment", {
-      type: "custom",
       exportName: "NamedComponent",
       path: join(__dirname, "__mocks__/stub-component.tsx"),
       props: {},
+      type: "custom",
     });
 
     expect(sourceFile.getText()).toContain(
@@ -319,10 +319,10 @@ describe("component service", () => {
     );
 
     add(sourceFile, "Reuse", {
-      type: "custom",
       exportName: "default",
       path: join(__dirname, "__mocks__/add-prop.tsx"),
       props: {},
+      type: "custom",
     });
 
     expect(sourceFile.getText()).toContain('import Scene from "./add-prop";');
@@ -337,10 +337,10 @@ describe("component service", () => {
     );
 
     add(sourceFile, "default", {
-      type: "custom",
       exportName: "RoundedBox",
       path: "@react-three/drei",
       props: {},
+      type: "custom",
     });
 
     expect(
@@ -360,10 +360,10 @@ describe("component service", () => {
     );
 
     add(sourceFile, "FragmentFragment", {
-      type: "custom",
       exportName: "default",
       path: join(__dirname, "stub-component.tsx"),
       props: {},
+      type: "custom",
     });
 
     expect(sourceFile.getText()).toContain(
@@ -380,10 +380,10 @@ describe("component service", () => {
     );
 
     add(sourceFile, "FragmentFragment", {
-      type: "custom",
       exportName: "Box",
       path: "@react-three/drei",
       props: {},
+      type: "custom",
     });
 
     expect(sourceFile.getText()).toContain(
@@ -401,10 +401,10 @@ describe("component service", () => {
 
     expect(() => {
       add(sourceFile, "EmptyMesh", {
-        type: "custom",
         exportName: "NamedComponent",
         path: join(__dirname, "stub-component.tsx"),
         props: {},
+        type: "custom",
       });
     }).toThrow();
   });
@@ -425,9 +425,9 @@ describe("component service", () => {
 
     expect(jsxElement.getText()).toMatchInlineSnapshot(`
       "<RoundedBox
-              position={[0.283739024, -1.4629692187526093, -0.8870023805097036]}
+              position={[0.283_739_024, -1.462_969_218_752_609_3, -0.887_002_380_509_703_6]}
               rotation={[
-                2.1533738875424957, -0.4755261514452274, 0.22680789335122342,
+                2.153_373_887_542_495_7, -0.475_526_151_445_227_4, 0.226_807_893_351_223_42,
               ]} scale={[2, 3, 4]}
             />"
     `);
@@ -515,7 +515,7 @@ describe("component service", () => {
       "<RoundedBox
               position={[2, 3, 4]}
               rotation={[
-                2.1533738875424957, -0.4755261514452274, 0.22680789335122342,
+                2.153_373_887_542_495_7, -0.475_526_151_445_227_4, 0.226_807_893_351_223_42,
               ]}
             />"
     `);
@@ -563,30 +563,30 @@ describe("component service", () => {
 
     expect(getExportName(sourceFile, "default").declaration.getText())
       .toMatchInlineSnapshot(`
-      "export default function Scene() {
-        return (
-          <>
-            
-            <RoundedBox></RoundedBox>
+        "export default function Scene() {
+          return (
+            <>
+              
+              <RoundedBox></RoundedBox>
 
-            <RoundedBox
-              scale={[0.630216523313958, 0.6302165233139577, 0.6302165233139577]}
-              position={[
-                -2.813889551893372, 0.0017712872227060306, 2.1329409413977354,
-              ]}
-            />
+              <RoundedBox
+                position={[
+                  -2.813_889_551_893_372, 0.001_771_287_222_706_030_6, 2.132_940_941_397_735_4,
+                ]}
+                scale={[0.630_216_523_313_958, 0.630_216_523_313_957_7, 0.630_216_523_313_957_7]}
+              />
 
-            <RoundedBox
-              position={[3, 0, 2]}
-              rotation={[0, 0.25, 0]}
-              scale={[1, 1.5, 1]}
-            >
-              <meshStandardMaterial color=\\"purple\\" />
-            </RoundedBox>
-          </>
-        );
-      }"
-    `);
+              <RoundedBox
+                position={[3, 0, 2]}
+                rotation={[0, 0.25, 0]}
+                scale={[1, 1.5, 1]}
+              >
+                <meshStandardMaterial color=\\"purple\\" />
+              </RoundedBox>
+            </>
+          );
+        }"
+      `);
   });
 
   it("should transform commented out child when commenting out parent so it is valid JSX", () => {
@@ -673,12 +673,12 @@ describe("component service", () => {
       sourceFile,
       "default",
       {
-        type: "custom",
         exportName: "AddComponent",
         path: join(__dirname, "stub-component.tsx"),
         props: { color: "blurple" },
+        type: "custom",
       },
-      { action: "child", column: 7, line: 56, path: "", exportName: "" }
+      { action: "child", column: 7, exportName: "", line: 56, path: "" }
     );
 
     expect(result).toEqual({ column: 19, line: 56 });
@@ -707,12 +707,12 @@ describe("component service", () => {
       sourceFile,
       "default",
       {
-        type: "custom",
         exportName: "AddComponent",
         path: join(__dirname, "stub-component.tsx"),
         props: { color: "blurple" },
+        type: "custom",
       },
-      { action: "child", column: 7, line: 55, path: "", exportName: "" }
+      { action: "child", column: 7, exportName: "", line: 55, path: "" }
     );
 
     expect(result).toEqual({ column: 19, line: 55 });
@@ -741,21 +741,21 @@ describe("component service", () => {
       sourceFile,
       "default",
       {
-        type: "host",
         name: "boxGeometry",
         props: { color: "blurple" },
+        type: "host",
       },
-      { action: "child", column: 7, line: 55, path: "", exportName: "" }
+      { action: "child", column: 7, exportName: "", line: 55, path: "" }
     );
     const result = add(
       sourceFile,
       "default",
       {
-        type: "host",
         name: "boxGeometry",
         props: { color: "blurple" },
+        type: "host",
       },
-      { action: "child", column: 7, line: 55, path: "", exportName: "" }
+      { action: "child", column: 7, exportName: "", line: 55, path: "" }
     );
 
     expect(result).toEqual({ column: 49, line: 55 });
@@ -770,13 +770,14 @@ describe("component service", () => {
     const saveFile = () => project.save({});
     const addComponent = async (exportName: string) => {
       const pos = add(sourceFile, "Untitled", {
-        type: "custom",
         exportName,
         path: join(__dirname, "__mocks__", "room.tsx"),
         props: {},
+        type: "custom",
       });
       const element = getJsxElementAt(sourceFile, pos.line, pos.column);
       if (!element) {
+        // eslint-disable-next-line no-console
         console.log(
           `${exportName}@${pos.line}:${pos.column}\n`,
           sourceFile.getText()
@@ -797,7 +798,7 @@ describe("component service", () => {
     await addComponent("TableBox");
     await addComponent("WallpaperAndLights");
     await addComponent("Lamps");
-  }, 30000);
+  }, 30_000);
 
   it("should add a jsx element to an array function", () => {
     const project = _createProject({
@@ -808,9 +809,9 @@ describe("component service", () => {
     );
 
     add(sourceFile, "EmptyArrowFunction", {
-      type: "host",
       name: "group",
       props: {},
+      type: "host",
     });
 
     expect(
@@ -829,11 +830,11 @@ describe("component service", () => {
       sourceFile,
       "HeroScene",
       {
-        type: "host",
         name: "meshStandardMaterial",
         props: {},
+        type: "host",
       },
-      { action: "child", column: 7, line: 31, path: "", exportName: "" }
+      { action: "child", column: 7, exportName: "", line: 31, path: "" }
     );
 
     const createdElement = getJsxElementAt(
@@ -856,9 +857,9 @@ describe("component service", () => {
       );
 
       add(sourceFile, "ArrowFuncReturnGroup", {
-        type: "host",
         name: "group",
         props: {},
+        type: "host",
       });
 
       expect(
@@ -882,9 +883,9 @@ describe("component service", () => {
     );
 
     add(sourceFile, "EmptyGroup", {
-      type: "host",
       name: "group",
       props: {},
+      type: "host",
     });
 
     expect(getExportName(sourceFile, "EmptyGroup").declaration.getText())

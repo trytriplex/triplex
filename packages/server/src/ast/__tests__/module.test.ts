@@ -4,10 +4,10 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { join } from "path";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { getJsxElementAt } from "../jsx";
-import { getExportName, getElementFilePath } from "../module";
+import { getElementFilePath, getExportName } from "../module";
 import { _createProject } from "../project";
 
 describe("module", () => {
@@ -26,8 +26,8 @@ describe("module", () => {
     const path = getElementFilePath(sceneObject);
 
     expect(path).toEqual({
-      filePath: join(__dirname, "__mocks__", "box.tsx"),
       exportName: "default",
+      filePath: join(__dirname, "__mocks__", "box.tsx"),
     });
   });
 
@@ -142,7 +142,7 @@ describe("module", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/import-named.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 18, 7);
+    const sceneObject = getJsxElementAt(sourceFile, 17, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -150,8 +150,8 @@ describe("module", () => {
     const actual = getElementFilePath(sceneObject);
 
     expect(actual).toEqual({
-      filePath: join(__dirname, "__mocks__/box.tsx"),
       exportName: "default",
+      filePath: join(__dirname, "__mocks__/box.tsx"),
     });
   });
 
@@ -170,8 +170,8 @@ describe("module", () => {
     const actual = getElementFilePath(sceneObject);
 
     expect(actual).toEqual({
-      filePath: join(__dirname, "__mocks__/named.tsx"),
       exportName: "Named",
+      filePath: join(__dirname, "__mocks__/named.tsx"),
     });
   });
 
@@ -190,8 +190,8 @@ describe("module", () => {
     const actual = getElementFilePath(sceneObject);
 
     expect(actual).toEqual({
-      filePath: join(__dirname, "__mocks__/named.tsx"),
       exportName: "Named",
+      filePath: join(__dirname, "__mocks__/named.tsx"),
     });
   });
 
@@ -210,8 +210,8 @@ describe("module", () => {
     const actual = getElementFilePath(sceneObject);
 
     expect(actual).toEqual({
-      filePath: join(__dirname, "__mocks__/import-named.tsx"),
       exportName: "SceneAlt",
+      filePath: join(__dirname, "__mocks__/import-named.tsx"),
     });
   });
 
@@ -230,8 +230,8 @@ describe("module", () => {
     const actual = getElementFilePath(sceneObject);
 
     expect(actual).toEqual({
-      filePath: join(__dirname, "__mocks__/scene.tsx"),
       exportName: "SceneArrow",
+      filePath: join(__dirname, "__mocks__/scene.tsx"),
     });
   });
 
@@ -250,8 +250,8 @@ describe("module", () => {
     const actual = getElementFilePath(sceneObject);
 
     expect(actual).toEqual({
-      filePath: join(__dirname, "__mocks__/scene.tsx"),
       exportName: "SceneWrapped",
+      filePath: join(__dirname, "__mocks__/scene.tsx"),
     });
   });
 });

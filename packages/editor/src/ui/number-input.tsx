@@ -5,16 +5,16 @@
  * file in the root directory of this source tree.
  */
 import {
-  Cross2Icon,
   CaretLeftIcon,
   CaretRightIcon,
+  Cross2Icon,
 } from "@radix-ui/react-icons";
 import {
-  useRef,
-  useEffect,
-  useState,
-  useCallback,
   MouseEventHandler,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
 } from "react";
 import { IconButton } from "../ds/button";
 import { sentenceCase } from "../util/string";
@@ -50,7 +50,7 @@ function getIterations(
   delta: number,
   modifiers: { ctrl: boolean; shift: boolean }
 ) {
-  let iterations = Math.abs(delta);
+  const iterations = Math.abs(delta);
 
   if (modifiers.ctrl) {
     return 1;
@@ -75,35 +75,35 @@ function toNumber(
 }
 
 export function NumberInput({
-  testId,
   defaultValue,
   label,
   name,
   onChange,
   onConfirm,
   required,
+  testId,
   transformValue = { in: (value) => value, out: (value) => value },
 }: {
-  testId?: string;
   defaultValue?: number;
   label?: string;
   name: string;
   onChange: (value: number | undefined) => void;
   onConfirm: (value: number | undefined) => void;
   required?: boolean;
+  testId?: string;
   transformValue?: {
     in: (value: number | undefined) => number | undefined;
     out: (value: number | undefined) => number | undefined;
   };
 }) {
   const [isPointerLock, setIsPointerLock] = useState(false);
-  const [modifier, setModifier] = useState({ shift: false, ctrl: false });
+  const [modifier, setModifier] = useState({ ctrl: false, shift: false });
   const step = stepModifier(modifier);
   const isDragging = useRef(false);
   const ref = useRef<HTMLInputElement>(null!);
   const tags = usePropTags();
-  const max = toNumber(tags.max, Infinity);
-  const min = toNumber(tags.min, -Infinity);
+  const max = toNumber(tags.max, Number.POSITIVE_INFINITY);
+  const min = toNumber(tags.min, Number.NEGATIVE_INFINITY);
   const transformedDefaultValue = transformValue.in(defaultValue);
 
   const onChangeHandler = useCallback(() => {
@@ -282,8 +282,8 @@ export function NumberInput({
 
   return (
     <div
-      data-testid={isPointerLock ? "pointer-lock" : undefined}
       className="group relative flex w-full items-center rounded-md border border-transparent bg-white/5 px-4 focus-within:border-blue-400 focus-within:pl-1 focus-within:pr-0.5 hover:bg-white/10"
+      data-testid={isPointerLock ? "pointer-lock" : undefined}
     >
       <input
         className="peer w-full cursor-col-resize text-ellipsis bg-transparent py-0.5 text-center text-sm text-neutral-300 outline-none [color-scheme:dark] [font-variant-numeric:tabular-nums] placeholder:italic placeholder:text-neutral-500 focus:cursor-text focus:text-left"
@@ -310,10 +310,10 @@ export function NumberInput({
       <button
         aria-label={`Decrease by ${step}`}
         className="absolute bottom-0 left-0 top-0 flex w-4 cursor-default items-center justify-center text-neutral-300 opacity-20 hover:block hover:bg-white/5 hover:opacity-100 focus:block active:bg-white/10 peer-hover:opacity-100 peer-focus:hidden"
+        data-testid={testId && `${testId}-decrement`}
         onBlur={onBlurHandler}
         onClick={incrementDown}
         tabIndex={-1}
-        data-testid={testId && `${testId}-decrement`}
         type="button"
       >
         <CaretLeftIcon />
@@ -322,11 +322,11 @@ export function NumberInput({
       <button
         aria-label={`Increase by ${step}`}
         className="absolute bottom-0 right-0 top-0 flex w-4 cursor-default items-center justify-center text-neutral-300 opacity-20 hover:block hover:bg-white/5 hover:opacity-100 focus:block active:bg-white/10 peer-hover:opacity-100 peer-focus:hidden"
+        data-testid={testId && `${testId}-increment`}
         onBlur={onBlurHandler}
         onClick={incrementUp}
         tabIndex={-1}
         type="button"
-        data-testid={testId && `${testId}-increment`}
       >
         <CaretRightIcon />
       </button>
@@ -337,8 +337,8 @@ export function NumberInput({
           icon={Cross2Icon}
           onClick={clearInputValue}
           size="tight"
-          title="Clear value"
           testId={testId && `${testId}-clear`}
+          title="Clear value"
         />
       )}
     </div>

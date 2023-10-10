@@ -5,11 +5,11 @@
  * file in the root directory of this source tree.
  */
 // @vitest-environment jsdom
-import { describe, expect, it } from "vitest";
+import { useEffect, useRef } from "react";
 import { render } from "react-three-test";
 import { PerspectiveCamera } from "triplex-drei";
+import { describe, expect, it } from "vitest";
 import { Camera, useCamera } from "../camera";
-import { useEffect, useRef } from "react";
 
 describe("camera", () => {
   it("should default to perspective camera", async () => {
@@ -46,7 +46,7 @@ describe("camera", () => {
         setCamera(ref.current!, { column: -1, line: -1, path: "" });
       }, [setCamera]);
 
-      return <PerspectiveCamera ref={ref} makeDefault />;
+      return <PerspectiveCamera makeDefault ref={ref} />;
     }
     const { scene } = await render(
       <>

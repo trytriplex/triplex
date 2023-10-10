@@ -5,14 +5,14 @@
  * file in the root directory of this source tree.
  */
 // @vitest-environment jsdom
-import { afterEach, describe, expect, it, vi } from "vitest";
 import {
-  render,
-  fireEvent,
   cleanup,
+  fireEvent,
+  render,
   waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react";
+import { afterEach, describe, expect, it, vi } from "vitest";
 import { NumberInput } from "../number-input";
 import { PropTagContext } from "../prop-input";
 
@@ -24,8 +24,8 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
-        name="rotation"
         defaultValue={10}
+        name="rotation"
         onChange={change}
         onConfirm={confirm}
         transformValue={{
@@ -45,8 +45,8 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
-        name="rotation"
         defaultValue={11}
+        name="rotation"
         onChange={change}
         onConfirm={confirm}
         transformValue={{
@@ -68,8 +68,8 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByLabelText } = render(
       <NumberInput
-        name="x"
         defaultValue={10}
+        name="x"
         onChange={change}
         onConfirm={confirm}
       />
@@ -88,8 +88,8 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByLabelText } = render(
       <NumberInput
-        name="x"
         defaultValue={10}
+        name="x"
         onChange={change}
         onConfirm={confirm}
       />
@@ -108,8 +108,8 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByLabelText } = render(
       <NumberInput
-        name="x"
         defaultValue={10}
+        name="x"
         onChange={change}
         onConfirm={confirm}
       />
@@ -126,8 +126,8 @@ describe("number input", () => {
   it("should focus the input when not initiating a drag", async () => {
     const { getByTestId } = render(
       <NumberInput
-        name="x"
         defaultValue={10}
+        name="x"
         onChange={() => {}}
         onConfirm={() => {}}
       />
@@ -144,8 +144,8 @@ describe("number input", () => {
   it("should not focus the input when initiating a drag", async () => {
     const { getByTestId } = render(
       <NumberInput
-        name="x"
         defaultValue={10}
+        name="x"
         onChange={() => {}}
         onConfirm={() => {}}
       />
@@ -165,8 +165,8 @@ describe("number input", () => {
       <>
         <iframe data-testid="iframe" />
         <NumberInput
-          name="x"
           defaultValue={10}
+          name="x"
           onChange={() => {}}
           onConfirm={() => {}}
         />
@@ -186,8 +186,8 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
-        name="x"
         defaultValue={10}
+        name="x"
         onChange={change}
         onConfirm={confirm}
       />
@@ -206,8 +206,8 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
-        name="x"
         defaultValue={10}
+        name="x"
         onChange={change}
         onConfirm={confirm}
       />
@@ -226,8 +226,8 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
-        name="x"
         defaultValue={10.2}
+        name="x"
         onChange={change}
         onConfirm={confirm}
       />
@@ -249,8 +249,8 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
-        name="x"
         defaultValue={10.2}
+        name="x"
         onChange={change}
         onConfirm={confirm}
       />
@@ -270,8 +270,8 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
-        name="x"
         defaultValue={10}
+        name="x"
         onChange={change}
         onConfirm={confirm}
       />
@@ -290,8 +290,8 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
-        name="x"
         defaultValue={10}
+        name="x"
         onChange={change}
         onConfirm={confirm}
       />
@@ -310,8 +310,8 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
-        name="x"
         defaultValue={10}
+        name="x"
         onChange={change}
         onConfirm={confirm}
       />
@@ -330,8 +330,8 @@ describe("number input", () => {
   it("should focus the input when clearing via the clear button", () => {
     const { getByLabelText, getByTestId } = render(
       <NumberInput
-        name="x"
         defaultValue={10}
+        name="x"
         onChange={() => {}}
         onConfirm={() => {}}
       />
@@ -350,8 +350,8 @@ describe("number input", () => {
     const { getByTestId } = render(
       <PropTagContext.Provider value={{ max: 100 }}>
         <NumberInput
-          name="x"
           defaultValue={10}
+          name="x"
           onChange={change}
           onConfirm={confirm}
         />
@@ -372,8 +372,8 @@ describe("number input", () => {
     const { getByTestId } = render(
       <PropTagContext.Provider value={{ min: 0 }}>
         <NumberInput
-          name="x"
           defaultValue={10}
+          name="x"
           onChange={change}
           onConfirm={confirm}
         />
@@ -393,8 +393,8 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
-        name="x"
         defaultValue={10}
+        name="x"
         onChange={change}
         onConfirm={confirm}
       />

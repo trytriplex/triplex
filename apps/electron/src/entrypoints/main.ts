@@ -4,7 +4,10 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import * as Sentry from "@sentry/electron/main";
+import { readdir } from "node:fs/promises";
+import { join } from "node:path";
+import process from "node:process";
+import { init } from "@sentry/electron/main";
 // eslint-disable-next-line import/no-extraneous-dependencies
 import {
   app,
@@ -15,17 +18,14 @@ import {
   MenuItemConstructorOptions,
   shell,
 } from "electron";
-import { readdir } from "node:fs/promises";
-import { join } from "node:path";
-import process from "node:process";
 import { autoUpdater } from "electron-updater";
-import { fork } from "../util/fork";
-import { logger, getLogPath } from "../util/log";
-import { ensureDepsInstall } from "../util/deps";
 import { createProject, showCreateDialog } from "../util/create";
+import { ensureDepsInstall } from "../util/deps";
+import { fork } from "../util/fork";
+import { getLogPath, logger } from "../util/log";
 
 if (process.env.TRIPLEX_ENV !== "development") {
-  Sentry.init({
+  init({
     dsn: "https://2dda5a93222a45468f0d672d11f356a7@o4505148024356864.ingest.sentry.io/4505148028092416",
   });
 }
@@ -54,8 +54,8 @@ function prepareMenu() {
   const listeners: ((id: string) => void)[] = [];
 
   const appMenu = {
-    role: "appMenu",
     label: app.name,
+    role: "appMenu",
     submenu: [
       { role: "about" },
       { type: "separator" },
@@ -73,14 +73,14 @@ function prepareMenu() {
     role: "fileMenu",
     submenu: [
       {
-        label: "Open Project...",
         id: "open-project",
+        label: "Open Project...",
       },
       { type: "separator" },
       {
-        label: "Close Project",
-        id: "close-project",
         enabled: false,
+        id: "close-project",
+        label: "Close Project",
       },
     ],
   } satisfies MenuItemConstructorOptions;
@@ -123,15 +123,8 @@ function prepareMenu() {
   resetMenu();
 
   return {
-    onMenuItemPress(callback: (id: string) => void) {
-      const index = listeners.push(callback);
-
-      return () => {
-        listeners.splice(index, 1);
-      };
-    },
-    resetMenu,
     connectMenuToRenderer(activeWindow: BrowserWindow) {
+      // eslint-disable-next-line unicorn/consistent-function-scoping
       const callback = (_: unknown, data: MenuItemConstructorOptions[]) => {
         const menu = Menu.buildFromTemplate(
           process.platform === "darwin" ? [appMenu, ...data] : data
@@ -147,6 +140,14 @@ function prepareMenu() {
         activeWindow.webContents.ipc.off("set-menu-bar", callback);
       };
     },
+    onMenuItemPress(callback: (id: string) => void) {
+      const index = listeners.push(callback);
+
+      return () => {
+        listeners.splice(index, 1);
+      };
+    },
+    resetMenu,
   };
 }
 
@@ -154,8 +155,8 @@ async function openProjectDialog(
   message?: string
 ): Promise<string | undefined> {
   const { canceled, filePaths } = await dialog.showOpenDialog({
-    properties: ["openDirectory"],
     message,
+    properties: ["openDirectory"],
     title: "Open Project",
   });
 
@@ -180,8 +181,8 @@ async function showSaveDialog(
   defaultPath: string
 ) {
   const { filePath } = await dialog.showSaveDialog(activeWindow, {
-    properties: ["showOverwriteConfirmation", "dontAddToRecent"],
     defaultPath,
+    properties: ["showOverwriteConfirmation", "dontAddToRecent"],
   });
 
   return filePath;
@@ -199,34 +200,32 @@ function applyWindowIpcHandlers(activeWindow: BrowserWindow) {
 async function openWelcomeScreen() {
   const window = new BrowserWindow({
     backgroundColor: "#171717",
-    titleBarStyle: "hidden",
-    titleBarOverlay: {
-      height: 32,
-      color: "#171717",
-      symbolColor: "#A3A3A3",
-    },
+    fullscreenable: false,
+    height: 408,
     maximizable: false,
     minimizable: false,
     resizable: false,
-    fullscreenable: false,
+    titleBarOverlay: {
+      color: "#171717",
+      height: 32,
+      symbolColor: "#A3A3A3",
+    },
+    titleBarStyle: "hidden",
     webPreferences: {
       preload: require.resolve("./preload.js"),
     },
     width: 520,
-    height: 408,
   });
 
-  if (process.env.TRIPLEX_ENV === "development") {
-    await window.loadURL(`http://localhost:${EDITOR_DEV_PORT}/welcome.html`);
-  } else {
-    await window.loadFile(require.resolve("@triplex/editor/dist/welcome.html"));
-  }
+  await (process.env.TRIPLEX_ENV === "development"
+    ? window.loadURL(`http://localhost:${EDITOR_DEV_PORT}/welcome.html`)
+    : window.loadFile(require.resolve("@triplex/editor/dist/welcome.html")));
 
   return window;
 }
 
 async function main() {
-  const { onMenuItemPress, resetMenu, connectMenuToRenderer } = prepareMenu();
+  const { connectMenuToRenderer, onMenuItemPress, resetMenu } = prepareMenu();
 
   let activeProjectWindow: BrowserWindow | undefined;
   let welcomeWindow: BrowserWindow | undefined;
@@ -255,21 +254,22 @@ async function main() {
 
     activeProjectWindow = new BrowserWindow({
       backgroundColor: "#171717",
-      titleBarStyle: "hidden",
-      show: false,
+      height: 720,
       paintWhenInitiallyHidden: false,
+      show: false,
       titleBarOverlay: {
-        height: 32,
         color: "#171717",
+        height: 32,
         symbolColor: "#A3A3A3",
       },
+      titleBarStyle: "hidden",
+
       webPreferences: {
         preload: require.resolve("./preload.js"),
       },
       // width: 477,
       // height: 848,
       width: 1280,
-      height: 720,
     });
 
     try {
@@ -283,15 +283,15 @@ async function main() {
         // Install was aborted, return.
         return;
       }
-    } catch (e) {
-      const error = e as Error;
+    } catch (error_) {
+      const error = error_ as Error;
       const { response } = await dialog.showMessageBox({
-        defaultId: 0,
         buttons: ["OK", "Learn more"],
+        cancelId: -1,
+        defaultId: 0,
+        detail: error.message,
         message: "Could not install project dependencies",
         type: "error",
-        detail: error.message,
-        cancelId: -1,
       });
 
       if (response === 1) {
@@ -327,18 +327,16 @@ async function main() {
 
     const searchParams = `?path=${p.data?.path}&exportName=${p.data?.exportName}`;
 
-    if (process.env.TRIPLEX_ENV === "development") {
-      await activeProjectWindow.loadURL(
-        `http://localhost:${EDITOR_DEV_PORT}${searchParams}`
-      );
-    } else {
-      await activeProjectWindow.loadFile(
-        require.resolve(`@triplex/editor/dist/index.html`),
-        {
-          search: searchParams,
-        }
-      );
-    }
+    await (process.env.TRIPLEX_ENV === "development"
+      ? activeProjectWindow.loadURL(
+          `http://localhost:${EDITOR_DEV_PORT}${searchParams}`
+        )
+      : activeProjectWindow.loadFile(
+          require.resolve(`@triplex/editor/dist/index.html`),
+          {
+            search: searchParams,
+          }
+        ));
   }
 
   function applyGlobalIpcHandlers() {
@@ -377,17 +375,17 @@ async function main() {
                 if (result === false) {
                   return;
                 }
-              } catch (e) {
-                const error = e as Error;
+              } catch (error_) {
+                const error = error_ as Error;
                 const { response } = await dialog.showMessageBox({
-                  defaultId: 0,
-                  type: "error",
                   buttons: ["OK", "Learn more"],
-                  message: "Project partially created",
+                  cancelId: -1,
+                  defaultId: 0,
                   detail:
                     "There was an error during project creation, please check your package manager. \n\n" +
                     error.message,
-                  cancelId: -1,
+                  message: "Project partially created",
+                  type: "error",
                 });
 
                 if (response === 1) {

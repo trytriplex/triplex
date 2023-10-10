@@ -7,36 +7,36 @@
 import { Vector3Tuple } from "three";
 
 function Box({
+  color,
   position,
   rotation,
   scale,
-  color,
   size = 1,
 }: {
+  color?: "red" | "green" | "blue";
+  position?: Vector3Tuple | number;
+  rotation?: Vector3Tuple;
+  scale?: Vector3Tuple | number;
   /**
    * @min 1
    * @max 2
    */
   size?: number;
-  position?: Vector3Tuple | number;
-  rotation?: Vector3Tuple;
-  scale?: Vector3Tuple | number;
-  color?: "red" | "green" | "blue";
 }) {
   const ok = {};
   return (
-    <group visible={true} scale={scale}>
+    <group scale={scale} visible={true}>
       <mesh
         {...ok}
         name="hello-world"
-        userData={{ hello: true }}
         onClick={() => {}}
-        visible={true}
         position={position}
         rotation={rotation}
+        userData={{ hello: true }}
+        visible={true}
       >
         <boxGeometry args={[size, size, size]} />
-        <meshStandardMaterial key={color} color={color} />
+        <meshStandardMaterial color={color} key={color} />
       </mesh>
     </group>
   );

@@ -10,13 +10,13 @@ import { useScenes } from "./context";
 import { ManualEditableSceneObject } from "./manual-editable";
 
 export function SceneLoader({
-  path,
   exportName,
+  path,
   sceneProps,
 }: {
+  exportName: "default" | string;
   path: string;
   sceneProps: Record<string, unknown>;
-  exportName: "default" | string;
 }) {
   const normalizedPath = path.replaceAll("\\", "/");
   const scenes = useScenes();
@@ -40,10 +40,10 @@ export function SceneLoader({
   return (
     <>
       <ManualEditableSceneObject
+        component={SceneComponent}
+        exportName={exportName}
         id={-1}
         path={path}
-        exportName={exportName}
-        component={SceneComponent}
         staticSceneProps={sceneProps}
       />
 
@@ -51,15 +51,15 @@ export function SceneLoader({
         <>
           <hemisphereLight
             color="#87CEEB"
-            intensity={0.3}
             groundColor="#362907"
+            intensity={0.3}
           />
           <ambientLight intensity={0.3} />
-          <directionalLight position={[2.5, 8, 5]} intensity={0.5} />
+          <directionalLight intensity={0.5} position={[2.5, 8, 5]} />
           <pointLight
-            position={[-10, 0, -20]}
             color="#eef4aa"
             intensity={0.5}
+            position={[-10, 0, -20]}
           />
         </>
       )}

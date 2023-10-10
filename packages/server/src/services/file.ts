@@ -4,21 +4,21 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { extname } from "path";
-import readdirp from "readdirp";
-import parent from "glob-parent";
+import { readFile } from "node:fs/promises";
+import { extname } from "node:path";
 import anymatch from "anymatch";
-import { readFile } from "fs/promises";
-import { TRIPLEXProject, getJsxElementsPositions } from "../ast";
+import parent from "glob-parent";
+import readdirp from "readdirp";
+import { getJsxElementsPositions, TRIPLEXProject } from "../ast";
 import { inferExports } from "../util/module";
 
 export function getSceneExport({
+  exportName,
   path,
   project,
-  exportName,
 }: {
-  path: string;
   exportName: string;
+  path: string;
   project: TRIPLEXProject;
 }) {
   const sourceFile = project.getSourceFile(path);
@@ -31,24 +31,24 @@ export function getSceneExport({
   }
 
   return {
+    exports: foundExports,
     name: foundExport.name,
     path,
     sceneObjects: jsxElements,
-    exports: foundExports,
   };
 }
 
 export async function getAllFiles({
-  files,
   cwd = process.cwd(),
+  files,
 }: {
-  files: string[];
   cwd?: string;
+  files: string[];
 }) {
   const foundFiles: {
-    path: string;
-    name: string;
     exports: { exportName: string; name: string }[];
+    name: string;
+    path: string;
   }[] = [];
   // Handle Windows separators being invalid in globs.
   const parsedFiles = files.map((file) => file.replaceAll("\\", "/"));
@@ -61,13 +61,13 @@ export async function getAllFiles({
 
     for await (const entry of readdirp(root)) {
       if (match(entry.fullPath)) {
-        const file = await readFile(entry.fullPath, "utf-8");
+        const file = await readFile(entry.fullPath, "utf8");
         const foundExports = inferExports(file);
 
         foundFiles.push({
-          path: entry.fullPath,
-          name: entry.basename.replace(extname(entry.path), ""),
           exports: foundExports,
+          name: entry.basename.replace(extname(entry.path), ""),
+          path: entry.fullPath,
         });
       }
     }

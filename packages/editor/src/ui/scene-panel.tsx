@@ -5,6 +5,16 @@
  * file in the root directory of this source tree.
  */
 import {
+  CaretDownIcon,
+  CaretRightIcon,
+  ExitIcon,
+  MixerHorizontalIcon,
+  MixerVerticalIcon,
+  PlusIcon,
+} from "@radix-ui/react-icons";
+import type { JsxElementPositions } from "@triplex/server";
+import { useLazySubscription } from "@triplex/ws-client";
+import {
   ChangeEventHandler,
   Fragment,
   Suspense,
@@ -14,31 +24,21 @@ import {
   useTransition,
 } from "react";
 import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary";
-import { cn } from "../ds/cn";
-import { useLazySubscription } from "@triplex/ws-client";
-import { IDELink } from "../util/ide";
-import { useEditor } from "../stores/editor";
-import { useScene } from "../stores/scene";
-import { ScrollContainer } from "../ds/scroll-container";
-import {
-  CaretDownIcon,
-  CaretRightIcon,
-  ExitIcon,
-  MixerHorizontalIcon,
-  MixerVerticalIcon,
-  PlusIcon,
-} from "@radix-ui/react-icons";
-import type { JsxElementPositions } from "@triplex/server";
 import { IconButton } from "../ds/button";
-import { ErrorBoundary } from "./error-boundary";
-import { useSceneState } from "../stores/scene-state";
+import { cn } from "../ds/cn";
 import { Pressable } from "../ds/pressable";
+import { ScrollContainer } from "../ds/scroll-container";
 import { useAssetsDrawer } from "../stores/assets-drawer";
-import { StringInput } from "./string-input";
+import { useEditor } from "../stores/editor";
 import { useProviderStore } from "../stores/provider";
+import { useScene } from "../stores/scene";
+import { useSceneState } from "../stores/scene-state";
+import { IDELink } from "../util/ide";
+import { ErrorBoundary } from "./error-boundary";
+import { StringInput } from "./string-input";
 
 export function ScenePanel() {
-  const { path, exportName } = useEditor();
+  const { exportName, path } = useEditor();
 
   return (
     <div className="pointer-events-auto w-full flex-grow overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%]">
@@ -54,11 +54,11 @@ export function ScenePanel() {
 }
 
 function ComponentHeading() {
-  const { path, exportName, newComponent, set } = useEditor();
+  const { exportName, newComponent, path, set } = useEditor();
   const projectState = useLazySubscription("/project/state");
   const scene = useLazySubscription("/scene/:path/:exportName", {
-    path,
     exportName,
+    path,
   });
 
   const onChangeComponentHandler: ChangeEventHandler<HTMLSelectElement> = (
@@ -107,11 +107,11 @@ function ComponentHeading() {
 
       <span
         aria-label={projectState.isDirty ? "Unsaved changes" : undefined}
-        title={projectState.isDirty ? "Unsaved changes" : undefined}
         className={cn([
           "ml-auto h-2.5 w-2.5 flex-shrink-0 rounded-full",
           projectState.isDirty ? "bg-yellow-400" : "bg-neutral-800",
         ])}
+        title={projectState.isDirty ? "Unsaved changes" : undefined}
       />
     </h2>
   );
@@ -120,11 +120,11 @@ function ComponentHeading() {
 function AssetsDrawerButton() {
   const show = useAssetsDrawer((store) => () => store.show());
 
-  return <IconButton onClick={show} icon={PlusIcon} title="Add element" />;
+  return <IconButton icon={PlusIcon} onClick={show} title="Add element" />;
 }
 
 function SceneContents() {
-  const { path, exportName, enteredComponent, exitComponent } = useEditor();
+  const { enteredComponent, exitComponent, exportName, path } = useEditor();
   const [filter, setFilter] = useState<string | undefined>();
 
   return (
@@ -132,7 +132,7 @@ function SceneContents() {
       <ComponentHeading />
 
       <div className="-mt-0.5 mb-2.5 px-4">
-        <IDELink path={path} column={1} line={1}>
+        <IDELink column={1} line={1} path={path}>
           View source
         </IDELink>
       </div>
@@ -144,10 +144,10 @@ function SceneContents() {
         <ComponentSandboxButton />
         <div className="ml-auto" />
         <IconButton
-          isDisabled={!enteredComponent}
           className="-scale-x-100"
-          onClick={exitComponent}
           icon={ExitIcon}
+          isDisabled={!enteredComponent}
+          onClick={exitComponent}
           title="Exit component"
         />
         <ProviderConfigButton />
@@ -157,27 +157,27 @@ function SceneContents() {
 
       <div className="px-3 py-2">
         <StringInput
-          onChange={setFilter}
-          name="filter-elements"
           label="Filter elements..."
+          name="filter-elements"
+          onChange={setFilter}
         />
       </div>
 
       <ScrollContainer>
         <ReactErrorBoundary
-          resetKeys={[path, exportName]}
           fallbackRender={(e) => (
             <div
-              title={e.error.message}
               className="bg-red-500/10 py-1 text-center text-xs italic text-red-400"
+              title={e.error.message}
             >
               Error loading elements
             </div>
           )}
+          resetKeys={[path, exportName]}
         >
           <JsxElements
-            filter={filter}
             exportName={exportName}
+            filter={filter}
             level={1}
             path={path}
           />
@@ -190,22 +190,22 @@ function SceneContents() {
 }
 
 function ComponentSandboxButton() {
-  const { focus, blur } = useScene();
-  const { target, path, exportName } = useEditor();
+  const { blur, focus } = useScene();
+  const { exportName, path, target } = useEditor();
   const hasState = useSceneState((store) => store.hasState(path + exportName));
   const isSelected = target?.column === -1 && target?.line === -1;
 
   return (
     <IconButton
+      icon={MixerHorizontalIcon}
       isSelected={isSelected || (hasState ? "partial" : false)}
       onClick={() => {
         if (isSelected) {
           blur();
         } else {
-          focus({ column: -1, line: -1, path, parentPath: "" });
+          focus({ column: -1, line: -1, parentPath: "", path });
         }
       }}
-      icon={MixerHorizontalIcon}
       title="Live edit props"
     />
   );
@@ -219,9 +219,9 @@ function ProviderConfigButton() {
 
   return (
     <IconButton
-      onClick={toggle}
-      isSelected={isOpen || (hasState ? "partial" : false)}
       icon={MixerVerticalIcon}
+      isSelected={isOpen || (hasState ? "partial" : false)}
+      onClick={toggle}
       title="View provider config"
     />
   );
@@ -247,19 +247,19 @@ function matchesFilter(
 }
 
 function JsxElements({
-  path,
   exportName,
-  level,
   filter = "",
+  level,
+  path,
 }: {
-  path: string;
   exportName: string;
-  level: number;
   filter?: string;
+  level: number;
+  path: string;
 }) {
   const scene = useLazySubscription("/scene/:path/:exportName", {
-    path,
     exportName,
+    path,
   });
 
   return (
@@ -267,11 +267,11 @@ function JsxElements({
       {scene.sceneObjects.map((element) => {
         return (
           <JsxElementButton
-            filter={filter}
+            element={element}
             exportName={exportName}
+            filter={filter}
             key={element.name + element.column + element.line}
             level={level}
-            element={element}
           />
         );
       })}
@@ -281,14 +281,14 @@ function JsxElements({
 
 function JsxElementButton({
   element,
-  level,
   exportName,
   filter,
+  level,
 }: {
-  exportName: string;
   element: JsxElementPositions;
-  level: number;
+  exportName: string;
   filter?: string;
+  level: number;
 }) {
   const { focus } = useScene();
   const { target } = useEditor();
@@ -315,7 +315,13 @@ function JsxElementButton({
     <Fragment>
       <Suspense>
         <Pressable
-          ref={ref}
+          className={cn([
+            match === false && "hidden",
+            selected
+              ? "border-l-blue-400 bg-white/5 text-blue-400"
+              : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
+            "group flex w-[242px] cursor-default items-center gap-1 border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
+          ])}
           onPress={() => {
             focus({
               column: element.column,
@@ -324,25 +330,19 @@ function JsxElementButton({
               path: "path" in element ? element.path || "" : "",
             });
           }}
-          title={element.name}
+          ref={ref}
           style={{ paddingLeft: level === 1 ? 13 : level * 13 }}
-          className={cn([
-            match === false && "hidden",
-            selected
-              ? "border-l-blue-400 bg-white/5 text-blue-400"
-              : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
-            "group flex w-[242px] cursor-default items-center gap-1 border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
-          ])}
+          title={element.name}
         >
           {showExpander ? (
             <Pressable
-              title={isExpanded ? "Hide child elements" : "View child elements"}
+              className="-ml-1 rounded px-0.5 py-0.5 text-inherit hover:bg-white/5 active:bg-white/10"
               onPress={() => {
                 startTransition(() => {
                   setIsExpanded((prev) => !prev);
                 });
               }}
-              className="-ml-1 rounded px-0.5 py-0.5 text-inherit hover:bg-white/5 active:bg-white/10"
+              title={isExpanded ? "Hide child elements" : "View child elements"}
             >
               {isExpanded ? <CaretDownIcon /> : <CaretRightIcon />}
             </Pressable>
@@ -355,16 +355,16 @@ function JsxElementButton({
           </span>
 
           <Pressable
+            className="ml-auto rounded px-0.5 py-0.5 text-inherit opacity-0 hover:bg-white/5 focus:opacity-100 active:bg-white/10 group-hover:opacity-100"
             onPress={() =>
               show({
-                exportName,
-                path: element.parentPath,
                 column: element.column,
+                exportName,
                 line: element.line,
+                path: element.parentPath,
               })
             }
             title="Add child element"
-            className="ml-auto rounded px-0.5 py-0.5 text-inherit opacity-0 hover:bg-white/5 focus:opacity-100 active:bg-white/10 group-hover:opacity-100"
           >
             <PlusIcon />
           </Pressable>
@@ -372,20 +372,20 @@ function JsxElementButton({
 
         {isExpanded && showExpander && element.path && (
           <ReactErrorBoundary
-            resetKeys={[element.path, element.exportName]}
             fallbackRender={(e) => (
               <div
-                title={e.error.message}
                 className="bg-red-500/10 py-1 text-center text-xs italic text-red-400"
+                title={e.error.message}
               >
                 Error loading elements
               </div>
             )}
+            resetKeys={[element.path, element.exportName]}
           >
             <JsxElements
+              exportName={element.exportName}
               filter={filter}
               level={level + 1}
-              exportName={element.exportName}
               path={element.path}
             />
           </ReactErrorBoundary>
@@ -394,9 +394,9 @@ function JsxElementButton({
 
       {element.children.map((child) => (
         <JsxElementButton
-          filter={filter}
-          exportName={exportName}
           element={child}
+          exportName={exportName}
+          filter={filter}
           key={child.name + child.column + child.line}
           level={level + 1}
         />

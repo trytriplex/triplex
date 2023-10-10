@@ -4,33 +4,33 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useEditor } from "../stores/editor";
+import { useCallback, useEffect, useMemo } from "react";
 import {
-  Menubar,
   Menu,
-  Trigger,
+  Menubar,
   MenuContent,
   MenuItem,
   Separator,
+  Trigger,
 } from "../ds/menubar";
+import { useEditor } from "../stores/editor";
 import { useOverlayStore } from "../stores/overlay";
-import { useUndoRedoState } from "../stores/undo-redo";
 import { useScene } from "../stores/scene";
-import { useCallback, useEffect, useMemo } from "react";
+import { useUndoRedoState } from "../stores/undo-redo";
 
 interface MenuItem {
-  role?: "fileMenu" | "editMenu" | "viewMenu" | "windowMenu" | "help";
-  label?: string;
-  id: string;
+  accelerator?: string;
   click?: () => void;
+  enabled?: boolean;
+  id: string;
+  label?: string;
+  role?: "fileMenu" | "editMenu" | "viewMenu" | "windowMenu" | "help";
   submenu?: (
     | MenuItem
     | {
         type: "separator";
       }
   )[];
-  accelerator?: string;
-  enabled?: boolean;
   visible?: boolean;
 }
 
@@ -93,9 +93,9 @@ function findMenuItem(
 
 export function EditorMenu() {
   const showOverlay = useOverlayStore((store) => store.show);
-  const { target, save, reset, deleteComponent, path, newFile } = useEditor();
+  const { deleteComponent, newFile, path, reset, save, target } = useEditor();
   const { blur, jumpTo, navigateTo, refresh } = useScene();
-  const { redo, undo, redoAvailable, undoAvailable } = useUndoRedoState();
+  const { redo, redoAvailable, undo, undoAvailable } = useUndoRedoState();
   const isEditable = !!path;
 
   const revertFile = useCallback(() => {
@@ -111,184 +111,186 @@ export function EditorMenu() {
       [
         {
           id: "file-menu",
-          role: "fileMenu",
           label: "File",
+          role: "fileMenu",
           submenu: [
             {
-              label: "New File...",
-              id: "new-file",
               accelerator: shortcut("N", { meta: true }),
               click: () => newFile(),
+              id: "new-file",
+              label: "New File...",
             },
             {
               type: "separator",
             },
             {
-              label: "Open...",
-              id: "open",
               accelerator: shortcut("O", { meta: true }),
               click: () => showOverlay("open-scene"),
+              id: "open",
+              label: "Open...",
             },
             {
+              click: () => window.triplex.sendCommand("open-project"),
+
+              id: "open-project",
               // Menu item only displayed in native
               label: "Open Project...",
-              id: "open-project",
               visible: __TRIPLEX_TARGET__ === "electron",
-              click: () => window.triplex.sendCommand("open-project"),
             },
             { type: "separator" },
             {
-              label: "Save",
-              id: "save",
-              enabled: isEditable,
               accelerator: shortcut("S", { meta: true }),
               click: () => save(),
+              enabled: isEditable,
+              id: "save",
+              label: "Save",
             },
             {
-              label: "Save As...",
-              id: "save-as",
-              enabled: isEditable,
               accelerator: shortcut("S", { meta: true, shift: true }),
               click: () => save(true),
+              enabled: isEditable,
+              id: "save-as",
+              label: "Save As...",
             },
             { type: "separator" },
             {
-              id: "reset",
-              enabled: isEditable,
-              label: "Revert File",
               click: () => revertFile(),
+              enabled: isEditable,
+              id: "reset",
+              label: "Revert File",
             },
             {
-              id: "refresh-scene",
-              label: "Refresh Scene",
               accelerator: shortcut("R", { meta: true }),
               click: () => refresh(),
+              id: "refresh-scene",
+              label: "Refresh Scene",
             },
             {
-              id: "hard-refresh-scene",
-              label: "Reload Scene",
               accelerator: shortcut("R", { meta: true, shift: true }),
               click: () => refresh({ hard: true }),
+              id: "hard-refresh-scene",
+              label: "Reload Scene",
             },
             { type: "separator" },
             {
+              click: () => window.triplex.sendCommand("close-project"),
+
+              id: "close-project",
               // Menu item only displayed in native
               label: "Close Project",
-              id: "close-project",
               visible: __TRIPLEX_TARGET__ === "electron",
-              click: () => window.triplex.sendCommand("close-project"),
             },
           ],
         },
         {
-          role: "editMenu",
-          label: "Edit",
           id: "edit-menu",
+          label: "Edit",
+          role: "editMenu",
           submenu: [
             {
+              accelerator: shortcut("Z", { meta: true }),
+              click: () => undo(),
+              enabled: undoAvailable && isEditable,
               id: "undo",
               label: "Undo",
-              enabled: undoAvailable && isEditable,
-              click: () => undo(),
-              accelerator: shortcut("Z", { meta: true }),
             },
             {
+              accelerator: shortcut("Z", { meta: true, shift: true }),
+              click: () => redo(),
+              enabled: redoAvailable && isEditable,
               id: "redo",
               label: "Redo",
-              enabled: redoAvailable && isEditable,
-              click: () => redo(),
-              accelerator: shortcut("Z", { meta: true, shift: true }),
             },
           ],
         },
         {
-          label: "Selection",
           id: "select-menu",
+          label: "Selection",
           submenu: [
             {
-              label: "Select all",
-              id: "select-all",
               accelerator: shortcut("A", { meta: true }),
               click: () => {
                 if (document.activeElement?.tagName === "INPUT") {
                   document.execCommand("selectAll");
                 }
               },
+              id: "select-all",
+              label: "Select all",
             },
             {
-              label: "Deselect",
-              id: "deselect",
-              enabled: !!target && isEditable,
               accelerator: shortcut("Escape"),
               click: () => blur(),
+              enabled: !!target && isEditable,
+              id: "deselect",
+              label: "Deselect",
             },
             {
               type: "separator",
             },
             {
-              label: "Focus camera",
-              id: "focus-camera",
-              enabled: !!target && isEditable,
               accelerator: shortcut("F"),
               click: () => jumpTo(),
+              enabled: !!target && isEditable,
+              id: "focus-camera",
+              label: "Focus camera",
             },
             {
-              label: "Enter component",
-              id: "enter-component",
-              enabled: !!target && isEditable,
               accelerator: shortcut("F", { shift: true }),
               click: () => navigateTo(),
+              enabled: !!target && isEditable,
+              id: "enter-component",
+              label: "Enter component",
             },
             {
               type: "separator",
             },
             {
-              label: "Delete",
-              id: "delete",
-              enabled: !!target && isEditable,
               accelerator: shortcut("Backspace"),
               click: () => deleteComponent(),
+              enabled: !!target && isEditable,
+              id: "delete",
+              label: "Delete",
             },
           ],
         },
         {
           id: "view-menu",
-          role: "viewMenu",
           label: "View",
-          visible: __TRIPLEX_TARGET__ === "electron",
+          role: "viewMenu",
           submenu: [
             {
+              click: () => window.triplex.sendCommand("show-devtools"),
               id: "devtools",
               label: "Show Developer Tools",
-              click: () => window.triplex.sendCommand("show-devtools"),
             },
             {
+              click: () => window.triplex.sendCommand("view-logs"),
               id: "view-logs",
               label: "Logs",
-              click: () => window.triplex.sendCommand("view-logs"),
             },
           ],
+          visible: __TRIPLEX_TARGET__ === "electron",
         },
         {
           id: "window-menu",
+          role: "windowMenu",
           visible:
             __TRIPLEX_TARGET__ === "electron" &&
             window.triplex.platform === "darwin",
-          role: "windowMenu",
         },
         {
           id: "help-menu",
           label: "Help",
-          visible: __TRIPLEX_TARGET__ === "electron",
           submenu: [
             {
-              id: "documentation",
-              role: "help",
-              label: "Documentation",
               click: () =>
                 window.triplex.openLink("https://triplex.dev/docs/overview"),
+              id: "documentation",
+              label: "Documentation",
+              role: "help",
             },
           ],
+          visible: __TRIPLEX_TARGET__ === "electron",
         },
       ] satisfies MenuItem[],
     [
@@ -364,8 +366,8 @@ export function EditorMenu() {
 
                   return (
                     <MenuItem
-                      key={menuitem.id}
                       disabled={menuitem.enabled === false}
+                      key={menuitem.id}
                       onClick={menuitem.click}
                       rslot={menuitem.accelerator}
                     >

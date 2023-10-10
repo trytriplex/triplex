@@ -9,13 +9,13 @@ import { BrowserWindow, dialog } from "electron";
 
 export async function createPkgManagerDialog(
   window: BrowserWindow,
-  { message, detail }: { message: string; detail: string }
+  { detail, message }: { detail: string; message: string }
 ) {
   const result = await dialog.showMessageBox(window, {
-    message,
-    detail,
-    type: "question",
     buttons: ["npm", "yarn", "pnpm", "Cancel"],
+    detail,
+    message,
+    type: "question",
   });
 
   switch (result.response) {

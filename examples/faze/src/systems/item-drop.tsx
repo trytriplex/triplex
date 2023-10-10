@@ -14,9 +14,9 @@ export function ItemDrop({
   item,
   position,
 }: {
-  position: Vector3Tuple;
   children: JSX.Element;
   item: keyof typeof items;
+  position: Vector3Tuple;
 }) {
   const [visible, setVisible] = useState(false);
   const activeItem = useActiveItem();
@@ -34,12 +34,12 @@ export function ItemDrop({
     <>
       {!visible && (
         <mesh
-          position={position}
           onClick={activeItem ? onClick : undefined}
+          position={position}
           visible={false}
         >
           <boxGeometry args={[7, 0.5, 7]} />
-          <meshBasicMaterial wireframe color="black" />
+          <meshBasicMaterial color="black" wireframe />
         </mesh>
       )}
 

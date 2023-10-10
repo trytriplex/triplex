@@ -15,15 +15,15 @@ const ECS = createReactAPI(new World<EntityComponents>());
 export const world = ECS.world;
 
 export const Component = <C extends keyof EntityComponents>({
-  name,
-  initialData,
-  data,
   children,
+  data,
+  initialData,
+  name,
 }: {
-  name: C;
+  children?: ReactNode;
   data?: EntityComponents[C] | undefined;
   initialData?: EntityComponents[C] | undefined;
-  children?: ReactNode;
+  name: C;
 }) => {
   const [cachedData] = useState(() => initialData);
   const actualData = data || cachedData;
@@ -75,7 +75,7 @@ export function useActiveItem() {
 export function useParentActive() {
   const parent = useCurrentEntity();
   const { entities } = useEntities(world.with("focused"));
-  const isActive = !!entities.find((entity) => entity === parent);
+  const isActive = entities.some((entity) => entity === parent);
 
   return isActive;
 }

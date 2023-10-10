@@ -4,17 +4,17 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { Object3DNode, extend } from "@react-three/fiber";
+import { extend, Object3DNode } from "@react-three/fiber";
 import {
-  Camera,
-  Vector3,
-  LineSegments,
-  Color,
-  LineBasicMaterial,
   BufferGeometry,
+  Camera,
+  Color,
   Float32BufferAttribute,
-  PerspectiveCamera,
+  LineBasicMaterial,
+  LineSegments,
   OrthographicCamera,
+  PerspectiveCamera,
+  Vector3,
 } from "three";
 
 class CameraInstance extends Camera {}
@@ -38,9 +38,9 @@ class TriplexCameraHelper extends LineSegments {
   constructor(camera: PerspectiveCamera | OrthographicCamera) {
     const geometry = new BufferGeometry();
     const material = new LineBasicMaterial({
-      color: 0xffffff,
-      vertexColors: true,
+      color: 0xff_ff_ff,
       toneMapped: false,
+      vertexColors: true,
     });
 
     const vertices: number[] = [];
@@ -109,10 +109,10 @@ class TriplexCameraHelper extends LineSegments {
 
     // colors
 
-    const colorFrustum = new Color(0xffaa00);
-    const colorCone = new Color(0xff0000);
-    const colorUp = new Color(0x00aaff);
-    const colorCross = new Color(0x333333);
+    const colorFrustum = new Color(0xff_aa_00);
+    const colorCone = new Color(0xff_00_00);
+    const colorUp = new Color(0x00_aa_ff);
+    const colorCross = new Color(0x33_33_33);
 
     this.setColors(colorFrustum, colorCone, colorUp, colorCross);
   }

@@ -17,7 +17,7 @@ export function useLookAtTarget() {
 
   useFrame(() => {
     for (let i = 0; i < entities.length; i++) {
-      const { target, sceneObject } = entities[i];
+      const { sceneObject, target } = entities[i];
 
       const targetv = copy(V1, target);
       targetv.y = sceneObject.current.position.y;

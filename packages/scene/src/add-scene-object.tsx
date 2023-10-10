@@ -5,28 +5,28 @@
  * file in the root directory of this source tree.
  */
 import { listen, send } from "@triplex/bridge/client";
+import type { ComponentType } from "@triplex/server";
 import {
+  ComponentType as CT,
   lazy,
   LazyExoticComponent,
-  ComponentType as CT,
   Suspense,
   useEffect,
   useRef,
   useState,
 } from "react";
 import { useSearchParams } from "react-router-dom";
-import type { ComponentType } from "@triplex/server";
 import { useComponents } from "./context";
 import { SceneObject } from "./scene-object";
 
 export function AddSceneObject({
-  path,
-  line,
   column,
+  line,
+  path,
 }: {
-  path: string;
-  line?: number;
   column?: number;
+  line?: number;
+  path: string;
 }) {
   const components = useComponents();
   const [searchParams] = useSearchParams();
@@ -38,7 +38,7 @@ export function AddSceneObject({
   const cachedLazyComponents = useRef<LazyExoticComponent<CT<unknown>>[]>([]);
 
   useEffect(() => {
-    return listen("trplx:requestAddNewComponent", ({ type, target }) => {
+    return listen("trplx:requestAddNewComponent", ({ target, type }) => {
       const isMatchingLineCol =
         target?.column === column && target?.line === line;
       const isMatchingPath = target?.path && path === target?.path;
@@ -53,7 +53,7 @@ export function AddSceneObject({
           return value.concat(type);
         });
 
-        send("trplx:onAddNewComponent", { type, target }, true).then((res) => {
+        send("trplx:onAddNewComponent", { target, type }, true).then((res) => {
           setPositions((prev) => {
             const next = prev.concat([]);
             next[index] = res;
@@ -122,7 +122,7 @@ export function AddSceneObject({
             const LazyComponent = cachedLazyComponents.current[index];
 
             return (
-              <Suspense key={component.exportName + index} fallback={null}>
+              <Suspense fallback={null} key={component.exportName + index}>
                 <SceneObject
                   {...component.props}
                   __component={LazyComponent}

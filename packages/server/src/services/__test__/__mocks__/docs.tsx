@@ -13,19 +13,19 @@ export function HeroScene() {
         makeDefault
         position={[-6, 5, 6]}
         rotation={[
-          -0.6792821448761931, -0.22689280275926285, -0.08726646259971647,
+          -0.679_282_144_876_193_1, -0.226_892_802_759_262_85, -0.087_266_462_599_716_47,
         ]}
       />
 
       <Grid
-        sectionColor="#9d4b4b"
         cellColor="#6f6f6f"
-        cellThickness={1.0}
-        infiniteGrid
-        fadeDistance={30}
         cellSize={1}
-        sectionSize={3}
+        cellThickness={1.0}
+        fadeDistance={30}
         fadeStrength={1.5}
+        infiniteGrid
+        sectionColor="#9d4b4b"
+        sectionSize={3}
       />
 
       <mesh position={[0, 0, 0]}>

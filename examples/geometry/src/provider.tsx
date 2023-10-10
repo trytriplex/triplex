@@ -4,9 +4,9 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { createContext, ReactNode, useContext } from "react";
-import { Physics } from "@react-three/rapier";
 import type { PresetsType } from "@react-three/drei/helpers/environment-assets";
+import { Physics } from "@react-three/rapier";
+import { createContext, ReactNode, useContext } from "react";
 
 const Context = createContext<boolean | null>(null);
 
@@ -19,18 +19,18 @@ export function useProvider() {
 
 export default function Provider({
   children,
-  enablePhysics = false,
   debugPhysics = true,
+  enablePhysics = false,
   environment: _ = "city",
 }: {
   children: ReactNode;
-  environment?: PresetsType;
-  enablePhysics?: boolean;
   debugPhysics?: boolean;
+  enablePhysics?: boolean;
+  environment?: PresetsType;
 }) {
   return (
     <Context.Provider value>
-      <Physics paused={!enablePhysics} debug={debugPhysics}>
+      <Physics debug={debugPhysics} paused={!enablePhysics}>
         {children}
       </Physics>
     </Context.Provider>

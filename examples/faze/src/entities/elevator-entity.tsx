@@ -7,9 +7,9 @@
 import { useTexture } from "@react-three/drei";
 import { useMemo, useRef, useState } from "react";
 import { Group, Vector3Tuple } from "three";
+import { KinematicBody } from "../ecs/components/kinematic-body";
 import { Component, Entity } from "../ecs/store";
 import { empty, fromArray } from "../math/vectors";
-import { KinematicBody } from "../ecs/components/kinematic-body";
 import { TERRAIN } from "../utils/layers";
 
 type Enumerate<
@@ -25,22 +25,22 @@ type Range<F extends number, T extends number> = Exclude<
 >;
 
 export function ElevatorEntity<TLevels extends [number, ...number[]]>({
-  position,
-  levels,
   level,
+  levels,
+  position,
 }: {
   /**
    * Current level the elevator is on.
    */
   level?: Range<0, TLevels["length"]>;
   /**
-   * Position of the elevator.
-   */
-  position: Vector3Tuple;
-  /**
    * Y height of each level.
    */
   levels: TLevels;
+  /**
+   * Position of the elevator.
+   */
+  position: Vector3Tuple;
 }) {
   const map = useTexture("/textures/light/texture_08.png");
   const ref = useRef<Group>(null!);
@@ -57,19 +57,19 @@ export function ElevatorEntity<TLevels extends [number, ...number[]]>({
 
   return (
     <Entity>
-      <Component name="target" data={nextPosition} />
-      <Component name="velocity" initialData={empty()} />
-      <Component name="speed" data={1} />
-      <Component name="state" data="idle" />
+      <Component data={nextPosition} name="target" />
+      <Component initialData={empty()} name="velocity" />
+      <Component data={1} name="speed" />
+      <Component data="idle" name="state" />
 
       <KinematicBody>
         <Component name="sceneObject">
           <group position={initialPosition} ref={ref}>
             <mesh
-              layers={TERRAIN}
               castShadow
-              receiveShadow
+              layers={TERRAIN}
               position={[0, -2.8, 0]}
+              receiveShadow
             >
               <boxGeometry args={[5, 5, 5]} />
               <meshStandardMaterial map={map} />

@@ -4,19 +4,19 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { createRoot } from "react-dom/client";
 import {
-  DiscordLogoIcon,
-  ReaderIcon,
-  HeartFilledIcon,
-  GlobeIcon,
   ActivityLogIcon,
+  DiscordLogoIcon,
+  GlobeIcon,
+  HeartFilledIcon,
+  ReaderIcon,
 } from "@radix-ui/react-icons";
+import { createRoot } from "react-dom/client";
 import "./styles.css";
-import { Button } from "./ds/button";
-import { version } from "../package.json";
-import { cn } from "./ds/cn";
 import { useEffect, useState } from "react";
+import { version } from "../package.json";
+import { Button } from "./ds/button";
+import { cn } from "./ds/cn";
 
 function ProgressBar() {
   const [progress, setProgress] = useState(-1);
@@ -59,7 +59,7 @@ function WelcomeScreen() {
     <div className="flex h-[100lvh] w-screen select-none flex-col gap-8">
       <div className="absolute left-0 right-0 top-0 z-50 h-8 [-webkit-app-region:drag]"></div>
       <div className="relative">
-        <img src="banner-r3f.jpg" className="bg-black" draggable="false" />
+        <img className="bg-black" draggable="false" src="banner-r3f.jpg" />
         <span
           className={cn([
             window.triplex.platform === "darwin" ? "top-0" : "bottom-0",
@@ -79,15 +79,15 @@ function WelcomeScreen() {
           <div className="-mx-2 flex flex-col">
             <Button
               disabled={windowState === "disabled"}
-              size="tight"
               onClick={() => window.triplex.sendCommand("open-project")}
+              size="tight"
             >
               Open Project...
             </Button>
             <Button
               disabled={windowState === "disabled"}
-              size="tight"
               onClick={() => window.triplex.sendCommand("create-project")}
+              size="tight"
             >
               Create Project...
             </Button>
@@ -99,27 +99,27 @@ function WelcomeScreen() {
       <div className="mt-auto flex gap-5 px-10">
         <div className="-mx-2 flex basis-1/2 flex-col justify-end">
           <Button
-            size="tight"
             icon={ReaderIcon}
             onClick={() =>
               window.triplex.openLink("https://triplex.dev/docs/overview")
             }
+            size="tight"
           >
             Documentation
           </Button>
           <Button
-            size="tight"
             icon={DiscordLogoIcon}
             onClick={() =>
               window.triplex.openLink("https://discord.gg/nBzRBUEs4b")
             }
+            size="tight"
           >
             Join Discord
           </Button>
           <Button
             icon={ActivityLogIcon}
-            size="tight"
             onClick={() => window.triplex.sendCommand("view-logs")}
+            size="tight"
           >
             View Logs
           </Button>
@@ -127,22 +127,22 @@ function WelcomeScreen() {
         <div className="-mx-2 flex basis-1/2 flex-col justify-end">
           <Button
             icon={GlobeIcon}
-            size="tight"
             onClick={() =>
               window.triplex.openLink(
                 "https://github.com/try-triplex/triplex/releases"
               )
             }
+            size="tight"
           >
             Release Notes
           </Button>
           <Button
             icon={HeartFilledIcon}
-            size="tight"
             isSelected
             onClick={() =>
               window.triplex.openLink("https://github.com/sponsors/itsdouges")
             }
+            size="tight"
           >
             Sponsor Development
           </Button>

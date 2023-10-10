@@ -18,8 +18,8 @@ export function PointerEntity({ onClick: _ }: PointerProps) {
 
   return (
     <Entity>
-      <Component name="parent" data={parent} />
-      <Component name="pointer" data={true} />
+      <Component data={parent} name="parent" />
+      <Component data={true} name="pointer" />
       <Component name="sceneObject">
         <group ref={group} />
       </Component>

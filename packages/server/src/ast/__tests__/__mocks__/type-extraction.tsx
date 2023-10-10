@@ -58,17 +58,17 @@ export const DefaultProps = identity(
     name: _ = "foo",
     test: __ = true,
   }: {
-    test: boolean;
     name: "foo" | "bar";
+    test: boolean;
   }) => null
 );
 
 export function Provider({
-  enablePhysics = false,
   debugPhysics = false,
+  enablePhysics = false,
 }: {
-  enablePhysics?: boolean;
   debugPhysics?: boolean;
+  enablePhysics?: boolean;
 }) {
   return [enablePhysics, debugPhysics];
 }

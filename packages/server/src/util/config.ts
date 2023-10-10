@@ -4,9 +4,9 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { readFile } from "fs/promises";
-import { join } from "path";
-import { join as joinPosix, normalize } from "path/posix";
+import { readFile } from "node:fs/promises";
+import { join } from "node:path";
+import { join as joinPosix, normalize } from "node:path/posix";
 
 const STATIC_ASSETS = ["glb", "gltf"];
 
@@ -15,9 +15,9 @@ export async function getConfig(cwd: string) {
   let config: Record<string, any>;
 
   try {
-    const conf = await readFile(join(cwd, ".triplex/config.json"), "utf-8");
+    const conf = await readFile(join(cwd, ".triplex/config.json"), "utf8");
     config = JSON.parse(conf);
-  } catch (e) {
+  } catch {
     throw new Error("invariant: could not fetch config");
   }
 
@@ -51,11 +51,11 @@ export async function getConfig(cwd: string) {
   );
 
   return {
-    cwd,
-    publicDir,
-    files,
-    components,
     assetsDir,
+    components,
+    cwd,
+    files,
     provider,
+    publicDir,
   };
 }

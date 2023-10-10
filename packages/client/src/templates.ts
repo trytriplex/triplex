@@ -10,38 +10,16 @@ export const scripts = {
       return children;
     }
   `,
-  scene: `
-    import { createElement } from "react";
-    import { createRoot } from "react-dom/client";
-    import { Scene } from "triplex:scene-frame.tsx";
-
-    createRoot(document.getElementById("root")).render(
-      createElement(Scene)
-    );
-  `,
-  sceneFrame: `
-    import { Scene as SceneFrame } from "@triplex/scene";
-    import Provider from "{{PROVIDER_PATH}}";
-
-    const scenes = import.meta.glob({{SCENE_FILES_GLOB}});
-    const localImports = import.meta.glob({{COMPONENTS_FILE_GLOB}});
-    const nodeImports = {{NODE_IMPORTS}};
-    const components = { ...localImports, ...nodeImports };
-
-    export function Scene() {
-      return (
-        <SceneFrame provider={Provider} components={components} scenes={scenes} />
-      );
-    }
-  `,
   // Hides vite-ignored dynamic import so that Vite can skip analysis if no other
   // dynamic import is present (https://github.com/vitejs/vite/pull/12732)
   dynamicImportHMR: `
     export const __hmr_import = (url) => import(/* @vite-ignore */ url);
   `,
+
   invalidateHMRHeader: `
     import { __hmr_import } from "triplex:hmr-import";
   `,
+
   invalidateHRMFooter: (providerPath: string) => `
     if (import.meta.hot) {
       __hmr_import(import.meta.url).then((currentModule) => {
@@ -71,6 +49,30 @@ export const scripts = {
           }
         });
       });
+    }
+  `,
+  scene: `
+    import { createElement } from "react";
+    import { createRoot } from "react-dom/client";
+    import { Scene } from "triplex:scene-frame.tsx";
+
+    createRoot(document.getElementById("root")).render(
+      createElement(Scene)
+    );
+  `,
+  sceneFrame: `
+    import { Scene as SceneFrame } from "@triplex/scene";
+    import Provider from "{{PROVIDER_PATH}}";
+
+    const scenes = import.meta.glob({{SCENE_FILES_GLOB}});
+    const localImports = import.meta.glob({{COMPONENTS_FILE_GLOB}});
+    const nodeImports = {{NODE_IMPORTS}};
+    const components = { ...localImports, ...nodeImports };
+
+    export function Scene() {
+      return (
+        <SceneFrame provider={Provider} components={components} scenes={scenes} />
+      );
     }
   `,
 };

@@ -15,15 +15,15 @@ import { useUndoRedoState } from "./undo-redo";
 
 export interface Params {
   encodedProps: string;
-  path: string;
   exportName: string;
+  path: string;
 }
 
 export interface FocusedObject {
-  line: number;
   column: number;
-  path: string;
+  line: number;
   parentPath: string;
+  path: string;
 }
 
 interface SelectionState {
@@ -33,16 +33,16 @@ interface SelectionState {
 
 interface PersistPropValue {
   column: number;
+  currentPropValue: unknown;
   line: number;
+  nextPropValue: unknown;
   path: string;
   propName: string;
-  currentPropValue: unknown;
-  nextPropValue: unknown;
 }
 
 const useSelectionStore = create<SelectionState>((set) => ({
-  focused: null,
   focus: (sceneObject) => set({ focused: sceneObject }),
+  focused: null,
 }));
 
 /**
@@ -69,11 +69,11 @@ export function useEditor() {
 
   const addComponent = useCallback(
     async ({
-      type,
       target,
+      type,
     }: {
-      type: ComponentType;
       target?: ComponentTarget;
+      type: ComponentType;
     }) => {
       const componentPath = target ? target.path : path;
       const componentExportName = target ? target.exportName : exportName;
@@ -83,25 +83,25 @@ export function useEditor() {
           encodeURIComponent(componentPath) +
           `/${componentExportName}/object`,
         {
-          method: "POST",
           body: JSON.stringify({
             target,
             type,
           }),
+          method: "POST",
         }
       );
 
       const result = (await res.json()) as {
-        line: number;
         column: number;
+        line: number;
         path: string;
       };
 
       scene.focus({
         column: result.column,
         line: result.line,
-        path: componentPath,
         parentPath: componentPath,
+        path: componentPath,
       });
 
       return result;
@@ -122,8 +122,8 @@ export function useEditor() {
         { method: "POST" }
       );
       scene.restoreComponent({
-        line: target.line,
         column: target.column,
+        line: target.line,
         parentPath: target.parentPath,
       });
     };
@@ -136,15 +136,15 @@ export function useEditor() {
         { method: "POST" }
       );
       scene.deleteComponent({
-        line: target.line,
         column: target.column,
+        line: target.line,
         parentPath: target.parentPath,
       });
     };
 
     performUndoableEvent({
-      undo: undoAction,
       redo: redoAction,
+      undo: undoAction,
     });
 
     scene.blur();
@@ -203,8 +203,8 @@ export function useEditor() {
       };
 
       performUndoableEvent({
-        undo: undoAction,
         redo: redoAction,
+        undo: undoAction,
       });
     },
     [performUndoableEvent, scene]
@@ -227,16 +227,16 @@ export function useEditor() {
     (
       componentParams: Params,
       metaParams: {
-        replace?: true;
         entered?: true;
         forceSaveAs?: true;
+        replace?: true;
       } = {}
     ) => {
       if (
         componentParams.path === path &&
         componentParams.exportName === exportName &&
-        typeof metaParams.forceSaveAs === "undefined" &&
-        typeof metaParams.replace === "undefined"
+        metaParams.forceSaveAs === undefined &&
+        metaParams.replace === undefined
       ) {
         // Bail if we're already on the same path.
         // If we implement props being able to change
@@ -291,10 +291,10 @@ export function useEditor() {
       clearUndoRedo();
 
       await fetch("http://localhost:8000/project/save", {
-        method: "POST",
         body: JSON.stringify({
           rename: path !== actualPath ? { [path]: actualPath } : {},
         }),
+        method: "POST",
       });
 
       if (actualPath !== path) {
@@ -320,9 +320,9 @@ export function useEditor() {
 
     set(
       {
+        encodedProps: "",
         exportName: data.exportName,
         path: data.path,
-        encodedProps: "",
       },
       { forceSaveAs: true }
     );
@@ -336,88 +336,100 @@ export function useEditor() {
     const data = await result.json();
 
     set({
+      encodedProps: "",
       exportName: data.exportName,
       path: data.path,
-      encodedProps: "",
     });
   }, [path, set]);
 
   return useMemo(
     () => ({
       /**
-       * Creates a new intermediate file and transitions the editor to the file.
-       */
-      newFile,
-      /**
-       * Creates a new intermediate component in the open file and transitions
-       * the editor to it.
-       */
-      newComponent,
-      /**
-       * Adds the component into the current file. Is not persisted until
-       * `save()` is called.
+       * Adds the component into the current file. Is not persisted until `save()` is
+       * called.
        */
       addComponent,
-      /**
-       * Will be `true` when entered a component via a owning parent, else
-       * `false`. Enter a component via `scene.navigateTo()`.
-       *
-       * @see {@link ./scene.tsx}
-       */
-      enteredComponent,
-      /**
-       * Exits the currently entered component and goes back to the parent.
-       */
-      exitComponent,
+
       /**
        * Deletes the currently focused scene object. Able to be undone. Is not
        * persisted until `save()` is called.
        */
       deleteComponent,
+
       /**
-       * Current value of the scene path.
-       */
-      path,
-      /**
-       * Encoded (via `encodeURIComponent()`) props used to hydrate the loaded
-       * scene.
+       * Encoded (via `encodeURIComponent()`) props used to hydrate the loaded scene.
        */
       encodedProps,
+
       /**
-       * Sets the loaded scene to a specific path, export name, and props.
+       * Will be `true` when entered a component via a owning parent, else `false`.
+       * Enter a component via `scene.navigateTo()`.
+       *
+       * @see {@link ./scene.tsx}
        */
-      set,
+      enteredComponent,
+
       /**
-       * Focuses the passed scene object. Will blur the currently focused scene
-       * object by passing `null`.
+       * Exits the currently entered component and goes back to the parent.
+       */
+      exitComponent,
+
+      /**
+       * Returns the scene export name that is currently open.
+       */
+      exportName,
+
+      /**
+       * Focuses the passed scene object. Will blur the currently focused scene object
+       * by passing `null`.
        *
        * You should probably be calling the scene API instead.
        *
        * @see {@link ./scene.tsx}
        */
       focus,
+
       /**
-       * Returns the currently focused scene object, else `null`.
+       * Creates a new intermediate component in the open file and transitions the
+       * editor to it.
        */
-      target,
+      newComponent,
+
       /**
-       * Returns the scene export name that is currently open.
+       * Creates a new intermediate file and transitions the editor to the file.
        */
-      exportName,
+      newFile,
+
       /**
-       * Calls the web server to save the intermediate scene source to file
-       * system.
+       * Current value of the scene path.
        */
-      save,
+      path,
+
       /**
-       * Persists the passed in prop value to the scene frame and web server,
-       * and makes it available as an undo/redo action.
+       * Persists the passed in prop value to the scene frame and web server, and
+       * makes it available as an undo/redo action.
        */
       persistPropValue,
+
       /**
        * Resets the scene throwing away any unsaved state.
        */
       reset,
+
+      /**
+       * Calls the web server to save the intermediate scene source to file system.
+       */
+      save,
+
+      /**
+       * Sets the loaded scene to a specific path, export name, and props.
+       */
+      set,
+
+      /**
+       * Returns the currently focused scene object, else `null`.
+       */
+      target,
     }),
     [
       addComponent,

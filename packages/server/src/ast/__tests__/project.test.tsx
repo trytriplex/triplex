@@ -6,7 +6,7 @@
  */
 import { describe, expect, it, vitest } from "vitest";
 import { createProject } from "../project";
-import { join } from "path";
+import { join } from "node:path";
 
 describe("project ast", () => {
   it("should return save state", async () => {

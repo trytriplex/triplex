@@ -1,15 +1,5 @@
 {
-  "env": {
-    "browser": true,
-    "es2021": true,
-    "node": true
-  },
-  "extends": [
-    "eslint:recommended",
-    "plugin:react/jsx-runtime",
-    "plugin:react-hooks/recommended",
-    "plugin:@typescript-eslint/recommended"
-  ],
+  "extends": ["@nkzw"],
   "ignorePatterns": ["dist", "build"],
   "overrides": [
     {
@@ -25,23 +15,18 @@
       }
     }
   ],
-  "parser": "@typescript-eslint/parser",
-  "parserOptions": {
-    "ecmaVersion": "latest",
-    "sourceType": "module"
-  },
-  "plugins": ["@typescript-eslint", "import", "react", "header"],
+  "plugins": ["header"],
   "rules": {
+    "@nkzw/no-instanceof": "off",
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-inferrable-types": "off",
-    "@typescript-eslint/no-non-null-assertion": "off",
     "@typescript-eslint/no-unnecessary-type-constraint": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
       { "argsIgnorePattern": "^_" }
     ],
-    "@typescript-eslint/no-var-requires": "off",
+    "header/header": ["error", "scripts/header.js"],
     "import/no-extraneous-dependencies": [
       "error",
       {
@@ -56,9 +41,13 @@
         ]
       }
     ],
+    "import/no-unresolved": "off",
+    "no-extra-parens": "off",
     "no-inner-declarations": "off",
+    "no-unused-expressions": "off",
     "prefer-const": "off",
-    "react-hooks/exhaustive-deps": "error",
-    "header/header": ["error", "scripts/header.js"]
+    "react/no-unknown-property": "off",
+    "unicorn/prefer-ternary": "off",
+    "unicorn/prefer-top-level-await": "off"
   }
 }

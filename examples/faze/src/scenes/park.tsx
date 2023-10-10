@@ -4,8 +4,6 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useGLTF } from "../utils/gltf";
-import { CascadedShadowMap } from "../utils/cascaded-shadow-map";
 import { Clone, useTexture } from "@react-three/drei";
 import {
   DialogAction,
@@ -19,6 +17,8 @@ import { StaticEntity } from "../entities/static-entity";
 import { WaterMaterial } from "../materials/water";
 import { Tree } from "../meshes/tree";
 import { ItemDrop } from "../systems/item-drop";
+import { CascadedShadowMap } from "../utils/cascaded-shadow-map";
+import { useGLTF } from "../utils/gltf";
 import { TERRAIN } from "../utils/layers";
 
 const alpha: Record<string, number> = {
@@ -28,18 +28,18 @@ const alpha: Record<string, number> = {
 const ignore = ["Scene", "trees"];
 
 const layers: Record<string, number> = {
-  grass: TERRAIN,
-  waterbowl: TERRAIN,
-  stairs: TERRAIN,
-  hedges: TERRAIN,
   bridges: TERRAIN,
+  grass: TERRAIN,
+  hedges: TERRAIN,
   road: TERRAIN,
+  stairs: TERRAIN,
   water: TERRAIN,
+  waterbowl: TERRAIN,
 };
 
 const materials: Record<string, JSX.Element> = {
-  waterbowl_water: <WaterMaterial opacity={0.5} transparent />,
   water: <WaterMaterial speed={1} wavelength={3} />,
+  waterbowl_water: <WaterMaterial opacity={0.5} transparent />,
 };
 
 export function ParkScene() {
@@ -54,8 +54,8 @@ export function ParkScene() {
     pole: "/textures/light/texture_06.png",
     road: "/textures/dark/texture_06.png",
     stairs: "/textures/dark/texture_01.png",
-    trees_small: "/textures/green/texture_08.png",
     trees: "/textures/green/texture_08.png",
+    trees_small: "/textures/green/texture_08.png",
     water: "/textures/blue/texture_06.png",
     waterbowl: "/textures/light/texture_06.png",
     waterbowl_water: "/textures/blue/texture_06.png",
@@ -63,11 +63,13 @@ export function ParkScene() {
 
   return (
     <>
-      <PlayerEntity position={[7.880951061776439, 0.012977683819411279, 11]} />
+      <PlayerEntity
+        position={[7.880_951_061_776_439, 0.012_977_683_819_411_279, 11]}
+      />
 
-      <ItemDrop item="woodStump" position={[7, 0, 10.774701506059406]}>
+      <ItemDrop item="woodStump" position={[7, 0, 10.774_701_506_059_406]}>
         <StaticEntity collidable={false} position={[7, 1, 12]}>
-          <mesh castShadow receiveShadow layers={TERRAIN}>
+          <mesh castShadow layers={TERRAIN} receiveShadow>
             <boxGeometry args={[1, 0.7, 1]} />
             <meshStandardMaterial color="brown" />
           </mesh>
@@ -76,40 +78,54 @@ export function ParkScene() {
 
       <Tree
         position={[
-          6.918252663980362, -0.012594673863718764, 10.662967482824303,
+          6.918_252_663_980_362, -0.012_594_673_863_718_764,
+          10.662_967_482_824_303,
         ]}
       />
       <Tree
         position={[
-          34.231777739531296, 0.011236969473075675, 20.652207012040023,
-        ]}
-      />
-      <Tree
-        position={[34.231777739531296, 0.011236969473075675, 4.538492780153211]}
-      />
-      <Tree
-        position={[
-          34.231777739531296, 0.011236969473075675, -12.633458930389056,
+          34.231_777_739_531_296, 0.011_236_969_473_075_675,
+          20.652_207_012_040_023,
         ]}
       />
       <Tree
         position={[
-          15.949946298513808, 0.011236969473075675, -12.633458930389056,
+          34.231_777_739_531_296, 0.011_236_969_473_075_675,
+          4.538_492_780_153_211,
         ]}
       />
       <Tree
         position={[
-          -3.109545038954262, 0.011236969473075675, -12.633458930389056,
+          34.231_777_739_531_296, 0.011_236_969_473_075_675,
+          -12.633_458_930_389_056,
+        ]}
+      />
+      <Tree
+        position={[
+          15.949_946_298_513_808, 0.011_236_969_473_075_675,
+          -12.633_458_930_389_056,
+        ]}
+      />
+      <Tree
+        position={[
+          -3.109_545_038_954_262, 0.011_236_969_473_075_675,
+          -12.633_458_930_389_056,
         ]}
       />
 
-      <NPCEntity name="tree-onlooker-2" position={[3.2682904891957203, 0, 12]}>
+      <NPCEntity
+        name="tree-onlooker-2"
+        position={[3.268_290_489_195_720_3, 0, 12]}
+      >
         <DialogEntity>
           <DialogMessage text="It's too high!" />
         </DialogEntity>
       </NPCEntity>
 
-      <NPCEntity name="tree-onlooker-1" position={[4.507686650567615, 0, 8]}>
+      <NPCEntity
+        name="tree-onlooker-1"
+        position={[4.507_686_650_567_615, 0, 8]}
+      >
         <DialogEntity>
           <DialogMessage text="Is that a...?" />
         </DialogEntity>
@@ -126,40 +142,38 @@ export function ParkScene() {
 
           return (
             <Clone
-              key={key}
               castShadow={!hasAlpha}
-              receiveShadow={!hasAlpha}
-              object={value}
-              layers={layers[key]}
               inject={
                 materials[key] || (
                   <meshStandardMaterial
-                    transparent={hasAlpha}
-                    opacity={hasAlpha ? alpha[key] : undefined}
                     map={maps[key as keyof typeof maps]}
+                    opacity={hasAlpha ? alpha[key] : undefined}
+                    transparent={hasAlpha}
                   />
                 )
               }
+              key={key}
+              layers={layers[key]}
+              object={value}
+              receiveShadow={!hasAlpha}
             />
           );
         })}
       </group>
 
-      <hemisphereLight color="#87CEEB" intensity={0.3} groundColor="#362907" />
+      <hemisphereLight color="#87CEEB" groundColor="#362907" intensity={0.3} />
       <ambientLight intensity={0.3} />
-      <directionalLight position={[2.5, 8, 5]} intensity={0.5} />
-      <pointLight position={[-10, 0, -20]} color="#eef4aa" intensity={0.5} />
+      <directionalLight intensity={0.5} position={[2.5, 8, 5]} />
+      <pointLight color="#eef4aa" intensity={0.5} position={[-10, 0, -20]} />
       <CascadedShadowMap />
 
-      <NPCEntity speed={3} name="runner" position={[30, 0, 5]}>
+      <NPCEntity name="runner" position={[30, 0, 5]} speed={3}>
         <DialogEntity>
           <DialogMessage text="I'm so tired :-(" />
           <DialogMessage text="I'm going for a new record but I have no energy..." />
           <DialogAction
-            when="item"
-            itemName="apple"
-            successText="YES! I'll be able to break that record now!!"
             count={2}
+            itemName="apple"
             onSuccess={[
               ["take"],
               [
@@ -172,6 +186,8 @@ export function ParkScene() {
                 ],
               ],
             ]}
+            successText="YES! I'll be able to break that record now!!"
+            when="item"
           />
         </DialogEntity>
       </NPCEntity>
@@ -196,8 +212,8 @@ export function ParkScene() {
       </NPCEntity>
 
       <NPCEntity
-        name="boat-attendant"
         cameraOffset={[2, 0, 0]}
+        name="boat-attendant"
         position={[-23, 0, -10.5]}
       >
         <DialogEntity>
@@ -215,10 +231,10 @@ export function ParkScene() {
       </NPCEntity>
 
       <NPCEntity
+        activateDistance={60}
         body="kinematicBody"
         cameraOffset={[3, 2, 0]}
         name="goose"
-        activateDistance={60}
         position={[-25, -3.1, 30]}
       >
         <DialogEntity>
@@ -234,18 +250,21 @@ export function ParkScene() {
 
       <ItemEntity
         id="apple"
-        position={[7, -1.4732968527710595, 3.292857314355263]}
+        position={[7, -1.473_296_852_771_059_5, 3.292_857_314_355_263]}
       ></ItemEntity>
       <ItemEntity id="bone" position={[32, 1, 32]}></ItemEntity>
       <ItemEntity
-        id="apple"
-        position={[6.858146743213356, 4, 11.5]}
-        body="kinematicBody"
         activateDistance={15}
+        body="kinematicBody"
+        id="apple"
+        position={[6.858_146_743_213_356, 4, 11.5]}
       ></ItemEntity>
       <ItemEntity
         id="woodStump"
-        position={[7.111704900105632, 0.36926914332758576, 14.380794036525907]}
+        position={[
+          7.111_704_900_105_632, 0.369_269_143_327_585_76,
+          14.380_794_036_525_907,
+        ]}
       ></ItemEntity>
     </>
   );

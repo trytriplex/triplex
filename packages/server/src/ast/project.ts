@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { join, normalize } from "path";
+import { join, normalize } from "node:path";
 import { watch } from "chokidar";
 import { Project, ProjectOptions, SourceFile } from "ts-morph";
 import { deleteCommentComponents } from "../services/component";
@@ -15,7 +15,6 @@ export type TRIPLEXProject = ReturnType<typeof createProject>;
 export function _createProject(opts: ProjectOptions) {
   const project = new Project({
     ...opts,
-    skipAddingFilesFromTsConfig: true,
     compilerOptions: {
       // Having this as `true` results in 100% CPU utilization when importing modules from
       // node_modules. We set this to false to ensure that consumers of triplex never run into
@@ -27,19 +26,20 @@ export function _createProject(opts: ProjectOptions) {
       // aren't ever defined.
       strictNullChecks: false,
     },
+    skipAddingFilesFromTsConfig: true,
   });
 
   return project;
 }
 
 async function persistSourceFile({
-  sourceFile,
-  newPath,
   cwd,
+  newPath,
+  sourceFile,
 }: {
-  sourceFile: SourceFile;
-  newPath?: string;
   cwd: string;
+  newPath?: string;
+  sourceFile: SourceFile;
 }) {
   if (!sourceFile.isSaved()) {
     // Only delete + format if the file is modified.
@@ -63,9 +63,9 @@ async function persistSourceFile({
         // No prettier config was found - so we'll use the default ts formatter.
         sourceFile.formatText({
           convertTabsToSpaces: true,
+          ensureNewLineAtEndOfFile: true,
           indentSize: 2,
           trimTrailingWhitespace: true,
-          ensureNewLineAtEndOfFile: true,
         });
       }
     }
@@ -157,20 +157,14 @@ export function ${componentName}() {
       project.getSourceFile(path) || project.addSourceFileAtPath(path);
 
     return {
-      reset: async () => {
-        await sourceFile.refreshFromFileSystem();
-        modifiedSourceFiles.delete(sourceFile);
-        onStateChangeCallbacks.forEach((cb) => cb());
+      cleanup: () => {
+        project.removeSourceFile(sourceFile);
+        dependencyModifiedCallbacks.delete(sourceFile.getFilePath());
       },
-      read: () => sourceFile,
       edit: () => {
         modifiedSourceFiles.add(sourceFile);
         onStateChangeCallbacks.forEach((cb) => cb());
         return sourceFile;
-      },
-      cleanup: () => {
-        project.removeSourceFile(sourceFile);
-        dependencyModifiedCallbacks.delete(sourceFile.getFilePath());
       },
       onDependencyModified: (cb: () => void) => {
         const callbacks = dependencyModifiedCallbacks.get(path) || [];
@@ -187,6 +181,12 @@ export function ${componentName}() {
             callbacks.filter((callback) => callback !== cb)
           );
         };
+      },
+      read: () => sourceFile,
+      reset: async () => {
+        await sourceFile.refreshFromFileSystem();
+        modifiedSourceFiles.delete(sourceFile);
+        onStateChangeCallbacks.forEach((cb) => cb());
       },
     };
   }
@@ -206,9 +206,9 @@ export function ${componentName}() {
 
     const promises = Array.from(modifiedSourceFiles).map((sourceFile) =>
       persistSourceFile({
-        sourceFile,
         cwd,
         newPath: rename[sourceFile.getFilePath()],
+        sourceFile,
       })
     );
 
@@ -224,8 +224,8 @@ export function ${componentName}() {
     );
 
     return {
-      isDirty: dirtySourceFiles.length > 0,
       dirtySourceFiles,
+      isDirty: dirtySourceFiles.length > 0,
     };
   }
 
@@ -243,11 +243,11 @@ export function ${componentName}() {
   }
 
   return {
-    cwd: () => cwd,
     createSourceFile,
+    cwd: () => cwd,
     getSourceFile,
-    save,
     getState,
     onStateChange,
+    save,
   };
 }

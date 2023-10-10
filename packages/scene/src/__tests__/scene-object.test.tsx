@@ -6,11 +6,11 @@
  */
 // @vitest-environment jsdom
 import { send } from "@triplex/bridge/host";
-import { render } from "react-three-test";
 import { MemoryRouter } from "react-router-dom";
+import { render } from "react-three-test";
 import { describe, expect, it } from "vitest";
-import { SceneObject } from "../scene-object";
 import { ComponentProvider } from "../context";
+import { SceneObject } from "../scene-object";
 
 describe("scene object component", () => {
   it("should render the component inside a group", async () => {
@@ -20,13 +20,13 @@ describe("scene object component", () => {
           <SceneObject
             __component="mesh"
             __meta={{
-              rotate: true,
-              scale: true,
-              translate: true,
               column: 1,
               line: 1,
               name: "mesh",
               path: "",
+              rotate: true,
+              scale: true,
+              translate: true,
             }}
           />
         </ComponentProvider>
@@ -60,25 +60,25 @@ describe("scene object component", () => {
             <SceneObject
               __component="directionalLight"
               __meta={{
-                rotate: false,
-                scale: false,
-                translate: false,
                 column: 10,
                 line: 99,
                 name: "directionalLight",
                 path: "",
+                rotate: false,
+                scale: false,
+                translate: false,
               }}
             >
               <SceneObject
                 __component="orthographicCamera"
                 __meta={{
-                  rotate: true,
-                  scale: true,
-                  translate: true,
                   column: 10,
                   line: 100,
                   name: "orthographicCamera",
                   path: "",
+                  rotate: true,
+                  scale: true,
+                  translate: true,
                 }}
                 attach="shadow-camera"
               />
@@ -86,8 +86,8 @@ describe("scene object component", () => {
           </ComponentProvider>
         </MemoryRouter>
       );
-    } catch (e) {
-      error = e as Error;
+    } catch (error_) {
+      error = error_ as Error;
     } finally {
       expect(error).toBeUndefined();
     }
@@ -100,13 +100,13 @@ describe("scene object component", () => {
           <SceneObject
             __component="mesh"
             __meta={{
-              rotate: true,
-              scale: true,
-              translate: true,
               column: 10,
               line: 100,
               name: "mesh",
               path: "box.tsx",
+              rotate: true,
+              scale: true,
+              translate: true,
             }}
           />
         </ComponentProvider>
@@ -120,14 +120,14 @@ describe("scene object component", () => {
           target: {
             action: "child",
             column: 10,
+            exportName: "default",
             line: 100,
             path: "box.tsx",
-            exportName: "default",
           },
           type: {
-            type: "host",
             name: "boxGeometry",
             props: { args: [1, 2, 3] },
+            type: "host",
           },
         },
         true

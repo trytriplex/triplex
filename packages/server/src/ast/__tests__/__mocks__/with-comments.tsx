@@ -17,6 +17,6 @@ export default function WithComments() {
 export function AnotherOne() {
   return (
     // OK
-    <mesh visible={true} castShadow={false} />
+    <mesh castShadow={false} visible={true} />
   );
 }

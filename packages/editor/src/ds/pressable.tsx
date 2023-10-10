@@ -15,13 +15,13 @@ import { cn } from "./cn";
 export const Pressable = forwardRef<
   HTMLDivElement,
   {
-    onPress?: () => void;
     children?: React.ReactNode;
     className?: string;
-    title?: string;
+    onPress?: () => void;
     style?: React.CSSProperties;
+    title?: string;
   }
->(({ onPress, children, className, title, style }, ref) => {
+>(({ children, className, onPress, style, title }, ref) => {
   const onKeyDownHandler: KeyboardEventHandler = useCallback(
     (e) => {
       if (e.key === "Enter") {
@@ -52,20 +52,22 @@ export const Pressable = forwardRef<
 
   return (
     <div
-      ref={ref}
-      style={style}
-      role="button"
-      title={title}
-      onClick={onClickHandler}
-      onKeyUp={onKeyUpHandler}
-      onKeyDown={onKeyDownHandler}
       className={cn([
         "cursor-default outline-1 -outline-offset-1 outline-blue-400 focus-visible:outline",
         className,
       ])}
+      onClick={onClickHandler}
+      onKeyDown={onKeyDownHandler}
+      onKeyUp={onKeyUpHandler}
+      ref={ref}
+      role="button"
+      style={style}
       tabIndex={0}
+      title={title}
     >
       {children}
     </div>
   );
 });
+
+Pressable.displayName = "Pressable";

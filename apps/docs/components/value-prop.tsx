@@ -21,19 +21,19 @@ const toIndexes = [
 ];
 
 export function ValueProp({
-  title,
-  text,
   index = 0,
+  text,
+  title,
 }: {
-  title: string;
   index: number;
   text: string;
+  title: string;
 }) {
   return (
     <div className="mx-auto min-h-[150vh] max-w-4xl text-center lg:text-left odd:lg:text-right xl:-translate-x-28 odd:xl:translate-x-28">
       <section
-        id={`value-prop-${index}`}
         className="sticky top-0 flex min-h-[100lvh] flex-col justify-center gap-10 px-10"
+        id={`value-prop-${index}`}
       >
         <div>
           <h2

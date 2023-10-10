@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { join } from "path";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { getJsxElementAt } from "../jsx";
 import { _createProject } from "../project";
@@ -39,7 +39,7 @@ describe("type infer", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/import-named.tsx")
     );
-    const sceneObject = getJsxElementAt(sourceFile, 18, 7);
+    const sceneObject = getJsxElementAt(sourceFile, 17, 7);
     if (!sceneObject) {
       throw new Error("not found");
     }
@@ -52,7 +52,7 @@ describe("type infer", () => {
           "column": 9,
           "description": undefined,
           "kind": "tuple",
-          "line": 19,
+          "line": 18,
           "name": "position",
           "required": false,
           "shape": [
@@ -84,7 +84,7 @@ describe("type infer", () => {
           "column": 9,
           "description": undefined,
           "kind": "tuple",
-          "line": 20,
+          "line": 19,
           "name": "rotation",
           "required": false,
           "shape": [
@@ -657,7 +657,7 @@ describe("type infer", () => {
           },
           "description": undefined,
           "kind": "boolean",
-          "name": "enablePhysics",
+          "name": "debugPhysics",
           "required": false,
           "tags": {},
         },
@@ -668,7 +668,7 @@ describe("type infer", () => {
           },
           "description": undefined,
           "kind": "boolean",
-          "name": "debugPhysics",
+          "name": "enablePhysics",
           "required": false,
           "tags": {},
         },
@@ -690,17 +690,6 @@ describe("type infer", () => {
       [
         {
           "defaultValue": {
-            "kind": "boolean",
-            "value": true,
-          },
-          "description": undefined,
-          "kind": "boolean",
-          "name": "test",
-          "required": true,
-          "tags": {},
-        },
-        {
-          "defaultValue": {
             "kind": "string",
             "value": "foo",
           },
@@ -718,6 +707,17 @@ describe("type infer", () => {
               "literal": "bar",
             },
           ],
+          "tags": {},
+        },
+        {
+          "defaultValue": {
+            "kind": "boolean",
+            "value": true,
+          },
+          "description": undefined,
+          "kind": "boolean",
+          "name": "test",
+          "required": true,
           "tags": {},
         },
       ]

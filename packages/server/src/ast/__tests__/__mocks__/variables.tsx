@@ -15,7 +15,7 @@ export function Placeholder() {
   const map = useTexture("/textures/purple/texture_06.png");
 
   return (
-    <mesh castShadow receiveShadow position={[0, 0.5, 0]}>
+    <mesh castShadow position={[0, 0.5, 0]} receiveShadow>
       <boxGeometry args={[0.5, 1, 0.5]} />
       <meshStandardMaterial map={map} />
     </mesh>
@@ -27,15 +27,15 @@ const ControllerContext = createContext<boolean>(null);
 const defaultChildren = () => <Placeholder />;
 
 export function NPCEntity({
+  cameraOffset,
   children,
   mesh = defaultChildren,
   position,
-  cameraOffset,
 }: {
+  cameraOffset?: [number, number, number];
   children?: JSX.Element | JSX.Element[];
   mesh?: (opts: ChildrenProps) => JSX.Element;
   position: [number, number, number];
-  cameraOffset?: [number, number, number];
 }) {
   return (
     <>

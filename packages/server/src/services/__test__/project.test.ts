@@ -11,7 +11,7 @@ import {
   folderComponents,
   folderAssets,
 } from "../project";
-import { join } from "path";
+import { join } from "node:path";
 
 describe("project", () => {
   it("should return a list of host jsx elements", () => {
@@ -27,28 +27,15 @@ describe("project", () => {
 
     expect(actual).toEqual([
       {
-        path: join(__dirname, "__mocks__", "components"),
-        name: "components",
-        files: 2,
         children: [
           {
-            files: 1,
-            path: join(__dirname, "__mocks__", "components", "materials"),
-            name: "materials",
             children: [
               {
-                files: 1,
-                path: join(
-                  __dirname,
-                  "__mocks__",
-                  "components",
-                  "materials",
-                  "water"
-                ),
-                name: "water",
                 children: [
                   {
+                    children: [],
                     files: 1,
+                    name: "concrete",
                     path: join(
                       __dirname,
                       "__mocks__",
@@ -57,20 +44,33 @@ describe("project", () => {
                       "water",
                       "concrete"
                     ),
-                    name: "concrete",
-                    children: [],
                   },
                 ],
+                files: 1,
+                name: "water",
+                path: join(
+                  __dirname,
+                  "__mocks__",
+                  "components",
+                  "materials",
+                  "water"
+                ),
               },
             ],
+            files: 1,
+            name: "materials",
+            path: join(__dirname, "__mocks__", "components", "materials"),
           },
           {
-            files: 2,
-            path: join(__dirname, "__mocks__", "components", "objects"),
-            name: "objects",
             children: [],
+            files: 2,
+            name: "objects",
+            path: join(__dirname, "__mocks__", "components", "objects"),
           },
         ],
+        files: 2,
+        name: "components",
+        path: join(__dirname, "__mocks__", "components"),
       },
     ]);
   });
@@ -86,7 +86,6 @@ describe("project", () => {
         category: "Unknown",
         exportName: "default",
         name: "Cylinder",
-        type: "custom",
         path: join(
           __dirname,
           "__mocks__",
@@ -94,20 +93,21 @@ describe("project", () => {
           "objects",
           "default.tsx"
         ),
+        type: "custom",
       },
       {
         category: "Unknown",
         exportName: "Sphere",
         name: "Sphere",
-        type: "custom",
         path: join(__dirname, "__mocks__", "components", "objects", "test.tsx"),
+        type: "custom",
       },
       {
         category: "Unknown",
         exportName: "default",
         name: "Box",
-        type: "custom",
         path: join(__dirname, "__mocks__", "components", "objects", "test.tsx"),
+        type: "custom",
       },
     ]);
   });
@@ -120,6 +120,7 @@ describe("project", () => {
 
     expect(actual).toEqual([
       {
+        extname: ".tsx",
         name: "default.tsx",
         path: join(
           __dirname,
@@ -128,13 +129,12 @@ describe("project", () => {
           "objects",
           "default.tsx"
         ),
-        extname: ".tsx",
         type: "asset",
       },
       {
+        extname: ".tsx",
         name: "test.tsx",
         path: join(__dirname, "__mocks__", "components", "objects", "test.tsx"),
-        extname: ".tsx",
         type: "asset",
       },
     ]);

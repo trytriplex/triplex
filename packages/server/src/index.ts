@@ -17,8 +17,8 @@ import {
 import { getParam } from "./util/params";
 import { createTWS } from "./util/ws-server";
 import { getAllFiles, getSceneExport } from "./services/file";
-import * as component from "./services/component";
-import * as projectService from "./services/project";
+import { upsertProp, commentComponent, create, rename, uncommentComponent, add } from "./services/component";
+import { foundFolders, folderAssets, hostElements, folderComponents } from "./services/project";
 import {
   ComponentTarget,
   ComponentType,
@@ -31,17 +31,17 @@ import { getFunctionProps } from "./ast/jsx";
 export * from "./types";
 
 export function createServer({
-  publicDir,
   assetsDir,
+  components,
   cwd = process.cwd(),
   files,
-  components,
+  publicDir,
 }: {
-  publicDir: string;
   assetsDir: string;
+  components: string[];
   cwd?: string;
   files: string[];
-  components: string[];
+  publicDir: string;
 }) {
   const app = new Application();
   const router = new Router();
@@ -51,12 +51,12 @@ export function createServer({
   app.use(async (ctx, next) => {
     try {
       await next();
-    } catch (err) {
-      if (isHttpError(err)) {
-        ctx.response.body = { error: err.message };
+    } catch (error) {
+      if (isHttpError(error)) {
+        ctx.response.body = { error: error.message };
         ctx.response.status = 500;
       } else {
-        throw err;
+        throw error;
       }
     }
   });
@@ -84,16 +84,16 @@ export function createServer({
       return;
     }
 
-    const action = component.upsertProp(jsxElement, name, value);
+    const action = upsertProp(jsxElement, name, value);
 
-    context.response.body = { message: "success", action };
+    context.response.body = { action, message: "success" };
   });
 
   router.post("/scene/:path/object/:line/:column/delete", (context) => {
     const { column, line, path } = context.params;
     const sourceFile = project.getSourceFile(path);
 
-    component.commentComponent(sourceFile.edit(), Number(line), Number(column));
+    commentComponent(sourceFile.edit(), Number(line), Number(column));
 
     context.response.body = { message: "success" };
   });
@@ -103,8 +103,8 @@ export function createServer({
     const sourceFile = project.createSourceFile(exportName);
 
     context.response.body = {
-      message: "success",
       exportName,
+      message: "success",
       path: sourceFile.getFilePath(),
     };
   });
@@ -113,18 +113,18 @@ export function createServer({
     const { path } = context.params;
     const sourceFile = project.getSourceFile(path);
 
-    const { exportName } = component.create(sourceFile.edit());
+    const { exportName } = create(sourceFile.edit());
 
     context.response.body = { exportName, path };
   });
 
   router.post("/scene/:path/:exportName", async (context) => {
-    const { path, exportName } = context.params;
+    const { exportName, path } = context.params;
     const sourceFile = project.getSourceFile(path);
     const body = await context.request.body({ type: "json" }).value;
     const { name: newName } = body as { name: string };
 
-    component.rename(sourceFile.edit(), exportName, newName);
+    rename(sourceFile.edit(), exportName, newName);
 
     context.response.body = { message: "success" };
   });
@@ -133,7 +133,7 @@ export function createServer({
     const { column, line, path } = context.params;
     const sourceFile = project.getSourceFile(path);
 
-    component.uncommentComponent(
+    uncommentComponent(
       sourceFile.edit(),
       Number(line),
       Number(column)
@@ -145,13 +145,13 @@ export function createServer({
   router.post("/scene/:path/:exportName/object", async (context) => {
     const { exportName, path } = context.params;
     const body = await context.request.body({ type: "json" }).value;
-    const { type, target } = body as {
-      type: ComponentType;
+    const { target, type } = body as {
       target?: ComponentTarget;
+      type: ComponentType;
     };
     const sourceFile = project.getSourceFile(path);
 
-    const result = component.add(sourceFile.edit(), exportName, type, target);
+    const result = add(sourceFile.edit(), exportName, type, target);
 
     context.response.body = { ...result };
   });
@@ -203,7 +203,7 @@ export function createServer({
     tws.route(
       "/scene/components",
       async () => {
-        const result = await projectService.foundFolders(components);
+        const result = await foundFolders(components);
         return result;
       },
       (push) => {
@@ -217,7 +217,7 @@ export function createServer({
     tws.route(
       "/scene/assets",
       async () => {
-        const result = await projectService.foundFolders([assetsDir]);
+        const result = await foundFolders([assetsDir]);
         return result;
       },
       (push) => {
@@ -231,7 +231,7 @@ export function createServer({
     tws.route(
       "/scene/assets/:folderPath",
       async ({ folderPath }) => {
-        const result = await projectService.folderAssets(
+        const result = await folderAssets(
           [assetsDir],
           folderPath
         );
@@ -252,11 +252,11 @@ export function createServer({
       "/scene/components/:folderPath",
       async ({ folderPath }) => {
         if (folderPath === "host") {
-          const result = projectService.hostElements();
+          const result = hostElements();
           return result;
         }
 
-        const result = await projectService.folderComponents(
+        const result = await folderComponents(
           components,
           folderPath
         );
@@ -282,8 +282,8 @@ export function createServer({
     ),
     tws.route(
       "/scene/:path/:exportName",
-      async ({ path, exportName }) => {
-        const result = await getSceneExport({ path, project, exportName });
+      async ({ exportName, path }) => {
+        const result = await getSceneExport({ exportName, path, project });
         return result;
       },
       async (push, { path }) => {
@@ -293,7 +293,7 @@ export function createServer({
     ),
     tws.route(
       "/scene/:path/:exportName/props",
-      async ({ path, exportName }) => {
+      async ({ exportName, path }) => {
         const sourceFile = await project.getSourceFile(path);
         const props = getFunctionProps(sourceFile.read(), exportName);
         return props;
@@ -364,7 +364,6 @@ export function createServer({
   ]);
 
   return {
-    twsDefinition: wsRoutesDef,
     listen: (port = 8000) => {
       const controller = new AbortController();
       app.listen({ port, signal: controller.signal });
@@ -379,6 +378,7 @@ export function createServer({
 
       return close;
     },
+    twsDefinition: wsRoutesDef,
   };
 }
 

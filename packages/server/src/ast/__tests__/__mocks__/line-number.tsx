@@ -17,14 +17,14 @@ function Box({
 }) {
   const ok = {};
   return (
-    <group visible scale={scale}>
+    <group scale={scale} visible>
       <mesh
         {...ok}
-        userData={{ hello: true }}
         onClick={() => {}}
-        visible={true}
         position={position}
         rotation={rotation}
+        userData={{ hello: true }}
+        visible={true}
       >
         <boxGeometry args={[1, 1, 1]} />
         <meshStandardMaterial color="#00ff00" />

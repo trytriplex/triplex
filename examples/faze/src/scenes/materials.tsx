@@ -10,17 +10,17 @@ export function MaterialsScene() {
   return (
     <>
       <mesh
-        receiveShadow
         castShadow
-        position={[-0.4, 2.224, -0.5]}
         name={"hello"}
+        position={[-0.4, 2.224, -0.5]}
+        receiveShadow
       >
         <boxGeometry args={[10, 1, 10, 10, 1, 10]} />
         <WaterMaterial
-          wavelength={50}
-          speed={1}
           opacity={undefined}
+          speed={1}
           transparent={true}
+          wavelength={50}
         />
       </mesh>
     </>

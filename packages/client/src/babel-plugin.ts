@@ -4,9 +4,10 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { toNamespacedPath } from "node:path";
 import type { NodePath, PluginObj } from "@babel/core";
+// eslint-disable-next-line import/no-namespace
 import * as t from "@babel/types";
-import { toNamespacedPath } from "path";
 
 function isNodeModulesComponent(path: NodePath, elementName: string) {
   try {
@@ -15,7 +16,7 @@ function isNodeModulesComponent(path: NodePath, elementName: string) {
       const location = require.resolve(binding.path.parent.source.value);
       return location.includes("node_modules");
     }
-  } catch (e) {
+  } catch {
     // Ignore
   }
 
@@ -31,7 +32,7 @@ export default function triplexBabelPlugin(_ignore: string[] = []) {
   let currentFunction:
     | {
         name: string;
-        props: { spreadIdentifier?: string; destructured: string[] };
+        props: { destructured: string[]; spreadIdentifier?: string };
       }
     | undefined = undefined;
 
@@ -41,7 +42,7 @@ export default function triplexBabelPlugin(_ignore: string[] = []) {
         enter(path) {
           if (path.node.id && /^[A-Z]/.exec(path.node.id.name)) {
             const propsArg = path.node.params[0];
-            let destructured: string[] = [];
+            const destructured: string[] = [];
             let spreadIdentifier: string | undefined = undefined;
 
             switch (propsArg?.type) {
@@ -78,92 +79,6 @@ export default function triplexBabelPlugin(_ignore: string[] = []) {
           }
         },
       },
-      VariableDeclarator: {
-        enter(path) {
-          if (
-            path.node.id.type === "Identifier" &&
-            /^[A-Z]/.exec(path.node.id.name)
-          ) {
-            let destructured: string[] = [];
-            let spreadIdentifier: string | undefined = undefined;
-
-            path.traverse({
-              ArrowFunctionExpression(innerPath) {
-                const propsArg = innerPath.node.params[0];
-
-                switch (propsArg?.type) {
-                  case "Identifier":
-                    spreadIdentifier = propsArg.name;
-                    break;
-
-                  case "ObjectPattern":
-                    propsArg.properties.forEach((prop) => {
-                      if (
-                        prop.type === "ObjectProperty" &&
-                        prop.key.type === "Identifier"
-                      ) {
-                        destructured.push(prop.key.name);
-                      } else if (
-                        prop.type === "RestElement" &&
-                        prop.argument.type === "Identifier"
-                      ) {
-                        spreadIdentifier = prop.argument.name;
-                      }
-                    });
-                    break;
-                }
-              },
-            });
-
-            currentFunction = {
-              name: path.node.id.name,
-              props: { destructured, spreadIdentifier },
-            };
-          }
-        },
-        exit(path) {
-          if (
-            path.node.id.type === "Identifier" &&
-            path.node.id.name === currentFunction?.name
-          ) {
-            currentFunction = undefined;
-          }
-        },
-      },
-      Program: {
-        enter(path, pass) {
-          if (
-            pass.filename &&
-            ignoreFiles.includes(toNamespacedPath(pass.filename))
-          ) {
-            path.skip();
-          }
-        },
-        exit(path) {
-          for (const [key, value] of triplexMeta) {
-            path.pushContainer(
-              "body",
-              t.expressionStatement(
-                t.assignmentExpression(
-                  "=",
-                  t.memberExpression(
-                    t.identifier(key),
-                    t.identifier("triplexMeta")
-                  ),
-                  t.objectExpression([
-                    t.objectProperty(
-                      t.stringLiteral("lighting"),
-                      t.stringLiteral(value.lighting)
-                    ),
-                  ])
-                )
-              )
-            );
-          }
-
-          triplexMeta.clear();
-        },
-      },
       JSXElement(path, pass) {
         if (
           cache.has(path.node) ||
@@ -196,9 +111,9 @@ export default function triplexBabelPlugin(_ignore: string[] = []) {
         // transform to keep it stable.
         let keyNode: t.Expression | undefined;
         const transformsFound = {
-          translate: false,
-          scale: false,
           rotate: false,
+          scale: false,
+          translate: false,
         };
 
         const attributes = path.node.openingElement.attributes.filter(
@@ -321,6 +236,92 @@ export default function triplexBabelPlugin(_ignore: string[] = []) {
         );
 
         path.replaceWith(newNode);
+      },
+      Program: {
+        enter(path, pass) {
+          if (
+            pass.filename &&
+            ignoreFiles.includes(toNamespacedPath(pass.filename))
+          ) {
+            path.skip();
+          }
+        },
+        exit(path) {
+          for (const [key, value] of triplexMeta) {
+            path.pushContainer(
+              "body",
+              t.expressionStatement(
+                t.assignmentExpression(
+                  "=",
+                  t.memberExpression(
+                    t.identifier(key),
+                    t.identifier("triplexMeta")
+                  ),
+                  t.objectExpression([
+                    t.objectProperty(
+                      t.stringLiteral("lighting"),
+                      t.stringLiteral(value.lighting)
+                    ),
+                  ])
+                )
+              )
+            );
+          }
+
+          triplexMeta.clear();
+        },
+      },
+      VariableDeclarator: {
+        enter(path) {
+          if (
+            path.node.id.type === "Identifier" &&
+            /^[A-Z]/.exec(path.node.id.name)
+          ) {
+            const destructured: string[] = [];
+            let spreadIdentifier: string | undefined = undefined;
+
+            path.traverse({
+              ArrowFunctionExpression(innerPath) {
+                const propsArg = innerPath.node.params[0];
+
+                switch (propsArg?.type) {
+                  case "Identifier":
+                    spreadIdentifier = propsArg.name;
+                    break;
+
+                  case "ObjectPattern":
+                    propsArg.properties.forEach((prop) => {
+                      if (
+                        prop.type === "ObjectProperty" &&
+                        prop.key.type === "Identifier"
+                      ) {
+                        destructured.push(prop.key.name);
+                      } else if (
+                        prop.type === "RestElement" &&
+                        prop.argument.type === "Identifier"
+                      ) {
+                        spreadIdentifier = prop.argument.name;
+                      }
+                    });
+                    break;
+                }
+              },
+            });
+
+            currentFunction = {
+              name: path.node.id.name,
+              props: { destructured, spreadIdentifier },
+            };
+          }
+        },
+        exit(path) {
+          if (
+            path.node.id.type === "Identifier" &&
+            path.node.id.name === currentFunction?.name
+          ) {
+            currentFunction = undefined;
+          }
+        },
       },
     },
   };

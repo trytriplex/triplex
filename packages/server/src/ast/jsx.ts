@@ -74,9 +74,9 @@ export function getJsxTag(node: JsxElement | JsxSelfClosingElement) {
   }
 
   return {
+    name: undefined,
     tagName: name,
     type,
-    name: undefined,
   };
 }
 
@@ -169,23 +169,23 @@ export function getJsxElementsPositions(
       if (tag.type === "custom") {
         const paths = getElementFilePath(node);
         positions = {
-          column: column,
-          line: line,
-          name: tag.tagName,
           children: [],
+          column,
           exportName: paths.exportName,
+          line,
+          name: tag.tagName,
+          parentPath,
           path: paths.filePath,
           type: "custom",
-          parentPath,
         };
       } else {
         positions = {
-          column: column,
-          line: line,
-          name: tag.name ? `${tag.name} (${tag.tagName})` : tag.tagName,
           children: [],
-          type: "host",
+          column,
+          line,
+          name: tag.name ? `${tag.name} (${tag.tagName})` : tag.tagName,
           parentPath,
+          type: "host",
         };
       }
 
@@ -348,7 +348,7 @@ export function getJsxElementAt(
     });
 
     return sceneObject;
-  } catch (e) {
+  } catch {
     return undefined;
   }
 }

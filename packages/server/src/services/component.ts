@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { basename, extname, relative } from "node:path";
 import {
   JsxElement,
   JsxSelfClosingElement,
@@ -12,17 +13,16 @@ import {
   SyntaxKind,
   ts,
 } from "ts-morph";
-import { basename, extname, relative } from "path";
-import { getExportName } from "../ast/module";
 import { getAttributes, getJsxElementAt } from "../ast/jsx";
-import { inferExports } from "../util/module";
+import { getExportName } from "../ast/module";
 import { ComponentRawType, ComponentTarget } from "../types";
+import { inferExports } from "../util/module";
 import { padLines } from "../util/string";
 
 function guessComponentNameFromPath(path: string) {
   const name = basename(path)
     .replace(extname(path), "")
-    .replace(/-[a-z]/g, (match) => match.replace("-", "").toUpperCase());
+    .replaceAll(/-[a-z]/g, (match) => match.replace("-", "").toUpperCase());
   return name[0].toUpperCase() + name.slice(1);
 }
 
@@ -121,7 +121,7 @@ function insertJsxElement(
 
 function addToJsxElement(
   sourceFile: SourceFile,
-  target: { line: number; column: number; action: "child" },
+  target: { action: "child"; column: number; line: number },
   componentName: string,
   componentProps: Record<string, unknown>
 ): { column: number; line: number } {
@@ -139,8 +139,8 @@ function addToJsxElement(
     sourceFile.insertText(insertStartPos, componentText);
 
     return {
-      line: insertedLineCol.line,
       column: insertedLineCol.column,
+      line: insertedLineCol.line,
     };
   }
 
@@ -150,15 +150,15 @@ function addToJsxElement(
   element.replaceWithText(openingText + componentText + closingText);
 
   return {
-    line: target.line,
     column: target.column + openingText.length,
+    line: target.line,
   };
 }
 
 export function includesComponent(sourceFile: SourceFile, exportName: string) {
   const foundExports = inferExports(sourceFile.getText());
 
-  return !!foundExports.find((exp) => exp.exportName === exportName);
+  return foundExports.some((exp) => exp.exportName === exportName);
 }
 
 export function create(sourceFile: SourceFile) {
@@ -185,7 +185,7 @@ export function add(
   exportName: string,
   component: ComponentRawType,
   target?: ComponentTarget
-): { line: number; column: number } {
+): { column: number; line: number } {
   const { declaration } = getExportName(sourceFile, exportName);
 
   if (
@@ -223,11 +223,7 @@ export function add(
         if (component.exportName === "default") {
           // Default export - check if it's already exported. If it is reuse the same name.
           const foundDefaultImport = existingImport.getDefaultImport();
-          if (foundDefaultImport) {
-            importName = foundDefaultImport.getText();
-          } else {
-            importName = "";
-          }
+          importName = foundDefaultImport ? foundDefaultImport.getText() : "";
         } else {
           // Named export - check if it's already exported. If it is reuse the same name.
           const foundNamedImport = existingImport
@@ -278,8 +274,8 @@ export function add(
           if (!preExistingImport) {
             existingImport.insertNamedImport(0, {
               alias: aliasImportName,
-              name: importName,
               isTypeOnly: false,
+              name: importName,
             });
           }
         }
@@ -357,8 +353,8 @@ export function upsertProp(
   }
 
   const newAttribute = {
-    name: propName,
     initializer: `{${propValue}}`,
+    name: propName,
   };
 
   if (Node.isJsxElement(jsxElement)) {
@@ -432,9 +428,9 @@ export function uncommentComponent(
   if (firstPreIndex >= 0 && lastPostIndex >= 0) {
     text = text.replace(DELETE_PRE_SAFE, DELETE_PRE);
     text =
-      text.substring(0, lastPostIndex) +
+      text.slice(0, Math.max(0, lastPostIndex)) +
       DELETE_POST +
-      text.substring(lastPostIndex + DELETE_POST_SAFE.length);
+      text.slice(Math.max(0, lastPostIndex + DELETE_POST_SAFE.length));
   }
 
   sourceFile.replaceText([node.getStart(), node.getEnd()], text);

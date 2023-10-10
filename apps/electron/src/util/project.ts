@@ -9,7 +9,7 @@ import { createServer as createBackend, getConfig } from "@triplex/server";
 
 export async function startProject(
   cwd: string,
-  { frontendPort = 3333, backendPort = 8000 } = {}
+  { backendPort = 8000, frontendPort = 3333 } = {}
 ) {
   const config = await getConfig(cwd);
   const frontend = await createFrontend({ ...config, target: "electron" });
@@ -18,13 +18,13 @@ export async function startProject(
   const closeBackend = await backend.listen(backendPort);
 
   return {
-    config,
-    sceneUrl: `http://localhost:${frontendPort}`,
-    serverUrl: `http://localhost:${backendPort}`,
-    wsUrl: `ws://localhost:${backendPort}`,
     close: async () => {
       await closeFrontend({ forceExit: false });
       await closeBackend();
     },
+    config,
+    sceneUrl: `http://localhost:${frontendPort}`,
+    serverUrl: `http://localhost:${backendPort}`,
+    wsUrl: `ws://localhost:${backendPort}`,
   };
 }

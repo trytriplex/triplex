@@ -8,24 +8,7 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("triplex", {
-  platform: process.platform,
   getEnv: () => ipcRenderer.invoke("get-triplex-env"),
-  openLink: (url) => ipcRenderer.send("open-link", url),
-  setMenu: (menu) => ipcRenderer.send("set-menu-bar", menu),
-  handleProgressBarChange: (callback) => {
-    const listener = (_, state) => {
-      callback(state);
-    };
-
-    ipcRenderer.on("progress-bar-change", listener);
-
-    return () => {
-      ipcRenderer.removeListener("progress-bar-change", listener);
-    };
-  },
-  sendCommand: (id) => ipcRenderer.send("send-command", id),
-  showSaveDialog: (filename) =>
-    ipcRenderer.invoke("show-save-dialog", filename),
   handleMenuItemPress: (callback) => {
     const listener = (_, id) => {
       callback(id);
@@ -35,6 +18,17 @@ contextBridge.exposeInMainWorld("triplex", {
 
     return () => {
       ipcRenderer.removeListener("menu-item-press", listener);
+    };
+  },
+  handleProgressBarChange: (callback) => {
+    const listener = (_, state) => {
+      callback(state);
+    };
+
+    ipcRenderer.on("progress-bar-change", listener);
+
+    return () => {
+      ipcRenderer.removeListener("progress-bar-change", listener);
     };
   },
   handleWindowStateChange: (callback) => {
@@ -48,4 +42,10 @@ contextBridge.exposeInMainWorld("triplex", {
       ipcRenderer.removeListener("window-state-change", listener);
     };
   },
+  openLink: (url) => ipcRenderer.send("open-link", url),
+  platform: process.platform,
+  sendCommand: (id) => ipcRenderer.send("send-command", id),
+  setMenu: (menu) => ipcRenderer.send("set-menu-bar", menu),
+  showSaveDialog: (filename) =>
+    ipcRenderer.invoke("show-save-dialog", filename),
 });

@@ -7,13 +7,13 @@
 import { create } from "zustand";
 
 export const useProviderStore = create<{
-  show: () => void;
   hide: () => void;
-  toggle: () => void;
+  show: () => void;
   shown: boolean;
+  toggle: () => void;
 }>((set, get) => ({
-  shown: false,
-  show: () => set({ shown: true }),
   hide: () => set({ shown: false }),
+  show: () => set({ shown: true }),
+  shown: false,
   toggle: () => set({ shown: !get().shown }),
 }));

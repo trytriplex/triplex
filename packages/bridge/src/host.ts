@@ -26,7 +26,7 @@ export function listen<TEvent extends ClientSendEventName>(
     if (typeof e.data === "object" && e.data.eventName === eventName) {
       const value = await callback(e.data.data);
 
-      if (typeof value !== "undefined") {
+      if (value !== undefined) {
         respond(eventName, value);
       }
     }
@@ -59,8 +59,8 @@ export function send<TEvent extends HostSendEventName>(
 
   messageWindow?.postMessage(
     {
-      eventName,
       data,
+      eventName,
     },
     "*"
   );
@@ -87,8 +87,8 @@ function respond<TEvent extends keyof ClientSendEventResponse>(
 
   messageWindow?.postMessage(
     {
-      eventName: `${eventName}Response`,
       data,
+      eventName: `${eventName}Response`,
     },
     "*"
   );

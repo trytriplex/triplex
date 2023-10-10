@@ -4,11 +4,11 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { PerspectiveCamera, Grid } from "@react-three/drei";
+import { Grid, PerspectiveCamera } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
+import { easing } from "maath";
 import { useRef } from "react";
 import { Group } from "three";
-import { easing } from "maath";
 import { ExplodingBox } from "./exploding-box";
 
 export function HeroScene() {
@@ -27,8 +27,8 @@ export function HeroScene() {
     <>
       <PerspectiveCamera
         makeDefault
-        rotation={[-0.37454765747798313, 0, 0]}
         position={[0, 6.92, 13.68]}
+        rotation={[-0.374_547_657_477_983_13, 0, 0]}
       />
 
       <ambientLight args={[undefined, 0.5]} />
@@ -36,36 +36,40 @@ export function HeroScene() {
       <group ref={ref}>
         <directionalLight
           castShadow
-          position={[
-            -1.1698257671920271, 8.44714248022657, -15.512714311161407,
-          ]}
           color={"#60a5fa"}
           intensity={1}
+          position={[
+            -1.169_825_767_192_027_1, 8.447_142_480_226_57,
+            -15.512_714_311_161_407,
+          ]}
         />
       </group>
 
       <pointLight
         castShadow
-        position={[-3.2057934735079705, 3.2807808056064145, 3.4583818625881166]}
         color={"#ff0000"}
         intensity={1}
+        position={[
+          -3.205_793_473_507_970_5, 3.280_780_805_606_414_5,
+          3.458_381_862_588_116_6,
+        ]}
       />
 
       <ExplodingBox
-        stage
-        rotation={[0, -0.7853981633974483, 0]}
         position={[-1.4, 0.22, 0]}
+        rotation={[0, -0.785_398_163_397_448_3, 0]}
+        stage
       />
 
       <Grid
-        sectionColor="#9d4b4b"
         cellColor="#6f6f6f"
-        cellThickness={1.0}
-        infiniteGrid
-        fadeDistance={30}
         cellSize={2}
-        sectionSize={6}
+        cellThickness={1.0}
+        fadeDistance={30}
         fadeStrength={2}
+        infiniteGrid
+        sectionColor="#9d4b4b"
+        sectionSize={6}
       />
     </>
   );

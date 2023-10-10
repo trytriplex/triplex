@@ -4,8 +4,8 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import type { TWSRouteDefinition } from "@triplex/server";
+import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import { parseJSON } from "./string";
 
 export type RemapWithNumber<TObject> = {
@@ -16,8 +16,8 @@ const valueCache = new Map<string, unknown>();
 const queryCache = new Map<
   string,
   {
-    subscribe: (onStoreChanged: () => void) => () => void;
     deferred: ReturnType<typeof defer>;
+    subscribe: (onStoreChanged: () => void) => () => void;
   }
 >();
 
@@ -143,8 +143,7 @@ export function buildPath(
 
   for (const param in params) {
     const rawValue = params[param];
-    const value =
-      typeof rawValue === "undefined" ? "" : encodeURIComponent(rawValue);
+    const value = rawValue === undefined ? "" : encodeURIComponent(rawValue);
     path = path.replace(`:${param}`, value);
   }
 

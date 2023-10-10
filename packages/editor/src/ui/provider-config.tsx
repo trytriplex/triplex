@@ -7,19 +7,19 @@
 import { useLazySubscription } from "@triplex/ws-client";
 import { Suspense, useMemo } from "react";
 import { ScrollContainer } from "../ds/scroll-container";
+import { useEnvironment } from "../environment";
 import { useProviderStore } from "../stores/provider";
 import { useScene } from "../stores/scene";
 import { useSceneState } from "../stores/scene-state";
+import { IDELink } from "../util/ide";
 import { PropField } from "./prop-field";
 import { PropInput, PropTagContext } from "./prop-input";
-import { useEnvironment } from "../environment";
-import { IDELink } from "../util/ide";
 
 function Inputs() {
   const providerPath = useEnvironment().config.provider;
   const data = useLazySubscription("/scene/:path/:exportName/props", {
-    path: providerPath,
     exportName: "default",
+    path: providerPath,
   });
   const { setPropValue } = useScene();
   const storeKey = "__provider__";
@@ -58,21 +58,15 @@ function Inputs() {
 
         return (
           <PropField
-            htmlFor={prop.name}
-            label={prop.name}
             description={prop.description}
-            tags={prop.tags}
+            htmlFor={prop.name}
             key={prop.name}
+            label={prop.name}
+            tags={prop.tags}
           >
             <PropTagContext.Provider value={prop.tags}>
               <PropInput
                 name={prop.name}
-                path={providerPath}
-                prop={Object.assign({}, prop, value ? { value } : {})}
-                required={prop.required}
-                onConfirm={(value) => {
-                  setValues(storeKey, prop.name, value);
-                }}
                 onChange={(value) => {
                   setPropValue({
                     column: -999,
@@ -82,6 +76,12 @@ function Inputs() {
                     propValue: value,
                   });
                 }}
+                onConfirm={(value) => {
+                  setValues(storeKey, prop.name, value);
+                }}
+                path={providerPath}
+                prop={Object.assign({}, prop, value ? { value } : {})}
+                required={prop.required}
               />
             </PropTagContext.Provider>
           </PropField>
@@ -108,7 +108,7 @@ export function ProviderConfig() {
       <div className="-mt-0.5 mb-2 px-4">
         {providerPath && (
           <>
-            <IDELink path={providerPath} column={1} line={1}>
+            <IDELink column={1} line={1} path={providerPath}>
               View source
             </IDELink>
             <span className="mx-1.5 text-xs text-neutral-400">•</span>
@@ -116,8 +116,8 @@ export function ProviderConfig() {
         )}
 
         <a
-          href="#"
           className="text-xs text-neutral-400"
+          href="#"
           onClick={() =>
             window.triplex.openLink(
               "https://triplex.dev/docs/user-guide/provider-config"

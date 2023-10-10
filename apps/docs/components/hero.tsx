@@ -10,12 +10,12 @@ import { cn } from "../util/cn";
 export function DownloadLink({ variant }: { variant: "outline" | "bold" }) {
   return (
     <Link
-      href="/download"
       className={cn([
         variant === "outline" && "border-2 border-blue-400 text-blue-400",
         variant === "bold" && "bg-blue-400 text-black/90",
         "flex h-[54px] w-[250px] items-center justify-center rounded-full text-xl font-bold",
       ])}
+      href="/download"
     >
       Gain Early Access
     </Link>
@@ -25,12 +25,12 @@ export function DownloadLink({ variant }: { variant: "outline" | "bold" }) {
 export function BigDownloadLink({ variant }: { variant: "outline" | "bold" }) {
   return (
     <Link
-      href="/download"
       className={cn([
         variant === "outline" && "border-2 border-blue-400 text-blue-400",
         variant === "bold" && "bg-blue-400 text-black/90",
         "flex items-center justify-center rounded-full px-20 py-6 text-2xl font-bold md:px-28 md:py-8 md:text-4xl",
       ])}
+      href="/download"
     >
       Download Now
     </Link>
@@ -40,8 +40,8 @@ export function BigDownloadLink({ variant }: { variant: "outline" | "bold" }) {
 export function Hero() {
   return (
     <div
-      id="hero-section"
       className="relative flex h-[100lvh] min-h-[700px] items-center"
+      id="hero-section"
     >
       <div className="max-w-[80rem] px-10 pt-16 xl:px-28">
         <div className="flex flex-col items-center gap-8 md:items-start lg:gap-4">
@@ -57,37 +57,38 @@ export function Hero() {
 
             <a
               aria-label="View Triplex Product Hunt Page"
-              href="https://www.producthunt.com/posts/triplex?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-triplex"
-              target="_blank"
               className="rounded-full bg-white"
+              href="https://www.producthunt.com/posts/triplex?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-triplex"
+              rel="noreferrer"
+              target="_blank"
             >
-              <svg width="250" height="54" viewBox="0 0 250 54">
-                <g stroke="none" strokeWidth="1" fill="none" fillRule="evenodd">
+              <svg height="54" viewBox="0 0 250 54" width="250">
+                <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
                   <g transform="translate(-130.000000, -73.000000)">
                     <g transform="translate(130.000000, 73.000000)">
                       <text
+                        fill="#4B587C"
                         fontFamily="inherit"
                         fontSize="9"
                         fontWeight="bold"
-                        fill="#4B587C"
                       >
                         <tspan x="53" y="20">
                           FEATURED ON
                         </tspan>
                       </text>
                       <text
+                        fill="#4B587C"
                         fontFamily="inherit"
                         fontSize="21"
                         fontWeight="bold"
-                        fill="#4B587C"
                       >
                         <tspan x="52" y="40">
                           Product Hunt
                         </tspan>
                       </text>
                       <g
-                        transform="translate(201.000000, 13.000000)"
                         fill="#4B587C"
+                        transform="translate(201.000000, 13.000000)"
                       >
                         <g>
                           <polygon points="26.0024997 10 15 10 20.5012498 0"></polygon>

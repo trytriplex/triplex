@@ -39,22 +39,22 @@ export interface StringType {
 
 export interface StringLiteralType {
   kind: "string";
-  literal: string;
   label?: string;
+  literal: string;
   required?: boolean;
 }
 
 export interface BooleanLiteralType {
   kind: "boolean";
-  literal: boolean;
   label?: string;
+  literal: boolean;
   required?: boolean;
 }
 
 export interface NumberLiteralType {
   kind: "number";
-  literal: number;
   label?: string;
+  literal: number;
   required?: boolean;
 }
 
@@ -71,11 +71,11 @@ export interface UnhandledType {
 type TupleValue = string | number | boolean | TupleValue[];
 
 export interface TypeValueMap {
-  unhandled: { value: string };
   boolean: { value: boolean };
-  string: { value: string };
   number: { value: number };
+  string: { value: string };
   tuple: { value: TupleValue[] };
+  unhandled: { value: string };
   union: { value: string | number };
 }
 
@@ -90,12 +90,12 @@ export type ValueKind =
 
 export type PropWithValue<TType extends Type> = {
   column: number;
-  line: number;
   description: string | undefined;
+  line: number;
   name: string;
   required: boolean;
-  valueKind: ValueKind;
   tags: Record<string, string | number | boolean>;
+  valueKind: ValueKind;
 } & TType &
   TypeValueMap[TType["kind"]];
 
@@ -114,37 +114,37 @@ export type Prop = {
 
 export type ComponentType =
   | {
-      type: "custom";
-      path: string;
-      name: string;
       exportName: string;
+      name: string;
+      path: string;
       props: Record<string, unknown>;
+      type: "custom";
     }
   | {
-      type: "host";
       name: string;
       props: Record<string, unknown>;
+      type: "host";
     };
 
 export type ComponentRawType =
   | {
-      type: "custom";
-      path: string;
       exportName: string;
+      path: string;
       props: Record<string, unknown>;
+      type: "custom";
     }
   | {
-      type: "host";
       name: string;
       props: Record<string, unknown>;
+      type: "host";
     };
 
 export interface ComponentTarget {
-  line: number;
-  column: number;
-  path: string;
   action: "child";
+  column: number;
   exportName: string;
+  line: number;
+  path: string;
 }
 
 export interface ProjectHostComponent {
@@ -156,23 +156,23 @@ export interface ProjectHostComponent {
 export interface ProjectCustomComponent {
   category: string;
   exportName: string;
-  path: string;
   name: string;
+  path: string;
   type: "custom";
 }
 
 export interface ProjectAsset {
-  path: string;
-  name: string;
-  type: "asset";
   extname: string;
+  name: string;
+  path: string;
+  type: "asset";
 }
 
 export interface Folder {
+  children: Folder[];
+  files: number;
   name: string;
   path: string;
-  files: number;
-  children: Folder[];
 }
 
 export type JsxElementPositions =
@@ -180,24 +180,24 @@ export type JsxElementPositions =
   | HostJsxElementPosition;
 
 export interface CustomJsxElementPosition {
+  children: JsxElementPositions[];
   column: number;
+  exportName: string;
   line: number;
   name: string;
+  parentPath: string;
   /**
    * Path will be defined if the jsx element exists in local source code.
    */
   path?: string;
-  exportName: string;
-  children: JsxElementPositions[];
   type: "custom";
-  parentPath: string;
 }
 
 export interface HostJsxElementPosition {
+  children: JsxElementPositions[];
   column: number;
   line: number;
   name: string;
-  children: JsxElementPositions[];
-  type: "host";
   parentPath: string;
+  type: "host";
 }

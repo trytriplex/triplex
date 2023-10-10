@@ -6,8 +6,8 @@
  */
 interface ObjectProps {
   position?: [x: number, y: number, z: number];
-  scale?: [x: number, y: number, z: number] | number;
   rotation?: [x: number, y: number, z: number];
+  scale?: [x: number, y: number, z: number] | number;
 }
 
 export function Wall(_: ObjectProps) {

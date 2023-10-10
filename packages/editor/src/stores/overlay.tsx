@@ -12,6 +12,6 @@ interface OverlayState {
 }
 
 export const useOverlayStore = create<OverlayState>((set) => ({
-  shown: false,
   show: (shown) => set({ shown }),
+  shown: false,
 }));

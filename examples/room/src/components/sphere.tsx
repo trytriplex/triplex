@@ -14,14 +14,14 @@ export function Sphere({
   speed = 0,
 }: {
   color?: string;
+  enabled?: boolean;
   floatIntensity?: number;
   position?: [number, number, number];
   scale?: number;
-  enabled?: boolean;
   speed?: number;
 }) {
   return (
-    <Float speed={speed} floatIntensity={floatIntensity}>
+    <Float floatIntensity={floatIntensity} speed={speed}>
       <mesh castShadow position={position} scale={scale}>
         <sphereGeometry />
         <meshBasicMaterial color={color} />

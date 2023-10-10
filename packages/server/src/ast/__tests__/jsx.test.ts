@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { join } from "path";
+import { join } from "node:path";
 import { fromCwd } from "../../util/path";
 import { describe, it, expect } from "vitest";
 import {
@@ -59,29 +59,29 @@ describe("jsx ast extractor", () => {
             column: 7,
             line: 14,
             name: "boxGeometry",
-            type: "host",
             parentPath: fromCwd(
               "/packages/server/src/ast/__tests__/__mocks__/expression.tsx"
             ),
+            type: "host",
           },
           {
             children: [],
             column: 7,
             line: 15,
             name: "meshStandardMaterial",
-            type: "host",
             parentPath: fromCwd(
               "/packages/server/src/ast/__tests__/__mocks__/expression.tsx"
             ),
+            type: "host",
           },
         ],
         column: 5,
         line: 13,
         name: "mesh",
-        type: "host",
         parentPath: fromCwd(
           "/packages/server/src/ast/__tests__/__mocks__/expression.tsx"
         ),
+        type: "host",
       },
     ]);
   });
@@ -100,64 +100,64 @@ describe("jsx ast extractor", () => {
       {
         children: [],
         column: 7,
+        exportName: "default",
         line: 25,
         name: "Box",
-        type: "custom",
-        exportName: "default",
-        path: fromCwd("packages/server/src/ast/__tests__/__mocks__/box.tsx"),
         parentPath: fromCwd(
           "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
         ),
+        path: fromCwd("packages/server/src/ast/__tests__/__mocks__/box.tsx"),
+        type: "custom",
       },
       {
         children: [],
         column: 7,
+        exportName: "default",
         line: 31,
         name: "Cylinder",
-        type: "custom",
-        exportName: "default",
+        parentPath: fromCwd(
+          "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
+        ),
         path: fromCwd(
           "packages/server/src/ast/__tests__/__mocks__/cylinder.tsx"
         ),
-        parentPath: fromCwd(
-          "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
-        ),
+        type: "custom",
       },
       {
         children: [],
         column: 7,
+        exportName: "SceneAlt",
         line: 34,
         name: "SceneAlt",
-        exportName: "SceneAlt",
-        type: "custom",
-        path: fromCwd("packages/server/src/ast/__tests__/__mocks__/scene.tsx"),
         parentPath: fromCwd(
           "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
         ),
+        path: fromCwd("packages/server/src/ast/__tests__/__mocks__/scene.tsx"),
+        type: "custom",
       },
       {
         children: [],
         column: 7,
+        exportName: "SceneWrapped",
         line: 35,
         name: "SceneWrapped",
-        type: "custom",
-        exportName: "SceneWrapped",
-        path: fromCwd("packages/server/src/ast/__tests__/__mocks__/scene.tsx"),
         parentPath: fromCwd(
           "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
         ),
+        path: fromCwd("packages/server/src/ast/__tests__/__mocks__/scene.tsx"),
+        type: "custom",
       },
       {
         children: [],
         column: 7,
+        exportName: "SceneArrow",
         line: 36,
         name: "SceneArrow",
-        exportName: "SceneArrow",
-        type: "custom",
-        path: fromCwd("packages/server/src/ast/__tests__/__mocks__/scene.tsx"),
         parentPath: fromCwd(
           "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
         ),
+        path: fromCwd("packages/server/src/ast/__tests__/__mocks__/scene.tsx"),
+        type: "custom",
       },
     ]);
   });
@@ -175,14 +175,14 @@ describe("jsx ast extractor", () => {
     expect(elements[0]).toEqual({
       children: [],
       column: 10,
+      exportName: "default",
       line: 13,
       name: "Box",
-      type: "custom",
-      exportName: "default",
-      path: fromCwd("packages/server/src/ast/__tests__/__mocks__/box.tsx"),
       parentPath: fromCwd(
         "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
       ),
+      path: fromCwd("packages/server/src/ast/__tests__/__mocks__/box.tsx"),
+      type: "custom",
     });
   });
 
@@ -202,10 +202,10 @@ describe("jsx ast extractor", () => {
       exportName: "default",
       line: 10,
       name: "Box",
-      path: fromCwd("packages/server/src/ast/__tests__/__mocks__/box.tsx"),
       parentPath: fromCwd(
         "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
       ),
+      path: fromCwd("packages/server/src/ast/__tests__/__mocks__/box.tsx"),
       type: "custom",
     });
   });
@@ -228,29 +228,29 @@ describe("jsx ast extractor", () => {
             column: 7,
             line: 18,
             name: "boxGeometry",
-            type: "host",
             parentPath: fromCwd(
               "/packages/server/src/ast/__tests__/__mocks__/box.tsx"
             ),
+            type: "host",
           },
           {
             children: [],
             column: 7,
             line: 19,
             name: "meshStandardMaterial",
-            type: "host",
             parentPath: fromCwd(
               "/packages/server/src/ast/__tests__/__mocks__/box.tsx"
             ),
+            type: "host",
           },
         ],
         column: 5,
         line: 17,
         name: "mesh",
-        type: "host",
         parentPath: fromCwd(
           "/packages/server/src/ast/__tests__/__mocks__/box.tsx"
         ),
+        type: "host",
       },
     ]);
   });
@@ -1903,7 +1903,7 @@ describe("jsx ast extractor", () => {
           },
         },
         {
-          "column": 11,
+          "column": 30,
           "description": "Object gets rendered if \`true\`.",
           "kind": "boolean",
           "line": 20,
@@ -1916,7 +1916,7 @@ describe("jsx ast extractor", () => {
           "valueKind": "boolean",
         },
         {
-          "column": 26,
+          "column": 11,
           "description": "Whether the object gets rendered into shadow map.",
           "kind": "boolean",
           "line": 20,
@@ -2546,38 +2546,38 @@ describe("jsx ast extractor", () => {
                 column: 9,
                 line: 11,
                 name: "boxGeometry",
-                type: "host",
                 parentPath: fromCwd(
                   "/packages/server/src/ast/__tests__/__mocks__/nested.tsx"
                 ),
+                type: "host",
               },
               {
                 children: [],
                 column: 9,
                 line: 12,
                 name: "meshBasicMaterial",
-                type: "host",
                 parentPath: fromCwd(
                   "/packages/server/src/ast/__tests__/__mocks__/nested.tsx"
                 ),
+                type: "host",
               },
             ],
             column: 7,
             line: 10,
             name: "mesh",
-            type: "host",
             parentPath: fromCwd(
               "/packages/server/src/ast/__tests__/__mocks__/nested.tsx"
             ),
+            type: "host",
           },
         ],
         column: 5,
         line: 9,
         name: "group",
-        type: "host",
         parentPath: fromCwd(
           "/packages/server/src/ast/__tests__/__mocks__/nested.tsx"
         ),
+        type: "host",
       },
     ]);
   });
@@ -2600,29 +2600,29 @@ describe("jsx ast extractor", () => {
             column: 7,
             line: 10,
             name: "geo-hi (cylinderGeometry)",
-            type: "host",
             parentPath: fromCwd(
               "/packages/server/src/ast/__tests__/__mocks__/cylinder.tsx"
             ),
+            type: "host",
           },
           {
             children: [],
             column: 7,
             line: 11,
             name: "meshStandardMaterial",
-            type: "host",
             parentPath: fromCwd(
               "/packages/server/src/ast/__tests__/__mocks__/cylinder.tsx"
             ),
+            type: "host",
           },
         ],
         column: 5,
         line: 9,
         name: "this-is-cilly (mesh)",
-        type: "host",
         parentPath: fromCwd(
           "/packages/server/src/ast/__tests__/__mocks__/cylinder.tsx"
         ),
+        type: "host",
       },
     ]);
   });

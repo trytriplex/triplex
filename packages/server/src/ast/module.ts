@@ -10,7 +10,7 @@ import { resolveExportDeclaration } from "./jsx";
 
 export function getElementFilePath(
   element: JsxSelfClosingElement | JsxElement
-): { filePath: string; exportName: string } {
+): { exportName: string, filePath: string; } {
   const tagNode = Node.isJsxSelfClosingElement(element)
     ? element.getTagNameNode()
     : element.getOpeningElement().getTagNameNode();
@@ -34,29 +34,29 @@ export function getElementFilePath(
   const filePath = normalize(declaration.getSourceFile().getFilePath());
 
   if (filePath.includes("node_modules")) {
-    return { filePath: "", exportName: "" };
+    return { exportName: "", filePath: "" };
   }
 
   const localSymbolDecl = tagNode.getSymbol()?.getDeclarations()[0];
 
   if (Node.isImportClause(localSymbolDecl)) {
     // Default import!
-    return { filePath, exportName: "default" };
+    return { exportName: "default", filePath };
   }
 
   if (Node.isImportSpecifier(localSymbolDecl)) {
     // Named import!
     const exportName = localSymbolDecl.getName();
-    return { filePath, exportName };
+    return { exportName, filePath };
   }
 
   if (Node.isFunctionDeclaration(localSymbolDecl)) {
     if (localSymbolDecl.isDefaultExport()) {
-      return { filePath, exportName: "default" };
+      return { exportName: "default", filePath };
     }
 
     if (localSymbolDecl.isNamedExport()) {
-      return { filePath, exportName: localSymbolDecl.getNameOrThrow() };
+      return { exportName: localSymbolDecl.getNameOrThrow(), filePath };
     }
   }
 
@@ -64,11 +64,11 @@ export function getElementFilePath(
     const parent = localSymbolDecl.getParent().getParent();
 
     if (Node.isVariableStatement(parent) && parent.isExported()) {
-      return { filePath, exportName: localSymbolDecl.getName() };
+      return { exportName: localSymbolDecl.getName(), filePath };
     }
   }
 
-  return { filePath: "", exportName: "" };
+  return { exportName: "", filePath: "" };
 }
 
 export function getExportName(sourceFile: SourceFile, exportName: string) {
