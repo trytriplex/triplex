@@ -1,6 +1,5 @@
 {
   "extends": ["@nkzw"],
-  "plugins": ["header"],
   "ignorePatterns": ["dist", "build"],
   "overrides": [
     {
@@ -10,13 +9,15 @@
       }
     },
     {
-      "files": ["**/create-triplex-project/templates/**"],
+      "files": ["**/create-triplex-project/templates/**", "*.d.ts"],
       "rules": {
         "header/header": "off"
       }
     }
   ],
+  "plugins": ["header"],
   "rules": {
+    "@nkzw/no-instanceof": "off",
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-inferrable-types": "off",
@@ -25,6 +26,7 @@
       "error",
       { "argsIgnorePattern": "^_" }
     ],
+    "header/header": ["error", "scripts/header.js"],
     "import/no-extraneous-dependencies": [
       "error",
       {
@@ -39,7 +41,13 @@
         ]
       }
     ],
+    "import/no-unresolved": "off",
+    "no-extra-parens": "off",
     "no-inner-declarations": "off",
-    "header/header": ["error", "scripts/header.js"]
+    "no-unused-expressions": "off",
+    "prefer-const": "off",
+    "react/no-unknown-property": "off",
+    "unicorn/prefer-ternary": "off",
+    "unicorn/prefer-top-level-await": "off"
   }
 }
