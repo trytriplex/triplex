@@ -1,5 +1,14 @@
 # create-triplex-project
 
+## 0.58.2
+
+### Patch Changes
+
+- 85447c2: Add halloween template for project initialization.
+- 85447c2: Upgrade three.js.
+- b5247c2: Apply lint and prettier fixes.
+- 85447c2: Dependencies bumped to latest.
+
 ## 0.58.1
 
 ## 0.58.0
