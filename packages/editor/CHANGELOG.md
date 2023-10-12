@@ -1,5 +1,16 @@
 # @triplex/editor
 
+## 0.58.2
+
+### Patch Changes
+
+- 85447c2: Add halloween template for project initialization.
+- 85447c2: Upgrade three.js.
+- b5247c2: Apply lint and prettier fixes.
+- Updated dependencies [b5247c2]
+  - @triplex/ws-client@0.58.2
+  - @triplex/bridge@0.58.2
+
 ## 0.58.1
 
 ### Patch Changes

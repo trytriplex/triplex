@@ -1,5 +1,12 @@
 # @docs/triplex
 
+## 0.2.2
+
+### Patch Changes
+
+- 85447c2: Upgrade three.js.
+- b5247c2: Apply lint and prettier fixes.
+
 ## 0.2.1
 
 ### Patch Changes

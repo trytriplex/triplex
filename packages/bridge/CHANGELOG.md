@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.58.2
+
+### Patch Changes
+
+- b5247c2: Apply lint and prettier fixes.
+
 ## 0.58.1
 
 ## 0.58.0
