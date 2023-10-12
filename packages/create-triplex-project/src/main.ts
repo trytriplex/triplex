@@ -96,7 +96,6 @@ async function main() {
           mode,
           name: projectName,
           pkgManager: packageManager,
-          target: "node",
           version,
         });
 

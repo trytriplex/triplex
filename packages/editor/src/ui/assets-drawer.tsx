@@ -82,14 +82,12 @@ function ProjectAsset({
 
   return (
     <button
-      className="relative h-24 w-24 cursor-default rounded bg-white/5 outline-1 outline-offset-1 outline-blue-400 hover:bg-white/10 focus-visible:outline active:bg-white/20"
+      className="relative h-24 w-24 cursor-default break-words rounded bg-white/5 p-2 text-sm text-neutral-300 outline-1 outline-offset-1 outline-blue-400 hover:bg-white/10 focus-visible:outline active:bg-white/20"
       onClick={onClickHandler}
       title={name}
       type="button"
     >
-      <span className="absolute bottom-0 left-0 right-0 top-0 flex items-center justify-center overflow-hidden text-ellipsis p-1 text-sm text-neutral-400">
-        {asset.type === "asset" ? name : titleCase(name)}
-      </span>
+      {asset.type === "asset" ? name : titleCase(name)}
     </button>
   );
 }
@@ -210,6 +208,34 @@ function ComponentFolder({
       ? component
       : null
   );
+
+  if (components.length === 0) {
+    const message = {
+      assets: [
+        "No assets exist in this folder.",
+        "https://triplex.dev/docs/api-reference/config#assets-directory",
+      ],
+      components: [
+        "No custom components were found to add to your scene.",
+        "https://triplex.dev/docs/api-reference/config#components",
+      ],
+    }[folderPath.category];
+
+    return (
+      <div className="m-auto text-center text-sm text-neutral-400">
+        {message[0]}
+        <br />
+        <a
+          className="text-blue-400"
+          href="#"
+          onClick={() => window.triplex.openLink(message[1])}
+        >
+          Learn more
+        </a>
+        .
+      </div>
+    );
+  }
 
   return (
     <ScrollContainer className="min-h-0">

@@ -23,7 +23,7 @@ export async function init({
   mode = "interactive",
   name,
   pkgManager,
-  target,
+  template = "halloween",
   version,
 }: {
   __exec?: typeof exec_dont_use_directly;
@@ -35,7 +35,7 @@ export async function init({
   mode?: "non-interactive" | "interactive";
   name: string;
   pkgManager: string;
-  target: "node" | "app";
+  template?: "default" | "halloween";
   version: string;
 }) {
   const { default: ora } = await import("ora");
@@ -102,7 +102,7 @@ export async function init({
     const packageJson = await fs.readFile(packageJsonPath, "utf8");
     const parsed = JSON.parse(packageJson);
     const pkgJSON = await fs.readFile(
-      join(templateDir, `package_${target}.json`),
+      join(templateDir, `package.json`),
       "utf8"
     );
     const pkgJSONParsed = JSON.parse(pkgJSON);
@@ -127,7 +127,7 @@ export async function init({
   } else {
     // Create
     const pkgJson = await fs.readFile(
-      join(templateDir, `package_${target}.json`),
+      join(templateDir, `package.json`),
       "utf8"
     );
     await fs.writeFile(
@@ -139,10 +139,7 @@ export async function init({
   if (dir.includes("README.md")) {
     // Skip
   } else {
-    const readme = await fs.readFile(
-      join(templateDir, `README_${target}.md`),
-      "utf8"
-    );
+    const readme = await fs.readFile(join(templateDir, `README.md`), "utf8");
     await fs.writeFile(
       readmePath,
       readme.replace("{pkg_manager}", pkgManager).replace("{app_name}", name)
@@ -199,7 +196,7 @@ export async function init({
     const examplesDir = await fs.readdir(packagesPath);
     if (!examplesDir.includes("triplex-examples")) {
       // Examples haven't been added yet - add them!
-      const templatePath = join(templateDir, "src");
+      const templatePath = join(templateDir, template, "src");
       await fs.cp(templatePath, join(packagesPath, "triplex-examples"), {
         recursive: true,
       });
@@ -212,7 +209,7 @@ export async function init({
     const srcDir = await fs.readdir(examplePath);
     if (!srcDir.includes("scene.tsx")) {
       // Examples haven't been added yet - add them!
-      const templatePath = join(templateDir, "src");
+      const templatePath = join(templateDir, template, "src");
       await fs.cp(templatePath, join(examplePath, "triplex-examples"), {
         recursive: true,
       });
@@ -223,7 +220,7 @@ export async function init({
       openPath = join(examplePath, "scene.tsx");
     }
   } else {
-    const templatePath = join(templateDir, "src");
+    const templatePath = join(templateDir, template, "src");
     await fs.cp(templatePath, examplePath, { recursive: true });
     openPath = join(examplePath, "scene.tsx");
   }
@@ -231,7 +228,7 @@ export async function init({
   if (dir.includes(".triplex")) {
     // Skip creating an example
   } else {
-    const templatePath = join(templateDir, ".triplex");
+    const templatePath = join(templateDir, template, ".triplex");
     await fs.cp(templatePath, join(cwd, ".triplex"), {
       recursive: true,
     });
@@ -240,7 +237,7 @@ export async function init({
   if (dir.includes("public")) {
     // Skip creating a public dir
   } else {
-    const templatePath = join(templateDir, "public");
+    const templatePath = join(templateDir, template, "public");
     await fs.cp(templatePath, join(cwd, "public"), {
       recursive: true,
     });

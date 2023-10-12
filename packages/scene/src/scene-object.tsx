@@ -21,7 +21,7 @@ function isRenderedSceneObject(
   name: string,
   props: Record<string, unknown>
 ): boolean {
-  const exclusions = ["Material", "Geometry", "Attribute"];
+  const exclusions = ["Material", "Geometry", "Attribute", "__exclude__"];
   if (
     // If the scene object has an attach prop it's not actually rendered to the scene
     // But instead attached to the parent object in the R3F tree.

@@ -52,6 +52,22 @@ Defaults to `"../public"`.
 }
 ```
 
+### Assets directory
+
+Folder inside the public directory folder where Triplex maintains static assets
+such as GLTF and GLB files. Files inside this directory are made available to be
+added to the open component as a `GLTF` element.
+
+Defaults to `"assets"`.
+
+**Example**
+
+```json
+{
+  "assetsDir": "mesh"
+}
+```
+
 ### Provider
 
 Use the `provider` property to point to a component that can declare any extra

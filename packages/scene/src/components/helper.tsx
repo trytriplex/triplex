@@ -4,7 +4,12 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { ThreeEvent, useFrame } from "@react-three/fiber";
+import {
+  createPortal,
+  ThreeEvent,
+  useFrame,
+  useThree,
+} from "@react-three/fiber";
 import { useLayoutEffect, useRef, useState } from "react";
 import { Mesh, Object3D } from "three";
 import "./camera-helper";
@@ -85,6 +90,7 @@ export function Helper({
 }) {
   const [target, setTarget] = useState<Object3D | null>(null);
   const helperRef = useRef<HelperInstance>(null);
+  const scene = useThree((three) => three.scene);
 
   useLayoutEffect(() => {
     if (parentObject && parentObject?.current) {
@@ -100,16 +106,22 @@ export function Helper({
     return (
       <>
         <HelperIcon onClick={onClick} target={target} />
-        <HelperElement
-          // This will be ignored by the selection component when a click event
-          // Has been captured. We do this as we don't want the helper to be the
-          // Bounding box but instead the helper icon above.
-          // @ts-expect-error - Hacking, sorry!
-          args={[target, ...args]}
-          name="triplex_ignore"
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          ref={helperRef as any}
-        />
+        {createPortal(
+          // We portal to helper to be a direct descendent of the scene to prevent
+          // position bugs when helpers are logically rendered inside a group.
+          // See: https://discourse.threejs.org/t/pointlighthelper-position-problem/47760/2
+          <HelperElement
+            // This will be ignored by the selection component when a click event
+            // Has been captured. We do this as we don't want the helper to be the
+            // Bounding box but instead the helper icon above.
+            // @ts-expect-error - Hacking, sorry!
+            args={[target, ...args]}
+            name="triplex_ignore"
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            ref={helperRef as any}
+          />,
+          scene
+        )}
       </>
     );
   }

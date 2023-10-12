@@ -187,35 +187,33 @@ export function SceneFrame({
   return (
     <Canvas>
       <Camera layers={layers} position={position} target={target}>
-        <Suspense fallback={null}>
-          <Selection
-            exportName={exportName}
-            onBlur={onBlurObject}
-            onFocus={onFocus}
-            onJumpTo={onJumpTo}
-            onNavigate={onNavigate}
-            path={path}
-          >
-            <SceneErrorBoundary>
-              <Suspense fallback={null}>
-                <ManualEditableSceneObject
-                  component={Provider}
-                  exportName="default"
-                  id={-999}
-                  key={resetCount}
-                  path={env.config.provider}
-                >
-                  <SceneLoader
-                    exportName={exportName}
-                    path={path}
-                    sceneProps={sceneProps}
-                  />
-                  <AddSceneObject key={path} path={path} />
-                </ManualEditableSceneObject>
-              </Suspense>
-            </SceneErrorBoundary>
-          </Selection>
-        </Suspense>
+        <SceneErrorBoundary>
+          <Suspense fallback={null}>
+            <ManualEditableSceneObject
+              component={Provider}
+              exportName="__exclude__"
+              id={-999}
+              key={resetCount}
+              path={env.config.provider}
+            >
+              <Selection
+                exportName={exportName}
+                onBlur={onBlurObject}
+                onFocus={onFocus}
+                onJumpTo={onJumpTo}
+                onNavigate={onNavigate}
+                path={path}
+              >
+                <SceneLoader
+                  exportName={exportName}
+                  path={path}
+                  sceneProps={sceneProps}
+                />
+                <AddSceneObject key={path} path={path} />
+              </Selection>
+            </ManualEditableSceneObject>
+          </Suspense>
+        </SceneErrorBoundary>
       </Camera>
 
       <Grid
