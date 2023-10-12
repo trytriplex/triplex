@@ -1,5 +1,21 @@
 # @triplex/scene
 
+## 0.58.2
+
+### Patch Changes
+
+- 85447c2: Upgrade three.js.
+- 250c9ab: Fixes GLTF selection choosing an unexpected scene object.
+- 85447c2: Scene helpers are now portalled to be direct descendents of the scene
+  instance.
+- 85447c2: Provider no longer has any intermediate groups between it and the
+  rendered canvas element.
+- 250c9ab: Fix scene object throwing during HMR when path is undefined.
+- b5247c2: Apply lint and prettier fixes.
+- Updated dependencies [b5247c2]
+  - @triplex/ws-client@0.58.2
+  - @triplex/bridge@0.58.2
+
 ## 0.58.1
 
 ### Patch Changes

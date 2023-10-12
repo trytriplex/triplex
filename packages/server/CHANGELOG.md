@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.58.2
+
+### Patch Changes
+
+- 85447c2: Upgrade three.js.
+- b5247c2: Apply lint and prettier fixes.
+
 ## 0.58.1
 
 ### Patch Changes

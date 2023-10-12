@@ -1,5 +1,17 @@
 # @triplex/run
 
+## 0.58.2
+
+### Patch Changes
+
+- b5247c2: Apply lint and prettier fixes.
+- Updated dependencies [85447c2]
+- Updated dependencies [85447c2]
+- Updated dependencies [b5247c2]
+  - @triplex/editor@0.58.2
+  - @triplex/server@0.58.2
+  - @triplex/client@0.58.2
+
 ## 0.58.1
 
 ### Patch Changes
