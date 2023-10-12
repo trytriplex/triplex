@@ -12,7 +12,6 @@ export function create({
   env,
   name,
   packageManager = "npm",
-  target,
 }: {
   cwd?: string;
   env?: Record<string, string>;
@@ -27,7 +26,6 @@ export function create({
     mode: "non-interactive",
     name,
     pkgManager: packageManager,
-    target,
     version,
   });
 }
