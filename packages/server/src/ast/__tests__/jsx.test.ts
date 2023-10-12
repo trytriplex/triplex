@@ -536,6 +536,16 @@ describe("jsx ast extractor", () => {
           },
         },
         {
+          "description": "Enables alpha hashed transparency, an alternative to {@link .transparent} or {@link .alphaTest}. The material
+      will not be rendered if opacity is lower than a random threshold. Randomization introduces some grain or noise,
+      but approximates alpha blending without the associated problems of sorting. Using TAARenderPass can reduce the
+      resulting noise.",
+          "kind": "boolean",
+          "name": "alphaHash",
+          "required": true,
+          "tags": {},
+        },
+        {
           "description": "Sets the alpha value to be used when running an alpha test. Default is 0.",
           "kind": "number",
           "name": "alphaTest",

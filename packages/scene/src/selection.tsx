@@ -212,15 +212,12 @@ const findSceneObjectFromSource = (
 
 const V1 = new Vector3();
 const box = new Box3();
-const noop = () => {};
-const SelectionContext = createContext<(select: Object3D) => void>(noop);
+const SelectionContext = createContext<(select: Object3D) => void>(() => {
+  throw new Error("invariant");
+});
 
 export const useSelectSceneObject = () => {
   const select = useContext(SelectionContext);
-  if (process.env.NODE_ENV !== "test" && select === noop) {
-    throw new Error("invariant");
-  }
-
   return select;
 };
 

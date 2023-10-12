@@ -35,11 +35,11 @@
     "@triplex/server": "^0.58.1",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
-    "@types/three": "^0.153.0",
+    "@types/three": "^0.157.0",
     "@types/tinycolor2": "^1.4.3",
     "@vitejs/plugin-react": "^3.0.1",
     "tailwindcss": "^3.3.2",
-    "three": "^0.153.0",
+    "three": "^0.157.0",
     "typescript": "^4.9.4",
     "vite": "^4.0.4"
   },

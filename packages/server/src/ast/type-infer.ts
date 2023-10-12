@@ -15,13 +15,13 @@ import {
   ts,
   Type,
 } from "ts-morph";
-import { getAttributes } from "./jsx";
 import type {
   DeclaredProp,
   Prop,
   Type as UnrolledType,
   ValueKind,
 } from "../types";
+import { getAttributes } from "./jsx";
 import { getExportName } from "./module";
 
 export function unrollType(type: Type): UnrolledType {

@@ -34,7 +34,6 @@ describe("init command", () => {
         cwd,
         name: "fresh-local",
         pkgManager: "npm",
-        target: "node",
         version: "0.0.0-local",
       });
 
@@ -60,7 +59,6 @@ describe("init command", () => {
         cwd,
         name: "fresh-local",
         pkgManager: "npm",
-        target: "node",
         version: "0.0.0-local",
       });
 
@@ -73,12 +71,12 @@ describe("init command", () => {
         join(cwd, "fresh-local", "tsconfig.json")
       );
       expect(stubFs.cp).toHaveBeenCalledWith(
-        join(templateDir, "src"),
+        join(templateDir, "halloween", "src"),
         join(cwd, "fresh-local", "src"),
         { recursive: true }
       );
       expect(stubFs.cp).toHaveBeenCalledWith(
-        join(templateDir, ".triplex"),
+        join(templateDir, "halloween", ".triplex"),
         join(cwd, "fresh-local", ".triplex"),
         { recursive: true }
       );
@@ -103,7 +101,6 @@ describe("init command", () => {
         cwd,
         name: "fresh-local",
         pkgManager: "npm",
-        target: "node",
         version: "0.0.0-local",
       });
 
@@ -113,18 +110,15 @@ describe("init command", () => {
   "name": "fresh-local",
   "version": "0.0.0",
   "private": true,
-  "scripts": {
-    "editor": "triplex editor"
-  },
+  "scripts": {},
   "dependencies": {
-    "@react-three/drei": "^9.74.6",
-    "@react-three/fiber": "^8.13.0",
-    "@triplex/run": "^0.0.0-local",
-    "@types/react": "^18.2.8",
-    "@types/three": "^0.153.0",
+    "@react-three/drei": "^9.87.0",
+    "@react-three/fiber": "^8.14.5",
+    "@types/react": "^18.2.25",
+    "@types/three": "^0.157.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "three": "^0.153.0"
+    "three": "^0.157.0"
   }
 }
 `.replaceAll("\n", EOL)
@@ -152,12 +146,11 @@ describe("init command", () => {
         cwd,
         name: "",
         pkgManager: "npm",
-        target: "node",
         version: "0.0.0-local",
       });
 
       expect(stubFs.cp).toHaveBeenCalledWith(
-        join(templateDir, "src"),
+        join(templateDir, "halloween", "src"),
         join(cwd, "src/triplex-examples"),
         { recursive: true }
       );
@@ -182,7 +175,6 @@ describe("init command", () => {
         cwd,
         name: "",
         pkgManager: "npm",
-        target: "node",
         version: "0.0.0-local",
       });
 
@@ -225,7 +217,6 @@ describe("init command", () => {
         cwd,
         name: "",
         pkgManager: "npm",
-        target: "node",
         version: "0.0.0-local",
       });
 
@@ -253,7 +244,6 @@ describe("init command", () => {
         cwd,
         name: "",
         pkgManager: "npm",
-        target: "node",
         version: "0.0.0-local",
       });
 
@@ -263,18 +253,15 @@ describe("init command", () => {
   "name": "app",
   "dependencies": {
     "already-exists": "^1.1.1",
-    "@react-three/drei": "^9.74.6",
-    "@react-three/fiber": "^8.13.0",
-    "@triplex/run": "^0.0.0-local",
-    "@types/react": "^18.2.8",
-    "@types/three": "^0.153.0",
+    "@react-three/drei": "^9.87.0",
+    "@react-three/fiber": "^8.14.5",
+    "@types/react": "^18.2.25",
+    "@types/three": "^0.157.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "three": "^0.153.0"
+    "three": "^0.157.0"
   },
-  "scripts": {
-    "editor": "triplex editor"
-  }
+  "scripts": {}
 }
 `
       );
@@ -299,7 +286,6 @@ describe("init command", () => {
         cwd,
         name: "fresh-local",
         pkgManager: "npm",
-        target: "node",
         version: "0.0.0-local",
       });
 
@@ -327,7 +313,6 @@ describe("init command", () => {
         cwd,
         name: "fresh-local",
         pkgManager: "npm",
-        target: "node",
         version: "0.0.0-local",
       });
 
