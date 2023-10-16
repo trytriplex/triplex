@@ -580,42 +580,52 @@ describe("jsx ast extractor", () => {
           "shape": [
             {
               "kind": "number",
+              "label": "ZeroFactor",
               "literal": 200,
             },
             {
               "kind": "number",
+              "label": "OneFactor",
               "literal": 201,
             },
             {
               "kind": "number",
+              "label": "SrcColorFactor",
               "literal": 202,
             },
             {
               "kind": "number",
+              "label": "OneMinusSrcColorFactor",
               "literal": 203,
             },
             {
               "kind": "number",
+              "label": "SrcAlphaFactor",
               "literal": 204,
             },
             {
               "kind": "number",
+              "label": "OneMinusSrcAlphaFactor",
               "literal": 205,
             },
             {
               "kind": "number",
+              "label": "DstAlphaFactor",
               "literal": 206,
             },
             {
               "kind": "number",
+              "label": "OneMinusDstAlphaFactor",
               "literal": 207,
             },
             {
               "kind": "number",
+              "label": "DstColorFactor",
               "literal": 208,
             },
             {
               "kind": "number",
+              "label": "OneMinusDstColorFactor",
               "literal": 209,
             },
           ],
@@ -640,22 +650,27 @@ describe("jsx ast extractor", () => {
           "shape": [
             {
               "kind": "number",
+              "label": "AddEquation",
               "literal": 100,
             },
             {
               "kind": "number",
+              "label": "SubtractEquation",
               "literal": 101,
             },
             {
               "kind": "number",
+              "label": "ReverseSubtractEquation",
               "literal": 102,
             },
             {
               "kind": "number",
+              "label": "MinEquation",
               "literal": 103,
             },
             {
               "kind": "number",
+              "label": "MaxEquation",
               "literal": 104,
             },
           ],
@@ -680,26 +695,32 @@ describe("jsx ast extractor", () => {
           "shape": [
             {
               "kind": "number",
+              "label": "NoBlending",
               "literal": 0,
             },
             {
               "kind": "number",
+              "label": "NormalBlending",
               "literal": 1,
             },
             {
               "kind": "number",
+              "label": "AdditiveBlending",
               "literal": 2,
             },
             {
               "kind": "number",
+              "label": "SubtractiveBlending",
               "literal": 3,
             },
             {
               "kind": "number",
+              "label": "MultiplyBlending",
               "literal": 4,
             },
             {
               "kind": "number",
+              "label": "CustomBlending",
               "literal": 5,
             },
           ],
@@ -715,42 +736,52 @@ describe("jsx ast extractor", () => {
           "shape": [
             {
               "kind": "number",
+              "label": "ZeroFactor",
               "literal": 200,
             },
             {
               "kind": "number",
+              "label": "OneFactor",
               "literal": 201,
             },
             {
               "kind": "number",
+              "label": "SrcColorFactor",
               "literal": 202,
             },
             {
               "kind": "number",
+              "label": "OneMinusSrcColorFactor",
               "literal": 203,
             },
             {
               "kind": "number",
+              "label": "SrcAlphaFactor",
               "literal": 204,
             },
             {
               "kind": "number",
+              "label": "OneMinusSrcAlphaFactor",
               "literal": 205,
             },
             {
               "kind": "number",
+              "label": "DstAlphaFactor",
               "literal": 206,
             },
             {
               "kind": "number",
+              "label": "OneMinusDstAlphaFactor",
               "literal": 207,
             },
             {
               "kind": "number",
+              "label": "DstColorFactor",
               "literal": 208,
             },
             {
               "kind": "number",
+              "label": "OneMinusDstColorFactor",
               "literal": 209,
             },
             {
@@ -815,34 +846,42 @@ describe("jsx ast extractor", () => {
           "shape": [
             {
               "kind": "number",
+              "label": "NeverDepth",
               "literal": 0,
             },
             {
               "kind": "number",
+              "label": "AlwaysDepth",
               "literal": 1,
             },
             {
               "kind": "number",
+              "label": "LessDepth",
               "literal": 2,
             },
             {
               "kind": "number",
+              "label": "LessEqualDepth",
               "literal": 3,
             },
             {
               "kind": "number",
+              "label": "EqualDepth",
               "literal": 4,
             },
             {
               "kind": "number",
+              "label": "GreaterEqualDepth",
               "literal": 5,
             },
             {
               "kind": "number",
+              "label": "GreaterDepth",
               "literal": 6,
             },
             {
               "kind": "number",
+              "label": "NotEqualDepth",
               "literal": 7,
             },
           ],
@@ -995,10 +1034,12 @@ describe("jsx ast extractor", () => {
           "shape": [
             {
               "kind": "number",
+              "label": "TangentSpaceNormalMap",
               "literal": 0,
             },
             {
               "kind": "number",
+              "label": "ObjectSpaceNormalMap",
               "literal": 1,
             },
           ],
@@ -1074,14 +1115,17 @@ describe("jsx ast extractor", () => {
           "shape": [
             {
               "kind": "number",
+              "label": "FrontSide",
               "literal": 0,
             },
             {
               "kind": "number",
+              "label": "BackSide",
               "literal": 1,
             },
             {
               "kind": "number",
+              "label": "DoubleSide",
               "literal": 2,
             },
           ],
@@ -1098,14 +1142,17 @@ describe("jsx ast extractor", () => {
           "shape": [
             {
               "kind": "number",
+              "label": "FrontSide",
               "literal": 0,
             },
             {
               "kind": "number",
+              "label": "BackSide",
               "literal": 1,
             },
             {
               "kind": "number",
+              "label": "DoubleSide",
               "literal": 2,
             },
           ],
@@ -1121,34 +1168,42 @@ describe("jsx ast extractor", () => {
           "shape": [
             {
               "kind": "number",
+              "label": "ZeroStencilOp",
               "literal": 0,
             },
             {
               "kind": "number",
+              "label": "KeepStencilOp",
               "literal": 7680,
             },
             {
               "kind": "number",
+              "label": "ReplaceStencilOp",
               "literal": 7681,
             },
             {
               "kind": "number",
+              "label": "IncrementStencilOp",
               "literal": 7682,
             },
             {
               "kind": "number",
+              "label": "DecrementStencilOp",
               "literal": 7283,
             },
             {
               "kind": "number",
+              "label": "IncrementWrapStencilOp",
               "literal": 34055,
             },
             {
               "kind": "number",
+              "label": "DecrementWrapStencilOp",
               "literal": 34056,
             },
             {
               "kind": "number",
+              "label": "InvertStencilOp",
               "literal": 5386,
             },
           ],
@@ -1164,34 +1219,42 @@ describe("jsx ast extractor", () => {
           "shape": [
             {
               "kind": "number",
+              "label": "NeverStencilFunc",
               "literal": 512,
             },
             {
               "kind": "number",
+              "label": "LessStencilFunc",
               "literal": 513,
             },
             {
               "kind": "number",
+              "label": "EqualStencilFunc",
               "literal": 514,
             },
             {
               "kind": "number",
+              "label": "LessEqualStencilFunc",
               "literal": 515,
             },
             {
               "kind": "number",
+              "label": "GreaterStencilFunc",
               "literal": 516,
             },
             {
               "kind": "number",
+              "label": "NotEqualStencilFunc",
               "literal": 517,
             },
             {
               "kind": "number",
+              "label": "GreaterEqualStencilFunc",
               "literal": 518,
             },
             {
               "kind": "number",
+              "label": "AlwaysStencilFunc",
               "literal": 519,
             },
           ],
@@ -1245,34 +1308,42 @@ describe("jsx ast extractor", () => {
           "shape": [
             {
               "kind": "number",
+              "label": "ZeroStencilOp",
               "literal": 0,
             },
             {
               "kind": "number",
+              "label": "KeepStencilOp",
               "literal": 7680,
             },
             {
               "kind": "number",
+              "label": "ReplaceStencilOp",
               "literal": 7681,
             },
             {
               "kind": "number",
+              "label": "IncrementStencilOp",
               "literal": 7682,
             },
             {
               "kind": "number",
+              "label": "DecrementStencilOp",
               "literal": 7283,
             },
             {
               "kind": "number",
+              "label": "IncrementWrapStencilOp",
               "literal": 34055,
             },
             {
               "kind": "number",
+              "label": "DecrementWrapStencilOp",
               "literal": 34056,
             },
             {
               "kind": "number",
+              "label": "InvertStencilOp",
               "literal": 5386,
             },
           ],
@@ -1290,34 +1361,42 @@ describe("jsx ast extractor", () => {
           "shape": [
             {
               "kind": "number",
+              "label": "ZeroStencilOp",
               "literal": 0,
             },
             {
               "kind": "number",
+              "label": "KeepStencilOp",
               "literal": 7680,
             },
             {
               "kind": "number",
+              "label": "ReplaceStencilOp",
               "literal": 7681,
             },
             {
               "kind": "number",
+              "label": "IncrementStencilOp",
               "literal": 7682,
             },
             {
               "kind": "number",
+              "label": "DecrementStencilOp",
               "literal": 7283,
             },
             {
               "kind": "number",
+              "label": "IncrementWrapStencilOp",
               "literal": 34055,
             },
             {
               "kind": "number",
+              "label": "DecrementWrapStencilOp",
               "literal": 34056,
             },
             {
               "kind": "number",
+              "label": "InvertStencilOp",
               "literal": 5386,
             },
           ],

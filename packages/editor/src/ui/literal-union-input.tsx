@@ -72,10 +72,9 @@ export function LiteralUnionInput({
       >
         {!isValueDefined && <option value="">Select value...</option>}
         {values.map((value, index) => (
-          <option
-            key={`${value.literal}`}
-            value={index}
-          >{`${value.literal}`}</option>
+          <option key={`${value.literal}`} value={index}>{`${
+            value.label || value.literal
+          }`}</option>
         ))}
       </select>
 

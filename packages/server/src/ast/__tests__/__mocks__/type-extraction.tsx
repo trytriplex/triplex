@@ -72,3 +72,7 @@ export function Provider({
 }) {
   return [enablePhysics, debugPhysics];
 }
+
+export function Material() {
+  return <meshStandardMaterial />;
+}

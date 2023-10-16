@@ -24,7 +24,10 @@ import type {
 import { getAttributes } from "./jsx";
 import { getExportName } from "./module";
 
-export function unrollType(type: Type): UnrolledType {
+export function unrollType(
+  type: Type,
+  unionLabels: Record<string, string> = {}
+): UnrolledType {
   if (type.isNumber()) {
     return {
       kind: "number",
@@ -58,7 +61,7 @@ export function unrollType(type: Type): UnrolledType {
     return {
       kind: "tuple",
       shape: elements.map((val, index) => ({
-        ...unrollType(val),
+        ...unrollType(val, unionLabels),
         label: labels ? labels[index].name.getText() : undefined,
         required: labels ? !labels[index].questionToken : true,
       })),
@@ -68,7 +71,19 @@ export function unrollType(type: Type): UnrolledType {
   if (type.isUnion()) {
     const types = type.getUnionTypes();
     const shape = types
-      .map((val) => unrollType(val))
+      .map((val) => {
+        const unrolled = unrollType(val, unionLabels);
+        const label = unionLabels[val.getText()];
+
+        if (label) {
+          return {
+            ...unrolled,
+            label,
+          };
+        }
+
+        return unrolled;
+      })
       // Filter out unknown values - if its unknown we don't want to handle it.
       .filter((val) => val.kind !== "unhandled")
       .filter(
@@ -200,6 +215,65 @@ function extractJSDoc(symbol: SymbolType) {
   };
 }
 
+function collectUnionLabels(
+  propType: Type,
+  outLabels: Record<string, Record<string, string>>,
+  propDecl: PropertySignature
+): Record<string, string> | undefined {
+  let propTypeName = propType.getText();
+
+  if (propType.isUnion()) {
+    // Collect union labels for use later.
+    if (outLabels[propTypeName]) {
+      // We've already collected the labels for this union type. Skip!
+    } else {
+      let symbol = propType.getSymbol() || propType.getAliasSymbol();
+
+      if (!symbol) {
+        // Hack to try and resolve the union labels by an alternate means.
+        const typeNode = propDecl.getTypeNode();
+        if (Node.isUnionTypeNode(typeNode)) {
+          typeNode.getTypeNodes().find((val) => {
+            const s = val.getType().getAliasSymbol();
+            if (s) {
+              symbol = s;
+            }
+          });
+        }
+      }
+
+      outLabels[propTypeName] = {};
+
+      symbol
+        ?.getDeclarations()[0]
+        .forEachDescendantAsArray()
+        .forEach((node) => {
+          if (Node.isTypeQuery(node) && node.getType().isLiteral()) {
+            const label = node.getExprName().getText();
+            const typeValue = node.getType().getText();
+
+            if (!outLabels[propTypeName][typeValue]) {
+              outLabels[propTypeName][typeValue] = label;
+            }
+          }
+
+          if (Node.isEnumMember(node)) {
+            const label = node.getName();
+            const typeValue = `${propTypeName}.${label}`;
+
+            if (typeValue) {
+              if (!outLabels[propTypeName][typeValue]) {
+                outLabels[propTypeName][typeValue] = label;
+              }
+            }
+          }
+        });
+    }
+  }
+
+  return outLabels[propTypeName];
+}
+
 type AttributeValue = number | string | boolean | undefined | AttributeValue[];
 type ExpressionValue = {
   kind: ValueKind;
@@ -273,6 +347,7 @@ export function getJsxElementPropTypes(
   const props: (Prop | DeclaredProp)[] = [];
   const attributes = getAttributes(element);
   const jsxDecl = getJsxDeclProps(element);
+  const unionValueLabels: Record<string, Record<string, string>> = {};
 
   if (!jsxDecl) {
     return {
@@ -295,6 +370,11 @@ export function getJsxElementPropTypes(
     const propDeclaration = declarations[0] as PropertySignature;
     const propType = prop.getTypeAtLocation(declaration);
     const { description, tags } = extractJSDoc(prop);
+    const unionLabels = collectUnionLabels(
+      propType,
+      unionValueLabels,
+      propDeclaration
+    );
 
     if (declaredProp) {
       const initializer = declaredProp.getInitializer();
@@ -306,7 +386,7 @@ export function getJsxElementPropTypes(
       const { column, line } = element
         .getSourceFile()
         .getLineAndColumnAtPos(declaredProp.getStart());
-      const type = unrollType(propType);
+      const type = unrollType(propType, unionLabels);
 
       if (value.kind !== "unhandled" && value.kind !== "identifier") {
         if (propName === "rotation") {
@@ -397,7 +477,7 @@ export function getJsxElementPropTypes(
       }
 
       props.push({
-        ...unrollType(propType),
+        ...unrollType(propType, unionLabels),
         description: description || undefined,
         name: propName,
         required: !propDeclaration?.hasQuestionToken?.(),

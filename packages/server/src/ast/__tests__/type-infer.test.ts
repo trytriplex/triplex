@@ -723,4 +723,175 @@ describe("type infer", () => {
       ]
     `);
   });
+
+  it("should extract literal labels", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/type-extraction.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 77, 10);
+    const { props } = getJsxElementPropTypes(sceneObject!);
+
+    expect(props.filter((prop) => prop.name === "side")).toMatchInlineSnapshot(`
+      [
+        {
+          "description": "Defines which of the face sides will be rendered - front, back or both.
+      Default is {@link THREE.FrontSide}. Other options are {@link THREE.BackSide} and {@link THREE.DoubleSide}.",
+          "kind": "union",
+          "name": "side",
+          "required": true,
+          "shape": [
+            {
+              "kind": "number",
+              "label": "FrontSide",
+              "literal": 0,
+            },
+            {
+              "kind": "number",
+              "label": "BackSide",
+              "literal": 1,
+            },
+            {
+              "kind": "number",
+              "label": "DoubleSide",
+              "literal": 2,
+            },
+          ],
+          "tags": {
+            "default": "{@link THREE.FrontSide }",
+          },
+        },
+      ]
+    `);
+  });
+
+  it("should extract literal labels nested", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/type-extraction.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 77, 10);
+    const { props } = getJsxElementPropTypes(sceneObject!);
+
+    expect(props.filter((prop) => prop.name === "blendSrc"))
+      .toMatchInlineSnapshot(`
+        [
+          {
+            "description": "Blending source. It's one of the blending mode constants defined in Three.js. Default is {@link SrcAlphaFactor}.",
+            "kind": "union",
+            "name": "blendSrc",
+            "required": true,
+            "shape": [
+              {
+                "kind": "number",
+                "label": "ZeroFactor",
+                "literal": 200,
+              },
+              {
+                "kind": "number",
+                "label": "OneFactor",
+                "literal": 201,
+              },
+              {
+                "kind": "number",
+                "label": "SrcColorFactor",
+                "literal": 202,
+              },
+              {
+                "kind": "number",
+                "label": "OneMinusSrcColorFactor",
+                "literal": 203,
+              },
+              {
+                "kind": "number",
+                "label": "SrcAlphaFactor",
+                "literal": 204,
+              },
+              {
+                "kind": "number",
+                "label": "OneMinusSrcAlphaFactor",
+                "literal": 205,
+              },
+              {
+                "kind": "number",
+                "label": "DstAlphaFactor",
+                "literal": 206,
+              },
+              {
+                "kind": "number",
+                "label": "OneMinusDstAlphaFactor",
+                "literal": 207,
+              },
+              {
+                "kind": "number",
+                "label": "DstColorFactor",
+                "literal": 208,
+              },
+              {
+                "kind": "number",
+                "label": "OneMinusDstColorFactor",
+                "literal": 209,
+              },
+              {
+                "kind": "number",
+                "literal": 210,
+              },
+            ],
+            "tags": {
+              "default": "THREE.SrcAlphaFactor",
+            },
+          },
+        ]
+      `);
+  });
+
+  it("should extract enum labels", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/n_modules.tsx")
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 24, 7);
+    const { props } = getJsxElementPropTypes(sceneObject!);
+
+    expect(props.filter((prop) => prop.name === "frictionCombineRule"))
+      .toMatchInlineSnapshot(`
+      [
+        {
+          "description": "What happens when two bodies meet. See https://rapier.rs/docs/user_guides/javascript/colliders#friction.",
+          "kind": "union",
+          "name": "frictionCombineRule",
+          "required": false,
+          "shape": [
+            {
+              "kind": "number",
+              "label": "Average",
+              "literal": 0,
+            },
+            {
+              "kind": "number",
+              "label": "Min",
+              "literal": 1,
+            },
+            {
+              "kind": "number",
+              "label": "Multiply",
+              "literal": 2,
+            },
+            {
+              "kind": "number",
+              "label": "Max",
+              "literal": 3,
+            },
+          ],
+          "tags": {},
+        },
+      ]
+    `);
+  });
 });

@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { RigidBody } from "@react-three/rapier";
+import { CuboidCollider, RigidBody } from "@react-three/rapier";
 
 export default function Box({
   position,
@@ -21,6 +21,7 @@ export default function Box({
         <boxGeometry args={[1, 1, 1]} />
         <meshStandardMaterial color="pink" />
       </mesh>
+      <CuboidCollider args={[1.92, 0.14, 1.32]} />
     </RigidBody>
   );
 }
