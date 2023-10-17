@@ -4,10 +4,8 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useEffect } from "react";
 import { SceneFrame } from "./scence-bridge";
 import { useEditor } from "./stores/editor";
-import { useUndoRedoState } from "./stores/undo-redo";
 import { AssetsDrawer } from "./ui/assets-drawer";
 import { ContextPanel } from "./ui/context-panel";
 import { ControlsMenu } from "./ui/controls-menu";
@@ -16,72 +14,7 @@ import { ScenePanel } from "./ui/scene-panel";
 import { ScenesDrawer } from "./ui/scenes-drawer";
 
 export function EditorFrame() {
-  const undo = useUndoRedoState((store) => store.undo);
-  const redo = useUndoRedoState((store) => store.redo);
-  const { deleteComponent, path, save } = useEditor();
-
-  useEffect(() => {
-    if (!path || __TRIPLEX_TARGET__ === "electron") {
-      // When in electron all shortcuts are handled by accelerators meaning
-      // We don't need to set any hotkeys in app. We need to refactor this and
-      // We need to clean up hotkey usage across the editor and consolidate it
-      // To one location where appropriate (e.g. menubar for menubar).
-      return;
-    }
-
-    const callback = (e: KeyboardEvent) => {
-      if (
-        e.keyCode === 83 &&
-        (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
-      ) {
-        save();
-        e.preventDefault();
-      }
-    };
-
-    document.addEventListener("keydown", callback);
-
-    return () => {
-      document.removeEventListener("keydown", callback);
-    };
-  }, [path, save]);
-
-  useEffect(() => {
-    if (!path || __TRIPLEX_TARGET__ === "electron") {
-      // When in electron all shortcuts are handled by accelerators meaning
-      // We don't need to set any hotkeys in app. We need to refactor this and
-      // We need to clean up hotkey usage across the editor and consolidate it
-      // To one location where appropriate (e.g. menubar for menubar).
-      return;
-    }
-
-    const callback = (e: KeyboardEvent) => {
-      if (
-        e.key === "z" &&
-        (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey) &&
-        e.shiftKey
-      ) {
-        redo();
-      } else if (
-        e.key === "z" &&
-        (navigator.platform.match("Mac") ? e.metaKey : e.ctrlKey)
-      ) {
-        undo();
-      } else if (
-        e.key === "Backspace" &&
-        // Ignore if we're focused inside an input.
-        document.activeElement?.tagName !== "INPUT"
-      ) {
-        deleteComponent();
-      }
-    };
-
-    document.addEventListener("keydown", callback);
-
-    return () => {
-      document.removeEventListener("keydown", callback);
-    };
-  }, [deleteComponent, path, redo, save, undo]);
+  const { path } = useEditor();
 
   return (
     <>

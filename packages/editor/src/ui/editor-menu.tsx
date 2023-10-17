@@ -93,8 +93,17 @@ function findMenuItem(
 
 export function EditorMenu() {
   const showOverlay = useOverlayStore((store) => store.show);
-  const { deleteComponent, newFile, path, reset, save, target } = useEditor();
-  const { blur, jumpTo, navigateTo, refresh } = useScene();
+  const {
+    deleteComponent,
+    enteredComponent,
+    exitComponent,
+    newFile,
+    path,
+    reset,
+    save,
+    target,
+  } = useEditor();
+  const { blur, jumpTo, navigateTo, refresh, setTransform } = useScene();
   const { redo, redoAvailable, undo, undoAvailable } = useUndoRedoState();
   const isEditable = !!path;
 
@@ -215,7 +224,7 @@ export function EditorMenu() {
                 }
               },
               id: "select-all",
-              label: "Select all",
+              label: "Select All",
             },
             {
               accelerator: shortcut("Escape"),
@@ -232,14 +241,43 @@ export function EditorMenu() {
               click: () => jumpTo(),
               enabled: !!target && isEditable,
               id: "focus-camera",
-              label: "Focus camera",
+              label: "Focus Selection",
             },
             {
               accelerator: shortcut("F", { shift: true }),
               click: () => navigateTo(),
               enabled: !!target && isEditable,
               id: "enter-component",
-              label: "Enter component",
+              label: "Enter Selection",
+            },
+            {
+              accelerator: shortcut("F", { meta: true, shift: true }),
+              click: () => exitComponent(),
+              enabled: enteredComponent,
+              id: "exit-component",
+              label: "Exit Selection",
+            },
+            {
+              type: "separator",
+            },
+
+            {
+              accelerator: shortcut("t"),
+              click: () => setTransform("translate"),
+              id: "translate",
+              label: "Translate",
+            },
+            {
+              accelerator: shortcut("r"),
+              click: () => setTransform("rotate"),
+              id: "rotate",
+              label: "Transform",
+            },
+            {
+              accelerator: shortcut("s"),
+              click: () => setTransform("scale"),
+              id: "scale",
+              label: "Transform",
             },
             {
               type: "separator",
@@ -296,9 +334,12 @@ export function EditorMenu() {
     [
       blur,
       deleteComponent,
+      enteredComponent,
+      exitComponent,
       isEditable,
       jumpTo,
       navigateTo,
+      setTransform,
       newFile,
       redo,
       redoAvailable,
