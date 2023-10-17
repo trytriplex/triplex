@@ -53,40 +53,6 @@ function BridgeSendEvents() {
       return;
     }
 
-    const callback = (e: KeyboardEvent) => {
-      switch (e.key) {
-        case "Escape": {
-          const target = e.target as HTMLElement;
-          if (target.tagName !== "INPUT") {
-            scene.blur();
-          }
-          break;
-        }
-
-        case "f": {
-          scene.jumpTo();
-          break;
-        }
-
-        case "F": {
-          if (e.shiftKey) {
-            scene.navigateTo();
-          }
-          break;
-        }
-      }
-    };
-
-    document.addEventListener("keyup", callback);
-
-    return () => document.removeEventListener("keyup", callback);
-  }, [scene]);
-
-  useEffect(() => {
-    if (!scene.ready) {
-      return;
-    }
-
     // This handles the browser history being updated and propagating to the scene.
     scene.navigateTo({
       encodedProps: editor.encodedProps,

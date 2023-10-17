@@ -148,7 +148,7 @@ function SceneContents() {
           icon={ExitIcon}
           isDisabled={!enteredComponent}
           onClick={exitComponent}
-          title="Exit component"
+          title="Exit selection"
         />
         <ProviderConfigButton />
       </div>
