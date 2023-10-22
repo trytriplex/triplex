@@ -26,7 +26,10 @@ export function TitleBar() {
       <div>
         <EditorMenu />
       </div>
-      <span className="place-self-center text-sm text-neutral-300">
+      <span
+        className="place-self-center text-sm text-neutral-300"
+        data-testid="titlebar"
+      >
         {windowTitle}
       </span>
       <div />
