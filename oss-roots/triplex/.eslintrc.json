@@ -27,20 +27,7 @@
       { "argsIgnorePattern": "^_" }
     ],
     "header/header": ["error", "scripts/header.js"],
-    "import/no-extraneous-dependencies": [
-      "error",
-      {
-        "devDependencies": [
-          "**/__test__/**",
-          "**/__tests__/**",
-          "**/hook*.js",
-          "**/*.d.ts",
-          "**/main-dev-only.ts",
-          "**/*.config.mjs",
-          "**/*.config.js"
-        ]
-      }
-    ],
+    "import/no-extraneous-dependencies": "off",
     "import/no-unresolved": "off",
     "no-extra-parens": "off",
     "no-inner-declarations": "off",

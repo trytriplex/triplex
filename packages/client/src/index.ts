@@ -7,8 +7,6 @@
 import { join } from "node:path";
 import react from "@vitejs/plugin-react";
 import express from "express";
-// This dependency is bundled.
-// eslint-disable-next-line import/no-extraneous-dependencies
 import tsconfigPaths from "vite-tsconfig-paths";
 import triplexBabelPlugin from "./babel-plugin";
 import { scenePlugin } from "./scene-plugin";
@@ -33,8 +31,6 @@ export async function createServer({
   const tsConfig = join(normalizedCwd, "tsconfig.json");
   const app = express();
   const { createServer: createViteServer } = await import("vite");
-  // This dependency is bundled.
-  // eslint-disable-next-line import/no-extraneous-dependencies
   const { default: glsl } = await import("vite-plugin-glsl");
 
   const vite = await createViteServer({

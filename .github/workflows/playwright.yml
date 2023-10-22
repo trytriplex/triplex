@@ -1,0 +1,64 @@
+name: Playwright
+
+on:
+  pull_request:
+    paths:
+      - apps/electron/**
+      - packages/**
+
+jobs:
+  test:
+    timeout-minutes: 5
+
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [
+            # Triplex doesn't work in Linux just yet.
+            # ubuntu-latest,
+            # Triplex is expensive to run on macOS.
+            # macos-latest
+            windows-latest,
+          ]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Read node version
+        run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+        id: nvm
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.6.1
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ steps.nvm.outputs.NVMRC }}
+
+      - name: Setup pnpm config
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Run end-to-end tests)
+        if: matrix.os == 'ubuntu-latest'
+        run:
+          xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" --
+          pnpm test:e2e
+
+      - name: Run end-to-end tests
+        if: matrix.os != 'ubuntu-latest'
+        run: pnpm test:e2e
+
+      - uses: actions/upload-artifact@v3
+        if: always()
+        with:
+          name: playwright-report
+          path: apps/electron/playwright-report/
+          retention-days: 30

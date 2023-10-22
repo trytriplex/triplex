@@ -84,6 +84,7 @@ export const Button = forwardRef<
     isSelected?: boolean;
     onClick?: () => void;
     size?: "default" | "tight";
+    testId?: string;
     variant?: "default" | "inverse";
   }
 >(
@@ -96,6 +97,7 @@ export const Button = forwardRef<
       isSelected,
       onClick,
       size = "default",
+      testId,
       variant = "default",
     },
     ref
@@ -118,6 +120,7 @@ export const Button = forwardRef<
         "flex items-center gap-1.5 text-sm",
         className,
       ])}
+      data-testid={testId}
       disabled={disabled}
       onClick={onClick}
       ref={ref}

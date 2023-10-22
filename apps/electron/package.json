@@ -15,6 +15,7 @@
     "dev": "cross-env TRIPLEX_TARGET=electron electron .",
     "prep-workspace": "pnpm -r exec node ../../scripts/apply-publish-config.js",
     "release": "rimraf targets && pnpm prep-workspace && cross-env USE_HARD_LINKS=false electron-builder --mac zip:x64 zip:arm64 dmg:x64 dmg:arm64 --win nsis:x64 nsis:ia32 --publish always && pnpm cleanup-workspace",
+    "test:e2e": "playwright test",
     "typedef": "tsc"
   },
   "dependencies": {
@@ -32,6 +33,7 @@
     "shell-env": "^3.0.1"
   },
   "devDependencies": {
+    "@playwright/test": "^1.39.0",
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.3.28",
     "@types/node": "^18.11.18",

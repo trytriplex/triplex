@@ -5,7 +5,6 @@
  * file in the root directory of this source tree.
  */
 import { readdir } from "node:fs/promises";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { BrowserWindow, Notification } from "electron";
 import { createPkgManagerDialog } from "./dialog";
 import { exec } from "./exec";

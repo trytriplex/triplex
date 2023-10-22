@@ -8,7 +8,6 @@ import { readdir } from "node:fs/promises";
 import { join } from "node:path";
 import process from "node:process";
 import { init } from "@sentry/electron/main";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import {
   app,
   BrowserWindow,
@@ -415,7 +414,14 @@ async function main() {
     await devServer.listen(EDITOR_DEV_PORT);
   }
 
-  welcomeWindow = await openWelcomeScreen();
+  if (process.env.FORCE_EDITOR_TEST_FIXTURE) {
+    // Immediately open the test fixture project
+    await onOpenProject(
+      join(process.cwd(), "..", "..", "examples", "test-fixture")
+    );
+  } else {
+    welcomeWindow = await openWelcomeScreen();
+  }
 
   applyGlobalIpcHandlers();
 

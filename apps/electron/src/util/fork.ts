@@ -6,7 +6,6 @@
  */
 import { fork as forkChild } from "node:child_process";
 import { join } from "node:path";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { app } from "electron";
 import { logger } from "../util/log";
 

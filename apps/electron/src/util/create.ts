@@ -6,7 +6,6 @@
  */
 import { basename } from "node:path";
 import { create } from "create-triplex-project";
-// eslint-disable-next-line import/no-extraneous-dependencies
 import { dialog, Notification, type BrowserWindow } from "electron";
 import { createPkgManagerDialog } from "./dialog";
 import { env } from "./env";
