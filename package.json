@@ -5,7 +5,9 @@
   "workspaces": [
     "apps/docs",
     "examples/*",
-    "packages/*"
+    "packages/*",
+    "packages/*/*",
+    "!packages/create-triplex-project/*"
   ],
   "scripts": {
     "build": "yarn clean && yarn workspaces run build",
