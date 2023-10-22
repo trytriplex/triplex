@@ -5,7 +5,9 @@
   "workspaces": [
     "apps/*",
     "examples/*",
-    "packages/*"
+    "packages/*",
+    "packages/*/*",
+    "!packages/create-triplex-project/*"
   ],
   "scripts": {
     "build": "pnpm clean && pnpm --filter @triplex/* --filter create-triplex-project build && pnpm typedef && pnpm clean:drop-dist-tests",
@@ -34,8 +36,6 @@
     "@ianvs/prettier-plugin-sort-imports": "^4.1.0",
     "@nkzw/eslint-config": "^1.8.0",
     "@swc/core": "^1.3.28",
-    "@triplex/run": "workspace:*",
-    "create-triplex-project": "workspace:*",
     "cross-env": "^7.0.3",
     "eslint": "^8.51.0",
     "eslint-plugin-header": "^3.1.1",

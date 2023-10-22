@@ -66,7 +66,7 @@ function WelcomeScreen() {
             "absolute right-0 ml-auto flex h-8 items-center pr-2.5 text-xs text-neutral-300",
           ])}
         >
-          {process.env.FORCE_EDITOR_TEST_FIXTURE ? "local_test" : version}
+          {version}
         </span>
 
         <ProgressBar />

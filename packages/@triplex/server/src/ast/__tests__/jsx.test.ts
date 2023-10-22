@@ -5,8 +5,8 @@
  * file in the root directory of this source tree.
  */
 import { join } from "node:path";
+import { describe, expect, it } from "vitest";
 import { fromCwd } from "../../util/path";
-import { describe, it, expect } from "vitest";
 import {
   getJsxElementAt,
   getJsxElementProps,
@@ -34,7 +34,7 @@ describe("jsx ast extractor", () => {
       line: 19,
       name: "RigidBody",
       parentPath: fromCwd(
-        "packages/server/src/ast/__tests__/__mocks__/n_modules.tsx"
+        "packages/@triplex/server/src/ast/__tests__/__mocks__/n_modules.tsx"
       ),
       path: "",
       type: "custom",
@@ -60,7 +60,7 @@ describe("jsx ast extractor", () => {
             line: 14,
             name: "boxGeometry",
             parentPath: fromCwd(
-              "/packages/server/src/ast/__tests__/__mocks__/expression.tsx"
+              "/packages/@triplex/server/src/ast/__tests__/__mocks__/expression.tsx"
             ),
             type: "host",
           },
@@ -70,7 +70,7 @@ describe("jsx ast extractor", () => {
             line: 15,
             name: "meshStandardMaterial",
             parentPath: fromCwd(
-              "/packages/server/src/ast/__tests__/__mocks__/expression.tsx"
+              "/packages/@triplex/server/src/ast/__tests__/__mocks__/expression.tsx"
             ),
             type: "host",
           },
@@ -79,7 +79,7 @@ describe("jsx ast extractor", () => {
         line: 13,
         name: "mesh",
         parentPath: fromCwd(
-          "/packages/server/src/ast/__tests__/__mocks__/expression.tsx"
+          "/packages/@triplex/server/src/ast/__tests__/__mocks__/expression.tsx"
         ),
         type: "host",
       },
@@ -104,9 +104,11 @@ describe("jsx ast extractor", () => {
         line: 25,
         name: "Box",
         parentPath: fromCwd(
-          "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
         ),
-        path: fromCwd("packages/server/src/ast/__tests__/__mocks__/box.tsx"),
+        path: fromCwd(
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
+        ),
         type: "custom",
       },
       {
@@ -116,10 +118,10 @@ describe("jsx ast extractor", () => {
         line: 31,
         name: "Cylinder",
         parentPath: fromCwd(
-          "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
         ),
         path: fromCwd(
-          "packages/server/src/ast/__tests__/__mocks__/cylinder.tsx"
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/cylinder.tsx"
         ),
         type: "custom",
       },
@@ -130,9 +132,11 @@ describe("jsx ast extractor", () => {
         line: 34,
         name: "SceneAlt",
         parentPath: fromCwd(
-          "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
         ),
-        path: fromCwd("packages/server/src/ast/__tests__/__mocks__/scene.tsx"),
+        path: fromCwd(
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
+        ),
         type: "custom",
       },
       {
@@ -142,9 +146,11 @@ describe("jsx ast extractor", () => {
         line: 35,
         name: "SceneWrapped",
         parentPath: fromCwd(
-          "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
         ),
-        path: fromCwd("packages/server/src/ast/__tests__/__mocks__/scene.tsx"),
+        path: fromCwd(
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
+        ),
         type: "custom",
       },
       {
@@ -154,9 +160,11 @@ describe("jsx ast extractor", () => {
         line: 36,
         name: "SceneArrow",
         parentPath: fromCwd(
-          "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
         ),
-        path: fromCwd("packages/server/src/ast/__tests__/__mocks__/scene.tsx"),
+        path: fromCwd(
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
+        ),
         type: "custom",
       },
     ]);
@@ -179,9 +187,11 @@ describe("jsx ast extractor", () => {
       line: 13,
       name: "Box",
       parentPath: fromCwd(
-        "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
+        "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
       ),
-      path: fromCwd("packages/server/src/ast/__tests__/__mocks__/box.tsx"),
+      path: fromCwd(
+        "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
+      ),
       type: "custom",
     });
   });
@@ -203,9 +213,11 @@ describe("jsx ast extractor", () => {
       line: 10,
       name: "Box",
       parentPath: fromCwd(
-        "packages/server/src/ast/__tests__/__mocks__/scene.tsx"
+        "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
       ),
-      path: fromCwd("packages/server/src/ast/__tests__/__mocks__/box.tsx"),
+      path: fromCwd(
+        "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
+      ),
       type: "custom",
     });
   });
@@ -229,7 +241,7 @@ describe("jsx ast extractor", () => {
             line: 18,
             name: "boxGeometry",
             parentPath: fromCwd(
-              "/packages/server/src/ast/__tests__/__mocks__/box.tsx"
+              "/packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
             ),
             type: "host",
           },
@@ -239,7 +251,7 @@ describe("jsx ast extractor", () => {
             line: 19,
             name: "meshStandardMaterial",
             parentPath: fromCwd(
-              "/packages/server/src/ast/__tests__/__mocks__/box.tsx"
+              "/packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
             ),
             type: "host",
           },
@@ -248,7 +260,7 @@ describe("jsx ast extractor", () => {
         line: 17,
         name: "mesh",
         parentPath: fromCwd(
-          "/packages/server/src/ast/__tests__/__mocks__/box.tsx"
+          "/packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
         ),
         type: "host",
       },
@@ -2636,7 +2648,7 @@ describe("jsx ast extractor", () => {
                 line: 11,
                 name: "boxGeometry",
                 parentPath: fromCwd(
-                  "/packages/server/src/ast/__tests__/__mocks__/nested.tsx"
+                  "/packages/@triplex/server/src/ast/__tests__/__mocks__/nested.tsx"
                 ),
                 type: "host",
               },
@@ -2646,7 +2658,7 @@ describe("jsx ast extractor", () => {
                 line: 12,
                 name: "meshBasicMaterial",
                 parentPath: fromCwd(
-                  "/packages/server/src/ast/__tests__/__mocks__/nested.tsx"
+                  "/packages/@triplex/server/src/ast/__tests__/__mocks__/nested.tsx"
                 ),
                 type: "host",
               },
@@ -2655,7 +2667,7 @@ describe("jsx ast extractor", () => {
             line: 10,
             name: "mesh",
             parentPath: fromCwd(
-              "/packages/server/src/ast/__tests__/__mocks__/nested.tsx"
+              "/packages/@triplex/server/src/ast/__tests__/__mocks__/nested.tsx"
             ),
             type: "host",
           },
@@ -2664,7 +2676,7 @@ describe("jsx ast extractor", () => {
         line: 9,
         name: "group",
         parentPath: fromCwd(
-          "/packages/server/src/ast/__tests__/__mocks__/nested.tsx"
+          "/packages/@triplex/server/src/ast/__tests__/__mocks__/nested.tsx"
         ),
         type: "host",
       },
@@ -2690,7 +2702,7 @@ describe("jsx ast extractor", () => {
             line: 10,
             name: "geo-hi (cylinderGeometry)",
             parentPath: fromCwd(
-              "/packages/server/src/ast/__tests__/__mocks__/cylinder.tsx"
+              "/packages/@triplex/server/src/ast/__tests__/__mocks__/cylinder.tsx"
             ),
             type: "host",
           },
@@ -2700,7 +2712,7 @@ describe("jsx ast extractor", () => {
             line: 11,
             name: "meshStandardMaterial",
             parentPath: fromCwd(
-              "/packages/server/src/ast/__tests__/__mocks__/cylinder.tsx"
+              "/packages/@triplex/server/src/ast/__tests__/__mocks__/cylinder.tsx"
             ),
             type: "host",
           },
@@ -2709,7 +2721,7 @@ describe("jsx ast extractor", () => {
         line: 9,
         name: "this-is-cilly (mesh)",
         parentPath: fromCwd(
-          "/packages/server/src/ast/__tests__/__mocks__/cylinder.tsx"
+          "/packages/@triplex/server/src/ast/__tests__/__mocks__/cylinder.tsx"
         ),
         type: "host",
       },

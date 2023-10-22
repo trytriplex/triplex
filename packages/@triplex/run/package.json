@@ -15,7 +15,7 @@
   ],
   "scripts": {
     "build": "swc ./src -d ./dist",
-    "build:config-schema": "ts-json-schema-generator --additional-properties true --path './src/types.ts' --type 'TRIPLEXConfig' > ../../apps/docs/public/config.schema.json",
+    "build:config-schema": "ts-json-schema-generator --additional-properties true --path './src/types.ts' --type 'TRIPLEXConfig' > ../../../apps/docs/public/config.schema.json",
     "typedef": "tsc && npm run build:config-schema"
   },
   "dependencies": {

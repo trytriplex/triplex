@@ -4,9 +4,9 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { join } from "node:path";
 import { describe, expect, it, vitest } from "vitest";
 import { createProject } from "../project";
-import { join } from "node:path";
 
 describe("project ast", () => {
   it("should return save state", async () => {
@@ -60,7 +60,7 @@ describe("project ast", () => {
       dirtySourceFiles: [
         join(
           process.cwd(),
-          "packages/server/src/ast/__tests__/__mocks__/box.tsx"
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
         ).replaceAll("\\", "/"),
       ],
       isDirty: true,
