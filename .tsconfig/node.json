@@ -3,7 +3,7 @@
   "display": "Node",
   "extends": "./base.json",
   "compilerOptions": {
-    "lib": ["es2022"],
+    "lib": ["dom", "dom.iterable", "es2022"],
     "module": "Node16",
     "target": "ES2017",
     "resolveJsonModule": true
