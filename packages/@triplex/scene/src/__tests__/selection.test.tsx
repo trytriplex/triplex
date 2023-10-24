@@ -11,7 +11,6 @@ import { mockUseSubscriptionEffect } from "./utils/subscriptions";
 import { MemoryRouter } from "react-router-dom";
 import { render } from "react-three-test";
 import { describe, expect, it, vi } from "vitest";
-import { ComponentProvider } from "../context";
 import { SceneObject } from "../scene-object";
 import { Selection } from "../selection";
 import { CustomBoxGroup } from "./__stubs__/custom";
@@ -39,44 +38,42 @@ describe("selection", () => {
     );
     const { fireEvent, scene } = await render(
       <MemoryRouter>
-        <ComponentProvider value={{}}>
-          <Selection
-            exportName={exportName}
-            onBlur={vi.fn()}
-            onFocus={onFocus}
-            onJumpTo={vi.fn()}
-            onNavigate={vi.fn()}
-            path={path}
+        <Selection
+          exportName={exportName}
+          onBlur={vi.fn()}
+          onFocus={onFocus}
+          onJumpTo={vi.fn()}
+          onNavigate={vi.fn()}
+          path={path}
+        >
+          <SceneObject
+            __component="group"
+            __meta={{
+              column: 0,
+              line: 1,
+              name: "group",
+              path,
+              rotate: false,
+              scale: false,
+              translate: false,
+            }}
           >
             <SceneObject
-              __component="group"
+              __component="mesh"
               __meta={{
                 column: 0,
                 line: 1,
-                name: "group",
+                name: "mesh",
                 path,
-                rotate: false,
-                scale: false,
-                translate: false,
+                rotate: true,
+                scale: true,
+                translate: true,
               }}
             >
-              <SceneObject
-                __component="mesh"
-                __meta={{
-                  column: 0,
-                  line: 1,
-                  name: "mesh",
-                  path,
-                  rotate: true,
-                  scale: true,
-                  translate: true,
-                }}
-              >
-                <boxGeometry />
-              </SceneObject>
+              <boxGeometry />
             </SceneObject>
-          </Selection>
-        </ComponentProvider>
+          </SceneObject>
+        </Selection>
       </MemoryRouter>
     );
     const selectionGroup = scene.findByProps({ name: "selection-group" });
@@ -118,31 +115,29 @@ describe("selection", () => {
     );
     const { fireEvent, scene } = await render(
       <MemoryRouter>
-        <ComponentProvider value={{}}>
-          <Selection
-            exportName={exportName}
-            onBlur={vi.fn()}
-            onFocus={onFocus}
-            onJumpTo={vi.fn()}
-            onNavigate={vi.fn()}
-            path={path}
+        <Selection
+          exportName={exportName}
+          onBlur={vi.fn()}
+          onFocus={onFocus}
+          onJumpTo={vi.fn()}
+          onNavigate={vi.fn()}
+          path={path}
+        >
+          <SceneObject
+            __component="mesh"
+            __meta={{
+              column: 22,
+              line: 33,
+              name: "Mesh",
+              path,
+              rotate: true,
+              scale: true,
+              translate: true,
+            }}
           >
-            <SceneObject
-              __component="mesh"
-              __meta={{
-                column: 22,
-                line: 33,
-                name: "Mesh",
-                path,
-                rotate: true,
-                scale: true,
-                translate: true,
-              }}
-            >
-              <boxGeometry />
-            </SceneObject>
-          </Selection>
-        </ComponentProvider>
+            <boxGeometry />
+          </SceneObject>
+        </Selection>
       </MemoryRouter>
     );
     const selectionGroup = scene.findByProps({ name: "selection-group" });
@@ -193,46 +188,44 @@ describe("selection", () => {
     );
     const { fireEvent, scene } = await render(
       <MemoryRouter>
-        <ComponentProvider value={{}}>
-          <Selection
-            exportName={exportName}
-            onBlur={vi.fn()}
-            onFocus={onFocus}
-            onJumpTo={vi.fn()}
-            onNavigate={vi.fn()}
-            path={path}
+        <Selection
+          exportName={exportName}
+          onBlur={vi.fn()}
+          onFocus={onFocus}
+          onJumpTo={vi.fn()}
+          onNavigate={vi.fn()}
+          path={path}
+        >
+          <SceneObject
+            __component="group"
+            __meta={{
+              column: 0,
+              line: 1,
+              name: "Box",
+              path,
+              rotate: true,
+              scale: true,
+              translate: true,
+            }}
+            name="parent-group"
           >
             <SceneObject
-              __component="group"
+              __component="mesh"
               __meta={{
                 column: 0,
-                line: 1,
-                name: "Box",
+                line: 2,
+                name: "mesh",
                 path,
                 rotate: true,
                 scale: true,
                 translate: true,
               }}
-              name="parent-group"
+              name="child-mesh"
             >
-              <SceneObject
-                __component="mesh"
-                __meta={{
-                  column: 0,
-                  line: 2,
-                  name: "mesh",
-                  path,
-                  rotate: true,
-                  scale: true,
-                  translate: true,
-                }}
-                name="child-mesh"
-              >
-                <boxGeometry />
-              </SceneObject>
+              <boxGeometry />
             </SceneObject>
-          </Selection>
-        </ComponentProvider>
+          </SceneObject>
+        </Selection>
       </MemoryRouter>
     );
     const selectionGroup = scene.findByProps({ name: "selection-group" });
@@ -284,32 +277,30 @@ describe("selection", () => {
 
     const { fireEvent, scene } = await render(
       <MemoryRouter>
-        <ComponentProvider value={{}}>
-          <Selection
-            exportName={exportName}
-            onBlur={vi.fn()}
-            onFocus={onFocus}
-            onJumpTo={vi.fn()}
-            onNavigate={vi.fn()}
-            path={path}
-          >
-            <SceneObject
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              __component={CustomBoxGroup as any}
-              __meta={{
-                column: 11,
-                line: 22,
-                name: "CustomBoxGroup",
-                path: "box.tsx",
-                rotate: false,
-                scale: false,
-                translate: true,
-              }}
-              name="custom-box"
-              position={[1, 1, 1]}
-            />
-          </Selection>
-        </ComponentProvider>
+        <Selection
+          exportName={exportName}
+          onBlur={vi.fn()}
+          onFocus={onFocus}
+          onJumpTo={vi.fn()}
+          onNavigate={vi.fn()}
+          path={path}
+        >
+          <SceneObject
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            __component={CustomBoxGroup as any}
+            __meta={{
+              column: 11,
+              line: 22,
+              name: "CustomBoxGroup",
+              path: "box.tsx",
+              rotate: false,
+              scale: false,
+              translate: true,
+            }}
+            name="custom-box"
+            position={[1, 1, 1]}
+          />
+        </Selection>
       </MemoryRouter>
     );
     const selectionGroup = scene.findByProps({ name: "selection-group" });

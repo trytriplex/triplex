@@ -1,0 +1,54 @@
+{
+  "name": "@triplex/ws",
+  "version": "0.58.2",
+  "private": true,
+  "description": "The React Three Fiber editor.",
+  "license": "GPL-3.0",
+  "author": "Michael Dougall (https://twitter.com/itsdouges)",
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "module": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./react": {
+      "types": "./src/react.ts",
+      "module": "./src/react.ts",
+      "default": "./src/react.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "swc ./src -d ./dist",
+    "typedef": "tsc"
+  },
+  "devDependencies": {
+    "@swc/cli": "^0.1.59",
+    "@swc/core": "^1.3.28",
+    "@triplex/server": "0.58.2",
+    "@types/react": "^18.0.27",
+    "typescript": "^4.9.4"
+  },
+  "peerDependencies": {
+    "react": "^18.0.0"
+  },
+  "optionalDependencies": {
+    "ws": "^8.12.0"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "module": "./dist/index.js",
+        "default": "./dist/index.js"
+      },
+      "./react": {
+        "types": "./dist/react.d.ts",
+        "module": "./dist/react.js",
+        "default": "./dist/react.js"
+      }
+    }
+  }
+}

@@ -39,10 +39,7 @@ export const scripts = {
     'import { Scene as SceneFrame } from "@triplex/scene";',
     'import Provider from "{{PROVIDER_PATH}}";',
     "const scenes = import.meta.glob({{SCENE_FILES_GLOB}});",
-    "const localImports = import.meta.glob({{COMPONENTS_FILE_GLOB}});",
-    "const nodeImports = {{NODE_IMPORTS}};",
-    "const components = {...localImports,...nodeImports };",
-    "export function Scene() {return <SceneFrame provider={Provider} components={components} scenes={scenes} />}",
+    "export function Scene() {return <SceneFrame provider={Provider} scenes={scenes} />}",
   ].join(""),
 };
 

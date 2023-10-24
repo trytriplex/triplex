@@ -13,7 +13,7 @@ import {
   PlusIcon,
 } from "@radix-ui/react-icons";
 import type { JsxElementPositions } from "@triplex/server";
-import { useLazySubscription } from "@triplex/ws-client";
+import { useLazySubscription } from "@triplex/ws/react";
 import {
   ChangeEventHandler,
   Fragment,

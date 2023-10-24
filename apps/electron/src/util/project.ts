@@ -12,10 +12,10 @@ export async function startProject(
   { backendPort = 8000, frontendPort = 3333 } = {}
 ) {
   const config = await getConfig(cwd);
-  const frontend = await createFrontend({ ...config, target: "electron" });
   const backend = await createBackend(config);
-  const closeFrontend = await frontend.listen(frontendPort);
   const closeBackend = await backend.listen(backendPort);
+  const frontend = await createFrontend({ ...config, target: "electron" });
+  const closeFrontend = await frontend.listen(frontendPort);
 
   return {
     close: async () => {

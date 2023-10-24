@@ -9,18 +9,17 @@ import react from "@vitejs/plugin-react";
 import express from "express";
 import tsconfigPaths from "vite-tsconfig-paths";
 import triplexBabelPlugin from "./babel-plugin";
+import { remoteModulePlugin } from "./remote-module-plugin";
 import { scenePlugin } from "./scene-plugin";
 import { createHTML } from "./templates";
 
 export async function createServer({
-  components,
   cwd = process.cwd(),
   files,
   provider,
   publicDir,
   target,
 }: {
-  components: string[];
   cwd?: string;
   files: string[];
   provider?: string;
@@ -43,11 +42,12 @@ export async function createServer({
     },
     logLevel: "error",
     plugins: [
+      remoteModulePlugin({ files }),
       react({
         babel: { plugins: [triplexBabelPlugin(provider ? [provider] : [])] },
       }),
       glsl(),
-      scenePlugin({ components, cwd: normalizedCwd, files, provider }),
+      scenePlugin({ cwd: normalizedCwd, files, provider }),
       tsconfigPaths({ projects: [tsConfig] }),
     ],
     publicDir,

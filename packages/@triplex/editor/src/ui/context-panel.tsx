@@ -12,7 +12,7 @@ import {
   EraserIcon,
   TrashIcon,
 } from "@radix-ui/react-icons";
-import { useLazySubscription } from "@triplex/ws-client";
+import { useLazySubscription } from "@triplex/ws/react";
 import { Suspense, useState } from "react";
 import { IconButton } from "../ds/button";
 import { ScrollContainer } from "../ds/scroll-container";

@@ -4,21 +4,32 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { basename } from "node:path";
 import { Application, isHttpError, Router } from "@oakserver/oak";
 import { watch } from "chokidar";
-import { basename } from "node:path";
 import {
   createProject,
+  getElementFilePath,
   getJsxElementAt,
   getJsxElementProps,
   getJsxTag,
-  getElementFilePath,
 } from "./ast";
-import { getParam } from "./util/params";
-import { createTWS } from "./util/ws-server";
+import { getFunctionProps } from "./ast/jsx";
+import {
+  add,
+  commentComponent,
+  create,
+  rename,
+  uncommentComponent,
+  upsertProp,
+} from "./services/component";
 import { getAllFiles, getSceneExport } from "./services/file";
-import { upsertProp, commentComponent, create, rename, uncommentComponent, add } from "./services/component";
-import { foundFolders, folderAssets, hostElements, folderComponents } from "./services/project";
+import {
+  folderAssets,
+  folderComponents,
+  foundFolders,
+  hostElements,
+} from "./services/project";
 import {
   ComponentTarget,
   ComponentType,
@@ -26,7 +37,8 @@ import {
   ProjectAsset,
   Prop,
 } from "./types";
-import { getFunctionProps } from "./ast/jsx";
+import { getParam } from "./util/params";
+import { createTWS } from "./util/ws-server";
 
 export * from "./types";
 
@@ -64,6 +76,10 @@ export function createServer({
   app.use((ctx, next) => {
     ctx.response.headers.set("Access-Control-Allow-Origin", "*");
     return next();
+  });
+
+  router.get("/healthcheck", (context) => {
+    context.response.body = { message: "Healthy", status: 200 };
   });
 
   /**
@@ -133,11 +149,7 @@ export function createServer({
     const { column, line, path } = context.params;
     const sourceFile = project.getSourceFile(path);
 
-    uncommentComponent(
-      sourceFile.edit(),
-      Number(line),
-      Number(column)
-    );
+    uncommentComponent(sourceFile.edit(), Number(line), Number(column));
 
     context.response.body = { message: "success" };
   });
@@ -183,10 +195,25 @@ export function createServer({
     context.response.body = { message: "success" };
   });
 
+  router.get("/fs/:path", async (context) => {
+    const path = context.params.path;
+    const sourceFile = await project.getSourceFile(path);
+
+    context.response.body = sourceFile.read().getFullText();
+  });
+
   app.use(router.routes());
   app.use(router.allowedMethods());
 
-  const wsRoutesDef = tws.router([
+  const wsEventsDef = tws.collectTypes([
+    tws.createEvent<"on-fs-change", string>("on-fs-change", (sendEvent) => {
+      project.onSourceFileChange((path) => {
+        sendEvent(path);
+      });
+    }),
+  ]);
+
+  const wsRoutesDef = tws.collectTypes([
     tws.route(
       "/scene",
       async () => {
@@ -231,10 +258,7 @@ export function createServer({
     tws.route(
       "/scene/assets/:folderPath",
       async ({ folderPath }) => {
-        const result = await folderAssets(
-          [assetsDir],
-          folderPath
-        );
+        const result = await folderAssets([assetsDir], folderPath);
 
         const parsed: ProjectAsset[] = result.map((asset) =>
           Object.assign(asset, { path: asset.path.replace(publicDir, "") })
@@ -256,10 +280,7 @@ export function createServer({
           return result;
         }
 
-        const result = await folderComponents(
-          components,
-          folderPath
-        );
+        const result = await folderComponents(components, folderPath);
         return result;
       },
       (push, { folderPath }) => {
@@ -364,7 +385,7 @@ export function createServer({
   ]);
 
   return {
-    listen: (port = 8000) => {
+    listen: async (port = 8000) => {
       const controller = new AbortController();
       app.listen({ port, signal: controller.signal });
 
@@ -379,6 +400,7 @@ export function createServer({
       return close;
     },
     twsDefinition: wsRoutesDef,
+    twsEventsDefinition: wsEventsDef,
   };
 }
 
@@ -387,3 +409,7 @@ export { getConfig } from "./util/config";
 export type TWSRouteDefinition = ReturnType<
   typeof createServer
 >["twsDefinition"];
+
+export type TWSEventDefinition = ReturnType<
+  typeof createServer
+>["twsEventsDefinition"];

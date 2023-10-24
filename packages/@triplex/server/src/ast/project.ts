@@ -6,9 +6,9 @@
  */
 import { join, normalize } from "node:path";
 import { watch } from "chokidar";
+import { format, resolveConfig, resolveConfigFile } from "prettier";
 import { Project, ProjectOptions, SourceFile } from "ts-morph";
 import { deleteCommentComponents } from "../services/component";
-import { format, resolveConfig, resolveConfigFile } from "prettier";
 
 export type TRIPLEXProject = ReturnType<typeof createProject>;
 
@@ -90,6 +90,7 @@ export function createProject({
   });
   const dependencyModifiedCallbacks = new Map<string, (() => void)[]>();
   const onStateChangeCallbacks = new Set<() => void>();
+  const onSourceFileChangeCallbacks = new Set<(path: string) => void>();
   const modifiedSourceFiles = new Set<SourceFile>();
 
   // Watch the all files inside cwd and watch for changes.
@@ -144,6 +145,10 @@ export function ${componentName}() {
 
     modifiedSourceFiles.add(sourceFile);
     onStateChangeCallbacks.forEach((cb) => cb());
+    sourceFile.onModified(() => {
+      const path = sourceFile.getFilePath();
+      onSourceFileChangeCallbacks.forEach((cb) => cb(path));
+    });
 
     return sourceFile;
   }
@@ -153,8 +158,15 @@ export function ${componentName}() {
       throw new Error("invariant: path is outside of cwd");
     }
 
-    const sourceFile =
-      project.getSourceFile(path) || project.addSourceFileAtPath(path);
+    let sourceFile = project.getSourceFile(path)!;
+
+    if (!sourceFile) {
+      sourceFile = project.addSourceFileAtPath(path);
+      sourceFile.onModified(() => {
+        const path = sourceFile.getFilePath();
+        onSourceFileChangeCallbacks.forEach((cb) => cb(path));
+      });
+    }
 
     return {
       cleanup: () => {
@@ -242,11 +254,25 @@ export function ${componentName}() {
     };
   }
 
+  function onSourceFileChange(callback: (path: string) => void) {
+    onSourceFileChangeCallbacks.add(callback);
+
+    return () => {
+      const callbacks = onSourceFileChangeCallbacks.has(callback);
+      if (!callbacks) {
+        return;
+      }
+
+      onSourceFileChangeCallbacks.delete(callback);
+    };
+  }
+
   return {
     createSourceFile,
     cwd: () => cwd,
     getSourceFile,
     getState,
+    onSourceFileChange,
     onStateChange,
     save,
   };

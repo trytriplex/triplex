@@ -11,12 +11,10 @@ const emptyProviderId = "triplex:empty-provider.tsx";
 const hmrImportId = "triplex:hmr-import";
 
 export function scenePlugin({
-  components,
   cwd,
   files,
   provider = emptyProviderId,
 }: {
-  components: string[];
   cwd: string;
   files: string[];
   provider: string | undefined;
@@ -29,29 +27,12 @@ export function scenePlugin({
       }
 
       if (id === sceneFrameId) {
-        // TODO: Users should be able to specify what node modules they want to make available.
-        const nodeImports = ["@react-three/drei"];
-
         return scripts.sceneFrame
           .replace(
             "{{SCENE_FILES_GLOB}}",
             `[${files
               .map((f) => `'${f.replace(cwd.replaceAll("\\", "/"), "")}'`)
               .join(",")}]`
-          )
-          .replace(
-            "{{COMPONENTS_FILE_GLOB}}",
-            `[${components
-              .map((f) => `'${f.replace(cwd.replaceAll("\\", "/"), "")}'`)
-              .join(",")}]`
-          )
-          .replace(
-            "{{NODE_IMPORTS}}",
-            `{
-            ${nodeImports
-              .map((imp) => `'${imp}': () => import('${imp}')`)
-              .join(",")}
-            }`
           )
           .replace("{{PROVIDER_PATH}}", provider);
       }

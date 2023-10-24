@@ -8,7 +8,6 @@ import { Object3DProps } from "@react-three/fiber";
 import { compose, listen } from "@triplex/bridge/client";
 import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { Group } from "three";
-import { AddSceneObject } from "./add-scene-object";
 import { getHelperForElement, Helper } from "./components/helper";
 import { useSelectSceneObject } from "./selection";
 
@@ -154,9 +153,6 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
 
     useEffect(() => {
       return compose([
-        listen("trplx:requestReset", () => {
-          setIsDeleted(false);
-        }),
         listen("trplx:requestDeleteSceneObject", (data) => {
           if (
             data.column === __meta.column &&
@@ -178,50 +174,6 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
       ]);
     }, [__meta.column, __meta.line, __meta.path]);
 
-    const componentJsx = (
-      <Component ref={ref} {...reconciledProps}>
-        {typeof children === "function" ? (
-          (...args: unknown[]) => {
-            // Children is a function.
-            // Resolve and render it if something was returned.
-            const resolvedChildren = children(...args);
-
-            // This is not semantically correct as we're always injecting
-            // children to every scene object in preparation for an added scene object.
-            // If the component is userland has default behavior when children is undefined
-            // We are breaking that behavior by forcing our children to be rendered. If/when
-            // This becomes a problem we can instead conditionally render the children only
-            // When confirming an added scene object, however that will be a large refactor.
-            return (
-              <>
-                {resolvedChildren}
-                <AddSceneObject
-                  column={__meta.column}
-                  line={__meta.line}
-                  path={__meta.path}
-                />
-              </>
-            );
-          }
-        ) : (
-          // This is not semantically correct as we're always injecting
-          // children to every scene object in preparation for an added scene object.
-          // If the component is userland has default behavior when children is undefined
-          // We are breaking that behavior by forcing our children to be rendered. If/when
-          // This becomes a problem we can instead conditionally render the children only
-          // When confirming an added scene object, however that will be a large refactor.
-          <>
-            {children}
-            <AddSceneObject
-              column={__meta.column}
-              line={__meta.line}
-              path={__meta.path}
-            />
-          </>
-        )}
-      </Component>
-    );
-
     if (isRenderedSceneObject(__meta.name, props)) {
       const helper = getHelperForElement(__meta.name);
       const userData = { triplexSceneMeta: { ...__meta, props } };
@@ -229,7 +181,9 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
       return (
         <>
           <group ref={parentRef} userData={userData} visible={!isDeleted}>
-            {componentJsx}
+            <Component ref={ref} {...reconciledProps}>
+              {children}
+            </Component>
           </group>
           {helper && !isDeleted && (
             <Helper
@@ -249,9 +203,15 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
         </>
       );
     } else if (!isDeleted) {
-      return componentJsx;
+      return (
+        <Component ref={ref} {...reconciledProps}>
+          {children}
+        </Component>
+      );
     }
 
+    // This component will eventually unmount when deleted as its removed
+    // from source code. To keep things snappy however we delete it optimistically.
     return null;
   }
 );

@@ -7,11 +7,11 @@
 import { listen, send } from "@triplex/bridge/client";
 import { useEffect, type PropsWithChildren } from "react";
 import { BrowserRouter } from "react-router-dom";
-import { ComponentProvider, SceneProvider } from "./context";
+import { SceneProvider } from "./context";
 import { Environment } from "./environment";
 import { SceneFrame } from "./scene";
 import { SceneObject } from "./scene-object";
-import { ComponentModule, SceneModule } from "./types";
+import { SceneModule } from "./types";
 
 // Hacking this for fun sorry!
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -19,11 +19,9 @@ import { ComponentModule, SceneModule } from "./types";
 window.SceneObject = SceneObject;
 
 export function Scene({
-  components,
   provider,
   scenes,
 }: {
-  components: Record<string, () => Promise<ComponentModule>>;
   provider: (props: PropsWithChildren) => JSX.Element;
   scenes: Record<string, () => Promise<SceneModule>>;
 }) {
@@ -75,13 +73,11 @@ export function Scene({
 
   return (
     <BrowserRouter>
-      <ComponentProvider value={components}>
-        <SceneProvider value={scenes}>
-          <Environment>
-            <SceneFrame provider={provider} />
-          </Environment>
-        </SceneProvider>
-      </ComponentProvider>
+      <SceneProvider value={scenes}>
+        <Environment>
+          <SceneFrame provider={provider} />
+        </Environment>
+      </SceneProvider>
     </BrowserRouter>
   );
 }

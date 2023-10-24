@@ -28,7 +28,6 @@ export async function editor({
   const spinner = ora("Starting...\n").start();
 
   const frontendServer = await createFrontendServer({
-    components,
     files,
     publicDir,
     target: "web",

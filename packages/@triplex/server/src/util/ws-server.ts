@@ -54,7 +54,7 @@ interface AliveWebSocket extends WebSocket {
   isAlive: boolean;
 }
 
-function router<TRoutes extends Array<Record<string, unknown>>>(
+function collectTypes<TRoutes extends Array<Record<string, unknown>>>(
   _: TRoutes
 ): UnionToIntersection<TRoutes[number]> {
   // This is opaque, purely used to return what the types are.
@@ -67,6 +67,7 @@ export function createTWS() {
   const routeHandlers: ((
     path: string
   ) => ((ws: WebSocket) => Promise<void>) | false)[] = [];
+  const eventHandlers: Record<string, (ws: WebSocket) => void> = {};
 
   function ping() {
     wss.clients.forEach((ws) => {
@@ -90,11 +91,18 @@ export function createTWS() {
     ws.on("message", (rawData) => {
       const path = rawData.toString();
 
-      for (let i = 0; i < routeHandlers.length; i++) {
-        const handler = routeHandlers[i](path);
+      if (path.startsWith("/")) {
+        for (let i = 0; i < routeHandlers.length; i++) {
+          const handler = routeHandlers[i](path);
+          if (handler) {
+            handler(ws);
+            return;
+          }
+        }
+      } else {
+        const handler = eventHandlers[path];
         if (handler) {
           handler(ws);
-          return;
         }
       }
     });
@@ -175,9 +183,34 @@ export function createTWS() {
     return {} as any;
   }
 
+  function createEvent<TRoute extends string, TData>(
+    eventName: TRoute,
+    init: (sendEvent: (data: TData) => void) => Promise<void> | void
+  ): Record<TRoute, { data: TData }> {
+    const handler = (ws: WebSocket) => {
+      async function sendEvent(data: TData) {
+        ws.send(stringifyJSON(data));
+      }
+
+      init(sendEvent);
+    };
+
+    if (eventHandlers[eventName]) {
+      throw new Error(`invariant: ${eventName} already declared`);
+    }
+
+    eventHandlers[eventName] = handler;
+
+    // This is opaque, purely used to return what the types are.
+    // Accessing it at runtime won't do anything.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    return {} as any;
+  }
+
   return {
     close: wss.close.bind(wss),
+    collectTypes,
+    createEvent,
     route,
-    router,
   };
 }

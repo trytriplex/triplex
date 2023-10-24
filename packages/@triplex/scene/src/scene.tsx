@@ -17,7 +17,6 @@ import {
 import { useSearchParams } from "react-router-dom";
 import { Box3, Layers, Vector3, Vector3Tuple } from "three";
 import { Grid } from "triplex-drei";
-import { AddSceneObject } from "./add-scene-object";
 import { Canvas } from "./canvas";
 import { Camera } from "./components/camera";
 import { useEnvironment } from "./environment";
@@ -145,7 +144,6 @@ export function SceneFrame({
                   path={path}
                   sceneProps={sceneProps}
                 />
-                <AddSceneObject key={path} path={path} />
               </Selection>
             </ManualEditableSceneObject>
           </Suspense>

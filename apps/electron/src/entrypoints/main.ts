@@ -316,6 +316,8 @@ async function main() {
 
     const p = await fork(join(__dirname, "./project.ts"), { cwd });
 
+    log.info("continuing");
+
     activeProjectWindow.webContents.ipc.handle("get-triplex-env", () => ({
       ...p.data,
     }));
@@ -325,6 +327,8 @@ async function main() {
     };
 
     const searchParams = `?path=${p.data?.path}&exportName=${p.data?.exportName}`;
+
+    log.info("starting editor");
 
     await (process.env.TRIPLEX_ENV === "development"
       ? activeProjectWindow.loadURL(
@@ -336,6 +340,8 @@ async function main() {
             search: searchParams,
           }
         ));
+
+    log.info("success");
   }
 
   function applyGlobalIpcHandlers() {

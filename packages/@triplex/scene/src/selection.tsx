@@ -7,7 +7,7 @@
 import { ThreeEvent, useFrame, useThree } from "@react-three/fiber";
 import { compose, listen, send } from "@triplex/bridge/client";
 import type { JsxElementPositions } from "@triplex/server";
-import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws-client";
+import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws/react";
 import {
   createContext,
   ReactNode,

@@ -27,7 +27,7 @@ export function fork(
   let fork: ReturnType<typeof forkChild>;
 
   if (process.env.TRIPLEX_ENV === "development") {
-    log.info("starting dev fork");
+    log.info("starting dev");
 
     fork = forkChild(filename, [], {
       cwd,
@@ -38,11 +38,14 @@ export function fork(
       },
     });
   } else {
-    log.info("starting prod fork");
+    log.info("starting prod");
 
     fork = forkChild(filename.replace(".ts", ".js"), [], {
       cwd,
       env: { DEBUG: "triplex", NODE_PATH: process.cwd() },
+      // We set the forked process to silent so we can capture errors.
+      // See: https://stackoverflow.com/a/52066025
+      silent: true,
     });
   }
 
@@ -50,7 +53,21 @@ export function fork(
     fork.kill("SIGTERM");
   });
 
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
+    fork.on("error", (e) => {
+      log.error(e);
+      reject(e);
+    });
+
+    fork.stderr?.on("data", (data) => {
+      log.error("error initializing");
+      reject(data.toString());
+    });
+
+    fork.on("exit", (code, signal) => {
+      log.error("exited", { code, signal });
+    });
+
     fork.on("message", (e) => {
       if (typeof e === "object") {
         const eventObject = e as {
@@ -59,6 +76,8 @@ export function fork(
         };
 
         if (eventObject.eventName === "ready") {
+          log.info("ready");
+
           resolve({
             data: eventObject.data,
             kill() {
@@ -71,6 +90,8 @@ export function fork(
             },
           });
         }
+      } else {
+        reject({ data: e, message: "invariant: unexpected message" });
       }
     });
   });

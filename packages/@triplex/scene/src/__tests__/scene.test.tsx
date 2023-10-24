@@ -9,7 +9,7 @@ import { MemoryRouter } from "react-router-dom";
 import { render } from "react-three-test";
 import { Color } from "three";
 import { describe, expect, it, vi } from "vitest";
-import { ComponentProvider, SceneProvider } from "../context";
+import { SceneProvider } from "../context";
 import { Environment } from "../environment";
 import { SceneFrame } from "../scene";
 
@@ -41,13 +41,11 @@ describe("scene frame", () => {
           },
         ]}
       >
-        <ComponentProvider value={{}}>
-          <SceneProvider value={{}}>
-            <Environment>
-              <SceneFrame provider={Provider} />
-            </Environment>
-          </SceneProvider>
-        </ComponentProvider>
+        <SceneProvider value={{}}>
+          <Environment>
+            <SceneFrame provider={Provider} />
+          </Environment>
+        </SceneProvider>
       </MemoryRouter>
     );
 

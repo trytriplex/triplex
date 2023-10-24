@@ -1,5 +1,5 @@
 ---
-"@triplex/ws-client": patch
+"@triplex/ws": patch
 "@triplex/bridge": patch
 "@triplex/client": patch
 "@triplex/editor": patch

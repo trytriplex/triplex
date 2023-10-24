@@ -15,13 +15,13 @@ import {
   preloadSubscription,
   useLazySubscription,
   useSubscription,
-} from "@triplex/ws-client";
+} from "@triplex/ws/react";
 import { createContext, Suspense, useContext, useState } from "react";
 import { cn } from "../ds/cn";
 import { Drawer } from "../ds/drawer";
 import { ScrollContainer } from "../ds/scroll-container";
 import { useAssetsDrawer } from "../stores/assets-drawer";
-import { useScene } from "../stores/scene";
+import { useEditor } from "../stores/editor";
 import { titleCase } from "../util/string";
 import { StringInput } from "./string-input";
 
@@ -34,7 +34,7 @@ function ProjectAsset({
   name: string;
   onClick: () => void;
 }) {
-  const { addComponent } = useScene();
+  const { addComponent } = useEditor();
   const target = useAssetsDrawer((store) => store.shown);
 
   const onClickHandler = () => {

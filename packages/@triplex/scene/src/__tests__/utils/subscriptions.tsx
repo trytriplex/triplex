@@ -5,13 +5,13 @@
  * file in the root directory of this source tree.
  */
 import type { TWSRouteDefinition } from "@triplex/server";
-import { buildPath, useSubscriptionEffect } from "@triplex/ws-client";
+import { buildPath, useSubscriptionEffect } from "@triplex/ws/react";
 import { vi, type Mock } from "vitest";
 
-vi.mock("@triplex/ws-client", async () => {
+vi.mock("@triplex/ws/react", async () => {
   const client = (await vi.importActual(
-    "@triplex/ws-client"
-  )) as typeof import("@triplex/ws-client");
+    "@triplex/ws/react"
+  )) as typeof import("@triplex/ws/react");
 
   return {
     ...client,
