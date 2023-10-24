@@ -35,7 +35,12 @@ export function Frypan({
       position={position}
       rotation={rotation}
     >
-      <Clone castShadow object={nodes.frypan} receiveShadow>
+      <Clone
+        castShadow
+        object={nodes.frypan}
+        position={[2.326_120_867_996_49, 0, 0.337_704_964_306_508]}
+        receiveShadow
+      >
         <meshStandardMaterial map={materials["lambert6SG"].map} />
       </Clone>
     </RigidBody>
