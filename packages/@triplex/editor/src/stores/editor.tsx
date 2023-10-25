@@ -297,17 +297,14 @@ export function useEditor() {
         method: "POST",
       });
 
-      if (actualPath !== path) {
-        // The path has changed so we need to update the URL to reflect that.
-        set(
-          {
-            encodedProps,
-            exportName,
-            path: actualPath,
-          },
-          { replace: true }
-        );
-      }
+      set(
+        {
+          encodedProps,
+          exportName,
+          path: actualPath,
+        },
+        { replace: true }
+      );
     },
     [clearUndoRedo, encodedProps, exportName, path, searchParams, set]
   );
@@ -345,8 +342,8 @@ export function useEditor() {
   return useMemo(
     () => ({
       /**
-       * Adds the component into the current file. Is not persisted until `save()` is
-       * called.
+       * Adds the component into the current file. Is not persisted until
+       * `save()` is called.
        */
       addComponent,
 
@@ -357,13 +354,14 @@ export function useEditor() {
       deleteComponent,
 
       /**
-       * Encoded (via `encodeURIComponent()`) props used to hydrate the loaded scene.
+       * Encoded (via `encodeURIComponent()`) props used to hydrate the loaded
+       * scene.
        */
       encodedProps,
 
       /**
-       * Will be `true` when entered a component via a owning parent, else `false`.
-       * Enter a component via `scene.navigateTo()`.
+       * Will be `true` when entered a component via a owning parent, else
+       * `false`. Enter a component via `scene.navigateTo()`.
        *
        * @see {@link ./scene.tsx}
        */
@@ -380,8 +378,8 @@ export function useEditor() {
       exportName,
 
       /**
-       * Focuses the passed scene object. Will blur the currently focused scene object
-       * by passing `null`.
+       * Focuses the passed scene object. Will blur the currently focused scene
+       * object by passing `null`.
        *
        * You should probably be calling the scene API instead.
        *
@@ -390,8 +388,8 @@ export function useEditor() {
       focus,
 
       /**
-       * Creates a new intermediate component in the open file and transitions the
-       * editor to it.
+       * Creates a new intermediate component in the open file and transitions
+       * the editor to it.
        */
       newComponent,
 
@@ -406,8 +404,8 @@ export function useEditor() {
       path,
 
       /**
-       * Persists the passed in prop value to the scene frame and web server, and
-       * makes it available as an undo/redo action.
+       * Persists the passed in prop value to the scene frame and web server,
+       * and makes it available as an undo/redo action.
        */
       persistPropValue,
 
@@ -417,7 +415,8 @@ export function useEditor() {
       reset,
 
       /**
-       * Calls the web server to save the intermediate scene source to file system.
+       * Calls the web server to save the intermediate scene source to file
+       * system.
        */
       save,
 

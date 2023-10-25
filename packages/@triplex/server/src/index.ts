@@ -36,6 +36,7 @@ import {
   DeclaredProp,
   ProjectAsset,
   Prop,
+  SourceFileChangedEvent,
 } from "./types";
 import { getParam } from "./util/params";
 import { createTWS } from "./util/ws-server";
@@ -206,11 +207,14 @@ export function createServer({
   app.use(router.allowedMethods());
 
   const wsEventsDef = tws.collectTypes([
-    tws.createEvent<"on-fs-change", string>("on-fs-change", (sendEvent) => {
-      project.onSourceFileChange((path) => {
-        sendEvent(path);
-      });
-    }),
+    tws.createEvent<"fs-change", SourceFileChangedEvent>(
+      "fs-change",
+      (sendEvent) => {
+        project.onSourceFileChange((e) => {
+          sendEvent(e);
+        });
+      }
+    ),
   ]);
 
   const wsRoutesDef = tws.collectTypes([

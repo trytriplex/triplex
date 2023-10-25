@@ -64,10 +64,6 @@ export function fork(
       reject(data.toString());
     });
 
-    fork.on("exit", (code, signal) => {
-      log.error("exited", { code, signal });
-    });
-
     fork.on("message", (e) => {
       if (typeof e === "object") {
         const eventObject = e as {

@@ -201,3 +201,8 @@ export interface HostJsxElementPosition {
   parentPath: string;
   type: "host";
 }
+
+export interface SourceFileChangedEvent {
+  existsOnFs: boolean;
+  path: string;
+}

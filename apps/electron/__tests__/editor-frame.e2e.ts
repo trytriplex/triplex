@@ -5,10 +5,10 @@
  * file in the root directory of this source tree.
  */
 import { expect } from "@playwright/test";
-import { test } from "./runner";
+import { test } from "./utils/runner";
 
 test("editor title bar", async ({ editorPage }) => {
-  const actual = await editorPage.titleBar();
+  const actual = editorPage.titleBar();
 
   await expect(actual).toHaveText("scene.tsx — test-fixture");
 });

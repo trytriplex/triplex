@@ -9,6 +9,7 @@ import { watch } from "chokidar";
 import { format, resolveConfig, resolveConfigFile } from "prettier";
 import { Project, ProjectOptions, SourceFile } from "ts-morph";
 import { deleteCommentComponents } from "../services/component";
+import { SourceFileChangedEvent } from "../types";
 
 export type TRIPLEXProject = ReturnType<typeof createProject>;
 
@@ -90,7 +91,9 @@ export function createProject({
   });
   const dependencyModifiedCallbacks = new Map<string, (() => void)[]>();
   const onStateChangeCallbacks = new Set<() => void>();
-  const onSourceFileChangeCallbacks = new Set<(path: string) => void>();
+  const onSourceFileChangeCallbacks = new Set<
+    (e: SourceFileChangedEvent) => void
+  >();
   const modifiedSourceFiles = new Set<SourceFile>();
 
   // Watch the all files inside cwd and watch for changes.
@@ -145,12 +148,19 @@ export function ${componentName}() {
 
     modifiedSourceFiles.add(sourceFile);
     onStateChangeCallbacks.forEach((cb) => cb());
-    sourceFile.onModified(() => {
-      const path = sourceFile.getFilePath();
-      onSourceFileChangeCallbacks.forEach((cb) => cb(path));
-    });
+    sourceFile.onModified(onSourceFileModified);
+    // Immediately callback to notify the creation of this source file
+    onSourceFileModified(sourceFile);
 
     return sourceFile;
+  }
+
+  function onSourceFileModified(sourceFile: SourceFile) {
+    const path = sourceFile.getFilePath();
+    const fs = project.getFileSystem();
+    const existsOnFs = fs.fileExistsSync(path);
+    const data = { existsOnFs, path };
+    onSourceFileChangeCallbacks.forEach((cb) => cb(data));
   }
 
   function getSourceFile(path: string) {
@@ -162,10 +172,7 @@ export function ${componentName}() {
 
     if (!sourceFile) {
       sourceFile = project.addSourceFileAtPath(path);
-      sourceFile.onModified(() => {
-        const path = sourceFile.getFilePath();
-        onSourceFileChangeCallbacks.forEach((cb) => cb(path));
-      });
+      sourceFile.onModified(onSourceFileModified);
     }
 
     return {
@@ -254,7 +261,7 @@ export function ${componentName}() {
     };
   }
 
-  function onSourceFileChange(callback: (path: string) => void) {
+  function onSourceFileChange(callback: (e: SourceFileChangedEvent) => void) {
     onSourceFileChangeCallbacks.add(callback);
 
     return () => {

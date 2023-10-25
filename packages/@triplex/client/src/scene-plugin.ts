@@ -74,7 +74,7 @@ export function scenePlugin({
       return (
         scripts.invalidateHMRHeader +
         code +
-        scripts.invalidateHRMFooter(provider.replace(process.cwd(), ""))
+        scripts.invalidateHMRFooter(provider.replace(process.cwd(), ""))
       );
     },
   } as const;

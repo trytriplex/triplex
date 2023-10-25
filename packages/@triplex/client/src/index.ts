@@ -42,9 +42,20 @@ export async function createServer({
     },
     logLevel: "error",
     plugins: [
-      remoteModulePlugin({ files }),
+      remoteModulePlugin({ cwd: normalizedCwd, files }),
       react({
-        babel: { plugins: [triplexBabelPlugin(provider ? [provider] : [])] },
+        babel: {
+          plugins: [
+            triplexBabelPlugin({
+              exclude: [
+                ...(provider ? [provider] : []),
+                "/triplex:scene-frame.tsx",
+                "/triplex:empty-provider.tsx",
+                "packages/@triplex",
+              ],
+            }),
+          ],
+        },
       }),
       glsl(),
       scenePlugin({ cwd: normalizedCwd, files, provider }),

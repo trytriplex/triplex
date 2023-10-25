@@ -307,7 +307,7 @@ function ComponentsDrawer({
       open
       title="assets"
     >
-      <div className="flex h-full flex-col">
+      <div className="flex h-full flex-col" data-testid="assets-drawer">
         <div className="flex min-h-0 flex-grow">
           <div className="flex w-60 flex-shrink-0 flex-col border-r border-neutral-800">
             <div className="p-2">

@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import {
+  BoxIcon,
   CaretDownIcon,
   CaretRightIcon,
   ExitIcon,
@@ -120,11 +121,19 @@ function ComponentHeading() {
 function AssetsDrawerButton() {
   const show = useAssetsDrawer((store) => () => store.show());
 
-  return <IconButton icon={PlusIcon} onClick={show} title="Add element" />;
+  return (
+    <IconButton
+      icon={PlusIcon}
+      onClick={show}
+      testId="open-assets-drawer"
+      title="Add element"
+    />
+  );
 }
 
 function SceneContents() {
-  const { enteredComponent, exitComponent, exportName, path } = useEditor();
+  const { enteredComponent, exitComponent, exportName, newFile, path } =
+    useEditor();
   const [filter, setFilter] = useState<string | undefined>();
 
   return (
@@ -142,6 +151,14 @@ function SceneContents() {
       <div className="flex px-2 py-1">
         <AssetsDrawerButton />
         <ComponentSandboxButton />
+        {import.meta.env.VITE_TEST && (
+          <IconButton
+            icon={BoxIcon}
+            onClick={newFile}
+            testId="new-file"
+            title="Debug: New file"
+          />
+        )}
         <div className="ml-auto" />
         <IconButton
           className="-scale-x-100"
@@ -332,6 +349,7 @@ function JsxElementButton({
           }}
           ref={ref}
           style={{ paddingLeft: level === 1 ? 13 : level * 13 }}
+          testId={`${element.name}-L${element.line}C${element.column}`}
           title={element.name}
         >
           {showExpander ? (
@@ -364,6 +382,7 @@ function JsxElementButton({
                 path: element.parentPath,
               })
             }
+            testId={`add-${element.name}-L${element.line}C${element.column}`}
             title="Add child element"
           >
             <PlusIcon />

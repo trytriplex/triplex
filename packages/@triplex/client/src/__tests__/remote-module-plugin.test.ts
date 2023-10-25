@@ -11,6 +11,7 @@ import { remoteModulePlugin } from "../remote-module-plugin";
 describe("virtual plugin", () => {
   it("should do nothing when loading files not considered a scene component", async () => {
     const plugin = remoteModulePlugin({
+      cwd: __dirname,
       files: [join(__dirname, "fixtures/*")],
     });
 
@@ -24,6 +25,7 @@ describe("virtual plugin", () => {
       __api: {
         getCode: async (id) => (id.endsWith("index.tsx") ? "code" : ""),
       },
+      cwd: __dirname,
       files: [join(__dirname, "fixtures/*")],
     });
 

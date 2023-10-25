@@ -21,6 +21,8 @@ _test.beforeAll(async ({}, testInfo) => {
     env: {
       ...process.env,
       FORCE_EDITOR_TEST_FIXTURE: "true",
+      TRIPLEX_TARGET: "electron",
+      VITE_TEST: "true",
     },
   });
 
@@ -42,12 +44,8 @@ _test.beforeAll(async ({}, testInfo) => {
   await editorWindow.waitForSelector(`[data-testid="titlebar"]`);
 });
 
-_test.beforeEach(async () => {
+_test.afterEach(async () => {
   await editorWindow.reload();
-});
-
-_test.afterAll(async () => {
-  await electronApp.close();
 });
 
 const test = _test.extend<{

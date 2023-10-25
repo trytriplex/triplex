@@ -19,9 +19,10 @@ export const Pressable = forwardRef<
     className?: string;
     onPress?: () => void;
     style?: React.CSSProperties;
+    testId?: string;
     title?: string;
   }
->(({ children, className, onPress, style, title }, ref) => {
+>(({ children, className, onPress, style, testId, title }, ref) => {
   const onKeyDownHandler: KeyboardEventHandler = useCallback(
     (e) => {
       if (e.key === "Enter") {
@@ -56,6 +57,7 @@ export const Pressable = forwardRef<
         "cursor-default outline-1 -outline-offset-1 outline-blue-400 focus-visible:outline",
         className,
       ])}
+      data-testid={testId}
       onClick={onClickHandler}
       onKeyDown={onKeyDownHandler}
       onKeyUp={onKeyUpHandler}

@@ -23,12 +23,13 @@ function isNodeModulesComponent(path: NodePath, elementName: string) {
   return false;
 }
 
-export default function triplexBabelPlugin(_ignore: string[] = []) {
-  const ignoreFiles = _ignore.map(toNamespacedPath);
+export default function triplexBabelPlugin({ exclude }: { exclude: string[] }) {
+  const ignoreFiles = exclude.map(toNamespacedPath);
   const cache = new WeakSet();
   const triplexMeta = new Map<string, { lighting: "default" | "custom" }>();
   const SCENE_OBJECT_COMPONENT_NAME = "SceneObject";
 
+  let shouldSkip = false;
   let currentFunction:
     | {
         name: string;
@@ -40,6 +41,10 @@ export default function triplexBabelPlugin(_ignore: string[] = []) {
     visitor: {
       FunctionDeclaration: {
         enter(path) {
+          if (shouldSkip) {
+            return;
+          }
+
           if (path.node.id && /^[A-Z]/.exec(path.node.id.name)) {
             const propsArg = path.node.params[0];
             const destructured: string[] = [];
@@ -80,6 +85,10 @@ export default function triplexBabelPlugin(_ignore: string[] = []) {
         },
       },
       JSXElement(path, pass) {
+        if (shouldSkip) {
+          return;
+        }
+
         if (
           cache.has(path.node) ||
           path.node.openingElement.name.type !== "JSXIdentifier" ||
@@ -172,6 +181,12 @@ export default function triplexBabelPlugin(_ignore: string[] = []) {
           }
         );
 
+        const reconciledFilename = pass.filename?.includes(
+          "triplex:/src/untitled"
+        )
+          ? pass.filename?.replace("triplex:/", "")
+          : pass.filename;
+
         const newNode = t.jsxElement(
           t.jsxOpeningElement(t.jsxIdentifier(SCENE_OBJECT_COMPONENT_NAME), [
             ...attributes,
@@ -189,7 +204,7 @@ export default function triplexBabelPlugin(_ignore: string[] = []) {
                 t.objectExpression([
                   t.objectProperty(
                     t.stringLiteral("path"),
-                    t.stringLiteral(pass.filename || "")
+                    t.stringLiteral(reconciledFilename || "")
                   ),
                   t.objectProperty(
                     t.stringLiteral("name"),
@@ -238,15 +253,20 @@ export default function triplexBabelPlugin(_ignore: string[] = []) {
         path.replaceWith(newNode);
       },
       Program: {
-        enter(path, pass) {
+        enter(_, state) {
           if (
-            pass.filename &&
-            ignoreFiles.includes(toNamespacedPath(pass.filename))
+            ignoreFiles.some(
+              (file) =>
+                state.filename &&
+                toNamespacedPath(state.filename).includes(file)
+            )
           ) {
-            path.skip();
+            shouldSkip = true;
           }
         },
         exit(path) {
+          shouldSkip = false;
+
           for (const [key, value] of triplexMeta) {
             path.pushContainer(
               "body",
@@ -273,6 +293,10 @@ export default function triplexBabelPlugin(_ignore: string[] = []) {
       },
       VariableDeclarator: {
         enter(path) {
+          if (shouldSkip) {
+            return;
+          }
+
           if (
             path.node.id.type === "Identifier" &&
             /^[A-Z]/.exec(path.node.id.name)

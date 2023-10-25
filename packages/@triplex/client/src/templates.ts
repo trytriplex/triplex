@@ -6,18 +6,23 @@
  */
 const suffix = "ta.hot";
 const metaHot = "imp" + "ort.me" + suffix;
+/**
+ * We set aside a static amount of virtual modules to be used when creating new
+ * files. If someone tries to create over this limit they won't see anything in
+ * their scene until they save. We're choosing 10 as the arbitrary number for
+ * now.
+ */
+const placeholderFiles = 10;
 
 export const scripts = {
   defaultProvider: `export default function Fragment({children}){return children;}`,
   // Hides vite-ignored dynamic import so that Vite can skip analysis if no other
   // dynamic import is present (https://github.com/vitejs/vite/pull/12732)
   dynamicImportHMR: `export const __hmr_import = (url) => import(/* @vite-ignore */ url);`,
-  invalidateHMRHeader: `import { __hmr_import } from "triplex:hmr-import";`,
   // If the exports change, or if triplex meta changes, invalidate HMR
-  // And force parents up the chain to refresh flushing changes through
-  // The editor.
-  // When the provider has changed - we want to flush it through the whole app.
-  invalidateHRMFooter: (providerPath: string) => `
+  // and force parents up the chain to refresh flushing changes through the editor
+  // when the provider has changed - we want to flush it through the whole app!
+  invalidateHMRFooter: (providerPath: string) => `
     if (${metaHot}) {
       __hmr_import(import.meta.url).then((currentModule) => {
         ${metaHot}.accept((nextModule) => {
@@ -29,6 +34,7 @@ export const scripts = {
       });
     }
   `,
+  invalidateHMRHeader: `import { __hmr_import } from "triplex:hmr-import";`,
   scene: [
     'import {createElement} from "react";',
     'import {createRoot} from "react-dom/client";',
@@ -39,7 +45,16 @@ export const scripts = {
     'import { Scene as SceneFrame } from "@triplex/scene";',
     'import Provider from "{{PROVIDER_PATH}}";',
     "const scenes = import.meta.glob({{SCENE_FILES_GLOB}});",
-    "export function Scene() {return <SceneFrame provider={Provider} scenes={scenes} />}",
+    "const temps = {",
+    Array(placeholderFiles)
+      .fill(undefined)
+      .map((_, i) => {
+        const n = i || "";
+        return `'/src/untitled${n}.tsx':() => import('triplex:/src/untitled${n}.tsx')`;
+      }),
+    "};",
+    "const merged = {...temps,...scenes};",
+    "export function Scene() {return <SceneFrame provider={Provider} scenes={merged} />}",
   ].join(""),
 };
 

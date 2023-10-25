@@ -35,19 +35,22 @@ interface API {
  * This plugin acts as an intermediate between the file system and the in-memory
  * file held in the server. We use this to be able to load files from the
  * in-memory representation enabling us to change it without having to modify
- * the fs representation enabling undo/redo/load-from-dirty without much
- * complexity (its just a HMR instead of trying to build up the logic).
+ * the file on the fs enabling undo/redo/load-from-dirty without much complexity
+ * ...its just a HMR instead of trying to build it up as client state!!
  */
 export function remoteModulePlugin({
   __api: api = { getCode },
+  cwd,
   files,
 }: {
   __api?: API;
+  cwd: string;
   files: string[];
 }) {
   return {
     configureServer(server: ViteDevServer) {
-      on("on-fs-change", async (id) => {
+      on("fs-change", async (e) => {
+        const id = e.existsOnFs ? e.path : e.path.replace(cwd, "triplex:");
         const mod = await server.moduleGraph.getModuleById(id);
         if (mod) {
           server.reloadModule(mod);
@@ -56,13 +59,24 @@ export function remoteModulePlugin({
     },
     enforce: "pre",
     async load(id: string) {
-      if (!match(id, files)) {
+      if (!match(id, files) && !id.startsWith("triplex:/src/untitled")) {
         return;
       }
 
-      const code = await api.getCode(id);
+      const reconciledId = id.startsWith("triplex:/src/untitled")
+        ? // We've found the placeholder modules used when creating a new file.
+          // Transform it to the actual name that will be found in the backend.
+          id.replace("triplex:", cwd)
+        : id;
+
+      const code = await api.getCode(reconciledId);
       return code;
     },
     name: "triplex:remote-module-plugin",
+    resolveId(id: string) {
+      if (id.startsWith("triplex:/src/untitled")) {
+        return id;
+      }
+    },
   } as const;
 }

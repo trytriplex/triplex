@@ -12,12 +12,18 @@ import { defineConfig } from "@playwright/test";
 export default defineConfig({
   forbidOnly: !!process.env.CI,
 
-  fullyParallel: true,
+  fullyParallel: false,
 
   projects: [
     {
+      expect: {
+        toMatchSnapshot: {
+          maxDiffPixelRatio: 0.05,
+        },
+      },
       name: "app",
-      testMatch: /e2e.ts$/,
+      snapshotPathTemplate: "{testDir}/__snapshots__/{testFileName}-{arg}{ext}",
+      testMatch: /e2e\.ts$/,
     },
   ],
 
@@ -36,6 +42,5 @@ export default defineConfig({
     video: "retain-on-failure",
   },
 
-  /* Opt out of parallel tests on CI. */
-  workers: process.env.CI ? 1 : undefined,
+  workers: 1,
 });

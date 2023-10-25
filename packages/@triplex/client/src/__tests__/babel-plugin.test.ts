@@ -32,13 +32,40 @@ describe("babel plugin", () => {
       {
         filename: "/hello.tsx",
         plugins: [
-          plugin(["/hello.tsx"]),
+          plugin({ exclude: ["/hello.tsx"] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
       }
     );
 
     expect(result?.code).toMatchInlineSnapshot('"<group scale={scale} />;"');
+  });
+
+  it("should continue to apply other babel plugins when ignored", () => {
+    const result = transformSync(
+      `
+      export function Component() {
+        return <group scale={scale} />
+      }
+    `,
+      {
+        filename: "/hello.tsx",
+        plugins: [
+          plugin({ exclude: ["/hello.tsx"] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+          [require.resolve("react-refresh/babel"), { skipEnvCheck: true }],
+        ],
+      }
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "export function Component() {
+        return <group scale={scale} />;
+      }
+      _c = Component;
+      var _c;
+      $RefreshReg$(_c, \\"Component\\");"
+    `);
   });
 
   it("should flag a component declared in node_modules as transformed", () => {
@@ -56,7 +83,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/hello.tsx",
-        plugins: [plugin([]), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -87,7 +117,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -144,7 +177,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -177,7 +213,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -215,7 +254,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -274,7 +316,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -312,7 +357,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -346,7 +394,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -398,7 +449,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -464,7 +518,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -488,7 +545,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -512,7 +572,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -537,7 +600,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -563,7 +629,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -594,7 +663,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -625,7 +697,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -659,7 +734,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -693,7 +771,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -730,7 +811,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
@@ -767,7 +851,10 @@ describe("babel plugin", () => {
     `,
       {
         filename: "/box.tsx",
-        plugins: [plugin(), require.resolve("@babel/plugin-syntax-jsx")],
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
       }
     );
 
