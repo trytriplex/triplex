@@ -314,34 +314,40 @@ async function main() {
 
     log.info("forking");
 
-    const p = await fork(join(__dirname, "./project.ts"), { cwd });
+    try {
+      const p = await fork(join(__dirname, "./project.ts"), { cwd });
 
-    log.info("continuing");
+      activeProjectWindow.webContents.ipc.handle("get-triplex-env", () => ({
+        ...p.data,
+      }));
 
-    activeProjectWindow.webContents.ipc.handle("get-triplex-env", () => ({
-      ...p.data,
-    }));
+      cleanup = () => {
+        p.kill();
+      };
 
-    cleanup = () => {
-      p.kill();
-    };
+      const searchParams = `?path=${p.data?.path}&exportName=${p.data?.exportName}`;
 
-    const searchParams = `?path=${p.data?.path}&exportName=${p.data?.exportName}`;
+      log.info("starting editor");
 
-    log.info("starting editor");
-
-    await (process.env.TRIPLEX_ENV === "development"
-      ? activeProjectWindow.loadURL(
-          `http://localhost:${EDITOR_DEV_PORT}${searchParams}`
-        )
-      : activeProjectWindow.loadFile(
-          require.resolve(`@triplex/editor/dist/index.html`),
-          {
-            search: searchParams,
-          }
-        ));
-
-    log.info("success");
+      await (process.env.TRIPLEX_ENV === "development"
+        ? activeProjectWindow.loadURL(
+            `http://localhost:${EDITOR_DEV_PORT}${searchParams}`
+          )
+        : activeProjectWindow.loadFile(
+            require.resolve(`@triplex/editor/dist/index.html`),
+            {
+              search: searchParams,
+            }
+          ));
+    } catch {
+      await (process.env.TRIPLEX_ENV === "development"
+        ? activeProjectWindow.loadURL(
+            `http://localhost:${EDITOR_DEV_PORT}/fallback-error.html`
+          )
+        : activeProjectWindow.loadFile(
+            require.resolve(`@triplex/editor/dist/fallback-error.html`)
+          ));
+    }
   }
 
   function applyGlobalIpcHandlers() {

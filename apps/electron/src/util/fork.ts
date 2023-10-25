@@ -36,6 +36,9 @@ export function fork(
         NODE_PATH: process.cwd(),
         TRIPLEX_ENV: "development",
       },
+      // We set the forked process to silent so we can capture errors.
+      // See: https://stackoverflow.com/a/52066025
+      silent: true,
     });
   } else {
     log.info("starting prod");
@@ -60,7 +63,7 @@ export function fork(
     });
 
     fork.stderr?.on("data", (data) => {
-      log.error("error initializing");
+      log.error(data.toString());
       reject(data.toString());
     });
 

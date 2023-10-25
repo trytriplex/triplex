@@ -16,6 +16,7 @@ export default {
     rollupOptions: {
       input: {
         editor: resolve(__dirname, "index.html"),
+        error: resolve(__dirname, "fallback-error.html"),
         welcome: resolve(__dirname, "welcome.html"),
       },
     },

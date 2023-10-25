@@ -7,7 +7,13 @@
 const { contextBridge, ipcRenderer } = require("electron");
 
 contextBridge.exposeInMainWorld("triplex", {
-  getEnv: () => ipcRenderer.invoke("get-triplex-env"),
+  getEnv: () => {
+    try {
+      return ipcRenderer.invoke("get-triplex-env");
+    } catch {
+      return null;
+    }
+  },
   handleMenuItemPress: (callback) => {
     const listener = (_, id) => {
       callback(id);
