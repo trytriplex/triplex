@@ -13,14 +13,9 @@ export function Shrine({
   variant?: "pillar" | "shrine" | "shrine_candles";
 }) {
   return (
-    <Gltf
-      castShadow
-      position={position}
-      receiveShadow
-      rotation={rotation}
-      scale={scale}
-      src={`/assets/structure/${variant}.glb`}
-    />
+    <group position={position} rotation={rotation} scale={scale}>
+      <Gltf castShadow receiveShadow src={`/assets/structure/${variant}.glb`} />
+    </group>
   );
 }
 
@@ -34,14 +29,9 @@ export function Crypt({
   scale?: Vector3Tuple;
 }) {
   return (
-    <Gltf
-      castShadow
-      position={position}
-      receiveShadow
-      rotation={rotation}
-      scale={scale}
-      src={`/assets/structure/crypt.glb`}
-    />
+    <group position={position} rotation={rotation} scale={scale}>
+      <Gltf castShadow receiveShadow src={`/assets/structure/crypt.glb`} />
+    </group>
   );
 }
 
@@ -57,14 +47,9 @@ export function Coffin({
   variant?: "coffin" | "coffin_decorated";
 }) {
   return (
-    <Gltf
-      castShadow
-      position={position}
-      receiveShadow
-      rotation={rotation}
-      scale={scale}
-      src={`/assets/structure/${variant}.glb`}
-    />
+    <group position={position} rotation={rotation} scale={scale}>
+      <Gltf castShadow receiveShadow src={`/assets/structure/${variant}.glb`} />
+    </group>
   );
 }
 
@@ -84,12 +69,8 @@ export function Grave({
     | "gravestone";
 }) {
   return (
-    <Gltf
-      castShadow
-      position={position}
-      receiveShadow
-      rotation={rotation}
-      src={`/assets/structure/${variant}.glb`}
-    />
+    <group position={position} rotation={rotation}>
+      <Gltf castShadow receiveShadow src={`/assets/structure/${variant}.glb`} />
+    </group>
   );
 }

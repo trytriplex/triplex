@@ -29,13 +29,8 @@ export function Item({
     | "skull_candle";
 }) {
   return (
-    <Gltf
-      castShadow
-      position={position}
-      receiveShadow
-      rotation={rotation}
-      scale={scale}
-      src={`/assets/item/${variant}.glb`}
-    />
+    <group position={position} rotation={rotation} scale={scale}>
+      <Gltf castShadow receiveShadow src={`/assets/item/${variant}.glb`} />
+    </group>
   );
 }
