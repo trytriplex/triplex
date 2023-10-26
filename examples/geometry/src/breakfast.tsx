@@ -35,12 +35,7 @@ export function Frypan({
       position={position}
       rotation={rotation}
     >
-      <Clone
-        castShadow
-        object={nodes.frypan}
-        position={[2.326_120_867_996_49, 0, 0.337_704_964_306_508]}
-        receiveShadow
-      >
+      <Clone castShadow object={nodes.frypan} receiveShadow>
         <meshStandardMaterial map={materials["lambert6SG"].map} />
       </Clone>
     </RigidBody>
@@ -386,6 +381,7 @@ export function Breakfast() {
       </group>
       <pointLight
         castShadow={true}
+        intensity={50}
         position={[
           -4.101_842_057_534_756, 5.508_838_681_006_239,
           -0.516_666_266_100_172_2,
@@ -396,7 +392,7 @@ export function Breakfast() {
       <pointLight
         castShadow={true}
         color={undefined}
-        intensity={0.2}
+        intensity={20}
         position={[
           -1.281_323_266_732_092_6, 2.613_904_657_900_211_4,
           -5.815_240_373_544_561,
@@ -404,7 +400,7 @@ export function Breakfast() {
       />
       <pointLight
         castShadow={true}
-        intensity={0.5}
+        intensity={30}
         position={[
           4.543_368_511_890_467, 3.295_888_814_429_723_4,
           1.927_909_503_058_799_4,
