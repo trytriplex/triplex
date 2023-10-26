@@ -19,13 +19,8 @@ export function Pumpkin({
     | "pumpkin_yellow_small";
 }) {
   return (
-    <Gltf
-      castShadow
-      position={position}
-      receiveShadow
-      rotation={rotation}
-      scale={scale}
-      src={`/assets/pumpkin/${variant}.glb`}
-    />
+    <group position={position} rotation={rotation} scale={scale}>
+      <Gltf castShadow receiveShadow src={`/assets/pumpkin/${variant}.glb`} />
+    </group>
   );
 }

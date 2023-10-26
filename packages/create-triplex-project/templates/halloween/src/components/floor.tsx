@@ -14,14 +14,9 @@ export function Path({
   variant?: "path_A" | "path_B" | "path_C" | "path_D";
 }) {
   return (
-    <Gltf
-      castShadow
-      position={position}
-      receiveShadow
-      rotation={rotation}
-      scale={scale}
-      src={`/assets/floor/${variant}.glb`}
-    />
+    <group position={position} rotation={rotation} scale={scale}>
+      <Gltf castShadow receiveShadow src={`/assets/floor/${variant}.glb`} />
+    </group>
   );
 }
 
@@ -43,16 +38,9 @@ export function Floor({
   const material = node.materials["HalloweenBits"];
 
   return (
-    <>
+    <group position={position} rotation={rotation} scale={scale}>
       <Primitive object={material} roughness={1} />
-      <Clone
-        castShadow
-        object={node.scene}
-        position={position}
-        receiveShadow
-        rotation={rotation}
-        scale={scale}
-      />
-    </>
+      <Clone castShadow object={node.scene} receiveShadow />
+    </group>
   );
 }

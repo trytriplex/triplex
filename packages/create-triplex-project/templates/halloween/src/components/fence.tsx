@@ -18,14 +18,9 @@ export function Fence({
     | "fence_seperate_broken";
 }) {
   return (
-    <Gltf
-      castShadow
-      position={position}
-      receiveShadow
-      rotation={rotation}
-      scale={scale}
-      src={`/assets/fence/${variant}.glb`}
-    />
+    <group position={position} rotation={rotation} scale={scale}>
+      <Gltf castShadow receiveShadow src={`/assets/fence/${variant}.glb`} />
+    </group>
   );
 }
 
