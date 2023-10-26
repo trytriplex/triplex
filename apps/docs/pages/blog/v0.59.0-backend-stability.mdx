@@ -1,0 +1,39 @@
+---
+title: "Triplex 0.59: Backend Stability Improvements"
+ogTitle: Triplex 0.59.0
+date: 2023-10-27
+description: This release significantly improves
+---
+
+▵ Triplex 0.59.0 completes a large refactor of the backend to improve scene
+stability, fixing bugs, enabling new features, and setting us up for success
+into the future.
+
+## New features
+
+- Exit selection command can now be triggered using the `Shift+CmdOrControl+F`
+  hotkey
+- Transform actions (translate/rotate/scale) are now available in the selection
+  menu
+- Triplex now warns you when the file you have open is outside where your
+  project has defined files should be
+  [[#135](https://github.com/try-triplex/triplex/issues/135)]
+
+## Bug fixes
+
+- Union literal labels are now shown in the select input when possible
+  [[#87](https://github.com/try-triplex/triplex/issues/87)]
+- Saving no longer accidentally triggers the scale transform mode
+  [[#145](https://github.com/try-triplex/triplex/issues/145)]
+- Changes to your scene are no longer visually lost when entering / exiting /
+  reloading components [[#3](https://github.com/try-triplex/triplex/issues/3),
+  [#53](https://github.com/try-triplex/triplex/issues/53)]
+- Adding a new element then saving no longer results in the component briefly
+  being unmounted [[#48](https://github.com/try-triplex/triplex/issues/48)]
+
+## Chores
+
+- When loading a project if it fails to load an error screen is now shown
+  instead of nothing
+- A loading screen is now shown when opening Triplex
+  [[#31](https://github.com/try-triplex/triplex/issues/31)]
