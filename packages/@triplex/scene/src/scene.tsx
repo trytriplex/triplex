@@ -123,7 +123,7 @@ export function SceneFrame({
     <Canvas>
       <Camera layers={layers} position={position} target={target}>
         <SceneErrorBoundary>
-          <Suspense fallback={null}>
+          <Suspense>
             <ManualEditableSceneObject
               component={Provider}
               exportName="__exclude__"
@@ -139,11 +139,13 @@ export function SceneFrame({
                 onNavigate={onNavigate}
                 path={path}
               >
-                <SceneLoader
-                  exportName={exportName}
-                  path={path}
-                  sceneProps={sceneProps}
-                />
+                <Suspense>
+                  <SceneLoader
+                    exportName={exportName}
+                    path={path}
+                    sceneProps={sceneProps}
+                  />
+                </Suspense>
               </Selection>
             </ManualEditableSceneObject>
           </Suspense>
