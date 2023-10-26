@@ -7,8 +7,9 @@
 import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
 import Head from "next/head";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import type { NextraThemeLayoutProps } from "nextra";
-import { Components, MDXProvider } from "nextra/mdx";
+import { Components, MDXProvider, useMDXComponents } from "nextra/mdx";
 import { normalizePages } from "nextra/normalize-pages";
 import {
   Fragment,
@@ -25,6 +26,74 @@ import { cn } from "../util/cn";
 import { BASE_URL } from "../util/url";
 
 const components: Components = {
+  MetaDiff: ({
+    action,
+    source,
+    target,
+    transform = "none",
+  }: {
+    action: "add" | "remove";
+    source: string;
+    target: string;
+    transform?: "glob" | "none";
+  }) => {
+    const transforms = {
+      glob: (value: string) => value?.replace(/\/\w+\.([jt]sx)$/, "/*.$1"),
+      none: (value: string) => value,
+    };
+    const applyAction = (value: string, targetValue: string) => {
+      let startIndex = value.indexOf(targetValue);
+
+      while (value[startIndex] !== "\n" && startIndex > 0) {
+        startIndex -= 1;
+      }
+
+      if (startIndex === -1) {
+        return value;
+      }
+
+      startIndex += 1;
+
+      return (
+        value.slice(0, startIndex) +
+        (action === "add" ? "+" : "-") +
+        value.slice(startIndex + 1, value.length)
+      );
+    };
+    const search = useSearchParams();
+    const meta = JSON.parse(search.get("meta") || `{}`);
+    const transformer = transforms[transform];
+    const targetValue = transformer(meta[target]);
+
+    delete meta[target];
+
+    if (Array.isArray(meta[source])) {
+      meta[source].push(targetValue);
+    }
+
+    const code = applyAction(JSON.stringify(meta, null, 2), targetValue);
+
+    return (
+      <pre className="mt-5 whitespace-break-spaces rounded-xl bg-white/5 p-3 text-lg text-neutral-300 md:text-base">
+        <code>{code}</code>
+      </pre>
+    );
+  },
+  PickMeta: ({ pick }: { pick: string }) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const { li: ListItem, ul: List } = useMDXComponents() as any;
+    const search = useSearchParams();
+    const meta = JSON.parse(search.get("meta") || `{}`);
+    const picked = Array.isArray(meta[pick]) ? meta[pick] : [meta[pick]];
+
+    return (
+      <List>
+        {picked.map((item: string, index: number) => (
+          <ListItem key={item + index}>{item || "..."}</ListItem>
+        ))}
+      </List>
+    );
+  },
   Video: ({ src }) => (
     <video className="mt-8 w-full rounded-xl" controls src={src} />
   ),
@@ -83,7 +152,7 @@ const components: Components = {
   th: ({ children }) => (
     <th className="text-left text-neutral-400">{children}</th>
   ),
-  ul: ({ children }) => <ul className="mt-8 list-disc">{children}</ul>,
+  ul: ({ children }) => <ul className="mt-5 list-disc">{children}</ul>,
 };
 
 const friendlyDate = (date: string): string => {
@@ -340,7 +409,7 @@ function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
   return (
     <>
       <Header
-        appearance={route === "/" ? "transparent" : "default"}
+        appearance="transparent"
         onShowNav={() => setNavOpen((prev) => !prev)}
       >
         {result.topLevelNavbarItems.map((item) => (
