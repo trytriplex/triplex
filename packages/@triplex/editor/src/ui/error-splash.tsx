@@ -21,9 +21,7 @@ export function ErrorSplash() {
           <a
             className="text-blue-400"
             href="#"
-            onClick={() =>
-              window.triplex.openLink("https://twitter.com/_douges")
-            }
+            onClick={() => window.triplex.openLink("mailto:team@triplex.dev")}
           >
             Contact us
           </a>
@@ -38,6 +36,14 @@ export function ErrorSplash() {
             }
           >
             Report a bug
+          </a>
+          <span className="text-xs text-neutral-400">•</span>
+          <a
+            className="text-blue-400"
+            href="#"
+            onClick={() => window.triplex.sendCommand("view-logs")}
+          >
+            View logs
           </a>
         </div>
       </div>

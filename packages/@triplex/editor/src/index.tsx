@@ -13,6 +13,7 @@ import { TitleBar } from "./ui/title-bar";
 import "./styles.css";
 import { Suspense } from "react";
 import { Environment } from "./environment";
+import { LoadingTriangle } from "./ui/loading-triagle";
 
 createRoot(document.getElementById("root")!).render(
   <BrowserRouter>
@@ -22,7 +23,7 @@ createRoot(document.getElementById("root")!).render(
         "grid-rows-[32px_auto]",
       ])}
     >
-      <Suspense>
+      <Suspense fallback={<LoadingTriangle />}>
         <Environment>
           <TitleBar />
           <EditorFrame />

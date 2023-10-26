@@ -10,7 +10,34 @@
     <title>Triplex</title>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root">
+      <style>
+        .loading--center {
+          position: fixed;
+          inset: 0;
+          display: flex;
+          padding-top: 5em;
+          align-items: center;
+          justify-content: center;
+        }
+      </style>
+      <div class="loading--center">
+        <svg width="200" height="200" viewBox="0 0 40 60">
+          <defs>
+            <linearGradient id="l-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="rgb(245 245 245)" />
+              <stop offset="100%" stop-color="rgb(163 163 163)" />
+            </linearGradient>
+          </defs>
+          <polygon
+            fill="none"
+            stroke="url(#l-gradient)"
+            stroke-width="1.4"
+            points="16,1 32,32 1,32"
+          />
+        </svg>
+      </div>
+    </div>
     <script type="module" src="./src/index.tsx"></script>
   </body>
 </html>

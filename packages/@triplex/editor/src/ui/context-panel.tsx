@@ -13,9 +13,10 @@ import {
   TrashIcon,
 } from "@radix-ui/react-icons";
 import { useLazySubscription } from "@triplex/ws/react";
-import { Suspense, useState } from "react";
+import { Suspense, useDeferredValue, useState } from "react";
 import { IconButton } from "../ds/button";
 import { ScrollContainer } from "../ds/scroll-container";
+import { PanelSkeleton } from "../ds/skeleton";
 import { FocusedObject, useEditor } from "../stores/editor";
 import { useScene } from "../stores/scene";
 import { useSceneState } from "../stores/scene-state";
@@ -306,11 +307,13 @@ function ComponentSandboxPanel() {
 export function ContextPanel() {
   const { target } = useEditor();
   const { blur } = useScene();
-  if (!target) {
+  const deferredTarget = useDeferredValue(target);
+
+  if (!deferredTarget) {
     return null;
   }
 
-  const isSceneObject = target.column > -1 && target.line > -1;
+  const isSceneObject = deferredTarget.column > -1 && deferredTarget.line > -1;
 
   return (
     <div className="pointer-events-none flex w-full flex-col gap-3">
@@ -322,14 +325,16 @@ export function ContextPanel() {
           title="Close (ESC)"
         />
 
-        <ErrorBoundary keys={[target]}>
-          <Suspense
-            fallback={<div className="p-4 text-neutral-400">Loading...</div>}
-          >
+        <ErrorBoundary keys={[deferredTarget]}>
+          <Suspense fallback={<PanelSkeleton />}>
             {isSceneObject ? (
               <SelectedSceneObjectPanel
-                key={target.path + target.column + target.line}
-                target={target}
+                key={
+                  deferredTarget.path +
+                  deferredTarget.column +
+                  deferredTarget.line
+                }
+                target={deferredTarget}
               />
             ) : (
               <ComponentSandboxPanel />

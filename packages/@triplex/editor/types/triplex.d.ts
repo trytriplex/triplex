@@ -25,7 +25,14 @@ declare interface Window {
     ) => () => void;
     openLink: (url: string) => void;
     platform: typeof process.platform;
-    sendCommand: (id: string) => void;
+    sendCommand: (
+      id:
+        | "open-project"
+        | "create-project"
+        | "view-logs"
+        | "close-project"
+        | "show-devtools"
+    ) => void;
     setMenu: (menu: import("electron").MenuItemConstructorOptions[]) => void;
     showSaveDialog: (filename: string) => Promise<string | undefined>;
   };

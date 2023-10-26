@@ -254,7 +254,6 @@ async function main() {
     activeProjectWindow = new BrowserWindow({
       backgroundColor: "#171717",
       height: 720,
-      paintWhenInitiallyHidden: false,
       show: false,
       titleBarOverlay: {
         color: "#171717",
@@ -262,14 +261,15 @@ async function main() {
         symbolColor: "#A3A3A3",
       },
       titleBarStyle: "hidden",
-
       webPreferences: {
         preload: require.resolve("./preload.js"),
       },
-      // width: 477,
-      // height: 848,
       width: 1280,
     });
+
+    activeProjectWindow.loadFile(
+      require.resolve(`@triplex/editor/loading.html`)
+    );
 
     try {
       const result = await ensureDepsInstall(

@@ -29,6 +29,7 @@ import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 import { Pressable } from "../ds/pressable";
 import { ScrollContainer } from "../ds/scroll-container";
+import { PanelSkeleton } from "../ds/skeleton";
 import { useAssetsDrawer } from "../stores/assets-drawer";
 import { useEditor } from "../stores/editor";
 import { useProviderStore } from "../stores/provider";
@@ -42,11 +43,9 @@ export function ScenePanel() {
   const { exportName, path } = useEditor();
 
   return (
-    <div className="pointer-events-auto w-full flex-grow overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%]">
+    <div className="pointer-events-auto relative w-full flex-grow overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%]">
       <ErrorBoundary keys={[path, exportName]}>
-        <Suspense
-          fallback={<div className="p-4 text-neutral-400">Loading...</div>}
-        >
+        <Suspense fallback={<PanelSkeleton />}>
           <SceneContents />
         </Suspense>
       </ErrorBoundary>
