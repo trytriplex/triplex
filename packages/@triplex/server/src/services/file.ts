@@ -11,13 +11,16 @@ import parent from "glob-parent";
 import readdirp from "readdirp";
 import { getJsxElementsPositions, TRIPLEXProject } from "../ast";
 import { inferExports } from "../util/module";
+import { matchFile } from "../util/path";
 
 export function getSceneExport({
   exportName,
+  files,
   path,
   project,
 }: {
   exportName: string;
+  files: string[];
   path: string;
   project: TRIPLEXProject;
 }) {
@@ -32,6 +35,7 @@ export function getSceneExport({
 
   return {
     exports: foundExports,
+    matchesFilesGlob: matchFile(path, files),
     name: foundExport.name,
     path,
     sceneObjects: jsxElements,

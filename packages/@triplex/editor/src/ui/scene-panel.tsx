@@ -8,6 +8,7 @@ import {
   BoxIcon,
   CaretDownIcon,
   CaretRightIcon,
+  ExclamationTriangleIcon,
   ExitIcon,
   MixerHorizontalIcon,
   MixerVerticalIcon,
@@ -30,6 +31,7 @@ import { cn } from "../ds/cn";
 import { Pressable } from "../ds/pressable";
 import { ScrollContainer } from "../ds/scroll-container";
 import { PanelSkeleton } from "../ds/skeleton";
+import { useEnvironment } from "../environment";
 import { useAssetsDrawer } from "../stores/assets-drawer";
 import { useEditor } from "../stores/editor";
 import { useProviderStore } from "../stores/provider";
@@ -55,6 +57,7 @@ export function ScenePanel() {
 
 function ComponentHeading() {
   const { exportName, newComponent, path, set } = useEditor();
+  const { config } = useEnvironment();
   const projectState = useLazySubscription("/project/state");
   const scene = useLazySubscription("/scene/:path/:exportName", {
     exportName,
@@ -84,7 +87,7 @@ function ComponentHeading() {
 
   return (
     <h2 className="flex flex-row items-center pl-2 pr-4 pt-3 text-2xl font-medium text-neutral-300">
-      <label className="relative flex items-center gap-1.5 overflow-hidden rounded pl-2 pr-1 outline-1 outline-offset-1 outline-blue-400 focus-within:outline hover:bg-white/5 active:bg-white/10">
+      <label className="relative mr-auto flex items-center gap-1.5 overflow-hidden rounded pl-2 pr-1 outline-1 outline-offset-1 outline-blue-400 focus-within:outline hover:bg-white/5 active:bg-white/10">
         <span className="overflow-hidden text-ellipsis rounded">
           {scene.name}
         </span>
@@ -108,11 +111,31 @@ function ComponentHeading() {
       <span
         aria-label={projectState.isDirty ? "Unsaved changes" : undefined}
         className={cn([
-          "ml-auto h-2.5 w-2.5 flex-shrink-0 rounded-full",
+          "h-2.5 w-2.5 flex-shrink-0 rounded-full",
           projectState.isDirty ? "bg-yellow-400" : "bg-neutral-800",
         ])}
         title={projectState.isDirty ? "Unsaved changes" : undefined}
       />
+      {!scene.matchesFilesGlob && (
+        <IconButton
+          className="-mr-1.5 ml-1 text-orange-400"
+          icon={ExclamationTriangleIcon}
+          onClick={() =>
+            window.triplex.openLink(
+              "https://triplex.dev/docs/supporting/docs/supporting/component-outside-of-project-files?meta=" +
+                encodeURIComponent(
+                  JSON.stringify({
+                    files: config.files.map((file) =>
+                      file.replace(config.cwd, "..")
+                    ),
+                    path: scene.path.replace(config.cwd, ".."),
+                  })
+                )
+            )
+          }
+          title="Warning: This component is outside of your declared project files. Click to learn more."
+        />
+      )}
     </h2>
   );
 }

@@ -52,41 +52,42 @@ function Inputs() {
         </div>
       )}
 
-      {props.map((prop) => {
-        const value =
-          prop.name in values ? values[prop.name] : defaultValues[prop.name];
+      {providerPath &&
+        props.map((prop) => {
+          const value =
+            prop.name in values ? values[prop.name] : defaultValues[prop.name];
 
-        return (
-          <PropField
-            description={prop.description}
-            htmlFor={prop.name}
-            key={prop.name}
-            label={prop.name}
-            tags={prop.tags}
-          >
-            <PropTagContext.Provider value={prop.tags}>
-              <PropInput
-                name={prop.name}
-                onChange={(value) => {
-                  setPropValue({
-                    column: -999,
-                    line: -999,
-                    path: providerPath,
-                    propName: prop.name,
-                    propValue: value,
-                  });
-                }}
-                onConfirm={(value) => {
-                  setValues(storeKey, prop.name, value);
-                }}
-                path={providerPath}
-                prop={Object.assign({}, prop, value ? { value } : {})}
-                required={prop.required}
-              />
-            </PropTagContext.Provider>
-          </PropField>
-        );
-      })}
+          return (
+            <PropField
+              description={prop.description}
+              htmlFor={prop.name}
+              key={prop.name}
+              label={prop.name}
+              tags={prop.tags}
+            >
+              <PropTagContext.Provider value={prop.tags}>
+                <PropInput
+                  name={prop.name}
+                  onChange={(value) => {
+                    setPropValue({
+                      column: -999,
+                      line: -999,
+                      path: providerPath,
+                      propName: prop.name,
+                      propValue: value,
+                    });
+                  }}
+                  onConfirm={(value) => {
+                    setValues(storeKey, prop.name, value);
+                  }}
+                  path={providerPath}
+                  prop={Object.assign({}, prop, value ? { value } : {})}
+                  required={prop.required}
+                />
+              </PropTagContext.Provider>
+            </PropField>
+          );
+        })}
       <div className="h-1" />
     </ScrollContainer>
   );

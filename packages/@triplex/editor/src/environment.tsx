@@ -21,15 +21,7 @@ export function useEnvironment() {
 }
 
 export function Environment({ children }: { children: ReactNode }) {
-  const data: Env = suspend(
-    () =>
-      __TRIPLEX_TARGET__ === "electron"
-        ? window.triplex.getEnv()
-        : Promise.resolve({
-            config: { provider: "", sceneUrl: "", serverUrl: "", wsUrl: "" },
-          }),
-    []
-  );
+  const data: Env = suspend(() => window.triplex.getEnv(), []);
 
   return <Context.Provider value={data}>{children}</Context.Provider>;
 }

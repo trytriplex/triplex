@@ -1,0 +1,18 @@
+---
+title: Component Outside of Project Files
+---
+
+This file lives outside of what you have declared your project files to be in
+the [Triplex config](/docs/api-reference/config#files), meaning Triplex won't be
+able to find it when opening files.
+
+To resolve, either:
+
+1. Update your config to include the folder the component is inside:
+
+   <MetaDiff source="files" target="path" action="add" transform="glob" />
+
+2. Move the file underneath one of the directories defined in the `files`
+   property of your config:
+
+   <PickMeta pick="files" />

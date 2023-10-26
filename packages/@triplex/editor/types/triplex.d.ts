@@ -10,10 +10,12 @@ declare interface Window {
   triplex: {
     getEnv: () => Promise<{
       config: {
-        provider: string;
-        sceneUrl: string;
-        serverUrl: string;
-        wsUrl: string;
+        assetsDir: string;
+        components: string[];
+        cwd: string;
+        files: string[];
+        provider?: string;
+        publicDir: string;
       };
     }>;
     handleMenuItemPress: (callback: (id: string) => void) => () => void;

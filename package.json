@@ -18,6 +18,7 @@
     "clean:drop-dist-tests": "pnpm -r exec rimraf --glob dist/**/__tests__ dist/**/__test__",
     "clean:node_modules": "pnpm -r exec rimraf node_modules && rimraf node_modules",
     "dev": "pnpm --filter @triplex/electron dev",
+    "dev:docs": "pnpm --filter @docs/triplex dev",
     "electron:build": "cross-env TRIPLEX_TARGET=electron pnpm --filter @triplex/* --filter create-triplex-project build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false pnpm --filter @triplex/electron build-target",
     "electron:build-targets": "cross-env TRIPLEX_TARGET=electron pnpm --filter @triplex/* --filter create-triplex-project build && cross-env CSC_IDENTITY_AUTO_DISCOVERY=false pnpm --filter @triplex/electron build-targets",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",

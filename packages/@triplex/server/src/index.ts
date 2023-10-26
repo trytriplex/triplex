@@ -308,7 +308,12 @@ export function createServer({
     tws.route(
       "/scene/:path/:exportName",
       async ({ exportName, path }) => {
-        const result = await getSceneExport({ exportName, path, project });
+        const result = await getSceneExport({
+          exportName,
+          files,
+          path,
+          project,
+        });
         return result;
       },
       async (push, { path }) => {
