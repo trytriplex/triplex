@@ -1,5 +1,7 @@
 # @triplex/server
 
+## 0.59.1
+
 ## 0.59.0
 
 ### Minor Changes
