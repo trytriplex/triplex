@@ -122,7 +122,7 @@ function ComponentHeading() {
           icon={ExclamationTriangleIcon}
           onClick={() =>
             window.triplex.openLink(
-              "https://triplex.dev/docs/supporting/docs/supporting/component-outside-of-project-files?meta=" +
+              "https://triplex.dev/docs/supporting/component-outside-of-project-files?meta=" +
                 encodeURIComponent(
                   JSON.stringify({
                     files: config.files.map((file) =>
