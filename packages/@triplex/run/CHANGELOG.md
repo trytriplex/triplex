@@ -1,5 +1,25 @@
 # @triplex/run
 
+## 0.59.0
+
+### Patch Changes
+
+- f6e068c: Packages have been moved into namedspaced folders.
+- Updated dependencies [2194c85]
+- Updated dependencies [ce8a108]
+- Updated dependencies [ce8a108]
+- Updated dependencies [26bd068]
+- Updated dependencies [f2d612b]
+- Updated dependencies [1d70f2b]
+- Updated dependencies [8dd7cd1]
+- Updated dependencies [75073e7]
+- Updated dependencies [ce8a108]
+- Updated dependencies [26bd068]
+- Updated dependencies [f6e068c]
+  - @triplex/editor@0.59.0
+  - @triplex/server@0.59.0
+  - @triplex/client@0.59.0
+
 ## 0.58.2
 
 ### Patch Changes

@@ -1,5 +1,27 @@
 # @triplex/client
 
+## 0.59.0
+
+### Minor Changes
+
+- 26bd068: Scene modules are now loaded remotely instead of from the fs. This is
+  going to raise the ceiling on features we can implement as now everything
+  becomes a mutation to the remote source instead of that AND also trying to
+  handle the intermediate state in the scene prior to it being flushed to the
+  fs. Super excited about this.
+
+### Patch Changes
+
+- 8dd7cd1: Scene/client pkgs now bundled with vite.
+- f6e068c: Packages have been moved into namedspaced folders.
+- Updated dependencies [ce8a108]
+- Updated dependencies [ce8a108]
+- Updated dependencies [8dd7cd1]
+- Updated dependencies [ce8a108]
+- Updated dependencies [26bd068]
+- Updated dependencies [f6e068c]
+  - @triplex/scene@0.59.0
+
 ## 0.58.2
 
 ### Patch Changes

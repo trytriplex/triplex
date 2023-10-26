@@ -1,5 +1,37 @@
 # @triplex/electron
 
+## 0.59.0
+
+### Minor Changes
+
+- 26bd068: Scene modules are now loaded remotely instead of from the fs. This is
+  going to raise the ceiling on features we can implement as now everything
+  becomes a mutation to the remote source instead of that AND also trying to
+  handle the intermediate state in the scene prior to it being flushed to the
+  fs. Super excited about this.
+
+### Patch Changes
+
+- 1d70f2b: An error screen is now presented to users when Triplex fails to start
+  up a project.
+- 75073e7: Editor now shows a loading screen prior to the project being
+  successfully loaded.
+- Updated dependencies [2194c85]
+- Updated dependencies [ce8a108]
+- Updated dependencies [ce8a108]
+- Updated dependencies [26bd068]
+- Updated dependencies [f2d612b]
+- Updated dependencies [1d70f2b]
+- Updated dependencies [8dd7cd1]
+- Updated dependencies [75073e7]
+- Updated dependencies [ce8a108]
+- Updated dependencies [26bd068]
+- Updated dependencies [f6e068c]
+  - @triplex/editor@0.59.0
+  - @triplex/server@0.59.0
+  - @triplex/client@0.59.0
+  - create-triplex-project@0.59.0
+
 ## 0.58.2
 
 ### Patch Changes

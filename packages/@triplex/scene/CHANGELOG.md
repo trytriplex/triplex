@@ -1,5 +1,27 @@
 # @triplex/scene
 
+## 0.59.0
+
+### Minor Changes
+
+- 26bd068: Scene modules are now loaded remotely instead of from the fs. This is
+  going to raise the ceiling on features we can implement as now everything
+  becomes a mutation to the remote source instead of that AND also trying to
+  handle the intermediate state in the scene prior to it being flushed to the
+  fs. Super excited about this.
+
+### Patch Changes
+
+- ce8a108: Exit selection command can now be triggered using the (SHIFT +
+  CmdOrControl + F) hotkey.
+- ce8a108: Add transform actions to selection menu.
+- 8dd7cd1: Scene/client pkgs now bundled with vite.
+- ce8a108: Fix saving accidentally triggered scale transform mode.
+- f6e068c: Packages have been moved into namedspaced folders.
+- Updated dependencies [f6e068c]
+  - @triplex/ws@0.59.0
+  - @triplex/bridge@0.59.0
+
 ## 0.58.2
 
 ### Patch Changes

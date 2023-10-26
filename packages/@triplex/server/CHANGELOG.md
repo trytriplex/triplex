@@ -1,5 +1,24 @@
 # @triplex/server
 
+## 0.59.0
+
+### Minor Changes
+
+- 26bd068: Add `onSourceFileChange` api to project.
+- 26bd068: Scene modules are now loaded remotely instead of from the fs. This is
+  going to raise the ceiling on features we can implement as now everything
+  becomes a mutation to the remote source instead of that AND also trying to
+  handle the intermediate state in the scene prior to it being flushed to the
+  fs. Super excited about this.
+
+### Patch Changes
+
+- 2194c85: Triplex now warns you when the file you have open is outside where
+  your project has defined files should be.
+- f2d612b: Editor now shows union literal labels where possible.
+- 8dd7cd1: Scene/client pkgs now bundled with vite.
+- f6e068c: Packages have been moved into namedspaced folders.
+
 ## 0.58.2
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @triplex/ws-client
 
+## 0.59.0
+
+### Patch Changes
+
+- f6e068c: Packages have been moved into namedspaced folders.
+
 ## 0.58.2
 
 ### Patch Changes
