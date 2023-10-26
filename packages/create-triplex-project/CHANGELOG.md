@@ -1,5 +1,11 @@
 # create-triplex-project
 
+## 0.59.1
+
+### Patch Changes
+
+- f899ef0: Halloween template components now wrapped in groups.
+
 ## 0.59.0
 
 ## 0.58.2
