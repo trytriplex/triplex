@@ -461,3 +461,19 @@ export function rename(
 
   declaration.rename(newName);
 }
+
+export function duplicate(
+  sourceFile: SourceFile,
+  line: number,
+  column: number
+) {
+  const jsxElement = getJsxElementAt(sourceFile, line, column);
+  if (!jsxElement) {
+    throw new Error("invariant: jsx element not found");
+  }
+
+  const insertedLineCol = sourceFile.getLineAndColumnAtPos(jsxElement.getEnd());
+  sourceFile.insertText(jsxElement.getEnd(), jsxElement.getText());
+
+  return insertedLineCol;
+}

@@ -28,6 +28,8 @@ import {
 import { useCamera } from "./components/camera";
 import { TransformControls } from "./components/transform-controls";
 import { SceneObjectProps } from "./scene-object";
+import { SceneObjectEventsContext } from "./stores/selection";
+import useEvent from "./util/use-event";
 
 export type EditorNodeData = SceneObjectProps["__meta"] & {
   parentPath: string;
@@ -279,16 +281,35 @@ export function Selection({
       path: selected?.parentPath,
     }
   );
-  const selectedObject = selected
-    ? findSceneObjectFromSource(
-        selected.parentPath,
-        scene,
-        selected.line,
-        selected.column,
-        transform,
-        sceneObjects
-      )
-    : null;
+  const [selectedObject, setSelectedObject] = useState<EditorNodeData | null>(
+    null
+  );
+
+  useEffect(() => {
+    if (!selected) {
+      setSelectedObject(null);
+      return;
+    }
+
+    const result = findSceneObjectFromSource(
+      selected.parentPath,
+      scene,
+      selected.line,
+      selected.column,
+      transform,
+      sceneObjects
+    );
+
+    setSelectedObject(result);
+  }, [
+    scene,
+    sceneObjects,
+    selected,
+    selected?.column,
+    selected?.line,
+    selected?.parentPath,
+    transform,
+  ]);
 
   useEffect(() => {
     send("trplx:onTransformChange", { mode: transform });
@@ -402,13 +423,16 @@ export function Selection({
       const data = findEditorData(rootPath, e.object, transform, sceneObjects);
       if (data) {
         e.stopPropagation();
-        setSelected(data);
-        onFocus({
+
+        const target = {
           column: data.column,
           line: data.line,
           parentPath: data.parentPath,
           path: data.path,
-        });
+        };
+
+        setSelected(target);
+        onFocus(target);
       }
     },
     [
@@ -484,24 +508,50 @@ export function Selection({
     (object: Object3D) => {
       const data = findEditorData(rootPath, object, transform, sceneObjects);
       if (data) {
-        setSelected(data);
-        // Create a new object to pick only what we need as it will be serialized later
-        onFocus({
+        const target = {
           column: data.column,
           line: data.line,
-          parentPath: rootPath,
+          parentPath: data.parentPath,
           path: data.path,
-        });
+        };
+
+        setSelected(target);
+        onFocus(target);
       }
     },
     [onFocus, rootPath, sceneObjects, transform]
   );
 
+  const sceneObjectMountHandler = useEvent(
+    (path: string, line: number, column: number) => {
+      if (
+        selected &&
+        !selectedObject &&
+        selected.path === path &&
+        selected.line === line &&
+        selected.column === column
+      ) {
+        const result = findSceneObjectFromSource(
+          selected.parentPath,
+          scene,
+          selected.line,
+          selected.column,
+          transform,
+          sceneObjects
+        );
+
+        setSelectedObject(result);
+      }
+    }
+  );
+
   return (
     <group name="selection-group" onClick={onClick}>
-      <SelectionContext.Provider value={selectSceneObject}>
-        {children}
-      </SelectionContext.Provider>
+      <SceneObjectEventsContext.Provider value={sceneObjectMountHandler}>
+        <SelectionContext.Provider value={selectSceneObject}>
+          {children}
+        </SelectionContext.Provider>
+      </SceneObjectEventsContext.Provider>
 
       {selectedObject && (
         <TransformControls

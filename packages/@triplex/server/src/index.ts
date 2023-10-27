@@ -19,6 +19,7 @@ import {
   add,
   commentComponent,
   create,
+  duplicate,
   rename,
   uncommentComponent,
   upsertProp,
@@ -104,6 +105,15 @@ export function createServer({
     const action = upsertProp(jsxElement, name, value);
 
     context.response.body = { action, message: "success" };
+  });
+
+  router.post("/scene/:path/object/:line/:column/duplicate", (context) => {
+    const { column, line, path } = context.params;
+    const sourceFile = project.getSourceFile(path);
+
+    const result = duplicate(sourceFile.edit(), Number(line), Number(column));
+
+    context.response.body = { ...result };
   });
 
   router.post("/scene/:path/object/:line/:column/delete", (context) => {

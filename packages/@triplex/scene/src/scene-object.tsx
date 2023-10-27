@@ -10,6 +10,7 @@ import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { Group } from "three";
 import { getHelperForElement, Helper } from "./components/helper";
 import { useSelectSceneObject } from "./selection";
+import { useOnSceneObjectMount } from "./stores/selection";
 
 function useForceRender() {
   const [, setState] = useState(false);
@@ -150,6 +151,7 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
     const [isDeleted, setIsDeleted] = useState(false);
     const parentRef = useRef<Group>(null);
     const selectSceneObject = useSelectSceneObject();
+    const onSceneObjectMount = useOnSceneObjectMount();
 
     useEffect(() => {
       return compose([
@@ -173,6 +175,10 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
         }),
       ]);
     }, [__meta.column, __meta.line, __meta.path]);
+
+    useEffect(() => {
+      onSceneObjectMount(__meta.path, __meta.line, __meta.column);
+    }, [__meta.column, __meta.line, __meta.path, onSceneObjectMount]);
 
     if (isRenderedSceneObject(__meta.name, props)) {
       const helper = getHelperForElement(__meta.name);

@@ -16,6 +16,7 @@ import {
   add,
   commentComponent,
   deleteCommentComponents,
+  duplicate,
   rename,
   uncommentComponent,
   upsertProp,
@@ -957,6 +958,36 @@ describe("component service", () => {
                 position={[-12225343900291231231231232192334,122262112312312312355004431233018,222224123123123123966135358083713]}
 
 
+                variant={\\"raspberry\\"}
+              />
+              <Berry position={[0, 0, 0]} variant=\\"blueberry\\" />
+            </>
+          );
+        }"
+      `);
+  });
+
+  it("should duplicate a jsx element and place it next to the original", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/breakfast.tsx")
+    );
+
+    const result = duplicate(sourceFile, 15, 7);
+
+    expect(result).toEqual({ column: 57, line: 15 });
+    expect(getExportName(sourceFile, "Scene").declaration.getText())
+      .toMatchInlineSnapshot(`
+        "export function Scene() {
+          return (
+            <>
+              <Berry position={[0, 0, 0]} variant=\\"blueberry\\" /><Berry position={[0, 0, 0]} variant=\\"blueberry\\" />
+              <Berry
+                position={[
+                  -1.534_390_029_419_233_4, 1.615_500_443_123_301_8, 0.249_661_353_580_837_13,
+                ]}
                 variant={\\"raspberry\\"}
               />
               <Berry position={[0, 0, 0]} variant=\\"blueberry\\" />

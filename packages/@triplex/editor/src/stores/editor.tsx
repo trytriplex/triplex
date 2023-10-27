@@ -121,11 +121,6 @@ export function useEditor() {
         }/${target.column}/restore`,
         { method: "POST" }
       );
-      scene.restoreComponent({
-        column: target.column,
-        line: target.line,
-        parentPath: target.parentPath,
-      });
     };
 
     const redoAction = () => {
@@ -339,6 +334,53 @@ export function useEditor() {
     });
   }, [path, set]);
 
+  const duplicateSelection = useCallback(async () => {
+    if (!target) {
+      return;
+    }
+
+    const originalTarget = target;
+    let pos: { column: number; line: number };
+
+    const redoAction = async () => {
+      const response = await fetch(
+        `http://localhost:8000/scene/${encodeURIComponent(path)}/object/${
+          target.line
+        }/${target.column}/duplicate`,
+        { method: "POST" }
+      );
+
+      pos = await response.json();
+
+      scene.focus({
+        column: pos.column,
+        line: pos.line,
+        parentPath: originalTarget.parentPath,
+        path: originalTarget.parentPath,
+      });
+    };
+
+    const undoAction = () => {
+      fetch(
+        `http://localhost:8000/scene/${encodeURIComponent(path)}/object/${
+          pos.line
+        }/${pos.column}/delete`,
+        { method: "POST" }
+      );
+      scene.deleteComponent({
+        column: pos.column,
+        line: pos.line,
+        parentPath: target.parentPath,
+      });
+      scene.focus(originalTarget);
+    };
+
+    performUndoableEvent({
+      redo: redoAction,
+      undo: undoAction,
+    });
+  }, [path, performUndoableEvent, scene, target]);
+
   return useMemo(
     () => ({
       /**
@@ -346,19 +388,20 @@ export function useEditor() {
        * `save()` is called.
        */
       addComponent,
-
       /**
        * Deletes the currently focused scene object. Able to be undone. Is not
        * persisted until `save()` is called.
        */
       deleteComponent,
-
+      /**
+       * Duplicates the selected element into the scene.
+       */
+      duplicateSelection,
       /**
        * Encoded (via `encodeURIComponent()`) props used to hydrate the loaded
        * scene.
        */
       encodedProps,
-
       /**
        * Will be `true` when entered a component via a owning parent, else
        * `false`. Enter a component via `scene.navigateTo()`.
@@ -366,17 +409,14 @@ export function useEditor() {
        * @see {@link ./scene.tsx}
        */
       enteredComponent,
-
       /**
        * Exits the currently entered component and goes back to the parent.
        */
       exitComponent,
-
       /**
        * Returns the scene export name that is currently open.
        */
       exportName,
-
       /**
        * Focuses the passed scene object. Will blur the currently focused scene
        * object by passing `null`.
@@ -386,45 +426,37 @@ export function useEditor() {
        * @see {@link ./scene.tsx}
        */
       focus,
-
       /**
        * Creates a new intermediate component in the open file and transitions
        * the editor to it.
        */
       newComponent,
-
       /**
        * Creates a new intermediate file and transitions the editor to the file.
        */
       newFile,
-
       /**
        * Current value of the scene path.
        */
       path,
-
       /**
        * Persists the passed in prop value to the scene frame and web server,
        * and makes it available as an undo/redo action.
        */
       persistPropValue,
-
       /**
        * Resets the scene throwing away any unsaved state.
        */
       reset,
-
       /**
        * Calls the web server to save the intermediate scene source to file
        * system.
        */
       save,
-
       /**
        * Sets the loaded scene to a specific path, export name, and props.
        */
       set,
-
       /**
        * Returns the currently focused scene object, else `null`.
        */
@@ -433,6 +465,7 @@ export function useEditor() {
     [
       addComponent,
       deleteComponent,
+      duplicateSelection,
       encodedProps,
       enteredComponent,
       exitComponent,

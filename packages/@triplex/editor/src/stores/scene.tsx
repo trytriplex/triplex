@@ -5,7 +5,6 @@
  * file in the root directory of this source tree.
  */
 import { send } from "@triplex/bridge/host";
-import type { ComponentTarget, ComponentType } from "@triplex/server";
 import { create } from "zustand";
 
 export interface FocusedObject {
@@ -17,16 +16,12 @@ export interface FocusedObject {
 
 interface BridgeContext {
   /**
-   * Adds a component to the scene until any HMR event is fired whereby all
-   * added components are removed.
-   */
-  addComponent(data: { target?: ComponentTarget; type: ComponentType }): void;
-  /**
    * Removes focus from the currently selected scene object.
    */
   blur(): void;
   /**
-   * Deletes a component from the scene. Will try to persist state if possible.
+   * Optimistically delete a component from the scene before it has been deleted
+   * in source.
    */
   deleteComponent(component: {
     column: number;
@@ -34,12 +29,11 @@ interface BridgeContext {
     parentPath: string;
   }): void;
   /**
-   * Focuses the passed in scene object. This will open the context panel and
-   * enable some editor capabilities for the selected scene object.
+   * Focus a scene object.
    */
   focus(sceneObject: FocusedObject): void;
   /**
-   * Returns the persisted prop value. It should not return the current
+   * Returns the current value for the prop. It should not return the current
    * intermediate value.
    */
   getPropValue(prop: {
@@ -49,14 +43,11 @@ interface BridgeContext {
     propName: string;
   }): Promise<{ value: unknown }>;
   /**
-   * Jumps the scene camera to the currently focused scene object.
+   * Jumps the viewport to the focused scene object, if any.
    */
   jumpTo(): void;
   /**
-   * Navigate the scene to the scene object.
-   *
-   * @param sceneObject Navigates to the passed in scene object. When undefined
-   *   navigates to the currently focused scene object.
+   * Navigate to a new component.
    */
   navigateTo(sceneObject?: {
     encodedProps: string;
@@ -64,9 +55,10 @@ interface BridgeContext {
     path: string;
   }): void;
   /**
-   * Persists the value of a prop which tells the editor that this is now the
-   * current value of the prop. This should only be called after a change has
-   * been "completed", for example during a mouse up event or blur event.
+   * Persist the value of a prop back to source code.
+   *
+   * This should only be called after a change has been "completed", for example
+   * during a mouse up event or blur event.
    */
   persistPropValue(prop: {
     column: number;
@@ -81,7 +73,8 @@ interface BridgeContext {
    */
   ready: boolean;
   /**
-   * Refreshes the scene.
+   * Refresh the scene. By default should re-mount the scene, pass in `hard` to
+   * completely reload it.
    */
   refresh(opts?: { hard?: boolean }): void;
   /**
@@ -92,25 +85,18 @@ interface BridgeContext {
    */
   reset(): void;
   /**
-   * Resets the triplex camera back to the editor default.
+   * Resets the viewport back to default.
    */
   resetCamera(): void;
-  /**
-   * Restores a component that was previously deleted from the scene.
-   */
-  restoreComponent(component: {
-    column: number;
-    line: number;
-    parentPath: string;
-  }): void;
   /**
    * Sets the scene camera type.
    */
   setCameraType(type: "perspective" | "orthographic"): void;
   /**
-   * Sets the value of a prop in the scene frame. This can be set as frequently
-   * as needed as is considered the intermediate values during a change. When
-   * setting a prop value it is not yet considered "persisted".
+   * Sets the temporary value of a prop.
+   *
+   * This can be set as frequently as needed as it's intermediate state and not
+   * yet persisted to source code.
    */
   setPropValue(prop: {
     column: number;
@@ -125,7 +111,7 @@ interface BridgeContext {
   setTransform(mode: "scale" | "translate" | "rotate"): void;
   /**
    * Switches the triplex camera to the currently focused camera. If the focused
-   * scene object is not a camera is noops.
+   * scene object is not a camera this function does nothing.
    */
   viewFocusedCamera(): void;
 }
@@ -140,9 +126,6 @@ interface BridgeContext {
  */
 export const useScene = create<BridgeContext & { sceneReady: () => void }>(
   (setStore) => ({
-    addComponent(data) {
-      send("trplx:requestAddNewComponent", data);
-    },
     blur() {
       send("trplx:requestBlurSceneObject", undefined);
     },
@@ -173,9 +156,6 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     },
     resetCamera() {
       send("trplx:requestAction", { action: "resetCamera" });
-    },
-    restoreComponent(data) {
-      send("trplx:requestRestoreSceneObject", data);
     },
     sceneReady() {
       setStore({ ready: true });
