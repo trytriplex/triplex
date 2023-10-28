@@ -6,7 +6,14 @@
  */
 import { Object3DProps } from "@react-three/fiber";
 import { compose, listen } from "@triplex/bridge/client";
-import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
+import {
+  forwardRef,
+  Suspense,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Group } from "three";
 import { getHelperForElement, Helper } from "./components/helper";
 import { useSelectSceneObject } from "./selection";
@@ -185,7 +192,7 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
       const userData = { triplexSceneMeta: { ...__meta, props } };
 
       return (
-        <>
+        <Suspense>
           <group ref={parentRef} userData={userData} visible={!isDeleted}>
             <Component ref={ref} {...reconciledProps}>
               {children}
@@ -206,13 +213,15 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
               parentObject={parentRef}
             />
           )}
-        </>
+        </Suspense>
       );
     } else if (!isDeleted) {
       return (
-        <Component ref={ref} {...reconciledProps}>
-          {children}
-        </Component>
+        <Suspense>
+          <Component ref={ref} {...reconciledProps}>
+            {children}
+          </Component>
+        </Suspense>
       );
     }
 

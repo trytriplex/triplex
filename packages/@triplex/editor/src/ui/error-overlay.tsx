@@ -33,16 +33,6 @@ export function ErrorOverlay() {
 
   useEffect(() => {
     return compose([
-      listen("trplx:onOpenFileHmr", () => {
-        resetTimeoutId.current = window.setTimeout(() => {
-          // Delay resetting the errors by a short amount.
-          // We do this to prevent a flash if the module was
-          // Updated and still contains errors.
-          setErrors([]);
-          setIndex(0);
-          resetTimeoutId.current = undefined;
-        }, 200);
-      }),
       listen("trplx:onError", (e) => {
         setErrors((prevErrors) => {
           let nextErrors = prevErrors;

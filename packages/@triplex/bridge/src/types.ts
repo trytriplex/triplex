@@ -47,7 +47,6 @@ export interface ClientSendEventData {
     source: string;
     stack: string;
   };
-  "trplx:onOpenFileHmr": undefined;
   "trplx:onSceneObjectBlur": undefined;
   "trplx:onSceneObjectFocus": {
     column: number;
@@ -84,7 +83,6 @@ export interface ClientSendEventResponse {
   "trplx:onConfirmSceneObjectProp": void;
   "trplx:onConnected": void;
   "trplx:onError": void;
-  "trplx:onOpenFileHmr": void;
   "trplx:onSceneObjectBlur": void;
   "trplx:onSceneObjectFocus": void;
   "trplx:onSceneObjectNavigated": void;

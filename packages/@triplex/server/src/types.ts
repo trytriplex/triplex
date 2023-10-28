@@ -203,6 +203,5 @@ export interface HostJsxElementPosition {
 }
 
 export interface SourceFileChangedEvent {
-  existsOnFs: boolean;
   path: string;
 }

@@ -54,10 +54,6 @@ export function Scene({
       });
     });
 
-    import.meta.hot?.on("vite:beforeUpdate", () => {
-      send("trplx:onOpenFileHmr", undefined);
-    });
-
     return () => {
       window.removeEventListener("error", errorCallback);
     };

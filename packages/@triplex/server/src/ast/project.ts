@@ -157,9 +157,7 @@ export function ${componentName}() {
 
   function onSourceFileModified(sourceFile: SourceFile) {
     const path = sourceFile.getFilePath();
-    const fs = project.getFileSystem();
-    const existsOnFs = fs.fileExistsSync(path);
-    const data = { existsOnFs, path };
+    const data = { path };
     onSourceFileChangeCallbacks.forEach((cb) => cb(data));
   }
 

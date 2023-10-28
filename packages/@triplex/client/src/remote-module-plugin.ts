@@ -50,8 +50,7 @@ export function remoteModulePlugin({
   return {
     configureServer(server: ViteDevServer) {
       on("fs-change", async (e) => {
-        const id = e.existsOnFs ? e.path : e.path.replace(cwd, "triplex:");
-        const mod = await server.moduleGraph.getModuleById(id);
+        const mod = await server.moduleGraph.getModuleById(e.path);
         if (mod) {
           server.reloadModule(mod);
         }
@@ -59,23 +58,17 @@ export function remoteModulePlugin({
     },
     enforce: "pre",
     async load(id: string) {
-      if (!match(id, files) && !id.startsWith("triplex:/src/untitled")) {
+      if (!match(id, files)) {
         return;
       }
 
-      const reconciledId = id.startsWith("triplex:/src/untitled")
-        ? // We've found the placeholder modules used when creating a new file.
-          // Transform it to the actual name that will be found in the backend.
-          id.replace("triplex:", cwd)
-        : id;
-
-      const code = await api.getCode(reconciledId);
+      const code = await api.getCode(id);
       return code;
     },
     name: "triplex:remote-module-plugin",
     resolveId(id: string) {
       if (id.startsWith("triplex:/src/untitled")) {
-        return id;
+        return id.replace("triplex:", cwd);
       }
     },
   } as const;
