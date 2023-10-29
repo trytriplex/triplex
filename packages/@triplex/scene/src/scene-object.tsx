@@ -6,14 +6,7 @@
  */
 import { Object3DProps } from "@react-three/fiber";
 import { compose, listen } from "@triplex/bridge/client";
-import {
-  forwardRef,
-  Suspense,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { Group } from "three";
 import { getHelperForElement, Helper } from "./components/helper";
 import { useSelectSceneObject } from "./selection";
@@ -187,12 +180,16 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
       onSceneObjectMount(__meta.path, __meta.line, __meta.column);
     }, [__meta.column, __meta.line, __meta.path, onSceneObjectMount]);
 
-    if (!isDeleted && isRenderedSceneObject(__meta.name, props)) {
+    if (isDeleted) {
+      // This component will eventually unmount when deleted as its removed
+      // from source code. To keep things snappy however we delete it optimistically.
+      return null;
+    } else if (isRenderedSceneObject(__meta.name, props)) {
       const helper = getHelperForElement(__meta.name);
       const userData = { triplexSceneMeta: { ...__meta, props } };
 
       return (
-        <Suspense>
+        <>
           <group ref={parentRef} userData={userData}>
             <Component ref={ref} {...reconciledProps}>
               {children}
@@ -213,21 +210,15 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
               parentObject={parentRef}
             />
           )}
-        </Suspense>
-      );
-    } else if (!isDeleted) {
-      return (
-        <Suspense>
-          <Component ref={ref} {...reconciledProps}>
-            {children}
-          </Component>
-        </Suspense>
+        </>
       );
     }
 
-    // This component will eventually unmount when deleted as its removed
-    // from source code. To keep things snappy however we delete it optimistically.
-    return null;
+    return (
+      <Component ref={ref} {...reconciledProps}>
+        {children}
+      </Component>
+    );
   }
 );
 
