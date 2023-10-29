@@ -21,7 +21,7 @@ import { useUndoRedoState } from "../stores/undo-redo";
 interface MenuItem {
   accelerator?: string;
   click?: () => void;
-  enabled?: boolean;
+  enabled?: boolean | "active-input" | "inactive-input";
   id: string;
   label?: string;
   role?: "fileMenu" | "editMenu" | "viewMenu" | "windowMenu" | "help";
@@ -211,6 +211,27 @@ export function EditorMenu() {
               id: "redo",
               label: "Redo",
             },
+            {
+              type: "separator",
+            },
+            {
+              accelerator: shortcut("C", { meta: true }),
+              click: () => {
+                document.execCommand("copy");
+              },
+              enabled: "active-input",
+              id: "copy",
+              label: "Copy",
+            },
+            {
+              accelerator: shortcut("V", { meta: true }),
+              click: () => {
+                document.execCommand("paste");
+              },
+              enabled: "active-input",
+              id: "paste",
+              label: "Paste",
+            },
           ],
         },
         {
@@ -220,10 +241,9 @@ export function EditorMenu() {
             {
               accelerator: shortcut("A", { meta: true }),
               click: () => {
-                if (document.activeElement?.tagName === "INPUT") {
-                  document.execCommand("selectAll");
-                }
+                document.execCommand("selectAll");
               },
+              enabled: "active-input",
               id: "select-all",
               label: "Select All",
             },
@@ -240,7 +260,7 @@ export function EditorMenu() {
             {
               accelerator: shortcut("F"),
               click: () => jumpTo(),
-              enabled: !!target && isEditable,
+              enabled: !!target && isEditable && "inactive-input",
               id: "jump-to",
               label: "Jump To",
             },
@@ -270,20 +290,23 @@ export function EditorMenu() {
             },
 
             {
-              accelerator: shortcut("t"),
+              accelerator: shortcut("T"),
               click: () => setTransform("translate"),
+              enabled: "inactive-input",
               id: "translate",
               label: "Translate",
             },
             {
-              accelerator: shortcut("r"),
+              accelerator: shortcut("R"),
               click: () => setTransform("rotate"),
+              enabled: "inactive-input",
               id: "rotate",
               label: "Transform",
             },
             {
-              accelerator: shortcut("s"),
+              accelerator: shortcut("S"),
               click: () => setTransform("scale"),
+              enabled: "inactive-input",
               id: "scale",
               label: "Transform",
             },
@@ -376,7 +399,25 @@ export function EditorMenu() {
       return window.triplex.handleMenuItemPress((id) => {
         const menuItem = findMenuItem(id, menubar);
         if (menuItem && menuItem.click) {
-          menuItem.click();
+          switch (menuItem.enabled) {
+            case "active-input": {
+              if (document.activeElement?.tagName === "INPUT") {
+                menuItem.click();
+              }
+              break;
+            }
+
+            case "inactive-input": {
+              if (document.activeElement?.tagName !== "INPUT") {
+                menuItem.click();
+              }
+              break;
+            }
+
+            default:
+              menuItem.click();
+              break;
+          }
         }
       });
     }
