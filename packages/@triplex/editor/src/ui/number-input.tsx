@@ -335,10 +335,10 @@ export function NumberInput({
         <IconButton
           className="z-50 hidden group-focus-within:block"
           icon={Cross2Icon}
+          label="Clear value"
           onClick={clearInputValue}
-          size="tight"
+          size="xs"
           testId={testId && `${testId}-clear`}
-          title="Clear value"
         />
       )}
     </div>

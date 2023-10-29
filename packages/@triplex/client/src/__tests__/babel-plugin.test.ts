@@ -105,6 +105,23 @@ describe("babel plugin", () => {
     `);
   });
 
+  it("should ignore windows paths", () => {
+    const result = transformSync(
+      `
+      <group />
+    `,
+      {
+        filename: "\\this\\is\\a\\path\\hello.tsx",
+        plugins: [
+          plugin({ exclude: ["is/a/path"] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      }
+    );
+
+    expect(result?.code).toMatchInlineSnapshot('"<group />;"');
+  });
+
   it("should transform scene with wrapped groups", () => {
     const result = transformSync(
       `

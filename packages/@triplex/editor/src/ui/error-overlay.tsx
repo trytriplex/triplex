@@ -76,14 +76,14 @@ export function ErrorOverlay() {
         <IconButton
           icon={ArrowLeftIcon}
           isDisabled={index === 0}
+          label="Previous error"
           onClick={() => setIndex((prev) => prev - 1)}
-          title="Previous error"
         />
         <IconButton
           icon={ArrowRightIcon}
           isDisabled={index === errors.length - 1}
+          label="Next error"
           onClick={() => setIndex((prev) => prev + 1)}
-          title="Next error"
         />
         <div className="mr-auto px-2 text-xs text-neutral-400 [font-variant-numeric:tabular-nums]">
           {index + 1} of {errors.length} errors in the scene
@@ -91,6 +91,7 @@ export function ErrorOverlay() {
 
         <IconButton
           icon={CodeIcon}
+          label="View source"
           onClick={() => {
             const context = window.open(
               getEditorLink({
@@ -102,12 +103,11 @@ export function ErrorOverlay() {
 
             context?.close();
           }}
-          title="View source"
         />
         <IconButton
           icon={Cross2Icon}
+          label="Dismiss errors"
           onClick={() => setErrors([])}
-          title="Dismiss errors"
         />
       </div>
       <div className="mb-2 line-clamp-2 px-2 text-sm font-medium text-neutral-300">

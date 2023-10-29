@@ -241,8 +241,8 @@ export function EditorMenu() {
               accelerator: shortcut("F"),
               click: () => jumpTo(),
               enabled: !!target && isEditable,
-              id: "focus-camera",
-              label: "Focus",
+              id: "jump-to",
+              label: "Jump To",
             },
             {
               accelerator: shortcut("F", { shift: true }),

@@ -47,6 +47,7 @@ export interface ClientSendEventData {
     source: string;
     stack: string;
   };
+  "trplx:onSceneLoaded": void;
   "trplx:onSceneObjectBlur": undefined;
   "trplx:onSceneObjectFocus": {
     column: number;
@@ -83,6 +84,7 @@ export interface ClientSendEventResponse {
   "trplx:onConfirmSceneObjectProp": void;
   "trplx:onConnected": void;
   "trplx:onError": void;
+  "trplx:onSceneLoaded": void;
   "trplx:onSceneObjectBlur": void;
   "trplx:onSceneObjectFocus": void;
   "trplx:onSceneObjectNavigated": void;
@@ -97,7 +99,12 @@ export interface ClientSendEventResponse {
 export type HostSendEventName = keyof HostSendEventData;
 
 export interface HostSendEventData {
-  "trplx:requestAction": { action: "viewFocusedCamera" | "resetCamera" };
+  "trplx:requestAction":
+    | { action: "resetCamera" }
+    | {
+        action: "enterCamera";
+        data?: { column: number; line: number; path: string };
+      };
   "trplx:requestAddNewComponent": {
     target?: {
       action: "child";
@@ -135,7 +142,13 @@ export interface HostSendEventData {
     parentPath: string;
     path: string;
   };
-  "trplx:requestJumpToSceneObject": undefined;
+  "trplx:requestJumpToSceneObject":
+    | {
+        column: number;
+        line: number;
+        path: string;
+      }
+    | undefined;
   "trplx:requestNavigateToScene":
     | {
         encodedProps: string;

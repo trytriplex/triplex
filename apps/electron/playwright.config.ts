@@ -6,9 +6,6 @@
  */
 import { defineConfig } from "@playwright/test";
 
-/**
- * See https://playwright.dev/docs/test-configuration.
- */
 export default defineConfig({
   forbidOnly: !!process.env.CI,
 
@@ -27,15 +24,12 @@ export default defineConfig({
     },
   ],
 
-  /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: "html",
 
-  /* Retry on CI only */
   retries: process.env.CI ? 2 : 0,
 
   testDir: "./__tests__",
 
-  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
     screenshot: "only-on-failure",
     trace: "retain-on-failure",

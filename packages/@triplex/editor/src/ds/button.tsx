@@ -7,37 +7,39 @@
 import { IconProps } from "@radix-ui/react-icons/dist/types";
 import { ComponentType, forwardRef } from "react";
 import { cn } from "./cn";
+import { Pressable } from "./pressable";
 
 export const IconButton = forwardRef<
-  HTMLButtonElement,
+  HTMLDivElement,
   {
     className?: string;
+    color?: "inherit" | "default";
     icon: ComponentType<IconProps>;
     isDisabled?: boolean;
     isSelected?: boolean | "partial";
+    label: string;
     onClick?: () => void;
-    size?: "default" | "tight";
+    size?: "md" | "sm" | "xs";
     testId?: string;
-    title: string;
     variant?: "default" | "inverse";
   }
 >(
   (
     {
       className,
+      color = "default",
       icon: Icon,
       isDisabled,
       isSelected,
+      label,
       onClick,
-      size = "default",
+      size = "md",
       testId,
-      title,
       variant = "default",
     },
     ref
   ) => (
-    <button
-      aria-label={title}
+    <Pressable
       className={cn([
         "cursor-default outline-1 outline-offset-1 outline-blue-400 focus-visible:outline",
         isDisabled && [
@@ -51,24 +53,27 @@ export const IconButton = forwardRef<
               ? "text-blue-400 hover:bg-white/5 active:bg-white/10"
               : "bg-white/5 text-blue-400 active:bg-white/10"
             : [
-                variant === "default" &&
-                  "text-neutral-400 hover:bg-white/5 active:bg-white/10",
+                variant === "default" && [
+                  color === "inherit" && "text-inherit",
+                  color === "default" && "text-neutral-400",
+                  "hover:bg-white/5 active:bg-white/10",
+                ],
                 variant === "inverse" &&
                   "bg-black/5 text-neutral-800 hover:bg-black/10 active:bg-black/20",
               ]),
-        size === "default" && "rounded-md p-1.5",
-        size === "tight" && "rounded p-0.5",
+        size === "md" && "rounded-md p-1.5",
+        size === "sm" && "rounded-md p-1",
+        size === "xs" && "rounded p-0.5",
         className,
       ])}
-      data-testid={testId}
-      disabled={isDisabled}
-      onClick={onClick}
+      label={label}
+      onPress={isDisabled ? undefined : onClick}
       ref={ref}
-      title={title}
-      type="submit"
+      testId={testId}
+      title={label}
     >
-      <Icon />
-    </button>
+      <Icon className="pointer-events-none" />
+    </Pressable>
   )
 );
 

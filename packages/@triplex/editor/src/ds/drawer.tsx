@@ -11,17 +11,17 @@ import { cn } from "./cn";
 export function Drawer({
   attach = "left",
   children,
+  label,
   mode = "blocking",
   onClose,
   open,
-  title,
 }: {
   attach?: "left" | "bottom";
   children: React.ReactNode;
+  label: string;
   mode?: "blocking" | "transparent";
   onClose: () => void;
   open: boolean;
-  title: string;
 }) {
   return (
     <Dialog.Root onOpenChange={(isOpen) => !isOpen && onClose()} open={open}>
@@ -39,7 +39,7 @@ export function Drawer({
             "fixed flex flex-col overflow-hidden border-neutral-800 text-neutral-300 shadow-2xl shadow-black/50 outline-none",
           ])}
         >
-          <Dialog.DialogTitle className="sr-only">{title}</Dialog.DialogTitle>
+          <Dialog.DialogTitle className="sr-only">{label}</Dialog.DialogTitle>
           {children}
         </Dialog.Content>
       </Dialog.Portal>

@@ -29,6 +29,7 @@ if (process.env.TRIPLEX_ENV !== "development") {
   });
 }
 
+const HEADLESS_RUN = process.argv.includes("--headless");
 const EDITOR_DEV_PORT = 5754;
 const log = logger("main");
 
@@ -204,6 +205,7 @@ async function openWelcomeScreen() {
     maximizable: false,
     minimizable: false,
     resizable: false,
+    show: !HEADLESS_RUN,
     titleBarOverlay: {
       color: "#171717",
       height: 32,
@@ -307,7 +309,11 @@ async function main() {
       welcomeWindow = undefined;
     }
 
-    activeProjectWindow.show();
+    if (HEADLESS_RUN) {
+      // Do nothing!
+    } else {
+      activeProjectWindow.show();
+    }
 
     connectMenuToRenderer(activeProjectWindow);
     applyWindowIpcHandlers(activeProjectWindow);

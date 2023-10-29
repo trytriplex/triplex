@@ -187,18 +187,18 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
       onSceneObjectMount(__meta.path, __meta.line, __meta.column);
     }, [__meta.column, __meta.line, __meta.path, onSceneObjectMount]);
 
-    if (isRenderedSceneObject(__meta.name, props)) {
+    if (!isDeleted && isRenderedSceneObject(__meta.name, props)) {
       const helper = getHelperForElement(__meta.name);
       const userData = { triplexSceneMeta: { ...__meta, props } };
 
       return (
         <Suspense>
-          <group ref={parentRef} userData={userData} visible={!isDeleted}>
+          <group ref={parentRef} userData={userData}>
             <Component ref={ref} {...reconciledProps}>
               {children}
             </Component>
           </group>
-          {helper && !isDeleted && (
+          {helper && (
             <Helper
               args={helper[1]}
               helperName={helper[0]}

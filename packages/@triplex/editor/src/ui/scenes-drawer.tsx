@@ -96,11 +96,11 @@ export function ScenesDrawer() {
 
   return (
     <Drawer
+      label="Files"
       onClose={() => {
         show(false);
       }}
       open={shown === "open-scene"}
-      title="Files"
     >
       <Suspense
         fallback={<div className="p-4 text-neutral-400">Loading...</div>}

@@ -302,10 +302,10 @@ function ComponentsDrawer({
   return (
     <Drawer
       attach="bottom"
+      label="assets"
       mode="transparent"
       onClose={onClose}
       open
-      title="assets"
     >
       <div className="flex h-full flex-col" data-testid="assets-drawer">
         <div className="flex min-h-0 flex-grow">

@@ -82,9 +82,9 @@ export function LiteralUnionInput({
         <IconButton
           className="hidden group-focus-within:block group-hover:block"
           icon={Cross2Icon}
+          label="Clear value"
           onClick={onClear}
-          size="tight"
-          title="Clear value"
+          size="xs"
         />
       )}
     </div>

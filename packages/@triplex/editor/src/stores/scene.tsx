@@ -29,6 +29,15 @@ interface BridgeContext {
     parentPath: string;
   }): void;
   /**
+   * Switches the editor camera to either the passed in reference or the
+   * currently focused camera.
+   */
+  enterCamera(sceneObject?: {
+    column: number;
+    line: number;
+    path: string;
+  }): void;
+  /**
    * Focus a scene object.
    */
   focus(sceneObject: FocusedObject): void;
@@ -45,7 +54,7 @@ interface BridgeContext {
   /**
    * Jumps the viewport to the focused scene object, if any.
    */
-  jumpTo(): void;
+  jumpTo(sceneObject?: { column: number; line: number; path: string }): void;
   /**
    * Navigate to a new component.
    */
@@ -109,11 +118,6 @@ interface BridgeContext {
    * Sets the scene transform control mode.
    */
   setTransform(mode: "scale" | "translate" | "rotate"): void;
-  /**
-   * Switches the triplex camera to the currently focused camera. If the focused
-   * scene object is not a camera this function does nothing.
-   */
-  viewFocusedCamera(): void;
 }
 
 /**
@@ -132,14 +136,17 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     deleteComponent(data) {
       send("trplx:requestDeleteSceneObject", data);
     },
+    enterCamera(sceneObject) {
+      send("trplx:requestAction", { action: "enterCamera", data: sceneObject });
+    },
     focus(sceneObject) {
       send("trplx:requestFocusSceneObject", sceneObject);
     },
     getPropValue(prop) {
       return send("trplx:requestSceneObjectPropValue", prop, true);
     },
-    jumpTo() {
-      send("trplx:requestJumpToSceneObject", undefined);
+    jumpTo(sceneObject) {
+      send("trplx:requestJumpToSceneObject", sceneObject);
     },
     navigateTo(sceneObject) {
       send("trplx:requestNavigateToScene", sceneObject);
@@ -168,9 +175,6 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     },
     setTransform(mode) {
       send("trplx:requestTransformChange", { mode });
-    },
-    viewFocusedCamera() {
-      send("trplx:requestAction", { action: "viewFocusedCamera" });
     },
   })
 );

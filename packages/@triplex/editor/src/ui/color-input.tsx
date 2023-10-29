@@ -103,9 +103,9 @@ export function ColorInput({
         <IconButton
           className="opacity-50 group-hover:opacity-100"
           icon={Cross2Icon}
+          label="Clear value"
           onClick={clearInputValue}
-          size="tight"
-          title="Clear value"
+          size="xs"
         />
       )}
     </div>

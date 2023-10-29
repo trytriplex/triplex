@@ -4,14 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import {
-  CameraIcon,
-  Cross2Icon,
-  Crosshair1Icon,
-  EnterIcon,
-  EraserIcon,
-  TrashIcon,
-} from "@radix-ui/react-icons";
+import { Cross2Icon, EraserIcon } from "@radix-ui/react-icons";
 import { useLazySubscription } from "@triplex/ws/react";
 import { Suspense, useDeferredValue, useState } from "react";
 import { IconButton } from "../ds/button";
@@ -27,9 +20,8 @@ import { PropInput, PropTagContext } from "./prop-input";
 import { StringInput } from "./string-input";
 
 function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
-  const { getPropValue, jumpTo, navigateTo, setPropValue, viewFocusedCamera } =
-    useScene();
-  const { deleteComponent, persistPropValue } = useEditor();
+  const { getPropValue, setPropValue } = useScene();
+  const { persistPropValue } = useEditor();
   const [filter, setFilter] = useState<string | undefined>();
 
   const data = useLazySubscription("/scene/:path/object/:line/:column", {
@@ -38,14 +30,12 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
     path: target.parentPath,
   });
 
-  // Most likely a camera component. It might not though be though.
-  // A better implementation later would be to traverse this scene objects children
-  // And see if a camera exists, if it does enable the button.
-  const isCamera = data.name.includes("Camera");
-
   return (
     <>
-      <h2 className="px-4 pt-3 text-xl font-medium text-neutral-300">
+      <h2
+        className="px-4 pt-3 text-xl font-medium text-neutral-300"
+        data-testid="context-panel-heading"
+      >
         <div className="overflow-hidden text-ellipsis">{data.name}</div>
       </h2>
 
@@ -67,35 +57,6 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
             </IDELink>
           </>
         )}
-      </div>
-
-      <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
-
-      <div className="flex px-2 py-1">
-        <IconButton
-          icon={EnterIcon}
-          isDisabled={data.type === "host" || !data.path}
-          onClick={() => navigateTo()}
-          title="Enter component (⇧ + F)"
-        />
-        <IconButton
-          icon={Crosshair1Icon}
-          onClick={jumpTo}
-          title="Focus camera (F)"
-        />
-        {isCamera && (
-          <IconButton
-            icon={CameraIcon}
-            onClick={viewFocusedCamera}
-            title="View camera"
-          />
-        )}
-        <IconButton
-          className="ml-auto"
-          icon={TrashIcon}
-          onClick={deleteComponent}
-          title="Delete (⌫)"
-        />
       </div>
 
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
@@ -197,10 +158,9 @@ function ComponentSandboxPanel() {
       <h2 className="px-4 pt-3 text-xl font-medium text-neutral-300">
         <div className="overflow-hidden text-ellipsis">Live Edit Props</div>
       </h2>
-      <div className="mt-1 px-4 pb-3 text-sm text-neutral-400">
-        Modify props given to {exportName} that only persist for this session.{" "}
+      <div className="-mt-0.5 mb-2.5 px-4">
         <a
-          className="text-blue-400"
+          className="text-xs text-neutral-400"
           href="#"
           onClick={() =>
             window.triplex.openLink(
@@ -210,7 +170,6 @@ function ComponentSandboxPanel() {
         >
           Learn more
         </a>
-        .
       </div>
 
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
@@ -219,6 +178,7 @@ function ComponentSandboxPanel() {
         <IconButton
           icon={EraserIcon}
           isDisabled={!hasValues}
+          label="Clear props"
           onClick={() => {
             Object.keys(values).forEach((key) => {
               setPropValue({
@@ -232,7 +192,6 @@ function ComponentSandboxPanel() {
 
             clearValues(storeKey);
           }}
-          title="Clear props"
         />
       </div>
 
@@ -251,7 +210,8 @@ function ComponentSandboxPanel() {
       <ScrollContainer>
         {data.props.length === 0 && (
           <div className="px-4 py-3 text-sm italic text-neutral-400">
-            This component has no props.
+            Props declared on this component will appear here that can be set
+            temporarily for this session.
           </div>
         )}
 
@@ -316,13 +276,16 @@ export function ContextPanel() {
   const isSceneObject = deferredTarget.column > -1 && deferredTarget.line > -1;
 
   return (
-    <div className="pointer-events-none flex w-full flex-col gap-3">
+    <div
+      className="pointer-events-none flex w-full flex-col gap-3"
+      data-testid="context-panel"
+    >
       <div className="pointer-events-auto relative flex h-full flex-col overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%]">
         <IconButton
           className="absolute right-2 top-3"
           icon={Cross2Icon}
+          label="Close (ESC)"
           onClick={blur}
-          title="Close (ESC)"
         />
 
         <ErrorBoundary keys={[deferredTarget]}>

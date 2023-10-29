@@ -182,6 +182,30 @@ const findEditorData = (
   return null;
 };
 
+const findSceneObject = (
+  scene: Object3D,
+  pos: { column: number; line: number; path: string }
+): Object3D | null => {
+  let sceneObject: Object3D | null = null;
+
+  scene.traverse((obj) => {
+    if ("triplexSceneMeta" in obj.userData) {
+      const node: EditorNodeData = obj.userData.triplexSceneMeta;
+
+      if (
+        node.path === pos.path &&
+        node.column === pos.column &&
+        node.line === pos.line &&
+        obj.children[0]
+      ) {
+        sceneObject = obj.children[0];
+      }
+    }
+  });
+
+  return sceneObject;
+};
+
 const findSceneObjectFromSource = (
   path: string,
   scene: Object3D,
@@ -355,19 +379,24 @@ export function Selection({
   }, []);
 
   useEffect(() => {
-    if (!selectedObject) {
-      return;
-    }
+    return listen("trplx:requestJumpToSceneObject", (sceneObject) => {
+      const targetSceneObject = sceneObject
+        ? findSceneObject(scene, sceneObject)
+        : selectedObject?.sceneObject;
 
-    return listen("trplx:requestJumpToSceneObject", () => {
-      box.setFromObject(selectedObject.sceneObject);
+      if (!targetSceneObject) {
+        return;
+      }
+
+      box.setFromObject(targetSceneObject);
+
       onJumpTo(
-        selectedObject.sceneObject.getWorldPosition(V1).toArray(),
+        targetSceneObject.getWorldPosition(V1).toArray(),
         box,
-        selectedObject.sceneObject
+        targetSceneObject
       );
     });
-  }, [onJumpTo, selectedObject]);
+  }, [onJumpTo, scene, selectedObject]);
 
   useEffect(() => {
     if (!selectedSceneObject || selectedSceneObject.type === "host") {
@@ -382,17 +411,27 @@ export function Selection({
 
   useEffect(() => {
     return compose([
-      listen("trplx:requestAction", ({ action }) => {
-        if (
-          action === "viewFocusedCamera" &&
-          selectedObject &&
-          "isCamera" in selectedObject.sceneObject
-        ) {
-          setCamera(selectedObject.sceneObject as PerspectiveCamera, {
-            column: selectedObject.column,
-            line: selectedObject.line,
-            path: selectedObject.path,
-          });
+      listen("trplx:requestAction", (e) => {
+        if (e.action === "enterCamera") {
+          if (e.data) {
+            const sceneObject = findSceneObject(scene, e.data);
+            if (sceneObject && "isCamera" in sceneObject) {
+              setCamera(sceneObject as PerspectiveCamera, {
+                column: e.data.column,
+                line: e.data.line,
+                path: e.data.path,
+              });
+            }
+          } else if (
+            selectedObject &&
+            "isCamera" in selectedObject.sceneObject
+          ) {
+            setCamera(selectedObject.sceneObject as PerspectiveCamera, {
+              column: selectedObject.column,
+              line: selectedObject.line,
+              path: selectedObject.path,
+            });
+          }
         }
       }),
       listen("trplx:requestFocusSceneObject", (data) => {
@@ -400,7 +439,7 @@ export function Selection({
         send("trplx:onSceneObjectFocus", data);
       }),
     ]);
-  }, [selectedObject, setCamera]);
+  }, [scene, selectedObject, setCamera]);
 
   const onClick = useCallback(
     async (e: ThreeEvent<MouseEvent>) => {

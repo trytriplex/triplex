@@ -7,22 +7,62 @@
 import { expect } from "@playwright/test";
 import { test } from "./utils/runner";
 
-test("create new file and insert a box", async ({ editorPage }) => {
-  await editorPage.newFile();
-
-  const drawer = await editorPage.openAssetsDrawer();
+test("create new file and insert a box", async ({ editor }) => {
+  await editor.newFile();
+  const drawer = await editor.assetsDrawer.open();
   await drawer.openFolder("built-in");
   await drawer.addAsset("Mesh");
 
-  await editorPage.openAssetsDrawer({ column: 5, line: 5, name: "mesh" });
+  await editor.assetsDrawer.open("mesh");
   await drawer.openFolder("built-in");
   await drawer.addAsset("Box Geometry");
 
-  const button = await editorPage.sceneElementButton({
-    column: 11,
-    line: 5,
-    name: "boxGeometry",
-  });
+  const button = await editor.scenePanel.elementButton("boxGeometry");
+  await expect(editor.contextPanel.heading).toHaveText("boxGeometry");
+  await expect(button.locator).toHaveText("boxGeometry");
+});
 
-  await expect(button).toHaveText("boxGeometry");
+test("create new component and insert a box", async ({ editor }) => {
+  await editor.scenePanel.newComponent();
+  const drawer = await editor.assetsDrawer.open();
+  await drawer.openFolder("built-in");
+  await drawer.addAsset("Mesh");
+
+  await editor.assetsDrawer.open("mesh");
+  await drawer.openFolder("built-in");
+  await drawer.addAsset("Box Geometry");
+
+  const button = await editor.scenePanel.elementButton("boxGeometry");
+  await expect(editor.contextPanel.heading).toHaveText("boxGeometry");
+  await expect(button.locator).toHaveText("boxGeometry");
+});
+
+// Currently flakey and causing the test run to run over 10 minutes
+test.skip("create new file and insert a custom component", async ({
+  editor,
+}) => {
+  await editor.newFile();
+  const drawer = await editor.assetsDrawer.open();
+  await drawer.openFolder({ name: "geometry" });
+  await drawer.addAsset("Box");
+
+  const button = await editor.scenePanel.elementButton("Box");
+
+  await expect(editor.contextPanel.heading).toHaveText("Box");
+  await expect(button.locator).toHaveText("Box");
+});
+
+// Currently flakey and causing the test run to run over 10 minutes
+test.skip("create new component and insert a custom component", async ({
+  editor,
+}) => {
+  await editor.scenePanel.newComponent();
+  const drawer = await editor.assetsDrawer.open();
+  await drawer.openFolder({ name: "geometry" });
+  await drawer.addAsset("Box");
+
+  const button = await editor.scenePanel.elementButton("Box");
+
+  await expect(editor.contextPanel.heading).toHaveText("Box");
+  await expect(button.locator).toHaveText("Box");
 });

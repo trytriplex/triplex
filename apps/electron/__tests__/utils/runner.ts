@@ -7,17 +7,28 @@
 /* eslint-disable no-console */
 /* eslint-disable no-empty-pattern */
 import { test as _test } from "@playwright/test";
-import { _electron as electron, ElectronApplication, Page } from "playwright";
+import { _electron as electron } from "playwright";
 import { EditorPage } from "./po";
 
-let editorWindow: Page;
-let electronApp: ElectronApplication;
+function defer() {
+  let resolve!: () => void;
+  let reject!: () => void;
 
-_test.beforeAll(async ({}, testInfo) => {
-  testInfo.slow();
+  const promise = new Promise<void>((res, rej) => {
+    resolve = res;
+    reject = rej;
+  });
 
-  electronApp = await electron.launch({
-    args: ["hook-main.js"],
+  return {
+    promise,
+    reject,
+    resolve,
+  };
+}
+
+async function launch() {
+  const electronApp = await electron.launch({
+    args: ["hook-main.js", process.env.DEBUG ? "" : "--headless"],
     env: {
       ...process.env,
       FORCE_EDITOR_TEST_FIXTURE: "true",
@@ -28,48 +39,64 @@ _test.beforeAll(async ({}, testInfo) => {
 
   electronApp
     .process()
-    .stdout?.on("data", (data) => console.log(`main: ${data.toString()}`));
-  electronApp
-    .process()
-    .stderr?.on("data", (error) => console.error(`main: ${error.toString()}`));
+    .stderr?.on("data", (error) =>
+      console.error(`[main error]: ${error.toString()}`)
+    );
 
   // During the test run we skip the welcome window.
   // Look for "FORCE_EDITOR_TEST_FIXTURE" env var.
-  editorWindow = await electronApp.firstWindow();
+  const editorWindow = await electronApp.firstWindow();
 
-  editorWindow.on("console", (msg) => {
-    console.log("renderer:", msg);
+  const sceneReadyPromise = defer();
+
+  await editorWindow.exposeFunction("sceneReady", () => {
+    sceneReadyPromise.resolve();
   });
 
-  await editorWindow.waitForSelector(`[data-testid="titlebar"]`);
-});
+  await editorWindow.addInitScript(() => {
+    window.addEventListener("message", (e) => {
+      if (e.data.eventName === "trplx:onSceneLoaded") {
+        // @ts-expect-error
+        window.sceneReady();
+      }
+    });
+  });
 
-_test.afterEach(async () => {
-  await editorWindow.reload();
-});
+  editorWindow.on("pageerror", (msg) => {
+    console.log("[renderer error]:", msg);
+  });
+
+  return {
+    editorWindow,
+    electronApp,
+    sceneReadyPromise: sceneReadyPromise.promise,
+  };
+}
 
 const test = _test.extend<{
-  editorPage: EditorPage;
+  editor: EditorPage;
   screenshotOnFailure: void;
 }>({
-  editorPage: async ({}, use) => {
-    const todoPage = new EditorPage(editorWindow);
-    await use(todoPage);
-  },
-  screenshotOnFailure: [
-    async ({}, use, testInfo) => {
-      await use();
+  editor: async ({}, use, testInfo) => {
+    const { editorWindow, electronApp, sceneReadyPromise } = await launch();
+    const editorPage = new EditorPage(
+      editorWindow,
+      sceneReadyPromise,
+      testInfo
+    );
 
-      if (testInfo.status !== testInfo.expectedStatus) {
-        const screenshot = await editorWindow.screenshot();
-        await testInfo.attach("screenshot", {
-          body: screenshot,
-          contentType: "image/png",
-        });
-      }
-    },
-    { auto: true },
-  ],
+    await use(editorPage);
+
+    if (testInfo.status !== testInfo.expectedStatus) {
+      const screenshot = await editorWindow.screenshot();
+      await testInfo.attach("screenshot", {
+        body: screenshot,
+        contentType: "image/png",
+      });
+    }
+
+    await electronApp.close();
+  },
 });
 
 export { test };

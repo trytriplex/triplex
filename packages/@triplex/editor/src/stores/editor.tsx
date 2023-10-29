@@ -109,41 +109,45 @@ export function useEditor() {
     [path, exportName, scene]
   );
 
-  const deleteComponent = useCallback(() => {
-    if (!target) {
-      return;
-    }
+  const deleteComponent = useCallback(
+    (element?: { column: number; line: number; parentPath: string }) => {
+      const toDelete = element || target;
+      if (!toDelete) {
+        return;
+      }
 
-    const undoAction = () => {
-      fetch(
-        `http://localhost:8000/scene/${encodeURIComponent(path)}/object/${
-          target.line
-        }/${target.column}/restore`,
-        { method: "POST" }
-      );
-    };
+      const undoAction = () => {
+        fetch(
+          `http://localhost:8000/scene/${encodeURIComponent(
+            toDelete.parentPath
+          )}/object/${toDelete.line}/${toDelete.column}/restore`,
+          { method: "POST" }
+        );
+      };
 
-    const redoAction = () => {
-      fetch(
-        `http://localhost:8000/scene/${encodeURIComponent(path)}/object/${
-          target.line
-        }/${target.column}/delete`,
-        { method: "POST" }
-      );
-      scene.deleteComponent({
-        column: target.column,
-        line: target.line,
-        parentPath: target.parentPath,
+      const redoAction = () => {
+        fetch(
+          `http://localhost:8000/scene/${encodeURIComponent(
+            toDelete.parentPath
+          )}/object/${toDelete.line}/${toDelete.column}/delete`,
+          { method: "POST" }
+        );
+        scene.deleteComponent({
+          column: toDelete.column,
+          line: toDelete.line,
+          parentPath: toDelete.parentPath,
+        });
+      };
+
+      performUndoableEvent({
+        redo: redoAction,
+        undo: undoAction,
       });
-    };
 
-    performUndoableEvent({
-      redo: redoAction,
-      undo: undoAction,
-    });
-
-    scene.blur();
-  }, [path, performUndoableEvent, scene, target]);
+      scene.blur();
+    },
+    [performUndoableEvent, scene, target]
+  );
 
   const exitComponent = useCallback(() => {
     window.history.back();

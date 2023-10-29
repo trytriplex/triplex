@@ -4,52 +4,134 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { expect, TestInfo } from "@playwright/test";
 import { Page } from "playwright";
 
 export class EditorPage {
-  constructor(public readonly page: Page) {}
+  #sceneReady: Promise<void>;
+  #testInfo: TestInfo;
 
-  titleBar() {
+  constructor(
+    public readonly page: Page,
+    scenePromise: Promise<void>,
+    testInfo: TestInfo
+  ) {
+    this.#sceneReady = scenePromise;
+    this.#testInfo = testInfo;
+  }
+
+  get titleBar() {
     const title = this.page.getByTestId("titlebar");
     return title;
+  }
+
+  get contextPanel() {
+    const locator = this.page.getByTestId("context-panel");
+
+    return {
+      heading: locator.getByTestId("context-panel-heading"),
+      input(label: string) {
+        return locator.getByLabel(label);
+      },
+      locator,
+    };
   }
 
   async screenshot() {
     return this.page.screenshot();
   }
 
+  async waitForScene() {
+    // Ensuring the scene is available can be slow. Mark the test as such.
+    this.#testInfo.slow();
+    return this.#sceneReady;
+  }
+
   async newFile() {
+    await this.waitForScene();
     const button = this.page.getByTestId("new-file");
-    return button.click();
+    await button.click();
+    await expect
+      .poll(async () => this.page.getByTestId("scene-element").count())
+      .toBe(0);
   }
 
-  sceneElementButton(scope: { column: number; line: number; name: string }) {
-    return this.page.getByTestId(
-      `${scope.name}-L${scope.line}C${scope.column}`
-    );
-  }
-
-  async openAssetsDrawer(scope?: {
-    column: number;
-    line: number;
-    name: string;
-  }) {
-    const buttonTestId = scope
-      ? `add-${scope.name}-L${scope.line}C${scope.column}`
-      : "open-assets-drawer";
-    const openButton = this.page.getByTestId(buttonTestId);
-    await openButton.click();
-
-    const drawer = this.page.getByTestId("assets-drawer");
+  get scenePanel() {
+    const locator = this.page.getByTestId("scene-panel");
 
     return {
-      addAsset: async (name: string) => {
-        const asset = drawer.getByText(name, { exact: true });
-        await asset.click();
+      allElements: this.page.getByTestId("scene-element"),
+      elementButton: (name: string) => {
+        const locator = this.page.getByRole("button", { name });
+
+        return {
+          addButton: locator.getByTestId("add"),
+          click: async () => {
+            await this.waitForScene();
+            await locator.click();
+          },
+          deleteButton: locator.getByTestId("delete"),
+          enterCameraButton: locator.getByTestId("enter-camera"),
+          expandButton: locator.getByTestId("expand"),
+          focusButton: locator.getByTestId("jump-to"),
+          locator,
+        };
       },
-      openFolder: async (name: "built-in" | "components" | "assets") => {
-        const locator = drawer.getByText(name, { exact: true });
+      locator,
+      newComponent: async () => {
+        this.waitForScene();
+        const locator = this.page.getByTestId("component-select-input");
         await locator.click();
+        await locator.selectOption("new-component");
+        await expect
+          .poll(async () => this.page.getByTestId("scene-element").count())
+          .toBe(0);
+      },
+      unsavedIndicator: locator.getByLabel("Unsaved changes"),
+    };
+  }
+
+  get controlsMenu() {
+    const locator = this.page.getByTestId("controls-menu");
+
+    return {
+      exitUserCameraButton: locator.getByTestId("user-camera"),
+      locator,
+    };
+  }
+
+  get keyboard() {
+    return this.page.keyboard;
+  }
+
+  get assetsDrawer() {
+    const locator = this.page.getByTestId("assets-drawer");
+
+    return {
+      open: async (name?: string) => {
+        if (name) {
+          const { addButton } = this.scenePanel.elementButton(name);
+          await addButton.click();
+        } else {
+          const openButton = this.page.getByTestId("open-assets-drawer");
+          await openButton.click();
+        }
+
+        return {
+          addAsset: async (name: string) => {
+            const asset = locator.getByText(name, { exact: true });
+            await asset.click();
+          },
+          openFolder: async (
+            name: "built-in" | "components" | { name: string }
+          ) => {
+            const folder = locator.getByText(
+              typeof name === "string" ? name : name.name,
+              { exact: true }
+            );
+            await folder.click();
+          },
+        };
       },
     };
   }

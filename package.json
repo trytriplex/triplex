@@ -29,7 +29,7 @@
     "typedef": "pnpm --filter @triplex/* --filter create-triplex-project typedef"
   },
   "lint-staged": {
-    "*.{ts,tsx}": "eslint ./ --cache --fix"
+    "*.{ts,tsx}": "eslint --cache --fix"
   },
   "dependencies": {
     "@adeira/monorepo-shipit": "^0.4.0",

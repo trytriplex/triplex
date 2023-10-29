@@ -104,7 +104,7 @@ export function ProviderConfig() {
   return (
     <div className="pointer-events-auto w-72 self-start overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900 text-white">
       <h2 className="text-md px-4 pt-3 font-medium text-neutral-300">
-        Provider Config
+        Provider Controls
       </h2>
       <div className="-mt-0.5 mb-2 px-4">
         {providerPath && (

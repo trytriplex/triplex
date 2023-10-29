@@ -4,7 +4,6 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { toNamespacedPath } from "node:path";
 import type { NodePath, PluginObj } from "@babel/core";
 // eslint-disable-next-line import/no-namespace
 import * as t from "@babel/types";
@@ -24,7 +23,6 @@ function isNodeModulesComponent(path: NodePath, elementName: string) {
 }
 
 export default function triplexBabelPlugin({ exclude }: { exclude: string[] }) {
-  const ignoreFiles = exclude.map(toNamespacedPath);
   const cache = new WeakSet();
   const triplexMeta = new Map<string, { lighting: "default" | "custom" }>();
   const SCENE_OBJECT_COMPONENT_NAME = "SceneObject";
@@ -181,12 +179,6 @@ export default function triplexBabelPlugin({ exclude }: { exclude: string[] }) {
           }
         );
 
-        const reconciledFilename = pass.filename?.includes(
-          "triplex:/src/untitled"
-        )
-          ? pass.filename?.replace("triplex:/", "")
-          : pass.filename;
-
         const newNode = t.jsxElement(
           t.jsxOpeningElement(t.jsxIdentifier(SCENE_OBJECT_COMPONENT_NAME), [
             ...attributes,
@@ -204,7 +196,7 @@ export default function triplexBabelPlugin({ exclude }: { exclude: string[] }) {
                 t.objectExpression([
                   t.objectProperty(
                     t.stringLiteral("path"),
-                    t.stringLiteral(reconciledFilename || "")
+                    t.stringLiteral(pass.filename || "")
                   ),
                   t.objectProperty(
                     t.stringLiteral("name"),
@@ -254,13 +246,8 @@ export default function triplexBabelPlugin({ exclude }: { exclude: string[] }) {
       },
       Program: {
         enter(_, state) {
-          if (
-            ignoreFiles.some(
-              (file) =>
-                state.filename &&
-                toNamespacedPath(state.filename).includes(file)
-            )
-          ) {
+          const normalizedPath = (state.filename || "").replaceAll("\\", "/");
+          if (exclude.some((file) => normalizedPath.includes(file))) {
             shouldSkip = true;
           }
         },

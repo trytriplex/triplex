@@ -6,13 +6,16 @@
  */
 import {
   BoxIcon,
+  CameraIcon,
   CaretDownIcon,
   CaretRightIcon,
+  Crosshair1Icon,
   ExclamationTriangleIcon,
   ExitIcon,
   MixerHorizontalIcon,
   MixerVerticalIcon,
   PlusIcon,
+  TrashIcon,
 } from "@radix-ui/react-icons";
 import type { JsxElementPositions } from "@triplex/server";
 import { useLazySubscription } from "@triplex/ws/react";
@@ -45,7 +48,10 @@ export function ScenePanel() {
   const { exportName, path } = useEditor();
 
   return (
-    <div className="pointer-events-auto relative w-full flex-grow overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%]">
+    <div
+      className="pointer-events-auto relative w-full flex-grow overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%]"
+      data-testid="scene-panel"
+    >
       <ErrorBoundary keys={[path, exportName]}>
         <Suspense fallback={<PanelSkeleton />}>
           <SceneContents />
@@ -96,6 +102,7 @@ function ComponentHeading() {
 
         <select
           className="absolute inset-0 text-sm opacity-0 [color-scheme:dark] [width:-moz-available]"
+          data-testid="component-select-input"
           onChange={onChangeComponentHandler}
           value={exportName}
         >
@@ -120,6 +127,7 @@ function ComponentHeading() {
         <IconButton
           className="-mr-1.5 ml-1 text-orange-400"
           icon={ExclamationTriangleIcon}
+          label="Warning: This component is outside of your declared project files. Click to learn more."
           onClick={() =>
             window.triplex.openLink(
               "https://triplex.dev/docs/supporting/component-outside-of-project-files?meta=" +
@@ -133,7 +141,6 @@ function ComponentHeading() {
                 )
             )
           }
-          title="Warning: This component is outside of your declared project files. Click to learn more."
         />
       )}
     </h2>
@@ -146,9 +153,9 @@ function AssetsDrawerButton() {
   return (
     <IconButton
       icon={PlusIcon}
+      label="Add element"
       onClick={show}
       testId="open-assets-drawer"
-      title="Add element"
     />
   );
 }
@@ -176,9 +183,9 @@ function SceneContents() {
         {import.meta.env.VITE_TEST && (
           <IconButton
             icon={BoxIcon}
+            label="Debug: New file"
             onClick={newFile}
             testId="new-file"
-            title="Debug: New file"
           />
         )}
         <div className="ml-auto" />
@@ -186,8 +193,8 @@ function SceneContents() {
           className="-scale-x-100"
           icon={ExitIcon}
           isDisabled={!enteredComponent}
+          label="Exit selection"
           onClick={exitComponent}
-          title="Exit selection"
         />
         <ProviderConfigButton />
       </div>
@@ -238,6 +245,7 @@ function ComponentSandboxButton() {
     <IconButton
       icon={MixerHorizontalIcon}
       isSelected={isSelected || (hasState ? "partial" : false)}
+      label="Live edit props"
       onClick={() => {
         if (isSelected) {
           blur();
@@ -245,7 +253,6 @@ function ComponentSandboxButton() {
           focus({ column: -1, line: -1, parentPath: "", path });
         }
       }}
-      title="Live edit props"
     />
   );
 }
@@ -260,8 +267,8 @@ function ProviderConfigButton() {
     <IconButton
       icon={MixerVerticalIcon}
       isSelected={isOpen || (hasState ? "partial" : false)}
+      label="View provider controls"
       onClick={toggle}
-      title="View provider config"
     />
   );
 }
@@ -329,8 +336,8 @@ function JsxElementButton({
   filter?: string;
   level: number;
 }) {
-  const { focus } = useScene();
-  const { target } = useEditor();
+  const { enterCamera, focus, jumpTo } = useScene();
+  const { deleteComponent, target } = useEditor();
   const selected =
     !!target &&
     target.column === element.column &&
@@ -359,8 +366,9 @@ function JsxElementButton({
             selected
               ? "border-l-blue-400 bg-white/5 text-blue-400"
               : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
-            "group flex w-[242px] cursor-default items-center gap-1 border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
+            "group relative flex w-[242px] cursor-default items-center gap-1 border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
           ])}
+          data-testid="scene-element"
           onPress={() => {
             focus({
               column: element.column,
@@ -371,44 +379,96 @@ function JsxElementButton({
           }}
           ref={ref}
           style={{ paddingLeft: level === 1 ? 13 : level * 13 }}
-          testId={`${element.name}-L${element.line}C${element.column}`}
           title={element.name}
         >
           {showExpander ? (
-            <Pressable
-              className="-ml-1 rounded px-0.5 py-0.5 text-inherit hover:bg-white/5 active:bg-white/10"
-              onPress={() => {
+            <IconButton
+              className="-my-1 -ml-1"
+              icon={isExpanded ? CaretDownIcon : CaretRightIcon}
+              label={isExpanded ? "Hide child elements" : "View child elements"}
+              onClick={() => {
                 startTransition(() => {
                   setIsExpanded((prev) => !prev);
                 });
               }}
-              title={isExpanded ? "Hide child elements" : "View child elements"}
-            >
-              {isExpanded ? <CaretDownIcon /> : <CaretRightIcon />}
-            </Pressable>
+              size="sm"
+              testId="expand"
+            />
           ) : (
-            <span className="w-4" />
+            <span className="w-4 flex-shrink-0" />
           )}
 
           <span className="overflow-hidden text-ellipsis whitespace-nowrap">
             {element.name}
           </span>
 
-          <Pressable
-            className="ml-auto rounded px-0.5 py-0.5 text-inherit opacity-0 hover:bg-white/5 focus:opacity-100 active:bg-white/10 group-hover:opacity-100"
-            onPress={() =>
-              show({
-                column: element.column,
-                exportName,
-                line: element.line,
-                path: element.parentPath,
-              })
-            }
-            testId={`add-${element.name}-L${element.line}C${element.column}`}
-            title="Add child element"
+          <div
+            className={cn([
+              selected ? "opacity-100" : "absolute opacity-0",
+              "-my-1 ml-auto flex items-center focus-within:static focus-within:opacity-100 group-hover:static group-hover:opacity-100",
+            ])}
           >
-            <PlusIcon />
-          </Pressable>
+            {element.name.includes("Camera") && (
+              // Most likely a camera component. It might not be though.
+              // A better implementation later would be to traverse this scene objects children
+              // And see if a camera exists, if it does enable the button.
+              <IconButton
+                color="inherit"
+                icon={CameraIcon}
+                label="Enter camera"
+                onClick={() =>
+                  enterCamera({
+                    column: element.column,
+                    line: element.line,
+                    path: element.parentPath,
+                  })
+                }
+                testId="enter-camera"
+              />
+            )}
+            <IconButton
+              color="inherit"
+              icon={TrashIcon}
+              label="Delete"
+              onClick={() =>
+                deleteComponent({
+                  column: element.column,
+                  line: element.line,
+                  parentPath: element.parentPath,
+                })
+              }
+              size="sm"
+              testId="delete"
+            />
+            <IconButton
+              color="inherit"
+              icon={Crosshair1Icon}
+              label="Jump to this element"
+              onClick={() =>
+                jumpTo({
+                  column: element.column,
+                  line: element.line,
+                  path: element.parentPath,
+                })
+              }
+              testId="jump-to"
+            />
+            <IconButton
+              color="inherit"
+              icon={PlusIcon}
+              label="Add child element"
+              onClick={() =>
+                show({
+                  column: element.column,
+                  exportName,
+                  line: element.line,
+                  path: element.parentPath,
+                })
+              }
+              size="sm"
+              testId="add"
+            />
+          </div>
         </Pressable>
 
         {isExpanded && showExpander && element.path && (

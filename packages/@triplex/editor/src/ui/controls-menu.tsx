@@ -50,24 +50,30 @@ export function ControlsMenu() {
   });
 
   return (
-    <div className="pointer-events-auto mx-auto mt-auto flex rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1">
+    <div
+      className="pointer-events-auto mx-auto mt-auto flex rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1"
+      data-testid="controls-menu"
+    >
       <IconButton
         icon={AllSidesIcon}
         isSelected={mode === "translate"}
+        label="Translate (T)"
         onClick={() => setTransform("translate")}
-        title="Translate (T)"
+        testId="translate"
       />
       <IconButton
         icon={AngleIcon}
         isSelected={mode === "rotate"}
+        label="Rotate (R)"
         onClick={() => setTransform("rotate")}
-        title="Rotate (R)"
+        testId="rotate"
       />
       <IconButton
         icon={TransformIcon}
         isSelected={mode === "scale"}
+        label="Scale (S)"
         onClick={() => setTransform("scale")}
-        title="Scale (S)"
+        testId="scale"
       />
       <div className="-my-1 mx-1 w-[1px] bg-neutral-800" />
       <IconButton
@@ -87,6 +93,7 @@ export function ControlsMenu() {
               )
         }
         isSelected={camera === "user"}
+        label={camera ? cameraTitles[camera] : ""}
         onClick={() => {
           if (camera === "user" && lastKnownTriplexCamera.current) {
             setCameraType(lastKnownTriplexCamera.current);
@@ -97,7 +104,7 @@ export function ControlsMenu() {
             lastKnownTriplexCamera.current = nextCamera;
           }
         }}
-        title={camera ? cameraTitles[camera] : ""}
+        testId={`${camera}-camera`}
       />
     </div>
   );
