@@ -6,7 +6,7 @@
  */
 import { Cross2Icon, EraserIcon } from "@radix-ui/react-icons";
 import { useLazySubscription } from "@triplex/ws/react";
-import { Suspense, useDeferredValue, useState } from "react";
+import { Suspense, useDeferredValue, useLayoutEffect, useState } from "react";
 import { IconButton } from "../ds/button";
 import { ScrollContainer } from "../ds/scroll-container";
 import { PanelSkeleton } from "../ds/skeleton";
@@ -20,7 +20,7 @@ import { PropInput, PropTagContext } from "./prop-input";
 import { StringInput } from "./string-input";
 
 function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
-  const { getPropValue, setPropValue } = useScene();
+  const { blur, getPropValue, setPropValue } = useScene();
   const { persistPropValue } = useEditor();
   const [filter, setFilter] = useState<string | undefined>();
 
@@ -29,6 +29,16 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
     line: target.line,
     path: target.parentPath,
   });
+
+  useLayoutEffect(() => {
+    // Sometimes we lose track of the line/col of the currently selected object.
+    // This could be for example when deleting a scene object, selecting another,
+    // and then saving. The line cols no-longer match up. When that is the case
+    // we immediately close the context panel.
+    if (data.name === "[deleted]") {
+      blur();
+    }
+  }, [blur, data.name]);
 
   return (
     <>
