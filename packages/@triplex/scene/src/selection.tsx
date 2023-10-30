@@ -11,11 +11,9 @@ import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws/react";
 import {
   createContext,
   ReactNode,
-  useCallback,
   useContext,
   useEffect,
   useMemo,
-  useRef,
   useState,
 } from "react";
 import {
@@ -282,9 +280,6 @@ export function Selection({
   const [transform, setTransform] = useState<"translate" | "rotate" | "scale">(
     "translate"
   );
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const transformControls = useRef<any>(null);
-  const dragging = useRef(false);
   const scene = useThree((store) => store.scene);
   const { setCamera } = useCamera();
   const sceneData = useSubscriptionEffect("/scene/:path/:exportName", {
@@ -292,6 +287,7 @@ export function Selection({
     exportName,
     path: rootPath,
   });
+  const [isDragging, setIsDragging] = useState(false);
   const sceneObjects = useMemo(
     () => flatten(sceneData?.sceneObjects || []),
     [sceneData]
@@ -340,77 +336,54 @@ export function Selection({
   }, [transform]);
 
   useEffect(() => {
-    return listen("trplx:requestTransformChange", ({ mode }) => {
-      setTransform(mode);
-    });
-  }, []);
-
-  useEffect(() => {
-    return listen("trplx:requestNavigateToScene", (sceneObject) => {
-      if (!sceneObject && (!selectedObject || !selectedSceneObject)) {
-        return;
-      }
-
-      if (sceneObject && sceneObject.path) {
-        onNavigate(sceneObject);
-        setSelected(undefined);
-        onBlur();
-      } else if (
-        selectedObject &&
-        selectedSceneObject &&
-        selectedSceneObject.type === "custom"
-      ) {
-        onNavigate({
-          encodedProps: encodeProps(selectedObject),
-          exportName: selectedSceneObject.exportName,
-          path: selectedSceneObject.path,
-        });
-        setSelected(undefined);
-        onBlur();
-      }
-    });
-  }, [onBlur, onNavigate, selectedObject, selectedSceneObject]);
-
-  useEffect(() => {
-    return listen("trplx:requestBlurSceneObject", () => {
-      setSelected(undefined);
-      send("trplx:onSceneObjectBlur", undefined);
-    });
-  }, []);
-
-  useEffect(() => {
-    return listen("trplx:requestJumpToSceneObject", (sceneObject) => {
-      const targetSceneObject = sceneObject
-        ? findSceneObject(scene, sceneObject)
-        : selectedObject?.sceneObject;
-
-      if (!targetSceneObject) {
-        return;
-      }
-
-      box.setFromObject(targetSceneObject);
-
-      onJumpTo(
-        targetSceneObject.getWorldPosition(V1).toArray(),
-        box,
-        targetSceneObject
-      );
-    });
-  }, [onJumpTo, scene, selectedObject]);
-
-  useEffect(() => {
-    if (!selectedSceneObject || selectedSceneObject.type === "host") {
-      return;
-    }
-
-    preloadSubscription("/scene/:path/:exportName", {
-      exportName: selectedSceneObject.exportName,
-      path: selectedSceneObject.path,
-    });
-  }, [selectedSceneObject]);
-
-  useEffect(() => {
     return compose([
+      listen("trplx:requestTransformChange", ({ mode }) => {
+        setTransform(mode);
+      }),
+      listen("trplx:requestNavigateToScene", (sceneObject) => {
+        if (!sceneObject && (!selectedObject || !selectedSceneObject)) {
+          return;
+        }
+
+        if (sceneObject && sceneObject.path) {
+          onNavigate(sceneObject);
+          setSelected(undefined);
+          onBlur();
+        } else if (
+          selectedObject &&
+          selectedSceneObject &&
+          selectedSceneObject.type === "custom"
+        ) {
+          onNavigate({
+            encodedProps: encodeProps(selectedObject),
+            exportName: selectedSceneObject.exportName,
+            path: selectedSceneObject.path,
+          });
+          setSelected(undefined);
+          onBlur();
+        }
+      }),
+      listen("trplx:requestBlurSceneObject", () => {
+        setSelected(undefined);
+        send("trplx:onSceneObjectBlur", undefined);
+      }),
+      listen("trplx:requestJumpToSceneObject", (sceneObject) => {
+        const targetSceneObject = sceneObject
+          ? findSceneObject(scene, sceneObject)
+          : selectedObject?.sceneObject;
+
+        if (!targetSceneObject) {
+          return;
+        }
+
+        box.setFromObject(targetSceneObject);
+
+        onJumpTo(
+          targetSceneObject.getWorldPosition(V1).toArray(),
+          box,
+          targetSceneObject
+        );
+      }),
       listen("trplx:requestAction", (e) => {
         if (e.action === "enterCamera") {
           if (e.data) {
@@ -439,55 +412,87 @@ export function Selection({
         send("trplx:onSceneObjectFocus", data);
       }),
     ]);
-  }, [scene, selectedObject, setCamera]);
+  }, [
+    onBlur,
+    onJumpTo,
+    onNavigate,
+    scene,
+    selectedObject,
+    selectedSceneObject,
+    setCamera,
+  ]);
 
-  const onClick = useCallback(
-    async (e: ThreeEvent<MouseEvent>) => {
-      if (
-        e.delta > 1 ||
-        // Any scene objects that have this in their name will be excluded
-        // Currently that's just the helpers inside ./components/helper.tsx
-        e.object.name.includes("triplex_ignore")
-      ) {
-        return;
+  useEffect(() => {
+    if (!selectedSceneObject || selectedSceneObject.type === "host") {
+      return;
+    }
+
+    preloadSubscription("/scene/:path/:exportName", {
+      exportName: selectedSceneObject.exportName,
+      path: selectedSceneObject.path,
+    });
+  }, [selectedSceneObject]);
+
+  useEffect(() => {
+    const callback = (e: KeyboardEvent) => {
+      if (isDragging && e.key === "Escape") {
+        e.preventDefault();
       }
+    };
 
-      if (selected && e.object === selectedObject?.sceneObject) {
-        // Ignore this event we're already selected.
-        return;
-      }
+    document.addEventListener("keydown", callback);
 
-      // TODO: If clicking on a scene object when a selection is already
-      // made this will fire A LOT OF TIMES. Need to investigate why.
-      const data = findEditorData(rootPath, e.object, transform, sceneObjects);
-      if (data) {
-        e.stopPropagation();
+    return () => document.removeEventListener("keydown", callback);
+  }, [isDragging]);
 
-        const target = {
-          column: data.column,
-          line: data.line,
-          parentPath: data.parentPath,
-          path: data.path,
-        };
+  useFrame(() => {
+    if (selectedObject && selectedObject.sceneObject.parent === null) {
+      // If the scene object gets removed from the scene unselect it.
+      setSelected(undefined);
+    }
+  });
 
-        setSelected(target);
-        onFocus(target);
-      }
-    },
-    [
-      onFocus,
-      rootPath,
-      sceneObjects,
-      selected,
-      selectedObject?.sceneObject,
-      transform,
-    ]
-  );
+  const onClick = useEvent(async (e: ThreeEvent<MouseEvent>) => {
+    if (
+      e.delta > 1 ||
+      // Any scene objects that have this in their name will be excluded
+      // Currently that's just the helpers inside ./components/helper.tsx
+      e.object.name.includes("triplex_ignore")
+    ) {
+      return;
+    }
 
-  const onMouseUp = useCallback(
+    if (selected && e.object === selectedObject?.sceneObject) {
+      // Ignore this event we're already selected.
+      return;
+    }
+
+    // TODO: If clicking on a scene object when a selection is already
+    // made this will fire A LOT OF TIMES. Need to investigate why.
+    const data = findEditorData(rootPath, e.object, transform, sceneObjects);
+    if (data) {
+      e.stopPropagation();
+
+      const target = {
+        column: data.column,
+        line: data.line,
+        parentPath: data.parentPath,
+        path: data.path,
+      };
+
+      setSelected(target);
+      onFocus(target);
+    }
+  });
+
+  const onMouseDownHandler = useEvent(() => {
+    setIsDragging(true);
+  });
+
+  const onMouseUpHandler = useEvent(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (e: any) => {
-      dragging.current = false;
+      setIsDragging(false);
 
       if (!e || !selectedObject || !selectedSceneObject) {
         return;
@@ -532,34 +537,23 @@ export function Selection({
           propValue: scale,
         });
       }
-    },
-    [selectedObject, selectedSceneObject]
+    }
   );
 
-  useFrame(() => {
-    if (selectedObject && selectedObject.sceneObject.parent === null) {
-      // If the scene object gets removed from the scene unselect it.
-      setSelected(undefined);
+  const selectSceneObject = useEvent((object: Object3D) => {
+    const data = findEditorData(rootPath, object, transform, sceneObjects);
+    if (data) {
+      const target = {
+        column: data.column,
+        line: data.line,
+        parentPath: data.parentPath,
+        path: data.path,
+      };
+
+      setSelected(target);
+      onFocus(target);
     }
   });
-
-  const selectSceneObject = useCallback(
-    (object: Object3D) => {
-      const data = findEditorData(rootPath, object, transform, sceneObjects);
-      if (data) {
-        const target = {
-          column: data.column,
-          line: data.line,
-          parentPath: data.parentPath,
-          path: data.path,
-        };
-
-        setSelected(target);
-        onFocus(target);
-      }
-    },
-    [onFocus, rootPath, sceneObjects, transform]
-  );
 
   const sceneObjectMountHandler = useEvent(
     (path: string, line: number, column: number) => {
@@ -599,9 +593,8 @@ export function Selection({
           }
           mode={transform}
           object={selectedObject.sceneObject}
-          onMouseDown={() => (dragging.current = true)}
-          onMouseUp={onMouseUp}
-          ref={transformControls}
+          onMouseDown={onMouseDownHandler}
+          onMouseUp={onMouseUpHandler}
         />
       )}
     </group>
