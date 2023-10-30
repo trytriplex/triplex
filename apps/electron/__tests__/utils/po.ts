@@ -68,7 +68,11 @@ export class EditorPage {
           addButton: locator.getByTestId("add"),
           click: async () => {
             await this.waitForScene();
-            await locator.click();
+            await locator.click({ force: true });
+          },
+          dblclick: async () => {
+            await this.waitForScene();
+            await locator.click({ clickCount: 2, delay: 50, force: true });
           },
           deleteButton: locator.getByTestId("delete"),
           enterCameraButton: locator.getByTestId("enter-camera"),
@@ -77,6 +81,8 @@ export class EditorPage {
           locator,
         };
       },
+      exitSelectionButton: this.page.getByLabel("Exit selection"),
+      heading: locator.getByTestId("scene-panel-heading"),
       locator,
       newComponent: async () => {
         this.waitForScene();

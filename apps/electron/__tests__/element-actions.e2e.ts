@@ -52,3 +52,13 @@ test("focus child element", async ({ editor }) => {
 
   await expect(editor.contextPanel.heading).toHaveText("mesh");
 });
+
+test("enter custom element and back", async ({ editor }) => {
+  const parent = editor.scenePanel.elementButton("Box");
+
+  await parent.dblclick();
+  await expect(editor.scenePanel.heading).toHaveText("Box");
+
+  await editor.scenePanel.exitSelectionButton.click();
+  await expect(editor.scenePanel.heading).toHaveText("Scene");
+});

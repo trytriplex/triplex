@@ -12,8 +12,8 @@ import {
   Crosshair1Icon,
   ExclamationTriangleIcon,
   ExitIcon,
-  MixerHorizontalIcon,
   MixerVerticalIcon,
+  Pencil2Icon,
   PlusIcon,
   TrashIcon,
 } from "@radix-ui/react-icons";
@@ -94,7 +94,10 @@ function ComponentHeading() {
   return (
     <h2 className="flex flex-row items-center pl-2 pr-4 pt-3 text-2xl font-medium text-neutral-300">
       <label className="relative mr-auto flex items-center gap-1.5 overflow-hidden rounded pl-2 pr-1 outline-1 outline-offset-1 outline-blue-400 focus-within:outline hover:bg-white/5 active:bg-white/10">
-        <span className="overflow-hidden text-ellipsis rounded">
+        <span
+          className="overflow-hidden text-ellipsis rounded"
+          data-testid="scene-panel-heading"
+        >
           {scene.name}
         </span>
 
@@ -178,8 +181,6 @@ function SceneContents() {
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
 
       <div className="flex px-2 py-1">
-        <AssetsDrawerButton />
-        <ComponentSandboxButton />
         {import.meta.env.VITE_TEST && (
           <IconButton
             icon={BoxIcon}
@@ -188,25 +189,28 @@ function SceneContents() {
             testId="new-file"
           />
         )}
-        <div className="ml-auto" />
-        <IconButton
-          className="-scale-x-100"
-          icon={ExitIcon}
-          isDisabled={!enteredComponent}
-          label="Exit selection"
-          onClick={exitComponent}
-        />
         <ProviderConfigButton />
       </div>
 
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
 
-      <div className="px-3 py-2">
+      <div className="flex py-2 pl-3 pr-2">
         <StringInput
           label="Filter elements..."
           name="filter-elements"
           onChange={setFilter}
         />
+        <div className="w-1 flex-shrink-0" />
+        {enteredComponent && (
+          <IconButton
+            className="-scale-x-100"
+            icon={ExitIcon}
+            label="Exit selection"
+            onClick={exitComponent}
+          />
+        )}
+        <LiveEditPropsButton />
+        <AssetsDrawerButton />
       </div>
 
       <ScrollContainer>
@@ -235,7 +239,7 @@ function SceneContents() {
   );
 }
 
-function ComponentSandboxButton() {
+function LiveEditPropsButton() {
   const { blur, focus } = useScene();
   const { exportName, path, target } = useEditor();
   const hasState = useSceneState((store) => store.hasState(path + exportName));
@@ -243,7 +247,7 @@ function ComponentSandboxButton() {
 
   return (
     <IconButton
-      icon={MixerHorizontalIcon}
+      icon={Pencil2Icon}
       isSelected={isSelected || (hasState ? "partial" : false)}
       label="Live edit props"
       onClick={() => {
@@ -267,7 +271,7 @@ function ProviderConfigButton() {
     <IconButton
       icon={MixerVerticalIcon}
       isSelected={isOpen || (hasState ? "partial" : false)}
-      label="View provider controls"
+      label="Provider controls"
       onClick={toggle}
     />
   );
@@ -336,7 +340,7 @@ function JsxElementButton({
   filter?: string;
   level: number;
 }) {
-  const { enterCamera, focus, jumpTo } = useScene();
+  const { enterCamera, focus, jumpTo, navigateTo } = useScene();
   const { deleteComponent, target } = useEditor();
   const selected =
     !!target &&
@@ -368,7 +372,9 @@ function JsxElementButton({
               : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
             "group relative flex w-[242px] cursor-default items-center gap-1 border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
           ])}
-          data-testid="scene-element"
+          onDoublePress={() => {
+            navigateTo();
+          }}
           onPress={() => {
             focus({
               column: element.column,
@@ -379,11 +385,13 @@ function JsxElementButton({
           }}
           ref={ref}
           style={{ paddingLeft: level === 1 ? 13 : level * 13 }}
+          testId="scene-element"
           title={element.name}
         >
           {showExpander ? (
             <IconButton
-              className="-my-1 -ml-1"
+              className="-my-1 -ml-2"
+              color="inherit"
               icon={isExpanded ? CaretDownIcon : CaretRightIcon}
               label={isExpanded ? "Hide child elements" : "View child elements"}
               onClick={() => {
@@ -405,7 +413,7 @@ function JsxElementButton({
           <div
             className={cn([
               selected ? "opacity-100" : "absolute opacity-0",
-              "-my-1 ml-auto flex items-center focus-within:static focus-within:opacity-100 group-hover:static group-hover:opacity-100",
+              "-my-1 -mr-0.5 ml-auto flex items-center focus-within:static focus-within:opacity-100 group-hover:static group-hover:opacity-100",
             ])}
           >
             {element.name.includes("Camera") && (
