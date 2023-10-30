@@ -18,6 +18,7 @@ import {
   shell,
 } from "electron";
 import { autoUpdater } from "electron-updater";
+import launchEditor from "launch-editor";
 import { createProject, showCreateDialog } from "../util/create";
 import { ensureDepsInstall } from "../util/deps";
 import { fork } from "../util/fork";
@@ -360,6 +361,13 @@ async function main() {
     ipcMain.on("open-link", (_, url: string) => {
       shell.openExternal(url);
     });
+
+    ipcMain.on(
+      "open-editor",
+      async (_, path: string, opts?: { column: number; line: number }) => {
+        launchEditor(opts ? `${path}:${opts.line}:${opts.column}` : path);
+      }
+    );
 
     ipcMain.on("send-command", async (_, id: string) => {
       switch (id) {

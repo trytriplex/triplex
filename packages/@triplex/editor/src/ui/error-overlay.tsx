@@ -15,7 +15,6 @@ import { useEffect, useRef, useState } from "react";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 import { ScrollContainer } from "../ds/scroll-container";
-import { getEditorLink } from "../util/ide";
 
 interface TriplexError {
   col: number;
@@ -93,15 +92,10 @@ export function ErrorOverlay() {
           icon={CodeIcon}
           label="View source"
           onClick={() => {
-            const context = window.open(
-              getEditorLink({
-                column: error.col,
-                line: error.line,
-                path: error.source,
-              })
-            );
-
-            context?.close();
+            window.triplex.openIDE(error.source, {
+              column: error.col,
+              line: error.line,
+            });
           }}
         />
         <IconButton

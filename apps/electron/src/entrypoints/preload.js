@@ -47,6 +47,7 @@ contextBridge.exposeInMainWorld("triplex", {
       ipcRenderer.removeListener("window-state-change", listener);
     };
   },
+  openIDE: (path, opts) => ipcRenderer.send("open-editor", path, opts),
   openLink: (url) => ipcRenderer.send("open-link", url),
   platform: process.platform,
   sendCommand: (id) => ipcRenderer.send("send-command", id),

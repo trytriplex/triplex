@@ -25,6 +25,7 @@ declare interface Window {
     handleWindowStateChange: (
       callback: (state: WindowState) => void
     ) => () => void;
+    openIDE: (path: string, opts?: { column: number; line: number }) => void;
     openLink: (url: string) => void;
     platform: typeof process.platform;
     sendCommand: (
