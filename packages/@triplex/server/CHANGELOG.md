@@ -1,5 +1,15 @@
 # @triplex/server
 
+## 0.60.0
+
+### Minor Changes
+
+- 7a250ba: Adds duplicate scene
+
+### Patch Changes
+
+- 0cce596: Fix adding custom components to a new file.
+
 ## 0.59.1
 
 ## 0.59.0

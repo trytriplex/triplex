@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.60.0
+
+### Patch Changes
+
+- 0cce596: Error overlay no longer closers after a HMR event.
+
 ## 0.59.1
 
 ## 0.59.0

@@ -1,5 +1,18 @@
 # @triplex/scene
 
+## 0.60.0
+
+### Minor Changes
+
+- 7a250ba: Adds duplicate scene
+
+### Patch Changes
+
+- 0cce596: Error overlay no longer closers after a HMR event.
+- Updated dependencies [0cce596]
+  - @triplex/bridge@0.60.0
+  - @triplex/ws@0.60.0
+
 ## 0.59.1
 
 ### Patch Changes

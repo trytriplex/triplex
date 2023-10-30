@@ -1,5 +1,32 @@
 # @triplex/editor
 
+## 0.60.0
+
+### Minor Changes
+
+- 7a250ba: Adds duplicate scene
+
+### Patch Changes
+
+- 7a250ba: Remove unused code paths missed by a previous refactor.
+- 722ac20: Context panel now closes when the element has been lost. This could
+  happen from being deleted in code, re-ordering, anything.
+- b42550f: Copy/paste text is now available in the edit menu.
+- b42550f: When focusing inputs you will no longer trigger unexpected hotkeys
+  such as transform mode changes when typing.
+- eb37a51: IDE links now opened through the `launch-editor` package.
+- 0cce596: Error overlay no longer closers after a HMR event.
+- 000008d: Element actions are now located in the scene panel, with the enter
+  selection action being removed from the UI altogether. Access it instead via
+  the "Selection" menu, or via its hotkey (SHIFT+F).
+
+  Selection actions remain functional via hotkeys: delete, focus, enter.
+
+- 000008d: Fix delete action not working on nested child elements.
+- Updated dependencies [0cce596]
+  - @triplex/bridge@0.60.0
+  - @triplex/ws@0.60.0
+
 ## 0.59.1
 
 ### Patch Changes

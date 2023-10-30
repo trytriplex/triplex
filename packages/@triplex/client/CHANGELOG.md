@@ -1,5 +1,15 @@
 # @triplex/client
 
+## 0.60.0
+
+### Patch Changes
+
+- 000008d: Fix regression on Windows where the scene would never load.
+- 0cce596: Fix adding custom components to a new file.
+- Updated dependencies [0cce596]
+- Updated dependencies [7a250ba]
+  - @triplex/scene@0.60.0
+
 ## 0.59.1
 
 ### Patch Changes
