@@ -52,7 +52,7 @@ export function Header({
         <span className="mr-3">
           <Link
             aria-label="Triplex home"
-            className="font text-[2.5rem] text-white/90"
+            className="font text-[2.5rem] text-neutral-300"
             href="/"
           >
             <svg viewBox="0 0 200 200" width="32px">
@@ -65,7 +65,7 @@ export function Header({
         </span>
 
         <Link
-          className="flex h-full items-center bg-blue-400 px-6 py-3 text-lg font-semibold text-neutral-950 md:text-base"
+          className="flex h-full items-center bg-blue-400 px-6 py-3 text-lg font-semibold text-neutral-900"
           href="/download"
         >
           Download
@@ -85,7 +85,7 @@ export function Header({
           <div className="hidden md:contents">{children}</div>
 
           <button
-            className="relative flex h-8 cursor-default items-center rounded-md border-neutral-700 px-3 text-sm text-neutral-400 -outline-offset-1 outline-blue-400 hover:bg-white/5 focus-visible:outline focus-visible:outline-1 active:bg-white/10 md:ml-auto md:w-64 md:cursor-text md:border md:pl-3 md:pr-1.5"
+            className="relative flex h-8 cursor-default items-center rounded-md border-neutral-700 px-3 text-base text-neutral-400 -outline-offset-1 outline-blue-400 hover:bg-white/5 focus-visible:outline focus-visible:outline-1 active:bg-white/10 md:ml-auto md:w-72 md:cursor-text md:border md:pl-3 md:pr-1.5"
             onClick={showSearch}
             type="button"
           >
@@ -114,8 +114,10 @@ export function HeaderItem({
   return (
     <Link
       className={cn([
-        isSelected ? "text-blue-400" : "text-white/80 hover:text-white/90",
-        "text-base font-semibold",
+        isSelected
+          ? "text-blue-400"
+          : "text-neutral-300 hover:text-neutral-200",
+        "text-lg font-semibold",
       ])}
       href={href}
     >
