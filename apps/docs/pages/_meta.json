@@ -20,16 +20,19 @@
     "title": "Docs",
     "href": "/docs/overview"
   },
+  "faq": {
+    "title": "FAQ",
+    "href": "/docs/faq"
+  },
+  "blog": {
+    "title": "Blog"
+  },
   "pricing": {
     "title": "Pricing",
     "href": "/pricing",
     "theme": {
       "layout": "raw"
     }
-  },
-  "faq": {
-    "title": "FAQ",
-    "href": "/docs/faq"
   },
   "github": {
     "title": "Visit Github",
@@ -51,9 +54,6 @@
     "title": "Visit Twitter",
     "href": "https://twitter.com/_douges",
     "type": "hidden"
-  },
-  "blog": {
-    "title": "Blog"
   },
   "license": {
     "type": "hidden"
