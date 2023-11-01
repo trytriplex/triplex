@@ -8,7 +8,7 @@ directories:
   output: targets
 
 extraMetadata:
-  main: ./dist/entrypoints/main.js
+  main: ./dist/main.js
 
 files:
   - dist
