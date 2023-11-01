@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { randomUUID } from "node:crypto";
 import { readdir } from "node:fs/promises";
 import { join } from "node:path";
 import process from "node:process";
@@ -30,6 +31,8 @@ if (process.env.TRIPLEX_ENV !== "development") {
   });
 }
 
+const SESSION_ID = randomUUID();
+const USER_ID = randomUUID();
 const HEADLESS_RUN = process.argv.includes("--headless");
 const EDITOR_DEV_PORT = 5754;
 const log = logger("main");
@@ -214,6 +217,7 @@ async function openWelcomeScreen() {
     },
     titleBarStyle: "hidden",
     webPreferences: {
+      additionalArguments: [`--userId=${USER_ID}`, `--sessionId=${SESSION_ID}`],
       preload: require.resolve("./preload.js"),
     },
     width: 520,
@@ -265,6 +269,10 @@ async function main() {
       },
       titleBarStyle: "hidden",
       webPreferences: {
+        additionalArguments: [
+          `--userId=${USER_ID}`,
+          `--sessionId=${SESSION_ID}`,
+        ],
         preload: require.resolve("./preload.js"),
       },
       width: 1280,

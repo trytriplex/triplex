@@ -12,6 +12,7 @@ import { Pressable } from "./pressable";
 export const IconButton = forwardRef<
   HTMLDivElement,
   {
+    actionId: string;
     className?: string;
     color?: "inherit" | "default";
     icon: ComponentType<IconProps>;
@@ -26,6 +27,7 @@ export const IconButton = forwardRef<
 >(
   (
     {
+      actionId,
       className,
       color = "default",
       icon: Icon,
@@ -68,6 +70,7 @@ export const IconButton = forwardRef<
       ])}
       label={label}
       onPress={isDisabled ? undefined : onClick}
+      pressActionId={actionId}
       ref={ref}
       testId={testId}
       title={label}
@@ -80,8 +83,9 @@ export const IconButton = forwardRef<
 IconButton.displayName = "IconButton";
 
 export const Button = forwardRef<
-  HTMLButtonElement,
+  HTMLDivElement,
   {
+    actionId: string;
     children: string;
     className?: string;
     disabled?: boolean;
@@ -95,6 +99,7 @@ export const Button = forwardRef<
 >(
   (
     {
+      actionId,
       children,
       className,
       disabled,
@@ -107,9 +112,8 @@ export const Button = forwardRef<
     },
     ref
   ) => (
-    <button
+    <Pressable
       className={cn([
-        "cursor-default outline-1 outline-offset-1 outline-blue-400 focus-visible:outline",
         disabled && "cursor-not-allowed text-neutral-500",
         !disabled &&
           (isSelected
@@ -125,15 +129,14 @@ export const Button = forwardRef<
         "flex items-center gap-1.5 text-sm",
         className,
       ])}
-      data-testid={testId}
-      disabled={disabled}
-      onClick={onClick}
+      onPress={disabled ? undefined : onClick}
+      pressActionId={actionId}
       ref={ref}
-      type="submit"
+      testId={testId}
     >
       {Icon && <Icon />}
       {children}
-    </button>
+    </Pressable>
   )
 );
 

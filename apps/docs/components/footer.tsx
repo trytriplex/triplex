@@ -161,6 +161,18 @@ export function Footer() {
               </Link>
             </li>
           </ul>
+          <ul className="flex flex-col gap-4">
+            <span className="text-sm font-bold text-neutral-200">Legal</span>
+
+            <li>
+              <Link
+                className="text-sm text-neutral-400 hover:text-neutral-200"
+                href="/legal/privacy-policy"
+              >
+                Privacy Policy
+              </Link>
+            </li>
+          </ul>
         </div>
       </div>
     </footer>

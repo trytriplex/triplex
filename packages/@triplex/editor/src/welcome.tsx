@@ -15,6 +15,7 @@ import { createRoot } from "react-dom/client";
 import "./styles.css";
 import { useEffect, useState } from "react";
 import { version } from "../package.json";
+import { Analytics, useScreenView } from "./analytics";
 import { Button } from "./ds/button";
 import { cn } from "./ds/cn";
 
@@ -48,6 +49,7 @@ function ProgressBar() {
 
 function WelcomeScreen() {
   const [windowState, setWindowState] = useState<WindowState>("active");
+  useScreenView("welcome", "Screen");
 
   useEffect(() => {
     return window.triplex.handleWindowStateChange((state) => {
@@ -78,6 +80,7 @@ function WelcomeScreen() {
 
           <div className="-mx-2 flex flex-col">
             <Button
+              actionId="open_project"
               disabled={windowState === "disabled"}
               onClick={() => window.triplex.sendCommand("open-project")}
               size="tight"
@@ -85,6 +88,7 @@ function WelcomeScreen() {
               Open Project...
             </Button>
             <Button
+              actionId="create_project"
               disabled={windowState === "disabled"}
               onClick={() => window.triplex.sendCommand("create-project")}
               size="tight"
@@ -99,6 +103,7 @@ function WelcomeScreen() {
       <div className="mt-auto flex gap-5 px-10">
         <div className="-mx-2 flex basis-1/2 flex-col justify-end">
           <Button
+            actionId="open_documentation"
             icon={ReaderIcon}
             onClick={() =>
               window.triplex.openLink("https://triplex.dev/docs/overview")
@@ -108,6 +113,7 @@ function WelcomeScreen() {
             Documentation
           </Button>
           <Button
+            actionId="open_discord"
             icon={DiscordLogoIcon}
             onClick={() =>
               window.triplex.openLink("https://discord.gg/nBzRBUEs4b")
@@ -117,6 +123,7 @@ function WelcomeScreen() {
             Join Discord
           </Button>
           <Button
+            actionId="view_logs"
             icon={ActivityLogIcon}
             onClick={() => window.triplex.sendCommand("view-logs")}
             size="tight"
@@ -126,6 +133,7 @@ function WelcomeScreen() {
         </div>
         <div className="-mx-2 flex basis-1/2 flex-col justify-end">
           <Button
+            actionId="view_release_notes"
             icon={GlobeIcon}
             onClick={() =>
               window.triplex.openLink(
@@ -137,6 +145,7 @@ function WelcomeScreen() {
             Release Notes
           </Button>
           <Button
+            actionId="sponsor_development"
             icon={HeartFilledIcon}
             isSelected
             onClick={() =>
@@ -153,4 +162,8 @@ function WelcomeScreen() {
   );
 }
 
-createRoot(document.getElementById("root")!).render(<WelcomeScreen />);
+createRoot(document.getElementById("root")!).render(
+  <Analytics>
+    <WelcomeScreen />
+  </Analytics>
+);

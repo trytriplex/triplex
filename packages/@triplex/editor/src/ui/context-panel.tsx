@@ -7,6 +7,7 @@
 import { Cross2Icon, EraserIcon } from "@radix-ui/react-icons";
 import { useLazySubscription } from "@triplex/ws/react";
 import { Suspense, useDeferredValue, useLayoutEffect, useState } from "react";
+import { useScreenView } from "../analytics";
 import { IconButton } from "../ds/button";
 import { ScrollContainer } from "../ds/scroll-container";
 import { PanelSkeleton } from "../ds/skeleton";
@@ -20,6 +21,8 @@ import { PropInput, PropTagContext } from "./prop-input";
 import { StringInput } from "./string-input";
 
 function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
+  useScreenView("context_scene", "Panel");
+
   const { blur, getPropValue, setPropValue } = useScene();
   const { persistPropValue } = useEditor();
   const [filter, setFilter] = useState<string | undefined>();
@@ -150,6 +153,7 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
 }
 
 function ComponentSandboxPanel() {
+  useScreenView("context_sandbox", "Panel");
   const { exportName, path } = useEditor();
   const data = useLazySubscription("/scene/:path/:exportName/props", {
     exportName,
@@ -186,6 +190,7 @@ function ComponentSandboxPanel() {
 
       <div className="flex px-2 py-1">
         <IconButton
+          actionId="clear_live_props"
           icon={EraserIcon}
           isDisabled={!hasValues}
           label="Clear props"
@@ -292,6 +297,7 @@ export function ContextPanel() {
     >
       <div className="pointer-events-auto relative flex h-full flex-col overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%]">
         <IconButton
+          actionId="close_context_panel"
           className="absolute right-2 top-3"
           icon={Cross2Icon}
           label="Close (ESC)"

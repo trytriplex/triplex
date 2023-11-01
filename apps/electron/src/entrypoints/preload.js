@@ -6,6 +6,15 @@
  */
 const { contextBridge, ipcRenderer } = require("electron");
 
+const args = Array.from(process.argv).reduce((acc, arg) => {
+  if (arg.startsWith("--")) {
+    const [key, value] = arg.slice(2).split("=");
+    acc[key] = value;
+  }
+
+  return acc;
+}, {});
+
 contextBridge.exposeInMainWorld("triplex", {
   getEnv: () => {
     try {
@@ -51,7 +60,9 @@ contextBridge.exposeInMainWorld("triplex", {
   openLink: (url) => ipcRenderer.send("open-link", url),
   platform: process.platform,
   sendCommand: (id) => ipcRenderer.send("send-command", id),
+  sessionId: args.sessionId,
   setMenu: (menu) => ipcRenderer.send("set-menu-bar", menu),
   showSaveDialog: (filename) =>
     ipcRenderer.invoke("show-save-dialog", filename),
+  userId: args.userId,
 });

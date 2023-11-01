@@ -4,12 +4,9 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import {
-  forwardRef,
-  KeyboardEventHandler,
-  MouseEventHandler,
-  useCallback,
-} from "react";
+import { forwardRef, KeyboardEventHandler, MouseEventHandler } from "react";
+import { useAnalytics } from "../analytics";
+import useEvent from "../util/use-event";
 import { cn } from "./cn";
 
 export const Pressable = forwardRef<
@@ -17,10 +14,14 @@ export const Pressable = forwardRef<
   {
     children?: React.ReactNode;
     className?: string;
+    doublePressActionId?: string;
     label?: string;
+    onBlur?: () => void;
     onDoublePress?: () => void;
     onPress?: () => void;
+    pressActionId: string;
     style?: React.CSSProperties;
+    tabIndex?: number;
     testId?: string;
     title?: string;
   }
@@ -29,50 +30,48 @@ export const Pressable = forwardRef<
     {
       children,
       className,
+      doublePressActionId,
       label,
+      onBlur,
       onDoublePress,
       onPress,
+      pressActionId,
       style,
+      tabIndex,
       testId,
       title,
     },
     ref
   ) => {
-    const onKeyDownHandler: KeyboardEventHandler = useCallback(
-      (e) => {
-        if (e.key === "Enter") {
-          onPress?.();
-          e.stopPropagation();
-        }
-      },
-      [onPress]
-    );
+    const analytics = useAnalytics();
 
-    const onKeyUpHandler: KeyboardEventHandler = useCallback(
-      (e) => {
-        if (e.key === " ") {
-          onPress?.();
-          e.stopPropagation();
-        }
-      },
-      [onPress]
-    );
-
-    const onClickHandler: MouseEventHandler = useCallback(
-      (e) => {
+    const onKeyDownHandler: KeyboardEventHandler = useEvent((e) => {
+      if (e.key === "Enter") {
         onPress?.();
+        analytics.event(pressActionId);
         e.stopPropagation();
-      },
-      [onPress]
-    );
+      }
+    });
 
-    const onDoubleClickHandler: MouseEventHandler = useCallback(
-      (e) => {
-        onDoublePress?.();
+    const onKeyUpHandler: KeyboardEventHandler = useEvent((e) => {
+      if (e.key === " ") {
+        onPress?.();
+        analytics.event(pressActionId);
         e.stopPropagation();
-      },
-      [onDoublePress]
-    );
+      }
+    });
+
+    const onClickHandler: MouseEventHandler = useEvent((e) => {
+      onPress?.();
+      analytics.event(pressActionId);
+      e.stopPropagation();
+    });
+
+    const onDoubleClickHandler: MouseEventHandler = useEvent((e) => {
+      onDoublePress?.();
+      analytics.event(doublePressActionId);
+      e.stopPropagation();
+    });
 
     return (
       <div
@@ -82,6 +81,7 @@ export const Pressable = forwardRef<
           className,
         ])}
         data-testid={testId}
+        onBlur={onBlur}
         onClick={onClickHandler}
         onDoubleClick={onDoubleClickHandler}
         onKeyDown={onKeyDownHandler}
@@ -89,7 +89,7 @@ export const Pressable = forwardRef<
         ref={ref}
         role="button"
         style={style}
-        tabIndex={0}
+        tabIndex={tabIndex || 0}
         title={title}
       >
         {children}

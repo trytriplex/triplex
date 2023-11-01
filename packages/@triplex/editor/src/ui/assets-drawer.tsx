@@ -19,6 +19,7 @@ import {
 import { createContext, Suspense, useContext, useState } from "react";
 import { cn } from "../ds/cn";
 import { Drawer } from "../ds/drawer";
+import { Pressable } from "../ds/pressable";
 import { ScrollContainer } from "../ds/scroll-container";
 import { useAssetsDrawer } from "../stores/assets-drawer";
 import { useEditor } from "../stores/editor";
@@ -81,14 +82,16 @@ function ProjectAsset({
   };
 
   return (
-    <button
-      className="relative h-24 w-24 cursor-default break-words rounded bg-white/5 p-2 text-sm text-neutral-300 outline-1 outline-offset-1 outline-blue-400 hover:bg-white/10 focus-visible:outline active:bg-white/20"
-      onClick={onClickHandler}
+    <Pressable
+      className="table h-24 w-24 table-fixed break-words rounded bg-white/5 p-2 text-center text-sm text-neutral-300 hover:bg-white/10 active:bg-white/20"
+      onPress={onClickHandler}
+      pressActionId="confirm_add_element"
       title={name}
-      type="button"
     >
-      {asset.type === "asset" ? name : titleCase(name)}
-    </button>
+      <div className="table-cell align-middle">
+        {asset.type === "asset" ? name : titleCase(name)}
+      </div>
+    </Pressable>
   );
 }
 
@@ -115,16 +118,15 @@ function Folder({
 
   return (
     <FolderContext.Provider value={level + 1}>
-      <button
+      <Pressable
         className={cn([
-          "outline-1 -outline-offset-1 outline-blue-400 focus-visible:outline",
           children ? "px-1" : "px-2",
           isSelected
             ? "bg-white/5 text-blue-400 before:absolute before:bottom-0 before:left-0 before:top-0 before:w-0.5 before:bg-blue-400"
             : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
           "relative flex w-full cursor-default items-center gap-0.5 whitespace-nowrap py-1 text-start text-sm",
         ])}
-        onClick={() => {
+        onPress={() => {
           if (hasChildrenFolders) {
             if (filesCount > 0 && !isSelected) {
               // Skip expanding but allow onClick to be called.
@@ -137,8 +139,10 @@ function Folder({
             onClick?.();
           }
         }}
+        pressActionId={
+          isExpanded ? "expand_asset_folder" : "collapse_asset_folder"
+        }
         style={{ paddingLeft: (level + 1) * 8 }}
-        type="button"
       >
         {hasChildrenFolders ? (
           <>
@@ -152,7 +156,7 @@ function Folder({
           <CaretDownIcon className="-ml-[2px] opacity-0" />
         )}
         {text}
-      </button>
+      </Pressable>
 
       {hasChildrenFolders && isExpanded && (
         <div className="relative">

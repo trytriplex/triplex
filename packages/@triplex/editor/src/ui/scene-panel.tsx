@@ -29,6 +29,7 @@ import {
   useTransition,
 } from "react";
 import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary";
+import { useScreenView } from "../analytics";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 import { Pressable } from "../ds/pressable";
@@ -46,6 +47,7 @@ import { StringInput } from "./string-input";
 
 export function ScenePanel() {
   const { exportName, path } = useEditor();
+  useScreenView("scene", "Panel");
 
   return (
     <div
@@ -128,6 +130,7 @@ function ComponentHeading() {
       />
       {!scene.matchesFilesGlob && (
         <IconButton
+          actionId="component_outside_of_project_files"
           className="-mr-1.5 ml-1 text-orange-400"
           icon={ExclamationTriangleIcon}
           label="Warning: This component is outside of your declared project files. Click to learn more."
@@ -155,6 +158,7 @@ function AssetsDrawerButton() {
 
   return (
     <IconButton
+      actionId="open_assets_drawer"
       icon={PlusIcon}
       label="Add element"
       onClick={show}
@@ -183,6 +187,7 @@ function SceneContents() {
       <div className="flex px-2 py-1">
         {import.meta.env.VITE_TEST && (
           <IconButton
+            actionId="new_file"
             icon={BoxIcon}
             label="Debug: New file"
             onClick={newFile}
@@ -203,6 +208,7 @@ function SceneContents() {
         <div className="w-1 flex-shrink-0" />
         {enteredComponent && (
           <IconButton
+            actionId="exit_component"
             className="-scale-x-100"
             icon={ExitIcon}
             label="Exit selection"
@@ -247,6 +253,7 @@ function LiveEditPropsButton() {
 
   return (
     <IconButton
+      actionId="live_edit_props"
       icon={Pencil2Icon}
       isSelected={isSelected || (hasState ? "partial" : false)}
       label="Live edit props"
@@ -269,6 +276,7 @@ function ProviderConfigButton() {
 
   return (
     <IconButton
+      actionId="provider_controls"
       icon={MixerVerticalIcon}
       isSelected={isOpen || (hasState ? "partial" : false)}
       label="Provider controls"
@@ -372,6 +380,7 @@ function JsxElementButton({
               : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
             "group relative flex w-[242px] cursor-default items-center gap-1 border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
           ])}
+          doublePressActionId="navigate_to_element"
           onDoublePress={() => {
             navigateTo();
           }}
@@ -383,6 +392,7 @@ function JsxElementButton({
               path: "path" in element ? element.path || "" : "",
             });
           }}
+          pressActionId="focus_element"
           ref={ref}
           style={{ paddingLeft: level === 1 ? 13 : level * 13 }}
           testId="scene-element"
@@ -390,6 +400,9 @@ function JsxElementButton({
         >
           {showExpander ? (
             <IconButton
+              actionId={
+                isExpanded ? "hide_child_elements" : "show_child_elements"
+              }
               className="-my-1 -ml-2"
               color="inherit"
               icon={isExpanded ? CaretDownIcon : CaretRightIcon}
@@ -421,6 +434,7 @@ function JsxElementButton({
               // A better implementation later would be to traverse this scene objects children
               // And see if a camera exists, if it does enable the button.
               <IconButton
+                actionId="enter_camera"
                 color="inherit"
                 icon={CameraIcon}
                 label="Enter camera"
@@ -435,6 +449,7 @@ function JsxElementButton({
               />
             )}
             <IconButton
+              actionId="delete_element"
               color="inherit"
               icon={TrashIcon}
               label="Delete"
@@ -449,6 +464,7 @@ function JsxElementButton({
               testId="delete"
             />
             <IconButton
+              actionId="jump_to_element"
               color="inherit"
               icon={Crosshair1Icon}
               label="Jump to this element"
@@ -462,6 +478,7 @@ function JsxElementButton({
               testId="jump-to"
             />
             <IconButton
+              actionId="add_child_element"
               color="inherit"
               icon={PlusIcon}
               label="Add child element"

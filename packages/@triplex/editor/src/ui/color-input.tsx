@@ -101,6 +101,7 @@ export function ColorInput({
       </div>
       {!required && defaultValue && (
         <IconButton
+          actionId="clear_prop_value"
           className="opacity-50 group-hover:opacity-100"
           icon={Cross2Icon}
           label="Clear value"

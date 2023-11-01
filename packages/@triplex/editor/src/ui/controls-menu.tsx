@@ -55,6 +55,7 @@ export function ControlsMenu() {
       data-testid="controls-menu"
     >
       <IconButton
+        actionId="set_translate"
         icon={AllSidesIcon}
         isSelected={mode === "translate"}
         label="Translate (T)"
@@ -62,6 +63,7 @@ export function ControlsMenu() {
         testId="translate"
       />
       <IconButton
+        actionId="set_rotate"
         icon={AngleIcon}
         isSelected={mode === "rotate"}
         label="Rotate (R)"
@@ -69,6 +71,7 @@ export function ControlsMenu() {
         testId="rotate"
       />
       <IconButton
+        actionId="set_scale"
         icon={TransformIcon}
         isSelected={mode === "scale"}
         label="Scale (S)"
@@ -77,6 +80,7 @@ export function ControlsMenu() {
       />
       <div className="-my-1 mx-1 w-[1px] bg-neutral-800" />
       <IconButton
+        actionId={camera === "user" ? "exit_user_camera" : "switch_camera"}
         icon={
           camera === "user"
             ? ExitIcon

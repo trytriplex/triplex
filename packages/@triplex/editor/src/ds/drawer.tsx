@@ -6,6 +6,7 @@
  */
 // eslint-disable-next-line import/no-namespace
 import * as Dialog from "@radix-ui/react-dialog";
+import { useScreenView } from "../analytics";
 import { cn } from "./cn";
 
 export function Drawer({
@@ -23,6 +24,8 @@ export function Drawer({
   onClose: () => void;
   open: boolean;
 }) {
+  useScreenView(label, "Drawer");
+
   return (
     <Dialog.Root onOpenChange={(isOpen) => !isOpen && onClose()} open={open}>
       <Dialog.Portal>

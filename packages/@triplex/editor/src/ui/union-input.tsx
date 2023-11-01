@@ -60,6 +60,7 @@ export function UnionInput({
       </div>
       <div className="self-start">
         <IconButton
+          actionId="switch_prop_type"
           icon={SwitchIcon}
           label="Switch prop type"
           onClick={incrementIndex}

@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { useScreenView } from "./analytics";
 import { SceneFrame } from "./scence-bridge";
 import { useEditor } from "./stores/editor";
 import { AssetsDrawer } from "./ui/assets-drawer";
@@ -15,6 +16,7 @@ import { ScenesDrawer } from "./ui/scenes-drawer";
 
 export function EditorFrame() {
   const { path } = useEditor();
+  useScreenView("editor", "Screen");
 
   return (
     <>

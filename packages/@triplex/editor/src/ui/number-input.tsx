@@ -17,6 +17,7 @@ import {
   useState,
 } from "react";
 import { IconButton } from "../ds/button";
+import { Pressable } from "../ds/pressable";
 import { sentenceCase } from "../util/string";
 import { usePropTags } from "./prop-input";
 
@@ -307,32 +308,33 @@ export function NumberInput({
 
       <div className="pointer-events-none absolute -inset-[1px] hidden rounded-md border border-red-400 border-transparent peer-invalid:block peer-focus:hidden" />
 
-      <button
-        aria-label={`Decrease by ${step}`}
-        className="absolute bottom-0 left-0 top-0 flex w-4 cursor-default items-center justify-center text-neutral-300 opacity-20 hover:block hover:bg-white/5 hover:opacity-100 focus:block active:bg-white/10 peer-hover:opacity-100 peer-focus:hidden"
-        data-testid={testId && `${testId}-decrement`}
+      <Pressable
+        className="absolute bottom-0 left-0 top-0 flex w-4 cursor-default items-center justify-center text-neutral-300 opacity-20 hover:flex hover:bg-white/5 hover:opacity-100 focus:flex active:bg-white/10 peer-hover:opacity-100 peer-focus:hidden"
+        label={`Decrease by ${step}`}
         onBlur={onBlurHandler}
-        onClick={incrementDown}
+        onPress={incrementDown}
+        pressActionId="decrement_number_input"
         tabIndex={-1}
-        type="button"
+        testId={testId && `${testId}-decrement`}
       >
         <CaretLeftIcon />
-      </button>
+      </Pressable>
 
-      <button
-        aria-label={`Increase by ${step}`}
-        className="absolute bottom-0 right-0 top-0 flex w-4 cursor-default items-center justify-center text-neutral-300 opacity-20 hover:block hover:bg-white/5 hover:opacity-100 focus:block active:bg-white/10 peer-hover:opacity-100 peer-focus:hidden"
-        data-testid={testId && `${testId}-increment`}
+      <Pressable
+        className="absolute bottom-0 right-0 top-0 flex w-4 cursor-default items-center justify-center text-neutral-300 opacity-20 hover:flex hover:bg-white/5 hover:opacity-100 focus:flex active:bg-white/10 peer-hover:opacity-100 peer-focus:hidden"
+        label={`Increase by ${step}`}
         onBlur={onBlurHandler}
-        onClick={incrementUp}
+        onPress={incrementUp}
+        pressActionId="increment_number_input"
         tabIndex={-1}
-        type="button"
+        testId={testId && `${testId}-increment`}
       >
         <CaretRightIcon />
-      </button>
+      </Pressable>
 
       {!required && (
         <IconButton
+          actionId="clear_number_input"
           className="z-50 hidden group-focus-within:block"
           icon={Cross2Icon}
           label="Clear value"

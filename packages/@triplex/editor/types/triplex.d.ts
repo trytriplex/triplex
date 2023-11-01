@@ -36,7 +36,9 @@ declare interface Window {
         | "close-project"
         | "show-devtools"
     ) => void;
+    sessionId: string;
     setMenu: (menu: import("electron").MenuItemConstructorOptions[]) => void;
     showSaveDialog: (filename: string) => Promise<string | undefined>;
+    userId: string;
   };
 }

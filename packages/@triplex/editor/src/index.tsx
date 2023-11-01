@@ -12,24 +12,27 @@ import { ErrorOverlay } from "./ui/error-overlay";
 import { TitleBar } from "./ui/title-bar";
 import "./styles.css";
 import { Suspense } from "react";
+import { Analytics } from "./analytics";
 import { Environment } from "./environment";
 import { LoadingTriangle } from "./ui/loading-triagle";
 
 createRoot(document.getElementById("root")!).render(
-  <BrowserRouter>
-    <div
-      className={cn([
-        "fixed inset-0 grid select-none grid-cols-[16rem_auto_18rem] gap-3 bg-neutral-900 pb-3",
-        "grid-rows-[32px_auto]",
-      ])}
-    >
-      <Suspense fallback={<LoadingTriangle />}>
-        <Environment>
-          <TitleBar />
-          <EditorFrame />
-          <ErrorOverlay />
-        </Environment>
-      </Suspense>
-    </div>
-  </BrowserRouter>
+  <Analytics>
+    <BrowserRouter>
+      <div
+        className={cn([
+          "fixed inset-0 grid select-none grid-cols-[16rem_auto_18rem] gap-3 bg-neutral-900 pb-3",
+          "grid-rows-[32px_auto]",
+        ])}
+      >
+        <Suspense fallback={<LoadingTriangle />}>
+          <Environment>
+            <TitleBar />
+            <EditorFrame />
+            <ErrorOverlay />
+          </Environment>
+        </Suspense>
+      </div>
+    </BrowserRouter>
+  </Analytics>
 );
