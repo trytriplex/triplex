@@ -65,7 +65,7 @@ export function Header({
         </span>
 
         <Link
-          className="flex h-full items-center bg-blue-400 px-6 py-3 text-lg font-semibold text-neutral-900"
+          className="flex h-full items-center bg-blue-400 px-6 py-3 text-lg font-medium text-neutral-900"
           href="/download"
         >
           Download
@@ -85,7 +85,7 @@ export function Header({
           <div className="hidden md:contents">{children}</div>
 
           <button
-            className="relative flex h-8 cursor-default items-center rounded-md border-neutral-700 px-3 text-base text-neutral-400 -outline-offset-1 outline-blue-400 hover:bg-white/5 focus-visible:outline focus-visible:outline-1 active:bg-white/10 md:ml-auto md:w-72 md:cursor-text md:border md:pl-3 md:pr-1.5"
+            className="relative flex h-8 cursor-default items-center rounded-md border-neutral-700 px-3 text-base text-neutral-300 -outline-offset-1 outline-blue-400 hover:bg-white/5 focus-visible:outline focus-visible:outline-1 active:bg-white/10 md:ml-auto md:w-72 md:cursor-text md:border md:pl-3 md:pr-1.5"
             onClick={showSearch}
             type="button"
           >
@@ -117,7 +117,7 @@ export function HeaderItem({
         isSelected
           ? "text-blue-400"
           : "text-neutral-300 hover:text-neutral-200",
-        "text-lg font-semibold",
+        "text-lg font-medium",
       ])}
       href={href}
     >
