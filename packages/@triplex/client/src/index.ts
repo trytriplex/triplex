@@ -34,6 +34,7 @@ export async function createServer({
 
   const vite = await createViteServer({
     appType: "custom",
+    assetsInclude: ["**/*.(gltf|glb)"],
     configFile: false,
     define: {
       __TRIPLEX_BASE_URL__: `"http://localhost:3333"`,

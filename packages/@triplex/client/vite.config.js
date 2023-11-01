@@ -15,6 +15,10 @@ const externalConfig = [
   ...Object.keys(pkg.dependencies),
 ];
 
+/**
+ * NOTE: This is only for the dev build. For the actual vite config that affects
+ * the scene frame check {@link ./src/index.ts}.
+ */
 export default defineConfig({
   build: {
     minify: true,
