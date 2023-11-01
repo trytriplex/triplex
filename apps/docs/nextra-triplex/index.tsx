@@ -346,7 +346,7 @@ function SearchModal({
       <form method="dialog">
         <div className="flex items-center">
           <input
-            className="w-full rounded bg-transparent px-4 py-4 text-lg text-neutral-200 placeholder:text-neutral-400 focus:outline-none md:text-base"
+            className="w-full rounded bg-transparent px-4 py-4 text-lg text-neutral-200 placeholder:text-neutral-400 focus:outline-none md:text-lg"
             onChange={(e) => setFilter(e.target.value)}
             placeholder="Search documentation..."
             type="text"

@@ -1,0 +1,8 @@
+{
+  "*": {
+    "type": "hidden",
+    "theme": {
+      "pagination": false
+    }
+  }
+}

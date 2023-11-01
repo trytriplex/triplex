@@ -57,5 +57,8 @@
   },
   "license": {
     "type": "hidden"
+  },
+  "legal": {
+    "type": "hidden"
   }
 }
