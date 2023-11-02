@@ -6,12 +6,11 @@
  */
 import { useLazySubscription } from "@triplex/ws/react";
 import { Suspense, useMemo } from "react";
-import { ScrollContainer } from "../ds/scroll-container";
+import { SkeletonContainer, SkeletonText } from "../ds/skeleton";
 import { useEnvironment } from "../environment";
 import { useProviderStore } from "../stores/provider";
 import { useScene } from "../stores/scene";
 import { useSceneState } from "../stores/scene-state";
-import { IDELink } from "../util/ide";
 import { PropField } from "./prop-field";
 import { PropInput, PropTagContext } from "./prop-input";
 
@@ -44,11 +43,23 @@ function Inputs() {
   );
 
   return (
-    <ScrollContainer>
+    <>
       <div className="h-3" />
       {props.length === 0 && (
         <div className="px-4 pb-2.5 text-sm italic text-neutral-400">
-          Props declared on your provider component will appear here.
+          Props declared on your provider component will appear here.{" "}
+          <a
+            className="text-sm text-blue-400"
+            href="#"
+            onClick={() =>
+              window.triplex.openLink(
+                "https://triplex.dev/docs/user-guide/provider-config"
+              )
+            }
+          >
+            Learn more
+          </a>
+          .
         </div>
       )}
 
@@ -89,7 +100,7 @@ function Inputs() {
           );
         })}
       <div className="h-1" />
-    </ScrollContainer>
+    </>
   );
 }
 
@@ -102,40 +113,18 @@ export function ProviderConfig() {
   }
 
   return (
-    <div className="pointer-events-auto w-72 self-start overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900 text-white">
-      <h2 className="text-md px-4 pt-3 font-medium text-neutral-300">
-        Provider Controls
-      </h2>
-      <div className="-mt-0.5 mb-2 px-4">
-        {providerPath && (
-          <>
-            <IDELink column={1} line={1} path={providerPath}>
-              View source
-            </IDELink>
-            <span className="mx-1.5 text-xs text-neutral-400">•</span>
-          </>
-        )}
-
-        <a
-          className="text-xs text-neutral-400"
-          href="#"
-          onClick={() =>
-            window.triplex.openLink(
-              "https://triplex.dev/docs/user-guide/provider-config"
-            )
-          }
-        >
-          Learn more
-        </a>
-      </div>
-
+    <div>
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
 
       {providerPath ? (
         <Suspense
           fallback={
-            <div className="px-4 py-2.5 text-sm italic text-neutral-400">
-              Loading...
+            <div className="px-4 py-4">
+              <SkeletonContainer>
+                <SkeletonText variant="ui" />
+                <SkeletonText variant="ui" />
+                <SkeletonText variant="ui" />
+              </SkeletonContainer>
             </div>
           }
         >

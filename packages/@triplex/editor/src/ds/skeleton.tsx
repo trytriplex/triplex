@@ -39,7 +39,7 @@ export function SkeletonText({
       return (
         <div
           className={cn([
-            "mb-10 h-8 w-2/4 rounded-lg bg-gradient-to-r from-neutral-700 to-neutral-800",
+            "mb-10 h-8  w-2/4 rounded-lg bg-gradient-to-r from-neutral-700 to-neutral-800 last-of-type:mb-0",
             width,
           ])}
         />
@@ -49,7 +49,7 @@ export function SkeletonText({
       return (
         <div
           className={cn([
-            "mb-4 h-3 w-2/4 rounded bg-gradient-to-r from-neutral-700 to-neutral-800",
+            "mb-4 h-3 w-2/4 rounded bg-gradient-to-r from-neutral-700 to-neutral-800 last-of-type:mb-0",
             width,
           ])}
         />

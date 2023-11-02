@@ -10,7 +10,6 @@ import { useEditor } from "./stores/editor";
 import { AssetsDrawer } from "./ui/assets-drawer";
 import { ContextPanel } from "./ui/context-panel";
 import { ControlsMenu } from "./ui/controls-menu";
-import { ProviderConfig } from "./ui/provider-config";
 import { ScenePanel } from "./ui/scene-panel";
 import { ScenesDrawer } from "./ui/scenes-drawer";
 
@@ -27,7 +26,6 @@ export function EditorFrame() {
       </div>
 
       <div className="pointer-events-none z-10 flex flex-col">
-        <ProviderConfig />
         <ControlsMenu />
       </div>
 

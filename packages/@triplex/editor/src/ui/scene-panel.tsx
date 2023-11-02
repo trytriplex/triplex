@@ -43,6 +43,7 @@ import { useScene } from "../stores/scene";
 import { useSceneState } from "../stores/scene-state";
 import { IDELink } from "../util/ide";
 import { ErrorBoundary } from "./error-boundary";
+import { ProviderConfig } from "./provider-config";
 import { StringInput } from "./string-input";
 
 export function ScenePanel() {
@@ -174,16 +175,6 @@ function SceneContents() {
 
   return (
     <div className="flex h-full flex-shrink flex-col">
-      <ComponentHeading />
-
-      <div className="-mt-0.5 mb-2.5 px-4">
-        <IDELink column={1} line={1} path={path}>
-          View source
-        </IDELink>
-      </div>
-
-      <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
-
       <div className="flex px-2 py-1">
         {import.meta.env.VITE_TEST && (
           <IconButton
@@ -195,6 +186,22 @@ function SceneContents() {
           />
         )}
         <ProviderConfigButton />
+      </div>
+
+      <div className="max-h-40">
+        <ScrollContainer>
+          <ProviderConfig />
+        </ScrollContainer>
+      </div>
+
+      <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
+
+      <ComponentHeading />
+
+      <div className="-mt-0.5 mb-2.5 px-4">
+        <IDELink column={1} line={1} path={path}>
+          View source
+        </IDELink>
       </div>
 
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
@@ -378,7 +385,7 @@ function JsxElementButton({
             selected
               ? "border-l-blue-400 bg-white/5 text-blue-400"
               : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
-            "group relative flex w-[242px] cursor-default items-center gap-1 border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
+            "group relative flex w-[274px] cursor-default items-center gap-1 border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
           ])}
           doublePressActionId="navigate_to_element"
           onDoublePress={() => {
