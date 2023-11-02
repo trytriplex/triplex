@@ -1,5 +1,14 @@
 # @triplex/editor
 
+## 0.60.1
+
+### Patch Changes
+
+- b82d12e: Provider controls have now moved above the open component to
+  hopefully provider a more intuitive ux.
+  - @triplex/bridge@0.60.1
+  - @triplex/ws@0.60.1
+
 ## 0.60.0
 
 ### Minor Changes

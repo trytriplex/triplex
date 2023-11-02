@@ -1,6 +1,6 @@
 {
   "name": "@triplex/ws",
-  "version": "0.60.0",
+  "version": "0.60.1",
   "private": true,
   "description": "The React Three Fiber editor.",
   "license": "GPL-3.0",
@@ -27,7 +27,7 @@
   "devDependencies": {
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.3.28",
-    "@triplex/server": "0.60.0",
+    "@triplex/server": "0.60.1",
     "@types/react": "^18.0.27",
     "typescript": "^4.9.4"
   },

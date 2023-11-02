@@ -1,5 +1,17 @@
 # @triplex/electron
 
+## 0.60.1
+
+### Patch Changes
+
+- e2fc746: App now bundled into a single file.
+- Updated dependencies [b82d12e]
+- Updated dependencies [13964df]
+  - @triplex/editor@0.60.1
+  - @triplex/client@0.60.1
+  - @triplex/server@0.60.1
+  - create-triplex-project@0.60.1
+
 ## 0.60.0
 
 ### Patch Changes

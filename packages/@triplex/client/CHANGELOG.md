@@ -1,5 +1,12 @@
 # @triplex/client
 
+## 0.60.1
+
+### Patch Changes
+
+- 13964df: Importing gltf/glb assets directly no longer errors.
+  - @triplex/scene@0.60.1
+
 ## 0.60.0
 
 ### Patch Changes
