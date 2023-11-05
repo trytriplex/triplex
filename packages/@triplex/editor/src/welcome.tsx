@@ -68,7 +68,7 @@ function WelcomeScreen() {
             "absolute right-0 ml-auto flex h-8 items-center pr-2.5 text-xs text-neutral-300",
           ])}
         >
-          {version}
+          {process.env.NODE_ENV === "production" ? version : `${version}-local`}
         </span>
 
         <ProgressBar />

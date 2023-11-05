@@ -25,12 +25,21 @@ async function main() {
       process.cwd()
     );
     const file = await getFirstFoundFile({ files: config.files });
+    let exportName = "";
+    let path = "";
+
+    if (file) {
+      if (file.exports.length) {
+        exportName = file.exports[0].exportName;
+        path = file.path;
+      }
+    }
 
     process.send?.({
       data: {
         config,
-        exportName: file ? file.exports[0].exportName : "",
-        path: file ? file.path : "",
+        exportName,
+        path,
         sceneUrl,
         serverUrl,
         wsUrl,
