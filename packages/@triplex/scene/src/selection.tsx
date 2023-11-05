@@ -37,6 +37,10 @@ export type EditorNodeData = SceneObjectProps["__meta"] & {
   space: "local" | "world";
 };
 
+function strip(num: number): number {
+  return +Number.parseFloat(Number(num).toPrecision(15));
+}
+
 function encodeProps(selected: EditorNodeData): string {
   const props = { ...selected.props };
 
@@ -509,7 +513,7 @@ export function Selection({
           line: selectedObject.line,
           path: selectedObject.path,
           propName: "position",
-          propValue: position,
+          propValue: position.map(strip),
         });
       }
 
@@ -534,7 +538,7 @@ export function Selection({
           line: selectedObject.line,
           path: selectedObject.path,
           propName: "scale",
-          propValue: scale,
+          propValue: scale.map(strip),
         });
       }
     }
@@ -595,6 +599,9 @@ export function Selection({
           object={selectedObject.sceneObject}
           onMouseDown={onMouseDownHandler}
           onMouseUp={onMouseUpHandler}
+          rotationSnap={Math.PI / 180}
+          scaleSnap={0.02}
+          translationSnap={0.02}
         />
       )}
     </group>

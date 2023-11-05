@@ -285,6 +285,7 @@ export function NumberInput({
     <div
       className="group relative flex w-full items-center rounded-md border border-transparent bg-white/5 px-4 focus-within:border-blue-400 focus-within:pl-1 focus-within:pr-0.5 hover:bg-white/10"
       data-testid={isPointerLock ? "pointer-lock" : undefined}
+      title={transformedDefaultValue ? `${transformedDefaultValue}` : ""}
     >
       <input
         className="peer w-full cursor-col-resize text-ellipsis bg-transparent py-0.5 text-center text-sm text-neutral-300 outline-none [color-scheme:dark] [font-variant-numeric:tabular-nums] placeholder:italic placeholder:text-neutral-500 focus:cursor-text focus:text-left"
