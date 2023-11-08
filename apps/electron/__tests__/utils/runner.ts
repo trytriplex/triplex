@@ -28,12 +28,11 @@ function defer() {
 
 async function launch() {
   const electronApp = await electron.launch({
-    args: ["hook-main.js", process.env.DEBUG ? "" : "--headless"],
+    args: ["hook-main.js", process.env.CI ? "--headless" : ""],
     env: {
       ...process.env,
       FORCE_EDITOR_TEST_FIXTURE: "true",
       TRIPLEX_TARGET: "electron",
-      VITE_TEST: "true",
     },
   });
 

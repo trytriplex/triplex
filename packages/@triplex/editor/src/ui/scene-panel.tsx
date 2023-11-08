@@ -5,7 +5,6 @@
  * file in the root directory of this source tree.
  */
 import {
-  BoxIcon,
   CameraIcon,
   CaretDownIcon,
   CaretRightIcon,
@@ -67,7 +66,6 @@ export function ScenePanel() {
 function ComponentHeading() {
   const { exportName, newComponent, path, set } = useEditor();
   const { config } = useEnvironment();
-  const projectState = useLazySubscription("/project/state");
   const scene = useLazySubscription("/scene/:path/:exportName", {
     exportName,
     path,
@@ -121,14 +119,6 @@ function ComponentHeading() {
         </select>
       </label>
 
-      <span
-        aria-label={projectState.isDirty ? "Unsaved changes" : undefined}
-        className={cn([
-          "h-2.5 w-2.5 flex-shrink-0 rounded-full",
-          projectState.isDirty ? "bg-yellow-400" : "bg-neutral-800",
-        ])}
-        title={projectState.isDirty ? "Unsaved changes" : undefined}
-      />
       {!scene.matchesFilesGlob && (
         <IconButton
           actionId="component_outside_of_project_files"
@@ -169,22 +159,12 @@ function AssetsDrawerButton() {
 }
 
 function SceneContents() {
-  const { enteredComponent, exitComponent, exportName, newFile, path } =
-    useEditor();
+  const { enteredComponent, exitComponent, exportName, path } = useEditor();
   const [filter, setFilter] = useState<string | undefined>();
 
   return (
     <div className="flex h-full flex-shrink flex-col">
       <div className="flex px-2 py-1">
-        {import.meta.env.VITE_TEST && (
-          <IconButton
-            actionId="new_file"
-            icon={BoxIcon}
-            label="Debug: New file"
-            onClick={newFile}
-            testId="new-file"
-          />
-        )}
         <ProviderConfigButton />
       </div>
 

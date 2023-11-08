@@ -5,11 +5,12 @@
  * file in the root directory of this source tree.
  */
 import type { ComponentTarget, ComponentType } from "@triplex/server";
-import { useCallback, useMemo } from "react";
+import { startTransition, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { create } from "zustand";
 import { showSaveDialog } from "../util/prompt";
 import { stringifyJSON } from "../util/string";
+import useEvent from "../util/use-event";
 import { useScene } from "./scene";
 import { useUndoRedoState } from "./undo-redo";
 
@@ -153,6 +154,10 @@ export function useEditor() {
     window.history.back();
   }, []);
 
+  const close = useEvent((filePath: string) => {
+    fetch(`http://localhost:8000/scene/${encodeURIComponent(filePath)}/close`);
+  });
+
   const persistPropValue = useCallback(
     (data: PersistPropValue) => {
       const undoAction = () => {
@@ -265,7 +270,15 @@ export function useEditor() {
         newParams.forceSaveAs = "true";
       }
 
-      setSearchParams(newParams, { replace: metaParams.replace });
+      if (newParams.forceSaveAs) {
+        // We want a loading state for a new file
+        setSearchParams(newParams, { replace: metaParams.replace });
+      } else {
+        startTransition(() => {
+          // Keeping this behind a transition ensures there isn't a flash of loading state.
+          setSearchParams(newParams, { replace: metaParams.replace });
+        });
+      }
     },
     [exportName, path, setSearchParams]
   );
@@ -393,6 +406,10 @@ export function useEditor() {
        */
       addComponent,
       /**
+       * Closes the file, clearing out any intermediate state.
+       */
+      close,
+      /**
        * Deletes the currently focused scene object. Able to be undone. Is not
        * persisted until `save()` is called.
        */
@@ -467,6 +484,7 @@ export function useEditor() {
       target,
     }),
     [
+      close,
       addComponent,
       deleteComponent,
       duplicateSelection,

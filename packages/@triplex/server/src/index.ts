@@ -206,6 +206,15 @@ export function createServer({
     context.response.body = { message: "success" };
   });
 
+  router.get("/scene/:path/close", async (context) => {
+    const path = context.params.path;
+    const sourceFile = await project.getSourceFile(path);
+
+    await sourceFile.close();
+
+    context.response.body = { message: "success" };
+  });
+
   router.get("/fs/:path", async (context) => {
     const path = context.params.path;
     const sourceFile = await project.getSourceFile(path);

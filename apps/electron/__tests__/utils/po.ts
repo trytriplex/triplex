@@ -20,6 +20,26 @@ export class EditorPage {
     this.#testInfo = testInfo;
   }
 
+  get fileTabs() {
+    const locator = this.page.getByLabel("File tabs");
+
+    return {
+      activeTab: locator.getByTestId("active-tab"),
+      locator,
+      tab(name: string) {
+        const tabLocator = locator.getByRole("button", { name }).first();
+
+        return {
+          closeButton: tabLocator.getByLabel(`Close ${name}`),
+          locator: tabLocator,
+        };
+      },
+      waitForActiveTab: async (text: string) => {
+        await expect(locator.getByTestId("active-tab")).toHaveText(text);
+      },
+    };
+  }
+
   get titleBar() {
     const title = this.page.getByTestId("titlebar");
     return title;
@@ -49,8 +69,8 @@ export class EditorPage {
 
   async newFile() {
     await this.waitForScene();
-    const button = this.page.getByTestId("new-file");
-    await button.click();
+    const button = this.page.getByLabel("New file");
+    await button.dblclick();
     await expect
       .poll(async () => this.page.getByTestId("scene-element").count())
       .toBe(0);

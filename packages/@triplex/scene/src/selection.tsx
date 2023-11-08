@@ -349,7 +349,7 @@ export function Selection({
           return;
         }
 
-        if (sceneObject && sceneObject.path) {
+        if (sceneObject) {
           onNavigate(sceneObject);
           setSelected(undefined);
           onBlur();

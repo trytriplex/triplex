@@ -8,6 +8,4 @@
 
 declare const __TRIPLEX_TARGET__: "web" | "electron";
 
-interface ImportMetaEnv {
-  readonly VITE_TEST: string;
-}
+interface ImportMetaEnv {}

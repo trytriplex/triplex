@@ -38,10 +38,7 @@ describe("project ast", () => {
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
 
-    expect(project.getState()).toEqual({
-      dirtySourceFiles: [],
-      isDirty: false,
-    });
+    expect(project.getState()).toEqual([]);
   });
 
   it("should return edited project state", () => {
@@ -52,19 +49,22 @@ describe("project ast", () => {
       join(__dirname, "__mocks__", "box.tsx")
     );
 
+    sourceFile.open("default");
     sourceFile.edit();
     sourceFile.edit();
     sourceFile.edit();
 
-    expect(project.getState()).toEqual({
-      dirtySourceFiles: [
-        join(
+    expect(project.getState()).toEqual([
+      {
+        exportName: "default",
+        fileName: "box.tsx",
+        filePath: join(
           process.cwd(),
           "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
         ).replaceAll("\\", "/"),
-      ],
-      isDirty: true,
-    });
+        isDirty: true,
+      },
+    ]);
   });
 
   it("should reset project state when saving", async () => {
@@ -74,14 +74,22 @@ describe("project ast", () => {
     const sourceFile = project.getSourceFile(
       join(__dirname, "__mocks__", "box.tsx")
     );
+    sourceFile.open("default");
     sourceFile.edit();
 
     await project.save({});
 
-    expect(project.getState()).toEqual({
-      dirtySourceFiles: [],
-      isDirty: false,
-    });
+    expect(project.getState()).toEqual([
+      {
+        exportName: "default",
+        fileName: "box.tsx",
+        filePath: join(
+          process.cwd(),
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
+        ).replaceAll("\\", "/"),
+        isDirty: false,
+      },
+    ]);
   });
 
   it("should callback when state changes", () => {

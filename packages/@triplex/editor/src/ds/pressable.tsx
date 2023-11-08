@@ -19,7 +19,7 @@ export const Pressable = forwardRef<
     onBlur?: () => void;
     onDoublePress?: () => void;
     onPress?: () => void;
-    pressActionId: string;
+    pressActionId?: string;
     style?: React.CSSProperties;
     tabIndex?: number;
     testId?: string;

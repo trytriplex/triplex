@@ -95,6 +95,7 @@ export function createProject({
     (e: SourceFileChangedEvent) => void
   >();
   const modifiedSourceFiles = new Set<SourceFile>();
+  const openedSourceFiles = new Map<SourceFile, string>();
 
   // Watch the all files inside cwd and watch for changes.
   // If any changes have been made refresh the source file.
@@ -146,9 +147,10 @@ export function ${componentName}() {
 
     const sourceFile = project.createSourceFile(filename, template);
 
+    // Setup callbacks
     modifiedSourceFiles.add(sourceFile);
-    onStateChangeCallbacks.forEach((cb) => cb());
     sourceFile.onModified(onSourceFileModified);
+
     // Immediately callback to notify the creation of this source file
     onSourceFileModified(sourceFile);
 
@@ -174,9 +176,10 @@ export function ${componentName}() {
     }
 
     return {
-      cleanup: () => {
-        project.removeSourceFile(sourceFile);
-        dependencyModifiedCallbacks.delete(sourceFile.getFilePath());
+      close: () => {
+        openedSourceFiles.delete(sourceFile);
+        modifiedSourceFiles.delete(sourceFile);
+        onStateChangeCallbacks.forEach((cb) => cb());
       },
       edit: () => {
         modifiedSourceFiles.add(sourceFile);
@@ -198,6 +201,10 @@ export function ${componentName}() {
             callbacks.filter((callback) => callback !== cb)
           );
         };
+      },
+      open: (exportName: string) => {
+        openedSourceFiles.set(sourceFile, exportName);
+        onStateChangeCallbacks.forEach((cb) => cb());
       },
       read: () => sourceFile,
       reset: async () => {
@@ -236,14 +243,14 @@ export function ${componentName}() {
   }
 
   function getState() {
-    const dirtySourceFiles = Array.from(modifiedSourceFiles).map((sourceFile) =>
-      sourceFile.getFilePath()
-    );
-
-    return {
-      dirtySourceFiles,
-      isDirty: dirtySourceFiles.length > 0,
-    };
+    return Array.from(openedSourceFiles).map(([file, exportName]) => {
+      return {
+        exportName,
+        fileName: file.getBaseName(),
+        filePath: file.getFilePath(),
+        isDirty: modifiedSourceFiles.has(file),
+      };
+    });
   }
 
   function onStateChange(callback: () => void) {

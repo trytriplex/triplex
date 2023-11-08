@@ -22,7 +22,7 @@ export function TitleBar() {
   }, [windowTitle]);
 
   return (
-    <div className="z-50 col-span-full row-start-1 grid h-[33px] select-none grid-cols-3 items-center border-b border-neutral-800 bg-neutral-900 [-webkit-app-region:drag]">
+    <div className="z-50 col-span-full row-start-1 grid h-8 select-none grid-cols-3 items-center border-b border-neutral-800 bg-neutral-900 [-webkit-app-region:drag]">
       <div>
         <EditorMenu />
       </div>

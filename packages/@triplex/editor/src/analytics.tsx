@@ -101,7 +101,9 @@ class Analytics4 {
         body: JSON.stringify(payload),
         method: "POST",
       }
-    );
+    ).catch(() => {
+      // Swallow any errors
+    });
   }
 }
 

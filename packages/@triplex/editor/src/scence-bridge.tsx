@@ -33,7 +33,7 @@ export function SceneFrame() {
     <>
       <iframe
         // This should never change during a session as it will do a full page reload.
-        className="absolute h-full w-full border-none"
+        className="col-span-full row-start-3 h-full w-full border-none"
         src={`http://localhost:3333/scene.html?path=${initialPath}&props=${initialProps}&exportName=${initialExportName}&env=${encodeURIComponent(
           JSON.stringify(env)
         )}`}
