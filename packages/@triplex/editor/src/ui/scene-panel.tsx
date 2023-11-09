@@ -432,6 +432,7 @@ function JsxElementButton({
                     path: element.parentPath,
                   })
                 }
+                size="sm"
                 testId="enter-camera"
               />
             )}
@@ -462,6 +463,7 @@ function JsxElementButton({
                   path: element.parentPath,
                 })
               }
+              size="sm"
               testId="jump-to"
             />
             <IconButton

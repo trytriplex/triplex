@@ -7,8 +7,7 @@
 import { expect } from "@playwright/test";
 import { test } from "./utils/runner";
 
-// Currently flakey and causing the test run to run over 10 minutes
-test.skip("update component position prop", async ({ editor }) => {
+test("update component position prop", async ({ editor }) => {
   const parent = editor.scenePanel.elementButton("Box");
   await parent.click();
   const input = editor.contextPanel.input("Position");
@@ -16,11 +15,12 @@ test.skip("update component position prop", async ({ editor }) => {
   await input.fill("2");
   await input.blur();
 
-  await expect(editor.scenePanel.unsavedIndicator).toBeVisible();
+  const tab = editor.fileTabs.tab("scene.tsx");
+  await expect(tab.unsavedIndicator).toBeVisible();
 });
 
-// Currently flakey and causing the test run to run over 10 minutes
-test.skip("update child component name prop", async ({ editor }) => {
+test("update child component name prop", async ({ editor }) => {
+  await editor.waitForScene();
   const parent = editor.scenePanel.elementButton("Box");
   await parent.expandButton.click({ force: true });
   const child = editor.scenePanel.elementButton("boxGeometry");

@@ -29,20 +29,20 @@ export function EditorFrame() {
   }, [exportName, open, path]);
 
   return (
-    <div className="fixed inset-0 grid select-none grid-cols-[18rem_auto_18rem] grid-rows-[2rem_2.25rem_auto] bg-neutral-900 pb-3">
+    <div className="fixed inset-0 grid select-none grid-cols-[18rem_auto_18rem] grid-rows-[2rem_2.25rem_auto] bg-neutral-900">
       <SceneFrame />
       <TitleBar />
       <FileTabs />
 
-      <div className="col-start-1 row-auto row-start-3 mt-3 flex overflow-hidden pl-3">
+      <div className="col-start-1 row-auto row-start-3 flex overflow-hidden py-3 pl-3">
         {path && <ScenePanel />}
       </div>
 
-      <div className="pointer-events-none col-start-2 row-start-3 flex">
+      <div className="pointer-events-none col-start-2 row-start-3 flex pb-3">
         <ControlsMenu />
       </div>
 
-      <div className="pointer-events-none col-start-3 row-start-3 mt-3 flex overflow-hidden pr-3">
+      <div className="pointer-events-none col-start-3 row-start-3 flex overflow-hidden py-3 pr-3">
         <ContextPanel />
       </div>
 

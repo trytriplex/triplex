@@ -32,6 +32,7 @@ export class EditorPage {
         return {
           closeButton: tabLocator.getByLabel(`Close ${name}`),
           locator: tabLocator,
+          unsavedIndicator: tabLocator.getByLabel("Unsaved changes"),
         };
       },
       waitForActiveTab: async (text: string) => {
@@ -105,7 +106,7 @@ export class EditorPage {
       heading: locator.getByTestId("scene-panel-heading"),
       locator,
       newComponent: async () => {
-        this.waitForScene();
+        await this.waitForScene();
         const locator = this.page.getByTestId("component-select-input");
         await locator.click();
         await locator.selectOption("new-component");
@@ -113,7 +114,6 @@ export class EditorPage {
           .poll(async () => this.page.getByTestId("scene-element").count())
           .toBe(0);
       },
-      unsavedIndicator: locator.getByLabel("Unsaved changes"),
     };
   }
 

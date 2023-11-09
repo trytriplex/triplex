@@ -37,10 +37,7 @@ test("create new component and insert a box", async ({ editor }) => {
   await expect(button.locator).toHaveText("boxGeometry");
 });
 
-// Currently flakey and causing the test run to run over 10 minutes
-test.skip("create new file and insert a custom component", async ({
-  editor,
-}) => {
+test("create new file and insert a custom component", async ({ editor }) => {
   await editor.newFile();
   const drawer = await editor.assetsDrawer.open();
   await drawer.openFolder({ name: "geometry" });
@@ -52,8 +49,7 @@ test.skip("create new file and insert a custom component", async ({
   await expect(button.locator).toHaveText("Box");
 });
 
-// Currently flakey and causing the test run to run over 10 minutes
-test.skip("create new component and insert a custom component", async ({
+test("create new component and insert a custom component", async ({
   editor,
 }) => {
   await editor.scenePanel.newComponent();
