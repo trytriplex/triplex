@@ -102,6 +102,8 @@ export function EditorMenu() {
     path,
     reset,
     save,
+    saveAll,
+    saveAs,
     target,
   } = useEditor();
   const { blur, jumpTo, navigateTo, refresh, setTransform } = useScene();
@@ -157,10 +159,16 @@ export function EditorMenu() {
             },
             {
               accelerator: shortcut("S", { meta: true, shift: true }),
-              click: () => save(true),
+              click: () => saveAs(),
               enabled: isEditable,
               id: "save-as",
               label: "Save As...",
+            },
+            {
+              click: () => saveAll(),
+              enabled: isEditable,
+              id: "save-all",
+              label: "Save All",
             },
             { type: "separator" },
             {
@@ -184,7 +192,6 @@ export function EditorMenu() {
             { type: "separator" },
             {
               click: () => window.triplex.sendCommand("close-project"),
-
               id: "close-project",
               // Menu item only displayed in native
               label: "Close Project",
@@ -372,6 +379,8 @@ export function EditorMenu() {
       newFile,
       showOverlay,
       save,
+      saveAs,
+      saveAll,
       revertFile,
       refresh,
       undo,

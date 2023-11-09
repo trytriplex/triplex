@@ -68,10 +68,6 @@ export interface ClientSendEventData {
   "trplx:onTransformChange": {
     mode: "translate" | "scale" | "rotate";
   };
-  "trplx:requestDeleteSceneObject": undefined;
-  "trplx:requestRedo": undefined;
-  "trplx:requestSave": undefined;
-  "trplx:requestUndo": undefined;
 }
 
 export interface ClientSendEventResponse {
@@ -90,10 +86,6 @@ export interface ClientSendEventResponse {
   "trplx:onSceneObjectNavigated": void;
   "trplx:onStateChange": void;
   "trplx:onTransformChange": void;
-  "trplx:requestDeleteSceneObject": void;
-  "trplx:requestRedo": void;
-  "trplx:requestSave": void;
-  "trplx:requestUndo": void;
 }
 
 export type HostSendEventName = keyof HostSendEventData;

@@ -8,7 +8,6 @@ import type { ComponentTarget, ComponentType } from "@triplex/server";
 import { startTransition, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { create } from "zustand";
-import { showSaveDialog } from "../util/prompt";
 import { stringifyJSON } from "../util/string";
 import useEvent from "../util/use-event";
 import { useScene } from "./scene";
@@ -232,14 +231,13 @@ export function useEditor() {
       componentParams: Params,
       metaParams: {
         entered?: true;
-        forceSaveAs?: true;
         replace?: true;
+        skipTransition?: boolean;
       } = {}
     ) => {
       if (
         componentParams.path === path &&
         componentParams.exportName === exportName &&
-        metaParams.forceSaveAs === undefined &&
         metaParams.replace === undefined
       ) {
         // Bail if we're already on the same path.
@@ -266,11 +264,7 @@ export function useEditor() {
         newParams.entered = "true";
       }
 
-      if (metaParams.forceSaveAs) {
-        newParams.forceSaveAs = "true";
-      }
-
-      if (newParams.forceSaveAs) {
+      if (metaParams.skipTransition) {
         // We want a loading state for a new file
         setSearchParams(newParams, { replace: metaParams.replace });
       } else {
@@ -283,43 +277,76 @@ export function useEditor() {
     [exportName, path, setSearchParams]
   );
 
-  const save = useCallback(
-    async (saveAs = !!searchParams.get("forceSaveAs")) => {
-      let actualPath = path;
+  const saveAs = useCallback(async () => {
+    const newPath = await window.triplex.showSaveDialog(path);
+    if (!newPath) {
+      return;
+    }
 
-      if (saveAs) {
-        const enteredPath = await showSaveDialog(path);
-        if (!enteredPath) {
-          // Abort, user cleared filename or cancelled.
-          return;
-        } else {
-          actualPath = enteredPath;
-        }
-      }
-
-      // Clear the update stack as the line and column numbers of jsx elements
-      // Will most likely change after formatting resulting in the rpc calls not
-      // Working anymore.
-      clearUndoRedo();
-
-      await fetch("http://localhost:8000/project/save", {
-        body: JSON.stringify({
-          rename: path !== actualPath ? { [path]: actualPath } : {},
-        }),
+    await fetch(
+      `http://localhost:8000/scene/${encodeURIComponent(
+        path
+      )}/save-as?newPath=${encodeURIComponent(newPath)}`,
+      {
         method: "POST",
-      });
+      }
+    );
 
+    if (newPath !== path) {
+      // Path has changed, redirect!
       set(
         {
           encodedProps,
           exportName,
-          path: actualPath,
+          path: newPath,
         },
-        { replace: true }
+        { skipTransition: true }
       );
-    },
-    [clearUndoRedo, encodedProps, exportName, path, searchParams, set]
-  );
+    }
+
+    // Clear the update stack as the line and column numbers of jsx elements
+    // Will most likely change after formatting resulting in the rpc calls not
+    // Working anymore.
+    clearUndoRedo();
+  }, [clearUndoRedo, encodedProps, exportName, path, set]);
+
+  const save = useCallback(async () => {
+    const response = await fetch(
+      `http://localhost:8000/scene/${encodeURIComponent(path)}/save`,
+      {
+        method: "POST",
+      }
+    );
+    const data = await response.json();
+
+    if (data.message === "error" && data.error.id === "missing-new-path") {
+      return saveAs();
+    }
+
+    // Clear the update stack as the line and column numbers of jsx elements
+    // Will most likely change after formatting resulting in the rpc calls not
+    // Working anymore.
+    clearUndoRedo();
+  }, [clearUndoRedo, path, saveAs]);
+
+  const saveAll = useCallback(async () => {
+    await fetch("http://localhost:8000/project/save-all", {
+      method: "POST",
+    });
+
+    // Clear the update stack as the line and column numbers of jsx elements
+    // Will most likely change after formatting resulting in the rpc calls not
+    // Working anymore.
+    clearUndoRedo();
+  }, [clearUndoRedo]);
+
+  const open = useEvent((path: string, exportName: string) => {
+    fetch(
+      `http://localhost:8000/scene/${encodeURIComponent(
+        path
+      )}/${exportName}/open`
+    );
+  });
 
   const newFile = useCallback(async () => {
     const result = await fetch(`http://localhost:8000/scene/new`, {
@@ -333,7 +360,7 @@ export function useEditor() {
         exportName: data.exportName,
         path: data.path,
       },
-      { forceSaveAs: true }
+      { skipTransition: true }
     );
   }, [set]);
 
@@ -457,6 +484,10 @@ export function useEditor() {
        */
       newFile,
       /**
+       * Opens the file at the passed in path and export name.
+       */
+      open,
+      /**
        * Current value of the scene path.
        */
       path,
@@ -470,10 +501,18 @@ export function useEditor() {
        */
       reset,
       /**
-       * Calls the web server to save the intermediate scene source to file
-       * system.
+       * Saves the current file to the filesystem.
        */
       save,
+      /**
+       * Saves all currently opened files that aren't "new" to the filesystem.
+       */
+      saveAll,
+      /**
+       * Presents a dialog to choose where to save the file to, and if chosen
+       * persists to the filesystem.
+       */
+      saveAs,
       /**
        * Sets the loaded scene to a specific path, export name, and props.
        */
@@ -484,8 +523,8 @@ export function useEditor() {
       target,
     }),
     [
-      close,
       addComponent,
+      close,
       deleteComponent,
       duplicateSelection,
       encodedProps,
@@ -495,10 +534,13 @@ export function useEditor() {
       focus,
       newComponent,
       newFile,
+      open,
       path,
       persistPropValue,
       reset,
       save,
+      saveAll,
+      saveAs,
       set,
       target,
     ]

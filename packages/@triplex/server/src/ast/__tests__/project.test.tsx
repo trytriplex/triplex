@@ -63,6 +63,7 @@ describe("project ast", () => {
           "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
         ).replaceAll("\\", "/"),
         isDirty: true,
+        isNew: false,
       },
     ]);
   });
@@ -77,7 +78,7 @@ describe("project ast", () => {
     sourceFile.open("default");
     sourceFile.edit();
 
-    await project.save({});
+    await project.saveAll();
 
     expect(project.getState()).toEqual([
       {
@@ -88,6 +89,45 @@ describe("project ast", () => {
           "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
         ).replaceAll("\\", "/"),
         isDirty: false,
+        isNew: false,
+      },
+    ]);
+  });
+
+  it("should ignore saving new files when saving all", async () => {
+    const project = createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+    const sourceFile = project.getSourceFile(
+      join(__dirname, "__mocks__", "box.tsx")
+    );
+    project.createSourceFile("Untitled").open("Untitled");
+    sourceFile.open("default");
+    sourceFile.open("default");
+    sourceFile.edit();
+
+    await project.saveAll();
+
+    expect(project.getState()).toEqual([
+      {
+        exportName: "Untitled",
+        fileName: "untitled.tsx",
+        filePath: join(process.cwd(), "/src/untitled.tsx").replaceAll(
+          "\\",
+          "/"
+        ),
+        isDirty: true,
+        isNew: true,
+      },
+      {
+        exportName: "default",
+        fileName: "box.tsx",
+        filePath: join(
+          process.cwd(),
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
+        ).replaceAll("\\", "/"),
+        isDirty: false,
+        isNew: false,
       },
     ]);
   });

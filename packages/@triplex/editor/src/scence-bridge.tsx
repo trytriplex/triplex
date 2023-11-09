@@ -77,10 +77,6 @@ function BridgeReceiveEvents() {
 
     return compose([
       listen("trplx:onAddNewComponent", editor.addComponent),
-      listen("trplx:requestDeleteSceneObject", editor.deleteComponent),
-      listen("trplx:requestSave", editor.save),
-      listen("trplx:requestUndo", undo),
-      listen("trplx:requestRedo", redo),
       listen("trplx:onSceneObjectNavigated", (data) => {
         editor.set(
           {

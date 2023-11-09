@@ -25,7 +25,6 @@ export function getSceneExport({
   project: TRIPLEXProject;
 }) {
   const sourceFile = project.getSourceFile(path);
-  sourceFile.open(exportName);
   const jsxElements = getJsxElementsPositions(sourceFile.read(), exportName);
   const foundExports = inferExports(sourceFile.read().getText());
   const foundExport = foundExports.find((exp) => exp.exportName === exportName);

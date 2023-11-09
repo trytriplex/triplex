@@ -24,7 +24,7 @@ function normalize(str: string | undefined): string {
 
 function Scenes({ filter = "" }: { filter?: string }) {
   const files = useLazySubscription("/scene");
-  const { exportName, path } = useEditor();
+  const { exportName, open, path } = useEditor();
   const { show } = useOverlayStore();
 
   function matchesFilter(
@@ -69,7 +69,10 @@ function Scenes({ filter = "" }: { filter?: string }) {
                   "block select-none rounded-sm px-2 py-0.5 text-base outline-1 outline-blue-400 hover:bg-white/5 focus-visible:outline active:bg-white/10",
                 ])}
                 key={exp.exportName}
-                onClick={() => show(false)}
+                onClick={() => {
+                  show(false);
+                  open(file.path, exp.exportName);
+                }}
                 to={{
                   search: `?path=${file.path}&exportName=${exp.exportName}`,
                 }}

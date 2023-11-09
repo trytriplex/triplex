@@ -94,7 +94,7 @@ export function createProject({
   const onSourceFileChangeCallbacks = new Set<
     (e: SourceFileChangedEvent) => void
   >();
-  const modifiedSourceFiles = new Set<SourceFile>();
+  const modifiedSourceFiles = new Map<SourceFile, { new: boolean }>();
   const openedSourceFiles = new Map<SourceFile, string>();
 
   // Watch the all files inside cwd and watch for changes.
@@ -148,13 +148,13 @@ export function ${componentName}() {
     const sourceFile = project.createSourceFile(filename, template);
 
     // Setup callbacks
-    modifiedSourceFiles.add(sourceFile);
+    modifiedSourceFiles.set(sourceFile, { new: true });
     sourceFile.onModified(onSourceFileModified);
 
     // Immediately callback to notify the creation of this source file
     onSourceFileModified(sourceFile);
 
-    return sourceFile;
+    return getSourceFile(filename);
   }
 
   function onSourceFileModified(sourceFile: SourceFile) {
@@ -182,7 +182,9 @@ export function ${componentName}() {
         onStateChangeCallbacks.forEach((cb) => cb());
       },
       edit: () => {
-        modifiedSourceFiles.add(sourceFile);
+        if (!modifiedSourceFiles.has(sourceFile)) {
+          modifiedSourceFiles.set(sourceFile, { new: false });
+        }
         onStateChangeCallbacks.forEach((cb) => cb());
         return sourceFile;
       },
@@ -212,43 +214,56 @@ export function ${componentName}() {
         modifiedSourceFiles.delete(sourceFile);
         onStateChangeCallbacks.forEach((cb) => cb());
       },
+      save: async (newPath?: string) => {
+        if (modifiedSourceFiles.get(sourceFile)?.new && !newPath) {
+          return {
+            id: "missing-new-path",
+            message: "Cannot save without newPath arg.",
+          };
+        }
+
+        await persistSourceFile({
+          cwd,
+          newPath,
+          sourceFile,
+        });
+
+        modifiedSourceFiles.delete(sourceFile);
+        onStateChangeCallbacks.forEach((cb) => cb());
+      },
     };
   }
 
-  async function save({ rename = {} }: { rename?: Record<string, string> }) {
-    const renamePaths = Object.keys(rename);
+  async function saveAll() {
+    const sourceFiles = Array.from(modifiedSourceFiles)
+      // Filter out source files that are "new".
+      .filter(([, value]) => !value.new);
 
-    // Ensure all source files that are staged to be renamed are available.
-    renamePaths.forEach((path) => {
-      const sourceFile = getSourceFile(path);
-      if (modifiedSourceFiles.has(sourceFile.read())) {
-        return;
-      }
-
-      modifiedSourceFiles.add(sourceFile.read());
-    });
-
-    const promises = Array.from(modifiedSourceFiles).map((sourceFile) =>
+    const promises = sourceFiles.map(([sourceFile]) =>
       persistSourceFile({
         cwd,
-        newPath: rename[sourceFile.getFilePath()],
         sourceFile,
       })
     );
 
     await Promise.all(promises);
 
-    modifiedSourceFiles.clear();
+    sourceFiles.forEach(([sourceFile]) => {
+      modifiedSourceFiles.delete(sourceFile);
+    });
     onStateChangeCallbacks.forEach((cb) => cb());
   }
 
   function getState() {
     return Array.from(openedSourceFiles).map(([file, exportName]) => {
+      const modified = modifiedSourceFiles.get(file);
+
       return {
         exportName,
         fileName: file.getBaseName(),
         filePath: file.getFilePath(),
-        isDirty: modifiedSourceFiles.has(file),
+        isDirty: !!modified,
+        isNew: !!modified?.new,
       };
     });
   }
@@ -286,6 +301,6 @@ export function ${componentName}() {
     getState,
     onSourceFileChange,
     onStateChange,
-    save,
+    saveAll,
   };
 }

@@ -767,8 +767,8 @@ describe("component service", () => {
       cwd: join(__dirname, "tmp"),
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
-    const sourceFile = project.createSourceFile("Untitled");
-    const saveFile = () => project.save({});
+    const sourceFile = project.createSourceFile("Untitled").read();
+    const saveFile = () => project.saveAll();
     const addComponent = async (exportName: string) => {
       const pos = add(sourceFile, "Untitled", {
         exportName,

@@ -129,10 +129,12 @@ export function createServer({
     const exportName = "Untitled";
     const sourceFile = project.createSourceFile(exportName);
 
+    sourceFile.open(exportName);
+
     context.response.body = {
       exportName,
       message: "success",
-      path: sourceFile.getFilePath(),
+      path: sourceFile.read().getFilePath(),
     };
   });
 
@@ -143,6 +145,38 @@ export function createServer({
     const { exportName } = create(sourceFile.edit());
 
     context.response.body = { exportName, path };
+  });
+
+  router.post("/scene/:path/save", async (context) => {
+    const { path } = context.params;
+    const sourceFile = project.getSourceFile(path);
+
+    const result = await sourceFile.save();
+
+    if (result) {
+      context.response.body = { error: result, message: "error" };
+    } else {
+      context.response.body = { message: "success" };
+    }
+  });
+
+  router.post("/scene/:path/save-as", async (context) => {
+    const { path } = context.params;
+    const newPath = getParam(context, "newPath");
+    const sourceFile = project.getSourceFile(path);
+
+    await sourceFile.save(newPath);
+
+    context.response.body = { message: "success" };
+  });
+
+  router.get("/scene/:path/:exportName/open", async (context) => {
+    const { exportName, path } = context.params;
+    const sourceFile = project.getSourceFile(path);
+
+    sourceFile.open(exportName);
+
+    context.response.body = { message: "success" };
   });
 
   router.post("/scene/:path/:exportName", async (context) => {
@@ -179,17 +213,8 @@ export function createServer({
     context.response.body = { ...result };
   });
 
-  /**
-   * Persist the in-memory scene to fs.
-   */
-  router.post("/project/save", async (context) => {
-    const body: { rename: Record<string, string> } = await context.request.body(
-      {
-        type: "json",
-      }
-    ).value;
-
-    await project.save(body);
+  router.post("/project/save-all", async (context) => {
+    await project.saveAll();
 
     context.response.body = { message: "success" };
   });

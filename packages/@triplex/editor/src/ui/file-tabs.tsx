@@ -35,6 +35,17 @@ function FileTab({
   });
 
   const onCloseHandler = useEvent(() => {
+    if (
+      // Skip if it's a test environment
+      import.meta.env.VITE_TRIPLEX_ENV !== "test" &&
+      isDirty &&
+      !confirm(
+        `Closing this tab will throw away changes you have made to ${children}, continue?`
+      )
+    ) {
+      return;
+    }
+
     onClose(filePath);
   });
 

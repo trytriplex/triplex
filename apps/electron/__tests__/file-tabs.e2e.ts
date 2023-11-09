@@ -18,6 +18,7 @@ test("fallback to first available tab when closing active tab", async ({
 }) => {
   await editor.newFile();
   await editor.newFile();
+  await editor.fileTabs.waitForActiveTab("untitled1.tsx");
 
   const { closeButton } = editor.fileTabs.tab("untitled1.tsx");
   await closeButton.click();

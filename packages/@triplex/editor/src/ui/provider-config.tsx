@@ -132,8 +132,18 @@ export function ProviderConfig() {
         </Suspense>
       ) : (
         <div className="px-4 py-2.5 text-sm italic text-neutral-400">
-          Set up a provider component to have its props appear here to
-          configure.
+          Set up a provider component and its props will appear here.{" "}
+          <a
+            className="text-blue-400"
+            href="#"
+            onClick={() =>
+              window.triplex.openLink(
+                "https://triplex.dev/docs/user-guide/provider-config"
+              )
+            }
+          >
+            Learn more.
+          </a>
         </div>
       )}
     </div>
