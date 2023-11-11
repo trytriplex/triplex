@@ -6,7 +6,7 @@
  */
 import { randomUUID } from "node:crypto";
 import { readdir } from "node:fs/promises";
-import { join } from "node:path";
+import { join, resolve, sep } from "node:path";
 import process from "node:process";
 import { init } from "@sentry/electron/main";
 import {
@@ -155,29 +155,19 @@ function prepareMenu() {
   };
 }
 
-async function openProjectDialog(
-  message?: string
-): Promise<string | undefined> {
-  const { canceled, filePaths } = await dialog.showOpenDialog({
-    message,
-    properties: ["openDirectory"],
-    title: "Open Project",
-  });
-
-  const path = filePaths.at(0);
-
-  if (canceled || !path) {
+async function findTriplexFolder(path: string): Promise<string | undefined> {
+  if (path === sep) {
+    // We've traversed all the way up the folder path and found nothing.
+    // Bail out!
     return undefined;
-  } else {
-    const dir = await readdir(path);
-    if (dir.includes(".triplex")) {
-      return path;
-    }
-
-    return openProjectDialog(
-      "Folder hasn't been initialized yet, create a project first."
-    );
   }
+
+  const dir = await readdir(path);
+  if (dir.includes(".triplex")) {
+    return path;
+  }
+
+  return findTriplexFolder(resolve(path, ".."));
 }
 
 async function showSaveDialog(
@@ -373,6 +363,85 @@ async function main() {
     }
   }
 
+  async function openProjectDialog(
+    message?: string
+  ): Promise<string | undefined> {
+    const { canceled, filePaths } = await dialog.showOpenDialog({
+      message,
+      properties: ["openDirectory"],
+      title: "Open Project",
+    });
+
+    const path = filePaths.at(0);
+
+    if (canceled || !path) {
+      return undefined;
+    } else {
+      const foundFolder = await findTriplexFolder(path);
+      if (foundFolder) {
+        return foundFolder;
+      }
+
+      const result = await dialog.showMessageBox({
+        buttons: ["Create a project...", "Open another project...", "Cancel"],
+        detail: "Want to create a project instead?",
+        message: "Project could not be found",
+        type: "warning",
+      });
+
+      switch (result.response) {
+        case 0: {
+          if (welcomeWindow) {
+            createTriplexProject(welcomeWindow);
+          }
+
+          return undefined;
+        }
+
+        case 1: {
+          return openProjectDialog();
+        }
+
+        default:
+          return;
+      }
+    }
+  }
+
+  async function createTriplexProject(browserWindow: BrowserWindow) {
+    const filename = await showCreateDialog();
+    if (filename) {
+      try {
+        const result = await createProject(browserWindow, filename);
+        if (result === false) {
+          return;
+        }
+      } catch (error_) {
+        const error = error_ as Error;
+        const { response } = await dialog.showMessageBox({
+          buttons: ["OK", "Learn more"],
+          cancelId: -1,
+          defaultId: 0,
+          detail:
+            "There was an error during project creation, please check your package manager. \n\n" +
+            error.message,
+          message: "Project partially created",
+          type: "error",
+        });
+
+        if (response === 1) {
+          shell.openExternal(
+            "https://triplex.dev/docs/supporting/installing-dependencies"
+          );
+        }
+
+        return;
+      }
+
+      await onOpenProject(filename);
+    }
+  }
+
   function applyGlobalIpcHandlers() {
     ipcMain.on("open-link", (_, url: string) => {
       shell.openExternal(url);
@@ -409,37 +478,7 @@ async function main() {
 
         case "create-project": {
           if (welcomeWindow) {
-            const filename = await showCreateDialog();
-            if (filename) {
-              try {
-                const result = await createProject(welcomeWindow, filename);
-                if (result === false) {
-                  return;
-                }
-              } catch (error_) {
-                const error = error_ as Error;
-                const { response } = await dialog.showMessageBox({
-                  buttons: ["OK", "Learn more"],
-                  cancelId: -1,
-                  defaultId: 0,
-                  detail:
-                    "There was an error during project creation, please check your package manager. \n\n" +
-                    error.message,
-                  message: "Project partially created",
-                  type: "error",
-                });
-
-                if (response === 1) {
-                  shell.openExternal(
-                    "https://triplex.dev/docs/supporting/installing-dependencies"
-                  );
-                }
-
-                return;
-              }
-
-              await onOpenProject(filename);
-            }
+            await createTriplexProject(welcomeWindow);
           }
           break;
         }
