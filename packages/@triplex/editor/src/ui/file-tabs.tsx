@@ -6,7 +6,7 @@
  */
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useLazySubscription } from "@triplex/ws/react";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 import { Pressable } from "../ds/pressable";
@@ -17,6 +17,7 @@ function FileTab({
   children,
   exportName,
   filePath,
+  index,
   isActive,
   isDirty,
   onClick,
@@ -25,6 +26,7 @@ function FileTab({
   children: string;
   exportName: string;
   filePath: string;
+  index: number;
   isActive?: boolean;
   isDirty?: boolean;
   onClick: (fileName: string, exportName: string) => void;
@@ -48,6 +50,25 @@ function FileTab({
 
     onClose(filePath);
   });
+
+  useEffect(() => {
+    if (!isActive) {
+      return;
+    }
+
+    return window.triplex.accelerator("CommandOrCtrl+W", onCloseHandler);
+  }, [onCloseHandler, isActive]);
+
+  useEffect(() => {
+    if (index > 8) {
+      return;
+    }
+
+    return window.triplex.accelerator(
+      `CommandOrCtrl+${index + 1}`,
+      onClickHandler
+    );
+  }, [index, onClickHandler]);
 
   return (
     <Pressable
@@ -152,10 +173,11 @@ export function FileTabs() {
       aria-label="File tabs"
       className="col-span-full row-start-2 flex h-9 border-b border-neutral-800"
     >
-      {projectState.map((file) => (
+      {projectState.map((file, index) => (
         <FileTab
           exportName={file.exportName}
           filePath={file.filePath}
+          index={index}
           isActive={path === file.filePath}
           isDirty={file.isDirty}
           key={file.filePath}

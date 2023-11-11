@@ -30,7 +30,6 @@ export async function editor({
   const frontendServer = await createFrontendServer({
     files,
     publicDir,
-    target: "web",
   });
   const backendServer = await createBackendServer({
     assetsDir,

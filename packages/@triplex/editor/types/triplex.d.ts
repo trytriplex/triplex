@@ -8,6 +8,10 @@ declare type WindowState = "active" | "inactive" | "disabled";
 
 declare interface Window {
   triplex: {
+    accelerator: (
+      accelerator: `CommandOrCtrl+${string}`,
+      callback: () => void
+    ) => () => void;
     getEnv: () => Promise<{
       config: {
         assetsDir: string;

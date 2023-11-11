@@ -32,7 +32,6 @@ async function launch() {
     env: {
       ...process.env,
       FORCE_EDITOR_TEST_FIXTURE: "true",
-      TRIPLEX_TARGET: "electron",
       VITE_TRIPLEX_ENV: "test",
     },
   });

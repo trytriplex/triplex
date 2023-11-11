@@ -6,8 +6,6 @@
  */
 /// <reference types="vite/client" />
 
-declare const __TRIPLEX_TARGET__: "web" | "electron";
-
 interface ImportMetaEnv {
   VITE_TRIPLEX_ENV?: "test";
 }

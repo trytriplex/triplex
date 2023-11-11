@@ -21,8 +21,6 @@ export default {
       },
     },
   },
-  define: {
-    __TRIPLEX_TARGET__: `"${process.env.TRIPLEX_TARGET}"`,
-  },
+  define: {},
   plugins: [react()],
 };

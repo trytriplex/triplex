@@ -15,7 +15,26 @@ const args = Array.from(process.argv).reduce((acc, arg) => {
   return acc;
 }, {});
 
+const declaredAccelerators = {};
+
 contextBridge.exposeInMainWorld("triplex", {
+  accelerator: (accelerator, callback) => {
+    const listener = () => {
+      callback();
+    };
+
+    if (declaredAccelerators[accelerator]) {
+      throw new Error("invariant: accelerator already declared");
+    }
+
+    declaredAccelerators[accelerator] = true;
+    ipcRenderer.on(`acl:${accelerator}`, listener);
+
+    return () => {
+      delete declaredAccelerators[accelerator];
+      ipcRenderer.removeListener(`acl:${accelerator}`, listener);
+    };
+  },
   getEnv: () => {
     try {
       return ipcRenderer.invoke("get-triplex-env");

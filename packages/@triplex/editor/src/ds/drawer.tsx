@@ -35,8 +35,7 @@ export function Drawer({
             mode === "blocking" && "bg-neutral-900",
             mode === "transparent" && "bg-neutral-900/[97%]",
             attach === "left" && "slide-in bottom-0 left-0 w-64 border-r",
-            attach === "left" &&
-              (__TRIPLEX_TARGET__ === "electron" ? "top-8" : "top-0"),
+            attach === "left" && "top-8",
             attach === "bottom" &&
               "slide-up bottom-2 left-2 right-2 h-48 rounded-lg border",
             "fixed flex flex-col overflow-hidden border-neutral-800 text-neutral-300 shadow-2xl shadow-black/50 outline-none",

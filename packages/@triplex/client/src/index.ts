@@ -18,13 +18,11 @@ export async function createServer({
   files,
   provider,
   publicDir,
-  target,
 }: {
   cwd?: string;
   files: string[];
   provider?: string;
   publicDir?: string;
-  target: "web" | "electron";
 }) {
   const normalizedCwd = cwd.replaceAll("\\", "/");
   const tsConfig = join(normalizedCwd, "tsconfig.json");
@@ -39,7 +37,6 @@ export async function createServer({
     define: {
       __TRIPLEX_BASE_URL__: `"http://localhost:3333"`,
       __TRIPLEX_CWD__: `"${normalizedCwd}"`,
-      __TRIPLEX_TARGET__: `"${target}"`,
     },
     logLevel: "error",
     plugins: [

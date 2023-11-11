@@ -199,6 +199,14 @@ function applyWindowIpcHandlers(activeWindow: BrowserWindow) {
       return showSaveDialog(activeWindow, filename);
     }
   );
+
+  activeWindow.webContents.on("before-input-event", (_, input) => {
+    if (input.meta && input.type === "keyDown") {
+      activeWindow.webContents.send(
+        `acl:CommandOrCtrl+${input.key.toUpperCase()}`
+      );
+    }
+  });
 }
 
 async function openWelcomeScreen() {

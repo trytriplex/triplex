@@ -35,10 +35,7 @@ interface MenuItem {
 }
 
 const shortcut = (key: string, { meta = false, shift = false } = {}) => {
-  if (
-    __TRIPLEX_TARGET__ === "electron" &&
-    window.triplex.platform === "darwin"
-  ) {
+  if (window.triplex.platform === "darwin") {
     const META_KEY = "CommandOrControl";
     const metaHotkey = meta ? META_KEY : "";
     const shiftHotkey = shift ? "Shift" : "";
@@ -143,11 +140,9 @@ export function EditorMenu() {
             },
             {
               click: () => window.triplex.sendCommand("open-project"),
-
               id: "open-project",
               // Menu item only displayed in native
               label: "Open Project...",
-              visible: __TRIPLEX_TARGET__ === "electron",
             },
             { type: "separator" },
             {
@@ -195,7 +190,6 @@ export function EditorMenu() {
               id: "close-project",
               // Menu item only displayed in native
               label: "Close Project",
-              visible: __TRIPLEX_TARGET__ === "electron",
             },
           ],
         },
@@ -295,7 +289,6 @@ export function EditorMenu() {
             {
               type: "separator",
             },
-
             {
               accelerator: shortcut("T"),
               click: () => setTransform("translate"),
@@ -345,14 +338,11 @@ export function EditorMenu() {
               label: "Logs",
             },
           ],
-          visible: __TRIPLEX_TARGET__ === "electron",
         },
         {
           id: "window-menu",
           role: "windowMenu",
-          visible:
-            __TRIPLEX_TARGET__ === "electron" &&
-            window.triplex.platform === "darwin",
+          visible: window.triplex.platform === "darwin",
         },
         {
           id: "help-menu",
@@ -366,7 +356,6 @@ export function EditorMenu() {
               role: "help",
             },
           ],
-          visible: __TRIPLEX_TARGET__ === "electron",
         },
       ] satisfies MenuItem[],
     [
@@ -395,47 +384,40 @@ export function EditorMenu() {
   );
 
   useEffect(() => {
-    if (__TRIPLEX_TARGET__ === "electron") {
-      window.triplex.setMenu(
-        // Eliminate functions before sending the data by stringifying it first.
-        JSON.parse(JSON.stringify(menubar))
-      );
-    }
+    window.triplex.setMenu(
+      // Eliminate functions before sending the data by stringifying it first.
+      JSON.parse(JSON.stringify(menubar))
+    );
   }, [menubar]);
 
   useEffect(() => {
-    if (__TRIPLEX_TARGET__ === "electron") {
-      return window.triplex.handleMenuItemPress((id) => {
-        const menuItem = findMenuItem(id, menubar);
-        if (menuItem && menuItem.click) {
-          switch (menuItem.enabled) {
-            case "active-input": {
-              if (document.activeElement?.tagName === "INPUT") {
-                menuItem.click();
-              }
-              break;
-            }
-
-            case "inactive-input": {
-              if (document.activeElement?.tagName !== "INPUT") {
-                menuItem.click();
-              }
-              break;
-            }
-
-            default:
+    return window.triplex.handleMenuItemPress((id) => {
+      const menuItem = findMenuItem(id, menubar);
+      if (menuItem && menuItem.click) {
+        switch (menuItem.enabled) {
+          case "active-input": {
+            if (document.activeElement?.tagName === "INPUT") {
               menuItem.click();
-              break;
+            }
+            break;
           }
+
+          case "inactive-input": {
+            if (document.activeElement?.tagName !== "INPUT") {
+              menuItem.click();
+            }
+            break;
+          }
+
+          default:
+            menuItem.click();
+            break;
         }
-      });
-    }
+      }
+    });
   }, [menubar]);
 
-  if (
-    __TRIPLEX_TARGET__ === "electron" &&
-    window.triplex.platform === "darwin"
-  ) {
+  if (window.triplex.platform === "darwin") {
     return null;
   }
 
