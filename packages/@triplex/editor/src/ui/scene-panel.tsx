@@ -55,9 +55,7 @@ export function ScenePanel() {
       data-testid="scene-panel"
     >
       <ErrorBoundary keys={[path, exportName]}>
-        <Suspense fallback={<PanelSkeleton />}>
-          <SceneContents />
-        </Suspense>
+        <SceneContents />
       </ErrorBoundary>
     </div>
   );
@@ -176,58 +174,60 @@ function SceneContents() {
 
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
 
-      <ComponentHeading />
+      <Suspense fallback={<PanelSkeleton />}>
+        <ComponentHeading />
 
-      <div className="-mt-0.5 mb-2.5 px-4">
-        <IDELink column={1} line={1} path={path}>
-          View source
-        </IDELink>
-      </div>
+        <div className="-mt-0.5 mb-2.5 px-4">
+          <IDELink column={1} line={1} path={path}>
+            View source
+          </IDELink>
+        </div>
 
-      <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
+        <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
 
-      <div className="flex py-2 pl-3 pr-2">
-        <StringInput
-          label="Filter elements..."
-          name="filter-elements"
-          onChange={setFilter}
-        />
-        <div className="w-1 flex-shrink-0" />
-        {enteredComponent && (
-          <IconButton
-            actionId="exit_component"
-            className="-scale-x-100"
-            icon={ExitIcon}
-            label="Exit selection"
-            onClick={exitComponent}
+        <div className="flex py-2 pl-3 pr-2">
+          <StringInput
+            label="Filter elements..."
+            name="filter-elements"
+            onChange={setFilter}
           />
-        )}
-        <LiveEditPropsButton />
-        <AssetsDrawerButton />
-      </div>
-
-      <ScrollContainer>
-        <ReactErrorBoundary
-          fallbackRender={(e) => (
-            <div
-              className="bg-red-500/10 py-1 text-center text-xs italic text-red-400"
-              title={e.error.message}
-            >
-              Error loading elements
-            </div>
+          <div className="w-1 flex-shrink-0" />
+          {enteredComponent && (
+            <IconButton
+              actionId="exit_component"
+              className="-scale-x-100"
+              icon={ExitIcon}
+              label="Exit selection"
+              onClick={exitComponent}
+            />
           )}
-          resetKeys={[path, exportName]}
-        >
-          <JsxElements
-            exportName={exportName}
-            filter={filter}
-            level={1}
-            path={path}
-          />
-        </ReactErrorBoundary>
+          <LiveEditPropsButton />
+          <AssetsDrawerButton />
+        </div>
 
-        <div className="h-1" />
-      </ScrollContainer>
+        <ScrollContainer>
+          <ReactErrorBoundary
+            fallbackRender={(e) => (
+              <div
+                className="bg-red-500/10 py-1 text-center text-xs italic text-red-400"
+                title={e.error.message}
+              >
+                Error loading elements
+              </div>
+            )}
+            resetKeys={[path, exportName]}
+          >
+            <JsxElements
+              exportName={exportName}
+              filter={filter}
+              level={1}
+              path={path}
+            />
+          </ReactErrorBoundary>
+
+          <div className="h-1" />
+        </ScrollContainer>
+      </Suspense>
     </div>
   );
 }

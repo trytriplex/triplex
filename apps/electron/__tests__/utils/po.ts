@@ -20,12 +20,25 @@ export class EditorPage {
     this.#testInfo = testInfo;
   }
 
+  get fileDrawer() {
+    const locator = this.page.getByTestId("file-drawer");
+
+    return {
+      fileLink(name: string) {
+        const fileLocator = locator.getByRole("link", { name });
+        return fileLocator;
+      },
+      locator,
+    };
+  }
+
   get fileTabs() {
     const locator = this.page.getByLabel("File tabs");
 
     return {
       activeTab: locator.getByTestId("active-tab"),
       locator,
+      openFileButton: locator.getByLabel("Open Component..."),
       tab(name: string) {
         const tabLocator = locator.getByRole("button", { name }).first();
 
@@ -36,6 +49,7 @@ export class EditorPage {
         };
       },
       waitForActiveTab: async (text: string) => {
+        this.#testInfo.slow();
         await expect(locator.getByTestId("active-tab")).toHaveText(text);
       },
     };

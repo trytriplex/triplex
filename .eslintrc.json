@@ -27,6 +27,7 @@
     "no-inner-declarations": "off",
     "no-unused-expressions": "off",
     "prefer-const": "off",
+    "playwright/no-focused-test": "off",
     "react/no-unknown-property": "off",
     "unicorn/prefer-ternary": "off",
     "unicorn/prefer-top-level-await": "off"

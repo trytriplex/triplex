@@ -43,7 +43,25 @@ function Scenes({ filter = "" }: { filter?: string }) {
   }
 
   return (
-    <div className="flex flex-col gap-2 px-2 pt-2">
+    <div className="flex flex-col gap-2 px-2 pt-2" data-testid="file-drawer">
+      {files.scenes.length === 0 && (
+        <div className="px-2 pb-2.5 text-sm italic text-neutral-400">
+          No files were found that can be opened. Your config might be invalid.{" "}
+          <a
+            className="text-sm text-blue-400"
+            href="#"
+            onClick={() =>
+              window.triplex.openLink(
+                "https://triplex.dev/docs/api-reference/config#files"
+              )
+            }
+          >
+            Learn more
+          </a>
+          .
+        </div>
+      )}
+
       {files.scenes.map((file) => {
         if (!matchesFilter(filter, file)) {
           return null;

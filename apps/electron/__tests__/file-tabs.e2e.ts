@@ -13,6 +13,15 @@ test("opening a new file should focus on new tab", async ({ editor }) => {
   await expect(editor.fileTabs.activeTab).toHaveText("untitled.tsx");
 });
 
+test("opening another file", async ({ editor }) => {
+  await editor.waitForScene();
+  await editor.fileTabs.openFileButton.click();
+
+  await editor.fileDrawer.fileLink("Box").click();
+
+  await expect(editor.scenePanel.heading).toHaveText("Box");
+});
+
 test("fallback to first available tab when closing active tab", async ({
   editor,
 }) => {

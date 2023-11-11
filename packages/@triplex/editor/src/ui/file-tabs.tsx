@@ -98,6 +98,7 @@ function FileTab({
           "peer absolute right-2 z-10 opacity-0 focus:opacity-100",
           isDirty ? "hover:opacity-100" : "group-hover:opacity-100",
         ])}
+        color="inherit"
         icon={Cross2Icon}
         label={`Close ${children}`}
         onClick={onCloseHandler}
@@ -179,7 +180,7 @@ export function FileTabs() {
         actionId="open-file"
         className="mx-1"
         icon={CubeIcon}
-        label="Open file..."
+        label="Open Component..."
         onClick={() => showOverlay("open-scene")}
       />
 

@@ -61,7 +61,7 @@ export function SkeletonText({
 
 export function PanelSkeleton() {
   return (
-    <div className="absolute left-0 right-0 top-0 flex flex-col pl-3 pt-3">
+    <div className="flex flex-col pl-3 pt-3">
       <SkeletonContainer>
         <SkeletonText variant="h1" />
         <SkeletonText variant="ui" />
