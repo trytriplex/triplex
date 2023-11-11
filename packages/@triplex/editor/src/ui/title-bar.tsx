@@ -5,13 +5,15 @@
  * file in the root directory of this source tree.
  */
 import { useLazySubscription } from "@triplex/ws/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { cn } from "../ds/cn";
 import { useEditor } from "../stores/editor";
 import { EditorMenu } from "./editor-menu";
 
 export function TitleBar() {
   const { path } = useEditor();
   const { name } = useLazySubscription("/folder");
+  const [windowState, setWindowState] = useState<WindowState>("active");
   const filename = path.replaceAll("\\", "/").split("/").at(-1);
   const windowTitle = filename ? filename + " — " + name : name;
 
@@ -21,8 +23,17 @@ export function TitleBar() {
     }
   }, [windowTitle]);
 
+  useEffect(() => {
+    return window.triplex.handleWindowStateChange(setWindowState);
+  }, []);
+
   return (
-    <div className="z-50 col-span-full row-start-1 grid h-8 select-none grid-cols-3 items-center border-b border-neutral-800 bg-neutral-900 [-webkit-app-region:drag]">
+    <div
+      className={cn([
+        windowState === "inactive" && "opacity-50",
+        "z-50 col-span-full row-start-1 grid h-8 select-none grid-cols-3 items-center border-b border-neutral-800 bg-neutral-900 [-webkit-app-region:drag]",
+      ])}
+    >
       <div>
         <EditorMenu />
       </div>

@@ -4,13 +4,14 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { Cross2Icon } from "@radix-ui/react-icons";
+import { Cross2Icon, CubeIcon } from "@radix-ui/react-icons";
 import { useLazySubscription } from "@triplex/ws/react";
 import { useEffect, useRef } from "react";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 import { Pressable } from "../ds/pressable";
 import { useEditor } from "../stores/editor";
+import { useOverlayStore } from "../stores/overlay";
 import useEvent from "../util/use-event";
 
 function FileTab({
@@ -73,7 +74,7 @@ function FileTab({
   return (
     <Pressable
       className={cn([
-        "group relative flex items-center gap-3 whitespace-nowrap border-t-2 px-4 text-sm",
+        "group relative flex h-full items-center gap-3 whitespace-nowrap border-t-2 px-4 text-sm",
         isActive
           ? "border-blue-400 bg-white/5 text-blue-400"
           : "border-transparent text-neutral-400 hover:bg-white/5 active:bg-white/10",
@@ -116,6 +117,7 @@ function FileTab({
 
 export function FileTabs() {
   const projectState = useLazySubscription("/project/state");
+  const showOverlay = useOverlayStore((store) => store.show);
   const { close, exportName, newFile, path, set } = useEditor();
   const lastActiveTab = useRef<
     { exportName: string; filePath: string } | undefined
@@ -171,8 +173,16 @@ export function FileTabs() {
   return (
     <nav
       aria-label="File tabs"
-      className="col-span-full row-start-2 flex h-9 border-b border-neutral-800"
+      className="col-span-full row-start-2 flex h-9 items-center border-b border-neutral-800"
     >
+      <IconButton
+        actionId="open-file"
+        className="mx-1"
+        icon={CubeIcon}
+        label="Open file..."
+        onClick={() => showOverlay("open-scene")}
+      />
+
       {projectState.map((file, index) => (
         <FileTab
           exportName={file.exportName}
@@ -187,8 +197,9 @@ export function FileTabs() {
           {file.fileName}
         </FileTab>
       ))}
+
       <Pressable
-        className="flex-grow"
+        className="h-full flex-grow"
         doublePressActionId="new-file"
         label="New file"
         onDoublePress={newFile}

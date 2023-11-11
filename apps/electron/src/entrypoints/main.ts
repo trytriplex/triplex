@@ -276,6 +276,14 @@ async function main() {
       width: 1280,
     });
 
+    activeProjectWindow.on("blur", () => {
+      activeProjectWindow?.webContents.send("window-state-change", "inactive");
+    });
+
+    activeProjectWindow.on("focus", () => {
+      activeProjectWindow?.webContents.send("window-state-change", "active");
+    });
+
     activeProjectWindow.loadFile(
       require.resolve(`@triplex/editor/loading.html`)
     );

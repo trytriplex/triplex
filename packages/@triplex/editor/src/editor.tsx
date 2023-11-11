@@ -20,6 +20,8 @@ import { TitleBar } from "./ui/title-bar";
 
 export function EditorFrame() {
   const { exportName, open, path } = useEditor();
+  const isFileOpen = !!exportName && !!path;
+
   useScreenView("editor", "Screen");
 
   useEffect(() => {
@@ -30,25 +32,30 @@ export function EditorFrame() {
 
   return (
     <div className="fixed inset-0 grid select-none grid-cols-[18rem_auto_18rem] grid-rows-[2rem_2.25rem_auto] bg-neutral-900">
-      <SceneFrame />
       <TitleBar />
       <FileTabs />
+      <SceneFrame />
 
-      <div className="col-start-1 row-auto row-start-3 flex overflow-hidden py-3 pl-3">
-        {path && <ScenePanel />}
-      </div>
+      {isFileOpen && (
+        <>
+          <div className="col-start-1 row-auto row-start-3 flex overflow-hidden py-3 pl-3">
+            {path && <ScenePanel />}
+          </div>
 
-      <div className="pointer-events-none col-start-2 row-start-3 flex pb-3">
-        <ControlsMenu />
-      </div>
+          <div className="pointer-events-none col-start-2 row-start-3 flex pb-3">
+            <ControlsMenu />
+          </div>
 
-      <div className="pointer-events-none col-start-3 row-start-3 flex overflow-hidden py-3 pr-3">
-        <ContextPanel />
-      </div>
+          <div className="pointer-events-none col-start-3 row-start-3 flex overflow-hidden py-3 pr-3">
+            <ContextPanel />
+          </div>
+
+          <AssetsDrawer />
+          <ErrorOverlay />
+        </>
+      )}
 
       <ScenesDrawer />
-      <AssetsDrawer />
-      <ErrorOverlay />
     </div>
   );
 }

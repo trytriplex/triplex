@@ -49,6 +49,7 @@ function ProgressBar() {
 
 function WelcomeScreen() {
   const [windowState, setWindowState] = useState<WindowState>("active");
+
   useScreenView("welcome", "Screen");
 
   useEffect(() => {

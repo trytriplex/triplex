@@ -164,7 +164,7 @@ function SceneContents() {
 
   return (
     <div className="flex h-full flex-shrink flex-col">
-      <div className="flex px-2 py-1">
+      <div className="flex p-1">
         <ProviderConfigButton />
       </div>
 
