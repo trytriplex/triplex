@@ -25,7 +25,7 @@ export function IDELink({
   return (
     <a
       className={cn([
-        "rounded-sm outline-1 outline-offset-1 outline-blue-400 focus-visible:outline",
+        "outline-1 -outline-offset-1 outline-blue-400 focus-visible:outline",
         className,
       ])}
       href="#"

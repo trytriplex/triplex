@@ -33,7 +33,7 @@ export function PropField({
   tags: Record<string, string | number | boolean>;
 }) {
   return (
-    <div className="group -mt-2 flex w-full flex-shrink gap-2 px-4 py-2 first-of-type:mt-0 hover:bg-white/[2%]">
+    <div className="-mt-2 flex w-full flex-shrink gap-2 px-4 py-2 first-of-type:mt-0 hover:bg-white/[2%]">
       <div className="flex w-[100px] flex-grow items-center justify-end text-neutral-400">
         <label
           className="overflow-hidden text-ellipsis whitespace-nowrap text-right text-xs text-neutral-400"

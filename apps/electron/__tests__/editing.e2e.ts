@@ -13,7 +13,7 @@ test("update component position prop", async ({ editor }) => {
   const input = editor.contextPanel.input("Position");
 
   await input.fill("2");
-  await input.blur();
+  await editor.keyboard.press("Enter");
 
   const tab = editor.fileTabs.tab("scene.tsx");
   await expect(tab.unsavedIndicator).toBeVisible();
@@ -28,7 +28,7 @@ test("update child component name prop", async ({ editor }) => {
   const input = editor.contextPanel.input("Name");
 
   await input.fill("foo");
-  await input.blur();
+  await editor.keyboard.press("Enter");
 
   await expect(child.locator).toHaveText("foo (boxGeometry)");
 });

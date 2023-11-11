@@ -75,7 +75,7 @@ export function ColorInput({
 
   return (
     <div className="flex items-center gap-1">
-      <div className="relative h-7 w-7">
+      <div className="relative h-7 w-7 rounded-md outline outline-1 focus-within:outline-blue-400">
         {!defaultValueHex && !hasChanged && (
           <div className="bg-checker pointer-events-none absolute inset-[3px] rounded-[3px] text-neutral-600 [background-size:20px]" />
         )}

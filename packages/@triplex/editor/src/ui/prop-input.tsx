@@ -73,7 +73,7 @@ export function PropInput({
   if (isUnhandled) {
     return (
       <IDELink
-        className="flex h-[26px] items-center gap-0.5 overflow-hidden rounded-md border border-transparent bg-white/5 px-1 py-0.5 text-sm hover:bg-white/10 focus-visible:border-blue-400"
+        className="flex h-[26px] items-center gap-0.5 overflow-hidden rounded-md bg-white/5 px-1 py-0.5 text-sm hover:bg-white/10"
         column={column || -1}
         line={line || -1}
         path={path}

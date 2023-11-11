@@ -21,6 +21,7 @@ export const IconButton = forwardRef<
     label: string;
     onClick?: () => void;
     size?: "md" | "sm" | "xs";
+    tabIndex?: number;
     testId?: string;
     variant?: "default" | "inverse";
   }
@@ -36,6 +37,7 @@ export const IconButton = forwardRef<
       label,
       onClick,
       size = "md",
+      tabIndex,
       testId,
       variant = "default",
     },
@@ -72,6 +74,7 @@ export const IconButton = forwardRef<
       onPress={isDisabled ? undefined : onClick}
       pressActionId={actionId}
       ref={ref}
+      tabIndex={tabIndex}
       testId={testId}
       title={label}
     >

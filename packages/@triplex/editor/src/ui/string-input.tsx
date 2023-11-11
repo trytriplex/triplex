@@ -5,13 +5,10 @@
  * file in the root directory of this source tree.
  */
 import { Cross2Icon } from "@radix-ui/react-icons";
-import {
-  useState,
-  type ChangeEventHandler,
-  type FocusEventHandler,
-} from "react";
+import { useRef, useState, type KeyboardEventHandler } from "react";
 import { IconButton } from "../ds/button";
 import { sentenceCase } from "../util/string";
+import useEvent from "../util/use-event";
 
 const noop = () => {};
 
@@ -33,9 +30,11 @@ export function StringInput({
   required?: boolean;
 }) {
   const [value, setValue] = useState(defaultValue);
+  const ref = useRef<HTMLInputElement>(null!);
+  const focusStop = useRef<HTMLDivElement>(null!);
 
-  const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
-    const nextValue = e.target.value || undefined;
+  const onChangeHandler = useEvent(() => {
+    const nextValue = ref.current.value || undefined;
     if (nextValue === undefined && required) {
       // Ignore calling back if it's required
       return;
@@ -43,10 +42,10 @@ export function StringInput({
 
     onChange(nextValue);
     setValue(nextValue);
-  };
+  });
 
-  const onBlurHandler: FocusEventHandler<HTMLInputElement> = (e) => {
-    const nextValue = e.target.value || undefined;
+  const onConfirmHandler = useEvent(() => {
+    const nextValue = ref.current.value || undefined;
     if (nextValue === undefined && required) {
       // Ignore calling back if it's required
       return;
@@ -55,15 +54,27 @@ export function StringInput({
     if (defaultValue !== nextValue) {
       onConfirm(nextValue);
     }
-  };
+  });
 
-  const onClear = () => {
+  const onClear = useEvent(() => {
     onChange(undefined);
     onConfirm(undefined);
-  };
+  });
+
+  const onKeyDownHandler: KeyboardEventHandler<HTMLInputElement> = useEvent(
+    (e) => {
+      if (e.key === "Enter") {
+        onConfirmHandler();
+        focusStop.current.focus();
+      }
+    }
+  );
 
   return (
-    <div className="group flex w-full items-center rounded-md border border-transparent bg-white/5 focus-within:border-blue-400 hover:bg-white/10">
+    <div
+      className="group flex w-full items-center rounded-md border border-transparent bg-white/5 focus-within:border-blue-400 hover:bg-white/10"
+      ref={focusStop}
+    >
       <input
         aria-label={label}
         autoFocus={autoFocus}
@@ -72,9 +83,11 @@ export function StringInput({
         defaultValue={defaultValue}
         id={name}
         key={defaultValue}
-        onBlur={onBlurHandler}
+        onBlur={onConfirmHandler}
         onChange={onChangeHandler}
+        onKeyDown={onKeyDownHandler}
         placeholder={label ? sentenceCase(label) : undefined}
+        ref={ref}
         required={required}
         type="text"
       />
@@ -87,6 +100,7 @@ export function StringInput({
           label="Clear value"
           onClick={onClear}
           size="xs"
+          tabIndex={-1}
         />
       )}
     </div>

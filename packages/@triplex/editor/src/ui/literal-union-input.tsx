@@ -86,6 +86,7 @@ export function LiteralUnionInput({
           label="Clear value"
           onClick={onClear}
           size="xs"
+          tabIndex={-1}
         />
       )}
     </div>

@@ -10,6 +10,7 @@ import {
   Cross2Icon,
 } from "@radix-ui/react-icons";
 import {
+  KeyboardEventHandler,
   MouseEventHandler,
   useCallback,
   useEffect,
@@ -19,6 +20,7 @@ import {
 import { IconButton } from "../ds/button";
 import { Pressable } from "../ds/pressable";
 import { sentenceCase } from "../util/string";
+import useEvent from "../util/use-event";
 import { usePropTags } from "./prop-input";
 
 function stepModifier(modifiers: { ctrl: boolean; shift: boolean }) {
@@ -106,6 +108,7 @@ export function NumberInput({
   const max = toNumber(tags.max, Number.POSITIVE_INFINITY);
   const min = toNumber(tags.min, Number.NEGATIVE_INFINITY);
   const transformedDefaultValue = transformValue.in(defaultValue);
+  const focusStop = useRef<HTMLDivElement>(null!);
 
   const onChangeHandler = useCallback(() => {
     const nextValue = Number.isNaN(ref.current.valueAsNumber)
@@ -120,7 +123,7 @@ export function NumberInput({
     onChange(nextValue);
   }, [max, min, onChange, transformValue]);
 
-  const onBlurHandler = useCallback(() => {
+  const onConfirmHandler = useCallback(() => {
     const nextValue = Number.isNaN(ref.current.valueAsNumber)
       ? undefined
       : transformValue.out(ref.current.valueAsNumber);
@@ -184,13 +187,13 @@ export function NumberInput({
     if (isPointerLock) {
       await document.exitPointerLock?.();
       setIsPointerLock(false);
-      onBlurHandler();
+      onConfirmHandler();
     } else {
       // The pointer lock was aborted with escape, nothing to do.
     }
 
     isDragging.current = false;
-  }, [isPointerLock, onBlurHandler]);
+  }, [isPointerLock, onConfirmHandler]);
 
   const onMouseDownHandler: MouseEventHandler = useCallback(async (e) => {
     if (document.activeElement === ref.current) {
@@ -216,6 +219,15 @@ export function NumberInput({
     });
     setIsPointerLock(true);
   }, []);
+
+  const onKeyDownHandler: KeyboardEventHandler<HTMLInputElement> = useEvent(
+    (e) => {
+      if (e.key === "Enter") {
+        onConfirmHandler();
+        focusStop.current.focus();
+      }
+    }
+  );
 
   const incrementUp = useCallback(() => {
     ref.current.stepUp();
@@ -285,6 +297,7 @@ export function NumberInput({
     <div
       className="group relative flex w-full items-center rounded-md border border-transparent bg-white/5 px-4 focus-within:border-blue-400 focus-within:pl-1 focus-within:pr-0.5 hover:bg-white/10"
       data-testid={isPointerLock ? "pointer-lock" : undefined}
+      ref={focusStop}
       title={transformedDefaultValue ? `${transformedDefaultValue}` : ""}
     >
       <input
@@ -295,8 +308,9 @@ export function NumberInput({
         key={defaultValue}
         max={max}
         min={min}
-        onBlur={onBlurHandler}
+        onBlur={onConfirmHandler}
         onChange={onChangeHandler}
+        onKeyDown={onKeyDownHandler}
         onMouseDown={onMouseDownHandler}
         onMouseMove={onMouseMoveHandler}
         onMouseUp={onMouseUpHandler}
@@ -312,7 +326,7 @@ export function NumberInput({
       <Pressable
         className="absolute bottom-0 left-0 top-0 flex w-4 cursor-default items-center justify-center text-neutral-300 opacity-20 hover:flex hover:bg-white/5 hover:opacity-100 focus:flex active:bg-white/10 peer-hover:opacity-100 peer-focus:hidden"
         label={`Decrease by ${step}`}
-        onBlur={onBlurHandler}
+        onBlur={onConfirmHandler}
         onPress={incrementDown}
         pressActionId="decrement_number_input"
         tabIndex={-1}
@@ -324,7 +338,7 @@ export function NumberInput({
       <Pressable
         className="absolute bottom-0 right-0 top-0 flex w-4 cursor-default items-center justify-center text-neutral-300 opacity-20 hover:flex hover:bg-white/5 hover:opacity-100 focus:flex active:bg-white/10 peer-hover:opacity-100 peer-focus:hidden"
         label={`Increase by ${step}`}
-        onBlur={onBlurHandler}
+        onBlur={onConfirmHandler}
         onPress={incrementUp}
         pressActionId="increment_number_input"
         tabIndex={-1}
@@ -341,6 +355,7 @@ export function NumberInput({
           label="Clear value"
           onClick={clearInputValue}
           size="xs"
+          tabIndex={-1}
           testId={testId && `${testId}-clear`}
         />
       )}
