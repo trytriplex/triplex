@@ -29,10 +29,7 @@ const V1 = new Vector3();
 const layers = new Layers();
 layers.enableAll();
 
-const defaultFocalPoint: { grid: Vector3Tuple; objectCenter: Vector3Tuple } = {
-  grid: [0, 0, 0],
-  objectCenter: [0, 0, 0],
-};
+const defaultFocalPoint: Vector3Tuple = [0, 0, 0];
 
 export function SceneFrame({
   provider: Provider,
@@ -51,10 +48,10 @@ export function SceneFrame({
   const env = useEnvironment();
   const [focalPoint, setFocalPoint] = useState(defaultFocalPoint);
   const { position, target } = useMemo(() => {
-    const actualCameraPosition: Vector3Tuple = [...focalPoint.objectCenter];
+    const actualCameraPosition: Vector3Tuple = [...focalPoint];
     actualCameraPosition[1] += 2;
     actualCameraPosition[2] += 7;
-    return { position: actualCameraPosition, target: focalPoint.objectCenter };
+    return { position: actualCameraPosition, target: focalPoint };
   }, [focalPoint]);
 
   if (path && !exportName) {
@@ -62,12 +59,11 @@ export function SceneFrame({
   }
 
   const onJumpTo = useCallback((position: Vector3Tuple, box: Box3) => {
-    setFocalPoint({
-      grid: [position[0], 0, position[2]],
+    setFocalPoint(
       // If the box is empty (as the object takes up no 3d space, like a light)
       // We instead use the position instead of the center position.
-      objectCenter: box.isEmpty() ? position : box.getCenter(V1).toArray(),
-    });
+      box.isEmpty() ? position : box.getCenter(V1).toArray()
+    );
   }, []);
 
   const onNavigate = useCallback(
@@ -156,10 +152,10 @@ export function SceneFrame({
         cellColor="#6f6f6f"
         cellSize={1}
         cellThickness={1.0}
-        fadeDistance={30}
-        fadeStrength={1.5}
+        fadeDistance={100}
+        fadeStrength={5}
+        followCamera
         infiniteGrid
-        position={focalPoint.grid}
         sectionColor="#9d4b4b"
         sectionSize={3}
       />

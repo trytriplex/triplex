@@ -368,9 +368,7 @@ function JsxElementButton({
             "group relative flex w-[274px] cursor-default items-center gap-1 border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
           ])}
           doublePressActionId="navigate_to_element"
-          onDoublePress={() => {
-            navigateTo();
-          }}
+          onDoublePress={navigateTo}
           onPress={() => {
             focus({
               column: element.column,

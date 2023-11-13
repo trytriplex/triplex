@@ -105,6 +105,7 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
               htmlFor={prop.name}
               key={`${prop.name}${column}${line}`}
               label={prop.name}
+              labelAlignment={prop.kind === "tuple" ? "start" : "center"}
               tags={prop.tags}
             >
               <PropTagContext.Provider value={prop.tags}>
@@ -138,7 +139,7 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
                       propName: prop.name,
                     });
                   }}
-                  path={target.path}
+                  path={target.parentPath}
                   prop={prop}
                   required={prop.required}
                 />

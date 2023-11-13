@@ -58,7 +58,15 @@ test("enter custom element and back", async ({ editor }) => {
 
   await parent.dblclick();
   await expect(editor.scenePanel.heading).toHaveText("Box");
-
   await editor.scenePanel.exitSelectionButton.click();
+
+  await expect(editor.scenePanel.heading).toHaveText("Scene");
+});
+
+test("elements from node modules cant be entered", async ({ editor }) => {
+  const parent = editor.scenePanel.elementButton("PerspectiveCamera");
+
+  await parent.dblclick();
+
   await expect(editor.scenePanel.heading).toHaveText("Scene");
 });

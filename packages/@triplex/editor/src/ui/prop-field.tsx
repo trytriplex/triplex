@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { type ReactNode } from "react";
+import { cn } from "../ds/cn";
 import { titleCase } from "../util/string";
 
 function stringifyTags(tags: Record<string, string | number | boolean>) {
@@ -24,17 +25,24 @@ export function PropField({
   description,
   htmlFor,
   label,
+  labelAlignment,
   tags,
 }: {
   children: ReactNode;
   description?: string;
   htmlFor: string;
   label: string;
+  labelAlignment?: "start" | "center";
   tags: Record<string, string | number | boolean>;
 }) {
   return (
     <div className="-mt-2 flex w-full flex-shrink gap-2 px-4 py-2 first-of-type:mt-0 hover:bg-white/[2%]">
-      <div className="flex w-[100px] flex-grow items-center justify-end text-neutral-400">
+      <div
+        className={cn([
+          labelAlignment === "start" ? "mt-1 items-start" : "items-center",
+          "flex w-[100px] flex-grow justify-end text-neutral-400",
+        ])}
+      >
         <label
           className="overflow-hidden text-ellipsis whitespace-nowrap text-right text-xs text-neutral-400"
           htmlFor={htmlFor}

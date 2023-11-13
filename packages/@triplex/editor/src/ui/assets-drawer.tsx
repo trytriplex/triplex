@@ -327,16 +327,6 @@ function ComponentsDrawer({
             <ScrollContainer>
               <div className="h-1" />
               <div className="group flex flex-col">
-                <Folder text="Assets">
-                  {assetFolders.map((folder) =>
-                    renderFolder(folder, {
-                      onClick: (path: string) =>
-                        onSelected({ category: "assets", path }),
-                      selected: selected?.path,
-                    })
-                  )}
-                </Folder>
-
                 <Folder text="Components">
                   <Folder
                     isSelected={selected?.path === "host"}
@@ -350,6 +340,15 @@ function ComponentsDrawer({
                     renderFolder(folder, {
                       onClick: (path: string) =>
                         onSelected({ category: "components", path }),
+                      selected: selected?.path,
+                    })
+                  )}
+                </Folder>
+                <Folder text="Assets">
+                  {assetFolders.map((folder) =>
+                    renderFolder(folder, {
+                      onClick: (path: string) =>
+                        onSelected({ category: "assets", path }),
                       selected: selected?.path,
                     })
                   )}

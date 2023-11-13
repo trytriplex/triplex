@@ -356,7 +356,9 @@ export function Selection({
         } else if (
           selectedObject &&
           selectedSceneObject &&
-          selectedSceneObject.type === "custom"
+          selectedSceneObject.type === "custom" &&
+          selectedSceneObject.path &&
+          selectedSceneObject.exportName
         ) {
           onNavigate({
             encodedProps: encodeProps(selectedObject),
