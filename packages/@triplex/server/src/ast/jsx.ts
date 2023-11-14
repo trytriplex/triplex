@@ -4,19 +4,20 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { normalize } from "node:path";
 import {
-  type JsxSelfClosingElement,
-  type SourceFile,
+  JsxAttribute,
   JsxElement,
   Node,
   SyntaxKind,
   ts,
-  JsxAttribute,
+  type JsxSelfClosingElement,
+  type SourceFile,
 } from "ts-morph";
-import { normalize } from "node:path";
-import { getFunctionPropTypes, getJsxElementPropTypes } from "./type-infer";
-import { getElementFilePath } from "./module";
 import type { JsxElementPositions } from "../types";
+import { getElementFilePath } from "./module";
+import { getFunctionPropTypes, getJsxElementPropTypes } from "./type-infer";
+
 /**
  * Returns all found jsx elements in a source file, optionally filtered by a
  * specific export.
@@ -351,4 +352,17 @@ export function getJsxElementAt(
   } catch {
     return undefined;
   }
+}
+
+export function getJsxElementAtOrThrow(
+  sourceFile: SourceFile,
+  line: number,
+  column: number
+) {
+  const sceneObject = getJsxElementAt(sourceFile, line, column);
+  if (!sceneObject) {
+    throw new Error("invariant: not found");
+  }
+
+  return sceneObject;
 }

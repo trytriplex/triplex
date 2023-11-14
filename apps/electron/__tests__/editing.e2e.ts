@@ -23,7 +23,7 @@ test("update child component name prop", async ({ editor }) => {
   await editor.waitForScene();
   const parent = editor.scenePanel.elementButton("Box");
   await parent.expandButton.click({ force: true });
-  const child = editor.scenePanel.elementButton("boxGeometry");
+  const child = parent.childElementButton("boxGeometry");
   await child.click();
   const input = editor.contextPanel.input("Name");
 

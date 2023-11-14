@@ -157,6 +157,24 @@ export function useEditor() {
     fetch(`http://localhost:8000/scene/${encodeURIComponent(filePath)}/close`);
   });
 
+  const move = useEvent(
+    (
+      path: string,
+      source: { column: number; line: number },
+      destination: { column: number; line: number },
+      action: "move-before" | "move-after" | "make-child" | "reparent"
+    ) => {
+      fetch(
+        `http://localhost:8000/scene/${encodeURIComponent(path)}/object/${
+          source.line
+        }/${source.column}/move?destLine=${destination.line}&destCol=${
+          destination.column
+        }&action=${action}`,
+        { method: "POST" }
+      );
+    }
+  );
+
   const persistPropValue = useCallback(
     (data: PersistPropValue) => {
       const undoAction = () => {
@@ -475,6 +493,10 @@ export function useEditor() {
        */
       focus,
       /**
+       * Moves the element to a new location.
+       */
+      move,
+      /**
        * Creates a new intermediate component in the open file and transitions
        * the editor to it.
        */
@@ -543,6 +565,7 @@ export function useEditor() {
       saveAs,
       set,
       target,
+      move,
     ]
   );
 }

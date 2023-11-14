@@ -10,7 +10,7 @@ import { test } from "./utils/runner";
 test("delete child element", async ({ editor }) => {
   const parent = editor.scenePanel.elementButton("Box");
   await parent.expandButton.click({ force: true });
-  const child = editor.scenePanel.elementButton("meshStandardMaterial");
+  const child = parent.childElementButton("meshStandardMaterial");
 
   await child.deleteButton.click();
 
@@ -46,7 +46,7 @@ test("focus child element", async ({ editor }) => {
   const parent = editor.scenePanel.elementButton("Box");
   await editor.waitForScene();
   await parent.expandButton.click({ force: true });
-  const child = editor.scenePanel.elementButton("hello-world");
+  const child = parent.childElementButton("hello-world");
 
   await child.locator.click();
 

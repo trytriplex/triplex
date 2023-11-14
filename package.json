@@ -59,5 +59,10 @@
   },
   "volta": {
     "node": "18.16.0"
+  },
+  "pnpm": {
+    "patchedDependencies": {
+      "@atlaskit/pragmatic-drag-and-drop@0.24.0": "patches/@atlaskit__pragmatic-drag-and-drop@0.24.0.patch"
+    }
   }
 }

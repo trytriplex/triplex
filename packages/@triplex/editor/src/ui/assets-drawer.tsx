@@ -16,7 +16,7 @@ import {
   useLazySubscription,
   useSubscription,
 } from "@triplex/ws/react";
-import { createContext, Suspense, useContext, useState } from "react";
+import { createContext, Suspense, useContext, useRef, useState } from "react";
 import { cn } from "../ds/cn";
 import { Drawer } from "../ds/drawer";
 import { Pressable } from "../ds/pressable";
@@ -24,6 +24,7 @@ import { ScrollContainer } from "../ds/scroll-container";
 import { useAssetsDrawer } from "../stores/assets-drawer";
 import { useEditor } from "../stores/editor";
 import { titleCase } from "../util/string";
+import useEvent from "../util/use-event";
 import { StringInput } from "./string-input";
 
 function ProjectAsset({
@@ -36,6 +37,7 @@ function ProjectAsset({
   onClick: () => void;
 }) {
   const { addComponent } = useEditor();
+  const ref = useRef<HTMLDivElement>(null);
   const target = useAssetsDrawer((store) => store.shown);
 
   const onClickHandler = () => {
@@ -86,6 +88,7 @@ function ProjectAsset({
       className="table h-24 w-24 table-fixed break-words rounded bg-white/5 p-2 text-center text-sm text-neutral-300 hover:bg-white/10 active:bg-white/20"
       onPress={onClickHandler}
       pressActionId="confirm_add_element"
+      ref={ref}
       title={name}
     >
       <div className="table-cell align-middle">
@@ -299,9 +302,9 @@ function ComponentsDrawer({
   const componentFolders = useSubscription("/scene/components");
   const assetFolders = useSubscription("/scene/assets");
 
-  const handleFilterChange = (value: string | undefined) => {
+  const handleFilterChange = useEvent((value: string | undefined) => {
     setFilter(value || "");
-  };
+  });
 
   return (
     <Drawer

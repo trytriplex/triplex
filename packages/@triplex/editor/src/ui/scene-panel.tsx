@@ -5,6 +5,10 @@
  * file in the root directory of this source tree.
  */
 import {
+  draggable,
+  dropTargetForElements,
+} from "@atlaskit/pragmatic-drag-and-drop/adapter/element";
+import {
   CameraIcon,
   CaretDownIcon,
   CaretRightIcon,
@@ -20,7 +24,6 @@ import type { JsxElementPositions } from "@triplex/server";
 import { useLazySubscription } from "@triplex/ws/react";
 import {
   ChangeEventHandler,
-  Fragment,
   Suspense,
   useEffect,
   useRef,
@@ -40,6 +43,12 @@ import { useEditor } from "../stores/editor";
 import { useProviderStore } from "../stores/provider";
 import { useScene } from "../stores/scene";
 import { useSceneState } from "../stores/scene-state";
+import {
+  attachInstruction,
+  extractInstruction,
+  Instruction,
+  InstructionType,
+} from "../util/dnd-hitbox";
 import { IDELink } from "../util/ide";
 import { ErrorBoundary } from "./error-boundary";
 import { ProviderConfig } from "./provider-config";
@@ -60,6 +69,13 @@ export function ScenePanel() {
     </div>
   );
 }
+
+const blockAll: InstructionType[] = [
+  "make-child",
+  "move-after",
+  "move-before",
+  "reparent",
+];
 
 function ComponentHeading() {
   const { exportName, newComponent, path, set } = useEditor();
@@ -336,7 +352,7 @@ function JsxElementButton({
   level: number;
 }) {
   const { enterCamera, focus, jumpTo, navigateTo } = useScene();
-  const { deleteComponent, target } = useEditor();
+  const { deleteComponent, move, target } = useEditor();
   const selected =
     !!target &&
     target.column === element.column &&
@@ -349,6 +365,15 @@ function JsxElementButton({
   const show = useAssetsDrawer((store) => store.show);
   const ref = useRef<HTMLDivElement>(null);
   const match = matchesFilter(filter, element);
+  const [dragState, setDragState] = useState<false | Instruction>(false);
+
+  interface DragData {
+    column: number;
+    exportName: string;
+    level: number;
+    line: number;
+    parentPath: string;
+  }
 
   useEffect(() => {
     if (selected) {
@@ -356,8 +381,90 @@ function JsxElementButton({
     }
   }, [selected]);
 
+  useEffect(() => {
+    if (!ref.current) {
+      return;
+    }
+
+    return dropTargetForElements({
+      canDrop: (args) => {
+        return args.source.element !== ref.current;
+      },
+      element: ref.current,
+      getData: (args) => {
+        const dragData = args.source.data as unknown as DragData;
+        const isWithinSameComponent =
+          dragData.parentPath === element.parentPath &&
+          dragData.exportName === exportName;
+
+        let block: InstructionType[] | undefined = undefined;
+
+        if (!isWithinSameComponent) {
+          block = blockAll;
+        }
+
+        return attachInstruction(
+          {},
+          {
+            block,
+            currentLevel: level,
+            element: args.element,
+            indentPerLevel: 13,
+            input: args.input,
+            mode: "standard",
+          }
+        );
+      },
+      onDrag: (args) => {
+        const instruction = extractInstruction(args.self.data);
+        if (instruction) {
+          setDragState(instruction);
+        }
+      },
+      onDragLeave: () => setDragState(false),
+      onDrop: (args) => {
+        const instruction = extractInstruction(args.self.data);
+        const dragData = args.source.data as unknown as DragData;
+
+        if (instruction && !instruction.blocked) {
+          move(
+            dragData.parentPath,
+            {
+              column: dragData.column,
+              line: dragData.line,
+            },
+            {
+              column: element.column,
+              line: element.line,
+            },
+            instruction.type
+          );
+        }
+
+        setDragState(false);
+      },
+    });
+  }, [element, exportName, level, move]);
+
+  useEffect(() => {
+    if (!ref.current) {
+      return;
+    }
+
+    return draggable({
+      element: ref.current,
+      getInitialData: () => ({
+        column: element.column,
+        exportName,
+        level,
+        line: element.line,
+        parentPath: element.parentPath,
+      }),
+    });
+  }, [element.column, element.line, element.parentPath, exportName, level]);
+
   return (
-    <Fragment>
+    <div data-testid={`SceneElement(${element.name})`}>
       <Suspense>
         <Pressable
           className={cn([
@@ -383,6 +490,19 @@ function JsxElementButton({
           testId="scene-element"
           title={element.name}
         >
+          {dragState && (
+            <div
+              className={cn([
+                dragState.blocked
+                  ? "border-red-400 outline-red-400"
+                  : "border-blue-400 outline-blue-400",
+                dragState.type === "make-child" && "outline",
+                dragState.type === "move-before" && "border-t-2",
+                dragState.type === "move-after" && "border-b-2",
+                "absolute -bottom-0.5 -left-0.5 right-0 top-0 outline-2 -outline-offset-2 ",
+              ])}
+            />
+          )}
           {showExpander ? (
             <IconButton
               actionId={
@@ -401,7 +521,7 @@ function JsxElementButton({
               testId="expand"
             />
           ) : (
-            <span className="w-4 flex-shrink-0" />
+            <span className="w-[15px] flex-shrink-0" />
           )}
 
           <span className="overflow-hidden text-ellipsis whitespace-nowrap">
@@ -514,6 +634,6 @@ function JsxElementButton({
           level={level + 1}
         />
       ))}
-    </Fragment>
+    </div>
   );
 }

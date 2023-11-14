@@ -17,6 +17,7 @@ import {
   commentComponent,
   deleteCommentComponents,
   duplicate,
+  move,
   rename,
   uncommentComponent,
   upsertProp,
@@ -991,6 +992,233 @@ describe("component service", () => {
                 variant={\\"raspberry\\"}
               />
               <Berry position={[0, 0, 0]} variant=\\"blueberry\\" />
+            </>
+          );
+        }"
+      `);
+  });
+
+  it("should move an element before another", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx")
+    );
+    const source = { column: 7, line: 18 };
+    const destination = { column: 7, line: 12 };
+
+    move(sourceFile, source, destination, "move-before");
+
+    expect(getExportName(sourceFile, "default").declaration.getText())
+      .toMatchInlineSnapshot(`
+        "export default function Scene() {
+          return (
+            <>
+              <RoundedBox></RoundedBox><RoundedBox
+                position={[0.283_739_024, -1.462_969_218_752_609_3, -0.887_002_380_509_703_6]}
+                rotation={[
+                  2.153_373_887_542_495_7, -0.475_526_151_445_227_4, 0.226_807_893_351_223_42,
+                ]}
+              />
+              
+
+              <RoundedBox
+                position={[
+                  -2.813_889_551_893_372, 0.001_771_287_222_706_030_6, 2.132_940_941_397_735_4,
+                ]}
+                scale={[0.630_216_523_313_958, 0.630_216_523_313_957_7, 0.630_216_523_313_957_7]}
+              />
+
+              <RoundedBox
+                position={[3, 0, 2]}
+                rotation={[0, 0.25, 0]}
+                scale={[1, 1.5, 1]}
+              >
+                <meshStandardMaterial color=\\"purple\\" />
+              </RoundedBox>
+            </>
+          );
+        }"
+      `);
+  });
+
+  it("should move an element after another", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx")
+    );
+    const source = { column: 7, line: 12 };
+    const destination = { column: 7, line: 18 };
+
+    move(sourceFile, source, destination, "move-after");
+
+    expect(getExportName(sourceFile, "default").declaration.getText())
+      .toMatchInlineSnapshot(`
+        "export default function Scene() {
+          return (
+            <>
+              
+              <RoundedBox></RoundedBox><RoundedBox
+                position={[0.283_739_024, -1.462_969_218_752_609_3, -0.887_002_380_509_703_6]}
+                rotation={[
+                  2.153_373_887_542_495_7, -0.475_526_151_445_227_4, 0.226_807_893_351_223_42,
+                ]}
+              />
+
+              <RoundedBox
+                position={[
+                  -2.813_889_551_893_372, 0.001_771_287_222_706_030_6, 2.132_940_941_397_735_4,
+                ]}
+                scale={[0.630_216_523_313_958, 0.630_216_523_313_957_7, 0.630_216_523_313_957_7]}
+              />
+
+              <RoundedBox
+                position={[3, 0, 2]}
+                rotation={[0, 0.25, 0]}
+                scale={[1, 1.5, 1]}
+              >
+                <meshStandardMaterial color=\\"purple\\" />
+              </RoundedBox>
+            </>
+          );
+        }"
+      `);
+  });
+
+  it("should move an element to be a child of another element", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx")
+    );
+    const source = { column: 7, line: 12 };
+    const destination = { column: 7, line: 18 };
+
+    move(sourceFile, source, destination, "make-child");
+
+    expect(getExportName(sourceFile, "default").declaration.getText())
+      .toMatchInlineSnapshot(`
+        "export default function Scene() {
+          return (
+            <>
+              
+              <RoundedBox>
+                      <RoundedBox
+                              position={[0.283_739_024, -1.462_969_218_752_609_3, -0.887_002_380_509_703_6]}
+                              rotation={[
+                                2.153_373_887_542_495_7, -0.475_526_151_445_227_4, 0.226_807_893_351_223_42,
+                              ]}
+                            />
+                  </RoundedBox>
+
+              <RoundedBox
+                position={[
+                  -2.813_889_551_893_372, 0.001_771_287_222_706_030_6, 2.132_940_941_397_735_4,
+                ]}
+                scale={[0.630_216_523_313_958, 0.630_216_523_313_957_7, 0.630_216_523_313_957_7]}
+              />
+
+              <RoundedBox
+                position={[3, 0, 2]}
+                rotation={[0, 0.25, 0]}
+                scale={[1, 1.5, 1]}
+              >
+                <meshStandardMaterial color=\\"purple\\" />
+              </RoundedBox>
+            </>
+          );
+        }"
+      `);
+  });
+
+  it("should move an element to be a child of another self closed element", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx")
+    );
+    const source = { column: 7, line: 18 };
+    const destination = { column: 7, line: 12 };
+
+    move(sourceFile, source, destination, "make-child");
+
+    expect(getExportName(sourceFile, "default").declaration.getText())
+      .toMatchInlineSnapshot(`
+      "export default function Scene() {
+        return (
+          <>
+            <RoundedBox
+                        position={[0.283_739_024, -1.462_969_218_752_609_3, -0.887_002_380_509_703_6]}
+                        rotation={[
+                          2.153_373_887_542_495_7, -0.475_526_151_445_227_4, 0.226_807_893_351_223_42,
+                        ]}
+                      ><RoundedBox></RoundedBox></RoundedBox>
+            
+
+            <RoundedBox
+              position={[
+                -2.813_889_551_893_372, 0.001_771_287_222_706_030_6, 2.132_940_941_397_735_4,
+              ]}
+              scale={[0.630_216_523_313_958, 0.630_216_523_313_957_7, 0.630_216_523_313_957_7]}
+            />
+
+            <RoundedBox
+              position={[3, 0, 2]}
+              rotation={[0, 0.25, 0]}
+              scale={[1, 1.5, 1]}
+            >
+              <meshStandardMaterial color=\\"purple\\" />
+            </RoundedBox>
+          </>
+        );
+      }"
+    `);
+  });
+
+  it("should move an element to be a child of an element with pre-existing children", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx")
+    );
+    const source = { column: 7, line: 12 };
+    const destination = { column: 7, line: 27 };
+
+    move(sourceFile, source, destination, "make-child");
+
+    expect(getExportName(sourceFile, "default").declaration.getText())
+      .toMatchInlineSnapshot(`
+        "export default function Scene() {
+          return (
+            <>
+              
+              <RoundedBox></RoundedBox>
+
+              <RoundedBox
+                position={[
+                  -2.813_889_551_893_372, 0.001_771_287_222_706_030_6, 2.132_940_941_397_735_4,
+                ]}
+                scale={[0.630_216_523_313_958, 0.630_216_523_313_957_7, 0.630_216_523_313_957_7]}
+              />
+
+              <RoundedBox
+                position={[3, 0, 2]}
+                rotation={[0, 0.25, 0]}
+                scale={[1, 1.5, 1]}
+              >
+                      <RoundedBox
+                              position={[0.283_739_024, -1.462_969_218_752_609_3, -0.887_002_380_509_703_6]}
+                              rotation={[
+                                2.153_373_887_542_495_7, -0.475_526_151_445_227_4, 0.226_807_893_351_223_42,
+                              ]}
+                            /><meshStandardMaterial color=\\"purple\\" />
+                  </RoundedBox>
             </>
           );
         }"

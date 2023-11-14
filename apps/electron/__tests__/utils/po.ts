@@ -94,13 +94,19 @@ export class EditorPage {
   get scenePanel() {
     const locator = this.page.getByTestId("scene-panel");
 
-    return {
+    const methods = {
       allElements: this.page.getByTestId("scene-element"),
-      elementButton: (name: string) => {
-        const locator = this.page.getByRole("button", { name });
+      elementButton: (
+        name: string,
+        rootLocator = this.page.getByTestId(`SceneElement(${name})`)
+      ) => {
+        const locator = rootLocator.getByRole("button", { name });
 
         return {
           addButton: locator.getByTestId("add"),
+          childElementButton: (name: string) => {
+            return methods.elementButton(name, rootLocator);
+          },
           click: async () => {
             await this.waitForScene();
             await locator.click({ force: true });
@@ -129,6 +135,8 @@ export class EditorPage {
           .toBe(0);
       },
     };
+
+    return methods;
   }
 
   get controlsMenu() {

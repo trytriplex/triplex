@@ -1,0 +1,19 @@
+diff --git a/package.json b/package.json
+index 8f6c1296d12c81b0b5823b163812815cd63e3149..6038fa7b33b7eaa79aea22847c9673894dcd6de6 100644
+--- a/package.json
++++ b/package.json
+@@ -40,6 +40,14 @@
+       ]
+     }
+   },
++  "exports": {
++    "./adapter/element": {
++      "types": "./dist/types/entry-point/adapter/element.d.ts",
++      "main": "./dist/cjs/entry-point/adapter/element.js",
++      "module": "./dist/esm/entry-point/adapter/element.js",
++      "module:es2019": "./dist/es2019/entry-point/adapter/element.js"
++    }
++  },
+   "af:exports": {
+     ".": "./src/index.ts",
+     "./adapter/element": "./src/entry-point/adapter/element.ts",

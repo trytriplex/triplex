@@ -4,6 +4,11 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
+patchedDependencies:
+  '@atlaskit/pragmatic-drag-and-drop@0.24.0':
+    hash: 2flpdewlyog7stqhk3y3x644xy
+    path: patches/@atlaskit__pragmatic-drag-and-drop@0.24.0.patch
+
 importers:
 
   .:
@@ -439,6 +444,9 @@ importers:
 
   packages/@triplex/editor:
     dependencies:
+      '@atlaskit/pragmatic-drag-and-drop':
+        specifier: ^0.24.0
+        version: 0.24.0(patch_hash=2flpdewlyog7stqhk3y3x644xy)
       '@radix-ui/react-dialog':
         specifier: ^1.0.3
         version: 1.0.3(@types/react@18.0.27)(react-dom@18.2.0)(react@18.2.0)
@@ -855,6 +863,15 @@ packages:
     dependencies:
       '@jridgewell/gen-mapping': 0.1.1
       '@jridgewell/trace-mapping': 0.3.17
+
+  /@atlaskit/pragmatic-drag-and-drop@0.24.0(patch_hash=2flpdewlyog7stqhk3y3x644xy):
+    resolution: {integrity: sha512-5LvAC7AUzZxlKWgAzizyV/OZMFj9dVB4OpKOC0f2drddJCZfklX2Mg9SYvMgU+7aPLtAXuo97Dl+4yIpkukYHQ==}
+    dependencies:
+      '@babel/runtime': 7.22.3
+      bind-event-listener: 2.1.1
+      raf-schd: 4.0.3
+    dev: false
+    patched: true
 
   /@babel/code-frame@7.22.13:
     resolution: {integrity: sha512-XktuhWlJ5g+3TJXc5upd9Ks1HutSArik6jf2eAjYFyIOf4ej3RN+184cZbzDvbPnuTJIUhPKKJE3cIsYTiAT3w==}
@@ -4153,6 +4170,10 @@ packages:
 
   /binary-searching@2.0.5:
     resolution: {integrity: sha512-v4N2l3RxL+m4zDxyxz3Ne2aTmiPn8ZUpKFpdPtO+ItW1NcTCXA7JeHG5GMBSvoKSkQZ9ycS+EouDVxYB9ufKWA==}
+    dev: false
+
+  /bind-event-listener@2.1.1:
+    resolution: {integrity: sha512-O+a5c0D2se/u2VlBJmPRn45IB6R4mYMh1ok3dWxrIZ2pmLqzggBhb875mbq73508ylzofc0+hT9W41x4Y2s8lg==}
     dev: false
 
   /bl@1.2.3:
@@ -9821,6 +9842,10 @@ packages:
     resolution: {integrity: sha512-WuyALRjWPDGtt/wzJiadO5AXY+8hZ80hVpe6MyivgraREW751X3SbhRvG3eLKOYN+8VEvqLcf3wdnt44Z4S4SA==}
     engines: {node: '>=10'}
     dev: true
+
+  /raf-schd@4.0.3:
+    resolution: {integrity: sha512-tQkJl2GRWh83ui2DiPTJz9wEiMN20syf+5oKfB03yYP7ioZcJwsIK8FjrtLwH1m7C7e+Tt2yYBlrOpdT+dyeIQ==}
+    dev: false
 
   /range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}

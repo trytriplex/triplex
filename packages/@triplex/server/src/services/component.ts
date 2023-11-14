@@ -13,7 +13,11 @@ import {
   SyntaxKind,
   ts,
 } from "ts-morph";
-import { getAttributes, getJsxElementAt } from "../ast/jsx";
+import {
+  getAttributes,
+  getJsxElementAt,
+  getJsxElementAtOrThrow,
+} from "../ast/jsx";
 import { getExportName } from "../ast/module";
 import { ComponentRawType, ComponentTarget } from "../types";
 import { inferExports } from "../util/module";
@@ -476,4 +480,60 @@ export function duplicate(
   sourceFile.insertText(jsxElement.getEnd(), jsxElement.getText());
 
   return insertedLineCol;
+}
+
+export function move(
+  sourceFile: SourceFile,
+  source: { column: number; line: number },
+  destination: { column: number; line: number },
+  action: "move-before" | "move-after" | "make-child"
+) {
+  const sourceElement = getJsxElementAtOrThrow(
+    sourceFile,
+    source.line,
+    source.column
+  );
+  const destinationElement = getJsxElementAtOrThrow(
+    sourceFile,
+    destination.line,
+    destination.column
+  );
+  const sourceText = sourceElement.getText();
+
+  switch (action) {
+    case "move-before": {
+      sourceElement.replaceWithText("");
+      sourceFile.insertText(destinationElement.getStart(), sourceText);
+      break;
+    }
+
+    case "move-after": {
+      sourceElement.replaceWithText("");
+      sourceFile.insertText(destinationElement.getEnd(), sourceText);
+      break;
+    }
+
+    case "make-child": {
+      if (Node.isJsxElement(destinationElement)) {
+        sourceElement.replaceWithText("");
+        const structure = destinationElement.getStructure();
+        destinationElement.set({
+          bodyText: structure.bodyText
+            ? `${sourceText}${structure.bodyText}`
+            : sourceText,
+        });
+      } else {
+        sourceElement.replaceWithText("");
+        const destinationText = destinationElement.getText();
+        const tagName = destinationElement.getTagNameNode().getText();
+        destinationElement.replaceWithText(
+          destinationText.replace("/>", `>${sourceText}</${tagName}>`)
+        );
+      }
+      break;
+    }
+
+    default:
+      throw new Error("invariant");
+  }
 }

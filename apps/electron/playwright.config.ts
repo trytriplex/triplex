@@ -14,6 +14,7 @@ export default defineConfig({
   projects: [
     {
       expect: {
+        timeout: 30_000,
         toMatchSnapshot: {
           maxDiffPixelRatio: 0.05,
         },

@@ -10,6 +10,7 @@ import Box from "./geometry/box";
 export default function Scene() {
   return (
     <>
+      <ambientLight position={[2.12, 0, -0.88]} />
       <Box />
       <PerspectiveCamera
         position={[-1.831_592_557_014_578_1, 0.943_661_973_904_340_8, 0]}
@@ -18,6 +19,12 @@ export default function Scene() {
           -1.570_796_326_794_896_6,
         ]}
       />
+      <group>
+        <mesh position={[1.6, 0, -1.7]}>
+          <boxGeometry />
+          <meshStandardMaterial />
+        </mesh>
+      </group>
     </>
   );
 }

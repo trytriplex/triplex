@@ -15,10 +15,7 @@
     "noUnusedParameters": true,
     "preserveWatchOutput": true,
     "skipLibCheck": true,
-    "strict": true,
-    "paths": {
-      "@triplex/*": ["../packages/*/src/index.ts"]
-    }
+    "strict": true
   },
   "exclude": ["node_modules"]
 }

@@ -20,6 +20,7 @@ import {
   commentComponent,
   create,
   duplicate,
+  move,
   rename,
   uncommentComponent,
   upsertProp,
@@ -82,6 +83,33 @@ export function createServer({
 
   router.get("/healthcheck", (context) => {
     context.response.body = { message: "Healthy", status: 200 };
+  });
+
+  router.post("/scene/:path/object/:line/:column/move", (context) => {
+    const destLine = Number(getParam(context, "destLine"));
+    const destCol = Number(getParam(context, "destCol"));
+    const action = getParam(context, "action") as
+      | "move-before"
+      | "move-after"
+      | "make-child";
+    const sourceFile = project.getSourceFile(context.params.path);
+    const line = Number(context.params.line);
+    const column = Number(context.params.column);
+
+    move(
+      sourceFile.edit(),
+      {
+        column,
+        line,
+      },
+      {
+        column: destCol,
+        line: destLine,
+      },
+      action
+    );
+
+    context.response.body = { message: "success" };
   });
 
   /**
