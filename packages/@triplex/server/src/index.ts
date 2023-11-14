@@ -14,7 +14,7 @@ import {
   getJsxElementProps,
   getJsxTag,
 } from "./ast";
-import { getFunctionProps } from "./ast/jsx";
+import { getFunctionProps, getJsxElementAtOrThrow } from "./ast/jsx";
 import {
   add,
   commentComponent,
@@ -96,18 +96,20 @@ export function createServer({
     const line = Number(context.params.line);
     const column = Number(context.params.column);
 
-    move(
-      sourceFile.edit(),
-      {
-        column,
-        line,
-      },
-      {
-        column: destCol,
-        line: destLine,
-      },
-      action
-    );
+    sourceFile.edit((source) => {
+      move(
+        source,
+        {
+          column,
+          line,
+        },
+        {
+          column: destCol,
+          line: destLine,
+        },
+        action
+      );
+    });
 
     context.response.body = { message: "success" };
   });
@@ -122,15 +124,11 @@ export function createServer({
     const line = Number(context.params.line);
     const column = Number(context.params.column);
     const sourceFile = project.getSourceFile(path);
-    const jsxElement = getJsxElementAt(sourceFile.edit(), line, column);
 
-    if (!jsxElement) {
-      context.response.status = 404;
-      context.response.body = { message: "Not found" };
-      return;
-    }
-
-    const action = upsertProp(jsxElement, name, value);
+    const action = sourceFile.edit((source) => {
+      const jsxElement = getJsxElementAtOrThrow(source, line, column);
+      return upsertProp(jsxElement, name, value);
+    });
 
     context.response.body = { action, message: "success" };
   });
@@ -139,7 +137,9 @@ export function createServer({
     const { column, line, path } = context.params;
     const sourceFile = project.getSourceFile(path);
 
-    const result = duplicate(sourceFile.edit(), Number(line), Number(column));
+    const result = sourceFile.edit((source) => {
+      return duplicate(source, Number(line), Number(column));
+    });
 
     context.response.body = { ...result };
   });
@@ -148,7 +148,9 @@ export function createServer({
     const { column, line, path } = context.params;
     const sourceFile = project.getSourceFile(path);
 
-    commentComponent(sourceFile.edit(), Number(line), Number(column));
+    sourceFile.edit((source) => {
+      commentComponent(source, Number(line), Number(column));
+    });
 
     context.response.body = { message: "success" };
   });
@@ -170,7 +172,9 @@ export function createServer({
     const { path } = context.params;
     const sourceFile = project.getSourceFile(path);
 
-    const { exportName } = create(sourceFile.edit());
+    const { exportName } = sourceFile.edit((source) => {
+      return create(source);
+    });
 
     context.response.body = { exportName, path };
   });
@@ -213,7 +217,9 @@ export function createServer({
     const body = await context.request.body({ type: "json" }).value;
     const { name: newName } = body as { name: string };
 
-    rename(sourceFile.edit(), exportName, newName);
+    sourceFile.edit((source) => {
+      rename(source, exportName, newName);
+    });
 
     context.response.body = { message: "success" };
   });
@@ -222,7 +228,9 @@ export function createServer({
     const { column, line, path } = context.params;
     const sourceFile = project.getSourceFile(path);
 
-    uncommentComponent(sourceFile.edit(), Number(line), Number(column));
+    sourceFile.edit((source) => {
+      uncommentComponent(source, Number(line), Number(column));
+    });
 
     context.response.body = { message: "success" };
   });
@@ -236,7 +244,9 @@ export function createServer({
     };
     const sourceFile = project.getSourceFile(path);
 
-    const result = add(sourceFile.edit(), exportName, type, target);
+    const result = sourceFile.edit((source) => {
+      return add(source, exportName, type, target);
+    });
 
     context.response.body = { ...result };
   });

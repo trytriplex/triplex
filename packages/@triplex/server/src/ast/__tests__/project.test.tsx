@@ -17,7 +17,9 @@ describe("project ast", () => {
       join(__dirname, "__mocks__", "box.tsx")
     );
 
-    expect(sourceFile.edit().isSaved()).toEqual(true);
+    sourceFile.edit(() => {});
+
+    expect(sourceFile.read().isSaved()).toEqual(true);
   });
 
   it("should return unsaved state", () => {
@@ -28,9 +30,11 @@ describe("project ast", () => {
       join(__dirname, "__mocks__", "box.tsx")
     );
 
-    sourceFile.edit().addFunction({});
+    sourceFile.edit((source) => {
+      source.addFunction({});
+    });
 
-    expect(sourceFile.edit().isSaved()).toEqual(false);
+    expect(sourceFile.read().isSaved()).toEqual(false);
   });
 
   it("should return default project state", () => {
@@ -50,9 +54,9 @@ describe("project ast", () => {
     );
 
     sourceFile.open("default");
-    sourceFile.edit();
-    sourceFile.edit();
-    sourceFile.edit();
+    sourceFile.edit(() => {});
+    sourceFile.edit(() => {});
+    sourceFile.edit(() => {});
 
     expect(project.getState()).toEqual([
       {
@@ -76,7 +80,7 @@ describe("project ast", () => {
       join(__dirname, "__mocks__", "box.tsx")
     );
     sourceFile.open("default");
-    sourceFile.edit();
+    sourceFile.edit(() => {});
 
     await project.saveAll();
 
@@ -104,7 +108,7 @@ describe("project ast", () => {
     project.createSourceFile("Untitled").open("Untitled");
     sourceFile.open("default");
     sourceFile.open("default");
-    sourceFile.edit();
+    sourceFile.edit(() => {});
 
     await project.saveAll();
 
@@ -142,7 +146,7 @@ describe("project ast", () => {
     const cb = vitest.fn();
     project.onStateChange(cb);
 
-    sourceFile.edit();
+    sourceFile.edit(() => {});
 
     expect(cb).toHaveBeenCalled();
   });
@@ -158,7 +162,7 @@ describe("project ast", () => {
     const cleanup = project.onStateChange(cb);
 
     cleanup();
-    sourceFile.edit();
+    sourceFile.edit(() => {});
 
     expect(cb).not.toHaveBeenCalled();
   });

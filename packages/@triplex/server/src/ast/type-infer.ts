@@ -10,7 +10,6 @@ import {
   JsxSelfClosingElement,
   Node,
   PropertySignature,
-  SourceFile,
   Symbol as SymbolType,
   ts,
   Type,
@@ -23,6 +22,7 @@ import type {
 } from "../types";
 import { getAttributes } from "./jsx";
 import { getExportName } from "./module";
+import { SourceFileReadOnly } from "./project";
 
 export function unrollType(
   type: Type,
@@ -490,7 +490,7 @@ export function getJsxElementPropTypes(
 }
 
 export function getFunctionPropTypes(
-  sourceFile: SourceFile,
+  sourceFile: SourceFileReadOnly,
   exportName: string
 ) {
   const propTypes: (Prop & { defaultValue?: ExpressionValue })[] = [];

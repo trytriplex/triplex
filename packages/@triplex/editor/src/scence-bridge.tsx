@@ -9,7 +9,6 @@ import { useEffect, useState } from "react";
 import { useEnvironment } from "./environment";
 import { useEditor } from "./stores/editor";
 import { useScene } from "./stores/scene";
-import { useUndoRedoState } from "./stores/undo-redo";
 
 export interface FocusedObject {
   column: number;
@@ -67,8 +66,6 @@ function BridgeSendEvents() {
 function BridgeReceiveEvents() {
   const editor = useEditor();
   const scene = useScene();
-  const undo = useUndoRedoState((store) => store.undo);
-  const redo = useUndoRedoState((store) => store.redo);
 
   useEffect(() => {
     if (!scene.ready) {
@@ -106,7 +103,7 @@ function BridgeReceiveEvents() {
         editor.focus(null);
       }),
     ]);
-  }, [scene, editor, undo, redo]);
+  }, [scene, editor]);
 
   return null;
 }

@@ -12,6 +12,11 @@ import { deleteCommentComponents } from "../services/component";
 import { SourceFileChangedEvent } from "../types";
 
 export type TRIPLEXProject = ReturnType<typeof createProject>;
+export type SourceFileGetters = Extract<
+  keyof SourceFile,
+  `get${string}` | `on${string}` | `is${string}`
+>;
+export type SourceFileReadOnly = Pick<SourceFile, SourceFileGetters>;
 
 export function _createProject(opts: ProjectOptions) {
   const project = new Project({
@@ -181,12 +186,16 @@ export function ${componentName}() {
         modifiedSourceFiles.delete(sourceFile);
         onStateChangeCallbacks.forEach((cb) => cb());
       },
-      edit: () => {
+      edit: <TResult>(callback: (sourceFile: SourceFile) => TResult) => {
+        const result = callback(sourceFile);
+
         if (!modifiedSourceFiles.has(sourceFile)) {
           modifiedSourceFiles.set(sourceFile, { new: false });
         }
+
         onStateChangeCallbacks.forEach((cb) => cb());
-        return sourceFile;
+
+        return result;
       },
       onDependencyModified: (cb: () => void) => {
         const callbacks = dependencyModifiedCallbacks.get(path) || [];
@@ -208,7 +217,9 @@ export function ${componentName}() {
         openedSourceFiles.set(sourceFile, exportName);
         onStateChangeCallbacks.forEach((cb) => cb());
       },
-      read: () => sourceFile,
+      read: () => {
+        return sourceFile as SourceFileReadOnly;
+      },
       reset: async () => {
         await sourceFile.refreshFromFileSystem();
         modifiedSourceFiles.delete(sourceFile);

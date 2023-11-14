@@ -768,21 +768,23 @@ describe("component service", () => {
       cwd: join(__dirname, "tmp"),
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
-    const sourceFile = project.createSourceFile("Untitled").read();
+    const sourceFile = project.createSourceFile("Untitled");
     const saveFile = () => project.saveAll();
     const addComponent = async (exportName: string) => {
-      const pos = add(sourceFile, "Untitled", {
-        exportName,
-        path: join(__dirname, "__mocks__", "room.tsx"),
-        props: {},
-        type: "custom",
-      });
-      const element = getJsxElementAt(sourceFile, pos.line, pos.column);
+      const pos = sourceFile.edit((source) =>
+        add(source, "Untitled", {
+          exportName,
+          path: join(__dirname, "__mocks__", "room.tsx"),
+          props: {},
+          type: "custom",
+        })
+      );
+      const element = getJsxElementAt(sourceFile.read(), pos.line, pos.column);
       if (!element) {
         // eslint-disable-next-line no-console
         console.log(
           `${exportName}@${pos.line}:${pos.column}\n`,
-          sourceFile.getText()
+          sourceFile.read().getText()
         );
         throw new Error(
           `could not find at ${exportName}@${pos.line}:${pos.column}`

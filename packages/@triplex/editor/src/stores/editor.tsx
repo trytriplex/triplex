@@ -11,7 +11,6 @@ import { create } from "zustand";
 import { stringifyJSON } from "../util/string";
 import useEvent from "../util/use-event";
 import { useScene } from "./scene";
-import { useUndoRedoState } from "./undo-redo";
 
 export interface Params {
   encodedProps: string;
@@ -62,10 +61,6 @@ export function useEditor() {
   const focus = useSelectionStore((store) => store.focus);
   const target = useSelectionStore((store) => store.focused);
   const scene = useScene();
-  const performUndoableEvent = useUndoRedoState(
-    (store) => store.performUndoableEvent
-  );
-  const clearUndoRedo = useUndoRedoState((store) => store.clearUndoRedo);
 
   const addComponent = useCallback(
     async ({
@@ -116,37 +111,21 @@ export function useEditor() {
         return;
       }
 
-      const undoAction = () => {
-        fetch(
-          `http://localhost:8000/scene/${encodeURIComponent(
-            toDelete.parentPath
-          )}/object/${toDelete.line}/${toDelete.column}/restore`,
-          { method: "POST" }
-        );
-      };
-
-      const redoAction = () => {
-        fetch(
-          `http://localhost:8000/scene/${encodeURIComponent(
-            toDelete.parentPath
-          )}/object/${toDelete.line}/${toDelete.column}/delete`,
-          { method: "POST" }
-        );
-        scene.deleteComponent({
-          column: toDelete.column,
-          line: toDelete.line,
-          parentPath: toDelete.parentPath,
-        });
-      };
-
-      performUndoableEvent({
-        redo: redoAction,
-        undo: undoAction,
+      fetch(
+        `http://localhost:8000/scene/${encodeURIComponent(
+          toDelete.parentPath
+        )}/object/${toDelete.line}/${toDelete.column}/delete`,
+        { method: "POST" }
+      );
+      scene.deleteComponent({
+        column: toDelete.column,
+        line: toDelete.line,
+        parentPath: toDelete.parentPath,
       });
 
       scene.blur();
     },
-    [performUndoableEvent, scene, target]
+    [scene, target]
   );
 
   const exitComponent = useCallback(() => {
@@ -177,68 +156,36 @@ export function useEditor() {
 
   const persistPropValue = useCallback(
     (data: PersistPropValue) => {
-      const undoAction = () => {
-        const propData = {
-          column: data.column,
-          line: data.line,
-          path: data.path,
-          propName: data.propName,
-          propValue: data.currentPropValue,
-        };
-
-        scene.setPropValue(propData);
-        scene.persistPropValue(propData);
-
-        fetch(
-          `http://localhost:8000/scene/object/${data.line}/${
-            data.column
-          }/prop?value=${encodeURIComponent(
-            stringifyJSON(data.currentPropValue)
-          )}&path=${encodeURIComponent(data.path)}&name=${encodeURIComponent(
-            data.propName
-          )}`
-        );
+      const propData = {
+        column: data.column,
+        line: data.line,
+        path: data.path,
+        propName: data.propName,
+        propValue: data.nextPropValue,
       };
 
-      const redoAction = () => {
-        const propData = {
-          column: data.column,
-          line: data.line,
-          path: data.path,
-          propName: data.propName,
-          propValue: data.nextPropValue,
-        };
+      scene.setPropValue(propData);
+      scene.persistPropValue(propData);
 
-        scene.setPropValue(propData);
-        scene.persistPropValue(propData);
-
-        fetch(
-          `http://localhost:8000/scene/object/${data.line}/${
-            data.column
-          }/prop?value=${encodeURIComponent(
-            stringifyJSON(data.nextPropValue)
-          )}&path=${encodeURIComponent(data.path)}&name=${encodeURIComponent(
-            data.propName
-          )}`
-        );
-      };
-
-      performUndoableEvent({
-        redo: redoAction,
-        undo: undoAction,
-      });
+      fetch(
+        `http://localhost:8000/scene/object/${data.line}/${
+          data.column
+        }/prop?value=${encodeURIComponent(
+          stringifyJSON(data.nextPropValue)
+        )}&path=${encodeURIComponent(data.path)}&name=${encodeURIComponent(
+          data.propName
+        )}`
+      );
     },
-    [performUndoableEvent, scene]
+    [scene]
   );
 
   const reset = useCallback(() => {
-    clearUndoRedo();
-
     scene.blur();
     scene.reset();
 
     fetch(`http://localhost:8000/scene/${encodeURIComponent(path)}/reset`);
-  }, [clearUndoRedo, path, scene]);
+  }, [path, scene]);
 
   if (path && !exportName) {
     throw new Error("invariant: exportName is undefined");
@@ -321,12 +268,7 @@ export function useEditor() {
         { skipTransition: true }
       );
     }
-
-    // Clear the update stack as the line and column numbers of jsx elements
-    // Will most likely change after formatting resulting in the rpc calls not
-    // Working anymore.
-    clearUndoRedo();
-  }, [clearUndoRedo, encodedProps, exportName, path, set]);
+  }, [encodedProps, exportName, path, set]);
 
   const save = useCallback(async () => {
     const response = await fetch(
@@ -340,23 +282,13 @@ export function useEditor() {
     if (data.message === "error" && data.error.id === "missing-new-path") {
       return saveAs();
     }
-
-    // Clear the update stack as the line and column numbers of jsx elements
-    // Will most likely change after formatting resulting in the rpc calls not
-    // Working anymore.
-    clearUndoRedo();
-  }, [clearUndoRedo, path, saveAs]);
+  }, [path, saveAs]);
 
   const saveAll = useCallback(async () => {
     await fetch("http://localhost:8000/project/save-all", {
       method: "POST",
     });
-
-    // Clear the update stack as the line and column numbers of jsx elements
-    // Will most likely change after formatting resulting in the rpc calls not
-    // Working anymore.
-    clearUndoRedo();
-  }, [clearUndoRedo]);
+  }, []);
 
   const open = useEvent((path: string, exportName: string) => {
     fetch(
@@ -404,44 +336,22 @@ export function useEditor() {
     const originalTarget = target;
     let pos: { column: number; line: number };
 
-    const redoAction = async () => {
-      const response = await fetch(
-        `http://localhost:8000/scene/${encodeURIComponent(path)}/object/${
-          target.line
-        }/${target.column}/duplicate`,
-        { method: "POST" }
-      );
+    const response = await fetch(
+      `http://localhost:8000/scene/${encodeURIComponent(path)}/object/${
+        target.line
+      }/${target.column}/duplicate`,
+      { method: "POST" }
+    );
 
-      pos = await response.json();
+    pos = await response.json();
 
-      scene.focus({
-        column: pos.column,
-        line: pos.line,
-        parentPath: originalTarget.parentPath,
-        path: originalTarget.parentPath,
-      });
-    };
-
-    const undoAction = () => {
-      fetch(
-        `http://localhost:8000/scene/${encodeURIComponent(path)}/object/${
-          pos.line
-        }/${pos.column}/delete`,
-        { method: "POST" }
-      );
-      scene.deleteComponent({
-        column: pos.column,
-        line: pos.line,
-        parentPath: target.parentPath,
-      });
-      scene.focus(originalTarget);
-    };
-
-    performUndoableEvent({
-      redo: redoAction,
-      undo: undoAction,
+    scene.focus({
+      column: pos.column,
+      line: pos.line,
+      parentPath: originalTarget.parentPath,
+      path: originalTarget.parentPath,
     });
-  }, [path, performUndoableEvent, scene, target]);
+  }, [path, scene, target]);
 
   return useMemo(
     () => ({

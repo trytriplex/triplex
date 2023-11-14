@@ -16,7 +16,6 @@ import {
 import { useEditor } from "../stores/editor";
 import { useOverlayStore } from "../stores/overlay";
 import { useScene } from "../stores/scene";
-import { useUndoRedoState } from "../stores/undo-redo";
 
 interface MenuItem {
   accelerator?: string;
@@ -104,7 +103,6 @@ export function EditorMenu() {
     target,
   } = useEditor();
   const { blur, jumpTo, navigateTo, refresh, setTransform } = useScene();
-  const { redo, redoAvailable, undo, undoAvailable } = useUndoRedoState();
   const isEditable = !!path;
 
   const revertFile = useCallback(() => {
@@ -200,15 +198,11 @@ export function EditorMenu() {
           submenu: [
             {
               accelerator: shortcut("Z", { meta: true }),
-              click: () => undo(),
-              enabled: undoAvailable && isEditable,
               id: "undo",
               label: "Undo",
             },
             {
               accelerator: shortcut("Z", { meta: true, shift: true }),
-              click: () => redo(),
-              enabled: redoAvailable && isEditable,
               id: "redo",
               label: "Redo",
             },
@@ -360,8 +354,6 @@ export function EditorMenu() {
       ] satisfies MenuItem[],
     [
       isEditable,
-      undoAvailable,
-      redoAvailable,
       target,
       enteredComponent,
       duplicateSelection,
@@ -372,8 +364,6 @@ export function EditorMenu() {
       saveAll,
       revertFile,
       refresh,
-      undo,
-      redo,
       blur,
       jumpTo,
       navigateTo,

@@ -16,6 +16,7 @@ import {
 } from "ts-morph";
 import type { JsxElementPositions } from "../types";
 import { getElementFilePath } from "./module";
+import { SourceFileReadOnly } from "./project";
 import { getFunctionPropTypes, getJsxElementPropTypes } from "./type-infer";
 
 /**
@@ -26,8 +27,11 @@ import { getFunctionPropTypes, getJsxElementPropTypes } from "./type-infer";
  * @param exportName When defined will only return the jsx elements for that
  *   export.
  */
-export function getAllJsxElements(sourceFile: SourceFile, exportName?: string) {
-  let nodeToSearch: Node = sourceFile;
+export function getAllJsxElements(
+  sourceFile: SourceFileReadOnly,
+  exportName?: string
+) {
+  let nodeToSearch: SourceFileReadOnly | Node = sourceFile;
 
   if (exportName) {
     const foundExport = sourceFile
@@ -141,7 +145,7 @@ export function resolveExportDeclaration(node: Node<ts.Node>) {
 }
 
 export function getJsxElementsPositions(
-  sourceFile: SourceFile,
+  sourceFile: SourceFileReadOnly,
   exportName: string
 ): JsxElementPositions[] {
   const elements: JsxElementPositions[] = [];
@@ -291,7 +295,7 @@ const propsExcludeList: Record<string, true> = {
 };
 
 export function getJsxElementProps(
-  _: SourceFile,
+  _: SourceFileReadOnly,
   element: JsxSelfClosingElement | JsxElement
 ) {
   const { props, transforms } = getJsxElementPropTypes(element);
@@ -316,7 +320,10 @@ export function getJsxElementProps(
   return { props: sortedProps, transforms };
 }
 
-export function getFunctionProps(sourceFile: SourceFile, exportName: string) {
+export function getFunctionProps(
+  sourceFile: SourceFileReadOnly,
+  exportName: string
+) {
   const { props, transforms } = getFunctionPropTypes(sourceFile, exportName);
 
   const sortedProps = props.sort((propA, propB) => {
@@ -338,7 +345,7 @@ export function getFunctionProps(sourceFile: SourceFile, exportName: string) {
 }
 
 export function getJsxElementAt(
-  sourceFile: SourceFile,
+  sourceFile: SourceFileReadOnly,
   line: number,
   column: number
 ) {
