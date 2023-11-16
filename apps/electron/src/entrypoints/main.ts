@@ -6,7 +6,6 @@
  */
 import { randomUUID } from "node:crypto";
 import { readdir } from "node:fs/promises";
-import { join, resolve, sep } from "node:path";
 import process from "node:process";
 import { init } from "@sentry/electron/main";
 import {
@@ -20,6 +19,7 @@ import {
 } from "electron";
 import { autoUpdater } from "electron-updater";
 import launchEditor from "launch-editor";
+import { join, resolve, sep } from "upath";
 import { createProject, showCreateDialog } from "../util/create";
 import { ensureDepsInstall } from "../util/deps";
 import { fork } from "../util/fork";

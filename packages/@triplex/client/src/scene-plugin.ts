@@ -30,9 +30,7 @@ export function scenePlugin({
         return scripts.sceneFrame
           .replace(
             "{{SCENE_FILES_GLOB}}",
-            `[${files
-              .map((f) => `'${f.replace(cwd.replaceAll("\\", "/"), "")}'`)
-              .join(",")}]`
+            `[${files.map((f) => `'${f.replace(cwd, "")}'`).join(",")}]`
           )
           .replace("{{PROVIDER_PATH}}", provider);
       }

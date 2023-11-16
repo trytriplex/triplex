@@ -27,6 +27,7 @@
     "react-router-dom": "^6.7.0",
     "suspend-react": "^0.0.9",
     "tinycolor2": "^1.6.0",
+    "upath": "^2.0.1",
     "zustand": "^4.3.2"
   },
   "devDependencies": {

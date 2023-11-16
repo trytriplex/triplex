@@ -14,7 +14,7 @@ export function TitleBar() {
   const { path } = useEditor();
   const { name } = useLazySubscription("/folder");
   const [windowState, setWindowState] = useState<WindowState>("active");
-  const filename = path.replaceAll("\\", "/").split("/").at(-1);
+  const filename = path.split("/").at(-1);
   const windowTitle = filename ? filename + " — " + name : name;
 
   useEffect(() => {

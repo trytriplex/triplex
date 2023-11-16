@@ -6,7 +6,7 @@
  */
 const { spawn } = require("node:child_process");
 const { readdirSync } = require("node:fs");
-const { join } = require("node:path");
+const { join } = require("upath");
 
 const examples = readdirSync(join(process.cwd(), "examples"));
 const example = process.argv[2] || "geometry";

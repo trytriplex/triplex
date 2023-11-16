@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { join } from "node:path";
+import { join } from "upath";
 import { describe, expect, it } from "vitest";
 import { getJsxElementAt } from "../jsx";
 import { _createProject } from "../project";

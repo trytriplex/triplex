@@ -4,14 +4,14 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { join } from "upath";
 import { describe, expect, it } from "vitest";
 import {
-  hostElements,
-  foundFolders,
-  folderComponents,
   folderAssets,
+  folderComponents,
+  foundFolders,
+  hostElements,
 } from "../project";
-import { join } from "node:path";
 
 describe("project", () => {
   it("should return a list of host jsx elements", () => {
@@ -22,7 +22,7 @@ describe("project", () => {
 
   it("should pick up all folders that contain files in a nested structure", async () => {
     const actual = await foundFolders([
-      __dirname + "/__mocks__/components/**/*.tsx",
+      join(__dirname, "/__mocks__/components/**/*.tsx"),
     ]);
 
     expect(actual).toEqual([
@@ -77,8 +77,8 @@ describe("project", () => {
 
   it("should return a folders components", async () => {
     const actual = await folderComponents(
-      [__dirname + "/__mocks__/components/**/*.tsx"],
-      __dirname + "/__mocks__/components/objects"
+      [join(__dirname, "/__mocks__/components/**/*.tsx")],
+      join(__dirname, "/__mocks__/components/objects")
     );
 
     expect(actual).toEqual([
@@ -114,8 +114,8 @@ describe("project", () => {
 
   it("should return a folders assets", async () => {
     const actual = await folderAssets(
-      [__dirname + "/__mocks__/components/**/*.tsx"],
-      __dirname + "/__mocks__/components/objects"
+      [join(__dirname, "/__mocks__/components/**/*.tsx")],
+      join(__dirname, "/__mocks__/components/objects")
     );
 
     expect(actual).toEqual([

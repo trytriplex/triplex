@@ -4,7 +4,6 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { basename, extname, relative } from "node:path";
 import {
   JsxElement,
   JsxSelfClosingElement,
@@ -13,6 +12,7 @@ import {
   SyntaxKind,
   ts,
 } from "ts-morph";
+import { basename, extname, relative } from "upath";
 import {
   getAttributes,
   getJsxElementAt,
@@ -34,7 +34,7 @@ function extractPath(dirPath: string, targetPath: string) {
   const isSrc =
     targetPath.startsWith(".") ||
     targetPath.startsWith("/") ||
-    targetPath.match(/^[A-Z]:\\/);
+    targetPath.match(/^[A-Z]:\//);
 
   if (isSrc) {
     const targetFilename = `${basename(targetPath).replace(

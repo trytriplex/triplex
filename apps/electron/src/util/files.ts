@@ -8,6 +8,7 @@ import { readFile } from "node:fs/promises";
 import anymatch from "anymatch";
 import parent from "glob-parent";
 import readdirp from "readdirp";
+import { normalize } from "upath";
 
 export function inferExports(file: string) {
   const namedExports = file.matchAll(/export (function|const|let) ([A-Z]\w+)/g);
@@ -42,7 +43,7 @@ export async function getFirstFoundFile({ files }: { files: string[] }) {
 
         return {
           exports: foundExports,
-          path: entry.fullPath,
+          path: normalize(entry.fullPath),
         };
       }
     }

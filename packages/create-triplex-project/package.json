@@ -23,7 +23,8 @@
     "commander": "^10.0.0",
     "enquirer": "^2.3.6",
     "open": "^8.4.0",
-    "ora": "^6.1.2"
+    "ora": "^6.1.2",
+    "upath": "^2.0.1"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.59",

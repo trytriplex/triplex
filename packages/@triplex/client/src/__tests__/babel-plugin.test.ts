@@ -30,7 +30,6 @@ describe("babel plugin", () => {
       <group scale={scale} />
     `,
       {
-        filename: "/hello.tsx",
         plugins: [
           plugin({ exclude: ["/hello.tsx"] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -38,7 +37,17 @@ describe("babel plugin", () => {
       }
     );
 
-    expect(result?.code).toMatchInlineSnapshot('"<group scale={scale} />;"');
+    expect(result?.code).toMatchInlineSnapshot(`
+      "<SceneObject scale={scale} __component={\\"group\\"} __meta={{
+        \\"path\\": \\"\\",
+        \\"name\\": \\"group\\",
+        \\"line\\": 2,
+        \\"column\\": 7,
+        \\"translate\\": false,
+        \\"rotate\\": false,
+        \\"scale\\": true
+      }} key={\\"group27\\"}></SceneObject>;"
+    `);
   });
 
   it("should continue to apply other babel plugins when ignored", () => {
@@ -49,7 +58,6 @@ describe("babel plugin", () => {
       }
     `,
       {
-        filename: "/hello.tsx",
         plugins: [
           plugin({ exclude: ["/hello.tsx"] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -60,9 +68,20 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "export function Component() {
-        return <group scale={scale} />;
+        return <SceneObject scale={scale} __component={\\"group\\"} __meta={{
+          \\"path\\": \\"\\",
+          \\"name\\": \\"group\\",
+          \\"line\\": 3,
+          \\"column\\": 16,
+          \\"translate\\": false,
+          \\"rotate\\": false,
+          \\"scale\\": true
+        }} key={\\"group316\\"}></SceneObject>;
       }
       _c = Component;
+      Component.triplexMeta = {
+        \\"lighting\\": \\"default\\"
+      };
       var _c;
       $RefreshReg$(_c, \\"Component\\");"
     `);
@@ -82,7 +101,6 @@ describe("babel plugin", () => {
       </RigidBody>
     `,
       {
-        filename: "/hello.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -93,7 +111,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "import { RigidBody } from '@react-three/rapier';
       <SceneObject name=\\"box\\" type=\\"dynamic\\" position={position} colliders=\\"cuboid\\" canSleep={false} __component={RigidBody} __meta={{
-        \\"path\\": \\"/hello.tsx\\",
+        \\"path\\": \\"\\",
         \\"name\\": \\"RigidBody\\",
         \\"line\\": 3,
         \\"column\\": 7,
@@ -111,7 +129,6 @@ describe("babel plugin", () => {
       <group />
     `,
       {
-        filename: "\\this\\is\\a\\path\\hello.tsx",
         plugins: [
           plugin({ exclude: ["is/a/path"] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -119,7 +136,17 @@ describe("babel plugin", () => {
       }
     );
 
-    expect(result?.code).toMatchInlineSnapshot('"<group />;"');
+    expect(result?.code).toMatchInlineSnapshot(`
+      "<SceneObject __component={\\"group\\"} __meta={{
+        \\"path\\": \\"\\",
+        \\"name\\": \\"group\\",
+        \\"line\\": 2,
+        \\"column\\": 7,
+        \\"translate\\": false,
+        \\"rotate\\": false,
+        \\"scale\\": false
+      }} key={\\"group27\\"}></SceneObject>;"
+    `);
   });
 
   it("should transform scene with wrapped groups", () => {
@@ -133,7 +160,6 @@ describe("babel plugin", () => {
       </group>
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -143,7 +169,7 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "<SceneObject scale={scale} __component={\\"group\\"} __meta={{
-        \\"path\\": \\"/box.tsx\\",
+        \\"path\\": \\"\\",
         \\"name\\": \\"group\\",
         \\"line\\": 2,
         \\"column\\": 7,
@@ -152,7 +178,7 @@ describe("babel plugin", () => {
         \\"scale\\": true
       }} key={\\"group27\\"}>
               <SceneObject position={[1, 1, 1]} __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"/box.tsx\\",
+          \\"path\\": \\"\\",
           \\"name\\": \\"mesh\\",
           \\"line\\": 3,
           \\"column\\": 9,
@@ -161,7 +187,7 @@ describe("babel plugin", () => {
           \\"scale\\": false
         }} key={\\"mesh39\\"}>
                 <SceneObject args={[1, 1, 1]} __component={\\"boxGeometry\\"} __meta={{
-            \\"path\\": \\"/box.tsx\\",
+            \\"path\\": \\"\\",
             \\"name\\": \\"boxGeometry\\",
             \\"line\\": 4,
             \\"column\\": 11,
@@ -170,7 +196,7 @@ describe("babel plugin", () => {
             \\"scale\\": false
           }} key={\\"boxGeometry411\\"}></SceneObject>
                 <SceneObject color=\\"black\\" __component={\\"standardMaterial\\"} __meta={{
-            \\"path\\": \\"/box.tsx\\",
+            \\"path\\": \\"\\",
             \\"name\\": \\"standardMaterial\\",
             \\"line\\": 5,
             \\"column\\": 11,
@@ -193,7 +219,6 @@ describe("babel plugin", () => {
       }
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -204,7 +229,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "export function HelloWorld() {
         return <SceneObject __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"/box.tsx\\",
+          \\"path\\": \\"\\",
           \\"name\\": \\"mesh\\",
           \\"line\\": 4,
           \\"column\\": 11,
@@ -229,7 +254,6 @@ describe("babel plugin", () => {
       }
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -240,7 +264,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "export const HelloWorld = () => {
         return <SceneObject __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"/box.tsx\\",
+          \\"path\\": \\"\\",
           \\"name\\": \\"mesh\\",
           \\"line\\": 4,
           \\"column\\": 11,
@@ -270,7 +294,6 @@ describe("babel plugin", () => {
       }
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -282,7 +305,7 @@ describe("babel plugin", () => {
       "export const HelloWorld = () => {
         return <>
                   <SceneObject visible __component={\\"mesh\\"} __meta={{
-            \\"path\\": \\"/box.tsx\\",
+            \\"path\\": \\"\\",
             \\"name\\": \\"mesh\\",
             \\"line\\": 5,
             \\"column\\": 13,
@@ -291,7 +314,7 @@ describe("babel plugin", () => {
             \\"scale\\": false
           }} key={\\"mesh513\\"}>
                     <SceneObject __component={\\"boxGeometry\\"} __meta={{
-              \\"path\\": \\"/box.tsx\\",
+              \\"path\\": \\"\\",
               \\"name\\": \\"boxGeometry\\",
               \\"line\\": 6,
               \\"column\\": 15,
@@ -301,7 +324,7 @@ describe("babel plugin", () => {
             }} key={\\"boxGeometry615\\"}></SceneObject>
                   </SceneObject>
                   <SceneObject __component={\\"spotLight\\"} __meta={{
-            \\"path\\": \\"/box.tsx\\",
+            \\"path\\": \\"\\",
             \\"name\\": \\"spotLight\\",
             \\"line\\": 8,
             \\"column\\": 13,
@@ -332,7 +355,6 @@ describe("babel plugin", () => {
       }
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -346,7 +368,7 @@ describe("babel plugin", () => {
       function HelloWorld() {
         const onClick = () => {};
         return <SceneObject __component={\\"group\\"} __meta={{
-          \\"path\\": \\"/box.tsx\\",
+          \\"path\\": \\"\\",
           \\"name\\": \\"group\\",
           \\"line\\": 9,
           \\"column\\": 11,
@@ -373,7 +395,6 @@ describe("babel plugin", () => {
       export default HelloWorld;
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -384,7 +405,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "const HelloWorld = () => {
         return <SceneObject __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"/box.tsx\\",
+          \\"path\\": \\"\\",
           \\"name\\": \\"mesh\\",
           \\"line\\": 4,
           \\"column\\": 11,
@@ -410,7 +431,6 @@ describe("babel plugin", () => {
       });
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -421,7 +441,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "export const HelloWorld = forwardRef(ref => {
         return <SceneObject ref={ref} __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"/box.tsx\\",
+          \\"path\\": \\"\\",
           \\"name\\": \\"mesh\\",
           \\"line\\": 4,
           \\"column\\": 11,
@@ -465,7 +485,6 @@ describe("babel plugin", () => {
       export default Box;
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -481,7 +500,7 @@ describe("babel plugin", () => {
       }) {
         const ok = {};
         return <SceneObject visible scale={scale} __component={\\"group\\"} __meta={{
-          \\"path\\": \\"/box.tsx\\",
+          \\"path\\": \\"\\",
           \\"name\\": \\"group\\",
           \\"line\\": 9,
           \\"column\\": 11,
@@ -492,7 +511,7 @@ describe("babel plugin", () => {
                   <SceneObject {...ok} userData={{
             hello: true
           }} onClick={() => {}} visible={true} position={position} rotation={rotation} __component={\\"mesh\\"} __meta={{
-            \\"path\\": \\"/box.tsx\\",
+            \\"path\\": \\"\\",
             \\"name\\": \\"mesh\\",
             \\"line\\": 10,
             \\"column\\": 13,
@@ -501,7 +520,7 @@ describe("babel plugin", () => {
             \\"scale\\": false
           }} key={\\"mesh1013\\"}>
                     <SceneObject args={[1, 1, 1]} __component={\\"boxGeometry\\"} __meta={{
-              \\"path\\": \\"/box.tsx\\",
+              \\"path\\": \\"\\",
               \\"name\\": \\"boxGeometry\\",
               \\"line\\": 18,
               \\"column\\": 15,
@@ -510,7 +529,7 @@ describe("babel plugin", () => {
               \\"scale\\": false
             }} key={\\"boxGeometry1815\\"}></SceneObject>
                     <SceneObject color=\\"#00ff00\\" __component={\\"meshStandardMaterial\\"} __meta={{
-              \\"path\\": \\"/box.tsx\\",
+              \\"path\\": \\"\\",
               \\"name\\": \\"meshStandardMaterial\\",
               \\"line\\": 19,
               \\"column\\": 15,
@@ -534,7 +553,6 @@ describe("babel plugin", () => {
       <CustomComponent />
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -544,7 +562,7 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "<SceneObject __component={CustomComponent} __meta={{
-        \\"path\\": \\"/box.tsx\\",
+        \\"path\\": \\"\\",
         \\"name\\": \\"CustomComponent\\",
         \\"line\\": 2,
         \\"column\\": 7,
@@ -561,7 +579,6 @@ describe("babel plugin", () => {
       <CustomComponent key="existing" />
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -571,7 +588,7 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "<SceneObject __component={CustomComponent} __meta={{
-        \\"path\\": \\"/box.tsx\\",
+        \\"path\\": \\"\\",
         \\"name\\": \\"CustomComponent\\",
         \\"line\\": 2,
         \\"column\\": 7,
@@ -588,7 +605,6 @@ describe("babel plugin", () => {
       <CustomComponent key={10} />
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -598,7 +614,7 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "<SceneObject __component={CustomComponent} __meta={{
-        \\"path\\": \\"/box.tsx\\",
+        \\"path\\": \\"\\",
         \\"name\\": \\"CustomComponent\\",
         \\"line\\": 2,
         \\"column\\": 7,
@@ -616,7 +632,6 @@ describe("babel plugin", () => {
       <mesh position={position} />
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -626,7 +641,7 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "<SceneObject position={position} __component={\\"mesh\\"} __meta={{
-        \\"path\\": \\"/box.tsx\\",
+        \\"path\\": \\"\\",
         \\"name\\": \\"mesh\\",
         \\"line\\": 2,
         \\"column\\": 7,
@@ -645,7 +660,6 @@ describe("babel plugin", () => {
       }
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -656,7 +670,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "function Component(props) {
         return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"/box.tsx\\",
+          \\"path\\": \\"\\",
           \\"name\\": \\"mesh\\",
           \\"line\\": 3,
           \\"column\\": 16,
@@ -679,7 +693,6 @@ describe("babel plugin", () => {
       });
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -690,7 +703,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "const Component = forwardRef(props => {
         return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"/box.tsx\\",
+          \\"path\\": \\"\\",
           \\"name\\": \\"mesh\\",
           \\"line\\": 3,
           \\"column\\": 16,
@@ -713,7 +726,6 @@ describe("babel plugin", () => {
       }
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -727,7 +739,7 @@ describe("babel plugin", () => {
         ...props
       }) {
         return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"/box.tsx\\",
+          \\"path\\": \\"\\",
           \\"name\\": \\"mesh\\",
           \\"line\\": 3,
           \\"column\\": 16,
@@ -750,7 +762,6 @@ describe("babel plugin", () => {
       });
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -764,7 +775,7 @@ describe("babel plugin", () => {
         ...props
       }) => {
         return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"/box.tsx\\",
+          \\"path\\": \\"\\",
           \\"name\\": \\"mesh\\",
           \\"line\\": 3,
           \\"column\\": 16,
@@ -787,7 +798,6 @@ describe("babel plugin", () => {
       }
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -804,7 +814,7 @@ describe("babel plugin", () => {
         ...props
       }) {
         return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"/box.tsx\\",
+          \\"path\\": \\"\\",
           \\"name\\": \\"mesh\\",
           \\"line\\": 3,
           \\"column\\": 16,
@@ -827,7 +837,6 @@ describe("babel plugin", () => {
       });
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -844,7 +853,7 @@ describe("babel plugin", () => {
         ...props
       }) => {
         return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"/box.tsx\\",
+          \\"path\\": \\"\\",
           \\"name\\": \\"mesh\\",
           \\"line\\": 3,
           \\"column\\": 16,
@@ -867,7 +876,6 @@ describe("babel plugin", () => {
       });
     `,
       {
-        filename: "/box.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -878,7 +886,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "const Component = forwardRef(function Hello(props) {
         return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"/box.tsx\\",
+          \\"path\\": \\"\\",
           \\"name\\": \\"mesh\\",
           \\"line\\": 3,
           \\"column\\": 16,

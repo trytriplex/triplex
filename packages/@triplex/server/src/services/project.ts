@@ -5,10 +5,10 @@
  * file in the root directory of this source tree.
  */
 import { readdir, readFile } from "node:fs/promises";
-import { basename, dirname, extname, join, normalize } from "node:path";
 import anymatch from "anymatch";
 import parent from "glob-parent";
 import readdirp from "readdirp";
+import { basename, dirname, extname, join, normalize } from "upath";
 import {
   Folder,
   ProjectAsset,
@@ -73,7 +73,7 @@ export function hostElements() {
 
 async function safeReaddir(path: string) {
   try {
-    return await readdir(path);
+    return await (await readdir(path)).map((file) => normalize(file));
   } catch {
     return [];
   }
@@ -81,8 +81,8 @@ async function safeReaddir(path: string) {
 
 export async function foundFolders(globs: string[]) {
   const folders: Folder[] = [];
-  const match = anymatch(globs.map((glob) => glob.replaceAll("\\", "/")));
-  const roots = globs.map((glob) => parent(glob.replaceAll("\\", "/")));
+  const match = anymatch(globs);
+  const roots = globs.map((glob) => parent(glob));
   const foldersCache: Record<string, Folder> = {};
 
   async function countDirFiles(path: string) {
@@ -113,7 +113,7 @@ export async function foundFolders(globs: string[]) {
     folders.push(rootFolder);
 
     for await (const entry of readdirp(root, { type: "directories" })) {
-      const path = entry.fullPath;
+      const path = normalize(entry.fullPath);
       const parentFolderName = dirname(entry.fullPath);
 
       const folder: Folder = {
@@ -138,7 +138,7 @@ export async function foundFolders(globs: string[]) {
 }
 
 export async function folderComponents(globs: string[], folder: string) {
-  const match = anymatch(globs.map((glob) => glob.replaceAll("\\", "/")));
+  const match = anymatch(globs);
   const foundComponents: ProjectCustomComponent[] = [];
 
   for await (const entry of readdirp(folder, { depth: 1 })) {
@@ -151,7 +151,7 @@ export async function folderComponents(globs: string[], folder: string) {
           category: "Unknown",
           exportName: exp.exportName,
           name: exp.name,
-          path: entry.fullPath,
+          path: normalize(entry.fullPath),
           type: "custom",
         })
       );
@@ -162,7 +162,7 @@ export async function folderComponents(globs: string[], folder: string) {
 }
 
 export async function folderAssets(globs: string[], folder: string) {
-  const match = anymatch(globs.map((glob) => glob.replaceAll("\\", "/")));
+  const match = anymatch(globs);
   const foundAssets: ProjectAsset[] = [];
 
   for await (const entry of readdirp(folder, { depth: 0 })) {
@@ -170,7 +170,7 @@ export async function folderAssets(globs: string[], folder: string) {
       foundAssets.push({
         extname: extname(entry.fullPath),
         name: entry.basename,
-        path: entry.fullPath,
+        path: normalize(entry.fullPath),
         type: "asset",
       });
     }

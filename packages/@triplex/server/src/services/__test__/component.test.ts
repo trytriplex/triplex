@@ -5,8 +5,8 @@
  * file in the root directory of this source tree.
  */
 import { rmSync } from "node:fs";
-import { join } from "node:path";
 import { SyntaxKind } from "ts-morph";
+import { join } from "upath";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { getJsxElementAt, getJsxElementsPositions } from "../../ast/jsx";
 import { getExportName } from "../../ast/module";

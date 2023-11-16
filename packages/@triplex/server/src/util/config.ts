@@ -5,8 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { readFile } from "node:fs/promises";
-import { join } from "node:path";
-import { join as joinPosix, normalize } from "node:path/posix";
+import { join, normalize } from "upath";
 
 const STATIC_ASSETS = ["glb", "gltf"];
 
@@ -28,22 +27,18 @@ export async function getConfig(cwd: string) {
   );
 
   const provider: string | undefined =
-    config.provider &&
-    joinPosix(cwd, ".triplex", config.provider).replaceAll("\\", "/");
+    config.provider && join(cwd, ".triplex", config.provider);
 
   const files: string[] = config.files.map((file: string) =>
-    // Separators should always be forward slashes for glob compatibility.
-    joinPosix(cwd, ".triplex", file).replaceAll("\\", "/")
+    join(cwd, ".triplex", file)
   );
 
   const components: string[] = (config.components || []).map((file: string) =>
-    // Separators should always be forward slashes for glob compatibility.
-    joinPosix(cwd, ".triplex", file).replaceAll("\\", "/")
+    join(cwd, ".triplex", file)
   );
 
   const assetsDir = normalize(
-    // Separators should always be forward slashes for glob compatibility.
-    joinPosix(
+    join(
       publicDir,
       config.assetsDir || "assets",
       `/**/*.(${STATIC_ASSETS.join("|")})`

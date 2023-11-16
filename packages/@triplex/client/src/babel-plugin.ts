@@ -7,6 +7,7 @@
 import type { NodePath, PluginObj } from "@babel/core";
 // eslint-disable-next-line import/no-namespace
 import * as t from "@babel/types";
+import { normalize } from "upath";
 
 function isNodeModulesComponent(path: NodePath, elementName: string) {
   try {
@@ -196,7 +197,9 @@ export default function triplexBabelPlugin({ exclude }: { exclude: string[] }) {
                 t.objectExpression([
                   t.objectProperty(
                     t.stringLiteral("path"),
-                    t.stringLiteral(pass.filename || "")
+                    t.stringLiteral(
+                      pass.filename ? normalize(pass.filename) : ""
+                    )
                   ),
                   t.objectProperty(
                     t.stringLiteral("name"),
@@ -246,7 +249,7 @@ export default function triplexBabelPlugin({ exclude }: { exclude: string[] }) {
       },
       Program: {
         enter(_, state) {
-          const normalizedPath = (state.filename || "").replaceAll("\\", "/");
+          const normalizedPath = normalize(state.filename || "");
           if (exclude.some((file) => normalizedPath.includes(file))) {
             shouldSkip = true;
           }

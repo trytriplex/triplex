@@ -4,10 +4,10 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { join, normalize } from "node:path";
 import { watch } from "chokidar";
 import { format, resolveConfig, resolveConfigFile } from "prettier";
 import { Project, ProjectOptions, SourceFile } from "ts-morph";
+import { join, normalize } from "upath";
 import { deleteCommentComponents } from "../services/component";
 import { SourceFileChangedEvent } from "../types";
 
@@ -90,7 +90,7 @@ async function persistSourceFile({
 export function createProject({
   cwd = process.cwd(),
   tsConfigFilePath = join(cwd, "tsconfig.json"),
-} = {}) {
+}: { cwd?: string; tsConfigFilePath?: string } = {}) {
   const project = _createProject({
     tsConfigFilePath,
   });

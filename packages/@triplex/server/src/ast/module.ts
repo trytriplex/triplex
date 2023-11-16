@@ -4,8 +4,8 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { normalize } from "node:path";
 import { JsxElement, JsxSelfClosingElement, Node } from "ts-morph";
+import { normalize } from "upath";
 import { resolveExportDeclaration } from "./jsx";
 import { SourceFileReadOnly } from "./project";
 

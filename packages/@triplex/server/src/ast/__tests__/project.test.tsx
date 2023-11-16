@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { join } from "node:path";
+import { join } from "upath";
 import { describe, expect, it, vitest } from "vitest";
 import { createProject } from "../project";
 
@@ -65,7 +65,7 @@ describe("project ast", () => {
         filePath: join(
           process.cwd(),
           "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
-        ).replaceAll("\\", "/"),
+        ),
         isDirty: true,
         isNew: false,
       },
@@ -91,7 +91,7 @@ describe("project ast", () => {
         filePath: join(
           process.cwd(),
           "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
-        ).replaceAll("\\", "/"),
+        ),
         isDirty: false,
         isNew: false,
       },
@@ -116,10 +116,7 @@ describe("project ast", () => {
       {
         exportName: "Untitled",
         fileName: "untitled.tsx",
-        filePath: join(process.cwd(), "/src/untitled.tsx").replaceAll(
-          "\\",
-          "/"
-        ),
+        filePath: join(process.cwd(), "/src/untitled.tsx"),
         isDirty: true,
         isNew: true,
       },
@@ -129,7 +126,7 @@ describe("project ast", () => {
         filePath: join(
           process.cwd(),
           "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
-        ).replaceAll("\\", "/"),
+        ),
         isDirty: false,
         isNew: false,
       },

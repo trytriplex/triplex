@@ -70,6 +70,9 @@ importers:
       typescript:
         specifier: ^4.9.4
         version: 4.9.4
+      upath:
+        specifier: ^2.0.1
+        version: 2.0.1
       vitest:
         specifier: ^0.34.6
         version: 0.34.6(jsdom@21.1.0)
@@ -197,6 +200,9 @@ importers:
       typescript:
         specifier: ^4.9.4
         version: 4.9.4
+      upath:
+        specifier: ^2.0.1
+        version: 2.0.1
       vite:
         specifier: ^4.4.11
         version: 4.4.11(@types/node@18.11.18)
@@ -435,6 +441,9 @@ importers:
       typescript:
         specifier: ^4.9.4
         version: 4.9.4
+      upath:
+        specifier: ^2.0.1
+        version: 2.0.1
       vite-plugin-glsl:
         specifier: ^1.1.2
         version: 1.1.2(vite@4.4.11)
@@ -486,6 +495,9 @@ importers:
       tinycolor2:
         specifier: ^1.6.0
         version: 1.6.0
+      upath:
+        specifier: ^2.0.1
+        version: 2.0.1
       zustand:
         specifier: ^4.3.2
         version: 4.3.2(react@18.2.0)
@@ -721,6 +733,9 @@ importers:
       typescript:
         specifier: ^4.9.4
         version: 4.9.4
+      upath:
+        specifier: ^2.0.1
+        version: 2.0.1
       vite:
         specifier: ^4.4.11
         version: 4.4.11(@types/node@18.11.18)
@@ -768,6 +783,9 @@ importers:
       ora:
         specifier: ^6.1.2
         version: 6.1.2
+      upath:
+        specifier: ^2.0.1
+        version: 2.0.1
     devDependencies:
       '@swc/cli':
         specifier: ^0.1.59
@@ -11799,6 +11817,10 @@ packages:
     resolution: {integrity: sha512-KK8xQ1mkzZeg9inewmFVDNkg3l5LUhoq9kN6iWYB/CC9YMG8HA+c1Q8HwDe6dEX7kErrEVNVBO3fWsVq5iDgtw==}
     engines: {node: '>=8'}
     dev: false
+
+  /upath@2.0.1:
+    resolution: {integrity: sha512-1uEe95xksV1O0CYKXo8vQvN1JEbtJp7lb7C5U9HMsIp6IVwntkH/oNUzyVNQSd4S1sYk2FpSSW44FqMc8qee5w==}
+    engines: {node: '>=4'}
 
   /update-browserslist-db@1.0.13(browserslist@4.22.1):
     resolution: {integrity: sha512-xebP81SNcPuNpPP3uzeW1NYXxI3rxyJzF3pD6sH4jE7o/IX+WtSpwnVU+qIsDPyk0d3hmFQ7mjqc6AtV604hbg==}

@@ -5,10 +5,10 @@
  * file in the root directory of this source tree.
  */
 import { readFile } from "node:fs/promises";
-import { extname } from "node:path";
 import anymatch from "anymatch";
 import parent from "glob-parent";
 import readdirp from "readdirp";
+import { extname, normalize } from "upath";
 import { getJsxElementsPositions, TRIPLEXProject } from "../ast";
 import { inferExports } from "../util/module";
 import { matchFile } from "../util/path";
@@ -55,11 +55,10 @@ export async function getAllFiles({
     path: string;
   }[] = [];
   // Handle Windows separators being invalid in globs.
-  const parsedFiles = files.map((file) => file.replaceAll("\\", "/"));
   const roots = files.map((glob) => parent(glob));
 
-  for (let i = 0; i < parsedFiles.length; i++) {
-    const glob = parsedFiles[i];
+  for (let i = 0; i < files.length; i++) {
+    const glob = files[i];
     const root = roots[i];
     const match = anymatch(glob);
 
@@ -71,7 +70,7 @@ export async function getAllFiles({
         foundFiles.push({
           exports: foundExports,
           name: entry.basename.replace(extname(entry.path), ""),
-          path: entry.fullPath,
+          path: normalize(entry.fullPath),
         });
       }
     }

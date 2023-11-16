@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { builtinModules } from "node:module";
-import { resolve } from "node:path";
+import { resolve } from "upath";
 import { defineConfig } from "vite";
 import pkg from "./package.json";
 

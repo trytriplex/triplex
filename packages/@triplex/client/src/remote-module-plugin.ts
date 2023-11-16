@@ -12,9 +12,7 @@ import {
 } from "vite";
 import { getCode } from "./api";
 
-function match(target: string, files: string[]): boolean {
-  const normalizedFiles = files.map((file) => file.replaceAll("\\", "/"));
-
+function match(target: string, normalizedFiles: string[]): boolean {
   for (let i = 0; i < normalizedFiles.length; i++) {
     const glob = normalizedFiles[i];
     const match = anymatch(glob);

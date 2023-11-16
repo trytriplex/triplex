@@ -5,8 +5,8 @@
  * file in the root directory of this source tree.
  */
 import { fork as forkChild } from "node:child_process";
-import { join } from "node:path";
 import { app } from "electron";
+import { join } from "upath";
 import { logger } from "../util/log";
 
 const log = logger("fork");

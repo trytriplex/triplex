@@ -27,10 +27,9 @@ export function SceneLoader({
   path: string;
   sceneProps: Record<string, unknown>;
 }) {
-  const normalizedPath = path.replaceAll("\\", "/");
   const scenes = useScenes();
   const componentFilename = Object.keys(scenes).find((filename) =>
-    normalizedPath ? normalizedPath.endsWith(filename) : false
+    path ? path.endsWith(filename) : false
   );
 
   if (!componentFilename || !exportName) {

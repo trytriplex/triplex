@@ -4,9 +4,9 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { join } from "node:path";
 import react from "@vitejs/plugin-react";
 import express from "express";
+import { join, normalize } from "upath";
 import tsconfigPaths from "vite-tsconfig-paths";
 import triplexBabelPlugin from "./babel-plugin";
 import { remoteModulePlugin } from "./remote-module-plugin";
@@ -14,7 +14,7 @@ import { scenePlugin } from "./scene-plugin";
 import { createHTML } from "./templates";
 
 export async function createServer({
-  cwd = process.cwd(),
+  cwd: __RAW_CWD_DONT_USE__ = process.cwd(),
   files,
   provider,
   publicDir,
@@ -24,7 +24,7 @@ export async function createServer({
   provider?: string;
   publicDir?: string;
 }) {
-  const normalizedCwd = cwd.replaceAll("\\", "/");
+  const normalizedCwd = normalize(__RAW_CWD_DONT_USE__);
   const tsConfig = join(normalizedCwd, "tsconfig.json");
   const app = express();
   const { createServer: createViteServer } = await import("vite");

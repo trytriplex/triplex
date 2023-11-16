@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 const { readFile, writeFile } = require("node:fs/promises");
-const { join } = require("node:path");
+const { join } = require("upath");
 
 async function main() {
   const filename = join(process.cwd(), "package.json");
