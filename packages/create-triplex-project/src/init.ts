@@ -6,9 +6,9 @@
  */
 import { exec as execCb } from "node:child_process";
 import fs_dont_use_directly from "node:fs/promises";
-import { join } from "node:path";
 import { promisify } from "node:util";
 import { prompt as prompt_dont_use_directly } from "enquirer";
+import { join } from "upath";
 
 const exec_dont_use_directly = promisify(execCb);
 const templateDir = join(__dirname, "../templates");

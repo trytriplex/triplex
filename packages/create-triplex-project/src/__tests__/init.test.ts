@@ -6,7 +6,7 @@
  */
 import { readdir, readFile } from "node:fs/promises";
 import { EOL } from "node:os";
-import { join } from "node:path";
+import { join } from "upath";
 import { describe, expect, it, vi } from "vitest";
 import { init } from "../init";
 
