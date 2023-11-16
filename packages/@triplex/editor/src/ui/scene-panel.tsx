@@ -9,6 +9,8 @@ import {
   dropTargetForElements,
 } from "@atlaskit/pragmatic-drag-and-drop/adapter/element";
 import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
   CameraIcon,
   CaretDownIcon,
   CaretRightIcon,
@@ -173,13 +175,30 @@ function AssetsDrawerButton() {
 }
 
 function SceneContents() {
-  const { enteredComponent, exitComponent, exportName, path } = useEditor();
+  const { enteredComponent, exitComponent, exportName, path, redo, undo } =
+    useEditor();
   const [filter, setFilter] = useState<string | undefined>();
 
   return (
     <div className="flex h-full flex-shrink flex-col">
       <div className="flex p-1">
         <ProviderConfigButton />
+        {import.meta.env.VITE_TRIPLEX_ENV === "test" && (
+          <>
+            <IconButton
+              actionId="undo"
+              icon={ArrowLeftIcon}
+              label="Undo"
+              onClick={undo}
+            />
+            <IconButton
+              actionId="redo"
+              icon={ArrowRightIcon}
+              label="Redo"
+              onClick={redo}
+            />
+          </>
+        )}
       </div>
 
       <div className="max-h-40">

@@ -353,6 +353,18 @@ export function useEditor() {
     });
   }, [path, scene, target]);
 
+  const undo = useEvent(() => {
+    fetch(`http://localhost:8000/scene/${encodeURIComponent(path)}/undo`, {
+      method: "POST",
+    });
+  });
+
+  const redo = useEvent(() => {
+    fetch(`http://localhost:8000/scene/${encodeURIComponent(path)}/redo`, {
+      method: "POST",
+    });
+  });
+
   return useMemo(
     () => ({
       /**
@@ -429,6 +441,10 @@ export function useEditor() {
        */
       persistPropValue,
       /**
+       * Re-applies the last action.
+       */
+      redo,
+      /**
        * Resets the scene throwing away any unsaved state.
        */
       reset,
@@ -453,6 +469,10 @@ export function useEditor() {
        * Returns the currently focused scene object, else `null`.
        */
       target,
+      /**
+       * Unapplies the last action.
+       */
+      undo,
     }),
     [
       addComponent,
@@ -464,18 +484,20 @@ export function useEditor() {
       exitComponent,
       exportName,
       focus,
+      move,
       newComponent,
       newFile,
       open,
       path,
       persistPropValue,
+      redo,
       reset,
       save,
       saveAll,
       saveAs,
       set,
       target,
-      move,
+      undo,
     ]
   );
 }

@@ -18,6 +18,10 @@ export type SourceFileGetters = Extract<
 >;
 export type SourceFileReadOnly = Pick<SourceFile, SourceFileGetters>;
 
+function normalizeLineEndings(source: string): string {
+  return source.replaceAll("\r\n", "\n");
+}
+
 export function _createProject(opts: ProjectOptions) {
   const project = new Project({
     ...opts,
@@ -101,6 +105,9 @@ export function createProject({
   >();
   const modifiedSourceFiles = new Map<SourceFile, { new: boolean }>();
   const openedSourceFiles = new Map<SourceFile, string>();
+  const sourceFileHistory = new Map<SourceFile, string[]>();
+  const sourceFileHistoryIndex = new Map<SourceFile, number>();
+  const persistedSourceFile = new Map<SourceFile, string>();
 
   // Watch the all files inside cwd and watch for changes.
   // If any changes have been made refresh the source file.
@@ -155,6 +162,7 @@ export function ${componentName}() {
     // Setup callbacks
     modifiedSourceFiles.set(sourceFile, { new: true });
     sourceFile.onModified(onSourceFileModified);
+    persistedSourceFile.set(sourceFile, sourceFile.getText(true));
 
     // Immediately callback to notify the creation of this source file
     onSourceFileModified(sourceFile);
@@ -178,6 +186,25 @@ export function ${componentName}() {
     if (!sourceFile) {
       sourceFile = project.addSourceFileAtPath(path);
       sourceFile.onModified(onSourceFileModified);
+      persistedSourceFile.set(sourceFile, sourceFile.getText(true));
+    }
+
+    function flushDirtyState() {
+      const persisted = normalizeLineEndings(
+        persistedSourceFile.get(sourceFile) || ""
+      );
+      const current = normalizeLineEndings(sourceFile.getText(true));
+      const isDirty = modifiedSourceFiles.get(sourceFile);
+
+      if (persisted !== current && !isDirty) {
+        modifiedSourceFiles.set(sourceFile, { new: false });
+        onStateChangeCallbacks.forEach((cb) => cb());
+      } else if (persisted === current && isDirty) {
+        modifiedSourceFiles.delete(sourceFile);
+        onStateChangeCallbacks.forEach((cb) => cb());
+      } else {
+        // Nothing to do — return!
+      }
     }
 
     return {
@@ -186,16 +213,30 @@ export function ${componentName}() {
         modifiedSourceFiles.delete(sourceFile);
         onStateChangeCallbacks.forEach((cb) => cb());
       },
-      edit: <TResult>(callback: (sourceFile: SourceFile) => TResult) => {
+      edit: <TResult>(
+        callback: (
+          sourceFile: SourceFile
+        ) => TResult extends SourceFile ? never : TResult
+      ) => {
+        const undoStack = sourceFileHistory.get(sourceFile) || [
+          sourceFile.getText(true),
+        ];
+        let undoStackIndex = sourceFileHistoryIndex.get(sourceFile) || 0;
+
         const result = callback(sourceFile);
 
-        if (!modifiedSourceFiles.has(sourceFile)) {
-          modifiedSourceFiles.set(sourceFile, { new: false });
-        }
+        undoStackIndex += 1;
+        undoStack.length = undoStackIndex;
+        undoStack.push(sourceFile.getText(true));
+        sourceFileHistoryIndex.set(sourceFile, undoStackIndex);
+        sourceFileHistory.set(sourceFile, undoStack);
 
-        onStateChangeCallbacks.forEach((cb) => cb());
+        flushDirtyState();
 
         return result;
+      },
+      isDirty: () => {
+        return !!modifiedSourceFiles.get(sourceFile);
       },
       onDependencyModified: (cb: () => void) => {
         const callbacks = dependencyModifiedCallbacks.get(path) || [];
@@ -220,6 +261,29 @@ export function ${componentName}() {
       read: () => {
         return sourceFile as SourceFileReadOnly;
       },
+      redo: () => {
+        const undoStack = sourceFileHistory.get(sourceFile);
+        const undoStackIndex = sourceFileHistoryIndex.get(sourceFile);
+
+        if (!undoStack || undoStackIndex === undefined) {
+          return;
+        }
+
+        const nextIndex = undoStackIndex + 1;
+        const nextSourceCode = undoStack[nextIndex];
+        if (!nextSourceCode) {
+          return;
+        }
+
+        sourceFile.replaceText(
+          [sourceFile.getStart(true), sourceFile.getEnd()],
+          nextSourceCode
+        );
+
+        sourceFileHistoryIndex.set(sourceFile, nextIndex);
+
+        flushDirtyState();
+      },
       reset: async () => {
         await sourceFile.refreshFromFileSystem();
         modifiedSourceFiles.delete(sourceFile);
@@ -239,8 +303,40 @@ export function ${componentName}() {
           sourceFile,
         });
 
+        const sourceText = sourceFile.getText(true);
+        const undoStack = sourceFileHistory.get(sourceFile);
+
+        if (undoStack) {
+          undoStack[undoStack.length - 1] = sourceText;
+        }
+
+        persistedSourceFile.set(sourceFile, sourceText);
         modifiedSourceFiles.delete(sourceFile);
         onStateChangeCallbacks.forEach((cb) => cb());
+      },
+      undo: () => {
+        const undoStack = sourceFileHistory.get(sourceFile);
+        const undoStackIndex = sourceFileHistoryIndex.get(sourceFile);
+
+        if (!undoStack || undoStackIndex === undefined) {
+          return;
+        }
+
+        const nextIndex = undoStackIndex - 1;
+        const nextSourceCode = undoStack[nextIndex];
+
+        if (!nextSourceCode) {
+          return;
+        }
+
+        sourceFile.replaceText(
+          [sourceFile.getStart(true), sourceFile.getEnd()],
+          nextSourceCode
+        );
+
+        sourceFileHistoryIndex.set(sourceFile, nextIndex);
+
+        flushDirtyState();
       },
     };
   }

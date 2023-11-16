@@ -91,6 +91,16 @@ export class EditorPage {
       .toBe(0);
   }
 
+  undo() {
+    const locator = this.page.getByLabel("Undo");
+    return locator.click();
+  }
+
+  redo() {
+    const locator = this.page.getByLabel("Redo");
+    return locator.click();
+  }
+
   get scenePanel() {
     const locator = this.page.getByTestId("scene-panel");
 

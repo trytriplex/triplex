@@ -7,6 +7,10 @@
 import { expect } from "@playwright/test";
 import { test } from "./utils/runner";
 
+test("focus on the initial open tab", async ({ editor }) => {
+  await expect(editor.fileTabs.activeTab).toHaveText("scene.tsx");
+});
+
 test("opening a new file should focus on new tab", async ({ editor }) => {
   await editor.newFile();
 

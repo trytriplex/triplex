@@ -54,9 +54,9 @@ describe("project ast", () => {
     );
 
     sourceFile.open("default");
-    sourceFile.edit(() => {});
-    sourceFile.edit(() => {});
-    sourceFile.edit(() => {});
+    sourceFile.edit((source) => source.addClass({ name: "foo" }));
+    sourceFile.edit((source) => source.addClass({ name: "foo" }));
+    sourceFile.edit((source) => source.addClass({ name: "foo" }));
 
     expect(project.getState()).toEqual([
       {
@@ -143,7 +143,9 @@ describe("project ast", () => {
     const cb = vitest.fn();
     project.onStateChange(cb);
 
-    sourceFile.edit(() => {});
+    sourceFile.edit((source) => {
+      source.addFunction({ name: "foo" });
+    });
 
     expect(cb).toHaveBeenCalled();
   });
@@ -162,5 +164,180 @@ describe("project ast", () => {
     sourceFile.edit(() => {});
 
     expect(cb).not.toHaveBeenCalled();
+  });
+
+  it("should undo to a past state and not go out of bounds", () => {
+    const project = createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+    const sourceFile = project.createSourceFile("Untitled");
+    sourceFile.edit((source) => {
+      source.addFunction({
+        name: "foo",
+      });
+    });
+
+    sourceFile.undo();
+    sourceFile.undo();
+    sourceFile.undo();
+    sourceFile.undo();
+
+    expect(sourceFile.read().getText()).toMatchInlineSnapshot(`
+      "export function Untitled() {
+        return (
+          <>
+          </>
+        );
+      }
+      "
+    `);
+  });
+
+  it("should undo and then redo and not go out of bounds", () => {
+    const project = createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+    const sourceFile = project.createSourceFile("Untitled");
+    sourceFile.edit((source) => {
+      source.addFunction({
+        name: "foo",
+      });
+    });
+
+    sourceFile.undo();
+    sourceFile.redo();
+    sourceFile.redo();
+    sourceFile.redo();
+    sourceFile.redo();
+
+    expect(sourceFile.read().getText()).toMatchInlineSnapshot(`
+      "export function Untitled() {
+        return (
+          <>
+          </>
+        );
+      }
+
+      function foo() {
+      }
+      "
+    `);
+  });
+
+  it("should clear out future state after an undo if another edit takes place", () => {
+    const project = createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+    const sourceFile = project.createSourceFile("Untitled");
+    sourceFile.edit((source) => {
+      source.addFunction({
+        name: "foo",
+      });
+    });
+    sourceFile.edit((source) => {
+      source.addFunction({
+        name: "bar",
+      });
+    });
+    sourceFile.edit((source) => {
+      source.addFunction({
+        name: "baz",
+      });
+    });
+    sourceFile.undo();
+    sourceFile.undo();
+    sourceFile.edit((source) => {
+      source.addFunction({
+        name: "bat",
+      });
+    });
+
+    sourceFile.redo();
+
+    expect(sourceFile.read().getText()).toMatchInlineSnapshot(`
+      "export function Untitled() {
+        return (
+          <>
+          </>
+        );
+      }
+
+      function foo() {
+      }
+
+      function bat() {
+      }
+      "
+    `);
+  });
+
+  it("should clear dirty state when editing new file to be the same as current state", () => {
+    const project = createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+    const sourceFile = project.createSourceFile("Untitled");
+    sourceFile.edit((source) => {
+      source.addFunction({
+        name: "foo",
+      });
+    });
+
+    sourceFile.undo();
+
+    expect(sourceFile.isDirty()).toEqual(false);
+  });
+
+  it("should set dirty state when editing new file to be the different to current state", () => {
+    const project = createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+    const sourceFile = project.createSourceFile("Untitled");
+    sourceFile.edit((source) => {
+      source.addFunction({
+        name: "foo",
+      });
+    });
+
+    sourceFile.undo();
+    sourceFile.redo();
+
+    expect(sourceFile.isDirty()).toEqual(true);
+  });
+
+  it("should set dirty state when editing existing file to be the different to current state", () => {
+    const project = createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+    const sourceFile = project.getSourceFile(
+      join(__dirname, "__mocks__", "box.tsx")
+    );
+    sourceFile.edit((source) => {
+      source.addFunction({
+        name: "foo",
+      });
+    });
+
+    sourceFile.undo();
+
+    expect(sourceFile.isDirty()).toEqual(false);
+  });
+
+  it("should set dirty state when editing existing file to be the same to current state", () => {
+    const project = createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+    const sourceFile = project.getSourceFile(
+      join(__dirname, "__mocks__", "box.tsx")
+    );
+    sourceFile.edit((source) => {
+      source.addFunction({
+        name: "foo",
+      });
+    });
+
+    sourceFile.undo();
+    sourceFile.redo();
+
+    expect(sourceFile.isDirty()).toEqual(true);
   });
 });

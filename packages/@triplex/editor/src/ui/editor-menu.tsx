@@ -96,11 +96,13 @@ export function EditorMenu() {
     exitComponent,
     newFile,
     path,
+    redo,
     reset,
     save,
     saveAll,
     saveAs,
     target,
+    undo,
   } = useEditor();
   const { blur, jumpTo, navigateTo, refresh, setTransform } = useScene();
   const isEditable = !!path;
@@ -198,11 +200,13 @@ export function EditorMenu() {
           submenu: [
             {
               accelerator: shortcut("Z", { meta: true }),
+              click: undo,
               id: "undo",
               label: "Undo",
             },
             {
               accelerator: shortcut("Z", { meta: true, shift: true }),
+              click: redo,
               id: "redo",
               label: "Redo",
             },
@@ -354,6 +358,8 @@ export function EditorMenu() {
       ] satisfies MenuItem[],
     [
       isEditable,
+      undo,
+      redo,
       target,
       enteredComponent,
       duplicateSelection,

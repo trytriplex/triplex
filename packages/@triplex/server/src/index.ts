@@ -133,6 +133,24 @@ export function createServer({
     context.response.body = { action, message: "success" };
   });
 
+  router.post("/scene/:path/undo", (context) => {
+    const { path } = context.params;
+    const sourceFile = project.getSourceFile(path);
+
+    sourceFile.undo();
+
+    context.response.body = { message: "success" };
+  });
+
+  router.post("/scene/:path/redo", (context) => {
+    const { path } = context.params;
+    const sourceFile = project.getSourceFile(path);
+
+    sourceFile.redo();
+
+    context.response.body = { message: "success" };
+  });
+
   router.post("/scene/:path/object/:line/:column/duplicate", (context) => {
     const { column, line, path } = context.params;
     const sourceFile = project.getSourceFile(path);

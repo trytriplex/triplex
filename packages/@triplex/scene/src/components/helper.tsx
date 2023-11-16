@@ -70,9 +70,8 @@ function HelperIcon({
   });
 
   return (
-    <mesh onClick={onClick} ref={ref}>
+    <mesh onClick={onClick} ref={ref} visible={false}>
       <boxGeometry args={[HELPER_SIZE, HELPER_SIZE, HELPER_SIZE]} />
-      <meshBasicMaterial opacity={0} transparent />
     </mesh>
   );
 }
