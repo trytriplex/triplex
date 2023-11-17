@@ -41,13 +41,7 @@ autoUpdater.logger = logger("auto-update");
 
 // Stub out the menu ASAP to prevent a flash.
 // It is filled in after the electron app is ready.
-Menu.setApplicationMenu(
-  Menu.buildFromTemplate(
-    process.platform === "darwin"
-      ? [{ role: "appMenu" }, { role: "fileMenu" }]
-      : [{ role: "fileMenu" }]
-  )
-);
+Menu.setApplicationMenu(null);
 
 if (process.platform === "win32") {
   // This ensures published notifications use the app name on Windows.
