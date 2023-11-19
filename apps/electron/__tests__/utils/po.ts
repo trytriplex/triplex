@@ -69,6 +69,9 @@ export class EditorPage {
         return locator.getByLabel(label);
       },
       locator,
+      waitForInputValue(type: "number" | "string" | "boolean", value: string) {
+        return locator.getByTestId(`${type}-${value}`).waitFor();
+      },
     };
   }
 

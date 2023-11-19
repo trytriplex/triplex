@@ -27,6 +27,8 @@ export function fork(
   let fork: ReturnType<typeof forkChild>;
 
   if (process.env.TRIPLEX_ENV === "development") {
+    const isDebugInspect = process.argv.includes("--inspect");
+
     log.info("starting dev");
 
     fork = forkChild(filename, [], {
@@ -36,9 +38,11 @@ export function fork(
         NODE_PATH: process.cwd(),
         TRIPLEX_ENV: "development",
       },
+      // Pass through inspect if the parent has it enabled.
+      execArgv: isDebugInspect ? ["--inspect=40895"] : undefined,
       // We set the forked process to silent so we can capture errors.
       // See: https://stackoverflow.com/a/52066025
-      silent: true,
+      silent: !isDebugInspect,
     });
   } else {
     log.info("starting prod");

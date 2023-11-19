@@ -14,6 +14,10 @@ export type UnionToIntersection<U> = (
   ? I
   : never;
 
+interface RouteOpts {
+  defer?: boolean;
+}
+
 type ValidateShape<T, Shape> = T extends Shape
   ? Exclude<keyof T, keyof Shape> extends never
     ? T
@@ -113,7 +117,7 @@ export function createTWS() {
     TRoute extends `/${string}`,
     TRouteParams extends RouteParams<TRoute>
   >(
-    route: TRoute,
+    opts: (RouteOpts & { path: TRoute }) | TRoute,
     cb: (
       params: TRouteParams,
       state: { type: "push" | "pull" }
@@ -124,6 +128,8 @@ export function createTWS() {
     ) => Promise<void> | void
   ): Record<TRoute, { data: TData; params: TRouteParams }> {
     const handler = (path: string) => {
+      const route = typeof opts === "string" ? opts : opts.path;
+      const config: RouteOpts = typeof opts === "string" ? {} : opts;
       const matches = match(route, path);
 
       if (matches.matches) {
@@ -136,6 +142,12 @@ export function createTWS() {
             let data;
 
             try {
+              if (config.defer) {
+                await new Promise((resolve) => {
+                  setImmediate(resolve);
+                });
+              }
+
               data = await cb(params, { type });
             } catch (error) {
               if (error instanceof Error) {

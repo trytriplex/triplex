@@ -14,7 +14,7 @@ import { SourceFileChangedEvent } from "../types";
 export type TRIPLEXProject = ReturnType<typeof createProject>;
 export type SourceFileGetters = Extract<
   keyof SourceFile,
-  `get${string}` | `on${string}` | `is${string}`
+  `get${string}` | `is${string}`
 >;
 export type SourceFileReadOnly = Pick<SourceFile, SourceFileGetters>;
 
@@ -61,14 +61,11 @@ async function persistSourceFile({
       const prettierConfig = await resolveConfig(prettierConfigPath);
       if (prettierConfig) {
         // A prettier config was found so we will use that to format.
-        const source = format(sourceFile.getText(), {
+        const source = format(sourceFile.getFullText(), {
           ...prettierConfig,
           filepath: sourceFile.getFilePath(),
         });
-        sourceFile.replaceText(
-          [sourceFile.getStart(true), sourceFile.getEnd()],
-          source
-        );
+        sourceFile.replaceWithText(source);
       } else {
         // No prettier config was found - so we'll use the default ts formatter.
         sourceFile.formatText({
@@ -161,8 +158,8 @@ export function ${componentName}() {
 
     // Setup callbacks
     modifiedSourceFiles.set(sourceFile, { new: true });
+    persistedSourceFile.set(sourceFile, sourceFile.getFullText());
     sourceFile.onModified(onSourceFileModified);
-    persistedSourceFile.set(sourceFile, sourceFile.getText(true));
 
     // Immediately callback to notify the creation of this source file
     onSourceFileModified(sourceFile);
@@ -185,15 +182,15 @@ export function ${componentName}() {
 
     if (!sourceFile) {
       sourceFile = project.addSourceFileAtPath(path);
+      persistedSourceFile.set(sourceFile, sourceFile.getFullText());
       sourceFile.onModified(onSourceFileModified);
-      persistedSourceFile.set(sourceFile, sourceFile.getText(true));
     }
 
     function flushDirtyState() {
       const persisted = normalizeLineEndings(
         persistedSourceFile.get(sourceFile) || ""
       );
-      const current = normalizeLineEndings(sourceFile.getText(true));
+      const current = normalizeLineEndings(sourceFile.getFullText());
       const isDirty = modifiedSourceFiles.get(sourceFile);
 
       if (persisted !== current && !isDirty) {
@@ -219,7 +216,7 @@ export function ${componentName}() {
         ) => TResult extends SourceFile ? never : TResult
       ) => {
         const undoStack = sourceFileHistory.get(sourceFile) || [
-          sourceFile.getText(true),
+          sourceFile.getFullText(),
         ];
         let undoStackIndex = sourceFileHistoryIndex.get(sourceFile) || 0;
 
@@ -227,7 +224,7 @@ export function ${componentName}() {
 
         undoStackIndex += 1;
         undoStack.length = undoStackIndex;
-        undoStack.push(sourceFile.getText(true));
+        undoStack.push(sourceFile.getFullText());
         sourceFileHistoryIndex.set(sourceFile, undoStackIndex);
         sourceFileHistory.set(sourceFile, undoStack);
 
@@ -239,8 +236,9 @@ export function ${componentName}() {
         return !!modifiedSourceFiles.get(sourceFile);
       },
       onDependencyModified: (cb: () => void) => {
+        const wrappedCb = () => setImmediate(cb);
         const callbacks = dependencyModifiedCallbacks.get(path) || [];
-        dependencyModifiedCallbacks.set(path, [...callbacks, cb]);
+        dependencyModifiedCallbacks.set(path, [...callbacks, wrappedCb]);
 
         return () => {
           const callbacks = dependencyModifiedCallbacks.get(path);
@@ -250,8 +248,16 @@ export function ${componentName}() {
 
           dependencyModifiedCallbacks.set(
             path,
-            callbacks.filter((callback) => callback !== cb)
+            callbacks.filter((callback) => callback !== wrappedCb)
           );
+        };
+      },
+      onModified: (cb: () => void) => {
+        const wrappedCb = () => setTimeout(cb, 14);
+        sourceFile.onModified(wrappedCb);
+
+        return () => {
+          sourceFile.onModified(wrappedCb, false);
         };
       },
       open: (exportName: string) => {
@@ -275,10 +281,7 @@ export function ${componentName}() {
           return;
         }
 
-        sourceFile.replaceText(
-          [sourceFile.getStart(true), sourceFile.getEnd()],
-          nextSourceCode
-        );
+        sourceFile.replaceWithText(nextSourceCode);
 
         sourceFileHistoryIndex.set(sourceFile, nextIndex);
 
@@ -303,7 +306,7 @@ export function ${componentName}() {
           sourceFile,
         });
 
-        const sourceText = sourceFile.getText(true);
+        const sourceText = sourceFile.getFullText();
         const undoStack = sourceFileHistory.get(sourceFile);
 
         if (undoStack) {
@@ -329,10 +332,7 @@ export function ${componentName}() {
           return;
         }
 
-        sourceFile.replaceText(
-          [sourceFile.getStart(true), sourceFile.getEnd()],
-          nextSourceCode
-        );
+        sourceFile.replaceWithText(nextSourceCode);
 
         sourceFileHistoryIndex.set(sourceFile, nextIndex);
 

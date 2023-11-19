@@ -12,6 +12,7 @@ test("undo an action", async ({ editor }) => {
   await editor.contextPanel.input("Position").fill("2");
   await editor.keyboard.press("Enter");
   await expect(editor.fileTabs.tab("scene.tsx").unsavedIndicator).toBeVisible();
+  await editor.contextPanel.waitForInputValue("number", "2");
 
   await editor.undo();
 
@@ -23,6 +24,7 @@ test("redo an action", async ({ editor }) => {
   await editor.contextPanel.input("Position").fill("2");
   await editor.keyboard.press("Enter");
   await expect(editor.fileTabs.tab("scene.tsx").unsavedIndicator).toBeVisible();
+  await editor.contextPanel.waitForInputValue("number", "2");
   await editor.undo();
   await expect(editor.fileTabs.tab("scene.tsx").unsavedIndicator).toBeHidden();
 

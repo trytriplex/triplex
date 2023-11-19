@@ -406,7 +406,7 @@ export function createServer({
       }
     ),
     tws.route(
-      "/scene/:path/:exportName",
+      { defer: true, path: "/scene/:path/:exportName" },
       async ({ exportName, path }) => {
         const result = await getSceneExport({
           exportName,
@@ -418,11 +418,11 @@ export function createServer({
       },
       async (push, { path }) => {
         const sourceFile = await project.getSourceFile(path);
-        sourceFile.read().onModified(push);
+        sourceFile.onModified(push);
       }
     ),
     tws.route(
-      "/scene/:path/:exportName/props",
+      { defer: true, path: "/scene/:path/:exportName/props" },
       async ({ exportName, path }) => {
         const sourceFile = await project.getSourceFile(path);
         const props = getFunctionProps(sourceFile.read(), exportName);
@@ -430,12 +430,12 @@ export function createServer({
       },
       async (push, { path }) => {
         const sourceFile = await project.getSourceFile(path);
-        sourceFile.read().onModified(push);
+        sourceFile.onModified(push);
         sourceFile.onDependencyModified(push);
       }
     ),
     tws.route(
-      "/scene/:path/object/:line/:column",
+      { defer: true, path: "/scene/:path/object/:line/:column" },
       (params, { type }) => {
         const path = params.path;
         const line = Number(params.line);
@@ -487,7 +487,7 @@ export function createServer({
       },
       async (push, { path }) => {
         const sourceFile = await project.getSourceFile(path);
-        sourceFile.read().onModified(push);
+        sourceFile.onModified(push);
         sourceFile.onDependencyModified(push);
       }
     ),
