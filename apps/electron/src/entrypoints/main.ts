@@ -185,9 +185,19 @@ function applyWindowIpcHandlers(activeWindow: BrowserWindow) {
   );
 
   activeWindow.webContents.on("before-input-event", (_, input) => {
-    if (input.meta && input.type === "keyDown") {
+    if (input.modifiers.length > 0 && input.type === "keyDown") {
+      const commands: string[] = [];
+
+      if (input.meta) {
+        commands.push("CommandOrCtrl");
+      }
+
+      if (input.shift) {
+        commands.push("Shift");
+      }
+
       activeWindow.webContents.send(
-        `acl:CommandOrCtrl+${input.key.toUpperCase()}`
+        `acl:${commands.join("+")}+${input.key.toUpperCase()}`
       );
     }
   });

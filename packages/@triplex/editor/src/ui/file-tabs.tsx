@@ -63,7 +63,7 @@ function FileTab({
   isActive?: boolean;
   isDirty?: boolean;
   onClick: (fileName: string, exportName: string) => void;
-  onClose: (fileName: string) => void;
+  onClose: (fileName: string, exportName: string) => void;
 }) {
   const onClickHandler = useEvent(() => {
     onClick(filePath, exportName);
@@ -81,7 +81,7 @@ function FileTab({
       return;
     }
 
-    onClose(filePath);
+    onClose(filePath, exportName);
   });
 
   useEffect(() => {
@@ -155,7 +155,23 @@ export function FileTabs() {
   const lastActiveTab = useRef<
     { exportName: string; filePath: string } | undefined
   >(undefined);
-  const lastTab = projectState.at(-1);
+  const previouslyClosedTabs = useRef<
+    { exportName: string; filePath: string }[]
+  >([]);
+  const lastAvailableTab = projectState.at(-1);
+
+  useEffect(() => {
+    return window.triplex.accelerator("CommandOrCtrl+Shift+T", () => {
+      const closedTab = previouslyClosedTabs.current.pop();
+      if (closedTab) {
+        set({
+          encodedProps: "",
+          exportName: closedTab.exportName,
+          path: closedTab.filePath,
+        });
+      }
+    });
+  }, [set]);
 
   const onClickHandler = useEvent(
     (nextFilePath: string, nextExportName: string) => {
@@ -169,7 +185,7 @@ export function FileTabs() {
     }
   );
 
-  const onCloseHandler = useEvent((filePath: string) => {
+  const onCloseHandler = useEvent((filePath: string, exportName: string) => {
     if (path === filePath) {
       // We are active so we need to transition away to another tab first.
       if (lastActiveTab.current) {
@@ -202,6 +218,8 @@ export function FileTabs() {
     }
 
     close(filePath);
+
+    previouslyClosedTabs.current.push({ exportName, filePath });
   });
 
   return (
@@ -232,10 +250,10 @@ export function FileTabs() {
         </FileTab>
       ))}
 
-      {projectState.length < 8 && lastTab && (
+      {projectState.length < 8 && lastAvailableTab && (
         <FallbackTab
-          exportName={lastTab.exportName}
-          filePath={lastTab.filePath}
+          exportName={lastAvailableTab.exportName}
+          filePath={lastAvailableTab.filePath}
           index={projectState.length}
           onClick={onClickHandler}
         />
