@@ -14,6 +14,38 @@ import { useEditor } from "../stores/editor";
 import { useOverlayStore } from "../stores/overlay";
 import useEvent from "../util/use-event";
 
+function FallbackTab({
+  exportName,
+  filePath,
+  index,
+  onClick,
+}: {
+  exportName: string;
+  filePath: string;
+  index: number;
+  onClick: (fileName: string, exportName: string) => void;
+}) {
+  const onClickHandler = useEvent(() => {
+    onClick(filePath, exportName);
+  });
+
+  useEffect(() => {
+    const cleanup: (() => void)[] = [];
+
+    for (let i = index; i <= 8; i++) {
+      cleanup.push(
+        window.triplex.accelerator(`CommandOrCtrl+${i + 1}`, onClickHandler)
+      );
+    }
+
+    return () => {
+      cleanup.forEach((clean) => clean());
+    };
+  }, [index, onClickHandler]);
+
+  return null;
+}
+
 function FileTab({
   children,
   exportName,
@@ -123,6 +155,7 @@ export function FileTabs() {
   const lastActiveTab = useRef<
     { exportName: string; filePath: string } | undefined
   >(undefined);
+  const lastTab = projectState.at(-1);
 
   const onClickHandler = useEvent(
     (nextFilePath: string, nextExportName: string) => {
@@ -198,6 +231,15 @@ export function FileTabs() {
           {file.fileName}
         </FileTab>
       ))}
+
+      {projectState.length < 8 && lastTab && (
+        <FallbackTab
+          exportName={lastTab.exportName}
+          filePath={lastTab.filePath}
+          index={projectState.length}
+          onClick={onClickHandler}
+        />
+      )}
 
       <Pressable
         className="h-full flex-grow"
