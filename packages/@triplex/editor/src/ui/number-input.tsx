@@ -108,7 +108,11 @@ export function NumberInput({
   const max = toNumber(tags.max, Number.POSITIVE_INFINITY);
   const min = toNumber(tags.min, Number.NEGATIVE_INFINITY);
   const transformedDefaultValue = transformValue.in(defaultValue);
-  const focusStop = useRef<HTMLDivElement>(null!);
+
+  useEffect(() => {
+    ref.current.value =
+      transformedDefaultValue !== undefined ? `${transformedDefaultValue}` : "";
+  }, [transformedDefaultValue]);
 
   const onChangeHandler = useCallback(() => {
     const nextValue = Number.isNaN(ref.current.valueAsNumber)
@@ -222,9 +226,12 @@ export function NumberInput({
 
   const onKeyDownHandler: KeyboardEventHandler<HTMLInputElement> = useEvent(
     (e) => {
-      if (e.key === "Enter") {
-        onConfirmHandler();
-        focusStop.current.focus();
+      if (
+        e.key === "Enter" &&
+        e.currentTarget.valueAsNumber >= min &&
+        e.currentTarget.valueAsNumber <= max
+      ) {
+        ref.current.blur();
       }
     }
   );
@@ -297,7 +304,6 @@ export function NumberInput({
     <div
       className="group relative flex w-full items-center rounded-md border border-transparent bg-white/5 px-4 focus-within:border-blue-400 focus-within:pl-1 focus-within:pr-0.5 hover:bg-white/10"
       data-testid={isPointerLock ? "pointer-lock" : undefined}
-      ref={focusStop}
       title={transformedDefaultValue ? `${transformedDefaultValue}` : ""}
     >
       <input
@@ -305,7 +311,6 @@ export function NumberInput({
         data-testid={testId || `number-${defaultValue}`}
         defaultValue={transformedDefaultValue}
         id={name}
-        key={defaultValue}
         max={max}
         min={min}
         onBlur={onConfirmHandler}
@@ -321,7 +326,7 @@ export function NumberInput({
         type="number"
       />
 
-      <div className="pointer-events-none absolute -inset-[1px] hidden rounded-md border border-red-400 border-transparent peer-invalid:block peer-focus:hidden" />
+      <div className="pointer-events-none absolute -inset-[1px] hidden rounded-md border border-red-400 peer-out-of-range:block peer-focus:hidden" />
 
       <Pressable
         className="absolute bottom-0 left-0 top-0 flex w-4 cursor-default items-center justify-center text-neutral-300 opacity-20 hover:flex hover:bg-white/5 hover:opacity-100 focus:flex active:bg-white/10 peer-hover:opacity-100 peer-focus:hidden"
@@ -350,7 +355,7 @@ export function NumberInput({
       {!required && (
         <IconButton
           actionId="clear_number_input"
-          className="z-50 hidden group-focus-within:block"
+          className="hidden peer-focus:block"
           icon={Cross2Icon}
           label="Clear value"
           onClick={clearInputValue}

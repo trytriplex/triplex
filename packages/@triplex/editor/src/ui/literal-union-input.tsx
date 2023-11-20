@@ -10,7 +10,7 @@ import type {
   NumberLiteralType,
   StringLiteralType,
 } from "@triplex/server";
-import { ChangeEventHandler, useRef } from "react";
+import { ChangeEventHandler, useEffect, useRef } from "react";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 
@@ -29,8 +29,13 @@ export function LiteralUnionInput({
   required?: boolean;
   values: (StringLiteralType | NumberLiteralType | BooleanLiteralType)[];
 }) {
-  const ref = useRef<HTMLSelectElement>(null);
+  const ref = useRef<HTMLSelectElement>(null!);
   const isValueDefined = defaultValue !== undefined;
+
+  useEffect(() => {
+    const index = values.findIndex((v) => v.literal === defaultValue);
+    ref.current.value = index !== -1 ? `${index}` : "";
+  }, [defaultValue, values]);
 
   const onChangeHandler: ChangeEventHandler<HTMLSelectElement> = (e) => {
     const currentValue = defaultValue ?? undefined;
@@ -66,7 +71,6 @@ export function LiteralUnionInput({
         data-testid={`select-${name}`}
         defaultValue={values.findIndex((v) => v.literal === defaultValue)}
         id={name}
-        key={`${defaultValue}`}
         onChange={onChangeHandler}
         ref={ref}
       >

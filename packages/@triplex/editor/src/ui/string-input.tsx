@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { useRef, useState, type KeyboardEventHandler } from "react";
+import { useEffect, useRef, useState, type KeyboardEventHandler } from "react";
 import { IconButton } from "../ds/button";
 import { sentenceCase } from "../util/string";
 import useEvent from "../util/use-event";
@@ -31,7 +31,10 @@ export function StringInput({
 }) {
   const [value, setValue] = useState(defaultValue);
   const ref = useRef<HTMLInputElement>(null!);
-  const focusStop = useRef<HTMLDivElement>(null!);
+
+  useEffect(() => {
+    ref.current.value = defaultValue || "";
+  }, [defaultValue]);
 
   const onChangeHandler = useEvent(() => {
     const nextValue = ref.current.value || undefined;
@@ -64,17 +67,13 @@ export function StringInput({
   const onKeyDownHandler: KeyboardEventHandler<HTMLInputElement> = useEvent(
     (e) => {
       if (e.key === "Enter") {
-        onConfirmHandler();
-        focusStop.current.focus();
+        ref.current.blur();
       }
     }
   );
 
   return (
-    <div
-      className="group flex w-full items-center rounded-md border border-transparent bg-white/5 focus-within:border-blue-400 hover:bg-white/10"
-      ref={focusStop}
-    >
+    <div className="group flex w-full items-center rounded-md border border-transparent bg-white/5 focus-within:border-blue-400 hover:bg-white/10">
       <input
         aria-label={label}
         autoFocus={autoFocus}
@@ -82,7 +81,6 @@ export function StringInput({
         data-testid={`string-${defaultValue}`}
         defaultValue={defaultValue}
         id={name}
-        key={defaultValue}
         onBlur={onConfirmHandler}
         onChange={onChangeHandler}
         onKeyDown={onKeyDownHandler}

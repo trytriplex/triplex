@@ -40,6 +40,37 @@ describe("number input", () => {
     expect(element.value).toEqual("20");
   });
 
+  it('should update the input value when the "value" prop changes via props', () => {
+    const { getByTestId, rerender } = render(
+      <NumberInput
+        defaultValue={10}
+        name="rotation"
+        onChange={() => {}}
+        onConfirm={() => {}}
+        transformValue={{
+          in: (val) => (val || 0) + 1,
+          out: (val) => (val || 0) - 1,
+        }}
+      />
+    );
+    const element = getByTestId("number-10") as HTMLInputElement;
+
+    rerender(
+      <NumberInput
+        defaultValue={20}
+        name="rotation"
+        onChange={() => {}}
+        onConfirm={() => {}}
+        transformValue={{
+          in: (val) => (val || 0) + 1,
+          out: (val) => (val || 0) - 1,
+        }}
+      />
+    );
+
+    expect(element.valueAsNumber).toEqual(21);
+  });
+
   it("should should callback with the transformed value", () => {
     const change = vi.fn();
     const confirm = vi.fn();

@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { CheckIcon } from "@radix-ui/react-icons";
-import type { ChangeEventHandler } from "react";
+import { ChangeEventHandler, useEffect, useRef } from "react";
 import { sentenceCase } from "../util/string";
 
 export function BooleanInput({
@@ -21,6 +21,12 @@ export function BooleanInput({
   onChange: (value?: boolean) => void;
   onConfirm: (value?: boolean) => void;
 }) {
+  const ref = useRef<HTMLInputElement>(null!);
+
+  useEffect(() => {
+    ref.current.checked = defaultValue;
+  }, [defaultValue]);
+
   const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     const nextValue = e.target.checked;
     onChange(nextValue);
@@ -35,8 +41,8 @@ export function BooleanInput({
           data-testid={`boolean-${defaultValue}`}
           defaultChecked={defaultValue}
           id={label ? name + "_" + label : name}
-          key={`${defaultValue}`}
           onChange={onChangeHandler}
+          ref={ref}
           type="checkbox"
         />
         <div className="pointer-events-none absolute inset-0 flex items-center justify-center rounded bg-blue-400 text-neutral-800 opacity-0 peer-checked:opacity-100">

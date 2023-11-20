@@ -34,6 +34,37 @@ describe("literal union input", () => {
     expect(select.value).toEqual(option.value);
   });
 
+  it("should update inputs value when prop changes", () => {
+    const { getByTestId, rerender } = render(
+      <LiteralUnionInput
+        defaultValue={false}
+        name="union"
+        onChange={() => {}}
+        onConfirm={() => {}}
+        values={[
+          { kind: "boolean", literal: false },
+          { kind: "string", literal: "one" },
+        ]}
+      />
+    );
+    const select = getByTestId("select-union") as HTMLInputElement;
+
+    rerender(
+      <LiteralUnionInput
+        defaultValue="one"
+        name="union"
+        onChange={() => {}}
+        onConfirm={() => {}}
+        values={[
+          { kind: "boolean", literal: false },
+          { kind: "string", literal: "one" },
+        ]}
+      />
+    );
+
+    expect(select.value).toEqual("1");
+  });
+
   it("should callback with a boolean value", () => {
     const onChange = vi.fn();
     const onConfirm = vi.fn();
