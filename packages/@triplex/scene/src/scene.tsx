@@ -6,7 +6,6 @@
  */
 import { listen, send } from "@triplex/bridge/client";
 import {
-  Suspense,
   useCallback,
   useEffect,
   useMemo,
@@ -19,6 +18,7 @@ import { Box3, Layers, Vector3, Vector3Tuple } from "three";
 import { Grid } from "triplex-drei";
 import { Canvas } from "./canvas";
 import { Camera } from "./components/camera";
+import { SubsequentSuspense } from "./components/suspense";
 import { useEnvironment } from "./environment";
 import { SceneErrorBoundary } from "./error-boundary";
 import { SceneLoader } from "./loader";
@@ -119,7 +119,7 @@ export function SceneFrame({
     <Canvas>
       <Camera layers={layers} position={position} target={target}>
         <SceneErrorBoundary>
-          <Suspense>
+          <SubsequentSuspense>
             <ManualEditableSceneObject
               component={Provider}
               exportName="__exclude__"
@@ -135,16 +135,16 @@ export function SceneFrame({
                 onNavigate={onNavigate}
                 path={path}
               >
-                <Suspense>
+                <SubsequentSuspense>
                   <SceneLoader
                     exportName={exportName}
                     path={path}
                     sceneProps={sceneProps}
                   />
-                </Suspense>
+                </SubsequentSuspense>
               </Selection>
             </ManualEditableSceneObject>
-          </Suspense>
+          </SubsequentSuspense>
         </SceneErrorBoundary>
       </Camera>
 
