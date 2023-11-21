@@ -1,5 +1,22 @@
 # @triplex/server
 
+## 0.61.0
+
+### Minor Changes
+
+- 3920fd3: Scene elements can now be moved before/after/into other scene
+  elements with drag and drop.
+- b407820: Add file tabs.
+- 3091229: Add new undo/redo system. Any edits are now flushed through this.
+
+### Patch Changes
+
+- b407820: Save is now correctly scoped to the currently opened file. Save all
+  replaces the original functionality.
+- 5efeea0: Normalize paths using upath instead of node built-in.
+- ab35f91: Refactor modified to be a different state to new file. New files now
+  shown as italic and not initially modified.
+
 ## 0.60.1
 
 ## 0.60.0

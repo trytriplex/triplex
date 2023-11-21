@@ -1,5 +1,30 @@
 # @triplex/run
 
+## 0.61.0
+
+### Patch Changes
+
+- Updated dependencies [5299234]
+- Updated dependencies [d583e42]
+- Updated dependencies [d583e42]
+- Updated dependencies [d583e42]
+- Updated dependencies [3920fd3]
+- Updated dependencies [d583e42]
+- Updated dependencies [b407820]
+- Updated dependencies [b407820]
+- Updated dependencies [2f569d5]
+- Updated dependencies [af8c06e]
+- Updated dependencies [af8c06e]
+- Updated dependencies [5299234]
+- Updated dependencies [5efeea0]
+- Updated dependencies [b407820]
+- Updated dependencies [ab35f91]
+- Updated dependencies [cba2b47]
+- Updated dependencies [3091229]
+  - @triplex/editor@0.61.0
+  - @triplex/server@0.61.0
+  - @triplex/client@0.61.0
+
 ## 0.60.1
 
 ### Patch Changes

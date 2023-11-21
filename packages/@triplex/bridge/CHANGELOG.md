@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.61.0
+
+### Minor Changes
+
+- b407820: Add file tabs.
+
 ## 0.60.1
 
 ## 0.60.0

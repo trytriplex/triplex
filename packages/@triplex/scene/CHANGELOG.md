@@ -1,5 +1,24 @@
 # @triplex/scene
 
+## 0.61.0
+
+### Minor Changes
+
+- b407820: Add file tabs.
+
+### Patch Changes
+
+- 3091229: Gizmo helper bounding box is no longer visible at certain angles.
+- d583e42: You can no-longer enter an element from node modules.
+- d583e42: Grid no longer follows focal point.
+- 5e22a9a: When loading a scene initially it no longer causes a double suspense.
+- 5efeea0: Normalize paths using upath instead of node built-in.
+- d583e42: Grid now follows camera.
+- cba2b47: Transform controls now has capped precision.
+- Updated dependencies [b407820]
+  - @triplex/bridge@0.61.0
+  - @triplex/ws@0.61.0
+
 ## 0.60.1
 
 ### Patch Changes

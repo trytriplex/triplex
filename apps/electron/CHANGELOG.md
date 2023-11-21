@@ -1,5 +1,46 @@
 # @triplex/electron
 
+## 0.61.0
+
+### Minor Changes
+
+- 3920fd3: Scene elements can now be moved before/after/into other scene
+  elements with drag and drop.
+- 5299234: Add open file button to tabs.
+
+### Patch Changes
+
+- 5299234: Titlebar now goes partially transparent when inactive.
+- 5ceb4de: Upgrade electron dependencies.
+- 755e39a: Triplex now traverses up the folder path to see if it can open a
+  project.
+- 4664b3c: Fix initial open throwing when no exports were found.
+- 5efeea0: Normalize paths using upath instead of node built-in.
+- b407820: Add hotkeys for file tabs.
+- 755e39a: Open project flow now allows you to create a project without going
+  back to the welcome screen
+- Updated dependencies [5299234]
+- Updated dependencies [d583e42]
+- Updated dependencies [d583e42]
+- Updated dependencies [d583e42]
+- Updated dependencies [3920fd3]
+- Updated dependencies [d583e42]
+- Updated dependencies [b407820]
+- Updated dependencies [b407820]
+- Updated dependencies [2f569d5]
+- Updated dependencies [af8c06e]
+- Updated dependencies [af8c06e]
+- Updated dependencies [5299234]
+- Updated dependencies [5efeea0]
+- Updated dependencies [b407820]
+- Updated dependencies [ab35f91]
+- Updated dependencies [cba2b47]
+- Updated dependencies [3091229]
+  - @triplex/editor@0.61.0
+  - @triplex/server@0.61.0
+  - @triplex/client@0.61.0
+  - create-triplex-project@0.61.0
+
 ## 0.60.1
 
 ### Patch Changes

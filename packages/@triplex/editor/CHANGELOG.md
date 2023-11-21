@@ -1,5 +1,36 @@
 # @triplex/editor
 
+## 0.61.0
+
+### Minor Changes
+
+- 3920fd3: Scene elements can now be moved before/after/into other scene
+  elements with drag and drop.
+- b407820: Add file tabs.
+- 5299234: Add open file button to tabs.
+- 3091229: Add new undo/redo system. Any edits are now flushed through this.
+
+### Patch Changes
+
+- 5299234: Titlebar now goes partially transparent when inactive.
+- d583e42: Tuple prop labels are now start-aligned.
+- d583e42: You can no-longer enter an element from node modules.
+- d583e42: Fix ide link for unsupported props.
+- d583e42: Assets now displayed as the last folder in the assets drawer.
+- b407820: Save is now correctly scoped to the currently opened file. Save all
+  replaces the original functionality.
+- 2f569d5: Inputs nolonger remount when value changes from source.
+- af8c06e: Inputs now confirm their value when pressing enter.
+- af8c06e: Color input now displays a focus state.
+- 5efeea0: Normalize paths using upath instead of node built-in.
+- b407820: Add hotkeys for file tabs.
+- ab35f91: Refactor modified to be a different state to new file. New files now
+  shown as italic and not initially modified.
+- cba2b47: Transform controls now has capped precision.
+- Updated dependencies [b407820]
+  - @triplex/bridge@0.61.0
+  - @triplex/ws@0.61.0
+
 ## 0.60.1
 
 ### Patch Changes

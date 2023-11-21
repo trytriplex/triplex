@@ -1,5 +1,11 @@
 # create-triplex-project
 
+## 0.61.0
+
+### Patch Changes
+
+- 5efeea0: Normalize paths using upath instead of node built-in.
+
 ## 0.60.1
 
 ## 0.60.0

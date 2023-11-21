@@ -1,5 +1,24 @@
 # @triplex/client
 
+## 0.61.0
+
+### Minor Changes
+
+- b407820: Add file tabs.
+
+### Patch Changes
+
+- 5efeea0: Normalize paths using upath instead of node built-in.
+- Updated dependencies [3091229]
+- Updated dependencies [d583e42]
+- Updated dependencies [d583e42]
+- Updated dependencies [b407820]
+- Updated dependencies [5e22a9a]
+- Updated dependencies [5efeea0]
+- Updated dependencies [d583e42]
+- Updated dependencies [cba2b47]
+  - @triplex/scene@0.61.0
+
 ## 0.60.1
 
 ### Patch Changes
