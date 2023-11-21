@@ -100,8 +100,9 @@ export function createProject({
   const onSourceFileChangeCallbacks = new Set<
     (e: SourceFileChangedEvent) => void
   >();
-  const modifiedSourceFiles = new Map<SourceFile, { new: boolean }>();
+  const modifiedSourceFiles = new Set<SourceFile>();
   const openedSourceFiles = new Map<SourceFile, string>();
+  const newSourceFiles = new Set<SourceFile>();
   const sourceFileHistory = new Map<SourceFile, string[]>();
   const sourceFileHistoryIndex = new Map<SourceFile, number>();
   const persistedSourceFile = new Map<SourceFile, string>();
@@ -157,7 +158,7 @@ export function ${componentName}() {
     const sourceFile = project.createSourceFile(filename, template);
 
     // Setup callbacks
-    modifiedSourceFiles.set(sourceFile, { new: true });
+    newSourceFiles.add(sourceFile);
     persistedSourceFile.set(sourceFile, sourceFile.getFullText());
     sourceFile.onModified(onSourceFileModified);
 
@@ -191,10 +192,10 @@ export function ${componentName}() {
         persistedSourceFile.get(sourceFile) || ""
       );
       const current = normalizeLineEndings(sourceFile.getFullText());
-      const isDirty = modifiedSourceFiles.get(sourceFile);
+      const isDirty = modifiedSourceFiles.has(sourceFile);
 
       if (persisted !== current && !isDirty) {
-        modifiedSourceFiles.set(sourceFile, { new: false });
+        modifiedSourceFiles.add(sourceFile);
         onStateChangeCallbacks.forEach((cb) => cb());
       } else if (persisted === current && isDirty) {
         modifiedSourceFiles.delete(sourceFile);
@@ -233,7 +234,7 @@ export function ${componentName}() {
         return result;
       },
       isDirty: () => {
-        return !!modifiedSourceFiles.get(sourceFile);
+        return modifiedSourceFiles.has(sourceFile);
       },
       onDependencyModified: (cb: () => void) => {
         const wrappedCb = () => setImmediate(cb);
@@ -293,7 +294,7 @@ export function ${componentName}() {
         onStateChangeCallbacks.forEach((cb) => cb());
       },
       save: async (newPath?: string) => {
-        if (modifiedSourceFiles.get(sourceFile)?.new && !newPath) {
+        if (newSourceFiles.has(sourceFile) && !newPath) {
           return {
             id: "missing-new-path",
             message: "Cannot save without newPath arg.",
@@ -315,6 +316,7 @@ export function ${componentName}() {
 
         persistedSourceFile.set(sourceFile, sourceText);
         modifiedSourceFiles.delete(sourceFile);
+        newSourceFiles.delete(sourceFile);
         onStateChangeCallbacks.forEach((cb) => cb());
       },
       undo: () => {
@@ -344,9 +346,9 @@ export function ${componentName}() {
   async function saveAll() {
     const sourceFiles = Array.from(modifiedSourceFiles)
       // Filter out source files that are "new".
-      .filter(([, value]) => !value.new);
+      .filter((sourceFile) => !newSourceFiles.has(sourceFile));
 
-    const promises = sourceFiles.map(([sourceFile]) =>
+    const promises = sourceFiles.map((sourceFile) =>
       persistSourceFile({
         cwd,
         sourceFile,
@@ -355,7 +357,7 @@ export function ${componentName}() {
 
     await Promise.all(promises);
 
-    sourceFiles.forEach(([sourceFile]) => {
+    sourceFiles.forEach((sourceFile) => {
       modifiedSourceFiles.delete(sourceFile);
     });
     onStateChangeCallbacks.forEach((cb) => cb());
@@ -363,14 +365,14 @@ export function ${componentName}() {
 
   function getState() {
     return Array.from(openedSourceFiles).map(([file, exportName]) => {
-      const modified = modifiedSourceFiles.get(file);
+      const modified = modifiedSourceFiles.has(file);
 
       return {
         exportName,
         fileName: file.getBaseName(),
         filePath: file.getFilePath(),
-        isDirty: !!modified,
-        isNew: !!modified?.new,
+        isDirty: modified,
+        isNew: newSourceFiles.has(file),
       };
     });
   }

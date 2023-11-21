@@ -53,6 +53,7 @@ function FileTab({
   index,
   isActive,
   isDirty,
+  isNew,
   onClick,
   onClose,
 }: {
@@ -62,6 +63,7 @@ function FileTab({
   index: number;
   isActive?: boolean;
   isDirty?: boolean;
+  isNew?: boolean;
   onClick: (fileName: string, exportName: string) => void;
   onClose: (fileName: string, exportName: string) => void;
 }) {
@@ -123,7 +125,7 @@ function FileTab({
         .filter(Boolean)
         .join(" • ")}
     >
-      <span>{children}</span>
+      <span className={isNew ? "italic" : undefined}>{children}</span>
       <IconButton
         actionId="close-file"
         className={cn([
@@ -225,7 +227,7 @@ export function FileTabs() {
   return (
     <nav
       aria-label="File tabs"
-      className="col-span-full row-start-2 flex h-9 items-center border-b border-neutral-800"
+      className="col-span-full row-start-2 flex h-9 items-center border-b border-neutral-800 pl-[1px]"
     >
       <IconButton
         actionId="open-file"
@@ -235,6 +237,8 @@ export function FileTabs() {
         onClick={() => showOverlay("open-scene")}
       />
 
+      <div className="h-full w-[1px] flex-shrink-0 bg-neutral-800" />
+
       {projectState.map((file, index) => (
         <FileTab
           exportName={file.exportName}
@@ -242,6 +246,7 @@ export function FileTabs() {
           index={index}
           isActive={path === file.filePath}
           isDirty={file.isDirty}
+          isNew={file.isNew}
           key={file.filePath}
           onClick={onClickHandler}
           onClose={onCloseHandler}

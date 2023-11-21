@@ -117,7 +117,7 @@ describe("project ast", () => {
         exportName: "Untitled",
         fileName: "untitled.tsx",
         filePath: join(process.cwd(), "/src/untitled.tsx"),
-        isDirty: true,
+        isDirty: false,
         isNew: true,
       },
       {
