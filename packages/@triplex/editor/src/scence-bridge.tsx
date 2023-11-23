@@ -6,6 +6,7 @@
  */
 import { compose, listen } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
+import { cn } from "./ds/cn";
 import { useEnvironment } from "./environment";
 import { useEditor } from "./stores/editor";
 import { useScene } from "./stores/scene";
@@ -23,16 +24,40 @@ export function SceneFrame() {
   const [initialExportName] = useState(() => editor.exportName);
   const sceneReady = useScene((prev) => prev.sceneReady);
   const env = useEnvironment();
+  const [blockPointerEvents, setBlockPointerEvents] = useState(false);
 
   useEffect(() => {
     return listen("trplx:onConnected", sceneReady);
   }, [sceneReady]);
 
+  useEffect(() => {
+    // This works around iframes underneath drag/drop areas from
+    // blocking drag events completely breaking drag/drop experiences.
+    // See: https://github.com/electron/electron/issues/18226
+    const block = () => {
+      setBlockPointerEvents(true);
+    };
+    const unblock = () => {
+      setBlockPointerEvents(false);
+    };
+
+    window.addEventListener("dragstart", block);
+    window.addEventListener("dragend", unblock);
+
+    return () => {
+      window.removeEventListener("dragstart", block);
+      window.removeEventListener("dragend", unblock);
+    };
+  }, []);
+
   return (
     <>
       <iframe
         // This should never change during a session as it will do a full page reload.
-        className="col-span-full row-start-3 h-full w-full border-none"
+        className={cn([
+          "col-span-full row-start-3 h-full w-full border-none",
+          blockPointerEvents && "pointer-events-none",
+        ])}
         src={`http://localhost:3333/scene.html?path=${initialPath}&props=${initialProps}&exportName=${initialExportName}&env=${encodeURIComponent(
           JSON.stringify(env)
         )}`}
