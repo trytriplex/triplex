@@ -1,5 +1,14 @@
 # @triplex/editor
 
+## 0.61.1
+
+### Patch Changes
+
+- 6c887c4: Fix drag & drop in the scene panel not functioning.
+- 8e565d9: Tabs now re-open in their last known index.
+  - @triplex/ws@0.61.1
+  - @triplex/bridge@0.61.1
+
 ## 0.61.0
 
 ### Minor Changes

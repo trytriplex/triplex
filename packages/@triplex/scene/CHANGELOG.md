@@ -1,5 +1,12 @@
 # @triplex/scene
 
+## 0.61.1
+
+### Patch Changes
+
+- @triplex/ws@0.61.1
+- @triplex/bridge@0.61.1
+
 ## 0.61.0
 
 ### Minor Changes

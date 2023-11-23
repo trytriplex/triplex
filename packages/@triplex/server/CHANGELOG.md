@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.61.1
+
+### Patch Changes
+
+- 8e565d9: Tabs now re-open in their last known index.
+
 ## 0.61.0
 
 ### Minor Changes
