@@ -6,7 +6,7 @@
  */
 import { Cross2Icon, CubeIcon } from "@radix-ui/react-icons";
 import { useLazySubscription } from "@triplex/ws/react";
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 import { Pressable } from "../ds/pressable";
@@ -65,7 +65,7 @@ function FileTab({
   isDirty?: boolean;
   isNew?: boolean;
   onClick: (fileName: string, exportName: string) => void;
-  onClose: (fileName: string, exportName: string) => void;
+  onClose: (fileName: string, exportName: string, index: number) => void;
 }) {
   const onClickHandler = useEvent(() => {
     onClick(filePath, exportName);
@@ -83,7 +83,7 @@ function FileTab({
       return;
     }
 
-    onClose(filePath, exportName);
+    onClose(filePath, exportName, index);
   });
 
   useEffect(() => {
@@ -158,22 +158,25 @@ export function FileTabs() {
     { exportName: string; filePath: string } | undefined
   >(undefined);
   const previouslyClosedTabs = useRef<
-    { exportName: string; filePath: string }[]
+    { exportName: string; filePath: string; index: number }[]
   >([]);
   const lastAvailableTab = projectState.at(-1);
 
-  useEffect(() => {
-    return window.triplex.accelerator("CommandOrCtrl+Shift+T", () => {
-      const closedTab = previouslyClosedTabs.current.pop();
-      if (closedTab) {
-        set({
-          encodedProps: "",
-          exportName: closedTab.exportName,
-          path: closedTab.filePath,
-        });
-      }
-    });
+  const openLastTab = useCallback(() => {
+    const closedTab = previouslyClosedTabs.current.pop();
+    if (closedTab) {
+      set({
+        encodedProps: "",
+        exportName: closedTab.exportName,
+        index: closedTab.index,
+        path: closedTab.filePath,
+      });
+    }
   }, [set]);
+
+  useEffect(() => {
+    return window.triplex.accelerator("CommandOrCtrl+Shift+T", openLastTab);
+  }, [openLastTab]);
 
   const onClickHandler = useEvent(
     (nextFilePath: string, nextExportName: string) => {
@@ -187,42 +190,44 @@ export function FileTabs() {
     }
   );
 
-  const onCloseHandler = useEvent((filePath: string, exportName: string) => {
-    if (path === filePath) {
-      // We are active so we need to transition away to another tab first.
-      if (lastActiveTab.current) {
-        // There was a previous active tab, let's transition to it!
-        set({
-          encodedProps: "",
-          exportName: lastActiveTab.current.exportName,
-          path: lastActiveTab.current.filePath,
-        });
-        lastActiveTab.current = undefined;
-      } else {
-        // Find the first available tab that isn't this one.
-        const nextTab = projectState.find((file) => file.filePath !== path);
-        if (nextTab) {
-          // Sweet we found one, switch to it!
+  const onCloseHandler = useEvent(
+    (filePath: string, exportName: string, index: number) => {
+      if (path === filePath) {
+        // We are active so we need to transition away to another tab first.
+        if (lastActiveTab.current) {
+          // There was a previous active tab, let's transition to it!
           set({
             encodedProps: "",
-            exportName: nextTab.exportName,
-            path: nextTab.filePath,
+            exportName: lastActiveTab.current.exportName,
+            path: lastActiveTab.current.filePath,
           });
+          lastActiveTab.current = undefined;
         } else {
-          // No other tabs were found, switch to empty!
-          set({
-            encodedProps: "",
-            exportName: "",
-            path: "",
-          });
+          // Find the first available tab that isn't this one.
+          const nextTab = projectState.find((file) => file.filePath !== path);
+          if (nextTab) {
+            // Sweet we found one, switch to it!
+            set({
+              encodedProps: "",
+              exportName: nextTab.exportName,
+              path: nextTab.filePath,
+            });
+          } else {
+            // No other tabs were found, switch to empty!
+            set({
+              encodedProps: "",
+              exportName: "",
+              path: "",
+            });
+          }
         }
       }
+
+      close(filePath);
+
+      previouslyClosedTabs.current.push({ exportName, filePath, index });
     }
-
-    close(filePath);
-
-    previouslyClosedTabs.current.push({ exportName, filePath });
-  });
+  );
 
   return (
     <nav
@@ -236,6 +241,16 @@ export function FileTabs() {
         label="Open Component..."
         onClick={() => showOverlay("open-scene")}
       />
+      {import.meta.env.VITE_TRIPLEX_ENV === "test" && (
+        <>
+          <IconButton
+            actionId="open-last-tab"
+            icon={CubeIcon}
+            label="Open Last Tab"
+            onClick={openLastTab}
+          />
+        </>
+      )}
 
       <div className="h-full w-[1px] flex-shrink-0 bg-neutral-800" />
 

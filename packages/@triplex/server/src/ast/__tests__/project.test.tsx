@@ -98,6 +98,70 @@ describe("project ast", () => {
     ]);
   });
 
+  it("should open a file into a specific index", () => {
+    const project = createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+    project.createSourceFile("Untitled").open("Untitled");
+    project.createSourceFile("Untitled").open("Untitled");
+    const sourceFile = project.getSourceFile(
+      join(__dirname, "__mocks__", "box.tsx")
+    );
+
+    sourceFile.open("default", 0);
+
+    expect(project.getState()).toEqual([
+      {
+        exportName: "default",
+        fileName: "box.tsx",
+        filePath: join(
+          process.cwd(),
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
+        ),
+        isDirty: false,
+        isNew: false,
+      },
+      {
+        exportName: "Untitled",
+        fileName: "untitled.tsx",
+        filePath: join(process.cwd(), "/src/untitled.tsx"),
+        isDirty: false,
+        isNew: true,
+      },
+      {
+        exportName: "Untitled",
+        fileName: "untitled1.tsx",
+        filePath: join(process.cwd(), "/src/untitled1.tsx"),
+        isDirty: false,
+        isNew: true,
+      },
+    ]);
+  });
+
+  it("should not go out of bounds when opening at a specific index", () => {
+    const project = createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+    const sourceFile = project.getSourceFile(
+      join(__dirname, "__mocks__", "box.tsx")
+    );
+
+    sourceFile.open("default", 10);
+
+    expect(project.getState()).toEqual([
+      {
+        exportName: "default",
+        fileName: "box.tsx",
+        filePath: join(
+          process.cwd(),
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
+        ),
+        isDirty: false,
+        isNew: false,
+      },
+    ]);
+  });
+
   it("should ignore saving new files when saving all", async () => {
     const project = createProject({
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),

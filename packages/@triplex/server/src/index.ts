@@ -222,9 +222,11 @@ export function createServer({
 
   router.get("/scene/:path/:exportName/open", async (context) => {
     const { exportName, path } = context.params;
+    const index = getParam(context, "index");
     const sourceFile = project.getSourceFile(path);
+    const parsedIndex = Number(index);
 
-    sourceFile.open(exportName);
+    sourceFile.open(exportName, parsedIndex);
 
     context.response.body = { message: "success" };
   });

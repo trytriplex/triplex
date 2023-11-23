@@ -261,8 +261,28 @@ export function ${componentName}() {
           sourceFile.onModified(wrappedCb, false);
         };
       },
-      open: (exportName: string) => {
-        openedSourceFiles.set(sourceFile, exportName);
+      open: (exportName: string, index: number = -1) => {
+        if (openedSourceFiles.has(sourceFile)) {
+          // Already opened, skip!
+          return;
+        }
+
+        if (index >= 0 && openedSourceFiles.size > index) {
+          const prev = Array.from(openedSourceFiles);
+
+          openedSourceFiles.clear();
+
+          prev.forEach(([key, value], idx) => {
+            if (index === idx) {
+              openedSourceFiles.set(sourceFile, exportName);
+            }
+
+            openedSourceFiles.set(key, value);
+          });
+        } else {
+          openedSourceFiles.set(sourceFile, exportName);
+        }
+
         onStateChangeCallbacks.forEach((cb) => cb());
       },
       read: () => {

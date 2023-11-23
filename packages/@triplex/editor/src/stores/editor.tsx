@@ -15,6 +15,7 @@ import { useScene } from "./scene";
 export interface Params {
   encodedProps: string;
   exportName: string;
+  index?: number;
   path: string;
 }
 
@@ -55,6 +56,9 @@ const useSelectionStore = create<SelectionState>((set) => ({
 export function useEditor() {
   const [searchParams, setSearchParams] = useSearchParams({ path: "" });
   const path = searchParams.get("path") || "";
+  const index = searchParams.get("index")
+    ? Number(searchParams.get("index"))
+    : undefined;
   const encodedProps = searchParams.get("props") || "";
   const exportName = searchParams.get("exportName") || "";
   const enteredComponent = !!searchParams.get("entered") || false;
@@ -225,6 +229,10 @@ export function useEditor() {
         newParams.exportName = componentParams.exportName;
       }
 
+      if (componentParams.index !== undefined) {
+        newParams.index = String(componentParams.index);
+      }
+
       if (metaParams.entered) {
         newParams.entered = "true";
       }
@@ -290,13 +298,15 @@ export function useEditor() {
     });
   }, []);
 
-  const open = useEvent((path: string, exportName: string) => {
-    fetch(
-      `http://localhost:8000/scene/${encodeURIComponent(
-        path
-      )}/${exportName}/open`
-    );
-  });
+  const open = useEvent(
+    (path: string, exportName: string, index: number = -1) => {
+      fetch(
+        `http://localhost:8000/scene/${encodeURIComponent(
+          path
+        )}/${exportName}/open?index=${index}`
+      );
+    }
+  );
 
   const newFile = useCallback(async () => {
     const result = await fetch(`http://localhost:8000/scene/new`, {
@@ -415,6 +425,10 @@ export function useEditor() {
        */
       focus,
       /**
+       * If the file is opened at a particular index this will be set.
+       */
+      index,
+      /**
        * Moves the element to a new location.
        */
       move,
@@ -484,6 +498,7 @@ export function useEditor() {
       exitComponent,
       exportName,
       focus,
+      index,
       move,
       newComponent,
       newFile,

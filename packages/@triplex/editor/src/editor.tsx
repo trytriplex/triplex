@@ -19,16 +19,16 @@ import { ScenesDrawer } from "./ui/scenes-drawer";
 import { TitleBar } from "./ui/title-bar";
 
 export function EditorFrame() {
-  const { exportName, open, path } = useEditor();
+  const { exportName, index, open, path } = useEditor();
   const isFileOpen = !!exportName && !!path;
 
   useScreenView("editor", "Screen");
 
   useEffect(() => {
     if (path && exportName) {
-      open(path, exportName);
+      open(path, exportName, index);
     }
-  }, [exportName, open, path]);
+  }, [exportName, open, path, index]);
 
   return (
     <div className="fixed inset-0 grid select-none grid-cols-[18rem_auto_18rem] grid-rows-[2rem_2.25rem_auto] bg-neutral-900">

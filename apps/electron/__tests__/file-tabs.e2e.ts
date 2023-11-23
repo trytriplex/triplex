@@ -63,3 +63,19 @@ test("do nothing when closing inactive tab", async ({ editor }) => {
 
   await expect(editor.fileTabs.activeTab).toHaveText("untitled1.tsx");
 });
+
+test("reopen tab", async ({ editor }) => {
+  await editor.newFile();
+  await editor.newFile();
+  await editor.fileTabs.waitForActiveTab("untitled1.tsx");
+  const { closeButton } = editor.fileTabs.tab("scene.tsx");
+  await closeButton.click();
+
+  await editor.fileTabs.openLastTabButton.click();
+
+  await expect(editor.fileTabs.activeTab).toHaveText("scene.tsx");
+  await expect(editor.fileTabs.locator).toHaveText(
+    // scene.tsx should be first!
+    "scene.tsxuntitled.tsxuntitled1.tsx"
+  );
+});
