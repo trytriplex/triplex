@@ -27,8 +27,8 @@ export const scripts = {
       __hmr_import(import.meta.url).then((currentModule) => {
         ${metaHot}.accept((nextModule) => {
           if (import.meta.url.includes("${providerPath}")){${metaHot}.invalidate();return;}
-          const currentKeys = Object.entries(currentModule).map(([key, value]) => typeof value.triplexMeta ? key + JSON.stringify(value.triplexMeta) : key).sort();
-          const nextKeys = Object.entries(nextModule).map(([key, value]) => typeof value.triplexMeta ? key + JSON.stringify(value.triplexMeta) : key).sort();
+          const currentKeys = globalThis.Object.entries(currentModule).map(([key, value]) => typeof value.triplexMeta ? key + JSON.stringify(value.triplexMeta) : key).sort();
+          const nextKeys = globalThis.Object.entries(nextModule).map(([key, value]) => typeof value.triplexMeta ? key + JSON.stringify(value.triplexMeta) : key).sort();
           if (JSON.stringify(currentKeys) !== JSON.stringify(nextKeys)){${metaHot}.invalidate();}
         });
       });
