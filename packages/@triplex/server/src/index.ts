@@ -85,7 +85,7 @@ export function createServer({
     context.response.body = { message: "Healthy", status: 200 };
   });
 
-  router.post("/scene/:path/object/:line/:column/move", (context) => {
+  router.post("/scene/:path/object/:line/:column/move", async (context) => {
     const destLine = Number(getParam(context, "destLine"));
     const destCol = Number(getParam(context, "destCol"));
     const action = getParam(context, "action") as
@@ -96,7 +96,7 @@ export function createServer({
     const line = Number(context.params.line);
     const column = Number(context.params.column);
 
-    sourceFile.edit((source) => {
+    await sourceFile.edit((source) => {
       move(
         source,
         {
@@ -117,7 +117,7 @@ export function createServer({
   /**
    * Update or add a prop to a jsx element.
    */
-  router.get("/scene/object/:line/:column/prop", (context) => {
+  router.get("/scene/object/:line/:column/prop", async (context) => {
     const path = getParam(context, "path");
     const value = getParam(context, "value");
     const name = getParam(context, "name");
@@ -125,7 +125,7 @@ export function createServer({
     const column = Number(context.params.column);
     const sourceFile = project.getSourceFile(path);
 
-    const action = sourceFile.edit((source) => {
+    const action = await sourceFile.edit((source) => {
       const jsxElement = getJsxElementAtOrThrow(source, line, column);
       return upsertProp(jsxElement, name, value);
     });
@@ -151,22 +151,25 @@ export function createServer({
     context.response.body = { message: "success" };
   });
 
-  router.post("/scene/:path/object/:line/:column/duplicate", (context) => {
+  router.post(
+    "/scene/:path/object/:line/:column/duplicate",
+    async (context) => {
+      const { column, line, path } = context.params;
+      const sourceFile = project.getSourceFile(path);
+
+      const result = await sourceFile.edit((source) => {
+        return duplicate(source, Number(line), Number(column));
+      });
+
+      context.response.body = { ...result };
+    }
+  );
+
+  router.post("/scene/:path/object/:line/:column/delete", async (context) => {
     const { column, line, path } = context.params;
     const sourceFile = project.getSourceFile(path);
 
-    const result = sourceFile.edit((source) => {
-      return duplicate(source, Number(line), Number(column));
-    });
-
-    context.response.body = { ...result };
-  });
-
-  router.post("/scene/:path/object/:line/:column/delete", (context) => {
-    const { column, line, path } = context.params;
-    const sourceFile = project.getSourceFile(path);
-
-    sourceFile.edit((source) => {
+    await sourceFile.edit((source) => {
       commentComponent(source, Number(line), Number(column));
     });
 
@@ -190,7 +193,7 @@ export function createServer({
     const { path } = context.params;
     const sourceFile = project.getSourceFile(path);
 
-    const { exportName } = sourceFile.edit((source) => {
+    const { exportName } = await sourceFile.edit((source) => {
       return create(source);
     });
 
@@ -237,18 +240,18 @@ export function createServer({
     const body = await context.request.body({ type: "json" }).value;
     const { name: newName } = body as { name: string };
 
-    sourceFile.edit((source) => {
+    await sourceFile.edit((source) => {
       rename(source, exportName, newName);
     });
 
     context.response.body = { message: "success" };
   });
 
-  router.post("/scene/:path/object/:line/:column/restore", (context) => {
+  router.post("/scene/:path/object/:line/:column/restore", async (context) => {
     const { column, line, path } = context.params;
     const sourceFile = project.getSourceFile(path);
 
-    sourceFile.edit((source) => {
+    await sourceFile.edit((source) => {
       uncommentComponent(source, Number(line), Number(column));
     });
 
@@ -264,7 +267,7 @@ export function createServer({
     };
     const sourceFile = project.getSourceFile(path);
 
-    const result = sourceFile.edit((source) => {
+    const result = await sourceFile.edit((source) => {
       return add(source, exportName, type, target);
     });
 

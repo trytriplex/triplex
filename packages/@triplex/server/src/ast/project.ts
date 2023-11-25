@@ -101,6 +101,7 @@ export function createProject({
     (e: SourceFileChangedEvent) => void
   >();
   const modifiedSourceFiles = new Set<SourceFile>();
+  const initializedSourceFiles = new Set<SourceFile>();
   const openedSourceFiles = new Map<SourceFile, string>();
   const newSourceFiles = new Set<SourceFile>();
   const sourceFileHistory = new Map<SourceFile, string[]>();
@@ -111,17 +112,21 @@ export function createProject({
   // If any changes have been made refresh the source file.
   const watcher = watch(cwd, { ignoreInitial: true });
   watcher.on("change", async (path) => {
-    const sourceFile = project.getSourceFile(path);
-    if (!sourceFile) {
+    const privateSourceFile = project.getSourceFile(path);
+    if (!privateSourceFile) {
       // We're only interested in source files that have been
       // added to the project graph. This is why we use project
       // directly and not the abstraction that creates it if missing.
       return;
     }
 
-    await sourceFile.refreshFromFileSystem();
+    const sourceFile = getSourceFile(path);
 
-    sourceFile.getReferencingSourceFiles().forEach((refFile) => {
+    await sourceFile.edit((source) => {
+      return source.refreshFromFileSystem();
+    });
+
+    privateSourceFile.getReferencingSourceFiles().forEach((refFile) => {
       const path = refFile.getFilePath();
       const callbacks = dependencyModifiedCallbacks.get(path);
 
@@ -131,7 +136,8 @@ export function createProject({
     });
 
     // Since we've refreshed from the file system the source file is no longer modified
-    modifiedSourceFiles.delete(sourceFile);
+    modifiedSourceFiles.delete(privateSourceFile);
+    persistedSourceFile.set(privateSourceFile, privateSourceFile.getFullText());
     onStateChangeCallbacks.forEach((cb) => cb());
   });
 
@@ -179,11 +185,12 @@ export function ${componentName}() {
       throw new Error("invariant: path is outside of cwd");
     }
 
-    let sourceFile = project.getSourceFile(path)!;
+    const sourceFile =
+      project.getSourceFile(path) || project.addSourceFileAtPath(path);
 
-    if (!sourceFile) {
-      sourceFile = project.addSourceFileAtPath(path);
-      persistedSourceFile.set(sourceFile, sourceFile.getFullText());
+    if (!initializedSourceFiles.has(sourceFile)) {
+      // Lazily initialize the source file events when they have been
+      // explicitly requested.
       sourceFile.onModified(onSourceFileModified);
     }
 
@@ -211,17 +218,23 @@ export function ${componentName}() {
         modifiedSourceFiles.delete(sourceFile);
         onStateChangeCallbacks.forEach((cb) => cb());
       },
-      edit: <TResult>(
+      edit: async <TResult>(
         callback: (
           sourceFile: SourceFile
         ) => TResult extends SourceFile ? never : TResult
       ) => {
+        if (!persistedSourceFile.has(sourceFile)) {
+          // Lazily set the current source file as the persisted source file
+          // before any changes have been made.
+          persistedSourceFile.set(sourceFile, sourceFile.getFullText());
+        }
+
         const undoStack = sourceFileHistory.get(sourceFile) || [
           sourceFile.getFullText(),
         ];
         let undoStackIndex = sourceFileHistoryIndex.get(sourceFile) || 0;
 
-        const result = callback(sourceFile);
+        const result = await callback(sourceFile);
 
         undoStackIndex += 1;
         undoStack.length = undoStackIndex;

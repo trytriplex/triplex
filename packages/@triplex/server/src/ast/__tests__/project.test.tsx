@@ -17,12 +17,12 @@ describe("project ast", () => {
       join(__dirname, "__mocks__", "box.tsx")
     );
 
-    sourceFile.edit(() => {});
+    await sourceFile.edit(() => {});
 
     expect(sourceFile.read().isSaved()).toEqual(true);
   });
 
-  it("should return unsaved state", () => {
+  it("should return unsaved state", async () => {
     const project = createProject({
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
@@ -30,7 +30,7 @@ describe("project ast", () => {
       join(__dirname, "__mocks__", "box.tsx")
     );
 
-    sourceFile.edit((source) => {
+    await sourceFile.edit((source) => {
       source.addFunction({});
     });
 
@@ -45,7 +45,7 @@ describe("project ast", () => {
     expect(project.getState()).toEqual([]);
   });
 
-  it("should return edited project state", () => {
+  it("should return edited project state", async () => {
     const project = createProject({
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
@@ -54,9 +54,9 @@ describe("project ast", () => {
     );
 
     sourceFile.open("default");
-    sourceFile.edit((source) => source.addClass({ name: "foo" }));
-    sourceFile.edit((source) => source.addClass({ name: "foo" }));
-    sourceFile.edit((source) => source.addClass({ name: "foo" }));
+    await sourceFile.edit((source) => source.addClass({ name: "foo" }));
+    await sourceFile.edit((source) => source.addClass({ name: "foo" }));
+    await sourceFile.edit((source) => source.addClass({ name: "foo" }));
 
     expect(project.getState()).toEqual([
       {
@@ -80,7 +80,7 @@ describe("project ast", () => {
       join(__dirname, "__mocks__", "box.tsx")
     );
     sourceFile.open("default");
-    sourceFile.edit(() => {});
+    await sourceFile.edit(() => {});
 
     await project.saveAll();
 
@@ -172,7 +172,7 @@ describe("project ast", () => {
     project.createSourceFile("Untitled").open("Untitled");
     sourceFile.open("default");
     sourceFile.open("default");
-    sourceFile.edit(() => {});
+    await sourceFile.edit(() => {});
 
     await project.saveAll();
 
@@ -197,7 +197,7 @@ describe("project ast", () => {
     ]);
   });
 
-  it("should callback when state changes", () => {
+  it("should callback when state changes", async () => {
     const project = createProject({
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
@@ -207,14 +207,14 @@ describe("project ast", () => {
     const cb = vitest.fn();
     project.onStateChange(cb);
 
-    sourceFile.edit((source) => {
+    await sourceFile.edit((source) => {
       source.addFunction({ name: "foo" });
     });
 
     expect(cb).toHaveBeenCalled();
   });
 
-  it("should cleanup state change callback", () => {
+  it("should cleanup state change callback", async () => {
     const project = createProject({
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
@@ -225,17 +225,17 @@ describe("project ast", () => {
     const cleanup = project.onStateChange(cb);
 
     cleanup();
-    sourceFile.edit(() => {});
+    await sourceFile.edit(() => {});
 
     expect(cb).not.toHaveBeenCalled();
   });
 
-  it("should undo to a past state and not go out of bounds", () => {
+  it("should undo to a past state and not go out of bounds", async () => {
     const project = createProject({
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.createSourceFile("Untitled");
-    sourceFile.edit((source) => {
+    await sourceFile.edit((source) => {
       source.addFunction({
         name: "foo",
       });
@@ -257,12 +257,12 @@ describe("project ast", () => {
     `);
   });
 
-  it("should undo and then redo and not go out of bounds", () => {
+  it("should undo and then redo and not go out of bounds", async () => {
     const project = createProject({
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.createSourceFile("Untitled");
-    sourceFile.edit((source) => {
+    await sourceFile.edit((source) => {
       source.addFunction({
         name: "foo",
       });
@@ -288,29 +288,29 @@ describe("project ast", () => {
     `);
   });
 
-  it("should clear out future state after an undo if another edit takes place", () => {
+  it("should clear out future state after an undo if another edit takes place", async () => {
     const project = createProject({
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.createSourceFile("Untitled");
-    sourceFile.edit((source) => {
+    await sourceFile.edit((source) => {
       source.addFunction({
         name: "foo",
       });
     });
-    sourceFile.edit((source) => {
+    await sourceFile.edit((source) => {
       source.addFunction({
         name: "bar",
       });
     });
-    sourceFile.edit((source) => {
+    await sourceFile.edit((source) => {
       source.addFunction({
         name: "baz",
       });
     });
     sourceFile.undo();
     sourceFile.undo();
-    sourceFile.edit((source) => {
+    await sourceFile.edit((source) => {
       source.addFunction({
         name: "bat",
       });
@@ -335,12 +335,12 @@ describe("project ast", () => {
     `);
   });
 
-  it("should clear dirty state when editing new file to be the same as current state", () => {
+  it("should clear dirty state when editing new file to be the same as current state", async () => {
     const project = createProject({
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.createSourceFile("Untitled");
-    sourceFile.edit((source) => {
+    await sourceFile.edit((source) => {
       source.addFunction({
         name: "foo",
       });
@@ -351,12 +351,12 @@ describe("project ast", () => {
     expect(sourceFile.isDirty()).toEqual(false);
   });
 
-  it("should set dirty state when editing new file to be the different to current state", () => {
+  it("should set dirty state when editing new file to be the different to current state", async () => {
     const project = createProject({
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.createSourceFile("Untitled");
-    sourceFile.edit((source) => {
+    await sourceFile.edit((source) => {
       source.addFunction({
         name: "foo",
       });
@@ -368,14 +368,14 @@ describe("project ast", () => {
     expect(sourceFile.isDirty()).toEqual(true);
   });
 
-  it("should set dirty state when editing existing file to be the different to current state", () => {
+  it("should set dirty state when editing existing file to be the different to current state", async () => {
     const project = createProject({
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
       join(__dirname, "__mocks__", "box.tsx")
     );
-    sourceFile.edit((source) => {
+    await sourceFile.edit((source) => {
       source.addFunction({
         name: "foo",
       });
@@ -386,14 +386,14 @@ describe("project ast", () => {
     expect(sourceFile.isDirty()).toEqual(false);
   });
 
-  it("should set dirty state when editing existing file to be the same to current state", () => {
+  it("should set dirty state when editing existing file to be the same to current state", async () => {
     const project = createProject({
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
       join(__dirname, "__mocks__", "box.tsx")
     );
-    sourceFile.edit((source) => {
+    await sourceFile.edit((source) => {
       source.addFunction({
         name: "foo",
       });
