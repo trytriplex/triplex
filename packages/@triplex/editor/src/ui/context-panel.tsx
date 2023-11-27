@@ -20,12 +20,19 @@ import { PropField } from "./prop-field";
 import { PropInput, PropTagContext } from "./prop-input";
 import { StringInput } from "./string-input";
 
-function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
+function SelectedSceneObjectPanel({
+  filter,
+  setFilter,
+  target,
+}: {
+  filter: string | undefined;
+  setFilter: (filter: string | undefined) => void;
+  target: FocusedObject;
+}) {
   useScreenView("context_scene", "Panel");
 
   const { blur, getPropValue, setPropValue } = useScene();
   const { persistPropValue } = useEditor();
-  const [filter, setFilter] = useState<string | undefined>();
 
   const data = useLazySubscription("/scene/:path/object/:line/:column", {
     column: target.column,
@@ -77,6 +84,7 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
       {data.props.length > 0 && (
         <div className="px-3 py-2">
           <StringInput
+            defaultValue={filter}
             label="Filter props..."
             name="prop-filter"
             onChange={setFilter}
@@ -153,7 +161,13 @@ function SelectedSceneObjectPanel({ target }: { target: FocusedObject }) {
   );
 }
 
-function ComponentSandboxPanel() {
+function ComponentSandboxPanel({
+  filter,
+  setFilter,
+}: {
+  filter: string | undefined;
+  setFilter: (filter: string | undefined) => void;
+}) {
   useScreenView("context_sandbox", "Panel");
   const { exportName, path } = useEditor();
   const data = useLazySubscription("/scene/:path/:exportName/props", {
@@ -166,7 +180,6 @@ function ComponentSandboxPanel() {
   const setValues = useSceneState((state) => state.set);
   const hasValues = useSceneState((state) => state.hasState(storeKey));
   const clearValues = useSceneState((state) => state.clear);
-  const [filter, setFilter] = useState<string | undefined>();
 
   return (
     <>
@@ -216,6 +229,7 @@ function ComponentSandboxPanel() {
       {data.props.length > 0 && (
         <div className="px-3 py-2">
           <StringInput
+            defaultValue={filter}
             label="Filter props..."
             name="prop-filter"
             onChange={setFilter}
@@ -284,6 +298,7 @@ export function ContextPanel() {
   const { target } = useEditor();
   const { blur } = useScene();
   const deferredTarget = useDeferredValue(target);
+  const [filter, setFilter] = useState<string | undefined>();
 
   if (!deferredTarget) {
     return null;
@@ -309,15 +324,17 @@ export function ContextPanel() {
           <Suspense fallback={<PanelSkeleton />}>
             {isSceneObject ? (
               <SelectedSceneObjectPanel
+                filter={filter}
                 key={
                   deferredTarget.path +
                   deferredTarget.column +
                   deferredTarget.line
                 }
+                setFilter={setFilter}
                 target={deferredTarget}
               />
             ) : (
-              <ComponentSandboxPanel />
+              <ComponentSandboxPanel filter={filter} setFilter={setFilter} />
             )}
           </Suspense>
         </ErrorBoundary>
