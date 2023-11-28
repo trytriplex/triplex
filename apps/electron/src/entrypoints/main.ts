@@ -24,6 +24,7 @@ import { createProject, showCreateDialog } from "../util/create";
 import { ensureDepsInstall } from "../util/deps";
 import { fork } from "../util/fork";
 import { getLogPath, logger } from "../util/log";
+import { userStore } from "../util/store";
 
 if (process.env.TRIPLEX_ENV !== "development") {
   init({
@@ -32,7 +33,7 @@ if (process.env.TRIPLEX_ENV !== "development") {
 }
 
 const SESSION_ID = randomUUID();
-const USER_ID = randomUUID();
+const USER_ID = userStore.get("userId");
 const HEADLESS_RUN = process.argv.includes("--headless");
 const EDITOR_DEV_PORT = 5754;
 const log = logger("main");

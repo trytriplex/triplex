@@ -21,6 +21,8 @@ class Analytics4 {
       : "https://www.google-analytics.com/debug/mp";
   private collectURL = "/collect";
   private engagementTimestamp: number | undefined = undefined;
+  private collectedEvents: Record<string, unknown>[] = [];
+  private fireEventTimeoutId: number | undefined;
 
   constructor(
     trackingID: string,
@@ -75,35 +77,41 @@ class Analytics4 {
   }
 
   event(eventName: string, params?: Record<string, string | number | boolean>) {
-    const payload = {
-      client_id: this.clientID,
-      events: [
-        {
-          name: eventName,
-          params: {
-            engagement_time_msec:
-              this.engagementTimestamp && Date.now() - this.engagementTimestamp,
-            session_id: this.sessionID,
-            ...this.customParams,
-            ...params,
-          },
-        },
-      ],
-    };
-
-    if (this.userProperties) {
-      Object.assign(payload, { user_properties: this.userProperties });
-    }
-
-    fetch(
-      `${this.baseURL}${this.collectURL}?measurement_id=${this.trackingID}&api_secret=${this.secretKey}`,
-      {
-        body: JSON.stringify(payload),
-        method: "POST",
-      }
-    ).catch(() => {
-      // Swallow any errors
+    this.collectedEvents.push({
+      name: eventName,
+      params: {
+        engagement_time_msec:
+          this.engagementTimestamp && Date.now() - this.engagementTimestamp,
+        session_id: this.sessionID,
+        ...this.customParams,
+        ...params,
+      },
     });
+
+    window.clearTimeout(this.fireEventTimeoutId);
+
+    this.fireEventTimeoutId = window.setTimeout(() => {
+      const payload = {
+        client_id: this.clientID,
+        events: this.collectedEvents,
+      };
+
+      if (this.userProperties) {
+        Object.assign(payload, { user_properties: this.userProperties });
+      }
+
+      fetch(
+        `${this.baseURL}${this.collectURL}?measurement_id=${this.trackingID}&api_secret=${this.secretKey}`,
+        {
+          body: JSON.stringify(payload),
+          method: "POST",
+        }
+      ).catch(() => {
+        // Swallow any errors
+      });
+
+      this.collectedEvents = [];
+    }, 333);
   }
 }
 
