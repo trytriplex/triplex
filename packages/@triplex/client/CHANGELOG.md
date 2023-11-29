@@ -1,5 +1,13 @@
 # @triplex/client
 
+## 0.61.2
+
+### Patch Changes
+
+- 273b644: Fix HMR error when Object namespace has been taken in the module
+  scope.
+  - @triplex/scene@0.61.2
+
 ## 0.61.1
 
 ### Patch Changes

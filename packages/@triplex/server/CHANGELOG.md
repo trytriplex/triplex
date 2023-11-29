@@ -1,5 +1,14 @@
 # @triplex/server
 
+## 0.61.2
+
+### Patch Changes
+
+- 4a40243: Source files now have events initialized when first explicitly loaded
+  — previously they would be skipped over when implicitly loaded.
+- 4a40243: Source files updates originating from the file system now work with
+  undo/redo.
+
 ## 0.61.1
 
 ### Patch Changes

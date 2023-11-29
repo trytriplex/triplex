@@ -1,5 +1,15 @@
 # @triplex/editor
 
+## 0.61.2
+
+### Patch Changes
+
+- b8bd0e0: Fix string input margin for clear button.
+- b8bd0e0: Add and default to empty template.
+- e522b42: Hoist filter out of context panel to persist between elements.
+  - @triplex/ws@0.61.2
+  - @triplex/bridge@0.61.2
+
 ## 0.61.1
 
 ### Patch Changes
