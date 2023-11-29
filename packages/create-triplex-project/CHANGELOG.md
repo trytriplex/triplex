@@ -1,5 +1,11 @@
 # create-triplex-project
 
+## 0.61.2
+
+### Patch Changes
+
+- b8bd0e0: Add and default to empty template.
+
 ## 0.61.1
 
 ## 0.61.0
