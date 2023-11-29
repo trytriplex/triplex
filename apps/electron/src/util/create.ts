@@ -55,7 +55,6 @@ export async function createProject(window: BrowserWindow, path: string) {
       env,
       name,
       packageManager: command,
-      target: "app",
     });
     return true;
   } finally {

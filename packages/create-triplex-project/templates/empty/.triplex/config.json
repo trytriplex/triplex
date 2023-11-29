@@ -1,0 +1,5 @@
+{
+  "$schema": "https://triplex.dev/config.schema.json",
+  "components": ["../src/components/*.tsx"],
+  "files": ["../src/**/*.tsx"]
+}

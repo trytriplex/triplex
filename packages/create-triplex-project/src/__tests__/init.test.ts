@@ -34,6 +34,7 @@ describe("init command", () => {
         cwd,
         name: "fresh-local",
         pkgManager: "npm",
+        template: "halloween",
         version: "0.0.0-local",
       });
 
@@ -59,6 +60,7 @@ describe("init command", () => {
         cwd,
         name: "fresh-local",
         pkgManager: "npm",
+        template: "halloween",
         version: "0.0.0-local",
       });
 
@@ -101,6 +103,7 @@ describe("init command", () => {
         cwd,
         name: "fresh-local",
         pkgManager: "npm",
+        template: "halloween",
         version: "0.0.0-local",
       });
 
@@ -146,6 +149,7 @@ describe("init command", () => {
         cwd,
         name: "",
         pkgManager: "npm",
+        template: "halloween",
         version: "0.0.0-local",
       });
 
@@ -175,6 +179,7 @@ describe("init command", () => {
         cwd,
         name: "",
         pkgManager: "npm",
+        template: "halloween",
         version: "0.0.0-local",
       });
 
@@ -217,6 +222,7 @@ describe("init command", () => {
         cwd,
         name: "",
         pkgManager: "npm",
+        template: "halloween",
         version: "0.0.0-local",
       });
 
@@ -244,6 +250,7 @@ describe("init command", () => {
         cwd,
         name: "",
         pkgManager: "npm",
+        template: "halloween",
         version: "0.0.0-local",
       });
 
@@ -286,6 +293,7 @@ describe("init command", () => {
         cwd,
         name: "fresh-local",
         pkgManager: "npm",
+        template: "halloween",
         version: "0.0.0-local",
       });
 
@@ -313,6 +321,7 @@ describe("init command", () => {
         cwd,
         name: "fresh-local",
         pkgManager: "npm",
+        template: "halloween",
         version: "0.0.0-local",
       });
 

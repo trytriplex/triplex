@@ -93,7 +93,7 @@ export function StringInput({
       {!required && value && (
         <IconButton
           actionId="clear_prop_value"
-          className="hidden group-focus-within:block group-hover:block"
+          className="mr-0.5 hidden group-focus-within:block group-hover:block"
           icon={Cross2Icon}
           label="Clear value"
           onClick={onClear}
