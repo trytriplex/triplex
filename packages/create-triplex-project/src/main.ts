@@ -96,6 +96,7 @@ async function main() {
           mode,
           name: projectName,
           pkgManager: packageManager,
+          template: "empty",
           version,
         });
 

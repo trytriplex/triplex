@@ -17,7 +17,6 @@ export function create({
   env?: Record<string, string>;
   name: string;
   packageManager?: "npm" | "yarn" | "pnpm";
-  target: "node" | "app";
 }) {
   return init({
     createFolder: false,
@@ -26,6 +25,7 @@ export function create({
     mode: "non-interactive",
     name,
     pkgManager: packageManager,
+    template: "empty",
     version,
   });
 }

@@ -23,7 +23,7 @@ export async function init({
   mode = "interactive",
   name,
   pkgManager,
-  template = "halloween",
+  template,
   version,
 }: {
   __exec?: typeof exec_dont_use_directly;
@@ -35,7 +35,7 @@ export async function init({
   mode?: "non-interactive" | "interactive";
   name: string;
   pkgManager: string;
-  template?: "default" | "halloween";
+  template: "default" | "halloween" | "empty";
   version: string;
 }) {
   const { default: ora } = await import("ora");

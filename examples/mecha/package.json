@@ -1,0 +1,16 @@
+{
+  "name": "@example/mechs",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {},
+  "dependencies": {
+    "@react-three/drei": "^9.56.27",
+    "@react-three/fiber": "^8.14.5",
+    "@react-three/postprocessing": "^2.15.11",
+    "@types/react": "^18.0.0",
+    "@types/three": "^0.157.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "three": "^0.157.0"
+  }
+}
