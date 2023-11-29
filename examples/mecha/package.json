@@ -2,7 +2,10 @@
   "name": "@example/mechs",
   "version": "0.0.0",
   "private": true,
-  "scripts": {},
+  "scripts": {
+    "build": "echo \"Not implemented\"",
+    "typedef": "echo \"Not implemented\""
+  },
   "dependencies": {
     "@react-three/drei": "^9.56.27",
     "@react-three/fiber": "^8.14.5",
