@@ -9,6 +9,8 @@ import { describe, expect, it } from "vitest";
 import { fromCwd } from "../../util/path";
 import {
   getJsxElementAt,
+  getJsxElementAtOrThrow,
+  getJsxElementParentExportNameOrThrow,
   getJsxElementProps,
   getJsxElementsPositions,
   getJsxTag,
@@ -16,6 +18,74 @@ import {
 import { _createProject } from "../project";
 
 describe("jsx ast extractor", () => {
+  it("should get owner func decl default export name", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/box.tsx")
+    );
+    const sceneObject = getJsxElementAtOrThrow(sourceFile, 18, 7);
+
+    const exportName = getJsxElementParentExportNameOrThrow(sceneObject);
+
+    expect(exportName).toEqual("default");
+  });
+
+  it("should get owner func direct decl named export name", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/box.tsx")
+    );
+    const sceneObject = getJsxElementAtOrThrow(sourceFile, 25, 10);
+
+    const exportName = getJsxElementParentExportNameOrThrow(sceneObject);
+
+    expect(exportName).toEqual("UseBox");
+  });
+
+  it("should get owner dangling arrow func default export name", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/shadowed-interface.tsx")
+    );
+    const sceneObject = getJsxElementAtOrThrow(sourceFile, 14, 3);
+
+    const exportName = getJsxElementParentExportNameOrThrow(sceneObject);
+
+    expect(exportName).toEqual("default");
+  });
+
+  it("should get owner direct arrow func named export name", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/scene.tsx")
+    );
+    const sceneObject = getJsxElementAtOrThrow(sourceFile, 19, 10);
+
+    const exportName = getJsxElementParentExportNameOrThrow(sceneObject);
+
+    expect(exportName).toEqual("SceneWrapped");
+  });
+
+  it.todo("should get owner dangling func decl named export name");
+
+  it.todo("should get owner dangling arrow func named export name");
+
+  it.todo(
+    "should get jsx element positions from dangling func decl named export name"
+  );
+
+  it.todo(
+    "should get jsx element positions from dangling arrow func named export name"
+  );
+
   it("should infer paths for rapier", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),

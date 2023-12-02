@@ -14,7 +14,11 @@ import {
   getJsxElementProps,
   getJsxTag,
 } from "./ast";
-import { getFunctionProps, getJsxElementAtOrThrow } from "./ast/jsx";
+import {
+  getFunctionProps,
+  getJsxElementAtOrThrow,
+  getJsxElementParentExportNameOrThrow,
+} from "./ast/jsx";
 import {
   add,
   commentComponent,
@@ -125,12 +129,20 @@ export function createServer({
     const column = Number(context.params.column);
     const sourceFile = project.getSourceFile(path);
 
-    const action = await sourceFile.edit((source) => {
+    const result = await sourceFile.edit((source) => {
       const jsxElement = getJsxElementAtOrThrow(source, line, column);
-      return upsertProp(jsxElement, name, value);
+      const action = upsertProp(jsxElement, name, value);
+
+      return {
+        action,
+        node: jsxElement,
+      };
     });
 
-    context.response.body = { action, message: "success" };
+    const parentExportName = getJsxElementParentExportNameOrThrow(result.node);
+    sourceFile.open(parentExportName);
+
+    context.response.body = { action: result.action, message: "success" };
   });
 
   router.post("/scene/:path/undo", (context) => {

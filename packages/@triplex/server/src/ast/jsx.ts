@@ -294,6 +294,48 @@ const propsExcludeList: Record<string, true> = {
   version: true,
 };
 
+export function getJsxElementParentExportNameOrThrow(
+  element: JsxSelfClosingElement | JsxElement
+): string {
+  const ancestors = element.getAncestors();
+  const maxDepth = ancestors.length - 2;
+
+  for (let i = ancestors.length - 1; i >= maxDepth; i--) {
+    const ancestor = ancestors[i];
+    if (Node.isFunctionDeclaration(ancestor) && ancestor.isExported()) {
+      if (ancestor.isDefaultExport()) {
+        return "default";
+      }
+
+      return ancestor.getNameNodeOrThrow().getText();
+    }
+
+    if (Node.isVariableStatement(ancestor)) {
+      if (ancestor.isExported()) {
+        return ancestor.getDeclarations()[0].getName();
+      }
+
+      const decl = ancestor.getFirstDescendantByKind(
+        SyntaxKind.VariableDeclaration
+      );
+      if (decl) {
+        const name = decl.getName();
+        const source = element.getSourceFile();
+        const exportAssignment = source.getExportAssignment((exp) => {
+          const identifiers = exp.getDescendantsOfKind(SyntaxKind.Identifier);
+          return identifiers.some((id) => id.getText() === name);
+        });
+
+        if (exportAssignment) {
+          return "default";
+        }
+      }
+    }
+  }
+
+  throw new Error("invariant: parent export not found");
+}
+
 export function getJsxElementProps(
   _: SourceFileReadOnly,
   element: JsxSelfClosingElement | JsxElement

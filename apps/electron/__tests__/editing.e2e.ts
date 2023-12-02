@@ -31,4 +31,5 @@ test("update child component name prop", async ({ editor }) => {
   await editor.keyboard.press("Enter");
 
   await expect(child.locator).toHaveText("foo (boxGeometry)");
+  await expect(editor.fileTabs.tab("box.tsx").unsavedIndicator).toBeVisible();
 });
