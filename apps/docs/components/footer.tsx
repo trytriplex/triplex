@@ -52,22 +52,26 @@ export function Footer() {
               </svg>
             </a>
             <a
-              aria-label="Twitter"
+              aria-label="X (formerly Twitter)"
               className="text-neutral-400 hover:text-neutral-200"
-              href="https://twitter.com/_douges"
+              href="https://twitter.com/trytriplex"
               rel="noreferrer"
               target="_blank"
             >
               <svg
-                aria-label="twitter"
-                fill="currentColor"
+                className="text-current"
+                data-testid="geist-icon"
                 height="16"
-                viewBox="0 0 18 15"
+                stroke-linejoin="round"
+                viewBox="0 0 16 16"
+                width="16"
               >
                 <path
-                  d="M18 1.684l-1.687 1.684v.28c0 .307-.05.602-.123.886-.04 2.316-.777 5.387-3.816 7.81C6.404 17.115 0 12.907 0 12.907c5.063 0 5.063-1.684 5.063-1.684-1.126 0-3.376-2.243-3.376-2.243.563.56 1.689 0 1.689 0C.56 7.295.56 5.61.56 5.61c.563.561 1.689 0 1.689 0C-.563 3.368 1.124.561 1.124.561 1.687 3.368 9 4.49 9 4.49l.093-.046A6.637 6.637 0 0 1 9 3.368C9 1.353 10.636 0 12.656 0c1.112 0 2.094.506 2.765 1.286l.329-.163L17.437 0l-1.122 2.245L18 1.684z"
-                  fillRule="nonzero"
-                ></path>
+                  clip-rule="evenodd"
+                  d="M0.5 0.5H5.75L9.48421 5.71053L14 0.5H16L10.3895 6.97368L16.5 15.5H11.25L7.51579 10.2895L3 15.5H1L6.61053 9.02632L0.5 0.5ZM12.0204 14L3.42043 2H4.97957L13.5796 14H12.0204Z"
+                  fill="currentColor"
+                  fill-rule="evenodd"
+                />
               </svg>
             </a>
           </div>
@@ -150,14 +154,6 @@ export function Footer() {
                 href="https://github.com/try-triplex/triplex"
               >
                 Github
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-sm text-neutral-400 hover:text-neutral-200"
-                href="/license"
-              >
-                License
               </Link>
             </li>
           </ul>
