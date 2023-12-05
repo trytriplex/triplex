@@ -9,17 +9,19 @@ import { test } from "./utils/runner";
 
 test("create new file and insert a box", async ({ editor }) => {
   await editor.newFile();
-  const drawer = await editor.assetsDrawer.open();
-  await drawer.openFolder("built-in");
-  await drawer.addAsset("Mesh");
+  const globalDrawer = await editor.assetsDrawer.open();
+  await globalDrawer.openFolder("built-in");
+  await globalDrawer.addAsset("Mesh");
+  await editor.waitForElementCount(4);
 
-  await editor.assetsDrawer.open("mesh");
-  await drawer.openFolder("built-in");
-  await drawer.addAsset("Box Geometry");
+  const localDrawer = await editor.assetsDrawer.open("mesh", 2);
+  await localDrawer.openFolder("built-in");
+  await localDrawer.addAsset("Sphere Geometry");
 
-  const button = await editor.scenePanel.elementButton("boxGeometry");
-  await expect(editor.contextPanel.heading).toHaveText("boxGeometry");
-  await expect(button.locator).toHaveText("boxGeometry");
+  await expect(editor.contextPanel.heading).toHaveText("sphereGeometry");
+  const button = await editor.scenePanel.elementButton("mesh", 1);
+  const childButton = button.childElementButton("sphereGeometry").locator;
+  await expect(childButton).toBeVisible();
 });
 
 test("create new component and insert a box", async ({ editor }) => {
@@ -28,13 +30,14 @@ test("create new component and insert a box", async ({ editor }) => {
   await drawer.openFolder("built-in");
   await drawer.addAsset("Mesh");
 
-  await editor.assetsDrawer.open("mesh");
+  await editor.assetsDrawer.open("mesh", 2);
   await drawer.openFolder("built-in");
-  await drawer.addAsset("Box Geometry");
+  await drawer.addAsset("Sphere Geometry");
 
-  const button = await editor.scenePanel.elementButton("boxGeometry");
-  await expect(editor.contextPanel.heading).toHaveText("boxGeometry");
-  await expect(button.locator).toHaveText("boxGeometry");
+  await expect(editor.contextPanel.heading).toHaveText("sphereGeometry");
+  const button = await editor.scenePanel.elementButton("mesh", 1);
+  const childButton = button.childElementButton("sphereGeometry").locator;
+  await expect(childButton).toBeVisible();
 });
 
 test("create new file and insert a custom component", async ({ editor }) => {

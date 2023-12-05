@@ -92,7 +92,13 @@ export class EditorPage {
     await button.dblclick();
     await expect
       .poll(async () => this.page.getByTestId("scene-element").count())
-      .toBe(0);
+      .toBe(3);
+  }
+
+  waitForElementCount(count: number) {
+    return expect
+      .poll(async () => this.page.getByTestId("scene-element").count())
+      .toBe(count);
   }
 
   undo() {
@@ -112,14 +118,15 @@ export class EditorPage {
       allElements: this.page.getByTestId("scene-element"),
       elementButton: (
         name: string,
+        at: number = 0,
         rootLocator = this.page.getByTestId(`SceneElement(${name})`)
       ) => {
-        const locator = rootLocator.getByRole("button", { name });
+        const locator = rootLocator.getByRole("button", { name }).nth(at);
 
         return {
           addButton: locator.getByTestId("add"),
-          childElementButton: (name: string) => {
-            return methods.elementButton(name, rootLocator);
+          childElementButton: (name: string, at: number = 0) => {
+            return methods.elementButton(name, at, rootLocator);
           },
           click: async () => {
             await this.waitForScene();
@@ -146,7 +153,7 @@ export class EditorPage {
         await locator.selectOption("new-component");
         await expect
           .poll(async () => this.page.getByTestId("scene-element").count())
-          .toBe(0);
+          .toBe(3);
       },
     };
 
@@ -170,9 +177,9 @@ export class EditorPage {
     const locator = this.page.getByTestId("assets-drawer");
 
     return {
-      open: async (name?: string) => {
+      open: async (name: string = "", at: number = 0) => {
         if (name) {
-          const { addButton } = this.scenePanel.elementButton(name);
+          const { addButton } = this.scenePanel.elementButton(name, at);
           await addButton.click();
         } else {
           const openButton = this.page.getByTestId("open-assets-drawer");

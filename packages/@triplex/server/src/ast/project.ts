@@ -156,6 +156,10 @@ export function createProject({
 export function ${componentName}() {
   return (
     <>
+      <mesh>
+        <boxGeometry />
+        <meshStandardMaterial />
+      </mesh>
     </>
   );
 }

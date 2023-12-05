@@ -178,7 +178,14 @@ export function create(sourceFile: SourceFile) {
   sourceFile.addFunction({
     isExported: true,
     name: exportName,
-    statements: `return <></>;`,
+    statements: `return (
+      <>
+        <mesh>
+          <boxGeometry />
+          <meshStandardMaterial />
+        </mesh>
+      </>
+    );`,
   });
 
   return { exportName };

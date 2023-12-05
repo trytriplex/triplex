@@ -250,6 +250,10 @@ describe("project ast", () => {
       "export function Untitled() {
         return (
           <>
+            <mesh>
+              <boxGeometry />
+              <meshStandardMaterial />
+            </mesh>
           </>
         );
       }
@@ -278,6 +282,10 @@ describe("project ast", () => {
       "export function Untitled() {
         return (
           <>
+            <mesh>
+              <boxGeometry />
+              <meshStandardMaterial />
+            </mesh>
           </>
         );
       }
@@ -322,6 +330,10 @@ describe("project ast", () => {
       "export function Untitled() {
         return (
           <>
+            <mesh>
+              <boxGeometry />
+              <meshStandardMaterial />
+            </mesh>
           </>
         );
       }
