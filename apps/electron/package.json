@@ -37,7 +37,6 @@
     "electron-store": "^8.1.0",
     "electron-updater": "^6.1.4",
     "glob-parent": "^6.0.2",
-    "launch-editor": "^2.6.1",
     "readdirp": "^3.6.0",
     "shell-env": "^3.0.1",
     "ts-node": "^10.9.1",

@@ -188,9 +188,6 @@ importers:
       glob-parent:
         specifier: ^6.0.2
         version: 6.0.2
-      launch-editor:
-        specifier: ^2.6.1
-        version: 2.6.1
       readdirp:
         specifier: ^3.6.0
         version: 3.6.0
@@ -7897,13 +7894,6 @@ packages:
   /ktx-parse@0.4.5:
     resolution: {integrity: sha512-MK3FOody4TXbFf8Yqv7EBbySw7aPvEcPX++Ipt6Sox+/YMFvR5xaTyhfNSk1AEmMy+RYIw81ctN4IMxCB8OAlg==}
 
-  /launch-editor@2.6.1:
-    resolution: {integrity: sha512-eB/uXmFVpY4zezmGp5XtU21kwo7GBbKB+EQ+UZeWtGb9yAM5xt/Evk+lYH3eRNAtId+ej4u7TYPFZ07w4s7rRw==}
-    dependencies:
-      picocolors: 1.0.0
-      shell-quote: 1.8.1
-    dev: true
-
   /lazy-val@1.0.5:
     resolution: {integrity: sha512-0/BnGCCfyUMkBpeDgWihanIAF9JmZhHBgUhEqzvf+adhNGLoP6TaiI5oF8oyb3I45P+PcnrqihSf01M0l0G5+Q==}
     dev: true
@@ -10743,10 +10733,6 @@ packages:
       default-shell: 1.0.1
       execa: 1.0.0
       strip-ansi: 5.2.0
-    dev: true
-
-  /shell-quote@1.8.1:
-    resolution: {integrity: sha512-6j1W9l1iAs/4xYBI1SYOVZyFcCis9b4KCLQ8fgAGG07QvzaRLVVRQvAy85yNmmZSjYjg4MWh4gNvlPujU/5LpA==}
     dev: true
 
   /shiki@0.14.2:

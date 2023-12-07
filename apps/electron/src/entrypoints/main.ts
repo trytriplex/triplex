@@ -18,7 +18,6 @@ import {
   shell,
 } from "electron";
 import { autoUpdater } from "electron-updater";
-import launchEditor from "launch-editor";
 import { join, resolve, sep } from "upath";
 import { createProject, showCreateDialog } from "../util/create";
 import { ensureDepsInstall } from "../util/deps";
@@ -463,7 +462,10 @@ async function main() {
     ipcMain.on(
       "open-editor",
       async (_, path: string, opts?: { column: number; line: number }) => {
-        launchEditor(opts ? `${path}:${opts.line}:${opts.column}` : path);
+        // TODO: line/colunn not currently supported.
+        // Need to figure out how best we can support it with the file:// URL.
+        const filename = opts ? path : path;
+        shell.openPath(filename);
       }
     );
 
