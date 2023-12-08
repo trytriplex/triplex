@@ -232,7 +232,7 @@ export function FileTabs() {
   return (
     <nav
       aria-label="File tabs"
-      className="col-span-full row-start-2 flex h-9 items-center border-b border-neutral-800 pl-[1px]"
+      className="col-span-full row-start-2 flex h-9 items-center bg-neutral-900 pl-[1px]"
     >
       <IconButton
         actionId="open-file"
