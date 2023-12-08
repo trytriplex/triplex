@@ -7,11 +7,11 @@
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "exports": {
     "./host": {
-      "module": "./src/host.ts",
+      "default": "./src/host.ts",
       "types": "./src/host.ts"
     },
     "./client": {
-      "module": "./src/client.ts",
+      "default": "./src/client.ts",
       "types": "./src/client.ts"
     }
   },
@@ -30,11 +30,11 @@
   "publishConfig": {
     "exports": {
       "./host": {
-        "module": "./dist/host.js",
+        "default": "./dist/host.js",
         "types": "./dist/host.d.ts"
       },
       "./client": {
-        "module": "./dist/client.js",
+        "default": "./dist/client.js",
         "types": "./dist/client.d.ts"
       }
     }

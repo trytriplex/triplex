@@ -4,21 +4,10 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { emptyProviderId, hmrImportId } from "./constants";
 import { scripts } from "./templates";
 
-const sceneFrameId = "triplex:scene-frame.tsx";
-const emptyProviderId = "triplex:empty-provider.tsx";
-const hmrImportId = "triplex:hmr-import";
-
-export function scenePlugin({
-  cwd,
-  files,
-  provider = emptyProviderId,
-}: {
-  cwd: string;
-  files: string[];
-  provider: string | undefined;
-}) {
+export function scenePlugin({ provider }: { provider: string }) {
   return {
     enforce: "pre",
     async load(id: string) {
@@ -26,25 +15,12 @@ export function scenePlugin({
         return scripts.defaultProvider;
       }
 
-      if (id === sceneFrameId) {
-        return scripts.sceneFrame
-          .replace(
-            "{{SCENE_FILES_GLOB}}",
-            `[${files.map((f) => `'${f.replace(cwd, "")}'`).join(",")}]`
-          )
-          .replace("{{PROVIDER_PATH}}", provider);
-      }
-
       if (id === "\0" + hmrImportId) {
         return scripts.dynamicImportHMR;
       }
     },
-    name: "triplex:scene-glob-plugin",
+    name: "triplex:scene-plugin",
     resolveId(id: string) {
-      if (id === sceneFrameId) {
-        return sceneFrameId;
-      }
-
       if (id === hmrImportId) {
         // Return the id as a virtual module so no other plugins transform it.
         return "\0" + hmrImportId;
@@ -67,8 +43,6 @@ export function scenePlugin({
       }
 
       // This forces modules with JSX to invalidate themselves if their exports change.
-      // This will force the triplex:scene-frame.tsx virtual module to load itself again
-      // Thus flushing the editor with the new (or removed!) export/s.
       return (
         scripts.invalidateHMRHeader +
         code +

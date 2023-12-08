@@ -9,6 +9,7 @@ import express from "express";
 import { join, normalize } from "upath";
 import tsconfigPaths from "vite-tsconfig-paths";
 import triplexBabelPlugin from "./babel-plugin";
+import { emptyProviderId } from "./constants";
 import { remoteModulePlugin } from "./remote-module-plugin";
 import { scenePlugin } from "./scene-plugin";
 import { createHTML } from "./templates";
@@ -16,7 +17,7 @@ import { createHTML } from "./templates";
 export async function createServer({
   cwd: __RAW_CWD_DONT_USE__ = process.cwd(),
   files,
-  provider,
+  provider = emptyProviderId,
   publicDir,
 }: {
   cwd?: string;
@@ -47,7 +48,6 @@ export async function createServer({
             triplexBabelPlugin({
               exclude: [
                 ...(provider ? [provider] : []),
-                "/triplex:scene-frame.tsx",
                 "/triplex:empty-provider.tsx",
                 "packages/@triplex",
               ],
@@ -56,12 +56,13 @@ export async function createServer({
         },
       }),
       glsl(),
-      scenePlugin({ cwd: normalizedCwd, files, provider }),
+      scenePlugin({ provider }),
       tsconfigPaths({ projects: [tsConfig] }),
     ],
     publicDir,
     resolve: {
       alias: {
+        "@triplex/bridge/client": require.resolve("@triplex/bridge/client"),
         // The consuming app doesn't have @triplex/scene as a direct dependency
         // So we use `require.resolve()` to find it from this location instead.
         "@triplex/scene": require.resolve("@triplex/scene"),
@@ -81,7 +82,11 @@ export async function createServer({
 
   app.get("/scene.html", async (_, res, next) => {
     try {
-      const template = createHTML();
+      const template = createHTML({
+        fileGlobs: files.map((f) => `'${f.replace(normalizedCwd, "")}'`),
+        pkgName: "@triplex/scene",
+        providerPath: provider,
+      });
       const html = await vite.transformIndexHtml("scene", template);
 
       res.status(200).set({ "Content-Type": "text/html" }).end(html);

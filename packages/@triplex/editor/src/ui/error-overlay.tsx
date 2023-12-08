@@ -69,6 +69,7 @@ export function ErrorOverlay() {
       className={cn([
         "highlight-danger fixed bottom-6 left-6 z-50 flex w-96 flex-col gap-1 rounded-md border border-neutral-600 bg-neutral-800 p-2",
       ])}
+      data-testid="ErrorOverlay"
       key={error.message}
     >
       <div className="flex items-center">

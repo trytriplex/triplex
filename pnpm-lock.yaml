@@ -425,6 +425,9 @@ importers:
       '@babel/types':
         specifier: ^7.23.0
         version: 7.23.0
+      '@triplex/bridge':
+        specifier: 0.61.2
+        version: link:../bridge
       '@triplex/scene':
         specifier: 0.61.2
         version: link:../scene

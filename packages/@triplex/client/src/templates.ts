@@ -14,7 +14,79 @@ const metaHot = "imp" + "ort.me" + suffix;
  */
 const placeholderFiles = 10;
 
+interface TemplateOpts {
+  fileGlobs: string[];
+  pkgName: string;
+  providerPath: string;
+}
+
 export const scripts = {
+  bootstrap: (template: TemplateOpts) =>
+    [
+      `import { bootstrap } from "${template.pkgName}";`,
+      `import provider from "${template.providerPath}";`,
+      'import { listen, send } from "@triplex/bridge/client";',
+      `const projectFiles = import.meta.glob([${template.fileGlobs}]);`,
+      "const tempFiles = {",
+      Array(placeholderFiles)
+        .fill(undefined)
+        .map((_, i) => {
+          const n = i || "";
+          return `'/src/untitled${n}.tsx':() => import('triplex:/src/untitled${n}.tsx')`;
+        }),
+      "};",
+      `
+      const files = Object.assign(tempFiles, projectFiles);
+
+      export { provider, files };
+
+      if (import.meta.hot) {
+        import.meta.hot.on("vite:error", (e) => {
+          console.log('vite error');
+          send("trplx:onError", {
+            col: e.err.loc?.column || -1,
+            line: e.err.loc?.line || -1,
+            message: e.err.message,
+            source: e.err.id || "unknown",
+            stack: e.err.stack,
+          });
+        });
+
+        if (!import.meta.hot.data.render) {
+          import.meta.hot.data.render = bootstrap(document.getElementById('root'));
+          import.meta.hot.data.render({ files, provider });
+
+          listen("trplx:requestRefresh", (data) => {
+            if (data.hard) {
+              window.location.reload();
+            }
+          });
+
+          window.addEventListener("error", (e) => {
+            console.log('window error');
+
+            send("trplx:onError", {
+              col: e.colno,
+              line: e.lineno,
+              message: e.message,
+              source: e.filename
+                .replace(__TRIPLEX_BASE_URL__, __TRIPLEX_CWD__)
+                .replace(/\\?.+/, ""),
+              stack: e.error.stack
+                .replaceAll(__TRIPLEX_BASE_URL__, __TRIPLEX_CWD__)
+                .replaceAll(/\\?.+:/g, ":"),
+            });
+          });
+        }
+
+        import.meta.hot.accept((mod) => {
+          if (mod) {
+            import.meta.hot.data.render({ files: mod.files, provider: mod.provider });
+          }
+        });
+      }
+      `,
+    ].join(""),
   defaultProvider: `export default function Fragment({children}){return children;}`,
   // Hides vite-ignored dynamic import so that Vite can skip analysis if no other
   // dynamic import is present (https://github.com/vitejs/vite/pull/12732)
@@ -35,30 +107,9 @@ export const scripts = {
     }
   `,
   invalidateHMRHeader: `import { __hmr_import } from "triplex:hmr-import";`,
-  scene: [
-    'import {createElement} from "react";',
-    'import {createRoot} from "react-dom/client";',
-    'import {Scene} from "triplex:scene-frame.tsx";',
-    'createRoot(document.getElementById("root")).render(createElement(Scene));',
-  ].join(""),
-  sceneFrame: [
-    'import { Scene as SceneFrame } from "@triplex/scene";',
-    'import Provider from "{{PROVIDER_PATH}}";',
-    "const scenes = import.meta.glob({{SCENE_FILES_GLOB}});",
-    "const temps = {",
-    Array(placeholderFiles)
-      .fill(undefined)
-      .map((_, i) => {
-        const n = i || "";
-        return `'/src/untitled${n}.tsx':() => import('triplex:/src/untitled${n}.tsx')`;
-      }),
-    "};",
-    "const merged = {...temps,...scenes};",
-    "export function Scene() {return <SceneFrame provider={Provider} scenes={merged} />}",
-  ].join(""),
 };
 
-export const createHTML = () =>
+export const createHTML = (opts: TemplateOpts) =>
   [
     "<!DOCTYPE html>",
     '<html lang="en">',
@@ -70,7 +121,7 @@ export const createHTML = () =>
     "<body>",
     '<div id="root"></div>',
     '<script type="module">',
-    `${scripts.scene}`,
+    `${scripts.bootstrap(opts)}`,
     "</script>",
     "</body>",
     "</html>",

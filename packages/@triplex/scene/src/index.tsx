@@ -4,14 +4,19 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { listen, send } from "@triplex/bridge/client";
-import { useEffect, type PropsWithChildren } from "react";
+import {
+  send,
+  type BootstrapFunction,
+  type Modules,
+  type ProviderComponent,
+} from "@triplex/bridge/client";
+import { useEffect } from "react";
+import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { SceneProvider } from "./context";
 import { Environment } from "./environment";
 import { SceneFrame } from "./scene";
 import { SceneObject } from "./scene-object";
-import { SceneModule } from "./types";
 
 // Hacking this for fun sorry!
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -19,57 +24,19 @@ import { SceneModule } from "./types";
 window.SceneObject = SceneObject;
 
 export function Scene({
+  files,
   provider,
-  scenes,
 }: {
-  provider: (props: PropsWithChildren) => JSX.Element;
-  scenes: Record<string, () => Promise<SceneModule>>;
+  files: Modules;
+  provider: ProviderComponent;
 }) {
   useEffect(() => {
     send("trplx:onConnected", undefined);
-
-    const errorCallback = (e: ErrorEvent) => {
-      send("trplx:onError", {
-        col: e.colno,
-        line: e.lineno,
-        message: e.message,
-        source: e.filename
-          .replace(__TRIPLEX_BASE_URL__, __TRIPLEX_CWD__)
-          .replace(/\?.+/, ""),
-        stack: e.error.stack
-          .replaceAll(__TRIPLEX_BASE_URL__, __TRIPLEX_CWD__)
-          .replaceAll(/\?.+:/g, ":"),
-      });
-    };
-
-    window.addEventListener("error", errorCallback);
-
-    import.meta.hot?.on("vite:error", (e) => {
-      send("trplx:onError", {
-        col: e.err.loc?.column || -1,
-        line: e.err.loc?.line || -1,
-        message: e.err.message,
-        source: e.err.id || "unknown",
-        stack: e.err.stack,
-      });
-    });
-
-    return () => {
-      window.removeEventListener("error", errorCallback);
-    };
-  }, []);
-
-  useEffect(() => {
-    return listen("trplx:requestRefresh", (data) => {
-      if (data.hard) {
-        window.location.reload();
-      }
-    });
   }, []);
 
   return (
     <BrowserRouter>
-      <SceneProvider value={scenes}>
+      <SceneProvider value={files}>
         <Environment>
           <SceneFrame provider={provider} />
         </Environment>
@@ -77,3 +44,11 @@ export function Scene({
     </BrowserRouter>
   );
 }
+
+export const bootstrap: BootstrapFunction = (container) => {
+  const root = createRoot(container);
+
+  return (opts) => {
+    root.render(<Scene files={opts.files} provider={opts.provider} />);
+  };
+};

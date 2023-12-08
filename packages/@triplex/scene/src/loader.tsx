@@ -38,10 +38,14 @@ export function SceneLoader({
 
   const { SceneComponent, triplexMeta } = suspend(async () => {
     const resolvedModule = await scenes[componentFilename]();
+    const moduleExport = resolvedModule[exportName];
 
     return {
-      SceneComponent: resolvedModule[exportName] || Fragment,
-      triplexMeta: resolvedModule[exportName]?.triplexMeta,
+      SceneComponent: moduleExport || Fragment,
+      triplexMeta:
+        moduleExport && "triplexMeta" in moduleExport
+          ? moduleExport.triplexMeta
+          : undefined,
     };
   }, [exportName, scenes, componentFilename]);
 
@@ -57,22 +61,25 @@ export function SceneLoader({
         staticSceneProps={sceneProps}
       />
 
-      {triplexMeta?.lighting === "default" && (
-        <>
-          <hemisphereLight
-            color="#87CEEB"
-            groundColor="#362907"
-            intensity={0.3}
-          />
-          <ambientLight intensity={0.3} />
-          <directionalLight intensity={0.5} position={[2.5, 8, 5]} />
-          <pointLight
-            color="#eef4aa"
-            intensity={0.5}
-            position={[-10, 0, -20]}
-          />
-        </>
-      )}
+      {triplexMeta &&
+        typeof triplexMeta === "object" &&
+        "lighting" in triplexMeta &&
+        triplexMeta.lighting === "default" && (
+          <>
+            <hemisphereLight
+              color="#87CEEB"
+              groundColor="#362907"
+              intensity={0.3}
+            />
+            <ambientLight intensity={0.3} />
+            <directionalLight intensity={0.5} position={[2.5, 8, 5]} />
+            <pointLight
+              color="#eef4aa"
+              intensity={0.5}
+              position={[-10, 0, -20]}
+            />
+          </>
+        )}
     </>
   );
 }

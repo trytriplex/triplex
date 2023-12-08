@@ -72,3 +72,17 @@ function respond<TEvent extends keyof HostSendEventResponse>(
 }
 
 export { compose } from "./compose";
+
+export interface SceneComponent {
+  (props: unknown): JSX.Element;
+}
+
+export type Module = Record<string, SceneComponent>;
+
+export type Modules = Record<string, () => Promise<Module>>;
+
+export type ProviderComponent = (props: { children?: unknown }) => JSX.Element;
+
+export type BootstrapFunction = (
+  container: HTMLElement
+) => (opts: { files: Modules; provider: ProviderComponent }) => void;

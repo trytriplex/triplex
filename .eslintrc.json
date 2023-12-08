@@ -1,6 +1,12 @@
 {
   "extends": ["@nkzw", "plugin:playwright/recommended"],
-  "ignorePatterns": ["dist", "build", "playwright-report", "test-results"],
+  "ignorePatterns": [
+    "dist",
+    "build",
+    "playwright-report",
+    "test-results",
+    "syntax-error.tsx"
+  ],
   "overrides": [
     {
       "files": ["**/create-triplex-project/templates/**"],

@@ -42,6 +42,7 @@
   "peerDependencies": {
     "@react-three/fiber": "^8.0.0",
     "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "three": ">=0.153.0"
   },
   "publishConfig": {

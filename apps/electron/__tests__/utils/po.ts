@@ -32,6 +32,14 @@ export class EditorPage {
     };
   }
 
+  get errorOverlay() {
+    const locator = this.page.getByTestId("ErrorOverlay");
+
+    return {
+      locator,
+    };
+  }
+
   get fileTabs() {
     const locator = this.page.getByLabel("File tabs");
 
