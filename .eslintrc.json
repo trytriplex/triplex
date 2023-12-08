@@ -1,6 +1,6 @@
 {
   "extends": ["@nkzw"],
-  "ignorePatterns": ["dist", "build"],
+  "ignorePatterns": ["dist", "build", "syntax-error.tsx"],
   "overrides": [
     {
       "files": ["**/__test__/**", "**/__tests__/**"],
