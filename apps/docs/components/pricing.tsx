@@ -6,7 +6,7 @@
  */
 import { ArrowLeftIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 import { cn } from "../util/cn";
 
 function PricingPanel({

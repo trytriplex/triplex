@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import renderer from "@react-three/test-renderer";
-import { TreeNode } from "@react-three/test-renderer/dist/declarations/src/types";
+import { type TreeNode } from "@react-three/test-renderer/dist/declarations/src/types";
 
 // @ts-expect-error - Ignore global variable in test.
 global.IS_REACT_ACT_ENVIRONMENT = true;

@@ -7,9 +7,9 @@
 import { useAnimations } from "@react-three/drei";
 import { useCallback, useEffect, useState } from "react";
 import { Component } from "../ecs/store";
-import { OnWorldEventHandler } from "../ecs/types";
+import { type OnWorldEventHandler } from "../ecs/types";
 import { InventoryIcon } from "../systems/inventory";
-import { Vector3Tuple } from "../types";
+import { type Vector3Tuple } from "../types";
 import { useGLTF } from "../utils/gltf";
 import { PointerEntity } from "./pointer-entity";
 import { SceneEntity } from "./scene-entity";

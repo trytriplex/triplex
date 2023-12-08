@@ -7,7 +7,7 @@
 import { useFrame } from "@react-three/fiber";
 import { useEntities } from "miniplex/react";
 import { useLayoutEffect } from "react";
-import { MathUtils, PerspectiveCamera, Vector3 } from "three";
+import { MathUtils, type PerspectiveCamera, Vector3 } from "three";
 import { add, damp } from "../../math/vectors";
 import { world } from "../store";
 

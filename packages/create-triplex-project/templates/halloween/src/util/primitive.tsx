@@ -1,4 +1,4 @@
-import { Node } from "@react-three/fiber";
+import { type Node } from "@react-three/fiber";
 
 export function Primitive<T extends object>({
   object,

@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { useEffect, useLayoutEffect } from "react";
-import { Vector3Tuple, type Group } from "three";
+import { type Vector3Tuple, type Group } from "three";
 import { useRefs } from "../../use-refs";
 
 interface ExplodingBoxProps {

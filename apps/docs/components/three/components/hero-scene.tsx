@@ -8,7 +8,7 @@ import { Grid, PerspectiveCamera } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { easing } from "maath";
 import { useRef } from "react";
-import { Group } from "three";
+import { type Group } from "three";
 import { ExplodingBox } from "./exploding-box";
 
 export function HeroScene() {

@@ -6,7 +6,7 @@
  */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useMemo, useRef } from "react";
-import { Vector3Tuple } from "three";
+import { type Vector3Tuple } from "three";
 import { RigidBody } from "../ecs/components/rigid-body";
 import { Component, Entity } from "../ecs/store";
 import { empty, fromArray } from "../math/vectors";

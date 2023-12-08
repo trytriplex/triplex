@@ -10,7 +10,7 @@ import {
   AdditiveBlending,
   FrontSide,
   MeshStandardMaterial,
-  Vector3Tuple,
+  type Vector3Tuple,
 } from "three";
 
 export function Glass({

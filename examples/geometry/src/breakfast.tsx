@@ -16,7 +16,7 @@ import {
   CylinderCollider,
   RigidBody,
 } from "@react-three/rapier";
-import { Vector3Tuple } from "three";
+import { type Vector3Tuple } from "three";
 
 export function Frypan({
   position,

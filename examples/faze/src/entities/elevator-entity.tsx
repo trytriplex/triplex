@@ -6,7 +6,7 @@
  */
 import { useTexture } from "@react-three/drei";
 import { useMemo, useRef, useState } from "react";
-import { Group, Vector3Tuple } from "three";
+import { type Group, type Vector3Tuple } from "three";
 import { KinematicBody } from "../ecs/components/kinematic-body";
 import { Component, Entity } from "../ecs/store";
 import { empty, fromArray } from "../math/vectors";

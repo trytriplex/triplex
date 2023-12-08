@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { useRef } from "react";
-import { Group, Vector3Tuple } from "three";
+import { type Group, type Vector3Tuple } from "three";
 import { Component, Entity, useCurrentEntity } from "../ecs/store";
 
 interface PointerProps {

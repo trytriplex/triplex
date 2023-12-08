@@ -9,11 +9,11 @@ import Head from "next/head";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { NextraThemeLayoutProps } from "nextra";
-import { Components, MDXProvider, useMDXComponents } from "nextra/mdx";
+import { type Components, MDXProvider, useMDXComponents } from "nextra/mdx";
 import { normalizePages } from "nextra/normalize-pages";
 import {
   Fragment,
-  MouseEventHandler,
+  type MouseEventHandler,
   useEffect,
   useMemo,
   useRef,

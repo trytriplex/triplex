@@ -6,9 +6,9 @@
  */
 import { World } from "miniplex";
 import { createReactAPI, useEntities } from "miniplex/react";
-import { ReactNode, useCallback, useMemo, useState } from "react";
-import { Item } from "./components/item";
-import { EntityComponents } from "./types";
+import { type ReactNode, useCallback, useMemo, useState } from "react";
+import { type Item } from "./components/item";
+import { type EntityComponents } from "./types";
 
 const ECS = createReactAPI(new World<EntityComponents>());
 

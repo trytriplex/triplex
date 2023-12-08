@@ -6,13 +6,13 @@
  */
 import { useTexture } from "@react-three/drei";
 import { useCallback, useState } from "react";
-import { Item } from "../ecs/components/item";
+import { type Item } from "../ecs/components/item";
 import {
   Component,
   useActiveItem,
   useActivePlayerInventory,
 } from "../ecs/store";
-import { Vector3Tuple } from "../types";
+import { type Vector3Tuple } from "../types";
 import { StaticEntity } from "./static-entity";
 
 function Placeholder() {

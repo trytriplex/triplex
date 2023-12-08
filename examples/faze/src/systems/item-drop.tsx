@@ -5,9 +5,9 @@
  * file in the root directory of this source tree.
  */
 import { useState } from "react";
-import { items } from "../ecs/components/item";
+import { type items } from "../ecs/components/item";
 import { useActiveItem, useActivePlayerInventory, world } from "../ecs/store";
-import { Vector3Tuple } from "../types";
+import { type Vector3Tuple } from "../types";
 
 export function ItemDrop({
   children,

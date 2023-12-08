@@ -6,7 +6,7 @@
  */
 import { useGLTF } from "@react-three/drei";
 import { useLayoutEffect } from "react";
-import { Vector3Tuple } from "three";
+import { type Vector3Tuple } from "three";
 
 export function Flowers({
   position,

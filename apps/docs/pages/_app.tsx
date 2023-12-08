@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { Analytics } from "@vercel/analytics/react";
-import { AppProps } from "next/app";
+import { type AppProps } from "next/app";
 import { Karla } from "next/font/google";
 import "../globals.css";
 

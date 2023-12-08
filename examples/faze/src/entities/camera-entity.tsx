@@ -10,7 +10,7 @@ import { useRef } from "react";
 import { Layers } from "three";
 import { Component, Entity } from "../ecs/store";
 import { empty, fromArray } from "../math/vectors";
-import { Vector3Tuple } from "../types";
+import { type Vector3Tuple } from "../types";
 
 const layer = new Layers();
 layer.enable(2);

@@ -6,9 +6,9 @@
  */
 import { useTexture } from "@react-three/drei";
 import { useCallback, useState } from "react";
-import { Vector3Tuple } from "three";
+import { type Vector3Tuple } from "three";
 import { Component, Entity } from "../ecs/store";
-import { OnWorldEventHandler } from "../ecs/types";
+import { type OnWorldEventHandler } from "../ecs/types";
 import { empty } from "../math/vectors";
 import { BoundingBox } from "../systems/bounding-box";
 

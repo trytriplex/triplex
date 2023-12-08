@@ -13,7 +13,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Box3, Group, Mesh, Object3D, Vector3, Vector3Tuple } from "three";
+import { Box3, type Group, type Mesh, type Object3D, Vector3, type Vector3Tuple } from "three";
 
 const boxes: Box3[] = [];
 const V1 = new Vector3();

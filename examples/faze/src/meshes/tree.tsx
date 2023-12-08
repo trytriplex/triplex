@@ -6,7 +6,7 @@
  */
 import { Clone, useTexture } from "@react-three/drei";
 import { FoliageMaterial } from "../materials/foliage";
-import { Vector3Tuple } from "../types";
+import { type Vector3Tuple } from "../types";
 import { useGLTF } from "../utils/gltf";
 
 export function Tree({
