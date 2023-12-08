@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+// eslint-disable-next-line @typescript-eslint/consistent-type-imports
 import type { Plane } from "./types";
 
 const Plane = () => (

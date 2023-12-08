@@ -6,7 +6,7 @@
  */
 import { useFrame } from "@react-three/fiber";
 import { useEntities } from "miniplex/react";
-import { Intersection, Object3D, Raycaster, Vector3 } from "three";
+import { type Intersection, type Object3D, Raycaster, Vector3 } from "three";
 import { add, copy, isEmpty2, reset2, sub2 } from "../../math/vectors";
 import { noop } from "../../utils/functions";
 import { TERRAIN } from "../../utils/layers";

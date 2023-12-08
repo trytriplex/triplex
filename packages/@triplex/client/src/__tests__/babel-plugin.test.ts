@@ -6,7 +6,7 @@
  */
 import {
   transformSync as babelTransformSync,
-  TransformOptions,
+  type TransformOptions,
 } from "@babel/core";
 import { describe, expect, it } from "vitest";
 import plugin from "../babel-plugin";

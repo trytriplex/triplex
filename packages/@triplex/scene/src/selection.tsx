@@ -4,13 +4,13 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { ThreeEvent, useFrame, useThree } from "@react-three/fiber";
+import { type ThreeEvent, useFrame, useThree } from "@react-three/fiber";
 import { compose, listen, send } from "@triplex/bridge/client";
 import type { JsxElementPositions } from "@triplex/server";
 import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws/react";
 import {
   createContext,
-  ReactNode,
+  type ReactNode,
   useContext,
   useEffect,
   useMemo,
@@ -18,14 +18,14 @@ import {
 } from "react";
 import {
   Box3,
-  Object3D,
-  PerspectiveCamera,
+  type Object3D,
+  type PerspectiveCamera,
   Vector3,
-  Vector3Tuple,
+  type Vector3Tuple,
 } from "three";
 import { useCamera } from "./components/camera";
 import { TransformControls } from "./components/transform-controls";
-import { SceneObjectProps } from "./scene-object";
+import { type SceneObjectProps } from "./scene-object";
 import { SceneObjectEventsContext } from "./stores/selection";
 import useEvent from "./util/use-event";
 

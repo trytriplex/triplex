@@ -15,7 +15,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Layers, Vector3, Vector3Tuple } from "three";
+import { type Layers, Vector3, type Vector3Tuple } from "three";
 import {
   OrbitControls,
   OrthographicCamera,

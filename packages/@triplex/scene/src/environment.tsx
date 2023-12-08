@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { createContext, ReactNode, useContext, useMemo } from "react";
+import { createContext, type ReactNode, useContext, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 
 const Context = createContext<{ config: { provider: string } } | null>(null);

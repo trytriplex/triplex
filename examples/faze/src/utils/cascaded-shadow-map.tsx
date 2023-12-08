@@ -7,12 +7,12 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useLayoutEffect, useMemo } from "react";
 import {
-  OrthographicCamera,
-  PerspectiveCamera,
+  type OrthographicCamera,
+  type PerspectiveCamera,
   Vector3,
-  Vector3Tuple,
+  type Vector3Tuple,
 } from "three";
-import CSM, { CSMParams } from "three-csm";
+import CSM, { type CSMParams } from "three-csm";
 
 interface CascadedShadowMapProps
   extends Omit<CSMParams, "lightDirection" | "camera" | "parent"> {

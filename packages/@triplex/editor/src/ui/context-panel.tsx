@@ -11,7 +11,7 @@ import { useScreenView } from "../analytics";
 import { IconButton } from "../ds/button";
 import { ScrollContainer } from "../ds/scroll-container";
 import { PanelSkeleton } from "../ds/skeleton";
-import { FocusedObject, useEditor } from "../stores/editor";
+import { type FocusedObject, useEditor } from "../stores/editor";
 import { useScene } from "../stores/scene";
 import { useSceneState } from "../stores/scene-state";
 import { IDELink } from "../util/ide";

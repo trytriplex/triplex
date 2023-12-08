@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { LumaSplatsSemantics, LumaSplatsThree } from "@lumaai/luma-web";
-import { extend, Object3DNode } from "@react-three/fiber";
+import { extend, type Object3DNode } from "@react-three/fiber";
 
 extend({ LumaSplats: LumaSplatsThree });
 

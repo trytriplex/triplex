@@ -14,7 +14,7 @@ import {
   type PropsWithChildren,
 } from "react";
 import { useSearchParams } from "react-router-dom";
-import { Box3, Layers, Vector3, Vector3Tuple } from "three";
+import { type Box3, Layers, Vector3, type Vector3Tuple } from "three";
 import { Grid } from "triplex-drei";
 import { Canvas } from "./canvas";
 import { Camera } from "./components/camera";

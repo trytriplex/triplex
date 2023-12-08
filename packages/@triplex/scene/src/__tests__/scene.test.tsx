@@ -7,7 +7,7 @@
 // @vitest-environment jsdom
 import { MemoryRouter } from "react-router-dom";
 import { render } from "react-three-test";
-import { Color } from "three";
+import { type Color } from "three";
 import { describe, expect, it, vi } from "vitest";
 import { SceneProvider } from "../context";
 import { Environment } from "../environment";

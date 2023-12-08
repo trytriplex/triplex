@@ -6,7 +6,7 @@
  */
 
 import { listen } from "@triplex/bridge/client";
-import { ComponentType, useEffect } from "react";
+import { type ComponentType, useEffect } from "react";
 import { SceneObject } from "./scene-object";
 import { useSceneState } from "./stores/scene-state";
 

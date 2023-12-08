@@ -15,10 +15,10 @@ import {
   useState,
 } from "react";
 import { Component, Entity, world } from "../ecs/store";
-import { OnWorldEventHandler } from "../ecs/types";
+import { type OnWorldEventHandler } from "../ecs/types";
 import { empty, fromArray } from "../math/vectors";
 import { BoundingBox } from "../systems/bounding-box";
-import { Vector3Tuple } from "../types";
+import { type Vector3Tuple } from "../types";
 import { noop } from "../utils/functions";
 import { useCursor } from "../utils/use-cursor";
 

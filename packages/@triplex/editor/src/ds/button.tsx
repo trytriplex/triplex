@@ -4,8 +4,8 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { IconProps } from "@radix-ui/react-icons/dist/types";
-import { ComponentType, forwardRef } from "react";
+import { type IconProps } from "@radix-ui/react-icons/dist/types";
+import { type ComponentType, forwardRef } from "react";
 import { cn } from "./cn";
 import { Pressable } from "./pressable";
 

@@ -7,7 +7,7 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEntities } from "miniplex/react";
 import { useEffect, useRef } from "react";
-import { Intersection, Object3D, Plane, Raycaster, Vector3 } from "three";
+import { type Intersection, type Object3D, Plane, Raycaster, Vector3 } from "three";
 import { TERRAIN } from "../../utils/layers";
 import { world } from "../store";
 

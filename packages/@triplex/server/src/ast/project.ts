@@ -6,10 +6,10 @@
  */
 import { watch } from "chokidar";
 import { format, resolveConfig, resolveConfigFile } from "prettier";
-import { Project, ProjectOptions, SourceFile } from "ts-morph";
+import { Project, type ProjectOptions, type SourceFile } from "ts-morph";
 import { join, normalize } from "upath";
 import { deleteCommentComponents } from "../services/component";
-import { SourceFileChangedEvent } from "../types";
+import { type SourceFileChangedEvent } from "../types";
 
 export type TRIPLEXProject = ReturnType<typeof createProject>;
 export type SourceFileGetters = Extract<

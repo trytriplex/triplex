@@ -7,7 +7,7 @@
 import { on } from "@triplex/ws";
 import anymatch from "anymatch";
 import {
-  ViteDevServer,
+  type ViteDevServer,
   // @ts-expect-error
 } from "vite";
 import { getCode } from "./api";

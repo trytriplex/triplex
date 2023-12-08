@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { memo } from "react";
-import { Vector3Tuple } from "three";
+import { type Vector3Tuple } from "three";
 
 type Plane = { position?: Vector3Tuple };
 

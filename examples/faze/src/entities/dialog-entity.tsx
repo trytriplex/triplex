@@ -7,7 +7,7 @@
 import { Text } from "@react-three/drei";
 import { useEffect, useState } from "react";
 import { MeshBasicMaterial } from "three";
-import { Item } from "../ecs/components/item";
+import { type Item } from "../ecs/components/item";
 import {
   Component,
   Entity,
@@ -17,7 +17,7 @@ import {
   useParentActive,
   world,
 } from "../ecs/store";
-import { Vector3Tuple } from "../types";
+import { type Vector3Tuple } from "../types";
 import { useCacheWhile } from "../utils/functions";
 import { DOM } from "../utils/tunnel";
 import { useParentNpcController } from "./npc-entity";

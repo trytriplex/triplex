@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { CuboidCollider, RigidBody } from "@react-three/rapier";
-import { Vector3Tuple } from "three";
+import { type Vector3Tuple } from "three";
 import Sphere from "./geometry/sphere";
 
 export function Box({ position }: { position?: Vector3Tuple }) {

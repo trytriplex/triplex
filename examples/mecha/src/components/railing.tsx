@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { useGLTF } from "@react-three/drei";
-import { Vector3Tuple } from "three";
+import { type Vector3Tuple } from "three";
 import { Floor, Shadow } from "./floor";
 import { Object } from "./object";
 import { Platform } from "./platform";

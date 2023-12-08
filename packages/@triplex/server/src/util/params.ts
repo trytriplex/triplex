@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { HttpError, RouterContext } from "@oakserver/oak";
+import { HttpError, type RouterContext } from "@oakserver/oak";
 
 export function getParam<T extends string>(
   context: RouterContext<T>,

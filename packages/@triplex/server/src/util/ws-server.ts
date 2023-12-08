@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { match } from "node-match-path";
-import { WebSocket, WebSocketServer } from "ws";
+import { type WebSocket, WebSocketServer } from "ws";
 import { stringifyJSON } from "./string";
 
 export type UnionToIntersection<U> = (

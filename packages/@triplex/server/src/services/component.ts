@@ -5,12 +5,12 @@
  * file in the root directory of this source tree.
  */
 import {
-  JsxElement,
-  JsxSelfClosingElement,
+  type JsxElement,
+  type JsxSelfClosingElement,
   Node,
-  SourceFile,
+  type SourceFile,
   SyntaxKind,
-  ts,
+  type ts,
 } from "ts-morph";
 import { basename, extname, relative } from "upath";
 import {
@@ -19,7 +19,7 @@ import {
   getJsxElementAtOrThrow,
 } from "../ast/jsx";
 import { getExportName } from "../ast/module";
-import { ComponentRawType, ComponentTarget } from "../types";
+import { type ComponentRawType, type ComponentTarget } from "../types";
 import { inferExports } from "../util/module";
 import { padLines } from "../util/string";
 

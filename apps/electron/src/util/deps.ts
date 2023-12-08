@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { readdir } from "node:fs/promises";
-import { BrowserWindow, Notification } from "electron";
+import { type BrowserWindow, Notification } from "electron";
 import { createPkgManagerDialog } from "./dialog";
 import { exec } from "./exec";
 import { indeterminate } from "./progress-bar";

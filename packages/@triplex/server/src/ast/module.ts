@@ -4,10 +4,10 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { JsxElement, JsxSelfClosingElement, Node } from "ts-morph";
+import { type JsxElement, type JsxSelfClosingElement, Node } from "ts-morph";
 import { normalize } from "upath";
 import { resolveExportDeclaration } from "./jsx";
-import { SourceFileReadOnly } from "./project";
+import { type SourceFileReadOnly } from "./project";
 
 export function getElementFilePath(
   element: JsxSelfClosingElement | JsxElement

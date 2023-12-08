@@ -6,12 +6,12 @@
  */
 import {
   createPortal,
-  ThreeEvent,
+  type ThreeEvent,
   useFrame,
   useThree,
 } from "@react-three/fiber";
 import { useLayoutEffect, useRef, useState } from "react";
-import { Mesh, Object3D } from "three";
+import { type Mesh, type Object3D } from "three";
 import "./camera-helper";
 
 type Helper =

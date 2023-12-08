@@ -8,7 +8,7 @@ import { forwardRef, useEffect, useRef } from "react";
 import mergeRefs from "react-merge-refs";
 import {
   TransformControls as TransformControlsImpl,
-  TransformControlsProps,
+  type TransformControlsProps,
 } from "triplex-drei";
 import { useCamera } from "./camera";
 

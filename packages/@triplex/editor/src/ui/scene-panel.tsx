@@ -25,7 +25,7 @@ import {
 import type { JsxElementPositions } from "@triplex/server";
 import { useLazySubscription } from "@triplex/ws/react";
 import {
-  ChangeEventHandler,
+  type ChangeEventHandler,
   Suspense,
   useEffect,
   useRef,
@@ -48,8 +48,8 @@ import { useSceneState } from "../stores/scene-state";
 import {
   attachInstruction,
   extractInstruction,
-  Instruction,
-  InstructionType,
+  type Instruction,
+  type InstructionType,
 } from "../util/dnd-hitbox";
 import { IDELink } from "../util/ide";
 import { ErrorBoundary } from "./error-boundary";

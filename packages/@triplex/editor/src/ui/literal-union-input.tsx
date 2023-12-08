@@ -10,7 +10,7 @@ import type {
   NumberLiteralType,
   StringLiteralType,
 } from "@triplex/server";
-import { ChangeEventHandler, useEffect, useRef } from "react";
+import { type ChangeEventHandler, useEffect, useRef } from "react";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 

@@ -6,7 +6,7 @@
  */
 import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { ReactNode, useEffect } from "react";
+import { type ReactNode, useEffect } from "react";
 import { useSearchStore } from "../stores/search";
 import { cn } from "../util/cn";
 

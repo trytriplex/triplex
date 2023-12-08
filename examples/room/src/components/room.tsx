@@ -6,7 +6,7 @@
  */
 import { useGLTF } from "@react-three/drei";
 import { useLayoutEffect } from "react";
-import { Material, Mesh } from "three";
+import { type Material, type Mesh } from "three";
 
 interface ObjectProps {
   position?: [x: number, y: number, z: number];

@@ -9,7 +9,7 @@ import anymatch from "anymatch";
 import parent from "glob-parent";
 import readdirp from "readdirp";
 import { extname, normalize } from "upath";
-import { getJsxElementsPositions, TRIPLEXProject } from "../ast";
+import { getJsxElementsPositions, type TRIPLEXProject } from "../ast";
 import { inferExports } from "../util/module";
 import { matchFile } from "../util/path";
 

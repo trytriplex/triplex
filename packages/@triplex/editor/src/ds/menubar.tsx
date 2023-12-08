@@ -6,7 +6,7 @@
  */
 // eslint-disable-next-line import/no-namespace
 import * as RadixMenubar from "@radix-ui/react-menubar";
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 import { cn } from "./cn";
 
 export function Trigger({

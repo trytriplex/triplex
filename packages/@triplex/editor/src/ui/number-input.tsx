@@ -10,8 +10,8 @@ import {
   Cross2Icon,
 } from "@radix-ui/react-icons";
 import {
-  KeyboardEventHandler,
-  MouseEventHandler,
+  type KeyboardEventHandler,
+  type MouseEventHandler,
   useCallback,
   useEffect,
   useRef,

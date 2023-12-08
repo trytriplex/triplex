@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { CheckIcon } from "@radix-ui/react-icons";
-import { ChangeEventHandler, useEffect, useRef } from "react";
+import { type ChangeEventHandler, useEffect, useRef } from "react";
 import { sentenceCase } from "../util/string";
 
 export function BooleanInput({

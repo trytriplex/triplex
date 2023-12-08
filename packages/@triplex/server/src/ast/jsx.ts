@@ -5,18 +5,18 @@
  * file in the root directory of this source tree.
  */
 import {
-  JsxAttribute,
-  JsxElement,
+  type JsxAttribute,
+  type JsxElement,
   Node,
   SyntaxKind,
-  ts,
+  type ts,
   type JsxSelfClosingElement,
   type SourceFile,
 } from "ts-morph";
 import { normalize } from "upath";
 import type { JsxElementPositions } from "../types";
 import { getElementFilePath } from "./module";
-import { SourceFileReadOnly } from "./project";
+import { type SourceFileReadOnly } from "./project";
 import { getFunctionPropTypes, getJsxElementPropTypes } from "./type-infer";
 
 /**

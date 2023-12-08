@@ -10,10 +10,10 @@ import parent from "glob-parent";
 import readdirp from "readdirp";
 import { basename, dirname, extname, join, normalize } from "upath";
 import {
-  Folder,
-  ProjectAsset,
-  ProjectCustomComponent,
-  ProjectHostComponent,
+  type Folder,
+  type ProjectAsset,
+  type ProjectCustomComponent,
+  type ProjectHostComponent,
 } from "../types";
 import { inferExports } from "../util/module";
 

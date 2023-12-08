@@ -4,10 +4,10 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { Object3D } from "three";
-import { VectorXyz } from "../math/vectors";
-import { BoundingBoxRef } from "../systems/bounding-box";
-import { Item } from "./components/item";
+import { type Object3D } from "three";
+import { type VectorXyz } from "../math/vectors";
+import { type BoundingBoxRef } from "../systems/bounding-box";
+import { type Item } from "./components/item";
 
 export interface OnWorldEventHandler {
   (

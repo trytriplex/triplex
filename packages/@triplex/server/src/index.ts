@@ -37,12 +37,12 @@ import {
   hostElements,
 } from "./services/project";
 import {
-  ComponentTarget,
-  ComponentType,
-  DeclaredProp,
-  ProjectAsset,
-  Prop,
-  SourceFileChangedEvent,
+  type ComponentTarget,
+  type ComponentType,
+  type DeclaredProp,
+  type ProjectAsset,
+  type Prop,
+  type SourceFileChangedEvent,
 } from "./types";
 import { getParam } from "./util/params";
 import { createTWS } from "./util/ws-server";

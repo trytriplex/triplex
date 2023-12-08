@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 import { cn } from "../ds/cn";
 
 export function IDELink({

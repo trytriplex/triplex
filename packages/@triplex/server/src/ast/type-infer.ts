@@ -5,14 +5,14 @@
  * file in the root directory of this source tree.
  */
 import {
-  Expression,
-  JsxElement,
-  JsxSelfClosingElement,
+  type Expression,
+  type JsxElement,
+  type JsxSelfClosingElement,
   Node,
-  PropertySignature,
-  Symbol as SymbolType,
-  ts,
-  Type,
+  type PropertySignature,
+  type Symbol as SymbolType,
+  type ts,
+  type Type,
 } from "ts-morph";
 import type {
   DeclaredProp,
@@ -22,7 +22,7 @@ import type {
 } from "../types";
 import { getAttributes } from "./jsx";
 import { getExportName } from "./module";
-import { SourceFileReadOnly } from "./project";
+import { type SourceFileReadOnly } from "./project";
 
 export function unrollType(
   type: Type,

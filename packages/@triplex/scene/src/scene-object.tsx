@@ -4,10 +4,10 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { Object3DProps } from "@react-three/fiber";
+import { type Object3DProps } from "@react-three/fiber";
 import { compose, listen } from "@triplex/bridge/client";
 import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
-import { Group } from "three";
+import { type Group } from "three";
 import { getHelperForElement, Helper } from "./components/helper";
 import { useSelectSceneObject } from "./selection";
 import { useOnSceneObjectMount } from "./stores/selection";

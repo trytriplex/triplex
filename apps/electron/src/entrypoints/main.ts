@@ -14,7 +14,7 @@ import {
   dialog,
   ipcMain,
   Menu,
-  MenuItemConstructorOptions,
+  type MenuItemConstructorOptions,
   shell,
 } from "electron";
 import { autoUpdater } from "electron-updater";
