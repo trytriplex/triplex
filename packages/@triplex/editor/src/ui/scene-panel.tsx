@@ -11,7 +11,6 @@ import {
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
-  CameraIcon,
   CaretDownIcon,
   CaretRightIcon,
   Crosshair1Icon,
@@ -25,12 +24,12 @@ import {
 import type { JsxElementPositions } from "@triplex/server";
 import { useLazySubscription } from "@triplex/ws/react";
 import {
-  type ChangeEventHandler,
   Suspense,
   useEffect,
   useRef,
   useState,
   useTransition,
+  type ChangeEventHandler,
 } from "react";
 import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary";
 import { useScreenView } from "../analytics";
@@ -52,6 +51,7 @@ import {
   type InstructionType,
 } from "../util/dnd-hitbox";
 import { IDELink } from "../util/ide";
+import { ElementActionProvider, RenderActions } from "./ecosystem/elements";
 import { ErrorBoundary } from "./error-boundary";
 import { ProviderConfig } from "./provider-config";
 import { StringInput } from "./string-input";
@@ -252,12 +252,14 @@ function SceneContents() {
             )}
             resetKeys={[path, exportName]}
           >
-            <JsxElements
-              exportName={exportName}
-              filter={filter}
-              level={1}
-              path={path}
-            />
+            <ElementActionProvider>
+              <JsxElements
+                exportName={exportName}
+                filter={filter}
+                level={1}
+                path={path}
+              />
+            </ElementActionProvider>
           </ReactErrorBoundary>
 
           <div className="h-1" />
@@ -370,7 +372,7 @@ function JsxElementButton({
   filter?: string;
   level: number;
 }) {
-  const { enterCamera, focus, jumpTo, navigateTo } = useScene();
+  const { focus, jumpTo, navigateTo } = useScene();
   const { deleteComponent, move, target } = useEditor();
   const selected =
     !!target &&
@@ -553,26 +555,7 @@ function JsxElementButton({
               "-my-1 -mr-0.5 ml-auto flex items-center focus-within:static focus-within:opacity-100 group-hover:static group-hover:opacity-100",
             ])}
           >
-            {element.name.includes("Camera") && (
-              // Most likely a camera component. It might not be though.
-              // A better implementation later would be to traverse this scene objects children
-              // And see if a camera exists, if it does enable the button.
-              <IconButton
-                actionId="enter_camera"
-                color="inherit"
-                icon={CameraIcon}
-                label="Enter camera"
-                onClick={() =>
-                  enterCamera({
-                    column: element.column,
-                    line: element.line,
-                    path: element.parentPath,
-                  })
-                }
-                size="sm"
-                testId="enter-camera"
-              />
-            )}
+            <RenderActions {...element} />
             <IconButton
               actionId="delete_element"
               color="inherit"

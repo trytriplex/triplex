@@ -6,44 +6,9 @@
  */
 declare type WindowState = "active" | "inactive" | "disabled";
 
-type Key =
-  | "A"
-  | "B"
-  | "C"
-  | "D"
-  | "E"
-  | "F"
-  | "G"
-  | "H"
-  | "I"
-  | "J"
-  | "K"
-  | "L"
-  | "M"
-  | "N"
-  | "O"
-  | "P"
-  | "Q"
-  | "R"
-  | "S"
-  | "T"
-  | "U"
-  | "V"
-  | "W"
-  | "X"
-  | "Y"
-  | "Z"
-  | number;
-
 declare interface Window {
   triplex: {
-    accelerator: (
-      accelerator:
-        | `CommandOrCtrl+${Key}`
-        | `CommandOrCtrl+Shift+${Key}`
-        | `Shift+${Key}`,
-      callback: () => void
-    ) => () => void;
+    accelerator: (accelerator: string, callback: () => void) => () => void;
     getEnv: () => Promise<{
       config: {
         assetsDir: string;

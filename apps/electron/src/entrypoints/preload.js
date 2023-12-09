@@ -24,7 +24,7 @@ contextBridge.exposeInMainWorld("triplex", {
     };
 
     if (declaredAccelerators[accelerator]) {
-      throw new Error("invariant: accelerator already declared");
+      throw new Error(`invariant: ${accelerator} accelerator already declared`);
     }
 
     declaredAccelerators[accelerator] = true;

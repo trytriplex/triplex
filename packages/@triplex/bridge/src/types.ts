@@ -6,6 +6,72 @@
  */
 export type ClientSendEventName = keyof ClientSendEventData;
 
+type Icon =
+  | "all-sides"
+  | "angle"
+  | "exit"
+  | "grid"
+  | "camera"
+  | "move"
+  | "exit"
+  | "grid-perspective"
+  | "transform";
+
+export interface ButtonGroupControl {
+  buttons: {
+    accelerator?: string;
+    icon?: Icon;
+    id: string;
+    label: string;
+  }[];
+  defaultSelected?: string;
+  id: string;
+  type: "button-group";
+}
+
+export interface ToggleButtonControl {
+  accelerator?: string;
+  buttons: [
+    {
+      icon?: Icon;
+      id: string;
+      label: string;
+    },
+    {
+      icon?: Icon;
+      id: string;
+      label: string;
+    }
+  ];
+  id: string;
+  type: "toggle-button";
+}
+
+export interface ButtonControl {
+  accelerator?: string;
+  icon?: Icon;
+  id: string;
+  label: string;
+  type: "button";
+}
+
+export interface SeparatorControl {
+  type: "separator";
+}
+
+export type Controls = (
+  | ButtonControl
+  | ButtonGroupControl
+  | ToggleButtonControl
+  | SeparatorControl
+)[];
+
+export type Actions = ((
+  | ButtonControl
+  | ButtonGroupControl
+  | ToggleButtonControl
+) & { filter: string })[];
+
 export interface ClientSendEventData {
   "trplx:onAddNewComponent": {
     target?: {
@@ -28,9 +94,6 @@ export interface ClientSendEventData {
           props: Record<string, unknown>;
           type: "host";
         };
-  };
-  "trplx:onCameraTypeChange": {
-    type: "perspective" | "orthographic";
   };
   "trplx:onConfirmSceneObjectProp": {
     column: number;
@@ -61,12 +124,11 @@ export interface ClientSendEventData {
     exportName: string;
     path: string;
   };
-  "trplx:onStateChange": {
-    change: "userCamera";
-    data: { column: number; line: number; path: string };
+  "trplx:onSetControls": {
+    controls: Controls;
   };
-  "trplx:onTransformChange": {
-    mode: "translate" | "scale" | "rotate";
+  "trplx:onSetElementActions": {
+    actions: Actions;
   };
 }
 
@@ -76,7 +138,6 @@ export interface ClientSendEventResponse {
     line: number;
     path: string;
   };
-  "trplx:onCameraTypeChange": void;
   "trplx:onConfirmSceneObjectProp": void;
   "trplx:onConnected": void;
   "trplx:onError": void;
@@ -84,19 +145,24 @@ export interface ClientSendEventResponse {
   "trplx:onSceneObjectBlur": void;
   "trplx:onSceneObjectFocus": void;
   "trplx:onSceneObjectNavigated": void;
-  "trplx:onStateChange": void;
-  "trplx:onTransformChange": void;
+  "trplx:onSetControls": void;
+  "trplx:onSetElementActions": void;
 }
 
 export type HostSendEventName = keyof HostSendEventData;
 
 export interface HostSendEventData {
-  "trplx:requestAction":
-    | { action: "resetCamera" }
-    | {
-        action: "enterCamera";
-        data?: { column: number; line: number; path: string };
-      };
+  "trplx:onControlClick": {
+    id: string;
+  };
+  "trplx:onElementActionClick": {
+    data: {
+      column: number;
+      line: number;
+      parentPath: string;
+    };
+    id: string;
+  };
   "trplx:requestAddNewComponent": {
     target?: {
       action: "child";
@@ -120,9 +186,6 @@ export interface HostSendEventData {
         };
   };
   "trplx:requestBlurSceneObject": undefined;
-  "trplx:requestCameraTypeChange": {
-    type: "perspective" | "orthographic";
-  };
   "trplx:requestDeleteSceneObject": {
     column: number;
     line: number;
@@ -181,16 +244,13 @@ export interface HostSendEventData {
     propName: string;
     propValue: unknown;
   };
-  "trplx:requestTransformChange": {
-    mode: "translate" | "scale" | "rotate";
-  };
 }
 
 export interface HostSendEventResponse {
-  "trplx:requestAction": void;
+  "trplx:onControlClick": void;
+  "trplx:onElementActionClick": void;
   "trplx:requestAddNewComponent": void;
   "trplx:requestBlurSceneObject": void;
-  "trplx:requestCameraTypeChange": void;
   "trplx:requestDeleteSceneObject": void;
   "trplx:requestFocusSceneObject": void;
   "trplx:requestJumpToSceneObject": void;
@@ -202,5 +262,4 @@ export interface HostSendEventResponse {
   "trplx:requestRestoreSceneObject": void;
   "trplx:requestSceneObjectPropValue": { value: unknown };
   "trplx:requestSetSceneObjectProp": void;
-  "trplx:requestTransformChange": void;
 }

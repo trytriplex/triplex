@@ -12,6 +12,7 @@ import { Pressable } from "./pressable";
 export const IconButton = forwardRef<
   HTMLDivElement,
   {
+    accelerator?: string;
     actionId: string;
     className?: string;
     color?: "inherit" | "default";
@@ -28,6 +29,7 @@ export const IconButton = forwardRef<
 >(
   (
     {
+      accelerator,
       actionId,
       className,
       color = "default",
@@ -44,6 +46,7 @@ export const IconButton = forwardRef<
     ref
   ) => (
     <Pressable
+      accelerator={isDisabled ? undefined : accelerator}
       className={cn([
         "cursor-default outline-1 outline-offset-1 outline-blue-400 focus-visible:outline",
         isDisabled && [

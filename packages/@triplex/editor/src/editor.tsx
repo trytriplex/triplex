@@ -31,7 +31,7 @@ export function EditorFrame() {
   }, [exportName, open, path, index]);
 
   return (
-    <div className="fixed inset-0 grid select-none grid-cols-[18rem_auto_18rem] grid-rows-[2rem_2.25rem_auto] bg-white/5">
+    <div className="fixed inset-0 grid select-none grid-cols-[18rem_auto_18rem] grid-rows-[2rem_2.25rem_auto] bg-gradient-to-b from-white/5 to-neutral-900">
       <TitleBar />
       <FileTabs />
       <SceneFrame />

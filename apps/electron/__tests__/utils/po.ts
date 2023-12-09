@@ -146,6 +146,7 @@ export class EditorPage {
           },
           deleteButton: locator.getByTestId("delete"),
           enterCameraButton: locator.getByTestId("enter-camera"),
+          exitCameraButton: locator.getByTestId("exit-camera"),
           expandButton: locator.getByTestId("expand"),
           focusButton: locator.getByTestId("jump-to"),
           locator,
@@ -166,15 +167,6 @@ export class EditorPage {
     };
 
     return methods;
-  }
-
-  get controlsMenu() {
-    const locator = this.page.getByTestId("controls-menu");
-
-    return {
-      exitUserCameraButton: locator.getByTestId("user-camera"),
-      locator,
-    };
   }
 
   get keyboard() {

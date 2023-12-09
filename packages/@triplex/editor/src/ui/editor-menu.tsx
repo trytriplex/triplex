@@ -104,7 +104,7 @@ export function EditorMenu() {
     target,
     undo,
   } = useEditor();
-  const { blur, jumpTo, navigateTo, refresh, setTransform } = useScene();
+  const { blur, jumpTo, navigateTo, refresh } = useScene();
   const isEditable = !!path;
 
   const revertFile = useCallback(() => {
@@ -288,30 +288,6 @@ export function EditorMenu() {
               type: "separator",
             },
             {
-              accelerator: shortcut("T"),
-              click: () => setTransform("translate"),
-              enabled: "inactive-input",
-              id: "translate",
-              label: "Translate",
-            },
-            {
-              accelerator: shortcut("R"),
-              click: () => setTransform("rotate"),
-              enabled: "inactive-input",
-              id: "rotate",
-              label: "Transform",
-            },
-            {
-              accelerator: shortcut("S"),
-              click: () => setTransform("scale"),
-              enabled: "inactive-input",
-              id: "scale",
-              label: "Transform",
-            },
-            {
-              type: "separator",
-            },
-            {
               accelerator: shortcut("Backspace"),
               click: () => deleteComponent(),
               enabled: !!target && isEditable,
@@ -374,7 +350,6 @@ export function EditorMenu() {
       jumpTo,
       navigateTo,
       exitComponent,
-      setTransform,
       deleteComponent,
     ]
   );

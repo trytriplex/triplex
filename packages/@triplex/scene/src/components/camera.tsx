@@ -4,8 +4,8 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useFrame } from "@react-three/fiber";
-import { listen, send } from "@triplex/bridge/client";
+import { useFrame, useThree } from "@react-three/fiber";
+import { compose, listen } from "@triplex/bridge/client";
 import {
   createContext,
   useContext,
@@ -15,12 +15,13 @@ import {
   useRef,
   useState,
 } from "react";
-import { type Layers, Vector3, type Vector3Tuple } from "three";
+import { Vector3, type Layers, type Vector3Tuple } from "three";
 import {
   OrbitControls,
   OrthographicCamera,
   PerspectiveCamera,
 } from "triplex-drei";
+import { findSceneObject } from "../util/scene";
 
 function frustumHeightAtDistance(
   camera: THREE.PerspectiveCamera,
@@ -68,12 +69,14 @@ export function Camera({
   position: Vector3Tuple;
   target: Vector3Tuple;
 }) {
+  const defaultCamera = "perspective";
   // This is the source of truth for what camera is active.
   // When this is set it propagates to the editor frame in the effect.
   const [type, setType] = useState<"perspective" | "orthographic" | "user">(
-    "perspective"
+    defaultCamera
   );
-  const prevType = useRef<"perspective" | "orthographic">();
+  const scene = useThree((state) => state.scene);
+  const prevType = useRef<"perspective" | "orthographic">(defaultCamera);
   const orthographicRef = useRef<THREE.OrthographicCamera>(null!);
   const perspectiveRef = useRef<THREE.PerspectiveCamera>(null!);
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -85,10 +88,46 @@ export function Camera({
     activeCamera && activeCamera.name === "__triplex_camera";
 
   useEffect(() => {
-    return listen("trplx:requestCameraTypeChange", ({ type }) => {
-      setType(type);
-    });
-  });
+    return compose([
+      listen("trplx:onControlClick", (data) => {
+        switch (data.id) {
+          case "perspective":
+          case "orthographic":
+            setType(data.id);
+            break;
+        }
+      }),
+      listen("trplx:onElementActionClick", (data) => {
+        switch (data.id) {
+          case "enter-camera": {
+            const camera = findSceneObject(scene, {
+              column: data.data.column,
+              line: data.data.line,
+              path: data.data.parentPath,
+            });
+
+            if (camera) {
+              setType("user");
+              setActiveCamera(
+                camera as THREE.OrthographicCamera | THREE.PerspectiveCamera
+              );
+            }
+            break;
+          }
+
+          case "leave-camera": {
+            setType(prevType.current);
+            setActiveCamera(
+              prevType.current === "orthographic"
+                ? orthographicRef.current
+                : perspectiveRef.current
+            );
+            break;
+          }
+        }
+      }),
+    ]);
+  }, [scene]);
 
   useLayoutEffect(() => {
     if (type === "orthographic") {
@@ -108,8 +147,6 @@ export function Camera({
       orthographicRef.current.lookAt(vtarget);
       orthographicRef.current.updateProjectionMatrix();
 
-      send("trplx:onCameraTypeChange", { type });
-
       prevType.current = "orthographic";
       setActiveCamera(orthographicRef.current);
     } else if (type === "perspective") {
@@ -119,8 +156,6 @@ export function Camera({
         perspectiveRef.current.position.y = oldY / orthographicRef.current.zoom;
         perspectiveRef.current.updateProjectionMatrix();
       }
-
-      send("trplx:onCameraTypeChange", { type });
 
       prevType.current = "perspective";
       setActiveCamera(perspectiveRef.current);
@@ -139,8 +174,7 @@ export function Camera({
   const context: CameraContextType = useMemo(
     () => ({
       controls: controlsRef,
-      setCamera: (camera, data) => {
-        send("trplx:onStateChange", { change: "userCamera", data });
+      setCamera: (camera) => {
         setActiveCamera(camera);
         setType("user");
       },

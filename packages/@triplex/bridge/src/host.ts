@@ -5,13 +5,28 @@
  * file in the root directory of this source tree.
  */
 import type {
+  Actions,
+  ButtonControl,
+  ButtonGroupControl,
   ClientSendEventData,
   ClientSendEventName,
   ClientSendEventResponse,
+  Controls,
   HostSendEventData,
   HostSendEventName,
   HostSendEventResponse,
+  SeparatorControl,
+  ToggleButtonControl,
 } from "./types";
+
+export {
+  Actions,
+  Controls,
+  ButtonControl,
+  ButtonGroupControl,
+  SeparatorControl,
+  ToggleButtonControl,
+};
 
 export function listen<TEvent extends ClientSendEventName>(
   eventName: TEvent,

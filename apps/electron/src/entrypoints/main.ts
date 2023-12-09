@@ -185,7 +185,7 @@ function applyWindowIpcHandlers(activeWindow: BrowserWindow) {
   );
 
   activeWindow.webContents.on("before-input-event", (_, input) => {
-    if (input.modifiers.length > 0 && input.type === "keyDown") {
+    if (input.type === "keyDown") {
       const commands: string[] = [];
 
       if (input.meta) {
@@ -196,9 +196,9 @@ function applyWindowIpcHandlers(activeWindow: BrowserWindow) {
         commands.push("Shift");
       }
 
-      activeWindow.webContents.send(
-        `acl:${commands.join("+")}+${input.key.toUpperCase()}`
-      );
+      commands.push(input.key.toUpperCase());
+
+      activeWindow.webContents.send(`acl:${commands.join("+")}`);
     }
   });
 }

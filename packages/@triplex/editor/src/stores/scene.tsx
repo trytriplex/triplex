@@ -29,15 +29,6 @@ interface BridgeContext {
     parentPath: string;
   }): void;
   /**
-   * Switches the editor camera to either the passed in reference or the
-   * currently focused camera.
-   */
-  enterCamera(sceneObject?: {
-    column: number;
-    line: number;
-    path: string;
-  }): void;
-  /**
    * Focus a scene object.
    */
   focus(sceneObject: FocusedObject): void;
@@ -94,14 +85,6 @@ interface BridgeContext {
    */
   reset(): void;
   /**
-   * Resets the viewport back to default.
-   */
-  resetCamera(): void;
-  /**
-   * Sets the scene camera type.
-   */
-  setCameraType(type: "perspective" | "orthographic"): void;
-  /**
    * Sets the temporary value of a prop.
    *
    * This can be set as frequently as needed as it's intermediate state and not
@@ -114,10 +97,6 @@ interface BridgeContext {
     propName: string;
     propValue: unknown;
   }): void;
-  /**
-   * Sets the scene transform control mode.
-   */
-  setTransform(mode: "scale" | "translate" | "rotate"): void;
 }
 
 /**
@@ -135,9 +114,6 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     },
     deleteComponent(data) {
       send("trplx:requestDeleteSceneObject", data);
-    },
-    enterCamera(sceneObject) {
-      send("trplx:requestAction", { action: "enterCamera", data: sceneObject });
     },
     focus(sceneObject) {
       send("trplx:requestFocusSceneObject", sceneObject);
@@ -161,20 +137,11 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     reset() {
       send("trplx:requestReset", undefined);
     },
-    resetCamera() {
-      send("trplx:requestAction", { action: "resetCamera" });
-    },
     sceneReady() {
       setStore({ ready: true });
     },
-    setCameraType(type) {
-      send("trplx:requestCameraTypeChange", { type });
-    },
     setPropValue(data) {
       send("trplx:requestSetSceneObjectProp", data);
-    },
-    setTransform(mode) {
-      send("trplx:requestTransformChange", { mode });
     },
   })
 );

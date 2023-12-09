@@ -4,7 +4,12 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { forwardRef, type KeyboardEventHandler, type MouseEventHandler } from "react";
+import {
+  forwardRef,
+  useEffect,
+  type KeyboardEventHandler,
+  type MouseEventHandler,
+} from "react";
 import { useAnalytics } from "../analytics";
 import useEvent from "../util/use-event";
 import { cn } from "./cn";
@@ -12,6 +17,7 @@ import { cn } from "./cn";
 export const Pressable = forwardRef<
   HTMLDivElement,
   {
+    accelerator?: string;
     children?: React.ReactNode;
     className?: string;
     doublePressActionId?: string;
@@ -28,6 +34,7 @@ export const Pressable = forwardRef<
 >(
   (
     {
+      accelerator,
       children,
       className,
       doublePressActionId,
@@ -44,6 +51,14 @@ export const Pressable = forwardRef<
     ref
   ) => {
     const analytics = useAnalytics();
+
+    useEffect(() => {
+      if (!onPress || !accelerator) {
+        return;
+      }
+
+      return window.triplex.accelerator(accelerator, onPress);
+    }, [accelerator, onPress]);
 
     const onKeyDownHandler: KeyboardEventHandler = useEvent((e) => {
       if (e.key === "Enter") {

@@ -31,7 +31,7 @@ test("enter camera", async ({ editor }) => {
 
   await parent.enterCameraButton.click();
 
-  await expect(editor.controlsMenu.exitUserCameraButton).toBeAttached();
+  await expect(parent.exitCameraButton).toBeAttached();
 });
 
 test("focus parent element", async ({ editor }) => {
