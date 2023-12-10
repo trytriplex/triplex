@@ -31,7 +31,18 @@ test("enter camera", async ({ editor }) => {
 
   await parent.enterCameraButton.click();
 
-  await expect(parent.exitCameraButton).toBeAttached();
+  await expect(parent.exitCameraButton).toBeVisible();
+});
+
+test("enter camera block changing host camera", async ({ editor }) => {
+  const parent = editor.scenePanel.elementButton("PerspectiveCamera");
+  await editor.waitForScene();
+
+  await parent.enterCameraButton.click();
+  await editor.camera.toOrthographicButton.click();
+
+  await expect(editor.camera.toOrthographicButton).toBeVisible();
+  await expect(editor.camera.toPerspectiveButton).toBeHidden();
 });
 
 test("focus parent element", async ({ editor }) => {

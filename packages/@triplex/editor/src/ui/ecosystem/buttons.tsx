@@ -39,7 +39,7 @@ const icons = {
 
 interface ControlProps<TControl> {
   control: TControl;
-  onClick: (id: string) => void;
+  onClick: (id: string) => unknown;
   size?: "md" | "sm" | "xs";
 }
 
@@ -58,9 +58,16 @@ export function ToggleButton({
       color="inherit"
       icon={button.icon ? icons[button.icon] : BoxIcon}
       label={button.label}
-      onClick={() => {
-        onClick(button.id);
-        setIndex((prev) => prev + 1);
+      onClick={async () => {
+        const result = await onClick(button.id);
+        if (
+          result &&
+          typeof result === "object" &&
+          "handled" in result &&
+          result.handled
+        ) {
+          setIndex((prev) => prev + 1);
+        }
       }}
       size={size}
       testId={button.id}

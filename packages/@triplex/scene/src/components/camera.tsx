@@ -92,9 +92,14 @@ export function Camera({
       listen("trplx:onControlClick", (data) => {
         switch (data.id) {
           case "perspective":
-          case "orthographic":
+          case "orthographic": {
+            if (type === "user") {
+              return;
+            }
+
             setType(data.id);
-            break;
+            return { handled: true };
+          }
         }
       }),
       listen("trplx:onElementActionClick", (data) => {
@@ -111,23 +116,25 @@ export function Camera({
               setActiveCamera(
                 camera as THREE.OrthographicCamera | THREE.PerspectiveCamera
               );
+              return { handled: true };
+            } else {
+              return { handled: false };
             }
-            break;
           }
 
-          case "leave-camera": {
+          case "exit-camera": {
             setType(prevType.current);
             setActiveCamera(
               prevType.current === "orthographic"
                 ? orthographicRef.current
                 : perspectiveRef.current
             );
-            break;
+            return { handled: true };
           }
         }
       }),
     ]);
-  }, [scene]);
+  }, [scene, type]);
 
   useLayoutEffect(() => {
     if (type === "orthographic") {

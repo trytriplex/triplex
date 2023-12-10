@@ -247,8 +247,8 @@ export interface HostSendEventData {
 }
 
 export interface HostSendEventResponse {
-  "trplx:onControlClick": void;
-  "trplx:onElementActionClick": void;
+  "trplx:onControlClick": { handled: boolean };
+  "trplx:onElementActionClick": { handled: boolean };
   "trplx:requestAddNewComponent": void;
   "trplx:requestBlurSceneObject": void;
   "trplx:requestDeleteSceneObject": void;

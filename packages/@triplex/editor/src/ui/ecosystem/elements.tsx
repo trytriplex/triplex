@@ -85,7 +85,7 @@ export function RenderActions({
                 control={action}
                 key={action.id}
                 onClick={(id) =>
-                  send("trplx:onElementActionClick", { data, id })
+                  send("trplx:onElementActionClick", { data, id }, true)
                 }
                 size="sm"
               />

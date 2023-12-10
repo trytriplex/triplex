@@ -173,6 +173,13 @@ export class EditorPage {
     return this.page.keyboard;
   }
 
+  get camera() {
+    return {
+      toOrthographicButton: this.page.getByTestId("orthographic"),
+      toPerspectiveButton: this.page.getByTestId("perspective"),
+    };
+  }
+
   get assetsDrawer() {
     const locator = this.page.getByTestId("assets-drawer");
 

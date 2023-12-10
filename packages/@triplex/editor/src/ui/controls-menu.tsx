@@ -52,7 +52,7 @@ export function ControlsMenu() {
                 <ToggleButton
                   control={control}
                   key={control.id}
-                  onClick={(id) => send("trplx:onControlClick", { id })}
+                  onClick={(id) => send("trplx:onControlClick", { id }, true)}
                 />
               );
             }
