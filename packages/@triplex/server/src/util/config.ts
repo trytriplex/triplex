@@ -6,10 +6,13 @@
  */
 import { readFile } from "node:fs/promises";
 import { join, normalize } from "upath";
+import { type TriplexConfig } from "../types";
 
 const STATIC_ASSETS = ["glb", "gltf"];
 
-export async function getConfig(cwd: string) {
+export async function getConfig(
+  cwd: string
+): Promise<Required<TriplexConfig> & { cwd: string }> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let config: Record<string, any>;
 
@@ -26,7 +29,7 @@ export async function getConfig(cwd: string) {
     config.publicDir || "../public"
   );
 
-  const provider: string | undefined =
+  const provider: string =
     config.provider && join(cwd, ".triplex", config.provider);
 
   const files: string[] = config.files.map((file: string) =>

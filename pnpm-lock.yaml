@@ -458,9 +458,9 @@ importers:
       '@triplex/bridge':
         specifier: 0.61.2
         version: link:../bridge
-      '@triplex/scene':
+      '@triplex/renderer-r3f':
         specifier: 0.61.2
-        version: link:../scene
+        version: link:../renderer-r3f
       '@vitejs/plugin-react':
         specifier: ^4.1.0
         version: 4.1.0(vite@4.4.11)
@@ -605,56 +605,7 @@ importers:
         specifier: ^4.4.11
         version: 4.4.11(@types/node@18.11.18)
 
-  packages/@triplex/run:
-    dependencies:
-      '@commander-js/extra-typings':
-        specifier: ^10.0.2
-        version: 10.0.2(commander@10.0.1)
-      '@triplex/client':
-        specifier: 0.61.2
-        version: link:../client
-      '@triplex/editor':
-        specifier: 0.61.2
-        version: link:../editor
-      '@triplex/server':
-        specifier: 0.61.2
-        version: link:../server
-      commander:
-        specifier: ^10.0.0
-        version: 10.0.1
-      express:
-        specifier: ^4.18.2
-        version: 4.18.2
-      open:
-        specifier: ^8.4.0
-        version: 8.4.2
-      ora:
-        specifier: ^6.1.2
-        version: 6.1.2
-    devDependencies:
-      '@swc/cli':
-        specifier: ^0.1.59
-        version: 0.1.59(@swc/core@1.3.28)
-      '@swc/core':
-        specifier: ^1.3.28
-        version: 1.3.28
-      '@types/express':
-        specifier: ^4.17.17
-        version: 4.17.17
-      '@types/node':
-        specifier: ^18.11.18
-        version: 18.11.18
-      ts-json-schema-generator:
-        specifier: ^1.2.0
-        version: 1.2.0
-      ts-node:
-        specifier: ^10.9.1
-        version: 10.9.1(@swc/core@1.3.28)(@types/node@18.11.18)(typescript@4.9.4)
-      typescript:
-        specifier: ^4.9.4
-        version: 4.9.4
-
-  packages/@triplex/scene:
+  packages/@triplex/renderer-r3f:
     dependencies:
       '@triplex/bridge':
         specifier: 0.61.2
@@ -790,6 +741,9 @@ importers:
       three:
         specifier: ^0.157.0
         version: 0.157.0
+      ts-json-schema-generator:
+        specifier: ^1.2.0
+        version: 1.2.0
       typescript:
         specifier: ^4.9.4
         version: 4.9.4

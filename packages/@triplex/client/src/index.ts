@@ -63,9 +63,9 @@ export async function createServer({
     resolve: {
       alias: {
         "@triplex/bridge/client": require.resolve("@triplex/bridge/client"),
-        // The consuming app doesn't have @triplex/scene as a direct dependency
-        // So we use `require.resolve()` to find it from this location instead.
-        "@triplex/scene": require.resolve("@triplex/scene"),
+        // The consuming app doesn't have this as a direct dependency
+        // so we use `require.resolve()` to find it from this location instead.
+        "@triplex/renderer-r3f": require.resolve("@triplex/renderer-r3f"),
       },
       dedupe: ["@react-three/fiber", "three"],
     },
@@ -84,7 +84,7 @@ export async function createServer({
     try {
       const template = createHTML({
         fileGlobs: files.map((f) => `'${f.replace(normalizedCwd, "")}'`),
-        pkgName: "@triplex/scene",
+        pkgName: "@triplex/renderer-r3f",
         providerPath: provider,
       });
       const html = await vite.transformIndexHtml("scene", template);

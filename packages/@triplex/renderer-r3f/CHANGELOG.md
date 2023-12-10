@@ -1,4 +1,4 @@
-# @triplex/scene
+# @triplex/renderer-r3f
 
 ## 0.61.2
 

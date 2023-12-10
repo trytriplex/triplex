@@ -1,5 +1,5 @@
 {
-  "name": "@triplex/scene",
+  "name": "@triplex/renderer-r3f",
   "version": "0.61.2",
   "private": true,
   "description": "The React Three Fiber editor.",
