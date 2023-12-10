@@ -1,9 +1,8 @@
 {
-  "$ref": "#/definitions/TRIPLEXConfig",
+  "$ref": "#/definitions/TriplexConfig",
   "$schema": "http://json-schema.org/draft-07/schema#",
   "definitions": {
-    "TRIPLEXConfig": {
-      "description": "Copyright (c) Michael Dougall. All rights reserved.\n\nThis source code is licensed under the GPL-3.0 license found in the LICENSE file in the root directory of this source tree.",
+    "TriplexConfig": {
       "properties": {
         "assetsDir": {
           "description": "Folder inside the  {@link  publicDir }  folder where Triplex maintains static assets such as GLTF and GLB files. Files inside this directory are made available to be added to the open component as a `<primitive>` element.\n\nDefaults to `\"assets\"`.",
@@ -24,7 +23,7 @@
           "type": "array"
         },
         "provider": {
-          "description": "Path to a provider component that can hold all React providers needed during runtime. The component must be the default export and return children.\n\n```ts export default function Provider({ children }) {   return children; } ```",
+          "description": "Path to a provider component that can hold all React providers needed during runtime. The component must be the default export and return children.",
           "type": "string"
         },
         "publicDir": {
