@@ -12,15 +12,16 @@ import {
 import { useEffect } from "react";
 import { BrowserRouter } from "react-router-dom";
 import { SceneProvider } from "./context";
-import { Environment } from "./environment";
 import { SceneFrame } from "./scene";
 
 export function Renderer({
   files,
   provider,
+  providerPath,
 }: {
   files: Modules;
   provider: ProviderComponent;
+  providerPath: string;
 }) {
   useEffect(() => {
     send("connected", undefined);
@@ -100,9 +101,7 @@ export function Renderer({
   return (
     <BrowserRouter>
       <SceneProvider value={files}>
-        <Environment>
-          <SceneFrame provider={provider} />
-        </Environment>
+        <SceneFrame provider={provider} providerPath={providerPath} />
       </SceneProvider>
     </BrowserRouter>
   );

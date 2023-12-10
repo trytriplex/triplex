@@ -4,6 +4,8 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import type { Config } from "@triplex/bridge/client";
+
 const suffix = "ta.hot";
 const metaHot = "imp" + "ort.me" + suffix;
 /**
@@ -15,16 +17,16 @@ const metaHot = "imp" + "ort.me" + suffix;
 const placeholderFiles = 10;
 
 interface TemplateOpts {
+  config: Config;
   fileGlobs: string[];
   pkgName: string;
-  providerPath: string;
 }
 
 export const scripts = {
   bootstrap: (template: TemplateOpts) =>
     [
       `import { bootstrap } from "${template.pkgName}";`,
-      `import provider from "${template.providerPath}";`,
+      `import provider from "${template.config.provider}";`,
       'import { on, send } from "@triplex/bridge/client";',
       `const projectFiles = import.meta.glob([${template.fileGlobs}]);`,
       "const tempFiles = {",
@@ -53,7 +55,9 @@ export const scripts = {
 
         if (!${metaHot}.data.render) {
           ${metaHot}.data.render = bootstrap(document.getElementById('root'));
-          ${metaHot}.data.render({ files, provider });
+          ${metaHot}.data.render({ config: ${JSON.stringify(
+        template.config
+      )}, files, provider });
 
           on("request-refresh-scene", (data) => {
             if (data.hard) {
@@ -78,7 +82,9 @@ export const scripts = {
 
         ${metaHot}.accept((mod) => {
           if (mod) {
-            ${metaHot}.data.render({ files: mod.files, provider: mod.provider });
+            ${metaHot}.data.render({ config: ${JSON.stringify(
+        template.config
+      )}, files: mod.files, provider: mod.provider });
           }
         });
       }

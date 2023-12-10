@@ -19,7 +19,6 @@ import { Grid } from "triplex-drei";
 import { Canvas } from "./canvas";
 import { Camera } from "./components/camera";
 import { SubsequentSuspense } from "./components/suspense";
-import { useEnvironment } from "./environment";
 import { SceneErrorBoundary } from "./error-boundary";
 import { SceneLoader } from "./loader";
 import { ManualEditableSceneObject } from "./manual-editable";
@@ -33,8 +32,10 @@ const defaultFocalPoint: Vector3Tuple = [0, 0, 0];
 
 export function SceneFrame({
   provider: Provider,
+  providerPath,
 }: {
   provider: (props: PropsWithChildren) => JSX.Element;
+  providerPath: string;
 }) {
   const [resetCount, incrementReset] = useReducer((s: number) => s + 1, 0);
   const [searchParams, setSearchParams] = useSearchParams();
@@ -45,7 +46,6 @@ export function SceneFrame({
     () => (props ? JSON.parse(decodeURIComponent(props)) : {}),
     [props]
   );
-  const env = useEnvironment();
   const [focalPoint, setFocalPoint] = useState(defaultFocalPoint);
   const { position, target } = useMemo(() => {
     const actualCameraPosition: Vector3Tuple = [...focalPoint];
@@ -125,7 +125,7 @@ export function SceneFrame({
               exportName="__exclude__"
               id={-999}
               key={resetCount}
-              path={env.config.provider}
+              path={providerPath}
             >
               <Selection
                 exportName={exportName}

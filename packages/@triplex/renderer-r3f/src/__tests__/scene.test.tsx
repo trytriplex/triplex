@@ -10,7 +10,6 @@ import { render } from "react-three-test";
 import { type Color } from "three";
 import { describe, expect, it, vi } from "vitest";
 import { SceneProvider } from "../context";
-import { Environment } from "../environment";
 import { SceneFrame } from "../scene";
 
 vi.mock("@react-three/fiber", async () => ({
@@ -32,19 +31,9 @@ export default function Provider({ children }: { children?: React.ReactNode }) {
 describe("scene frame", () => {
   it("should apply color to canvas background", async () => {
     const { getInstance } = await render(
-      <MemoryRouter
-        initialEntries={[
-          {
-            search: `?env=${encodeURIComponent(
-              JSON.stringify({ config: {} })
-            )}`,
-          },
-        ]}
-      >
+      <MemoryRouter>
         <SceneProvider value={{}}>
-          <Environment>
-            <SceneFrame provider={Provider} />
-          </Environment>
+          <SceneFrame provider={Provider} providerPath="" />
         </SceneProvider>
       </MemoryRouter>
     );

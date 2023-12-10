@@ -18,6 +18,12 @@ export const bootstrap: BootstrapFunction = (container) => {
   const root = createRoot(container);
 
   return (opts) => {
-    root.render(<Renderer files={opts.files} provider={opts.provider} />);
+    root.render(
+      <Renderer
+        files={opts.files}
+        provider={opts.provider}
+        providerPath={opts.config.provider}
+      />
+    );
   };
 };
