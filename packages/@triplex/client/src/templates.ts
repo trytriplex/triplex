@@ -40,8 +40,8 @@ export const scripts = {
 
       export { provider, files };
 
-      if (import.meta.hot) {
-        import.meta.hot.on("vite:error", (e) => {
+      if (${metaHot}) {
+        ${metaHot}.on("vite:error", (e) => {
           console.log('vite error');
           send("trplx:onError", {
             col: e.err.loc?.column || -1,
@@ -52,9 +52,9 @@ export const scripts = {
           });
         });
 
-        if (!import.meta.hot.data.render) {
-          import.meta.hot.data.render = bootstrap(document.getElementById('root'));
-          import.meta.hot.data.render({ files, provider });
+        if (!${metaHot}.data.render) {
+          ${metaHot}.data.render = bootstrap(document.getElementById('root'));
+          ${metaHot}.data.render({ files, provider });
 
           listen("trplx:requestRefresh", (data) => {
             if (data.hard) {
@@ -79,9 +79,9 @@ export const scripts = {
           });
         }
 
-        import.meta.hot.accept((mod) => {
+        ${metaHot}.accept((mod) => {
           if (mod) {
-            import.meta.hot.data.render({ files: mod.files, provider: mod.provider });
+            ${metaHot}.data.render({ files: mod.files, provider: mod.provider });
           }
         });
       }
