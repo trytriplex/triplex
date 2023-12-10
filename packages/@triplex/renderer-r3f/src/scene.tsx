@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { listen, send } from "@triplex/bridge/client";
+import { on, send } from "@triplex/bridge/client";
 import {
   useCallback,
   useEffect,
@@ -14,7 +14,7 @@ import {
   type PropsWithChildren,
 } from "react";
 import { useSearchParams } from "react-router-dom";
-import { type Box3, Layers, Vector3, type Vector3Tuple } from "three";
+import { Layers, Vector3, type Box3, type Vector3Tuple } from "three";
 import { Grid } from "triplex-drei";
 import { Canvas } from "./canvas";
 import { Camera } from "./components/camera";
@@ -78,7 +78,7 @@ export function SceneFrame({
         { replace: true }
       );
 
-      send("trplx:onSceneObjectNavigated", { ...selected, entered: true });
+      send("component-opened", { ...selected, entered: true });
     },
     [setSearchParams]
   );
@@ -91,7 +91,7 @@ export function SceneFrame({
       path: string;
     }) => {
       // This will be serialized so we create a new object just in case.
-      send("trplx:onSceneObjectFocus", {
+      send("element-focused", {
         column: data.column,
         line: data.line,
         parentPath: data.parentPath,
@@ -102,11 +102,11 @@ export function SceneFrame({
   );
 
   const onBlurObject = useCallback(() => {
-    send("trplx:onSceneObjectBlur", undefined);
+    send("element-blurred", undefined);
   }, []);
 
   useEffect(() => {
-    return listen("trplx:requestRefresh", (data) => {
+    return on("request-refresh-scene", (data) => {
       if (data.hard) {
         return;
       }

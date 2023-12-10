@@ -110,38 +110,38 @@ interface BridgeContext {
 export const useScene = create<BridgeContext & { sceneReady: () => void }>(
   (setStore) => ({
     blur() {
-      send("trplx:requestBlurSceneObject", undefined);
+      send("request-blur-element", undefined);
     },
     deleteComponent(data) {
-      send("trplx:requestDeleteSceneObject", data);
+      send("request-delete-element", data);
     },
     focus(sceneObject) {
-      send("trplx:requestFocusSceneObject", sceneObject);
+      send("request-focus-element", sceneObject);
     },
     getPropValue(prop) {
-      return send("trplx:requestSceneObjectPropValue", prop, true);
+      return send("request-element-prop-value", prop, true);
     },
     jumpTo(sceneObject) {
-      send("trplx:requestJumpToSceneObject", sceneObject);
+      send("request-jump-to-element", sceneObject);
     },
     navigateTo(sceneObject) {
-      send("trplx:requestNavigateToScene", sceneObject);
+      send("request-open-component", sceneObject);
     },
     persistPropValue(data) {
-      send("trplx:requestPersistSceneObjectProp", data);
+      send("request-persist-element-prop", data);
     },
     ready: false,
     refresh({ hard }: { hard?: boolean } = {}) {
-      send("trplx:requestRefresh", { hard });
+      send("request-refresh-scene", { hard });
     },
     reset() {
-      send("trplx:requestReset", undefined);
+      send("request-reset-scene", undefined);
     },
     sceneReady() {
       setStore({ ready: true });
     },
     setPropValue(data) {
-      send("trplx:requestSetSceneObjectProp", data);
+      send("request-set-element-prop", data);
     },
   })
 );

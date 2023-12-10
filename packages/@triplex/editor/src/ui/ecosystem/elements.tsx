@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { listen, send, type Actions } from "@triplex/bridge/host";
+import { on, send, type Actions } from "@triplex/bridge/host";
 import { createContext, useContext, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Button, ButtonGroup, ToggleButton } from "./buttons";
@@ -19,7 +19,7 @@ export function ElementActionProvider({
   const [actions, setActions] = useState<Actions>([]);
 
   useEffect(() => {
-    return listen("trplx:onSetElementActions", (data) => {
+    return on("set-element-actions", (data) => {
       setActions(data.actions);
     });
   }, []);
@@ -58,9 +58,7 @@ export function RenderActions({
               <Button
                 control={action}
                 key={action.id}
-                onClick={(id) =>
-                  send("trplx:onElementActionClick", { data, id })
-                }
+                onClick={(id) => send("element-action-triggered", { data, id })}
                 size="sm"
               />
             );
@@ -71,9 +69,7 @@ export function RenderActions({
               <ButtonGroup
                 control={action}
                 key={action.id}
-                onClick={(id) =>
-                  send("trplx:onElementActionClick", { data, id })
-                }
+                onClick={(id) => send("element-action-triggered", { data, id })}
                 size="sm"
               />
             );
@@ -85,7 +81,7 @@ export function RenderActions({
                 control={action}
                 key={action.id}
                 onClick={(id) =>
-                  send("trplx:onElementActionClick", { data, id }, true)
+                  send("element-action-triggered", { data, id }, true)
                 }
                 size="sm"
               />

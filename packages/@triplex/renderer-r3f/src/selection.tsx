@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
-import { compose, listen, send } from "@triplex/bridge/client";
+import { compose, on, send } from "@triplex/bridge/client";
 import type { JsxElementPositions } from "@triplex/server";
 import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws/react";
 import {
@@ -174,7 +174,7 @@ export function Selection({
   );
 
   useEffect(() => {
-    return listen("trplx:onControlClick", (data) => {
+    return on("control-triggered", (data) => {
       switch (data.id) {
         case "translate":
         case "scale":
@@ -214,7 +214,7 @@ export function Selection({
 
   useEffect(() => {
     return compose([
-      listen("trplx:requestNavigateToScene", (sceneObject) => {
+      on("request-open-component", (sceneObject) => {
         if (!sceneObject && (!selectedObject || !selectedSceneObject)) {
           return;
         }
@@ -239,11 +239,11 @@ export function Selection({
           onBlur();
         }
       }),
-      listen("trplx:requestBlurSceneObject", () => {
+      on("request-blur-element", () => {
         setSelected(undefined);
-        send("trplx:onSceneObjectBlur", undefined);
+        send("element-blurred", undefined);
       }),
-      listen("trplx:requestJumpToSceneObject", (sceneObject) => {
+      on("request-jump-to-element", (sceneObject) => {
         const targetSceneObject = sceneObject
           ? findSceneObject(scene, sceneObject)
           : selectedObject?.sceneObject;
@@ -260,9 +260,9 @@ export function Selection({
           targetSceneObject
         );
       }),
-      listen("trplx:requestFocusSceneObject", (data) => {
+      on("request-focus-element", (data) => {
         setSelected(data);
-        send("trplx:onSceneObjectFocus", data);
+        send("element-focused", data);
       }),
     ]);
   }, [
@@ -356,7 +356,7 @@ export function Selection({
             ? selectedObject.sceneObject.getWorldPosition(V1).toArray()
             : selectedObject.sceneObject.position.toArray();
 
-        send("trplx:onConfirmSceneObjectProp", {
+        send("element-set-prop", {
           column: selectedObject.column,
           line: selectedObject.line,
           path: selectedObject.path,
@@ -369,7 +369,7 @@ export function Selection({
         const rotation = selectedObject.sceneObject.rotation.toArray();
         rotation.pop();
 
-        send("trplx:onConfirmSceneObjectProp", {
+        send("element-set-prop", {
           column: selectedObject.column,
           line: selectedObject.line,
           path: selectedObject.path,
@@ -381,7 +381,7 @@ export function Selection({
       if (e.mode === "scale") {
         const scale = selectedObject.sceneObject.scale.toArray();
 
-        send("trplx:onConfirmSceneObjectProp", {
+        send("element-set-prop", {
           column: selectedObject.column,
           line: selectedObject.line,
           path: selectedObject.path,

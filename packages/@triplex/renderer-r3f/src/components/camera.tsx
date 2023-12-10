@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { useFrame, useThree } from "@react-three/fiber";
-import { compose, listen } from "@triplex/bridge/client";
+import { compose, on } from "@triplex/bridge/client";
 import {
   createContext,
   useContext,
@@ -89,7 +89,7 @@ export function Camera({
 
   useEffect(() => {
     return compose([
-      listen("trplx:onControlClick", (data) => {
+      on("control-triggered", (data) => {
         switch (data.id) {
           case "perspective":
           case "orthographic": {
@@ -102,7 +102,7 @@ export function Camera({
           }
         }
       }),
-      listen("trplx:onElementActionClick", (data) => {
+      on("element-action-triggered", (data) => {
         switch (data.id) {
           case "enter-camera": {
             const camera = findSceneObject(scene, {

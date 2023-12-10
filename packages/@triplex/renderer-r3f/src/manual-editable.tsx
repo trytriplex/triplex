@@ -5,8 +5,8 @@
  * file in the root directory of this source tree.
  */
 
-import { listen } from "@triplex/bridge/client";
-import { type ComponentType, useEffect } from "react";
+import { on } from "@triplex/bridge/client";
+import { useEffect, type ComponentType } from "react";
 import { SceneObject } from "./scene-object";
 import { useSceneState } from "./stores/scene-state";
 
@@ -33,7 +33,7 @@ export function ManualEditableSceneObject({
   const setProp = useSceneState((state) => state.set);
 
   useEffect(() => {
-    return listen("trplx:requestSetSceneObjectProp", (data) => {
+    return on("request-set-element-prop", (data) => {
       if (data.column === id && data.line === id && data.path === path) {
         setProp(storeKey, data.propName, data.propValue);
       }

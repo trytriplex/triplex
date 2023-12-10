@@ -12,7 +12,7 @@ import { ManualEditableSceneObject } from "./manual-editable";
 
 function Loaded() {
   useEffect(() => {
-    send("trplx:onSceneLoaded", undefined);
+    send("component-rendered", undefined);
   }, []);
 
   return null;

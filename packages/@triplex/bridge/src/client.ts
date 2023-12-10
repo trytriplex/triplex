@@ -13,7 +13,7 @@ import type {
   HostSendEventResponse,
 } from "./types";
 
-export function listen<TEvent extends HostSendEventName>(
+export function on<TEvent extends HostSendEventName>(
   eventName: TEvent,
   callback: (
     data: HostSendEventData[TEvent]
@@ -54,7 +54,7 @@ export function send<TEvent extends ClientSendEventName>(
     return new Promise((resolve) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const responseName = `${eventName}Response` as any;
-      const cleanup = listen(responseName, (responseValue) => {
+      const cleanup = on(responseName, (responseValue) => {
         resolve(responseValue as ClientSendEventResponse[TEvent]);
         cleanup();
       });

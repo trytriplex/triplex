@@ -54,7 +54,7 @@ async function launch() {
 
   await editorWindow.addInitScript(() => {
     window.addEventListener("message", (e) => {
-      if (e.data.eventName === "trplx:onSceneLoaded") {
+      if (e.data.eventName === "component-rendered") {
         // @ts-expect-error
         window.sceneReady();
       }

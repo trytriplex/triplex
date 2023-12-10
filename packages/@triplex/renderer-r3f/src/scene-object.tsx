@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { type Object3DProps } from "@react-three/fiber";
-import { compose, listen } from "@triplex/bridge/client";
+import { compose, on } from "@triplex/bridge/client";
 import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { type Group } from "three";
 import { getHelperForElement, Helper } from "./components/helper";
@@ -59,13 +59,13 @@ function useSceneObjectProps(
 
   useEffect(() => {
     return compose([
-      listen("trplx:requestReset", () => {
+      on("request-reset-scene", () => {
         if (Object.keys(intermediateProps.current).length) {
           intermediateProps.current = {};
           forceRender();
         }
       }),
-      listen("trplx:requestSceneObjectPropValue", (data) => {
+      on("request-element-prop-value", (data) => {
         if (
           data.column === meta.column &&
           data.line === meta.line &&
@@ -78,7 +78,7 @@ function useSceneObjectProps(
           return prop;
         }
       }),
-      listen("trplx:requestSetSceneObjectProp", (data) => {
+      on("request-set-element-prop", (data) => {
         if (
           "column" in data &&
           data.column === meta.column &&
@@ -89,7 +89,7 @@ function useSceneObjectProps(
           forceRender();
         }
       }),
-      listen("trplx:requestPersistSceneObjectProp", (data) => {
+      on("request-persist-element-prop", (data) => {
         if (
           data.column === meta.column &&
           data.line === meta.line &&
@@ -98,7 +98,7 @@ function useSceneObjectProps(
           persistedProps.current[data.propName] = data.propValue;
         }
       }),
-      listen("trplx:requestResetSceneObjectProp", (data) => {
+      on("request-reset-prop", (data) => {
         if (
           data.column === meta.column &&
           data.line === meta.line &&
@@ -155,7 +155,7 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
 
     useEffect(() => {
       return compose([
-        listen("trplx:requestDeleteSceneObject", (data) => {
+        on("request-delete-element", (data) => {
           if (
             data.column === __meta.column &&
             data.line === __meta.line &&
@@ -164,7 +164,7 @@ export const SceneObject = forwardRef<unknown, SceneObjectProps>(
             setIsDeleted(true);
           }
         }),
-        listen("trplx:requestRestoreSceneObject", (data) => {
+        on("request-restore-element", (data) => {
           if (
             data.column === __meta.column &&
             data.line === __meta.line &&

@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 
-import { listen, send, type Controls } from "@triplex/bridge/host";
+import { on, send, type Controls } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Button, ButtonGroup, ToggleButton } from "./ecosystem/buttons";
@@ -14,7 +14,7 @@ export function ControlsMenu() {
   const [controls, setControls] = useState<Controls>([]);
 
   useEffect(() => {
-    return listen("trplx:onSetControls", (data) => {
+    return on("set-controls", (data) => {
       setControls(data.controls);
     });
   });
@@ -36,7 +36,7 @@ export function ControlsMenu() {
                 <Button
                   control={control}
                   key={control.id}
-                  onClick={(id) => send("trplx:onControlClick", { id })}
+                  onClick={(id) => send("control-triggered", { id })}
                 />
               );
             }
@@ -46,7 +46,7 @@ export function ControlsMenu() {
                 <ButtonGroup
                   control={control}
                   key={control.id}
-                  onClick={(id) => send("trplx:onControlClick", { id })}
+                  onClick={(id) => send("control-triggered", { id })}
                 />
               );
             }
@@ -56,7 +56,7 @@ export function ControlsMenu() {
                 <ToggleButton
                   control={control}
                   key={control.id}
-                  onClick={(id) => send("trplx:onControlClick", { id }, true)}
+                  onClick={(id) => send("control-triggered", { id }, true)}
                 />
               );
             }

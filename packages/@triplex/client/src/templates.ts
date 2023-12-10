@@ -25,7 +25,7 @@ export const scripts = {
     [
       `import { bootstrap } from "${template.pkgName}";`,
       `import provider from "${template.providerPath}";`,
-      'import { listen, send } from "@triplex/bridge/client";',
+      'import { on, send } from "@triplex/bridge/client";',
       `const projectFiles = import.meta.glob([${template.fileGlobs}]);`,
       "const tempFiles = {",
       Array(placeholderFiles)
@@ -42,8 +42,7 @@ export const scripts = {
 
       if (${metaHot}) {
         ${metaHot}.on("vite:error", (e) => {
-          console.log('vite error');
-          send("trplx:onError", {
+          send("error", {
             col: e.err.loc?.column || -1,
             line: e.err.loc?.line || -1,
             message: e.err.message,
@@ -56,16 +55,14 @@ export const scripts = {
           ${metaHot}.data.render = bootstrap(document.getElementById('root'));
           ${metaHot}.data.render({ files, provider });
 
-          listen("trplx:requestRefresh", (data) => {
+          on("request-refresh-scene", (data) => {
             if (data.hard) {
               window.location.reload();
             }
           });
 
           window.addEventListener("error", (e) => {
-            console.log('window error');
-
-            send("trplx:onError", {
+            send("error", {
               col: e.colno,
               line: e.lineno,
               message: e.message,

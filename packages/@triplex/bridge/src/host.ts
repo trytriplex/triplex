@@ -28,7 +28,7 @@ export {
   ToggleButtonControl,
 };
 
-export function listen<TEvent extends ClientSendEventName>(
+export function on<TEvent extends ClientSendEventName>(
   eventName: TEvent,
   callback: (
     data: ClientSendEventData[TEvent]
@@ -84,7 +84,7 @@ export function send<TEvent extends HostSendEventName>(
     return new Promise((resolve) => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const responseName = `${eventName}Response` as any;
-      const cleanup = listen(responseName, (responseValue) => {
+      const cleanup = on(responseName, (responseValue) => {
         resolve(responseValue as HostSendEventResponse[TEvent]);
         cleanup();
       });

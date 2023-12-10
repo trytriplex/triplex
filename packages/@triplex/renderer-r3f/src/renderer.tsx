@@ -23,9 +23,9 @@ export function Renderer({
   provider: ProviderComponent;
 }) {
   useEffect(() => {
-    send("trplx:onConnected", undefined);
+    send("connected", undefined);
 
-    send("trplx:onSetElementActions", {
+    send("set-element-actions", {
       actions: [
         {
           buttons: [
@@ -47,7 +47,7 @@ export function Renderer({
       ],
     });
 
-    send("trplx:onSetControls", {
+    send("set-controls", {
       controls: [
         {
           buttons: [

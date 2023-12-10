@@ -73,89 +73,62 @@ export type Actions = ((
 ) & { filter: string })[];
 
 export interface ClientSendEventData {
-  "trplx:onAddNewComponent": {
-    target?: {
-      action: "child";
-      column: number;
-      exportName: string;
-      line: number;
-      path: string;
-    };
-    type:
-      | {
-          exportName: string;
-          name: string;
-          path: string;
-          props: Record<string, unknown>;
-          type: "custom";
-        }
-      | {
-          name: string;
-          props: Record<string, unknown>;
-          type: "host";
-        };
+  "component-opened": {
+    encodedProps: string;
+    entered?: boolean;
+    exportName: string;
+    path: string;
   };
-  "trplx:onConfirmSceneObjectProp": {
+  "component-rendered": void;
+  connected: undefined;
+  "element-blurred": undefined;
+  "element-focused": {
+    column: number;
+    line: number;
+    parentPath: string;
+    path: string;
+  };
+  "element-set-prop": {
     column: number;
     line: number;
     path: string;
     propName: string;
     propValue: unknown;
   };
-  "trplx:onConnected": undefined;
-  "trplx:onError": {
+  error: {
     col: number;
     line: number;
     message: string;
     source: string;
     stack: string;
   };
-  "trplx:onSceneLoaded": void;
-  "trplx:onSceneObjectBlur": undefined;
-  "trplx:onSceneObjectFocus": {
-    column: number;
-    line: number;
-    parentPath: string;
-    path: string;
-  };
-  "trplx:onSceneObjectNavigated": {
-    encodedProps: string;
-    entered?: boolean;
-    exportName: string;
-    path: string;
-  };
-  "trplx:onSetControls": {
+  "set-controls": {
     controls: Controls;
   };
-  "trplx:onSetElementActions": {
+  "set-element-actions": {
     actions: Actions;
   };
 }
 
 export interface ClientSendEventResponse {
-  "trplx:onAddNewComponent": {
-    column: number;
-    line: number;
-    path: string;
-  };
-  "trplx:onConfirmSceneObjectProp": void;
-  "trplx:onConnected": void;
-  "trplx:onError": void;
-  "trplx:onSceneLoaded": void;
-  "trplx:onSceneObjectBlur": void;
-  "trplx:onSceneObjectFocus": void;
-  "trplx:onSceneObjectNavigated": void;
-  "trplx:onSetControls": void;
-  "trplx:onSetElementActions": void;
+  "component-opened": void;
+  "component-rendered": void;
+  connected: void;
+  "element-blurred": void;
+  "element-focused": void;
+  "element-set-prop": void;
+  error: void;
+  "set-controls": void;
+  "set-element-actions": void;
 }
 
 export type HostSendEventName = keyof HostSendEventData;
 
 export interface HostSendEventData {
-  "trplx:onControlClick": {
+  "control-triggered": {
     id: string;
   };
-  "trplx:onElementActionClick": {
+  "element-action-triggered": {
     data: {
       column: number;
       line: number;
@@ -163,81 +136,59 @@ export interface HostSendEventData {
     };
     id: string;
   };
-  "trplx:requestAddNewComponent": {
-    target?: {
-      action: "child";
-      column: number;
-      exportName: string;
-      line: number;
-      path: string;
-    };
-    type:
-      | {
-          exportName: string;
-          name: string;
-          path: string;
-          props: Record<string, unknown>;
-          type: "custom";
-        }
-      | {
-          name: string;
-          props: Record<string, unknown>;
-          type: "host";
-        };
-  };
-  "trplx:requestBlurSceneObject": undefined;
-  "trplx:requestDeleteSceneObject": {
+  "request-blur-element": undefined;
+  "request-delete-element": {
     column: number;
     line: number;
     parentPath: string;
   };
-  "trplx:requestFocusSceneObject": {
+  "request-element-prop-value": {
+    column: number;
+    line: number;
+    path: string;
+    propName: string;
+  };
+  "request-focus-element": {
     column: number;
     line: number;
     parentPath: string;
     path: string;
   };
-  "trplx:requestJumpToSceneObject":
+  "request-jump-to-element":
     | {
         column: number;
         line: number;
         path: string;
       }
     | undefined;
-  "trplx:requestNavigateToScene":
+  "request-open-component":
     | {
         encodedProps: string;
         exportName: string;
         path: string;
       }
     | undefined;
-  "trplx:requestPersistSceneObjectProp": {
+  "request-persist-element-prop": {
     column: number;
     line: number;
     path: string;
     propName: string;
     propValue: unknown;
   };
-  "trplx:requestRefresh": { hard?: boolean };
-  "trplx:requestReset": undefined;
-  "trplx:requestResetSceneObjectProp": {
+  "request-refresh-scene": { hard?: boolean };
+  "request-reset-prop": {
     column: number;
     line: number;
     path: string;
     propName: string;
   };
-  "trplx:requestRestoreSceneObject": {
+  "request-reset-scene": undefined;
+  "request-restore-element": {
     column: number;
     line: number;
     parentPath: string;
   };
-  "trplx:requestSceneObjectPropValue": {
-    column: number;
-    line: number;
-    path: string;
-    propName: string;
-  };
-  "trplx:requestSetSceneObjectProp": {
+  "request-set-element-prop": {
     column: number;
     line: number;
     path: string;
@@ -247,19 +198,18 @@ export interface HostSendEventData {
 }
 
 export interface HostSendEventResponse {
-  "trplx:onControlClick": { handled: boolean };
-  "trplx:onElementActionClick": { handled: boolean };
-  "trplx:requestAddNewComponent": void;
-  "trplx:requestBlurSceneObject": void;
-  "trplx:requestDeleteSceneObject": void;
-  "trplx:requestFocusSceneObject": void;
-  "trplx:requestJumpToSceneObject": void;
-  "trplx:requestNavigateToScene": void;
-  "trplx:requestPersistSceneObjectProp": void;
-  "trplx:requestRefresh": void;
-  "trplx:requestReset": void;
-  "trplx:requestResetSceneObjectProp": void;
-  "trplx:requestRestoreSceneObject": void;
-  "trplx:requestSceneObjectPropValue": { value: unknown };
-  "trplx:requestSetSceneObjectProp": void;
+  "control-triggered": { handled: boolean };
+  "element-action-triggered": { handled: boolean };
+  "request-blur-element": void;
+  "request-delete-element": void;
+  "request-element-prop-value": { value: unknown };
+  "request-focus-element": void;
+  "request-jump-to-element": void;
+  "request-open-component": void;
+  "request-persist-element-prop": void;
+  "request-refresh-scene": void;
+  "request-reset-prop": void;
+  "request-reset-scene": void;
+  "request-restore-element": void;
+  "request-set-element-prop": void;
 }

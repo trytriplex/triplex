@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { compose, listen } from "@triplex/bridge/host";
+import { compose, on } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
 import { cn } from "./ds/cn";
 import { useEnvironment } from "./environment";
@@ -27,7 +27,7 @@ export function SceneFrame() {
   const [blockPointerEvents, setBlockPointerEvents] = useState(false);
 
   useEffect(() => {
-    return listen("trplx:onConnected", sceneReady);
+    return on("connected", sceneReady);
   }, [sceneReady]);
 
   useEffect(() => {
@@ -98,8 +98,7 @@ function BridgeReceiveEvents() {
     }
 
     return compose([
-      listen("trplx:onAddNewComponent", editor.addComponent),
-      listen("trplx:onSceneObjectNavigated", (data) => {
+      on("component-opened", (data) => {
         editor.set(
           {
             encodedProps: data.encodedProps,
@@ -109,7 +108,7 @@ function BridgeReceiveEvents() {
           data.entered ? { entered: true } : undefined
         );
       }),
-      listen("trplx:onConfirmSceneObjectProp", async (data) => {
+      on("element-set-prop", async (data) => {
         const currentPropValue = await scene.getPropValue(data);
 
         editor.persistPropValue({
@@ -121,10 +120,10 @@ function BridgeReceiveEvents() {
           propName: data.propName,
         });
       }),
-      listen("trplx:onSceneObjectFocus", (data) => {
+      on("element-focused", (data) => {
         editor.focus(data);
       }),
-      listen("trplx:onSceneObjectBlur", () => {
+      on("element-blurred", () => {
         editor.focus(null);
       }),
     ]);

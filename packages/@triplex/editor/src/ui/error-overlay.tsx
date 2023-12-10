@@ -10,7 +10,7 @@ import {
   CodeIcon,
   Cross2Icon,
 } from "@radix-ui/react-icons";
-import { compose, listen } from "@triplex/bridge/host";
+import { compose, on } from "@triplex/bridge/host";
 import { useEffect, useRef, useState } from "react";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
@@ -32,7 +32,7 @@ export function ErrorOverlay() {
 
   useEffect(() => {
     return compose([
-      listen("trplx:onError", (e) => {
+      on("error", (e) => {
         setErrors((prevErrors) => {
           let nextErrors = prevErrors;
 
