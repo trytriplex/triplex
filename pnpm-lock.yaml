@@ -297,6 +297,30 @@ importers:
         specifier: ^0.157.0
         version: 0.157.0
 
+  examples/js:
+    dependencies:
+      '@react-three/drei':
+        specifier: ^9.56.27
+        version: 9.74.6(@react-three/fiber@8.14.5)(@types/three@0.157.0)(react-dom@18.2.0)(react@18.2.0)(three@0.157.0)
+      '@react-three/fiber':
+        specifier: ^8.14.5
+        version: 8.14.5(react-dom@18.2.0)(react@18.2.0)(three@0.157.0)
+      '@types/react':
+        specifier: ^18.0.0
+        version: 18.0.27
+      '@types/three':
+        specifier: ^0.157.0
+        version: 0.157.0
+      react:
+        specifier: ^18.0.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.0.0
+        version: 18.2.0(react@18.2.0)
+      three:
+        specifier: ^0.157.0
+        version: 0.157.0
+
   examples/luma-splats:
     dependencies:
       '@lumaai/luma-web':

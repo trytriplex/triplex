@@ -1,0 +1,34 @@
+Triplex works best with TypeScript as the rich type information is used to
+populate the editor controls, however if you're not yet using TypeScript you're
+still able to use Triplex.
+
+## Set up config file
+
+In your existing project add a
+[`.triplex/config.json`](/docs/api-reference/config) file:
+
+```json
+{
+  "components": ["../src/components/**/*.jsx"],
+  "files": ["../src/**/*.jsx"]
+}
+```
+
+Where `"components"` is a glob pointing to custom components that can be added
+to other components, and `"files"` is a glob pointing to any files you want to
+open with Triplex.
+
+## Add type packages
+
+Make sure to add types to your project (even if you're not using TypeScript!) —
+this will make your experience in Triplex that much better as all Three.js
+primitives will have types the editor can use:
+
+```
+npm install @types/react @types/three
+```
+
+## Open your project
+
+You're now able to open your project with Triplex! When you do Triplex will add
+a `.tsconfig.json` file to the root of your project.

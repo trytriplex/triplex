@@ -4,12 +4,14 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { existsSync, writeFileSync } from "node:fs";
 import { watch } from "chokidar";
 import { format, resolveConfig, resolveConfigFile } from "prettier";
 import { Project, type ProjectOptions, type SourceFile } from "ts-morph";
 import { join, normalize } from "upath";
 import { deleteCommentComponents } from "../services/component";
 import { type SourceFileChangedEvent } from "../types";
+import { baseTsConfig } from "../util/ts";
 
 export type TRIPLEXProject = ReturnType<typeof createProject>;
 export type SourceFileGetters = Extract<
@@ -22,7 +24,14 @@ function normalizeLineEndings(source: string): string {
   return source.replaceAll("\r\n", "\n");
 }
 
-export function _createProject(opts: ProjectOptions) {
+export function _createProject(opts: ProjectOptions & { cwd?: string }) {
+  const tsConfigPath = join(opts.cwd || process.cwd(), "tsconfig.json");
+  const hasTsConfig = existsSync(tsConfigPath);
+
+  if (!hasTsConfig) {
+    writeFileSync(tsConfigPath, JSON.stringify(baseTsConfig, null, 2) + "\n");
+  }
+
   const project = new Project({
     ...opts,
     compilerOptions: {
