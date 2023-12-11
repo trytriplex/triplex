@@ -1,0 +1,6 @@
+{
+  "$schema": "https://triplex.dev/config.schema.json",
+  "components": ["../src/geometry/**/*.jsx"],
+  "files": ["../src/**/*.jsx"],
+  "provider": "./provider.jsx"
+}

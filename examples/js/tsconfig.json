@@ -16,6 +16,6 @@
     "strict": true,
     "types": ["@react-three/fiber"]
   },
-  "include": ["."],
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules"],
+  "include": ["."]
 }

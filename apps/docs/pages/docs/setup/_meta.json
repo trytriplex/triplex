@@ -1,5 +1,7 @@
 {
   "overview": "Overview",
   "macos": "macOS",
-  "windows": "Windows"
+  "windows": "Windows",
+  "manual-setup": "",
+  "javascript-projects": ""
 }

@@ -1,0 +1,18 @@
+{
+  "name": "@example/js",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "echo \"Not implemented\"",
+    "typedef": "echo \"Not implemented\""
+  },
+  "dependencies": {
+    "@react-three/drei": "^9.56.27",
+    "@react-three/fiber": "^8.14.5",
+    "@types/react": "^18.0.0",
+    "@types/three": "^0.157.0",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "three": "^0.157.0"
+  }
+}
