@@ -1,18 +1,21 @@
 ---
 title: Built-in GLSL Support
+description:
+  GLSL shaders are small programs that are ran on the GPU. When imported they
+  have their include statements resolved and are then available as a string for
+  you to forward on to Three.js.
 ---
 
-Triplex comes with out-of-the-box support for GLSL shader files.
-
-When importing a GLSL file with an extension of `glsl`, `wgsl`, `vert`, `frag`,
-`vs`, or `fs`, they will have all `#include` statements resolved and be returned
-as a string for you to use in Three.js materials.
+GLSL shaders are small programs that are ran on the GPU. When importing a GLSL
+file with an extension of `glsl`, `wgsl`, `vert`, `frag`, `vs`, or `fs`, they
+have their include statements resolved and are then available as a string for
+you to forward on to Three.js.
 
 Import them:
 
 ```tsx
-import vert from "./vertex.glsl";
 import frag from "./fragment.glsl";
+import vert from "./vertex.glsl";
 ```
 
 And use them as needed, for example here it's used with
