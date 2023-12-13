@@ -34,6 +34,10 @@ class Analytics4 {
     this.secretKey = secretKey;
     this.clientID = clientID;
     this.sessionID = sessionID;
+
+    if (document.visibilityState === "visible") {
+      this.engagementTimestamp = Date.now();
+    }
   }
 
   setVisibility() {
@@ -157,20 +161,6 @@ export function Analytics({ children }: { children: React.ReactNode }) {
   const analytics = useRef<Analytics4>();
 
   useEffect(() => {
-    if (!analytics.current) {
-      return;
-    }
-
-    const setVisibility = analytics.current.setVisibility;
-
-    document.addEventListener("visibilitychange", setVisibility);
-
-    return () => {
-      document.removeEventListener("visibilitychange", setVisibility);
-    };
-  }, []);
-
-  useEffect(() => {
     if (analytics.current) {
       return;
     }
@@ -189,6 +179,14 @@ export function Analytics({ children }: { children: React.ReactNode }) {
       os: window.triplex.platform,
       version: process.env.NODE_ENV === "production" ? version : "local",
     });
+
+    const setVisibility = analytics.current.setVisibility;
+
+    document.addEventListener("visibilitychange", setVisibility);
+
+    return () => {
+      document.removeEventListener("visibilitychange", setVisibility);
+    };
   }, []);
 
   const event: Events["event"] = useEvent((eventName, params) => {
