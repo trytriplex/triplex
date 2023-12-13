@@ -142,12 +142,6 @@ export interface HostSendEventData {
     line: number;
     parentPath: string;
   };
-  "request-element-prop-value": {
-    column: number;
-    line: number;
-    path: string;
-    propName: string;
-  };
   "request-focus-element": {
     column: number;
     line: number;
@@ -168,13 +162,6 @@ export interface HostSendEventData {
         path: string;
       }
     | undefined;
-  "request-persist-element-prop": {
-    column: number;
-    line: number;
-    path: string;
-    propName: string;
-    propValue: unknown;
-  };
   "request-refresh-scene": { hard?: boolean };
   "request-reset-prop": {
     column: number;
@@ -202,11 +189,9 @@ export interface HostSendEventResponse {
   "element-action-triggered": { handled: boolean };
   "request-blur-element": void;
   "request-delete-element": void;
-  "request-element-prop-value": { value: unknown };
   "request-focus-element": void;
   "request-jump-to-element": void;
   "request-open-component": void;
-  "request-persist-element-prop": void;
   "request-refresh-scene": void;
   "request-reset-prop": void;
   "request-reset-scene": void;

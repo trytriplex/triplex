@@ -33,11 +33,10 @@ interface SelectionState {
 
 interface PersistPropValue {
   column: number;
-  currentPropValue: unknown;
   line: number;
-  nextPropValue: unknown;
   path: string;
   propName: string;
+  propValue: unknown;
 }
 
 const useSelectionStore = create<SelectionState>((set) => ({
@@ -165,17 +164,16 @@ export function useEditor() {
         line: data.line,
         path: data.path,
         propName: data.propName,
-        propValue: data.nextPropValue,
+        propValue: data.propValue,
       };
 
       scene.setPropValue(propData);
-      scene.persistPropValue(propData);
 
       fetch(
         `http://localhost:8000/scene/object/${data.line}/${
           data.column
         }/prop?value=${encodeURIComponent(
-          stringifyJSON(data.nextPropValue)
+          stringifyJSON(data.propValue)
         )}&path=${encodeURIComponent(data.path)}&name=${encodeURIComponent(
           data.propName
         )}`

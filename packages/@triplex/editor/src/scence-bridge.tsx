@@ -108,16 +108,13 @@ function BridgeReceiveEvents() {
           data.entered ? { entered: true } : undefined
         );
       }),
-      on("element-set-prop", async (data) => {
-        const currentPropValue = await scene.getPropValue(data);
-
+      on("element-set-prop", (data) => {
         editor.persistPropValue({
           column: data.column,
-          currentPropValue: currentPropValue.value,
           line: data.line,
-          nextPropValue: data.propValue,
           path: data.path,
           propName: data.propName,
+          propValue: data.propValue,
         });
       }),
       on("element-focused", (data) => {

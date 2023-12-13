@@ -40,11 +40,10 @@ function useSceneObjectProps(
 ): Record<string, unknown> {
   const forceRender = useForceRender();
   const intermediateProps = useRef<Record<string, unknown>>({});
-  const persistedProps = useRef<Record<string, unknown>>({});
   const propsRef = useRef<Record<string, unknown>>({});
 
   // Assign all current top-level props to a ref so we can access it in an effect.
-  Object.assign(propsRef.current, props, persistedProps.current);
+  Object.assign(propsRef.current, props);
 
   useEffect(() => {
     import.meta.hot?.on("vite:afterUpdate", (e) => {
@@ -65,19 +64,6 @@ function useSceneObjectProps(
           forceRender();
         }
       }),
-      on("request-element-prop-value", (data) => {
-        if (
-          data.column === meta.column &&
-          data.line === meta.line &&
-          data.path === meta.path
-        ) {
-          const prop = {
-            value: propsRef.current[data.propName],
-          };
-
-          return prop;
-        }
-      }),
       on("request-set-element-prop", (data) => {
         if (
           "column" in data &&
@@ -87,15 +73,6 @@ function useSceneObjectProps(
         ) {
           intermediateProps.current[data.propName] = data.propValue;
           forceRender();
-        }
-      }),
-      on("request-persist-element-prop", (data) => {
-        if (
-          data.column === meta.column &&
-          data.line === meta.line &&
-          data.path === meta.path
-        ) {
-          persistedProps.current[data.propName] = data.propValue;
         }
       }),
       on("request-reset-prop", (data) => {

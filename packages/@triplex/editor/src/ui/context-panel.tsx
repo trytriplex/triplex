@@ -31,7 +31,7 @@ function SelectedSceneObjectPanel({
 }) {
   useScreenView("context_scene", "Panel");
 
-  const { blur, getPropValue, setPropValue } = useScene();
+  const { blur, setPropValue } = useScene();
   const { persistPropValue } = useEditor();
 
   const data = useLazySubscription("/scene/:path/object/:line/:column", {
@@ -130,21 +130,13 @@ function SelectedSceneObjectPanel({
                       propValue: value,
                     });
                   }}
-                  onConfirm={async (value) => {
-                    const currentValue = await getPropValue({
-                      column: target.column,
-                      line: target.line,
-                      path: target.parentPath,
-                      propName: prop.name,
-                    });
-
+                  onConfirm={(value) => {
                     persistPropValue({
                       column: target.column,
-                      currentPropValue: currentValue.value,
                       line: target.line,
-                      nextPropValue: value,
                       path: target.parentPath,
                       propName: prop.name,
+                      propValue: value,
                     });
                   }}
                   path={target.parentPath}

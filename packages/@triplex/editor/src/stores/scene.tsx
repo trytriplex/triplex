@@ -33,16 +33,6 @@ interface BridgeContext {
    */
   focus(sceneObject: FocusedObject): void;
   /**
-   * Returns the current value for the prop. It should not return the current
-   * intermediate value.
-   */
-  getPropValue(prop: {
-    column: number;
-    line: number;
-    path: string;
-    propName: string;
-  }): Promise<{ value: unknown }>;
-  /**
    * Jumps the viewport to the focused scene object, if any.
    */
   jumpTo(sceneObject?: { column: number; line: number; path: string }): void;
@@ -53,19 +43,6 @@ interface BridgeContext {
     encodedProps: string;
     exportName: string;
     path: string;
-  }): void;
-  /**
-   * Persist the value of a prop back to source code.
-   *
-   * This should only be called after a change has been "completed", for example
-   * during a mouse up event or blur event.
-   */
-  persistPropValue(prop: {
-    column: number;
-    line: number;
-    path: string;
-    propName: string;
-    propValue: unknown;
   }): void;
   /**
    * Value is `true` when the scene is ready else `false`. If the scene is not
@@ -118,17 +95,11 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     focus(sceneObject) {
       send("request-focus-element", sceneObject);
     },
-    getPropValue(prop) {
-      return send("request-element-prop-value", prop, true);
-    },
     jumpTo(sceneObject) {
       send("request-jump-to-element", sceneObject);
     },
     navigateTo(sceneObject) {
       send("request-open-component", sceneObject);
-    },
-    persistPropValue(data) {
-      send("request-persist-element-prop", data);
     },
     ready: false,
     refresh({ hard }: { hard?: boolean } = {}) {
