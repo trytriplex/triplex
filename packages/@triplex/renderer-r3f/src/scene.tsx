@@ -13,16 +13,16 @@ import {
   useState,
   type PropsWithChildren,
 } from "react";
-import { useSearchParams } from "react-router-dom";
+import { ErrorBoundary } from "react-error-boundary";
 import { Layers, Vector3, type Box3, type Vector3Tuple } from "three";
 import { Grid } from "triplex-drei";
 import { Canvas } from "./canvas";
 import { Camera } from "./components/camera";
 import { SubsequentSuspense } from "./components/suspense";
-import { SceneErrorBoundary } from "./error-boundary";
 import { SceneLoader } from "./loader";
 import { ManualEditableSceneObject } from "./manual-editable";
 import { Selection } from "./selection";
+import useEvent from "./util/use-event";
 
 const V1 = new Vector3();
 const layers = new Layers();
@@ -38,14 +38,11 @@ export function SceneFrame({
   providerPath: string;
 }) {
   const [resetCount, incrementReset] = useReducer((s: number) => s + 1, 0);
-  const [searchParams, setSearchParams] = useSearchParams();
-  const path = searchParams.get("path") || "";
-  const props = searchParams.get("props") || "";
-  const exportName = searchParams.get("exportName") || "";
-  const sceneProps = useMemo<Record<string, unknown>>(
-    () => (props ? JSON.parse(decodeURIComponent(props)) : {}),
-    [props]
-  );
+  const [component, setComponent] = useState<{
+    exportName: string;
+    path: string;
+    props: Record<string, unknown>;
+  }>({ exportName: "", path: "", props: {} });
   const [focalPoint, setFocalPoint] = useState(defaultFocalPoint);
   const { position, target } = useMemo(() => {
     const actualCameraPosition: Vector3Tuple = [...focalPoint];
@@ -53,10 +50,6 @@ export function SceneFrame({
     actualCameraPosition[2] += 7;
     return { position: actualCameraPosition, target: focalPoint };
   }, [focalPoint]);
-
-  if (path && !exportName) {
-    throw new Error("invariant: exportName is undefined");
-  }
 
   const onJumpTo = useCallback((position: Vector3Tuple, box: Box3) => {
     setFocalPoint(
@@ -66,21 +59,24 @@ export function SceneFrame({
     );
   }, []);
 
-  const onNavigate = useCallback(
-    (selected: { encodedProps: string; exportName: string; path: string }) => {
-      setSearchParams(
-        (prev) => ({
-          ...Object.fromEntries(prev.entries()),
-          exportName: selected.exportName,
-          path: selected.path,
-          props: selected.encodedProps,
-        }),
-        { replace: true }
-      );
-
-      send("component-opened", { ...selected, entered: true });
-    },
-    [setSearchParams]
+  const onNavigate = useEvent(
+    (target: {
+      exportName: string;
+      path: string;
+      props: Record<string, unknown>;
+    }) => {
+      setComponent({
+        exportName: target.exportName,
+        path: target.path,
+        props: target.props,
+      });
+      send("component-opened", {
+        encodedProps: JSON.stringify(target.props),
+        entered: true,
+        exportName: target.exportName,
+        path: target.path,
+      });
+    }
   );
 
   const onFocus = useCallback(
@@ -118,7 +114,7 @@ export function SceneFrame({
   return (
     <Canvas>
       <Camera layers={layers} position={position} target={target}>
-        <SceneErrorBoundary>
+        <ErrorBoundary fallbackRender={() => null} resetKeys={[component]}>
           <SubsequentSuspense>
             <ManualEditableSceneObject
               component={Provider}
@@ -128,24 +124,29 @@ export function SceneFrame({
               path={providerPath}
             >
               <Selection
-                exportName={exportName}
+                exportName={component.exportName}
                 onBlur={onBlurObject}
                 onFocus={onFocus}
                 onJumpTo={onJumpTo}
                 onNavigate={onNavigate}
-                path={path}
+                path={component.path}
               >
-                <SubsequentSuspense>
-                  <SceneLoader
-                    exportName={exportName}
-                    path={path}
-                    sceneProps={sceneProps}
-                  />
-                </SubsequentSuspense>
+                <ErrorBoundary
+                  fallbackRender={() => null}
+                  resetKeys={[component]}
+                >
+                  <SubsequentSuspense>
+                    <SceneLoader
+                      exportName={component.exportName}
+                      path={component.path}
+                      sceneProps={component.props}
+                    />
+                  </SubsequentSuspense>
+                </ErrorBoundary>
               </Selection>
             </ManualEditableSceneObject>
           </SubsequentSuspense>
-        </SceneErrorBoundary>
+        </ErrorBoundary>
       </Camera>
 
       <Grid

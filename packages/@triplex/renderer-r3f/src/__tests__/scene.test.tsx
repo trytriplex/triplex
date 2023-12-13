@@ -5,7 +5,6 @@
  * file in the root directory of this source tree.
  */
 // @vitest-environment jsdom
-import { MemoryRouter } from "react-router-dom";
 import { render } from "react-three-test";
 import { type Color } from "three";
 import { describe, expect, it, vi } from "vitest";
@@ -31,11 +30,9 @@ export default function Provider({ children }: { children?: React.ReactNode }) {
 describe("scene frame", () => {
   it("should apply color to canvas background", async () => {
     const { getInstance } = await render(
-      <MemoryRouter>
-        <SceneProvider value={{}}>
-          <SceneFrame provider={Provider} providerPath="" />
-        </SceneProvider>
-      </MemoryRouter>
+      <SceneProvider value={{}}>
+        <SceneFrame provider={Provider} providerPath="" />
+      </SceneProvider>
     );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

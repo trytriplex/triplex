@@ -19,6 +19,7 @@ import {
 import { Box3, Vector3, type Object3D, type Vector3Tuple } from "three";
 import { TransformControls } from "./components/transform-controls";
 import { SceneObjectEventsContext } from "./stores/selection";
+import { encodeProps } from "./util/props";
 import {
   findEditorData,
   findSceneObject,
@@ -28,32 +29,6 @@ import useEvent from "./util/use-event";
 
 function strip(num: number): number {
   return +Number.parseFloat(Number(num).toPrecision(15));
-}
-
-function encodeProps(selected: EditorNodeData): string {
-  const props = { ...selected.props };
-
-  for (const key in props) {
-    const prop = props[key];
-    if (prop && typeof prop === "object" && "$$typeof" in prop) {
-      // We remove any jsx elements from props as they can't be serialized.
-      delete props[key];
-    }
-  }
-
-  if ("position" in props) {
-    // If position exists we want to make sure we pass in the world position
-    // So if any parent groups have their position set when we transition
-    // It won't jump around unexpectedly.
-    const worldPosition = selected.sceneObject.getWorldPosition(V1).toArray();
-
-    return JSON.stringify({
-      ...props,
-      position: worldPosition,
-    });
-  }
-
-  return JSON.stringify(props);
 }
 
 function flatten(
@@ -134,9 +109,9 @@ export function Selection({
   }) => void;
   onJumpTo: (v: Vector3Tuple, bb: Box3, obj: Object3D) => void;
   onNavigate: (node: {
-    encodedProps: string;
     exportName: string;
     path: string;
+    props: Record<string, unknown>;
   }) => void;
   path: string;
 }) {
@@ -213,6 +188,8 @@ export function Selection({
   ]);
 
   useEffect(() => {
+    send("ready-to-receive", undefined);
+
     return compose([
       on("request-open-component", (sceneObject) => {
         if (!sceneObject && (!selectedObject || !selectedSceneObject)) {
@@ -220,7 +197,13 @@ export function Selection({
         }
 
         if (sceneObject) {
-          onNavigate(sceneObject);
+          onNavigate({
+            exportName: sceneObject.exportName,
+            path: sceneObject.path,
+            props: sceneObject.encodedProps
+              ? JSON.parse(sceneObject.encodedProps)
+              : {},
+          });
           setSelected(undefined);
           onBlur();
         } else if (
@@ -231,9 +214,9 @@ export function Selection({
           selectedSceneObject.exportName
         ) {
           onNavigate({
-            encodedProps: encodeProps(selectedObject),
             exportName: selectedSceneObject.exportName,
             path: selectedSceneObject.path,
+            props: encodeProps(selectedObject),
           });
           setSelected(undefined);
           onBlur();
@@ -241,7 +224,7 @@ export function Selection({
       }),
       on("request-blur-element", () => {
         setSelected(undefined);
-        send("element-blurred", undefined);
+        onBlur();
       }),
       on("request-jump-to-element", (sceneObject) => {
         const targetSceneObject = sceneObject
@@ -262,11 +245,12 @@ export function Selection({
       }),
       on("request-focus-element", (data) => {
         setSelected(data);
-        send("element-focused", data);
+        onFocus(data);
       }),
     ]);
   }, [
     onBlur,
+    onFocus,
     onJumpTo,
     onNavigate,
     scene,

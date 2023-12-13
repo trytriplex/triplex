@@ -80,7 +80,6 @@ export interface ClientSendEventData {
     path: string;
   };
   "component-rendered": void;
-  connected: undefined;
   "element-blurred": undefined;
   "element-focused": {
     column: number;
@@ -102,6 +101,7 @@ export interface ClientSendEventData {
     source: string;
     stack: string;
   };
+  "ready-to-receive": undefined;
   "set-controls": {
     controls: Controls;
   };
@@ -113,11 +113,11 @@ export interface ClientSendEventData {
 export interface ClientSendEventResponse {
   "component-opened": void;
   "component-rendered": void;
-  connected: void;
   "element-blurred": void;
   "element-focused": void;
   "element-set-prop": void;
   error: void;
+  "ready-to-receive": void;
   "set-controls": void;
   "set-element-actions": void;
 }

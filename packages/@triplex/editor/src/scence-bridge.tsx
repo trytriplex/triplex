@@ -7,7 +7,6 @@
 import { compose, on } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
 import { cn } from "./ds/cn";
-import { useEnvironment } from "./environment";
 import { useEditor } from "./stores/editor";
 import { useScene } from "./stores/scene";
 
@@ -18,16 +17,11 @@ export interface FocusedObject {
 }
 
 export function SceneFrame() {
-  const editor = useEditor();
-  const [initialPath] = useState(() => editor.path);
-  const [initialProps] = useState(() => editor.encodedProps);
-  const [initialExportName] = useState(() => editor.exportName);
   const sceneReady = useScene((prev) => prev.sceneReady);
-  const env = useEnvironment();
   const [blockPointerEvents, setBlockPointerEvents] = useState(false);
 
   useEffect(() => {
-    return on("connected", sceneReady);
+    return on("ready-to-receive", sceneReady);
   }, [sceneReady]);
 
   useEffect(() => {
@@ -58,9 +52,7 @@ export function SceneFrame() {
           "col-span-full row-start-3 h-full w-full border-none",
           blockPointerEvents && "pointer-events-none",
         ])}
-        src={`http://localhost:3333/scene.html?path=${initialPath}&props=${initialProps}&exportName=${initialExportName}&env=${encodeURIComponent(
-          JSON.stringify(env)
-        )}`}
+        src={`http://localhost:3333/scene.html`}
       />
       <BridgeSendEvents />
       <BridgeReceiveEvents />
@@ -69,21 +61,22 @@ export function SceneFrame() {
 }
 
 function BridgeSendEvents() {
-  const scene = useScene();
+  const navigateTo = useScene((store) => store.navigateTo);
+  const ready = useScene((store) => store.ready);
   const editor = useEditor();
 
   useEffect(() => {
-    if (!scene.ready) {
+    if (!ready) {
       return;
     }
 
     // This handles the browser history being updated and propagating to the scene.
-    scene.navigateTo({
+    navigateTo({
       encodedProps: editor.encodedProps,
       exportName: editor.exportName,
       path: editor.path,
     });
-  }, [editor.encodedProps, editor.exportName, editor.path, scene]);
+  }, [editor.encodedProps, editor.exportName, editor.path, navigateTo, ready]);
 
   return null;
 }

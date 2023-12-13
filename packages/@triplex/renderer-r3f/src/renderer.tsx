@@ -10,7 +10,6 @@ import {
   type ProviderComponent,
 } from "@triplex/bridge/client";
 import { useEffect } from "react";
-import { BrowserRouter } from "react-router-dom";
 import { SceneProvider } from "./context";
 import { SceneFrame } from "./scene";
 
@@ -24,8 +23,6 @@ export function Renderer({
   providerPath: string;
 }) {
   useEffect(() => {
-    send("connected", undefined);
-
     send("set-element-actions", {
       actions: [
         {
@@ -99,10 +96,8 @@ export function Renderer({
   }, []);
 
   return (
-    <BrowserRouter>
-      <SceneProvider value={files}>
-        <SceneFrame provider={provider} providerPath={providerPath} />
-      </SceneProvider>
-    </BrowserRouter>
+    <SceneProvider value={files}>
+      <SceneFrame provider={provider} providerPath={providerPath} />
+    </SceneProvider>
   );
 }

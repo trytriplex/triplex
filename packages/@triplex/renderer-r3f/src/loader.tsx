@@ -6,6 +6,7 @@
  */
 import { send } from "@triplex/bridge/client";
 import { Fragment, useEffect } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 import { suspend } from "suspend-react";
 import { useScenes } from "./context";
 import { ManualEditableSceneObject } from "./manual-editable";
@@ -53,13 +54,15 @@ export function SceneLoader({
     <>
       <Loaded />
 
-      <ManualEditableSceneObject
-        component={SceneComponent}
-        exportName={exportName}
-        id={-1}
-        path={path}
-        staticSceneProps={sceneProps}
-      />
+      <ErrorBoundary fallbackRender={() => null} resetKeys={[SceneComponent]}>
+        <ManualEditableSceneObject
+          component={SceneComponent}
+          exportName={exportName}
+          id={-1}
+          path={path}
+          staticSceneProps={sceneProps}
+        />
+      </ErrorBoundary>
 
       {triplexMeta &&
         typeof triplexMeta === "object" &&
