@@ -388,7 +388,7 @@ export function EditorMenu() {
     });
   }, [menubar]);
 
-  if (window.triplex.platform === "darwin") {
+  if (window.triplex.platform !== "win32") {
     return null;
   }
 

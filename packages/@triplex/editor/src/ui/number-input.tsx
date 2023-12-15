@@ -10,14 +10,15 @@ import {
   Cross2Icon,
 } from "@radix-ui/react-icons";
 import {
-  type KeyboardEventHandler,
-  type MouseEventHandler,
   useCallback,
   useEffect,
   useRef,
   useState,
+  type KeyboardEventHandler,
+  type MouseEventHandler,
 } from "react";
 import { IconButton } from "../ds/button";
+import { cn } from "../ds/cn";
 import { Pressable } from "../ds/pressable";
 import { sentenceCase } from "../util/string";
 import useEvent from "../util/use-event";
@@ -99,6 +100,7 @@ export function NumberInput({
     out: (value: number | undefined) => number | undefined;
   };
 }) {
+  const isLinux = navigator.platform.startsWith("Linux");
   const [isPointerLock, setIsPointerLock] = useState(false);
   const [modifier, setModifier] = useState({ ctrl: false, shift: false });
   const step = stepModifier(modifier);
@@ -199,30 +201,35 @@ export function NumberInput({
     isDragging.current = false;
   }, [isPointerLock, onConfirmHandler]);
 
-  const onMouseDownHandler: MouseEventHandler = useCallback(async (e) => {
-    if (document.activeElement === ref.current) {
-      // We're focused in the input already, bail out!
-      return;
-    }
+  const onMouseDownHandler: MouseEventHandler = useCallback(
+    async (e) => {
+      if (isLinux || document.activeElement === ref.current) {
+        // Pointer lock isn't well supported on Linux so we ignore it.
+        // We're focused in the input already, bail out!
+        return;
+      }
 
-    e.preventDefault();
+      e.preventDefault();
 
-    if (document.activeElement?.tagName === "IFRAME") {
-      // If it's an iframe blur so the events get captured for mouse down / mouse up.
-      const element: HTMLIFrameElement =
-        document.activeElement as HTMLIFrameElement;
-      element.blur();
-    }
+      if (document.activeElement?.tagName === "IFRAME") {
+        // If it's an iframe blur so the events get captured for mouse down / mouse up.
+        const element: HTMLIFrameElement =
+          document.activeElement as HTMLIFrameElement;
+        element.blur();
+      }
 
-    // @ts-expect-error Unadjusted movement isn't available in DOM types currently.
-    // We use unadjusted movement as on Windows odd behaviour occurs without it
-    // Such as mouse move events being fired before moving the mouse, and HUGE values
-    // For e.movementX.
-    await ref.current.requestPointerLock?.({
-      unadjustedMovement: true,
-    });
-    setIsPointerLock(true);
-  }, []);
+      // @ts-expect-error Unadjusted movement isn't available in DOM types currently.
+      // We use unadjusted movement as on Windows odd behaviour occurs without it
+      // Such as mouse move events being fired before moving the mouse, and HUGE values
+      // For e.movementX.
+      await ref.current.requestPointerLock?.({
+        unadjustedMovement: true,
+      });
+
+      setIsPointerLock(true);
+    },
+    [isLinux]
+  );
 
   const onKeyDownHandler: KeyboardEventHandler<HTMLInputElement> = useEvent(
     (e) => {
@@ -307,7 +314,10 @@ export function NumberInput({
       title={transformedDefaultValue ? `${transformedDefaultValue}` : ""}
     >
       <input
-        className="peer w-full cursor-col-resize text-ellipsis bg-transparent py-0.5 text-center text-sm text-neutral-300 outline-none [color-scheme:dark] [font-variant-numeric:tabular-nums] placeholder:italic placeholder:text-neutral-500 focus:cursor-text focus:text-left"
+        className={cn([
+          isLinux ? "cursor-text" : "cursor-col-resize",
+          "peer w-full text-ellipsis bg-transparent py-0.5 text-center text-sm text-neutral-300 outline-none [color-scheme:dark] [font-variant-numeric:tabular-nums] placeholder:italic placeholder:text-neutral-500 focus:cursor-text focus:text-left",
+        ])}
         data-testid={testId || `number-${defaultValue}`}
         defaultValue={transformedDefaultValue}
         id={name}

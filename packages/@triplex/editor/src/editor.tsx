@@ -7,6 +7,7 @@
 
 import { useEffect } from "react";
 import { useScreenView } from "./analytics";
+import { cn } from "./ds/cn";
 import { SceneFrame } from "./scence-bridge";
 import { useEditor } from "./stores/editor";
 import { AssetsDrawer } from "./ui/assets-drawer";
@@ -31,7 +32,16 @@ export function EditorFrame() {
   }, [exportName, open, path, index]);
 
   return (
-    <div className="fixed inset-0 grid select-none grid-cols-[18rem_auto_18rem] grid-rows-[2rem_2.25rem_auto] bg-gradient-to-b from-white/5 to-neutral-900">
+    <div
+      className={cn([
+        ["win32", "darwin"].includes(window.triplex.platform)
+          ? // On windows/macOS show the menu bar
+            "grid-rows-[2rem_2.25rem_auto]"
+          : // On linux hide the menu bar
+            "grid-rows-[0rem_2.25rem_auto]",
+        "fixed inset-0 grid select-none grid-cols-[18rem_auto_18rem] bg-gradient-to-b from-white/5 to-neutral-900",
+      ])}
+    >
       <TitleBar />
       <FileTabs />
       <SceneFrame />

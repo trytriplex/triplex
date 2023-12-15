@@ -31,6 +31,8 @@ export function TitleBar() {
     <div
       className={cn([
         windowState === "inactive" && "opacity-50",
+        // Hide the menu bar on Linux platforms
+        !["win32", "darwin"].includes(window.triplex.platform) && "hidden",
         "z-50 col-span-full row-start-1 grid h-8 select-none grid-cols-3 items-center border-b border-neutral-800 bg-neutral-900 [-webkit-app-region:drag]",
       ])}
     >

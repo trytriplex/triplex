@@ -14,8 +14,8 @@ import {
   dialog,
   ipcMain,
   Menu,
-  type MenuItemConstructorOptions,
   shell,
+  type MenuItemConstructorOptions,
 } from "electron";
 import { autoUpdater } from "electron-updater";
 import { join, resolve, sep } from "upath";
@@ -188,7 +188,7 @@ function applyWindowIpcHandlers(activeWindow: BrowserWindow) {
     if (input.type === "keyDown") {
       const commands: string[] = [];
 
-      if (input.meta) {
+      if (input.meta || input.control) {
         commands.push("CommandOrCtrl");
       }
 

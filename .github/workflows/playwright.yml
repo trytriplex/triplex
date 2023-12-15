@@ -14,13 +14,7 @@ jobs:
 
     strategy:
       matrix:
-        os: [
-            # Triplex doesn't work in Linux just yet.
-            # ubuntu-latest,
-            # Triplex is expensive to run on macOS.
-            # macos-latest
-            windows-latest,
-          ]
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout

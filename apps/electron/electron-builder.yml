@@ -19,5 +19,10 @@ mac:
   hardenedRuntime: true
   entitlements: ./build/entitlements.mac.plist
 
+linux:
+  executableName: triplex-electron
+  artifactName: "${productName}-${version}.${ext}"
+  target: AppImage
+
 publish:
   - github
