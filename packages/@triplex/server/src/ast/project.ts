@@ -288,7 +288,8 @@ export function ${componentName}() {
         };
       },
       open: (exportName: string, index: number = -1) => {
-        if (openedSourceFiles.has(sourceFile)) {
+        const existing = openedSourceFiles.get(sourceFile);
+        if (existing === exportName) {
           // Already opened, skip!
           return;
         }

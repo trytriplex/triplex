@@ -79,3 +79,14 @@ test("reopen tab", async ({ editor }) => {
     "scene.tsxuntitled.tsxuntitled1.tsx"
   );
 });
+
+test("persist previously opened component when switching back to the tab", async ({
+  editor,
+}) => {
+  await editor.switchToComponent("Plane");
+  await editor.newFile();
+
+  await editor.fileTabs.tab("scene.tsx").locator.click();
+
+  await expect(editor.scenePanel.heading).toHaveText("Plane");
+});

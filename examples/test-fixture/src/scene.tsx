@@ -7,7 +7,7 @@
 import { PerspectiveCamera } from "@react-three/drei";
 import Box from "./geometry/box";
 
-export default function Scene() {
+export function Scene() {
   return (
     <>
       <ambientLight position={[2.12, 0, -0.88]} />
@@ -26,5 +26,13 @@ export default function Scene() {
         </mesh>
       </group>
     </>
+  );
+}
+
+export function Plane() {
+  return (
+    <mesh>
+      <planeGeometry />
+    </mesh>
   );
 }

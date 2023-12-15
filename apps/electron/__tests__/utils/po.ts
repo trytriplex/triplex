@@ -64,6 +64,12 @@ export class EditorPage {
     };
   }
 
+  async switchToComponent(name: string) {
+    const locator = this.page.getByTestId("component-select-input");
+    await locator.click();
+    await locator.selectOption(name);
+  }
+
   get titleBar() {
     const title = this.page.getByTestId("titlebar");
     return title;
