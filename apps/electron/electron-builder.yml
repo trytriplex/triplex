@@ -21,7 +21,7 @@ mac:
 
 linux:
   executableName: triplex-electron
-  artifactName: "${productName}-${version}.${ext}"
+  artifactName: "${productName}-${version}-${arch}.${ext}"
   target: AppImage
 
 publish:

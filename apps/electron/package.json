@@ -10,11 +10,11 @@
   "scripts": {
     "build": "vite build",
     "build-target": "rimraf targets && pnpm prep-workspace && cross-env USE_HARD_LINKS=false electron-builder --publish never && pnpm cleanup-workspace",
-    "build-targets": "rimraf targets && pnpm prep-workspace && cross-env USE_HARD_LINKS=false electron-builder --publish never --mac dir:x64 dir:arm64 --win dir:x64 dir:ia32 --linux && pnpm cleanup-workspace",
+    "build-targets": "rimraf targets && pnpm prep-workspace && cross-env USE_HARD_LINKS=false electron-builder --publish never --mac dir:x64 dir:arm64 --win dir:x64 dir:ia32 --linux AppImage:x64 AppImage:arm64 && pnpm cleanup-workspace",
     "cleanup-workspace": "git checkout ../../packages/*/package.json ../../packages/@triplex/*/package.json",
     "dev": "cross-env electron .",
     "prep-workspace": "node ../../scripts/workspace-run.js ./apply-publish-config.js",
-    "release": "rimraf targets && pnpm prep-workspace && cross-env USE_HARD_LINKS=false electron-builder --mac zip:x64 zip:arm64 dmg:x64 dmg:arm64 --win nsis:x64 nsis:ia32 --publish always --linux && pnpm cleanup-workspace",
+    "release": "rimraf targets && pnpm prep-workspace && cross-env USE_HARD_LINKS=false electron-builder --mac zip:x64 zip:arm64 dmg:x64 dmg:arm64 --win nsis:x64 nsis:ia32 --linux AppImage:x64 AppImage:arm64 --publish always && pnpm cleanup-workspace",
     "test:e2e": "playwright test",
     "typedef": "tsc"
   },
