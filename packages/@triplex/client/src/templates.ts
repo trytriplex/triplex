@@ -29,6 +29,7 @@ export const scripts = {
       `import provider from "${template.config.provider}";`,
       'import { on, send } from "@triplex/bridge/client";',
       `const projectFiles = import.meta.glob([${template.fileGlobs}]);`,
+      `window.triplex = {env:JSON.parse(__TRIPLEX_DATA__)};`,
       "const tempFiles = {",
       Array(placeholderFiles)
         .fill(undefined)
@@ -70,12 +71,8 @@ export const scripts = {
               col: e.colno,
               line: e.lineno,
               message: e.message,
-              source: e.filename
-                .replace(__TRIPLEX_BASE_URL__, __TRIPLEX_CWD__)
-                .replace(/\\?.+/, ""),
-              stack: e.error.stack
-                .replaceAll(__TRIPLEX_BASE_URL__, __TRIPLEX_CWD__)
-                .replaceAll(/\\?.+:/g, ":"),
+              source: e.filename.replace(/\\?.+/, ""),
+              stack: e.error.stack.replaceAll(/\\?.+:/g, ":"),
             });
           });
         }

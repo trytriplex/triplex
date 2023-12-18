@@ -51,3 +51,18 @@ export async function getFirstFoundFile({ files }: { files: string[] }) {
 
   return undefined;
 }
+
+export async function getInitialComponent({ files }: { files: string[] }) {
+  const file = await getFirstFoundFile({ files });
+  let exportName = "";
+  let path = "";
+
+  if (file) {
+    if (file.exports.length) {
+      exportName = file.exports[0].exportName;
+      path = file.path;
+    }
+  }
+
+  return { exportName, path };
+}

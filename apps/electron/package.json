@@ -36,6 +36,7 @@
     "electron-log": "^5.0.0",
     "electron-store": "^8.1.0",
     "electron-updater": "^6.1.4",
+    "get-port": "^7.0.0",
     "glob-parent": "^6.0.2",
     "readdirp": "^3.6.0",
     "shell-env": "^3.0.1",

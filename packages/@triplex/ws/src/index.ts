@@ -9,11 +9,12 @@ import { parseJSON } from "./string";
 
 export function on<TEventName extends keyof TWSEventDefinition>(
   eventName: TEventName,
-  callback: (data: TWSEventDefinition[TEventName]["data"]) => void
+  callback: (data: TWSEventDefinition[TEventName]["data"]) => void,
+  port: number
 ) {
   const WS: typeof WebSocket =
     typeof WebSocket === "undefined" ? require("ws") : WebSocket;
-  const ws = new WS("ws://127.0.0.1:3300");
+  const ws = new WS(`ws://127.0.0.1:${port}`);
 
   ws.addEventListener("open", () => {
     ws.send(eventName);

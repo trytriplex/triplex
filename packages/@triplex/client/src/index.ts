@@ -17,11 +17,13 @@ import { createHTML } from "./templates";
 export async function createServer({
   cwd: __RAW_CWD_DONT_USE__ = process.cwd(),
   files,
+  ports,
   provider = emptyProviderId,
   publicDir,
 }: {
   cwd?: string;
   files: string[];
+  ports: { server: number; ws: number };
   provider?: string;
   publicDir?: string;
 }) {
@@ -36,12 +38,12 @@ export async function createServer({
     assetsInclude: ["**/*.(gltf|glb)"],
     configFile: false,
     define: {
-      __TRIPLEX_BASE_URL__: `"http://localhost:3333"`,
       __TRIPLEX_CWD__: `"${normalizedCwd}"`,
+      __TRIPLEX_DATA__: JSON.stringify(process.env.TRIPLEX_DATA),
     },
     logLevel: "error",
     plugins: [
-      remoteModulePlugin({ cwd: normalizedCwd, files }),
+      remoteModulePlugin({ cwd: normalizedCwd, files, ports }),
       react({
         babel: {
           plugins: [

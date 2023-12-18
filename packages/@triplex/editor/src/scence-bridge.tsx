@@ -52,7 +52,7 @@ export function SceneFrame() {
           "col-span-full row-start-3 h-full w-full border-none",
           blockPointerEvents && "pointer-events-none",
         ])}
-        src={`http://localhost:3333/scene.html`}
+        src={`http://localhost:${window.triplex.env.ports.client}/scene.html`}
       />
       <BridgeSendEvents />
       <BridgeReceiveEvents />

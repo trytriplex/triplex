@@ -38,7 +38,6 @@ import { cn } from "../ds/cn";
 import { Pressable } from "../ds/pressable";
 import { ScrollContainer } from "../ds/scroll-container";
 import { PanelSkeleton } from "../ds/skeleton";
-import { useEnvironment } from "../environment";
 import { useAssetsDrawer } from "../stores/assets-drawer";
 import { useEditor } from "../stores/editor";
 import { useProviderStore } from "../stores/provider";
@@ -81,7 +80,6 @@ const blockAll: InstructionType[] = [
 
 function ComponentHeading() {
   const { exportName, newComponent, path, set } = useEditor();
-  const { config } = useEnvironment();
   const scene = useLazySubscription("/scene/:path/:exportName", {
     exportName,
     path,
@@ -146,10 +144,13 @@ function ComponentHeading() {
               "https://triplex.dev/docs/supporting/component-outside-of-project-files?meta=" +
                 encodeURIComponent(
                   JSON.stringify({
-                    files: config.files.map((file) =>
-                      file.replace(config.cwd, "..")
+                    files: window.triplex.env.config.files.map((file) =>
+                      file.replace(window.triplex.env.config.cwd, "..")
                     ),
-                    path: scene.path.replace(config.cwd, ".."),
+                    path: scene.path.replace(
+                      window.triplex.env.config.cwd,
+                      ".."
+                    ),
                   })
                 )
             )

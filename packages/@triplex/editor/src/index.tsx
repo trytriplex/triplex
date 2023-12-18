@@ -9,7 +9,6 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter } from "react-router-dom";
 import { Analytics } from "./analytics";
 import { EditorFrame } from "./editor";
-import { Environment } from "./environment";
 import { LoadingTriangle } from "./ui/loading-triagle";
 import "./styles.css";
 
@@ -17,9 +16,7 @@ createRoot(document.getElementById("root")!).render(
   <Analytics>
     <BrowserRouter>
       <Suspense fallback={<LoadingTriangle />}>
-        <Environment>
-          <EditorFrame />
-        </Environment>
+        <EditorFrame />
       </Suspense>
     </BrowserRouter>
   </Analytics>

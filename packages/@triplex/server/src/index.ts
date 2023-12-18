@@ -511,9 +511,10 @@ export function createServer({
   ]);
 
   return {
-    listen: async (port = 8000) => {
+    listen: async (ports: { server: number; ws: number }) => {
       const controller = new AbortController();
-      app.listen({ port, signal: controller.signal });
+      app.listen({ port: ports.server, signal: controller.signal });
+      tws.listen(ports.ws);
 
       const close = () => {
         controller.abort();

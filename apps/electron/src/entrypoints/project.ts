@@ -5,7 +5,6 @@
  * file in the root directory of this source tree.
  */
 import { init } from "@sentry/node";
-import { getFirstFoundFile } from "../util/files";
 import { logger } from "../util/log";
 import { startProject } from "../util/project";
 
@@ -17,33 +16,19 @@ if (process.env.TRIPLEX_ENV !== "development") {
 
 const log = logger("project");
 
+if (!process.env.TRIPLEX_DATA) {
+  throw new Error("invariant: no data");
+}
+
+const data = JSON.parse(process.env.TRIPLEX_DATA);
+
 async function main() {
   log.info("start project", process.cwd());
 
   try {
-    const { config, sceneUrl, serverUrl, wsUrl } = await startProject(
-      process.cwd()
-    );
-    const file = await getFirstFoundFile({ files: config.files });
-    let exportName = "";
-    let path = "";
-
-    if (file) {
-      if (file.exports.length) {
-        exportName = file.exports[0].exportName;
-        path = file.path;
-      }
-    }
+    await startProject(data.config, data.ports);
 
     process.send?.({
-      data: {
-        config,
-        exportName,
-        path,
-        sceneUrl,
-        serverUrl,
-        wsUrl,
-      },
       eventName: "ready",
     });
   } catch (error) {

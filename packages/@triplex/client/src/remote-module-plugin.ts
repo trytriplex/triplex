@@ -26,7 +26,7 @@ function match(target: string, normalizedFiles: string[]): boolean {
 }
 
 interface API {
-  getCode: (id: string) => Promise<string>;
+  getCode: typeof getCode;
 }
 
 /**
@@ -40,19 +40,25 @@ export function remoteModulePlugin({
   __api: api = { getCode },
   cwd,
   files,
+  ports,
 }: {
   __api?: API;
   cwd: string;
   files: string[];
+  ports: { server: number; ws: number };
 }) {
   return {
     configureServer(server: ViteDevServer) {
-      on("fs-change", async (e) => {
-        const mod = await server.moduleGraph.getModuleById(e.path);
-        if (mod) {
-          server.reloadModule(mod);
-        }
-      });
+      on(
+        "fs-change",
+        async (e) => {
+          const mod = await server.moduleGraph.getModuleById(e.path);
+          if (mod) {
+            server.reloadModule(mod);
+          }
+        },
+        ports.ws
+      );
     },
     enforce: "pre",
     async load(id: string) {
@@ -60,7 +66,7 @@ export function remoteModulePlugin({
         return;
       }
 
-      const code = await api.getCode(id);
+      const code = await api.getCode(id, ports.server);
       return code;
     },
     name: "triplex:remote-module-plugin",

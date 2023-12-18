@@ -9,6 +9,13 @@ const { contextBridge, ipcRenderer } = require("electron");
 const args = Array.from(process.argv).reduce((acc, arg) => {
   if (arg.startsWith("--")) {
     const [key, value] = arg.slice(2).split("=");
+
+    if (key.match(/[A-Z]/)) {
+      throw new Error(
+        `invariant: key ${key} must be lowercase for cross platform support`
+      );
+    }
+
     acc[key] = value;
   }
 
@@ -16,6 +23,7 @@ const args = Array.from(process.argv).reduce((acc, arg) => {
 }, {});
 
 const declaredAccelerators = {};
+const env = args.triplex_data ? JSON.parse(args.triplex_data) : {};
 
 contextBridge.exposeInMainWorld("triplex", {
   accelerator: (accelerator, callback) => {
@@ -35,12 +43,12 @@ contextBridge.exposeInMainWorld("triplex", {
       ipcRenderer.removeListener(`acl:${accelerator}`, listener);
     };
   },
-  getEnv: () => {
-    try {
-      return ipcRenderer.invoke("get-triplex-env");
-    } catch {
-      return null;
+  get env() {
+    if (!env) {
+      throw new Error("invariant: unavailable in this context");
     }
+
+    return env;
   },
   handleMenuItemPress: (callback) => {
     const listener = (_, id) => {
@@ -79,9 +87,9 @@ contextBridge.exposeInMainWorld("triplex", {
   openLink: (url) => ipcRenderer.send("open-link", url),
   platform: process.platform,
   sendCommand: (id) => ipcRenderer.send("send-command", id),
-  sessionId: args.sessionId,
+  sessionId: args.session_id,
   setMenu: (menu) => ipcRenderer.send("set-menu-bar", menu),
   showSaveDialog: (filename) =>
     ipcRenderer.invoke("show-save-dialog", filename),
-  userId: args.userId,
+  userId: args.user_id,
 });

@@ -9,16 +9,21 @@ declare type WindowState = "active" | "inactive" | "disabled";
 declare interface Window {
   triplex: {
     accelerator: (accelerator: string, callback: () => void) => () => void;
-    getEnv: () => Promise<{
+    env: {
       config: {
         assetsDir: string;
         components: string[];
         cwd: string;
         files: string[];
-        provider?: string;
+        provider: string;
         publicDir: string;
       };
-    }>;
+      ports: {
+        client: number;
+        server: number;
+        ws: number;
+      };
+    };
     handleMenuItemPress: (callback: (id: string) => void) => () => void;
     handleProgressBarChange: (
       callback: (progress: number) => void

@@ -8,6 +8,7 @@ import { randomUUID } from "node:crypto";
 import { readdir } from "node:fs/promises";
 import process from "node:process";
 import { init } from "@sentry/electron/main";
+import { getConfig } from "@triplex/server";
 import {
   app,
   BrowserWindow,
@@ -21,6 +22,7 @@ import { autoUpdater } from "electron-updater";
 import { join, resolve, sep } from "upath";
 import { createProject, showCreateDialog } from "../util/create";
 import { ensureDepsInstall } from "../util/deps";
+import { getInitialComponent } from "../util/files";
 import { fork } from "../util/fork";
 import { getLogPath, logger } from "../util/log";
 import { userStore } from "../util/store";
@@ -34,7 +36,6 @@ if (process.env.TRIPLEX_ENV !== "development") {
 const SESSION_ID = randomUUID();
 const USER_ID = userStore.get("userId");
 const HEADLESS_RUN = process.argv.includes("--headless");
-const EDITOR_DEV_PORT = 5754;
 const log = logger("main");
 
 autoUpdater.logger = logger("auto-update");
@@ -203,7 +204,7 @@ function applyWindowIpcHandlers(activeWindow: BrowserWindow) {
   });
 }
 
-async function openWelcomeScreen() {
+async function openWelcomeScreen(editorDevPort: number) {
   const window = new BrowserWindow({
     backgroundColor: "#171717",
     fullscreenable: false,
@@ -219,20 +220,31 @@ async function openWelcomeScreen() {
     },
     titleBarStyle: "hidden",
     webPreferences: {
-      additionalArguments: [`--userId=${USER_ID}`, `--sessionId=${SESSION_ID}`],
+      additionalArguments: [
+        `--user_id=${USER_ID}`,
+        `--session_id=${SESSION_ID}`,
+      ],
       preload: require.resolve("./preload.js"),
     },
     width: 520,
   });
 
   await (process.env.TRIPLEX_ENV === "development"
-    ? window.loadURL(`http://localhost:${EDITOR_DEV_PORT}/welcome.html`)
+    ? window.loadURL(`http://localhost:${editorDevPort}/welcome.html`)
     : window.loadFile(require.resolve("@triplex/editor/dist/welcome.html")));
 
   return window;
 }
 
+async function getPort() {
+  const { default: getPort } = await import("get-port");
+
+  return await getPort();
+}
+
 async function main() {
+  const editorDevPort =
+    process.env.TRIPLEX_ENV === "development" ? await getPort() : -1;
   const { connectMenuToRenderer, onMenuItemPress, resetMenu } = prepareMenu();
 
   let activeProjectWindow: BrowserWindow | undefined;
@@ -258,6 +270,14 @@ async function main() {
     abortContoller?.abort();
     abortContoller = undefined;
 
+    const config = await getConfig(cwd);
+    const ports = {
+      client: await getPort(),
+      server: await getPort(),
+      ws: await getPort(),
+    };
+    const environmentData = { config, ports };
+
     abortContoller = new AbortController();
 
     activeProjectWindow = new BrowserWindow({
@@ -272,8 +292,9 @@ async function main() {
       titleBarStyle: "hidden",
       webPreferences: {
         additionalArguments: [
-          `--userId=${USER_ID}`,
-          `--sessionId=${SESSION_ID}`,
+          `--user_id=${USER_ID}`,
+          `--session_id=${SESSION_ID}`,
+          `--triplex_data=${JSON.stringify(environmentData)}`,
         ],
         preload: require.resolve("./preload.js"),
       },
@@ -340,23 +361,23 @@ async function main() {
     log.info("forking");
 
     try {
-      const p = await fork(join(__dirname, "./project.ts"), { cwd });
-
-      activeProjectWindow.webContents.ipc.handle("get-triplex-env", () => ({
-        ...p.data,
-      }));
+      const p = await fork(join(__dirname, "./project.ts"), {
+        cwd,
+        data: environmentData,
+      });
 
       cleanup = () => {
         p.kill();
       };
 
-      const searchParams = `?path=${p.data?.path}&exportName=${p.data?.exportName}`;
+      const file = await getInitialComponent({ files: config.files });
+      const searchParams = `?path=${file.path}&exportName=${file.exportName}`;
 
       log.info("starting editor");
 
       await (process.env.TRIPLEX_ENV === "development"
         ? activeProjectWindow.loadURL(
-            `http://localhost:${EDITOR_DEV_PORT}${searchParams}`
+            `http://localhost:${editorDevPort}${searchParams}`
           )
         : activeProjectWindow.loadFile(
             require.resolve(`@triplex/editor/dist/index.html`),
@@ -367,7 +388,7 @@ async function main() {
     } catch {
       await (process.env.TRIPLEX_ENV === "development"
         ? activeProjectWindow.loadURL(
-            `http://localhost:${EDITOR_DEV_PORT}/fallback-error.html`
+            `http://localhost:${editorDevPort}/fallback-error.html`
           )
         : activeProjectWindow.loadFile(
             require.resolve(`@triplex/editor/dist/fallback-error.html`)
@@ -507,7 +528,7 @@ async function main() {
   if (process.env.TRIPLEX_ENV === "development") {
     const { createDevServer } = require("@triplex/editor");
     const devServer = await createDevServer();
-    await devServer.listen(EDITOR_DEV_PORT);
+    await devServer.listen(editorDevPort);
   }
 
   if (process.env.FORCE_EDITOR_TEST_FIXTURE) {
@@ -516,7 +537,7 @@ async function main() {
       join(process.cwd(), "..", "..", "examples", "test-fixture")
     );
   } else {
-    welcomeWindow = await openWelcomeScreen();
+    welcomeWindow = await openWelcomeScreen(editorDevPort);
   }
 
   applyGlobalIpcHandlers();

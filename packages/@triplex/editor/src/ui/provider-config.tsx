@@ -7,7 +7,6 @@
 import { useLazySubscription } from "@triplex/ws/react";
 import { Suspense, useMemo } from "react";
 import { SkeletonContainer, SkeletonText } from "../ds/skeleton";
-import { useEnvironment } from "../environment";
 import { useProviderStore } from "../stores/provider";
 import { useScene } from "../stores/scene";
 import { useSceneState } from "../stores/scene-state";
@@ -15,10 +14,9 @@ import { PropField } from "./prop-field";
 import { PropInput, PropTagContext } from "./prop-input";
 
 function Inputs() {
-  const providerPath = useEnvironment().config.provider;
   const data = useLazySubscription("/scene/:path/:exportName/props", {
     exportName: "default",
-    path: providerPath,
+    path: window.triplex.env.config.provider,
   });
   const { setPropValue } = useScene();
   const storeKey = "__provider__";
@@ -63,7 +61,7 @@ function Inputs() {
         </div>
       )}
 
-      {providerPath &&
+      {window.triplex.env.config.provider &&
         props.map((prop) => {
           const value =
             prop.name in values ? values[prop.name] : defaultValues[prop.name];
@@ -83,7 +81,7 @@ function Inputs() {
                     setPropValue({
                       column: -999,
                       line: -999,
-                      path: providerPath,
+                      path: window.triplex.env.config.provider,
                       propName: prop.name,
                       propValue: value,
                     });
@@ -91,7 +89,7 @@ function Inputs() {
                   onConfirm={(value) => {
                     setValues(storeKey, prop.name, value);
                   }}
-                  path={providerPath}
+                  path={window.triplex.env.config.provider}
                   prop={Object.assign({}, prop, value ? { value } : {})}
                   required={prop.required}
                 />
@@ -106,8 +104,6 @@ function Inputs() {
 
 export function ProviderConfig() {
   const isOpen = useProviderStore((store) => store.shown);
-  const providerPath = useEnvironment().config.provider;
-
   if (!isOpen) {
     return null;
   }
@@ -116,7 +112,7 @@ export function ProviderConfig() {
     <div>
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
 
-      {providerPath ? (
+      {window.triplex.env.config.provider ? (
         <Suspense
           fallback={
             <div className="px-4 py-4">

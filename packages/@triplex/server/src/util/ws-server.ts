@@ -4,8 +4,9 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { createServer } from "node:http";
 import { match } from "node-match-path";
-import { type WebSocket, WebSocketServer } from "ws";
+import { WebSocketServer, type WebSocket } from "ws";
 import { stringifyJSON } from "./string";
 
 export type UnionToIntersection<U> = (
@@ -67,7 +68,8 @@ function collectTypes<TRoutes extends Array<Record<string, unknown>>>(
 }
 
 export function createTWS() {
-  const wss = new WebSocketServer<AliveWebSocket>({ port: 3300 });
+  const server = createServer();
+  const wss = new WebSocketServer<AliveWebSocket>({ server });
   const routeHandlers: ((
     path: string
   ) => ((ws: WebSocket) => Promise<void>) | false)[] = [];
@@ -220,9 +222,15 @@ export function createTWS() {
   }
 
   return {
-    close: wss.close.bind(wss),
+    close() {
+      wss.close();
+      server.close();
+    },
     collectTypes,
     createEvent,
+    listen(port: number) {
+      server.listen(port);
+    },
     route,
   };
 }

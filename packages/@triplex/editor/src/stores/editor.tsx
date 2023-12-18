@@ -77,7 +77,7 @@ export function useEditor() {
       const componentExportName = target ? target.exportName : exportName;
 
       const res = await fetch(
-        "http://localhost:8000/scene/" +
+        `http://localhost:${window.triplex.env.ports.server}/scene/` +
           encodeURIComponent(componentPath) +
           `/${componentExportName}/object`,
         {
@@ -115,9 +115,11 @@ export function useEditor() {
       }
 
       fetch(
-        `http://localhost:8000/scene/${encodeURIComponent(
-          toDelete.parentPath
-        )}/object/${toDelete.line}/${toDelete.column}/delete`,
+        `http://localhost:${
+          window.triplex.env.ports.server
+        }/scene/${encodeURIComponent(toDelete.parentPath)}/object/${
+          toDelete.line
+        }/${toDelete.column}/delete`,
         { method: "POST" }
       );
       scene.deleteComponent({
@@ -136,7 +138,11 @@ export function useEditor() {
   }, []);
 
   const close = useEvent((filePath: string) => {
-    fetch(`http://localhost:8000/scene/${encodeURIComponent(filePath)}/close`);
+    fetch(
+      `http://localhost:${
+        window.triplex.env.ports.server
+      }/scene/${encodeURIComponent(filePath)}/close`
+    );
   });
 
   const move = useEvent(
@@ -147,9 +153,11 @@ export function useEditor() {
       action: "move-before" | "move-after" | "make-child" | "reparent"
     ) => {
       fetch(
-        `http://localhost:8000/scene/${encodeURIComponent(path)}/object/${
-          source.line
-        }/${source.column}/move?destLine=${destination.line}&destCol=${
+        `http://localhost:${
+          window.triplex.env.ports.server
+        }/scene/${encodeURIComponent(path)}/object/${source.line}/${
+          source.column
+        }/move?destLine=${destination.line}&destCol=${
           destination.column
         }&action=${action}`,
         { method: "POST" }
@@ -170,9 +178,9 @@ export function useEditor() {
       scene.setPropValue(propData);
 
       fetch(
-        `http://localhost:8000/scene/object/${data.line}/${
-          data.column
-        }/prop?value=${encodeURIComponent(
+        `http://localhost:${window.triplex.env.ports.server}/scene/object/${
+          data.line
+        }/${data.column}/prop?value=${encodeURIComponent(
           stringifyJSON(data.propValue)
         )}&path=${encodeURIComponent(data.path)}&name=${encodeURIComponent(
           data.propName
@@ -186,7 +194,11 @@ export function useEditor() {
     scene.blur();
     scene.reset();
 
-    fetch(`http://localhost:8000/scene/${encodeURIComponent(path)}/reset`);
+    fetch(
+      `http://localhost:${
+        window.triplex.env.ports.server
+      }/scene/${encodeURIComponent(path)}/reset`
+    );
   }, [path, scene]);
 
   if (path && !exportName) {
@@ -255,9 +267,11 @@ export function useEditor() {
     }
 
     await fetch(
-      `http://localhost:8000/scene/${encodeURIComponent(
-        path
-      )}/save-as?newPath=${encodeURIComponent(newPath)}`,
+      `http://localhost:${
+        window.triplex.env.ports.server
+      }/scene/${encodeURIComponent(path)}/save-as?newPath=${encodeURIComponent(
+        newPath
+      )}`,
       {
         method: "POST",
       }
@@ -278,7 +292,9 @@ export function useEditor() {
 
   const save = useCallback(async () => {
     const response = await fetch(
-      `http://localhost:8000/scene/${encodeURIComponent(path)}/save`,
+      `http://localhost:${
+        window.triplex.env.ports.server
+      }/scene/${encodeURIComponent(path)}/save`,
       {
         method: "POST",
       }
@@ -291,25 +307,31 @@ export function useEditor() {
   }, [path, saveAs]);
 
   const saveAll = useCallback(async () => {
-    await fetch("http://localhost:8000/project/save-all", {
-      method: "POST",
-    });
+    await fetch(
+      `http://localhost:${window.triplex.env.ports.server}/project/save-all`,
+      {
+        method: "POST",
+      }
+    );
   }, []);
 
   const open = useEvent(
     (path: string, exportName: string, index: number = -1) => {
       fetch(
-        `http://localhost:8000/scene/${encodeURIComponent(
-          path
-        )}/${exportName}/open?index=${index}`
+        `http://localhost:${
+          window.triplex.env.ports.server
+        }/scene/${encodeURIComponent(path)}/${exportName}/open?index=${index}`
       );
     }
   );
 
   const newFile = useCallback(async () => {
-    const result = await fetch(`http://localhost:8000/scene/new`, {
-      method: "POST",
-    });
+    const result = await fetch(
+      `http://localhost:${window.triplex.env.ports.server}/scene/new`,
+      {
+        method: "POST",
+      }
+    );
     const data = await result.json();
 
     set(
@@ -324,7 +346,9 @@ export function useEditor() {
 
   const newComponent = useCallback(async () => {
     const result = await fetch(
-      `http://localhost:8000/scene/${encodeURIComponent(path)}/new`,
+      `http://localhost:${
+        window.triplex.env.ports.server
+      }/scene/${encodeURIComponent(path)}/new`,
       { method: "POST" }
     );
     const data = await result.json();
@@ -345,9 +369,11 @@ export function useEditor() {
     let pos: { column: number; line: number };
 
     const response = await fetch(
-      `http://localhost:8000/scene/${encodeURIComponent(path)}/object/${
-        target.line
-      }/${target.column}/duplicate`,
+      `http://localhost:${
+        window.triplex.env.ports.server
+      }/scene/${encodeURIComponent(path)}/object/${target.line}/${
+        target.column
+      }/duplicate`,
       { method: "POST" }
     );
 
@@ -362,15 +388,25 @@ export function useEditor() {
   }, [path, scene, target]);
 
   const undo = useEvent(() => {
-    fetch(`http://localhost:8000/scene/${encodeURIComponent(path)}/undo`, {
-      method: "POST",
-    });
+    fetch(
+      `http://localhost:${
+        window.triplex.env.ports.server
+      }/scene/${encodeURIComponent(path)}/undo`,
+      {
+        method: "POST",
+      }
+    );
   });
 
   const redo = useEvent(() => {
-    fetch(`http://localhost:8000/scene/${encodeURIComponent(path)}/redo`, {
-      method: "POST",
-    });
+    fetch(
+      `http://localhost:${
+        window.triplex.env.ports.server
+      }/scene/${encodeURIComponent(path)}/redo`,
+      {
+        method: "POST",
+      }
+    );
   });
 
   return useMemo(

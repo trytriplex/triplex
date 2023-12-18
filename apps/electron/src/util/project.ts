@@ -5,26 +5,27 @@
  * file in the root directory of this source tree.
  */
 import { createServer as createFrontend } from "@triplex/client";
-import { createServer as createBackend, getConfig } from "@triplex/server";
+import {
+  createServer as createBackend,
+  type TriplexConfig,
+} from "@triplex/server";
 
 export async function startProject(
-  cwd: string,
-  { backendPort = 8000, frontendPort = 3333 } = {}
+  config: Required<TriplexConfig>,
+  ports: { client: number; server: number; ws: number }
 ) {
-  const config = await getConfig(cwd);
   const backend = await createBackend(config);
-  const closeBackend = await backend.listen(backendPort);
-  const frontend = await createFrontend(config);
-  const closeFrontend = await frontend.listen(frontendPort);
+  const closeBackend = await backend.listen(ports);
+  const frontend = await createFrontend({
+    ...config,
+    ports,
+  });
+  const closeFrontend = await frontend.listen(ports.client);
 
   return {
     close: async () => {
       await closeFrontend({ forceExit: false });
       await closeBackend();
     },
-    config,
-    sceneUrl: `http://localhost:${frontendPort}`,
-    serverUrl: `http://localhost:${backendPort}`,
-    wsUrl: `ws://localhost:${backendPort}`,
   };
 }

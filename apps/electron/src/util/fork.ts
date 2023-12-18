@@ -18,7 +18,7 @@ const log = logger("fork");
  */
 export function fork(
   filename: string,
-  { cwd }: { cwd: string }
+  { cwd, data }: { cwd: string; data: Record<string, unknown> }
 ): Promise<{
   data?: Record<string, unknown>;
   kill(): void;
@@ -36,6 +36,7 @@ export function fork(
       env: {
         NODE_OPTIONS: `-r ${join(process.cwd(), "hook-fork.js")}`,
         NODE_PATH: process.cwd(),
+        TRIPLEX_DATA: JSON.stringify(data),
         TRIPLEX_ENV: "development",
       },
       // Pass through inspect if the parent has it enabled.
@@ -49,7 +50,11 @@ export function fork(
 
     fork = forkChild(filename.replace(".ts", ".js"), [], {
       cwd,
-      env: { DEBUG: "triplex", NODE_PATH: process.cwd() },
+      env: {
+        DEBUG: "triplex",
+        NODE_PATH: process.cwd(),
+        TRIPLEX_DATA: JSON.stringify(data),
+      },
       // We set the forked process to silent so we can capture errors.
       // See: https://stackoverflow.com/a/52066025
       silent: true,
