@@ -189,7 +189,9 @@ export function Selection({
 
   useEffect(() => {
     send("ready-to-receive", undefined);
+  }, []);
 
+  useEffect(() => {
     return compose([
       on("request-open-component", (sceneObject) => {
         if (!sceneObject && (!selectedObject || !selectedSceneObject)) {

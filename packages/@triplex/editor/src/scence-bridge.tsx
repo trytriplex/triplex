@@ -19,10 +19,25 @@ export interface FocusedObject {
 export function SceneFrame() {
   const sceneReady = useScene((prev) => prev.sceneReady);
   const [blockPointerEvents, setBlockPointerEvents] = useState(false);
+  const navigateTo = useScene((store) => store.navigateTo);
+  const editor = useEditor();
 
   useEffect(() => {
-    return on("ready-to-receive", sceneReady);
-  }, [sceneReady]);
+    return on("ready-to-receive", () => {
+      sceneReady();
+      navigateTo({
+        encodedProps: editor.encodedProps,
+        exportName: editor.exportName,
+        path: editor.path,
+      });
+    });
+  }, [
+    editor.encodedProps,
+    editor.exportName,
+    editor.path,
+    navigateTo,
+    sceneReady,
+  ]);
 
   useEffect(() => {
     // This works around iframes underneath drag/drop areas from
@@ -83,10 +98,10 @@ function BridgeSendEvents() {
 
 function BridgeReceiveEvents() {
   const editor = useEditor();
-  const scene = useScene();
+  const ready = useScene((store) => store.ready);
 
   useEffect(() => {
-    if (!scene.ready) {
+    if (!ready) {
       return;
     }
 
@@ -117,7 +132,7 @@ function BridgeReceiveEvents() {
         editor.focus(null);
       }),
     ]);
-  }, [scene, editor]);
+  }, [editor, ready]);
 
   return null;
 }
