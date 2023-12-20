@@ -28,6 +28,8 @@ export function on<TEvent extends HostSendEventName>(
 
       if (value !== undefined) {
         respond(eventName, value);
+        // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
+        // @ts-ignore
       } else if (process.env.NODE_ENV === "test") {
         // Always respond in a test environment so we can assert that the event was called
         // eslint-disable-next-line @typescript-eslint/no-explicit-any

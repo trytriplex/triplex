@@ -12,7 +12,7 @@ const STATIC_ASSETS = ["glb", "gltf"];
 
 export async function getConfig(
   cwd: string
-): Promise<Required<TriplexConfig> & { cwd: string }> {
+): Promise<Required<TriplexConfig> & { cwd: string; renderer?: string }> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let config: Record<string, any>;
 
@@ -55,5 +55,6 @@ export async function getConfig(
     files,
     provider,
     publicDir,
+    renderer: config.renderer,
   };
 }

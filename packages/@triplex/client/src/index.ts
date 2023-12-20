@@ -14,19 +14,27 @@ import { remoteModulePlugin } from "./remote-module-plugin";
 import { scenePlugin } from "./scene-plugin";
 import { createHTML } from "./templates";
 
+const renderers = {
+  "react-dom": "@triplex/renderer-react",
+  "react-three-fiber": "@triplex/renderer-r3f",
+};
+
 export async function createServer({
   cwd: __RAW_CWD_DONT_USE__ = process.cwd(),
   files,
   ports,
   provider = emptyProviderId,
   publicDir,
+  renderer = "react-three-fiber",
 }: {
   cwd?: string;
   files: string[];
   ports: { server: number; ws: number };
   provider?: string;
   publicDir?: string;
+  renderer?: "react-three-fiber" | "react-dom";
 }) {
+  const rendererPackage = renderers[renderer];
   const normalizedCwd = normalize(__RAW_CWD_DONT_USE__);
   const tsConfig = join(normalizedCwd, "tsconfig.json");
   const app = express();
@@ -67,7 +75,7 @@ export async function createServer({
         "@triplex/bridge/client": require.resolve("@triplex/bridge/client"),
         // The consuming app doesn't have this as a direct dependency
         // so we use `require.resolve()` to find it from this location instead.
-        "@triplex/renderer-r3f": require.resolve("@triplex/renderer-r3f"),
+        [rendererPackage]: require.resolve(rendererPackage),
       },
       dedupe: ["@react-three/fiber", "three"],
     },
@@ -87,7 +95,7 @@ export async function createServer({
       const template = createHTML({
         config: { provider },
         fileGlobs: files.map((f) => `'${f.replace(normalizedCwd, "")}'`),
-        pkgName: "@triplex/renderer-r3f",
+        pkgName: rendererPackage,
       });
       const html = await vite.transformIndexHtml("scene", template);
 

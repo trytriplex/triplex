@@ -19,6 +19,7 @@
     "@babel/types": "^7.23.0",
     "@triplex/bridge": "0.61.2",
     "@triplex/renderer-r3f": "0.61.2",
+    "@triplex/renderer-react": "0.61.2",
     "@vitejs/plugin-react": "^4.1.0",
     "express": "^4.18.2",
     "vite": "^4.4.11"

@@ -10,7 +10,7 @@ import type {
   NumberLiteralType,
   StringLiteralType,
 } from "@triplex/server";
-import { type ChangeEventHandler, useEffect, useRef } from "react";
+import { useEffect, useRef, type ChangeEventHandler } from "react";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 
@@ -76,9 +76,10 @@ export function LiteralUnionInput({
       >
         {!isValueDefined && <option value="">Select value...</option>}
         {values.map((value, index) => (
-          <option key={`${value.literal}`} value={index}>{`${
-            value.label || value.literal
-          }`}</option>
+          <option
+            key={`${value.label}-${value.literal}-${index}`}
+            value={index}
+          >{`${value.label || value.literal}`}</option>
         ))}
       </select>
 
