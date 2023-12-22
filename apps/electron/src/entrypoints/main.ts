@@ -25,6 +25,8 @@ import { ensureDepsInstall } from "../util/deps";
 import { getInitialComponent } from "../util/files";
 import { fork } from "../util/fork";
 import { getLogPath, logger } from "../util/log";
+import { getPort } from "../util/port";
+import { invalidateScreenshot, screenshotComponent } from "../util/screenshot";
 import { userStore } from "../util/store";
 
 if (process.env.TRIPLEX_ENV !== "development") {
@@ -236,12 +238,6 @@ async function openWelcomeScreen(editorDevPort: number) {
   return window;
 }
 
-async function getPort() {
-  const { default: getPort } = await import("get-port");
-
-  return await getPort();
-}
-
 async function main() {
   const editorDevPort =
     process.env.TRIPLEX_ENV === "development" ? await getPort() : -1;
@@ -309,7 +305,7 @@ async function main() {
       activeProjectWindow?.webContents.send("window-state-change", "active");
     });
 
-    activeProjectWindow.loadFile(
+    await activeProjectWindow.loadFile(
       require.resolve(`@triplex/editor/loading.html`)
     );
 
@@ -364,6 +360,34 @@ async function main() {
       const p = await fork(join(__dirname, "./project.ts"), {
         cwd,
         data: environmentData,
+      });
+
+      p.on("invalidate-thumbnail", (data) => {
+        const { exportName, path } = data as {
+          exportName: string;
+          path: string;
+        };
+
+        invalidateScreenshot({ exportName, path });
+      });
+
+      p.on("thumbnail", async (data) => {
+        const { exportName, path } = data as {
+          exportName: string;
+          path: string;
+        };
+
+        const thumbnailPath = await screenshotComponent({
+          exportName,
+          path,
+          port: ports.client,
+        });
+
+        p.send("response:thumbnail", {
+          exportName,
+          path,
+          thumbnailPath,
+        });
       });
 
       cleanup = () => {
@@ -502,6 +526,10 @@ async function main() {
 
         case "show-devtools":
           activeProjectWindow?.webContents.openDevTools();
+          break;
+
+        case "show-app-dir":
+          shell.openPath(app.getPath("userData"));
           break;
 
         case "open-project": {

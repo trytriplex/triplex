@@ -92,7 +92,7 @@ export const Pressable = forwardRef<
       <div
         aria-label={label}
         className={cn([
-          "cursor-default outline-1 -outline-offset-1 outline-blue-400 focus-visible:outline",
+          "cursor-default select-none outline-1 -outline-offset-1 outline-blue-400 focus-visible:outline",
           className,
         ])}
         data-testid={testId}

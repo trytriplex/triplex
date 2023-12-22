@@ -22,8 +22,13 @@ export function fork(
 ): Promise<{
   data?: Record<string, unknown>;
   kill(): void;
-  send(message: Record<string, unknown>): void;
+  on(eventName: string, data: (data: Record<string, unknown>) => void): void;
+  send(eventName: string, data: Record<string, unknown>): void;
 }> {
+  const messageCallbacks: Record<
+    string,
+    (obj: Record<string, unknown>) => void
+  > = {};
   let fork: ReturnType<typeof forkChild>;
 
   if (process.env.TRIPLEX_ENV === "development") {
@@ -77,29 +82,41 @@ export function fork(
     });
 
     fork.on("message", (e) => {
-      if (typeof e === "object") {
-        const eventObject = e as {
-          data?: Record<string, unknown>;
-          eventName: string;
-        };
+      const eventObject = e as {
+        data?: Record<string, unknown>;
+        eventName: string;
+      };
 
-        if (eventObject.eventName === "ready") {
-          log.info("ready");
+      if (eventObject.eventName === "ready") {
+        log.info("ready");
 
-          resolve({
-            data: eventObject.data,
-            kill() {
-              if (!fork.kill("SIGTERM")) {
-                log.error("could not kill fork");
-              }
-            },
-            send(message: Record<string, unknown>) {
-              fork.send(message);
-            },
-          });
-        }
+        resolve({
+          data: eventObject.data,
+          kill() {
+            if (!fork.kill("SIGTERM")) {
+              log.error("could not kill fork");
+            }
+          },
+          on(
+            eventName: string,
+            callback: (data: Record<string, unknown>) => void
+          ) {
+            messageCallbacks[eventName] = callback;
+          },
+          send(eventName: string, data: Record<string, unknown>) {
+            fork.send({
+              data,
+              eventName,
+            });
+          },
+        });
       } else {
-        reject({ data: e, message: "invariant: unexpected message" });
+        // This means only one callback is supported for now. For now that's all we need,
+        // we can come back to it if needed.
+        const callback = messageCallbacks[eventObject.eventName];
+        if (callback) {
+          callback(eventObject.data || {});
+        }
       }
     });
   });

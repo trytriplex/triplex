@@ -11,6 +11,7 @@ import { Project, type ProjectOptions, type SourceFile } from "ts-morph";
 import { join, normalize } from "upath";
 import { deleteCommentComponents } from "../services/component";
 import { type SourceFileChangedEvent } from "../types";
+import { invalidateThumbnail } from "../util/thumbnail";
 import { baseTsConfig } from "../util/ts";
 
 export type TRIPLEXProject = ReturnType<typeof createProject>;
@@ -348,6 +349,13 @@ export function ${componentName}() {
           };
         }
 
+        if (!modifiedSourceFiles.has(sourceFile)) {
+          // This source file isn't modified, nothing to do!
+          return;
+        }
+
+        const exportName = openedSourceFiles.get(sourceFile);
+
         await persistSourceFile({
           cwd,
           newPath,
@@ -365,6 +373,10 @@ export function ${componentName}() {
         modifiedSourceFiles.delete(sourceFile);
         newSourceFiles.delete(sourceFile);
         onStateChangeCallbacks.forEach((cb) => cb());
+
+        if (exportName) {
+          invalidateThumbnail({ exportName, path });
+        }
       },
       undo: () => {
         const undoStack = sourceFileHistory.get(sourceFile);

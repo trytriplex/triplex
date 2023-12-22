@@ -107,9 +107,19 @@ export const scripts = {
     }
   `,
   invalidateHMRHeader: `import { __hmr_import } from "triplex:hmr-import";`,
+  render: (
+    template: TemplateOpts,
+    { exportName, path }: { exportName: string; path: string }
+  ) =>
+    [
+      `import { thumbnail } from "${template.pkgName}";`,
+      `import provider from "${template.config.provider}";`,
+      `import {${exportName} as component} from "${path}";`,
+      `thumbnail(document.getElementById('root'))({ component, provider });`,
+    ].join(""),
 };
 
-export const createHTML = (opts: TemplateOpts) =>
+export const createHTML = (script: string, head?: string) =>
   [
     "<!DOCTYPE html>",
     '<html lang="en">',
@@ -117,11 +127,12 @@ export const createHTML = (opts: TemplateOpts) =>
     '<meta charset="UTF-8" />',
     '<meta name="viewport" content="width=device-width, initial-scale=1.0" />',
     "<title>Triplex</title>",
+    head,
     "</head>",
     "<body>",
     '<div id="root"></div>',
     '<script type="module">',
-    `${scripts.bootstrap(opts)}`,
+    script,
     "</script>",
     "</body>",
     "</html>",

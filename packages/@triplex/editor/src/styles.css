@@ -123,3 +123,8 @@ html {
   animation-iteration-count: infinite;
   animation-name: indeterminate;
 }
+
+.box-decoration-clone {
+  -webkit-box-decoration-break: clone;
+  box-decoration-break: clone;
+}

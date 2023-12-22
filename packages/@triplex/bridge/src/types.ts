@@ -101,7 +101,7 @@ export interface ClientSendEventData {
     source: string;
     stack: string;
   };
-  "ready-to-receive": undefined;
+  ready: undefined;
   "set-controls": {
     controls: Controls;
   };
@@ -117,7 +117,7 @@ export interface ClientSendEventResponse {
   "element-focused": void;
   "element-set-prop": void;
   error: void;
-  "ready-to-receive": void;
+  ready: void;
   "set-controls": void;
   "set-element-actions": void;
 }

@@ -12,7 +12,7 @@ import triplexBabelPlugin from "./babel-plugin";
 import { emptyProviderId } from "./constants";
 import { remoteModulePlugin } from "./remote-module-plugin";
 import { scenePlugin } from "./scene-plugin";
-import { createHTML } from "./templates";
+import { createHTML, scripts } from "./templates";
 
 const renderers = {
   "react-dom": "@triplex/renderer-react",
@@ -88,16 +88,42 @@ export async function createServer({
     },
   });
 
+  const htmlConfig = {
+    config: { provider },
+    fileGlobs: files.map((f) => `'${f.replace(normalizedCwd, "")}'`),
+    pkgName: rendererPackage,
+  };
+
   app.use(vite.middlewares);
 
   app.get("/scene.html", async (_, res, next) => {
     try {
-      const template = createHTML({
-        config: { provider },
-        fileGlobs: files.map((f) => `'${f.replace(normalizedCwd, "")}'`),
-        pkgName: rendererPackage,
-      });
+      const template = createHTML(scripts.bootstrap(htmlConfig));
       const html = await vite.transformIndexHtml("scene", template);
+
+      res.status(200).set({ "Content-Type": "text/html" }).end(html);
+    } catch (error) {
+      vite.ssrFixStacktrace(error as Error);
+      next(error);
+    }
+  });
+
+  app.get("/__thumbnail", async (req, res, next) => {
+    try {
+      const { exportName, path } = req.query;
+      if (typeof exportName !== "string" || typeof path !== "string") {
+        res.status(404).end();
+        return;
+      }
+
+      const template = createHTML(
+        scripts.render(htmlConfig, { exportName, path }),
+        `<style>body{background-color:rgb(38 38 38)}</style>`
+      );
+      const html = await vite.transformIndexHtml(
+        `thumbnail_${path}_${exportName}`,
+        template
+      );
 
       res.status(200).set({ "Content-Type": "text/html" }).end(html);
     } catch (error) {

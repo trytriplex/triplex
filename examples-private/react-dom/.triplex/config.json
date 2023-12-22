@@ -1,6 +1,6 @@
 {
   "$schema": "https://triplex.dev/config.schema.json",
-  "components": ["../src/geometry/**/*.tsx"],
+  "components": ["../src/**/*.tsx"],
   "files": ["../src/**/*.tsx"],
   "renderer": "react-dom"
 }

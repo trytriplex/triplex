@@ -8,23 +8,8 @@
 /* eslint-disable no-empty-pattern */
 import { test as _test } from "@playwright/test";
 import { _electron as electron } from "playwright";
+import { defer } from "../../src/util/promise";
 import { EditorPage } from "./po";
-
-function defer() {
-  let resolve!: () => void;
-  let reject!: () => void;
-
-  const promise = new Promise<void>((res, rej) => {
-    resolve = res;
-    reject = rej;
-  });
-
-  return {
-    promise,
-    reject,
-    resolve,
-  };
-}
 
 async function launch() {
   const electronApp = await electron.launch({

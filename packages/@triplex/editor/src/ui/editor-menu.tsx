@@ -331,6 +331,18 @@ export function EditorMenu() {
             },
           ],
         },
+        {
+          id: "debug-menu",
+          label: "Debug",
+          submenu: [
+            {
+              click: () => window.triplex.sendCommand("show-app-dir"),
+              id: "app-dir",
+              label: "Open App Directory",
+            },
+          ],
+          visible: process.env.NODE_ENV === "development",
+        },
       ] satisfies MenuItem[],
     [
       isEditable,

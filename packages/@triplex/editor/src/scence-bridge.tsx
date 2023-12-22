@@ -23,7 +23,7 @@ export function SceneFrame() {
   const editor = useEditor();
 
   useEffect(() => {
-    return on("ready-to-receive", () => {
+    return on("ready", () => {
       sceneReady();
       navigateTo({
         encodedProps: editor.encodedProps,

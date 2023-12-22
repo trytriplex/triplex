@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { readFile } from "node:fs/promises";
 import { Application, isHttpError, Router } from "@oakserver/oak";
 import { watch } from "chokidar";
 import { basename } from "upath";
@@ -45,6 +46,7 @@ import {
   type SourceFileChangedEvent,
 } from "./types";
 import { getParam } from "./util/params";
+import { getThumbnailPath } from "./util/thumbnail";
 import { createTWS } from "./util/ws-server";
 
 export * from "./types";
@@ -87,6 +89,16 @@ export function createServer({
 
   router.get("/healthcheck", (context) => {
     context.response.body = { message: "Healthy", status: 200 };
+  });
+
+  router.get("/thumbnail/:path/:exportName", async (context) => {
+    const { exportName, path } = context.params;
+
+    const thumbnailPath = await getThumbnailPath({ exportName, path });
+    const file = await readFile(thumbnailPath);
+
+    context.response.headers.set("Content-Type", "image/png");
+    context.response.body = file;
   });
 
   router.post("/scene/:path/object/:line/:column/move", async (context) => {

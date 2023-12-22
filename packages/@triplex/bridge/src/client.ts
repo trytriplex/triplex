@@ -85,6 +85,8 @@ export type Modules = Record<string, () => Promise<Module>>;
 
 export type ProviderComponent = (props: { children?: unknown }) => JSX.Element;
 
+export type UnknownComponent = (props: Record<string, unknown>) => JSX.Element;
+
 export type Config = { provider: string };
 
 export type BootstrapFunction = (
@@ -92,5 +94,12 @@ export type BootstrapFunction = (
 ) => (opts: {
   config: Config;
   files: Modules;
+  provider: ProviderComponent;
+}) => void;
+
+export type ThumbnailFunction = (
+  container: HTMLElement
+) => (opts: {
+  component: UnknownComponent;
   provider: ProviderComponent;
 }) => void;

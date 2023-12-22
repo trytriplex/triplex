@@ -188,7 +188,7 @@ export function Selection({
   ]);
 
   useEffect(() => {
-    send("ready-to-receive", undefined);
+    send("ready", undefined);
   }, []);
 
   useEffect(() => {

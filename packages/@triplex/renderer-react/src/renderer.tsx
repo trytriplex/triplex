@@ -68,7 +68,7 @@ export function Renderer({
       controls: [],
     });
 
-    send("ready-to-receive", undefined);
+    send("ready", undefined);
   }, []);
 
   return (

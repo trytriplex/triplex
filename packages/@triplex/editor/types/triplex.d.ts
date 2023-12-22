@@ -41,6 +41,7 @@ declare interface Window {
         | "view-logs"
         | "close-project"
         | "show-devtools"
+        | "show-app-dir"
     ) => void;
     sessionId: string;
     setMenu: (menu: import("electron").MenuItemConstructorOptions[]) => void;
