@@ -6,13 +6,13 @@
  */
 import { useLazySubscription } from "@triplex/ws/react";
 import { Suspense, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
 import { cn } from "../ds/cn";
 import { Drawer } from "../ds/drawer";
 import { ScrollContainer } from "../ds/scroll-container";
 import { useEditor } from "../stores/editor";
 import { useOverlayStore } from "../stores/overlay";
 import { StringInput } from "./string-input";
+import { AssetThumbnail } from "./thumbnail";
 
 function normalize(str: string | undefined): string {
   if (!str) {
@@ -24,7 +24,7 @@ function normalize(str: string | undefined): string {
 
 function Scenes({ filter = "" }: { filter?: string }) {
   const files = useLazySubscription("/scene");
-  const { exportName, open, path } = useEditor();
+  const { open, path, set } = useEditor();
   const { show } = useOverlayStore();
 
   function matchesFilter(
@@ -67,37 +67,49 @@ function Scenes({ filter = "" }: { filter?: string }) {
           return null;
         }
 
+        const isPathOpen = path === file.path;
+
         return (
           <div
             className={cn([
-              path === file.path && "-my-1 rounded-lg bg-neutral-800/50 py-1",
+              "p-1",
+              isPathOpen && "rounded-lg bg-neutral-800/50",
             ])}
             key={file.path}
           >
-            <small className="block px-2 text-xs text-neutral-400">
+            <small
+              className={cn([
+                isPathOpen ? "text-blue-400" : "text-neutral-300",
+                "mb-0.5 block px-0.5 text-xs",
+              ])}
+            >
               {file.path.replace(files.cwd + "/", "")}
             </small>
 
-            {file.exports.map((exp) => (
-              <Link
-                className={cn([
-                  path === file.path && exportName === exp.exportName
-                    ? "bg-neutral-800 text-blue-400"
-                    : "text-neutral-300",
-                  "block select-none rounded-sm px-2 py-0.5 text-base outline-1 outline-blue-400 hover:bg-white/5 focus-visible:outline active:bg-white/10",
-                ])}
-                key={exp.exportName}
-                onClick={() => {
-                  show(false);
-                  open(file.path, exp.exportName);
-                }}
-                to={{
-                  search: `?path=${file.path}&exportName=${exp.exportName}`,
-                }}
-              >
-                <div>{exp.name}</div>
-              </Link>
-            ))}
+            <div className="flex flex-wrap gap-1">
+              {file.exports.map((exp) => (
+                <AssetThumbnail
+                  actionId="open_component"
+                  asset={{
+                    category: "",
+                    exportName: exp.exportName,
+                    name: exp.name,
+                    path: file.path,
+                    type: "custom",
+                  }}
+                  key={exp.exportName}
+                  onClick={() => {
+                    show(false);
+                    open(file.path, exp.exportName);
+                    set({
+                      encodedProps: "",
+                      exportName: exp.exportName,
+                      path: file.path,
+                    });
+                  }}
+                />
+              ))}
+            </div>
           </div>
         );
       })}

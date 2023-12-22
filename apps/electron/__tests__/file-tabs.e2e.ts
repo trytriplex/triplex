@@ -21,7 +21,7 @@ test("opening another file", async ({ editor }) => {
   await editor.waitForScene();
   await editor.fileTabs.openFileButton.click();
 
-  await editor.fileDrawer.fileLink("Box").click();
+  await editor.fileDrawer.thumbnail("Box").click();
 
   await expect(editor.scenePanel.heading).toHaveText("Box");
 });

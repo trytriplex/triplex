@@ -11,7 +11,7 @@ test("render error", async ({ editor }) => {
   await editor.waitForScene();
   await editor.fileTabs.openFileButton.click();
 
-  await editor.fileDrawer.fileLink("RenderError").click();
+  await editor.fileDrawer.thumbnail("Render Error").click();
 
   await expect(editor.errorOverlay.locator).toBeVisible();
 });
@@ -20,7 +20,7 @@ test("syntax error", async ({ editor }) => {
   await editor.waitForScene();
   await editor.fileTabs.openFileButton.click();
 
-  await editor.fileDrawer.fileLink("SyntaxError").click();
+  await editor.fileDrawer.thumbnail("Syntax Error").click();
 
   await expect(editor.errorOverlay.locator).toBeVisible();
 });

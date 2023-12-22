@@ -24,11 +24,11 @@ export class EditorPage {
     const locator = this.page.getByTestId("file-drawer");
 
     return {
-      fileLink(name: string) {
-        const fileLocator = locator.getByRole("link", { name });
+      locator,
+      thumbnail(name: string) {
+        const fileLocator = locator.getByRole("button", { name });
         return fileLocator;
       },
-      locator,
     };
   }
 

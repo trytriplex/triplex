@@ -4,12 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import {
-  CaretDownIcon,
-  CaretRightIcon,
-  CodeIcon,
-  OpenInNewWindowIcon,
-} from "@radix-ui/react-icons";
+import { CaretDownIcon, CaretRightIcon } from "@radix-ui/react-icons";
 import type {
   Folder as FolderType,
   ProjectAsset as ProjectAssetType,
@@ -21,30 +16,25 @@ import {
   useLazySubscription,
   useSubscription,
 } from "@triplex/ws/react";
-import { createContext, Suspense, useContext, useRef, useState } from "react";
-import { IconButton } from "../ds/button";
+import { createContext, Suspense, useContext, useState } from "react";
 import { cn } from "../ds/cn";
 import { Drawer } from "../ds/drawer";
-import { Interactive } from "../ds/interactive";
 import { Pressable } from "../ds/pressable";
 import { ScrollContainer } from "../ds/scroll-container";
 import { useAssetsDrawer } from "../stores/assets-drawer";
 import { useEditor } from "../stores/editor";
-import { titleCase } from "../util/string";
 import useEvent from "../util/use-event";
 import { StringInput } from "./string-input";
+import { AssetThumbnail } from "./thumbnail";
 
 function ProjectAsset({
   asset,
-  name,
   onClick,
 }: {
   asset: ProjectHostComponent | ProjectCustomComponent | ProjectAssetType;
-  name: string;
   onClick: () => void;
 }) {
   const { addComponent } = useEditor();
-  const ref = useRef<HTMLDivElement>(null);
   const target = useAssetsDrawer((store) => store.shown);
 
   const onClickHandler = () => {
@@ -57,7 +47,7 @@ function ProjectAsset({
       case "host":
         addComponent({
           target: targetData,
-          type: { name, props: {}, type: "host" },
+          type: { name: asset.name, props: {}, type: "host" },
         });
         break;
 
@@ -91,66 +81,11 @@ function ProjectAsset({
   };
 
   return (
-    <Pressable
-      className="group relative h-24 w-24 rounded bg-white/5"
-      onPress={onClickHandler}
-      pressActionId="confirm_add_element"
-      ref={ref}
-    >
-      {asset.type === "custom" && (
-        <img
-          className="absolute inset-0 -z-10 h-full w-full rounded-[inherit] object-cover"
-          data-testid={`Thumbnail(${asset.name})`}
-          loading="lazy"
-          src={`http://localhost:${
-            window.triplex.env.ports.server
-          }/thumbnail/${encodeURIComponent(asset.path)}/${asset.exportName}`}
-        />
-      )}
-      <div
-        className={cn([
-          asset.type === "custom"
-            ? "bottom-0.5 left-0 right-0 opacity-50 group-hover:opacity-100 group-focus:opacity-100"
-            : "inset-0 items-center",
-          "absolute flex justify-center break-words p-0.5 text-center text-xs",
-        ])}
-      >
-        <div>
-          <span className="rounded bg-neutral-900 box-decoration-clone px-0.5 text-neutral-300">
-            {asset.type === "asset" ? name : titleCase(name)}
-          </span>
-        </div>
-      </div>
-      <Interactive />
-      <div className="absolute right-0 top-0 flex p-0.5">
-        {process.env.NODE_ENV === "development" && asset.type === "custom" && (
-          <IconButton
-            actionId="open_render_debug"
-            icon={OpenInNewWindowIcon}
-            label="Debug: Open thumbnail render"
-            onClick={() =>
-              window.triplex.openLink(
-                `http://localhost:${
-                  window.triplex.env.ports.client
-                }/__thumbnail?path=${encodeURIComponent(
-                  asset.path
-                )}&exportName=${asset.exportName}`
-              )
-            }
-            size="sm"
-          />
-        )}
-        {asset.type === "custom" && (
-          <IconButton
-            actionId="view_source_assets_drawer"
-            icon={CodeIcon}
-            label="View source"
-            onClick={() => window.triplex.openIDE(asset.path)}
-            size="sm"
-          />
-        )}
-      </div>
-    </Pressable>
+    <AssetThumbnail
+      actionId="confirm_add_element"
+      asset={asset}
+      onClick={onClickHandler}
+    />
   );
 }
 
@@ -185,6 +120,7 @@ function Folder({
             : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
           "relative flex w-full cursor-default items-center gap-0.5 whitespace-nowrap py-1 text-start text-sm",
         ])}
+        focusRing="inset"
         onPress={() => {
           if (hasChildrenFolders) {
             if (filesCount > 0 && !isSelected) {
@@ -314,7 +250,6 @@ function ComponentFolder({
                 <ProjectAsset
                   asset={element}
                   key={element.path}
-                  name={element.name}
                   onClick={onClose}
                 />
               );
@@ -324,7 +259,6 @@ function ComponentFolder({
                 <ProjectAsset
                   asset={element}
                   key={element.path + element.exportName}
-                  name={element.name}
                   onClick={onClose}
                 />
               );
@@ -334,7 +268,6 @@ function ComponentFolder({
                 <ProjectAsset
                   asset={element}
                   key={element.name}
-                  name={element.name}
                   onClick={onClose}
                 />
               );

@@ -21,6 +21,7 @@ export const Pressable = forwardRef<
     children?: React.ReactNode;
     className?: string;
     doublePressActionId?: string;
+    focusRing?: "inset" | "default";
     label?: string;
     onBlur?: () => void;
     onDoublePress?: () => void;
@@ -38,6 +39,7 @@ export const Pressable = forwardRef<
       children,
       className,
       doublePressActionId,
+      focusRing,
       label,
       onBlur,
       onDoublePress,
@@ -92,7 +94,8 @@ export const Pressable = forwardRef<
       <div
         aria-label={label}
         className={cn([
-          "cursor-default select-none outline-1 -outline-offset-1 outline-blue-400 focus-visible:outline",
+          focusRing === "inset" && "-outline-offset-1",
+          "cursor-default select-none outline-1 outline-blue-400 focus-visible:outline",
           className,
         ])}
         data-testid={testId}
