@@ -11,8 +11,8 @@ import { createPkgManagerDialog } from "./dialog";
 import { env } from "./env";
 import { indeterminate } from "./progress-bar";
 
-export async function showCreateDialog() {
-  const { canceled, filePaths } = await dialog.showOpenDialog({
+export async function showCreateDialog(browserWindow: BrowserWindow) {
+  const { canceled, filePaths } = await dialog.showOpenDialog(browserWindow, {
     buttonLabel: "Create",
     properties: ["createDirectory", "openDirectory"],
   });

@@ -17,6 +17,7 @@ import {
   Menu,
   shell,
   type MenuItemConstructorOptions,
+  type OpenDialogOptions,
 } from "electron";
 import { autoUpdater } from "electron-updater";
 import { join, resolve, sep } from "upath";
@@ -423,11 +424,16 @@ async function main() {
   async function openProjectDialog(
     message?: string
   ): Promise<string | undefined> {
-    const { canceled, filePaths } = await dialog.showOpenDialog({
+    const browserWindow = welcomeWindow || activeProjectWindow;
+    const dialogProps = {
       message,
       properties: ["openDirectory"],
       title: "Open Project",
-    });
+    } satisfies OpenDialogOptions;
+
+    const { canceled, filePaths } = await (browserWindow
+      ? dialog.showOpenDialog(browserWindow, dialogProps)
+      : dialog.showOpenDialog(dialogProps));
 
     const path = filePaths.at(0);
 
@@ -466,7 +472,7 @@ async function main() {
   }
 
   async function createTriplexProject(browserWindow: BrowserWindow) {
-    const filename = await showCreateDialog();
+    const filename = await showCreateDialog(browserWindow);
     if (filename) {
       try {
         const result = await createProject(browserWindow, filename);
