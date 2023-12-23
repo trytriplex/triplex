@@ -349,11 +349,6 @@ export function ${componentName}() {
           };
         }
 
-        if (!modifiedSourceFiles.has(sourceFile)) {
-          // This source file isn't modified, nothing to do!
-          return;
-        }
-
         const exportName = openedSourceFiles.get(sourceFile);
 
         await persistSourceFile({
