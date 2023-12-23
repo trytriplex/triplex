@@ -171,21 +171,49 @@ async function findTriplexFolder(path: string): Promise<string | undefined> {
 
 async function showSaveDialog(
   activeWindow: BrowserWindow,
-  defaultPath: string
-) {
+  defaultPath: string,
+  cwd: string
+): Promise<string | undefined> {
   const { filePath } = await dialog.showSaveDialog(activeWindow, {
     defaultPath,
     properties: ["showOverwriteConfirmation", "dontAddToRecent"],
   });
 
-  return filePath;
+  if (filePath) {
+    if (filePath.startsWith(cwd)) {
+      return filePath;
+    }
+
+    const { response } = await dialog.showMessageBox({
+      buttons: ["Save as...", "Learn more", "Cancel"],
+      defaultId: 0,
+      detail: "Files can only be saved within the open project folder.",
+      message: "Cannot save outside of project folder",
+      type: "error",
+    });
+
+    if (response === 0) {
+      return showSaveDialog(activeWindow, defaultPath, cwd);
+    }
+
+    if (response === 1) {
+      shell.openExternal(
+        "https://triplex.dev/docs/supporting/saving-outside-cwd"
+      );
+    }
+  }
+
+  return undefined;
 }
 
-function applyWindowIpcHandlers(activeWindow: BrowserWindow) {
+function applyWindowIpcHandlers(
+  activeWindow: BrowserWindow,
+  { cwd }: { cwd: string }
+) {
   activeWindow.webContents.ipc.handle(
     "show-save-dialog",
     (_, filename: string) => {
-      return showSaveDialog(activeWindow, filename);
+      return showSaveDialog(activeWindow, filename, cwd);
     }
   );
 
@@ -357,7 +385,7 @@ async function main() {
     }
 
     connectMenuToRenderer(activeProjectWindow);
-    applyWindowIpcHandlers(activeProjectWindow);
+    applyWindowIpcHandlers(activeProjectWindow, config);
 
     log.info("forking");
 
