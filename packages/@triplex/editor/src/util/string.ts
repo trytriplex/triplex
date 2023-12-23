@@ -34,3 +34,15 @@ export function stringifyJSON(value: unknown): string {
 
   return str.replaceAll('"__UNDEFINED__"', "undefined");
 }
+
+export function filename(path: string): string {
+  return path.split("/").at(-1)!;
+}
+
+export function normalize(str: string | undefined): string {
+  if (!str) {
+    return "";
+  }
+
+  return str.replaceAll("-", "").toLowerCase();
+}

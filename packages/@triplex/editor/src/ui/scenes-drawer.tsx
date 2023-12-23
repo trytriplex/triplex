@@ -11,20 +11,13 @@ import { Drawer } from "../ds/drawer";
 import { ScrollContainer } from "../ds/scroll-container";
 import { useEditor } from "../stores/editor";
 import { useOverlayStore } from "../stores/overlay";
+import { filename, normalize } from "../util/string";
 import { StringInput } from "./string-input";
 import { AssetThumbnail } from "./thumbnail";
 
-function normalize(str: string | undefined): string {
-  if (!str) {
-    return "";
-  }
-
-  return str.replaceAll("-", "").toLowerCase();
-}
-
 function Scenes({ filter = "" }: { filter?: string }) {
   const files = useLazySubscription("/scene");
-  const { open, path, set } = useEditor();
+  const { open, set } = useEditor();
   const { show } = useOverlayStore();
 
   function matchesFilter(
@@ -43,7 +36,7 @@ function Scenes({ filter = "" }: { filter?: string }) {
   }
 
   return (
-    <div className="flex flex-col gap-2 px-2 pt-2" data-testid="file-drawer">
+    <div className="flex flex-col gap-8 px-4 pt-2" data-testid="file-drawer">
       {files.scenes.length === 0 && (
         <div className="px-2 pb-2.5 text-sm italic text-neutral-400">
           No files were found that can be opened. Your config might be invalid.{" "}
@@ -62,55 +55,56 @@ function Scenes({ filter = "" }: { filter?: string }) {
         </div>
       )}
 
-      {files.scenes.map((file) => {
+      {files.scenes.map((file, index) => {
         if (!matchesFilter(filter, file)) {
           return null;
         }
 
-        const isPathOpen = path === file.path;
+        const isLastElement = index === files.scenes.length - 1;
 
         return (
-          <div
-            className={cn([
-              "p-1",
-              isPathOpen && "rounded-lg bg-neutral-800/50",
-            ])}
-            key={file.path}
-          >
-            <small
-              className={cn([
-                isPathOpen ? "text-blue-400" : "text-neutral-300",
-                "mb-0.5 block px-0.5 text-xs",
-              ])}
-            >
-              {file.path.replace(files.cwd + "/", "")}
-            </small>
+          <>
+            <div className="select-none" key={file.path}>
+              <div className="mb-3 text-base font-medium text-neutral-300">
+                {filename(file.path)}
+              </div>
 
-            <div className="flex flex-wrap gap-1">
-              {file.exports.map((exp) => (
-                <AssetThumbnail
-                  actionId="open_component"
-                  asset={{
-                    category: "",
-                    exportName: exp.exportName,
-                    name: exp.name,
-                    path: file.path,
-                    type: "custom",
-                  }}
-                  key={exp.exportName}
-                  onClick={() => {
-                    show(false);
-                    open(file.path, exp.exportName);
-                    set({
-                      encodedProps: "",
+              <div className="flex flex-wrap gap-3">
+                {file.exports.map((exp) => (
+                  <AssetThumbnail
+                    actionId="open_component"
+                    asset={{
+                      category: "",
                       exportName: exp.exportName,
+                      name: exp.name,
                       path: file.path,
-                    });
-                  }}
-                />
-              ))}
+                      type: "custom",
+                    }}
+                    key={exp.exportName}
+                    onClick={() => {
+                      open(file.path, exp.exportName);
+                      show(false);
+                      set(
+                        {
+                          encodedProps: "",
+                          exportName: exp.exportName,
+                          path: file.path,
+                        },
+                        { skipTransition: true }
+                      );
+                    }}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
+
+            <div
+              className={cn([
+                "-mx-4 border-b",
+                isLastElement ? "border-transparent" : "border-neutral-800",
+              ])}
+            />
+          </>
         );
       })}
     </div>
@@ -141,13 +135,14 @@ export function ScenesDrawer() {
         <div className="px-3 py-2">
           <StringInput
             autoFocus
-            label="Filter components..."
+            label="Filter files, components..."
             name="component-filter"
             onChange={(value) => setFilter(normalize(value))}
           />
         </div>
 
         <ScrollContainer>
+          <div className="h-2" />
           <Scenes filter={filter} />
           <div className="h-2" />
         </ScrollContainer>

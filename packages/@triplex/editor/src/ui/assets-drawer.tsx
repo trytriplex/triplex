@@ -238,7 +238,7 @@ function ComponentFolder({
 
   return (
     <ScrollContainer className="min-h-0">
-      <div className="flex flex-wrap gap-2 px-2 py-2">
+      <div className="flex flex-wrap gap-3 p-3">
         {filteredComponents.map((element) => {
           if (element === null) {
             return null;
@@ -308,13 +308,11 @@ function ComponentsDrawer({
           <div className="flex w-60 flex-shrink-0 flex-col border-r border-neutral-800">
             <div className="p-2">
               <StringInput
-                label="Filter selection..."
+                label="Filter selected folder..."
                 name="filter-elements"
                 onChange={handleFilterChange}
               />
             </div>
-
-            <div className="border-t border-neutral-800" />
 
             <ScrollContainer>
               <div className="h-1" />

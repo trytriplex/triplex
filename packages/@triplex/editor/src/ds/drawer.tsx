@@ -34,8 +34,7 @@ export function Drawer({
           className={cn([
             mode === "blocking" && "bg-neutral-900",
             mode === "transparent" && "bg-neutral-900/[97%]",
-            attach === "left" &&
-              "slide-in bottom-0 left-0 w-[20.1rem] border-r",
+            attach === "left" && "slide-in bottom-0 left-0 w-60 border-r",
             attach === "left" && "top-8",
             attach === "bottom" &&
               "slide-up bottom-2 left-2 right-2 h-48 rounded-lg border",

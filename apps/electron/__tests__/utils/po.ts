@@ -201,7 +201,7 @@ export class EditorPage {
 
         return {
           addAsset: async (name: string) => {
-            const asset = locator.getByText(name, { exact: true });
+            const asset = locator.getByRole("button", { exact: true, name });
             await asset.click();
           },
           openFolder: async (
