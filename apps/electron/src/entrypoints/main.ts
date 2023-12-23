@@ -21,7 +21,7 @@ import {
   type OpenDialogOptions,
 } from "electron";
 import { autoUpdater } from "electron-updater";
-import { join, resolve, sep } from "upath";
+import { join, resolve } from "upath";
 import { createProject, showCreateDialog } from "../util/create";
 import { ensureDepsInstall } from "../util/deps";
 import { getInitialComponent } from "../util/files";
@@ -155,7 +155,9 @@ function prepareMenu() {
 }
 
 async function findTriplexFolder(path: string): Promise<string | undefined> {
-  if (path === sep) {
+  const next = resolve(path, "..");
+
+  if (path === next) {
     // We've traversed all the way up the folder path and found nothing.
     // Bail out!
     return undefined;
@@ -166,7 +168,7 @@ async function findTriplexFolder(path: string): Promise<string | undefined> {
     return path;
   }
 
-  return findTriplexFolder(resolve(path, ".."));
+  return findTriplexFolder(next);
 }
 
 async function showSaveDialog(
