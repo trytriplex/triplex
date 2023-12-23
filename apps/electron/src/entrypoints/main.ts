@@ -17,6 +17,7 @@ import {
   Menu,
   shell,
   type MenuItemConstructorOptions,
+  type MessageBoxOptions,
   type OpenDialogOptions,
 } from "electron";
 import { autoUpdater } from "electron-updater";
@@ -323,14 +324,17 @@ async function main() {
       }
     } catch (error_) {
       const error = error_ as Error;
-      const { response } = await dialog.showMessageBox({
-        buttons: ["OK", "Learn more"],
-        cancelId: -1,
-        defaultId: 0,
-        detail: error.message,
-        message: "Could not install project dependencies",
-        type: "error",
-      });
+      const { response } = await dialog.showMessageBox(
+        welcomeWindow || activeProjectWindow,
+        {
+          buttons: ["OK", "Learn more"],
+          cancelId: -1,
+          defaultId: 0,
+          detail: error.message,
+          message: "Could not install project dependencies",
+          type: "error",
+        }
+      );
 
       if (response === 1) {
         shell.openExternal(
@@ -421,12 +425,11 @@ async function main() {
     }
   }
 
-  async function openProjectDialog(
-    message?: string
-  ): Promise<string | undefined> {
+  async function openProjectDialog(): Promise<string | undefined> {
     const browserWindow = welcomeWindow || activeProjectWindow;
     const dialogProps = {
-      message,
+      message:
+        "Select a folder that contains a Triplex config. If you don't have one yet create / initialize one on the welcome screen.",
       properties: ["openDirectory"],
       title: "Open Project",
     } satisfies OpenDialogOptions;
@@ -445,24 +448,38 @@ async function main() {
         return foundFolder;
       }
 
-      const result = await dialog.showMessageBox({
-        buttons: ["Create a project...", "Open another project...", "Cancel"],
-        detail: "Want to create a project instead?",
-        message: "Project could not be found",
+      const messageProps = {
+        buttons: [
+          "Create / initialize project...",
+          "Open another project...",
+          "Learn more",
+          "Cancel",
+        ],
+        detail:
+          "A config must be present in the selected or parent folders. When wanting to open an existing project for the first time make sure to initialize it.",
+        message: "Triplex config not found",
         type: "warning",
-      });
+      } satisfies MessageBoxOptions;
+
+      const result = await (browserWindow
+        ? dialog.showMessageBox(browserWindow, messageProps)
+        : dialog.showMessageBox(messageProps));
 
       switch (result.response) {
         case 0: {
           if (welcomeWindow) {
             createTriplexProject(welcomeWindow);
           }
-
-          return undefined;
+          return;
         }
 
         case 1: {
           return openProjectDialog();
+        }
+
+        case 2: {
+          shell.openExternal("https://triplex.dev/docs/setup/manual-setup");
+          return;
         }
 
         default:

@@ -14,7 +14,10 @@ import { indeterminate } from "./progress-bar";
 export async function showCreateDialog(browserWindow: BrowserWindow) {
   const { canceled, filePaths } = await dialog.showOpenDialog(browserWindow, {
     buttonLabel: "Create",
+    message:
+      "To create a new project select an empty folder, else select an existing project folder to initialize Triplex in.",
     properties: ["createDirectory", "openDirectory"],
+    title: "Create / Initialize Project",
   });
 
   if (canceled || !filePaths[0]) {
