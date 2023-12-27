@@ -2,6 +2,7 @@
   "overview": "Overview",
   "macos": "macOS",
   "windows": "Windows",
+  "linux": "Linux",
   "manual-setup": "",
   "javascript-projects": ""
 }
