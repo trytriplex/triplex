@@ -1,5 +1,29 @@
 # @triplex/client
 
+## 0.62.0
+
+### Minor Changes
+
+- 3612434: Add thumbnail support for renderers.
+
+### Patch Changes
+
+- bad0a57: Triplex now finds random open ports every time a project is opened
+  instead of using hardcoded ones.
+- cea76c2: Simplify bridge event names.
+- 7313788: Internal refactor.
+- fe7c5f9: Config now passed to renderer func.
+- Updated dependencies [cea76c2]
+- Updated dependencies [99b97cf]
+- Updated dependencies [cdbdc16]
+- Updated dependencies [3612434]
+- Updated dependencies [99b97cf]
+- Updated dependencies [7313788]
+- Updated dependencies [fe7c5f9]
+  - @triplex/renderer-r3f@0.62.0
+  - @triplex/bridge@0.62.0
+  - @triplex/renderer-react@0.62.0
+
 ## 0.61.2
 
 ### Patch Changes

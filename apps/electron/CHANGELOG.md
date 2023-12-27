@@ -1,5 +1,49 @@
 # @triplex/electron
 
+## 0.62.0
+
+### Minor Changes
+
+- 273c586: Create / open project flow has had its UX changed to improve
+  understanding what is actually happening.
+- 0909731: Add Linux support.
+- 3612434: Add thumbnail support for renderers.
+
+### Patch Changes
+
+- bad0a57: Triplex now finds random open ports every time a project is opened
+  instead of using hardcoded ones.
+- 0de7465: Saving files outside of the project folder is now presented with an
+  error message instead of an exception.
+- cea76c2: Simplify bridge event names.
+- 547c72d: Finding Triplex config when opening a project now stops when getting
+  to the root directory instead of going forever.
+- 2ec38a1: Fix ide link not opening.
+- 4e9e389: Open project modal is now tied to a browser window if available.
+- 0909731: Fix hotkeys firing when they shouldn't.
+- 0ab691d: Inputs no-longer fire accelerators when focused.
+- Updated dependencies [bad0a57]
+- Updated dependencies [cea76c2]
+- Updated dependencies [11a548a]
+- Updated dependencies [b629d57]
+- Updated dependencies [e2608a8]
+- Updated dependencies [273c586]
+- Updated dependencies [0909731]
+- Updated dependencies [99b97cf]
+- Updated dependencies [490aaf1]
+- Updated dependencies [b629d57]
+- Updated dependencies [0909731]
+- Updated dependencies [1d7e53f]
+- Updated dependencies [cdbdc16]
+- Updated dependencies [3612434]
+- Updated dependencies [c2a0640]
+- Updated dependencies [7313788]
+- Updated dependencies [fe7c5f9]
+  - @triplex/client@0.62.0
+  - @triplex/editor@0.62.0
+  - @triplex/server@0.62.0
+  - create-triplex-project@0.62.0
+
 ## 0.61.2
 
 ### Patch Changes

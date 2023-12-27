@@ -1,5 +1,19 @@
 # @triplex/bridge
 
+## 0.62.0
+
+### Minor Changes
+
+- 3612434: Add thumbnail support for renderers.
+
+### Patch Changes
+
+- cea76c2: Simplify bridge event names.
+- 99b97cf: Remove need for router inside the r3f renderer.
+- cdbdc16: Remove redundant bridge events for element props.
+- 7313788: Internal refactor.
+- fe7c5f9: Config now passed to renderer func.
+
 ## 0.61.2
 
 ## 0.61.1

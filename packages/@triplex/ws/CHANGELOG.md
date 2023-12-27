@@ -1,5 +1,12 @@
 # @triplex/ws-client
 
+## 0.62.0
+
+### Patch Changes
+
+- bad0a57: Triplex now finds random open ports every time a project is opened
+  instead of using hardcoded ones.
+
 ## 0.61.2
 
 ## 0.61.1

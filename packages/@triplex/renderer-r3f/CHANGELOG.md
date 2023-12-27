@@ -1,5 +1,31 @@
 # @triplex/renderer-r3f
 
+## 0.62.0
+
+### Minor Changes
+
+- 3612434: Add thumbnail support for renderers.
+
+### Patch Changes
+
+- cea76c2: Simplify bridge event names.
+- 99b97cf: Remove need for router inside the r3f renderer.
+- cdbdc16: Remove redundant bridge events for element props.
+- 99b97cf: Error boundaries now reset when the source module and/or open
+  component changes enabling the editor to remain functional even if an error
+  has ocurred.
+- 7313788: Internal refactor.
+- fe7c5f9: Config now passed to renderer func.
+- Updated dependencies [bad0a57]
+- Updated dependencies [cea76c2]
+- Updated dependencies [99b97cf]
+- Updated dependencies [cdbdc16]
+- Updated dependencies [3612434]
+- Updated dependencies [7313788]
+- Updated dependencies [fe7c5f9]
+  - @triplex/ws@0.62.0
+  - @triplex/bridge@0.62.0
+
 ## 0.61.2
 
 ### Patch Changes

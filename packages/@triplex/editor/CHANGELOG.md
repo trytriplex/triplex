@@ -1,5 +1,38 @@
 # @triplex/editor
 
+## 0.62.0
+
+### Minor Changes
+
+- 11a548a: File browser now displays thumbnails.
+- 273c586: Create / open project flow has had its UX changed to improve
+  understanding what is actually happening.
+- 0909731: Add Linux support.
+- 3612434: Add thumbnail support for renderers.
+
+### Patch Changes
+
+- bad0a57: Triplex now finds random open ports every time a project is opened
+  instead of using hardcoded ones.
+- cea76c2: Simplify bridge event names.
+- b629d57: Component thumbnail has had its design simplified.
+- e2608a8: Editor scene now has improved contrast against the editor and tabs.
+- 0909731: Fix hotkeys firing when they shouldn't.
+- 99b97cf: Remove need for router inside the r3f renderer.
+- b629d57: Open component drawer now has distinct sections for files.
+- 1d7e53f: Editor now flushes events back to the editor when the "ready" event
+  is called multiple times.
+- cdbdc16: Remove redundant bridge events for element props.
+- Updated dependencies [bad0a57]
+- Updated dependencies [cea76c2]
+- Updated dependencies [99b97cf]
+- Updated dependencies [cdbdc16]
+- Updated dependencies [3612434]
+- Updated dependencies [7313788]
+- Updated dependencies [fe7c5f9]
+  - @triplex/ws@0.62.0
+  - @triplex/bridge@0.62.0
+
 ## 0.61.2
 
 ### Patch Changes

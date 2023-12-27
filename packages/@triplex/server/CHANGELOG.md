@@ -1,5 +1,19 @@
 # @triplex/server
 
+## 0.62.0
+
+### Minor Changes
+
+- 3612434: Add thumbnail support for renderers.
+
+### Patch Changes
+
+- bad0a57: Triplex now finds random open ports every time a project is opened
+  instead of using hardcoded ones.
+- 490aaf1: New files and components now display a box.
+- c2a0640: Editing children elements now opens the elements file if not yet
+  open.
+
 ## 0.61.2
 
 ### Patch Changes
