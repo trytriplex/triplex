@@ -21,6 +21,8 @@ export function DownloadButton() {
       setPlatform("macOS (ARM64)");
     } else if (navigator.platform.match("Win")) {
       setPlatform("Windows");
+    } else if (navigator.platform.match("Linux")) {
+      setPlatform("Linux (ARM64)");
     } else {
       setPlatform("Unsupported");
     }
@@ -45,6 +47,12 @@ export function DownloadButton() {
         );
 
         setAssets(windows);
+      } else if (navigator.platform.match("Linux")) {
+        const linux: Asset[] = json.assets.filter((asset: Asset) =>
+          asset.name.endsWith(".AppImage")
+        );
+
+        setAssets(linux);
       }
     }
 
@@ -71,7 +79,7 @@ export function DownloadButton() {
 
       {platform === "Unsupported" && (
         <p className="pt-3 text-center text-sm text-neutral-400">
-          Triplex supports macOS and Windows.
+          Triplex supports macOS, Windows, and Linux.
         </p>
       )}
 
