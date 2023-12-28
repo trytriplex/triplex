@@ -18,6 +18,6 @@
     "strict": true,
     "types": ["@react-three/fiber"]
   },
-  "include": ["."],
+  "include": [".", ".triplex/*.tsx"],
   "exclude": ["node_modules"]
 }
