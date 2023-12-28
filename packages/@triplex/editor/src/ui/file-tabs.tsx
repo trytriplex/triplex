@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import {
+  Component1Icon,
   Cross2Icon,
   CubeIcon,
   EnterFullScreenIcon,
@@ -253,7 +254,7 @@ export function FileTabs() {
     >
       <IconButton
         actionId="open-file"
-        icon={CubeIcon}
+        icon={() => <Component1Icon className="rotate-45" />}
         label="Open Component..."
         onClick={() => showOverlay("open-scene")}
       />

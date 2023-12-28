@@ -44,5 +44,5 @@ export function normalize(str: string | undefined): string {
     return "";
   }
 
-  return str.replaceAll("-", "").toLowerCase();
+  return str.replaceAll("-", "").replaceAll(" ", "").toLowerCase();
 }

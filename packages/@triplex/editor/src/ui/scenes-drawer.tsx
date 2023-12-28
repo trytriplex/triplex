@@ -6,7 +6,6 @@
  */
 import { useLazySubscription } from "@triplex/ws/react";
 import { Fragment, Suspense, useEffect, useState } from "react";
-import { cn } from "../ds/cn";
 import { Drawer } from "../ds/drawer";
 import { ScrollContainer } from "../ds/scroll-container";
 import { useEditor } from "../stores/editor";
@@ -20,16 +19,17 @@ function Scenes({ filter = "" }: { filter?: string }) {
   const { open, set } = useEditor();
   const { show } = useOverlayStore();
 
-  function matchesFilter(
-    filter: string,
-    file: (typeof files)["scenes"][0]
-  ): boolean {
-    if (normalize(file.name).includes(filter)) {
-      return true;
+  function matches(filter: string, file: (typeof files)["scenes"][0]) {
+    const normalizedFilter = normalize(filter);
+
+    if (
+      file.exports.some((exp) => normalize(exp.name).includes(normalizedFilter))
+    ) {
+      return "specific";
     }
 
-    if (file.exports.some((exp) => normalize(exp.name).includes(filter))) {
-      return true;
+    if (normalize(file.name).includes(normalizedFilter)) {
+      return "global";
     }
 
     return false;
@@ -55,12 +55,11 @@ function Scenes({ filter = "" }: { filter?: string }) {
         </div>
       )}
 
-      {files.scenes.map((file, index) => {
-        if (!matchesFilter(filter, file)) {
+      {files.scenes.map((file) => {
+        const match = matches(filter, file);
+        if (!match) {
           return null;
         }
-
-        const isLastElement = index === files.scenes.length - 1;
 
         return (
           <Fragment key={file.path}>
@@ -70,40 +69,44 @@ function Scenes({ filter = "" }: { filter?: string }) {
               </div>
 
               <div className="flex flex-wrap gap-3">
-                {file.exports.map((exp) => (
-                  <AssetThumbnail
-                    actionId="open_component"
-                    asset={{
-                      category: "",
-                      exportName: exp.exportName,
-                      name: exp.name,
-                      path: file.path,
-                      type: "custom",
-                    }}
-                    key={exp.exportName}
-                    onClick={() => {
-                      open(file.path, exp.exportName);
-                      show(false);
-                      set(
-                        {
-                          encodedProps: "",
-                          exportName: exp.exportName,
-                          path: file.path,
-                        },
-                        { skipTransition: true }
-                      );
-                    }}
-                  />
-                ))}
+                {file.exports.map((exp) => {
+                  if (
+                    match === "specific" &&
+                    !normalize(exp.name).includes(normalize(filter))
+                  ) {
+                    return null;
+                  }
+
+                  return (
+                    <AssetThumbnail
+                      actionId="open_component"
+                      asset={{
+                        category: "",
+                        exportName: exp.exportName,
+                        name: exp.name,
+                        path: file.path,
+                        type: "custom",
+                      }}
+                      key={exp.exportName}
+                      onClick={() => {
+                        open(file.path, exp.exportName);
+                        show(false);
+                        set(
+                          {
+                            encodedProps: "",
+                            exportName: exp.exportName,
+                            path: file.path,
+                          },
+                          { skipTransition: true }
+                        );
+                      }}
+                    />
+                  );
+                })}
               </div>
             </div>
 
-            <div
-              className={cn([
-                "-mx-4 border-b",
-                isLastElement ? "border-transparent" : "border-neutral-800",
-              ])}
-            />
+            <div className="-mx-4 border-b border-neutral-800 last-of-type:border-transparent" />
           </Fragment>
         );
       })}

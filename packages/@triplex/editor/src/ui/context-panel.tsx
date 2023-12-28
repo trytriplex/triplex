@@ -313,7 +313,7 @@ export function ContextPanel() {
           actionId="close_context_panel"
           className="absolute right-1.5 top-3"
           icon={Cross2Icon}
-          label="Close (ESC)"
+          label="Close"
           onClick={blur}
         />
       )}

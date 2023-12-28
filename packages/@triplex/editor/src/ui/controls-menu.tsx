@@ -35,7 +35,7 @@ export function ControlsMenu() {
       <IconButton
         actionId="refresh_scene"
         icon={ResetIcon}
-        label="Reset Scene (CMD+R)"
+        label="Reset Scene"
         onClick={refresh}
       />
 
