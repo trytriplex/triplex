@@ -43,10 +43,11 @@ function Inputs() {
 
   return (
     <>
-      <div className="h-3" />
-      {props.length === 0 && (
-        <div className="px-4 pb-2.5 text-sm text-neutral-400">
-          Props declared on your provider component will appear here.{" "}
+      {props.length === 0 ? (
+        <div className="flex flex-col gap-2 px-4 py-3">
+          <span className="text-sm text-neutral-400">
+            Props declared on your provider component will appear here.
+          </span>
           <a
             className="text-sm text-blue-400"
             href="#"
@@ -56,10 +57,12 @@ function Inputs() {
               )
             }
           >
-            Learn more
+            Learn more about this feature.
           </a>
           .
         </div>
+      ) : (
+        <div className="h-3 flex-shrink-0" />
       )}
 
       {window.triplex.env.config.provider &&
@@ -118,8 +121,6 @@ export function ProviderConfig() {
       <div className="-mt-0.5 mb-2.5 px-4">
         {window.triplex.env.config.provider && (
           <>
-            <span className="mx-1.5 text-xs text-neutral-400">•</span>
-
             <IDELink
               column={0}
               line={0}
@@ -127,6 +128,8 @@ export function ProviderConfig() {
             >
               View source
             </IDELink>
+
+            <span className="mx-1.5 text-xs text-neutral-400">•</span>
           </>
         )}
         <a

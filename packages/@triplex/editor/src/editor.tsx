@@ -41,9 +41,9 @@ export function EditorFrame() {
             "grid-rows-[2rem_2.25rem_auto]"
           : // On linux hide the menu bar
             "grid-rows-[0rem_2.25rem_auto]",
-        "fixed inset-0 grid select-none grid-cols-[18rem_auto_18rem] bg-gradient-to-b from-white/5 to-neutral-900",
-        canvasLayout === "collapsed" && "grid-cols-[16.25rem_auto_16.25rem]",
-        canvasLayout === "expanded" && "grid-cols-[17.25rem_auto_17.25rem]",
+        "fixed inset-0 grid select-none bg-gradient-to-b from-white/5 to-neutral-900",
+        canvasLayout === "collapsed" && "grid-cols-[16rem_auto_16rem]",
+        canvasLayout === "expanded" && "grid-cols-[17.125rem_auto_17.125rem]",
       ])}
     >
       <TitleBar />

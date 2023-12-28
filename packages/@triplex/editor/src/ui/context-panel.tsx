@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { Cross2Icon, ResetIcon } from "@radix-ui/react-icons";
+import { Cross2Icon, EraserIcon } from "@radix-ui/react-icons";
 import { useLazySubscription } from "@triplex/ws/react";
 import { Suspense, useDeferredValue, useLayoutEffect, useState } from "react";
 import { useScreenView } from "../analytics";
@@ -206,7 +206,7 @@ function ComponentSandboxPanel({
           <div className="w-1 flex-shrink-0" />
           <IconButton
             actionId="clear_live_props"
-            icon={ResetIcon}
+            icon={EraserIcon}
             isDisabled={!hasValues}
             label="Reset Props"
             onClick={() => {
