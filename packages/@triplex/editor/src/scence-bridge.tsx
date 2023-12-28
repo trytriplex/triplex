@@ -8,6 +8,7 @@ import { compose, on } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
 import { cn } from "./ds/cn";
 import { useEditor } from "./stores/editor";
+import { usePanels } from "./stores/panels";
 import { useScene } from "./stores/scene";
 
 export interface FocusedObject {
@@ -21,6 +22,7 @@ export function SceneFrame() {
   const [blockPointerEvents, setBlockPointerEvents] = useState(false);
   const navigateTo = useScene((store) => store.navigateTo);
   const editor = useEditor();
+  const canvasLayout = usePanels((store) => store.layout);
 
   useEffect(() => {
     return on("ready", () => {
@@ -60,18 +62,24 @@ export function SceneFrame() {
   }, []);
 
   return (
-    <>
+    <div
+      className={cn([
+        "row-start-3 flex items-center justify-center",
+        canvasLayout === "collapsed" && "col-span-1 col-start-2",
+        canvasLayout === "expanded" && "col-span-3 col-start-1",
+      ])}
+    >
       <iframe
-        // This should never change during a session as it will do a full page reload.
         className={cn([
-          "col-span-full row-start-3 h-full w-full border-none",
           blockPointerEvents && "pointer-events-none",
+          "h-full w-full flex-shrink-0 border-none",
         ])}
         src={`http://localhost:${window.triplex.env.ports.client}/scene.html`}
       />
+
       <BridgeSendEvents />
       <BridgeReceiveEvents />
-    </>
+    </div>
   );
 }
 

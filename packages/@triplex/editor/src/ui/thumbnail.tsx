@@ -55,7 +55,7 @@ export function AssetThumbnail({
               <IconButton
                 actionId="open_render_debug"
                 icon={OpenInNewWindowIcon}
-                label="Debug: Open thumbnail render"
+                label="Debug: Open Render"
                 onClick={() =>
                   window.triplex.openLink(
                     `http://localhost:${

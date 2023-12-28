@@ -128,3 +128,8 @@ html {
   -webkit-box-decoration-break: clone;
   box-decoration-break: clone;
 }
+
+[data-radix-scroll-area-viewport] > div {
+  /* Hack to fix https://github.com/radix-ui/primitives/issues/926 */
+  display: block !important;
+}

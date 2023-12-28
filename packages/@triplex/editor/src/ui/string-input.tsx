@@ -95,7 +95,7 @@ export function StringInput({
           actionId="clear_prop_value"
           className="mr-0.5 hidden group-focus-within:block group-hover:block"
           icon={Cross2Icon}
-          label="Clear value"
+          label="Clear Value"
           onClick={onClear}
           size="xs"
           tabIndex={-1}

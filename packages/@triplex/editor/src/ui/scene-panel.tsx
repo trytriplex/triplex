@@ -16,7 +16,6 @@ import {
   Crosshair1Icon,
   ExclamationTriangleIcon,
   ExitIcon,
-  MixerVerticalIcon,
   Pencil2Icon,
   PlusIcon,
   TrashIcon,
@@ -40,7 +39,6 @@ import { ScrollContainer } from "../ds/scroll-container";
 import { PanelSkeleton } from "../ds/skeleton";
 import { useAssetsDrawer } from "../stores/assets-drawer";
 import { useEditor } from "../stores/editor";
-import { useProviderStore } from "../stores/provider";
 import { useScene } from "../stores/scene";
 import { useSceneState } from "../stores/scene-state";
 import {
@@ -52,7 +50,6 @@ import {
 import { IDELink } from "../util/ide";
 import { ElementActionProvider, RenderActions } from "./ecosystem/elements";
 import { ErrorBoundary } from "./error-boundary";
-import { ProviderConfig } from "./provider-config";
 import { StringInput } from "./string-input";
 
 export function ScenePanel() {
@@ -61,7 +58,7 @@ export function ScenePanel() {
 
   return (
     <div
-      className="pointer-events-auto relative w-full flex-grow overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%]"
+      className="pointer-events-auto relative w-full flex-grow overflow-hidden rounded-[inherit] border border-neutral-800 bg-neutral-900/[97%]"
       data-testid="scene-panel"
     >
       <ErrorBoundary keys={[path, exportName]}>
@@ -107,7 +104,7 @@ function ComponentHeading() {
   };
 
   return (
-    <h2 className="flex flex-row items-center pl-2 pr-4 pt-3 text-2xl font-medium text-neutral-300">
+    <h2 className="flex flex-row items-center pl-2 pr-4 pt-3 text-base font-medium text-neutral-300">
       <label className="relative mr-auto flex items-center gap-1.5 overflow-hidden rounded pl-2 pr-1 outline-1 outline-offset-1 outline-blue-400 focus-within:outline hover:bg-white/5 active:bg-white/10">
         <span
           className="overflow-hidden text-ellipsis rounded"
@@ -168,7 +165,7 @@ function AssetsDrawerButton() {
     <IconButton
       actionId="open_assets_drawer"
       icon={PlusIcon}
-      label="Add element"
+      label="Add Element"
       onClick={show}
       testId="open-assets-drawer"
     />
@@ -182,9 +179,8 @@ function SceneContents() {
 
   return (
     <div className="flex h-full flex-shrink flex-col">
-      <div className="flex p-1">
-        <ProviderConfigButton />
-        {import.meta.env.VITE_TRIPLEX_ENV === "test" && (
+      {import.meta.env.VITE_TRIPLEX_ENV === "test" && (
+        <div className="flex p-1">
           <>
             <IconButton
               actionId="undo"
@@ -199,16 +195,8 @@ function SceneContents() {
               onClick={redo}
             />
           </>
-        )}
-      </div>
-
-      <div className="max-h-40">
-        <ScrollContainer>
-          <ProviderConfig />
-        </ScrollContainer>
-      </div>
-
-      <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
+        </div>
+      )}
 
       <Suspense fallback={<PanelSkeleton />}>
         <ComponentHeading />
@@ -233,7 +221,7 @@ function SceneContents() {
               actionId="exit_component"
               className="-scale-x-100"
               icon={ExitIcon}
-              label="Exit selection"
+              label="Exit Selection"
               onClick={exitComponent}
             />
           )}
@@ -281,7 +269,7 @@ function LiveEditPropsButton() {
       actionId="live_edit_props"
       icon={Pencil2Icon}
       isSelected={isSelected || (hasState ? "partial" : false)}
-      label="Live edit props"
+      label={isSelected ? "Close Prop Controls" : "Open Prop Controls"}
       onClick={() => {
         if (isSelected) {
           blur();
@@ -289,23 +277,6 @@ function LiveEditPropsButton() {
           focus({ column: -1, line: -1, parentPath: "", path });
         }
       }}
-    />
-  );
-}
-
-function ProviderConfigButton() {
-  const key = "__provider__";
-  const hasState = useSceneState((store) => store.hasState(key));
-  const isOpen = useProviderStore((store) => store.shown);
-  const toggle = useProviderStore((store) => store.toggle);
-
-  return (
-    <IconButton
-      actionId="provider_controls"
-      icon={MixerVerticalIcon}
-      isSelected={isOpen || (hasState ? "partial" : false)}
-      label="Provider controls"
-      onClick={toggle}
     />
   );
 }
@@ -494,7 +465,7 @@ function JsxElementButton({
             selected
               ? "border-l-blue-400 bg-white/5 text-blue-400"
               : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
-            "group relative flex w-[274px] cursor-default items-center gap-1 border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
+            "group relative flex cursor-default items-center gap-1 border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
           ])}
           doublePressActionId="navigate_to_element"
           onDoublePress={navigateTo}
@@ -533,7 +504,7 @@ function JsxElementButton({
               className="-my-1 -ml-2"
               color="inherit"
               icon={isExpanded ? CaretDownIcon : CaretRightIcon}
-              label={isExpanded ? "Hide child elements" : "View child elements"}
+              label={isExpanded ? "Hide Child Elements" : "View Child Elements"}
               onClick={() => {
                 startTransition(() => {
                   setIsExpanded((prev) => !prev);
@@ -546,12 +517,13 @@ function JsxElementButton({
             <span className="w-[15px] flex-shrink-0" />
           )}
 
-          <span className="overflow-hidden text-ellipsis whitespace-nowrap">
+          <span className="overflow-hidden text-ellipsis whitespace-nowrap pr-0.5">
             {element.name}
           </span>
 
           <div
             className={cn([
+              "flex-shrink-0",
               selected ? "opacity-100" : "absolute opacity-0",
               "-my-1 -mr-0.5 ml-auto flex items-center focus-within:static focus-within:opacity-100 group-hover:static group-hover:opacity-100",
             ])}
@@ -576,7 +548,7 @@ function JsxElementButton({
               actionId="jump_to_element"
               color="inherit"
               icon={Crosshair1Icon}
-              label="Jump to this element"
+              label="Jump To Element"
               onClick={() =>
                 jumpTo({
                   column: element.column,
@@ -591,7 +563,7 @@ function JsxElementButton({
               actionId="add_child_element"
               color="inherit"
               icon={PlusIcon}
-              label="Add child element"
+              label="Add Child Element"
               onClick={() =>
                 show({
                   column: element.column,

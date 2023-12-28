@@ -30,12 +30,12 @@ export function Renderer({
             {
               icon: "camera",
               id: "enter-camera",
-              label: "Enter camera",
+              label: "Enter Camera",
             },
             {
               icon: "exit",
               id: "exit-camera",
-              label: "Exit camera",
+              label: "Exit Camera",
             },
           ],
           filter: "Camera",
@@ -80,12 +80,12 @@ export function Renderer({
             {
               icon: "grid-perspective",
               id: "orthographic",
-              label: "Switch to orthographic",
+              label: "Switch To Orthographic",
             },
             {
               icon: "grid",
               id: "perspective",
-              label: "Switch to perspective",
+              label: "Switch To Perspective",
             },
           ],
           id: "camera-switcher",

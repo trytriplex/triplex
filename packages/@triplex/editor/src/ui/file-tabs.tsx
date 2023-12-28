@@ -4,7 +4,12 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { Cross2Icon, CubeIcon } from "@radix-ui/react-icons";
+import {
+  Cross2Icon,
+  CubeIcon,
+  EnterFullScreenIcon,
+  ExitFullScreenIcon,
+} from "@radix-ui/react-icons";
 import { useLazySubscription } from "@triplex/ws/react";
 import { useCallback, useEffect, useRef } from "react";
 import { IconButton } from "../ds/button";
@@ -12,6 +17,7 @@ import { cn } from "../ds/cn";
 import { Pressable } from "../ds/pressable";
 import { useEditor } from "../stores/editor";
 import { useOverlayStore } from "../stores/overlay";
+import { usePanels } from "../stores/panels";
 import useEvent from "../util/use-event";
 
 function FallbackTab({
@@ -113,14 +119,15 @@ function FileTab({
           ? "border-blue-400 bg-white/5 text-blue-400"
           : "border-transparent text-neutral-400 hover:bg-white/5 active:bg-white/10",
       ])}
+      focusRing="inset"
       onPress={isActive ? undefined : onClickHandler}
       pressActionId="open-file"
       testId={isActive ? "active-tab" : "tab"}
       title={[
         children,
         exportName,
-        isDirty ? "Unsaved changes" : "",
-        isActive ? "Active tab" : "",
+        isDirty ? "Unsaved Changes" : "",
+        isActive ? "Active Tab" : "",
       ]
         .filter(Boolean)
         .join(" • ")}
@@ -139,7 +146,7 @@ function FileTab({
         size="sm"
       />
       <span
-        aria-label={isDirty ? "Unsaved changes" : undefined}
+        aria-label={isDirty ? "Unsaved Changes" : undefined}
         className={cn([
           "h-2 w-2 flex-shrink-0 rounded-full peer-hover:opacity-0 peer-focus:opacity-0",
           isActive ? "" : "opacity-75",
@@ -161,6 +168,8 @@ export function FileTabs() {
     { exportName: string; filePath: string; index: number }[]
   >([]);
   const lastAvailableTab = projectState.at(-1);
+  const canvasLayout = usePanels((store) => store.layout);
+  const toggleCanvasLayout = usePanels((store) => store.toggleLayout);
 
   const openLastTab = useCallback(() => {
     const closedTab = previouslyClosedTabs.current.pop();
@@ -189,6 +198,14 @@ export function FileTabs() {
       });
     }
   );
+
+  const toggleLayout = useEvent(() => {
+    window.triplex.setEditorConfig(
+      "layout",
+      canvasLayout === "expanded" ? "collapsed" : "expanded"
+    );
+    toggleCanvasLayout();
+  });
 
   const onCloseHandler = useEvent(
     (filePath: string, exportName: string, index: number) => {
@@ -231,12 +248,11 @@ export function FileTabs() {
 
   return (
     <nav
-      aria-label="File tabs"
-      className="col-span-full row-start-2 flex h-9 items-center bg-neutral-900 pl-[1px]"
+      aria-label="File Tabs"
+      className="col-span-full row-start-2 flex h-9 items-center gap-1 overflow-hidden bg-neutral-900 px-1.5"
     >
       <IconButton
         actionId="open-file"
-        className="mx-1"
         icon={CubeIcon}
         label="Open Component..."
         onClick={() => showOverlay("open-scene")}
@@ -252,39 +268,56 @@ export function FileTabs() {
         </>
       )}
 
-      <div className="h-full w-[1px] flex-shrink-0 bg-neutral-800" />
+      <div className="flex h-full w-full flex-shrink items-center overflow-hidden border-l border-neutral-800">
+        {projectState.map((file, index) => (
+          <FileTab
+            exportName={file.exportName}
+            filePath={file.filePath}
+            index={index}
+            isActive={path === file.filePath}
+            isDirty={file.isDirty}
+            isNew={file.isNew}
+            key={file.filePath}
+            onClick={onClickHandler}
+            onClose={onCloseHandler}
+          >
+            {file.fileName}
+          </FileTab>
+        ))}
 
-      {projectState.map((file, index) => (
-        <FileTab
-          exportName={file.exportName}
-          filePath={file.filePath}
-          index={index}
-          isActive={path === file.filePath}
-          isDirty={file.isDirty}
-          isNew={file.isNew}
-          key={file.filePath}
-          onClick={onClickHandler}
-          onClose={onCloseHandler}
-        >
-          {file.fileName}
-        </FileTab>
-      ))}
+        {projectState.length < 8 && lastAvailableTab && (
+          <FallbackTab
+            exportName={lastAvailableTab.exportName}
+            filePath={lastAvailableTab.filePath}
+            index={projectState.length}
+            onClick={onClickHandler}
+          />
+        )}
 
-      {projectState.length < 8 && lastAvailableTab && (
-        <FallbackTab
-          exportName={lastAvailableTab.exportName}
-          filePath={lastAvailableTab.filePath}
-          index={projectState.length}
-          onClick={onClickHandler}
+        <Pressable
+          className="h-full flex-grow"
+          doublePressActionId="new-file"
+          label="New File"
+          onDoublePress={newFile}
+          tabIndex={-1}
         />
-      )}
+      </div>
 
-      <Pressable
-        className="h-full flex-grow"
-        doublePressActionId="new-file"
-        label="New file"
-        onDoublePress={newFile}
-        tabIndex={-1}
+      <IconButton
+        actionId={
+          canvasLayout === "expanded"
+            ? "set_canvas_collapsed"
+            : "set_canvas_expanded"
+        }
+        icon={
+          canvasLayout === "expanded" ? ExitFullScreenIcon : EnterFullScreenIcon
+        }
+        label={
+          canvasLayout === "expanded"
+            ? "Collapse Scene Canvas"
+            : "Expand Scene Canvas"
+        }
+        onClick={toggleLayout}
       />
     </nav>
   );

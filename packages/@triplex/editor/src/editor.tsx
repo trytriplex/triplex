@@ -10,6 +10,7 @@ import { useScreenView } from "./analytics";
 import { cn } from "./ds/cn";
 import { SceneFrame } from "./scence-bridge";
 import { useEditor } from "./stores/editor";
+import { usePanels } from "./stores/panels";
 import { AssetsDrawer } from "./ui/assets-drawer";
 import { ContextPanel } from "./ui/context-panel";
 import { ControlsMenu } from "./ui/controls-menu";
@@ -22,6 +23,7 @@ import { TitleBar } from "./ui/title-bar";
 export function EditorFrame() {
   const { exportName, index, open, path } = useEditor();
   const isFileOpen = !!exportName && !!path;
+  const canvasLayout = usePanels((store) => store.layout);
 
   useScreenView("editor", "Screen");
 
@@ -40,6 +42,8 @@ export function EditorFrame() {
           : // On linux hide the menu bar
             "grid-rows-[0rem_2.25rem_auto]",
         "fixed inset-0 grid select-none grid-cols-[18rem_auto_18rem] bg-gradient-to-b from-white/5 to-neutral-900",
+        canvasLayout === "collapsed" && "grid-cols-[16.25rem_auto_16.25rem]",
+        canvasLayout === "expanded" && "grid-cols-[17.25rem_auto_17.25rem]",
       ])}
     >
       <TitleBar />
@@ -48,7 +52,12 @@ export function EditorFrame() {
 
       {isFileOpen && (
         <>
-          <div className="col-start-1 row-auto row-start-3 flex overflow-hidden py-3 pl-3">
+          <div
+            className={cn([
+              "col-start-1 row-auto row-start-3 flex overflow-hidden",
+              canvasLayout === "expanded" && "rounded-lg py-3 pl-3",
+            ])}
+          >
             {path && <ScenePanel />}
           </div>
 
@@ -56,7 +65,12 @@ export function EditorFrame() {
             <ControlsMenu />
           </div>
 
-          <div className="pointer-events-none col-start-3 row-start-3 flex overflow-hidden py-3 pr-3">
+          <div
+            className={cn([
+              "pointer-events-none col-start-3 row-start-3 flex overflow-hidden",
+              canvasLayout === "expanded" && "rounded-lg py-3 pr-3",
+            ])}
+          >
             <ContextPanel />
           </div>
 

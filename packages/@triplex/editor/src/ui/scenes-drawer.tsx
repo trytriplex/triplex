@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { useLazySubscription } from "@triplex/ws/react";
-import { Suspense, useEffect, useState } from "react";
+import { Fragment, Suspense, useEffect, useState } from "react";
 import { cn } from "../ds/cn";
 import { Drawer } from "../ds/drawer";
 import { ScrollContainer } from "../ds/scroll-container";
@@ -63,9 +63,9 @@ function Scenes({ filter = "" }: { filter?: string }) {
         const isLastElement = index === files.scenes.length - 1;
 
         return (
-          <>
-            <div className="select-none" key={file.path}>
-              <div className="mb-3 text-base font-medium text-neutral-300">
+          <Fragment key={file.path}>
+            <div className="select-none">
+              <div className="mb-2 text-sm font-medium text-neutral-300">
                 {filename(file.path)}
               </div>
 
@@ -104,7 +104,7 @@ function Scenes({ filter = "" }: { filter?: string }) {
                 isLastElement ? "border-transparent" : "border-neutral-800",
               ])}
             />
-          </>
+          </Fragment>
         );
       })}
     </div>

@@ -88,7 +88,7 @@ export function LiteralUnionInput({
           actionId="clear_prop_value"
           className="hidden group-focus-within:block group-hover:block"
           icon={Cross2Icon}
-          label="Clear value"
+          label="Clear Value"
           onClick={onClear}
           size="xs"
           tabIndex={-1}

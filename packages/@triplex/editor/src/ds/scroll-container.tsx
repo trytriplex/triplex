@@ -21,7 +21,9 @@ export function ScrollContainer({
   className?: string;
 }) {
   return (
-    <Root className={cn(["h-full flex-shrink overflow-hidden", className])}>
+    <Root
+      className={cn(["h-full w-full flex-shrink overflow-hidden", className])}
+    >
       <Viewport className="h-full">{children}</Viewport>
       <Scrollbar
         className="flex touch-none select-none data-[orientation=horizontal]:h-2 data-[orientation=vertical]:w-2 data-[orientation=horizontal]:flex-col"

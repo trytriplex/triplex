@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { Cross2Icon, EraserIcon } from "@radix-ui/react-icons";
+import { Cross2Icon, ResetIcon } from "@radix-ui/react-icons";
 import { useLazySubscription } from "@triplex/ws/react";
 import { Suspense, useDeferredValue, useLayoutEffect, useState } from "react";
 import { useScreenView } from "../analytics";
@@ -18,6 +18,7 @@ import { IDELink } from "../util/ide";
 import { ErrorBoundary } from "./error-boundary";
 import { PropField } from "./prop-field";
 import { PropInput, PropTagContext } from "./prop-input";
+import { ProviderConfig } from "./provider-config";
 import { StringInput } from "./string-input";
 
 function SelectedSceneObjectPanel({
@@ -53,7 +54,7 @@ function SelectedSceneObjectPanel({
   return (
     <>
       <h2
-        className="px-4 pt-3 text-xl font-medium text-neutral-300"
+        className="px-4 pt-3 text-base font-medium text-neutral-300"
         data-testid="context-panel-heading"
       >
         <div className="overflow-hidden text-ellipsis">{data.name}</div>
@@ -175,8 +176,8 @@ function ComponentSandboxPanel({
 
   return (
     <>
-      <h2 className="px-4 pt-3 text-xl font-medium text-neutral-300">
-        <div className="overflow-hidden text-ellipsis">Live Edit Props</div>
+      <h2 className="px-4 pt-3 text-base font-medium text-neutral-300">
+        <div className="overflow-hidden text-ellipsis">Prop Controls</div>
       </h2>
       <div className="-mt-0.5 mb-2.5 px-4">
         <a
@@ -194,46 +195,56 @@ function ComponentSandboxPanel({
 
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
 
-      <div className="flex px-2 py-1">
-        <IconButton
-          actionId="clear_live_props"
-          icon={EraserIcon}
-          isDisabled={!hasValues}
-          label="Clear props"
-          onClick={() => {
-            Object.keys(values).forEach((key) => {
-              setPropValue({
-                column: -1,
-                line: -1,
-                path,
-                propName: key,
-                propValue: undefined,
-              });
-            });
-
-            clearValues(storeKey);
-          }}
-        />
-      </div>
-
-      <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
-
       {data.props.length > 0 && (
-        <div className="px-3 py-2">
+        <div className="flex py-2 pl-3 pr-2">
           <StringInput
             defaultValue={filter}
             label="Filter props..."
             name="prop-filter"
             onChange={setFilter}
           />
+          <div className="w-1 flex-shrink-0" />
+          <IconButton
+            actionId="clear_live_props"
+            icon={ResetIcon}
+            isDisabled={!hasValues}
+            label="Reset Props"
+            onClick={() => {
+              Object.keys(values).forEach((key) => {
+                setPropValue({
+                  column: -1,
+                  line: -1,
+                  path,
+                  propName: key,
+                  propValue: undefined,
+                });
+              });
+
+              clearValues(storeKey);
+            }}
+          />
         </div>
       )}
 
       <ScrollContainer>
         {data.props.length === 0 && (
-          <div className="px-4 py-3 text-sm italic text-neutral-400">
-            Props declared on this component will appear here that can be set
-            temporarily for this session.
+          <div className="flex flex-col gap-2 px-4 py-3">
+            <span className="text-sm text-neutral-400">
+              Props declared on your component appear here that can be set
+              temporarily during this session.
+            </span>
+
+            <a
+              className="text-sm text-blue-400"
+              href="#"
+              onClick={() =>
+                window.triplex.openLink(
+                  "https://triplex.dev/docs/user-guide/live-edit-props"
+                )
+              }
+            >
+              Learn how to use this feature.
+            </a>
           </div>
         )}
 
@@ -292,45 +303,45 @@ export function ContextPanel() {
   const deferredTarget = useDeferredValue(target);
   const [filter, setFilter] = useState<string | undefined>();
 
-  if (!deferredTarget) {
-    return null;
-  }
-
-  const isSceneObject = deferredTarget.column > -1 && deferredTarget.line > -1;
-
   return (
     <div
-      className="pointer-events-none flex w-full flex-col gap-3"
+      className="pointer-events-auto relative flex h-full w-full flex-col overflow-hidden rounded-[inherit] border border-neutral-800 bg-neutral-900/[97%]"
       data-testid="context-panel"
     >
-      <div className="pointer-events-auto relative flex h-full flex-col overflow-hidden rounded-lg border border-neutral-800 bg-neutral-900/[97%]">
+      {deferredTarget && (
         <IconButton
           actionId="close_context_panel"
-          className="absolute right-2 top-3"
+          className="absolute right-1.5 top-3"
           icon={Cross2Icon}
           label="Close (ESC)"
           onClick={blur}
         />
+      )}
 
-        <ErrorBoundary keys={[deferredTarget]}>
-          <Suspense fallback={<PanelSkeleton />}>
-            {isSceneObject ? (
-              <SelectedSceneObjectPanel
-                filter={filter}
-                key={
-                  deferredTarget.path +
-                  deferredTarget.column +
-                  deferredTarget.line
-                }
-                setFilter={setFilter}
-                target={deferredTarget}
-              />
-            ) : (
-              <ComponentSandboxPanel filter={filter} setFilter={setFilter} />
-            )}
-          </Suspense>
-        </ErrorBoundary>
-      </div>
+      <ErrorBoundary keys={[deferredTarget]}>
+        <Suspense fallback={<PanelSkeleton />}>
+          {deferredTarget ? (
+            <>
+              {deferredTarget.column > -1 && deferredTarget.line > -1 ? (
+                <SelectedSceneObjectPanel
+                  filter={filter}
+                  key={
+                    deferredTarget.path +
+                    deferredTarget.column +
+                    deferredTarget.line
+                  }
+                  setFilter={setFilter}
+                  target={deferredTarget}
+                />
+              ) : (
+                <ComponentSandboxPanel filter={filter} setFilter={setFilter} />
+              )}
+            </>
+          ) : (
+            <ProviderConfig />
+          )}
+        </Suspense>
+      </ErrorBoundary>
     </div>
   );
 }

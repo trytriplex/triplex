@@ -9,7 +9,7 @@ export function ErrorSplash() {
     <>
       <div className="z-50 h-[33px] select-none [-webkit-app-region:drag]" />
       <div className="fixed inset-0 mx-auto flex max-w-2xl flex-col justify-center gap-4 p-10 lg:max-w-4xl">
-        <h1 className="text-center text-6xl font-extrabold tracking-tight text-neutral-200 md:text-7xl">
+        <h1 className="text-center text-5xl font-medium tracking-tight text-neutral-200">
           Triplex couldn&apos;t start up
         </h1>
         <p className="mx-auto max-w-xl text-center text-lg text-neutral-400">

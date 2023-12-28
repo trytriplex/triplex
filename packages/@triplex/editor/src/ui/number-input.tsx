@@ -340,7 +340,7 @@ export function NumberInput({
 
       <Pressable
         className="absolute bottom-0 left-0 top-0 flex w-4 cursor-default items-center justify-center text-neutral-300 opacity-20 hover:flex hover:bg-white/5 hover:opacity-100 focus:flex active:bg-white/10 peer-hover:opacity-100 peer-focus:hidden"
-        label={`Decrease by ${step}`}
+        label={`Decrease By ${step}`}
         onBlur={onConfirmHandler}
         onPress={incrementDown}
         pressActionId="decrement_number_input"
@@ -352,7 +352,7 @@ export function NumberInput({
 
       <Pressable
         className="absolute bottom-0 right-0 top-0 flex w-4 cursor-default items-center justify-center text-neutral-300 opacity-20 hover:flex hover:bg-white/5 hover:opacity-100 focus:flex active:bg-white/10 peer-hover:opacity-100 peer-focus:hidden"
-        label={`Increase by ${step}`}
+        label={`Increase By ${step}`}
         onBlur={onConfirmHandler}
         onPress={incrementUp}
         pressActionId="increment_number_input"
@@ -367,7 +367,7 @@ export function NumberInput({
           actionId="clear_number_input"
           className="hidden peer-focus:block"
           icon={Cross2Icon}
-          label="Clear value"
+          label="Clear Value"
           onClick={clearInputValue}
           size="xs"
           tabIndex={-1}

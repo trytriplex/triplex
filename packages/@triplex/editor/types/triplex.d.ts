@@ -6,9 +6,14 @@
  */
 declare type WindowState = "active" | "inactive" | "disabled";
 
+type EditorConfig = {
+  layout: "expanded" | "collapsed";
+};
+
 declare interface Window {
   triplex: {
     accelerator: (accelerator: string, callback: () => void) => () => void;
+    editorConfig: EditorConfig;
     env: {
       config: {
         assetsDir: string;
@@ -44,6 +49,10 @@ declare interface Window {
         | "show-app-dir"
     ) => void;
     sessionId: string;
+    setEditorConfig: <TKey extends keyof EditorConfig>(
+      key: TKey,
+      value: EditorConfig[TKey]
+    ) => void;
     setMenu: (menu: import("electron").MenuItemConstructorOptions[]) => void;
     showSaveDialog: (filename: string) => Promise<string | undefined>;
     userId: string;

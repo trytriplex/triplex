@@ -32,9 +32,8 @@ function humanize(message: string) {
   }
 
   return {
-    description:
-      "This was unexpected please raise an issue on Github or Discord.",
-    title: "An Error Occurred",
+    description: "An unexpected error occurred, sorry! We're looking into it.",
+    title: "Something Went Wrong",
   };
 }
 
@@ -50,17 +49,41 @@ export function ErrorBoundary({
       fallbackRender={(e) => {
         const message = humanize(e.error.message);
         return (
-          <div className="flex flex-col gap-2 p-4">
-            <h2 className="text-xl font-medium text-neutral-300">
+          <div className="flex h-full flex-col gap-2 px-4 py-3">
+            <h2 className="text-base font-medium text-neutral-300">
               {message.title}
             </h2>
 
-            <div className="text-neutral-400">{message.description}</div>
+            <div className="text-sm text-neutral-400">
+              {message.description}
+            </div>
 
-            <div className="mt-4 rounded bg-white/5 p-2">
+            <div className="my-2 rounded bg-white/5 p-2">
               <code className="block max-h-64 overflow-hidden text-xs text-neutral-500">
                 {e.error.message}
               </code>
+            </div>
+
+            <div className="flex items-center gap-2">
+              <a
+                className="text-sm text-blue-400"
+                href="#"
+                onClick={() =>
+                  window.triplex.openLink(
+                    "https://github.com/try-triplex/triplex/issues/new"
+                  )
+                }
+              >
+                Report a bug
+              </a>
+              <span className="text-xs text-neutral-400">•</span>
+              <a
+                className="text-sm text-blue-400"
+                href="#"
+                onClick={() => window.triplex.sendCommand("view-logs")}
+              >
+                View logs
+              </a>
             </div>
           </div>
         );

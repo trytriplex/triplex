@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { type IconProps } from "@radix-ui/react-icons/dist/types";
-import { type ComponentType, forwardRef } from "react";
+import { forwardRef, type ComponentType } from "react";
 import { cn } from "./cn";
 import { Pressable } from "./pressable";
 

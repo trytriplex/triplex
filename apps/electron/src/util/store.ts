@@ -11,12 +11,21 @@ export const userStore = new Store<{ userId: string }>({
   name: "user",
   schema: {
     userId: {
+      default: randomUUID(),
       format: "uuid",
       type: "string",
     },
   },
 });
 
-if (!userStore.has("userId")) {
-  userStore.set("userId", randomUUID());
-}
+export const editorConfigStore = new Store<{
+  layout: "expanded" | "collapsed";
+}>({
+  name: "editor-config",
+  schema: {
+    layout: {
+      default: "collapsed",
+      type: "string",
+    },
+  },
+});

@@ -105,7 +105,7 @@ describe("number input", () => {
         onConfirm={confirm}
       />
     );
-    const element = getByLabelText("Decrease by 0.02");
+    const element = getByLabelText("Decrease By 0.02");
 
     fireEvent.click(element);
     fireEvent.blur(element);
@@ -125,7 +125,7 @@ describe("number input", () => {
         onConfirm={confirm}
       />
     );
-    const element = getByLabelText("Increase by 0.02");
+    const element = getByLabelText("Increase By 0.02");
 
     fireEvent.click(element);
     fireEvent.blur(element);
@@ -145,7 +145,7 @@ describe("number input", () => {
         onConfirm={confirm}
       />
     );
-    const element = getByLabelText("Clear value");
+    const element = getByLabelText("Clear Value");
 
     fireEvent.click(element);
     fireEvent.blur(element);
@@ -367,7 +367,7 @@ describe("number input", () => {
         onConfirm={() => {}}
       />
     );
-    const element = getByLabelText("Clear value");
+    const element = getByLabelText("Clear Value");
     const inputElement = getByTestId("number-10");
 
     fireEvent.click(element);

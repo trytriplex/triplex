@@ -29,7 +29,7 @@ import { fork } from "../util/fork";
 import { getLogPath, logger } from "../util/log";
 import { getPort } from "../util/port";
 import { invalidateScreenshot, screenshotComponent } from "../util/screenshot";
-import { userStore } from "../util/store";
+import { editorConfigStore, userStore } from "../util/store";
 
 if (process.env.TRIPLEX_ENV !== "development") {
   init({
@@ -323,6 +323,7 @@ async function main() {
           `--user_id=${USER_ID}`,
           `--session_id=${SESSION_ID}`,
           `--triplex_data=${JSON.stringify(environmentData)}`,
+          `--editor_config=${JSON.stringify(editorConfigStore.store)}`,
         ],
         preload: require.resolve("./preload.js"),
       },
@@ -559,13 +560,17 @@ async function main() {
 
     ipcMain.on(
       "open-editor",
-      async (_, path: string, opts?: { column: number; line: number }) => {
+      (_, path: string, opts?: { column: number; line: number }) => {
         // TODO: line/colunn not currently supported.
         // Need to figure out how best we can support it with the file:// URL.
         const filename = opts ? path : path;
         shell.openPath(filename);
       }
     );
+
+    ipcMain.on("update-editor-config", (_, key: string, value: unknown) => {
+      editorConfigStore.set(key, value);
+    });
 
     ipcMain.on("send-command", async (_, id: string) => {
       switch (id) {

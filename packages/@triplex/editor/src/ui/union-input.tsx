@@ -62,7 +62,7 @@ export function UnionInput({
         <IconButton
           actionId="switch_prop_type"
           icon={SwitchIcon}
-          label="Switch prop type"
+          label="Switch Prop Type"
           onClick={incrementIndex}
         />
       </div>

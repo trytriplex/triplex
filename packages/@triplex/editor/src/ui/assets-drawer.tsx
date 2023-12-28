@@ -368,7 +368,7 @@ export function AssetsDrawer() {
   const [selectedFolder, setSelectedFolder] = useState<{
     category: "components" | "assets";
     path: string;
-  }>();
+  }>({ category: "components", path: "host" });
 
   preloadSubscription("/scene/assets");
   preloadSubscription("/scene/components");

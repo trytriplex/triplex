@@ -77,14 +77,14 @@ export function ErrorOverlay() {
           actionId="previous_error"
           icon={ArrowLeftIcon}
           isDisabled={index === 0}
-          label="Previous error"
+          label="Previous Error"
           onClick={() => setIndex((prev) => prev - 1)}
         />
         <IconButton
           actionId="next_error"
           icon={ArrowRightIcon}
           isDisabled={index === errors.length - 1}
-          label="Next error"
+          label="Next Error"
           onClick={() => setIndex((prev) => prev + 1)}
         />
         <div className="mr-auto px-2 text-xs text-neutral-400 [font-variant-numeric:tabular-nums]">
@@ -94,7 +94,7 @@ export function ErrorOverlay() {
         <IconButton
           actionId="view_error_source"
           icon={CodeIcon}
-          label="View source"
+          label="View Source"
           onClick={() => {
             window.triplex.openIDE(error.source, {
               column: error.col,
@@ -105,7 +105,7 @@ export function ErrorOverlay() {
         <IconButton
           actionId="dismiss_errors"
           icon={Cross2Icon}
-          label="Dismiss errors"
+          label="Dismiss Errors"
           onClick={() => setErrors([])}
         />
       </div>
