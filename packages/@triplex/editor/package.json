@@ -3,7 +3,6 @@
   "version": "0.62.0",
   "private": true,
   "description": "The React Three Fiber editor.",
-  "license": "GPL-3.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "main": "./src/main-dev-only.ts",
   "types": "./src/main-dev-only.ts",

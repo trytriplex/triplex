@@ -3,7 +3,6 @@
   "version": "0.62.0",
   "private": true,
   "repository": "https://github.com/try-triplex/triplex-monorepo",
-  "license": "GPL-3.0",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "main": "./src/index.ts",
   "types": "./src/index.ts",
