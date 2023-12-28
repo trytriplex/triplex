@@ -48,6 +48,11 @@ export async function getConfig(
     )
   );
 
+  const renderer: string =
+    config.renderer && config.renderer.startsWith(".")
+      ? join(cwd, ".triplex", config.renderer)
+      : config.renderer;
+
   return {
     assetsDir,
     components,
@@ -55,6 +60,6 @@ export async function getConfig(
     files,
     provider,
     publicDir,
-    renderer: config.renderer,
+    renderer,
   };
 }

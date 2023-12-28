@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import {
+  init,
   type BootstrapFunction,
   type ThumbnailFunction,
 } from "@triplex/bridge/client";
@@ -14,10 +15,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Renderer } from "./renderer";
 import { SceneObject } from "./scene-object";
 
-// Hacking this for fun sorry!
-// eslint-disable-next-line @typescript-eslint/ban-ts-comment
-// @ts-expect-error
-window.SceneObject = SceneObject;
+init({ RendererElement: SceneObject });
 
 export const bootstrap: BootstrapFunction = (container) => {
   const root = createRoot(container);

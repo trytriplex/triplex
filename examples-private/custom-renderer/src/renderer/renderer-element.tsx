@@ -12,7 +12,7 @@ function useForceRender() {
   return useCallback(() => setState((prev) => !prev), []);
 }
 
-function useSceneObjectProps(
+function useProps(
   meta: RendererElementProps["__meta"],
   props: Record<string, unknown>
 ): Record<string, unknown> {
@@ -22,17 +22,6 @@ function useSceneObjectProps(
 
   // Assign all current top-level props to a ref so we can access it in an effect.
   Object.assign(propsRef.current, props);
-
-  useEffect(() => {
-    import.meta.hot?.on("vite:afterUpdate", (e) => {
-      const isUpdated = e.updates.find((up) => meta.path?.endsWith(up.path));
-      if (isUpdated) {
-        // On HMR clear out the intermediate state so when it's rendered again
-        // It'll use the latest values from source.
-        intermediateProps.current = {};
-      }
-    });
-  }, [meta.path]);
 
   useEffect(() => {
     return compose([
@@ -66,26 +55,12 @@ function useSceneObjectProps(
     ]);
   }, [meta.column, meta.line, meta.name, meta.path, forceRender]);
 
-  const nextProps = { ...props, ...intermediateProps.current };
-
-  for (const key in nextProps) {
-    const value = nextProps[key];
-    if (value === undefined) {
-      // If the value is undefined we remove it from props altogether.
-      // If props are spread onto the host jsx element in r3f this means it
-      // gets completely removed and r3f will reset its value back to default.
-      // For props directly assigned we instead transform it in the babel plugin
-      // to be conditionally applied instead.
-      delete nextProps[key];
-    }
-  }
-
-  return nextProps;
+  return { ...props, ...intermediateProps.current };
 }
 
-export const SceneObject = forwardRef<unknown, RendererElementProps>(
+export const RendererElement = forwardRef<unknown, RendererElementProps>(
   ({ __component: Component, __meta, ...props }, ref) => {
-    const { children, ...reconciledProps } = useSceneObjectProps(__meta, props);
+    const { children, ...reconciledProps } = useProps(__meta, props);
     const [isDeleted, setIsDeleted] = useState(false);
 
     useEffect(() => {
@@ -112,8 +87,6 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
     }, [__meta.column, __meta.line, __meta.path]);
 
     if (isDeleted) {
-      // This component will eventually unmount when deleted as its removed
-      // from source code. To keep things snappy however we delete it optimistically.
       return null;
     }
 
@@ -125,4 +98,4 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
   }
 );
 
-SceneObject.displayName = "SceneObject";
+RendererElement.displayName = "RendererElement";

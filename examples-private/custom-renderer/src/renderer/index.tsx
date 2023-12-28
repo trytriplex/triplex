@@ -4,7 +4,6 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { Canvas } from "@react-three/fiber";
 import {
   init,
   type BootstrapFunction,
@@ -13,11 +12,10 @@ import {
 import { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
-import { Bounds } from "triplex-drei";
 import { Renderer } from "./renderer";
-import { SceneObject } from "./scene-object";
+import { RendererElement } from "./renderer-element";
 
-init({ RendererElement: SceneObject });
+init({ RendererElement });
 
 export const bootstrap: BootstrapFunction = (container) => {
   const root = createRoot(container);
@@ -47,19 +45,25 @@ export const thumbnail: ThumbnailFunction = (container) => {
 
   return ({ component: Component, provider: Provider }) => {
     root.render(
-      <Canvas shadows style={{ inset: 0, position: "absolute" }}>
+      <div
+        style={{
+          alignItems: "center",
+          display: "flex",
+          height: "100%",
+          inset: 0,
+          justifyContent: "center",
+          position: "absolute",
+          width: "100%",
+        }}
+      >
         <Ready>
           <ErrorBoundary fallbackRender={() => null}>
-            <Bounds damping={0} fit>
-              <Provider>
-                <Component />
-              </Provider>
-            </Bounds>
-
-            <ambientLight intensity={2} />
+            <Provider>
+              <Component />
+            </Provider>
           </ErrorBoundary>
         </Ready>
-      </Canvas>
+      </div>
     );
   };
 };

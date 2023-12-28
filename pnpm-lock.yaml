@@ -210,6 +210,33 @@ importers:
         specifier: ^4.4.11
         version: 4.4.11(@types/node@18.11.18)
 
+  examples-private/custom-renderer:
+    dependencies:
+      '@triplex/bridge':
+        specifier: workspace:*
+        version: link:../../packages/@triplex/bridge
+      '@types/react':
+        specifier: ^18.0.0
+        version: 18.0.27
+      react:
+        specifier: ^18.0.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.0.0
+        version: 18.2.0(react@18.2.0)
+
+  examples-private/react-dom:
+    dependencies:
+      '@types/react':
+        specifier: ^18.0.0
+        version: 18.0.27
+      react:
+        specifier: ^18.0.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.0.0
+        version: 18.2.0(react@18.2.0)
+
   examples/caustics:
     dependencies:
       '@react-three/drei':

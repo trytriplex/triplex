@@ -6,7 +6,7 @@
  */
 import react from "@vitejs/plugin-react";
 import express from "express";
-import { join, normalize } from "upath";
+import { dirname, join, normalize } from "upath";
 import tsconfigPaths from "vite-tsconfig-paths";
 import triplexBabelPlugin from "./babel-plugin";
 import { emptyProviderId } from "./constants";
@@ -14,10 +14,22 @@ import { remoteModulePlugin } from "./remote-module-plugin";
 import { scenePlugin } from "./scene-plugin";
 import { createHTML, scripts } from "./templates";
 
-const renderers = {
+const renderers: Record<string, string> = {
   "react-dom": "@triplex/renderer-react",
   "react-three-fiber": "@triplex/renderer-r3f",
 };
+
+function getRendererPath(name: string): string {
+  if (name.startsWith("/")) {
+    return name;
+  }
+
+  try {
+    return require.resolve(renderers[name] || name);
+  } catch {
+    throw new Error(`invariant: unable to resolve renderer "${name}"`);
+  }
+}
 
 export async function createServer({
   cwd: __RAW_CWD_DONT_USE__ = process.cwd(),
@@ -32,9 +44,9 @@ export async function createServer({
   ports: { server: number; ws: number };
   provider?: string;
   publicDir?: string;
-  renderer?: "react-three-fiber" | "react-dom";
+  renderer?: string;
 }) {
-  const rendererPackage = renderers[renderer];
+  const rendererPath = getRendererPath(renderer);
   const normalizedCwd = normalize(__RAW_CWD_DONT_USE__);
   const tsConfig = join(normalizedCwd, "tsconfig.json");
   const app = express();
@@ -56,11 +68,7 @@ export async function createServer({
         babel: {
           plugins: [
             triplexBabelPlugin({
-              exclude: [
-                ...(provider ? [provider] : []),
-                "/triplex:empty-provider.tsx",
-                "packages/@triplex",
-              ],
+              exclude: [provider, "packages/@triplex", dirname(rendererPath)],
             }),
           ],
         },
@@ -75,7 +83,7 @@ export async function createServer({
         "@triplex/bridge/client": require.resolve("@triplex/bridge/client"),
         // The consuming app doesn't have this as a direct dependency
         // so we use `require.resolve()` to find it from this location instead.
-        [rendererPackage]: require.resolve(rendererPackage),
+        __triplex_renderer__: rendererPath,
       },
       dedupe: ["@react-three/fiber", "three"],
     },
@@ -91,7 +99,7 @@ export async function createServer({
   const htmlConfig = {
     config: { provider },
     fileGlobs: files.map((f) => `'${f.replace(normalizedCwd, "")}'`),
-    pkgName: rendererPackage,
+    pkgName: "__triplex_renderer__",
   };
 
   app.use(vite.middlewares);

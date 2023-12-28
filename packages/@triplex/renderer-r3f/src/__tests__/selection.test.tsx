@@ -278,8 +278,7 @@ describe("selection", () => {
         path={path}
       >
         <SceneObject
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          __component={CustomBoxGroup as any}
+          __component={CustomBoxGroup}
           __meta={{
             column: 11,
             line: 22,

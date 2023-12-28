@@ -4,8 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { type Object3DProps } from "@react-three/fiber";
-import { compose, on } from "@triplex/bridge/client";
+import { compose, on, type RendererElementProps } from "@triplex/bridge/client";
 import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
 import { type Group } from "three";
 import { getHelperForElement, Helper } from "./components/helper";
@@ -35,7 +34,7 @@ function isRenderedSceneObject(
 }
 
 function useSceneObjectProps(
-  meta: SceneObjectProps["__meta"],
+  meta: RendererElementProps["__meta"],
   props: Record<string, unknown>
 ): Record<string, unknown> {
   const forceRender = useForceRender();
@@ -105,24 +104,7 @@ function useSceneObjectProps(
   return nextProps;
 }
 
-export interface SceneObjectProps extends Object3DProps {
-  __component:
-    | React.ComponentType<{ children?: unknown; ref?: unknown }>
-    | string;
-  __meta: {
-    column: number;
-    line: number;
-    name: string;
-    path: string;
-    rotate: boolean;
-    scale: boolean;
-    // These props are only set if the scene object is a host component
-    // and has {position/scale/rotation} set statically (not through spread props).
-    translate: boolean;
-  };
-}
-
-export const SceneObject = forwardRef<unknown, SceneObjectProps>(
+export const SceneObject = forwardRef<unknown, RendererElementProps>(
   ({ __component: Component, __meta, ...props }, ref) => {
     const { children, ...reconciledProps } = useSceneObjectProps(__meta, props);
     const [isDeleted, setIsDeleted] = useState(false);

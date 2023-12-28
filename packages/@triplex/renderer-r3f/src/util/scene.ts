@@ -4,11 +4,11 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { type RendererElementProps } from "@triplex/bridge/client";
 import type { JsxElementPositions } from "@triplex/server";
 import { type Object3D } from "three";
-import { type SceneObjectProps } from "../scene-object";
 
-export type EditorNodeData = SceneObjectProps["__meta"] & {
+export type EditorNodeData = RendererElementProps["__meta"] & {
   parentPath: string;
   // Unaltered props currently set on the component.
   props: Record<string, unknown>;
@@ -24,7 +24,7 @@ export const findTransformedSceneObject = (
   let foundTranslatedSceneObject: Object3D | undefined;
 
   sceneObject.traverse((child: Object3D) => {
-    const meta: SceneObjectProps["__meta"] | undefined =
+    const meta: RendererElementProps["__meta"] | undefined =
       child.userData.triplexSceneMeta;
 
     // We need to find out if one of the jsx elements between sceneObject

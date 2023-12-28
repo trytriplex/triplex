@@ -103,3 +103,30 @@ export type ThumbnailFunction = (
   component: UnknownComponent;
   provider: ProviderComponent;
 }) => void;
+
+export interface RendererElementProps {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  __component: ((props: any) => any) | string;
+  __meta: {
+    column: number;
+    line: number;
+    name: string;
+    path: string;
+    rotate: boolean;
+    scale: boolean;
+    translate: boolean;
+  };
+  attach?: unknown;
+  children?: unknown;
+  name?: string;
+  position?: unknown;
+}
+
+export function init({
+  RendererElement,
+}: {
+  RendererElement: (props: RendererElementProps) => unknown;
+}) {
+  // @ts-expect-error
+  window.SceneObject = RendererElement;
+}

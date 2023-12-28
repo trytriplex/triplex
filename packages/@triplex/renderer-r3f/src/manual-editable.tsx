@@ -6,7 +6,7 @@
  */
 
 import { on } from "@triplex/bridge/client";
-import { useEffect, type ComponentType } from "react";
+import { useEffect } from "react";
 import { SceneObject } from "./scene-object";
 import { useSceneState } from "./stores/scene-state";
 
@@ -22,7 +22,8 @@ export function ManualEditableSceneObject({
   staticSceneProps = {},
 }: {
   children?: React.ReactNode;
-  component: ComponentType<Record<string, unknown>>;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  component: (props: any) => any;
   exportName: string;
   id: number;
   path: string;
