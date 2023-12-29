@@ -3,9 +3,10 @@
   "display": "Node",
   "extends": "./base.json",
   "compilerOptions": {
+    "resolveJsonModule": true,
     "lib": ["dom", "dom.iterable", "es2022"],
-    "module": "Node16",
-    "target": "ES2017",
-    "resolveJsonModule": true
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2022"
   }
 }
