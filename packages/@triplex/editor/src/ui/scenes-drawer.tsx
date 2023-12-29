@@ -8,6 +8,7 @@ import { useLazySubscription } from "@triplex/ws/react";
 import { Fragment, Suspense, useEffect, useState } from "react";
 import { Drawer } from "../ds/drawer";
 import { ScrollContainer } from "../ds/scroll-container";
+import { PanelSkeleton } from "../ds/skeleton";
 import { useEditor } from "../stores/editor";
 import { useOverlayStore } from "../stores/overlay";
 import { filename, normalize } from "../util/string";
@@ -132,9 +133,7 @@ export function ScenesDrawer() {
       }}
       open={shown === "open-scene"}
     >
-      <Suspense
-        fallback={<div className="p-4 text-neutral-400">Loading...</div>}
-      >
+      <Suspense fallback={<PanelSkeleton />}>
         <div className="px-3 py-2">
           <StringInput
             autoFocus

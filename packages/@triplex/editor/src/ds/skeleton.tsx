@@ -39,7 +39,7 @@ export function SkeletonText({
       return (
         <div
           className={cn([
-            "mb-10 h-8  w-2/4 rounded-lg bg-gradient-to-r from-neutral-700 to-neutral-800 last-of-type:mb-0",
+            "mb-9 mt-1 h-5 w-2/4 rounded-lg bg-gradient-to-r from-neutral-700 to-neutral-800 last-of-type:mb-0",
             width,
           ])}
         />
@@ -59,9 +59,14 @@ export function SkeletonText({
   return null;
 }
 
-export function PanelSkeleton() {
+export function PanelSkeleton({ debug }: { debug?: boolean }) {
   return (
-    <div className="flex flex-col pl-3 pt-3">
+    <div
+      className={cn([
+        "flex flex-col pl-3 pt-3",
+        debug && "absolute inset-0 z-10 bg-neutral-900",
+      ])}
+    >
       <SkeletonContainer>
         <SkeletonText variant="h1" />
         <SkeletonText variant="ui" />
