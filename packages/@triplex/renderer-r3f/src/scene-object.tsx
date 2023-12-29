@@ -45,6 +45,7 @@ function useSceneObjectProps(
   Object.assign(propsRef.current, props);
 
   useEffect(() => {
+    // @ts-expect-error — ??????
     import.meta.hot?.on("vite:afterUpdate", (e) => {
       const isUpdated = e.updates.find((up) => meta.path?.endsWith(up.path));
       if (isUpdated) {

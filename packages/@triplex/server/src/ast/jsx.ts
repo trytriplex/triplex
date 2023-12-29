@@ -5,13 +5,13 @@
  * file in the root directory of this source tree.
  */
 import {
-  type JsxAttribute,
-  type JsxElement,
   Node,
   SyntaxKind,
-  type ts,
+  type JsxAttribute,
+  type JsxElement,
   type JsxSelfClosingElement,
   type SourceFile,
+  type ts,
 } from "ts-morph";
 import { normalize } from "upath";
 import type { JsxElementPositions } from "../types";
@@ -225,7 +225,7 @@ export function getAttributes(
   for (let i = 0; i < attributes.length; i++) {
     const attr = attributes[i];
     if (Node.isJsxAttribute(attr)) {
-      attrs[attr.getName()] = attr;
+      attrs[attr.getNameNode().getText()] = attr;
     }
   }
 

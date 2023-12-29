@@ -227,9 +227,21 @@ describe("type infer", () => {
         },
         {
           "description": undefined,
-          "kind": "unhandled",
+          "kind": "union",
           "name": "children",
           "required": false,
+          "shape": [
+            {
+              "kind": "string",
+            },
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "boolean",
+              "literal": false,
+            },
+          ],
           "tags": {},
         },
       ]

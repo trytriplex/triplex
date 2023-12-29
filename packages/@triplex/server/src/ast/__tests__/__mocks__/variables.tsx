@@ -4,8 +4,8 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { createContext } from "react";
 import { useTexture } from "@react-three/drei";
+import { createContext } from "react";
 
 interface ChildrenProps {
   playerNear: boolean;
@@ -22,7 +22,7 @@ export function Placeholder() {
   );
 }
 
-const ControllerContext = createContext<boolean>(null);
+const ControllerContext = createContext<boolean | null>(null);
 
 const defaultChildren = () => <Placeholder />;
 

@@ -23,7 +23,7 @@
     "picomatch": "^2.3.1",
     "prettier": "^2.8.3",
     "readdirp": "^3.6.0",
-    "ts-morph": "^17.0.1",
+    "ts-morph": "^21.0.1",
     "ws": "^8.12.0"
   },
   "devDependencies": {
@@ -41,7 +41,7 @@
     "react-dom": "^18.2.0",
     "three": "^0.157.0",
     "ts-json-schema-generator": "^1.2.0",
-    "typescript": "^4.9.4",
+    "typescript": "^5.3.3",
     "upath": "^2.0.1",
     "vite": "^4.4.11"
   },

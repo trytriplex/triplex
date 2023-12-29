@@ -5,10 +5,10 @@
  * file in the root directory of this source tree.
  */
 import {
+  Node,
   type Expression,
   type JsxElement,
   type JsxSelfClosingElement,
-  Node,
   type PropertySignature,
   type Symbol as SymbolType,
   type ts,
@@ -62,8 +62,8 @@ export function unrollType(
       kind: "tuple",
       shape: elements.map((val, index) => ({
         ...unrollType(val, unionLabels),
-        label: labels ? labels[index].name.getText() : undefined,
-        required: labels ? !labels[index].questionToken : true,
+        label: labels ? labels[index]?.name.getText() : undefined,
+        required: labels ? !labels[index]?.questionToken : true,
       })),
     };
   }

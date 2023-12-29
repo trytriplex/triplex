@@ -5,7 +5,8 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "lib": ["dom", "dom.iterable", "es2022"],
-    "module": "ESNext",
-    "target": "ES2017"
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
+    "target": "ES2022"
   }
 }
