@@ -1,4 +1,7 @@
 {
+  "assets": {
+    "hostElements": []
+  },
   "templates": {
     "newElements": "<><span>custom renderer</span></>"
   }

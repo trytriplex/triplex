@@ -6,20 +6,9 @@
  */
 import { join } from "upath";
 import { describe, expect, it } from "vitest";
-import {
-  folderAssets,
-  folderComponents,
-  foundFolders,
-  hostElements,
-} from "../project";
+import { folderAssets, folderComponents, foundFolders } from "../project";
 
 describe("project", () => {
-  it("should return a list of host jsx elements", () => {
-    const actual = hostElements();
-
-    expect(actual.length).toEqual(46);
-  });
-
   it("should pick up all folders that contain files in a nested structure", async () => {
     const actual = await foundFolders([
       join(__dirname, "/__mocks__/components/**/*.tsx"),

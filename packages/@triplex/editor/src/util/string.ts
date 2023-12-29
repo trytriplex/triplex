@@ -12,6 +12,10 @@ export function titleCase(string: string) {
     return parsed[0] + " " + parsed[1].toUpperCase();
   });
 
+  if (result.length <= 2) {
+    return result.toUpperCase();
+  }
+
   return result[0].toUpperCase() + result.slice(1);
 }
 

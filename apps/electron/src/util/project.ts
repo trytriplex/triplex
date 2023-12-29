@@ -8,10 +8,11 @@ import { inspect } from "node:util";
 import { createServer as createFrontend } from "@triplex/client";
 import {
   createServer as createBackend,
+  type RendererManifest,
   type TriplexConfig,
 } from "@triplex/server";
 import { dirname } from "upath";
-import { object, parse, string } from "valibot";
+import { array, literal, minLength, object, parse, string } from "valibot";
 import { logger } from "./log";
 import { findParentFile } from "./path";
 
@@ -22,15 +23,27 @@ const renderers: Record<string, string> = {
 
 const log = logger("start-project");
 
-interface Manifest {
-  templates: { newElements: string };
-}
-
-function validateManifest(manifest: unknown): Manifest {
+function validateManifest(manifest: unknown): RendererManifest {
   const schema = object({
-    templates: object({
-      newElements: string(),
-    }),
+    assets: object(
+      {
+        hostElements: array(
+          object({
+            category: string("category must be a string"),
+            name: string("name must be a string"),
+            type: literal("host", 'type must be "host"'),
+          }),
+          "missing assets.hostElements"
+        ),
+      },
+      "missing assets"
+    ),
+    templates: object(
+      {
+        newElements: string([minLength(6)]),
+      },
+      "missing templates"
+    ),
   });
 
   return parse(schema, manifest);
@@ -40,7 +53,7 @@ async function getRendererMeta(
   filepath: string,
   cwd: string
 ): Promise<{
-  manifest: Manifest;
+  manifest: RendererManifest;
   path: string;
   root: string;
 }> {

@@ -230,11 +230,6 @@ export interface TriplexConfig {
    * Path to a provider component that can hold all React providers needed
    * during runtime. The component must be the default export and return
    * children.
-   *
-   * @example
-   *   export default function Provider({ children }) {
-   *     return children;
-   *   }
    */
   provider?: string;
   /**
@@ -244,4 +239,11 @@ export interface TriplexConfig {
    * the `"/image.png"` URL.
    */
   publicDir?: string;
+}
+
+export interface RendererManifest {
+  assets: {
+    hostElements: Array<{ category: string; name: string; type: "host" }>;
+  };
+  templates: { newElements: string };
 }

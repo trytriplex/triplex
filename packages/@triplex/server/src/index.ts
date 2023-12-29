@@ -35,7 +35,6 @@ import {
   folderAssets,
   folderComponents,
   foundFolders,
-  hostElements,
 } from "./services/project";
 import {
   type ComponentTarget,
@@ -43,6 +42,7 @@ import {
   type DeclaredProp,
   type ProjectAsset,
   type Prop,
+  type RendererManifest,
   type SourceFileChangedEvent,
 } from "./types";
 import { getParam } from "./util/params";
@@ -65,7 +65,7 @@ export function createServer({
   files: string[];
   publicDir: string;
   renderer: {
-    manifest: { templates: { newElements: string } };
+    manifest: RendererManifest;
     path: string;
     root: string;
   };
@@ -418,7 +418,7 @@ export function createServer({
       "/scene/components/:folderPath",
       async ({ folderPath }) => {
         if (folderPath === "host") {
-          const result = hostElements();
+          const result = renderer.manifest.assets.hostElements;
           return result;
         }
 

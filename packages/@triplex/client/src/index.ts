@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import type { RendererManifest } from "@triplex/server";
 import react from "@vitejs/plugin-react";
 import express from "express";
 import { join, normalize } from "upath";
@@ -28,7 +29,7 @@ export async function createServer({
   provider?: string;
   publicDir?: string;
   renderer: {
-    manifest: { templates: { newElements: string } };
+    manifest: RendererManifest;
     path: string;
     root: string;
   };
