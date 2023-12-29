@@ -1,0 +1,5 @@
+{
+  "templates": {
+    "newElements": "<><mesh><boxGeometry /><meshStandardMaterial /></mesh></>"
+  }
+}

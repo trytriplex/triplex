@@ -11,6 +11,8 @@ import { createProject } from "../project";
 describe("project ast", () => {
   it("should return save state", async () => {
     const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "" },
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
@@ -24,6 +26,8 @@ describe("project ast", () => {
 
   it("should return unsaved state", async () => {
     const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "" },
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
@@ -39,6 +43,8 @@ describe("project ast", () => {
 
   it("should return default project state", () => {
     const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "" },
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
 
@@ -47,6 +53,8 @@ describe("project ast", () => {
 
   it("should return edited project state", async () => {
     const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "" },
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
@@ -74,6 +82,8 @@ describe("project ast", () => {
 
   it("should reset project state when saving", async () => {
     const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "" },
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
@@ -100,6 +110,8 @@ describe("project ast", () => {
 
   it("should open a file into a specific index", () => {
     const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "" },
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     project.createSourceFile("Untitled").open("Untitled");
@@ -140,6 +152,8 @@ describe("project ast", () => {
 
   it("should not go out of bounds when opening at a specific index", () => {
     const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "" },
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
@@ -164,6 +178,8 @@ describe("project ast", () => {
 
   it("should ignore saving new files when saving all", async () => {
     const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "" },
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
@@ -199,6 +215,8 @@ describe("project ast", () => {
 
   it("should callback when state changes", async () => {
     const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "" },
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
@@ -216,6 +234,8 @@ describe("project ast", () => {
 
   it("should cleanup state change callback", async () => {
     const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "" },
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
@@ -232,6 +252,8 @@ describe("project ast", () => {
 
   it("should undo to a past state and not go out of bounds", async () => {
     const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "<></>" },
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.createSourceFile("Untitled");
@@ -248,14 +270,7 @@ describe("project ast", () => {
 
     expect(sourceFile.read().getText()).toMatchInlineSnapshot(`
       "export function Untitled() {
-        return (
-          <>
-            <mesh>
-              <boxGeometry />
-              <meshStandardMaterial />
-            </mesh>
-          </>
-        );
+        return <></>;
       }
       "
     `);
@@ -263,6 +278,8 @@ describe("project ast", () => {
 
   it("should undo and then redo and not go out of bounds", async () => {
     const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "<></>" },
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.createSourceFile("Untitled");
@@ -280,14 +297,7 @@ describe("project ast", () => {
 
     expect(sourceFile.read().getText()).toMatchInlineSnapshot(`
       "export function Untitled() {
-        return (
-          <>
-            <mesh>
-              <boxGeometry />
-              <meshStandardMaterial />
-            </mesh>
-          </>
-        );
+        return <></>;
       }
 
       function foo() {
@@ -298,6 +308,8 @@ describe("project ast", () => {
 
   it("should clear out future state after an undo if another edit takes place", async () => {
     const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "<></>" },
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.createSourceFile("Untitled");
@@ -328,14 +340,7 @@ describe("project ast", () => {
 
     expect(sourceFile.read().getText()).toMatchInlineSnapshot(`
       "export function Untitled() {
-        return (
-          <>
-            <mesh>
-              <boxGeometry />
-              <meshStandardMaterial />
-            </mesh>
-          </>
-        );
+        return <></>;
       }
 
       function foo() {
@@ -349,6 +354,8 @@ describe("project ast", () => {
 
   it("should clear dirty state when editing new file to be the same as current state", async () => {
     const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "" },
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.createSourceFile("Untitled");
@@ -365,6 +372,8 @@ describe("project ast", () => {
 
   it("should set dirty state when editing new file to be the different to current state", async () => {
     const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "" },
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.createSourceFile("Untitled");
@@ -382,6 +391,8 @@ describe("project ast", () => {
 
   it("should set dirty state when editing existing file to be the different to current state", async () => {
     const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "" },
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
@@ -400,6 +411,8 @@ describe("project ast", () => {
 
   it("should set dirty state when editing existing file to be the same to current state", async () => {
     const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "" },
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(

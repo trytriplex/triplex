@@ -206,6 +206,9 @@ importers:
       upath:
         specifier: ^2.0.1
         version: 2.0.1
+      valibot:
+        specifier: ^0.25.0
+        version: 0.25.0
       vite:
         specifier: ^4.4.11
         version: 4.4.11(@types/node@18.11.18)
@@ -12177,6 +12180,10 @@ packages:
 
   /v8-compile-cache-lib@3.0.1:
     resolution: {integrity: sha512-wa7YjyUGfNZngI/vtK0UHAN+lgDCxBPCylVXGp0zu59Fz5aiGtNXaq3DhIov063MorB+VfufLh3JlF2KdTK3xg==}
+    dev: true
+
+  /valibot@0.25.0:
+    resolution: {integrity: sha512-cmD0ca15oyAbT75iYLNW6uU6doAeIwYfOshpXka/E1Bx4frzbkrgb7gvkI7K0YK/DVOksei4FfxWfRoBP3NFTg==}
     dev: true
 
   /validate-npm-package-license@3.0.4:

@@ -5,11 +5,11 @@
  * file in the root directory of this source tree.
  */
 import {
+  Node,
+  SyntaxKind,
   type JsxElement,
   type JsxSelfClosingElement,
-  Node,
   type SourceFile,
-  SyntaxKind,
   type ts,
 } from "ts-morph";
 import { basename, extname, relative } from "upath";
@@ -165,7 +165,7 @@ export function includesComponent(sourceFile: SourceFile, exportName: string) {
   return foundExports.some((exp) => exp.exportName === exportName);
 }
 
-export function create(sourceFile: SourceFile) {
+export function create(sourceFile: SourceFile, template: string) {
   let count = 0;
   let exportName = "Untitled";
 
@@ -178,14 +178,7 @@ export function create(sourceFile: SourceFile) {
   sourceFile.addFunction({
     isExported: true,
     name: exportName,
-    statements: `return (
-      <>
-        <mesh>
-          <boxGeometry />
-          <meshStandardMaterial />
-        </mesh>
-      </>
-    );`,
+    statements: `return ${template};`,
   });
 
   return { exportName };

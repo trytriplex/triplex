@@ -6,7 +6,7 @@
  */
 import react from "@vitejs/plugin-react";
 import express from "express";
-import { dirname, join, normalize } from "upath";
+import { join, normalize } from "upath";
 import tsconfigPaths from "vite-tsconfig-paths";
 import triplexBabelPlugin from "./babel-plugin";
 import { emptyProviderId } from "./constants";
@@ -14,39 +14,25 @@ import { remoteModulePlugin } from "./remote-module-plugin";
 import { scenePlugin } from "./scene-plugin";
 import { createHTML, scripts } from "./templates";
 
-const renderers: Record<string, string> = {
-  "react-dom": "@triplex/renderer-react",
-  "react-three-fiber": "@triplex/renderer-r3f",
-};
-
-function getRendererPath(name: string): string {
-  if (name.startsWith("/")) {
-    return name;
-  }
-
-  try {
-    return require.resolve(renderers[name] || name);
-  } catch {
-    throw new Error(`invariant: unable to resolve renderer "${name}"`);
-  }
-}
-
 export async function createServer({
   cwd: __RAW_CWD_DONT_USE__ = process.cwd(),
   files,
   ports,
   provider = emptyProviderId,
   publicDir,
-  renderer = "react-three-fiber",
+  renderer,
 }: {
   cwd?: string;
   files: string[];
   ports: { server: number; ws: number };
   provider?: string;
   publicDir?: string;
-  renderer?: string;
+  renderer: {
+    manifest: { templates: { newElements: string } };
+    path: string;
+    root: string;
+  };
 }) {
-  const rendererPath = getRendererPath(renderer);
   const normalizedCwd = normalize(__RAW_CWD_DONT_USE__);
   const tsConfig = join(normalizedCwd, "tsconfig.json");
   const app = express();
@@ -68,7 +54,7 @@ export async function createServer({
         babel: {
           plugins: [
             triplexBabelPlugin({
-              exclude: [provider, "packages/@triplex", dirname(rendererPath)],
+              exclude: [provider, renderer.root],
             }),
           ],
         },
@@ -81,9 +67,7 @@ export async function createServer({
     resolve: {
       alias: {
         "@triplex/bridge/client": require.resolve("@triplex/bridge/client"),
-        // The consuming app doesn't have this as a direct dependency
-        // so we use `require.resolve()` to find it from this location instead.
-        __triplex_renderer__: rendererPath,
+        __triplex_renderer__: renderer.path,
       },
       dedupe: ["@react-three/fiber", "three"],
     },

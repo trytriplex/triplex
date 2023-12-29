@@ -133,7 +133,7 @@ function ComponentHeading() {
       {!scene.matchesFilesGlob && (
         <IconButton
           actionId="component_outside_of_project_files"
-          className="-mr-1.5 ml-1 text-orange-400"
+          className="-my-1 -mr-1.5 ml-1 text-orange-400"
           icon={ExclamationTriangleIcon}
           label="Warning: This component is outside of your declared project files. Click to learn more."
           onClick={() =>

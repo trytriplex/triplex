@@ -99,9 +99,14 @@ async function persistSourceFile({
 }
 
 export function createProject({
-  cwd = process.cwd(),
+  cwd,
   tsConfigFilePath = join(cwd, "tsconfig.json"),
-}: { cwd?: string; tsConfigFilePath?: string } = {}) {
+  templates,
+}: {
+  cwd: string;
+  templates: { newElements: string };
+  tsConfigFilePath?: string;
+}) {
   const project = _createProject({
     tsConfigFilePath,
   });
@@ -164,14 +169,7 @@ export function createProject({
 
     const template = `
 export function ${componentName}() {
-  return (
-    <>
-      <mesh>
-        <boxGeometry />
-        <meshStandardMaterial />
-      </mesh>
-    </>
-  );
+  return ${templates.newElements};
 }
 `;
 

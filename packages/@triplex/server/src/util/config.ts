@@ -60,6 +60,6 @@ export async function getConfig(
     files,
     provider,
     publicDir,
-    renderer,
+    renderer: renderer || "react-three-fiber",
   };
 }

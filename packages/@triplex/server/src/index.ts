@@ -57,16 +57,25 @@ export function createServer({
   cwd = process.cwd(),
   files,
   publicDir,
+  renderer,
 }: {
   assetsDir: string;
   components: string[];
   cwd?: string;
   files: string[];
   publicDir: string;
+  renderer: {
+    manifest: { templates: { newElements: string } };
+    path: string;
+    root: string;
+  };
 }) {
   const app = new Application();
   const router = new Router();
-  const project = createProject({ cwd });
+  const project = createProject({
+    cwd,
+    templates: renderer.manifest.templates,
+  });
   const tws = createTWS();
 
   app.use(async (ctx, next) => {
@@ -218,7 +227,7 @@ export function createServer({
     const sourceFile = project.getSourceFile(path);
 
     const { exportName } = await sourceFile.edit((source) => {
-      return create(source);
+      return create(source, renderer.manifest.templates.newElements);
     });
 
     context.response.body = { exportName, path };

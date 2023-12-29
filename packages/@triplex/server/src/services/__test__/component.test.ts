@@ -766,6 +766,7 @@ describe("component service", () => {
   it("should add components without losing track of line and columns", async () => {
     const project = createProject({
       cwd: join(__dirname, "tmp"),
+      templates: { newElements: "<></>" },
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.createSourceFile("Untitled");
