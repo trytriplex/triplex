@@ -7,7 +7,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "lib": ["dom", "dom.iterable", "es2022"],
-    "module": "esnext",
+    "module": "Node16",
     "moduleResolution": "Node16",
     "noEmit": true,
     "resolveJsonModule": true,

@@ -146,15 +146,13 @@ export class EditorPage {
             await this.waitForScene();
             await locator.click({ force: true });
           },
+          customAction: (label: string) => locator.getByLabel(label),
           dblclick: async () => {
             await this.waitForScene();
             await locator.click({ clickCount: 2, delay: 50, force: true });
           },
           deleteButton: locator.getByTestId("delete"),
-          enterCameraButton: locator.getByTestId("enter-camera"),
-          exitCameraButton: locator.getByTestId("exit-camera"),
           expandButton: locator.getByTestId("expand"),
-          focusButton: locator.getByTestId("jump-to"),
           locator,
         };
       },
@@ -179,10 +177,12 @@ export class EditorPage {
     return this.page.keyboard;
   }
 
-  get camera() {
+  get controls() {
+    const locator = this.page.getByTestId("controls-menu");
+
     return {
-      toOrthographicButton: this.page.getByTestId("orthographic"),
-      toPerspectiveButton: this.page.getByTestId("perspective"),
+      button: (label: string) => locator.getByLabel(label),
+      locator,
     };
   }
 

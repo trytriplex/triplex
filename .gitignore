@@ -14,6 +14,7 @@ coverage
 /playwright-report/
 /playwright/.cache/
 *.*profile
+**/blob-report
 
 # next.js
 .next/

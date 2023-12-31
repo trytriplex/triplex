@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { readdir } from "node:fs/promises";
-import { type BrowserWindow, Notification } from "electron";
+import { Notification, type BrowserWindow } from "electron";
 import { createPkgManagerDialog } from "./dialog";
 import { exec } from "./exec";
 import { indeterminate } from "./progress-bar";
@@ -16,7 +16,11 @@ export async function ensureDepsInstall(
   signal: AbortSignal
 ) {
   const dir = await readdir(cwd);
-  if (dir.includes("node_modules")) {
+  if (
+    dir.includes("node_modules") ||
+    // Skip deps check in a test environment else it will hang indefinitely.
+    process.env.FORCE_EDITOR_TEST_FIXTURE
+  ) {
     return true;
   }
 

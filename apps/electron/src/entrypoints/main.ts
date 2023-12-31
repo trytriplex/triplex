@@ -620,7 +620,7 @@ async function main() {
   if (process.env.FORCE_EDITOR_TEST_FIXTURE) {
     // Immediately open the test fixture project
     await onOpenProject(
-      join(process.cwd(), "..", "..", "examples", "test-fixture")
+      join(process.cwd(), "..", "..", process.env.FORCE_EDITOR_TEST_FIXTURE)
     );
   } else {
     welcomeWindow = await openWelcomeScreen(editorDevPort);

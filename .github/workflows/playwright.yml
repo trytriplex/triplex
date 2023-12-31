@@ -13,8 +13,11 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     strategy:
+      fail-fast: false
+
       matrix:
         os: [ubuntu-latest, windows-latest]
+        shard: [1/2, 2/2]
 
     steps:
       - name: Checkout
@@ -44,15 +47,67 @@ jobs:
         if: matrix.os == 'ubuntu-latest'
         run:
           xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" --
-          pnpm test:e2e
+          pnpm test:e2e --shard ${{ matrix.shard }}
+        env:
+          PWTEST_BLOB_REPORT_NAME: ${{ matrix.os }}
 
       - name: Run end-to-end tests
         if: matrix.os != 'ubuntu-latest'
-        run: pnpm test:e2e
+        run: pnpm test:e2e --shard ${{ matrix.shard }}
+        env:
+          PWTEST_BLOB_REPORT_NAME: ${{ matrix.os }}
 
       - uses: actions/upload-artifact@v3
         if: always()
         with:
-          name: playwright-report
-          path: apps/electron/playwright-report/
-          retention-days: 30
+          name: blob-report
+          path: apps/electron/blob-report/
+          retention-days: 1
+
+  merge-reports:
+    # Merge reports after playwright-tests, even if some shards have failed
+    if: always()
+
+    needs: [test]
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Read node version
+        run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+        id: nvm
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.6.1
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ steps.nvm.outputs.NVMRC }}
+
+      - name: Setup pnpm config
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Download blob reports from GitHub Actions Artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: blob-report
+          path: blob-reports
+
+      - name: Merge into HTML Report
+        run: npx playwright merge-reports --reporter html,github ./blob-reports
+
+      - name: Upload HTML report
+        uses: actions/upload-artifact@v3
+        with:
+          name: html-report
+          path: playwright-report
+          retention-days: 14

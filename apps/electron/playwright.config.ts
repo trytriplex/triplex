@@ -25,17 +25,11 @@ export default defineConfig({
     },
   ],
 
-  reporter: "html",
+  reporter: process.env.CI ? "blob" : "html",
 
   retries: process.env.CI ? 2 : 0,
 
   testDir: "./__tests__",
-
-  use: {
-    screenshot: "only-on-failure",
-    trace: "retain-on-failure",
-    video: "retain-on-failure",
-  },
 
   workers: 1,
 });

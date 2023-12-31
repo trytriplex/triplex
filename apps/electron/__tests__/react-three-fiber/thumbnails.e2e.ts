@@ -5,13 +5,13 @@
  * file in the root directory of this source tree.
  */
 import { expect } from "@playwright/test";
-import { test } from "./utils/runner";
+import { test } from "../utils/runner";
 
-test("thumbnail loads", async ({ editor }) => {
-  const drawer = await editor.assetsDrawer.open();
+test("thumbnail loads", async ({ editorR3F }) => {
+  const drawer = await editorR3F.assetsDrawer.open();
   await drawer.openFolder({ name: "geometry" });
 
-  const thumbnail = editor.page.getByTestId("Thumbnail(Box)");
+  const thumbnail = editorR3F.page.getByTestId("Thumbnail(Box)");
 
   await expect(thumbnail).toHaveJSProperty("complete", true);
   await expect(thumbnail).not.toHaveJSProperty("naturalWidth", 0);
