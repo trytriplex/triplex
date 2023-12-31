@@ -54,7 +54,7 @@ function SelectedSceneObjectPanel({
   return (
     <>
       <h2
-        className="px-4 pt-3 text-base font-medium text-neutral-300"
+        className="px-4 pt-3 text-sm font-medium text-neutral-300"
         data-testid="context-panel-heading"
       >
         <div className="overflow-hidden text-ellipsis">{data.name}</div>
@@ -176,7 +176,7 @@ function ComponentSandboxPanel({
 
   return (
     <>
-      <h2 className="px-4 pt-3 text-base font-medium text-neutral-300">
+      <h2 className="px-4 pt-3 text-sm font-medium text-neutral-300">
         <div className="overflow-hidden text-ellipsis">Prop Controls</div>
       </h2>
       <div className="-mt-0.5 mb-2.5 px-4">

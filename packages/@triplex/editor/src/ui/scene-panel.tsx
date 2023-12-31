@@ -104,8 +104,8 @@ function ComponentHeading() {
   };
 
   return (
-    <h2 className="flex flex-row items-center pl-2 pr-4 pt-3 text-base font-medium text-neutral-300">
-      <label className="relative mr-auto flex items-center gap-1.5 overflow-hidden rounded pl-2 pr-1 outline-1 outline-offset-1 outline-blue-400 focus-within:outline hover:bg-white/5 active:bg-white/10">
+    <h2 className="flex flex-row items-center pl-2 pr-4 pt-3 text-sm font-medium text-neutral-300">
+      <label className="relative -my-0.5 mr-auto flex items-center gap-1.5 overflow-hidden rounded py-0.5 pl-2 pr-1 outline-1 outline-offset-1 outline-blue-400 focus-within:outline hover:bg-white/5 active:bg-white/10">
         <span
           className="overflow-hidden text-ellipsis rounded"
           data-testid="scene-panel-heading"

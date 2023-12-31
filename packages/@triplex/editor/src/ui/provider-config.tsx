@@ -112,7 +112,7 @@ export function ProviderConfig() {
   return (
     <>
       <h2
-        className="px-4 pt-3 text-base font-medium text-neutral-300"
+        className="px-4 pt-3 text-sm font-medium text-neutral-300"
         data-testid="context-panel-heading"
       >
         Provider Controls

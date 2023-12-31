@@ -50,7 +50,7 @@ export function ErrorBoundary({
         const message = humanize(e.error.message);
         return (
           <div className="flex h-full flex-col gap-2 px-4 py-3">
-            <h2 className="text-base font-medium text-neutral-300">
+            <h2 className="text-sm font-medium text-neutral-300">
               {message.title}
             </h2>
 
