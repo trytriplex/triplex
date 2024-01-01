@@ -41,6 +41,7 @@ export const scripts = {
       `
       const files = Object.assign(tempFiles, projectFiles);
 
+      // Need to export for HMR support later down the template.
       export { provider, files };
 
       if (${metaHot}) {
@@ -51,6 +52,14 @@ export const scripts = {
             message: e.err.message,
             source: e.err.id || "unknown",
             stack: e.err.stack,
+          });
+        });
+
+        ${metaHot}.on("vite:afterUpdate", (e) => {
+          const paths = e.updates.map((update) => update.path);
+
+          paths.forEach((path) => {
+            send("self:request-reset-file", { path });
           });
         });
 

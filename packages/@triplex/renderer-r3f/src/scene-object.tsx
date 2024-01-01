@@ -45,19 +45,12 @@ function useSceneObjectProps(
   Object.assign(propsRef.current, props);
 
   useEffect(() => {
-    // @ts-expect-error — ??????
-    import.meta.hot?.on("vite:afterUpdate", (e) => {
-      const isUpdated = e.updates.find((up) => meta.path?.endsWith(up.path));
-      if (isUpdated) {
-        // On HMR clear out the intermediate state so when it's rendered again
-        // It'll use the latest values from source.
-        intermediateProps.current = {};
-      }
-    });
-  }, [meta.path]);
-
-  useEffect(() => {
     return compose([
+      on("self:request-reset-file", ({ path }) => {
+        if (meta.path.endsWith(path)) {
+          intermediateProps.current = {};
+        }
+      }),
       on("request-reset-scene", () => {
         if (Object.keys(intermediateProps.current).length) {
           intermediateProps.current = {};

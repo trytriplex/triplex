@@ -50,7 +50,11 @@ export function send<TEvent extends ClientSendEventName>(
   data: ClientSendEventData[TEvent],
   awaitResponse = false
 ): Promise<ClientSendEventResponse[TEvent]> {
-  window.top?.postMessage({ data, eventName }, "*");
+  if (eventName.startsWith("self:")) {
+    window.postMessage({ data, eventName }, "*");
+  } else {
+    window.top?.postMessage({ data, eventName }, "*");
+  }
 
   if (awaitResponse) {
     return new Promise((resolve) => {

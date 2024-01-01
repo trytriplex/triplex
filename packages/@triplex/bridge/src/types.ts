@@ -182,6 +182,7 @@ export interface HostSendEventData {
     propName: string;
     propValue: unknown;
   };
+  "self:request-reset-file": { path: string };
 }
 
 export interface HostSendEventResponse {
@@ -197,4 +198,5 @@ export interface HostSendEventResponse {
   "request-reset-scene": void;
   "request-restore-element": void;
   "request-set-element-prop": void;
+  "self:request-reset-file": void;
 }
