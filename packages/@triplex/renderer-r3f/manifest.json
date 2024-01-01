@@ -65,6 +65,10 @@
       { "category": "Geometry", "name": "capsuleGeometry", "type": "host" }
     ]
   },
+  "bundler": {
+    "assetsInclude": ["**/*.(gltf|glb)"],
+    "dedupe": ["@react-three/fiber", "three"]
+  },
   "templates": {
     "newElements": "<><mesh><boxGeometry /><meshStandardMaterial /></mesh></>"
   }

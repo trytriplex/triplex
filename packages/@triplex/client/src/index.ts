@@ -42,7 +42,7 @@ export async function createServer({
 
   const vite = await createViteServer({
     appType: "custom",
-    assetsInclude: ["**/*.(gltf|glb)"],
+    assetsInclude: renderer.manifest.bundler?.assetsInclude,
     configFile: false,
     define: {
       __TRIPLEX_CWD__: `"${normalizedCwd}"`,
@@ -60,6 +60,8 @@ export async function createServer({
           ],
         },
       }),
+      // TODO: Vite plugins should be loaded from a renderer's manfiest
+      // instead of hardcoded. We'll cross this bridge to resolve later.
       glsl(),
       scenePlugin({ provider }),
       tsconfigPaths({ projects: [tsConfig] }),
@@ -70,7 +72,7 @@ export async function createServer({
         "@triplex/bridge/client": require.resolve("@triplex/bridge/client"),
         __triplex_renderer__: renderer.path,
       },
-      dedupe: ["@react-three/fiber", "three"],
+      dedupe: renderer.manifest.bundler?.dedupe,
     },
     root: normalizedCwd,
     server: {

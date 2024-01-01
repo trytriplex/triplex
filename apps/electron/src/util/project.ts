@@ -12,7 +12,15 @@ import {
   type TriplexConfig,
 } from "@triplex/server";
 import { dirname } from "upath";
-import { array, literal, minLength, object, parse, string } from "valibot";
+import {
+  array,
+  literal,
+  minLength,
+  object,
+  optional,
+  parse,
+  string,
+} from "valibot";
 import { logger } from "./log";
 import { findParentFile } from "./path";
 
@@ -37,6 +45,12 @@ function validateManifest(manifest: unknown): RendererManifest {
         ),
       },
       "missing assets"
+    ),
+    bundler: optional(
+      object({
+        assetsInclude: optional(array(string())),
+        dedupe: optional(array(string())),
+      })
     ),
     templates: object(
       {

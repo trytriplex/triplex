@@ -89,16 +89,16 @@ async function runUseWithTrace({
 
   await use(editorPage);
 
+  await testInfo.attach("logs", {
+    body: logs.join("\n"),
+    contentType: "text/plain",
+  });
+
   if (testInfo.status !== testInfo.expectedStatus) {
     const screenshot = await editorPage.screenshot();
     await testInfo.attach("screenshot", {
       body: screenshot,
       contentType: "image/png",
-    });
-
-    await testInfo.attach("logs", {
-      body: logs.join("\n"),
-      contentType: "text/plain",
     });
   }
 

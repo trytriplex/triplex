@@ -242,8 +242,44 @@ export interface TriplexConfig {
 }
 
 export interface RendererManifest {
+  /**
+   * Assets your renderer makes available inside the editor UI.
+   */
   assets: {
+    /**
+     * Host elements can be added through the assets drawer. For example when
+     * writing a DOM based renderer you could expose web elements like "button"
+     * and "div".
+     *
+     * If your renderer has no host elements then define an empty array.
+     */
     hostElements: Array<{ category: string; name: string; type: "host" }>;
   };
-  templates: { newElements: string };
+  /**
+   * Configuration for the Triplex bundler.
+   */
+  bundler?: {
+    /**
+     * Glob patterns to match for files that should be considered static assets.
+     * This means that when they are imported they are copied to the public
+     * folder and the default export is a path to the asset. For example the
+     * React Three Fiber renderer declares glb & gltf assets.
+     */
+    assetsInclude?: string[];
+    /**
+     * Packages to dedupe between Triplex and the opened project. For example
+     * for the React Three Fiber renderer it dedupes `"@react-three/fiber"` and
+     * `"three"`.
+     */
+    dedupe?: string[];
+  };
+  /**
+   * Templates used for different use cases across Triplex.
+   */
+  templates: {
+    /**
+     * The elements returned from a new component.
+     */
+    newElements: string;
+  };
 }
