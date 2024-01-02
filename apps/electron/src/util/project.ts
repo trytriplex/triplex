@@ -136,7 +136,7 @@ export async function startProject(
 
   return {
     close: async () => {
-      await closeFrontend({ forceExit: false });
+      await closeFrontend();
       await closeBackend();
     },
   };

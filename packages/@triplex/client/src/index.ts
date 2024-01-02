@@ -112,8 +112,7 @@ export async function createServer({
       }
 
       const template = createHTML(
-        scripts.render(htmlConfig, { exportName, path }),
-        `<style>body{background-color:rgb(38 38 38)}</style>`
+        scripts.render(htmlConfig, { exportName, path })
       );
       const html = await vite.transformIndexHtml(
         `thumbnail_${path}_${exportName}`,
@@ -131,14 +130,12 @@ export async function createServer({
     listen: async (port: number) => {
       const server = await app.listen(port);
 
-      const close = async ({ forceExit = true } = {}) => {
+      const close = async () => {
         try {
           await server.close();
           await vite.close();
         } finally {
-          if (forceExit) {
-            process.exit(0);
-          }
+          process.exit(0);
         }
       };
 

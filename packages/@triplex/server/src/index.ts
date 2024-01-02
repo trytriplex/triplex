@@ -538,8 +538,12 @@ export function createServer({
       tws.listen(ports.ws);
 
       const close = () => {
-        controller.abort();
-        tws.close();
+        try {
+          controller.abort();
+          tws.close();
+        } finally {
+          process.exit(0);
+        }
       };
 
       process.once("SIGINT", close);

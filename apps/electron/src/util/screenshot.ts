@@ -14,9 +14,11 @@ import { createWindowBrowserPool } from "./browser-pool";
 const appDataDir = app.getPath("userData");
 
 const getWindowBrowser = createWindowBrowserPool({
+  frame: false,
   height: 200,
   show: false,
   titleBarStyle: "hidden",
+  transparent: true,
   width: 200,
 });
 
@@ -61,22 +63,31 @@ export async function screenshotComponent({
   );
 
   return new Promise((resolve, reject) => {
-    setTimeout(() => reject("timeout"), 2000);
+    setTimeout(() => reject("timeout"), 10_000);
 
     thumbnailWindow.webContents.on(
       "console-message",
       async (_, __, message) => {
         if (message === "screenshot!") {
-          const res = await thumbnailWindow.webContents.capturePage(undefined, {
-            stayHidden: true,
-          });
+          // Windows / Linux need an extra delay to capture the screenshot.
+          // This is shit, hacky, lame, but works so it is what it is.
+          const screenShotTimeout = process.platform === "darwin" ? 0 : 2000;
 
-          thumbnailWindow.close();
+          setTimeout(async () => {
+            const res = await thumbnailWindow.webContents.capturePage(
+              undefined,
+              {
+                stayHidden: true,
+              }
+            );
 
-          await mkdir(dirname(thumbnailPath), { recursive: true });
-          await writeFile(thumbnailPath, res.toPNG());
+            thumbnailWindow.close();
 
-          resolve(thumbnailPath);
+            await mkdir(dirname(thumbnailPath), { recursive: true });
+            await writeFile(thumbnailPath, res.toPNG());
+
+            resolve(thumbnailPath);
+          }, screenShotTimeout);
         }
       }
     );
