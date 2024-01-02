@@ -129,6 +129,14 @@ export function Footer() {
             <li>
               <Link
                 className="text-sm text-neutral-400 hover:text-neutral-200"
+                href="https://www.youtube.com/@trytriplex"
+              >
+                YouTube
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="text-sm text-neutral-400 hover:text-neutral-200"
                 href="https://github.com/try-triplex/triplex/issues/new"
               >
                 Raise an Issue
