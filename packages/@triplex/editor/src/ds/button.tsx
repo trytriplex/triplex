@@ -68,7 +68,7 @@ export const IconButton = forwardRef<
                 variant === "inverse" &&
                   "bg-black/5 text-neutral-800 hover:bg-black/10 active:bg-black/20",
               ]),
-        size === "md" && "rounded-md p-1.5",
+        size === "md" && "h-[26px] w-[26px] rounded-md p-1.5",
         size === "sm" && "rounded-md p-1",
         size === "xs" && "rounded p-0.5",
         className,
