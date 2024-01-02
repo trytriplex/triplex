@@ -1,5 +1,11 @@
 # @docs/triplex
 
+## 0.2.3
+
+### Patch Changes
+
+- 480866f: Upgrade TypeScript.
+
 ## 0.2.2
 
 ### Patch Changes

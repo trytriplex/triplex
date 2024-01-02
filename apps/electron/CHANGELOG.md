@@ -1,5 +1,27 @@
 # @triplex/electron
 
+## 0.63.0
+
+### Minor Changes
+
+- 0b5fb14: Add manifest to renderers.
+- 4c48d66: Add host element declarations to renderer manifest.
+
+### Patch Changes
+
+- 480866f: Upgrade TypeScript.
+- Updated dependencies [8eddebb]
+- Updated dependencies [8eddebb]
+- Updated dependencies [0b5fb14]
+- Updated dependencies [4c48d66]
+- Updated dependencies [a81b79a]
+- Updated dependencies [8eddebb]
+- Updated dependencies [480866f]
+  - @triplex/editor@0.63.0
+  - @triplex/client@0.63.0
+  - @triplex/server@0.63.0
+  - create-triplex-project@0.63.0
+
 ## 0.62.0
 
 ### Minor Changes

@@ -1,5 +1,16 @@
 # @triplex/server
 
+## 0.63.0
+
+### Minor Changes
+
+- 0b5fb14: Add manifest to renderers.
+- 4c48d66: Add host element declarations to renderer manifest.
+
+### Patch Changes
+
+- 480866f: Upgrade TypeScript.
+
 ## 0.62.0
 
 ### Minor Changes

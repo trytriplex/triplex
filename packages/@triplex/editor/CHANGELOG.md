@@ -1,5 +1,23 @@
 # @triplex/editor
 
+## 0.63.0
+
+### Minor Changes
+
+- 4c48d66: Add host element declarations to renderer manifest.
+- 8eddebb: The canvas can now be set to take up all available space in the
+  editor or take up the space between panels.
+
+### Patch Changes
+
+- 8eddebb: Assets panel now defaults to host elements.
+- 8eddebb: Font size has been consolidated across the editor ui.
+- a81b79a: Improve filter logic in open component drawer.
+- 480866f: Upgrade TypeScript.
+- Updated dependencies [480866f]
+  - @triplex/bridge@0.63.0
+  - @triplex/ws@0.63.0
+
 ## 0.62.0
 
 ### Minor Changes

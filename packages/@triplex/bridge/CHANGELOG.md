@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.63.0
+
+### Patch Changes
+
+- 480866f: Upgrade TypeScript.
+
 ## 0.62.0
 
 ### Minor Changes

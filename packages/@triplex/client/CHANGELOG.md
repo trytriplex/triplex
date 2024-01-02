@@ -1,5 +1,22 @@
 # @triplex/client
 
+## 0.63.0
+
+### Minor Changes
+
+- 0b5fb14: Add manifest to renderers.
+- 4c48d66: Add host element declarations to renderer manifest.
+
+### Patch Changes
+
+- 480866f: Upgrade TypeScript.
+- Updated dependencies [0b5fb14]
+- Updated dependencies [4c48d66]
+- Updated dependencies [480866f]
+  - @triplex/renderer-react@0.63.0
+  - @triplex/renderer-r3f@0.63.0
+  - @triplex/bridge@0.63.0
+
 ## 0.62.0
 
 ### Minor Changes
