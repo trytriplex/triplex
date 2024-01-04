@@ -229,13 +229,13 @@ function ComponentSandboxPanel({
       <ScrollContainer>
         {data.props.length === 0 && (
           <div className="flex flex-col gap-2 px-4 py-3">
-            <span className="text-sm text-neutral-400">
+            <span className="text-xs text-neutral-400">
               Props declared on your component appear here that can be set
               temporarily during this session.
             </span>
 
             <a
-              className="text-sm text-blue-400"
+              className="text-xs text-blue-400"
               href="#"
               onClick={() =>
                 window.triplex.openLink(

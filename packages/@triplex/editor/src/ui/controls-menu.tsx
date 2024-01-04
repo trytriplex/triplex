@@ -9,23 +9,23 @@ import { ResetIcon } from "@radix-ui/react-icons";
 import { on, send, type Controls } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { IconButton } from "../ds/button";
+import { Button as DSButton, IconButton } from "../ds/button";
+import { useCanvasStage } from "../stores/canvas-stage";
 import { useScene } from "../stores/scene";
 import { Button, ButtonGroup, ToggleButton } from "./ecosystem/buttons";
 
 export function ControlsMenu() {
   const { refresh } = useScene();
   const [controls, setControls] = useState<Controls>([]);
+  const zoom = useCanvasStage((store) => store.canvasZoom);
+  const setZoom = useCanvasStage((store) => store.setCanvasZoom);
+  const frame = useCanvasStage((store) => store.frame);
 
   useEffect(() => {
     return on("set-controls", (data) => {
       setControls(data.controls);
     });
   });
-
-  if (controls.length === 0) {
-    return null;
-  }
 
   return (
     <div
@@ -39,7 +39,9 @@ export function ControlsMenu() {
         onClick={refresh}
       />
 
-      <div className="-my-1 mx-1 w-[1px] bg-neutral-800" />
+      {controls.length ? (
+        <div className="-my-1 mx-1 w-[1px] bg-neutral-800" />
+      ) : undefined}
 
       <ErrorBoundary fallbackRender={() => null} resetKeys={[controls]}>
         {controls.map((control, index) => {
@@ -85,6 +87,24 @@ export function ControlsMenu() {
           }
         })}
       </ErrorBoundary>
+
+      {frame === "intrinsic" && (
+        <>
+          <div className="-my-1 mx-1 w-[1px] bg-neutral-800" />
+
+          <DSButton
+            actionId="refresh_scene"
+            onClick={() => {
+              setZoom(zoom === 1 ? 1.4 : 1);
+            }}
+            size="tight"
+          >
+            <span className="w-8 text-center text-xs text-neutral-400">{`${
+              zoom * 100
+            }%`}</span>
+          </DSButton>
+        </>
+      )}
     </div>
   );
 }

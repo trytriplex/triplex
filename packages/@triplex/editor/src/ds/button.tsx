@@ -92,7 +92,7 @@ export const Button = forwardRef<
   HTMLDivElement,
   {
     actionId: string;
-    children: string;
+    children: React.ReactNode;
     className?: string;
     disabled?: boolean;
     icon?: ComponentType<IconProps>;

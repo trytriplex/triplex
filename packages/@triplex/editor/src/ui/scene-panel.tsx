@@ -15,6 +15,7 @@ import {
   CaretRightIcon,
   Crosshair1Icon,
   ExclamationTriangleIcon,
+  ExitFullScreenIcon,
   ExitIcon,
   Pencil2Icon,
   PlusIcon,
@@ -38,6 +39,7 @@ import { Pressable } from "../ds/pressable";
 import { ScrollContainer } from "../ds/scroll-container";
 import { PanelSkeleton } from "../ds/skeleton";
 import { useAssetsDrawer } from "../stores/assets-drawer";
+import { useCanvasStage } from "../stores/canvas-stage";
 import { useEditor } from "../stores/editor";
 import { useScene } from "../stores/scene";
 import { useSceneState } from "../stores/scene-state";
@@ -77,6 +79,8 @@ const blockAll: InstructionType[] = [
 
 function ComponentHeading() {
   const { exportName, newComponent, path, set } = useEditor();
+  const setFrame = useCanvasStage((store) => store.setFrame);
+  const frame = useCanvasStage((store) => store.frame);
   const scene = useLazySubscription("/scene/:path/:exportName", {
     exportName,
     path,
@@ -130,30 +134,40 @@ function ComponentHeading() {
         </select>
       </label>
 
-      {!scene.matchesFilesGlob && (
-        <IconButton
-          actionId="component_outside_of_project_files"
-          className="-my-1 -mr-1.5 ml-1 text-orange-400"
-          icon={ExclamationTriangleIcon}
-          label="Warning: This component is outside of your declared project files. Click to learn more."
-          onClick={() =>
-            window.triplex.openLink(
-              "https://triplex.dev/docs/supporting/component-outside-of-project-files?meta=" +
-                encodeURIComponent(
-                  JSON.stringify({
-                    files: window.triplex.env.config.files.map((file) =>
-                      file.replace(window.triplex.env.config.cwd, "..")
-                    ),
-                    path: scene.path.replace(
-                      window.triplex.env.config.cwd,
-                      ".."
-                    ),
-                  })
-                )
-            )
-          }
-        />
-      )}
+      <div className="-my-1 -mr-2 ml-1 flex items-center">
+        {frame === "expanded" && (
+          <IconButton
+            actionId="collapse_frame"
+            icon={ExitFullScreenIcon}
+            label="Collapse To Frame"
+            onClick={() => setFrame("intrinsic")}
+          />
+        )}
+        {!scene.matchesFilesGlob && (
+          <IconButton
+            actionId="component_outside_of_project_files"
+            className="text-orange-400"
+            icon={ExclamationTriangleIcon}
+            label="Warning: This component is outside of your declared project files. Click to learn more."
+            onClick={() =>
+              window.triplex.openLink(
+                "https://triplex.dev/docs/supporting/component-outside-of-project-files?meta=" +
+                  encodeURIComponent(
+                    JSON.stringify({
+                      files: window.triplex.env.config.files.map((file) =>
+                        file.replace(window.triplex.env.config.cwd, "..")
+                      ),
+                      path: scene.path.replace(
+                        window.triplex.env.config.cwd,
+                        ".."
+                      ),
+                    })
+                  )
+              )
+            }
+          />
+        )}
+      </div>
     </h2>
   );
 }

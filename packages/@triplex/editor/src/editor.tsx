@@ -9,8 +9,8 @@ import { useEffect } from "react";
 import { useScreenView } from "./analytics";
 import { cn } from "./ds/cn";
 import { SceneFrame } from "./scence-bridge";
+import { useCanvasStage } from "./stores/canvas-stage";
 import { useEditor } from "./stores/editor";
-import { usePanels } from "./stores/panels";
 import { AssetsDrawer } from "./ui/assets-drawer";
 import { ContextPanel } from "./ui/context-panel";
 import { ControlsMenu } from "./ui/controls-menu";
@@ -23,7 +23,7 @@ import { TitleBar } from "./ui/title-bar";
 export function EditorFrame() {
   const { exportName, index, open, path } = useEditor();
   const isFileOpen = !!exportName && !!path;
-  const canvasLayout = usePanels((store) => store.layout);
+  const canvasLayout = useCanvasStage((store) => store.canvasStage);
 
   useScreenView("editor", "Screen");
 
@@ -61,7 +61,7 @@ export function EditorFrame() {
             {path && <ScenePanel />}
           </div>
 
-          <div className="pointer-events-none col-start-2 row-start-3 flex pb-3">
+          <div className="pointer-events-none relative col-start-2 row-start-3 flex pb-3">
             <ControlsMenu />
           </div>
 

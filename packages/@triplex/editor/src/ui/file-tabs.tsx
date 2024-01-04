@@ -16,9 +16,9 @@ import { useCallback, useEffect, useRef } from "react";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 import { Pressable } from "../ds/pressable";
+import { useCanvasStage } from "../stores/canvas-stage";
 import { useEditor } from "../stores/editor";
 import { useOverlayStore } from "../stores/overlay";
-import { usePanels } from "../stores/panels";
 import useEvent from "../util/use-event";
 
 function FallbackTab({
@@ -170,8 +170,8 @@ export function FileTabs() {
     { exportName: string; filePath: string; index: number }[]
   >([]);
   const lastAvailableTab = projectState.at(-1);
-  const canvasLayout = usePanels((store) => store.layout);
-  const toggleCanvasLayout = usePanels((store) => store.toggleLayout);
+  const canvasLayout = useCanvasStage((store) => store.canvasStage);
+  const toggleCanvasLayout = useCanvasStage((store) => store.toggleCanvasStage);
 
   const openLastTab = useCallback(() => {
     const closedTab = previouslyClosedTabs.current.pop();

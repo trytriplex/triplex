@@ -7,8 +7,9 @@
 import { compose, on } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
 import { cn } from "./ds/cn";
+import { Stage } from "./stage";
+import { useCanvasStage } from "./stores/canvas-stage";
 import { useEditor } from "./stores/editor";
-import { usePanels } from "./stores/panels";
 import { useScene } from "./stores/scene";
 
 export interface FocusedObject {
@@ -22,7 +23,7 @@ export function SceneFrame() {
   const [blockPointerEvents, setBlockPointerEvents] = useState(false);
   const navigateTo = useScene((store) => store.navigateTo);
   const editor = useEditor();
-  const canvasLayout = usePanels((store) => store.layout);
+  const canvasLayout = useCanvasStage((store) => store.canvasStage);
 
   useEffect(() => {
     return on("ready", () => {
@@ -64,18 +65,20 @@ export function SceneFrame() {
   return (
     <div
       className={cn([
-        "row-start-3 flex items-center justify-center",
+        "relative row-start-3 flex items-center justify-center overflow-hidden",
         canvasLayout === "collapsed" && "col-span-1 col-start-2",
         canvasLayout === "expanded" && "col-span-3 col-start-1",
       ])}
     >
-      <iframe
-        className={cn([
-          blockPointerEvents && "pointer-events-none",
-          "h-full w-full flex-shrink-0 border-none",
-        ])}
-        src={`http://localhost:${window.triplex.env.ports.client}/scene.html`}
-      />
+      <Stage>
+        <iframe
+          className={cn([
+            blockPointerEvents && "pointer-events-none",
+            "h-full w-full flex-shrink-0 border-none",
+          ])}
+          src={`http://localhost:${window.triplex.env.ports.client}/scene.html`}
+        />
+      </Stage>
 
       <BridgeSendEvents />
       <BridgeReceiveEvents />

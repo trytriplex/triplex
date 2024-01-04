@@ -125,6 +125,26 @@ export class EditorPage {
     return locator.click();
   }
 
+  get stage() {
+    const locator = this.page.getByTestId("stage");
+
+    return {
+      locator,
+    };
+  }
+
+  get frame() {
+    const locator = this.page.getByTestId("frame");
+
+    return {
+      activateButton: this.page.getByLabel("Activate Frame", { exact: true }),
+      collapseButton: this.page.getByLabel("Collapse To Frame"),
+      deactivateButton: this.page.getByLabel("Deactivate Frame"),
+      expandButton: this.page.getByLabel("Expand Frame"),
+      locator,
+    };
+  }
+
   get scenePanel() {
     const locator = this.page.getByTestId("scene-panel");
 

@@ -163,12 +163,12 @@ export function ProviderConfig() {
         </Suspense>
       ) : (
         <div className="flex flex-col gap-2 px-4 py-3">
-          <span className="text-sm text-neutral-400">
+          <span className="text-xs text-neutral-400">
             Set up a provider component and its props will appear here to
             configure.
           </span>
           <a
-            className="text-sm text-blue-400"
+            className="text-xs text-blue-400"
             href="#"
             onClick={() =>
               window.triplex.openLink(
