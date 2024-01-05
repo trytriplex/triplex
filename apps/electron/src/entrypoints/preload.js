@@ -24,7 +24,6 @@ const args = Array.from(process.argv).reduce((acc, arg) => {
 
 const declaredAccelerators = {};
 const env = args.triplex_data ? JSON.parse(args.triplex_data) : {};
-const editorConfig = args.editor_config ? JSON.parse(args.editor_config) : {};
 
 contextBridge.exposeInMainWorld("triplex", {
   accelerator: (accelerator, callback) => {
@@ -48,13 +47,6 @@ contextBridge.exposeInMainWorld("triplex", {
       delete declaredAccelerators[accelerator];
       ipcRenderer.removeListener(`acl:${accelerator}`, listener);
     };
-  },
-  get editorConfig() {
-    if (!editorConfig) {
-      throw new Error("invariant: unavailable in this context");
-    }
-
-    return editorConfig;
   },
   get env() {
     if (!env) {

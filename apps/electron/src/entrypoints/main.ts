@@ -28,8 +28,10 @@ import { getInitialComponent } from "../util/files";
 import { fork } from "../util/fork";
 import { getLogPath, logger } from "../util/log";
 import { getPort } from "../util/port";
+import type { startProject } from "../util/project";
+import { getRendererMeta } from "../util/renderer";
 import { invalidateScreenshot, screenshotComponent } from "../util/screenshot";
-import { editorConfigStore, userStore } from "../util/store";
+import { editorConfigStore, getProjectStore, userStore } from "../util/store";
 
 if (process.env.TRIPLEX_ENV !== "development") {
   init({
@@ -304,7 +306,8 @@ async function main() {
       server: await getPort(),
       ws: await getPort(),
     };
-    const environmentData = { config, ports };
+    const renderer = await getRendererMeta({ cwd, filepath: config.renderer });
+    const project = getProjectStore({ cwd, manifest: renderer.manifest });
 
     abortContoller = new AbortController();
 
@@ -322,8 +325,12 @@ async function main() {
         additionalArguments: [
           `--user_id=${USER_ID}`,
           `--session_id=${SESSION_ID}`,
-          `--triplex_data=${JSON.stringify(environmentData)}`,
-          `--editor_config=${JSON.stringify(editorConfigStore.store)}`,
+          `--triplex_data=${JSON.stringify({
+            config,
+            editor: editorConfigStore.store,
+            ports,
+            project: project.store,
+          })}`,
         ],
         preload: require.resolve("./preload.js"),
       },
@@ -393,10 +400,13 @@ async function main() {
     log.info("forking");
 
     try {
-      const p = await fork(join(__dirname, "./project.ts"), {
-        cwd,
-        data: environmentData,
-      });
+      const p = await fork<Parameters<typeof startProject>[0]>(
+        join(__dirname, "./project.ts"),
+        {
+          cwd,
+          data: { config, ports, renderer },
+        }
+      );
 
       p.on("invalidate-thumbnail", (data) => {
         const { exportName, path } = data as {

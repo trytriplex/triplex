@@ -4,37 +4,34 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import type { RendererManifest } from "@triplex/server";
+import type {
+  ReconciledTriplexConfig,
+  RendererManifest,
+  TriplexPorts,
+} from "@triplex/server";
 import react from "@vitejs/plugin-react";
 import express from "express";
 import { join, normalize } from "upath";
 import tsconfigPaths from "vite-tsconfig-paths";
 import triplexBabelPlugin from "./babel-plugin";
-import { emptyProviderId } from "./constants";
 import { remoteModulePlugin } from "./remote-module-plugin";
 import { scenePlugin } from "./scene-plugin";
 import { createHTML, scripts } from "./templates";
 
 export async function createServer({
-  cwd: __RAW_CWD_DONT_USE__ = process.cwd(),
-  files,
+  config,
   ports,
-  provider = emptyProviderId,
-  publicDir,
   renderer,
 }: {
-  cwd?: string;
-  files: string[];
-  ports: { server: number; ws: number };
-  provider?: string;
-  publicDir?: string;
+  config: ReconciledTriplexConfig;
+  ports: TriplexPorts;
   renderer: {
     manifest: RendererManifest;
     path: string;
     root: string;
   };
 }) {
-  const normalizedCwd = normalize(__RAW_CWD_DONT_USE__);
+  const normalizedCwd = normalize(config.cwd);
   const tsConfig = join(normalizedCwd, "tsconfig.json");
   const app = express();
   const { createServer: createViteServer } = await import("vite");
@@ -44,18 +41,14 @@ export async function createServer({
     appType: "custom",
     assetsInclude: renderer.manifest.bundler?.assetsInclude,
     configFile: false,
-    define: {
-      __TRIPLEX_CWD__: `"${normalizedCwd}"`,
-      __TRIPLEX_DATA__: JSON.stringify(process.env.TRIPLEX_DATA),
-    },
     logLevel: "error",
     plugins: [
-      remoteModulePlugin({ cwd: normalizedCwd, files, ports }),
+      remoteModulePlugin({ cwd: normalizedCwd, files: config.files, ports }),
       react({
         babel: {
           plugins: [
             triplexBabelPlugin({
-              exclude: [provider, renderer.root],
+              exclude: [config.provider, renderer.root],
             }),
           ],
         },
@@ -63,10 +56,10 @@ export async function createServer({
       // TODO: Vite plugins should be loaded from a renderer's manfiest
       // instead of hardcoded. We'll cross this bridge to resolve later.
       glsl(),
-      scenePlugin({ provider }),
+      scenePlugin(config),
       tsconfigPaths({ projects: [tsConfig] }),
     ],
-    publicDir,
+    publicDir: config.publicDir,
     resolve: {
       alias: {
         "@triplex/bridge/client": require.resolve("@triplex/bridge/client"),
@@ -84,9 +77,10 @@ export async function createServer({
   });
 
   const htmlConfig = {
-    config: { provider },
-    fileGlobs: files.map((f) => `'${f.replace(normalizedCwd, "")}'`),
+    config,
+    fileGlobs: config.files.map((f) => `'${f.replace(normalizedCwd, "")}'`),
     pkgName: "__triplex_renderer__",
+    ports,
   };
 
   app.use(vite.middlewares);

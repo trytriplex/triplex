@@ -6,15 +6,20 @@
  */
 import { readFile } from "node:fs/promises";
 import { join, normalize } from "upath";
-import { type TriplexConfig } from "../types";
+import {
+  type ReconciledTriplexConfig,
+  type SecretTriplexConfig,
+  type TriplexConfig,
+} from "../types";
 
 const STATIC_ASSETS = ["glb", "gltf"];
 
-export async function getConfig(
-  cwd: string
-): Promise<Required<TriplexConfig> & { cwd: string; renderer?: string }> {
+export async function getConfig(cwd: string): Promise<ReconciledTriplexConfig> {
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // TODO: VALIDATE THIS CONFIG!!!!
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  let config: Record<string, any>;
+  let config: TriplexConfig & SecretTriplexConfig;
 
   try {
     const conf = await readFile(join(cwd, ".triplex/config.json"), "utf8");
@@ -29,8 +34,9 @@ export async function getConfig(
     config.publicDir || "../public"
   );
 
-  const provider: string =
-    config.provider && join(cwd, ".triplex", config.provider);
+  const provider: string = config.provider
+    ? join(cwd, ".triplex", config.provider)
+    : "";
 
   const files: string[] = config.files.map((file: string) =>
     join(cwd, ".triplex", file)

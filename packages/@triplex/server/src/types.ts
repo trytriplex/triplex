@@ -206,6 +206,14 @@ export interface SourceFileChangedEvent {
   path: string;
 }
 
+export type ReconciledTriplexConfig = Required<TriplexConfig> & {
+  cwd: string;
+} & SecretTriplexConfig;
+
+export interface SecretTriplexConfig {
+  renderer: string;
+}
+
 export interface TriplexConfig {
   /**
    * Folder inside the {@link publicDir} folder where Triplex maintains static
@@ -274,6 +282,17 @@ export interface RendererManifest {
     dedupe?: string[];
   };
   /**
+   * Renderer specific configuration for the canvas stage.
+   */
+  stage: {
+    /**
+     * Initial state of the frame. `"expanded"` means the frame is expanded to
+     * fill the entire available area, `"intrinsic"` means the frame is
+     * collapsed into a sized area.
+     */
+    defaultFrame: "expanded" | "intrinsic";
+  };
+  /**
    * Templates used for different use cases across Triplex.
    */
   templates: {
@@ -282,4 +301,36 @@ export interface RendererManifest {
      */
     newElements: string;
   };
+}
+
+/**
+ * Information about a renderer that has been sourced from the file system.
+ */
+export interface ReconciledRenderer {
+  manifest: RendererManifest;
+  path: string;
+  root: string;
+}
+
+/**
+ * Settings for a project that are persisted to the file system.
+ */
+export interface ProjectSettings {
+  frame: "expanded" | "intrinsic";
+}
+
+/**
+ * Settings for the editor that are persisted to the file system.
+ */
+export interface EditorSettings {
+  layout: "expanded" | "collapsed";
+}
+
+/**
+ * Exposed ports used for Triplex.
+ */
+export interface TriplexPorts {
+  client: number;
+  server: number;
+  ws: number;
 }

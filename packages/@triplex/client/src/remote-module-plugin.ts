@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { type TriplexPorts } from "@triplex/server";
 import { on } from "@triplex/ws";
 import anymatch from "anymatch";
 import {
@@ -45,7 +46,7 @@ export function remoteModulePlugin({
   __api?: API;
   cwd: string;
   files: string[];
-  ports: { server: number; ws: number };
+  ports: TriplexPorts;
 }) {
   return {
     configureServer(server: ViteDevServer) {

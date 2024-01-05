@@ -4,30 +4,22 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-declare type WindowState = "active" | "inactive" | "disabled";
+type EditorConfig = import("@triplex/server").EditorSettings;
+type ProjectSettings = import("@triplex/server").ProjectSettings;
+type ReconciledTriplexConfig =
+  import("@triplex/server").ReconciledTriplexConfig;
+type TriplexPorts = import("@triplex/server").TriplexPorts;
 
-type EditorConfig = {
-  layout: "expanded" | "collapsed";
-};
+declare type WindowState = "active" | "inactive" | "disabled";
 
 declare interface Window {
   triplex: {
     accelerator: (accelerator: string, callback: () => void) => () => void;
-    editorConfig: EditorConfig;
     env: {
-      config: {
-        assetsDir: string;
-        components: string[];
-        cwd: string;
-        files: string[];
-        provider: string;
-        publicDir: string;
-      };
-      ports: {
-        client: number;
-        server: number;
-        ws: number;
-      };
+      config: ReconciledTriplexConfig;
+      editor: EditorConfig;
+      ports: TriplexPorts;
+      project: ProjectSettings;
     };
     handleMenuItemPress: (callback: (id: string) => void) => () => void;
     handleProgressBarChange: (

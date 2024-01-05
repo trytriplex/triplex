@@ -16,9 +16,9 @@ const log = logger("fork");
  * `process.send({ eventName: 'ready' })` when ready to have this fork resolve
  * its promise.
  */
-export function fork(
+export function fork<TData extends Record<string, unknown>>(
   filename: string,
-  { cwd, data }: { cwd: string; data: Record<string, unknown> }
+  { cwd, data }: { cwd: string; data: TData }
 ): Promise<{
   data?: Record<string, unknown>;
   kill(): void;

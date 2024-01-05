@@ -42,8 +42,10 @@ import {
   type DeclaredProp,
   type ProjectAsset,
   type Prop,
+  type ReconciledTriplexConfig,
   type RendererManifest,
   type SourceFileChangedEvent,
+  type TriplexPorts,
 } from "./types";
 import { getParam } from "./util/params";
 import { getThumbnailPath } from "./util/thumbnail";
@@ -52,18 +54,10 @@ import { createTWS } from "./util/ws-server";
 export * from "./types";
 
 export function createServer({
-  assetsDir,
-  components,
-  cwd = process.cwd(),
-  files,
-  publicDir,
+  config,
   renderer,
 }: {
-  assetsDir: string;
-  components: string[];
-  cwd?: string;
-  files: string[];
-  publicDir: string;
+  config: ReconciledTriplexConfig;
   renderer: {
     manifest: RendererManifest;
     path: string;
@@ -73,7 +67,7 @@ export function createServer({
   const app = new Application();
   const router = new Router();
   const project = createProject({
-    cwd,
+    cwd: config.cwd,
     templates: renderer.manifest.templates,
   });
   const tws = createTWS();
@@ -359,11 +353,14 @@ export function createServer({
     tws.route(
       "/scene",
       async () => {
-        const result = await getAllFiles({ cwd: project.cwd(), files });
+        const result = await getAllFiles({
+          cwd: project.cwd(),
+          files: config.files,
+        });
         return result;
       },
       (push) => {
-        const watcher = watch(files, { ignoreInitial: true });
+        const watcher = watch(config.files, { ignoreInitial: true });
         watcher.on("add", push);
         watcher.on("change", push);
         watcher.on("unlink", push);
@@ -372,11 +369,11 @@ export function createServer({
     tws.route(
       "/scene/components",
       async () => {
-        const result = await foundFolders(components);
+        const result = await foundFolders(config.components);
         return result;
       },
       (push) => {
-        const watcher = watch(components);
+        const watcher = watch(config.components);
         watcher.on("addDir", push);
         watcher.on("unlinkDir", push);
         watcher.on("add", push);
@@ -386,11 +383,11 @@ export function createServer({
     tws.route(
       "/scene/assets",
       async () => {
-        const result = await foundFolders([assetsDir]);
+        const result = await foundFolders([config.assetsDir]);
         return result;
       },
       (push) => {
-        const watcher = watch(assetsDir);
+        const watcher = watch(config.assetsDir);
         watcher.on("addDir", push);
         watcher.on("unlinkDir", push);
         watcher.on("add", push);
@@ -400,10 +397,12 @@ export function createServer({
     tws.route(
       "/scene/assets/:folderPath",
       async ({ folderPath }) => {
-        const result = await folderAssets([assetsDir], folderPath);
+        const result = await folderAssets([config.assetsDir], folderPath);
 
         const parsed: ProjectAsset[] = result.map((asset) =>
-          Object.assign(asset, { path: asset.path.replace(publicDir, "") })
+          Object.assign(asset, {
+            path: asset.path.replace(config.publicDir, ""),
+          })
         );
 
         return parsed;
@@ -422,7 +421,7 @@ export function createServer({
           return result;
         }
 
-        const result = await folderComponents(components, folderPath);
+        const result = await folderComponents(config.components, folderPath);
         return result;
       },
       (push, { folderPath }) => {
@@ -432,7 +431,7 @@ export function createServer({
       }
     ),
     tws.route("/folder", async () => {
-      return { name: basename(cwd) };
+      return { name: basename(config.cwd) };
     }),
     tws.route(
       "/project/state",
@@ -448,7 +447,7 @@ export function createServer({
       async ({ exportName, path }) => {
         const result = await getSceneExport({
           exportName,
-          files,
+          files: config.files,
           path,
           project,
         });
@@ -532,7 +531,7 @@ export function createServer({
   ]);
 
   return {
-    listen: async (ports: { server: number; ws: number }) => {
+    listen: async (ports: TriplexPorts) => {
       const controller = new AbortController();
       app.listen({ port: ports.server, signal: controller.signal });
       tws.listen(ports.ws);

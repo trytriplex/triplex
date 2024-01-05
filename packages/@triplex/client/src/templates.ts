@@ -4,7 +4,11 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import type { Config } from "@triplex/bridge/client";
+import {
+  type ReconciledTriplexConfig,
+  type TriplexPorts,
+} from "@triplex/server";
+import { emptyProviderId } from "./constants";
 
 const suffix = "ta.hot";
 const metaHot = "imp" + "ort.me" + suffix;
@@ -17,19 +21,22 @@ const metaHot = "imp" + "ort.me" + suffix;
 const placeholderFiles = 10;
 
 interface TemplateOpts {
-  config: Config;
+  config: ReconciledTriplexConfig;
   fileGlobs: string[];
   pkgName: string;
+  ports: TriplexPorts;
 }
 
 export const scripts = {
   bootstrap: (template: TemplateOpts) =>
     [
       `import { bootstrap } from "${template.pkgName}";`,
-      `import provider from "${template.config.provider}";`,
+      `import provider from "${template.config.provider || emptyProviderId}";`,
       'import { on, send } from "@triplex/bridge/client";',
       `const projectFiles = import.meta.glob([${template.fileGlobs}]);`,
-      `window.triplex = {env:JSON.parse(__TRIPLEX_DATA__)};`,
+      `window.triplex = JSON.parse(\`${JSON.stringify({
+        env: { ports: template.ports },
+      })}\`);`,
       "const tempFiles = {",
       Array(placeholderFiles)
         .fill(undefined)

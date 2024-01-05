@@ -11,7 +11,7 @@ function humanize(message: string) {
   if (message.includes("path is outside of cwd")) {
     return {
       description:
-        "Only files within the directory that you ran Triplex in can be opened.",
+        "Invariant: Only files within the project folder can be opened.",
       title: "Unable to Load",
     };
   }
@@ -58,7 +58,7 @@ export function ErrorBoundary({
               {message.description}
             </div>
 
-            <div className="my-2 rounded bg-white/5 p-2">
+            <div className="rounded bg-white/5 p-2">
               <code className="block max-h-64 overflow-hidden text-xs text-neutral-500">
                 {e.error.message}
               </code>
@@ -66,7 +66,7 @@ export function ErrorBoundary({
 
             <div className="flex items-center gap-2">
               <a
-                className="text-sm text-blue-400"
+                className="text-xs text-blue-400"
                 href="#"
                 onClick={() =>
                   window.triplex.openLink(
@@ -78,7 +78,7 @@ export function ErrorBoundary({
               </a>
               <span className="text-xs text-neutral-400">•</span>
               <a
-                className="text-sm text-blue-400"
+                className="text-xs text-blue-400"
                 href="#"
                 onClick={() => window.triplex.sendCommand("view-logs")}
               >

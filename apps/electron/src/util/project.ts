@@ -4,131 +4,30 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { inspect } from "node:util";
 import { createServer as createFrontend } from "@triplex/client";
 import {
   createServer as createBackend,
-  type RendererManifest,
-  type TriplexConfig,
+  type ReconciledRenderer,
+  type ReconciledTriplexConfig,
+  type TriplexPorts,
 } from "@triplex/server";
-import { dirname } from "upath";
-import {
-  array,
-  literal,
-  minLength,
-  object,
-  optional,
-  parse,
-  string,
-} from "valibot";
-import { logger } from "./log";
-import { findParentFile } from "./path";
 
-const renderers: Record<string, string> = {
-  "react-dom": "@triplex/renderer-react",
-  "react-three-fiber": "@triplex/renderer-r3f",
-};
-
-const log = logger("start-project");
-
-function validateManifest(manifest: unknown): RendererManifest {
-  const schema = object({
-    assets: object(
-      {
-        hostElements: array(
-          object({
-            category: string("category must be a string"),
-            name: string("name must be a string"),
-            type: literal("host", 'type must be "host"'),
-          }),
-          "missing assets.hostElements"
-        ),
-      },
-      "missing assets"
-    ),
-    bundler: optional(
-      object({
-        assetsInclude: optional(array(string())),
-        dedupe: optional(array(string())),
-      })
-    ),
-    templates: object(
-      {
-        newElements: string([minLength(6)]),
-      },
-      "missing templates"
-    ),
-  });
-
-  return parse(schema, manifest);
-}
-
-async function getRendererMeta(
-  filepath: string,
-  cwd: string
-): Promise<{
-  manifest: RendererManifest;
-  path: string;
-  root: string;
-}> {
-  try {
-    if (filepath.startsWith("/")) {
-      log.info("Resolving local renderer at", filepath);
-
-      const root = dirname(filepath);
-      const manifestPath = await findParentFile(root, "manifest.json");
-      const manifest = validateManifest(require(manifestPath));
-
-      log.debug({ manifest, manifestPath, root });
-
-      return {
-        manifest: validateManifest(require(manifestPath)),
-        path: filepath,
-        root,
-      };
-    }
-
-    log.info("Resolving renderer package", renderers[filepath] || filepath);
-
-    const packageName = renderers[filepath] || filepath;
-    const entryPoint = require.resolve(packageName, {
-      paths: [require.resolve("@triplex/client"), cwd],
-    });
-    const root = dirname(entryPoint);
-    const manifestPath = await findParentFile(root, "manifest.json");
-    const manifest = validateManifest(require(manifestPath));
-
-    log.debug({ entryPoint, manifest, manifestPath, packageName, root });
-
-    return {
-      manifest,
-      path: entryPoint,
-      root,
-    };
-  } catch (error) {
-    const wrappedError = new AggregateError(
-      [error],
-      `invariant: failed to resolve renderer "${filepath}" check inner errors.`
-    );
-
-    log.error(inspect(wrappedError, { depth: null }));
-
-    throw wrappedError;
-  }
-}
-
-export async function startProject(
-  config: Required<TriplexConfig> & { cwd: string; renderer: string },
-  ports: { client: number; server: number; ws: number }
-) {
-  const renderer = await getRendererMeta(config.renderer, config.cwd);
+export async function startProject({
+  config,
+  ports,
+  renderer,
+}: {
+  config: ReconciledTriplexConfig;
+  ports: TriplexPorts;
+  renderer: ReconciledRenderer;
+}) {
   const backend = await createBackend({
-    ...config,
+    config,
     renderer,
   });
   const closeBackend = await backend.listen(ports);
   const frontend = await createFrontend({
-    ...config,
+    config,
     ports,
     renderer,
   });

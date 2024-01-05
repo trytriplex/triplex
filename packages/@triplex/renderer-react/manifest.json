@@ -26,6 +26,9 @@
       { "category": "typography", "name": "h4", "type": "host" }
     ]
   },
+  "stage": {
+    "defaultFrame": "intrinsic"
+  },
   "templates": {
     "newElements": "<><span>hello world</span></>"
   }

@@ -2,6 +2,9 @@
   "assets": {
     "hostElements": []
   },
+  "stage": {
+    "defaultFrame": "intrinsic"
+  },
   "templates": {
     "newElements": "<><span>custom renderer</span></>"
   }
