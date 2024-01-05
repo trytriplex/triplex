@@ -15,10 +15,10 @@ import {
   useRef,
   useState,
   type CSSProperties,
-  type MouseEventHandler,
 } from "react";
 import { IconButton } from "./ds/button";
 import { cn } from "./ds/cn";
+import { Pressable } from "./ds/pressable";
 import { useCanvasStage } from "./stores/canvas-stage";
 import useEvent from "./util/use-event";
 
@@ -40,12 +40,23 @@ export function Stage({ children }: { children: React.ReactNode }) {
   const setFrame = useCanvasStage((store) => store.setFrame);
   const canvasZoom = useCanvasStage((store) => store.canvasZoom);
   const canvasZoomRef = useRef<number>();
+  const resetZoomCounter = useCanvasStage((store) => store.resetZoomCounter);
   const frameSize = FRAME_SIZES[frameSizeIndex || 0];
 
   useEffect(() => {
     // Apply this to a ref to access it later.
     canvasZoomRef.current = canvasZoom;
   }, [canvasZoom]);
+
+  useEffect(() => {
+    if (!resetZoomCounter) {
+      return;
+    }
+
+    canvasRef.current.style.setProperty("--tw-translate-x", null);
+    canvasRef.current.style.setProperty("--tw-translate-y", null);
+    deltaFromOrigin.current = EMPTY_ORIGIN;
+  }, [resetZoomCounter]);
 
   useEffect(() => {
     if (frame === "expanded") {
@@ -55,7 +66,7 @@ export function Stage({ children }: { children: React.ReactNode }) {
     const mouseDownHandler = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
 
-      if (!ref.current.contains(target) || target.role === "button") {
+      if (!ref.current.contains(target)) {
         // Ensure only elements inside the stage can be dragged.
         return;
       }
@@ -92,10 +103,10 @@ export function Stage({ children }: { children: React.ReactNode }) {
       const [startX, startY] = initialMousePosition.current;
 
       // Persist the delta so we can use it again later.
-      deltaFromOrigin.current[0] =
-        deltaFromOrigin.current[0] + (currentX - startX);
-      deltaFromOrigin.current[1] =
-        deltaFromOrigin.current[1] + (currentY - startY);
+      deltaFromOrigin.current = [
+        deltaFromOrigin.current[0] + (currentX - startX),
+        deltaFromOrigin.current[1] + (currentY - startY),
+      ];
 
       initialMousePosition.current = false;
 
@@ -115,12 +126,9 @@ export function Stage({ children }: { children: React.ReactNode }) {
     };
   }, [frame]);
 
-  const onBlanketClickHandler: MouseEventHandler<HTMLButtonElement> = useEvent(
-    (e) => {
-      e.stopPropagation();
-      setIsActive(true);
-    }
-  );
+  const onBlanketClickHandler = useEvent(() => {
+    setIsActive(true);
+  });
 
   const onCanvasClickHandler = useEvent(() => {
     setIsActive(false);
@@ -169,11 +177,13 @@ export function Stage({ children }: { children: React.ReactNode }) {
   }, [frameSizeIndex]);
 
   return (
-    <div
+    <Pressable
       className="flex h-full w-full items-center justify-center"
       data-testid="stage"
-      onClick={isDragging ? undefined : onCanvasClickHandler}
+      onPress={isDragging || !isActive ? undefined : onCanvasClickHandler}
+      pressActionId="deactivate_frame"
       ref={ref}
+      tabIndex={-1}
     >
       <div
         className={cn([
@@ -198,72 +208,74 @@ export function Stage({ children }: { children: React.ReactNode }) {
         }
       >
         {frame === "intrinsic" && !isActive && (
-          <button
-            aria-label="Activate Frame"
-            className="absolute inset-0 cursor-default outline outline-1 outline-transparent hover:outline-blue-400"
-            onClick={onBlanketClickHandler}
+          <Pressable
+            className="absolute inset-0 hover:outline"
+            label="Activate Frame"
+            onPress={onBlanketClickHandler}
+            pressActionId="activate_frame"
           />
+        )}
+
+        {frame === "intrinsic" && isActive && (
+          <div
+            className="absolute -top-1 right-full mr-1.5 origin-top-right"
+            style={{
+              transform: `perspective(1px) translateZ(0) scale(${
+                1 / canvasZoom
+              })`,
+            }}
+          >
+            <IconButton
+              actionId="set_frame_size"
+              icon={DimensionsIcon}
+              label="Set Frame Size"
+              onClick={() => {
+                setFrameSizeIndex(
+                  (prev = 0) => (prev + 1) % FRAME_SIZES.length
+                );
+              }}
+              size="sm"
+            />
+            <IconButton
+              actionId="expand_frame"
+              icon={EnterFullScreenIcon}
+              label="Expand Frame"
+              onClick={() => {
+                setFrame("expanded");
+                deltaFromOrigin.current = [0, 0];
+              }}
+              size="sm"
+            />
+            <IconButton
+              actionId="deactivate_frame"
+              className="mt-1"
+              icon={Cross1Icon}
+              label="Deactivate Frame"
+              onClick={onCanvasClickHandler}
+              size="sm"
+            />
+          </div>
         )}
 
         {children}
 
         {frame === "intrinsic" && isActive && (
-          <>
-            <div
-              className="absolute -top-1 right-full mr-1.5 origin-top-right"
-              style={{
-                transform: `perspective(1px) translateZ(0) scale(${
-                  1 / canvasZoom
-                })`,
-              }}
-            >
-              <IconButton
-                actionId="set_frame_size"
-                icon={DimensionsIcon}
-                label="Set Frame Size"
-                onClick={() => {
-                  setFrameSizeIndex(
-                    (prev = 0) => (prev + 1) % FRAME_SIZES.length
-                  );
-                }}
-                size="sm"
-              />
-              <IconButton
-                actionId="expand_frame"
-                icon={EnterFullScreenIcon}
-                label="Expand Frame"
-                onClick={() => {
-                  setFrame("expanded");
-                  deltaFromOrigin.current = [0, 0];
-                }}
-                size="sm"
-              />
-              <IconButton
-                actionId="deactivate_frame"
-                className="mt-3"
-                icon={Cross1Icon}
-                label="Deactivate Frame"
-                onClick={onCanvasClickHandler}
-                size="sm"
-              />
+          <div
+            className="flex origin-top justify-center"
+            style={{
+              transform: `perspective(1px) translateZ(0) scale(${
+                1 / canvasZoom
+              })`,
+            }}
+          >
+            <div className="flex items-center gap-0.5 rounded-b-sm bg-blue-400 px-2 py-1 text-xs leading-none text-neutral-900">
+              <span>{frameSize[0]}</span>
+              <span>×</span>
+              <span>{frameSize[1]}</span>
             </div>
-            <div
-              className="flex origin-top justify-center"
-              style={{
-                transform: `perspective(1px) translateZ(0) scale(${
-                  1 / canvasZoom
-                })`,
-              }}
-            >
-              <div className="flex items-center gap-0.5 rounded-b-sm bg-blue-400 px-2 py-1 text-xs leading-none text-neutral-900">
-                <span>{frameSize[0]}</span>
-                <span>×</span>
-                <span>{frameSize[1]}</span>
-              </div>
-            </div>
-          </>
+          </div>
         )}
       </div>
-    </div>
+    </Pressable>
   );
 }

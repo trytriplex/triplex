@@ -63,31 +63,35 @@ export const Pressable = forwardRef<
     }, [accelerator, onPress]);
 
     const onKeyDownHandler: KeyboardEventHandler = useEvent((e) => {
-      if (e.key === "Enter") {
-        onPress?.();
+      if (e.key === "Enter" && onPress) {
+        onPress();
         analytics.event(pressActionId);
         e.stopPropagation();
       }
     });
 
     const onKeyUpHandler: KeyboardEventHandler = useEvent((e) => {
-      if (e.key === " ") {
-        onPress?.();
+      if (e.key === " " && onPress) {
+        onPress();
         analytics.event(pressActionId);
         e.stopPropagation();
       }
     });
 
     const onClickHandler: MouseEventHandler = useEvent((e) => {
-      onPress?.();
-      analytics.event(pressActionId);
-      e.stopPropagation();
+      if (onPress) {
+        onPress?.();
+        analytics.event(pressActionId);
+        e.stopPropagation();
+      }
     });
 
     const onDoubleClickHandler: MouseEventHandler = useEvent((e) => {
-      onDoublePress?.();
-      analytics.event(doublePressActionId);
-      e.stopPropagation();
+      if (onDoublePress) {
+        onDoublePress?.();
+        analytics.event(doublePressActionId);
+        e.stopPropagation();
+      }
     });
 
     return (

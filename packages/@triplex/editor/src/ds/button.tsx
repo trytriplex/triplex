@@ -92,6 +92,7 @@ export const Button = forwardRef<
   HTMLDivElement,
   {
     actionId: string;
+    "aria-label"?: string;
     children: React.ReactNode;
     className?: string;
     disabled?: boolean;
@@ -106,6 +107,7 @@ export const Button = forwardRef<
   (
     {
       actionId,
+      "aria-label": ariaLabel,
       children,
       className,
       disabled,
@@ -135,10 +137,12 @@ export const Button = forwardRef<
         "flex items-center gap-1.5 text-sm",
         className,
       ])}
+      label={ariaLabel}
       onPress={disabled ? undefined : onClick}
       pressActionId={actionId}
       ref={ref}
       testId={testId}
+      title={ariaLabel}
     >
       {Icon && <Icon />}
       {children}

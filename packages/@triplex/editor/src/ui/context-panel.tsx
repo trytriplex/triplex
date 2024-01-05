@@ -95,7 +95,7 @@ function SelectedSceneObjectPanel({
 
       <ScrollContainer>
         {data.props.length === 0 && (
-          <div className="px-4 py-3 text-sm italic text-neutral-400">
+          <div className="px-4 py-3 text-xs italic text-neutral-400">
             This element has no props.
           </div>
         )}

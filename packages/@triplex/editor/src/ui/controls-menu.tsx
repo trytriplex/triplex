@@ -5,8 +5,8 @@
  * file in the root directory of this source tree.
  */
 
-import { ResetIcon } from "@radix-ui/react-icons";
-import { on, send, type Controls } from "@triplex/bridge/host";
+import { ReloadIcon } from "@radix-ui/react-icons";
+import { compose, on, send, type Controls } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Button as DSButton, IconButton } from "../ds/button";
@@ -16,16 +16,31 @@ import { Button, ButtonGroup, ToggleButton } from "./ecosystem/buttons";
 
 export function ControlsMenu() {
   const { refresh } = useScene();
-  const [controls, setControls] = useState<Controls>([]);
+  const [controls, setControls] = useState<Controls>();
   const zoom = useCanvasStage((store) => store.canvasZoom);
-  const setZoom = useCanvasStage((store) => store.setCanvasZoom);
   const frame = useCanvasStage((store) => store.frame);
+  const increaseZoom = useCanvasStage((store) => store.increaseZoom);
+  const decreaseZoom = useCanvasStage((store) => store.decreaseZoom);
+  const resetZoom = useCanvasStage((store) => store.resetZoom);
 
   useEffect(() => {
     return on("set-controls", (data) => {
       setControls(data.controls);
     });
-  });
+  }, []);
+
+  useEffect(() => {
+    return compose([
+      window.triplex.accelerator("CommandOrCtrl+=", increaseZoom),
+      window.triplex.accelerator("CommandOrCtrl+-", decreaseZoom),
+    ]);
+  }, [decreaseZoom, frame, increaseZoom]);
+
+  if (!controls) {
+    // Hide controls until the renderer sets them. All renderers need to set them
+    // For them to show up, even if they set an empty array.
+    return null;
+  }
 
   return (
     <div
@@ -34,8 +49,8 @@ export function ControlsMenu() {
     >
       <IconButton
         actionId="refresh_scene"
-        icon={ResetIcon}
-        label="Reset Scene"
+        icon={ReloadIcon}
+        label="Refresh Scene"
         onClick={refresh}
       />
 
@@ -94,14 +109,14 @@ export function ControlsMenu() {
 
           <DSButton
             actionId="refresh_scene"
-            onClick={() => {
-              setZoom(zoom === 1 ? 1.4 : 1);
-            }}
+            aria-label="Reset Zoom"
+            onClick={resetZoom}
             size="tight"
           >
-            <span className="w-8 text-center text-xs text-neutral-400">{`${
-              zoom * 100
-            }%`}</span>
+            <span
+              aria-hidden
+              className="w-8 text-center text-xs text-neutral-400"
+            >{`${zoom * 100}%`}</span>
           </DSButton>
         </>
       )}

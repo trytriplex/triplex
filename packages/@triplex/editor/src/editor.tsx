@@ -48,7 +48,6 @@ export function EditorFrame() {
     >
       <TitleBar />
       <FileTabs />
-      <SceneFrame />
 
       {isFileOpen && (
         <>
@@ -60,6 +59,8 @@ export function EditorFrame() {
           >
             {path && <ScenePanel />}
           </div>
+
+          <SceneFrame />
 
           <div className="pointer-events-none relative col-start-2 row-start-3 flex pb-3">
             <ControlsMenu />
