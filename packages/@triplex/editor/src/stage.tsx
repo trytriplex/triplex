@@ -66,7 +66,10 @@ export function Stage({ children }: { children: React.ReactNode }) {
     const mouseDownHandler = (e: MouseEvent) => {
       const target = e.target as HTMLElement;
 
-      if (!ref.current.contains(target)) {
+      if (
+        !ref.current.contains(target) ||
+        target.parentElement?.hasAttribute("data-block-dragging")
+      ) {
         // Ensure only elements inside the stage can be dragged.
         return;
       }
@@ -188,10 +191,8 @@ export function Stage({ children }: { children: React.ReactNode }) {
       <div
         className={cn([
           frame === "expanded" && "h-full w-full",
-          "relative flex-shrink-0 transform-gpu bg-white/5 outline",
-          isActive
-            ? "outline-2 outline-blue-400"
-            : "outline-1 outline-neutral-700",
+          "relative flex-shrink-0 transform-gpu bg-white/5 outline outline-1",
+          isActive ? "outline-blue-400" : "outline-neutral-700",
           isDragging && "pointer-events-none",
         ])}
         data-testid="frame"
@@ -219,6 +220,7 @@ export function Stage({ children }: { children: React.ReactNode }) {
         {frame === "intrinsic" && isActive && (
           <div
             className="absolute -top-1 right-full mr-1.5 origin-top-right"
+            data-block-dragging
             style={{
               transform: `perspective(1px) translateZ(0) scale(${
                 1 / canvasZoom
