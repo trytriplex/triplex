@@ -5,16 +5,21 @@
  * file in the root directory of this source tree.
  */
 export function ErrorSplash() {
+  const params = new URLSearchParams(location.search);
+  const error = params.get("error") || "Unknown error";
+
   return (
     <>
       <div className="z-50 h-[33px] select-none [-webkit-app-region:drag]" />
-      <div className="fixed inset-0 mx-auto flex max-w-2xl flex-col justify-center gap-4 p-10 lg:max-w-4xl">
-        <h1 className="text-center text-5xl font-medium tracking-tight text-neutral-200">
+
+      <div className="fixed inset-0 mx-auto flex max-w-2xl flex-col justify-center gap-4 p-4 lg:max-w-4xl">
+        <h1 className="text-center text-5xl font-semibold tracking-tight text-neutral-200">
           Triplex couldn&apos;t start up
         </h1>
-        <p className="mx-auto max-w-xl text-center text-lg text-neutral-400">
-          Something unexpected happened and we couldn&apos;t open your project,
-          sorry! We&apos;re looking into it.
+
+        <p className="mx-auto max-w-2xl text-center text-lg text-neutral-400">
+          We&apos;re looking into it. Meanwhile, close and re-open Triplex and
+          try again. If the problem persists try restarting your computer.
         </p>
 
         <div className="mx-auto flex items-center gap-2">
@@ -46,6 +51,10 @@ export function ErrorSplash() {
             View logs
           </a>
         </div>
+
+        <code className="mx-auto max-w-2xl bg-white/5 px-4 py-2 text-center text-sm text-neutral-400">
+          {JSON.parse(error)}
+        </code>
       </div>
     </>
   );

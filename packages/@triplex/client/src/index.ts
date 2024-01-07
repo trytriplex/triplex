@@ -14,6 +14,7 @@ import express from "express";
 import { join, normalize } from "upath";
 import tsconfigPaths from "vite-tsconfig-paths";
 import triplexBabelPlugin from "./babel-plugin";
+import { getPort } from "./port";
 import { remoteModulePlugin } from "./remote-module-plugin";
 import { scenePlugin } from "./scene-plugin";
 import { createHTML, scripts } from "./templates";
@@ -71,6 +72,7 @@ export async function createServer({
     server: {
       hmr: {
         overlay: false,
+        port: await getPort(),
       },
       middlewareMode: true,
     },

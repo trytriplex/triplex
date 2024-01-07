@@ -455,13 +455,18 @@ async function main() {
               search: searchParams,
             }
           ));
-    } catch {
+    } catch (error) {
+      const searchParams = `?error=${encodeURIComponent(
+        JSON.stringify(error)
+      )}`;
+
       await (process.env.TRIPLEX_ENV === "development"
         ? activeProjectWindow.loadURL(
-            `http://localhost:${editorDevPort}/fallback-error.html`
+            `http://localhost:${editorDevPort}/fallback-error.html${searchParams}`
           )
         : activeProjectWindow.loadFile(
-            require.resolve(`@triplex/editor/dist/fallback-error.html`)
+            require.resolve(`@triplex/editor/dist/fallback-error.html`),
+            { search: searchParams }
           ));
     }
   }
