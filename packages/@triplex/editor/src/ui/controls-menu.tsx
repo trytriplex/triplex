@@ -5,8 +5,8 @@
  * file in the root directory of this source tree.
  */
 
-import { ReloadIcon } from "@radix-ui/react-icons";
-import { compose, on, send, type Controls } from "@triplex/bridge/host";
+import { ReloadIcon, SizeIcon } from "@radix-ui/react-icons";
+import { on, send, type Controls } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Button as DSButton, IconButton } from "../ds/button";
@@ -19,22 +19,16 @@ export function ControlsMenu() {
   const [controls, setControls] = useState<Controls>();
   const zoom = useCanvasStage((store) => store.canvasZoom);
   const frame = useCanvasStage((store) => store.frame);
-  const increaseZoom = useCanvasStage((store) => store.increaseZoom);
-  const decreaseZoom = useCanvasStage((store) => store.decreaseZoom);
   const resetZoom = useCanvasStage((store) => store.resetZoom);
+  const fitFrameToViewport = useCanvasStage(
+    (store) => store.fitFrameToViewport
+  );
 
   useEffect(() => {
     return on("set-controls", (data) => {
       setControls(data.controls);
     });
   }, []);
-
-  useEffect(() => {
-    return compose([
-      window.triplex.accelerator("CommandOrCtrl+=", increaseZoom),
-      window.triplex.accelerator("CommandOrCtrl+-", decreaseZoom),
-    ]);
-  }, [decreaseZoom, frame, increaseZoom]);
 
   if (!controls) {
     // Hide controls until the renderer sets them. All renderers need to set them
@@ -44,7 +38,7 @@ export function ControlsMenu() {
 
   return (
     <div
-      className="pointer-events-auto mx-auto mt-auto flex rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1 text-neutral-400"
+      className="pointer-events-auto mx-auto mb-auto mt-3 flex rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1 text-neutral-400"
       data-testid="controls-menu"
     >
       <IconButton
@@ -116,8 +110,15 @@ export function ControlsMenu() {
             <span
               aria-hidden
               className="w-8 text-center text-xs text-neutral-400"
-            >{`${zoom * 100}%`}</span>
+            >{`${zoom}%`}</span>
           </DSButton>
+
+          <IconButton
+            actionId="fit_frame_to_viewport"
+            icon={SizeIcon}
+            label="Fit Frame To Viewport"
+            onClick={fitFrameToViewport}
+          />
         </>
       )}
     </div>

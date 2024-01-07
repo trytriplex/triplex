@@ -5,17 +5,15 @@
  * file in the root directory of this source tree.
  */
 import {
+  BoxIcon,
   Cross1Icon,
-  DimensionsIcon,
+  DesktopIcon,
   EnterFullScreenIcon,
+  LaptopIcon,
+  MobileIcon,
 } from "@radix-ui/react-icons";
-import {
-  useEffect,
-  useLayoutEffect,
-  useRef,
-  useState,
-  type CSSProperties,
-} from "react";
+import { compose } from "@triplex/bridge/host";
+import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { IconButton } from "./ds/button";
 import { cn } from "./ds/cn";
 import { Pressable } from "./ds/pressable";
@@ -23,10 +21,12 @@ import { useCanvasStage } from "./stores/canvas-stage";
 import useEvent from "./util/use-event";
 
 const EMPTY_ORIGIN = [0, 0];
-const FRAME_SIZES: [number, number][] = [
-  [200, 500],
-  [600, 400],
-];
+const FRAME_SIZES = {
+  desktop: [1600, 900],
+  laptop: [1280, 720],
+  mobile: [390, 844],
+  square: [590, 590],
+} satisfies Record<string, [number, number]>;
 
 export function Stage({ children }: { children: React.ReactNode }) {
   const ref = useRef<HTMLDivElement>(null!);
@@ -34,29 +34,98 @@ export function Stage({ children }: { children: React.ReactNode }) {
   const deltaFromOrigin = useRef(EMPTY_ORIGIN);
   const initialMousePosition = useRef<false | [number, number]>(false);
   const [isDragging, setIsDragging] = useState(false);
-  const [isActive, setIsActive] = useState(false);
-  const [frameSizeIndex, setFrameSizeIndex] = useState<number>();
+  const [isActive, setIsActive] = useState(true);
+  const [frameSize, setFrameSize] = useState<[number, number]>(
+    FRAME_SIZES.square
+  );
   const frame = useCanvasStage((store) => store.frame);
   const setFrame = useCanvasStage((store) => store.setFrame);
-  const canvasZoom = useCanvasStage((store) => store.canvasZoom);
+  const zoom = useCanvasStage((store) => store.canvasZoom);
+  const setCanvasZoom = useCanvasStage((store) => store.setCanvasZoom);
   const canvasZoomRef = useRef<number>();
   const resetZoomCounter = useCanvasStage((store) => store.resetZoomCounter);
-  const frameSize = FRAME_SIZES[frameSizeIndex || 0];
+  const increaseZoom = useCanvasStage((store) => store.increaseZoom);
+  const decreaseZoom = useCanvasStage((store) => store.decreaseZoom);
+  const fitFrameToViewportCounter = useCanvasStage(
+    (store) => store.fitFrameToViewportCounter
+  );
+  const normalizedZoom = zoom / 100;
+  const frameRatio =
+    frameSize[0] / frameSize[1] > 1 ? "horizontal" : "vertical";
+
+  useEffect(() => {
+    if (frame === "expanded") {
+      return;
+    }
+
+    return compose([
+      window.triplex.accelerator("CommandOrCtrl+=", increaseZoom),
+      window.triplex.accelerator("CommandOrCtrl+-", decreaseZoom),
+    ]);
+  }, [decreaseZoom, frame, increaseZoom]);
+
+  const sizeFrameToCanvas = useEvent((opts?: { zoomIn: boolean }) => {
+    const nextZoom = Math.min(
+      Math.round(
+        (ref.current.clientWidth / canvasRef.current.clientWidth) * 100
+      ),
+      Math.round(
+        (ref.current.clientHeight / canvasRef.current.clientHeight) * 100
+      )
+    );
+
+    const frameRatio = ref.current.clientWidth / ref.current.clientHeight;
+    const canvasRatio =
+      canvasRef.current.clientWidth / canvasRef.current.clientHeight;
+
+    if (opts?.zoomIn || nextZoom <= 100) {
+      // Only apply zoom > 100 if zoomIn is true.
+      const mod1 = Math.max(frameRatio, canvasRatio);
+      const mod2 = Math.min(frameRatio, canvasRatio);
+      const zoomOffset = Math.floor((mod2 / mod1) * 10);
+
+      setCanvasZoom(nextZoom - zoomOffset);
+    } else {
+      setCanvasZoom(100);
+    }
+
+    resetCanvasTransforms();
+  });
+
+  const resetCanvasTransforms = useEvent(() => {
+    canvasRef.current.style.setProperty("--tw-translate-x", null);
+    canvasRef.current.style.setProperty("--tw-translate-y", null);
+    deltaFromOrigin.current = EMPTY_ORIGIN;
+  });
+
+  useEffect(() => {
+    sizeFrameToCanvas({ zoomIn: true });
+  }, [
+    // fitFrameToViewportCounter isn't used directly but should trigger a resize when changed.
+    fitFrameToViewportCounter,
+    sizeFrameToCanvas,
+  ]);
+
+  useEffect(() => {
+    sizeFrameToCanvas();
+  }, [
+    // frame isn't used directly but should trigger a resize when changed.
+    frame,
+    sizeFrameToCanvas,
+  ]);
 
   useEffect(() => {
     // Apply this to a ref to access it later.
-    canvasZoomRef.current = canvasZoom;
-  }, [canvasZoom]);
+    canvasZoomRef.current = normalizedZoom;
+  }, [normalizedZoom]);
 
   useEffect(() => {
     if (!resetZoomCounter) {
       return;
     }
 
-    canvasRef.current.style.setProperty("--tw-translate-x", null);
-    canvasRef.current.style.setProperty("--tw-translate-y", null);
-    deltaFromOrigin.current = EMPTY_ORIGIN;
-  }, [resetZoomCounter]);
+    resetCanvasTransforms();
+  }, [resetCanvasTransforms, resetZoomCounter]);
 
   useEffect(() => {
     if (frame === "expanded") {
@@ -99,8 +168,6 @@ export function Stage({ children }: { children: React.ReactNode }) {
         return;
       }
 
-      e.stopImmediatePropagation();
-
       const currentX = e.clientX;
       const currentY = e.clientY;
       const [startX, startY] = initialMousePosition.current;
@@ -138,46 +205,8 @@ export function Stage({ children }: { children: React.ReactNode }) {
   });
 
   useEffect(() => {
-    canvasRef.current.style.setProperty("--tw-translate-x", null);
-    canvasRef.current.style.setProperty("--tw-translate-y", null);
-  }, [frame]);
-
-  useLayoutEffect(() => {
-    if (frameSizeIndex === undefined || FRAME_SIZES.length <= 1) {
-      // Size hasn't been set during this session yet, bail out!
-      return;
-    }
-
-    const zoom = canvasZoomRef.current;
-    if (zoom === undefined) {
-      throw new Error("invariant");
-    }
-
-    // We use the index directly as we want to get the previous
-    // value to do some calculations for keeping the top right edge
-    // of the frames aligned at all times when switching sizes.
-    const current = FRAME_SIZES.at(frameSizeIndex)!;
-    const previous = FRAME_SIZES.at(frameSizeIndex - 1)!;
-    const currentFramePoint = [
-      (current[0] / 2) * zoom,
-      (current[1] / 2) * zoom,
-    ];
-    const previousFramePoint = [
-      (previous[0] / 2) * zoom,
-      (previous[1] / 2) * zoom,
-    ];
-    const framePointDiff = [
-      currentFramePoint[0] - previousFramePoint[0],
-      currentFramePoint[1] - previousFramePoint[1],
-    ];
-
-    const deltaX = framePointDiff[0] + deltaFromOrigin.current[0];
-    const deltaY = framePointDiff[1] + deltaFromOrigin.current[1];
-
-    canvasRef.current.style.setProperty("--tw-translate-x", `${deltaX}px`);
-    canvasRef.current.style.setProperty("--tw-translate-y", `${deltaY}px`);
-    deltaFromOrigin.current = [deltaX, deltaY];
-  }, [frameSizeIndex]);
+    sizeFrameToCanvas();
+  }, [frameSize, sizeFrameToCanvas]);
 
   return (
     <Pressable
@@ -191,7 +220,7 @@ export function Stage({ children }: { children: React.ReactNode }) {
       <div
         className={cn([
           frame === "expanded" && "h-full w-full",
-          "relative flex-shrink-0 transform-gpu bg-white/5 outline outline-1",
+          "relative flex-shrink-0 transform-gpu bg-white/5 outline",
           isActive ? "outline-blue-400" : "outline-neutral-700",
           isDragging && "pointer-events-none",
         ])}
@@ -200,44 +229,47 @@ export function Stage({ children }: { children: React.ReactNode }) {
         style={
           frame === "intrinsic"
             ? ({
-                "--tw-scale-x": canvasZoom,
-                "--tw-scale-y": canvasZoom,
+                "--tw-scale-x": normalizedZoom,
+                "--tw-scale-y": normalizedZoom,
                 height: frameSize[1],
+                outlineWidth: normalizedZoom < 1 ? 1 / normalizedZoom : 1,
                 width: frameSize[0],
               } as CSSProperties)
             : undefined
         }
       >
+        {frame === "intrinsic" && isActive && isDragging && (
+          <div className="absolute inset-0" />
+        )}
+
         {frame === "intrinsic" && !isActive && (
           <Pressable
             className="absolute inset-0 hover:outline"
             label="Activate Frame"
             onPress={onBlanketClickHandler}
             pressActionId="activate_frame"
+            style={{
+              outlineWidth: normalizedZoom < 1 ? 1 / normalizedZoom : 1,
+            }}
           />
         )}
 
         {frame === "intrinsic" && isActive && (
           <div
-            className="absolute -top-1 right-full mr-1.5 origin-top-right"
+            className={cn([
+              "absolute",
+              frameRatio === "horizontal" &&
+                "bottom-full left-0 mb-1.5 flex origin-bottom-left",
+              frameRatio === "vertical" &&
+                "right-full top-0 mr-1.5 origin-top-right",
+            ])}
             data-block-dragging
             style={{
               transform: `perspective(1px) translateZ(0) scale(${
-                1 / canvasZoom
+                1 / normalizedZoom
               })`,
             }}
           >
-            <IconButton
-              actionId="set_frame_size"
-              icon={DimensionsIcon}
-              label="Set Frame Size"
-              onClick={() => {
-                setFrameSizeIndex(
-                  (prev = 0) => (prev + 1) % FRAME_SIZES.length
-                );
-              }}
-              size="sm"
-            />
             <IconButton
               actionId="expand_frame"
               icon={EnterFullScreenIcon}
@@ -249,13 +281,54 @@ export function Stage({ children }: { children: React.ReactNode }) {
               size="sm"
             />
             <IconButton
-              actionId="deactivate_frame"
-              className="mt-1"
-              icon={Cross1Icon}
-              label="Deactivate Frame"
-              onClick={onCanvasClickHandler}
+              actionId="set_square_frame"
+              icon={BoxIcon}
+              isSelected={frameSize === FRAME_SIZES.square}
+              label="Set Square Frame"
+              onClick={() => {
+                setFrameSize(FRAME_SIZES.square);
+              }}
               size="sm"
             />
+            <IconButton
+              actionId="set_mobile_frame"
+              icon={MobileIcon}
+              isSelected={frameSize === FRAME_SIZES.mobile}
+              label="Set Mobile Frame"
+              onClick={() => {
+                setFrameSize(FRAME_SIZES.mobile);
+              }}
+              size="sm"
+            />
+            <IconButton
+              actionId="set_laptop_frame"
+              icon={LaptopIcon}
+              isSelected={frameSize === FRAME_SIZES.laptop}
+              label="Set Laptop Frame"
+              onClick={() => {
+                setFrameSize(FRAME_SIZES.laptop);
+              }}
+              size="sm"
+            />
+            <IconButton
+              actionId="set_desktop_frame"
+              icon={DesktopIcon}
+              isSelected={frameSize === FRAME_SIZES.desktop}
+              label="Set Desktop Frame"
+              onClick={() => {
+                setFrameSize(FRAME_SIZES.desktop);
+              }}
+              size="sm"
+            />
+            {import.meta.env.VITE_TRIPLEX_ENV === "test" && (
+              <IconButton
+                actionId="deactivate_frame"
+                icon={Cross1Icon}
+                label="Deactivate Frame"
+                onClick={onCanvasClickHandler}
+                size="sm"
+              />
+            )}
           </div>
         )}
 
@@ -266,7 +339,7 @@ export function Stage({ children }: { children: React.ReactNode }) {
             className="flex origin-top justify-center"
             style={{
               transform: `perspective(1px) translateZ(0) scale(${
-                1 / canvasZoom
+                1 / normalizedZoom
               })`,
             }}
           >

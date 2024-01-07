@@ -13,7 +13,6 @@ test("default to expanded frame", async ({ editorR3F }) => {
 
 test("collapse then expand frame", async ({ editorR3F }) => {
   await editorR3F.frame.collapseButton.click();
-  await editorR3F.frame.activateButton.click();
 
   await editorR3F.frame.expandButton.click();
 

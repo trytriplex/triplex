@@ -193,27 +193,24 @@ function SceneContents() {
 
   return (
     <div className="flex h-full flex-shrink flex-col">
-      {
-        // @ts-expect-error — ??????
-        import.meta.env.VITE_TRIPLEX_ENV === "test" && (
-          <div className="flex p-1">
-            <>
-              <IconButton
-                actionId="undo"
-                icon={ArrowLeftIcon}
-                label="Undo"
-                onClick={undo}
-              />
-              <IconButton
-                actionId="redo"
-                icon={ArrowRightIcon}
-                label="Redo"
-                onClick={redo}
-              />
-            </>
-          </div>
-        )
-      }
+      {import.meta.env.VITE_TRIPLEX_ENV === "test" && (
+        <div className="flex p-1">
+          <>
+            <IconButton
+              actionId="undo"
+              icon={ArrowLeftIcon}
+              label="Undo"
+              onClick={undo}
+            />
+            <IconButton
+              actionId="redo"
+              icon={ArrowRightIcon}
+              label="Redo"
+              onClick={redo}
+            />
+          </>
+        </div>
+      )}
 
       <Suspense fallback={<PanelSkeleton />}>
         <ComponentHeading />

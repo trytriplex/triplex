@@ -7,16 +7,12 @@
 import { expect } from "@playwright/test";
 import { test } from "../utils/runner";
 
-test("activating frame", async ({ editorReact }) => {
-  await editorReact.frame.activateButton.click();
-
+test("default activated frame", async ({ editorReact }) => {
   await expect(editorReact.frame.expandButton).toBeAttached();
   await expect(editorReact.frame.activateButton).not.toBeAttached();
 });
 
 test("de-activating frame", async ({ editorReact }) => {
-  await editorReact.frame.activateButton.click();
-
   await editorReact.frame.deactivateButton.click();
 
   await expect(editorReact.frame.expandButton).not.toBeAttached();
@@ -24,15 +20,12 @@ test("de-activating frame", async ({ editorReact }) => {
 });
 
 test("expand frame", async ({ editorReact }) => {
-  await editorReact.frame.activateButton.click();
-
   await editorReact.frame.expandButton.click();
 
   await expect(editorReact.frame.locator).toHaveClass(/h-full w-full/);
 });
 
 test("collapse frame", async ({ editorReact }) => {
-  await editorReact.frame.activateButton.click();
   await editorReact.frame.expandButton.click();
 
   await editorReact.frame.collapseButton.click();

@@ -80,8 +80,6 @@ function FileTab({
 
   const onCloseHandler = useEvent(() => {
     if (
-      // Skip if it's a test environment
-      // @ts-expect-error — ??????
       import.meta.env.VITE_TRIPLEX_ENV !== "test" &&
       isDirty &&
       !confirm(
@@ -260,19 +258,16 @@ export function FileTabs() {
         onClick={() => showOverlay("open-scene")}
       />
 
-      {
-        // @ts-expect-error — ??????
-        import.meta.env.VITE_TRIPLEX_ENV === "test" && (
-          <>
-            <IconButton
-              actionId="open-last-tab"
-              icon={CubeIcon}
-              label="Open Last Tab"
-              onClick={openLastTab}
-            />
-          </>
-        )
-      }
+      {import.meta.env.VITE_TRIPLEX_ENV === "test" && (
+        <>
+          <IconButton
+            actionId="open-last-tab"
+            icon={CubeIcon}
+            label="Open Last Tab"
+            onClick={openLastTab}
+          />
+        </>
+      )}
 
       <div className="flex h-full w-full flex-shrink items-center overflow-hidden border-l border-neutral-800">
         {projectState.map((file, index) => (

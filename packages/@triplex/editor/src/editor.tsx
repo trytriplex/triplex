@@ -62,7 +62,7 @@ export function EditorFrame() {
 
           <SceneFrame />
 
-          <div className="pointer-events-none relative col-start-2 row-start-3 flex pb-3">
+          <div className="pointer-events-none relative col-start-2 row-start-3 flex">
             <ControlsMenu />
           </div>
 

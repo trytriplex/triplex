@@ -11,6 +11,8 @@ interface CanvasStageStore {
   canvasStage: EditorSettings["layout"];
   canvasZoom: number;
   decreaseZoom: () => void;
+  fitFrameToViewport: () => void;
+  fitFrameToViewportCounter: number;
   frame: ProjectSettings["frame"];
   increaseZoom: () => void;
   resetZoom: () => void;
@@ -20,29 +22,68 @@ interface CanvasStageStore {
   toggleCanvasStage: () => void;
 }
 
+function getZoomIncrement(zoom: number) {
+  switch (true) {
+    case zoom >= 300:
+      return 300;
+
+    case zoom >= 200:
+      return 100;
+
+    case zoom >= 100:
+      return 50;
+
+    default:
+      return 25;
+  }
+}
+
+function getZoomDecrement(zoom: number) {
+  switch (true) {
+    case zoom > 300:
+      return 300;
+
+    case zoom > 200:
+      return 100;
+
+    case zoom > 100:
+      return 50;
+
+    default:
+      return 25;
+  }
+}
+
 export const useCanvasStage = create<CanvasStageStore>((set, get) => ({
   canvasStage: window.triplex.env.editor.layout,
-  canvasZoom: 1,
+  canvasZoom: 100,
   decreaseZoom() {
     const store = get();
-    const nextZoom = store.canvasZoom / 2;
+    const multiplier = getZoomDecrement(store.canvasZoom);
+    const nextZoom = store.canvasZoom - multiplier;
 
-    if (nextZoom >= 0.25) {
+    if (nextZoom >= 25) {
       store.setCanvasZoom(nextZoom);
     }
   },
+  fitFrameToViewport() {
+    const store = get();
+    set({ fitFrameToViewportCounter: store.fitFrameToViewportCounter + 1 });
+  },
+  fitFrameToViewportCounter: 0,
   frame: window.triplex.env.project.frame,
   increaseZoom() {
     const store = get();
-    const nextZoom = store.canvasZoom * 2;
+    const multiplier = getZoomIncrement(store.canvasZoom);
+    const nextZoom = store.canvasZoom + multiplier;
 
-    if (nextZoom <= 4) {
+    if (nextZoom <= 900) {
       store.setCanvasZoom(nextZoom);
     }
   },
   resetZoom() {
     const store = get();
-    set({ canvasZoom: 1, resetZoomCounter: store.resetZoomCounter + 1 });
+    set({ canvasZoom: 100, resetZoomCounter: store.resetZoomCounter + 1 });
   },
   resetZoomCounter: 0,
   setCanvasZoom(zoom) {
