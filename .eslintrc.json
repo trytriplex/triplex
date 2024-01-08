@@ -1,15 +1,15 @@
 {
-  "extends": ["@nkzw"],
-  "ignorePatterns": ["dist", "build", "syntax-error.tsx"],
+  "extends": ["@nkzw", "plugin:playwright/recommended"],
+  "ignorePatterns": [
+    "dist",
+    "build",
+    "playwright-report",
+    "test-results",
+    "syntax-error.tsx"
+  ],
   "overrides": [
     {
-      "files": ["**/__test__/**", "**/__tests__/**"],
-      "rules": {
-        "import/no-extraneous-dependencies": "off"
-      }
-    },
-    {
-      "files": ["**/create-triplex-project/templates/**", "*.d.ts"],
+      "files": ["**/create-triplex-project/templates/**"],
       "rules": {
         "header/header": "off"
       }
@@ -40,8 +40,10 @@
     "no-inner-declarations": "off",
     "no-unused-expressions": "off",
     "prefer-const": "off",
+    "playwright/no-focused-test": "off",
     "react/no-unknown-property": "off",
     "unicorn/prefer-ternary": "off",
+    "space-before-function-paren": "off",
     "unicorn/prefer-top-level-await": "off"
   }
 }
