@@ -40,13 +40,16 @@ export class EditorPage {
     };
   }
 
+  get openFileButton() {
+    return this.page.getByLabel("Open Component...");
+  }
+
   get fileTabs() {
     const locator = this.page.getByLabel("File tabs");
 
     return {
       activeTab: locator.getByTestId("active-tab"),
       locator,
-      openFileButton: locator.getByLabel("Open Component..."),
       openLastTabButton: locator.getByLabel("Open Last Tab"),
       tab(name: string) {
         const tabLocator = locator.getByRole("button", { name }).first();

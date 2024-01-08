@@ -8,7 +8,11 @@ import { rmSync } from "node:fs";
 import { SyntaxKind } from "ts-morph";
 import { join } from "upath";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { getJsxElementAt, getJsxElementsPositions } from "../../ast/jsx";
+import {
+  getJsxElementAt,
+  getJsxElementAtOrThrow,
+  getJsxElementsPositions,
+} from "../../ast/jsx";
 import { getExportName } from "../../ast/module";
 import { _createProject, createProject } from "../../ast/project";
 import { getJsxElementPropTypes } from "../../ast/type-infer";
@@ -116,6 +120,31 @@ describe("component service", () => {
     expect(
       getJsxElementAt(sourceFile, result.line, result.column)?.getText()
     ).toMatchInlineSnapshot('"<StubComponent color=\\"blurple\\"/>"');
+  });
+
+  it("should add element to component with no top level fragment or group", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/empty.tsx")
+    );
+
+    const res = add(sourceFile, "EmptyMesh", {
+      name: "mesh",
+      props: {},
+      type: "host",
+    });
+
+    expect(
+      getJsxElementAtOrThrow(sourceFile, res.line, res.column).getText()
+    ).toMatchInlineSnapshot('"<mesh />"');
+    expect(getExportName(sourceFile, "EmptyMesh").declaration.getText())
+      .toMatchInlineSnapshot(`
+        "export function EmptyMesh() {
+          return (<><mesh /><mesh></mesh></>);
+        }"
+      `);
   });
 
   it("should add host component", () => {
@@ -391,24 +420,6 @@ describe("component service", () => {
     expect(sourceFile.getText()).toContain(
       'import { Box } from "@react-three/drei";'
     );
-  });
-
-  it("should throw when trying to add a jsx element to a non fragment or group", () => {
-    const project = _createProject({
-      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
-    });
-    const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/empty.tsx")
-    );
-
-    expect(() => {
-      add(sourceFile, "EmptyMesh", {
-        exportName: "NamedComponent",
-        path: join(__dirname, "stub-component.tsx"),
-        props: {},
-        type: "custom",
-      });
-    }).toThrow();
   });
 
   it("should add a prop to a component", () => {
@@ -851,35 +862,7 @@ describe("component service", () => {
     expect(createdElement).toBeDefined();
   });
 
-  it.todo(
-    "should add a jsx element to arrow func that short hand returns group",
-    () => {
-      const project = _createProject({
-        tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
-      });
-      const sourceFile = project.addSourceFileAtPath(
-        join(__dirname, "__mocks__/empty.tsx")
-      );
-
-      add(sourceFile, "ArrowFuncReturnGroup", {
-        name: "group",
-        props: {},
-        type: "host",
-      });
-
-      expect(
-        getExportName(sourceFile, "EmptyArrowFunction").declaration.getText()
-      ).toMatchInlineSnapshot(`
-        "EmptyArrowFunction = () => (
-          <>
-            <group />
-            <group />
-          </>
-        )"`);
-    }
-  );
-
-  it.todo("should add a jsx element to func that returns group", () => {
+  it("should add a jsx element to arrow func that short hand returns group", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
@@ -887,18 +870,45 @@ describe("component service", () => {
       join(__dirname, "__mocks__/empty.tsx")
     );
 
-    add(sourceFile, "EmptyGroup", {
+    const actual = add(sourceFile, "ArrowFuncReturnGroup", {
       name: "group",
       props: {},
       type: "host",
     });
 
+    expect(
+      getJsxElementAtOrThrow(sourceFile, actual.line, actual.column).getText()
+    ).toMatchInlineSnapshot('"<group />"');
+    expect(
+      getExportName(sourceFile, "ArrowFuncReturnGroup").declaration.getText()
+    ).toMatchInlineSnapshot(
+      '"ArrowFuncReturnGroup = () => <><group /><group></group></>"'
+    );
+  });
+
+  it("should add a jsx element to func that returns group", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/empty.tsx")
+    );
+
+    const actual = add(sourceFile, "EmptyGroup", {
+      name: "mesh",
+      props: { name: "foo" },
+      type: "host",
+    });
+
+    expect(
+      getJsxElementAtOrThrow(sourceFile, actual.line, actual.column).getText()
+    ).toMatchInlineSnapshot('"<mesh name=\\"foo\\"/>"');
     expect(getExportName(sourceFile, "EmptyGroup").declaration.getText())
       .toMatchInlineSnapshot(`
-      "export function EmptyGroup() {
-        return <><group /><group></group></>;
-      }"
-    `);
+        "export function EmptyGroup() {
+          return <><mesh name=\\"foo\\"/><group></group></>;
+        }"
+      `);
   });
 
   it("should keep prop value on the same line(s) after an small upsert", () => {

@@ -29,9 +29,9 @@ export function EmptyGroup() {
 }
 
 export function EmptyMesh() {
-  return <mesh></mesh>;
+  return (<mesh></mesh>);
 }
 
 export const EmptyArrowFunction = () => <></>;
 
-export const ArrowFuncReturnGroup = () => <group />;
+export const ArrowFuncReturnGroup = () => <group></group>;

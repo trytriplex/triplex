@@ -9,7 +9,7 @@ import { test } from "../utils/runner";
 
 test("render error", async ({ editorR3F }) => {
   await editorR3F.waitForScene();
-  await editorR3F.fileTabs.openFileButton.click();
+  await editorR3F.openFileButton.click();
 
   await editorR3F.fileDrawer.thumbnail("Render Error").click();
 
@@ -18,7 +18,7 @@ test("render error", async ({ editorR3F }) => {
 
 test("syntax error", async ({ editorR3F }) => {
   await editorR3F.waitForScene();
-  await editorR3F.fileTabs.openFileButton.click();
+  await editorR3F.openFileButton.click();
 
   await editorR3F.fileDrawer.thumbnail("Syntax Error").click();
 

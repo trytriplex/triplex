@@ -19,7 +19,7 @@ test("opening a new file should focus on new tab", async ({ editorR3F }) => {
 
 test("opening another file", async ({ editorR3F }) => {
   await editorR3F.waitForScene();
-  await editorR3F.fileTabs.openFileButton.click();
+  await editorR3F.openFileButton.click();
 
   await editorR3F.fileDrawer.thumbnail("Box").click();
 

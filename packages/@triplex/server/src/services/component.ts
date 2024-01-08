@@ -90,16 +90,18 @@ function insertJsxElement(
 ) {
   const jsxFrag = target.getFirstDescendantByKind(SyntaxKind.JsxFragment);
   const jsxEle = target.getFirstDescendantByKind(SyntaxKind.JsxElement);
-
-  let line: number;
-  let column: number;
-
   const componentText = `<${componentName} ${propsToString(componentProps)}/>`;
 
   if (jsxFrag) {
     const pos = jsxFrag.getClosingFragment().getStart();
-    ({ column, line } = sourceFile.getLineAndColumnAtPos(pos));
+    const { column, line } = sourceFile.getLineAndColumnAtPos(pos);
+
     sourceFile.insertText(pos, componentText);
+
+    return {
+      column,
+      line,
+    };
   } else if (jsxEle) {
     const jsxElementName = jsxEle
       .getOpeningElement()
@@ -107,20 +109,30 @@ function insertJsxElement(
       .getText();
 
     if (jsxElementName !== "Fragment") {
-      throw new Error("invariant: can only add to a fragment");
-    }
+      const pos = jsxEle.getStart();
+      const { column, line } = sourceFile.getLineAndColumnAtPos(pos);
 
-    const pos = jsxEle.getClosingElement().getStart();
-    ({ column, line } = sourceFile.getLineAndColumnAtPos(pos));
-    sourceFile.insertText(pos, componentText);
-  } else {
-    throw new Error("invariant: could not find jsx element to add to");
+      // We need to add another fragment around the existing element.
+      jsxEle.replaceWithText(`<>${componentText}${jsxEle.getText()}</>`);
+
+      return {
+        column: 2 + column,
+        line,
+      };
+    } else {
+      const pos = jsxEle.getClosingElement().getStart();
+      const { column, line } = sourceFile.getLineAndColumnAtPos(pos);
+
+      sourceFile.insertText(pos, componentText);
+
+      return {
+        column,
+        line,
+      };
+    }
   }
 
-  return {
-    column,
-    line,
-  };
+  throw new Error("invariant: could not find jsx element to add to");
 }
 
 function addToJsxElement(
