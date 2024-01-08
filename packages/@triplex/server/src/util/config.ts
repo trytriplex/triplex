@@ -68,5 +68,6 @@ export async function getConfig(cwd: string): Promise<ReconciledTriplexConfig> {
     provider,
     publicDir,
     renderer: renderer || "react-three-fiber",
+    rendererAttributes: config.rendererAttributes || {},
   };
 }

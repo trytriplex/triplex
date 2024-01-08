@@ -28,6 +28,7 @@ export function on<TEvent extends HostSendEventName>(
 
       if (value !== undefined) {
         respond(eventName, value);
+        // This type errors when built in other packages. Suppress and move on.
         // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
         // @ts-ignore
       } else if (process.env.NODE_ENV === "test") {

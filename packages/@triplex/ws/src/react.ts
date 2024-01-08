@@ -43,11 +43,6 @@ function wsQuery<TValue>(path: string) {
       return;
     }
 
-    // For now we suppress and move on, but to clean this up we should
-    // place this whole module behind a factory function so you can just-in-time
-    // declare what the WS URL + types should be.
-    // eslint-disable-next-line @typescript-eslint/prefer-ts-expect-error
-    // @ts-ignore
     const ws = new WebSocket(`ws://localhost:${window.triplex.env.ports.ws}`);
     const deferred = defer();
     const subscriptions: (() => void)[] = [];

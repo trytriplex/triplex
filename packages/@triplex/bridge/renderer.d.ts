@@ -1,0 +1,19 @@
+/**
+ * Copyright (c) Michael Dougall. All rights reserved.
+ *
+ * This source code is licensed under the GPL-3.0 license found in the LICENSE
+ * file in the root directory of this source tree.
+ */
+declare interface Window {
+  triplex: {
+    env: {
+      ports: Record<string, number>;
+    };
+    renderer: {
+      attributes: Record<
+        string,
+        string | number | Record<string, string | number>
+      >;
+    };
+  };
+}

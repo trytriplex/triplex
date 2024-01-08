@@ -232,7 +232,7 @@ export interface TriplexConfig {
    * Variables that are replaced when running your scenes. Works exactly the
    * same as the `define` option in Vite or the `DefinePlugin` in Webpack.
    */
-  define?: Record<string, string>;
+  define?: Record<string, string | number | object | Array<unknown>>;
   /**
    * An array of relative path globs to select what files can be opened by
    * Triplex. You can define multiple roots. Found files will be available to
@@ -252,6 +252,14 @@ export interface TriplexConfig {
    * the `"/image.png"` URL.
    */
   publicDir?: string;
+  /**
+   * Extra attributes passed to the renderer. For available attributes refer to
+   * the docs.
+   */
+  rendererAttributes?: Record<
+    string,
+    string | number | object | Array<unknown>
+  >;
 }
 
 export interface RendererManifest {

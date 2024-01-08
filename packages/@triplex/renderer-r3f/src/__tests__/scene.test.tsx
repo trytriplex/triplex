@@ -18,6 +18,8 @@ vi.mock("@react-three/fiber", async () => ({
   },
 }));
 
+window.triplex = { env: { ports: {} }, renderer: { attributes: {} } };
+
 export default function Provider({ children }: { children?: React.ReactNode }) {
   return (
     <>

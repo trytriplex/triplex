@@ -5,6 +5,6 @@
   "compilerOptions": {
     "baseUrl": ".",
     "outDir": "./dist",
-    "types": ["vite/client"]
+    "types": ["vite/client", "@triplex/bridge/types/renderer"]
   }
 }

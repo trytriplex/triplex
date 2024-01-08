@@ -12,6 +12,9 @@
     "./client": {
       "default": "./src/client.ts",
       "types": "./src/client.ts"
+    },
+    "./types/renderer": {
+      "types": "./renderer.d.ts"
     }
   },
   "files": [

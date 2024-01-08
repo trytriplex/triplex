@@ -8,7 +8,14 @@ import { Canvas as RCanvas } from "@react-three/fiber";
 
 export function Canvas({ children }: { children: React.ReactNode }) {
   return (
-    <RCanvas shadows style={{ inset: 0, position: "absolute" }}>
+    <RCanvas
+      gl={
+        typeof window.triplex.renderer.attributes.gl === "object"
+          ? window.triplex.renderer.attributes.gl
+          : undefined
+      }
+      style={{ inset: 0, position: "absolute" }}
+    >
       {children}
     </RCanvas>
   );

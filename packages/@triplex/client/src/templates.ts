@@ -36,6 +36,7 @@ export const scripts = {
       `const projectFiles = import.meta.glob([${template.fileGlobs}]);`,
       `window.triplex = JSON.parse(\`${JSON.stringify({
         env: { ports: template.ports },
+        renderer: { attributes: template.config.rendererAttributes },
       })}\`);`,
       "const tempFiles = {",
       Array(placeholderFiles)
