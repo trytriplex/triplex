@@ -15,6 +15,13 @@
           },
           "type": "array"
         },
+        "define": {
+          "additionalProperties": {
+            "type": "string"
+          },
+          "description": "Variables that are replaced when running your scenes. Works exactly the same as the `define` option in Vite or the `DefinePlugin` in Webpack.",
+          "type": "object"
+        },
         "files": {
           "description": "An array of relative path globs to select what files can be opened by Triplex. You can define multiple roots. Found files will be available to open in the `File` > `Open` menu.",
           "items": {

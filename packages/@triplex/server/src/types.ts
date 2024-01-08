@@ -229,6 +229,11 @@ export interface TriplexConfig {
    */
   components?: string[];
   /**
+   * Variables that are replaced when running your scenes. Works exactly the
+   * same as the `define` option in Vite or the `DefinePlugin` in Webpack.
+   */
+  define?: Record<string, string>;
+  /**
    * An array of relative path globs to select what files can be opened by
    * Triplex. You can define multiple roots. Found files will be available to
    * open in the `File` > `Open` menu.

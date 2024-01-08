@@ -40,3 +40,12 @@ function JsDocMeta(_: {
 export function UseJsDocMeta() {
   return <JsDocMeta posX={5} />;
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export const AnyProps: any = (_: any) => {
+  return null;
+};
+
+export function Test() {
+  return <AnyProps />;
+}

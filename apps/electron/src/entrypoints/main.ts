@@ -445,15 +445,26 @@ async function main() {
 
       log.info("starting editor");
 
+      activeProjectWindow.webContents.session.webRequest.onHeadersReceived(
+        (details, callback) => {
+          callback({
+            responseHeaders: {
+              ...details.responseHeaders,
+              "Cross-Origin-Embedder-Policy": "require-corp",
+              "Cross-Origin-Opener-Policy": "same-origin",
+              "Cross-Origin-Resource-Policy": "cross-origin",
+            },
+          });
+        }
+      );
+
       await (process.env.TRIPLEX_ENV === "development"
         ? activeProjectWindow.loadURL(
             `http://localhost:${editorDevPort}${searchParams}`
           )
         : activeProjectWindow.loadFile(
             require.resolve(`@triplex/editor/dist/index.html`),
-            {
-              search: searchParams,
-            }
+            { search: searchParams }
           ));
     } catch (error) {
       const searchParams = `?error=${encodeURIComponent(

@@ -63,6 +63,7 @@ export async function getConfig(cwd: string): Promise<ReconciledTriplexConfig> {
     assetsDir,
     components,
     cwd,
+    define: config.define || {},
     files,
     provider,
     publicDir,

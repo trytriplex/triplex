@@ -6,7 +6,7 @@
  */
 import { join } from "upath";
 import { describe, expect, it } from "vitest";
-import { getJsxElementAt } from "../jsx";
+import { getJsxElementAt, getJsxElementAtOrThrow } from "../jsx";
 import { getElementFilePath, getExportName } from "../module";
 import { _createProject } from "../project";
 
@@ -28,6 +28,23 @@ describe("module", () => {
     expect(path).toEqual({
       exportName: "default",
       filePath: join(__dirname, "__mocks__", "box.tsx"),
+    });
+  });
+
+  it("should not throw when props return any", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/meta.tsx")
+    );
+    const sceneObject = getJsxElementAtOrThrow(sourceFile, 50, 10);
+
+    const path = getElementFilePath(sceneObject);
+
+    expect(path).toEqual({
+      exportName: "",
+      filePath: "",
     });
   });
 

@@ -42,6 +42,7 @@ export async function createServer({
     appType: "custom",
     assetsInclude: renderer.manifest.bundler?.assetsInclude,
     configFile: false,
+    define: config.define,
     logLevel: "error",
     plugins: [
       remoteModulePlugin({ cwd: normalizedCwd, files: config.files, ports }),
@@ -70,6 +71,13 @@ export async function createServer({
     },
     root: normalizedCwd,
     server: {
+      headers: {
+        // Needed for any static assets loaded through the Vite server.
+        // These headers are needed to enable shared array buffers.
+        // See: https://web.dev/articles/cross-origin-isolation-guide
+        "Cross-Origin-Embedder-Policy": "require-corp",
+        "Cross-Origin-Opener-Policy": "same-origin",
+      },
       hmr: {
         overlay: false,
         port: await getPort(),
@@ -92,7 +100,16 @@ export async function createServer({
       const template = createHTML(scripts.bootstrap(htmlConfig));
       const html = await vite.transformIndexHtml("scene", template);
 
-      res.status(200).set({ "Content-Type": "text/html" }).end(html);
+      res
+        .status(200)
+        .set({
+          "Content-Type": "text/html",
+          // These headers are needed to enable shared array buffers.
+          // See: https://web.dev/articles/cross-origin-isolation-guide
+          "Cross-Origin-Embedder-Policy": "require-corp",
+          "Cross-Origin-Opener-Policy": "same-origin",
+        })
+        .end(html);
     } catch (error) {
       vite.ssrFixStacktrace(error as Error);
       next(error);
@@ -115,7 +132,16 @@ export async function createServer({
         template
       );
 
-      res.status(200).set({ "Content-Type": "text/html" }).end(html);
+      res
+        .status(200)
+        .set({
+          "Content-Type": "text/html",
+          // These headers are needed to enable shared array buffers.
+          // See: https://web.dev/articles/cross-origin-isolation-guide
+          "Cross-Origin-Embedder-Policy": "require-corp",
+          "Cross-Origin-Opener-Policy": "same-origin",
+        })
+        .end(html);
     } catch (error) {
       vite.ssrFixStacktrace(error as Error);
       next(error);

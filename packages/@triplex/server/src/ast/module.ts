@@ -4,11 +4,13 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { type JsxElement, type JsxSelfClosingElement, Node } from "ts-morph";
+import { Node, type JsxElement, type JsxSelfClosingElement } from "ts-morph";
 import { normalize } from "upath";
 import { resolveExportDeclaration } from "./jsx";
 import { type SourceFileReadOnly } from "./project";
 
+// TODO: Does this need to access the typechecker or can
+// it just grab the import / local AST directly and use that?
 export function getElementFilePath(
   element: JsxSelfClosingElement | JsxElement
 ): { exportName: string; filePath: string } {
@@ -18,13 +20,10 @@ export function getElementFilePath(
 
   const jsxType = tagNode.getType();
   if (jsxType.isAny()) {
-    throw new Error(
-      `invariant: ${tagNode.getText()} resolved to any, check node_modules.`
-    );
+    return { exportName: "", filePath: "" };
   }
 
   const symbol = jsxType.getSymbol() || jsxType.getAliasSymbol();
-
   if (!symbol) {
     throw new Error(
       `invariant: could not find symbol for ${tagNode.getText()}`

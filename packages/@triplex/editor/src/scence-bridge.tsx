@@ -72,6 +72,8 @@ export function SceneFrame() {
     >
       <Stage>
         <iframe
+          // Needed for SharedBufferArray support.
+          allow="cross-origin-isolated"
           className={cn([
             blockPointerEvents && "pointer-events-none",
             "h-full w-full flex-shrink-0 border-none",

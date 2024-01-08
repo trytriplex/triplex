@@ -192,12 +192,15 @@ export function Camera({
   return (
     <CameraContext.Provider value={context}>
       <PerspectiveCamera
+        far={100_000}
         layers={layers}
         name="__triplex_camera"
+        near={0.01}
         position={position}
         ref={perspectiveRef}
       />
       <OrthographicCamera
+        far={100_000}
         layers={layers}
         name="__triplex_camera"
         near={-10}
