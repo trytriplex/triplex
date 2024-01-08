@@ -43,6 +43,7 @@
     "playwright/no-focused-test": "off",
     "react/no-unknown-property": "off",
     "unicorn/prefer-ternary": "off",
+    "space-before-function-paren": "off",
     "unicorn/prefer-top-level-await": "off"
   }
 }

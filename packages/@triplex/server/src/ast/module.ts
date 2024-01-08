@@ -9,65 +9,71 @@ import { normalize } from "upath";
 import { resolveExportDeclaration } from "./jsx";
 import { type SourceFileReadOnly } from "./project";
 
-// TODO: Does this need to access the typechecker or can
-// it just grab the import / local AST directly and use that?
 export function getElementFilePath(
   element: JsxSelfClosingElement | JsxElement
 ): { exportName: string; filePath: string } {
   const tagNode = Node.isJsxSelfClosingElement(element)
     ? element.getTagNameNode()
     : element.getOpeningElement().getTagNameNode();
+  const sourceFile = tagNode.getSourceFile();
+  const filePath = normalize(sourceFile.getFilePath());
+  // Grab the local declaration in the same module. This represents either
+  // a variable/function declaration, or an import.
+  const declaration = sourceFile
+    .getLocal(tagNode.getText())
+    ?.getDeclarations()[0];
 
-  const jsxType = tagNode.getType();
-  if (jsxType.isAny()) {
-    return { exportName: "", filePath: "" };
-  }
+  if (declaration) {
+    if (Node.isImportClause(declaration)) {
+      const moduleFilePath = declaration
+        .getParent()
+        .getModuleSpecifierSourceFile()
+        ?.getFilePath();
 
-  const symbol = jsxType.getSymbol() || jsxType.getAliasSymbol();
-  if (!symbol) {
-    throw new Error(
-      `invariant: could not find symbol for ${tagNode.getText()}`
-    );
-  }
-
-  const declaration = symbol.getDeclarations()[0];
-  const filePath = normalize(declaration.getSourceFile().getFilePath());
-
-  if (filePath.includes("node_modules")) {
-    return { exportName: "", filePath: "" };
-  }
-
-  const localSymbolDecl = tagNode.getSymbol()?.getDeclarations()[0];
-
-  if (Node.isImportClause(localSymbolDecl)) {
-    // Default import!
-    return { exportName: "default", filePath };
-  }
-
-  if (Node.isImportSpecifier(localSymbolDecl)) {
-    // Named import!
-    const exportName = localSymbolDecl.getName();
-    return { exportName, filePath };
-  }
-
-  if (Node.isFunctionDeclaration(localSymbolDecl)) {
-    if (localSymbolDecl.isDefaultExport()) {
-      return { exportName: "default", filePath };
+      if (moduleFilePath && !moduleFilePath.includes("node_modules")) {
+        return {
+          exportName: "default",
+          filePath: normalize(moduleFilePath),
+        };
+      }
     }
 
-    if (localSymbolDecl.isNamedExport()) {
-      return { exportName: localSymbolDecl.getNameOrThrow(), filePath };
+    if (Node.isImportSpecifier(declaration)) {
+      const moduleFilePath = declaration
+        .getParent()
+        .getParent()
+        .getParent()
+        .getModuleSpecifierSourceFile()
+        ?.getFilePath();
+
+      if (moduleFilePath && !moduleFilePath.includes("node_modules")) {
+        return {
+          exportName: declaration.getName(),
+          filePath: normalize(moduleFilePath),
+        };
+      }
+    }
+
+    if (Node.isVariableDeclaration(declaration)) {
+      const parent = declaration.getParent().getParent();
+
+      if (Node.isVariableStatement(parent) && parent.isExported()) {
+        return { exportName: declaration.getName(), filePath };
+      }
+    }
+
+    if (Node.isFunctionDeclaration(declaration)) {
+      if (declaration.isDefaultExport()) {
+        return { exportName: "default", filePath };
+      }
+
+      if (declaration.isNamedExport()) {
+        return { exportName: declaration.getNameOrThrow(), filePath };
+      }
     }
   }
 
-  if (Node.isVariableDeclaration(localSymbolDecl)) {
-    const parent = localSymbolDecl.getParent().getParent();
-
-    if (Node.isVariableStatement(parent) && parent.isExported()) {
-      return { exportName: localSymbolDecl.getName(), filePath };
-    }
-  }
-
+  // Couldn't find it? Bail out.
   return { exportName: "", filePath: "" };
 }
 

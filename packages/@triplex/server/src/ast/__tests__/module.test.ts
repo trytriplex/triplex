@@ -11,6 +11,40 @@ import { getElementFilePath, getExportName } from "../module";
 import { _createProject } from "../project";
 
 describe("module", () => {
+  it("should bail out for node modules", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/n_modules.tsx")
+    );
+    const sceneObject = getJsxElementAtOrThrow(sourceFile, 19, 5);
+
+    const path = getElementFilePath(sceneObject);
+
+    expect(path).toEqual({
+      exportName: "",
+      filePath: "",
+    });
+  });
+
+  it("should return fc component path", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/fc.tsx")
+    );
+    const sceneObject = getJsxElementAtOrThrow(sourceFile, 9, 10);
+
+    const path = getElementFilePath(sceneObject);
+
+    expect(path).toEqual({
+      exportName: "Home",
+      filePath: join(__dirname, "__mocks__", "fc.tsx"),
+    });
+  });
+
   it("should return the file path and export", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
@@ -31,7 +65,7 @@ describe("module", () => {
     });
   });
 
-  it("should not throw when props return any", () => {
+  it("should return component path even when any", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
@@ -43,8 +77,8 @@ describe("module", () => {
     const path = getElementFilePath(sceneObject);
 
     expect(path).toEqual({
-      exportName: "",
-      filePath: "",
+      exportName: "AnyProps",
+      filePath: join(__dirname, "__mocks__", "meta.tsx"),
     });
   });
 
