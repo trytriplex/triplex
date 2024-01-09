@@ -7,7 +7,7 @@
 import { type Vector3Tuple } from "three";
 
 function Box({
-  color,
+  color = "blue",
   position,
   rotation,
   scale,
