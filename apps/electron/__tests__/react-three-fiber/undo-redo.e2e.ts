@@ -9,7 +9,7 @@ import { test } from "../utils/runner";
 
 test("undo an action", async ({ editorR3F }) => {
   await editorR3F.scenePanel.elementButton("Box").click();
-  await editorR3F.contextPanel.input("Position").fill("2");
+  await editorR3F.contextPanel.input("Position").locator.fill("2");
   await editorR3F.keyboard.press("Enter");
   await expect(
     editorR3F.fileTabs.tab("scene.tsx").unsavedIndicator
@@ -25,7 +25,7 @@ test("undo an action", async ({ editorR3F }) => {
 
 test("redo an action", async ({ editorR3F }) => {
   await editorR3F.scenePanel.elementButton("Box").click();
-  await editorR3F.contextPanel.input("Position").fill("2");
+  await editorR3F.contextPanel.input("Position").locator.fill("2");
   await editorR3F.keyboard.press("Enter");
   await expect(
     editorR3F.fileTabs.tab("scene.tsx").unsavedIndicator

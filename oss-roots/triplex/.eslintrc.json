@@ -1,12 +1,6 @@
 {
-  "extends": ["@nkzw", "plugin:playwright/recommended"],
-  "ignorePatterns": [
-    "dist",
-    "build",
-    "playwright-report",
-    "test-results",
-    "syntax-error.tsx"
-  ],
+  "extends": ["@nkzw"],
+  "ignorePatterns": ["dist", "build", "test-results", "syntax-error.tsx"],
   "overrides": [
     {
       "files": ["**/create-triplex-project/templates/**"],
@@ -40,7 +34,6 @@
     "no-inner-declarations": "off",
     "no-unused-expressions": "off",
     "prefer-const": "off",
-    "playwright/no-focused-test": "off",
     "react/no-unknown-property": "off",
     "unicorn/prefer-ternary": "off",
     "space-before-function-paren": "off",

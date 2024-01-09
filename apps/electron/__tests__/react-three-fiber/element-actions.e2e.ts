@@ -67,9 +67,11 @@ test("focus child element", async ({ editorR3F }) => {
 });
 
 test("enter custom element and back", async ({ editorR3F }) => {
-  const parent = editorR3F.scenePanel.elementButton("Box");
+  const element = editorR3F.scenePanel.elementButton("Box");
+  await element.click();
+  await expect(editorR3F.contextPanel.heading).toHaveText("Box");
 
-  await parent.dblclick();
+  await element.dblclick();
   await expect(editorR3F.scenePanel.heading).toHaveText("Box");
   await editorR3F.scenePanel.exitSelectionButton.click();
 

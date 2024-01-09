@@ -107,6 +107,7 @@ function SelectedSceneObjectPanel({
 
           const column = "column" in prop ? prop.column : -1;
           const line = "line" in prop ? prop.line : -1;
+          const value = "value" in prop ? prop.value : prop.defaultValue?.value;
 
           return (
             <PropField
@@ -141,7 +142,7 @@ function SelectedSceneObjectPanel({
                     });
                   }}
                   path={target.parentPath}
-                  prop={prop}
+                  prop={Object.assign({}, prop, { value })}
                   required={prop.required}
                 />
               </PropTagContext.Provider>
@@ -253,6 +254,9 @@ function ComponentSandboxPanel({
             return null;
           }
 
+          const value =
+            prop.name in values ? values[prop.name] : prop.defaultValue?.value;
+
           return (
             <PropField
               description={prop.description}
@@ -280,11 +284,7 @@ function ComponentSandboxPanel({
                     setValues(storeKey, prop.name, value);
                   }}
                   path={path}
-                  prop={Object.assign(
-                    {},
-                    prop,
-                    values[prop.name] ? { value: values[prop.name] } : {}
-                  )}
+                  prop={Object.assign({}, prop, { value })}
                   required={prop.required}
                 />
               </PropTagContext.Provider>

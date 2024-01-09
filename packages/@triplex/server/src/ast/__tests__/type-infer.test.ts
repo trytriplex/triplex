@@ -6,7 +6,7 @@
  */
 import { join } from "upath";
 import { describe, expect, it } from "vitest";
-import { getJsxElementAt } from "../jsx";
+import { getJsxElementAt, getJsxElementAtOrThrow } from "../jsx";
 import { _createProject } from "../project";
 import { getFunctionPropTypes, getJsxElementPropTypes } from "../type-infer";
 
@@ -604,6 +604,229 @@ describe("type infer", () => {
     `);
   });
 
+  it("should infer default props from a jsx element function decl", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/default-props.tsx")
+    );
+    const sceneObject = getJsxElementAtOrThrow(sourceFile, 15, 7);
+
+    const { props } = getJsxElementPropTypes(sceneObject);
+
+    expect(props).toMatchInlineSnapshot(`
+      [
+        {
+          "defaultValue": {
+            "kind": "boolean",
+            "value": false,
+          },
+          "description": undefined,
+          "kind": "boolean",
+          "name": "debugPhysics",
+          "required": false,
+          "tags": {},
+        },
+        {
+          "defaultValue": {
+            "kind": "boolean",
+            "value": false,
+          },
+          "description": undefined,
+          "kind": "boolean",
+          "name": "enablePhysics",
+          "required": false,
+          "tags": {},
+        },
+      ]
+    `);
+  });
+
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // TODO: How do we get access to the concrete AST of a component declared using
+  // React.FC? It's currently unknown so this test isn't showing the correct data
+  // it's missing default props!
+  it.todo("should infer default props from a jsx element React.FC decl", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/default-props.tsx")
+    );
+    const sceneObject = getJsxElementAtOrThrow(sourceFile, 14, 7);
+
+    const { props } = getJsxElementPropTypes(sceneObject);
+
+    expect(props).toMatchInlineSnapshot(`
+      [
+        {
+          "description": undefined,
+          "kind": "number",
+          "name": "scaleMax",
+          "required": false,
+          "tags": {
+            "max": 2000,
+            "min": 0,
+          },
+        },
+        {
+          "column": 13,
+          "description": undefined,
+          "kind": "string",
+          "line": 102,
+          "name": "seed",
+          "required": true,
+          "tags": {},
+          "value": "",
+          "valueKind": "string",
+        },
+        {
+          "description": undefined,
+          "kind": "string",
+          "literal": "foo",
+          "name": "strategy",
+          "required": false,
+          "tags": {},
+        },
+        {
+          "description": undefined,
+          "kind": "boolean",
+          "name": "useInterpolation",
+          "required": false,
+          "tags": {},
+        },
+        {
+          "description": undefined,
+          "kind": "boolean",
+          "name": "useNoise",
+          "required": false,
+          "tags": {},
+        },
+      ]
+    `);
+  });
+
+  it("should infer default props from a jsx element component with hoc", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/default-props.tsx")
+    );
+    const sceneObject = getJsxElementAtOrThrow(sourceFile, 16, 7);
+
+    const { props } = getJsxElementPropTypes(sceneObject);
+
+    expect(props).toMatchInlineSnapshot(`
+      [
+        {
+          "defaultValue": {
+            "kind": "string",
+            "value": "foo",
+          },
+          "description": undefined,
+          "kind": "union",
+          "name": "name",
+          "required": false,
+          "shape": [
+            {
+              "kind": "string",
+              "literal": "foo",
+            },
+            {
+              "kind": "string",
+              "literal": "bar",
+            },
+          ],
+          "tags": {},
+        },
+        {
+          "defaultValue": {
+            "kind": "boolean",
+            "value": true,
+          },
+          "description": undefined,
+          "kind": "boolean",
+          "name": "test",
+          "required": false,
+          "tags": {},
+        },
+      ]
+    `);
+  });
+
+  it("should infer props from a FC component", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/type-extraction.tsx")
+    );
+
+    const { props } = getFunctionPropTypes(sourceFile, "Home");
+
+    expect(props).toMatchInlineSnapshot(`
+      [
+        {
+          "defaultValue": {
+            "kind": "number",
+            "value": 700,
+          },
+          "description": undefined,
+          "kind": "number",
+          "name": "scaleMax",
+          "required": false,
+          "tags": {
+            "max": 2000,
+            "min": 0,
+          },
+        },
+        {
+          "description": undefined,
+          "kind": "string",
+          "name": "seed",
+          "required": true,
+          "tags": {},
+        },
+        {
+          "defaultValue": {
+            "kind": "string",
+            "value": "WGAN",
+          },
+          "description": undefined,
+          "kind": "string",
+          "literal": "foo",
+          "name": "strategy",
+          "required": false,
+          "tags": {},
+        },
+        {
+          "defaultValue": {
+            "kind": "boolean",
+            "value": true,
+          },
+          "description": undefined,
+          "kind": "boolean",
+          "name": "useInterpolation",
+          "required": false,
+          "tags": {},
+        },
+        {
+          "defaultValue": {
+            "kind": "boolean",
+            "value": true,
+          },
+          "description": undefined,
+          "kind": "boolean",
+          "name": "useNoise",
+          "required": false,
+          "tags": {},
+        },
+      ]
+    `);
+  });
+
   it("should infer prop types from arrow function", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
@@ -708,7 +931,7 @@ describe("type infer", () => {
           "description": undefined,
           "kind": "union",
           "name": "name",
-          "required": true,
+          "required": false,
           "shape": [
             {
               "kind": "string",
@@ -729,7 +952,7 @@ describe("type infer", () => {
           "description": undefined,
           "kind": "boolean",
           "name": "test",
-          "required": true,
+          "required": false,
           "tags": {},
         },
       ]

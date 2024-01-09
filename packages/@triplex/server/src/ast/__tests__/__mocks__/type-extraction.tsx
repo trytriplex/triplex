@@ -58,21 +58,50 @@ export const DefaultProps = identity(
     name: _ = "foo",
     test: __ = true,
   }: {
-    name: "foo" | "bar";
-    test: boolean;
+    name?: "foo" | "bar";
+    test?: boolean;
   }) => null
 );
 
 export function Provider({
-  debugPhysics = false,
-  enablePhysics = false,
+  debugPhysics: _ = false,
+  enablePhysics: __ = false,
 }: {
   debugPhysics?: boolean;
   enablePhysics?: boolean;
 }) {
-  return [enablePhysics, debugPhysics];
+  return null;
 }
 
 export function Material() {
   return <meshStandardMaterial />;
+}
+
+export const Home: React.FC<{
+  /**
+   * @min 0
+   * @max 2000
+   */
+  scaleMax?: number;
+  seed: string;
+  strategy?: "foo";
+  useInterpolation?: boolean;
+  useNoise?: boolean;
+}> = ({
+  scaleMax: _ = 700,
+  strategy: __ = "WGAN",
+  useInterpolation: ___ = true,
+  useNoise: ____ = true,
+}) => {
+  return null;
+};
+
+export function UsingComponentsWithDefaultProps() {
+  return (
+    <>
+      <Home seed="" />
+      <Provider />
+      <DefaultProps />
+    </>
+  );
 }

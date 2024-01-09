@@ -2,5 +2,6 @@
   "$schema": "https://triplex.dev/config.schema.json",
   "components": ["../src/**/*.tsx"],
   "files": ["../src/**/*.tsx"],
-  "renderer": "react-dom"
+  "renderer": "react-dom",
+  "provider": "./provider.tsx"
 }

@@ -7,7 +7,19 @@
 import { PerspectiveCamera } from "@react-three/drei";
 import Box from "./geometry/box";
 
-export function Scene() {
+interface SceneProps {
+  name?: string;
+  value?: number;
+  variant?: "giant" | "small";
+  visible?: boolean;
+}
+
+export function Scene({
+  name: ___ = "jelly",
+  value: __ = 100,
+  variant: _ = "giant",
+  visible: ____ = true,
+}: SceneProps) {
   return (
     <>
       <ambientLight position={[2.12, 0, -0.88]} />

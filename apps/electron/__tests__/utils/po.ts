@@ -69,7 +69,6 @@ export class EditorPage {
 
   async switchToComponent(name: string) {
     const locator = this.page.getByTestId("component-select-input");
-    await locator.click();
     await locator.selectOption(name);
   }
 
@@ -84,7 +83,13 @@ export class EditorPage {
     return {
       heading: locator.getByTestId("context-panel-heading"),
       input(label: string) {
-        return locator.getByLabel(label);
+        const inputLocator = locator.getByLabel(label, { exact: true });
+        return {
+          get clearButton() {
+            return inputLocator.getByLabel("Clear Value");
+          },
+          locator: inputLocator,
+        };
       },
       locator,
       waitForInputValue(type: "number" | "string" | "boolean", value: string) {
@@ -148,6 +153,13 @@ export class EditorPage {
     };
   }
 
+  get propControls() {
+    return {
+      closeButton: this.page.getByLabel("Close Prop Controls"),
+      openButton: this.page.getByLabel("Open Prop Controls"),
+    };
+  }
+
   get scenePanel() {
     const locator = this.page.getByTestId("scene-panel");
 
@@ -185,7 +197,6 @@ export class EditorPage {
       newComponent: async () => {
         await this.waitForScene();
         const locator = this.page.getByTestId("component-select-input");
-        await locator.click();
         await locator.selectOption("new-component");
         await expect
           .poll(async () => this.page.getByTestId("scene-element").count())

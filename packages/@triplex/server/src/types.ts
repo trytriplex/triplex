@@ -105,7 +105,20 @@ export type RemapPropWithValue<TType> = TType extends Type
 
 export type DeclaredProp = RemapPropWithValue<Type>;
 
+export type AttributeValue =
+  | number
+  | string
+  | boolean
+  | undefined
+  | AttributeValue[];
+
+export type ExpressionValue = {
+  kind: ValueKind;
+  value: AttributeValue;
+};
+
 export type Prop = {
+  defaultValue?: ExpressionValue;
   description: string | undefined;
   name: string;
   required: boolean;

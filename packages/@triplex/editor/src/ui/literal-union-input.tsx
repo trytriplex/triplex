@@ -4,13 +4,18 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { Cross2Icon } from "@radix-ui/react-icons";
+import { ChevronDownIcon, Cross2Icon } from "@radix-ui/react-icons";
 import type {
   BooleanLiteralType,
   NumberLiteralType,
   StringLiteralType,
 } from "@triplex/server";
-import { useEffect, useRef, type ChangeEventHandler } from "react";
+import {
+  useEffect,
+  useRef,
+  type ChangeEventHandler,
+  type KeyboardEventHandler,
+} from "react";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 
@@ -56,9 +61,17 @@ export function LiteralUnionInput({
   };
 
   const onClear = () => {
-    ref.current!.value = "";
+    const index = values.findIndex((v) => v.literal === defaultValue);
+    ref.current.value = index !== -1 ? `${index}` : "";
+
     onChange(undefined);
     onConfirm(undefined);
+  };
+
+  const onKeyDownHandler: KeyboardEventHandler<HTMLSelectElement> = (e) => {
+    if (e.key === "Backspace") {
+      onClear();
+    }
   };
 
   return (
@@ -72,6 +85,7 @@ export function LiteralUnionInput({
         defaultValue={values.findIndex((v) => v.literal === defaultValue)}
         id={name}
         onChange={onChangeHandler}
+        onKeyDown={onKeyDownHandler}
         ref={ref}
       >
         {!isValueDefined && <option value="">Select value...</option>}
@@ -82,6 +96,8 @@ export function LiteralUnionInput({
           >{`${value.label || value.literal}`}</option>
         ))}
       </select>
+
+      <ChevronDownIcon className="mr-1 text-neutral-400 group-focus-within:hidden group-hover:hidden" />
 
       {!required && (
         <IconButton

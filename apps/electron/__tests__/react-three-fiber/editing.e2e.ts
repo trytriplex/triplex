@@ -10,7 +10,7 @@ import { test } from "../utils/runner";
 test("update component position prop", async ({ editorR3F }) => {
   const parent = editorR3F.scenePanel.elementButton("Box");
   await parent.click();
-  const input = editorR3F.contextPanel.input("Position");
+  const input = editorR3F.contextPanel.input("Position").locator;
 
   await input.fill("2");
   await editorR3F.keyboard.press("Enter");
@@ -25,7 +25,7 @@ test("update child component name prop", async ({ editorR3F }) => {
   await parent.expandButton.click({ force: true });
   const child = parent.childElementButton("boxGeometry");
   await child.click();
-  const input = editorR3F.contextPanel.input("Name");
+  const input = editorR3F.contextPanel.input("Name").locator;
 
   await input.fill("foo");
   await editorR3F.keyboard.press("Enter");

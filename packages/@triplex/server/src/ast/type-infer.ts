@@ -15,10 +15,11 @@ import {
   type Type,
 } from "ts-morph";
 import type {
+  AttributeValue,
   DeclaredProp,
+  ExpressionValue,
   Prop,
   Type as UnrolledType,
-  ValueKind,
 } from "../types";
 import { getAttributes } from "./jsx";
 import { getExportName } from "./module";
@@ -170,6 +171,7 @@ function getJsxDeclProps(element: JsxSelfClosingElement | JsxElement) {
     return {
       declaration,
       properties,
+      symbolType: props,
     };
   }
 }
@@ -274,12 +276,6 @@ function collectUnionLabels(
   return outLabels[propTypeName];
 }
 
-type AttributeValue = number | string | boolean | undefined | AttributeValue[];
-type ExpressionValue = {
-  kind: ValueKind;
-  value: AttributeValue;
-};
-
 export function resolveExpressionValue(
   expression: Expression | undefined
 ): ExpressionValue {
@@ -348,6 +344,7 @@ export function getJsxElementPropTypes(
   const attributes = getAttributes(element);
   const jsxDecl = getJsxDeclProps(element);
   const unionValueLabels: Record<string, Record<string, string>> = {};
+  const defaultValues: Record<string, ExpressionValue> = {};
 
   if (!jsxDecl) {
     return {
@@ -356,11 +353,30 @@ export function getJsxElementPropTypes(
     };
   }
 
-  const { declaration, properties } = jsxDecl;
+  const { declaration, properties, symbolType } = jsxDecl;
 
   let rotate = false;
   let scale = false;
   let translate = false;
+
+  const binding = getComponentPropsObjectBinding(declaration, symbolType);
+  if (binding) {
+    binding.getElements().forEach((element) => {
+      const name = element.getPropertyNameNode() || element.getNameNode();
+      if (!name) {
+        return;
+      }
+
+      const propertyName = name.getText();
+      const initializer = element.getInitializer();
+
+      if (!initializer) {
+        return;
+      }
+
+      defaultValues[propertyName] = resolveExpressionValue(initializer);
+    });
+  }
 
   for (let i = 0; i < properties.length; i++) {
     const prop = properties[i];
@@ -375,6 +391,7 @@ export function getJsxElementPropTypes(
       unionValueLabels,
       propDeclaration
     );
+    const defaultValue = defaultValues[propName];
 
     if (declaredProp) {
       const initializer = declaredProp.getInitializer();
@@ -466,6 +483,7 @@ export function getJsxElementPropTypes(
         tags,
         value: value.value as string,
         valueKind: value.kind,
+        ...(defaultValue ? { defaultValue } : undefined),
       });
     } else {
       if (propName === "rotation") {
@@ -482,11 +500,41 @@ export function getJsxElementPropTypes(
         name: propName,
         required: !propDeclaration?.hasQuestionToken?.(),
         tags,
+        ...(defaultValue ? { defaultValue } : undefined),
       });
     }
   }
 
   return { props, transforms: { rotate, scale, translate } };
+}
+
+function getComponentPropsObjectBinding(
+  declaration: Node,
+  propsSymbolType?: SymbolType
+) {
+  const valueDeclaration = propsSymbolType?.getValueDeclaration();
+  if (Node.isParameterDeclaration(valueDeclaration)) {
+    const nameNode = valueDeclaration.getNameNode();
+
+    if (Node.isObjectBindingPattern(nameNode)) {
+      return nameNode;
+    }
+  }
+
+  if (Node.isVariableDeclaration(declaration)) {
+    const initializer = declaration.getInitializer();
+    if (Node.isArrowFunction(initializer)) {
+      const param = initializer.getParameters()[0];
+      if (param) {
+        const binding = param.getNameNode();
+        if (Node.isObjectBindingPattern(binding)) {
+          return binding;
+        }
+      }
+    }
+  }
+
+  return undefined;
 }
 
 export function getFunctionPropTypes(
@@ -513,44 +561,35 @@ export function getFunctionPropTypes(
     return empty;
   }
 
-  const valueDeclaration = props.getValueDeclaration();
-  if (!valueDeclaration) {
-    // No decl found!
-    return empty;
-  }
-
   const propsType = sourceFile
     .getProject()
     .getTypeChecker()
-    .getTypeOfSymbolAtLocation(props, valueDeclaration);
+    .getTypeOfSymbolAtLocation(props, declaration);
 
   const properties = propsType.getApparentProperties();
+  const defaultValues: Record<string, ExpressionValue> = {};
 
   let rotate = false;
   let scale = false;
   let translate = false;
-  const defaultValues: Record<string, ExpressionValue> = {};
 
-  if (Node.isParameterDeclaration(valueDeclaration)) {
-    const nameNode = valueDeclaration.getNameNode();
-    const objectBinding = Node.isObjectBindingPattern(nameNode) && nameNode;
-    if (objectBinding) {
-      objectBinding.getElements().forEach((element) => {
-        const name = element.getPropertyNameNode() || element.getNameNode();
-        if (!name) {
-          return;
-        }
+  const binding = getComponentPropsObjectBinding(declaration, props);
+  if (binding) {
+    binding.getElements().forEach((element) => {
+      const name = element.getPropertyNameNode() || element.getNameNode();
+      if (!name) {
+        return;
+      }
 
-        const propertyName = name.getText();
-        const initializer = element.getInitializer();
+      const propertyName = name.getText();
+      const initializer = element.getInitializer();
 
-        if (!initializer) {
-          return;
-        }
+      if (!initializer) {
+        return;
+      }
 
-        defaultValues[propertyName] = resolveExpressionValue(initializer);
-      });
-    }
+      defaultValues[propertyName] = resolveExpressionValue(initializer);
+    });
   }
 
   for (let i = 0; i < properties.length; i++) {
