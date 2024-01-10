@@ -114,7 +114,20 @@ export function SceneFrame({
   return (
     <Canvas>
       <Camera layers={layers} position={position} target={target}>
-        <ErrorBoundary fallbackRender={() => null} resetKeys={[component]}>
+        <ErrorBoundary
+          fallbackRender={() => null}
+          onError={(err) =>
+            send("error", {
+              message: err.message,
+              source: providerPath,
+              stack: err.stack,
+              subtitle:
+                "The scene could not be rendered because there was an error in the provider component. Resolve the errors and try again.",
+              title: "Could not render scene",
+            })
+          }
+          resetKeys={[component, Provider]}
+        >
           <SubsequentSuspense>
             <ManualEditableSceneObject
               component={Provider}

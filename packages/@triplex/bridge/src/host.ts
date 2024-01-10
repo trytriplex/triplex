@@ -25,6 +25,7 @@ export {
   ButtonControl,
   ButtonGroupControl,
   SeparatorControl,
+  ClientSendEventData,
   ToggleButtonControl,
 };
 

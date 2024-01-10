@@ -44,6 +44,7 @@
     "react/no-unknown-property": "off",
     "unicorn/prefer-ternary": "off",
     "space-before-function-paren": "off",
-    "unicorn/prefer-top-level-await": "off"
+    "unicorn/prefer-top-level-await": "off",
+    "import/no-namespace": "off"
   }
 }

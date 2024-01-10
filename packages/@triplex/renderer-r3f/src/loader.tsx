@@ -24,7 +24,7 @@ export function SceneLoader({
   path,
   sceneProps,
 }: {
-  exportName: "default" | string;
+  exportName: string;
   path: string;
   sceneProps: Record<string, unknown>;
 }) {
@@ -54,7 +54,20 @@ export function SceneLoader({
     <>
       <Loaded />
 
-      <ErrorBoundary fallbackRender={() => null} resetKeys={[SceneComponent]}>
+      <ErrorBoundary
+        fallbackRender={() => null}
+        onError={(err) =>
+          send("error", {
+            message: err.message,
+            source: path,
+            stack: err.message,
+            subtitle:
+              "The scene could not be rendered because there was an error in a component. Resolve the errors and try again.",
+            title: "Could not render scene",
+          })
+        }
+        resetKeys={[SceneComponent]}
+      >
         <ManualEditableSceneObject
           component={SceneComponent}
           exportName={exportName}

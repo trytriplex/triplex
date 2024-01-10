@@ -25,7 +25,7 @@ const FRAME_SIZES = {
   desktop: [1600, 900],
   laptop: [1280, 720],
   mobile: [390, 844],
-  square: [590, 590],
+  square: [600, 600],
 } satisfies Record<string, [number, number]>;
 
 export function Stage({ children }: { children: React.ReactNode }) {

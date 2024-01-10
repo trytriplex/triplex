@@ -95,11 +95,13 @@ export interface ClientSendEventData {
     propValue: unknown;
   };
   error: {
-    col: number;
-    line: number;
+    col?: number;
+    line?: number;
     message: string;
-    source: string;
-    stack: string;
+    source?: string;
+    stack?: string;
+    subtitle: string;
+    title: string;
   };
   ready: undefined;
   "set-controls": {

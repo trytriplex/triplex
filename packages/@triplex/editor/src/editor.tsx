@@ -53,7 +53,7 @@ export function EditorFrame() {
         <>
           <div
             className={cn([
-              "col-start-1 row-auto row-start-3 flex overflow-hidden",
+              "z-10 col-start-1 row-auto row-start-3 flex overflow-hidden",
               canvasLayout === "expanded" && "rounded-lg py-3 pl-3",
             ])}
           >
@@ -62,13 +62,13 @@ export function EditorFrame() {
 
           <SceneFrame />
 
-          <div className="pointer-events-none relative col-start-2 row-start-3 flex">
+          <div className="pointer-events-none relative z-10 col-start-2 row-start-3 flex">
             <ControlsMenu />
           </div>
 
           <div
             className={cn([
-              "pointer-events-none col-start-3 row-start-3 flex overflow-hidden",
+              "pointer-events-none z-10 col-start-3 row-start-3 flex overflow-hidden",
               canvasLayout === "expanded" && "rounded-lg py-3 pr-3",
             ])}
           >

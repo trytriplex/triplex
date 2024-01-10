@@ -55,11 +55,13 @@ export const scripts = {
       if (${metaHot}) {
         ${metaHot}.on("vite:error", (e) => {
           send("error", {
-            col: e.err.loc?.column || -1,
-            line: e.err.loc?.line || -1,
+            title: "Could not parse file",
+            subtitle: "The scene could not be rendered as there was an error parsing its file. Resolve syntax errors and try again.",
             message: e.err.message,
-            source: e.err.id || "unknown",
+            col: e.err.loc?.column,
+            line: e.err.loc?.line,
             stack: e.err.stack,
+            source: e.err.id,
           });
         });
 
@@ -72,6 +74,22 @@ export const scripts = {
         });
 
         if (!${metaHot}.data.render) {
+          window.addEventListener("error", (e) => {
+            requestAnimationFrame(() => {
+              // Flush this error one frame later to ensure any duplicate errors
+              // sent from the renderer get prioritized over this generic one.
+              send("error", {
+                col: e.colno,
+                line: e.lineno,
+                title: "Could not run code",
+                subtitle: "There was an error which may have affected the rendering of your scene. Resolve any errors and try again.",
+                message: e.error.message,
+                source: e.filename,
+                stack: e.error.stack,
+              });
+            });
+          });
+
           ${metaHot}.data.render = bootstrap(document.getElementById('root'));
           ${metaHot}.data.render({ config: ${JSON.stringify(
         template.config
@@ -81,16 +99,6 @@ export const scripts = {
             if (data.hard) {
               window.location.reload();
             }
-          });
-
-          window.addEventListener("error", (e) => {
-            send("error", {
-              col: e.colno,
-              line: e.lineno,
-              message: e.message,
-              source: e.filename.replace(/\\?.+/, ""),
-              stack: e.error.stack.replaceAll(/\\?.+:/g, ":"),
-            });
           });
         }
 

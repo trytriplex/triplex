@@ -10,51 +10,32 @@ import {
   CodeIcon,
   Cross2Icon,
 } from "@radix-ui/react-icons";
-import { compose, on } from "@triplex/bridge/host";
-import { useEffect, useRef, useState } from "react";
+import { compose, on, type ClientSendEventData } from "@triplex/bridge/host";
+import { useEffect, useState } from "react";
 import { IconButton } from "../ds/button";
-import { cn } from "../ds/cn";
 import { ScrollContainer } from "../ds/scroll-container";
 
-interface TriplexError {
-  col: number;
-  line: number;
-  message: string;
-  source: string;
-  stack: string;
-}
-
 export function ErrorOverlay() {
-  const [errors, setErrors] = useState<TriplexError[]>([]);
+  const [errors, setErrors] = useState<ClientSendEventData["error"][]>([]);
   const [index, setIndex] = useState(0);
   const error = errors[index];
-  const resetTimeoutId = useRef<number>();
 
   useEffect(() => {
     return compose([
       on("error", (e) => {
         setErrors((prevErrors) => {
-          let nextErrors = prevErrors;
-
-          if (resetTimeoutId.current) {
-            // There is a pending reset. Cancel it and clear all prev errors.
-            window.clearTimeout(resetTimeoutId.current);
-            resetTimeoutId.current = undefined;
-            nextErrors = [];
-            setIndex(0);
+          for (let i = 0; i < prevErrors.length; i++) {
+            const err = prevErrors[i];
+            if (err.message === e.message) {
+              // Skip adding a new error as it already exists.
+              setIndex(i);
+              return prevErrors;
+            }
           }
 
-          const newErrorStr = JSON.stringify(e);
-          const errorExists = nextErrors.find((err) => {
-            return JSON.stringify(err) === newErrorStr;
-          });
+          setIndex(0);
 
-          if (errorExists) {
-            // Skip adding a new error as it already exists.
-            return nextErrors;
-          }
-
-          return nextErrors.concat(e);
+          return [e].concat(prevErrors);
         });
       }),
     ]);
@@ -66,9 +47,7 @@ export function ErrorOverlay() {
 
   return (
     <div
-      className={cn([
-        "highlight-danger fixed bottom-6 left-6 z-50 flex w-96 flex-col gap-1 rounded-md border border-neutral-600 bg-neutral-800 p-2",
-      ])}
+      className="highlight-danger fixed bottom-6 left-6 z-50 flex w-96 flex-col gap-2 rounded-md border border-neutral-600 bg-neutral-800 p-2"
       data-testid="ErrorOverlay"
       key={error.message}
     >
@@ -91,17 +70,27 @@ export function ErrorOverlay() {
           {index + 1} of {errors.length} errors in the scene
         </div>
 
-        <IconButton
-          actionId="view_error_source"
-          icon={CodeIcon}
-          label="View Source"
-          onClick={() => {
-            window.triplex.openIDE(error.source, {
-              column: error.col,
-              line: error.line,
-            });
-          }}
-        />
+        {error.source && (
+          <IconButton
+            actionId="view_error_source"
+            icon={CodeIcon}
+            label="View Source"
+            onClick={() => {
+              if (error.source) {
+                const pos =
+                  typeof error.col === "number" &&
+                  typeof error.line === "number"
+                    ? {
+                        column: error.col,
+                        line: error.line,
+                      }
+                    : undefined;
+
+                window.triplex.openIDE(error.source, pos);
+              }
+            }}
+          />
+        )}
         <IconButton
           actionId="dismiss_errors"
           icon={Cross2Icon}
@@ -109,18 +98,21 @@ export function ErrorOverlay() {
           onClick={() => setErrors([])}
         />
       </div>
-      <div className="mb-2 line-clamp-2 px-2 text-sm font-medium text-neutral-300">
-        {error.message}
+      <div className="-mt-1 px-2 text-sm font-medium text-neutral-300">
+        {error.title}
       </div>
-      <StackTrace>{error.stack}</StackTrace>
+      <div className="-mt-1 px-2 text-xs text-neutral-300">
+        {error.subtitle}
+      </div>
+      <ErrorMessage>{error.message}</ErrorMessage>
     </div>
   );
 }
 
-function StackTrace({ children }: { children: string }) {
+function ErrorMessage({ children }: { children: string }) {
   return (
     <ScrollContainer className="rounded bg-white/5">
-      <div className="max-h-20 px-2 pt-1.5 text-left font-mono text-xs text-neutral-400 after:block after:h-1.5">
+      <div className="mt-0.5 max-h-14 px-2 pt-1 text-left text-xs text-neutral-400 after:block after:h-1.5">
         {children}
       </div>
     </ScrollContainer>
