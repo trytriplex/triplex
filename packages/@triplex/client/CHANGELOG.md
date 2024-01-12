@@ -1,5 +1,24 @@
 # @triplex/client
 
+## 0.64.0
+
+### Minor Changes
+
+- 8712a12: Add renderer attributes. Refer to docs.
+- 0868337: Add support for SharedBufferArray.
+- 0868337: Add `define` variables support.
+
+### Patch Changes
+
+- a153ee8: Error handler now set up before bootstrapping renderer.
+- 777b2f5: Get random port for the ws server on Vite start.
+- Updated dependencies [8712a12]
+- Updated dependencies [a153ee8]
+- Updated dependencies [a153ee8]
+  - @triplex/renderer-r3f@0.64.0
+  - @triplex/bridge@0.64.0
+  - @triplex/renderer-react@0.64.0
+
 ## 0.63.0
 
 ### Minor Changes

@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.64.0
+
+### Minor Changes
+
+- 8712a12: Add renderer attributes. Refer to docs.
+
 ## 0.63.0
 
 ### Patch Changes

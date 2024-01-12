@@ -1,5 +1,23 @@
 # @triplex/server
 
+## 0.64.0
+
+### Minor Changes
+
+- 8712a12: Add renderer attributes. Refer to docs.
+- 0868337: Add support for SharedBufferArray.
+- 0868337: Add `define` variables support.
+- f0444d6: Component controls, provider controls, and component prop controls
+  now show default props when no value has been set.
+
+### Patch Changes
+
+- 0868337: Prevent throwing an exception if a component resolves to `any` when
+  resolving its path.
+- dca6003: Fix inferring jsx element locations for certain scenarios.
+- 6a65504: Fix adding elements to a component without a top level fragment.
+- f0444d6: Fix default prop parsing from fc component.
+
 ## 0.63.0
 
 ### Minor Changes

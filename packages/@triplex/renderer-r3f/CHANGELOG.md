@@ -1,5 +1,21 @@
 # @triplex/renderer-r3f
 
+## 0.64.0
+
+### Minor Changes
+
+- 8712a12: Add renderer attributes. Refer to docs.
+
+### Patch Changes
+
+- a153ee8: Fix error resolution for the provider component. Now when any errors
+  inside it get fixed the scene successfully re-renders.
+- a153ee8: Errors thrown during the initial render are now visible as an error
+  notification.
+- Updated dependencies [8712a12]
+  - @triplex/bridge@0.64.0
+  - @triplex/ws@0.64.0
+
 ## 0.63.0
 
 ### Minor Changes

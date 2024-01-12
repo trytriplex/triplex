@@ -1,5 +1,29 @@
 # @triplex/editor
 
+## 0.64.0
+
+### Minor Changes
+
+- 0868337: Add support for SharedBufferArray.
+- f0444d6: Component controls, provider controls, and component prop controls
+  now show default props when no value has been set.
+- 09d435f: Add zoom controls.
+- 9567579: Add canvas frame.
+
+### Patch Changes
+
+- f0444d6: Fix string literal union input resetting the value on clear to
+  nothing instead of the default value.
+- 777b2f5: Improve UI/UX of error screen shown when loading a project fails, now
+  showing the actual error message.
+- a153ee8: Error notifications now display the latest error first.
+- f0444d6: Fix select input not being cleared when pressing backspace.
+- a153ee8: Errors thrown during the initial render are now visible as an error
+  notification.
+- Updated dependencies [8712a12]
+  - @triplex/bridge@0.64.0
+  - @triplex/ws@0.64.0
+
 ## 0.63.0
 
 ### Minor Changes

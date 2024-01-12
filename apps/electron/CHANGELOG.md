@@ -1,5 +1,38 @@
 # @triplex/electron
 
+## 0.64.0
+
+### Minor Changes
+
+- 0868337: Add support for SharedBufferArray.
+- 0868337: Add `define` variables support.
+
+### Patch Changes
+
+- 777b2f5: Improve UI/UX of error screen shown when loading a project fails, now
+  showing the actual error message.
+- Updated dependencies [f0444d6]
+- Updated dependencies [777b2f5]
+- Updated dependencies [8712a12]
+- Updated dependencies [a153ee8]
+- Updated dependencies [0868337]
+- Updated dependencies [0868337]
+- Updated dependencies [0868337]
+- Updated dependencies [f0444d6]
+- Updated dependencies [a153ee8]
+- Updated dependencies [dca6003]
+- Updated dependencies [f0444d6]
+- Updated dependencies [6a65504]
+- Updated dependencies [f0444d6]
+- Updated dependencies [a153ee8]
+- Updated dependencies [777b2f5]
+- Updated dependencies [09d435f]
+- Updated dependencies [9567579]
+  - @triplex/editor@0.64.0
+  - @triplex/client@0.64.0
+  - @triplex/server@0.64.0
+  - create-triplex-project@0.64.0
+
 ## 0.63.0
 
 ### Minor Changes
