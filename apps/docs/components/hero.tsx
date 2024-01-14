@@ -40,12 +40,12 @@ export function BigDownloadLink({ variant }: { variant: "outline" | "bold" }) {
 export function Hero() {
   return (
     <div
-      className="relative flex h-[100lvh] min-h-[700px] items-center"
+      className="relative -mb-20 flex h-[80lvh] min-h-[400px] items-center pt-28"
       id="hero-section"
     >
-      <div className="max-w-[80rem] px-10 pt-16 xl:px-28">
+      <div className="max-w-[80rem] px-10 xl:px-28">
         <div className="flex flex-col items-center gap-8 md:items-start lg:gap-4">
-          <h1 className="max-w-2xl text-center text-6xl font-extrabold tracking-tighter text-neutral-200 md:text-left md:text-7xl lg:max-w-4xl lg:text-8xl">
+          <h1 className="max-w-2xl text-center text-5xl font-bold tracking-tighter text-neutral-200 md:text-left md:text-6xl lg:max-w-4xl lg:text-7xl">
             Visually Edit React Three Fiber Components
           </h1>
           <span className="text-center text-2xl font-medium tracking-tight text-neutral-300 md:max-w-3xl md:text-left lg:text-3xl">

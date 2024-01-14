@@ -11,13 +11,16 @@ still able to use Triplex.
 
 ## Set up config file
 
-In your existing project add a
-[`.triplex/config.json`](/docs/api-reference/config) file:
+Create a config file and populate it.
+
+```sh
+touch .triplex/config.json
+```
 
 ```json
 {
-  "components": ["../src/components/**/*.jsx"],
-  "files": ["../src/**/*.jsx"]
+  "components": ["../src/components/**/*.tsx"],
+  "files": ["../src/**/*.tsx"]
 }
 ```
 
@@ -27,9 +30,10 @@ open with Triplex.
 
 ## Add type packages
 
-Make sure to add types to your project (even if you're not using TypeScript!) —
-this will make your experience in Triplex that much better as all Three.js
-primitives will have types the editor can use:
+Make sure to add types to your project, even if you're not using TypeScript!
+
+This will make your experience in Triplex that much better as all Three.js
+primitives will have their types picked up by the editor as controls.
 
 ```
 npm install @types/react @types/three

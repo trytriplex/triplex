@@ -9,15 +9,15 @@ import Head from "next/head";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { NextraThemeLayoutProps } from "nextra";
-import { type Components, MDXProvider, useMDXComponents } from "nextra/mdx";
+import { MDXProvider, useMDXComponents, type Components } from "nextra/mdx";
 import { normalizePages } from "nextra/normalize-pages";
 import {
   Fragment,
-  type MouseEventHandler,
   useEffect,
   useMemo,
   useRef,
   useState,
+  type MouseEventHandler,
 } from "react";
 import { Footer } from "../components/footer";
 import { Header, HeaderItem } from "../components/header";
@@ -74,7 +74,7 @@ const components: Components = {
     const code = applyAction(JSON.stringify(meta, null, 2), targetValue);
 
     return (
-      <pre className="mt-5 whitespace-break-spaces rounded-xl bg-white/5 p-3 text-lg text-neutral-300 md:text-base">
+      <pre className="whitespace-break-spaces mt-5 rounded-xl bg-white/5 p-3 text-lg text-neutral-300 md:text-base">
         <code>{code}</code>
       </pre>
     );
@@ -113,7 +113,7 @@ const components: Components = {
   ),
   h2: ({ children, id }) => (
     <h2
-      className="mt-14 text-4xl font-extrabold tracking-tight text-neutral-200"
+      className="mt-14 text-4xl font-bold tracking-tight text-neutral-200"
       id={id}
     >
       {children}
@@ -121,7 +121,7 @@ const components: Components = {
   ),
   h3: ({ children, id }) => (
     <h3
-      className="mt-10 text-2xl font-extrabold tracking-tight text-neutral-200"
+      className="mt-10 text-2xl font-bold tracking-tight text-neutral-200"
       id={id}
     >
       {children}
@@ -129,7 +129,7 @@ const components: Components = {
   ),
   h4: ({ children, id }) => (
     <h4
-      className="mt-6 text-xl font-extrabold tracking-tight text-neutral-200"
+      className="mt-6 text-xl font-bold tracking-tight text-neutral-200"
       id={id}
     >
       {children}
@@ -143,7 +143,7 @@ const components: Components = {
     <p className="mt-6 text-xl text-neutral-300 md:text-lg">{children}</p>
   ),
   pre: ({ children }) => (
-    <pre className="mt-5 whitespace-break-spaces rounded-xl bg-white/5 p-3 text-lg text-neutral-300 md:text-base">
+    <pre className="whitespace-break-spaces mt-5 rounded-xl bg-white/5 p-3 text-lg text-neutral-300 md:text-base">
       {children}
     </pre>
   ),
@@ -340,7 +340,7 @@ function SearchModal({
 
   return (
     <dialog
-      className="m-auto mt-10 w-full rounded-lg border border-neutral-700 bg-neutral-950 p-0 backdrop:bg-black/70 md:mt-32 md:max-w-2xl"
+      className="bg-neutral-950 m-auto mt-10 w-full rounded-lg border border-neutral-700 p-0 backdrop:bg-black/70 md:mt-32 md:max-w-2xl"
       ref={ref}
     >
       <form method="dialog">
@@ -423,7 +423,7 @@ function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
       </Header>
 
       {isNavMenuOpen && (
-        <div className="absolute left-0 right-0 top-16 z-50 border-b border-neutral-900 bg-neutral-950 px-10 py-6 text-white md:hidden">
+        <div className="bg-neutral-950 absolute left-0 right-0 top-16 z-50 border-b border-neutral-900 px-10 py-6 text-white md:hidden">
           {result.topLevelNavbarItems.map((item) => (
             <div className="mb-2" key={item.title}>
               <Link
@@ -474,7 +474,7 @@ function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
       >
         {result.activeThemeContext.layout !== "raw" && (
           <>
-            <h1 className="text-6xl font-extrabold tracking-tight text-neutral-300">
+            <h1 className="text-5xl font-bold tracking-tight text-neutral-300">
               {title}
             </h1>
             {frontMatter.date && (
@@ -507,7 +507,7 @@ function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                 <div className="flex items-center gap-2">
                   <ArrowLeftIcon className="text-neutral-400" />
                   <Link
-                    className="text-2xl font-bold text-neutral-300 md:text-xl"
+                    className="text-2xl font-medium text-neutral-300 md:text-xl"
                     href={previousPage.route}
                   >
                     {previousPage.title}
@@ -517,7 +517,7 @@ function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
               {nextPage && nextPage.route !== "#" && (
                 <div className="ml-auto flex items-center gap-2">
                   <Link
-                    className="text-2xl font-bold text-neutral-300 md:text-xl"
+                    className="text-2xl font-medium text-neutral-300 md:text-xl"
                     href={nextPage.route}
                   >
                     {nextPage.title}

@@ -1,0 +1,56 @@
+---
+title: "Triplex 0.64: SharedBufferArray, Canvas Frames, and Bugfixes"
+ogTitle: Triplex 0.64.0
+date: 2024-01-13
+description: But what, exactly?
+---
+
+▵ Triplex 0.64.0 adds support for `SharedBufferArray`, sizing your scene over
+different viewports, and new renderer configuration.
+
+## New features
+
+- Add support for `SharedBufferArray`
+  [[#186](https://github.com/try-triplex/triplex/issues/186)]
+- Add canvas frame and zoom controls to size your scene over different viewports
+- Add [define](/docs/get-started/settings#define) config to replace static
+  variables at build time
+  [[#177](https://github.com/try-triplex/triplex/issues/177)]
+- Add [renderer attributes](/docs/get-started/settings#renderer-attributes)
+  config [[#187](https://github.com/try-triplex/triplex/issues/187)]
+
+## Bug fixes
+
+- Component controls, provider controls, and component prop controls now show
+  their default value when one has been set
+  [[#176](https://github.com/try-triplex/triplex/issues/176)]
+- Vite backend now selects a random port on start
+  [[#175](https://github.com/try-triplex/triplex/issues/175)]
+- Improve UI/UX of error screen shown when loading a project fails, now showing
+  the actual error message
+  [[#111](https://github.com/try-triplex/triplex/issues/111)]
+- Fix error resolution for the provider component, now when any errors inside it
+  get fixed the scene successfully re-renders
+  [[#183](https://github.com/try-triplex/triplex/issues/183)]
+- Prevent throwing an exception if a component resolves to `any` when resolving
+  its path [[#188](https://github.com/try-triplex/triplex/issues/188)]
+- Fix adding elements to a component without a top level fragment
+  [[#130](https://github.com/try-triplex/triplex/issues/130)]
+- Fix default prop parsing from fc component
+  [[#178](https://github.com/try-triplex/triplex/issues/178)]
+- Fix string literal union input resetting the value on clear to nothing instead
+  of the default value
+- Improve UI/UX of error screen shown when loading a project fails, now shows
+  the actual error message
+- Errors are now captured during renderer bootstrap
+- Fix select input not being cleared when pressing backspace
+- Errors thrown during the initial render are now visible as an error
+  notification
+- Fix inferring jsx element locations for certain scenarios
+
+## Chores
+
+- Error notifications now display the latest error first
+
+Triplex is the React Three Fiber editor where your code is source of truth.
+[Download today](/download).
