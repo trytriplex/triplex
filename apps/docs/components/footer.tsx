@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="relative col-span-full border-t border-neutral-800 bg-neutral-950">
+    <footer className="bg-neutral-950 relative col-span-full border-t border-neutral-800">
       <div className="mx-auto flex justify-center gap-14 px-10 py-10 lg:w-full lg:max-w-[79rem] lg:gap-32">
         <div className="lg:mr-auto">
           <div className="flex gap-1">
@@ -62,15 +62,15 @@ export function Footer() {
                 className="text-current"
                 data-testid="geist-icon"
                 height="16"
-                stroke-linejoin="round"
+                strokeLinejoin="round"
                 viewBox="0 0 16 16"
                 width="16"
               >
                 <path
-                  clip-rule="evenodd"
+                  clipRule="evenodd"
                   d="M0.5 0.5H5.75L9.48421 5.71053L14 0.5H16L10.3895 6.97368L16.5 15.5H11.25L7.51579 10.2895L3 15.5H1L6.61053 9.02632L0.5 0.5ZM12.0204 14L3.42043 2H4.97957L13.5796 14H12.0204Z"
                   fill="currentColor"
-                  fill-rule="evenodd"
+                  fillRule="evenodd"
                 />
               </svg>
             </a>
@@ -162,6 +162,22 @@ export function Footer() {
                 href="https://github.com/try-triplex/triplex"
               >
                 Github
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="text-sm text-neutral-400 hover:text-neutral-200"
+                href="https://github.com/sponsors/itsdouges"
+              >
+                Sponsor
+              </Link>
+            </li>
+            <li>
+              <Link
+                className="text-sm text-neutral-400 hover:text-neutral-200"
+                href="https://pmnd.rs/"
+              >
+                Poimandres
               </Link>
             </li>
           </ul>

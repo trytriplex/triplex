@@ -212,11 +212,11 @@ function ComponentFolder({
     const message = {
       assets: [
         "No assets exist in this folder.",
-        "https://triplex.dev/docs/api-reference/config#assets-directory",
+        "https://triplex.dev/docs/get-started/settings#assets-directory",
       ],
       components: [
         "No custom components were found to add to your scene.",
-        "https://triplex.dev/docs/api-reference/config#components",
+        "https://triplex.dev/docs/get-started/settings#components",
       ],
     }[folderPath.category];
 

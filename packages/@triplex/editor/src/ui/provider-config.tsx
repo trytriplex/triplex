@@ -53,7 +53,7 @@ function Inputs() {
             href="#"
             onClick={() =>
               window.triplex.openLink(
-                "https://triplex.dev/docs/user-guide/provider-config"
+                "https://triplex.dev/docs/guide/provider-controls"
               )
             }
           >
@@ -137,7 +137,7 @@ export function ProviderConfig() {
           href="#"
           onClick={() =>
             window.triplex.openLink(
-              "https://triplex.dev/docs/user-guide/provider-config"
+              "https://triplex.dev/docs/guides/provider-controls"
             )
           }
         >
@@ -172,7 +172,7 @@ export function ProviderConfig() {
             href="#"
             onClick={() =>
               window.triplex.openLink(
-                "https://triplex.dev/docs/user-guide/provider-config"
+                "https://triplex.dev/docs/guides/provider-controls"
               )
             }
           >

@@ -1,0 +1,81 @@
+[Leva](https://github.com/pmndrs/leva) is a hooks-based GUI for React that is
+used to display controls during development. When developing inside Triplex
+you're able to get a similar experience as Leva with the added benefit of
+keeping your components portable.
+
+Take a standard Leva config inside a component:
+
+```tsx
+const { color, isEnabled, scale } = useControls({
+  color: "#fff",
+  isEnabled: false,
+  scale: 4,
+});
+```
+
+You can instead represent this config as props your component takes.
+
+```tsx
+interface Props {
+  color: string;
+  isEnabled: boolean;
+  scale: number;
+}
+
+export function Component(props: Props);
+```
+
+Which are then able to have their values be changed in its
+[Component Controls](/docs/guides/component-controls).
+
+## Constraints
+
+Similar to Leva, props can have values be constrained by using JSDoc tags. Take
+a Leva config that sets constraints on the `scale` value.
+
+```tsx
+useControls({
+  scale: {
+    value: 4,
+    min: 0,
+    max: 10,
+  },
+});
+```
+
+You can instead represent these constraints as JSDoc tags on your prop.
+
+```tsx
+interface Props {
+  /**
+   * @min 0
+   * @max 10
+   */
+  scale: number;
+}
+```
+
+For an exhaustive list of tags see
+[Declaring Props](/docs/get-started/declaring-props#tags).
+
+## Complex props
+
+Complex props such as tuples are also supported. Take a Leva config that
+declares a number tuple;
+
+```tsx
+useControls({
+  boxSize: [10, 20],
+});
+```
+
+You can instead represent this as a tuple prop.
+
+```tsx
+interface Props {
+  boxSize: [number, number];
+}
+```
+
+For an exhaustive list of types that are supported see
+[Declaring Props](/docs/get-started/declaring-props).

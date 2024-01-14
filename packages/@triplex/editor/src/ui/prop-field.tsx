@@ -40,7 +40,7 @@ export function PropField({
       <div
         className={cn([
           labelAlignment === "start" ? "mt-1 items-start" : "items-center",
-          "flex w-[100px] flex-grow justify-end text-neutral-400",
+          "flex w-[100px] flex-grow justify-end overflow-hidden text-neutral-400",
         ])}
       >
         <label

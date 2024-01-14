@@ -186,7 +186,7 @@ function ComponentSandboxPanel({
           href="#"
           onClick={() =>
             window.triplex.openLink(
-              "https://triplex.dev/docs/user-guide/live-edit-props"
+              "https://triplex.dev/docs/guides/component-controls"
             )
           }
         >
@@ -240,7 +240,7 @@ function ComponentSandboxPanel({
               href="#"
               onClick={() =>
                 window.triplex.openLink(
-                  "https://triplex.dev/docs/user-guide/live-edit-props"
+                  "https://triplex.dev/docs/guides/component-controls"
                 )
               }
             >

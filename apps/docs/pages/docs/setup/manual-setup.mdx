@@ -1,12 +1,12 @@
 ---
 title: Manual Setup
 description:
-  If you'd prefer to set up your project manually instead of using the Create
-  project action in Triplex you can do so following this guide.
+  This guide walks you through the same steps Triplex takes when bootstrapping
+  an existing project.
 ---
 
-If you'd prefer to set up your project manually instead of using the "Create
-project" action in Triplex you can do so following this guide.
+This guide walks you through the same steps Triplex takes when bootstrapping an
+existing project.
 
 ## Install dependencies
 
@@ -27,6 +27,7 @@ Open or create a `tsconfig.json` and add the following:
 ```json
 {
   "compilerOptions": {
+    "allowJs": true,
     "baseUrl": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
@@ -49,8 +50,11 @@ Open or create a `tsconfig.json` and add the following:
 
 ## Configure Triplex
 
-Create a [`.triplex/config.json`](/docs/api-reference/config) file and add the
-following:
+Create a config file and populate it.
+
+```sh
+touch .triplex/config.json
+```
 
 ```json
 {
@@ -79,3 +83,15 @@ After set up is complete:
 - Run the Triplex executable to start and open the editor
 - Edit the component in `src/scene.tsx` and see it updated in the editor
 - Edit the component in the editor and see it updated in your code
+
+## Next steps
+
+Once you have set up your project for Triplex, these topics will help you get up
+to speed:
+
+- [Learn the User Interface](/docs/get-started/user-interface) - A quick
+  orientation around the editor
+- [Project Settings](/docs/get-started/settings) - Learn how to configure the
+  editor to your needs
+- [Declaring Props](/docs/get-started/declaring-props) - Learn how declaring
+  props on your components will appear in the editor

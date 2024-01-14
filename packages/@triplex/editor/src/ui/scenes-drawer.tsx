@@ -46,7 +46,7 @@ function Scenes({ filter = "" }: { filter?: string }) {
             href="#"
             onClick={() =>
               window.triplex.openLink(
-                "https://triplex.dev/docs/api-reference/config#files"
+                "https://triplex.dev/docs/get-started/settings#files"
               )
             }
           >

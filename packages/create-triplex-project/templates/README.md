@@ -7,11 +7,9 @@ improving your experience.
 
 ## Next steps
 
-- [Download Triplex](https://triplex.dev/download) - Download the appropriate
-  distributable for your operating system
 - [Learn the User Interface](https://triplex.dev/docs/get-started/user-interface) -
-  A quick orientation around the Triplex UI
-- [View Settings](https://triplex.dev/docs/get-started/settings) - Learn how to
-  configure Triplex to your needs
-- [Learn about Live Editing](https://triplex.dev/docs/user-guide/live-editing) -
-  Learn more about how the live editing works in Triplex
+  A quick orientation around the editor
+- [Project Settings](https://triplex.dev/docs/get-started/settings) - Learn how
+  to configure the editor to your needs
+- [Declaring Props](https://triplex.dev/docs/get-started/declaring-props) -
+  Learn how declaring props on your components will appear in the editor
