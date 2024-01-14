@@ -1,5 +1,15 @@
 # @triplex/electron
 
+## 0.64.1
+
+### Patch Changes
+
+- Updated dependencies [835639f]
+  - @triplex/client@0.64.1
+  - @triplex/editor@0.64.1
+  - @triplex/server@0.64.1
+  - create-triplex-project@0.64.1
+
 ## 0.64.0
 
 ### Minor Changes

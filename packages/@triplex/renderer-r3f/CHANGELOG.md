@@ -1,5 +1,12 @@
 # @triplex/renderer-r3f
 
+## 0.64.1
+
+### Patch Changes
+
+- @triplex/bridge@0.64.1
+- @triplex/ws@0.64.1
+
 ## 0.64.0
 
 ### Minor Changes

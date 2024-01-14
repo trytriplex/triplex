@@ -1,5 +1,14 @@
 # @triplex/client
 
+## 0.64.1
+
+### Patch Changes
+
+- 835639f: Fix scene object not being transformed when provider wasn't set.
+  - @triplex/bridge@0.64.1
+  - @triplex/renderer-r3f@0.64.1
+  - @triplex/renderer-react@0.64.1
+
 ## 0.64.0
 
 ### Minor Changes
