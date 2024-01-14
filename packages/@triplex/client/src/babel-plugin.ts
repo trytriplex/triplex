@@ -23,10 +23,15 @@ function isNodeModulesComponent(path: NodePath, elementName: string) {
   return false;
 }
 
-export default function triplexBabelPlugin({ exclude }: { exclude: string[] }) {
+export default function triplexBabelPlugin({
+  exclude: excludeDirs,
+}: {
+  exclude: string[];
+}) {
+  const SCENE_OBJECT_COMPONENT_NAME = "SceneObject";
   const cache = new WeakSet();
   const triplexMeta = new Map<string, { lighting: "default" | "custom" }>();
-  const SCENE_OBJECT_COMPONENT_NAME = "SceneObject";
+  const exclude = excludeDirs.filter(Boolean);
 
   let shouldSkip = false;
   let currentFunction:

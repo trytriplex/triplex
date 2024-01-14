@@ -209,6 +209,41 @@ describe("babel plugin", () => {
     `);
   });
 
+  it("should ignore empty string exclude", () => {
+    const result = transformSync(
+      `
+      export function HelloWorld() {
+        return (
+          <mesh />
+        );
+      }
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [""] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      }
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "export function HelloWorld() {
+        return <SceneObject __component={\\"mesh\\"} __meta={{
+          \\"path\\": \\"\\",
+          \\"name\\": \\"mesh\\",
+          \\"line\\": 4,
+          \\"column\\": 11,
+          \\"translate\\": false,
+          \\"rotate\\": false,
+          \\"scale\\": false
+        }} key={\\"mesh411\\"}></SceneObject>;
+      }
+      HelloWorld.triplexMeta = {
+        \\"lighting\\": \\"default\\"
+      };"
+    `);
+  });
+
   it("should add triplex meta to function declaration", () => {
     const result = transformSync(
       `
