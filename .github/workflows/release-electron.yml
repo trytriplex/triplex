@@ -13,9 +13,6 @@ env:
 
 jobs:
   release:
-    # Currently disabling building CI as it's expensive.
-    if: ${{ false }}
-
     runs-on: macos-latest
 
     steps:
@@ -58,3 +55,8 @@ jobs:
         if: steps.check.outcome == 'success'
         env:
           GH_TOKEN: ${{ secrets.GH_TOKEN }}
+          WIN_CSC_LINK: ${{ secrets.WIN_CSC_LINK }}
+          WIN_CSC_KEY_PASSWORD: ${{ secrets.WIN_CSC_KEY_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_APP_SPECIFIC_PASSWORD:
+            ${{ secrets.APPLE_APP_SPECIFIC_PASSWORD }}
