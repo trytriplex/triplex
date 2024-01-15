@@ -132,13 +132,13 @@ export const scripts = {
     }
   `,
   invalidateHMRHeader: `import { __hmr_import } from "triplex:hmr-import";`,
-  render: (
+  thumbnail: (
     template: TemplateOpts,
     { exportName, path }: { exportName: string; path: string }
   ) =>
     [
       `import { thumbnail } from "${template.pkgName}";`,
-      `import provider from "${template.config.provider}";`,
+      `import provider from "${template.config.provider || emptyProviderId}";`,
       `import {${exportName} as component} from "${path}";`,
       `thumbnail(document.getElementById('root'))({ component, provider });`,
     ].join(""),

@@ -125,7 +125,7 @@ export async function createServer({
       }
 
       const template = createHTML(
-        scripts.render(htmlConfig, { exportName, path })
+        scripts.thumbnail(htmlConfig, { exportName, path })
       );
       const html = await vite.transformIndexHtml(
         `thumbnail_${path}_${exportName}`,

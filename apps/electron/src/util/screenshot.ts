@@ -50,7 +50,8 @@ export async function screenshotComponent({
 }) {
   const thumbnailPath = buildPath({ exportName, path });
 
-  if (existsSync(thumbnailPath)) {
+  if (!process.env.FORCE_EDITOR_TEST_FIXTURE && existsSync(thumbnailPath)) {
+    // Don't cache if we're running in a test environment.
     return thumbnailPath;
   }
 
