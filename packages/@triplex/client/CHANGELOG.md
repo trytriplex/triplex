@@ -1,5 +1,14 @@
 # @triplex/client
 
+## 0.64.2
+
+### Patch Changes
+
+- 26ac612: Fix thumbnail renderer throwing when no provider was configured.
+  - @triplex/bridge@0.64.2
+  - @triplex/renderer-r3f@0.64.2
+  - @triplex/renderer-react@0.64.2
+
 ## 0.64.1
 
 ### Patch Changes
