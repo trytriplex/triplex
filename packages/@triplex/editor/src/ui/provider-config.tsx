@@ -147,7 +147,7 @@ export function ProviderConfig() {
 
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
 
-      {window.triplex.env.config.provider ? (
+      {window.triplex.env.config.provider.includes("/") ? (
         <Suspense
           fallback={
             <div className="px-4 py-4">

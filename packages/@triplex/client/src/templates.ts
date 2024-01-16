@@ -8,7 +8,6 @@ import {
   type ReconciledTriplexConfig,
   type TriplexPorts,
 } from "@triplex/server";
-import { emptyProviderId } from "./constants";
 
 const suffix = "ta.hot";
 const metaHot = "imp" + "ort.me" + suffix;
@@ -31,7 +30,7 @@ export const scripts = {
   bootstrap: (template: TemplateOpts) =>
     [
       `import { bootstrap } from "${template.pkgName}";`,
-      `import provider from "${template.config.provider || emptyProviderId}";`,
+      `import provider from "${template.config.provider}";`,
       'import { on, send } from "@triplex/bridge/client";',
       `const projectFiles = import.meta.glob([${template.fileGlobs}]);`,
       `window.triplex = JSON.parse(\`${JSON.stringify({
@@ -119,11 +118,11 @@ export const scripts = {
   // If the exports change, or if triplex meta changes, invalidate HMR
   // and force parents up the chain to refresh flushing changes through the editor
   // when the provider has changed - we want to flush it through the whole app!
-  invalidateHMRFooter: (providerPath: string) => `
+  invalidateHMRFooter: (providerModule: string) => `
     if (${metaHot}) {
       __hmr_import(import.meta.url).then((currentModule) => {
         ${metaHot}.accept((nextModule) => {
-          if (import.meta.url.includes("${providerPath}")){${metaHot}.invalidate();return;}
+          if (import.meta.url.includes("${providerModule}")){${metaHot}.invalidate();return;}
           const currentKeys = globalThis.Object.entries(currentModule).map(([key, value]) => typeof value.triplexMeta ? key + JSON.stringify(value.triplexMeta) : key).sort();
           const nextKeys = globalThis.Object.entries(nextModule).map(([key, value]) => typeof value.triplexMeta ? key + JSON.stringify(value.triplexMeta) : key).sort();
           if (JSON.stringify(currentKeys) !== JSON.stringify(nextKeys)){${metaHot}.invalidate();}
@@ -138,7 +137,7 @@ export const scripts = {
   ) =>
     [
       `import { thumbnail } from "${template.pkgName}";`,
-      `import provider from "${template.config.provider || emptyProviderId}";`,
+      `import provider from "${template.config.provider}";`,
       `import {${exportName} as component} from "${path}";`,
       `thumbnail(document.getElementById('root'))({ component, provider });`,
     ].join(""),

@@ -65,7 +65,7 @@ export async function getConfig(cwd: string): Promise<ReconciledTriplexConfig> {
     cwd,
     define: config.define || {},
     files,
-    provider,
+    provider: provider || "triplex:empty-provider.tsx",
     publicDir,
     renderer: renderer || "react-three-fiber",
     rendererAttributes: config.rendererAttributes || {},

@@ -58,7 +58,7 @@ export async function createServer({
       // TODO: Vite plugins should be loaded from a renderer's manfiest
       // instead of hardcoded. We'll cross this bridge to resolve later.
       glsl(),
-      scenePlugin(config),
+      scenePlugin({ config }),
       tsconfigPaths({ projects: [tsConfig] }),
     ],
     publicDir: config.publicDir,

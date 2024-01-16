@@ -4,10 +4,13 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { emptyProviderId, hmrImportId } from "./constants";
+import { type ReconciledTriplexConfig } from "@triplex/server";
 import { scripts } from "./templates";
 
-export function scenePlugin({ provider }: { provider: string }) {
+const emptyProviderId = "triplex:empty-provider.tsx";
+const hmrImportId = "triplex:hmr-import";
+
+export function scenePlugin({ config }: { config: ReconciledTriplexConfig }) {
   return {
     enforce: "pre",
     async load(id: string) {
@@ -46,7 +49,7 @@ export function scenePlugin({ provider }: { provider: string }) {
       return (
         scripts.invalidateHMRHeader +
         code +
-        scripts.invalidateHMRFooter(provider.replace(process.cwd(), ""))
+        scripts.invalidateHMRFooter(config.provider.replace(config.cwd, ""))
       );
     },
   } as const;
