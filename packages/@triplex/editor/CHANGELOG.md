@@ -1,5 +1,14 @@
 # @triplex/editor
 
+## 0.64.3
+
+### Patch Changes
+
+- 1d9c390: Fix user land modules being forcibly invalidated during HMR causing
+  unexpected behaviour.
+  - @triplex/ws@0.64.3
+  - @triplex/bridge@0.64.3
+
 ## 0.64.2
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.64.3
+
+### Patch Changes
+
+- 1d9c390: Fix user land modules being forcibly invalidated during HMR causing
+  unexpected behaviour.
+
 ## 0.64.2
 
 ## 0.64.1
