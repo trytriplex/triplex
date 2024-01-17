@@ -11,6 +11,21 @@ import { getHelperForElement, Helper } from "./components/helper";
 import { useSelectSceneObject } from "./selection";
 import { useOnSceneObjectMount } from "./stores/selection";
 
+const EXCLUSIONS = [
+  "ArcballControls",
+  "CameraControls",
+  "Ecctrl",
+  "FirstPersonControls",
+  "FlyControls",
+  "KeyboardControls",
+  "MapControls",
+  "OrbitControls",
+  "PivotControls",
+  "PointerLockControls",
+  "PresentationControls",
+  "TransformControls",
+];
+
 function useForceRender() {
   const [, setState] = useState(false);
   return useCallback(() => setState((prev) => !prev), []);
@@ -137,6 +152,10 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
       // This component will eventually unmount when deleted as its removed
       // from source code. To keep things snappy however we delete it optimistically.
       return null;
+    } else if (EXCLUSIONS.includes(__meta.name)) {
+      // We don't want this component to render to the scene and affect Triplex.
+      // E.g. user land controls. Get rid of the problem altogether!
+      return <>{props.children || null}</>;
     } else if (isRenderedSceneObject(__meta.name, props)) {
       const helper = getHelperForElement(__meta.name);
       const userData = { triplexSceneMeta: { ...__meta, props } };

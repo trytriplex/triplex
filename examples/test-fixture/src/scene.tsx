@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { PerspectiveCamera } from "@react-three/drei";
+import { MapControls, PerspectiveCamera } from "@react-three/drei";
 import Box from "./geometry/box";
 
 interface SceneProps {
@@ -37,6 +37,8 @@ export function Scene({
           <meshStandardMaterial />
         </mesh>
       </group>
+
+      <MapControls />
     </>
   );
 }
