@@ -14,6 +14,7 @@ import { useOnSceneObjectMount } from "./stores/selection";
 const EXCLUSIONS = [
   "ArcballControls",
   "CameraControls",
+  "Canvas",
   "Ecctrl",
   "FirstPersonControls",
   "FlyControls",
