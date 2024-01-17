@@ -49,8 +49,8 @@ export function Hero() {
             Visually Edit React Three Fiber Components
           </h1>
           <span className="text-center text-2xl font-medium tracking-tight text-neutral-300 md:max-w-3xl md:text-left lg:text-3xl">
-            Code is source of truth, build scenes, reusable components, and
-            more. Made for coders, artists, everyone.
+            Your component types populate the editor, build scenes, reusable
+            components, and more.
           </span>
           <div className="flex flex-col gap-4 md:mt-8 md:flex-row">
             <DownloadLink variant="bold" />

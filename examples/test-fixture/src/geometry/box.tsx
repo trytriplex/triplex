@@ -20,6 +20,7 @@ function Box({
   /**
    * @min 1
    * @max 2
+   * @step 0.1
    */
   size?: number;
 }) {

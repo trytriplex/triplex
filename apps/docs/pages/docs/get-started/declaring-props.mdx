@@ -112,3 +112,18 @@ interface ComponentProps {
   x: number;
 }
 ```
+
+### @step
+
+Constrains each value change of the prop to be in increments of this value.
+
+Supported prop types: `number`
+
+```tsx
+interface ComponentProps {
+  /**
+   * @step 1
+   */
+  x: number;
+}
+```

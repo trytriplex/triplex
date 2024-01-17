@@ -103,10 +103,10 @@ export function NumberInput({
   const isLinux = navigator.platform.startsWith("Linux");
   const [isPointerLock, setIsPointerLock] = useState(false);
   const [modifier, setModifier] = useState({ ctrl: false, shift: false });
-  const step = stepModifier(modifier);
   const isDragging = useRef(false);
   const ref = useRef<HTMLInputElement>(null!);
   const tags = usePropTags();
+  const step = toNumber(tags.step, stepModifier(modifier));
   const max = toNumber(tags.max, Number.POSITIVE_INFINITY);
   const min = toNumber(tags.min, Number.NEGATIVE_INFINITY);
   const transformedDefaultValue = transformValue.in(defaultValue);
