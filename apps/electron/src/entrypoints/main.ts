@@ -167,7 +167,10 @@ async function findTriplexFolder(path: string): Promise<string | undefined> {
 
   const dir = await readdir(path);
   if (dir.includes(".triplex")) {
-    return path;
+    const triplexDir = await readdir(join(path, ".triplex"));
+    if (triplexDir.includes("config.json")) {
+      return path;
+    }
   }
 
   return findTriplexFolder(next);
