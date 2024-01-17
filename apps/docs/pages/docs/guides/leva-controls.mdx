@@ -22,7 +22,11 @@ interface Props {
   scale: number;
 }
 
-export function Component(props: Props);
+export function Component({
+  color = "#fff",
+  isEnabled = false,
+  scale = 4,
+}: Props);
 ```
 
 Which are then able to have their values be changed in its
@@ -39,6 +43,7 @@ useControls({
     value: 4,
     min: 0,
     max: 10,
+    step: 1,
   },
 });
 ```
@@ -50,6 +55,7 @@ interface Props {
   /**
    * @min 0
    * @max 10
+   * @step 1
    */
   scale: number;
 }

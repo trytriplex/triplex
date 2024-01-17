@@ -19,8 +19,8 @@ touch .triplex/config.json
 
 ```json
 {
-  "components": ["../src/components/**/*.tsx"],
-  "files": ["../src/**/*.tsx"]
+  "components": ["../src/components/**/*.jsx"],
+  "files": ["../src/**/*.jsx"]
 }
 ```
 
@@ -33,7 +33,7 @@ open with Triplex.
 Make sure to add types to your project, even if you're not using TypeScript!
 
 This will make your experience in Triplex that much better as all Three.js
-primitives will have their types picked up by the editor as controls.
+primitives will have their types picked up by the editor to display as controls.
 
 ```
 npm install @types/react @types/three
@@ -43,3 +43,19 @@ npm install @types/react @types/three
 
 You're now able to open your project with Triplex! When you do Triplex will add
 a `.tsconfig.json` file to the root of your project.
+
+## Get the most out of controls
+
+You can still get some inference for your own components by giving some hints.
+For declared props if you add default props to them the editor can infer the
+primitive type (string, number, or boolean).
+
+```jsx
+export function Component({ color = "red", x = 0, visible = true }) {
+  return (
+    <mesh visible={visible}>
+      <meshBasicMaterial color={color} position={[x, 0, 0]} />
+    </mesh>
+  );
+}
+```
