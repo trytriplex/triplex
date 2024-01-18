@@ -5,11 +5,12 @@
  * file in the root directory of this source tree.
  */
 // @vitest-environment jsdom
-import { useEffect, useRef } from "react";
+import { send } from "@triplex/bridge/host";
 import { render } from "react-three-test";
 import { PerspectiveCamera } from "triplex-drei";
 import { describe, expect, it } from "vitest";
-import { Camera, useCamera } from "../camera";
+import { SceneObject } from "../../scene-object";
+import { Camera } from "../camera";
 
 describe("camera", () => {
   it("should default to perspective camera", async () => {
@@ -39,27 +40,34 @@ describe("camera", () => {
   });
 
   it("should disable the controls when a user land camera is active", async () => {
-    function ForceCamera() {
-      const ref = useRef<THREE.PerspectiveCamera>();
-      const { setCamera } = useCamera();
-      useEffect(() => {
-        setCamera(ref.current!, { column: -1, line: -1, path: "" });
-      }, [setCamera]);
+    const { act, scene } = await render(
+      <Camera position={[0, 0, 0]} target={[0, 0, 0]}>
+        <SceneObject
+          __component={PerspectiveCamera}
+          __meta={{ column: 111, line: 33, name: "p", path: "path" }}
+          name="foo"
+        />
+      </Camera>
+    );
 
-      return <PerspectiveCamera makeDefault ref={ref} />;
-    }
-    const { scene } = await render(
-      <>
-        <Camera position={[0, 0, 0]} target={[0, 0, 0]}>
-          <ForceCamera />
-        </Camera>
-      </>
+    await act(() =>
+      send(
+        "element-action-triggered",
+        {
+          data: {
+            column: 111,
+            line: 33,
+            parentPath: "path",
+          },
+          id: "enter-camera",
+        },
+        true
+      )
     );
 
     const controls = scene.findAll(
       (node) => node.instance.constructor.name === "OrbitControls"
     );
-
     expect(controls.length).toEqual(0);
   });
 });

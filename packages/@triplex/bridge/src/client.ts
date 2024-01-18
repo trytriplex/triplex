@@ -117,9 +117,9 @@ export interface RendererElementProps {
     line: number;
     name: string;
     path: string;
-    rotate: boolean;
-    scale: boolean;
-    translate: boolean;
+    rotate?: boolean;
+    scale?: boolean;
+    translate?: boolean;
   };
   attach?: unknown;
   children?: unknown;

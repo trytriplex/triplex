@@ -41,16 +41,13 @@ function frustumWidthAtDistance(
 const V1 = new Vector3();
 
 interface CameraContextType {
+  camera: THREE.OrthographicCamera | THREE.PerspectiveCamera | undefined;
   controls: React.MutableRefObject<{ enabled: boolean } | null>;
-  setCamera: (
-    camera: THREE.OrthographicCamera | THREE.PerspectiveCamera,
-    data: { column: number; line: number; path: string }
-  ) => void;
 }
 
 const CameraContext = createContext<CameraContextType>({
+  camera: undefined,
   controls: { current: null },
-  setCamera: () => {},
 });
 
 export const useCamera = () => {
@@ -183,13 +180,10 @@ export function Camera({
 
   const context: CameraContextType = useMemo(
     () => ({
+      camera: activeCamera,
       controls: controlsRef,
-      setCamera: (camera) => {
-        setActiveCamera(camera);
-        setType("user");
-      },
     }),
-    []
+    [activeCamera]
   );
 
   return (

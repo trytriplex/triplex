@@ -14,10 +14,10 @@ import { useCamera } from "./camera";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const TransformControls = forwardRef<any, TransformControlsProps>(
-  (props: TransformControlsProps, ref) => {
+  ({ enabled, ...props }: TransformControlsProps, ref) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const controlsRef = useRef<any>(null);
-    const { controls } = useCamera();
+    const { camera, controls } = useCamera();
 
     useEffect(() => {
       const callback = (event: { value: boolean }) => {
@@ -33,10 +33,17 @@ export const TransformControls = forwardRef<any, TransformControlsProps>(
       return () => {
         transformControls.removeEventListener("dragging-changed", callback);
       };
-    }, [controls]);
+      // When the camera changes the ref of transform controls is re-created
+      // So we need to flush this effect to add the events back.
+    }, [camera, controls]);
 
     return (
-      <TransformControlsImpl {...props} ref={mergeRefs([controlsRef, ref])} />
+      <TransformControlsImpl
+        {...props}
+        camera={camera}
+        enabled={enabled}
+        ref={mergeRefs([controlsRef, ref])}
+      />
     );
   }
 );
