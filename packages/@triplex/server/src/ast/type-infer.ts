@@ -233,7 +233,7 @@ function collectUnionLabels(
 
       if (!symbol) {
         // Hack to try and resolve the union labels by an alternate means.
-        const typeNode = propDecl.getTypeNode();
+        const typeNode = propDecl.getTypeNode?.();
         if (Node.isUnionTypeNode(typeNode)) {
           typeNode.getTypeNodes().find((val) => {
             const s = val.getType().getAliasSymbol();
