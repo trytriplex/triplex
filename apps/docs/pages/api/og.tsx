@@ -14,18 +14,18 @@ async function getAssets() {
   const imageData = fetch(new URL("./bg.png", import.meta.url)).then(
     (res) => res.arrayBuffer() as unknown as string
   );
-  const extraBold = fetch(
-    new URL("./Karla-ExtraBold.ttf", import.meta.url)
-  ).then((res) => res.arrayBuffer());
+  const bold = fetch(new URL("./Karla-Bold.ttf", import.meta.url)).then((res) =>
+    res.arrayBuffer()
+  );
   const medium = fetch(new URL("./Karla-Medium.ttf", import.meta.url)).then(
     (res) => res.arrayBuffer()
   );
 
-  return Promise.all([imageData, extraBold, medium]);
+  return Promise.all([imageData, bold, medium]);
 }
 
-export default async function(request: Request) {
-  const [imageData, extraBold, medium] = await getAssets();
+export default async function (request: Request) {
+  const [imageData, bold, medium] = await getAssets();
 
   const { searchParams } = new URL(request.url);
   const title = searchParams.has("title")
@@ -53,7 +53,7 @@ export default async function(request: Request) {
             gap: 20,
             height: "100%",
             justifyContent: "center",
-            maxWidth: 1150,
+            maxWidth: 1000,
             paddingLeft: 80,
             paddingRight: 80,
             width: "100%",
@@ -66,6 +66,7 @@ export default async function(request: Request) {
                 fontFamily: "Karla-Medium",
                 fontSize: 28,
                 letterSpacing: "-.025em",
+                marginBottom: -14,
                 opacity: 0.7,
               }}
             >
@@ -75,8 +76,8 @@ export default async function(request: Request) {
           <span
             style={{
               color: "white",
-              fontFamily: "Karla-ExtraBold",
-              fontSize: 110,
+              fontFamily: "Karla-Bold",
+              fontSize: 74,
               letterSpacing: "-.05em",
               lineHeight: 1,
               opacity: 0.9,
@@ -88,7 +89,7 @@ export default async function(request: Request) {
             style={{
               color: "white",
               fontFamily: "Karla-Medium",
-              fontSize: 36,
+              fontSize: 30,
               letterSpacing: "-.025em",
               opacity: 0.8,
             }}
@@ -101,8 +102,8 @@ export default async function(request: Request) {
     {
       fonts: [
         {
-          data: extraBold,
-          name: "Karla-ExtraBold",
+          data: bold,
+          name: "Karla-Bold",
           style: "normal",
         },
         {
