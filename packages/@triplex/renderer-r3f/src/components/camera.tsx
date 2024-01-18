@@ -111,7 +111,10 @@ export function Camera({
               path: data.data.parentPath,
             });
 
-            if (camera) {
+            if (
+              camera &&
+              ["PerspectiveCamera", "OrthographicCamera"].includes(camera.type)
+            ) {
               setType("user");
               setActiveCamera(
                 camera as THREE.OrthographicCamera | THREE.PerspectiveCamera

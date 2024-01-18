@@ -48,7 +48,7 @@ export function RenderActions({
   return (
     <ErrorBoundary fallbackRender={() => null} resetKeys={[actions]}>
       {actions.map((action) => {
-        if (!name.includes(action.filter)) {
+        if (new RegExp(action.filter).test(name) === false) {
           return null;
         }
 

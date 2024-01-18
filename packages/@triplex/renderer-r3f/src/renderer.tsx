@@ -38,7 +38,7 @@ export function Renderer({
               label: "Exit Camera",
             },
           ],
-          filter: "Camera",
+          filter: "PerspectiveCamera|OrthographicCamera",
           id: "enter-camera",
           type: "toggle-button",
         },
