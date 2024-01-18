@@ -36,6 +36,8 @@ export function _createProject(opts: ProjectOptions & { cwd?: string }) {
   const project = new Project({
     ...opts,
     compilerOptions: {
+      // This ensures that even if a project is misconfigured we can still infer types from JS.
+      allowJs: true,
       // Having this as `true` results in 100% CPU utilization when importing modules from
       // node_modules. We set this to false to ensure that consumers of triplex never run into
       // this.
