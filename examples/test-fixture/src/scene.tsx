@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { MapControls, PerspectiveCamera } from "@react-three/drei";
+import { Bloom, EffectComposer } from "@react-three/postprocessing";
 import Box from "./geometry/box";
 
 interface SceneProps {
@@ -39,6 +40,10 @@ export function Scene({
       </group>
 
       <MapControls />
+
+      <EffectComposer enabled={false}>
+        <Bloom />
+      </EffectComposer>
     </>
   );
 }
