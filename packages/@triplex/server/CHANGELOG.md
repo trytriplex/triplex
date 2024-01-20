@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.64.4
+
+### Patch Changes
+
+- 50dc97a: Fix resolving union labels throwing unexpectedly for some elements.
+- 6ed3037: allowJs tsconfig option is now always set to `true` internally.
+
 ## 0.64.3
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @triplex/renderer-r3f
 
+## 0.64.4
+
+### Patch Changes
+
+- 399713d: Exclude Canvas elements from being rendered to the scene.
+- 1df7cc9: Fix non-camera scene objects having an enter camera action.
+- 44a0156: Fix userland controls affecting transform controls.
+- 343a7e4: Fix camera changes affecting transform controls by no-longer
+  disabling controls on transform controls drag.
+  - @triplex/ws@0.64.4
+  - @triplex/bridge@0.64.4
+
 ## 0.64.3
 
 ### Patch Changes

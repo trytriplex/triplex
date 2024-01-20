@@ -1,5 +1,12 @@
 # @triplex/renderer-react
 
+## 0.64.4
+
+### Patch Changes
+
+- @triplex/ws@0.64.4
+- @triplex/bridge@0.64.4
+
 ## 0.64.3
 
 ### Patch Changes

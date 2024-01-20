@@ -1,5 +1,20 @@
 # @triplex/electron
 
+## 0.64.4
+
+### Patch Changes
+
+- 0393817: Fix triplex folder passing config precondition with no config file.
+- 50dc97a: Fix resolving union labels throwing unexpectedly for some elements.
+- Updated dependencies [a66604b]
+- Updated dependencies [1df7cc9]
+- Updated dependencies [50dc97a]
+- Updated dependencies [6ed3037]
+  - @triplex/editor@0.64.4
+  - @triplex/server@0.64.4
+  - @triplex/client@0.64.4
+  - create-triplex-project@0.64.4
+
 ## 0.64.3
 
 ### Patch Changes

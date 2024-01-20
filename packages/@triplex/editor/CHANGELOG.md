@@ -1,5 +1,14 @@
 # @triplex/editor
 
+## 0.64.4
+
+### Patch Changes
+
+- a66604b: Fix @step tag not working with number inputs.
+- 1df7cc9: Fix non-camera scene objects having an enter camera action.
+  - @triplex/ws@0.64.4
+  - @triplex/bridge@0.64.4
+
 ## 0.64.3
 
 ### Patch Changes
