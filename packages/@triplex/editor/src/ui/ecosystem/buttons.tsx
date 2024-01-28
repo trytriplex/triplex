@@ -9,7 +9,6 @@ import {
   AngleIcon,
   BoxIcon,
   CameraIcon,
-  ComponentNoneIcon,
   ExitIcon,
   GridIcon,
   HeightIcon,
@@ -24,6 +23,7 @@ import {
 } from "@triplex/bridge/host";
 import { useState } from "react";
 import { IconButton } from "../../ds/button";
+import { LocalSpaceIcon, WorldSpaceIcon } from "../../ds/icons";
 
 const icons = {
   "all-sides": AllSidesIcon,
@@ -37,15 +37,11 @@ const icons = {
     </div>
   ),
   height: HeightIcon,
-  local: ComponentNoneIcon,
+  local: LocalSpaceIcon,
   move: MoveIcon,
   size: SizeIcon,
   transform: TransformIcon,
-  world: () => (
-    <div className="-rotate-45">
-      <ComponentNoneIcon />
-    </div>
-  ),
+  world: WorldSpaceIcon,
 };
 
 interface ControlProps<TControl> {
