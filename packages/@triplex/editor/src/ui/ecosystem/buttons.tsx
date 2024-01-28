@@ -9,9 +9,12 @@ import {
   AngleIcon,
   BoxIcon,
   CameraIcon,
+  ComponentNoneIcon,
   ExitIcon,
   GridIcon,
+  HeightIcon,
   MoveIcon,
+  SizeIcon,
   TransformIcon,
 } from "@radix-ui/react-icons";
 import {
@@ -33,8 +36,16 @@ const icons = {
       <GridIcon />
     </div>
   ),
+  height: HeightIcon,
+  local: ComponentNoneIcon,
   move: MoveIcon,
+  size: SizeIcon,
   transform: TransformIcon,
+  world: () => (
+    <div className="-rotate-45">
+      <ComponentNoneIcon />
+    </div>
+  ),
 };
 
 interface ControlProps<TControl> {
@@ -57,6 +68,7 @@ export function ToggleButton({
       actionId={button.id}
       color="inherit"
       icon={button.icon ? icons[button.icon] : BoxIcon}
+      isSelected={button.isSelected}
       label={button.label}
       onClick={async () => {
         const result = await onClick(button.id);

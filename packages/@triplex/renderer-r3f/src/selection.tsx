@@ -115,6 +115,7 @@ export function Selection({
   }) => void;
   path: string;
 }) {
+  const [space, setSpace] = useState<"world" | "local">("world");
   const [selected, setSelected] = useState<{
     column: number;
     line: number;
@@ -156,6 +157,16 @@ export function Selection({
         case "rotate": {
           setTransform(data.id);
           break;
+        }
+
+        case "local-transform": {
+          setSpace("local");
+          return { handled: true };
+        }
+
+        case "world-transform": {
+          setSpace("world");
+          return { handled: true };
         }
       }
     });
@@ -435,6 +446,7 @@ export function Selection({
           onMouseUp={onMouseUpHandler}
           rotationSnap={Math.PI / 180}
           scaleSnap={0.02}
+          space={space}
           translationSnap={0.02}
         />
       )}

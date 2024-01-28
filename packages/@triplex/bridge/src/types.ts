@@ -12,6 +12,10 @@ type Icon =
   | "exit"
   | "grid"
   | "camera"
+  | "height"
+  | "local"
+  | "world"
+  | "size"
   | "move"
   | "exit"
   | "grid-perspective"
@@ -35,11 +39,13 @@ export interface ToggleButtonControl {
     {
       icon?: Icon;
       id: string;
+      isSelected?: boolean;
       label: string;
     },
     {
       icon?: Icon;
       id: string;
+      isSelected?: boolean;
       label: string;
     }
   ];

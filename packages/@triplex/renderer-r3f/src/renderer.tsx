@@ -50,6 +50,22 @@ export function Renderer({
         {
           buttons: [
             {
+              icon: "world",
+              id: "local-transform",
+              label: "Set Local Transform",
+            },
+            {
+              icon: "local",
+              id: "world-transform",
+              label: "Set World Transform",
+            },
+          ],
+          id: "transform-space",
+          type: "toggle-button",
+        },
+        {
+          buttons: [
+            {
               accelerator: "T",
               icon: "move",
               id: "translate",
