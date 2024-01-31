@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.65.0
+
+### Minor Changes
+
+- 29c9d95: Add support for local/world transforms.
+
 ## 0.64.4
 
 ## 0.64.3

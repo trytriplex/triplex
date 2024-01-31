@@ -1,5 +1,17 @@
 # @triplex/editor
 
+## 0.65.0
+
+### Minor Changes
+
+- 29c9d95: Add support for local/world transforms.
+
+### Patch Changes
+
+- Updated dependencies [29c9d95]
+  - @triplex/bridge@0.65.0
+  - @triplex/ws@0.65.0
+
 ## 0.64.4
 
 ### Patch Changes

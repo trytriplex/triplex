@@ -1,6 +1,6 @@
 {
   "name": "create-triplex-project",
-  "version": "0.64.4",
+  "version": "0.65.0",
   "private": true,
   "description": "The React Three Fiber editor.",
   "license": "GPL-3.0",
