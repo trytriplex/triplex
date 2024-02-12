@@ -21,14 +21,14 @@ And then copy and paste the following code into the file.
 
 ```tsx
 // .triplex/provider.tsx
-export default function Provider({ children }: PropsWithChildren<{}>) {
+export default function Provider({ children }: React.PropsWithChildren<{}>) {
   return <>{children}</>;
 }
 ```
 
 ## Set the config
 
-In your `.triplex/config.tsx` file set the `provider` prop to the relative
+In your `.triplex/config.json` file set the `provider` prop to the relative
 location of the component you've just made. If you used the same location as
 above then it will look like this:
 
@@ -50,7 +50,7 @@ a black background, and when it's `"light"` you should see a light background.
 export default function Provider({
   children,
   sky,
-}: PropsWithChildren<{ sky?: "dark" | "light" }>) {
+}: React.PropsWithChildren<{ sky?: "dark" | "light" }>) {
   return (
     <>
       <color args={[dark ? "#000" : "#fff"]} attach="background" />
