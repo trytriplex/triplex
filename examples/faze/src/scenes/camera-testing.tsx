@@ -25,6 +25,7 @@ export function Scene() {
       <PlayerEntity position={[0, 0, 0]} />
 
       <PerspectiveCamera
+        makeDefault={true}
         position={[
           -0.141_646_936_469_016_94, 1.732_122_037_827_79,
           2.068_985_775_667_036,
