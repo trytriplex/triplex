@@ -14,6 +14,7 @@ export function Canvas({ children }: { children: React.ReactNode }) {
           ? window.triplex.renderer.attributes.gl
           : undefined
       }
+      shadows
       style={{ inset: 0, position: "absolute" }}
     >
       {children}
