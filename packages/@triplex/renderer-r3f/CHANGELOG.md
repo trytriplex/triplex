@@ -1,5 +1,14 @@
 # @triplex/renderer-r3f
 
+## 0.65.1
+
+### Patch Changes
+
+- 983b5d9: Turn on shadows.
+- 763f2a1: Fix triplex camera not being default on initial render.
+  - @triplex/bridge@0.65.1
+  - @triplex/ws@0.65.1
+
 ## 0.65.0
 
 ### Minor Changes

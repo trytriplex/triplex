@@ -1,5 +1,14 @@
 # @triplex/electron
 
+## 0.65.1
+
+### Patch Changes
+
+- @triplex/client@0.65.1
+- @triplex/editor@0.65.1
+- @triplex/server@0.65.1
+- create-triplex-project@0.65.1
+
 ## 0.65.0
 
 ### Patch Changes

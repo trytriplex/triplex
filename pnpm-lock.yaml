@@ -140,16 +140,16 @@ importers:
   apps/electron:
     dependencies:
       '@triplex/client':
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../../packages/@triplex/client
       '@triplex/editor':
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../../packages/@triplex/editor
       '@triplex/server':
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../../packages/@triplex/server
       create-triplex-project:
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../../packages/create-triplex-project
     devDependencies:
       '@playwright/test':
@@ -516,13 +516,13 @@ importers:
         specifier: ^7.23.0
         version: 7.23.0
       '@triplex/bridge':
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../bridge
       '@triplex/renderer-r3f':
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../renderer-r3f
       '@triplex/renderer-react':
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../renderer-react
       '@vitejs/plugin-react':
         specifier: ^4.1.0
@@ -544,10 +544,10 @@ importers:
         specifier: ^1.3.28
         version: 1.3.28
       '@triplex/server':
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../server
       '@triplex/ws':
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../ws
       '@types/babel__core':
         specifier: ^7.20.2
@@ -601,10 +601,10 @@ importers:
         specifier: ^8.0.0
         version: 8.14.5(react-dom@18.2.0)(react@18.2.0)(three@0.157.0)
       '@triplex/bridge':
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../bridge
       '@triplex/ws':
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../ws
       react:
         specifier: ^18.0.0
@@ -641,7 +641,7 @@ importers:
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
       '@triplex/server':
-        specifier: ^0.65.0
+        specifier: ^0.65.1
         version: link:../server
       '@types/react':
         specifier: ^18.0.27
@@ -677,10 +677,10 @@ importers:
   packages/@triplex/renderer-r3f:
     dependencies:
       '@triplex/bridge':
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../bridge
       '@triplex/ws':
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../ws
       react-error-boundary:
         specifier: ^3.1.4
@@ -708,7 +708,7 @@ importers:
         specifier: ^1.3.28
         version: 1.3.28
       '@triplex/server':
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../server
       '@types/react':
         specifier: ^18.0.27
@@ -738,10 +738,10 @@ importers:
   packages/@triplex/renderer-react:
     dependencies:
       '@triplex/bridge':
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../bridge
       '@triplex/ws':
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../ws
       react-error-boundary:
         specifier: ^3.1.4
@@ -757,7 +757,7 @@ importers:
         specifier: ^1.3.28
         version: 1.3.28
       '@triplex/server':
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../server
       '@types/react':
         specifier: ^18.0.27
@@ -880,10 +880,10 @@ importers:
         specifier: ^1.3.28
         version: 1.3.28
       '@triplex/bridge':
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../bridge
       '@triplex/server':
-        specifier: 0.65.0
+        specifier: 0.65.1
         version: link:../server
       '@types/react':
         specifier: ^18.0.27
