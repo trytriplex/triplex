@@ -191,6 +191,7 @@ export function Camera({
       <PerspectiveCamera
         far={100_000}
         layers={layers}
+        makeDefault={type === "perspective"}
         name="__triplex_camera"
         near={0.01}
         position={position}
@@ -199,6 +200,7 @@ export function Camera({
       <OrthographicCamera
         far={100_000}
         layers={layers}
+        makeDefault={type === "orthographic"}
         name="__triplex_camera"
         near={-10}
         ref={orthographicRef}
