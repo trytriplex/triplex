@@ -1,5 +1,15 @@
 # @triplex/client
 
+## 0.65.2
+
+### Patch Changes
+
+- c1a986d: Fix node modules check on scene elements using the triplex default
+  cwd instead of the opened project cwd.
+  - @triplex/bridge@0.65.2
+  - @triplex/renderer-r3f@0.65.2
+  - @triplex/renderer-react@0.65.2
+
 ## 0.65.1
 
 ### Patch Changes
