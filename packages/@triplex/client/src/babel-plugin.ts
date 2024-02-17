@@ -9,11 +9,17 @@ import type { NodePath, PluginObj } from "@babel/core";
 import * as t from "@babel/types";
 import { normalize } from "upath";
 
-function isNodeModulesComponent(path: NodePath, elementName: string) {
+function isNodeModulesComponent(
+  path: NodePath,
+  elementName: string,
+  cwd: string
+) {
   try {
     const binding = path.scope.getBinding(elementName);
     if (binding && binding.path.parent.type === "ImportDeclaration") {
-      const location = require.resolve(binding.path.parent.source.value);
+      const location = require.resolve(binding.path.parent.source.value, {
+        paths: [cwd],
+      });
       return location.includes("node_modules");
     }
   } catch {
@@ -24,8 +30,10 @@ function isNodeModulesComponent(path: NodePath, elementName: string) {
 }
 
 export default function triplexBabelPlugin({
+  cwd = process.cwd(),
   exclude: excludeDirs,
 }: {
+  cwd?: string;
   exclude: string[];
 }) {
   const SCENE_OBJECT_COMPONENT_NAME = "SceneObject";
@@ -147,7 +155,7 @@ export default function triplexBabelPlugin({
 
               if (
                 elementType === "host" ||
-                isNodeModulesComponent(path, elementName)
+                isNodeModulesComponent(path, elementName, cwd)
               ) {
                 if (attr.name.name === "position") {
                   transformsFound.translate = true;

@@ -50,6 +50,7 @@ export async function createServer({
         babel: {
           plugins: [
             triplexBabelPlugin({
+              cwd: normalizedCwd,
               exclude: [config.provider, renderer.root],
             }),
           ],
