@@ -155,8 +155,8 @@ export class EditorPage {
 
   get propControls() {
     return {
-      closeButton: this.page.getByLabel("Close Prop Controls"),
-      openButton: this.page.getByLabel("Open Prop Controls"),
+      closeButton: this.page.getByLabel("Close Component Controls"),
+      openButton: this.page.getByLabel("Open Component Controls"),
     };
   }
 

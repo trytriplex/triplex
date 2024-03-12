@@ -53,11 +53,11 @@ function Inputs() {
             href="#"
             onClick={() =>
               window.triplex.openLink(
-                "https://triplex.dev/docs/guide/provider-controls"
+                "https://triplex.dev/docs/guides/provider-controls"
               )
             }
           >
-            Learn more about this feature.
+            Learn how to use this feature.
           </a>
           .
         </div>

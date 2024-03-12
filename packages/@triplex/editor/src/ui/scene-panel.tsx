@@ -283,7 +283,9 @@ function LiveEditPropsButton() {
       actionId="live_edit_props"
       icon={Pencil2Icon}
       isSelected={isSelected || (hasState ? "partial" : false)}
-      label={isSelected ? "Close Prop Controls" : "Open Prop Controls"}
+      label={
+        isSelected ? "Close Component Controls" : "Open Component Controls"
+      }
       onClick={() => {
         if (isSelected) {
           blur();

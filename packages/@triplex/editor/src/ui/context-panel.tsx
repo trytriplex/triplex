@@ -178,7 +178,7 @@ function ComponentSandboxPanel({
   return (
     <>
       <h2 className="px-4 pt-3 text-sm font-medium text-neutral-300">
-        <div className="overflow-hidden text-ellipsis">Prop Controls</div>
+        <div className="overflow-hidden text-ellipsis">Component Controls</div>
       </h2>
       <div className="-mt-0.5 mb-2.5 px-4">
         <a
