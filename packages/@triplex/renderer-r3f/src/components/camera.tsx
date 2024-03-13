@@ -21,7 +21,7 @@ import {
   OrthographicCamera,
   PerspectiveCamera,
 } from "triplex-drei";
-import { findSceneObject } from "../util/scene";
+import { findObject3D } from "../util/scene";
 
 function frustumHeightAtDistance(
   camera: THREE.PerspectiveCamera,
@@ -102,7 +102,7 @@ export function Camera({
       on("element-action-triggered", (data) => {
         switch (data.id) {
           case "enter-camera": {
-            const camera = findSceneObject(scene, {
+            const camera = findObject3D(scene, {
               column: data.data.column,
               line: data.data.line,
               path: data.data.parentPath,

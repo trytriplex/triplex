@@ -51,6 +51,61 @@ export default function triplexBabelPlugin({
 
   const plugin: PluginObj = {
     visitor: {
+      CallExpression(path) {
+        if (
+          path.node.callee.type === "MemberExpression" &&
+          path.node.callee.object.type === "Identifier" &&
+          path.node.callee.object.name !== "document" &&
+          path.node.callee.property.type === "Identifier" &&
+          path.node.callee.property.name === "createElement" &&
+          path.node.arguments.length >= 2 &&
+          t.isExpression(path.node.arguments[0]) &&
+          !cache.has(path.node)
+        ) {
+          const elementName =
+            path.node.arguments[0].type === "StringLiteral"
+              ? path.node.arguments[0].value
+              : "unknown";
+          const props = path.node.arguments[1];
+          const componentArg = path.node.arguments[0];
+
+          const newNode = t.callExpression(path.node.callee, [
+            t.identifier(SCENE_OBJECT_COMPONENT_NAME),
+            t.objectExpression([
+              t.spreadElement(
+                t.isExpression(props) ? props : t.identifier("undefined")
+              ),
+              t.objectProperty(t.identifier("__component"), componentArg),
+              t.objectProperty(
+                t.identifier("__meta"),
+                t.objectExpression([
+                  t.objectProperty(
+                    t.stringLiteral("path"),
+                    t.stringLiteral("")
+                  ),
+                  t.objectProperty(
+                    t.stringLiteral("name"),
+                    t.stringLiteral(elementName)
+                  ),
+                  t.objectProperty(
+                    t.stringLiteral("line"),
+                    t.numericLiteral(-2)
+                  ),
+                  t.objectProperty(
+                    t.stringLiteral("column"),
+                    t.numericLiteral(-2)
+                  ),
+                ])
+              ),
+            ]),
+            ...path.node.arguments.slice(2),
+          ]);
+
+          // Mark the node as transformed to not get into an infinite loop.
+          cache.add(newNode);
+          path.replaceWith(newNode);
+        }
+      },
       FunctionDeclaration: {
         enter(path) {
           if (shouldSkip) {

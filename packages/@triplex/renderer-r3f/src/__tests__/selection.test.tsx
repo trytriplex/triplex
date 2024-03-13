@@ -37,7 +37,6 @@ describe("selection", () => {
     );
     const { fireEvent, scene } = await render(
       <Selection
-        exportName={exportName}
         onBlur={vi.fn()}
         onFocus={onFocus}
         onJumpTo={vi.fn()}
@@ -74,7 +73,7 @@ describe("selection", () => {
       </Selection>
     );
     const selectionGroup = scene.findByProps({ name: "selection-group" });
-    const groupElement = scene.findAllByType("Group")[2];
+    const groupElement = scene.findAllByType("Mesh")[0];
 
     await fireEvent(selectionGroup, "onClick", {
       delta: 0,
@@ -112,7 +111,6 @@ describe("selection", () => {
     );
     const { fireEvent, scene } = await render(
       <Selection
-        exportName={exportName}
         onBlur={vi.fn()}
         onFocus={onFocus}
         onJumpTo={vi.fn()}
@@ -183,7 +181,6 @@ describe("selection", () => {
     );
     const { fireEvent, scene } = await render(
       <Selection
-        exportName={exportName}
         onBlur={vi.fn()}
         onFocus={onFocus}
         onJumpTo={vi.fn()}
@@ -270,7 +267,6 @@ describe("selection", () => {
 
     const { fireEvent, scene } = await render(
       <Selection
-        exportName={exportName}
         onBlur={vi.fn()}
         onFocus={onFocus}
         onJumpTo={vi.fn()}

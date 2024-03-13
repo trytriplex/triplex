@@ -6,9 +6,9 @@
  */
 import {
   createPortal,
-  type ThreeEvent,
   useFrame,
   useThree,
+  type ThreeEvent,
 } from "@react-three/fiber";
 import { useLayoutEffect, useRef, useState } from "react";
 import { type Mesh, type Object3D } from "three";
@@ -47,8 +47,6 @@ export const getHelperForElement = (
 
     case "perspectiveCamera":
     case "orthographicCamera":
-    case "PerspectiveCamera":
-    case "OrthographicCamera":
       return ["triplexCameraHelper", []];
 
     default:
@@ -80,22 +78,22 @@ export function Helper({
   args = [],
   helperName: HelperElement,
   onClick,
-  parentObject,
+  targetRef,
 }: {
   args?: unknown[];
   helperName: Helper;
   onClick: (e: ThreeEvent<MouseEvent>) => void;
-  parentObject: React.MutableRefObject<Object3D | null>;
+  targetRef: React.MutableRefObject<Object3D | null>;
 }) {
   const [target, setTarget] = useState<Object3D | null>(null);
   const helperRef = useRef<HelperInstance>(null);
   const scene = useThree((three) => three.scene);
 
   useLayoutEffect(() => {
-    if (parentObject && parentObject?.current) {
-      setTarget(parentObject.current.children[0]);
+    if (targetRef && targetRef.current) {
+      setTarget(targetRef.current);
     }
-  }, [parentObject]);
+  }, [targetRef]);
 
   useFrame(() => {
     helperRef.current?.update();

@@ -137,7 +137,6 @@ export function SceneFrame({
               path={providerPath}
             >
               <Selection
-                exportName={component.exportName}
                 onBlur={onBlurObject}
                 onFocus={onFocus}
                 onJumpTo={onJumpTo}

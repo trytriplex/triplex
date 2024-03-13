@@ -6,23 +6,23 @@
  */
 import { useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
 import { compose, on, send } from "@triplex/bridge/client";
-import type { JsxElementPositions } from "@triplex/server";
 import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws/react";
 import {
   createContext,
   useContext,
   useEffect,
-  useMemo,
   useState,
   type ReactNode,
 } from "react";
 import { Box3, Vector3, type Object3D, type Vector3Tuple } from "three";
 import { TransformControls } from "./components/transform-controls";
+import { SceneObjectContext } from "./scene-object";
 import { SceneObjectEventsContext } from "./stores/selection";
 import { encodeProps } from "./util/props";
 import {
-  findEditorData,
-  findSceneObject,
+  findObject3D,
+  resolveObject3D,
+  resolveObject3DMeta,
   type EditorNodeData,
 } from "./util/scene";
 import useEvent from "./util/use-event";
@@ -30,53 +30,6 @@ import useEvent from "./util/use-event";
 function strip(num: number): number {
   return +Number.parseFloat(Number(num).toPrecision(15));
 }
-
-function flatten(
-  positions: JsxElementPositions[]
-): Exclude<JsxElementPositions, "children">[] {
-  const result: Exclude<JsxElementPositions, "children">[] = [];
-
-  for (let i = 0; i < positions.length; i++) {
-    const item = positions[i];
-    if (item.children) {
-      result.push(...flatten(item.children));
-    }
-
-    result.push(item);
-  }
-
-  return result;
-}
-
-const findSceneObjectFromSource = (
-  path: string,
-  scene: Object3D,
-  line: number,
-  column: number,
-  transform: "translate" | "scale" | "rotate",
-  positions: JsxElementPositions[]
-): EditorNodeData | null => {
-  let nodeData: EditorNodeData | null = null;
-
-  scene.traverse((obj) => {
-    if ("triplexSceneMeta" in obj.userData) {
-      const node: EditorNodeData = obj.userData.triplexSceneMeta;
-
-      if (
-        node.path === path &&
-        node.column === column &&
-        node.line === line &&
-        obj.children[0]
-      ) {
-        // We've found our scene object that _also_ has a direct child in the
-        // Three.js scene.
-        nodeData = findEditorData(path, obj, transform, positions);
-      }
-    }
-  });
-
-  return nodeData;
-};
 
 const V1 = new Vector3();
 const box = new Box3();
@@ -91,7 +44,6 @@ export const useSelectSceneObject = () => {
 
 export function Selection({
   children,
-  exportName,
   onBlur,
   onFocus,
   onJumpTo,
@@ -99,7 +51,6 @@ export function Selection({
   path: rootPath,
 }: {
   children?: ReactNode;
-  exportName: string;
   onBlur: () => void;
   onFocus: (node: {
     column: number;
@@ -126,16 +77,7 @@ export function Selection({
     "translate"
   );
   const scene = useThree((store) => store.scene);
-  const sceneData = useSubscriptionEffect("/scene/:path/:exportName", {
-    disabled: !rootPath || !exportName,
-    exportName,
-    path: rootPath,
-  });
   const [isDragging, setIsDragging] = useState(false);
-  const sceneObjects = useMemo(
-    () => flatten(sceneData?.sceneObjects || []),
-    [sceneData]
-  );
   const selectedSceneObject = useSubscriptionEffect(
     "/scene/:path/object/:line/:column",
     {
@@ -178,25 +120,15 @@ export function Selection({
       return;
     }
 
-    const result = findSceneObjectFromSource(
-      selected.parentPath,
-      scene,
-      selected.line,
-      selected.column,
+    const result = resolveObject3D(scene, {
+      column: selected.column,
+      line: selected.line,
+      path: selected.parentPath,
       transform,
-      sceneObjects
-    );
+    });
 
     setSelectedObject(result);
-  }, [
-    scene,
-    sceneObjects,
-    selected,
-    selected?.column,
-    selected?.line,
-    selected?.parentPath,
-    transform,
-  ]);
+  }, [scene, selected, transform]);
 
   useEffect(() => {
     send("ready", undefined);
@@ -241,7 +173,7 @@ export function Selection({
       }),
       on("request-jump-to-element", (sceneObject) => {
         const targetSceneObject = sceneObject
-          ? findSceneObject(scene, sceneObject)
+          ? findObject3D(scene, sceneObject)
           : selectedObject?.sceneObject;
 
         if (!targetSceneObject) {
@@ -318,14 +250,14 @@ export function Selection({
 
     // TODO: If clicking on a scene object when a selection is already
     // made this will fire A LOT OF TIMES. Need to investigate why.
-    const data = findEditorData(rootPath, e.object, transform, sceneObjects);
+    const data = resolveObject3DMeta(e.object, { path: rootPath });
     if (data) {
       e.stopPropagation();
 
       const target = {
         column: data.column,
         line: data.line,
-        parentPath: data.parentPath,
+        parentPath: rootPath,
         path: data.path,
       };
 
@@ -390,12 +322,12 @@ export function Selection({
   );
 
   const selectSceneObject = useEvent((object: Object3D) => {
-    const data = findEditorData(rootPath, object, transform, sceneObjects);
+    const data = resolveObject3DMeta(object, { path: rootPath });
     if (data) {
       const target = {
         column: data.column,
         line: data.line,
-        parentPath: data.parentPath,
+        parentPath: rootPath,
         path: data.path,
       };
 
@@ -413,14 +345,12 @@ export function Selection({
         selected.line === line &&
         selected.column === column
       ) {
-        const result = findSceneObjectFromSource(
-          selected.parentPath,
-          scene,
-          selected.line,
-          selected.column,
+        const result = resolveObject3D(scene, {
+          column: selected.column,
+          line: selected.line,
+          path: selected.parentPath,
           transform,
-          sceneObjects
-        );
+        });
 
         setSelectedObject(result);
       }
@@ -428,28 +358,30 @@ export function Selection({
   );
 
   return (
-    <group name="selection-group" onClick={onClick}>
-      <SceneObjectEventsContext.Provider value={sceneObjectMountHandler}>
-        <SelectionContext.Provider value={selectSceneObject}>
-          {children}
-        </SelectionContext.Provider>
-      </SceneObjectEventsContext.Provider>
+    <SceneObjectContext.Provider value={true}>
+      <group name="selection-group" onClick={onClick}>
+        <SceneObjectEventsContext.Provider value={sceneObjectMountHandler}>
+          <SelectionContext.Provider value={selectSceneObject}>
+            {children}
+          </SelectionContext.Provider>
+        </SceneObjectEventsContext.Provider>
 
-      {selectedObject && (
-        <TransformControls
-          enabled={
-            !!selectedSceneObject && selectedSceneObject.transforms[transform]
-          }
-          mode={transform}
-          object={selectedObject.sceneObject}
-          onMouseDown={onMouseDownHandler}
-          onMouseUp={onMouseUpHandler}
-          rotationSnap={Math.PI / 180}
-          scaleSnap={0.02}
-          space={space}
-          translationSnap={0.02}
-        />
-      )}
-    </group>
+        {selectedObject && (
+          <TransformControls
+            enabled={
+              !!selectedSceneObject && selectedSceneObject.transforms[transform]
+            }
+            mode={transform}
+            object={selectedObject.sceneObject}
+            onMouseDown={onMouseDownHandler}
+            onMouseUp={onMouseUpHandler}
+            rotationSnap={Math.PI / 180}
+            scaleSnap={0.02}
+            space={space}
+            translationSnap={0.02}
+          />
+        )}
+      </group>
+    </SceneObjectContext.Provider>
   );
 }

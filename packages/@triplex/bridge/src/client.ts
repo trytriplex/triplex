@@ -109,22 +109,35 @@ export type ThumbnailFunction = (
   provider: ProviderComponent;
 }) => void;
 
+export interface EmbeddedMeta {
+  column: number;
+  line: number;
+  name: string;
+  path: string;
+  rotate?: boolean;
+  scale?: boolean;
+  translate?: boolean;
+}
+
+export interface TriplexMeta extends EmbeddedMeta {
+  parents: TriplexMeta[];
+  props: Record<string, unknown>;
+}
+
+export interface TriplexResolvedMeta extends EmbeddedMeta {
+  props: Record<string, unknown>;
+}
+
 export interface RendererElementProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   __component: ((props: any) => any) | string;
-  __meta: {
-    column: number;
-    line: number;
-    name: string;
-    path: string;
-    rotate?: boolean;
-    scale?: boolean;
-    translate?: boolean;
-  };
+  __meta: EmbeddedMeta;
   attach?: unknown;
   children?: unknown;
   name?: string;
   position?: unknown;
+  rotation?: unknown;
+  scale?: unknown;
 }
 
 export function init({

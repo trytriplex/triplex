@@ -4,9 +4,25 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { compose, on, type RendererElementProps } from "@triplex/bridge/client";
-import { forwardRef, useCallback, useEffect, useRef, useState } from "react";
-import { type Group } from "three";
+import {
+  compose,
+  on,
+  type RendererElementProps,
+  type TriplexMeta,
+} from "@triplex/bridge/client";
+import {
+  createContext,
+  forwardRef,
+  Fragment,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import mergeRefs from "react-merge-refs";
+import { type Object3D } from "three";
 import { getHelperForElement, Helper } from "./components/helper";
 import { useSelectSceneObject } from "./selection";
 import { useOnSceneObjectMount } from "./stores/selection";
@@ -30,23 +46,6 @@ const EXCLUSIONS = [
 function useForceRender() {
   const [, setState] = useState(false);
   return useCallback(() => setState((prev) => !prev), []);
-}
-
-function isRenderedSceneObject(
-  name: string,
-  props: Record<string, unknown>
-): boolean {
-  const exclusions = ["Material", "Geometry", "Attribute", "__exclude__"];
-  if (
-    // If the scene object has an attach prop it's not actually rendered to the scene
-    // But instead attached to the parent object in the R3F tree.
-    props.attach ||
-    exclusions.some((n) => name.includes(n))
-  ) {
-    return false;
-  }
-
-  return true;
 }
 
 function useSceneObjectProps(
@@ -114,13 +113,47 @@ function useSceneObjectProps(
   return nextProps;
 }
 
+const ParentComponentMetaContext = createContext<TriplexMeta[]>([]);
+
+function ParentComponentMetaProvider({
+  children,
+  type,
+  value,
+}: {
+  children: React.ReactNode;
+  type: "host" | "custom";
+  value: TriplexMeta;
+}) {
+  const parents = useContext(ParentComponentMetaContext);
+  // We keep a list of all parents at each level because not all nodes
+  // are injected into the Three.js scene. Meaning if we just used a single
+  // parent we'd lose data.
+  const values = useMemo(() => [...parents, value], [parents, value]);
+
+  if (type === "host") {
+    // We only store parent data of custom components.
+    return <Fragment>{children}</Fragment>;
+  }
+
+  return (
+    <ParentComponentMetaContext.Provider value={values}>
+      {children}
+    </ParentComponentMetaContext.Provider>
+  );
+}
+
+export const SceneObjectContext = createContext(false);
+
 export const SceneObject = forwardRef<unknown, RendererElementProps>(
   ({ __component: Component, __meta, ...props }, ref) => {
     const { children, ...reconciledProps } = useSceneObjectProps(__meta, props);
     const [isDeleted, setIsDeleted] = useState(false);
-    const parentRef = useRef<Group>(null);
-    const selectSceneObject = useSelectSceneObject();
     const onSceneObjectMount = useOnSceneObjectMount();
+    const parentMeta = useContext(ParentComponentMetaContext);
+    const type = typeof Component === "string" ? "host" : "custom";
+    const hostRef = useRef<Object3D>(null);
+    const selectSceneObject = useSelectSceneObject();
+    const insideSceneObjectContext = useContext(SceneObjectContext);
 
     useEffect(() => {
       return compose([
@@ -156,39 +189,60 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
     } else if (EXCLUSIONS.includes(__meta.name)) {
       // We don't want this component to render to the scene and affect Triplex.
       // E.g. user land controls. Get rid of the problem altogether!
-      return <>{props.children || null}</>;
-    } else if (isRenderedSceneObject(__meta.name, props)) {
-      const helper = getHelperForElement(__meta.name);
-      const userData = { triplexSceneMeta: { ...__meta, props } };
+      return <>{props.children}</>;
+    } else if (insideSceneObjectContext) {
+      const helper =
+        typeof Component === "string"
+          ? getHelperForElement(Component)
+          : undefined;
+      const triplexMeta: TriplexMeta = {
+        ...__meta,
+        parents: parentMeta,
+        props,
+      };
 
       return (
-        <>
-          <group ref={parentRef} userData={userData}>
-            <Component ref={ref} {...reconciledProps}>
-              {children}
-            </Component>
-          </group>
+        <ParentComponentMetaProvider type={type} value={triplexMeta}>
+          <Component
+            ref={type === "host" ? mergeRefs([hostRef, ref]) : ref}
+            {...reconciledProps}
+          >
+            {type === "custom" ? (
+              // This keeps any preconditions for custom components valid
+              // e.g. they always take the same amount of children, no mutations.
+              // React.Children.only() use case.
+              children
+            ) : (
+              // For host elements we inject extra metadata for lookups but otherwise
+              // keep things pretty much the same (no Three.js scene mutation).
+              <>
+                {children}
+                <primitive attach="__triplex" object={triplexMeta} />
+              </>
+            )}
+          </Component>
+
           {helper && (
             <Helper
               args={helper[1]}
               helperName={helper[0]}
               onClick={(e) => {
-                if (e.delta > 1 || !parentRef.current) {
+                if (e.delta > 1 || !hostRef.current) {
                   return;
                 }
 
                 e.stopPropagation();
-                selectSceneObject(parentRef.current.children[0]);
+                selectSceneObject(hostRef.current);
               }}
-              parentObject={parentRef}
+              targetRef={hostRef}
             />
           )}
-        </>
+        </ParentComponentMetaProvider>
       );
     }
 
     return (
-      <Component ref={ref} {...reconciledProps}>
+      <Component ref={ref} {...props}>
         {children}
       </Component>
     );

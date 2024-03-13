@@ -31,7 +31,7 @@
     "@typescript-eslint/no-unnecessary-type-constraint": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
-      { "argsIgnorePattern": "^_" }
+      { "argsIgnorePattern": "^_", "ignoreRestSiblings": true }
     ],
     "header/header": ["error", "scripts/header.js"],
     "import/no-extraneous-dependencies": "off",

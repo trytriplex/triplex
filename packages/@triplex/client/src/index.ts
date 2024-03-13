@@ -14,6 +14,7 @@ import express from "express";
 import { join, normalize } from "upath";
 import tsconfigPaths from "vite-tsconfig-paths";
 import triplexBabelPlugin from "./babel-plugin";
+import { transformNodeModulesJSXPlugin } from "./node-modules-plugin";
 import { getPort } from "./port";
 import { remoteModulePlugin } from "./remote-module-plugin";
 import { scenePlugin } from "./scene-plugin";
@@ -41,11 +42,18 @@ export async function createServer({
   const vite = await createViteServer({
     appType: "custom",
     assetsInclude: renderer.manifest.bundler?.assetsInclude,
+    cacheDir: "node_modules/.triplex",
     configFile: false,
     define: config.define,
     logLevel: "error",
+    optimizeDeps: {
+      esbuildOptions: { plugins: [transformNodeModulesJSXPlugin] },
+    },
     plugins: [
       remoteModulePlugin({ cwd: normalizedCwd, files: config.files, ports }),
+      // ---------------------------------------------------------------
+      // TODO: Vite plugins should be loaded from a renderer's manfiest
+      // instead of hardcoded. We'll cross this bridge to resolve later.
       react({
         babel: {
           plugins: [
@@ -56,9 +64,8 @@ export async function createServer({
           ],
         },
       }),
-      // TODO: Vite plugins should be loaded from a renderer's manfiest
-      // instead of hardcoded. We'll cross this bridge to resolve later.
       glsl(),
+      // ---------------------------------------------------------------
       scenePlugin({ config }),
       tsconfigPaths({ projects: [tsConfig] }),
     ],

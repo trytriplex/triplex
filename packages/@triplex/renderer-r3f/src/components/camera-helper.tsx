@@ -12,9 +12,9 @@ import {
   Float32BufferAttribute,
   LineBasicMaterial,
   LineSegments,
+  Vector3,
   type OrthographicCamera,
   type PerspectiveCamera,
-  Vector3,
 } from "three";
 
 class CameraInstance extends Camera {}
