@@ -8,7 +8,7 @@ import { readFile } from "node:fs/promises";
 import anymatch from "anymatch";
 import parent from "glob-parent";
 import readdirp from "readdirp";
-import { normalize } from "upath";
+import { join, normalize } from "upath";
 
 export function inferExports(file: string) {
   const namedExports = file.matchAll(/export (function|const|let) ([A-Z]\w+)/g);
@@ -53,6 +53,23 @@ export async function getFirstFoundFile({ files }: { files: string[] }) {
 }
 
 export async function getInitialComponent({ files }: { files: string[] }) {
+  if (
+    process.env.FORCE_EDITOR_TEST_FIXTURE &&
+    process.env.FORCE_PATH &&
+    process.env.FORCE_EXPORT_NAME
+  ) {
+    return {
+      exportName: process.env.FORCE_EXPORT_NAME,
+      path: join(
+        process.cwd(),
+        "..",
+        "..",
+        process.env.FORCE_EDITOR_TEST_FIXTURE,
+        process.env.FORCE_PATH
+      ),
+    };
+  }
+
   const file = await getFirstFoundFile({ files });
   let exportName = "";
   let path = "";

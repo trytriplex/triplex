@@ -11,13 +11,21 @@ import { _electron as electron } from "playwright";
 import { defer } from "../../src/util/promise";
 import { EditorPage } from "./po";
 
-async function launch(textFixturePath: string) {
+async function launch(
+  textFixturePath: string,
+  opts: {
+    exportName: string;
+    path: string;
+  }
+) {
   const logs: string[] = [];
   const electronApp = await electron.launch({
     args: ["hook-main.js", process.env.CI ? "--headless" : ""],
     env: {
       ...process.env,
       FORCE_EDITOR_TEST_FIXTURE: textFixturePath,
+      FORCE_EXPORT_NAME: opts.exportName,
+      FORCE_PATH: opts.path,
       VITE_TRIPLEX_ENV: "test",
     },
   });
@@ -134,10 +142,15 @@ const test = _test.extend<{
    * Starts the React renderer for Triplex.
    */
   editorReact: EditorPage;
+  /**
+   * First file to open for the test.
+   */
+  file: { exportName: string; path: string };
 }>({
-  editorLocal: async ({}, use, testInfo) => {
+  editorLocal: async ({ file }, use, testInfo) => {
     const { editorWindow, electronApp, logs, sceneReadyPromise } = await launch(
-      "examples-private/custom-renderer"
+      "examples-private/custom-renderer",
+      file
     );
     const editorPage = new EditorPage(
       editorWindow,
@@ -149,9 +162,11 @@ const test = _test.extend<{
 
     await electronApp.close();
   },
-  editorR3F: async ({}, use, testInfo) => {
+
+  editorR3F: async ({ file }, use, testInfo) => {
     const { editorWindow, electronApp, logs, sceneReadyPromise } = await launch(
-      "examples/test-fixture"
+      "examples/test-fixture",
+      file
     );
     const editorPage = new EditorPage(
       editorWindow,
@@ -163,9 +178,10 @@ const test = _test.extend<{
 
     await electronApp.close();
   },
-  editorReact: async ({}, use, testInfo) => {
+  editorReact: async ({ file }, use, testInfo) => {
     const { editorWindow, electronApp, logs, sceneReadyPromise } = await launch(
-      "examples-private/react-dom"
+      "examples-private/react-dom",
+      file
     );
     const editorPage = new EditorPage(
       editorWindow,
@@ -177,6 +193,7 @@ const test = _test.extend<{
 
     await electronApp.close();
   },
+  file: [{ exportName: "", path: "" }, { option: true }],
 });
 
 export { test };
