@@ -67,3 +67,41 @@ test.describe(() => {
     await expect(editorR3F.contextPanel.heading).toHaveText("ambientLight");
   });
 });
+
+test.describe(() => {
+  test.use({
+    file: {
+      exportName: "UIKitExample",
+      path: "src/uikit.tsx",
+    },
+  });
+
+  test("select node module component using automatic runtime", async ({
+    editorR3F,
+  }) => {
+    await editorR3F.waitForScene();
+
+    await editorR3F.frame.locator.click({ force: true });
+
+    await expect(editorR3F.contextPanel.heading).toHaveText("Container");
+  });
+});
+
+test.describe(() => {
+  test.use({
+    file: {
+      exportName: "Scene",
+      path: "src/geometry/nested-same-file.tsx",
+    },
+  });
+
+  test("select component in scene of deeply nested component", async ({
+    editorR3F,
+  }) => {
+    await editorR3F.waitForScene();
+
+    await editorR3F.frame.locator.click({ force: true });
+
+    await expect(editorR3F.contextPanel.heading).toHaveText("Inbuilt2");
+  });
+});

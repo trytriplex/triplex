@@ -137,11 +137,11 @@ export function SceneFrame({
               path={providerPath}
             >
               <Selection
+                filter={component}
                 onBlur={onBlurObject}
                 onFocus={onFocus}
                 onJumpTo={onJumpTo}
                 onNavigate={onNavigate}
-                path={component.path}
               >
                 <ErrorBoundary
                   fallbackRender={() => null}

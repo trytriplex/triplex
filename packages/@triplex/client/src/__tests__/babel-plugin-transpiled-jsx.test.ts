@@ -93,7 +93,194 @@ describe("transform transpiled jsx", () => {
     `);
   });
 
-  it.todo("should transform jsx automatic identifier", () => {});
+  it("should transform jsx automatic identifier cjs", () => {
+    const actual = transformSync(`
+      jsxs("group", {
+        children: [
+          jsx(Mesh, {
+            position: [0, 0, 0],
+          }),
+        ],
+      });
+    `);
 
-  it.todo("should transform jsxs automatic identifier", () => {});
+    expect(actual?.code).toMatchInlineSnapshot(`
+      "jsxs(SceneObject, {
+        children: [jsx(SceneObject, {
+          position: [0, 0, 0],
+          __component: Mesh,
+          __meta: {
+            \\"path\\": \\"\\",
+            \\"name\\": \\"unknown\\",
+            \\"line\\": -2,
+            \\"column\\": -2
+          }
+        })],
+        __component: \\"group\\",
+        __meta: {
+          \\"path\\": \\"\\",
+          \\"name\\": \\"group\\",
+          \\"line\\": -2,
+          \\"column\\": -2
+        }
+      });"
+    `);
+  });
+
+  it("should transform jsx automatic identifier esm", () => {
+    const actual = transformSync(`
+      jsxRuntime.jsxs("group", {
+        children: [
+          jsxRuntime.jsx("mesh", {
+            position: [0, 0, 0],
+          }),
+        ],
+      });
+    `);
+
+    expect(actual?.code).toMatchInlineSnapshot(`
+      "jsxRuntime.jsxs(SceneObject, {
+        children: [jsxRuntime.jsx(SceneObject, {
+          position: [0, 0, 0],
+          __component: \\"mesh\\",
+          __meta: {
+            \\"path\\": \\"\\",
+            \\"name\\": \\"mesh\\",
+            \\"line\\": -2,
+            \\"column\\": -2
+          }
+        })],
+        __component: \\"group\\",
+        __meta: {
+          \\"path\\": \\"\\",
+          \\"name\\": \\"group\\",
+          \\"line\\": -2,
+          \\"column\\": -2
+        }
+      });"
+    `);
+  });
+
+  it("should transform uikit jsx", () => {
+    const actual = transformSync(`
+      (_jsxs(InteractionGroup, { groupRef: groupRef, matrix: transformMatrix, handlers: properties, hoverHandlers: hoverHandlers, activeHandlers: activeHandlers, children: [_jsx(ScrollHandler, { listeners: properties, node: node, scrollPosition: scrollPosition, children: _jsx("primitive", { object: interactionPanel }) }), _jsx(ChildrenProvider, { globalMatrix: globalMatrix, node: node, orderInfo: orderInfo, scrollPosition: scrollPosition, children: properties.children })] }))
+    `);
+
+    expect(actual?.code).toMatchInlineSnapshot(`
+      "_jsxs(SceneObject, {
+        groupRef: groupRef,
+        matrix: transformMatrix,
+        handlers: properties,
+        hoverHandlers: hoverHandlers,
+        activeHandlers: activeHandlers,
+        children: [_jsx(SceneObject, {
+          listeners: properties,
+          node: node,
+          scrollPosition: scrollPosition,
+          children: _jsx(SceneObject, {
+            object: interactionPanel,
+            __component: \\"primitive\\",
+            __meta: {
+              \\"path\\": \\"\\",
+              \\"name\\": \\"primitive\\",
+              \\"line\\": -2,
+              \\"column\\": -2
+            }
+          }),
+          __component: ScrollHandler,
+          __meta: {
+            \\"path\\": \\"\\",
+            \\"name\\": \\"unknown\\",
+            \\"line\\": -2,
+            \\"column\\": -2
+          }
+        }), _jsx(SceneObject, {
+          globalMatrix: globalMatrix,
+          node: node,
+          orderInfo: orderInfo,
+          scrollPosition: scrollPosition,
+          children: properties.children,
+          __component: ChildrenProvider,
+          __meta: {
+            \\"path\\": \\"\\",
+            \\"name\\": \\"unknown\\",
+            \\"line\\": -2,
+            \\"column\\": -2
+          }
+        })],
+        __component: InteractionGroup,
+        __meta: {
+          \\"path\\": \\"\\",
+          \\"name\\": \\"unknown\\",
+          \\"line\\": -2,
+          \\"column\\": -2
+        }
+      });"
+    `);
+  });
+
+  it("should transform mangled jsx", () => {
+    const actual = transformSync(`
+      (0, import_jsx_runtime6.jsxs)(InteractionGroup, { groupRef, matrix: transformMatrix, handlers: properties, hoverHandlers, activeHandlers, children: [(0, import_jsx_runtime6.jsx)("primitive", { object: interactionPanel }), (0, import_jsx_runtime6.jsx)("group", { matrixAutoUpdate: false, ref: outerGroupRef, children: (0, import_jsx_runtime6.jsx)("group", { ref: innerGroupRef, matrixAutoUpdate: false, children: (0, import_jsx_runtime6.jsx)(FlexProvider, { value: void 0, children: properties.children }) }) })] })
+    `);
+
+    expect(actual?.code).toMatchInlineSnapshot(`
+      "(0, import_jsx_runtime6.jsxs)(SceneObject, {
+        groupRef,
+        matrix: transformMatrix,
+        handlers: properties,
+        hoverHandlers,
+        activeHandlers,
+        children: [(0, import_jsx_runtime6.jsx)(SceneObject, {
+          object: interactionPanel,
+          __component: \\"primitive\\",
+          __meta: {
+            \\"path\\": \\"\\",
+            \\"name\\": \\"primitive\\",
+            \\"line\\": -2,
+            \\"column\\": -2
+          }
+        }), (0, import_jsx_runtime6.jsx)(SceneObject, {
+          matrixAutoUpdate: false,
+          ref: outerGroupRef,
+          children: (0, import_jsx_runtime6.jsx)(SceneObject, {
+            ref: innerGroupRef,
+            matrixAutoUpdate: false,
+            children: (0, import_jsx_runtime6.jsx)(SceneObject, {
+              value: void 0,
+              children: properties.children,
+              __component: FlexProvider,
+              __meta: {
+                \\"path\\": \\"\\",
+                \\"name\\": \\"unknown\\",
+                \\"line\\": -2,
+                \\"column\\": -2
+              }
+            }),
+            __component: \\"group\\",
+            __meta: {
+              \\"path\\": \\"\\",
+              \\"name\\": \\"group\\",
+              \\"line\\": -2,
+              \\"column\\": -2
+            }
+          }),
+          __component: \\"group\\",
+          __meta: {
+            \\"path\\": \\"\\",
+            \\"name\\": \\"group\\",
+            \\"line\\": -2,
+            \\"column\\": -2
+          }
+        })],
+        __component: InteractionGroup,
+        __meta: {
+          \\"path\\": \\"\\",
+          \\"name\\": \\"unknown\\",
+          \\"line\\": -2,
+          \\"column\\": -2
+        }
+      });"
+    `);
+  });
 });

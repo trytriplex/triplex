@@ -70,9 +70,32 @@ export function getTriplexMeta(obj: Object3D | null): TriplexMeta | undefined {
   return undefined;
 }
 
+export function isActiveElement(
+  node: { column: number; line: number; path: string },
+  filter: {
+    elements: { column: number; line: number }[];
+    path: string;
+  }
+): boolean {
+  if (filter.path === node.path) {
+    for (const element of filter.elements) {
+      if (node.line === element.line && node.column === element.column) {
+        return true;
+      }
+    }
+  }
+
+  return false;
+}
+
 export function resolveObject3DMeta(
   obj: Object3D,
-  filter: { path: string } | { column: number; line: number; path: string }
+  filter:
+    | {
+        elements: { column: number; line: number }[];
+        path: string;
+      }
+    | { column: number; line: number; path: string }
 ): TriplexResolvedMeta | null {
   let parentObject: Object3D | null = obj;
 
@@ -86,9 +109,9 @@ export function resolveObject3DMeta(
             ? filter.column === parent.column &&
               filter.line === parent.line &&
               parent.path === filter.path
-            : parent.path === filter.path;
+            : isActiveElement(parent, filter);
 
-        if (parent.column >= 0 && filterMatches) {
+        if (filterMatches) {
           return parent;
         }
       }

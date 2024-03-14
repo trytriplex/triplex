@@ -35,16 +35,17 @@
     ],
     "header/header": ["error", "scripts/header.js"],
     "import/no-extraneous-dependencies": "off",
+    "import/no-namespace": "off",
     "import/no-unresolved": "off",
     "no-extra-parens": "off",
     "no-inner-declarations": "off",
     "no-unused-expressions": "off",
-    "prefer-const": "off",
     "playwright/no-focused-test": "off",
+    "playwright/no-force-option": "off",
+    "prefer-const": "off",
     "react/no-unknown-property": "off",
-    "unicorn/prefer-ternary": "off",
     "space-before-function-paren": "off",
-    "unicorn/prefer-top-level-await": "off",
-    "import/no-namespace": "off"
+    "unicorn/prefer-ternary": "off",
+    "unicorn/prefer-top-level-await": "off"
   }
 }

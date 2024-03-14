@@ -11,6 +11,7 @@ import {
   createContext,
   useContext,
   useEffect,
+  useMemo,
   useState,
   type ReactNode,
 } from "react";
@@ -18,6 +19,7 @@ import { Box3, Vector3, type Object3D, type Vector3Tuple } from "three";
 import { TransformControls } from "./components/transform-controls";
 import { SceneObjectContext } from "./scene-object";
 import { SceneObjectEventsContext } from "./stores/selection";
+import { flatten } from "./util/array";
 import { encodeProps } from "./util/props";
 import {
   findObject3D,
@@ -44,13 +46,14 @@ export const useSelectSceneObject = () => {
 
 export function Selection({
   children,
+  filter,
   onBlur,
   onFocus,
   onJumpTo,
   onNavigate,
-  path: rootPath,
 }: {
   children?: ReactNode;
+  filter: { exportName: string; path: string };
   onBlur: () => void;
   onFocus: (node: {
     column: number;
@@ -64,7 +67,6 @@ export function Selection({
     path: string;
     props: Record<string, unknown>;
   }) => void;
-  path: string;
 }) {
   const [space, setSpace] = useState<"world" | "local">("world");
   const [selected, setSelected] = useState<{
@@ -86,6 +88,15 @@ export function Selection({
       line: selected?.line,
       path: selected?.parentPath,
     }
+  );
+  const sceneData = useSubscriptionEffect("/scene/:path/:exportName", {
+    disabled: !filter.exportName || !filter.path,
+    exportName: filter.exportName,
+    path: filter.path,
+  });
+  const sceneElements = useMemo(
+    () => flatten(sceneData?.sceneObjects || []),
+    [sceneData]
   );
   const [selectedObject, setSelectedObject] = useState<EditorNodeData | null>(
     null
@@ -250,14 +261,18 @@ export function Selection({
 
     // TODO: If clicking on a scene object when a selection is already
     // made this will fire A LOT OF TIMES. Need to investigate why.
-    const data = resolveObject3DMeta(e.object, { path: rootPath });
+    const data = resolveObject3DMeta(e.object, {
+      elements: sceneElements,
+      path: filter.path,
+    });
+
     if (data) {
       e.stopPropagation();
 
       const target = {
         column: data.column,
         line: data.line,
-        parentPath: rootPath,
+        parentPath: filter.path,
         path: data.path,
       };
 
@@ -322,12 +337,16 @@ export function Selection({
   );
 
   const selectSceneObject = useEvent((object: Object3D) => {
-    const data = resolveObject3DMeta(object, { path: rootPath });
+    const data = resolveObject3DMeta(object, {
+      elements: sceneElements,
+      path: filter.path,
+    });
+
     if (data) {
       const target = {
         column: data.column,
         line: data.line,
-        parentPath: rootPath,
+        parentPath: filter.path,
         path: data.path,
       };
 

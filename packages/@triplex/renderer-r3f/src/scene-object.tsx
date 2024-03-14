@@ -128,7 +128,7 @@ function ParentComponentMetaProvider({
   // We keep a list of all parents at each level because not all nodes
   // are injected into the Three.js scene. Meaning if we just used a single
   // parent we'd lose data.
-  const values = useMemo(() => [...parents, value], [parents, value]);
+  const values = useMemo(() => [value, ...parents], [parents, value]);
 
   if (type === "host") {
     // We only store parent data of custom components.

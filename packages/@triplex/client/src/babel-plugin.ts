@@ -9,6 +9,8 @@ import type { NodePath, PluginObj } from "@babel/core";
 import * as t from "@babel/types";
 import { normalize } from "upath";
 
+const AUTOMATIC_JSX_RUNTIME = ["jsx", "jsxs", "_jsx", "_jsxs"];
+
 function isNodeModulesComponent(
   path: NodePath,
   elementName: string,
@@ -62,6 +64,7 @@ export default function triplexBabelPlugin({
           t.isExpression(path.node.arguments[0]) &&
           !cache.has(path.node)
         ) {
+          // We've found a classic runtime transformed JSX
           const elementName =
             path.node.arguments[0].type === "StringLiteral"
               ? path.node.arguments[0].value
@@ -72,9 +75,72 @@ export default function triplexBabelPlugin({
           const newNode = t.callExpression(path.node.callee, [
             t.identifier(SCENE_OBJECT_COMPONENT_NAME),
             t.objectExpression([
+              // Since the current props can be manually created it could be anything.
+              // We spread it in instead of taking its properties.
               t.spreadElement(
                 t.isExpression(props) ? props : t.identifier("undefined")
               ),
+              t.objectProperty(t.identifier("__component"), componentArg),
+              t.objectProperty(
+                t.identifier("__meta"),
+                t.objectExpression([
+                  t.objectProperty(
+                    t.stringLiteral("path"),
+                    t.stringLiteral("")
+                  ),
+                  t.objectProperty(
+                    t.stringLiteral("name"),
+                    t.stringLiteral(elementName)
+                  ),
+                  t.objectProperty(
+                    t.stringLiteral("line"),
+                    t.numericLiteral(-2)
+                  ),
+                  t.objectProperty(
+                    t.stringLiteral("column"),
+                    t.numericLiteral(-2)
+                  ),
+                ])
+              ),
+            ]),
+            ...path.node.arguments.slice(2),
+          ]);
+
+          // Mark the node as transformed to not get into an infinite loop.
+          cache.add(newNode);
+          path.replaceWith(newNode);
+        }
+
+        if (
+          // Basic jsx() calls
+          ((path.node.callee.type === "Identifier" &&
+            AUTOMATIC_JSX_RUNTIME.includes(path.node.callee.name)) ||
+            // OR basic jsxRuntime.jsx() calls.
+            (path.node.callee.type === "MemberExpression" &&
+              path.node.callee.property.type === "Identifier" &&
+              AUTOMATIC_JSX_RUNTIME.includes(path.node.callee.property.name)) ||
+            // OR mangled (0, jsxRuntime.jsx) calls.
+            (path.node.callee.type === "SequenceExpression" &&
+              path.node.callee.expressions[1].type === "MemberExpression" &&
+              path.node.callee.expressions[1].property.type === "Identifier" &&
+              AUTOMATIC_JSX_RUNTIME.includes(
+                path.node.callee.expressions[1].property.name
+              ))) &&
+          t.isExpression(path.node.arguments[0]) &&
+          !cache.has(path.node)
+        ) {
+          // We've found the transformed automatic runtime for ESM
+          const elementName =
+            path.node.arguments[0].type === "StringLiteral"
+              ? path.node.arguments[0].value
+              : "unknown";
+          const props = path.node.arguments[1];
+          const componentArg = path.node.arguments[0];
+
+          const newNode = t.callExpression(path.node.callee, [
+            t.identifier(SCENE_OBJECT_COMPONENT_NAME),
+            t.objectExpression([
+              ...(t.isObjectExpression(props) ? props.properties : []),
               t.objectProperty(t.identifier("__component"), componentArg),
               t.objectProperty(
                 t.identifier("__meta"),

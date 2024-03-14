@@ -162,7 +162,12 @@ describe("scene object component", () => {
       </SceneObjectContext.Provider>
     );
 
-    expect(resolveObject3DMeta(ref.current!, { path: "/foo" })).toMatchObject({
+    expect(
+      resolveObject3DMeta(ref.current!, {
+        elements: [{ column: 1, line: 1 }],
+        path: "/foo",
+      })
+    ).toMatchObject({
       column: 1,
       line: 1,
       name: "Component",
@@ -262,6 +267,7 @@ describe("scene object component", () => {
     );
 
     const actual = resolveObject3DMeta(ref.current!, {
+      elements: [{ column: 1, line: 2 }],
       path: "/foo",
     });
 
@@ -337,6 +343,7 @@ describe("scene object component", () => {
     );
 
     const actual = resolveObject3DMeta(ref.current!, {
+      elements: [{ column: 1, line: 2 }],
       path: "/foo",
     });
 

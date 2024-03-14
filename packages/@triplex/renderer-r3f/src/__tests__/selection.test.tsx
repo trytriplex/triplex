@@ -37,11 +37,11 @@ describe("selection", () => {
     );
     const { fireEvent, scene } = await render(
       <Selection
+        filter={{ exportName: "default", path }}
         onBlur={vi.fn()}
         onFocus={onFocus}
         onJumpTo={vi.fn()}
         onNavigate={vi.fn()}
-        path={path}
       >
         <SceneObject
           __component="group"
@@ -111,11 +111,11 @@ describe("selection", () => {
     );
     const { fireEvent, scene } = await render(
       <Selection
+        filter={{ exportName: "default", path }}
         onBlur={vi.fn()}
         onFocus={onFocus}
         onJumpTo={vi.fn()}
         onNavigate={vi.fn()}
-        path={path}
       >
         <SceneObject
           __component="mesh"
@@ -181,11 +181,11 @@ describe("selection", () => {
     );
     const { fireEvent, scene } = await render(
       <Selection
+        filter={{ exportName: "default", path }}
         onBlur={vi.fn()}
         onFocus={onFocus}
         onJumpTo={vi.fn()}
         onNavigate={vi.fn()}
-        path={path}
       >
         <SceneObject
           __component="group"
@@ -267,11 +267,11 @@ describe("selection", () => {
 
     const { fireEvent, scene } = await render(
       <Selection
+        filter={{ exportName: "default", path }}
         onBlur={vi.fn()}
         onFocus={onFocus}
         onJumpTo={vi.fn()}
         onNavigate={vi.fn()}
-        path={path}
       >
         <SceneObject
           __component={CustomBoxGroup}
