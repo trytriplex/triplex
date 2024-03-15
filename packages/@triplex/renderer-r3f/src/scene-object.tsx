@@ -21,8 +21,8 @@ import {
   useRef,
   useState,
 } from "react";
-import mergeRefs from "react-merge-refs";
 import { type Object3D } from "three";
+import { mergeRefs } from "use-callback-ref";
 import { getHelperForElement, Helper } from "./components/helper";
 import { useSelectSceneObject } from "./selection";
 import { useOnSceneObjectMount } from "./stores/selection";
@@ -154,6 +154,7 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
     const hostRef = useRef<Object3D>(null);
     const selectSceneObject = useSelectSceneObject();
     const insideSceneObjectContext = useContext(SceneObjectContext);
+    const mergedRefs = useMemo(() => mergeRefs([ref, hostRef]), [ref]);
 
     useEffect(() => {
       return compose([
@@ -204,7 +205,7 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
       return (
         <ParentComponentMetaProvider type={type} value={triplexMeta}>
           <Component
-            ref={type === "host" ? mergeRefs([hostRef, ref]) : ref}
+            ref={type === "host" ? mergedRefs : ref}
             {...reconciledProps}
           >
             {type === "custom" ? (

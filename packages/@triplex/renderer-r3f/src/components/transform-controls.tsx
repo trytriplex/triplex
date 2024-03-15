@@ -5,11 +5,11 @@
  * file in the root directory of this source tree.
  */
 import { forwardRef, useEffect, useRef } from "react";
-import mergeRefs from "react-merge-refs";
 import {
   TransformControls as TransformControlsImpl,
   type TransformControlsProps,
 } from "triplex-drei";
+import { useMergeRefs } from "use-callback-ref";
 import { useCamera } from "./camera";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -18,6 +18,7 @@ export const TransformControls = forwardRef<any, TransformControlsProps>(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const controlsRef = useRef<any>(null);
     const { camera, controls } = useCamera();
+    const mergedRefs = useMergeRefs([controlsRef, ref]);
 
     useEffect(() => {
       const callback = (event: { value: boolean }) => {
@@ -42,7 +43,7 @@ export const TransformControls = forwardRef<any, TransformControlsProps>(
         {...props}
         camera={camera}
         enabled={enabled}
-        ref={mergeRefs([controlsRef, ref])}
+        ref={mergedRefs}
       />
     );
   }
