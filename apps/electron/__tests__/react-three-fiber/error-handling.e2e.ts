@@ -24,3 +24,18 @@ test("syntax error", async ({ editorR3F }) => {
 
   await expect(editorR3F.errorOverlay.locator).toBeVisible();
 });
+
+test.describe(() => {
+  test.use({
+    file: {
+      exportName: "UnsafeRefAccess",
+      path: "src/unsafe-ref.tsx",
+    },
+  });
+
+  test("unsafe ref access should not throw", async ({ editorR3F }) => {
+    await editorR3F.waitForScene();
+
+    await expect(editorR3F.errorOverlay.locator).toBeHidden();
+  });
+});
