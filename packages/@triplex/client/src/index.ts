@@ -18,7 +18,7 @@ import { transformNodeModulesJSXPlugin } from "./node-modules-plugin";
 import { getPort } from "./port";
 import { remoteModulePlugin } from "./remote-module-plugin";
 import { scenePlugin } from "./scene-plugin";
-import { createHTML, scripts } from "./templates";
+import { createHTML, loading, scripts } from "./templates";
 
 export async function createServer({
   config,
@@ -105,7 +105,9 @@ export async function createServer({
 
   app.get("/scene.html", async (_, res, next) => {
     try {
-      const template = createHTML(scripts.bootstrap(htmlConfig));
+      const template = createHTML(scripts.bootstrap(htmlConfig), {
+        initial: loading(),
+      });
       const html = await vite.transformIndexHtml("scene", template);
 
       res

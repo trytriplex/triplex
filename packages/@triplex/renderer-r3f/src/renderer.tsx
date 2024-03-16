@@ -10,6 +10,7 @@ import {
   type ProviderComponent,
 } from "@triplex/bridge/client";
 import { useEffect } from "react";
+import { Tunnel } from "./components/tunnel";
 import { SceneProvider } from "./context";
 import { SceneFrame } from "./scene";
 
@@ -114,6 +115,7 @@ export function Renderer({
   return (
     <SceneProvider value={files}>
       <SceneFrame provider={provider} providerPath={providerPath} />
+      <Tunnel.Out />
     </SceneProvider>
   );
 }

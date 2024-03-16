@@ -6,6 +6,7 @@
  */
 import { on, send } from "@triplex/bridge/client";
 import {
+  Suspense,
   useCallback,
   useEffect,
   useMemo,
@@ -18,7 +19,9 @@ import { Layers, Vector3, type Box3, type Vector3Tuple } from "three";
 import { Grid } from "triplex-drei";
 import { Canvas } from "./canvas";
 import { Camera } from "./components/camera";
+import { LoadingTriangle } from "./components/loading-triangle";
 import { SubsequentSuspense } from "./components/suspense";
+import { Tunnel } from "./components/tunnel";
 import { SceneLoader } from "./loader";
 import { ManualEditableSceneObject } from "./manual-editable";
 import { Selection } from "./selection";
@@ -128,7 +131,13 @@ export function SceneFrame({
           }
           resetKeys={[component, Provider]}
         >
-          <SubsequentSuspense>
+          <Suspense
+            fallback={
+              <Tunnel.In>
+                <LoadingTriangle />
+              </Tunnel.In>
+            }
+          >
             <ManualEditableSceneObject
               component={Provider}
               exportName="__exclude__"
@@ -147,7 +156,13 @@ export function SceneFrame({
                   fallbackRender={() => null}
                   resetKeys={[component]}
                 >
-                  <SubsequentSuspense>
+                  <SubsequentSuspense
+                    fallback={
+                      <Tunnel.In>
+                        <LoadingTriangle />
+                      </Tunnel.In>
+                    }
+                  >
                     <SceneLoader
                       exportName={component.exportName}
                       path={component.path}
@@ -157,7 +172,7 @@ export function SceneFrame({
                 </ErrorBoundary>
               </Selection>
             </ManualEditableSceneObject>
-          </SubsequentSuspense>
+          </Suspense>
         </ErrorBoundary>
       </Camera>
 

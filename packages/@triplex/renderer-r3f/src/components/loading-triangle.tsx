@@ -6,8 +6,34 @@
  */
 export function LoadingTriangle() {
   return (
-    <div className="fixed inset-0 flex items-center justify-center">
-      <svg height="150" viewBox="0 0 33 33" width="150">
+    <div
+      style={{
+        alignItems: "center",
+        bottom: 12,
+        display: "flex",
+        height: 50,
+        justifyContent: "center",
+        pointerEvents: "none",
+        position: "fixed",
+        right: 12,
+        width: 50,
+      }}
+    >
+      <style>
+        {`
+  .loading--animate-dashes {
+    stroke-dasharray: 25;
+    animation: dash 1.4s linear infinite;
+  }
+
+  @keyframes dash {
+    to {
+      stroke-dashoffset: 100;
+    }
+  }
+      `}
+      </style>
+      <svg height="33" viewBox="0 0 33 33" width="33">
         <defs>
           <linearGradient id="l-gradient" x1="0%" x2="100%" y1="0%" y2="0%">
             <stop offset="0%" stopColor="rgb(245 245 245)" />
@@ -15,10 +41,11 @@ export function LoadingTriangle() {
           </linearGradient>
         </defs>
         <polygon
+          className="loading--animate-dashes"
           fill="none"
           points="16,1 32,32 1,32"
           stroke="url(#l-gradient)"
-          strokeWidth="1"
+          strokeWidth="2"
         />
       </svg>
     </div>
