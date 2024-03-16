@@ -36,29 +36,21 @@ export function PropField({
   tags: Record<string, string | number | boolean>;
 }) {
   return (
-    <div className="-mt-2 flex w-full flex-shrink gap-2 px-4 py-2 first-of-type:mt-0 hover:bg-white/[2%]">
-      <div
+    <div className="-mt-2 grid flex-shrink grid-cols-2 gap-2 px-4 py-2 first-of-type:mt-0 hover:bg-white/[2%]">
+      <label
         className={cn([
-          labelAlignment === "start" ? "mt-1 items-start" : "items-center",
-          "flex w-[100px] flex-grow justify-end overflow-hidden text-neutral-400",
+          labelAlignment === "start" ? "mt-[5px] self-start" : "self-center ",
+          "text-right text-xs text-neutral-400",
         ])}
+        htmlFor={htmlFor}
+        title={
+          description ? description + stringifyTags(tags) : stringifyTags(tags)
+        }
       >
-        <label
-          className="overflow-hidden text-ellipsis whitespace-nowrap text-right text-xs text-neutral-400"
-          htmlFor={htmlFor}
-          title={
-            description
-              ? `${label} — ${description}`
-              : label + stringifyTags(tags)
-          }
-        >
-          {titleCase(label)}
-        </label>
-      </div>
+        {titleCase(label)}
+      </label>
 
-      <div className="flex w-[134px] flex-col justify-center gap-1">
-        {children}
-      </div>
+      <div className="flex flex-col justify-center gap-1">{children}</div>
     </div>
   );
 }
