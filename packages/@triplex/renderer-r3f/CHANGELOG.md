@@ -1,5 +1,19 @@
 # @triplex/renderer-r3f
 
+## 0.66.0
+
+### Minor Changes
+
+- 625e23a: The selection system has been reimplemented, removing the need for
+  intermediate group elements powering scene lookups.
+
+### Patch Changes
+
+- 79a2c59: Scene now shows a loading indicator when appropriate.
+- Updated dependencies [625e23a]
+  - @triplex/bridge@0.66.0
+  - @triplex/ws@0.66.0
+
 ## 0.65.2
 
 ### Patch Changes

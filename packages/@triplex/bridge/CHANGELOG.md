@@ -1,5 +1,12 @@
 # @triplex/bridge
 
+## 0.66.0
+
+### Minor Changes
+
+- 625e23a: The selection system has been reimplemented, removing the need for
+  intermediate group elements powering scene lookups.
+
 ## 0.65.2
 
 ## 0.65.1

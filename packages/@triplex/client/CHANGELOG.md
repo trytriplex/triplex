@@ -1,5 +1,21 @@
 # @triplex/client
 
+## 0.66.0
+
+### Minor Changes
+
+- 625e23a: The selection system has been reimplemented, removing the need for
+  intermediate group elements powering scene lookups.
+
+### Patch Changes
+
+- 3179ed6: Add support for automatic runtime for scene selection system.
+- Updated dependencies [79a2c59]
+- Updated dependencies [625e23a]
+  - @triplex/renderer-r3f@0.66.0
+  - @triplex/bridge@0.66.0
+  - @triplex/renderer-react@0.66.0
+
 ## 0.65.2
 
 ### Patch Changes

@@ -1,5 +1,20 @@
 # @triplex/editor
 
+## 0.66.0
+
+### Minor Changes
+
+- 625e23a: The selection system has been reimplemented, removing the need for
+  intermediate group elements powering scene lookups.
+
+### Patch Changes
+
+- 346cb79: Prop field layout now consistently sized in the context panel.
+- e794908: Fix links and body copy for component controls panel.
+- Updated dependencies [625e23a]
+  - @triplex/bridge@0.66.0
+  - @triplex/ws@0.66.0
+
 ## 0.65.2
 
 ### Patch Changes

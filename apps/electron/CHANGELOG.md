@@ -1,5 +1,24 @@
 # @triplex/electron
 
+## 0.66.0
+
+### Minor Changes
+
+- 625e23a: The selection system has been reimplemented, removing the need for
+  intermediate group elements powering scene lookups.
+
+### Patch Changes
+
+- e794908: Fix links and body copy for component controls panel.
+- Updated dependencies [346cb79]
+- Updated dependencies [3179ed6]
+- Updated dependencies [e794908]
+- Updated dependencies [625e23a]
+  - @triplex/editor@0.66.0
+  - @triplex/client@0.66.0
+  - @triplex/server@0.66.0
+  - create-triplex-project@0.66.0
+
 ## 0.65.2
 
 ### Patch Changes
