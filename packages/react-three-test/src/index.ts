@@ -6,6 +6,7 @@
  */
 import renderer from "@react-three/test-renderer";
 import { type TreeNode } from "@react-three/test-renderer/dist/declarations/src/types";
+import { fireEvent as fireDOMEvent } from "@testing-library/dom";
 
 // @ts-expect-error - Ignore global variable in test.
 global.IS_REACT_ACT_ENVIRONMENT = true;
@@ -31,11 +32,21 @@ function find(
 }
 
 export async function render(jsx: JSX.Element) {
-  const controls = await renderer.create(jsx);
+  let canvas: HTMLCanvasElement;
+
+  const controls = await renderer.create(jsx, {
+    onCreated(state) {
+      canvas = state.gl.domElement;
+    },
+  });
 
   return {
     ...controls,
     act: renderer.act,
+    get canvas() {
+      return canvas;
+    },
+    fireDOMEvent,
     tree: {
       getByType(type: string) {
         const tree = controls.toTree();
