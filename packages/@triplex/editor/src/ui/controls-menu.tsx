@@ -5,11 +5,18 @@
  * file in the root directory of this source tree.
  */
 
-import { ReloadIcon, SizeIcon } from "@radix-ui/react-icons";
+import {
+  PauseIcon,
+  PlayIcon,
+  ResetIcon,
+  SizeIcon,
+  StopIcon,
+} from "@radix-ui/react-icons";
 import { on, send, type Controls } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Button as DSButton, IconButton } from "../ds/button";
+import { Separator } from "../ds/separator";
 import { useCanvasStage } from "../stores/canvas-stage";
 import { useScene } from "../stores/scene";
 import { Button, ButtonGroup, ToggleButton } from "./ecosystem/buttons";
@@ -23,6 +30,7 @@ export function ControlsMenu() {
   const fitFrameToViewport = useCanvasStage(
     (store) => store.fitFrameToViewport
   );
+  const [playState, setPlayState] = useState<"edit" | "play" | "pause">("edit");
 
   useEffect(() => {
     return on("set-controls", (data) => {
@@ -38,89 +46,115 @@ export function ControlsMenu() {
 
   return (
     <div
-      className="pointer-events-auto mx-auto mb-auto mt-3 flex rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1 text-neutral-400"
+      className="pointer-events-auto mx-auto mb-auto mt-3 flex gap-0.5"
       data-testid="controls-menu"
     >
-      <IconButton
-        actionId="refresh_scene"
-        icon={ReloadIcon}
-        label="Refresh Scene"
-        onClick={refresh}
-      />
+      {playState !== "play" && (
+        <div className="flex rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1 text-neutral-400">
+          <ErrorBoundary fallbackRender={() => null} resetKeys={[controls]}>
+            {controls.map((control, index) => {
+              switch (control.type) {
+                case "button": {
+                  return (
+                    <Button
+                      control={control}
+                      key={control.id}
+                      onClick={(id) => send("control-triggered", { id })}
+                    />
+                  );
+                }
 
-      {controls.length ? (
-        <div className="-my-1 mx-1 w-[1px] bg-neutral-800" />
-      ) : undefined}
+                case "button-group": {
+                  return (
+                    <ButtonGroup
+                      control={control}
+                      key={control.id}
+                      onClick={(id) => send("control-triggered", { id })}
+                    />
+                  );
+                }
 
-      <ErrorBoundary fallbackRender={() => null} resetKeys={[controls]}>
-        {controls.map((control, index) => {
-          switch (control.type) {
-            case "button": {
-              return (
-                <Button
-                  control={control}
-                  key={control.id}
-                  onClick={(id) => send("control-triggered", { id })}
-                />
-              );
-            }
+                case "toggle-button": {
+                  return (
+                    <ToggleButton
+                      control={control}
+                      key={control.id}
+                      onClick={(id) => send("control-triggered", { id }, true)}
+                    />
+                  );
+                }
 
-            case "button-group": {
-              return (
-                <ButtonGroup
-                  control={control}
-                  key={control.id}
-                  onClick={(id) => send("control-triggered", { id })}
-                />
-              );
-            }
+                case "separator": {
+                  return <Separator key={index + "separator"} />;
+                }
+              }
+            })}
+          </ErrorBoundary>
 
-            case "toggle-button": {
-              return (
-                <ToggleButton
-                  control={control}
-                  key={control.id}
-                  onClick={(id) => send("control-triggered", { id }, true)}
-                />
-              );
-            }
+          {frame === "intrinsic" && (
+            <>
+              <Separator />
 
-            case "separator": {
-              return (
-                <div
-                  className="-my-1 mx-1 w-[1px] bg-neutral-800"
-                  key={index + "separator"}
-                />
-              );
-            }
-          }
-        })}
-      </ErrorBoundary>
+              <DSButton
+                actionId="refresh_scene"
+                aria-label="Reset Zoom"
+                onClick={resetZoom}
+                size="tight"
+              >
+                <span
+                  aria-hidden
+                  className="w-8 text-center text-xs text-neutral-400"
+                >{`${zoom}%`}</span>
+              </DSButton>
 
-      {frame === "intrinsic" && (
-        <>
-          <div className="-my-1 mx-1 w-[1px] bg-neutral-800" />
-
-          <DSButton
-            actionId="refresh_scene"
-            aria-label="Reset Zoom"
-            onClick={resetZoom}
-            size="tight"
-          >
-            <span
-              aria-hidden
-              className="w-8 text-center text-xs text-neutral-400"
-            >{`${zoom}%`}</span>
-          </DSButton>
-
-          <IconButton
-            actionId="fit_frame_to_viewport"
-            icon={SizeIcon}
-            label="Fit Frame To Viewport"
-            onClick={fitFrameToViewport}
-          />
-        </>
+              <IconButton
+                actionId="fit_frame_to_viewport"
+                icon={SizeIcon}
+                label="Fit Frame To Viewport"
+                onClick={fitFrameToViewport}
+              />
+            </>
+          )}
+        </div>
       )}
+
+      <div className="flex rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1 text-neutral-400">
+        {playState !== "edit" && (
+          <>
+            <IconButton
+              actionId="reset_scene"
+              icon={ResetIcon}
+              label="Reset Scene"
+              onClick={refresh}
+            />
+            <Separator />
+            <IconButton
+              actionId="stop_scene"
+              icon={StopIcon}
+              label="Stop Scene"
+              onClick={() => setPlayState("edit")}
+            />
+          </>
+        )}
+
+        {playState === "play" && (
+          <IconButton
+            actionId="pause_scene"
+            icon={PauseIcon}
+            label="Pause Scene"
+            onClick={() => setPlayState("pause")}
+          />
+        )}
+
+        {playState !== "play" && (
+          <IconButton
+            actionId="play_scene"
+            icon={PlayIcon}
+            label="Play Scene"
+            onClick={() => setPlayState("play")}
+          />
+        )}
+      </div>
     </div>
   );
 }

@@ -13,6 +13,7 @@ import {
 import { useLayoutEffect, useRef, useState } from "react";
 import { type Mesh, type Object3D } from "three";
 import "./camera-helper";
+import { editorLayer, hiddenLayer } from "../util/layers";
 
 type Helper =
   | "spotLightHelper"
@@ -68,7 +69,7 @@ function HelperIcon({
   });
 
   return (
-    <mesh onClick={onClick} ref={ref} visible={false}>
+    <mesh layers={editorLayer} onClick={onClick} ref={ref} visible={false}>
       <boxGeometry args={[HELPER_SIZE, HELPER_SIZE, HELPER_SIZE]} />
     </mesh>
   );
@@ -108,12 +109,13 @@ export function Helper({
           // position bugs when helpers are logically rendered inside a group.
           // See: https://discourse.threejs.org/t/pointlighthelper-position-problem/47760/2
           <HelperElement
-            // This will be ignored by the selection component when a click event
-            // Has been captured. We do this as we don't want the helper to be the
-            // Bounding box but instead the helper icon above.
             // @ts-expect-error - Hacking, sorry!
             args={[target, ...args]}
-            name="triplex_ignore"
+            // Hide this from both the default and the editor raycasters. Helper element
+            // bounding boxes aren't generally just what they look visually in the scene
+            // so we exclude them altogether and use a hidden box for selection instead.
+            // See: HelperIcon component.
+            layers={hiddenLayer}
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             ref={helperRef as any}
           />,

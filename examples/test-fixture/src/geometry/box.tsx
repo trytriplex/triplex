@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { useState } from "react";
 import { type Vector3Tuple } from "three";
 
 function Box({
@@ -25,19 +26,22 @@ function Box({
   size?: number;
 }) {
   const ok = {};
+  const [hover, setHover] = useState(false);
   return (
     <group scale={scale} visible={true}>
       <mesh
         {...ok}
         name="hello-world"
         onClick={() => {}}
+        onPointerOut={() => setHover(false)}
+        onPointerOver={() => setHover(true)}
         position={position}
         rotation={rotation}
         userData={{ hello: true }}
         visible={true}
       >
         <boxGeometry args={[size, size, size]} />
-        <meshStandardMaterial color={color} key={color} />
+        <meshStandardMaterial color={hover ? "purple" : color} key={color} />
       </mesh>
     </group>
   );

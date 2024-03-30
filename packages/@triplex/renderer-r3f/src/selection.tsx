@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useFrame, useThree, type ThreeEvent } from "@react-three/fiber";
+import { useFrame, useThree } from "@react-three/fiber";
 import { compose, on, send } from "@triplex/bridge/client";
 import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws/react";
 import {
@@ -15,7 +15,14 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { Box3, Vector3, type Object3D, type Vector3Tuple } from "three";
+import {
+  Box3,
+  Raycaster,
+  Vector2,
+  Vector3,
+  type Object3D,
+  type Vector3Tuple,
+} from "three";
 import { TransformControls } from "./components/transform-controls";
 import { SceneObjectContext } from "./scene-object";
 import { SceneObjectEventsContext } from "./stores/selection";
@@ -35,6 +42,9 @@ function strip(num: number): number {
 
 const V1 = new Vector3();
 const box = new Box3();
+// We use this as a default raycaster so it is fired on the default layer (0) instead
+// Of the editor layer (31).
+const raycaster = new Raycaster();
 const SelectionContext = createContext<(select: Object3D) => void>(() => {
   throw new Error("invariant");
 });
@@ -79,6 +89,9 @@ export function Selection({
     "translate"
   );
   const scene = useThree((store) => store.scene);
+  const gl = useThree((store) => store.gl);
+  const camera = useThree((store) => store.camera);
+  const canvasSize = useThree((store) => store.size);
   const [isDragging, setIsDragging] = useState(false);
   const selectedSceneObject = useSubscriptionEffect(
     "/scene/:path/object/:line/:column",
@@ -244,31 +257,13 @@ export function Selection({
     }
   });
 
-  const onClick = useEvent(async (e: ThreeEvent<MouseEvent>) => {
-    if (
-      e.delta > 1 ||
-      // Any scene objects that have this in their name will be excluded
-      // Currently that's just the helpers inside ./components/helper.tsx
-      e.object.name.includes("triplex_ignore")
-    ) {
-      return;
-    }
-
-    if (selected && e.object === selectedObject?.sceneObject) {
-      // Ignore this event we're already selected.
-      return;
-    }
-
-    // TODO: If clicking on a scene object when a selection is already
-    // made this will fire A LOT OF TIMES. Need to investigate why.
-    const data = resolveObject3DMeta(e.object, {
+  const trySelectObject = useEvent((object: Object3D) => {
+    const data = resolveObject3DMeta(object, {
       elements: sceneElements,
       path: filter.path,
     });
 
     if (data) {
-      e.stopPropagation();
-
       const target = {
         column: data.column,
         line: data.line,
@@ -278,7 +273,11 @@ export function Selection({
 
       setSelected(target);
       onFocus(target);
+
+      return true;
     }
+
+    return false;
   });
 
   const onMouseDownHandler = useEvent(() => {
@@ -376,31 +375,76 @@ export function Selection({
     }
   );
 
+  useEffect(() => {
+    let origin = [-1, -1];
+
+    const mouseDownHandler = (e: MouseEvent) => {
+      origin = [e.offsetX, e.offsetY];
+    };
+
+    const mouseUpHandler = (e: MouseEvent) => {
+      const delta =
+        Math.abs(e.offsetX - origin[0]) + Math.abs(e.offsetY - origin[1]);
+
+      if (delta > 1) {
+        return;
+      }
+
+      const x = (e.offsetX / canvasSize.width) * 2 - 1;
+      const y = -(e.offsetY / canvasSize.height) * 2 + 1;
+
+      raycaster.setFromCamera(new Vector2(x, y), camera);
+
+      const result = raycaster
+        .intersectObject(scene)
+        .filter((found) => "isMesh" in found.object);
+
+      for (const found of result) {
+        if (trySelectObject(found.object)) {
+          return;
+        }
+      }
+    };
+
+    gl.domElement.addEventListener("mousedown", mouseDownHandler);
+    gl.domElement.addEventListener("mouseup", mouseUpHandler);
+
+    return () => {
+      gl.domElement.removeEventListener("mousedown", mouseDownHandler);
+      gl.domElement.removeEventListener("mouseup", mouseUpHandler);
+    };
+  }, [
+    camera,
+    canvasSize.height,
+    canvasSize.width,
+    gl.domElement,
+    scene,
+    trySelectObject,
+  ]);
+
   return (
     <SceneObjectContext.Provider value={true}>
-      <group name="selection-group" onClick={onClick}>
-        <SceneObjectEventsContext.Provider value={sceneObjectMountHandler}>
-          <SelectionContext.Provider value={selectSceneObject}>
-            {children}
-          </SelectionContext.Provider>
-        </SceneObjectEventsContext.Provider>
+      <SceneObjectEventsContext.Provider value={sceneObjectMountHandler}>
+        <SelectionContext.Provider value={selectSceneObject}>
+          {children}
+        </SelectionContext.Provider>
+      </SceneObjectEventsContext.Provider>
 
-        {selectedObject && (
-          <TransformControls
-            enabled={
-              !!selectedSceneObject && selectedSceneObject.transforms[transform]
-            }
-            mode={transform}
-            object={selectedObject.sceneObject}
-            onMouseDown={onMouseDownHandler}
-            onMouseUp={onMouseUpHandler}
-            rotationSnap={Math.PI / 180}
-            scaleSnap={0.02}
-            space={space}
-            translationSnap={0.02}
-          />
-        )}
-      </group>
+      {selectedObject && (
+        <TransformControls
+          enabled={
+            !!selectedSceneObject && selectedSceneObject.transforms[transform]
+          }
+          mode={transform}
+          object={selectedObject.sceneObject}
+          onMouseDown={onMouseDownHandler}
+          onMouseUp={onMouseUpHandler}
+          rotationSnap={Math.PI / 180}
+          scaleSnap={0.02}
+          space={space}
+          translationSnap={0.02}
+        />
+      )}
     </SceneObjectContext.Provider>
   );
 }

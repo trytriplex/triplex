@@ -9,7 +9,8 @@
     "typedef": "echo \"not implemented\""
   },
   "dependencies": {
-    "@react-three/test-renderer": "^8.2.0"
+    "@react-three/test-renderer": "^8.2.0",
+    "@testing-library/dom": "^9.3.4"
   },
   "peerDependencies": {
     "@react-three/fiber": "^8.0.0",
