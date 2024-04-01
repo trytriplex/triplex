@@ -45,6 +45,10 @@ interface BridgeContext {
     path: string;
   }): void;
   /**
+   * Current state of the scene.
+   */
+  playState: "play" | "pause" | "edit";
+  /**
    * Value is `true` when the scene is ready else `false`. If the scene is not
    * ready accessing any of the scene store values will throw an invariant.
    */
@@ -61,6 +65,10 @@ interface BridgeContext {
    * @see {@link ./editor.tsx}
    */
   reset(): void;
+  /**
+   * Set play state for the scene.
+   */
+  setPlayState(state: "play" | "pause" | "edit"): void;
   /**
    * Sets the temporary value of a prop.
    *
@@ -85,7 +93,7 @@ interface BridgeContext {
  * @see {@link ./editor.tsx}
  */
 export const useScene = create<BridgeContext & { sceneReady: () => void }>(
-  (setStore) => ({
+  (setStore, get) => ({
     blur() {
       send("request-blur-element", undefined);
     },
@@ -101,6 +109,7 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     navigateTo(sceneObject) {
       send("request-open-component", sceneObject);
     },
+    playState: "edit",
     ready: false,
     refresh({ hard }: { hard?: boolean } = {}) {
       send("request-refresh-scene", { hard });
@@ -110,6 +119,15 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     },
     sceneReady() {
       setStore({ ready: true });
+    },
+    setPlayState(playState: "play" | "pause" | "edit") {
+      setStore({ playState });
+      send("request-state-change", { state: playState });
+
+      if (playState === "edit") {
+        const store = get();
+        store.refresh();
+      }
     },
     setPropValue(data) {
       send("request-set-element-prop", data);

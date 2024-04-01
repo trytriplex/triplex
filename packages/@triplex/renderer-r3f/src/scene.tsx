@@ -9,29 +9,22 @@ import {
   Suspense,
   useCallback,
   useEffect,
-  useMemo,
   useReducer,
   useState,
   type PropsWithChildren,
 } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { Layers, Vector3, type Box3, type Vector3Tuple } from "three";
 import { Grid } from "triplex-drei";
 import { Canvas } from "./canvas";
-import { Camera } from "./components/camera";
+import { Camera, FitCameraToScene } from "./components/camera";
 import { LoadingTriangle } from "./components/loading-triangle";
 import { SubsequentSuspense } from "./components/suspense";
 import { Tunnel } from "./components/tunnel";
 import { SceneLoader } from "./loader";
 import { ManualEditableSceneObject } from "./manual-editable";
 import { Selection } from "./selection";
+import { editorLayer } from "./util/layers";
 import useEvent from "./util/use-event";
-
-const V1 = new Vector3();
-const layers = new Layers();
-layers.enableAll();
-
-const defaultFocalPoint: Vector3Tuple = [0, 0, 0];
 
 export function SceneFrame({
   provider: Provider,
@@ -46,22 +39,6 @@ export function SceneFrame({
     path: string;
     props: Record<string, unknown>;
   }>({ exportName: "", path: "", props: {} });
-  const [focalPoint, setFocalPoint] = useState(defaultFocalPoint);
-  const { position, target } = useMemo(() => {
-    const actualCameraPosition: Vector3Tuple = [...focalPoint];
-    actualCameraPosition[1] += 2;
-    actualCameraPosition[2] += 7;
-    return { position: actualCameraPosition, target: focalPoint };
-  }, [focalPoint]);
-
-  const onJumpTo = useCallback((position: Vector3Tuple, box: Box3) => {
-    setFocalPoint(
-      // If the box is empty (as the object takes up no 3d space, like a light)
-      // We instead use the position instead of the center position.
-      box.isEmpty() ? position : box.getCenter(V1).toArray()
-    );
-  }, []);
-
   const onNavigate = useEvent(
     (target: {
       exportName: string;
@@ -116,7 +93,7 @@ export function SceneFrame({
 
   return (
     <Canvas>
-      <Camera layers={layers} position={position} target={target}>
+      <Camera>
         <ErrorBoundary
           fallbackRender={() => null}
           onError={(err) =>
@@ -142,14 +119,12 @@ export function SceneFrame({
               component={Provider}
               exportName="__exclude__"
               id={-999}
-              key={resetCount}
               path={providerPath}
             >
               <Selection
                 filter={component}
                 onBlur={onBlurObject}
                 onFocus={onFocus}
-                onJumpTo={onJumpTo}
                 onNavigate={onNavigate}
               >
                 <ErrorBoundary
@@ -163,11 +138,16 @@ export function SceneFrame({
                       </Tunnel.In>
                     }
                   >
-                    <SceneLoader
-                      exportName={component.exportName}
-                      path={component.path}
-                      sceneProps={component.props}
-                    />
+                    <FitCameraToScene
+                      trigger={component.path + component.exportName}
+                    >
+                      <SceneLoader
+                        exportName={component.exportName}
+                        key={resetCount}
+                        path={component.path}
+                        sceneProps={component.props}
+                      />
+                    </FitCameraToScene>
                   </SubsequentSuspense>
                 </ErrorBoundary>
               </Selection>
@@ -184,6 +164,7 @@ export function SceneFrame({
         fadeStrength={5}
         followCamera
         infiniteGrid
+        layers={editorLayer}
         sectionColor="#9d4b4b"
         sectionSize={3}
       />

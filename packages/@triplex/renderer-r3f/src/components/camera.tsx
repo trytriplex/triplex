@@ -4,8 +4,9 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useFrame, useThree } from "@react-three/fiber";
+import { useFrame, useThree, type Size } from "@react-three/fiber";
 import { compose, on } from "@triplex/bridge/client";
+import { type default as CameraControlsImpl } from "camera-controls";
 import {
   createContext,
   useContext,
@@ -15,34 +16,22 @@ import {
   useRef,
   useState,
 } from "react";
-import { Vector3, type Layers, type Vector3Tuple } from "three";
-import {
-  OrbitControls,
-  OrthographicCamera,
-  PerspectiveCamera,
-} from "triplex-drei";
+import { Box3, type Group, type Vector3Tuple } from "three";
+import { CameraControls } from "triplex-drei";
+import { ALL_LAYERS } from "../util/layers";
 import { findObject3D } from "../util/scene";
+import { Tunnel } from "./tunnel";
 
-function frustumHeightAtDistance(
-  camera: THREE.PerspectiveCamera,
-  distance: number
-) {
-  const vFov = (camera.fov * Math.PI) / 180;
-  return Math.tan(vFov / 2) * distance * 2;
-}
+const TRIPLEX_CAMERA_NAME = "__triplex_camera";
+const DEFAULT_CAMERA = "perspective";
+const TEMP_BOX3 = new Box3();
+const DEFAULT_POSITION: Vector3Tuple = [0, 0, 1];
 
-function frustumWidthAtDistance(
-  camera: THREE.PerspectiveCamera,
-  distance: number
-) {
-  return frustumHeightAtDistance(camera, distance) * camera.aspect;
-}
-
-const V1 = new Vector3();
+type ThreeCameras = THREE.OrthographicCamera | THREE.PerspectiveCamera;
 
 interface CameraContextType {
-  camera: THREE.OrthographicCamera | THREE.PerspectiveCamera | undefined;
-  controls: React.MutableRefObject<{ enabled: boolean } | null>;
+  camera: ThreeCameras | undefined;
+  controls: React.MutableRefObject<CameraControlsImpl | null>;
 }
 
 const CameraContext = createContext<CameraContextType>({
@@ -50,39 +39,91 @@ const CameraContext = createContext<CameraContextType>({
   controls: { current: null },
 });
 
-export const useCamera = () => {
+function fitCameraToViewport(camera: ThreeCameras, size: Size) {
+  if ("isOrthographicCamera" in camera) {
+    const left = size.width / -2;
+    const right = size.width / 2;
+    const top = size.height / 2;
+    const bottom = size.height / -2;
+
+    camera.left = left;
+    camera.right = right;
+    camera.top = top;
+    camera.bottom = bottom;
+    camera.updateProjectionMatrix();
+  } else {
+    camera.aspect = size.width / size.height;
+    camera.updateProjectionMatrix();
+  }
+}
+
+export function useCamera() {
   const context = useContext(CameraContext);
   return context;
-};
+}
 
-export function Camera({
+export function FitCameraToScene({
   children,
-  layers,
-  position,
-  target,
+  trigger,
 }: {
-  children?: React.ReactNode;
-  layers?: Layers;
-  position: Vector3Tuple;
-  target: Vector3Tuple;
+  children: React.ReactNode;
+  trigger?: string;
 }) {
-  const defaultCamera = "perspective";
+  const { controls } = useCamera();
+  const scene = useThree((store) => store.scene);
+  const ref = useRef<Group>(null!);
+
+  useLayoutEffect(() => {
+    if (controls.current) {
+      const box = TEMP_BOX3.setFromObject(ref.current);
+      if (box.isEmpty()) {
+        return;
+      }
+
+      controls.current.reset();
+      controls.current.fitToBox(box, false, {
+        paddingBottom: 0.5,
+        paddingLeft: 0.5,
+        paddingRight: 0.5,
+        paddingTop: 0.5,
+      });
+    }
+  }, [controls, scene, trigger]);
+
+  return <group ref={ref}>{children}</group>;
+}
+
+export function Camera({ children }: { children?: React.ReactNode }) {
   // This is the source of truth for what camera is active.
   // When this is set it propagates to the editor frame in the effect.
   const [type, setType] = useState<"perspective" | "orthographic" | "user">(
-    defaultCamera
+    DEFAULT_CAMERA
   );
   const scene = useThree((state) => state.scene);
-  const prevType = useRef<"perspective" | "orthographic">(defaultCamera);
-  const orthographicRef = useRef<THREE.OrthographicCamera>(null!);
-  const perspectiveRef = useRef<THREE.PerspectiveCamera>(null!);
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const controlsRef = useRef<any>(null);
-  const [activeCamera, setActiveCamera] = useState<
-    THREE.OrthographicCamera | THREE.PerspectiveCamera | undefined
-  >(undefined);
+  const set = useThree((state) => state.set);
+  const size = useThree((state) => state.size);
+  const camera = useThree((state) => state.camera);
+  const prevTriplexCamera = useRef<"perspective" | "orthographic">();
+  const orthCameraRef = useRef<THREE.OrthographicCamera>(null!);
+  const perspCameraRef = useRef<THREE.PerspectiveCamera>(null!);
+  const controlsRef = useRef<CameraControlsImpl>(null);
+  const [activeCamera, setActiveCamera] = useState<ThreeCameras | undefined>(
+    undefined
+  );
   const isTriplexCamera =
-    activeCamera && activeCamera.name === "__triplex_camera";
+    activeCamera && activeCamera.name === TRIPLEX_CAMERA_NAME;
+  const previousUserlandCamera = useRef<ThreeCameras | undefined>();
+
+  useEffect(() => {
+    return on("request-state-change", ({ state }) => {
+      if (state !== "edit") {
+        setType("user");
+        setActiveCamera(previousUserlandCamera.current);
+      } else {
+        setType(prevTriplexCamera.current || DEFAULT_CAMERA);
+      }
+    });
+  }, []);
 
   useEffect(() => {
     return compose([
@@ -123,11 +164,11 @@ export function Camera({
           }
 
           case "exit-camera": {
-            setType(prevType.current);
+            setType(prevTriplexCamera.current || DEFAULT_CAMERA);
             setActiveCamera(
-              prevType.current === "orthographic"
-                ? orthographicRef.current
-                : perspectiveRef.current
+              prevTriplexCamera.current === "orthographic"
+                ? orthCameraRef.current
+                : perspCameraRef.current
             );
             return { handled: true };
           }
@@ -138,45 +179,48 @@ export function Camera({
 
   useLayoutEffect(() => {
     if (type === "orthographic") {
-      const vtarget = V1.fromArray(target);
-      orthographicRef.current.position.copy(perspectiveRef.current.position);
-      const distance = perspectiveRef.current.position.distanceTo(vtarget);
-      const halfWidth =
-        frustumWidthAtDistance(perspectiveRef.current, distance) / 2;
-      const halfHeight =
-        frustumHeightAtDistance(perspectiveRef.current, distance) / 2;
-
-      orthographicRef.current.top = halfHeight;
-      orthographicRef.current.bottom = -halfHeight;
-      orthographicRef.current.left = -halfWidth;
-      orthographicRef.current.right = halfWidth;
-      orthographicRef.current.zoom = 1;
-      orthographicRef.current.lookAt(vtarget);
-      orthographicRef.current.updateProjectionMatrix();
-
-      prevType.current = "orthographic";
-      setActiveCamera(orthographicRef.current);
+      prevTriplexCamera.current = "orthographic";
+      setActiveCamera(orthCameraRef.current);
     } else if (type === "perspective") {
-      if (prevType.current === "orthographic") {
-        const oldY = perspectiveRef.current.position.y;
-        perspectiveRef.current.position.copy(orthographicRef.current.position);
-        perspectiveRef.current.position.y = oldY / orthographicRef.current.zoom;
-        perspectiveRef.current.updateProjectionMatrix();
-      }
-
-      prevType.current = "perspective";
-      setActiveCamera(perspectiveRef.current);
+      prevTriplexCamera.current = "perspective";
+      setActiveCamera(perspCameraRef.current);
     }
-  }, [target, type]);
+  }, [scene, type]);
 
-  useFrame((state) => {
+  useLayoutEffect(() => {
+    fitCameraToViewport(orthCameraRef.current, size);
+    fitCameraToViewport(perspCameraRef.current, size);
+  }, [size]);
+
+  useLayoutEffect(() => {
+    if (camera.name !== TRIPLEX_CAMERA_NAME) {
+      fitCameraToViewport(camera, size);
+    }
+  }, [camera, size]);
+
+  useFrame(({ camera, gl, scene }) => {
     if (activeCamera) {
       // Force the Triplex active camera to be the active camera.
       // We sidestep the R3F state management here because we want to be able to
       // control which camera is active (userland vs. Triplex).
-      state.camera = activeCamera;
+      gl.render(scene, activeCamera);
+
+      if (camera !== activeCamera) {
+        // Ensure r3f state has our camera as the active camera.
+        set({ camera: activeCamera });
+
+        if (
+          camera !== perspCameraRef.current &&
+          camera !== orthCameraRef.current
+        ) {
+          // Keep track of the last non-triplex camera so we can set it back when appropriate.
+          previousUserlandCamera.current = camera;
+        }
+      }
+    } else {
+      gl.render(scene, camera);
     }
-  });
+  }, 1);
 
   const context: CameraContextType = useMemo(
     () => ({
@@ -188,33 +232,59 @@ export function Camera({
 
   return (
     <CameraContext.Provider value={context}>
-      <PerspectiveCamera
+      <perspectiveCamera
         far={100_000}
-        layers={layers}
-        makeDefault={type === "perspective"}
-        name="__triplex_camera"
+        layers={ALL_LAYERS}
+        // Opt out from r3f auto update updating the frustum.
+        // @ts-expect-error
+        manual
+        name={TRIPLEX_CAMERA_NAME}
         near={0.01}
-        position={position}
-        ref={perspectiveRef}
+        position={DEFAULT_POSITION}
+        ref={perspCameraRef}
       />
-      <OrthographicCamera
+      <orthographicCamera
         far={100_000}
-        layers={layers}
-        makeDefault={type === "orthographic"}
-        name="__triplex_camera"
+        layers={ALL_LAYERS}
+        // Opt out from r3f auto update updating the frustum.
+        // @ts-expect-error
+        manual
+        name={TRIPLEX_CAMERA_NAME}
         near={-10}
-        ref={orthographicRef}
+        position={DEFAULT_POSITION}
+        ref={orthCameraRef}
+        zoom={100}
       />
-      {isTriplexCamera && (
-        <OrbitControls
-          // We don't want user land cameras to be able to be affected by these controls
-          // So we explicitly set the camera instead of relying on "default camera" behaviour.
-          camera={activeCamera}
-          ref={controlsRef}
-          target={target}
-        />
-      )}
+      <CameraControls
+        // We don't want user land cameras to be able to be affected by these controls
+        // So we explicitly set the camera instead of relying on "default camera" behaviour.
+        camera={activeCamera}
+        enabled={isTriplexCamera}
+        // @ts-expect-error — TODO: Fix duplicate types error.
+        ref={controlsRef}
+      />
       {children}
+
+      {import.meta.env.DEV && (
+        <Tunnel.In>
+          <pre
+            data-testid="camera-panel"
+            style={{
+              backgroundColor: "white",
+              bottom: 4,
+              left: 4,
+              margin: 0,
+              opacity: 0.5,
+              padding: 4,
+              pointerEvents: "none",
+              position: "absolute",
+            }}
+          >
+            {`name: ${activeCamera?.name || "(empty)"}
+type: ${type}`}
+          </pre>
+        </Tunnel.In>
+      )}
     </CameraContext.Provider>
   );
 }

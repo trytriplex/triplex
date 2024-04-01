@@ -24,6 +24,7 @@ export function SceneFrame() {
   const navigateTo = useScene((store) => store.navigateTo);
   const editor = useEditor();
   const canvasLayout = useCanvasStage((store) => store.canvasStage);
+  const playState = useScene((store) => store.playState);
 
   useEffect(() => {
     return on("ready", () => {
@@ -66,8 +67,9 @@ export function SceneFrame() {
     <div
       className={cn([
         "relative row-start-3 flex items-center justify-center overflow-hidden",
-        canvasLayout === "collapsed" && "col-span-1 col-start-2",
-        canvasLayout === "expanded" && "col-span-3 col-start-1",
+        canvasLayout === "expanded" || playState === "play"
+          ? "col-span-3 col-start-1"
+          : "col-span-1 col-start-2",
       ])}
     >
       <Stage>
@@ -78,6 +80,7 @@ export function SceneFrame() {
             blockPointerEvents && "pointer-events-none",
             "h-full w-full flex-shrink-0 border-none",
           ])}
+          id="scene"
           src={`http://localhost:${window.triplex.env.ports.client}/scene.html`}
         />
       </Stage>

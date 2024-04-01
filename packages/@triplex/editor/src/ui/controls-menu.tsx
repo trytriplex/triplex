@@ -22,7 +22,9 @@ import { useScene } from "../stores/scene";
 import { Button, ButtonGroup, ToggleButton } from "./ecosystem/buttons";
 
 export function ControlsMenu() {
-  const { refresh } = useScene();
+  const refresh = useScene((store) => store.refresh);
+  const playState = useScene((store) => store.playState);
+  const setPlayState = useScene((store) => store.setPlayState);
   const [controls, setControls] = useState<Controls>();
   const zoom = useCanvasStage((store) => store.canvasZoom);
   const frame = useCanvasStage((store) => store.frame);
@@ -30,7 +32,6 @@ export function ControlsMenu() {
   const fitFrameToViewport = useCanvasStage(
     (store) => store.fitFrameToViewport
   );
-  const [playState, setPlayState] = useState<"edit" | "play" | "pause">("edit");
 
   useEffect(() => {
     return on("set-controls", (data) => {

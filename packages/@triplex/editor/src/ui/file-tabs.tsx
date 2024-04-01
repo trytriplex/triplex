@@ -19,6 +19,7 @@ import { Pressable } from "../ds/pressable";
 import { useCanvasStage } from "../stores/canvas-stage";
 import { useEditor } from "../stores/editor";
 import { useOverlayStore } from "../stores/overlay";
+import { useScene } from "../stores/scene";
 import useEvent from "../util/use-event";
 
 function FallbackTab({
@@ -170,6 +171,7 @@ export function FileTabs() {
   const lastAvailableTab = projectState.at(-1);
   const canvasLayout = useCanvasStage((store) => store.canvasStage);
   const toggleCanvasLayout = useCanvasStage((store) => store.toggleCanvasStage);
+  const playState = useScene((store) => store.playState);
 
   const openLastTab = useCallback(() => {
     const closedTab = previouslyClosedTabs.current.pop();
@@ -254,6 +256,7 @@ export function FileTabs() {
       <IconButton
         actionId="open-file"
         icon={() => <Component1Icon className="rotate-45" />}
+        isDisabled={playState === "play"}
         label="Open Component..."
         onClick={() => showOverlay("open-scene")}
       />
@@ -304,22 +307,26 @@ export function FileTabs() {
         />
       </div>
 
-      <IconButton
-        actionId={
-          canvasLayout === "expanded"
-            ? "set_canvas_collapsed"
-            : "set_canvas_expanded"
-        }
-        icon={
-          canvasLayout === "expanded" ? ExitFullScreenIcon : EnterFullScreenIcon
-        }
-        label={
-          canvasLayout === "expanded"
-            ? "Collapse Scene Canvas"
-            : "Expand Scene Canvas"
-        }
-        onClick={toggleLayout}
-      />
+      {playState !== "play" && (
+        <IconButton
+          actionId={
+            canvasLayout === "expanded"
+              ? "set_canvas_collapsed"
+              : "set_canvas_expanded"
+          }
+          icon={
+            canvasLayout === "expanded"
+              ? ExitFullScreenIcon
+              : EnterFullScreenIcon
+          }
+          label={
+            canvasLayout === "expanded"
+              ? "Collapse Scene Canvas"
+              : "Expand Scene Canvas"
+          }
+          onClick={toggleLayout}
+        />
+      )}
     </nav>
   );
 }

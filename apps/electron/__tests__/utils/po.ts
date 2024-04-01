@@ -20,6 +20,13 @@ export class EditorPage {
     this.#testInfo = testInfo;
   }
 
+  get devOnlyCameraPanel() {
+    const locator = this.page
+      .frameLocator("#scene")
+      .getByTestId("camera-panel");
+    return locator;
+  }
+
   get fileDrawer() {
     const locator = this.page.getByTestId("file-drawer");
 

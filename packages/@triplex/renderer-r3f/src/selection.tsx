@@ -12,17 +12,12 @@ import {
   useContext,
   useEffect,
   useMemo,
+  useRef,
   useState,
   type ReactNode,
 } from "react";
-import {
-  Box3,
-  Raycaster,
-  Vector2,
-  Vector3,
-  type Object3D,
-  type Vector3Tuple,
-} from "three";
+import { Box3, Raycaster, Vector2, Vector3, type Object3D } from "three";
+import { useCamera } from "./components/camera";
 import { TransformControls } from "./components/transform-controls";
 import { SceneObjectContext } from "./scene-object";
 import { SceneObjectEventsContext } from "./stores/selection";
@@ -41,7 +36,6 @@ function strip(num: number): number {
 }
 
 const V1 = new Vector3();
-const box = new Box3();
 // We use this as a default raycaster so it is fired on the default layer (0) instead
 // Of the editor layer (31).
 const raycaster = new Raycaster();
@@ -59,7 +53,6 @@ export function Selection({
   filter,
   onBlur,
   onFocus,
-  onJumpTo,
   onNavigate,
 }: {
   children?: ReactNode;
@@ -71,7 +64,6 @@ export function Selection({
     parentPath: string;
     path: string;
   }) => void;
-  onJumpTo: (v: Vector3Tuple, bb: Box3, obj: Object3D) => void;
   onNavigate: (node: {
     exportName: string;
     path: string;
@@ -114,6 +106,20 @@ export function Selection({
   const [selectedObject, setSelectedObject] = useState<EditorNodeData | null>(
     null
   );
+  const disableSelection = useRef(false);
+  const { controls } = useCamera();
+
+  useEffect(() => {
+    return on("request-state-change", ({ state }) => {
+      if (state === "play") {
+        setSelected(undefined);
+        onBlur();
+        disableSelection.current = true;
+      } else {
+        disableSelection.current = false;
+      }
+    });
+  }, [onBlur]);
 
   useEffect(() => {
     return on("control-triggered", (data) => {
@@ -204,13 +210,20 @@ export function Selection({
           return;
         }
 
-        box.setFromObject(targetSceneObject);
+        const box = new Box3().setFromObject(targetSceneObject);
+        if (box.min.x === Number.POSITIVE_INFINITY) {
+          box.setFromCenterAndSize(
+            targetSceneObject.position,
+            new Vector3(0.5, 0.5, 0.5)
+          );
+        }
 
-        onJumpTo(
-          targetSceneObject.getWorldPosition(V1).toArray(),
-          box,
-          targetSceneObject
-        );
+        controls.current?.fitToBox(box, false, {
+          paddingBottom: 0.5,
+          paddingLeft: 0.5,
+          paddingRight: 0.5,
+          paddingTop: 0.5,
+        });
       }),
       on("request-focus-element", (data) => {
         setSelected(data);
@@ -218,9 +231,9 @@ export function Selection({
       }),
     ]);
   }, [
+    controls,
     onBlur,
     onFocus,
-    onJumpTo,
     onNavigate,
     scene,
     selectedObject,
@@ -258,6 +271,10 @@ export function Selection({
   });
 
   const trySelectObject = useEvent((object: Object3D) => {
+    if (disableSelection.current) {
+      return;
+    }
+
     const data = resolveObject3DMeta(object, {
       elements: sceneElements,
       path: filter.path,
@@ -335,25 +352,6 @@ export function Selection({
     }
   );
 
-  const selectSceneObject = useEvent((object: Object3D) => {
-    const data = resolveObject3DMeta(object, {
-      elements: sceneElements,
-      path: filter.path,
-    });
-
-    if (data) {
-      const target = {
-        column: data.column,
-        line: data.line,
-        parentPath: filter.path,
-        path: data.path,
-      };
-
-      setSelected(target);
-      onFocus(target);
-    }
-  });
-
   const sceneObjectMountHandler = useEvent(
     (path: string, line: number, column: number) => {
       if (
@@ -425,7 +423,7 @@ export function Selection({
   return (
     <SceneObjectContext.Provider value={true}>
       <SceneObjectEventsContext.Provider value={sceneObjectMountHandler}>
-        <SelectionContext.Provider value={selectSceneObject}>
+        <SelectionContext.Provider value={trySelectObject}>
           {children}
         </SelectionContext.Provider>
       </SceneObjectEventsContext.Provider>

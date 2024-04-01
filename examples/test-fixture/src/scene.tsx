@@ -26,6 +26,8 @@ export function Scene({
       <ambientLight position={[2.12, 0, -0.88]} />
       <Box scale={1.5} />
       <PerspectiveCamera
+        makeDefault={true}
+        name={"user_defined"}
         position={[-1.831_592_557_014_578_1, 0.943_661_973_904_340_8, 0]}
         rotation={[
           -1.570_796_326_794_896_6, -1.221_730_476_396_030_6,

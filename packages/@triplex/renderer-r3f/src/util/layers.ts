@@ -6,6 +6,9 @@
  */
 import { Layers } from "three";
 
+export const DEFAULT_LAYER_INDEX = 0;
+export const defaultLayer = new Layers();
+
 export const EDITOR_LAYER_INDEX = 31;
 export const editorLayer = new Layers();
 editorLayer.set(EDITOR_LAYER_INDEX);
@@ -13,3 +16,6 @@ editorLayer.set(EDITOR_LAYER_INDEX);
 export const HIDDEN_LAYER_INDEX = 30;
 export const hiddenLayer = new Layers();
 hiddenLayer.set(HIDDEN_LAYER_INDEX);
+
+export const ALL_LAYERS = new Layers();
+ALL_LAYERS.enableAll();

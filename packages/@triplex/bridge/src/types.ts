@@ -190,6 +190,7 @@ export interface HostSendEventData {
     propName: string;
     propValue: unknown;
   };
+  "request-state-change": { state: "play" | "pause" | "edit" };
   "self:request-reset-file": { path: string };
 }
 
@@ -206,5 +207,6 @@ export interface HostSendEventResponse {
   "request-reset-scene": void;
   "request-restore-element": void;
   "request-set-element-prop": void;
+  "request-state-change": void;
   "self:request-reset-file": void;
 }
