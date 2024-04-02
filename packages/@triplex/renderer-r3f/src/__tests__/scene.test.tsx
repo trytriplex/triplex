@@ -30,7 +30,7 @@ export default function Provider({ children }: { children?: React.ReactNode }) {
 }
 
 describe("scene frame", () => {
-  it("should apply color to canvas background", async () => {
+  it("should apply color to canvas background set in provider", async () => {
     const { getInstance } = await render(
       <SceneProvider value={{}}>
         <SceneFrame provider={Provider} providerPath="" />

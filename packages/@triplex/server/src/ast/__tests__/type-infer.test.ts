@@ -1073,6 +1073,26 @@ describe("type infer", () => {
               },
               {
                 "kind": "number",
+                "label": "ConstantColorFactor",
+                "literal": 211,
+              },
+              {
+                "kind": "number",
+                "label": "OneMinusConstantColorFactor",
+                "literal": 212,
+              },
+              {
+                "kind": "number",
+                "label": "ConstantAlphaFactor",
+                "literal": 213,
+              },
+              {
+                "kind": "number",
+                "label": "OneMinusConstantAlphaFactor",
+                "literal": 214,
+              },
+              {
+                "kind": "number",
                 "literal": 210,
               },
             ],

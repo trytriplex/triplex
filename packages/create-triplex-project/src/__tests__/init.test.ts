@@ -115,13 +115,13 @@ describe("init command", () => {
   "private": true,
   "scripts": {},
   "dependencies": {
-    "@react-three/drei": "^9.87.0",
-    "@react-three/fiber": "^8.14.5",
+    "@react-three/drei": "^9.103.0",
+    "@react-three/fiber": "^8.16.1",
     "@types/react": "^18.2.25",
-    "@types/three": "^0.157.0",
+    "@types/three": "^0.163.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "three": "^0.157.0"
+    "three": "^0.163.0"
   }
 }
 `.replaceAll("\n", EOL)
@@ -260,13 +260,13 @@ describe("init command", () => {
   "name": "app",
   "dependencies": {
     "already-exists": "^1.1.1",
-    "@react-three/drei": "^9.87.0",
-    "@react-three/fiber": "^8.14.5",
+    "@react-three/drei": "^9.103.0",
+    "@react-three/fiber": "^8.16.1",
     "@types/react": "^18.2.25",
-    "@types/three": "^0.157.0",
+    "@types/three": "^0.163.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "three": "^0.157.0"
+    "three": "^0.163.0"
   },
   "scripts": {}
 }

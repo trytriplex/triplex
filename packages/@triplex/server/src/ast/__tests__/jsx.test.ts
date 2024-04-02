@@ -352,7 +352,7 @@ describe("jsx ast extractor", () => {
       [
         {
           "column": 20,
-          "description": undefined,
+          "description": "Constructor arguments",
           "kind": "tuple",
           "line": 18,
           "name": "args",
@@ -433,7 +433,7 @@ describe("jsx ast extractor", () => {
     expect(props[0]).toMatchInlineSnapshot(`
       {
         "column": 25,
-        "description": undefined,
+        "description": "Constructor arguments",
         "kind": "tuple",
         "line": 10,
         "name": "args",
@@ -507,7 +507,7 @@ describe("jsx ast extractor", () => {
     expect(props).toMatchInlineSnapshot(`
       [
         {
-          "description": undefined,
+          "description": "Constructor arguments",
           "kind": "tuple",
           "name": "args",
           "required": false,
@@ -590,8 +590,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "Defines whether this material is transparent. This has an effect on rendering as transparent objects need special treatment and are rendered after non-transparent objects.
-      When set to true, the extent to which the material is transparent is controlled by setting it's .opacity property.
-      Default is false.",
+      When set to true, the extent to which the material is transparent is controlled by setting it's .opacity property.",
           "kind": "boolean",
           "name": "transparent",
           "required": true,
@@ -628,7 +627,8 @@ describe("jsx ast extractor", () => {
           "tags": {},
         },
         {
-          "description": "Sets the alpha value to be used when running an alpha test. Default is 0.",
+          "description": "Gets the alpha value to be used when running an alpha test. Default is 0.
+      Sets the alpha value to be used when running an alpha test. Default is 0.",
           "kind": "number",
           "name": "alphaTest",
           "required": true,
@@ -637,7 +637,9 @@ describe("jsx ast extractor", () => {
           },
         },
         {
-          "description": "Enables alpha to coverage. Can only be used with MSAA-enabled rendering contexts.",
+          "description": "Enables alpha to coverage. Can only be used with MSAA-enabled rendering contexts (meaning when the renderer was
+      created with *antialias* parameter set to \`true\`). Enabling this will smooth aliasing on clip plane edges and
+      alphaTest-clipped edges.",
           "kind": "boolean",
           "name": "alphaToCoverage",
           "required": true,
@@ -652,6 +654,54 @@ describe("jsx ast extractor", () => {
           "required": true,
           "tags": {
             "default": 1,
+          },
+        },
+        {
+          "description": "Represents the alpha value of the constant blend color. This property has only an effect when using custom
+      blending with {@link ConstantAlphaFactor} or {@link OneMinusConstantAlphaFactor}.",
+          "kind": "number",
+          "name": "blendAlpha",
+          "required": true,
+          "tags": {
+            "default": 0,
+          },
+        },
+        {
+          "description": "Represent the RGB values of the constant blend color. This property has only an effect when using custom
+      blending with {@link ConstantColorFactor} or {@link OneMinusConstantColorFactor}.",
+          "kind": "union",
+          "name": "blendColor",
+          "required": true,
+          "shape": [
+            {
+              "kind": "string",
+            },
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "tuple",
+              "shape": [
+                {
+                  "kind": "number",
+                  "label": "r",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "g",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "b",
+                  "required": true,
+                },
+              ],
+            },
+          ],
+          "tags": {
+            "default": 0,
           },
         },
         {
@@ -709,6 +759,26 @@ describe("jsx ast extractor", () => {
               "kind": "number",
               "label": "OneMinusDstColorFactor",
               "literal": 209,
+            },
+            {
+              "kind": "number",
+              "label": "ConstantColorFactor",
+              "literal": 211,
+            },
+            {
+              "kind": "number",
+              "label": "OneMinusConstantColorFactor",
+              "literal": 212,
+            },
+            {
+              "kind": "number",
+              "label": "ConstantAlphaFactor",
+              "literal": 213,
+            },
+            {
+              "kind": "number",
+              "label": "OneMinusConstantAlphaFactor",
+              "literal": 214,
             },
           ],
           "tags": {
@@ -787,13 +857,13 @@ describe("jsx ast extractor", () => {
             },
             {
               "kind": "number",
-              "label": "AdditiveBlending",
-              "literal": 2,
+              "label": "SubtractiveBlending",
+              "literal": 3,
             },
             {
               "kind": "number",
-              "label": "SubtractiveBlending",
-              "literal": 3,
+              "label": "AdditiveBlending",
+              "literal": 2,
             },
             {
               "kind": "number",
@@ -868,6 +938,26 @@ describe("jsx ast extractor", () => {
             },
             {
               "kind": "number",
+              "label": "ConstantColorFactor",
+              "literal": 211,
+            },
+            {
+              "kind": "number",
+              "label": "OneMinusConstantColorFactor",
+              "literal": 212,
+            },
+            {
+              "kind": "number",
+              "label": "ConstantAlphaFactor",
+              "literal": 213,
+            },
+            {
+              "kind": "number",
+              "label": "OneMinusConstantAlphaFactor",
+              "literal": 214,
+            },
+            {
+              "kind": "number",
               "literal": 210,
             },
           ],
@@ -938,13 +1028,13 @@ describe("jsx ast extractor", () => {
             },
             {
               "kind": "number",
-              "label": "LessDepth",
-              "literal": 2,
+              "label": "LessEqualDepth",
+              "literal": 3,
             },
             {
               "kind": "number",
-              "label": "LessEqualDepth",
-              "literal": 3,
+              "label": "LessDepth",
+              "literal": 2,
             },
             {
               "kind": "number",
@@ -972,7 +1062,8 @@ describe("jsx ast extractor", () => {
           },
         },
         {
-          "description": "Whether to have depth test enabled when rendering this material. Default is true.",
+          "description": "Whether to have depth test enabled when rendering this material. When the depth test is disabled, the depth write
+      will also be implicitly disabled.",
           "kind": "boolean",
           "name": "depthTest",
           "required": true,
@@ -1487,8 +1578,9 @@ describe("jsx ast extractor", () => {
           },
         },
         {
-          "description": "Defines whether this material is tone mapped according to the renderer's toneMapping setting.
-      Default is true.",
+          "description": "Defines whether this material is tone mapped according to the renderer's
+      {@link WebGLRenderer.toneMapping toneMapping} setting. It is ignored when rendering to a render target or using
+      post processing.",
           "kind": "boolean",
           "name": "toneMapped",
           "required": true,
@@ -1780,7 +1872,7 @@ describe("jsx ast extractor", () => {
           "tags": {},
         },
         {
-          "description": undefined,
+          "description": "Constructor arguments",
           "kind": "tuple",
           "name": "args",
           "required": false,
@@ -1904,7 +1996,8 @@ describe("jsx ast extractor", () => {
           "required": true,
           "tags": {
             "defaultValue": "\`0\`",
-            "remarks": "Sorting is from lowest to highest renderOrder.",
+            "remarks": "When this property is set for an instance of {@link Group | Group}, all descendants objects will be sorted and rendered together.
+      Sorting is from lowest to highest renderOrder.",
           },
         },
       ]
@@ -2044,7 +2137,7 @@ describe("jsx ast extractor", () => {
           "tags": {},
         },
         {
-          "description": undefined,
+          "description": "Constructor arguments",
           "kind": "tuple",
           "name": "args",
           "required": false,
@@ -2172,7 +2265,8 @@ describe("jsx ast extractor", () => {
           "required": true,
           "tags": {
             "defaultValue": "\`0\`",
-            "remarks": "Sorting is from lowest to highest renderOrder.",
+            "remarks": "When this property is set for an instance of {@link Group | Group}, all descendants objects will be sorted and rendered together.
+      Sorting is from lowest to highest renderOrder.",
           },
         },
       ]
@@ -2454,7 +2548,7 @@ describe("jsx ast extractor", () => {
           "valueKind": "identifier",
         },
         {
-          "description": undefined,
+          "description": "Constructor arguments",
           "kind": "tuple",
           "name": "args",
           "required": false,
@@ -2574,7 +2668,8 @@ describe("jsx ast extractor", () => {
           "required": true,
           "tags": {
             "defaultValue": "\`0\`",
-            "remarks": "Sorting is from lowest to highest renderOrder.",
+            "remarks": "When this property is set for an instance of {@link Group | Group}, all descendants objects will be sorted and rendered together.
+      Sorting is from lowest to highest renderOrder.",
           },
         },
       ]

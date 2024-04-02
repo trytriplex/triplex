@@ -4,6 +4,8 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { vi } from "vitest";
+
 globalThis.DOMRect = class DOMRect {
   bottom: number = 0;
   left: number = 0;
@@ -22,3 +24,9 @@ globalThis.DOMRect = class DOMRect {
     return JSON.stringify(this);
   }
 };
+
+vi.mock("triplex-drei", () => ({
+  // Stub out Camera controls as it needs canvas capabilities that are unavailable in jsdom.
+  CameraControls: () => null,
+  Grid: () => null,
+}));

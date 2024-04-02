@@ -50,7 +50,7 @@ export const thumbnail: ThumbnailFunction = (container) => {
       <Canvas shadows style={{ inset: 0, position: "absolute" }}>
         <Ready>
           <ErrorBoundary fallbackRender={() => null}>
-            <Bounds damping={0} fit>
+            <Bounds fit>
               <Provider>
                 <Component />
               </Provider>

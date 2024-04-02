@@ -16,7 +16,13 @@ import {
   useRef,
   useState,
 } from "react";
-import { Box3, type Group, type Vector3Tuple } from "three";
+import {
+  Box3,
+  type Group,
+  type OrthographicCamera,
+  type PerspectiveCamera,
+  type Vector3Tuple,
+} from "three";
 import { CameraControls } from "triplex-drei";
 import { ALL_LAYERS } from "../util/layers";
 import { findObject3D } from "../util/scene";
@@ -27,10 +33,10 @@ const DEFAULT_CAMERA = "perspective";
 const TEMP_BOX3 = new Box3();
 const DEFAULT_POSITION: Vector3Tuple = [0, 0, 1];
 
-type ThreeCameras = THREE.OrthographicCamera | THREE.PerspectiveCamera;
+type CameraType = OrthographicCamera | PerspectiveCamera;
 
 interface CameraContextType {
-  camera: ThreeCameras | undefined;
+  camera: CameraType | undefined;
   controls: React.MutableRefObject<CameraControlsImpl | null>;
 }
 
@@ -39,7 +45,7 @@ const CameraContext = createContext<CameraContextType>({
   controls: { current: null },
 });
 
-function fitCameraToViewport(camera: ThreeCameras, size: Size) {
+function fitCameraToViewport(camera: CameraType, size: Size) {
   if ("isOrthographicCamera" in camera) {
     const left = size.width / -2;
     const right = size.width / 2;
@@ -104,15 +110,15 @@ export function Camera({ children }: { children?: React.ReactNode }) {
   const size = useThree((state) => state.size);
   const camera = useThree((state) => state.camera);
   const prevTriplexCamera = useRef<"perspective" | "orthographic">();
-  const orthCameraRef = useRef<THREE.OrthographicCamera>(null!);
-  const perspCameraRef = useRef<THREE.PerspectiveCamera>(null!);
+  const orthCameraRef = useRef<OrthographicCamera>(null!);
+  const perspCameraRef = useRef<PerspectiveCamera>(null!);
   const controlsRef = useRef<CameraControlsImpl>(null);
-  const [activeCamera, setActiveCamera] = useState<ThreeCameras | undefined>(
+  const [activeCamera, setActiveCamera] = useState<CameraType | undefined>(
     undefined
   );
   const isTriplexCamera =
     activeCamera && activeCamera.name === TRIPLEX_CAMERA_NAME;
-  const previousUserlandCamera = useRef<ThreeCameras | undefined>();
+  const previousUserlandCamera = useRef<CameraType | undefined>();
 
   useEffect(() => {
     return on("request-state-change", ({ state }) => {
@@ -154,9 +160,7 @@ export function Camera({ children }: { children?: React.ReactNode }) {
               ["PerspectiveCamera", "OrthographicCamera"].includes(camera.type)
             ) {
               setType("user");
-              setActiveCamera(
-                camera as THREE.OrthographicCamera | THREE.PerspectiveCamera
-              );
+              setActiveCamera(camera as CameraType);
               return { handled: true };
             } else {
               return { handled: false };
@@ -260,7 +264,6 @@ export function Camera({ children }: { children?: React.ReactNode }) {
         // So we explicitly set the camera instead of relying on "default camera" behaviour.
         camera={activeCamera}
         enabled={isTriplexCamera}
-        // @ts-expect-error — TODO: Fix duplicate types error.
         ref={controlsRef}
       />
       {children}
