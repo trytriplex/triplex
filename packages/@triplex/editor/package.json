@@ -43,7 +43,7 @@
     "tailwindcss": "^3.3.2",
     "three": "^0.163.0",
     "typescript": "^5.3.3",
-    "vite": "^4.4.11"
+    "vite": "^4.5.2"
   },
   "peerDependencies": {
     "@react-three/fiber": "^8.0.0",
