@@ -8,7 +8,6 @@ import { compose, on } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
 import { cn } from "./ds/cn";
 import { Stage } from "./stage";
-import { useCanvasStage } from "./stores/canvas-stage";
 import { useEditor } from "./stores/editor";
 import { useScene } from "./stores/scene";
 
@@ -23,7 +22,6 @@ export function SceneFrame() {
   const [blockPointerEvents, setBlockPointerEvents] = useState(false);
   const navigateTo = useScene((store) => store.navigateTo);
   const editor = useEditor();
-  const canvasLayout = useCanvasStage((store) => store.canvasStage);
   const playState = useScene((store) => store.playState);
 
   useEffect(() => {
@@ -67,7 +65,7 @@ export function SceneFrame() {
     <div
       className={cn([
         "relative row-start-3 flex items-center justify-center overflow-hidden",
-        canvasLayout === "expanded" || playState === "play"
+        playState === "play"
           ? "col-span-3 col-start-1"
           : "col-span-1 col-start-2",
       ])}

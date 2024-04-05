@@ -4,11 +4,10 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { type EditorSettings, type ProjectSettings } from "@triplex/server";
+import { type ProjectSettings } from "@triplex/server";
 import { create } from "zustand";
 
 interface CanvasStageStore {
-  canvasStage: EditorSettings["layout"];
   canvasZoom: number;
   decreaseZoom: () => void;
   fitFrameToViewport: () => void;
@@ -19,7 +18,6 @@ interface CanvasStageStore {
   resetZoomCounter: number;
   setCanvasZoom: (zoom: number) => void;
   setFrame: (frame: ProjectSettings["frame"]) => void;
-  toggleCanvasStage: () => void;
 }
 
 function getZoomIncrement(zoom: number) {
@@ -55,7 +53,6 @@ function getZoomDecrement(zoom: number) {
 }
 
 export const useCanvasStage = create<CanvasStageStore>((set, get) => ({
-  canvasStage: window.triplex.env.editor.layout,
   canvasZoom: 100,
   decreaseZoom() {
     const store = get();
@@ -91,11 +88,5 @@ export const useCanvasStage = create<CanvasStageStore>((set, get) => ({
   },
   setFrame(frame) {
     set({ frame });
-  },
-  toggleCanvasStage() {
-    const store = get();
-    set({
-      canvasStage: store.canvasStage === "collapsed" ? "expanded" : "collapsed",
-    });
   },
 }));

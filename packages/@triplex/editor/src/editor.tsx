@@ -9,7 +9,6 @@ import { useEffect } from "react";
 import { useScreenView } from "./analytics";
 import { cn } from "./ds/cn";
 import { SceneFrame } from "./scence-bridge";
-import { useCanvasStage } from "./stores/canvas-stage";
 import { useEditor } from "./stores/editor";
 import { useScene } from "./stores/scene";
 import { AssetsDrawer } from "./ui/assets-drawer";
@@ -24,7 +23,6 @@ import { TitleBar } from "./ui/title-bar";
 export function EditorFrame() {
   const { exportName, index, open, path } = useEditor();
   const isFileOpen = !!exportName && !!path;
-  const canvasLayout = useCanvasStage((store) => store.canvasStage);
   const playState = useScene((store) => store.playState);
 
   useScreenView("editor", "Screen");
@@ -43,9 +41,7 @@ export function EditorFrame() {
             "grid-rows-[2rem_2.25rem_auto]"
           : // On linux hide the menu bar
             "grid-rows-[0rem_2.25rem_auto]",
-        "fixed inset-0 grid select-none bg-gradient-to-b from-white/5 to-neutral-900",
-        canvasLayout === "collapsed" && "grid-cols-[16rem_auto_16rem]",
-        canvasLayout === "expanded" && "grid-cols-[17.125rem_auto_17.125rem]",
+        "fixed inset-0 grid select-none grid-cols-[16rem_auto_16rem] bg-gradient-to-b from-white/5 to-neutral-900",
       ])}
     >
       <TitleBar />
@@ -54,12 +50,7 @@ export function EditorFrame() {
       {isFileOpen && (
         <>
           {playState !== "play" && (
-            <div
-              className={cn([
-                "z-10 col-start-1 row-auto row-start-3 flex overflow-hidden",
-                canvasLayout === "expanded" && "rounded-lg py-3 pl-3",
-              ])}
-            >
+            <div className="z-10 col-start-1 row-auto row-start-3 flex overflow-hidden">
               {path && <ScenePanel />}
             </div>
           )}
@@ -71,12 +62,7 @@ export function EditorFrame() {
           </div>
 
           {playState !== "play" && (
-            <div
-              className={cn([
-                "pointer-events-none z-10 col-start-3 row-start-3 flex overflow-hidden",
-                canvasLayout === "expanded" && "rounded-lg py-3 pr-3",
-              ])}
-            >
+            <div className="pointer-events-none z-10 col-start-3 row-start-3 flex overflow-hidden">
               <ContextPanel />
             </div>
           )}

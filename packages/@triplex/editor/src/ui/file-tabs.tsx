@@ -4,19 +4,12 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import {
-  Component1Icon,
-  Cross2Icon,
-  CubeIcon,
-  EnterFullScreenIcon,
-  ExitFullScreenIcon,
-} from "@radix-ui/react-icons";
+import { Component1Icon, Cross2Icon, CubeIcon } from "@radix-ui/react-icons";
 import { useLazySubscription } from "@triplex/ws/react";
 import { useCallback, useEffect, useRef } from "react";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 import { Pressable } from "../ds/pressable";
-import { useCanvasStage } from "../stores/canvas-stage";
 import { useEditor } from "../stores/editor";
 import { useOverlayStore } from "../stores/overlay";
 import { useScene } from "../stores/scene";
@@ -169,8 +162,6 @@ export function FileTabs() {
     { exportName: string; filePath: string; index: number }[]
   >([]);
   const lastAvailableTab = projectState.at(-1);
-  const canvasLayout = useCanvasStage((store) => store.canvasStage);
-  const toggleCanvasLayout = useCanvasStage((store) => store.toggleCanvasStage);
   const playState = useScene((store) => store.playState);
 
   const openLastTab = useCallback(() => {
@@ -200,14 +191,6 @@ export function FileTabs() {
       });
     }
   );
-
-  const toggleLayout = useEvent(() => {
-    window.triplex.setEditorConfig(
-      "layout",
-      canvasLayout === "expanded" ? "collapsed" : "expanded"
-    );
-    toggleCanvasLayout();
-  });
 
   const onCloseHandler = useEvent(
     (filePath: string, exportName: string, index: number) => {
@@ -306,27 +289,6 @@ export function FileTabs() {
           tabIndex={-1}
         />
       </div>
-
-      {playState !== "play" && (
-        <IconButton
-          actionId={
-            canvasLayout === "expanded"
-              ? "set_canvas_collapsed"
-              : "set_canvas_expanded"
-          }
-          icon={
-            canvasLayout === "expanded"
-              ? ExitFullScreenIcon
-              : EnterFullScreenIcon
-          }
-          label={
-            canvasLayout === "expanded"
-              ? "Collapse Scene Canvas"
-              : "Expand Scene Canvas"
-          }
-          onClick={toggleLayout}
-        />
-      )}
     </nav>
   );
 }

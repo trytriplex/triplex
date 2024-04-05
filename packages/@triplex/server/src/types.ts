@@ -348,9 +348,7 @@ export interface ProjectSettings {
 /**
  * Settings for the editor that are persisted to the file system.
  */
-export interface EditorSettings {
-  layout: "expanded" | "collapsed";
-}
+export interface EditorSettings {}
 
 /**
  * Exposed ports used for Triplex.
