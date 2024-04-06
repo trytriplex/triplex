@@ -44,6 +44,7 @@ interface BridgeContext {
     exportName: string;
     path: string;
   }): void;
+  playCamera: "default" | "editor";
   /**
    * Current state of the scene.
    */
@@ -65,6 +66,10 @@ interface BridgeContext {
    * @see {@link ./editor.tsx}
    */
   reset(): void;
+  /**
+   * Set play camera for the scene when playing.
+   */
+  setPlayCamera(camera: "default" | "editor"): void;
   /**
    * Set play state for the scene.
    */
@@ -109,6 +114,7 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     navigateTo(sceneObject) {
       send("request-open-component", sceneObject);
     },
+    playCamera: "editor",
     playState: "edit",
     ready: false,
     refresh({ hard }: { hard?: boolean } = {}) {
@@ -120,12 +126,29 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     sceneReady() {
       setStore({ ready: true });
     },
+    setPlayCamera(camera) {
+      const store = get();
+
+      setStore({ playCamera: camera });
+
+      if (store.playState !== "edit") {
+        // We're either paused or playing the scene. Flush it again!
+        send("request-state-change", {
+          camera,
+          state: store.playState,
+        });
+      }
+    },
     setPlayState(playState: "play" | "pause" | "edit") {
+      const store = get();
+
       setStore({ playState });
-      send("request-state-change", { state: playState });
+      send("request-state-change", {
+        camera: store.playCamera,
+        state: playState,
+      });
 
       if (playState === "edit") {
-        const store = get();
         store.refresh();
       }
     },

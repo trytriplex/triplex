@@ -167,6 +167,7 @@ export function SceneFrame({
         layers={editorLayer}
         sectionColor="#9d4b4b"
         sectionSize={3}
+        side={2}
       />
     </Canvas>
   );

@@ -190,7 +190,10 @@ export interface HostSendEventData {
     propName: string;
     propValue: unknown;
   };
-  "request-state-change": { state: "play" | "pause" | "edit" };
+  "request-state-change": {
+    camera: "default" | "editor";
+    state: "play" | "pause" | "edit";
+  };
   "self:request-reset-file": { path: string };
 }
 

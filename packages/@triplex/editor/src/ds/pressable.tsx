@@ -5,7 +5,10 @@
  * file in the root directory of this source tree.
  */
 import {
+  cloneElement,
+  createContext,
   forwardRef,
+  useContext,
   useEffect,
   type KeyboardEventHandler,
   type MouseEventHandler,
@@ -13,6 +16,20 @@ import {
 import { useAnalytics } from "../analytics";
 import useEvent from "../util/use-event";
 import { cn } from "./cn";
+
+const PrimitiveContext = createContext({});
+
+export const PrimitiveProvider = forwardRef<unknown, { children: JSX.Element }>(
+  ({ children, ...props }, ref) => {
+    return (
+      <PrimitiveContext.Provider value={props}>
+        {cloneElement(children, { ref })}
+      </PrimitiveContext.Provider>
+    );
+  }
+);
+
+PrimitiveProvider.displayName = "PrimitiveProvider";
 
 export const Pressable = forwardRef<
   HTMLDivElement,
@@ -53,6 +70,7 @@ export const Pressable = forwardRef<
     ref
   ) => {
     const analytics = useAnalytics();
+    const props = useContext(PrimitiveContext);
 
     useEffect(() => {
       if (!onPress || !accelerator) {
@@ -113,6 +131,7 @@ export const Pressable = forwardRef<
         style={style}
         tabIndex={tabIndex || 0}
         title={title}
+        {...props}
       >
         {children}
       </div>

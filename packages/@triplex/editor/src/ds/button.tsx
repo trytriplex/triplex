@@ -21,7 +21,7 @@ export const IconButton = forwardRef<
     isSelected?: boolean | "partial";
     label: string;
     onClick?: () => void;
-    size?: "md" | "sm" | "xs";
+    size?: "md" | "sm" | "xs" | "flush";
     tabIndex?: number;
     testId?: string;
     variant?: "default" | "inverse";
@@ -71,6 +71,7 @@ export const IconButton = forwardRef<
         size === "md" && "h-[26px] w-[26px] rounded-md p-1.5",
         size === "sm" && "rounded-md p-1",
         size === "xs" && "rounded p-0.5",
+        size === "flush" && "flex items-center rounded",
         className,
       ])}
       label={label}

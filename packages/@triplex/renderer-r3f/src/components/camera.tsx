@@ -18,6 +18,7 @@ import {
 } from "react";
 import {
   Box3,
+  MathUtils,
   type Group,
   type OrthographicCamera,
   type PerspectiveCamera,
@@ -93,6 +94,7 @@ export function FitCameraToScene({
         paddingRight: 0.5,
         paddingTop: 0.5,
       });
+      controls.current.rotate(0, MathUtils.degToRad(-22), false);
     }
   }, [controls, scene, trigger]);
 
@@ -107,8 +109,8 @@ export function Camera({ children }: { children?: React.ReactNode }) {
   );
   const scene = useThree((state) => state.scene);
   const set = useThree((state) => state.set);
-  const size = useThree((state) => state.size);
   const camera = useThree((state) => state.camera);
+  const gl = useThree((state) => state.gl);
   const prevTriplexCamera = useRef<"perspective" | "orthographic">();
   const orthCameraRef = useRef<OrthographicCamera>(null!);
   const perspCameraRef = useRef<PerspectiveCamera>(null!);
@@ -121,8 +123,8 @@ export function Camera({ children }: { children?: React.ReactNode }) {
   const previousUserlandCamera = useRef<CameraType | undefined>();
 
   useEffect(() => {
-    return on("request-state-change", ({ state }) => {
-      if (state !== "edit") {
+    return on("request-state-change", ({ camera, state }) => {
+      if (state !== "edit" && camera === "default") {
         setType("user");
         setActiveCamera(previousUserlandCamera.current);
       } else {
@@ -192,15 +194,26 @@ export function Camera({ children }: { children?: React.ReactNode }) {
   }, [scene, type]);
 
   useLayoutEffect(() => {
-    fitCameraToViewport(orthCameraRef.current, size);
-    fitCameraToViewport(perspCameraRef.current, size);
-  }, [size]);
+    function fitCameras() {
+      const size: Size = {
+        height: gl.domElement.clientHeight,
+        left: 0,
+        top: 0,
+        width: gl.domElement.clientWidth,
+      };
 
-  useLayoutEffect(() => {
-    if (camera.name !== TRIPLEX_CAMERA_NAME) {
+      fitCameraToViewport(orthCameraRef.current, size);
+      fitCameraToViewport(perspCameraRef.current, size);
       fitCameraToViewport(camera, size);
     }
-  }, [camera, size]);
+
+    const observer = new ResizeObserver(fitCameras);
+    observer.observe(gl.domElement);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [camera, gl.domElement]);
 
   useFrame(({ camera, gl, scene }) => {
     if (activeCamera) {
@@ -254,7 +267,7 @@ export function Camera({ children }: { children?: React.ReactNode }) {
         // @ts-expect-error
         manual
         name={TRIPLEX_CAMERA_NAME}
-        near={-10}
+        near={-100}
         position={DEFAULT_POSITION}
         ref={orthCameraRef}
         zoom={100}

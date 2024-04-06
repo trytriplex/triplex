@@ -153,6 +153,7 @@ export class EditorPage {
 
     return {
       activateButton: this.page.getByLabel("Activate Frame", { exact: true }),
+      click: () => locator.click({ force: true, noWaitAfter: true }),
       collapseButton: this.page.getByLabel("Collapse To Frame"),
       deactivateButton: this.page.getByLabel("Deactivate Frame"),
       expandButton: this.page.getByLabel("Expand Frame"),

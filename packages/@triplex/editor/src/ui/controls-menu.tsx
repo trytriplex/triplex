@@ -6,6 +6,7 @@
  */
 
 import {
+  CaretDownIcon,
   PauseIcon,
   PlayIcon,
   ResetIcon,
@@ -16,6 +17,8 @@ import { on, send, type Controls } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Button as DSButton, IconButton } from "../ds/button";
+import { cn } from "../ds/cn";
+import { Menu, MenuRadioGroup, MenuRadioItem } from "../ds/menu";
 import { Separator } from "../ds/separator";
 import { useCanvasStage } from "../stores/canvas-stage";
 import { useScene } from "../stores/scene";
@@ -25,6 +28,8 @@ export function ControlsMenu() {
   const refresh = useScene((store) => store.refresh);
   const playState = useScene((store) => store.playState);
   const setPlayState = useScene((store) => store.setPlayState);
+  const setPlayCamera = useScene((store) => store.setPlayCamera);
+  const playCamera = useScene((store) => store.playCamera);
   const [controls, setControls] = useState<Controls>();
   const zoom = useCanvasStage((store) => store.canvasZoom);
   const frame = useCanvasStage((store) => store.frame);
@@ -50,74 +55,79 @@ export function ControlsMenu() {
       className="pointer-events-auto mx-auto mb-auto mt-3 flex gap-0.5"
       data-testid="controls-menu"
     >
-      {playState !== "play" && (
-        <div className="flex rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1 text-neutral-400">
-          <ErrorBoundary fallbackRender={() => null} resetKeys={[controls]}>
-            {controls.map((control, index) => {
-              switch (control.type) {
-                case "button": {
-                  return (
-                    <Button
-                      control={control}
-                      key={control.id}
-                      onClick={(id) => send("control-triggered", { id })}
-                    />
-                  );
-                }
-
-                case "button-group": {
-                  return (
-                    <ButtonGroup
-                      control={control}
-                      key={control.id}
-                      onClick={(id) => send("control-triggered", { id })}
-                    />
-                  );
-                }
-
-                case "toggle-button": {
-                  return (
-                    <ToggleButton
-                      control={control}
-                      key={control.id}
-                      onClick={(id) => send("control-triggered", { id }, true)}
-                    />
-                  );
-                }
-
-                case "separator": {
-                  return <Separator key={index + "separator"} />;
-                }
+      <div
+        className={cn([
+          playState === "play" && "hidden",
+          "flex rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1 text-neutral-400",
+        ])}
+        // @ts-expect-error — updating React types will make this go away
+        inert={playState === "play" ? "true" : undefined}
+      >
+        <ErrorBoundary fallbackRender={() => null} resetKeys={[controls]}>
+          {controls.map((control, index) => {
+            switch (control.type) {
+              case "button": {
+                return (
+                  <Button
+                    control={control}
+                    key={control.id}
+                    onClick={(id) => send("control-triggered", { id })}
+                  />
+                );
               }
-            })}
-          </ErrorBoundary>
 
-          {frame === "intrinsic" && (
-            <>
-              <Separator />
+              case "button-group": {
+                return (
+                  <ButtonGroup
+                    control={control}
+                    key={control.id}
+                    onClick={(id) => send("control-triggered", { id })}
+                  />
+                );
+              }
 
-              <DSButton
-                actionId="refresh_scene"
-                aria-label="Reset Zoom"
-                onClick={resetZoom}
-                size="tight"
-              >
-                <span
-                  aria-hidden
-                  className="w-8 text-center text-xs text-neutral-400"
-                >{`${zoom}%`}</span>
-              </DSButton>
+              case "toggle-button": {
+                return (
+                  <ToggleButton
+                    control={control}
+                    key={control.id}
+                    onClick={(id) => send("control-triggered", { id }, true)}
+                  />
+                );
+              }
 
-              <IconButton
-                actionId="fit_frame_to_viewport"
-                icon={SizeIcon}
-                label="Fit Frame To Viewport"
-                onClick={fitFrameToViewport}
-              />
-            </>
-          )}
-        </div>
-      )}
+              case "separator": {
+                return <Separator key={index + "separator"} />;
+              }
+            }
+          })}
+        </ErrorBoundary>
+
+        {frame === "intrinsic" && (
+          <>
+            <Separator />
+
+            <DSButton
+              actionId="refresh_scene"
+              aria-label="Reset Zoom"
+              onClick={resetZoom}
+              size="tight"
+            >
+              <span
+                aria-hidden
+                className="w-8 text-center text-xs text-neutral-400"
+              >{`${zoom}%`}</span>
+            </DSButton>
+
+            <IconButton
+              actionId="fit_frame_to_viewport"
+              icon={SizeIcon}
+              label="Fit Frame To Viewport"
+              onClick={fitFrameToViewport}
+            />
+          </>
+        )}
+      </div>
 
       <div className="flex rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1 text-neutral-400">
         {playState !== "edit" && (
@@ -155,6 +165,22 @@ export function ControlsMenu() {
             onClick={() => setPlayState("play")}
           />
         )}
+
+        <Menu
+          trigger={
+            <IconButton
+              actionId="play_options"
+              icon={CaretDownIcon}
+              label="Play Options"
+              size="flush"
+            />
+          }
+        >
+          <MenuRadioGroup onChange={setPlayCamera} value={playCamera}>
+            <MenuRadioItem value="editor">Editor camera</MenuRadioItem>
+            <MenuRadioItem value="default">Default camera</MenuRadioItem>
+          </MenuRadioGroup>
+        </Menu>
       </div>
     </div>
   );

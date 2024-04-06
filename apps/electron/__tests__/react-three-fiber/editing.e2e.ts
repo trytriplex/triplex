@@ -46,6 +46,7 @@ test("insert element to component with no fragment", async ({ editorR3F }) => {
   await drawer.addAsset("Box");
 
   const button = await editorR3F.scenePanel.elementButton("Box");
+  await button.click();
   await expect(editorR3F.contextPanel.heading).toHaveText("Box");
   await expect(button.locator).toHaveText("Box");
 });

@@ -41,7 +41,7 @@
     "cross-env": "^7.0.3",
     "eslint": "^8.51.0",
     "eslint-plugin-header": "^3.1.1",
-    "eslint-plugin-playwright": "^0.17.0",
+    "eslint-plugin-playwright": "^1.5.4",
     "husky": "^8.0.3",
     "jsdom": "^21.1.0",
     "lint-staged": "^13.2.2",

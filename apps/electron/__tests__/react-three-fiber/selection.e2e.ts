@@ -10,7 +10,7 @@ import { test } from "../utils/runner";
 test("select custom component", async ({ editorR3F }) => {
   await editorR3F.waitForScene();
 
-  await editorR3F.frame.locator.click({ force: true });
+  await editorR3F.frame.click();
 
   await expect(editorR3F.contextPanel.heading).toHaveText("Box");
 });
@@ -26,7 +26,7 @@ test.describe(() => {
   test("select camera component", async ({ editorR3F }) => {
     await editorR3F.waitForScene();
 
-    await editorR3F.frame.locator.click({ force: true });
+    await editorR3F.frame.click();
 
     await expect(editorR3F.contextPanel.heading).toHaveText(
       "PerspectiveCamera"
@@ -45,7 +45,7 @@ test.describe(() => {
   test("select host element mesh", async ({ editorR3F }) => {
     await editorR3F.waitForScene();
 
-    await editorR3F.frame.locator.click({ force: true });
+    await editorR3F.frame.click();
 
     await expect(editorR3F.contextPanel.heading).toHaveText("mesh");
   });
@@ -62,7 +62,7 @@ test.describe(() => {
   test("select host element light", async ({ editorR3F }) => {
     await editorR3F.waitForScene();
 
-    await editorR3F.frame.locator.click({ force: true });
+    await editorR3F.frame.click();
 
     await expect(editorR3F.contextPanel.heading).toHaveText("ambientLight");
   });
@@ -81,7 +81,7 @@ test.describe(() => {
   }) => {
     await editorR3F.waitForScene();
 
-    await editorR3F.frame.locator.click({ force: true });
+    await editorR3F.frame.click();
 
     await expect(editorR3F.contextPanel.heading).toHaveText("Container");
   });
@@ -100,7 +100,7 @@ test.describe(() => {
   }) => {
     await editorR3F.waitForScene();
 
-    await editorR3F.frame.locator.click({ force: true });
+    await editorR3F.frame.click();
 
     await expect(editorR3F.contextPanel.heading).toHaveText("Inbuilt2");
   });

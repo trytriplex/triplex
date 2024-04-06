@@ -25,7 +25,7 @@
     "create-triplex-project": "0.66.0"
   },
   "devDependencies": {
-    "@playwright/test": "^1.39.0",
+    "@playwright/test": "^1.43.0",
     "@sentry/electron": "^4.5.0",
     "@sentry/node": "^7.51.0",
     "@types/node": "^18.11.18",

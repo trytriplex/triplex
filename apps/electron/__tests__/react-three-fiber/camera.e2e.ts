@@ -37,8 +37,10 @@ test("switch to play mode and back", async ({ editorR3F }) => {
 
   await editorR3F.controls.button("Play Scene").click();
 
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/type: user/);
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/name: user_defined/);
+  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/type: perspective/);
+  await expect(editorR3F.devOnlyCameraPanel).toHaveText(
+    /name: __triplex_camera/
+  );
 
   await editorR3F.controls.button("Stop Scene").click();
 
@@ -46,6 +48,44 @@ test("switch to play mode and back", async ({ editorR3F }) => {
   await expect(editorR3F.devOnlyCameraPanel).toHaveText(
     /name: __triplex_camera/
   );
+});
+
+test("switch to play mode and toggle to default camera", async ({
+  editorR3F,
+}) => {
+  await editorR3F.waitForScene();
+
+  await editorR3F.controls.button("Play Scene").click();
+
+  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/type: perspective/);
+  await expect(editorR3F.devOnlyCameraPanel).toHaveText(
+    /name: __triplex_camera/
+  );
+
+  await editorR3F.controls.button("Play Options").click();
+  await editorR3F.page.getByText("Default camera").click();
+
+  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/type: user/);
+  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/name: user_defined/);
+});
+
+test("toggle to default camera and switch to play mode", async ({
+  editorR3F,
+}) => {
+  await editorR3F.waitForScene();
+
+  await editorR3F.controls.button("Play Options").click();
+  await editorR3F.page.getByText("Default camera").click();
+
+  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/type: perspective/);
+  await expect(editorR3F.devOnlyCameraPanel).toHaveText(
+    /name: __triplex_camera/
+  );
+
+  await editorR3F.controls.button("Play Scene").click();
+
+  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/type: user/);
+  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/name: user_defined/);
 });
 
 test.skip("unset userland camera to use default camera in play mode", async ({

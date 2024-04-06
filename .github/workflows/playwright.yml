@@ -103,7 +103,9 @@ jobs:
           path: blob-reports
 
       - name: Merge into HTML Report
-        run: npx playwright merge-reports --reporter html,github ./blob-reports
+        run:
+          npx playwright merge-reports --reporter html,github --config
+          test/merge.config.ts ./blob-reports
 
       - name: Upload HTML report
         uses: actions/upload-artifact@v3

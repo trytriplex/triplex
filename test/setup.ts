@@ -30,3 +30,9 @@ vi.mock("triplex-drei", () => ({
   CameraControls: () => null,
   Grid: () => null,
 }));
+
+globalThis.ResizeObserver = class ResizeObserver {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};

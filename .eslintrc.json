@@ -42,6 +42,7 @@
     "no-unused-expressions": "off",
     "playwright/no-focused-test": "off",
     "playwright/no-force-option": "off",
+    "playwright/no-standalone-expect": "off",
     "prefer-const": "off",
     "react/no-unknown-property": "off",
     "space-before-function-paren": "off",
