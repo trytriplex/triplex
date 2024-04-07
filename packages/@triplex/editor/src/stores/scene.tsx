@@ -118,7 +118,11 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     playState: "edit",
     ready: false,
     refresh({ hard }: { hard?: boolean } = {}) {
-      send("request-refresh-scene", { hard });
+      if (hard) {
+        window.location.reload();
+      } else {
+        send("request-refresh-scene", undefined);
+      }
     },
     reset() {
       send("request-reset-scene", undefined);

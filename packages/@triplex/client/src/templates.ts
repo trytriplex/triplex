@@ -93,12 +93,6 @@ export const scripts = {
           ${metaHot}.data.render({ config: ${JSON.stringify(
         template.config
       )}, files, provider });
-
-          on("request-refresh-scene", (data) => {
-            if (data.hard) {
-              window.location.reload();
-            }
-          });
         }
 
         ${metaHot}.accept((mod) => {

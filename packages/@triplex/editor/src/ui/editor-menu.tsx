@@ -176,13 +176,13 @@ export function EditorMenu() {
               accelerator: shortcut("R", { meta: true }),
               click: () => refresh(),
               id: "refresh-scene",
-              label: "Refresh Scene",
+              label: "Reset Scene",
             },
             {
               accelerator: shortcut("R", { meta: true, shift: true }),
               click: () => refresh({ hard: true }),
               id: "hard-refresh-scene",
-              label: "Reload Scene",
+              label: "Reload Editor",
             },
             { type: "separator" },
             {

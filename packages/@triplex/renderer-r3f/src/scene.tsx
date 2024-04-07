@@ -82,13 +82,7 @@ export function SceneFrame({
   }, []);
 
   useEffect(() => {
-    return on("request-refresh-scene", (data) => {
-      if (data.hard) {
-        return;
-      }
-
-      incrementReset();
-    });
+    return on("request-refresh-scene", incrementReset);
   }, []);
 
   return (

@@ -170,7 +170,7 @@ export interface HostSendEventData {
         path: string;
       }
     | undefined;
-  "request-refresh-scene": { hard?: boolean };
+  "request-refresh-scene": undefined;
   "request-reset-prop": {
     column: number;
     line: number;
