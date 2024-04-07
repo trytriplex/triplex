@@ -13,22 +13,22 @@ global.IS_REACT_ACT_ENVIRONMENT = true;
 
 function find(
   nodes: TreeNode[],
-  invariant: (node: TreeNode) => boolean
-): TreeNode | null {
+  predicate: (node: TreeNode) => boolean
+): TreeNode | undefined {
   for (const node of nodes) {
-    if (invariant(node)) {
+    if (predicate(node)) {
       return node;
     }
 
     if (node.children) {
-      const result = find(node.children, invariant);
+      const result = find(node.children, predicate);
       if (result) {
         return result;
       }
     }
   }
 
-  return null;
+  return undefined;
 }
 
 export async function render(jsx: JSX.Element) {
@@ -48,6 +48,16 @@ export async function render(jsx: JSX.Element) {
     },
     fireDOMEvent,
     tree: {
+      getByName(name: string) {
+        const tree = controls.toTree();
+        if (!tree) {
+          throw new Error("invariant");
+        }
+
+        const result = find(tree, (node) => node.props.name === name);
+
+        return result;
+      },
       getByType(type: string) {
         const tree = controls.toTree();
         if (!tree) {
@@ -55,9 +65,6 @@ export async function render(jsx: JSX.Element) {
         }
 
         const result = find(tree, (node) => node.type === type);
-        if (!result) {
-          throw new Error("invariant");
-        }
 
         return result;
       },
