@@ -17,6 +17,7 @@ out/
 .pnpm-store
 .npmrc
 tsconfig.tsbuildinfo
+.eslintcache
 
 # debug
 npm-debug.log*
