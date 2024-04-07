@@ -40,7 +40,7 @@ export function Scene({
         </mesh>
       </group>
 
-      <MapControls />
+      <MapControls makeDefault={false} />
     </>
   );
 }

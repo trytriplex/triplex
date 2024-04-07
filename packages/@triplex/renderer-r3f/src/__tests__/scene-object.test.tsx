@@ -5,9 +5,12 @@
  * file in the root directory of this source tree.
  */
 // @vitest-environment jsdom
+import { send } from "@triplex/bridge/host";
 import { Fragment } from "react";
 import { render } from "react-three-test";
+import { MapControls } from "triplex-drei";
 import { describe, expect, it } from "vitest";
+import { Camera } from "../components/camera";
 import { SceneObject, SceneObjectContext } from "../scene-object";
 import {
   findObject3D,
@@ -383,5 +386,55 @@ describe("scene object component", () => {
       name: "group",
       path: "/foo",
     });
+  });
+
+  it("should not render userland controls when triplex camera is active", async () => {
+    const { tree } = await render(
+      <Camera>
+        <SceneObject
+          __component={MapControls}
+          __meta={{
+            column: 1,
+            line: 1,
+            name: "MapControls",
+            path: "",
+            rotate: false,
+            scale: false,
+            translate: false,
+          }}
+        />
+      </Camera>
+    );
+
+    expect(tree.getByName("__stub_map_controls__")).toBeUndefined();
+  });
+
+  it("should render userland controls when triplex camera is not active", async () => {
+    const { act, tree } = await render(
+      <Camera>
+        <SceneObject
+          __component={MapControls}
+          __meta={{
+            column: 1,
+            line: 1,
+            name: "MapControls",
+            path: "",
+            rotate: false,
+            scale: false,
+            translate: false,
+          }}
+        />
+      </Camera>
+    );
+
+    await act(() => {
+      return send(
+        "request-state-change",
+        { camera: "default", state: "play" },
+        true
+      );
+    });
+
+    expect(tree.getByName("__stub_map_controls__")).toBeDefined();
   });
 });

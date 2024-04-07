@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { createElement } from "react";
 import { vi } from "vitest";
 
 globalThis.DOMRect = class DOMRect {
@@ -29,6 +30,7 @@ vi.mock("triplex-drei", () => ({
   // Stub out Camera controls as it needs canvas capabilities that are unavailable in jsdom.
   CameraControls: () => null,
   Grid: () => null,
+  MapControls: () => createElement("mesh", { name: "__stub_map_controls__" }),
 }));
 
 globalThis.ResizeObserver = class ResizeObserver {

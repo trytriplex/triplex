@@ -23,25 +23,13 @@ import {
 } from "react";
 import { type Object3D } from "three";
 import { mergeRefs } from "use-callback-ref";
+import { useCamera } from "./components/camera";
 import { getHelperForElement, Helper } from "./components/helper";
 import { useSelectSceneObject } from "./selection";
 import { useOnSceneObjectMount } from "./stores/selection";
 
-const EXCLUSIONS = [
-  "ArcballControls",
-  "CameraControls",
-  "Canvas",
-  "Ecctrl",
-  "FirstPersonControls",
-  "FlyControls",
-  "KeyboardControls",
-  "MapControls",
-  "OrbitControls",
-  "PivotControls",
-  "PointerLockControls",
-  "PresentationControls",
-  "TransformControls",
-];
+const permanentlyExcluded = [/^Canvas$/];
+const excludedWhenTriplexCamera = [/^Ecctrl$/, /Controls$/];
 
 function useForceRender() {
   const [, setState] = useState(false);
@@ -155,6 +143,7 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
     const selectSceneObject = useSelectSceneObject();
     const insideSceneObjectContext = useContext(SceneObjectContext);
     const mergedRefs = useMemo(() => mergeRefs([ref, hostRef]), [ref]);
+    const { isTriplexCamera } = useCamera();
 
     useEffect(() => {
       return compose([
@@ -187,8 +176,15 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
       // This component will eventually unmount when deleted as its removed
       // from source code. To keep things snappy however we delete it optimistically.
       return null;
-    } else if (EXCLUSIONS.includes(__meta.name)) {
+    } else if (permanentlyExcluded.some((r) => r.test(__meta.name))) {
       // We don't want this component to render to the scene and affect Triplex.
+      // Noop it out and render its children.
+      return <>{props.children}</>;
+    } else if (
+      isTriplexCamera &&
+      excludedWhenTriplexCamera.some((r) => r.test(__meta.name))
+    ) {
+      // We don't want this component to affect Triplex when looking through the camera.
       // E.g. user land controls. Get rid of the problem altogether!
       return <>{props.children}</>;
     } else if (insideSceneObjectContext) {

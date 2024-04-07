@@ -39,11 +39,13 @@ type CameraType = OrthographicCamera | PerspectiveCamera;
 interface CameraContextType {
   camera: CameraType | undefined;
   controls: React.MutableRefObject<CameraControlsImpl | null>;
+  isTriplexCamera: boolean;
 }
 
 const CameraContext = createContext<CameraContextType>({
   camera: undefined,
   controls: { current: null },
+  isTriplexCamera: true,
 });
 
 function fitCameraToViewport(camera: CameraType, size: Size) {
@@ -243,8 +245,9 @@ export function Camera({ children }: { children?: React.ReactNode }) {
     () => ({
       camera: activeCamera,
       controls: controlsRef,
+      isTriplexCamera: !!isTriplexCamera,
     }),
-    [activeCamera]
+    [activeCamera, isTriplexCamera]
   );
 
   return (
