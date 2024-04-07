@@ -6,7 +6,10 @@
  */
 import { useFrame, useThree, type Size } from "@react-three/fiber";
 import { compose, on } from "@triplex/bridge/client";
-import { type default as CameraControlsImpl } from "camera-controls";
+import {
+  default as CCIMPL,
+  type default as CameraControlsImpl,
+} from "camera-controls";
 import {
   createContext,
   useContext,
@@ -33,6 +36,25 @@ const TRIPLEX_CAMERA_NAME = "__triplex_camera";
 const DEFAULT_CAMERA = "perspective";
 const TEMP_BOX3 = new Box3();
 const DEFAULT_POSITION: Vector3Tuple = [0, 0, 1];
+const CameraAction = CCIMPL.ACTION;
+
+const mouseHotkeys = {
+  ctrl: {},
+  rest: {
+    left: CameraAction.ROTATE,
+    middle: CameraAction.DOLLY,
+    right: CameraAction.TRUCK,
+  },
+  shift: {
+    left: CameraAction.TRUCK,
+  },
+} satisfies Record<string, Partial<CameraControlsImpl["mouseButtons"]>>;
+
+const touchHotkeys = {
+  ctrl: {},
+  rest: {},
+  shift: {},
+} satisfies Record<string, Partial<CameraControlsImpl["touches"]>>;
 
 type CameraType = OrthographicCamera | PerspectiveCamera;
 
@@ -123,6 +145,64 @@ export function Camera({ children }: { children?: React.ReactNode }) {
   const isTriplexCamera =
     activeCamera && activeCamera.name === TRIPLEX_CAMERA_NAME;
   const previousUserlandCamera = useRef<CameraType | undefined>();
+
+  useEffect(() => {
+    function apply<TKey extends string>(
+      a: Record<TKey, number>,
+      b: Partial<Record<TKey, number>>
+    ) {
+      const allB = b as Record<TKey, number>;
+      for (const key in b) {
+        a[key] = allB[key];
+      }
+    }
+
+    const callback = (event: KeyboardEvent) => {
+      if (!controlsRef.current) {
+        return;
+      }
+
+      switch (event.key) {
+        case "Shift":
+          apply(controlsRef.current.touches, touchHotkeys.shift);
+          apply(controlsRef.current.mouseButtons, mouseHotkeys.shift);
+          break;
+
+        case "Control":
+          apply(controlsRef.current.touches, touchHotkeys.ctrl);
+          apply(controlsRef.current.mouseButtons, mouseHotkeys.ctrl);
+          break;
+
+        default:
+          return;
+      }
+    };
+
+    const reset = (event: KeyboardEvent) => {
+      if (!controlsRef.current) {
+        return;
+      }
+
+      switch (event.key) {
+        case "Shift":
+        case "Control":
+          apply(controlsRef.current.touches, touchHotkeys.rest);
+          apply(controlsRef.current.mouseButtons, mouseHotkeys.rest);
+          break;
+
+        default:
+          return;
+      }
+    };
+
+    document.addEventListener("keydown", callback);
+    document.addEventListener("keyup", reset);
+
+    return () => {
+      document.removeEventListener("keydown", callback);
+      document.removeEventListener("keyup", reset);
+    };
+  }, []);
 
   useEffect(() => {
     return on("request-state-change", ({ camera, state }) => {
