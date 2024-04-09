@@ -27,8 +27,11 @@ globalThis.DOMRect = class DOMRect {
 };
 
 vi.mock("triplex-drei", () => ({
-  // Stub out Camera controls as it needs canvas capabilities that are unavailable in jsdom.
-  CameraControls: () => null,
+  CameraControls: () =>
+    createElement("group", { name: "__stub_camera_controls__" }),
+  GizmoHelper: () => createElement("group", { name: "__stub_gizmo_helper__" }),
+  GizmoViewcube: () =>
+    createElement("mesh", { name: "__stub_gizmo_viewcube__" }),
   Grid: () => null,
   MapControls: () => createElement("mesh", { name: "__stub_map_controls__" }),
 }));

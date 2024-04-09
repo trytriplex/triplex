@@ -17,6 +17,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Grid } from "triplex-drei";
 import { Canvas } from "./canvas";
 import { Camera, FitCameraToScene } from "./components/camera";
+import { CameraGizmo } from "./components/camera-gizmo";
 import { LoadingTriangle } from "./components/loading-triangle";
 import { SubsequentSuspense } from "./components/suspense";
 import { Tunnel } from "./components/tunnel";
@@ -146,6 +147,7 @@ export function SceneFrame({
                 </ErrorBoundary>
               </Selection>
             </ManualEditableSceneObject>
+            <CameraGizmo />
           </Suspense>
         </ErrorBoundary>
       </Camera>
