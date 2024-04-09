@@ -178,7 +178,7 @@ export function Camera({ children }: { children?: React.ReactNode }) {
       }
     };
 
-    const reset = (event: KeyboardEvent) => {
+    const resetKey = (event: KeyboardEvent) => {
       if (!controlsRef.current) {
         return;
       }
@@ -195,12 +195,25 @@ export function Camera({ children }: { children?: React.ReactNode }) {
       }
     };
 
+    const reset = () => {
+      if (!controlsRef.current) {
+        return;
+      }
+
+      if (document.visibilityState === "hidden") {
+        apply(controlsRef.current.touches, touchHotkeys.rest);
+        apply(controlsRef.current.mouseButtons, mouseHotkeys.rest);
+      }
+    };
+
     document.addEventListener("keydown", callback);
-    document.addEventListener("keyup", reset);
+    document.addEventListener("keyup", resetKey);
+    document.addEventListener("visibilitychange", reset);
 
     return () => {
       document.removeEventListener("keydown", callback);
-      document.removeEventListener("keyup", reset);
+      document.removeEventListener("keyup", resetKey);
+      document.removeEventListener("visibilitychange", reset);
     };
   }, []);
 
