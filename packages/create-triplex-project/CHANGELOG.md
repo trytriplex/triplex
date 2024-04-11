@@ -1,5 +1,11 @@
 # create-triplex-project
 
+## 0.67.0
+
+### Patch Changes
+
+- 6f3d8de: Upgrade three deps (r3f/drei/three).
+
 ## 0.66.0
 
 ## 0.65.2
