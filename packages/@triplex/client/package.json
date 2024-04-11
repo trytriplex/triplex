@@ -21,7 +21,7 @@
     "@triplex/renderer-react": "0.66.0",
     "@vitejs/plugin-react": "^4.1.0",
     "express": "^4.19.2",
-    "vite": "^4.5.2"
+    "vite": "^4.5.3"
   },
   "devDependencies": {
     "@babel/plugin-syntax-jsx": "^7.24.1",
