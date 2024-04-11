@@ -49,11 +49,14 @@ export function EditorFrame() {
 
       {isFileOpen && (
         <>
-          {playState !== "play" && (
-            <div className="z-10 col-start-1 row-auto row-start-3 flex overflow-hidden">
-              {path && <ScenePanel />}
-            </div>
-          )}
+          <div
+            className={cn([
+              "z-10 col-start-1 row-auto row-start-3 flex overflow-hidden",
+              playState === "play" && "hidden",
+            ])}
+          >
+            {path && <ScenePanel />}
+          </div>
 
           <SceneFrame />
 
@@ -61,11 +64,14 @@ export function EditorFrame() {
             <ControlsMenu />
           </div>
 
-          {playState !== "play" && (
-            <div className="pointer-events-none z-10 col-start-3 row-start-3 flex overflow-hidden">
-              <ContextPanel />
-            </div>
-          )}
+          <div
+            className={cn([
+              "pointer-events-none z-10 col-start-3 row-start-3 flex overflow-hidden",
+              playState === "play" && "hidden",
+            ])}
+          >
+            <ContextPanel />
+          </div>
 
           <AssetsDrawer />
           <ErrorOverlay />
