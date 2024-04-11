@@ -1,5 +1,16 @@
 # @triplex/renderer-react
 
+## 0.67.0
+
+### Patch Changes
+
+- 6f3d8de: Upgrade three deps (r3f/drei/three).
+- Updated dependencies [55ecc10]
+- Updated dependencies [b4886f6]
+- Updated dependencies [3343fad]
+  - @triplex/bridge@0.67.0
+  - @triplex/ws@0.67.0
+
 ## 0.66.0
 
 ### Patch Changes

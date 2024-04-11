@@ -1,5 +1,16 @@
 # @triplex/bridge
 
+## 0.67.0
+
+### Minor Changes
+
+- 55ecc10: Add camera switcher for play state.
+- b4886f6: Add play/pause scene states.
+
+### Patch Changes
+
+- 3343fad: Hard refresh now reloads the entire editor.
+
 ## 0.66.0
 
 ### Minor Changes

@@ -1,5 +1,22 @@
 # @triplex/client
 
+## 0.67.0
+
+### Patch Changes
+
+- 3343fad: Hard refresh now reloads the entire editor.
+- Updated dependencies [a7b3058]
+- Updated dependencies [f14b92b]
+- Updated dependencies [55ecc10]
+- Updated dependencies [b4886f6]
+- Updated dependencies [2e0acc7]
+- Updated dependencies [6f3d8de]
+- Updated dependencies [1d415ae]
+- Updated dependencies [3343fad]
+  - @triplex/renderer-r3f@0.67.0
+  - @triplex/bridge@0.67.0
+  - @triplex/renderer-react@0.67.0
+
 ## 0.66.0
 
 ### Minor Changes

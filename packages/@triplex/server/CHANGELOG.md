@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.67.0
+
+### Patch Changes
+
+- 6f3d8de: Upgrade three deps (r3f/drei/three).
+- 2ca7cbe: Remove expand/collapse editor panels logic. Always collapsed now.
+
 ## 0.66.0
 
 ## 0.65.2

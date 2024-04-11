@@ -1,5 +1,28 @@
 # @triplex/renderer-r3f
 
+## 0.67.0
+
+### Minor Changes
+
+- a7b3058: Add viewcube to the viewport.
+- f14b92b: Scene selection is now powered by an out-of-band raycaster. By
+  default scenes no-longer receive events when in edit mode.
+- 55ecc10: Add camera switcher for play state.
+- b4886f6: Add play/pause scene states.
+- 2e0acc7: Left click with ctrl modifier now dollys the camera.
+
+### Patch Changes
+
+- 6f3d8de: Upgrade three deps (r3f/drei/three).
+- 1d415ae: Controls are now enabled when playing the scene through the default
+  camera.
+- 3343fad: Hard refresh now reloads the entire editor.
+- Updated dependencies [55ecc10]
+- Updated dependencies [b4886f6]
+- Updated dependencies [3343fad]
+  - @triplex/bridge@0.67.0
+  - @triplex/ws@0.67.0
+
 ## 0.66.0
 
 ### Minor Changes
