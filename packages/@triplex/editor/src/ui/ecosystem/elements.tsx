@@ -56,6 +56,7 @@ export function RenderActions({
           case "button": {
             return (
               <Button
+                actionId="scenepanel_element"
                 control={action}
                 key={action.id}
                 onClick={(id) => send("element-action-triggered", { data, id })}
@@ -67,6 +68,7 @@ export function RenderActions({
           case "button-group": {
             return (
               <ButtonGroup
+                actionId="scenepanel_element"
                 control={action}
                 key={action.id}
                 onClick={(id) => send("element-action-triggered", { data, id })}
@@ -78,6 +80,7 @@ export function RenderActions({
           case "toggle-button": {
             return (
               <ToggleButton
+                actionId="scenepanel_element"
                 control={action}
                 key={action.id}
                 onClick={(id) =>

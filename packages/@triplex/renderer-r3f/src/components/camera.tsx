@@ -245,7 +245,7 @@ export function Camera({ children }: { children?: React.ReactNode }) {
       }),
       on("element-action-triggered", (data) => {
         switch (data.id) {
-          case "enter-camera": {
+          case "camera_enter": {
             const camera = findObject3D(scene, {
               column: data.data.column,
               line: data.data.line,
@@ -264,7 +264,7 @@ export function Camera({ children }: { children?: React.ReactNode }) {
             }
           }
 
-          case "exit-camera": {
+          case "camera_exit": {
             setType(prevTriplexCamera.current || DEFAULT_CAMERA);
             setActiveCamera(
               prevTriplexCamera.current === "orthographic"

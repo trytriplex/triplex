@@ -15,6 +15,7 @@ describe("boolean input", () => {
   it("should update inputs value when prop changes", () => {
     const { getByTestId, rerender } = render(
       <BooleanInput
+        actionId="contextpanel_project_ignore"
         defaultValue={false}
         name="name"
         onChange={() => {}}
@@ -25,6 +26,7 @@ describe("boolean input", () => {
 
     rerender(
       <BooleanInput
+        actionId="contextpanel_project_ignore"
         defaultValue={true}
         name="name"
         onChange={() => {}}

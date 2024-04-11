@@ -19,6 +19,7 @@ import {
 import { createContext, Suspense, useContext, useState } from "react";
 import { cn } from "../ds/cn";
 import { Drawer } from "../ds/drawer";
+import { ExternalLink } from "../ds/external-link";
 import { Pressable } from "../ds/pressable";
 import { ScrollContainer } from "../ds/scroll-container";
 import { useAssetsDrawer } from "../stores/assets-drawer";
@@ -36,13 +37,12 @@ function ProjectAsset({
 }) {
   const { addComponent } = useEditor();
   const target = useAssetsDrawer((store) => store.shown);
+  const targetData =
+    typeof target === "object"
+      ? ({ action: "child", ...target } as const)
+      : undefined;
 
   const onClickHandler = () => {
-    const targetData =
-      typeof target === "object"
-        ? ({ action: "child", ...target } as const)
-        : undefined;
-
     switch (asset.type) {
       case "host":
         addComponent({
@@ -82,7 +82,11 @@ function ProjectAsset({
 
   return (
     <AssetThumbnail
-      actionId="confirm_add_element"
+      actionId={
+        targetData
+          ? "assetsdrawer_element_addchild"
+          : "assetsdrawer_element_add"
+      }
       asset={asset}
       onClick={onClickHandler}
     />
@@ -135,7 +139,13 @@ function Folder({
           }
         }}
         pressActionId={
-          isExpanded ? "expand_asset_folder" : "collapse_asset_folder"
+          hasChildrenFolders
+            ? filesCount > 0 && !isSelected
+              ? "assetsdrawer_assets_open"
+              : isExpanded
+              ? "assetsdrawer_assets_collapse"
+              : "assetsdrawer_assets_expand"
+            : "assetsdrawer_assets_open"
         }
         style={{ paddingLeft: (level + 1) * 8 }}
       >
@@ -213,25 +223,19 @@ function ComponentFolder({
       assets: [
         "No assets exist in this folder.",
         "https://triplex.dev/docs/get-started/settings#assets-directory",
-      ],
+      ] as const,
       components: [
         "No custom components were found to add to your scene.",
         "https://triplex.dev/docs/get-started/settings#components",
-      ],
+      ] as const,
     }[folderPath.category];
 
     return (
-      <div className="m-auto text-center text-sm text-neutral-400">
+      <div className="m-auto flex flex-col items-center gap-2 text-sm text-neutral-400">
         {message[0]}
-        <br />
-        <a
-          className="text-blue-400"
-          href="#"
-          onClick={() => window.triplex.openLink(message[1])}
-        >
-          Learn more
-        </a>
-        .
+        <ExternalLink actionId="assetsdrawer_docs_settings" to={message[1]}>
+          Learn how to set up your assets panel
+        </ExternalLink>
       </div>
     );
   }
@@ -308,6 +312,7 @@ function ComponentsDrawer({
           <div className="flex w-60 flex-shrink-0 flex-col border-r border-neutral-800">
             <div className="p-2">
               <StringInput
+                actionId="assetsdrawer_assets_filter"
                 label="Filter selected folder..."
                 name="filter-elements"
                 onChange={handleFilterChange}

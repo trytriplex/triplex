@@ -6,6 +6,7 @@
  */
 import { Cross2Icon } from "@radix-ui/react-icons";
 import { useEffect, useRef, useState, type KeyboardEventHandler } from "react";
+import { useAnalytics, type ActionIdSafe } from "../analytics";
 import { IconButton } from "../ds/button";
 import { sentenceCase } from "../util/string";
 import useEvent from "../util/use-event";
@@ -13,6 +14,7 @@ import useEvent from "../util/use-event";
 const noop = () => {};
 
 export function StringInput({
+  actionId,
   autoFocus,
   defaultValue,
   label,
@@ -21,6 +23,7 @@ export function StringInput({
   onConfirm = noop,
   required,
 }: {
+  actionId: ActionIdSafe;
   autoFocus?: boolean;
   defaultValue?: string;
   label?: string;
@@ -31,6 +34,7 @@ export function StringInput({
 }) {
   const [value, setValue] = useState(defaultValue);
   const ref = useRef<HTMLInputElement>(null!);
+  const analytics = useAnalytics();
 
   useEffect(() => {
     ref.current.value = defaultValue || "";
@@ -56,6 +60,7 @@ export function StringInput({
 
     if (defaultValue !== nextValue) {
       onConfirm(nextValue);
+      analytics.event(`${actionId}_confirm`);
     }
   });
 
@@ -92,7 +97,7 @@ export function StringInput({
 
       {!required && value && (
         <IconButton
-          actionId="clear_prop_value"
+          actionId={`${actionId}_clear`}
           className="mr-0.5 hidden group-focus-within:block group-hover:block"
           icon={Cross2Icon}
           label="Clear Value"

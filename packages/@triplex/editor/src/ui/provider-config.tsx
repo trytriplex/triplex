@@ -7,6 +7,7 @@
 import { useLazySubscription } from "@triplex/ws/react";
 import { Suspense, useMemo } from "react";
 import { useScreenView } from "../analytics";
+import { ExternalLink } from "../ds/external-link";
 import { SkeletonContainer, SkeletonText } from "../ds/skeleton";
 import { useScene } from "../stores/scene";
 import { useSceneState } from "../stores/scene-state";
@@ -48,17 +49,13 @@ function Inputs() {
           <span className="text-xs text-neutral-400">
             Props declared on your provider component will appear here.
           </span>
-          <a
-            className="text-xs text-blue-400"
-            href="#"
-            onClick={() =>
-              window.triplex.openLink(
-                "https://triplex.dev/docs/guides/provider-controls"
-              )
-            }
+          <ExternalLink
+            actionId="contextpanel_docs_providercontrols_noprops"
+            size="xs"
+            to="https://triplex.dev/docs/guides/provider-controls"
           >
             Learn how to use this feature.
-          </a>
+          </ExternalLink>
           .
         </div>
       ) : (
@@ -107,7 +104,7 @@ function Inputs() {
 }
 
 export function ProviderConfig() {
-  useScreenView("context_provider", "Panel");
+  useScreenView("provider_controls", "Panel");
 
   return (
     <>
@@ -122,6 +119,7 @@ export function ProviderConfig() {
         {window.triplex.env.config.provider && (
           <>
             <IDELink
+              actionId="contextpanel_provider_viewsource"
               column={0}
               line={0}
               path={window.triplex.env.config.provider}
@@ -132,17 +130,14 @@ export function ProviderConfig() {
             <span className="mx-1.5 text-xs text-neutral-400">•</span>
           </>
         )}
-        <a
-          className="text-xs text-neutral-400"
-          href="#"
-          onClick={() =>
-            window.triplex.openLink(
-              "https://triplex.dev/docs/guides/provider-controls"
-            )
-          }
+        <ExternalLink
+          actionId="contextpanel_docs_providercontrols_learnmore"
+          size="xs"
+          to="https://triplex.dev/docs/guides/provider-controls"
+          variant="subtle"
         >
           Learn more
-        </a>
+        </ExternalLink>
       </div>
 
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
@@ -167,17 +162,13 @@ export function ProviderConfig() {
             Set up a provider component and its props will appear here to
             configure.
           </span>
-          <a
-            className="text-xs text-blue-400"
-            href="#"
-            onClick={() =>
-              window.triplex.openLink(
-                "https://triplex.dev/docs/guides/provider-controls"
-              )
-            }
+          <ExternalLink
+            actionId="contextpanel_docs_providercontrols_setup"
+            size="xs"
+            to="https://triplex.dev/docs/guides/provider-controls"
           >
             Learn how to set one up.
-          </a>
+          </ExternalLink>
         </div>
       )}
     </>

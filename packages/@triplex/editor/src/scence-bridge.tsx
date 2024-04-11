@@ -6,6 +6,7 @@
  */
 import { compose, on } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
+import { useAnalytics, type ActionId } from "./analytics";
 import { cn } from "./ds/cn";
 import { Stage } from "./stage";
 import { useEditor } from "./stores/editor";
@@ -113,6 +114,7 @@ function BridgeSendEvents() {
 function BridgeReceiveEvents() {
   const editor = useEditor();
   const ready = useScene((store) => store.ready);
+  const analytics = useAnalytics();
 
   useEffect(() => {
     if (!ready) {
@@ -120,6 +122,9 @@ function BridgeReceiveEvents() {
     }
 
     return compose([
+      on("track", (data) => {
+        analytics.event(`scene_${data.actionId}` as ActionId);
+      }),
       on("component-opened", (data) => {
         editor.set(
           {
@@ -146,7 +151,7 @@ function BridgeReceiveEvents() {
         editor.focus(null);
       }),
     ]);
-  }, [editor, ready]);
+  }, [analytics, editor, ready]);
 
   return null;
 }

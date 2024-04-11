@@ -213,7 +213,7 @@ export function Stage({ children }: { children: React.ReactNode }) {
       className="flex h-full w-full items-center justify-center"
       data-testid="stage"
       onPress={isDragging || !isActive ? undefined : onCanvasClickHandler}
-      pressActionId="deactivate_frame"
+      pressActionId="scene_frame_blur"
       ref={ref}
       tabIndex={-1}
     >
@@ -247,7 +247,7 @@ export function Stage({ children }: { children: React.ReactNode }) {
             className="absolute inset-0 hover:outline"
             label="Activate Frame"
             onPress={onBlanketClickHandler}
-            pressActionId="activate_frame"
+            pressActionId="scene_frame_focus"
             style={{
               outlineWidth: normalizedZoom < 1 ? 1 / normalizedZoom : 1,
             }}
@@ -271,7 +271,7 @@ export function Stage({ children }: { children: React.ReactNode }) {
             }}
           >
             <IconButton
-              actionId="expand_frame"
+              actionId="scene_frame_expand"
               icon={EnterFullScreenIcon}
               label="Expand Frame"
               onClick={() => {
@@ -281,7 +281,7 @@ export function Stage({ children }: { children: React.ReactNode }) {
               size="sm"
             />
             <IconButton
-              actionId="set_square_frame"
+              actionId="scene_frame_square"
               icon={BoxIcon}
               isSelected={frameSize === FRAME_SIZES.square}
               label="Set Square Frame"
@@ -291,7 +291,7 @@ export function Stage({ children }: { children: React.ReactNode }) {
               size="sm"
             />
             <IconButton
-              actionId="set_mobile_frame"
+              actionId="scene_frame_mobile"
               icon={MobileIcon}
               isSelected={frameSize === FRAME_SIZES.mobile}
               label="Set Mobile Frame"
@@ -301,7 +301,7 @@ export function Stage({ children }: { children: React.ReactNode }) {
               size="sm"
             />
             <IconButton
-              actionId="set_laptop_frame"
+              actionId="scene_frame_laptop"
               icon={LaptopIcon}
               isSelected={frameSize === FRAME_SIZES.laptop}
               label="Set Laptop Frame"
@@ -311,7 +311,7 @@ export function Stage({ children }: { children: React.ReactNode }) {
               size="sm"
             />
             <IconButton
-              actionId="set_desktop_frame"
+              actionId="scene_frame_desktop"
               icon={DesktopIcon}
               isSelected={frameSize === FRAME_SIZES.desktop}
               label="Set Desktop Frame"
@@ -322,7 +322,7 @@ export function Stage({ children }: { children: React.ReactNode }) {
             />
             {import.meta.env.VITE_TRIPLEX_ENV === "test" && (
               <IconButton
-                actionId="deactivate_frame"
+                actionId="(UNSAFE_SKIP)"
                 icon={Cross1Icon}
                 label="Deactivate Frame"
                 onClick={onCanvasClickHandler}

@@ -17,6 +17,7 @@ describe("literal union input", () => {
     const onConfirm = vi.fn();
     const { getByTestId, getByText } = render(
       <LiteralUnionInput
+        actionId="contextpanel_project_ignore"
         defaultValue={false}
         name="union"
         onChange={onChange}
@@ -37,6 +38,7 @@ describe("literal union input", () => {
   it("should update inputs value when prop changes", () => {
     const { getByTestId, rerender } = render(
       <LiteralUnionInput
+        actionId="contextpanel_project_ignore"
         defaultValue={false}
         name="union"
         onChange={() => {}}
@@ -51,6 +53,7 @@ describe("literal union input", () => {
 
     rerender(
       <LiteralUnionInput
+        actionId="contextpanel_project_ignore"
         defaultValue="one"
         name="union"
         onChange={() => {}}
@@ -70,6 +73,7 @@ describe("literal union input", () => {
     const onConfirm = vi.fn();
     const { getByTestId } = render(
       <LiteralUnionInput
+        actionId="contextpanel_project_ignore"
         name="union"
         onChange={onChange}
         onConfirm={onConfirm}
@@ -91,6 +95,7 @@ describe("literal union input", () => {
     const onConfirm = vi.fn();
     const { getByTestId } = render(
       <LiteralUnionInput
+        actionId="contextpanel_project_ignore"
         defaultValue={false}
         name="union"
         onChange={onChange}
@@ -113,6 +118,7 @@ describe("literal union input", () => {
     const onConfirm = vi.fn();
     const { getByTestId } = render(
       <LiteralUnionInput
+        actionId="contextpanel_project_ignore"
         defaultValue={false}
         name="union"
         onChange={onChange}
@@ -135,6 +141,7 @@ describe("literal union input", () => {
     const onConfirm = vi.fn();
     const { getByTestId } = render(
       <LiteralUnionInput
+        actionId="contextpanel_project_ignore"
         defaultValue={false}
         name="union"
         onChange={onChange}

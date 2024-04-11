@@ -7,6 +7,8 @@
 // eslint-disable-next-line import/no-namespace
 import * as RadixMenubar from "@radix-ui/react-menubar";
 import { type ReactNode } from "react";
+import { useAnalytics, type ActionId } from "../analytics";
+import useEvent from "../util/use-event";
 import { cn } from "./cn";
 
 export function Trigger({
@@ -40,12 +42,22 @@ export function MenuContent({
 }
 
 export function MenuItem({
+  actionId,
   children,
   disabled,
   onClick,
   rslot,
   ...props
-}: RadixMenubar.MenuItemProps & { rslot?: ReactNode }) {
+}: RadixMenubar.MenuItemProps & { actionId: ActionId; rslot?: ReactNode }) {
+  const analytics = useAnalytics();
+
+  const onClickHandler: React.MouseEventHandler<HTMLDivElement> = useEvent(
+    (e) => {
+      onClick?.(e);
+      analytics.event(actionId);
+    }
+  );
+
   return (
     <RadixMenubar.Item
       {...props}
@@ -56,7 +68,7 @@ export function MenuItem({
         "flex select-none rounded px-2 py-1 text-sm text-neutral-300 outline-none",
       ])}
       disabled={disabled}
-      onClick={disabled ? undefined : onClick}
+      onClick={disabled ? undefined : onClickHandler}
     >
       {children}
       {rslot && <div className="ml-auto pl-7 text-neutral-400">{rslot}</div>}

@@ -7,6 +7,7 @@
 import { useLazySubscription } from "@triplex/ws/react";
 import { Fragment, Suspense, useEffect, useState } from "react";
 import { Drawer } from "../ds/drawer";
+import { ExternalLink } from "../ds/external-link";
 import { ScrollContainer } from "../ds/scroll-container";
 import { PanelSkeleton } from "../ds/skeleton";
 import { useEditor } from "../stores/editor";
@@ -41,17 +42,12 @@ function Scenes({ filter = "" }: { filter?: string }) {
       {files.scenes.length === 0 && (
         <div className="px-2 pb-2.5 text-sm italic text-neutral-400">
           No files were found that can be opened. Your config might be invalid.{" "}
-          <a
-            className="text-sm text-blue-400"
-            href="#"
-            onClick={() =>
-              window.triplex.openLink(
-                "https://triplex.dev/docs/get-started/settings#files"
-              )
-            }
+          <ExternalLink
+            actionId="projectdrawer_docs_settings"
+            to="https://triplex.dev/docs/get-started/settings#files"
           >
             Learn more
-          </a>
+          </ExternalLink>
           .
         </div>
       )}
@@ -80,7 +76,7 @@ function Scenes({ filter = "" }: { filter?: string }) {
 
                   return (
                     <AssetThumbnail
-                      actionId="open_component"
+                      actionId="projectdrawer_component_open"
                       asset={{
                         category: "",
                         exportName: exp.exportName,
@@ -127,7 +123,7 @@ export function ScenesDrawer() {
 
   return (
     <Drawer
-      label="Files"
+      label="project"
       onClose={() => {
         show(false);
       }}
@@ -136,6 +132,7 @@ export function ScenesDrawer() {
       <Suspense fallback={<PanelSkeleton />}>
         <div className="px-3 py-2">
           <StringInput
+            actionId="projectdrawer_component_filter"
             autoFocus
             label="Filter files, components..."
             name="component-filter"

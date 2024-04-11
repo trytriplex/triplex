@@ -6,6 +6,7 @@
  */
 import { type ReactNode } from "react";
 import { ErrorBoundary as ErrorBound } from "react-error-boundary";
+import { ExternalLink } from "../ds/external-link";
 
 function humanize(message: string) {
   if (message.includes("path is outside of cwd")) {
@@ -65,25 +66,19 @@ export function ErrorBoundary({
             </div>
 
             <div className="flex items-center gap-2">
-              <a
-                className="text-xs text-blue-400"
-                href="#"
-                onClick={() =>
-                  window.triplex.openLink(
-                    "https://github.com/try-triplex/triplex/issues/new"
-                  )
-                }
+              <ExternalLink
+                actionId="errorboundary_contact_issue"
+                to="https://github.com/try-triplex/triplex/issues/new"
               >
                 Report a bug
-              </a>
+              </ExternalLink>
               <span className="text-xs text-neutral-400">•</span>
-              <a
-                className="text-xs text-blue-400"
-                href="#"
-                onClick={() => window.triplex.sendCommand("view-logs")}
+              <ExternalLink
+                actionId="errorboundary_logs_open"
+                to="triplex:view-logs"
               >
                 View logs
-              </a>
+              </ExternalLink>
             </div>
           </div>
         );

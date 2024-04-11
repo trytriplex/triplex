@@ -6,6 +6,7 @@
  */
 import type { TupleType } from "@triplex/server";
 import { useRef } from "react";
+import { useAnalytics, type ActionIdSafe } from "../analytics";
 import { PropInput } from "./prop-input";
 
 function merge(a: unknown[], b: Record<string, unknown>) {
@@ -69,6 +70,7 @@ function dropUnneededOptionalValues(
 }
 
 export function TupleInput({
+  actionId,
   column,
   line,
   name,
@@ -79,6 +81,7 @@ export function TupleInput({
   value,
   values,
 }: {
+  actionId: ActionIdSafe;
   column?: number;
   line?: number;
   name: string;
@@ -92,6 +95,7 @@ export function TupleInput({
 }) {
   const defaultValue = Array.isArray(value) ? value : [value];
   const intermediateValues = useRef<Record<string, unknown>>({});
+  const analytics = useAnalytics();
 
   return (
     <>
@@ -119,6 +123,7 @@ export function TupleInput({
 
           onConfirm(dropUnneededOptionalValues(values, nextValue));
           intermediateValues.current = {};
+          analytics.event(`${actionId}_confirm`);
         };
 
         return (

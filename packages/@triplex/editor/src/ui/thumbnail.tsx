@@ -10,6 +10,7 @@ import {
   type ProjectCustomComponent,
   type ProjectHostComponent,
 } from "@triplex/server";
+import { type ActionId } from "../analytics";
 import { IconButton } from "../ds/button";
 import { Interactive } from "../ds/interactive";
 import { Pressable } from "../ds/pressable";
@@ -20,7 +21,7 @@ export function AssetThumbnail({
   asset,
   onClick,
 }: {
-  actionId: string;
+  actionId: ActionId;
   asset: ProjectHostComponent | ProjectCustomComponent | ProjectAsset;
   onClick: () => void;
 }) {
@@ -53,7 +54,7 @@ export function AssetThumbnail({
           {process.env.NODE_ENV === "development" &&
             asset.type === "custom" && (
               <IconButton
-                actionId="open_render_debug"
+                actionId="(UNSAFE_SKIP)"
                 icon={OpenInNewWindowIcon}
                 label="Debug: Open Render"
                 onClick={() =>

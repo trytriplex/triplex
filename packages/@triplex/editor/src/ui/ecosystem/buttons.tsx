@@ -22,6 +22,7 @@ import {
   type ToggleButtonControl,
 } from "@triplex/bridge/host";
 import { useState } from "react";
+import { type ActionIdSafe } from "../../analytics";
 import { IconButton } from "../../ds/button";
 import { LocalSpaceIcon, WorldSpaceIcon } from "../../ds/icons";
 
@@ -45,12 +46,14 @@ const icons = {
 };
 
 interface ControlProps<TControl> {
+  actionId: ActionIdSafe;
   control: TControl;
   onClick: (id: string) => unknown;
   size?: "md" | "sm" | "xs";
 }
 
 export function ToggleButton({
+  actionId,
   control,
   onClick,
   size,
@@ -61,7 +64,7 @@ export function ToggleButton({
   return (
     <IconButton
       accelerator={control.accelerator}
-      actionId={button.id}
+      actionId={`${actionId}_${button.id}`}
       color="inherit"
       icon={button.icon ? icons[button.icon] : BoxIcon}
       isSelected={button.isSelected}
@@ -84,6 +87,7 @@ export function ToggleButton({
 }
 
 export function ButtonGroup({
+  actionId,
   control,
   onClick,
   size,
@@ -95,7 +99,7 @@ export function ButtonGroup({
       {control.buttons.map((control) => (
         <IconButton
           accelerator={control.accelerator}
-          actionId={control.id}
+          actionId={`${actionId}_${control.id}`}
           color="inherit"
           icon={control.icon ? icons[control.icon] : BoxIcon}
           isSelected={control.id === selected}
@@ -114,6 +118,7 @@ export function ButtonGroup({
 }
 
 export function Button({
+  actionId,
   control,
   onClick,
   size,
@@ -121,7 +126,7 @@ export function Button({
   return (
     <IconButton
       accelerator={control.accelerator}
-      actionId={control.id}
+      actionId={`${actionId}_${control.id}`}
       color="inherit"
       icon={control.icon ? icons[control.icon] : BoxIcon}
       key={control.id}

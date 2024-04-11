@@ -131,12 +131,12 @@ export function Selection({
           break;
         }
 
-        case "local-transform": {
+        case "transformlocal": {
           setSpace("local");
           return { handled: true };
         }
 
-        case "world-transform": {
+        case "transformworld": {
           setSpace("world");
           return { handled: true };
         }
@@ -290,6 +290,7 @@ export function Selection({
 
       setSelected(target);
       onFocus(target);
+      send("track", { actionId: "element_focus" });
 
       return true;
     }
@@ -323,6 +324,7 @@ export function Selection({
           propName: "position",
           propValue: position.map(strip),
         });
+        send("track", { actionId: "element_transform_translate" });
       }
 
       if (e.mode === "rotate") {
@@ -336,6 +338,7 @@ export function Selection({
           propName: "rotation",
           propValue: rotation,
         });
+        send("track", { actionId: "element_transform_rotate" });
       }
 
       if (e.mode === "scale") {
@@ -348,6 +351,7 @@ export function Selection({
           propName: "scale",
           propValue: scale.map(strip),
         });
+        send("track", { actionId: "element_transform_scale" });
       }
     }
   );

@@ -30,17 +30,17 @@ export function Renderer({
           buttons: [
             {
               icon: "camera",
-              id: "enter-camera",
+              id: "camera_enter",
               label: "Enter Camera",
             },
             {
               icon: "exit",
-              id: "exit-camera",
+              id: "camera_exit",
               label: "Exit Camera",
             },
           ],
           filter: "PerspectiveCamera|OrthographicCamera",
-          id: "enter-camera",
+          id: "enter_camera",
           type: "toggle-button",
         },
       ],
@@ -52,16 +52,16 @@ export function Renderer({
           buttons: [
             {
               icon: "world",
-              id: "local-transform",
+              id: "transformlocal",
               label: "Set Local Transform",
             },
             {
               icon: "local",
-              id: "world-transform",
+              id: "transformworld",
               label: "Set World Transform",
             },
           ],
-          id: "transform-space",
+          id: "transform_space",
           type: "toggle-button",
         },
         {
@@ -86,7 +86,7 @@ export function Renderer({
             },
           ],
           defaultSelected: "translate",
-          id: "transform-controls",
+          id: "transform_controls",
           type: "button-group",
         },
         {
@@ -105,7 +105,7 @@ export function Renderer({
               label: "Switch To Perspective",
             },
           ],
-          id: "camera-switcher",
+          id: "camera_switcher",
           type: "toggle-button",
         },
       ],

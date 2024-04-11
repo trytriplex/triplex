@@ -24,6 +24,7 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
+        actionId="contextpanel_project_ignore"
         defaultValue={10}
         name="rotation"
         onChange={change}
@@ -43,6 +44,7 @@ describe("number input", () => {
   it('should update the input value when the "value" prop changes via props', () => {
     const { getByTestId, rerender } = render(
       <NumberInput
+        actionId="contextpanel_project_ignore"
         defaultValue={10}
         name="rotation"
         onChange={() => {}}
@@ -57,6 +59,7 @@ describe("number input", () => {
 
     rerender(
       <NumberInput
+        actionId="contextpanel_project_ignore"
         defaultValue={20}
         name="rotation"
         onChange={() => {}}
@@ -76,6 +79,7 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
+        actionId="contextpanel_project_ignore"
         defaultValue={11}
         name="rotation"
         onChange={change}
@@ -99,6 +103,7 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByLabelText } = render(
       <NumberInput
+        actionId="contextpanel_project_ignore"
         defaultValue={10}
         name="x"
         onChange={change}
@@ -119,6 +124,7 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByLabelText } = render(
       <NumberInput
+        actionId="contextpanel_project_ignore"
         defaultValue={10}
         name="x"
         onChange={change}
@@ -139,6 +145,7 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByLabelText } = render(
       <NumberInput
+        actionId="contextpanel_project_ignore"
         defaultValue={10}
         name="x"
         onChange={change}
@@ -157,6 +164,7 @@ describe("number input", () => {
   it("should focus the input when not initiating a drag", async () => {
     const { getByTestId } = render(
       <NumberInput
+        actionId="contextpanel_project_ignore"
         defaultValue={10}
         name="x"
         onChange={() => {}}
@@ -175,6 +183,7 @@ describe("number input", () => {
   it("should not focus the input when initiating a drag", async () => {
     const { getByTestId } = render(
       <NumberInput
+        actionId="contextpanel_project_ignore"
         defaultValue={10}
         name="x"
         onChange={() => {}}
@@ -196,6 +205,7 @@ describe("number input", () => {
       <>
         <iframe data-testid="iframe" />
         <NumberInput
+          actionId="contextpanel_project_ignore"
           defaultValue={10}
           name="x"
           onChange={() => {}}
@@ -217,6 +227,7 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
+        actionId="contextpanel_project_ignore"
         defaultValue={10}
         name="x"
         onChange={change}
@@ -237,6 +248,7 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
+        actionId="contextpanel_project_ignore"
         defaultValue={10}
         name="x"
         onChange={change}
@@ -257,6 +269,7 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
+        actionId="contextpanel_project_ignore"
         defaultValue={10.2}
         name="x"
         onChange={change}
@@ -280,6 +293,7 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
+        actionId="contextpanel_project_ignore"
         defaultValue={10.2}
         name="x"
         onChange={change}
@@ -301,6 +315,7 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
+        actionId="contextpanel_project_ignore"
         defaultValue={10}
         name="x"
         onChange={change}
@@ -321,6 +336,7 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
+        actionId="contextpanel_project_ignore"
         defaultValue={10}
         name="x"
         onChange={change}
@@ -341,6 +357,7 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
+        actionId="contextpanel_project_ignore"
         defaultValue={10}
         name="x"
         onChange={change}
@@ -361,6 +378,7 @@ describe("number input", () => {
   it("should focus the input when clearing via the clear button", () => {
     const { getByLabelText, getByTestId } = render(
       <NumberInput
+        actionId="contextpanel_project_ignore"
         defaultValue={10}
         name="x"
         onChange={() => {}}
@@ -381,6 +399,7 @@ describe("number input", () => {
     const { getByTestId } = render(
       <PropTagContext.Provider value={{ max: 100 }}>
         <NumberInput
+          actionId="contextpanel_project_ignore"
           defaultValue={10}
           name="x"
           onChange={change}
@@ -403,6 +422,7 @@ describe("number input", () => {
     const { getByTestId } = render(
       <PropTagContext.Provider value={{ min: 0 }}>
         <NumberInput
+          actionId="contextpanel_project_ignore"
           defaultValue={10}
           name="x"
           onChange={change}
@@ -424,6 +444,7 @@ describe("number input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <NumberInput
+        actionId="contextpanel_project_ignore"
         defaultValue={10}
         name="x"
         onChange={change}

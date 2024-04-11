@@ -5,9 +5,11 @@
  * file in the root directory of this source tree.
  */
 import { type ReactNode } from "react";
+import { useAnalytics, type ActionId } from "../analytics";
 import { cn } from "../ds/cn";
 
 export function IDELink({
+  actionId,
   children,
   className = "text-xs text-neutral-400",
   column,
@@ -15,6 +17,7 @@ export function IDELink({
   path,
   title,
 }: {
+  actionId: ActionId;
   children: ReactNode;
   className?: string;
   column: number;
@@ -22,6 +25,8 @@ export function IDELink({
   path: string;
   title?: string;
 }) {
+  const analytics = useAnalytics();
+
   return (
     <a
       className={cn([
@@ -34,6 +39,7 @@ export function IDELink({
         // to keep the websocket connections open. Without it they close and never reopen.
         e.preventDefault();
         window.triplex.openIDE(path, { column, line });
+        analytics.event(actionId);
       }}
       title={title}
     >

@@ -53,14 +53,14 @@ export function ErrorOverlay() {
     >
       <div className="flex items-center">
         <IconButton
-          actionId="previous_error"
+          actionId="errorflag_error_previous"
           icon={ArrowLeftIcon}
           isDisabled={index === 0}
           label="Previous Error"
           onClick={() => setIndex((prev) => prev - 1)}
         />
         <IconButton
-          actionId="next_error"
+          actionId="errorflag_error_next"
           icon={ArrowRightIcon}
           isDisabled={index === errors.length - 1}
           label="Next Error"
@@ -72,7 +72,7 @@ export function ErrorOverlay() {
 
         {error.source && (
           <IconButton
-            actionId="view_error_source"
+            actionId="errorflag_file_viewsource"
             icon={CodeIcon}
             label="View Source"
             onClick={() => {
@@ -92,7 +92,7 @@ export function ErrorOverlay() {
           />
         )}
         <IconButton
-          actionId="dismiss_errors"
+          actionId="errorflag_error_dismissall"
           icon={Cross2Icon}
           label="Dismiss Errors"
           onClick={() => setErrors([])}

@@ -116,6 +116,7 @@ export interface ClientSendEventData {
   "set-element-actions": {
     actions: Actions;
   };
+  track: { actionId: string };
 }
 
 export interface ClientSendEventResponse {
@@ -128,6 +129,7 @@ export interface ClientSendEventResponse {
   ready: void;
   "set-controls": void;
   "set-element-actions": void;
+  track: void;
 }
 
 export type HostSendEventName = keyof HostSendEventData;

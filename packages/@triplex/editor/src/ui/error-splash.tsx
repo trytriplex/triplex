@@ -4,6 +4,8 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { ExternalLink } from "../ds/external-link";
+
 export function ErrorSplash() {
   const params = new URLSearchParams(location.search);
   const error = params.get("error") || "Unknown error";
@@ -23,33 +25,23 @@ export function ErrorSplash() {
         </p>
 
         <div className="mx-auto flex items-center gap-2">
-          <a
-            className="text-blue-400"
-            href="#"
-            onClick={() => window.triplex.openLink("mailto:team@triplex.dev")}
+          <ExternalLink
+            actionId="errorsplash_contact_email"
+            to="mailto:team@triplex.dev"
           >
             Contact us
-          </a>
+          </ExternalLink>
           <span className="text-xs text-neutral-400">•</span>
-          <a
-            className="text-blue-400"
-            href="#"
-            onClick={() =>
-              window.triplex.openLink(
-                "https://github.com/try-triplex/triplex/issues/new"
-              )
-            }
+          <ExternalLink
+            actionId="errorsplash_contact_issue"
+            to="https://github.com/try-triplex/triplex/issues/new"
           >
             Report a bug
-          </a>
+          </ExternalLink>
           <span className="text-xs text-neutral-400">•</span>
-          <a
-            className="text-blue-400"
-            href="#"
-            onClick={() => window.triplex.sendCommand("view-logs")}
-          >
+          <ExternalLink actionId="errorsplash_logs_open" to="triplex:view-logs">
             View logs
-          </a>
+          </ExternalLink>
         </div>
 
         <code className="mx-auto max-w-2xl bg-white/5 px-4 py-2 text-center text-sm text-neutral-400">

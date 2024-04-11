@@ -13,7 +13,7 @@ import {
   type KeyboardEventHandler,
   type MouseEventHandler,
 } from "react";
-import { useAnalytics } from "../analytics";
+import { useAnalytics, type ActionId } from "../analytics";
 import useEvent from "../util/use-event";
 import { cn } from "./cn";
 
@@ -37,13 +37,13 @@ export const Pressable = forwardRef<
     accelerator?: string;
     children?: React.ReactNode;
     className?: string;
-    doublePressActionId?: string;
+    doublePressActionId?: ActionId;
     focusRing?: "inset" | "default";
     label?: string;
     onBlur?: () => void;
     onDoublePress?: () => void;
     onPress?: () => void;
-    pressActionId?: string;
+    pressActionId: ActionId;
     style?: React.CSSProperties;
     tabIndex?: number;
     testId?: string;
@@ -77,38 +77,41 @@ export const Pressable = forwardRef<
         return;
       }
 
-      return window.triplex.accelerator(accelerator, onPress);
-    }, [accelerator, onPress]);
+      return window.triplex.accelerator(accelerator, () => {
+        onPress();
+        analytics.event(pressActionId);
+      });
+    }, [accelerator, analytics, onPress, pressActionId]);
 
     const onKeyDownHandler: KeyboardEventHandler = useEvent((e) => {
       if (e.key === "Enter" && onPress) {
         onPress();
-        analytics.event(pressActionId);
         e.stopPropagation();
+        analytics.event(pressActionId);
       }
     });
 
     const onKeyUpHandler: KeyboardEventHandler = useEvent((e) => {
       if (e.key === " " && onPress) {
         onPress();
-        analytics.event(pressActionId);
         e.stopPropagation();
+        analytics.event(pressActionId);
       }
     });
 
     const onClickHandler: MouseEventHandler = useEvent((e) => {
       if (onPress) {
         onPress?.();
-        analytics.event(pressActionId);
         e.stopPropagation();
+        analytics.event(pressActionId);
       }
     });
 
     const onDoubleClickHandler: MouseEventHandler = useEvent((e) => {
       if (onDoublePress) {
         onDoublePress?.();
-        analytics.event(doublePressActionId);
         e.stopPropagation();
+        analytics.event(doublePressActionId);
       }
     });
 

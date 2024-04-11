@@ -16,10 +16,12 @@ import {
   type ChangeEventHandler,
   type KeyboardEventHandler,
 } from "react";
+import { useAnalytics, type ActionIdSafe } from "../analytics";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 
 export function LiteralUnionInput({
+  actionId,
   defaultValue,
   name,
   onChange,
@@ -27,6 +29,7 @@ export function LiteralUnionInput({
   required,
   values,
 }: {
+  actionId: ActionIdSafe;
   defaultValue?: string | number | boolean;
   name: string;
   onChange: (value: number | string | boolean | undefined) => void;
@@ -34,6 +37,7 @@ export function LiteralUnionInput({
   required?: boolean;
   values: (StringLiteralType | NumberLiteralType | BooleanLiteralType)[];
 }) {
+  const analytics = useAnalytics();
   const ref = useRef<HTMLSelectElement>(null!);
   const isValueDefined = defaultValue !== undefined;
 
@@ -57,6 +61,7 @@ export function LiteralUnionInput({
       // This is because the clear event handler handles empty values.
       onChange(nextValue);
       onConfirm(nextValue);
+      analytics.event(`${actionId}_confirm`);
     }
   };
 
@@ -66,11 +71,13 @@ export function LiteralUnionInput({
 
     onChange(undefined);
     onConfirm(undefined);
+    analytics.event(`${actionId}_clear`);
   };
 
   const onKeyDownHandler: KeyboardEventHandler<HTMLSelectElement> = (e) => {
     if (e.key === "Backspace") {
       onClear();
+      analytics.event(`${actionId}_clear`);
     }
   };
 
@@ -101,7 +108,7 @@ export function LiteralUnionInput({
 
       {!required && (
         <IconButton
-          actionId="clear_prop_value"
+          actionId={`${actionId}_clear`}
           className="hidden group-focus-within:block group-hover:block"
           icon={Cross2Icon}
           label="Clear Value"

@@ -15,6 +15,7 @@ describe("string input", () => {
   it("should update inputs value when prop changes", () => {
     const { getByTestId, rerender } = render(
       <StringInput
+        actionId="contextpanel_project_ignore"
         defaultValue="my-name"
         name="name"
         onChange={() => {}}
@@ -25,6 +26,7 @@ describe("string input", () => {
 
     rerender(
       <StringInput
+        actionId="contextpanel_project_ignore"
         defaultValue="updated-name"
         name="name"
         onChange={() => {}}

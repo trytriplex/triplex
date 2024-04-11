@@ -81,7 +81,7 @@ function WelcomeScreen() {
 
           <div className="-mx-2 flex flex-col">
             <Button
-              actionId="open_project"
+              actionId="welcome_project_open"
               disabled={windowState === "disabled"}
               onClick={() => window.triplex.sendCommand("open-project")}
               size="tight"
@@ -89,7 +89,7 @@ function WelcomeScreen() {
               Open Project...
             </Button>
             <Button
-              actionId="create_project"
+              actionId="welcome_project_create"
               disabled={windowState === "disabled"}
               onClick={() => window.triplex.sendCommand("create-project")}
               size="tight"
@@ -104,7 +104,7 @@ function WelcomeScreen() {
       <div className="mt-auto flex gap-5 px-10">
         <div className="-mx-2 flex basis-1/2 flex-col justify-end">
           <Button
-            actionId="open_documentation"
+            actionId="welcome_docs_overview"
             icon={ReaderIcon}
             onClick={() =>
               window.triplex.openLink("https://triplex.dev/docs/overview")
@@ -114,7 +114,7 @@ function WelcomeScreen() {
             Documentation
           </Button>
           <Button
-            actionId="open_discord"
+            actionId="welcome_contact_discord"
             icon={DiscordLogoIcon}
             onClick={() =>
               window.triplex.openLink("https://discord.gg/nBzRBUEs4b")
@@ -124,7 +124,7 @@ function WelcomeScreen() {
             Join Discord
           </Button>
           <Button
-            actionId="view_logs"
+            actionId="welcome_logs_open"
             icon={ActivityLogIcon}
             onClick={() => window.triplex.sendCommand("view-logs")}
             size="tight"
@@ -134,7 +134,7 @@ function WelcomeScreen() {
         </div>
         <div className="-mx-2 flex basis-1/2 flex-col justify-end">
           <Button
-            actionId="view_release_notes"
+            actionId="welcome_changelog_view"
             icon={GlobeIcon}
             onClick={() =>
               window.triplex.openLink(
@@ -146,7 +146,7 @@ function WelcomeScreen() {
             Release Notes
           </Button>
           <Button
-            actionId="sponsor_development"
+            actionId="welcome_contact_sponsor"
             icon={HeartFilledIcon}
             isSelected
             onClick={() =>

@@ -12,6 +12,14 @@ type TriplexPorts = import("@triplex/server").TriplexPorts;
 
 declare type WindowState = "active" | "inactive" | "disabled";
 
+declare type TriplexActionId =
+  | "open-project"
+  | "create-project"
+  | "view-logs"
+  | "close-project"
+  | "show-devtools"
+  | "show-app-dir";
+
 declare interface Window {
   triplex: {
     accelerator: (accelerator: string, callback: () => void) => () => void;
@@ -31,15 +39,7 @@ declare interface Window {
     openIDE: (path: string, opts?: { column: number; line: number }) => void;
     openLink: (url: string) => void;
     platform: typeof process.platform;
-    sendCommand: (
-      id:
-        | "open-project"
-        | "create-project"
-        | "view-logs"
-        | "close-project"
-        | "show-devtools"
-        | "show-app-dir"
-    ) => void;
+    sendCommand: (id: TriplexActionId) => void;
     sessionId: string;
     setEditorConfig: <TKey extends keyof EditorConfig>(
       key: TKey,

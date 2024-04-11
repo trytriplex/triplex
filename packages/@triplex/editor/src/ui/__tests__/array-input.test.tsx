@@ -17,6 +17,7 @@ describe("array input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <TupleInput
+        actionId="contextpanel_project_ignore"
         column={0}
         line={0}
         name="array"
@@ -40,6 +41,7 @@ describe("array input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <TupleInput
+        actionId="contextpanel_project_ignore"
         column={0}
         line={0}
         name="array"
@@ -62,6 +64,7 @@ describe("array input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <TupleInput
+        actionId="contextpanel_project_ignore"
         column={0}
         line={0}
         name="array"
@@ -90,6 +93,7 @@ describe("array input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <TupleInput
+        actionId="contextpanel_project_ignore"
         column={0}
         line={0}
         name="array"
@@ -127,6 +131,7 @@ describe("array input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <TupleInput
+        actionId="contextpanel_project_ignore"
         column={0}
         line={0}
         name="array"
@@ -151,6 +156,7 @@ describe("array input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <TupleInput
+        actionId="contextpanel_project_ignore"
         column={0}
         line={0}
         name="array"
@@ -179,6 +185,7 @@ describe("array input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <TupleInput
+        actionId="contextpanel_project_ignore"
         column={0}
         line={0}
         name="array"
@@ -206,6 +213,7 @@ describe("array input", () => {
   it("should set the first value of the tuple when the value is not an array", () => {
     const { getByTestId } = render(
       <TupleInput
+        actionId="contextpanel_project_ignore"
         column={0}
         line={0}
         name="array"
@@ -230,6 +238,7 @@ describe("array input", () => {
     const confirm = vi.fn();
     const { getByTestId } = render(
       <TupleInput
+        actionId="contextpanel_project_ignore"
         column={0}
         line={0}
         name="array"

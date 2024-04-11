@@ -6,6 +6,7 @@
  */
 import { type IconProps } from "@radix-ui/react-icons/dist/types";
 import { forwardRef, type ComponentType } from "react";
+import { type ActionId } from "../analytics";
 import { cn } from "./cn";
 import { Pressable } from "./pressable";
 
@@ -13,7 +14,7 @@ export const IconButton = forwardRef<
   HTMLDivElement,
   {
     accelerator?: string;
-    actionId: string;
+    actionId: ActionId;
     className?: string;
     color?: "inherit" | "default";
     icon: ComponentType<IconProps>;
@@ -92,7 +93,7 @@ IconButton.displayName = "IconButton";
 export const Button = forwardRef<
   HTMLDivElement,
   {
-    actionId: string;
+    actionId: ActionId;
     "aria-label"?: string;
     children: React.ReactNode;
     className?: string;

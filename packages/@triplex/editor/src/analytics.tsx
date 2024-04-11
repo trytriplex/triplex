@@ -8,6 +8,50 @@ import { createContext, useContext, useEffect, useMemo, useRef } from "react";
 import { version } from "../package.json";
 import useEvent from "./util/use-event";
 
+type ActionContext =
+  | "assetsdrawer"
+  | "contextpanel"
+  | "projectdrawer"
+  | "rootmenu"
+  | "scene"
+  | "errorsplash"
+  | "errorboundary"
+  | "errorflag"
+  | "scenepanel"
+  | "tabbar"
+  | "welcome";
+
+type ActionGroup =
+  | "assets"
+  | "changelog"
+  | "component"
+  | "contact"
+  | "controls"
+  | "docs"
+  | "element"
+  | "error"
+  | "file"
+  | "frame"
+  | "input"
+  | "logs"
+  | "project"
+  | "provider";
+
+export type ActionId = ActionIdSafe | "(UNSAFE_SKIP)";
+
+export type ActionIdSafe = `${ActionContext}_${ActionGroup}${string}`;
+
+function mergeDeepDuplicates<TValue>(
+  value: TValue,
+  index: number,
+  array: TValue[]
+) {
+  return (
+    index === array.length - 1 ||
+    JSON.stringify(value) !== JSON.stringify(array[index + 1])
+  );
+}
+
 class Analytics4 {
   private trackingID: string;
   private secretKey: string;
@@ -97,7 +141,8 @@ class Analytics4 {
     this.fireEventTimeoutId = window.setTimeout(() => {
       const payload = {
         client_id: this.clientID,
-        events: this.collectedEvents,
+        // If any events are literally the same we de-dupe them away.
+        events: this.collectedEvents.filter(mergeDeepDuplicates),
       };
 
       if (this.userProperties) {
@@ -127,8 +172,19 @@ const noopEvents: Events = {
 const AnalyticsContext = createContext<Events>(noopEvents);
 
 interface Events {
+  /**
+   * `analytics.event("tabbar_file_close")`
+   *
+   * Sends an event to the analytics backend. Should be in the form of:
+   *
+   * ```
+   * "(context)_(group)_(action)";
+   * ```
+   *
+   * Where `(action)` can have a sub-action if needed.
+   */
   event(
-    name?: string,
+    name?: ActionId,
     params?: Record<string, string | number | boolean>
   ): void;
   screenView(
@@ -148,13 +204,16 @@ export function useAnalytics() {
 
 export function useScreenView(
   name: string,
-  screen_class: "Dialog" | "Drawer" | "Screen" | "Panel"
+  screen_class: "Dialog" | "Drawer" | "Screen" | "Panel",
+  isEnabled = true
 ) {
   const analytics = useAnalytics();
 
   useEffect(() => {
-    analytics.screenView(name, screen_class);
-  }, [analytics, name, screen_class]);
+    if (isEnabled) {
+      analytics.screenView(name, screen_class);
+    }
+  }, [analytics, isEnabled, name, screen_class]);
 }
 
 export function Analytics({ children }: { children: React.ReactNode }) {
@@ -175,9 +234,9 @@ export function Analytics({ children }: { children: React.ReactNode }) {
     );
 
     analytics.current.setParams({
+      app_version: process.env.NODE_ENV === "production" ? version : "local",
       env: process.env.NODE_ENV === "production" ? "production" : "local",
       os: window.triplex.platform,
-      version: process.env.NODE_ENV === "production" ? version : "local",
     });
 
     const setVisibility = analytics.current.setVisibility;
@@ -190,17 +249,28 @@ export function Analytics({ children }: { children: React.ReactNode }) {
   }, []);
 
   const event: Events["event"] = useEvent((eventName, params) => {
-    if (eventName) {
+    if (eventName && eventName !== "(UNSAFE_SKIP)") {
+      if (
+        import.meta.env.DEV &&
+        /^[a-z]$/.test(eventName.replaceAll("_", ""))
+      ) {
+        throw new Error(
+          "invariant: invalid event name should be in the form [a-z] with underscores only."
+        );
+      }
+
       analytics.current?.event(eventName, params);
     }
   });
 
-  const screenView: Events["screenView"] = useEvent((name, screen_class) => {
-    analytics.current?.event("screen_view", {
-      name,
-      screen_class,
-    });
-  });
+  const screenView: Events["screenView"] = useEvent(
+    (screen_name, page_title) => {
+      analytics.current?.event("screen_view", {
+        page_title,
+        screen_name,
+      });
+    }
+  );
 
   const callbacks = useMemo(
     () => ({

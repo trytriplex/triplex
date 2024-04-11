@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { useCallback, useEffect, useMemo } from "react";
+import { useAnalytics, type ActionId } from "../analytics";
 import {
   Menu,
   Menubar,
@@ -21,7 +22,7 @@ interface MenuItem {
   accelerator?: string;
   click?: () => void;
   enabled?: boolean | "active-input" | "inactive-input";
-  id: string;
+  id: ActionId;
   label?: string;
   role?: "fileMenu" | "editMenu" | "viewMenu" | "windowMenu" | "help";
   submenu?: (
@@ -104,6 +105,7 @@ export function EditorMenu() {
     target,
     undo,
   } = useEditor();
+  const analytics = useAnalytics();
   const { blur, jumpTo, navigateTo, refresh } = useScene();
   const isEditable = !!path;
 
@@ -119,14 +121,14 @@ export function EditorMenu() {
     () =>
       [
         {
-          id: "file-menu",
+          id: "rootmenu_project_file",
           label: "File",
           role: "fileMenu",
           submenu: [
             {
               accelerator: shortcut("N", { meta: true }),
               click: () => newFile(),
-              id: "new-file",
+              id: "rootmenu_file_new",
               label: "New File...",
             },
             {
@@ -135,12 +137,12 @@ export function EditorMenu() {
             {
               accelerator: shortcut("O", { meta: true }),
               click: () => showOverlay("open-scene"),
-              id: "open",
+              id: "rootmenu_project_components",
               label: "Open...",
             },
             {
               click: () => window.triplex.sendCommand("open-project"),
-              id: "open-project",
+              id: "rootmenu_project_open",
               // Menu item only displayed in native
               label: "Open Project...",
             },
@@ -149,65 +151,65 @@ export function EditorMenu() {
               accelerator: shortcut("S", { meta: true }),
               click: () => save(),
               enabled: isEditable,
-              id: "save",
+              id: "rootmenu_file_save",
               label: "Save",
             },
             {
               accelerator: shortcut("S", { meta: true, shift: true }),
               click: () => saveAs(),
               enabled: isEditable,
-              id: "save-as",
+              id: "rootmenu_file_saveas",
               label: "Save As...",
             },
             {
               click: () => saveAll(),
               enabled: isEditable,
-              id: "save-all",
+              id: "rootmenu_file_saveall",
               label: "Save All",
             },
             { type: "separator" },
             {
               click: () => revertFile(),
               enabled: isEditable,
-              id: "reset",
+              id: "rootmenu_file_reset",
               label: "Revert File",
             },
             {
               accelerator: shortcut("R", { meta: true }),
               click: () => refresh(),
-              id: "refresh-scene",
+              id: "rootmenu_frame_reset",
               label: "Reset Scene",
             },
             {
               accelerator: shortcut("R", { meta: true, shift: true }),
               click: () => refresh({ hard: true }),
-              id: "hard-refresh-scene",
+              id: "rootmenu_project_reload",
               label: "Reload Editor",
             },
             { type: "separator" },
             {
               click: () => window.triplex.sendCommand("close-project"),
-              id: "close-project",
+              id: "rootmenu_project_close",
               // Menu item only displayed in native
               label: "Close Project",
             },
           ],
         },
         {
-          id: "edit-menu",
+          id: "rootmenu_project_edit",
           label: "Edit",
           role: "editMenu",
           submenu: [
             {
               accelerator: shortcut("Z", { meta: true }),
               click: undo,
-              id: "undo",
+              id: "rootmenu_project_undo",
               label: "Undo",
             },
             {
               accelerator: shortcut("Z", { meta: true, shift: true }),
               click: redo,
-              id: "redo",
+              id: "rootmenu_project_redo",
               label: "Redo",
             },
             {
@@ -219,7 +221,7 @@ export function EditorMenu() {
                 document.execCommand("copy");
               },
               enabled: "active-input",
-              id: "copy",
+              id: "rootmenu_input_copy",
               label: "Copy",
             },
             {
@@ -228,13 +230,13 @@ export function EditorMenu() {
                 document.execCommand("paste");
               },
               enabled: "active-input",
-              id: "paste",
+              id: "rootmenu_input_paste",
               label: "Paste",
             },
           ],
         },
         {
-          id: "select-menu",
+          id: "rootmenu_project_select",
           label: "Selection",
           submenu: [
             {
@@ -243,14 +245,14 @@ export function EditorMenu() {
                 document.execCommand("selectAll");
               },
               enabled: "active-input",
-              id: "select-all",
+              id: "rootmenu_input_selectall",
               label: "Select All",
             },
             {
               accelerator: shortcut("Escape"),
               click: () => blur(),
               enabled: !!target && isEditable,
-              id: "deselect",
+              id: "rootmenu_element_blur",
               label: "Deselect",
             },
             {
@@ -260,28 +262,28 @@ export function EditorMenu() {
               accelerator: shortcut("F"),
               click: () => jumpTo(),
               enabled: !!target && isEditable && "inactive-input",
-              id: "jump-to",
+              id: "rootmenu_element_jumpto",
               label: "Jump To",
             },
             {
               accelerator: shortcut("F", { shift: true }),
               click: () => navigateTo(),
               enabled: !!target && isEditable,
-              id: "enter-component",
+              id: "rootmenu_element_open",
               label: "Enter",
             },
             {
               accelerator: shortcut("F", { meta: true, shift: true }),
               click: () => exitComponent(),
               enabled: enteredComponent,
-              id: "exit-component",
+              id: "rootmenu_element_exit",
               label: "Exit",
             },
             {
               accelerator: shortcut("D", { meta: true }),
               click: duplicateSelection,
               enabled: !!target,
-              id: "duplicate",
+              id: "rootmenu_element_duplicate",
               label: "Duplicate",
             },
             {
@@ -291,53 +293,53 @@ export function EditorMenu() {
               accelerator: shortcut("Backspace"),
               click: () => deleteComponent(),
               enabled: !!target && isEditable,
-              id: "delete",
+              id: "rootmenu_element_delete",
               label: "Delete",
             },
           ],
         },
         {
-          id: "view-menu",
+          id: "rootmenu_project_view",
           label: "View",
           role: "viewMenu",
           submenu: [
             {
               click: () => window.triplex.sendCommand("show-devtools"),
-              id: "devtools",
+              id: "rootmenu_project_devtools",
               label: "Show Developer Tools",
             },
             {
               click: () => window.triplex.sendCommand("view-logs"),
-              id: "view-logs",
+              id: "rootmenu_logs_open",
               label: "Logs",
             },
           ],
         },
         {
-          id: "window-menu",
+          id: "rootmenu_project_window",
           role: "windowMenu",
           visible: window.triplex.platform === "darwin",
         },
         {
-          id: "help-menu",
+          id: "rootmenu_project_help",
           label: "Help",
           submenu: [
             {
               click: () =>
                 window.triplex.openLink("https://triplex.dev/docs/overview"),
-              id: "documentation",
+              id: "rootmenu_docs_overview",
               label: "Documentation",
               role: "help",
             },
           ],
         },
         {
-          id: "debug-menu",
+          id: "rootmenu_project_debug",
           label: "Debug",
           submenu: [
             {
               click: () => window.triplex.sendCommand("show-app-dir"),
-              id: "app-dir",
+              id: "(UNSAFE_SKIP)",
               label: "Open App Directory",
             },
           ],
@@ -381,6 +383,7 @@ export function EditorMenu() {
           case "active-input": {
             if (document.activeElement?.tagName === "INPUT") {
               menuItem.click();
+              analytics.event(menuItem.id);
             }
             break;
           }
@@ -388,17 +391,19 @@ export function EditorMenu() {
           case "inactive-input": {
             if (document.activeElement?.tagName !== "INPUT") {
               menuItem.click();
+              analytics.event(menuItem.id);
             }
             break;
           }
 
           default:
             menuItem.click();
+            analytics.event(menuItem.id);
             break;
         }
       }
     });
-  }, [menubar]);
+  }, [analytics, menubar]);
 
   if (window.triplex.platform !== "win32") {
     return null;
@@ -431,6 +436,7 @@ export function EditorMenu() {
 
                   return (
                     <MenuItem
+                      actionId={menuitem.id}
                       disabled={menuitem.enabled === false}
                       key={menuitem.id}
                       onClick={menuitem.click}

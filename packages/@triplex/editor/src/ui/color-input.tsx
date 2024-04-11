@@ -5,24 +5,22 @@
  * file in the root directory of this source tree.
  */
 import { Cross2Icon } from "@radix-ui/react-icons";
-import {
-  type FormEventHandler,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState, type FormEventHandler } from "react";
 import tinycolor from "tinycolor2";
+import { useAnalytics, type ActionIdSafe } from "../analytics";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
+import useEvent from "../util/use-event";
 
 export function ColorInput({
+  actionId,
   defaultValue,
   name,
   onChange,
   onConfirm,
   required,
 }: {
+  actionId: ActionIdSafe;
   defaultValue?: string;
   name: string;
   onChange: (value: string | undefined) => void;
@@ -35,6 +33,7 @@ export function ColorInput({
     ? defaultValueColor.toHexString()
     : undefined;
   const [hasChanged, setHasChanged] = useState(false);
+  const analytics = useAnalytics();
 
   useEffect(() => {
     if (!ref.current) {
@@ -47,6 +46,7 @@ export function ColorInput({
         defaultValueHex !== e.target.value
       ) {
         onConfirm(e.target.value);
+        analytics.event(`${actionId}_confirm`);
       }
     };
 
@@ -56,7 +56,7 @@ export function ColorInput({
     return () => {
       element.removeEventListener("change", cb);
     };
-  }, [defaultValueHex, onConfirm]);
+  }, [defaultValueHex, onConfirm, actionId, analytics]);
 
   const onChangeHandler: FormEventHandler<HTMLInputElement> = (e) => {
     if (e.target instanceof HTMLInputElement) {
@@ -65,13 +65,14 @@ export function ColorInput({
     }
   };
 
-  const clearInputValue = useCallback(() => {
+  const clearInputValue = useEvent(() => {
     if (defaultValue !== undefined) {
       onChange(undefined);
       onConfirm(undefined);
       setHasChanged(false);
+      analytics.event(`${actionId}_clear`);
     }
-  }, [defaultValue, onChange, onConfirm]);
+  });
 
   return (
     <div className="flex items-center gap-1">
@@ -101,7 +102,7 @@ export function ColorInput({
       </div>
       {!required && defaultValue && (
         <IconButton
-          actionId="clear_prop_value"
+          actionId={`${actionId}_clear`}
           className="opacity-50 group-hover:opacity-100"
           icon={Cross2Icon}
           label="Clear value"

@@ -7,10 +7,12 @@
 import { SwitchIcon } from "@radix-ui/react-icons";
 import type { Type } from "@triplex/server";
 import { useState } from "react";
+import { type ActionIdSafe } from "../analytics";
 import { IconButton } from "../ds/button";
 import { PropInput } from "./prop-input";
 
 export function UnionInput({
+  actionId,
   column,
   defaultValue,
   line,
@@ -21,6 +23,7 @@ export function UnionInput({
   required,
   values,
 }: {
+  actionId: ActionIdSafe;
   column?: number;
   defaultValue?: string | number;
   line?: number;
@@ -60,7 +63,7 @@ export function UnionInput({
       </div>
       <div className="self-start">
         <IconButton
-          actionId="switch_prop_type"
+          actionId={`${actionId}_switch`}
           icon={SwitchIcon}
           label="Switch Prop Type"
           onClick={incrementIndex}

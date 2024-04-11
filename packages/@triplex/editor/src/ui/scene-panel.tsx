@@ -32,7 +32,7 @@ import {
   type ChangeEventHandler,
 } from "react";
 import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary";
-import { useScreenView } from "../analytics";
+import { useAnalytics, useScreenView } from "../analytics";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 import { Pressable } from "../ds/pressable";
@@ -78,6 +78,7 @@ const blockAll: InstructionType[] = [
 ];
 
 function ComponentHeading() {
+  const analytics = useAnalytics();
   const { exportName, newComponent, path, set } = useEditor();
   const setFrame = useCanvasStage((store) => store.setFrame);
   const frame = useCanvasStage((store) => store.frame);
@@ -94,10 +95,12 @@ function ComponentHeading() {
     switch (nextValue) {
       case "new-component": {
         newComponent();
+        analytics.event("scenepanel_component_new");
         break;
       }
 
       default: {
+        analytics.event("scenepanel_component_open");
         set({
           encodedProps: "",
           exportName: nextValue,
@@ -137,7 +140,7 @@ function ComponentHeading() {
       <div className="-my-1 -mr-2 ml-1 flex items-center">
         {frame === "expanded" && (
           <IconButton
-            actionId="collapse_frame"
+            actionId="scenepanel_frame_collapse"
             icon={ExitFullScreenIcon}
             label="Collapse To Frame"
             onClick={() => setFrame("intrinsic")}
@@ -145,7 +148,7 @@ function ComponentHeading() {
         )}
         {!scene.matchesFilesGlob && (
           <IconButton
-            actionId="component_outside_of_project_files"
+            actionId="scenepanel_docs_outsideproject"
             className="text-orange-400"
             icon={ExclamationTriangleIcon}
             label="Warning: This component is outside of your declared project files. Click to learn more."
@@ -177,7 +180,7 @@ function AssetsDrawerButton() {
 
   return (
     <IconButton
-      actionId="open_assets_drawer"
+      actionId="scenepanel_project_assetsdrawer"
       icon={PlusIcon}
       label="Add Element"
       onClick={show}
@@ -197,13 +200,13 @@ function SceneContents() {
         <div className="flex p-1">
           <>
             <IconButton
-              actionId="undo"
+              actionId="(UNSAFE_SKIP)"
               icon={ArrowLeftIcon}
               label="Undo"
               onClick={undo}
             />
             <IconButton
-              actionId="redo"
+              actionId="(UNSAFE_SKIP)"
               icon={ArrowRightIcon}
               label="Redo"
               onClick={redo}
@@ -216,7 +219,12 @@ function SceneContents() {
         <ComponentHeading />
 
         <div className="-mt-0.5 mb-2.5 px-3">
-          <IDELink column={1} line={1} path={path}>
+          <IDELink
+            actionId="scenepanel_component_source"
+            column={1}
+            line={1}
+            path={path}
+          >
             View source
           </IDELink>
         </div>
@@ -225,6 +233,7 @@ function SceneContents() {
 
         <div className="flex py-2 pl-3 pr-2">
           <StringInput
+            actionId="scenepanel_element_filter"
             label="Filter elements..."
             name="filter-elements"
             onChange={setFilter}
@@ -232,7 +241,7 @@ function SceneContents() {
           <div className="w-1 flex-shrink-0" />
           {enteredComponent && (
             <IconButton
-              actionId="exit_component"
+              actionId="scenepanel_component_exit"
               className="-scale-x-100"
               icon={ExitIcon}
               label="Exit Selection"
@@ -280,7 +289,11 @@ function LiveEditPropsButton() {
 
   return (
     <IconButton
-      actionId="live_edit_props"
+      actionId={
+        isSelected
+          ? "scene_component_controls_close"
+          : "scene_component_controls_open"
+      }
       icon={Pencil2Icon}
       isSelected={isSelected || (hasState ? "partial" : false)}
       label={
@@ -483,7 +496,7 @@ function JsxElementButton({
               : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
             "group relative flex cursor-default items-center gap-1 border-l-2 border-transparent px-3 py-1.5 text-left text-sm -outline-offset-1",
           ])}
-          doublePressActionId="navigate_to_element"
+          doublePressActionId="scenepanel_component_open"
           onDoublePress={navigateTo}
           onPress={() => {
             focus({
@@ -493,7 +506,7 @@ function JsxElementButton({
               path: "path" in element ? element.path || "" : "",
             });
           }}
-          pressActionId="focus_element"
+          pressActionId="scenepanel_element_focus"
           ref={ref}
           style={{ paddingLeft: level === 1 ? 13 : level * 13 }}
           testId="scene-element"
@@ -515,7 +528,9 @@ function JsxElementButton({
           {showExpander ? (
             <IconButton
               actionId={
-                isExpanded ? "hide_child_elements" : "show_child_elements"
+                isExpanded
+                  ? "scenepanel_element_collapse"
+                  : "scenepanel_element_expand"
               }
               className="-my-1 -ml-2"
               color="inherit"
@@ -546,7 +561,7 @@ function JsxElementButton({
           >
             <RenderActions {...element} />
             <IconButton
-              actionId="delete_element"
+              actionId="scenepanel_element_delete"
               color="inherit"
               icon={TrashIcon}
               label="Delete"
@@ -561,7 +576,7 @@ function JsxElementButton({
               testId="delete"
             />
             <IconButton
-              actionId="jump_to_element"
+              actionId="scenepanel_element_jumpto"
               color="inherit"
               icon={Crosshair1Icon}
               label="Jump To Element"
@@ -576,7 +591,7 @@ function JsxElementButton({
               testId="jump-to"
             />
             <IconButton
-              actionId="add_child_element"
+              actionId="scenepanel_project_assetsdrawer"
               color="inherit"
               icon={PlusIcon}
               label="Add Child Element"

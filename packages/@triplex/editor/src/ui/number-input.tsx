@@ -17,6 +17,7 @@ import {
   type KeyboardEventHandler,
   type MouseEventHandler,
 } from "react";
+import { useAnalytics, type ActionIdSafe } from "../analytics";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 import { Pressable } from "../ds/pressable";
@@ -79,6 +80,7 @@ function toNumber(
 }
 
 export function NumberInput({
+  actionId,
   defaultValue,
   label,
   name,
@@ -88,6 +90,7 @@ export function NumberInput({
   testId,
   transformValue = { in: (value) => value, out: (value) => value },
 }: {
+  actionId: ActionIdSafe;
   defaultValue?: number;
   label?: string;
   name: string;
@@ -100,6 +103,7 @@ export function NumberInput({
     out: (value: number | undefined) => number | undefined;
   };
 }) {
+  const analytics = useAnalytics();
   const isLinux = navigator.platform.startsWith("Linux");
   const [isPointerLock, setIsPointerLock] = useState(false);
   const [modifier, setModifier] = useState({ ctrl: false, shift: false });
@@ -129,7 +133,7 @@ export function NumberInput({
     onChange(nextValue);
   }, [max, min, onChange, transformValue]);
 
-  const onConfirmHandler = useCallback(() => {
+  const onConfirmHandler = useEvent(() => {
     const nextValue = Number.isNaN(ref.current.valueAsNumber)
       ? undefined
       : transformValue.out(ref.current.valueAsNumber);
@@ -146,17 +150,19 @@ export function NumberInput({
 
     if (transformedDefaultValue !== nextValue) {
       onConfirm(nextValue);
+      analytics.event(`${actionId}_confirm`);
     }
-  }, [transformValue, required, min, max, transformedDefaultValue, onConfirm]);
+  });
 
-  const clearInputValue = useCallback(() => {
+  const clearInputValue = useEvent(() => {
     if (defaultValue !== undefined) {
       onChange(undefined);
       onConfirm(undefined);
+      analytics.event(`${actionId}_clear`);
     }
 
     ref.current.focus();
-  }, [defaultValue, onChange, onConfirm]);
+  });
 
   const onMouseMoveHandler: MouseEventHandler = useCallback(
     (e) => {
@@ -343,7 +349,7 @@ export function NumberInput({
         label={`Decrease By ${step}`}
         onBlur={onConfirmHandler}
         onPress={incrementDown}
-        pressActionId="decrement_number_input"
+        pressActionId={`${actionId}_decrement`}
         tabIndex={-1}
         testId={testId && `${testId}-decrement`}
       >
@@ -355,7 +361,7 @@ export function NumberInput({
         label={`Increase By ${step}`}
         onBlur={onConfirmHandler}
         onPress={incrementUp}
-        pressActionId="increment_number_input"
+        pressActionId={`${actionId}_increment`}
         tabIndex={-1}
         testId={testId && `${testId}-increment`}
       >
@@ -364,7 +370,7 @@ export function NumberInput({
 
       {!required && (
         <IconButton
-          actionId="clear_number_input"
+          actionId={`${actionId}_clear`}
           className="hidden peer-focus:block"
           icon={Cross2Icon}
           label="Clear Value"

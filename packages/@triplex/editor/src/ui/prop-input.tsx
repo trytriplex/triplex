@@ -73,6 +73,11 @@ export function PropInput({
   if (isUnhandled) {
     return (
       <IDELink
+        actionId={
+          "value" in prop && prop.value
+            ? "contextpanel_element_viewpropcodecontrolled"
+            : "contextpanel_element_viewpropunsupported"
+        }
         className="flex h-[26px] items-center gap-0.5 overflow-hidden rounded-md bg-white/5 px-1 py-0.5 text-sm hover:bg-white/10"
         column={column || -1}
         line={line || -1}
@@ -111,6 +116,7 @@ export function PropInput({
     if (isLiteralUnion) {
       return (
         <LiteralUnionInput
+          actionId="contextpanel_input_literalunion"
           defaultValue={"value" in prop ? prop.value : undefined}
           name={name}
           onChange={onChange}
@@ -122,6 +128,7 @@ export function PropInput({
     } else {
       return (
         <UnionInput
+          actionId="contextpanel_input_union"
           column={column}
           defaultValue={"value" in prop ? prop.value : undefined}
           // If the order of the values change blow re-mount the component so
@@ -142,6 +149,7 @@ export function PropInput({
   if (prop.kind === "tuple") {
     return (
       <TupleInput
+        actionId="contextpanel_input_tuple"
         column={column}
         line={line}
         name={name}
@@ -159,6 +167,7 @@ export function PropInput({
     // We handle rotation differently because we need to convert rads to degs.
     return (
       <NumberInput
+        actionId="contextpanel_input_number"
         defaultValue={"value" in prop ? prop.value : undefined}
         label={prop.label}
         name={name}
@@ -179,6 +188,7 @@ export function PropInput({
   } else if (prop.kind === "number") {
     return (
       <NumberInput
+        actionId="contextpanel_input_number"
         defaultValue={"value" in prop ? prop.value : undefined}
         label={prop.label}
         name={name}
@@ -191,6 +201,7 @@ export function PropInput({
   } else if (prop.kind === "boolean") {
     return (
       <BooleanInput
+        actionId="contextpanel_input_boolean"
         defaultValue={"value" in prop ? prop.value : false}
         label={prop.label}
         name={name}
@@ -202,6 +213,7 @@ export function PropInput({
     if (isColorProp(name)) {
       return (
         <ColorInput
+          actionId="contextpanel_input_color"
           defaultValue={"value" in prop ? prop.value : undefined}
           name={name}
           onChange={onChange}
@@ -213,6 +225,7 @@ export function PropInput({
 
     return (
       <StringInput
+        actionId="contextpanel_input_string"
         defaultValue={"value" in prop ? prop.value : undefined}
         label={prop.label}
         name={name}

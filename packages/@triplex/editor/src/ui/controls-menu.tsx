@@ -69,6 +69,7 @@ export function ControlsMenu() {
               case "button": {
                 return (
                   <Button
+                    actionId="scene_controls"
                     control={control}
                     key={control.id}
                     onClick={(id) => send("control-triggered", { id })}
@@ -79,6 +80,7 @@ export function ControlsMenu() {
               case "button-group": {
                 return (
                   <ButtonGroup
+                    actionId="scene_controls"
                     control={control}
                     key={control.id}
                     onClick={(id) => send("control-triggered", { id })}
@@ -89,6 +91,7 @@ export function ControlsMenu() {
               case "toggle-button": {
                 return (
                   <ToggleButton
+                    actionId="scene_controls"
                     control={control}
                     key={control.id}
                     onClick={(id) => send("control-triggered", { id }, true)}
@@ -108,7 +111,7 @@ export function ControlsMenu() {
             <Separator />
 
             <DSButton
-              actionId="refresh_scene"
+              actionId="scene_frame_zoom_reset"
               aria-label="Reset Zoom"
               onClick={resetZoom}
               size="tight"
@@ -120,7 +123,7 @@ export function ControlsMenu() {
             </DSButton>
 
             <IconButton
-              actionId="fit_frame_to_viewport"
+              actionId="scene_frame_fittoviewport"
               icon={SizeIcon}
               label="Fit Frame To Viewport"
               onClick={fitFrameToViewport}
@@ -133,14 +136,14 @@ export function ControlsMenu() {
         {playState !== "edit" && (
           <>
             <IconButton
-              actionId="reset_scene"
+              actionId="scene_frame_reset"
               icon={ResetIcon}
               label="Reset Scene"
               onClick={refresh}
             />
             <Separator />
             <IconButton
-              actionId="stop_scene"
+              actionId="scene_frame_stop"
               icon={StopIcon}
               label="Stop Scene"
               onClick={() => setPlayState("edit")}
@@ -150,7 +153,7 @@ export function ControlsMenu() {
 
         {playState === "play" && (
           <IconButton
-            actionId="pause_scene"
+            actionId="scene_frame_pause"
             icon={PauseIcon}
             label="Pause Scene"
             onClick={() => setPlayState("pause")}
@@ -159,7 +162,7 @@ export function ControlsMenu() {
 
         {playState !== "play" && (
           <IconButton
-            actionId="play_scene"
+            actionId="scene_frame_play"
             icon={PlayIcon}
             label="Play Scene"
             onClick={() => setPlayState("play")}
@@ -169,7 +172,7 @@ export function ControlsMenu() {
         <Menu
           trigger={
             <IconButton
-              actionId="play_options"
+              actionId="scene_frame_playoptions"
               icon={CaretDownIcon}
               label="Play Options"
               size="flush"
@@ -177,8 +180,15 @@ export function ControlsMenu() {
           }
         >
           <MenuRadioGroup onChange={setPlayCamera} value={playCamera}>
-            <MenuRadioItem value="editor">Editor camera</MenuRadioItem>
-            <MenuRadioItem value="default">Default camera</MenuRadioItem>
+            <MenuRadioItem actionId="scene_frame_camera_editor" value="editor">
+              Editor camera
+            </MenuRadioItem>
+            <MenuRadioItem
+              actionId="scene_frame_camera_default"
+              value="default"
+            >
+              Default camera
+            </MenuRadioItem>
           </MenuRadioGroup>
         </Menu>
       </div>

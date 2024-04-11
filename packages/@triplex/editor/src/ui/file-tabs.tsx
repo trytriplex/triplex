@@ -6,7 +6,8 @@
  */
 import { Component1Icon, Cross2Icon, CubeIcon } from "@radix-ui/react-icons";
 import { useLazySubscription } from "@triplex/ws/react";
-import { useCallback, useEffect, useRef } from "react";
+import { useEffect, useRef } from "react";
+import { useAnalytics } from "../analytics";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 import { Pressable } from "../ds/pressable";
@@ -115,7 +116,7 @@ function FileTab({
       ])}
       focusRing="inset"
       onPress={isActive ? undefined : onClickHandler}
-      pressActionId="open-file"
+      pressActionId="tabbar_file_switch"
       testId={isActive ? "active-tab" : "tab"}
       title={[
         children,
@@ -128,7 +129,7 @@ function FileTab({
     >
       <span className={isNew ? "italic" : undefined}>{children}</span>
       <IconButton
-        actionId="close-file"
+        actionId="tabbar_file_close"
         className={cn([
           "peer absolute right-2 z-10 opacity-0 focus:opacity-100",
           isDirty ? "hover:opacity-100" : "group-hover:opacity-100",
@@ -163,8 +164,9 @@ export function FileTabs() {
   >([]);
   const lastAvailableTab = projectState.at(-1);
   const playState = useScene((store) => store.playState);
+  const analytics = useAnalytics();
 
-  const openLastTab = useCallback(() => {
+  const openLastTab = useEvent(() => {
     const closedTab = previouslyClosedTabs.current.pop();
     if (closedTab) {
       set({
@@ -173,8 +175,9 @@ export function FileTabs() {
         index: closedTab.index,
         path: closedTab.filePath,
       });
+      analytics.event("tabbar_file_reopen");
     }
-  }, [set]);
+  });
 
   useEffect(() => {
     return window.triplex.accelerator("CommandOrCtrl+Shift+T", openLastTab);
@@ -189,6 +192,7 @@ export function FileTabs() {
         exportName: nextExportName,
         path: nextFilePath,
       });
+      analytics.event("tabbar_file_switch");
     }
   );
 
@@ -226,6 +230,7 @@ export function FileTabs() {
       }
 
       close(filePath);
+      analytics.event("tabbar_file_close");
 
       previouslyClosedTabs.current.push({ exportName, filePath, index });
     }
@@ -237,7 +242,7 @@ export function FileTabs() {
       className="col-span-full row-start-2 flex h-9 items-center gap-1 overflow-hidden bg-neutral-900 px-1.5"
     >
       <IconButton
-        actionId="open-file"
+        actionId="tabbar_project_components"
         icon={() => <Component1Icon className="rotate-45" />}
         isDisabled={playState === "play"}
         label="Open Component..."
@@ -247,7 +252,7 @@ export function FileTabs() {
       {import.meta.env.VITE_TRIPLEX_ENV === "test" && (
         <>
           <IconButton
-            actionId="open-last-tab"
+            actionId="(UNSAFE_SKIP)"
             icon={CubeIcon}
             label="Open Last Tab"
             onClick={openLastTab}
@@ -283,9 +288,10 @@ export function FileTabs() {
 
         <Pressable
           className="h-full flex-grow"
-          doublePressActionId="new-file"
+          doublePressActionId="tabbar_file_new"
           label="New File"
           onDoublePress={newFile}
+          pressActionId="(UNSAFE_SKIP)"
           tabIndex={-1}
         />
       </div>

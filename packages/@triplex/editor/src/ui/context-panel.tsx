@@ -9,6 +9,7 @@ import { useLazySubscription } from "@triplex/ws/react";
 import { Suspense, useDeferredValue, useLayoutEffect, useState } from "react";
 import { useScreenView } from "../analytics";
 import { IconButton } from "../ds/button";
+import { ExternalLink } from "../ds/external-link";
 import { ScrollContainer } from "../ds/scroll-container";
 import { PanelSkeleton } from "../ds/skeleton";
 import { useEditor, type FocusedObject } from "../stores/editor";
@@ -30,7 +31,7 @@ function SelectedSceneObjectPanel({
   setFilter: (filter: string | undefined) => void;
   target: FocusedObject;
 }) {
-  useScreenView("context_scene", "Panel");
+  useScreenView("component_props", "Panel");
 
   const { blur, setPropValue } = useScene();
   const { persistPropValue } = useEditor();
@@ -62,6 +63,7 @@ function SelectedSceneObjectPanel({
 
       <div className="-mt-0.5 mb-2.5 px-4">
         <IDELink
+          actionId="contextpanel_element_usage"
           column={target.column}
           line={target.line}
           path={target.parentPath}
@@ -73,7 +75,12 @@ function SelectedSceneObjectPanel({
           <>
             <span className="mx-1.5 text-xs text-neutral-400">•</span>
 
-            <IDELink column={1} line={1} path={data.path}>
+            <IDELink
+              actionId="contextpanel_element_source"
+              column={1}
+              line={1}
+              path={data.path}
+            >
               View source
             </IDELink>
           </>
@@ -85,6 +92,7 @@ function SelectedSceneObjectPanel({
       {data.props.length > 0 && (
         <div className="px-3 py-2">
           <StringInput
+            actionId="contextpanel_input_componentprops_filter"
             defaultValue={filter}
             label="Filter props..."
             name="prop-filter"
@@ -162,7 +170,7 @@ function ComponentSandboxPanel({
   filter: string | undefined;
   setFilter: (filter: string | undefined) => void;
 }) {
-  useScreenView("context_sandbox", "Panel");
+  useScreenView("component_controls", "Panel");
   const { exportName, path } = useEditor();
   const data = useLazySubscription("/scene/:path/:exportName/props", {
     exportName,
@@ -181,17 +189,14 @@ function ComponentSandboxPanel({
         <div className="overflow-hidden text-ellipsis">Component Controls</div>
       </h2>
       <div className="-mt-0.5 mb-2.5 px-4">
-        <a
-          className="text-xs text-neutral-400"
-          href="#"
-          onClick={() =>
-            window.triplex.openLink(
-              "https://triplex.dev/docs/guides/component-controls"
-            )
-          }
+        <ExternalLink
+          actionId="contextpanel_docs_componentcontrols"
+          size="xs"
+          to="https://triplex.dev/docs/guides/component-controls"
+          variant="subtle"
         >
           Learn more
-        </a>
+        </ExternalLink>
       </div>
 
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
@@ -199,6 +204,7 @@ function ComponentSandboxPanel({
       {data.props.length > 0 && (
         <div className="flex py-2 pl-3 pr-2">
           <StringInput
+            actionId="contextpanel_input_controlsprops_filter"
             defaultValue={filter}
             label="Filter props..."
             name="prop-filter"
@@ -206,7 +212,7 @@ function ComponentSandboxPanel({
           />
           <div className="w-1 flex-shrink-0" />
           <IconButton
-            actionId="clear_live_props"
+            actionId="contextpanel_input_controlsprops_reset"
             icon={EraserIcon}
             isDisabled={!hasValues}
             label="Reset Props"
@@ -235,17 +241,13 @@ function ComponentSandboxPanel({
               temporarily during this session.
             </span>
 
-            <a
-              className="text-xs text-blue-400"
-              href="#"
-              onClick={() =>
-                window.triplex.openLink(
-                  "https://triplex.dev/docs/guides/component-controls"
-                )
-              }
+            <ExternalLink
+              actionId="contextpanel_docs_componentcontrols"
+              size="xs"
+              to="https://triplex.dev/docs/guides/component-controls"
             >
               Learn how to use this feature.
-            </a>
+            </ExternalLink>
           </div>
         )}
 
@@ -302,6 +304,11 @@ export function ContextPanel() {
   const { blur } = useScene();
   const deferredTarget = useDeferredValue(target);
   const [filter, setFilter] = useState<string | undefined>();
+  const closeActionId = deferredTarget
+    ? deferredTarget.column > -1 && deferredTarget.line > -1
+      ? "contextpanel_element_blur"
+      : "contextpanel_controls_close"
+    : "(UNSAFE_SKIP)";
 
   return (
     <div
@@ -310,7 +317,7 @@ export function ContextPanel() {
     >
       {deferredTarget && (
         <IconButton
-          actionId="close_context_panel"
+          actionId={closeActionId}
           className="absolute right-1.5 top-3"
           icon={Cross2Icon}
           label="Close"

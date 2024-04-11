@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { useThree, type ThreeEvent } from "@react-three/fiber";
+import { send } from "@triplex/bridge/client";
 import { type default as CameraControls } from "camera-controls";
 import { useMemo, useState } from "react";
 import {
@@ -249,6 +250,8 @@ export function CameraGizmo() {
           } else {
             tweenCamera(controls.current, scene, e.eventObject.position);
           }
+
+          send("track", { actionId: "controls_viewcube" });
 
           return null;
         }}

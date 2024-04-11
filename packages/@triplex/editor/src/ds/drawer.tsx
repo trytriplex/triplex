@@ -24,7 +24,7 @@ export function Drawer({
   onClose: () => void;
   open: boolean;
 }) {
-  useScreenView(label, "Drawer");
+  useScreenView(label, "Drawer", open);
 
   return (
     <Dialog.Root onOpenChange={(isOpen) => !isOpen && onClose()} open={open}>
