@@ -7,5 +7,5 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  VITE_TRIPLEX_ENV?: "test";
+  VITE_TRIPLEX_ENV?: "test" | "development";
 }

@@ -5,5 +5,3 @@
  * file in the root directory of this source tree.
  */
 require("ts-node").register({ project: __dirname + "/tsconfig.json" });
-
-process.env.TRIPLEX_ENV = "development";

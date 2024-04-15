@@ -7,5 +7,6 @@
 require("ts-node").register({ project: __dirname + "/tsconfig.json" });
 
 process.env.TRIPLEX_ENV = "development";
+process.env.VITE_TRIPLEX_ENV = process.env.VITE_TRIPLEX_ENV || "development";
 
 require("./src/entrypoints/main.ts");

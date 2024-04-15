@@ -43,6 +43,7 @@ export function fork<TData extends Record<string, unknown>>(
         NODE_PATH: process.cwd(),
         TRIPLEX_DATA: JSON.stringify(data),
         TRIPLEX_ENV: "development",
+        VITE_TRIPLEX_ENV: "development",
       },
       // Pass through inspect if the parent has it enabled.
       execArgv: isDebugInspect ? ["--inspect=40895"] : undefined,
@@ -59,6 +60,8 @@ export function fork<TData extends Record<string, unknown>>(
         DEBUG: "triplex",
         NODE_PATH: process.cwd(),
         TRIPLEX_DATA: JSON.stringify(data),
+        TRIPLEX_ENV: "production",
+        VITE_TRIPLEX_ENV: "production",
       },
       // We set the forked process to silent so we can capture errors.
       // See: https://stackoverflow.com/a/52066025

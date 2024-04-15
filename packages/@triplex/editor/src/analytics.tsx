@@ -251,7 +251,7 @@ export function Analytics({ children }: { children: React.ReactNode }) {
   const event: Events["event"] = useEvent((eventName, params) => {
     if (eventName && eventName !== "(UNSAFE_SKIP)") {
       if (
-        import.meta.env.DEV &&
+        import.meta.env.VITE_TRIPLEX_ENV === "development" &&
         /^[a-z]$/.test(eventName.replaceAll("_", ""))
       ) {
         throw new Error(

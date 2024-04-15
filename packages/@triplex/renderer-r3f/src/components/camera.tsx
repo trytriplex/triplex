@@ -377,7 +377,7 @@ export function Camera({ children }: { children?: React.ReactNode }) {
       />
       {children}
 
-      {import.meta.env.DEV && (
+      {import.meta.env.VITE_TRIPLEX_ENV === "development" && (
         <Tunnel.In>
           <pre
             data-testid="camera-panel"

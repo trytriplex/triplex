@@ -10,7 +10,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "VITE_TRIPLEX_ENV=production vite build",
     "typedef": "tsc"
   },
   "dependencies": {
