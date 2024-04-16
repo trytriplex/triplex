@@ -1,5 +1,13 @@
 # @triplex/editor
 
+## 0.67.1
+
+### Patch Changes
+
+- e841a67: Fix camera dev tools being visible.
+  - @triplex/bridge@0.67.1
+  - @triplex/ws@0.67.1
+
 ## 0.67.0
 
 ### Minor Changes
