@@ -1,0 +1,16 @@
+{
+  "extends": "../../.tsconfig/node.json",
+  "include": ["."],
+  "exclude": ["dist", "build", "node_modules"],
+  "ts-node": {
+    "transpileOnly": true,
+    "swc": true
+  },
+  "compilerOptions": {
+    "jsx": "react-jsx",
+    "baseUrl": ".",
+    "outDir": "./dist",
+    "emitDeclarationOnly": false,
+    "noEmit": true
+  }
+}

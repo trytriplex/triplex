@@ -54,7 +54,7 @@ export function send<TEvent extends ClientSendEventName>(
   if (eventName.startsWith("self:")) {
     window.postMessage({ data, eventName }, "*");
   } else {
-    window.top?.postMessage({ data, eventName }, "*");
+    window.parent.postMessage({ data, eventName }, "*");
   }
 
   if (awaitResponse) {

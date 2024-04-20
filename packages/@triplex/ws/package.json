@@ -14,6 +14,11 @@
       "types": "./src/react.ts",
       "module": "./src/react.ts",
       "default": "./src/react.ts"
+    },
+    "./factory": {
+      "types": "./src/factory.ts",
+      "module": "./src/factory.ts",
+      "default": "./src/factory.ts"
     }
   },
   "files": [
@@ -48,6 +53,11 @@
         "types": "./dist/react.d.ts",
         "module": "./dist/react.js",
         "default": "./dist/react.js"
+      },
+      "./factory": {
+        "types": "./dist/factory.d.ts",
+        "module": "./dist/factory.js",
+        "default": "./dist/factory.js"
       }
     }
   }

@@ -8,7 +8,7 @@ import { expect } from "@playwright/test";
 import { test } from "../utils/runner";
 
 // TODO: Test is flakey think up a better way to test / implement.
-test.skip("thumbnail loads", async ({ editorR3F }) => {
+test.fixme("thumbnail loads", async ({ editorR3F }) => {
   const drawer = await editorR3F.assetsDrawer.open();
   await drawer.openFolder({ name: "geometry" });
 

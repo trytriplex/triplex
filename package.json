@@ -11,11 +11,11 @@
     "!packages/create-triplex-project/*"
   ],
   "scripts": {
-    "build": "pnpm clean && pnpm --filter @triplex/* --filter create-triplex-project build && pnpm typedef && pnpm clean:drop-dist-tests",
+    "build": "pnpm clean && pnpm --filter @triplex/* --filter create-triplex-project --filter triplex-vscode build && pnpm typedef && pnpm clean:drop-dist-tests",
     "ci:publish": "pnpm build && pnpm publish --recursive --access=public && changeset tag",
     "ci:release-electron": "pnpm i --force && cross-env pnpm --filter @triplex/* --filter create-triplex-project build && pnpm --filter @triplex/electron release",
     "ci:version": "changeset version && pnpm install --lockfile-only",
-    "clean": "pnpm -r exec rimraf dist",
+    "clean": "pnpm -r exec rimraf dist out targets playwright-report test-results",
     "clean:drop-dist-tests": "pnpm -r exec rimraf --glob dist/**/__tests__ dist/**/__test__",
     "clean:node_modules": "pnpm -r exec rimraf node_modules && rimraf node_modules",
     "dev": "pnpm --filter @triplex/electron dev",

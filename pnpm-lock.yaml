@@ -210,6 +210,55 @@ importers:
         specifier: ^4.5.3
         version: 4.5.3(@types/node@18.11.18)
 
+  apps/vscode:
+    dependencies:
+      '@triplex/client':
+        specifier: 0.67.1
+        version: link:../../packages/@triplex/client
+      '@triplex/server':
+        specifier: 0.67.1
+        version: link:../../packages/@triplex/server
+    devDependencies:
+      '@triplex/bridge':
+        specifier: 0.67.1
+        version: link:../../packages/@triplex/bridge
+      '@triplex/ws':
+        specifier: 0.67.1
+        version: link:../../packages/@triplex/ws
+      '@types/vscode':
+        specifier: ^1.88.0
+        version: 1.88.0
+      '@vitejs/plugin-react':
+        specifier: ^4.1.0
+        version: 4.1.0(vite@4.5.3)
+      autoprefixer:
+        specifier: ^10.4.16
+        version: 10.4.16(postcss@8.4.32)
+      get-port:
+        specifier: ^7.0.0
+        version: 7.0.0
+      react:
+        specifier: ^18.0.0
+        version: 18.2.0
+      react-dom:
+        specifier: ^18.0.0
+        version: 18.2.0(react@18.2.0)
+      tailwindcss:
+        specifier: ^3.3.2
+        version: 3.3.2
+      typescript:
+        specifier: ^5.3.3
+        version: 5.3.3
+      upath:
+        specifier: ^2.0.1
+        version: 2.0.1
+      valibot:
+        specifier: ^0.25.0
+        version: 0.25.0
+      vite:
+        specifier: ^4.5.3
+        version: 4.5.3(@types/node@18.11.18)
+
   examples-private/custom-renderer:
     dependencies:
       '@triplex/bridge':
@@ -3810,6 +3859,10 @@ packages:
     requiresBuild: true
     dev: true
     optional: true
+
+  /@types/vscode@1.88.0:
+    resolution: {integrity: sha512-rWY+Bs6j/f1lvr8jqZTyp5arRMfovdxolcqGi+//+cPDOh8SBvzXH90e7BiSXct5HJ9HGW6jATchbRTpTJpEkw==}
+    dev: true
 
   /@types/webxr@0.5.14:
     resolution: {integrity: sha512-UEMMm/Xn3DtEa+gpzUrOcDj+SJS1tk5YodjwOxcqStNhCfPcwgyC5Srg2ToVKyg2Fhq16Ffpb0UWUQHqoT9AMA==}

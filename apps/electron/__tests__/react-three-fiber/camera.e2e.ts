@@ -88,6 +88,8 @@ test("toggle to default camera and switch to play mode", async ({
   await expect(editorR3F.devOnlyCameraPanel).toHaveText(/name: user_defined/);
 });
 
+// This is currently a bug where the camera isn't unset when removing it as default
+// This could be a bug in Triplex or R3F. Need to investigate.
 test.skip("unset userland camera to use default camera in play mode", async ({
   editorR3F,
 }) => {

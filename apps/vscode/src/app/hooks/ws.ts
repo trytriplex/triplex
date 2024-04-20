@@ -4,15 +4,9 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { createWSHooks } from "./factory";
+import { createWSHooks } from "@triplex/ws/factory";
 
-export type RemapWithNumber<TObject> = {
-  [P in keyof TObject]: string | number | undefined;
-};
-
-const instance = createWSHooks(() => ({
-  url: `ws://localhost:${window.triplex.env.ports.ws}`,
-}));
+const instance = createWSHooks({ url: "ws://localhost:333" });
 
 export const preloadSubscription = instance.preloadSubscription;
 
@@ -21,5 +15,3 @@ export const useLazySubscription = instance.useLazySubscription;
 export const useSubscription = instance.useSubscription;
 
 export const useSubscriptionEffect = instance.useSubscriptionEffect;
-
-export { buildPath } from "./factory";
