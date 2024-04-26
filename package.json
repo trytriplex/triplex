@@ -64,7 +64,8 @@
   },
   "pnpm": {
     "patchedDependencies": {
-      "@atlaskit/pragmatic-drag-and-drop@0.24.0": "patches/@atlaskit__pragmatic-drag-and-drop@0.24.0.patch"
+      "@atlaskit/pragmatic-drag-and-drop@0.24.0": "patches/@atlaskit__pragmatic-drag-and-drop@0.24.0.patch",
+      "@vscode/vsce@2.26.0": "patches/@vscode__vsce@2.26.0.patch"
     }
   }
 }

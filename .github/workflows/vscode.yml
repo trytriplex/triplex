@@ -1,0 +1,55 @@
+name: VSCode
+
+on:
+  pull_request:
+    paths:
+      - apps/vscode/**
+      - packages/**
+
+env:
+  CI: true
+  PNPM_CACHE_FOLDER: .pnpm-store
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Read node version
+        run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+        id: nvm
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        with:
+          version: 8.6.1
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ steps.nvm.outputs.NVMRC }}
+
+      - name: Setup pnpm config
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+
+      - name: Install dependencies
+        run: pnpm i --force
+
+      - name: Build
+        run: pnpm build
+
+      - name: Prepack
+        run: pnpm --filter triplex-vscode run prepack
+
+      - name: Pack
+        run: pnpm --filter triplex-vscode run pack
+
+      - name: Upload extension
+        uses: actions/upload-artifact@v3
+        with:
+          name: vscode-extension
+          path: apps/vscode/out/triplex-vscode*.vsix
+          retention-days: 14

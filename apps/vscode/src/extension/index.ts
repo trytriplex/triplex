@@ -5,20 +5,31 @@
  * file in the root directory of this source tree.
  */
 import "./env";
-import { createServer as createClientServer } from "@triplex/client";
-import { createServer, getConfig } from "@triplex/server";
+import { getConfig } from "@triplex/server";
 import { join } from "upath";
 import * as vscode from "vscode";
-import { getRendererMeta } from "./utils/renderer";
+import { type Args } from "../project";
+import { logger } from "../util/log/node";
+import { fork } from "./util/fork";
+import { getPort } from "./util/port";
+import { getRendererMeta } from "./util/renderer";
+
+const log = logger("vscode_main");
 
 export function activate(context: vscode.ExtensionContext) {
+  log("init");
+
   let panel: vscode.WebviewPanel | undefined;
 
   context.subscriptions.push(
     vscode.commands.registerCommand("triplex.start", async () => {
+      log("start");
+
       if (panel) {
+        log("reveal existing");
         panel.reveal();
       } else {
+        log("new panel");
         // Show something as fast as possible before doing anything.
         const cleanupFunctions: (() => void)[] = [];
         const html = await vscode.workspace.fs
@@ -39,35 +50,41 @@ export function activate(context: vscode.ExtensionContext) {
         panel.onDidDispose(() => {
           panel = undefined;
           cleanupFunctions.forEach((cleanup) => cleanup());
+          log("disposed");
         });
 
         panel.webview.html = html;
 
-        // TODO: Don't hardcode cwd.
         const cwd =
           "/Users/douges/projects/triplex-monorepo/examples/test-fixture";
-        process.chdir(cwd);
         const config = await getConfig(cwd);
-        const ports = { client: 3333, server: 8080, ws: 333 };
+        const ports = {
+          client: 3333,
+          server: await getPort(),
+          ws: 333,
+        };
         const renderer = await getRendererMeta({
           cwd,
           filepath: config.renderer,
         });
-        const server = await createServer({
-          config,
-          renderer,
-        });
-        const client = await createClientServer({
-          config,
-          ports,
-          renderer,
-        });
 
-        cleanupFunctions.push(
-          await server.listen(ports),
-          await client.listen(ports.client),
-          await initializePanel(context, panel)
+        log("forking");
+
+        const p = await fork<Args>(
+          process.env.NODE_ENV === "production"
+            ? join(context.extensionPath, "dist/project.js")
+            : join(context.extensionPath, "src/project/index.ts"),
+          {
+            cwd: context.extensionPath,
+            data: { config, cwd, ports, renderer },
+          }
         );
+
+        cleanupFunctions.push(() => p.kill());
+
+        await initializePanel(context, panel);
+
+        log("complete");
       }
     })
   );
@@ -100,7 +117,7 @@ async function initializePanel(
 
     return () => {};
   } else {
-    const editorDevPort = 4444;
+    const editorDevPort = await getPort();
     const { createDevServer } = require("../../scripts/dev");
     const devServer = await createDevServer();
     const cleanup = await devServer.listen(editorDevPort);

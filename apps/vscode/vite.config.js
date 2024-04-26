@@ -26,6 +26,7 @@ export default defineConfig({
       input: {
         extension: resolve(__dirname, "src/extension/index.ts"),
         index: resolve(__dirname, "index.html"),
+        project: resolve(__dirname, "src/project/index.ts"),
       },
       output: {
         assetFileNames: "assets/[name].[ext]",

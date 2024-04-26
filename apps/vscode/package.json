@@ -5,7 +5,11 @@
   "private": true,
   "description": "",
   "categories": [],
-  "publisher": "Michael Dougall",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/try-triplex/triplex"
+  },
+  "publisher": "Triplex",
   "main": "./hook-extension.js",
   "files": [
     "dist",
@@ -14,8 +18,8 @@
   ],
   "scripts": {
     "build": "vite build",
-    "predeploy": "node ../../scripts/workspace-run.js ./apply-publish-config.js",
-    "deploy": "pnpm --filter=triplex-vscode deploy --prod ./out && pnpm run build",
+    "prepack": "node ../../scripts/workspace-run.js ./apply-publish-config.js",
+    "pack": "node scripts/pack.js",
     "typedef": "tsc"
   },
   "contributes": {
@@ -36,7 +40,10 @@
     "@triplex/ws": "0.67.1",
     "@types/vscode": "^1.88.0",
     "@vitejs/plugin-react": "^4.1.0",
+    "@vscode/vsce": "^2.26.0",
     "autoprefixer": "^10.4.16",
+    "electron": "27.1.0",
+    "electron-builder": "^24.6.4",
     "get-port": "^7.0.0",
     "react": "^18.0.0",
     "react-dom": "^18.0.0",

@@ -1,0 +1,13 @@
+diff --git a/out/package.js b/out/package.js
+index 0a464f49ad8ff2b481180c65a7eba6376bb3f945..bc6b6f0557d2668e59c5532f46e2ef9b573fe801 100644
+--- a/out/package.js
++++ b/out/package.js
+@@ -1145,7 +1145,7 @@ const defaultIgnore = [
+ const notIgnored = ['!package.json', '!README.md'];
+ async function collectAllFiles(cwd, dependencies, dependencyEntryPoints) {
+     const deps = await (0, npm_1.getDependencies)(cwd, dependencies, dependencyEntryPoints);
+-    const promises = deps.map(dep => (0, util_1.promisify)(glob_1.default)('**', { cwd: dep, nodir: true, dot: true, ignore: 'node_modules/**' }).then(files => files.map(f => path.relative(cwd, path.join(dep, f))).map(f => f.replace(/\\/g, '/'))));
++    const promises = deps.map(dep => (0, util_1.promisify)(glob_1.default)('**', { cwd: dep, nodir: true, dot: true }).then(files => files.map(f => path.relative(cwd, path.join(dep, f))).map(f => f.replace(/\\/g, '/'))));
+     return Promise.all(promises).then(util.flatten);
+ }
+ function getDependenciesOption(options) {
