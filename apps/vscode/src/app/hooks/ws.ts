@@ -6,7 +6,9 @@
  */
 import { createWSHooks } from "@triplex/ws/factory";
 
-const instance = createWSHooks({ url: "ws://localhost:333" });
+const instance = createWSHooks({
+  url: `ws://localhost:${window.triplex.env.ports.ws}`,
+});
 
 export const preloadSubscription = instance.preloadSubscription;
 

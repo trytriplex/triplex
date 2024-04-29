@@ -5,28 +5,11 @@
  * file in the root directory of this source tree.
  */
 import { readFile } from "node:fs/promises";
+import { inferExports } from "@triplex/server";
 import anymatch from "anymatch";
 import parent from "glob-parent";
 import readdirp from "readdirp";
 import { join, normalize } from "upath";
-
-export function inferExports(file: string) {
-  const namedExports = file.matchAll(/export (function|const|let) ([A-Z]\w+)/g);
-  const defaultExport = /export default.+([A-Z]\w+)/.exec(file);
-  const foundExports: { exportName: string; name: string }[] = [];
-
-  for (const match of namedExports) {
-    const [, , exportName] = match;
-    foundExports.push({ exportName, name: exportName });
-  }
-
-  if (defaultExport) {
-    const name = defaultExport[1];
-    foundExports.push({ exportName: "default", name });
-  }
-
-  return foundExports;
-}
 
 export async function getFirstFoundFile({ files }: { files: string[] }) {
   const roots = files.map((glob) => parent(glob));

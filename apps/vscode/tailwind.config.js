@@ -10,7 +10,11 @@ const { join } = require("upath");
  * @type {import("tailwindcss").Config}
  */
 module.exports = {
-  content: [join(__dirname, "./src/**/*.tsx"), join(__dirname, "./index.html")],
+  content: [
+    join(__dirname, "./src/app/**/*.tsx"),
+    join(__dirname, "./index.html"),
+    join(__dirname, "./loading.html"),
+  ],
   plugins: [],
   theme: {
     fontFamily: {

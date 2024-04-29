@@ -52,4 +52,4 @@ jobs:
         with:
           name: vscode-extension
           path: apps/vscode/out/triplex-vscode*.vsix
-          retention-days: 14
+          retention-days: 2

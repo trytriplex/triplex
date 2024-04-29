@@ -556,6 +556,8 @@ export function createServer({
 }
 
 export { getConfig } from "./util/config";
+export { inferExports } from "./util/module";
+export { getRendererMeta } from "./util/renderer";
 
 export type TWSRouteDefinition = ReturnType<
   typeof createServer

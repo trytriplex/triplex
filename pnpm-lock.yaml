@@ -206,9 +206,6 @@ importers:
       upath:
         specifier: ^2.0.1
         version: 2.0.1
-      valibot:
-        specifier: ^0.25.0
-        version: 0.25.0
       vite:
         specifier: ^4.5.3
         version: 4.5.3(@types/node@18.11.18)
@@ -264,9 +261,6 @@ importers:
       upath:
         specifier: ^2.0.1
         version: 2.0.1
-      valibot:
-        specifier: ^0.25.0
-        version: 0.25.0
       vite:
         specifier: ^4.5.3
         version: 4.5.3(@types/node@18.11.18)
@@ -920,6 +914,9 @@ importers:
       upath:
         specifier: ^2.0.1
         version: 2.0.1
+      valibot:
+        specifier: ^0.25.0
+        version: 0.25.0
       vite:
         specifier: ^4.5.3
         version: 4.5.3(@types/node@18.11.18)

@@ -4,11 +4,8 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import {
-  type ReconciledRenderer,
-  type RendererManifest,
-} from "@triplex/server";
-import { dirname } from "upath";
+import { readdir } from "node:fs/promises";
+import { dirname, join, resolve } from "upath";
 import {
   array,
   literal,
@@ -19,7 +16,27 @@ import {
   string,
   union,
 } from "valibot";
-import { findParentFile } from "./path";
+import { type ReconciledRenderer, type RendererManifest } from "../types";
+
+async function findParentFile(
+  dirpath: string,
+  filename: string
+): Promise<string> {
+  const next = resolve(dirpath, "..");
+
+  if (dirpath === next) {
+    // We've traversed all the way up the folder path and found nothing.
+    // Bail out!
+    throw new Error(`invariant: ${filename} could not be found`);
+  }
+
+  const dir = await readdir(dirpath);
+  if (dir.includes(filename)) {
+    return join(dirpath, filename);
+  }
+
+  return findParentFile(next, filename);
+}
 
 function validateManifest(manifest: unknown): RendererManifest {
   const schema = object({
@@ -57,6 +74,7 @@ const renderers: Record<string, string> = {
 export async function getRendererMeta(opts: {
   cwd: string;
   filepath: string;
+  getTriplexClientPkgPath: () => string;
 }): Promise<ReconciledRenderer> {
   try {
     if (opts.filepath.startsWith("/")) {
@@ -73,7 +91,7 @@ export async function getRendererMeta(opts: {
 
     const packageName = renderers[opts.filepath] || opts.filepath;
     const entryPoint = require.resolve(packageName, {
-      paths: [require.resolve("@triplex/client"), opts.cwd],
+      paths: [opts.getTriplexClientPkgPath(), opts.cwd],
     });
     const root = dirname(entryPoint);
     const manifestPath = await findParentFile(root, "manifest.json");

@@ -4,26 +4,35 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { on, send } from "@triplex/bridge/host";
+import { compose, on, send } from "@triplex/bridge/host";
 import { useEffect } from "react";
-import { useLazySubscription } from "../hooks/ws";
+import { onVSCE } from "../util/bridge";
 
 export function App() {
-  const scene = useLazySubscription("/scene");
-
   useEffect(() => {
-    return on("ready", () => {
-      const { path } = scene.scenes[0];
-      const { exportName } = scene.scenes[0].exports[0];
-      send("request-open-component", { encodedProps: "", exportName, path });
-    });
-  }, [scene.scenes]);
+    return compose([
+      on("ready", () => {
+        send("request-open-component", {
+          encodedProps: "",
+          exportName: window.triplex.initialState.exportName,
+          path: window.triplex.initialState.path,
+        });
+      }),
+      onVSCE("vscode:request-open-component", (data) => {
+        send("request-open-component", {
+          encodedProps: "",
+          exportName: data.exportName,
+          path: data.path,
+        });
+      }),
+    ]);
+  }, []);
 
   return (
     <iframe
       allow="cross-origin-isolated"
       className="absolute inset-0 h-full w-full"
-      src={`http://localhost:3333/scene.html`}
+      src={`http://localhost:${window.triplex.env.ports.client}/scene.html`}
     />
   );
 }

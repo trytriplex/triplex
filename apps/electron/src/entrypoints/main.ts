@@ -8,7 +8,7 @@ import { randomUUID } from "node:crypto";
 import { readdir } from "node:fs/promises";
 import process from "node:process";
 import { init } from "@sentry/electron/main";
-import { getConfig } from "@triplex/server";
+import { getConfig, getRendererMeta } from "@triplex/server";
 import {
   app,
   BrowserWindow,
@@ -29,7 +29,6 @@ import { fork } from "../util/fork";
 import { getLogPath, logger } from "../util/log";
 import { getPort } from "../util/port";
 import type { startProject } from "../util/project";
-import { getRendererMeta } from "../util/renderer";
 import { invalidateScreenshot, screenshotComponent } from "../util/screenshot";
 import { editorConfigStore, getProjectStore, userStore } from "../util/store";
 
@@ -309,7 +308,11 @@ async function main() {
       server: await getPort(),
       ws: await getPort(),
     };
-    const renderer = await getRendererMeta({ cwd, filepath: config.renderer });
+    const renderer = await getRendererMeta({
+      cwd,
+      filepath: config.renderer,
+      getTriplexClientPkgPath: () => require.resolve("@triplex/client"),
+    });
     const project = getProjectStore({ cwd, manifest: renderer.manifest });
 
     abortContoller = new AbortController();

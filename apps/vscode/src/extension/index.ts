@@ -4,17 +4,29 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import "./env";
-import { getConfig } from "@triplex/server";
+import { readFileSync } from "node:fs";
+import { getConfig, getRendererMeta, inferExports } from "@triplex/server";
 import { join } from "upath";
 import * as vscode from "vscode";
 import { type Args } from "../project";
 import { logger } from "../util/log/node";
+import { sendVSCE } from "./util/bridge";
 import { fork } from "./util/fork";
 import { getPort } from "./util/port";
-import { getRendererMeta } from "./util/renderer";
 
 const log = logger("vscode_main");
+
+function getFallbackExportName(filepath: string): string {
+  const code = readFileSync(filepath, "utf8");
+  const exports = inferExports(code);
+  const lastExport = exports.at(-1);
+
+  if (!lastExport) {
+    throw new Error("invariant: export not found");
+  }
+
+  return lastExport.exportName;
+}
 
 export function activate(context: vscode.ExtensionContext) {
   log("init");
@@ -23,15 +35,33 @@ export function activate(context: vscode.ExtensionContext) {
 
   context.subscriptions.push(
     vscode.commands.registerCommand("triplex.start", async () => {
+      const activeFileName = vscode.window.activeTextEditor?.document.fileName;
+      const activeWorkspace = vscode.workspace.workspaceFolders?.find((e) =>
+        vscode.window.activeTextEditor?.document.fileName.startsWith(
+          e.uri.fsPath
+        )
+      );
+
+      if (!activeFileName || !activeWorkspace) {
+        log("nothing active aborting");
+        return;
+      }
+
       log("start");
+
+      const scopedInitialExport = getFallbackExportName(activeFileName);
 
       if (panel) {
         log("reveal existing");
+        sendVSCE(panel.webview, "vscode:request-open-component", {
+          exportName: scopedInitialExport,
+          path: activeFileName,
+        });
         panel.reveal();
       } else {
         log("new panel");
         // Show something as fast as possible before doing anything.
-        const cleanupFunctions: (() => void)[] = [];
+        const disposables: (() => void)[] = [];
         const html = await vscode.workspace.fs
           .readFile(
             vscode.Uri.file(join(context.extensionPath, "loading.html"))
@@ -44,31 +74,38 @@ export function activate(context: vscode.ExtensionContext) {
           vscode.ViewColumn.Beside,
           {
             enableScripts: true,
+            retainContextWhenHidden: true,
           }
         );
 
         panel.onDidDispose(() => {
           panel = undefined;
-          cleanupFunctions.forEach((cleanup) => cleanup());
+          disposables.forEach((cleanup) => cleanup());
           log("disposed");
         });
 
         panel.webview.html = html;
 
-        const cwd =
-          "/Users/douges/projects/triplex-monorepo/examples/test-fixture";
+        const cwd = activeWorkspace.uri.fsPath;
         const config = await getConfig(cwd);
         const ports = {
-          client: 3333,
+          client: await getPort(),
           server: await getPort(),
-          ws: 333,
+          ws: await getPort(),
         };
         const renderer = await getRendererMeta({
           cwd,
           filepath: config.renderer,
+          getTriplexClientPkgPath: () => require.resolve("@triplex/client"),
         });
 
         log("forking");
+
+        const args: Args = { config, cwd, ports, renderer };
+        const initialState = {
+          exportName: scopedInitialExport,
+          path: activeFileName,
+        };
 
         const p = await fork<Args>(
           process.env.NODE_ENV === "production"
@@ -76,13 +113,13 @@ export function activate(context: vscode.ExtensionContext) {
             : join(context.extensionPath, "src/project/index.ts"),
           {
             cwd: context.extensionPath,
-            data: { config, cwd, ports, renderer },
+            data: args,
           }
         );
 
-        cleanupFunctions.push(() => p.kill());
+        disposables.push(() => p.kill());
 
-        await initializePanel(context, panel);
+        await initializePanel({ args, context, initialState, panel });
 
         log("complete");
       }
@@ -90,10 +127,29 @@ export function activate(context: vscode.ExtensionContext) {
   );
 }
 
-async function initializePanel(
-  context: vscode.ExtensionContext,
-  panel: vscode.WebviewPanel
-) {
+async function initializePanel({
+  args,
+  context,
+  initialState,
+  panel,
+}: {
+  args: Args;
+  context: vscode.ExtensionContext;
+  initialState: { exportName: string; path: string };
+  panel: vscode.WebviewPanel;
+}) {
+  const preload = `
+    <script>
+      window.triplex = {
+        env: JSON.parse(\`${JSON.stringify({
+          config: args.config,
+          ports: args.ports,
+        })}\`),
+        initialState: JSON.parse(\`${JSON.stringify(initialState)}\`),
+      };
+    </script>
+  `;
+
   if (process.env.NODE_ENV === "production") {
     const cssPath = vscode.Uri.file(
       join(context.extensionPath, "dist/assets/index.css")
@@ -105,15 +161,17 @@ async function initializePanel(
       .readFile(vscode.Uri.file(join(__dirname, "index.html")))
       .then((res) => res.toString());
 
-    panel.webview.html = html
-      .replace(
-        '"/__base_url_replace__/index.js"',
-        panel.webview.asWebviewUri(jsPath).toString()
-      )
-      .replace(
-        '"/__base_url_replace__/assets/index.css"',
-        panel.webview.asWebviewUri(cssPath).toString()
-      );
+    panel.webview.html =
+      preload +
+      html
+        .replace(
+          '"/__base_url_replace__/index.js"',
+          panel.webview.asWebviewUri(jsPath).toString()
+        )
+        .replace(
+          '"/__base_url_replace__/assets/index.css"',
+          panel.webview.asWebviewUri(cssPath).toString()
+        );
 
     return () => {};
   } else {
@@ -126,7 +184,7 @@ async function initializePanel(
     );
 
     panel.webview.html =
-      `<base href="http://localhost:${editorDevPort}" />` + html;
+      `<base href="http://localhost:${editorDevPort}" />` + preload + html;
 
     return () => {
       cleanup();
