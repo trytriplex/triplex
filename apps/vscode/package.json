@@ -4,6 +4,9 @@
   "version": "0.0.1",
   "private": true,
   "description": "The React Three Fiber visual IDE.",
+  "categories": [
+    "Other"
+  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/try-triplex/triplex"
@@ -11,9 +14,11 @@
   "publisher": "Triplex",
   "main": "./hook-extension.js",
   "files": [
+    "!hook-extension.js",
     "dist",
+    "index.html",
     "loading.html",
-    "!hook-extension.js"
+    "static"
   ],
   "scripts": {
     "build": "vite build",
@@ -31,7 +36,9 @@
       }
     ]
   },
-  "activationEvents": [],
+  "activationEvents": [
+    "workspaceContains:**/*.{jsx,tsx}"
+  ],
   "dependencies": {
     "@triplex/client": "0.67.1",
     "@triplex/server": "0.67.1"

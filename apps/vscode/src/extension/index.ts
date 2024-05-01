@@ -6,10 +6,11 @@
  */
 import { readFileSync } from "node:fs";
 import { getConfig, getRendererMeta, inferExports } from "@triplex/server";
-import { join } from "upath";
+import { basename, join } from "upath";
 import * as vscode from "vscode";
 import { type Args } from "../project";
 import { logger } from "../util/log/node";
+import { CodelensProvider } from "./codelens";
 import { sendVSCE } from "./util/bridge";
 import { fork } from "./util/fork";
 import { getPort } from "./util/port";
@@ -28,102 +29,120 @@ function getFallbackExportName(filepath: string): string {
   return lastExport.exportName;
 }
 
+function getPanelName(path: string, exportName: string) {
+  return `${basename(path)} (${exportName})`;
+}
+
 export function activate(context: vscode.ExtensionContext) {
   log("init");
 
   let panel: vscode.WebviewPanel | undefined;
 
   context.subscriptions.push(
-    vscode.commands.registerCommand("triplex.start", async () => {
-      const activeFileName = vscode.window.activeTextEditor?.document.fileName;
-      const activeWorkspace = vscode.workspace.workspaceFolders?.find((e) =>
-        vscode.window.activeTextEditor?.document.fileName.startsWith(
-          e.uri.fsPath
-        )
-      );
-
-      if (!activeFileName || !activeWorkspace) {
-        log("nothing active aborting");
-        return;
-      }
-
-      log("start");
-
-      const scopedInitialExport = getFallbackExportName(activeFileName);
-
-      if (panel) {
-        log("reveal existing");
-        sendVSCE(panel.webview, "vscode:request-open-component", {
-          exportName: scopedInitialExport,
-          path: activeFileName,
-        });
-        panel.reveal();
-      } else {
-        log("new panel");
-        // Show something as fast as possible before doing anything.
-        const disposables: (() => void)[] = [];
-        const html = await vscode.workspace.fs
-          .readFile(
-            vscode.Uri.file(join(context.extensionPath, "loading.html"))
-          )
-          .then((res) => res.toString());
-
-        panel = vscode.window.createWebviewPanel(
-          "triplex",
-          "Triplex",
-          vscode.ViewColumn.Beside,
-          {
-            enableScripts: true,
-            retainContextWhenHidden: true,
-          }
+    vscode.languages.registerCodeLensProvider(
+      [
+        { language: "typescriptreact", scheme: "file" },
+        { language: "javascriptreact", scheme: "file" },
+      ],
+      new CodelensProvider()
+    ),
+    vscode.commands.registerCommand(
+      "triplex.start",
+      async (ctx?: { exportName: string; path: string }) => {
+        const scopedFileName =
+          ctx?.path || vscode.window.activeTextEditor?.document.fileName || "";
+        const activeWorkspace = vscode.workspace.workspaceFolders?.find((e) =>
+          scopedFileName.startsWith(e.uri.fsPath)
         );
 
-        panel.onDidDispose(() => {
-          panel = undefined;
-          disposables.forEach((cleanup) => cleanup());
-          log("disposed");
-        });
+        if (!scopedFileName || !activeWorkspace) {
+          log("nothing active aborting");
+          return;
+        }
 
-        panel.webview.html = html;
+        const scopedExportName =
+          ctx?.exportName || getFallbackExportName(scopedFileName);
 
-        const cwd = activeWorkspace.uri.fsPath;
-        const config = await getConfig(cwd);
-        const ports = {
-          client: await getPort(),
-          server: await getPort(),
-          ws: await getPort(),
-        };
-        const renderer = await getRendererMeta({
-          cwd,
-          filepath: config.renderer,
-          getTriplexClientPkgPath: () => require.resolve("@triplex/client"),
-        });
+        log("start");
 
-        log("forking");
+        if (panel) {
+          log("reveal existing");
+          sendVSCE(panel.webview, "vscode:request-open-component", {
+            exportName: scopedExportName,
+            path: scopedFileName,
+          });
+          panel.title = getPanelName(scopedFileName, scopedExportName);
+          panel.reveal();
+        } else {
+          log("new panel");
+          // Show something as fast as possible before doing anything.
+          const disposables: (() => void)[] = [];
+          const html = await vscode.workspace.fs
+            .readFile(
+              vscode.Uri.file(join(context.extensionPath, "loading.html"))
+            )
+            .then((res) => res.toString());
 
-        const args: Args = { config, cwd, ports, renderer };
-        const initialState = {
-          exportName: scopedInitialExport,
-          path: activeFileName,
-        };
+          panel = vscode.window.createWebviewPanel(
+            "triplex.editor",
+            getPanelName(scopedFileName, scopedExportName),
+            vscode.ViewColumn.Beside,
+            {
+              enableScripts: true,
+              retainContextWhenHidden: true,
+            }
+          );
 
-        const p = await fork<Args>(
-          process.env.NODE_ENV === "production"
-            ? join(context.extensionPath, "dist/project.js")
-            : join(context.extensionPath, "src/project/index.ts"),
-          {
-            cwd: context.extensionPath,
-            data: args,
-          }
-        );
+          panel.onDidDispose(() => {
+            panel = undefined;
+            disposables.forEach((cleanup) => cleanup());
+            log("disposed");
+          });
 
-        disposables.push(() => p.kill());
+          panel.webview.html = html;
+          panel.iconPath = vscode.Uri.file(
+            join(context.extensionPath, "static", "logo.svg")
+          );
 
-        await initializePanel({ args, context, initialState, panel });
+          const cwd = activeWorkspace.uri.fsPath;
+          const config = await getConfig(cwd);
+          const ports = {
+            client: await getPort(),
+            server: await getPort(),
+            ws: await getPort(),
+          };
+          const renderer = await getRendererMeta({
+            cwd,
+            filepath: config.renderer,
+            getTriplexClientPkgPath: () => require.resolve("@triplex/client"),
+          });
 
-        log("complete");
+          log("forking");
+
+          const args: Args = { config, cwd, ports, renderer };
+          const initialState = {
+            exportName: scopedExportName,
+            path: scopedFileName,
+          };
+
+          const p = await fork<Args>(
+            process.env.NODE_ENV === "production"
+              ? join(context.extensionPath, "dist/project.js")
+              : join(context.extensionPath, "src/project/index.ts"),
+            {
+              cwd: context.extensionPath,
+              data: args,
+            }
+          );
+
+          disposables.push(() => p.kill());
+
+          await initializePanel({ args, context, initialState, panel });
+
+          log("complete");
+        }
       }
-    })
+    )
   );
 }
 

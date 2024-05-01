@@ -6,7 +6,7 @@
  */
 
 /**
- * Infers ESM exports from a given JS/TS file.
+ * Infers ESM component exports from a given JS/TS file.
  */
 export function inferExports(file: string) {
   const namedExports = file.matchAll(/export (function|const|let) ([A-Z]\w+)/g);

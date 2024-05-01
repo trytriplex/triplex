@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 16 16">
+    <defs>
+    <linearGradient id="l-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+        <stop offset="0%" stop-color="rgb(245 245 245)"></stop>
+        <stop offset="100%" stop-color="rgb(163 163 163)"></stop>
+    </linearGradient>
+    </defs>
+    <polygon fill="none" stroke="url(#l-gradient)" stroke-width="1.5" points="8,1.7 14.8,15 1.2,15"></polygon>
+</svg>
