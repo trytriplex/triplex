@@ -25,7 +25,10 @@ export async function getConfig(cwd: string): Promise<ReconciledTriplexConfig> {
     const conf = await readFile(join(cwd, ".triplex/config.json"), "utf8");
     config = JSON.parse(conf);
   } catch {
-    throw new Error("invariant: could not fetch config");
+    config = {
+      files: ["../**/*.{jsx,tsx}"],
+      renderer: "react-three-fiber",
+    };
   }
 
   const publicDir: string = join(

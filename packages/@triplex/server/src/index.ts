@@ -360,7 +360,10 @@ export function createServer({
         return result;
       },
       (push) => {
-        const watcher = watch(config.files, { ignoreInitial: true });
+        const watcher = watch(config.files, {
+          ignoreInitial: true,
+          ignored: /node_modules/,
+        });
         watcher.on("add", push);
         watcher.on("change", push);
         watcher.on("unlink", push);
@@ -373,7 +376,7 @@ export function createServer({
         return result;
       },
       (push) => {
-        const watcher = watch(config.components);
+        const watcher = watch(config.components, { ignored: /node_modules/ });
         watcher.on("addDir", push);
         watcher.on("unlinkDir", push);
         watcher.on("add", push);
@@ -387,7 +390,7 @@ export function createServer({
         return result;
       },
       (push) => {
-        const watcher = watch(config.assetsDir);
+        const watcher = watch(config.assetsDir, { ignored: /node_modules/ });
         watcher.on("addDir", push);
         watcher.on("unlinkDir", push);
         watcher.on("add", push);
@@ -408,7 +411,7 @@ export function createServer({
         return parsed;
       },
       (push, { folderPath }) => {
-        const watcher = watch(folderPath);
+        const watcher = watch(folderPath, { ignored: /node_modules/ });
         watcher.on("add", push);
         watcher.on("unlink", push);
       }
@@ -425,7 +428,7 @@ export function createServer({
         return result;
       },
       (push, { folderPath }) => {
-        const watcher = watch(folderPath);
+        const watcher = watch(folderPath, { ignored: /node_modules/ });
         watcher.on("add", push);
         watcher.on("unlink", push);
       }

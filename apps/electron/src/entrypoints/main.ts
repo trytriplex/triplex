@@ -155,13 +155,15 @@ function prepareMenu() {
   };
 }
 
-async function findTriplexFolder(path: string): Promise<string | undefined> {
+async function findTriplexProjectCwd(
+  path: string,
+  __fallbackPkgJsonPath?: string
+): Promise<string | undefined> {
   const next = resolve(path, "..");
 
   if (path === next) {
-    // We've traversed all the way up the folder path and found nothing.
-    // Bail out!
-    return undefined;
+    // We've traversed all the way up the folder path and found nothing. Bail out!
+    return __fallbackPkgJsonPath || undefined;
   }
 
   const dir = await readdir(path);
@@ -172,7 +174,12 @@ async function findTriplexFolder(path: string): Promise<string | undefined> {
     }
   }
 
-  return findTriplexFolder(next);
+  if (dir.includes("package.json") && !__fallbackPkgJsonPath) {
+    // Keep track of the first found package.json just in case as a fallback cwd.
+    return findTriplexProjectCwd(next, path);
+  }
+
+  return findTriplexProjectCwd(next, __fallbackPkgJsonPath);
 }
 
 async function showSaveDialog(
@@ -506,7 +513,7 @@ async function main() {
     if (canceled || !path) {
       return undefined;
     } else {
-      const foundFolder = await findTriplexFolder(path);
+      const foundFolder = await findTriplexProjectCwd(path);
       if (foundFolder) {
         return foundFolder;
       }
@@ -519,8 +526,8 @@ async function main() {
           "Cancel",
         ],
         detail:
-          "A config must be present in the selected or parent folders. When wanting to open an existing project for the first time make sure to initialize it.",
-        message: "Triplex config not found",
+          "A project config or package.json must be present in the selected or parent folders to be opened.",
+        message: "Could not open project",
         type: "warning",
       } satisfies MessageBoxOptions;
 

@@ -127,7 +127,7 @@ export function createProject({
 
   // Watch the all files inside cwd and watch for changes.
   // If any changes have been made refresh the source file.
-  const watcher = watch(cwd, { ignoreInitial: true });
+  const watcher = watch(cwd, { ignoreInitial: true, ignored: /node_modules/ });
   watcher.on("change", async (path) => {
     const privateSourceFile = project.getSourceFile(path);
     if (!privateSourceFile) {
