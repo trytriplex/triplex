@@ -4,8 +4,8 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { readFile } from "node:fs/promises";
-import { join, normalize } from "upath";
+import { readdirSync, readFileSync } from "node:fs";
+import { join, normalize, resolve } from "upath";
 import {
   type ReconciledTriplexConfig,
   type SecretTriplexConfig,
@@ -14,7 +14,7 @@ import {
 
 const STATIC_ASSETS = ["glb", "gltf"];
 
-export async function getConfig(cwd: string): Promise<ReconciledTriplexConfig> {
+export function getConfig(cwd: string): ReconciledTriplexConfig {
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // TODO: VALIDATE THIS CONFIG!!!!
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -22,7 +22,7 @@ export async function getConfig(cwd: string): Promise<ReconciledTriplexConfig> {
   let config: TriplexConfig & SecretTriplexConfig;
 
   try {
-    const conf = await readFile(join(cwd, ".triplex/config.json"), "utf8");
+    const conf = readFileSync(join(cwd, ".triplex/config.json"), "utf8");
     config = JSON.parse(conf);
   } catch {
     config = {
@@ -73,4 +73,35 @@ export async function getConfig(cwd: string): Promise<ReconciledTriplexConfig> {
     renderer: renderer || "react-three-fiber",
     rendererAttributes: config.rendererAttributes || {},
   };
+}
+
+function _resolveProjectCwd(
+  startPath: string,
+  __fallbackPkgJsonPath?: string
+): string | undefined {
+  const next = resolve(startPath, "..");
+
+  if (startPath === next) {
+    // We've traversed all the way up the folder path and found nothing. Bail out!
+    return __fallbackPkgJsonPath || undefined;
+  }
+
+  const dir = readdirSync(startPath);
+  if (dir.includes(".triplex")) {
+    const triplexDir = readdirSync(join(startPath, ".triplex"));
+    if (triplexDir.includes("config.json")) {
+      return startPath;
+    }
+  }
+
+  if (dir.includes("package.json") && !__fallbackPkgJsonPath) {
+    // Keep track of the first found package.json just in case as a fallback cwd.
+    return _resolveProjectCwd(next, startPath);
+  }
+
+  return _resolveProjectCwd(next, __fallbackPkgJsonPath);
+}
+
+export function resolveProjectCwd(startPath: string): string | undefined {
+  return _resolveProjectCwd(startPath);
 }

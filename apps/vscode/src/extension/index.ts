@@ -5,8 +5,13 @@
  * file in the root directory of this source tree.
  */
 import { readFileSync } from "node:fs";
-import { getConfig, getRendererMeta, inferExports } from "@triplex/server";
-import { basename, join } from "upath";
+import {
+  getConfig,
+  getRendererMeta,
+  inferExports,
+  resolveProjectCwd,
+} from "@triplex/server";
+import { basename, dirname, join } from "upath";
 import * as vscode from "vscode";
 import { type Args } from "../project";
 import { logger } from "../util/log/node";
@@ -29,14 +34,21 @@ function getFallbackExportName(filepath: string): string {
   return lastExport.exportName;
 }
 
-function getPanelName(path: string, exportName: string) {
-  return `${basename(path)} (${exportName})`;
+function getPanelName({
+  cwd,
+  path,
+}: {
+  cwd: string;
+  exportName: string;
+  path: string;
+}) {
+  return `${basename(path)} (${basename(cwd)})`;
 }
 
 export function activate(context: vscode.ExtensionContext) {
   log("init");
 
-  let panel: vscode.WebviewPanel | undefined;
+  const activePanels = new Map<string, vscode.WebviewPanel>();
 
   context.subscriptions.push(
     vscode.languages.registerCodeLensProvider(
@@ -50,13 +62,21 @@ export function activate(context: vscode.ExtensionContext) {
       "triplex.start",
       async (ctx?: { exportName: string; path: string }) => {
         const scopedFileName =
-          ctx?.path || vscode.window.activeTextEditor?.document.fileName || "";
-        const activeWorkspace = vscode.workspace.workspaceFolders?.find((e) =>
-          scopedFileName.startsWith(e.uri.fsPath)
-        );
+          ctx?.path || vscode.window.activeTextEditor?.document.fileName;
 
-        if (!scopedFileName || !activeWorkspace) {
+        if (!scopedFileName) {
+          // No file is currently active, nothing to do.
+          return;
+        }
+
+        const triplexProjectCwd = resolveProjectCwd(dirname(scopedFileName));
+
+        if (!triplexProjectCwd) {
           log("nothing active aborting");
+          vscode.window.showWarningMessage(
+            "A project config or package.json must be present anywhere from the selected file and up to be opened.",
+            "Learn More"
+          );
           return;
         }
 
@@ -65,13 +85,19 @@ export function activate(context: vscode.ExtensionContext) {
 
         log("start");
 
+        const panel = activePanels.get(triplexProjectCwd);
+
         if (panel) {
           log("reveal existing");
           sendVSCE(panel.webview, "vscode:request-open-component", {
             exportName: scopedExportName,
             path: scopedFileName,
           });
-          panel.title = getPanelName(scopedFileName, scopedExportName);
+          panel.title = getPanelName({
+            cwd: triplexProjectCwd,
+            exportName: scopedExportName,
+            path: scopedFileName,
+          });
           panel.reveal();
         } else {
           log("new panel");
@@ -83,9 +109,13 @@ export function activate(context: vscode.ExtensionContext) {
             )
             .then((res) => res.toString());
 
-          panel = vscode.window.createWebviewPanel(
+          const panel = vscode.window.createWebviewPanel(
             "triplex.editor",
-            getPanelName(scopedFileName, scopedExportName),
+            getPanelName({
+              cwd: triplexProjectCwd,
+              exportName: scopedExportName,
+              path: scopedFileName,
+            }),
             vscode.ViewColumn.Beside,
             {
               enableScripts: true,
@@ -94,7 +124,7 @@ export function activate(context: vscode.ExtensionContext) {
           );
 
           panel.onDidDispose(() => {
-            panel = undefined;
+            activePanels.delete(triplexProjectCwd);
             disposables.forEach((cleanup) => cleanup());
             log("disposed");
           });
@@ -104,22 +134,26 @@ export function activate(context: vscode.ExtensionContext) {
             join(context.extensionPath, "static", "logo.svg")
           );
 
-          const cwd = activeWorkspace.uri.fsPath;
-          const config = await getConfig(cwd);
+          const config = getConfig(triplexProjectCwd);
           const ports = {
             client: await getPort(),
             server: await getPort(),
             ws: await getPort(),
           };
           const renderer = await getRendererMeta({
-            cwd,
+            cwd: triplexProjectCwd,
             filepath: config.renderer,
             getTriplexClientPkgPath: () => require.resolve("@triplex/client"),
           });
 
           log("forking");
 
-          const args: Args = { config, cwd, ports, renderer };
+          const args: Args = {
+            config,
+            cwd: triplexProjectCwd,
+            ports,
+            renderer,
+          };
           const initialState = {
             exportName: scopedExportName,
             path: scopedFileName,
@@ -138,6 +172,8 @@ export function activate(context: vscode.ExtensionContext) {
           disposables.push(() => p.kill());
 
           await initializePanel({ args, context, initialState, panel });
+
+          activePanels.set(triplexProjectCwd, panel);
 
           log("complete");
         }

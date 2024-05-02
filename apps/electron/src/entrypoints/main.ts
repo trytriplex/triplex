@@ -5,10 +5,9 @@
  * file in the root directory of this source tree.
  */
 import { randomUUID } from "node:crypto";
-import { readdir } from "node:fs/promises";
 import process from "node:process";
 import { init } from "@sentry/electron/main";
-import { getConfig, getRendererMeta } from "@triplex/server";
+import { getConfig, getRendererMeta, resolveProjectCwd } from "@triplex/server";
 import {
   app,
   BrowserWindow,
@@ -21,7 +20,7 @@ import {
   type OpenDialogOptions,
 } from "electron";
 import { autoUpdater } from "electron-updater";
-import { join, resolve } from "upath";
+import { join } from "upath";
 import { createProject, showCreateDialog } from "../util/create";
 import { ensureDepsInstall } from "../util/deps";
 import { getInitialComponent } from "../util/files";
@@ -155,33 +154,6 @@ function prepareMenu() {
   };
 }
 
-async function findTriplexProjectCwd(
-  path: string,
-  __fallbackPkgJsonPath?: string
-): Promise<string | undefined> {
-  const next = resolve(path, "..");
-
-  if (path === next) {
-    // We've traversed all the way up the folder path and found nothing. Bail out!
-    return __fallbackPkgJsonPath || undefined;
-  }
-
-  const dir = await readdir(path);
-  if (dir.includes(".triplex")) {
-    const triplexDir = await readdir(join(path, ".triplex"));
-    if (triplexDir.includes("config.json")) {
-      return path;
-    }
-  }
-
-  if (dir.includes("package.json") && !__fallbackPkgJsonPath) {
-    // Keep track of the first found package.json just in case as a fallback cwd.
-    return findTriplexProjectCwd(next, path);
-  }
-
-  return findTriplexProjectCwd(next, __fallbackPkgJsonPath);
-}
-
 async function showSaveDialog(
   activeWindow: BrowserWindow,
   defaultPath: string,
@@ -309,7 +281,7 @@ async function main() {
     abortContoller?.abort();
     abortContoller = undefined;
 
-    const config = await getConfig(cwd);
+    const config = getConfig(cwd);
     const ports = {
       client: await getPort(),
       server: await getPort(),
@@ -513,7 +485,7 @@ async function main() {
     if (canceled || !path) {
       return undefined;
     } else {
-      const foundFolder = await findTriplexProjectCwd(path);
+      const foundFolder = resolveProjectCwd(path);
       if (foundFolder) {
         return foundFolder;
       }
@@ -526,7 +498,7 @@ async function main() {
           "Cancel",
         ],
         detail:
-          "A project config or package.json must be present in the selected or parent folders to be opened.",
+          "A project config or package.json must be present anywhere from the selected folder and up to be opened.",
         message: "Could not open project",
         type: "warning",
       } satisfies MessageBoxOptions;

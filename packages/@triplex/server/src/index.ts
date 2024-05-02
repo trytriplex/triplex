@@ -558,7 +558,7 @@ export function createServer({
   };
 }
 
-export { getConfig } from "./util/config";
+export { getConfig, resolveProjectCwd } from "./util/config";
 export { inferExports } from "./util/module";
 export { getRendererMeta } from "./util/renderer";
 

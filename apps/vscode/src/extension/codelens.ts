@@ -4,7 +4,9 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { inferExports } from "@triplex/server";
+import { getConfig, inferExports, resolveProjectCwd } from "@triplex/server";
+import anymatch from "anymatch";
+import { dirname } from "upath";
 import * as vscode from "vscode";
 
 export class CodelensProvider implements vscode.CodeLensProvider {
@@ -14,15 +16,27 @@ export class CodelensProvider implements vscode.CodeLensProvider {
     doc: vscode.TextDocument,
     _token: vscode.CancellationToken
   ): vscode.ProviderResult<vscode.CodeLens[]> {
+    const cwd = resolveProjectCwd(dirname(doc.fileName));
+    if (!cwd) {
+      return null;
+    }
+
+    const config = getConfig(cwd);
+    const matchFiles = anymatch(config.files);
+
+    if (!matchFiles(doc.fileName)) {
+      return null;
+    }
+
     const codeLenses: vscode.CodeLens[] = [];
     const text = doc.getText();
     const regex = new RegExp(this.regex);
     const foundExports = inferExports(text);
 
-    let match: RegExpExecArray | null;
+    let matchRegExp: RegExpExecArray | null;
 
-    while ((match = regex.exec(text)) !== null) {
-      const componentName = match[1];
+    while ((matchRegExp = regex.exec(text)) !== null) {
+      const componentName = matchRegExp[1];
       const foundExport = foundExports.find(
         (exp) => exp.name === componentName
       );
@@ -32,8 +46,8 @@ export class CodelensProvider implements vscode.CodeLensProvider {
         continue;
       }
 
-      const line = doc.lineAt(doc.positionAt(match.index).line);
-      const indexOf = line.text.indexOf(match[0]);
+      const line = doc.lineAt(doc.positionAt(matchRegExp.index).line);
+      const indexOf = line.text.indexOf(matchRegExp[0]);
       const position = new vscode.Position(line.lineNumber, indexOf);
       const range = doc.getWordRangeAtPosition(
         position,
