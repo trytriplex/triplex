@@ -11,7 +11,7 @@ import {
   inferExports,
   resolveProjectCwd,
 } from "@triplex/server";
-import { basename, dirname, join } from "upath";
+import { basename, dirname, join, normalize } from "upath";
 import * as vscode from "vscode";
 import { type Args } from "../project";
 import { logger } from "../util/log/node";
@@ -25,7 +25,7 @@ const log = logger("vscode_main");
 function getFallbackExportName(filepath: string): string {
   const code = readFileSync(filepath, "utf8");
   const exports = inferExports(code);
-  const lastExport = exports.at(-1);
+  const lastExport = exports[0];
 
   if (!lastExport) {
     throw new Error("invariant: export not found");
@@ -61,8 +61,9 @@ export function activate(context: vscode.ExtensionContext) {
     vscode.commands.registerCommand(
       "triplex.start",
       async (ctx?: { exportName: string; path: string }) => {
-        const scopedFileName =
-          ctx?.path || vscode.window.activeTextEditor?.document.fileName;
+        const scopedFileName = normalize(
+          ctx?.path || vscode.window.activeTextEditor?.document.fileName || ""
+        );
 
         if (!scopedFileName) {
           // No file is currently active, nothing to do.

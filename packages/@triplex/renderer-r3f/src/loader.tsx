@@ -8,15 +8,25 @@ import { send } from "@triplex/bridge/client";
 import { Fragment, useEffect } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { suspend } from "suspend-react";
+import { Tunnel } from "./components/tunnel";
 import { useScenes } from "./context";
 import { ManualEditableSceneObject } from "./manual-editable";
 
-function Loaded() {
+function LoadedNotifierForTesting({ exportName }: { exportName: string }) {
   useEffect(() => {
     send("component-rendered", undefined);
   }, []);
 
-  return null;
+  return (
+    <Tunnel.In>
+      <span
+        data-testid="scene-loaded-meta"
+        style={{ left: 0, position: "absolute", top: 0 }}
+      >
+        {exportName}
+      </span>
+    </Tunnel.In>
+  );
 }
 
 export function SceneLoader({
@@ -52,8 +62,6 @@ export function SceneLoader({
 
   return (
     <>
-      <Loaded />
-
       <ErrorBoundary
         fallbackRender={() => null}
         onError={(err) =>
@@ -68,6 +76,9 @@ export function SceneLoader({
         }
         resetKeys={[SceneComponent]}
       >
+        {import.meta.env.VITE_TRIPLEX_ENV === "test" && (
+          <LoadedNotifierForTesting exportName={exportName} />
+        )}
         <ManualEditableSceneObject
           component={SceneComponent}
           exportName={exportName}

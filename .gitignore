@@ -16,6 +16,7 @@ coverage
 /playwright/.cache/
 *.*profile
 **/blob-report
+.vscode-test/
 
 # next.js
 .next/

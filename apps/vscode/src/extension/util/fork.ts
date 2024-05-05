@@ -40,7 +40,7 @@ export function fork<TData extends Record<string, unknown>>(
         NODE_PATH: cwd,
         TRIPLEX_DATA: JSON.stringify(data),
         TRIPLEX_ENV: "development",
-        VITE_TRIPLEX_ENV: "development",
+        VITE_TRIPLEX_ENV: process.env.VITE_TRIPLEX_ENV,
       },
       // We set the forked process to silent so we can capture errors.
       // See: https://stackoverflow.com/a/52066025

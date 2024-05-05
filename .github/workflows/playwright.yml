@@ -4,6 +4,7 @@ on:
   pull_request:
     paths:
       - apps/electron/**
+      - apps/vscode/**
       - packages/**
 
 jobs:
@@ -61,7 +62,7 @@ jobs:
         if: always()
         with:
           name: blob-report
-          path: apps/electron/blob-report/
+          path: blob-report/
           retention-days: 1
 
   merge-reports:

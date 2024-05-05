@@ -5,7 +5,13 @@
       "name": "Run VSCode (DEV)",
       "type": "extensionHost",
       "request": "launch",
-      "args": ["--extensionDevelopmentPath=${workspaceFolder}/apps/vscode"]
+      "args": [
+        "${workspaceFolder}/examples",
+        "${workspaceFolder}/examples/test-fixture/src/scene.tsx",
+        "--disable-extensions",
+        "--new-window",
+        "--extensionDevelopmentPath=${workspaceFolder}/apps/vscode"
+      ]
     },
     {
       "name": "Run VSCode (PROD)",

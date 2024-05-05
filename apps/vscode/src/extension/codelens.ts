@@ -62,6 +62,7 @@ export class CodelensProvider implements vscode.CodeLensProvider {
             ],
             command: "triplex.start",
             title: "Open in Triplex",
+            tooltip: `Will open the ${foundExport.name} component in Triplex`,
           })
         );
       }

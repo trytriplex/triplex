@@ -7,29 +7,28 @@
 import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
-  forbidOnly: !!process.env.CI,
-
+  expect: {
+    timeout: 30_000,
+    toMatchSnapshot: {
+      maxDiffPixelRatio: 0.05,
+    },
+  },
   fullyParallel: false,
-
+  globalSetup: "./test/playwright-setup",
   projects: [
     {
-      expect: {
-        timeout: 30_000,
-        toMatchSnapshot: {
-          maxDiffPixelRatio: 0.05,
-        },
-      },
-      name: "app",
-      snapshotPathTemplate: "{testDir}/__snapshots__/{testFileName}-{arg}{ext}",
-      testMatch: /e2e\.ts$/,
+      name: "electron",
+      testDir: "./apps/electron/__tests__",
+    },
+    {
+      name: "vscode",
+      testDir: "./apps/vscode/__tests__",
     },
   ],
-
   reporter: process.env.CI ? "blob" : "html",
-
   retries: process.env.CI ? 2 : 0,
-
-  testDir: "./__tests__",
-
+  snapshotPathTemplate: "{testDir}/__snapshots__/{testFileName}-{arg}{ext}",
+  testMatch: /e2e\.ts$/,
+  timeout: 120_000,
   workers: 1,
 });

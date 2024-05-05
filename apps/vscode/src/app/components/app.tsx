@@ -32,6 +32,7 @@ export function App() {
     <iframe
       allow="cross-origin-isolated"
       className="absolute inset-0 h-full w-full"
+      id="scene"
       src={`http://localhost:${window.triplex.env.ports.client}/scene.html`}
     />
   );

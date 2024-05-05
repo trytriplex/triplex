@@ -6,8 +6,10 @@
  */
 /* eslint-disable no-console */
 /* eslint-disable no-empty-pattern */
-import { test as _test, type TestInfo } from "@playwright/test";
+import { test as _test } from "@playwright/test";
 import { _electron as electron } from "playwright";
+import { join } from "upath";
+import { runUseWithTrace } from "../../../../test/playwright";
 import { defer } from "../../src/util/promise";
 import { EditorPage } from "./po";
 
@@ -19,22 +21,26 @@ async function launch(
   }
 ) {
   const logs: string[] = [];
-  const electronApp = await electron.launch({
-    args: ["hook-main.js", process.env.CI ? "--headless" : ""],
+  const app = await electron.launch({
+    args: [
+      join(__dirname, "../..", "hook-main.js"),
+      process.env.CI ? "--headless" : "",
+    ],
+    cwd: join(__dirname, "../.."),
     env: {
       ...process.env,
-      FORCE_EDITOR_TEST_FIXTURE: textFixturePath,
+      FORCE_EDITOR_TEST_FIXTURE: join(process.cwd(), textFixturePath),
       FORCE_EXPORT_NAME: opts.exportName,
       FORCE_PATH: opts.path,
       VITE_TRIPLEX_ENV: "test",
     },
   });
 
-  electronApp
+  app
     .process()
     .stdout!.on("data", (msg) => logs.push("[main:log] " + msg.toString()));
 
-  electronApp
+  app
     .process()
     .stderr!.on("data", (error) =>
       logs.push("[main:error] " + error.toString())
@@ -43,15 +49,15 @@ async function launch(
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // NOTE: During the test run we skip the welcome window.
   // Look for "FORCE_EDITOR_TEST_FIXTURE" env var.
-  const editorWindow = await electronApp.firstWindow();
+  const window = await app.firstWindow();
   const sceneReadyPromise = defer();
 
-  await editorWindow.exposeFunction("sceneReady", () => {
+  await window.exposeFunction("sceneReady", () => {
     sceneReadyPromise.resolve();
   });
 
-  await editorWindow.addInitScript(() => {
-    window.addEventListener("message", (e) => {
+  await window.addInitScript(() => {
+    globalThis.window.addEventListener("message", (e) => {
       if (e.data.eventName === "component-rendered") {
         // @ts-expect-error
         window.sceneReady();
@@ -59,74 +65,20 @@ async function launch(
     });
   });
 
-  editorWindow.on("console", (msg) => {
+  window.on("console", (msg) => {
     logs.push(`[renderer:${msg.type()}] ${msg.text()}`);
   });
 
-  editorWindow.on("pageerror", (msg) => {
+  window.on("pageerror", (msg) => {
     logs.push("[renderer:error] " + msg.name + " " + msg.message);
   });
 
   return {
-    editorWindow,
-    electronApp,
+    app,
     logs,
     sceneReadyPromise: sceneReadyPromise.promise,
+    window,
   };
-}
-
-async function runUseWithTrace({
-  editorPage,
-  logs,
-  testInfo,
-  use,
-}: {
-  editorPage: EditorPage;
-  logs: string[];
-  testInfo: TestInfo;
-  use: (r: EditorPage) => Promise<void>;
-}) {
-  const context = editorPage.page.context();
-
-  if (testInfo.retry) {
-    await context.tracing.start({
-      screenshots: true,
-      snapshots: true,
-    });
-  }
-
-  await use(editorPage);
-
-  await testInfo.attach("logs", {
-    body: logs.join("\n"),
-    contentType: "text/plain",
-  });
-
-  if (testInfo.status !== testInfo.expectedStatus) {
-    const screenshot = await editorPage.screenshot();
-    await testInfo.attach("screenshot", {
-      body: screenshot,
-      contentType: "image/png",
-    });
-  }
-
-  if (testInfo.retry) {
-    const saveTrace =
-      testInfo.status !== testInfo.expectedStatus
-        ? testInfo.outputPath("trace.zip")
-        : undefined;
-
-    await context.tracing.stop({
-      path: saveTrace,
-    });
-
-    if (saveTrace) {
-      await testInfo.attach("trace", {
-        contentType: "application/zip",
-        path: saveTrace,
-      });
-    }
-  }
 }
 
 const test = _test.extend<{
@@ -148,50 +100,40 @@ const test = _test.extend<{
   file: { exportName: string; path: string };
 }>({
   editorLocal: async ({ file }, use, testInfo) => {
-    const { editorWindow, electronApp, logs, sceneReadyPromise } = await launch(
+    const { app, logs, sceneReadyPromise, window } = await launch(
       "examples-private/custom-renderer",
       file
     );
-    const editorPage = new EditorPage(
-      editorWindow,
-      sceneReadyPromise,
-      testInfo
-    );
+    const page = new EditorPage(window, sceneReadyPromise, testInfo);
 
-    await runUseWithTrace({ editorPage, logs, testInfo, use });
+    await runUseWithTrace({ logs, page, testInfo, use });
 
-    await electronApp.close();
+    await window.close();
+    await app.close();
   },
-
   editorR3F: async ({ file }, use, testInfo) => {
-    const { editorWindow, electronApp, logs, sceneReadyPromise } = await launch(
+    const { app, logs, sceneReadyPromise, window } = await launch(
       "examples/test-fixture",
       file
     );
-    const editorPage = new EditorPage(
-      editorWindow,
-      sceneReadyPromise,
-      testInfo
-    );
+    const page = new EditorPage(window, sceneReadyPromise, testInfo);
 
-    await runUseWithTrace({ editorPage, logs, testInfo, use });
+    await runUseWithTrace({ logs, page, testInfo, use });
 
-    await electronApp.close();
+    await window.close();
+    await app.close();
   },
   editorReact: async ({ file }, use, testInfo) => {
-    const { editorWindow, electronApp, logs, sceneReadyPromise } = await launch(
+    const { app, logs, sceneReadyPromise, window } = await launch(
       "examples-private/react-dom",
       file
     );
-    const editorPage = new EditorPage(
-      editorWindow,
-      sceneReadyPromise,
-      testInfo
-    );
+    const page = new EditorPage(window, sceneReadyPromise, testInfo);
 
-    await runUseWithTrace({ editorPage, logs, testInfo, use });
+    await runUseWithTrace({ logs, page, testInfo, use });
 
-    await electronApp.close();
+    await window.close();
+    await app.close();
   },
   file: [{ exportName: "", path: "" }, { option: true }],
 });

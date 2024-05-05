@@ -43,13 +43,7 @@ export async function getInitialComponent({ files }: { files: string[] }) {
   ) {
     return {
       exportName: process.env.FORCE_EXPORT_NAME,
-      path: join(
-        process.cwd(),
-        "..",
-        "..",
-        process.env.FORCE_EDITOR_TEST_FIXTURE,
-        process.env.FORCE_PATH
-      ),
+      path: join(process.env.FORCE_EDITOR_TEST_FIXTURE, process.env.FORCE_PATH),
     };
   }
 

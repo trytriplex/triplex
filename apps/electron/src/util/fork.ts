@@ -43,7 +43,7 @@ export function fork<TData extends Record<string, unknown>>(
         NODE_PATH: process.cwd(),
         TRIPLEX_DATA: JSON.stringify(data),
         TRIPLEX_ENV: "development",
-        VITE_TRIPLEX_ENV: "development",
+        VITE_TRIPLEX_ENV: process.env.VITE_TRIPLEX_ENV,
       },
       // Pass through inspect if the parent has it enabled.
       execArgv: isDebugInspect ? ["--inspect=40895"] : undefined,
