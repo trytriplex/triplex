@@ -38,7 +38,13 @@ async function main() {
   });
 
   cpSync(modulesSource, modulesDest, { recursive: true });
-  copyToDest("package.json", "README.md", "loading.html");
+  copyToDest(
+    "package.json",
+    "README.md",
+    "loading.html",
+    "LICENSE",
+    "CHANGELOG.md"
+  );
 
   await createVSIX({ cwd: join(process.cwd(), outDir), dependencies: false });
 }

@@ -1,0 +1,67 @@
+name: VSCode
+
+on:
+  push:
+    branches:
+      - main
+
+env:
+  CI: true
+  PNPM_CACHE_FOLDER: .pnpm-store
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Check for changesets
+        continue-on-error: true
+        run: "bash ./scripts/check-changesets.sh"
+        id: check
+        shell: bash
+
+      - name: Read node version
+        run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_OUTPUT
+        id: nvm
+        if: steps.check.outcome == 'success'
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+        if: steps.check.outcome == 'success'
+        with:
+          version: 8.6.1
+
+      - name: Setup node
+        uses: actions/setup-node@v3
+        if: steps.check.outcome == 'success'
+        with:
+          node-version: ${{ steps.nvm.outputs.NVMRC }}
+
+      - name: Setup pnpm config
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+        if: steps.check.outcome == 'success'
+
+      - name: Install dependencies
+        run: pnpm i --force
+        if: steps.check.outcome == 'success'
+
+      - name: Build
+        run: pnpm build
+        if: steps.check.outcome == 'success'
+
+      - name: Prepack
+        run: pnpm --filter triplex-vscode run prepack
+        if: steps.check.outcome == 'success'
+
+      - name: Pack
+        run: pnpm --filter triplex-vscode run pack
+        if: steps.check.outcome == 'success'
+
+      - name: Release targets
+        run: pnpm --filter triplex-vscode run publish
+        if: steps.check.outcome == 'success'
+        env:
+          VSCE_PAT: ${{ secrets.VSCE_PAT }}
