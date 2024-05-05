@@ -1,24 +1,19 @@
-name: OSS
+name: Test
 
 on:
-  push:
-    branches:
-      - main
+  pull_request:
 
 env:
   CI: true
   PNPM_CACHE_FOLDER: .pnpm-store
 
 jobs:
-  push:
+  lint:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@master
-        with:
-          # Shipit requires all history.
-          fetch-depth: 0
 
       - name: Read node version
         run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_OUTPUT
@@ -40,14 +35,5 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - name: Prepare Shipit
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_SHIPIT_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
-          chmod 600 ~/.ssh/id_rsa
-          ssh-keyscan -H 'github.com' >> ~/.ssh/known_hosts
-
-      - name: Run Shipit
-        run:
-          npx monorepo-shipit --committer-name triplex-bot --committer-email
-          124734075+triplex-bot@users.noreply.github.com
+      - name: Lint packages
+        run: pnpm lint

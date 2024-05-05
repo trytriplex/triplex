@@ -3,8 +3,10 @@ name: Electron
 on:
   pull_request:
     paths:
-      - apps/electron/**
       - packages/**
+      - apps/electron/**
+      - pnpm-lock.yaml
+      - .github/workflows/**
 
 env:
   CI: true

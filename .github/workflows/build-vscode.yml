@@ -3,8 +3,10 @@ name: VSCode
 on:
   pull_request:
     paths:
-      - apps/vscode/**
       - packages/**
+      - apps/vscode/**
+      - pnpm-lock.yaml
+      - .github/workflows/**
 
 env:
   CI: true

@@ -1,4 +1,4 @@
-name: Playwright
+name: Test
 
 on:
   pull_request:
@@ -6,9 +6,11 @@ on:
       - apps/electron/**
       - apps/vscode/**
       - packages/**
+      - pnpm-lock.yaml
+      - .github/workflows/**
 
 jobs:
-  test:
+  playwright:
     timeout-minutes: 20
 
     runs-on: ${{ matrix.os }}
@@ -69,7 +71,7 @@ jobs:
     # Merge reports after playwright-tests, even if some shards have failed
     if: always()
 
-    needs: [test]
+    needs: [playwright]
 
     runs-on: ubuntu-latest
 

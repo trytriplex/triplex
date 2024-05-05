@@ -1,20 +1,24 @@
-name: Packages
+name: Test
 
 on:
   pull_request:
     paths:
-      - apps/electron/**
+      - apps/**
       - packages/**
-      - .github/workflows/**
       - pnpm-lock.yaml
+      - .github/workflows/**
 
 env:
   CI: true
   PNPM_CACHE_FOLDER: .pnpm-store
 
 jobs:
-  build:
-    runs-on: ubuntu-latest
+  unit:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout
@@ -40,8 +44,5 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - name: Build packages
-        run: pnpm --filter @triplex/* build
-
-      - name: Type check
-        run: pnpm typedef
+      - name: Unit tests
+        run: pnpm test

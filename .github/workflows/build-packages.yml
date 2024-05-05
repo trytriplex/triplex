@@ -3,22 +3,17 @@ name: Packages
 on:
   pull_request:
     paths:
-      - apps/**
       - packages/**
-      - .github/workflows/**
       - pnpm-lock.yaml
+      - .github/workflows/**
 
 env:
   CI: true
   PNPM_CACHE_FOLDER: .pnpm-store
 
 jobs:
-  test:
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
+  build:
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
@@ -44,8 +39,8 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - name: Test packages
-        run: pnpm test
+      - name: Build packages
+        run: pnpm --filter @triplex/* build
 
-      - name: Lint packages
-        run: pnpm lint
+      - name: Type check
+        run: pnpm typedef
