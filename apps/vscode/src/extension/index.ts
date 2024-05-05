@@ -132,7 +132,7 @@ export function activate(context: vscode.ExtensionContext) {
 
           panel.webview.html = html;
           panel.iconPath = vscode.Uri.file(
-            join(context.extensionPath, "static", "logo.svg")
+            join(context.extensionPath, "static", "icon.svg")
           );
 
           const config = getConfig(triplexProjectCwd);

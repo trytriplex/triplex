@@ -11,11 +11,13 @@ const { createVSIX } = require("@vscode/vsce");
 
 const tempDir = ".tmp";
 const outDir = "out";
-const modulesSource = join(
+const nmSrc = join(
   process.cwd(),
   `${tempDir}/linux-unpacked/resources/app/node_modules`
 );
-const modulesDest = join(process.cwd(), `${outDir}/node_modules`);
+const nmDest = join(process.cwd(), `${outDir}/node_modules`);
+const staticSrc = join(process.cwd(), `static`);
+const staticDest = join(process.cwd(), `${outDir}/static`);
 
 const copyToDest = (...filenames) => {
   filenames.forEach((filename) => {
@@ -37,7 +39,8 @@ async function main() {
     targets: Platform.LINUX.createTarget(),
   });
 
-  cpSync(modulesSource, modulesDest, { recursive: true });
+  cpSync(nmSrc, nmDest, { recursive: true });
+  cpSync(staticSrc, staticDest, { recursive: true });
   copyToDest(
     "package.json",
     "README.md",

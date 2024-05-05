@@ -73,9 +73,6 @@
           "type": "object"
         }
       },
-      "required": [
-        "files"
-      ],
       "type": "object"
     }
   }

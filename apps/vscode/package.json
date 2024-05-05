@@ -5,13 +5,22 @@
   "private": true,
   "description": "The React Three Fiber visual IDE.",
   "categories": [
+    "Visualization",
     "Other"
+  ],
+  "keywords": [
+    "r3f",
+    "react",
+    "spatial",
+    "three",
+    "threejs"
   ],
   "repository": {
     "type": "git",
     "url": "https://github.com/try-triplex/triplex"
   },
-  "publisher": "Triplex",
+  "license": "SEE LICENSE IN LICENSE",
+  "publisher": "trytriplex",
   "main": "./hook-extension.js",
   "files": [
     "!hook-extension.js",
@@ -69,6 +78,7 @@
   "publishConfig": {
     "main": "./dist/extension.js"
   },
+  "icon": "./static/logo.png",
   "sponsor": {
     "url": "https://github.com/sponsors/itsdouges"
   }
