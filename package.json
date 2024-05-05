@@ -11,7 +11,7 @@
     "!packages/create-triplex-project/*"
   ],
   "scripts": {
-    "build": "pnpm clean && pnpm --filter @triplex/* --filter create-triplex-project --filter triplex-vscode build && pnpm typedef && pnpm clean:drop-dist-tests",
+    "build": "pnpm clean && pnpm --filter @triplex/* --filter create-triplex-project --filter triplex-vsce build && pnpm typedef && pnpm clean:drop-dist-tests",
     "ci:publish": "pnpm build && pnpm publish --recursive --access=public && changeset tag",
     "ci:release-electron": "pnpm i --force && cross-env pnpm --filter @triplex/* --filter create-triplex-project build && pnpm --filter @triplex/electron release",
     "ci:version": "changeset version && pnpm install --lockfile-only",

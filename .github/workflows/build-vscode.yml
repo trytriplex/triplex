@@ -44,14 +44,14 @@ jobs:
         run: pnpm build
 
       - name: Prepack
-        run: pnpm --filter triplex-vscode run prepack
+        run: pnpm --filter triplex-vsce run prepack
 
       - name: Pack
-        run: pnpm --filter triplex-vscode run pack
+        run: pnpm --filter triplex-vsce run pack
 
       - name: Upload extension
         uses: actions/upload-artifact@v3
         with:
           name: vscode-extension
-          path: apps/vscode/out/triplex-vscode*.vsix
+          path: apps/vscode/out/triplex-vsce*.vsix
           retention-days: 2

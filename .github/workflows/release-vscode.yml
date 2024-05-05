@@ -53,15 +53,15 @@ jobs:
         if: steps.check.outcome == 'success'
 
       - name: Prepack
-        run: pnpm --filter triplex-vscode run prepack
+        run: pnpm --filter triplex-vsce run prepack
         if: steps.check.outcome == 'success'
 
       - name: Pack
-        run: pnpm --filter triplex-vscode run pack
+        run: pnpm --filter triplex-vsce run pack
         if: steps.check.outcome == 'success'
 
       - name: Release targets
-        run: pnpm --filter triplex-vscode run publish
+        run: pnpm --filter triplex-vsce run publish
         if: steps.check.outcome == 'success'
         env:
           VSCE_PAT: ${{ secrets.VSCE_PAT }}
