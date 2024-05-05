@@ -1,5 +1,11 @@
 # @triplex/vscode
 
+## 0.0.3
+
+### Patch Changes
+
+- 19474be: Adds missing extension metadata.
+
 ## 0.0.2
 
 ### Patch Changes
