@@ -1,5 +1,13 @@
 # @triplex/server
 
+## 0.67.2
+
+### Patch Changes
+
+- 506ba7e: Triplex configs no longer has any required properties.
+- 264dca9: Remove get config invariant when opening a project.
+- 264dca9: Ignore node modules from watchers.
+
 ## 0.67.1
 
 ## 0.67.0

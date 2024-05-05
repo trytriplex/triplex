@@ -1,5 +1,18 @@
 # @triplex/electron
 
+## 0.67.2
+
+### Patch Changes
+
+- 264dca9: Remove get config invariant when opening a project.
+- Updated dependencies [506ba7e]
+- Updated dependencies [264dca9]
+- Updated dependencies [264dca9]
+  - @triplex/server@0.67.2
+  - @triplex/client@0.67.2
+  - @triplex/editor@0.67.2
+  - create-triplex-project@0.67.2
+
 ## 0.67.1
 
 ### Patch Changes
