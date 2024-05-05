@@ -12,7 +12,13 @@ import {
   type TriplexConfig,
 } from "../types";
 
-const STATIC_ASSETS = ["glb", "gltf"];
+const STATIC_ASSETS: string[] = ["glb", "gltf"];
+const DEFAULT_FILES: string[] = ["../**/*.{jsx,tsx}"];
+const DEFAULT_COMPONENTS: string[] = [];
+const DEFAULT_RENDERER = "react-three-fiber";
+const DEFAULT_PROVIDER = "triplex:empty-provider.tsx";
+const DEFAULT_PUBLIC_DIR = "../public";
+const DEFAULT_ASSETS_DIR = "assets";
 
 export function getConfig(cwd: string): ReconciledTriplexConfig {
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -25,34 +31,31 @@ export function getConfig(cwd: string): ReconciledTriplexConfig {
     const conf = readFileSync(join(cwd, ".triplex/config.json"), "utf8");
     config = JSON.parse(conf);
   } catch {
-    config = {
-      files: ["../**/*.{jsx,tsx}"],
-      renderer: "react-three-fiber",
-    };
+    config = {};
   }
 
   const publicDir: string = join(
     cwd,
     ".triplex",
-    config.publicDir || "../public"
+    config.publicDir || DEFAULT_PUBLIC_DIR
   );
 
   const provider: string = config.provider
     ? join(cwd, ".triplex", config.provider)
-    : "";
+    : DEFAULT_PROVIDER;
 
-  const files: string[] = config.files.map((file: string) =>
+  const files: string[] = (config.files || DEFAULT_FILES).map((file: string) =>
     join(cwd, ".triplex", file)
   );
 
-  const components: string[] = (config.components || []).map((file: string) =>
-    join(cwd, ".triplex", file)
+  const components: string[] = (config.components || DEFAULT_COMPONENTS).map(
+    (file: string) => join(cwd, ".triplex", file)
   );
 
   const assetsDir = normalize(
     join(
       publicDir,
-      config.assetsDir || "assets",
+      config.assetsDir || DEFAULT_ASSETS_DIR,
       `/**/*.(${STATIC_ASSETS.join("|")})`
     )
   );
@@ -60,7 +63,7 @@ export function getConfig(cwd: string): ReconciledTriplexConfig {
   const renderer: string =
     config.renderer && config.renderer.startsWith(".")
       ? join(cwd, ".triplex", config.renderer)
-      : config.renderer;
+      : config.renderer || DEFAULT_RENDERER;
 
   return {
     assetsDir,
@@ -68,9 +71,9 @@ export function getConfig(cwd: string): ReconciledTriplexConfig {
     cwd,
     define: config.define || {},
     files,
-    provider: provider || "triplex:empty-provider.tsx",
+    provider,
     publicDir,
-    renderer: renderer || "react-three-fiber",
+    renderer,
     rendererAttributes: config.rendererAttributes || {},
   };
 }

@@ -72,7 +72,7 @@ const test = base.extend<{
 
     await runUseWithTrace({ logs, page, testInfo, use });
 
-    await window.close();
+    app.process().kill();
     await app.close();
   },
 });

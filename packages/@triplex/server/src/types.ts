@@ -219,12 +219,14 @@ export interface SourceFileChangedEvent {
   path: string;
 }
 
-export type ReconciledTriplexConfig = Required<TriplexConfig> & {
-  cwd: string;
-} & SecretTriplexConfig;
+export type ReconciledTriplexConfig = Required<
+  TriplexConfig & {
+    cwd: string;
+  } & SecretTriplexConfig
+>;
 
 export interface SecretTriplexConfig {
-  renderer: string;
+  renderer?: string;
 }
 
 export interface TriplexConfig {
@@ -251,7 +253,7 @@ export interface TriplexConfig {
    * Triplex. You can define multiple roots. Found files will be available to
    * open in the `File` > `Open` menu.
    */
-  files: string[];
+  files?: string[];
   /**
    * Path to a provider component that can hold all React providers needed
    * during runtime. The component must be the default export and return

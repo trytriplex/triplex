@@ -108,7 +108,7 @@ const test = _test.extend<{
 
     await runUseWithTrace({ logs, page, testInfo, use });
 
-    await window.close();
+    app.process().kill();
     await app.close();
   },
   editorR3F: async ({ file }, use, testInfo) => {
@@ -120,7 +120,7 @@ const test = _test.extend<{
 
     await runUseWithTrace({ logs, page, testInfo, use });
 
-    await window.close();
+    app.process().kill();
     await app.close();
   },
   editorReact: async ({ file }, use, testInfo) => {
@@ -132,7 +132,7 @@ const test = _test.extend<{
 
     await runUseWithTrace({ logs, page, testInfo, use });
 
-    await window.close();
+    app.process().kill();
     await app.close();
   },
   file: [{ exportName: "", path: "" }, { option: true }],
