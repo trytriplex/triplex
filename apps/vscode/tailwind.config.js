@@ -15,37 +15,31 @@ module.exports = {
     join(__dirname, "./index.html"),
     join(__dirname, "./loading.html"),
   ],
-  plugins: [],
   theme: {
+    backgroundColor: {
+      hover: "var(--vscode-toolbar-hoverBackground)",
+      overlay: "var(--panel-view-background)",
+      selected: "var(--vscode-toolbar-activeBackground)",
+    },
+    borderColor: {
+      overlay: "var(--panel-view-border)",
+      selected: "var(--vscode-focusBorder)",
+    },
+    boxShadow: {
+      overlay: "var(--vscode-widget-shadow)",
+    },
     fontFamily: {
-      mono: [
-        "ui-monospace",
-        "SFMono-Regular",
-        "Menlo",
-        "Monaco",
-        "Consolas",
-        "Liberation Mono",
-        "Courier New",
-        "monospace",
-      ],
-      sans: [
-        "ui-sans-serif",
-        "system-ui",
-        "-apple-system",
-        "BlinkMacSystemFont",
-        "Segoe UI",
-        "Roboto",
-        "Noto Sans",
-        "Ubuntu",
-        "Cantarell",
-        "Helvetica Neue",
-        "Arial",
-        "sans-serif",
-        "Apple Color Emoji",
-        "Segoe UI Emoji",
-        "Segoe UI Symbol",
-        "Noto Color Emoji",
-      ],
+      default: "var(--vscode-font-family)",
+    },
+    fontSize: {
+      default: "var(--vscode-font-size)",
+    },
+    fontWeight: {
+      default: "var(--vscode-font-weight)",
+    },
+    textColor: {
+      default: "var(--vscode-foreground)",
+      selected: "var(--vscode-tab-activeForeground)",
     },
   },
 };

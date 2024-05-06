@@ -75,7 +75,7 @@ function respond<TEvent extends keyof HostSendEventResponse>(
   eventName: TEvent,
   data: HostSendEventResponse[TEvent]
 ) {
-  window.top?.postMessage({ data, eventName: `${eventName}Response` }, "*");
+  window.parent.postMessage({ data, eventName: `${eventName}Response` }, "*");
 }
 
 export { compose } from "./compose";

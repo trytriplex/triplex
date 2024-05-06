@@ -7,6 +7,7 @@
 import { compose, on, send } from "@triplex/bridge/host";
 import { useEffect } from "react";
 import { onVSCE } from "../util/bridge";
+import { Controls } from "./controls";
 
 export function App() {
   useEffect(() => {
@@ -29,11 +30,14 @@ export function App() {
   }, []);
 
   return (
-    <iframe
-      allow="cross-origin-isolated"
-      className="absolute inset-0 h-full w-full"
-      id="scene"
-      src={`http://localhost:${window.triplex.env.ports.client}/scene.html`}
-    />
+    <>
+      <Controls />
+      <iframe
+        allow="cross-origin-isolated"
+        className="absolute inset-0 h-full w-full"
+        id="scene"
+        src={`http://localhost:${window.triplex.env.ports.client}/scene.html`}
+      />
+    </>
   );
 }

@@ -1,14 +1,8 @@
 {
-  "extends": "../../.tsconfig/node.json",
+  "extends": "../../../../.tsconfig/react-library.json",
   "include": ["."],
   "exclude": ["dist", "build", "node_modules"],
-  "ts-node": {
-    "transpileOnly": true,
-    "swc": true
-  },
   "compilerOptions": {
-    "baseUrl": ".",
-    "outDir": "./dist",
     "emitDeclarationOnly": false,
     "noEmit": true
   }
