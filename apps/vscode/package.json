@@ -39,12 +39,36 @@
   "contributes": {
     "commands": [
       {
-        "command": "triplex.start",
         "category": "Triplex",
+        "command": "triplex.start",
         "title": "Open File",
         "when": "editorFocus && (resourceExtname === .jsx || resourceExtname === .tsx)"
+      },
+      {
+        "category": "Triplex",
+        "command": "triplex.set-camera-editor",
+        "title": "Editor Camera"
+      },
+      {
+        "category": "Triplex",
+        "command": "triplex.set-camera-default",
+        "title": "Default Camera"
       }
-    ]
+    ],
+    "menus": {
+      "webview/context": [
+        {
+          "command": "triplex.set-camera-editor",
+          "when": "webviewSection == 'play-camera'",
+          "group": "camera@1"
+        },
+        {
+          "command": "triplex.set-camera-default",
+          "when": "webviewSection == 'play-camera'",
+          "group": "camera@2"
+        }
+      ]
+    }
   },
   "activationEvents": [
     "workspaceContains:**/*.{jsx,tsx}"

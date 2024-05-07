@@ -5,6 +5,9 @@
  * file in the root directory of this source tree.
  */
 export interface VSCodeEvent {
+  "vscode:play-camera": {
+    name: "default" | "editor";
+  };
   "vscode:request-open-component": {
     exportName: string;
     path: string;

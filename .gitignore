@@ -17,6 +17,7 @@ coverage
 *.*profile
 **/blob-report
 .vscode-test/
+*.temp
 
 # next.js
 .next/

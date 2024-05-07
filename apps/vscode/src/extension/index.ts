@@ -59,6 +59,28 @@ export function activate(context: vscode.ExtensionContext) {
       new CodelensProvider()
     ),
     vscode.commands.registerCommand(
+      "triplex.set-camera-default",
+      (e: { webview: string } | undefined) => {
+        const panel = e && activePanels.get(e.webview);
+        if (!panel) {
+          return;
+        }
+
+        sendVSCE(panel.webview, "vscode:play-camera", { name: "default" });
+      }
+    ),
+    vscode.commands.registerCommand(
+      "triplex.set-camera-editor",
+      (e: { webview: string } | undefined) => {
+        const panel = e && activePanels.get(e.webview);
+        if (!panel) {
+          return;
+        }
+
+        sendVSCE(panel.webview, "vscode:play-camera", { name: "editor" });
+      }
+    ),
+    vscode.commands.registerCommand(
       "triplex.start",
       async (ctx?: { exportName: string; path: string }) => {
         const scopedFileName = normalize(
@@ -111,7 +133,7 @@ export function activate(context: vscode.ExtensionContext) {
             .then((res) => res.toString());
 
           const panel = vscode.window.createWebviewPanel(
-            "triplex.editor",
+            triplexProjectCwd,
             getPanelName({
               cwd: triplexProjectCwd,
               exportName: scopedExportName,
