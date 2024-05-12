@@ -9,8 +9,20 @@ import anymatch from "anymatch";
 import { dirname } from "upath";
 import * as vscode from "vscode";
 
-export class CodelensProvider implements vscode.CodeLensProvider {
+export class TriplexCodelensProvider implements vscode.CodeLensProvider {
   private regex = /(?:function|const|let) ([A-Z]\w+)/g;
+
+  private constructor() {}
+
+  static register() {
+    return vscode.languages.registerCodeLensProvider(
+      [
+        { language: "typescriptreact", scheme: "file" },
+        { language: "javascriptreact", scheme: "file" },
+      ],
+      new TriplexCodelensProvider()
+    );
+  }
 
   provideCodeLenses(
     doc: vscode.TextDocument,

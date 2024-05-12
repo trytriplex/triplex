@@ -55,6 +55,18 @@
         "title": "Default Camera"
       }
     ],
+    "customEditors": [
+      {
+        "viewType": "triplex.editor",
+        "displayName": "Triplex",
+        "selector": [
+          {
+            "filenamePattern": "*.(tsx|jsx)"
+          }
+        ],
+        "priority": "option"
+      }
+    ],
     "menus": {
       "webview/context": [
         {

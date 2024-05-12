@@ -33,6 +33,7 @@
       "error",
       { "argsIgnorePattern": "^_", "ignoreRestSiblings": true }
     ],
+    "brace-style": "off",
     "header/header": ["error", "scripts/header.js"],
     "import/no-extraneous-dependencies": "off",
     "import/no-namespace": "off",

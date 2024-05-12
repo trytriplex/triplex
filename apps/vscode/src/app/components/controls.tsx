@@ -86,7 +86,9 @@ export function Controls() {
   return (
     <div
       className="pointer-events-none absolute left-0 right-0 top-2 z-10 flex justify-center gap-1"
-      data-vscode-context='{"preventDefaultContextMenuItems": true}'
+      data-vscode-context={JSON.stringify({
+        preventDefaultContextMenuItems: true,
+      })}
     >
       <div
         className={cn([
@@ -211,7 +213,10 @@ export function Controls() {
             appearance="icon"
             aria-label="Set Play Camera"
             className="-ml-0.5"
-            data-vscode-context='{"webviewSection": "play-camera"}'
+            data-vscode-context={JSON.stringify({
+              path: window.triplex.initialState.path,
+              webviewSection: "play-camera",
+            })}
             onClick={(e) => {
               e.target.dispatchEvent(
                 new MouseEvent("contextmenu", {

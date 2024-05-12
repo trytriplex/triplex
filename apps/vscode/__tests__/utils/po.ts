@@ -23,6 +23,17 @@ export class ExtensionPage {
     return locator;
   }
 
+  get editorTab() {
+    const locator = this.page.getByLabel("scene.tsx, Editor Group 2");
+
+    return {
+      get closeButton() {
+        return locator.getByRole("button", { name: "Close" });
+      },
+      locator,
+    };
+  }
+
   resolvePanel({
     filename = "scene.tsx",
     project = "test-fixture",
