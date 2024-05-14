@@ -47,6 +47,7 @@
     "prefer-const": "off",
     "react/no-unknown-property": "off",
     "space-before-function-paren": "off",
+    "unicorn/consistent-function-scoping": "off",
     "unicorn/prefer-ternary": "off",
     "unicorn/prefer-top-level-await": "off"
   }

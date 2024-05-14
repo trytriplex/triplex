@@ -64,6 +64,16 @@ interface CameraContextType {
   isTriplexCamera: boolean;
 }
 
+function apply<TKey extends string>(
+  a: Record<TKey, number>,
+  b: Partial<Record<TKey, number>>
+) {
+  const allB = b as Record<TKey, number>;
+  for (const key in b) {
+    a[key] = allB[key];
+  }
+}
+
 const CameraContext = createContext<CameraContextType>({
   camera: undefined,
   controls: { current: null },
@@ -138,82 +148,87 @@ export function Camera({ children }: { children?: React.ReactNode }) {
   const prevTriplexCamera = useRef<"perspective" | "orthographic">();
   const orthCameraRef = useRef<OrthographicCamera>(null!);
   const perspCameraRef = useRef<PerspectiveCamera>(null!);
-  const controlsRef = useRef<CameraControlsImpl>(null);
+  const controlsRef = useRef<CameraControlsImpl>(null!);
   const [activeCamera, setActiveCamera] = useState<CameraType | undefined>(
     undefined
   );
   const isTriplexCamera =
     activeCamera && activeCamera.name === TRIPLEX_CAMERA_NAME;
   const previousUserlandCamera = useRef<CameraType | undefined>();
+  const [modifier, setModifier] = useState<"Rest" | "Shift" | "Control">(
+    "Rest"
+  );
 
   useEffect(() => {
-    function apply<TKey extends string>(
-      a: Record<TKey, number>,
-      b: Partial<Record<TKey, number>>
-    ) {
-      const allB = b as Record<TKey, number>;
-      for (const key in b) {
-        a[key] = allB[key];
-      }
-    }
+    switch (modifier) {
+      case "Control":
+        apply(controlsRef.current.touches, touchHotkeys.ctrl);
+        apply(controlsRef.current.mouseButtons, mouseHotkeys.ctrl);
+        break;
 
-    const callback = (event: KeyboardEvent) => {
-      if (!controlsRef.current) {
-        return;
-      }
+      case "Shift":
+        apply(controlsRef.current.touches, touchHotkeys.shift);
+        apply(controlsRef.current.mouseButtons, mouseHotkeys.shift);
+        break;
 
-      switch (event.key) {
-        case "Shift":
-          apply(controlsRef.current.touches, touchHotkeys.shift);
-          apply(controlsRef.current.mouseButtons, mouseHotkeys.shift);
-          break;
-
-        case "Control":
-          apply(controlsRef.current.touches, touchHotkeys.ctrl);
-          apply(controlsRef.current.mouseButtons, mouseHotkeys.ctrl);
-          break;
-
-        default:
-          return;
-      }
-    };
-
-    const resetKey = (event: KeyboardEvent) => {
-      if (!controlsRef.current) {
-        return;
-      }
-
-      switch (event.key) {
-        case "Shift":
-        case "Control":
-          apply(controlsRef.current.touches, touchHotkeys.rest);
-          apply(controlsRef.current.mouseButtons, mouseHotkeys.rest);
-          break;
-
-        default:
-          return;
-      }
-    };
-
-    const reset = () => {
-      if (!controlsRef.current) {
-        return;
-      }
-
-      if (document.visibilityState === "hidden") {
+      default:
         apply(controlsRef.current.touches, touchHotkeys.rest);
         apply(controlsRef.current.mouseButtons, mouseHotkeys.rest);
+        break;
+    }
+  }, [modifier]);
+
+  useEffect(() => {
+    let intervalId: number;
+
+    const applyCameraModifiers = (event: KeyboardEvent) => {
+      function beginPollingForDocumentFocusLoss() {
+        window.clearInterval(intervalId);
+        intervalId = window.setInterval(() => {
+          if (!document.hasFocus()) {
+            window.clearInterval(intervalId);
+            setModifier("Rest");
+          }
+        }, 200);
+      }
+
+      switch (event.key) {
+        case "Shift":
+        case "Control":
+          beginPollingForDocumentFocusLoss();
+          setModifier(event.key);
+          break;
       }
     };
 
-    document.addEventListener("keydown", callback);
-    document.addEventListener("keyup", resetKey);
-    document.addEventListener("visibilitychange", reset);
+    const resetFromKeyUp = (event: KeyboardEvent) => {
+      switch (event.key) {
+        case "Shift":
+        case "Control":
+          window.clearInterval(intervalId);
+          setModifier("Rest");
+          break;
+      }
+    };
+
+    const resetFromVisibilityChange = () => {
+      if (document.visibilityState === "hidden") {
+        window.clearInterval(intervalId);
+        setModifier("Rest");
+      }
+    };
+
+    document.addEventListener("keydown", applyCameraModifiers);
+    document.addEventListener("keyup", resetFromKeyUp);
+    document.addEventListener("visibilitychange", resetFromVisibilityChange);
 
     return () => {
-      document.removeEventListener("keydown", callback);
-      document.removeEventListener("keyup", resetKey);
-      document.removeEventListener("visibilitychange", reset);
+      document.removeEventListener("keydown", applyCameraModifiers);
+      document.removeEventListener("keyup", resetFromKeyUp);
+      document.removeEventListener(
+        "visibilitychange",
+        resetFromVisibilityChange
+      );
     };
   }, []);
 

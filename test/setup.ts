@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { createElement } from "react";
+import { createElement, forwardRef } from "react";
 import { vi } from "vitest";
 
 globalThis.DOMRect = class DOMRect {
@@ -26,9 +26,21 @@ globalThis.DOMRect = class DOMRect {
   }
 };
 
+const CameraControls = forwardRef((props, ref) => {
+  return createElement("group", {
+    ...props,
+    name: "__stub_camera_controls__",
+    ref: () => {
+      if (typeof ref === "object" && ref && !ref.current) {
+        ref.current = { mouseButtons: {}, touches: {} };
+      }
+    },
+  });
+});
+CameraControls.displayName = "CameraControls";
+
 vi.mock("triplex-drei", () => ({
-  CameraControls: () =>
-    createElement("group", { name: "__stub_camera_controls__" }),
+  CameraControls,
   GizmoHelper: () => createElement("group", { name: "__stub_gizmo_helper__" }),
   GizmoViewcube: () =>
     createElement("mesh", { name: "__stub_gizmo_viewcube__" }),

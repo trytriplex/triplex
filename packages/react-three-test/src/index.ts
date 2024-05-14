@@ -42,7 +42,9 @@ export async function render(jsx: JSX.Element) {
 
   return {
     ...controls,
-    act: renderer.act,
+    act: renderer.act as (
+      cb: () => unknown | Promise<unknown>
+    ) => Promise<unknown>,
     get canvas() {
       return canvas;
     },

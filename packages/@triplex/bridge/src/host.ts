@@ -29,6 +29,12 @@ export {
   ToggleButtonControl,
 };
 
+export function broadcastForwardedKeydownEvents() {
+  return on("keydown", (data) => {
+    window.dispatchEvent(new KeyboardEvent("keydown", data));
+  });
+}
+
 export function on<TEvent extends ClientSendEventName>(
   eventName: TEvent,
   callback: (

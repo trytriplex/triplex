@@ -4,7 +4,12 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { compose, on, send } from "@triplex/bridge/host";
+import {
+  broadcastForwardedKeydownEvents,
+  compose,
+  on,
+  send,
+} from "@triplex/bridge/host";
 import { useEffect } from "react";
 import { onVSCE } from "../util/bridge";
 import { Controls } from "./controls";
@@ -26,6 +31,7 @@ export function App() {
           path: data.path,
         });
       }),
+      broadcastForwardedKeydownEvents(),
     ]);
   }, []);
 

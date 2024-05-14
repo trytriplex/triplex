@@ -31,7 +31,7 @@ export const scripts = {
     [
       `import { bootstrap } from "${template.pkgName}";`,
       `import provider from "${template.config.provider}";`,
-      'import { on, send } from "@triplex/bridge/client";',
+      'import { forwardKeydownEvents, on, send } from "@triplex/bridge/client";',
       `const projectFiles = import.meta.glob([${template.fileGlobs}]);`,
       `window.triplex = JSON.parse(\`${JSON.stringify({
         env: { ports: template.ports },
@@ -103,6 +103,11 @@ export const scripts = {
           }
         });
       }
+      `,
+      `
+      // Forward keydown events to the parent window to prevent the client iframe
+      // from swallowing events and the parent document being none-the-wiser.
+      forwardKeydownEvents();
       `,
     ].join(""),
   defaultProvider: `export default function Fragment({children}){return children;}`,

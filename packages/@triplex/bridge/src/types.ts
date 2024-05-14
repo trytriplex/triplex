@@ -109,6 +109,17 @@ export interface ClientSendEventData {
     subtitle: string;
     title: string;
   };
+  keydown: {
+    altKey: boolean;
+    code: string;
+    ctrlKey: boolean;
+    isComposing: boolean;
+    key: string;
+    location: number;
+    metaKey: boolean;
+    repeat: boolean;
+    shiftKey: boolean;
+  };
   ready: undefined;
   "set-controls": {
     controls: Controls;
@@ -126,6 +137,7 @@ export interface ClientSendEventResponse {
   "element-focused": void;
   "element-set-prop": void;
   error: void;
+  keydown: void;
   ready: void;
   "set-controls": void;
   "set-element-actions": void;
