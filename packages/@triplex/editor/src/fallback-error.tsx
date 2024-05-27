@@ -6,6 +6,11 @@
  */
 import { createRoot } from "react-dom/client";
 import "./styles.css";
+import { StrictMode } from "react";
 import { ErrorSplash } from "./ui/error-splash";
 
-createRoot(document.getElementById("root")!).render(<ErrorSplash />);
+createRoot(document.getElementById("root")!).render(
+  <StrictMode>
+    <ErrorSplash />
+  </StrictMode>
+);

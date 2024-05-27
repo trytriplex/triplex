@@ -22,5 +22,18 @@ export default {
     },
   },
   define: {},
-  plugins: [react()],
+  plugins: [
+    react({
+      babel: {
+        plugins: [
+          [
+            "babel-plugin-react-compiler",
+            {
+              runtimeModule: "react-compiler-runtime",
+            },
+          ],
+        ],
+      },
+    }),
+  ],
 };

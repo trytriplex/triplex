@@ -21,9 +21,7 @@ export function useEvent<TCallback extends AnyFunction>(
   callback: TCallback
 ): TCallback {
   // Keep track of the latest callback:
-  const latestRef = useRef<TCallback>(
-    useEvent_shouldNotBeInvokedBeforeMount as any
-  );
+  const latestRef = useRef<TCallback>(beforeMountInvariant as any);
 
   useInsertionEffect(() => {
     latestRef.current = callback;
@@ -43,9 +41,9 @@ export function useEvent<TCallback extends AnyFunction>(
  * Render methods should be pure, especially when concurrency is used, so we
  * will throw this error if the callback is called while rendering.
  */
-function useEvent_shouldNotBeInvokedBeforeMount() {
+function beforeMountInvariant() {
   throw new Error(
-    "INVALID_USEEVENT_INVOCATION: the callback from useEvent cannot be invoked before the component has mounted."
+    "INVALID_USE_EVENT_INVOCATION: the callback from useEvent cannot be invoked before the component has mounted."
   );
 }
 

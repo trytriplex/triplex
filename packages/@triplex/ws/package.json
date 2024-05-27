@@ -34,6 +34,7 @@
     "@triplex/bridge": "0.67.2",
     "@triplex/server": "0.67.2",
     "@types/react": "^18.0.27",
+    "react-compiler-runtime": "workspace:*",
     "typescript": "^5.3.3"
   },
   "peerDependencies": {

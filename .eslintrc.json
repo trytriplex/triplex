@@ -13,9 +13,15 @@
       "rules": {
         "header/header": "off"
       }
+    },
+    {
+      "files": ["**/apps/vscode/**", "**/packages/@triplex/editor/**"],
+      "rules": {
+        "react-compiler/react-compiler": "error"
+      }
     }
   ],
-  "plugins": ["header"],
+  "plugins": ["react-compiler", "header"],
   "rules": {
     "@nkzw/no-instanceof": "off",
     "@typescript-eslint/consistent-type-imports": [

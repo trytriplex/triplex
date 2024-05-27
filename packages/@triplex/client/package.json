@@ -14,8 +14,8 @@
     "typedef": "tsc"
   },
   "dependencies": {
-    "@babel/core": "^7.24.4",
-    "@babel/types": "^7.24.0",
+    "@babel/core": "^7.24.5",
+    "@babel/types": "^7.24.5",
     "@triplex/bridge": "0.67.2",
     "@triplex/renderer-r3f": "0.67.2",
     "@triplex/renderer-react": "0.67.2",

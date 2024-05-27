@@ -13,7 +13,7 @@ import {
 } from "@radix-ui/react-icons";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
-import { useEffect, useState } from "react";
+import { StrictMode, useEffect, useState } from "react";
 import { version } from "../package.json";
 import { Analytics, useScreenView } from "./analytics";
 import { Button } from "./ds/button";
@@ -164,7 +164,9 @@ function WelcomeScreen() {
 }
 
 createRoot(document.getElementById("root")!).render(
-  <Analytics>
-    <WelcomeScreen />
-  </Analytics>
+  <StrictMode>
+    <Analytics>
+      <WelcomeScreen />
+    </Analytics>
+  </StrictMode>
 );
