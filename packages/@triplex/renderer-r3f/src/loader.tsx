@@ -12,6 +12,9 @@ import { Tunnel } from "./components/tunnel";
 import { useScenes } from "./context";
 import { ManualEditableSceneObject } from "./manual-editable";
 
+/**
+ * This is used for e2e testing both the dev and prod smoke test build.
+ */
 function LoadedNotifierForTesting({ exportName }: { exportName: string }) {
   useEffect(() => {
     send("component-rendered", undefined);
@@ -21,7 +24,14 @@ function LoadedNotifierForTesting({ exportName }: { exportName: string }) {
     <Tunnel.In>
       <span
         data-testid="scene-loaded-meta"
-        style={{ left: 0, position: "absolute", top: 0 }}
+        style={{
+          height: 1,
+          left: 0,
+          opacity: 0,
+          position: "absolute",
+          top: 0,
+          width: 1,
+        }}
       >
         {exportName}
       </span>
@@ -76,9 +86,7 @@ export function SceneLoader({
         }
         resetKeys={[SceneComponent]}
       >
-        {import.meta.env.VITE_TRIPLEX_ENV === "test" && (
-          <LoadedNotifierForTesting exportName={exportName} />
-        )}
+        <LoadedNotifierForTesting exportName={exportName} />
         <ManualEditableSceneObject
           component={SceneComponent}
           exportName={exportName}

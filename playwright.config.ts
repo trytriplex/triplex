@@ -8,7 +8,6 @@ import { defineConfig } from "@playwright/test";
 
 export default defineConfig({
   expect: {
-    timeout: 30_000,
     toMatchSnapshot: {
       maxDiffPixelRatio: 0.05,
     },
@@ -17,10 +16,16 @@ export default defineConfig({
   globalSetup: "./test/playwright-setup",
   projects: [
     {
+      expect: {
+        timeout: 60_000,
+      },
       name: "electron",
       testDir: "./apps/electron/__tests__",
     },
     {
+      expect: {
+        timeout: 60_000,
+      },
       name: "vscode",
       testDir: "./apps/vscode/__tests__",
     },

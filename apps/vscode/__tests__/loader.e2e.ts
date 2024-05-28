@@ -16,11 +16,15 @@ test("default to perspective camera", async ({ vsce }) => {
   await expect(panel.devOnlyCameraPanel).toHaveText(/name: __triplex_camera/);
 });
 
-test("opening scene using codelens", async ({ vsce }) => {
-  await vsce.codelens("Scene").click();
+test(
+  "opening scene using codelens",
+  { tag: "@vsce_smoke" },
+  async ({ vsce }) => {
+    await vsce.codelens("Scene").click();
 
-  await expect(vsce.loadedComponent).toHaveText("Scene");
-});
+    await expect(vsce.loadedComponent).toHaveText("Scene");
+  }
+);
 
 test("reopening a file after closing", async ({ vsce }) => {
   await vsce.codelens("Scene").click();

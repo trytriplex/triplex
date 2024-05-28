@@ -30,7 +30,7 @@
     "static"
   ],
   "scripts": {
-    "build": "vite build",
+    "build": "vite build --mode vsce && vite build --mode app",
     "prepack": "node ../../scripts/workspace-run.js ./apply-publish-config.js",
     "pack": "node scripts/pack.js",
     "publish": "cd out && vsce publish --no-dependencies",

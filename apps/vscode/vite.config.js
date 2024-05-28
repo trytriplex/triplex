@@ -9,43 +9,68 @@ import { resolve } from "upath";
 import { defineConfig } from "vite";
 import pkg from "./package.json";
 
-const externalConfig = [
-  ...builtinModules,
-  ...builtinModules.map((m) => `node:${m}`),
-  ...Object.keys(pkg.dependencies),
-  "vscode",
-];
+export default defineConfig(({ mode }) => {
+  if (mode === "vsce") {
+    const externalConfig = [
+      ...builtinModules,
+      ...builtinModules.map((m) => `node:${m}`),
+      ...Object.keys(pkg.dependencies),
+      "vscode",
+    ];
 
-export default defineConfig({
-  base: "/__base_url_replace__",
-  build: {
-    minify: false,
-    outDir: "out/dist",
-    rollupOptions: {
-      external: externalConfig,
-      input: {
-        extension: resolve(__dirname, "src/extension/index.ts"),
-        index: resolve(__dirname, "index.html"),
-        project: resolve(__dirname, "src/project/index.ts"),
+    return {
+      build: {
+        emptyOutDir: false,
+        outDir: "out/dist",
+        rollupOptions: {
+          external: externalConfig,
+          input: {
+            extension: resolve(__dirname, "src/extension/index.ts"),
+            project: resolve(__dirname, "src/project/index.ts"),
+          },
+          output: {
+            assetFileNames: "assets/[name].[ext]",
+            chunkFileNames: "assets/[name].js",
+            entryFileNames: "[name].js",
+          },
+        },
+        ssr: true,
+        ssrEmitAssets: true,
+        target: "node18",
       },
-      output: {
-        assetFileNames: "assets/[name].[ext]",
-        chunkFileNames: "assets/[name].js",
-        entryFileNames: "[name].js",
-        inlineDynamicImports: false,
+      define: {
+        "process.env.NODE_ENV": '"production"',
       },
-    },
-    ssr: true,
-    ssrEmitAssets: true,
-    target: "node18",
-  },
-  define: {
-    "process.env.NODE_ENV": '"production"',
-  },
-  mode: "production",
-  ssr: {
-    external: externalConfig,
-    format: "cjs",
-    noExternal: true,
-  },
+      mode: "production",
+      ssr: {
+        external: externalConfig,
+        format: "cjs",
+        noExternal: true,
+      },
+    };
+  } else if (mode === "app") {
+    return {
+      base: "/__base_url_replace__",
+      build: {
+        emptyOutDir: false,
+        outDir: "out/dist",
+        rollupOptions: {
+          input: {
+            index: resolve(__dirname, "index.html"),
+          },
+          output: {
+            assetFileNames: "assets/[name].[ext]",
+            chunkFileNames: "assets/[name].js",
+            entryFileNames: "[name].js",
+          },
+        },
+      },
+      define: {
+        "process.env.NODE_ENV": '"production"',
+      },
+      mode: "production",
+    };
+  }
+
+  throw new Error(`invariant: unknown --mode "${mode}"`);
 });
