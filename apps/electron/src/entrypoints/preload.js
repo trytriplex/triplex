@@ -27,6 +27,8 @@ const env = args.triplex_data ? JSON.parse(args.triplex_data) : {};
 
 contextBridge.exposeInMainWorld("triplex", {
   accelerator: (accelerator, callback) => {
+    accelerator = accelerator.toUpperCase();
+
     const listener = () => {
       if (document.activeElement.tagName === "INPUT") {
         // Bail out if the user is typing in an input field

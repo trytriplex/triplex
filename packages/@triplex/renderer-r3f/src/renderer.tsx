@@ -67,19 +67,19 @@ export function Renderer({
         {
           buttons: [
             {
-              accelerator: "T",
+              accelerator: "t",
               icon: "move",
               id: "translate",
               label: "Translate",
             },
             {
-              accelerator: "R",
+              accelerator: "r",
               icon: "angle",
               id: "rotate",
               label: "Rotate",
             },
             {
-              accelerator: "S",
+              accelerator: "s",
               icon: "transform",
               id: "scale",
               label: "Scale",

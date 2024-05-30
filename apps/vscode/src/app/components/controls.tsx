@@ -21,6 +21,7 @@ import {
 import { VSCodeButton } from "@vscode/webview-ui-toolkit/react";
 import { useEffect, useReducer, useState } from "react";
 import { onVSCE } from "../util/bridge";
+import { IconButton } from "./button";
 
 interface PlayState {
   camera: "default" | "editor";
@@ -112,7 +113,7 @@ export function Controls() {
             case "button-group": {
               return (
                 <ButtonGroupControl control={control} key={control.id}>
-                  {({ Icon, isSelected, label, onClick }) => (
+                  {({ Icon, accelerator, isSelected, label, onClick }) => (
                     <div
                       className={cn([
                         "relative -my-0.5 flex py-0.5",
@@ -121,17 +122,13 @@ export function Controls() {
                       ])}
                       key={label}
                     >
-                      <VSCodeButton
-                        appearance="icon"
-                        aria-label={label}
-                        className={
-                          isSelected ? "bg-selected text-selected" : ""
-                        }
+                      <IconButton
+                        accelerator={accelerator}
+                        icon={Icon}
+                        isSelected={isSelected}
+                        label={label}
                         onClick={onClick}
-                        title={label}
-                      >
-                        <Icon />
-                      </VSCodeButton>
+                      />
                     </div>
                   )}
                 </ButtonGroupControl>
@@ -141,16 +138,14 @@ export function Controls() {
             case "toggle-button": {
               return (
                 <ToggleButtonControl control={control} key={control.id}>
-                  {({ Icon, label, onClick }) => (
-                    <VSCodeButton
-                      appearance="icon"
-                      aria-label={label}
+                  {({ Icon, accelerator, label, onClick }) => (
+                    <IconButton
+                      accelerator={accelerator}
+                      icon={Icon}
                       key={label}
+                      label={label}
                       onClick={onClick}
-                      title={label}
-                    >
-                      <Icon />
-                    </VSCodeButton>
+                    />
                   )}
                 </ToggleButtonControl>
               );
@@ -159,16 +154,14 @@ export function Controls() {
             case "button": {
               return (
                 <ButtonControl control={control} key={control.id}>
-                  {({ Icon, label, onClick }) => (
-                    <VSCodeButton
-                      appearance="icon"
-                      aria-label={label}
+                  {({ Icon, accelerator, label, onClick }) => (
+                    <IconButton
+                      accelerator={accelerator}
+                      icon={Icon}
                       key={label}
+                      label={label}
                       onClick={onClick}
-                      title={label}
-                    >
-                      <Icon />
-                    </VSCodeButton>
+                    />
                   )}
                 </ButtonControl>
               );
