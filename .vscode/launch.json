@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Run VSCode (DEV)",
+      "name": "Run VSCode",
       "type": "extensionHost",
       "request": "launch",
       "args": [
@@ -12,12 +12,6 @@
         "--new-window",
         "--extensionDevelopmentPath=${workspaceFolder}/apps/vscode"
       ]
-    },
-    {
-      "name": "Run VSCode (PROD)",
-      "type": "extensionHost",
-      "request": "launch",
-      "args": ["--extensionDevelopmentPath=${workspaceFolder}/apps/vscode/out"]
     },
     {
       "args": [".", "--inspect"],
