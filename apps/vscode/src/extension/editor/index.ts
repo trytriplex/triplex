@@ -8,7 +8,7 @@ import { readFileSync } from "node:fs";
 import { inferExports, resolveProjectCwd } from "@triplex/server";
 import { dirname, join, normalize } from "upath";
 import * as vscode from "vscode";
-import { sendVSCE } from "../util/bridge";
+import { on, sendVSCE } from "../util/bridge";
 import { TriplexDocument } from "./document";
 import { initializeWebviewPanel, type TriplexProject } from "./panel";
 
@@ -27,8 +27,7 @@ function getFallbackExportName(filepath: string): string {
 export class TriplexEditorProvider
   implements vscode.CustomEditorProvider<TriplexDocument>
 {
-  static readonly viewType = "triplex.editor";
-
+  private static readonly viewType = "triplex.editor";
   private static _nextExportName = "";
   private static readonly activePanels = new Map<string, vscode.WebviewPanel>();
   private static readonly activeProjects = new Map<string, TriplexProject>();
@@ -70,7 +69,16 @@ export class TriplexEditorProvider
     _openContext: vscode.CustomDocumentOpenContext,
     _token: vscode.CancellationToken
   ) {
-    return new TriplexDocument(uri);
+    const document = new TriplexDocument(uri);
+
+    document.onDidChange((data) => {
+      this._onDidChangeCustomDocument.fire({
+        document,
+        ...data,
+      });
+    });
+
+    return document;
   }
 
   async resolveCustomEditor(
@@ -105,6 +113,14 @@ export class TriplexEditorProvider
       path: scopedFileName,
       projectRegistry: TriplexEditorProvider.activeProjects,
       triplexProjectCwd,
+    }).then((ports) => {
+      document.setContext(ports.server);
+
+      // When the panel is ready we set up event listeners to mutate the document
+      // We don't await this so the panel can have the loading screen appear immediately.
+      on(panel.webview, "element-set-prop", (prop) => {
+        document.upsertProp(prop);
+      });
     });
   }
 
@@ -125,28 +141,28 @@ export class TriplexEditorProvider
 
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
     const disposables = [
-      vscode.commands.registerCommand(
-        "triplex.set-camera-default",
-        (e: { path: string } | undefined) => {
-          const panel = e && this.activePanels.get(e.path);
-          if (!panel) {
-            return;
-          }
+      vscode.commands.registerCommand("triplex.set-camera-default", () => {
+        const activePanel = Array.from(this.activePanels.values()).find(
+          (panel) => panel.active
+        );
 
-          sendVSCE(panel.webview, "vscode:play-camera", { name: "default" });
+        if (activePanel) {
+          sendVSCE(activePanel.webview, "vscode:play-camera", {
+            name: "default",
+          });
         }
-      ),
-      vscode.commands.registerCommand(
-        "triplex.set-camera-editor",
-        (e: { path: string } | undefined) => {
-          const panel = e && this.activePanels.get(e.path);
-          if (!panel) {
-            return;
-          }
+      }),
+      vscode.commands.registerCommand("triplex.set-camera-editor", () => {
+        const activePanel = Array.from(this.activePanels.values()).find(
+          (panel) => panel.active
+        );
 
-          sendVSCE(panel.webview, "vscode:play-camera", { name: "editor" });
+        if (activePanel) {
+          sendVSCE(activePanel.webview, "vscode:play-camera", {
+            name: "editor",
+          });
         }
-      ),
+      }),
       vscode.commands.registerCommand(
         "triplex.start",
         async (ctx?: { exportName: string; path: string }) => {
@@ -178,7 +194,12 @@ export class TriplexEditorProvider
 
             vscode.commands.executeCommand(
               "vscode.openWith",
-              vscode.Uri.file(scopedFileName),
+              // We set an extra to the file path to have vscode consider it a unique file.
+              // This means when we perform undo/redo/save actions it's isolated to the triplex
+              // editor rather than shared with the default editor.
+              // NOTE: Breadcrumbs get messed up when supplying the query.
+              // See: https://github.com/microsoft/vscode/issues/213633
+              vscode.Uri.file(scopedFileName).with({ query: "triplex" }),
               TriplexEditorProvider.viewType,
               vscode.ViewColumn.Beside
             );

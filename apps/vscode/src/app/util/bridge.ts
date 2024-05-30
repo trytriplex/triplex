@@ -4,6 +4,10 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { on, type ClientSendEventData } from "@triplex/bridge/host";
+
+export const vscode = window.acquireVsCodeApi();
+
 export interface VSCodeEvent {
   "vscode:play-camera": {
     name: "default" | "editor";
@@ -33,4 +37,10 @@ export function onVSCE<TEvent extends keyof VSCodeEvent>(
   return () => {
     window.removeEventListener("message", cb);
   };
+}
+
+export function forwardClientMessages(eventName: keyof ClientSendEventData) {
+  return on(eventName, (data) => {
+    vscode.postMessage({ data, eventName });
+  });
 }

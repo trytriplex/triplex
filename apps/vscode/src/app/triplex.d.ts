@@ -9,6 +9,10 @@ type ReconciledTriplexConfig =
 type TriplexPorts = import("@triplex/server").TriplexPorts;
 
 declare interface Window {
+  acquireVsCodeApi: () => {
+    postMessage: (data: unknown) => void;
+  };
+
   triplex: {
     env: {
       config: ReconciledTriplexConfig;

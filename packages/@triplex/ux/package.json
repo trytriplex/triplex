@@ -6,9 +6,9 @@
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "exports": {
     ".": {
-      "types": "./src/index.tsx",
-      "module": "./src/index.tsx",
-      "default": "./src/index.tsx"
+      "types": "./src/index.ts",
+      "module": "./src/index.ts",
+      "default": "./src/index.ts"
     }
   },
   "files": [

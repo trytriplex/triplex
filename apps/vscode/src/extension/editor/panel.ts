@@ -14,6 +14,7 @@ import { getPort } from "../util/port";
 export interface TriplexProjectData {
   buildHtml: (opts: { exportName: string; path: string }) => string;
   dispose: () => void;
+  ports: { client: number; server: number; ws: number };
 }
 
 export interface TriplexProject {
@@ -56,7 +57,7 @@ export async function initializeWebviewPanel(
 
     panel.webview.html = project.buildHtml({ exportName, path });
 
-    return;
+    return project.ports;
   }
 
   const promise = new Promise<TriplexProjectData>((resolve) => {
@@ -179,6 +180,7 @@ export async function initializeWebviewPanel(
         buildHtml: (initialState: { exportName: string; path: string }) =>
           preload(initialState) + constructedHTML,
         dispose,
+        ports,
       });
     }
 
@@ -186,4 +188,8 @@ export async function initializeWebviewPanel(
   });
 
   projectRegistry.set(triplexProjectCwd, () => promise);
+
+  const result = await promise;
+
+  return result.ports;
 }

@@ -12,6 +12,7 @@ import {
 } from "@triplex/bridge/host";
 import { useEffect } from "react";
 import { onVSCE } from "../util/bridge";
+import { ContextPanel } from "./context-panel";
 import { Controls } from "./controls";
 
 export function App() {
@@ -37,6 +38,7 @@ export function App() {
 
   return (
     <>
+      <ContextPanel />
       <Controls />
       <iframe
         allow="cross-origin-isolated"
