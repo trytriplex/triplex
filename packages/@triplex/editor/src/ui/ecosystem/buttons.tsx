@@ -21,8 +21,8 @@ import {
   type ButtonGroupControl,
   type ToggleButtonControl,
 } from "@triplex/bridge/host";
+import { type ActionIdSafe } from "@triplex/ux";
 import { useState } from "react";
-import { type ActionIdSafe } from "../../analytics";
 import { IconButton } from "../../ds/button";
 import { LocalSpaceIcon, WorldSpaceIcon } from "../../ds/icons";
 

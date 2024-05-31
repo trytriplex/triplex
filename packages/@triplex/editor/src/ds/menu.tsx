@@ -13,8 +13,8 @@ import {
   Trigger,
 } from "@radix-ui/react-dropdown-menu";
 import { DotFilledIcon } from "@radix-ui/react-icons";
+import { useAnalytics, type ActionId } from "@triplex/ux";
 import React, { createContext, useContext } from "react";
-import { useAnalytics, type ActionId } from "../analytics";
 import { cn } from "./cn";
 import { PrimitiveProvider } from "./pressable";
 

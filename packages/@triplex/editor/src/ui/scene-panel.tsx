@@ -22,6 +22,7 @@ import {
   TrashIcon,
 } from "@radix-ui/react-icons";
 import type { JsxElementPositions } from "@triplex/server";
+import { useAnalytics, useScreenView } from "@triplex/ux";
 import { useLazySubscription } from "@triplex/ws/react";
 import {
   Suspense,
@@ -32,7 +33,6 @@ import {
   type ChangeEventHandler,
 } from "react";
 import { ErrorBoundary as ReactErrorBoundary } from "react-error-boundary";
-import { useAnalytics, useScreenView } from "../analytics";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 import { Pressable } from "../ds/pressable";

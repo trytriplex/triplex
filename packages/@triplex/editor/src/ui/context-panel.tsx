@@ -5,9 +5,9 @@
  * file in the root directory of this source tree.
  */
 import { Cross2Icon, EraserIcon } from "@radix-ui/react-icons";
+import { useScreenView } from "@triplex/ux";
 import { useLazySubscription } from "@triplex/ws/react";
 import { Suspense, useDeferredValue, useLayoutEffect, useState } from "react";
-import { useScreenView } from "../analytics";
 import { IconButton } from "../ds/button";
 import { ExternalLink } from "../ds/external-link";
 import { ScrollContainer } from "../ds/scroll-container";

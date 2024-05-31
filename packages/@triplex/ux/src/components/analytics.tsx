@@ -5,8 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { createContext, useContext, useEffect, useMemo, useRef } from "react";
-import { version } from "../package.json";
-import useEvent from "./util/use-event";
+import useEvent from "../util/use-event";
 
 type ActionContext =
   | "assetsdrawer"
@@ -216,7 +215,21 @@ export function useScreenView(
   }, [analytics, isEnabled, name, screen_class]);
 }
 
-export function Analytics({ children }: { children: React.ReactNode }) {
+export function Analytics({
+  children,
+  secretKey,
+  sessionId,
+  trackingId,
+  userId,
+  version,
+}: {
+  children: React.ReactNode;
+  secretKey: string;
+  sessionId: string;
+  trackingId: string;
+  userId: string;
+  version: string;
+}) {
   const analytics = useRef<Analytics4>();
 
   useEffect(() => {
@@ -225,18 +238,15 @@ export function Analytics({ children }: { children: React.ReactNode }) {
     }
 
     analytics.current = new Analytics4(
-      "G-G1GDHSKRZN",
-      // !! SECURITY WARNING !!
-      // The following key should never be publicly exposed.
-      "pMzCe62mSIazSOyUpEBn3A",
-      window.triplex.userId,
-      window.triplex.sessionId
+      trackingId,
+      secretKey,
+      userId,
+      sessionId
     );
 
     analytics.current.setParams({
       app_version: process.env.NODE_ENV === "production" ? version : "local",
       env: process.env.NODE_ENV === "production" ? "production" : "local",
-      os: window.triplex.platform,
     });
 
     const setVisibility = analytics.current.setVisibility;
@@ -246,12 +256,12 @@ export function Analytics({ children }: { children: React.ReactNode }) {
     return () => {
       document.removeEventListener("visibilitychange", setVisibility);
     };
-  }, []);
+  }, [secretKey, sessionId, trackingId, userId, version]);
 
   const event: Events["event"] = useEvent((eventName, params) => {
     if (eventName && eventName !== "(UNSAFE_SKIP)") {
       if (
-        import.meta.env.VITE_TRIPLEX_ENV === "development" &&
+        process.env.NODE_ENV !== "production" &&
         /^[a-z]$/.test(eventName.replaceAll("_", ""))
       ) {
         throw new Error(

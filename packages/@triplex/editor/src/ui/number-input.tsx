@@ -9,6 +9,7 @@ import {
   CaretRightIcon,
   Cross2Icon,
 } from "@radix-ui/react-icons";
+import { useAnalytics, useEvent, type ActionIdSafe } from "@triplex/ux";
 import {
   useCallback,
   useEffect,
@@ -17,12 +18,10 @@ import {
   type KeyboardEventHandler,
   type MouseEventHandler,
 } from "react";
-import { useAnalytics, type ActionIdSafe } from "../analytics";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 import { Pressable } from "../ds/pressable";
 import { sentenceCase } from "../util/string";
-import useEvent from "../util/use-event";
 import { usePropTags } from "./prop-input";
 
 function stepModifier(modifiers: { ctrl: boolean; shift: boolean }) {

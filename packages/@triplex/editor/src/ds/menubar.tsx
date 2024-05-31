@@ -6,9 +6,8 @@
  */
 // eslint-disable-next-line import/no-namespace
 import * as RadixMenubar from "@radix-ui/react-menubar";
+import { useAnalytics, useEvent, type ActionId } from "@triplex/ux";
 import { type ReactNode } from "react";
-import { useAnalytics, type ActionId } from "../analytics";
-import useEvent from "../util/use-event";
 import { cn } from "./cn";
 
 export function Trigger({

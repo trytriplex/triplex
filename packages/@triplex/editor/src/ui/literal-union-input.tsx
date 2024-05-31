@@ -10,13 +10,13 @@ import type {
   NumberLiteralType,
   StringLiteralType,
 } from "@triplex/server";
+import { useAnalytics, type ActionIdSafe } from "@triplex/ux";
 import {
   useEffect,
   useRef,
   type ChangeEventHandler,
   type KeyboardEventHandler,
 } from "react";
-import { useAnalytics, type ActionIdSafe } from "../analytics";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 

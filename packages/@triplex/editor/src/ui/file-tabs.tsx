@@ -5,16 +5,15 @@
  * file in the root directory of this source tree.
  */
 import { Component1Icon, Cross2Icon, CubeIcon } from "@radix-ui/react-icons";
+import { useAnalytics, useEvent } from "@triplex/ux";
 import { useLazySubscription } from "@triplex/ws/react";
 import { useEffect, useRef } from "react";
-import { useAnalytics } from "../analytics";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
 import { Pressable } from "../ds/pressable";
 import { useEditor } from "../stores/editor";
 import { useOverlayStore } from "../stores/overlay";
 import { useScene } from "../stores/scene";
-import useEvent from "../util/use-event";
 
 function FallbackTab({
   exportName,

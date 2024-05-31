@@ -15,7 +15,13 @@
       }
     },
     {
-      "files": ["**/apps/vscode/**", "**/packages/@triplex/editor/**"],
+      "files": [
+        "./apps/vscode/**",
+        "./packages/@triplex/editor/**",
+        "./packages/@triplex/bridge/**",
+        "./packages/@triplex/ux/**",
+        "./packages/@triplex/ws/**"
+      ],
       "rules": {
         "react-compiler/react-compiler": "error"
       }

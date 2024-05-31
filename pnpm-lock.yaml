@@ -694,6 +694,9 @@ importers:
       '@triplex/bridge':
         specifier: 0.67.2
         version: link:../bridge
+      '@triplex/ux':
+        specifier: 0.67.2
+        version: link:../ux
       '@triplex/ws':
         specifier: 0.67.2
         version: link:../ws
@@ -776,6 +779,9 @@ importers:
       '@triplex/bridge':
         specifier: 0.67.2
         version: link:../bridge
+      '@triplex/ux':
+        specifier: 0.67.2
+        version: link:../ux
       '@triplex/ws':
         specifier: 0.67.2
         version: link:../ws
@@ -984,6 +990,9 @@ importers:
       '@types/react':
         specifier: ^18.0.27
         version: 18.0.27
+      react-compiler-runtime:
+        specifier: workspace:*
+        version: link:../../react-compiler-runtime
       typescript:
         specifier: ^5.3.3
         version: 5.3.3

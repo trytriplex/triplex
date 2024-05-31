@@ -11,6 +11,7 @@ import type {
   ProjectCustomComponent,
   ProjectHostComponent,
 } from "@triplex/server";
+import { useEvent } from "@triplex/ux";
 import {
   preloadSubscription,
   useLazySubscription,
@@ -24,7 +25,6 @@ import { Pressable } from "../ds/pressable";
 import { ScrollContainer } from "../ds/scroll-container";
 import { useAssetsDrawer } from "../stores/assets-drawer";
 import { useEditor } from "../stores/editor";
-import useEvent from "../util/use-event";
 import { StringInput } from "./string-input";
 import { AssetThumbnail } from "./thumbnail";
 

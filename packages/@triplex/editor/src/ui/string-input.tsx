@@ -5,11 +5,10 @@
  * file in the root directory of this source tree.
  */
 import { Cross2Icon } from "@radix-ui/react-icons";
+import { useAnalytics, useEvent, type ActionIdSafe } from "@triplex/ux";
 import { useEffect, useRef, useState, type KeyboardEventHandler } from "react";
-import { useAnalytics, type ActionIdSafe } from "../analytics";
 import { IconButton } from "../ds/button";
 import { sentenceCase } from "../util/string";
-import useEvent from "../util/use-event";
 
 const noop = () => {};
 

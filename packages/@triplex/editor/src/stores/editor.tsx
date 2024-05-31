@@ -5,11 +5,11 @@
  * file in the root directory of this source tree.
  */
 import type { ComponentTarget, ComponentType } from "@triplex/server";
+import { useEvent } from "@triplex/ux";
 import { startTransition, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { create } from "zustand";
 import { stringifyJSON } from "../util/string";
-import useEvent from "../util/use-event";
 import { useScene } from "./scene";
 
 export interface Params {

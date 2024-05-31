@@ -5,8 +5,8 @@
  * file in the root directory of this source tree.
  */
 import type { TupleType } from "@triplex/server";
+import { useAnalytics, type ActionIdSafe } from "@triplex/ux";
 import { useRef } from "react";
-import { useAnalytics, type ActionIdSafe } from "../analytics";
 import { PropInput } from "./prop-input";
 
 function merge(a: unknown[], b: Record<string, unknown>) {

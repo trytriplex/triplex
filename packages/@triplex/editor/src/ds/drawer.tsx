@@ -6,7 +6,7 @@
  */
 // eslint-disable-next-line import/no-namespace
 import * as Dialog from "@radix-ui/react-dialog";
-import { useScreenView } from "../analytics";
+import { useScreenView } from "@triplex/ux";
 import { cn } from "./cn";
 
 export function Drawer({

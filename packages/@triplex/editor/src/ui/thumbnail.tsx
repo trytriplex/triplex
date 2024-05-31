@@ -10,7 +10,7 @@ import {
   type ProjectCustomComponent,
   type ProjectHostComponent,
 } from "@triplex/server";
-import { type ActionId } from "../analytics";
+import { type ActionId } from "@triplex/ux";
 import { IconButton } from "../ds/button";
 import { Interactive } from "../ds/interactive";
 import { Pressable } from "../ds/pressable";

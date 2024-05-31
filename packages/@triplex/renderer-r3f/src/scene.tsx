@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { on, send } from "@triplex/bridge/client";
+import { useEvent } from "@triplex/ux";
 import {
   Suspense,
   useCallback,
@@ -25,7 +26,6 @@ import { SceneLoader } from "./loader";
 import { ManualEditableSceneObject } from "./manual-editable";
 import { Selection } from "./selection";
 import { editorLayer } from "./util/layers";
-import useEvent from "./util/use-event";
 
 export function SceneFrame({
   provider: Provider,

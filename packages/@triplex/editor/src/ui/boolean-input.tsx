@@ -5,8 +5,8 @@
  * file in the root directory of this source tree.
  */
 import { CheckIcon } from "@radix-ui/react-icons";
+import { useAnalytics, type ActionIdSafe } from "@triplex/ux";
 import { useEffect, useRef, type ChangeEventHandler } from "react";
-import { useAnalytics, type ActionIdSafe } from "../analytics";
 import { sentenceCase } from "../util/string";
 
 export function BooleanInput({

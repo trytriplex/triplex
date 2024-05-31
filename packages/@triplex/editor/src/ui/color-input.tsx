@@ -5,12 +5,11 @@
  * file in the root directory of this source tree.
  */
 import { Cross2Icon } from "@radix-ui/react-icons";
+import { useAnalytics, useEvent, type ActionIdSafe } from "@triplex/ux";
 import { useEffect, useRef, useState, type FormEventHandler } from "react";
 import tinycolor from "tinycolor2";
-import { useAnalytics, type ActionIdSafe } from "../analytics";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
-import useEvent from "../util/use-event";
 
 export function ColorInput({
   actionId,

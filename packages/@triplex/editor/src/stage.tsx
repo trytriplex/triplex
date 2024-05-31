@@ -13,12 +13,12 @@ import {
   MobileIcon,
 } from "@radix-ui/react-icons";
 import { compose } from "@triplex/bridge/host";
+import { useEvent } from "@triplex/ux";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { IconButton } from "./ds/button";
 import { cn } from "./ds/cn";
 import { Pressable } from "./ds/pressable";
 import { useCanvasStage } from "./stores/canvas-stage";
-import useEvent from "./util/use-event";
 
 const EMPTY_ORIGIN = [0, 0];
 const FRAME_SIZES = {

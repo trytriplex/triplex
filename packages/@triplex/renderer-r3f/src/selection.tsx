@@ -6,6 +6,7 @@
  */
 import { useFrame, useThree } from "@react-three/fiber";
 import { compose, on, send } from "@triplex/bridge/client";
+import { useEvent } from "@triplex/ux";
 import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws/react";
 import {
   createContext,
@@ -29,7 +30,6 @@ import {
   resolveObject3DMeta,
   type EditorNodeData,
 } from "./util/scene";
-import useEvent from "./util/use-event";
 
 function strip(num: number): number {
   return +Number.parseFloat(Number(num).toPrecision(15));

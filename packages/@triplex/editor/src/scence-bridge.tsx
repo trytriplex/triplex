@@ -5,8 +5,8 @@
  * file in the root directory of this source tree.
  */
 import { compose, on } from "@triplex/bridge/host";
+import { useAnalytics, type ActionId } from "@triplex/ux";
 import { useEffect, useState } from "react";
-import { useAnalytics, type ActionId } from "./analytics";
 import { cn } from "./ds/cn";
 import { Stage } from "./stage";
 import { useEditor } from "./stores/editor";

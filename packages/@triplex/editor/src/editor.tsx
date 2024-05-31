@@ -5,8 +5,8 @@
  * file in the root directory of this source tree.
  */
 
+import { useScreenView } from "@triplex/ux";
 import { useEffect } from "react";
-import { useScreenView } from "./analytics";
 import { cn } from "./ds/cn";
 import { SceneFrame } from "./scence-bridge";
 import { useEditor } from "./stores/editor";

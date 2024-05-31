@@ -6,8 +6,8 @@
  */
 import { SwitchIcon } from "@radix-ui/react-icons";
 import type { Type } from "@triplex/server";
+import { type ActionIdSafe } from "@triplex/ux";
 import { useState } from "react";
-import { type ActionIdSafe } from "../analytics";
 import { IconButton } from "../ds/button";
 import { PropInput } from "./prop-input";
 
