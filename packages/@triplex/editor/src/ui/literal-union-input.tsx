@@ -67,6 +67,8 @@ export function LiteralUnionInput({
 
   const onClear = () => {
     const index = values.findIndex((v) => v.literal === defaultValue);
+    // Not an issue, see: https://github.com/facebook/react/issues/29106
+    // eslint-disable-next-line react-compiler/react-compiler
     ref.current.value = index !== -1 ? `${index}` : "";
 
     onChange(undefined);
