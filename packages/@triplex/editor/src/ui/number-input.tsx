@@ -9,7 +9,7 @@ import {
   CaretRightIcon,
   Cross2Icon,
 } from "@radix-ui/react-icons";
-import { useAnalytics, useEvent, type ActionIdSafe } from "@triplex/ux";
+import { useEvent, useTelemetry, type ActionIdSafe } from "@triplex/ux";
 import {
   useCallback,
   useEffect,
@@ -102,7 +102,7 @@ export function NumberInput({
     out: (value: number | undefined) => number | undefined;
   };
 }) {
-  const analytics = useAnalytics();
+  const telemetry = useTelemetry();
   const isLinux = navigator.platform.startsWith("Linux");
   const [isPointerLock, setIsPointerLock] = useState(false);
   const [modifier, setModifier] = useState({ ctrl: false, shift: false });
@@ -149,7 +149,7 @@ export function NumberInput({
 
     if (transformedDefaultValue !== nextValue) {
       onConfirm(nextValue);
-      analytics.event(`${actionId}_confirm`);
+      telemetry.event(`${actionId}_confirm`);
     }
   });
 
@@ -157,7 +157,7 @@ export function NumberInput({
     if (defaultValue !== undefined) {
       onChange(undefined);
       onConfirm(undefined);
-      analytics.event(`${actionId}_clear`);
+      telemetry.event(`${actionId}_clear`);
     }
 
     ref.current.focus();

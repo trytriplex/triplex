@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { Component1Icon, Cross2Icon, CubeIcon } from "@radix-ui/react-icons";
-import { useAnalytics, useEvent } from "@triplex/ux";
+import { useEvent, useTelemetry } from "@triplex/ux";
 import { useLazySubscription } from "@triplex/ws/react";
 import { useEffect, useRef } from "react";
 import { IconButton } from "../ds/button";
@@ -163,7 +163,7 @@ export function FileTabs() {
   >([]);
   const lastAvailableTab = projectState.at(-1);
   const playState = useScene((store) => store.playState);
-  const analytics = useAnalytics();
+  const telemetry = useTelemetry();
 
   const openLastTab = useEvent(() => {
     const closedTab = previouslyClosedTabs.current.pop();
@@ -174,7 +174,7 @@ export function FileTabs() {
         index: closedTab.index,
         path: closedTab.filePath,
       });
-      analytics.event("tabbar_file_reopen");
+      telemetry.event("tabbar_file_reopen");
     }
   });
 
@@ -191,7 +191,7 @@ export function FileTabs() {
         exportName: nextExportName,
         path: nextFilePath,
       });
-      analytics.event("tabbar_file_switch");
+      telemetry.event("tabbar_file_switch");
     }
   );
 
@@ -229,7 +229,7 @@ export function FileTabs() {
       }
 
       close(filePath);
-      analytics.event("tabbar_file_close");
+      telemetry.event("tabbar_file_close");
 
       previouslyClosedTabs.current.push({ exportName, filePath, index });
     }

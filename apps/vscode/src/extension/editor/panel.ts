@@ -118,6 +118,9 @@ export async function initializeWebviewPanel(
               exportName,
               path: normalize(path),
             },
+            isTelemetryEnabled: vscode.env.isTelemetryEnabled,
+            sessionId: vscode.env.sessionId,
+            userId: vscode.env.machineId,
           })}\`);
         </script>
       `;

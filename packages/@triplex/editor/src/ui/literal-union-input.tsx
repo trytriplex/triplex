@@ -10,7 +10,7 @@ import type {
   NumberLiteralType,
   StringLiteralType,
 } from "@triplex/server";
-import { useAnalytics, type ActionIdSafe } from "@triplex/ux";
+import { useTelemetry, type ActionIdSafe } from "@triplex/ux";
 import {
   useEffect,
   useRef,
@@ -37,7 +37,7 @@ export function LiteralUnionInput({
   required?: boolean;
   values: (StringLiteralType | NumberLiteralType | BooleanLiteralType)[];
 }) {
-  const analytics = useAnalytics();
+  const telemetry = useTelemetry();
   const ref = useRef<HTMLSelectElement>(null!);
   const isValueDefined = defaultValue !== undefined;
 
@@ -61,7 +61,7 @@ export function LiteralUnionInput({
       // This is because the clear event handler handles empty values.
       onChange(nextValue);
       onConfirm(nextValue);
-      analytics.event(`${actionId}_confirm`);
+      telemetry.event(`${actionId}_confirm`);
     }
   };
 
@@ -71,13 +71,13 @@ export function LiteralUnionInput({
 
     onChange(undefined);
     onConfirm(undefined);
-    analytics.event(`${actionId}_clear`);
+    telemetry.event(`${actionId}_clear`);
   };
 
   const onKeyDownHandler: KeyboardEventHandler<HTMLSelectElement> = (e) => {
     if (e.key === "Backspace") {
       onClear();
-      analytics.event(`${actionId}_clear`);
+      telemetry.event(`${actionId}_clear`);
     }
   };
 

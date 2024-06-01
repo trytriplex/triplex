@@ -17,8 +17,8 @@ import {
   ButtonGroupControl,
   cn,
   ToggleButtonControl,
+  type ActionId,
 } from "@triplex/ux";
-import { VSCodeButton } from "@vscode/webview-ui-toolkit/react";
 import { useEffect, useReducer, useState } from "react";
 import { onVSCE } from "../util/bridge";
 import { IconButton } from "./button";
@@ -113,7 +113,7 @@ export function Controls() {
             case "button-group": {
               return (
                 <ButtonGroupControl control={control} key={control.id}>
-                  {({ Icon, accelerator, isSelected, label, onClick }) => (
+                  {({ Icon, accelerator, id, isSelected, label, onClick }) => (
                     <div
                       className={cn([
                         "relative -my-0.5 flex py-0.5",
@@ -124,6 +124,7 @@ export function Controls() {
                     >
                       <IconButton
                         accelerator={accelerator}
+                        actionId={("scene_controls_" + id) as ActionId}
                         icon={Icon}
                         isSelected={isSelected}
                         label={label}
@@ -138,9 +139,10 @@ export function Controls() {
             case "toggle-button": {
               return (
                 <ToggleButtonControl control={control} key={control.id}>
-                  {({ Icon, accelerator, label, onClick }) => (
+                  {({ Icon, accelerator, id, label, onClick }) => (
                     <IconButton
                       accelerator={accelerator}
+                      actionId={("scene_controls_" + id) as ActionId}
                       icon={Icon}
                       key={label}
                       label={label}
@@ -154,9 +156,10 @@ export function Controls() {
             case "button": {
               return (
                 <ButtonControl control={control} key={control.id}>
-                  {({ Icon, accelerator, label, onClick }) => (
+                  {({ Icon, accelerator, id, label, onClick }) => (
                     <IconButton
                       accelerator={accelerator}
+                      actionId={("scene_controls_" + id) as ActionId}
                       icon={Icon}
                       key={label}
                       label={label}
@@ -176,57 +179,65 @@ export function Controls() {
       <div className="bg-overlay border-overlay shadow-overlay pointer-events-auto flex rounded border p-0.5">
         {play.state !== "edit" && (
           <>
-            <VSCodeButton
-              appearance="icon"
-              aria-label="Reset"
+            <IconButton
+              actionId="scene_frame_reset"
+              icon={ResetIcon}
+              label="Reset"
               onClick={() => send("request-refresh-scene", undefined)}
-              title="Reset"
-            >
-              <ResetIcon />
-            </VSCodeButton>
-            <VSCodeButton appearance="icon" aria-label="Stop" title="Stop">
-              <StopIcon onClick={() => dispatch("state-edit")} />
-            </VSCodeButton>
+            />
+
+            <IconButton
+              actionId="scene_frame_stop"
+              icon={StopIcon}
+              label="Stop"
+              onClick={() => dispatch("state-edit")}
+            />
           </>
         )}
 
         <div className="hover:bg-hover flex">
           {play.state === "play" && (
-            <VSCodeButton appearance="icon" aria-label="Pause" title="Pause">
-              <PauseIcon onClick={() => dispatch("state-pause")} />
-            </VSCodeButton>
+            <IconButton
+              actionId="scene_frame_pause"
+              icon={PauseIcon}
+              label="Pause"
+              onClick={() => dispatch("state-pause")}
+            />
           )}
           {play.state !== "play" && (
-            <VSCodeButton appearance="icon" aria-label="Play" title="Play">
-              <PlayIcon onClick={() => dispatch("state-play")} />
-            </VSCodeButton>
+            <IconButton
+              actionId="scene_frame_play"
+              icon={PlayIcon}
+              label="Play"
+              onClick={() => dispatch("state-play")}
+            />
           )}
 
-          <VSCodeButton
-            appearance="icon"
-            aria-label="Set Play Camera"
-            className="-ml-0.5"
-            data-vscode-context={JSON.stringify({
-              path: window.triplex.initialState.path,
-              webviewSection: "play-camera",
-            })}
-            onClick={(e) => {
-              e.target.dispatchEvent(
-                new MouseEvent("contextmenu", {
-                  bubbles: true,
-                  clientX: e.clientX,
-                  clientY: e.clientY,
-                })
-              );
-            }}
-            title={
+          <IconButton
+            actionId="scene_frame_playoptions"
+            icon={CaretDownIcon}
+            label={
               play.camera === "default"
                 ? "Set Play Camera (Default)"
                 : "Set Play Camera (Editor)"
             }
-          >
-            <CaretDownIcon className="-mx-1" />
-          </VSCodeButton>
+            onClick={(e) => {
+              if (e instanceof MouseEvent && e.target) {
+                e.target.dispatchEvent(
+                  new MouseEvent("contextmenu", {
+                    bubbles: true,
+                    clientX: e.clientX,
+                    clientY: e.clientY,
+                  })
+                );
+              }
+            }}
+            spacing="thin"
+            vscodeContext={{
+              path: window.triplex.initialState.path,
+              webviewSection: "play-camera",
+            }}
+          />
         </div>
       </div>
     </div>

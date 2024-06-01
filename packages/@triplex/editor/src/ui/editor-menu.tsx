@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useAnalytics, type ActionId } from "@triplex/ux";
+import { useTelemetry, type ActionId } from "@triplex/ux";
 import { useCallback, useEffect, useMemo } from "react";
 import {
   Menu,
@@ -105,7 +105,7 @@ export function EditorMenu() {
     target,
     undo,
   } = useEditor();
-  const analytics = useAnalytics();
+  const telemetry = useTelemetry();
   const { blur, jumpTo, navigateTo, refresh } = useScene();
   const isEditable = !!path;
 
@@ -383,7 +383,7 @@ export function EditorMenu() {
           case "active-input": {
             if (document.activeElement?.tagName === "INPUT") {
               menuItem.click();
-              analytics.event(menuItem.id);
+              telemetry.event(menuItem.id);
             }
             break;
           }
@@ -391,19 +391,19 @@ export function EditorMenu() {
           case "inactive-input": {
             if (document.activeElement?.tagName !== "INPUT") {
               menuItem.click();
-              analytics.event(menuItem.id);
+              telemetry.event(menuItem.id);
             }
             break;
           }
 
           default:
             menuItem.click();
-            analytics.event(menuItem.id);
+            telemetry.event(menuItem.id);
             break;
         }
       }
     });
-  }, [analytics, menubar]);
+  }, [telemetry, menubar]);
 
   if (window.triplex.platform !== "win32") {
     return null;

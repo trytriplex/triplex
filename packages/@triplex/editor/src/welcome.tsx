@@ -13,7 +13,7 @@ import {
 } from "@radix-ui/react-icons";
 import { createRoot } from "react-dom/client";
 import "./styles.css";
-import { Analytics, useScreenView } from "@triplex/ux";
+import { TelemetryProvider, useScreenView } from "@triplex/ux";
 import { StrictMode, useEffect, useState } from "react";
 import { version } from "../package.json";
 import { Button } from "./ds/button";
@@ -165,7 +165,7 @@ function WelcomeScreen() {
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
-    <Analytics
+    <TelemetryProvider
       secretKey="pMzCe62mSIazSOyUpEBn3A"
       sessionId={window.triplex.sessionId}
       trackingId="G-G1GDHSKRZN"
@@ -173,6 +173,6 @@ createRoot(document.getElementById("root")!).render(
       version={version}
     >
       <WelcomeScreen />
-    </Analytics>
+    </TelemetryProvider>
   </StrictMode>
 );

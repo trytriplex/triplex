@@ -13,7 +13,7 @@ import {
   Trigger,
 } from "@radix-ui/react-dropdown-menu";
 import { DotFilledIcon } from "@radix-ui/react-icons";
-import { useAnalytics, type ActionId } from "@triplex/ux";
+import { useTelemetry, type ActionId } from "@triplex/ux";
 import React, { createContext, useContext } from "react";
 import { cn } from "./cn";
 import { PrimitiveProvider } from "./pressable";
@@ -73,7 +73,7 @@ export function MenuRadioItem<TValue extends string>({
 }) {
   const selectedValue = useContext(RadioGroupContext);
   const isSelected = value === selectedValue;
-  const analytics = useAnalytics();
+  const telemetry = useTelemetry();
 
   return (
     <RadioItem
@@ -81,7 +81,7 @@ export function MenuRadioItem<TValue extends string>({
         "relative flex select-none items-center gap-1 rounded px-2 py-1 text-sm outline-none outline-1 outline-offset-0 data-[highlighted]:outline-blue-400 data-[highlighted]:hover:outline-none",
         isSelected ? "bg-white/5" : "hover:bg-white/5 active:bg-white/10",
       ])}
-      onClick={() => analytics.event(actionId)}
+      onClick={() => telemetry.event(actionId)}
       value={value}
     >
       {isSelected ? (

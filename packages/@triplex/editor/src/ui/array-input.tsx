@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import type { TupleType } from "@triplex/server";
-import { useAnalytics, type ActionIdSafe } from "@triplex/ux";
+import { useTelemetry, type ActionIdSafe } from "@triplex/ux";
 import { useRef } from "react";
 import { PropInput } from "./prop-input";
 
@@ -95,7 +95,7 @@ export function TupleInput({
 }) {
   const defaultValue = Array.isArray(value) ? value : [value];
   const intermediateValues = useRef<Record<string, unknown>>({});
-  const analytics = useAnalytics();
+  const telemetry = useTelemetry();
 
   return (
     <>
@@ -124,7 +124,7 @@ export function TupleInput({
 
           onConfirm(dropUnneededOptionalValues(values, nextValue));
           intermediateValues.current = {};
-          analytics.event(`${actionId}_confirm`);
+          telemetry.event(`${actionId}_confirm`);
         };
 
         return (

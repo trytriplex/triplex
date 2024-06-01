@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { compose, on } from "@triplex/bridge/host";
-import { useAnalytics, type ActionId } from "@triplex/ux";
+import { useTelemetry, type ActionId } from "@triplex/ux";
 import { useEffect, useState } from "react";
 import { cn } from "./ds/cn";
 import { Stage } from "./stage";
@@ -114,7 +114,7 @@ function BridgeSendEvents() {
 function BridgeReceiveEvents() {
   const editor = useEditor();
   const ready = useScene((store) => store.ready);
-  const analytics = useAnalytics();
+  const telemetry = useTelemetry();
 
   useEffect(() => {
     if (!ready) {
@@ -123,7 +123,7 @@ function BridgeReceiveEvents() {
 
     return compose([
       on("track", (data) => {
-        analytics.event(`scene_${data.actionId}` as ActionId);
+        telemetry.event(`scene_${data.actionId}` as ActionId);
       }),
       on("component-opened", (data) => {
         editor.set(
@@ -151,7 +151,7 @@ function BridgeReceiveEvents() {
         editor.focus(null);
       }),
     ]);
-  }, [analytics, editor, ready]);
+  }, [telemetry, editor, ready]);
 
   return null;
 }

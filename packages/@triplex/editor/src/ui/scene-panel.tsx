@@ -22,7 +22,7 @@ import {
   TrashIcon,
 } from "@radix-ui/react-icons";
 import type { JsxElementPositions } from "@triplex/server";
-import { useAnalytics, useScreenView } from "@triplex/ux";
+import { useScreenView, useTelemetry } from "@triplex/ux";
 import { useLazySubscription } from "@triplex/ws/react";
 import {
   Suspense,
@@ -78,7 +78,7 @@ const blockAll: InstructionType[] = [
 ];
 
 function ComponentHeading() {
-  const analytics = useAnalytics();
+  const telemetry = useTelemetry();
   const { exportName, newComponent, path, set } = useEditor();
   const setFrame = useCanvasStage((store) => store.setFrame);
   const frame = useCanvasStage((store) => store.frame);
@@ -95,12 +95,12 @@ function ComponentHeading() {
     switch (nextValue) {
       case "new-component": {
         newComponent();
-        analytics.event("scenepanel_component_new");
+        telemetry.event("scenepanel_component_new");
         break;
       }
 
       default: {
-        analytics.event("scenepanel_component_open");
+        telemetry.event("scenepanel_component_open");
         set({
           encodedProps: "",
           exportName: nextValue,

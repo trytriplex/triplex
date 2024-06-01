@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useAnalytics, type ActionId } from "@triplex/ux";
+import { useTelemetry, type ActionId } from "@triplex/ux";
 import { cn } from "./cn";
 
 export function ExternalLink({
@@ -20,7 +20,7 @@ export function ExternalLink({
   to: string | `triplex:${TriplexActionId}`;
   variant?: "link" | "subtle";
 }) {
-  const analytics = useAnalytics();
+  const telemetry = useTelemetry();
   return (
     <a
       className={cn([
@@ -36,7 +36,7 @@ export function ExternalLink({
         } else {
           window.triplex.openLink(to);
         }
-        analytics.event(actionId);
+        telemetry.event(actionId);
       }}
     >
       {children}

@@ -10,12 +10,15 @@ import {
   on,
   send,
 } from "@triplex/bridge/host";
+import { useScreenView } from "@triplex/ux";
 import { useEffect } from "react";
 import { onVSCE } from "../util/bridge";
 import { ContextPanel } from "./context-panel";
 import { Controls } from "./controls";
 
 export function App() {
+  useScreenView("app", "Panel");
+
   useEffect(() => {
     return compose([
       on("ready", () => {

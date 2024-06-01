@@ -48,6 +48,7 @@ interface ControlProps<TControl> {
   children: (props: {
     Icon: () => JSX.Element;
     accelerator?: string;
+    id: string;
     isSelected: boolean;
     label: string;
     onClick: () => void;
@@ -65,6 +66,7 @@ export function ToggleButtonControl({
   return children({
     Icon: (button.icon ? icons[button.icon] : BoxIcon) as () => JSX.Element,
     accelerator: control.accelerator,
+    id: control.id,
     isSelected: !!button.isSelected,
     label: button.label,
     onClick: async () => {
@@ -90,6 +92,7 @@ export function ButtonGroupControl({
             ? icons[control.icon]
             : BoxIcon) as () => JSX.Element,
           accelerator: control.accelerator,
+          id: control.id,
           isSelected: control.id === selected,
           label: control.label,
           onClick: () => {
@@ -109,6 +112,7 @@ export function ButtonControl({
   return children({
     Icon: (control.icon ? icons[control.icon] : BoxIcon) as () => JSX.Element,
     accelerator: control.accelerator,
+    id: control.id,
     isSelected: false,
     label: control.label,
     onClick: () => send("control-triggered", { id: control.id }),

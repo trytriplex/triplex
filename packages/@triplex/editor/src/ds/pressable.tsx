@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useAnalytics, useEvent, type ActionId } from "@triplex/ux";
+import { useEvent, useTelemetry, type ActionId } from "@triplex/ux";
 import {
   cloneElement,
   createContext,
@@ -68,7 +68,7 @@ export const Pressable = forwardRef<
     },
     ref
   ) => {
-    const analytics = useAnalytics();
+    const telemetry = useTelemetry();
     const props = useContext(PrimitiveContext);
 
     useEffect(() => {
@@ -78,15 +78,15 @@ export const Pressable = forwardRef<
 
       return window.triplex.accelerator(accelerator, () => {
         onPress();
-        analytics.event(pressActionId);
+        telemetry.event(pressActionId);
       });
-    }, [accelerator, analytics, onPress, pressActionId]);
+    }, [accelerator, telemetry, onPress, pressActionId]);
 
     const onKeyDownHandler: KeyboardEventHandler = useEvent((e) => {
       if (e.key === "Enter" && onPress) {
         onPress();
         e.stopPropagation();
-        analytics.event(pressActionId);
+        telemetry.event(pressActionId);
       }
     });
 
@@ -94,7 +94,7 @@ export const Pressable = forwardRef<
       if (e.key === " " && onPress) {
         onPress();
         e.stopPropagation();
-        analytics.event(pressActionId);
+        telemetry.event(pressActionId);
       }
     });
 
@@ -102,7 +102,7 @@ export const Pressable = forwardRef<
       if (onPress) {
         onPress?.();
         e.stopPropagation();
-        analytics.event(pressActionId);
+        telemetry.event(pressActionId);
       }
     });
 
@@ -110,7 +110,7 @@ export const Pressable = forwardRef<
       if (onDoublePress) {
         onDoublePress?.();
         e.stopPropagation();
-        analytics.event(doublePressActionId);
+        telemetry.event(doublePressActionId);
       }
     });
 

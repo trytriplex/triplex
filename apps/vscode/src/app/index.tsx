@@ -4,13 +4,24 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { TelemetryProvider } from "@triplex/ux";
 import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
-import "./styles.css";
+import { version } from "../../package.json";
 import { App } from "./components/app";
+import "./styles.css";
 
 createRoot(document.getElementById("root")!).render(
   <Suspense>
-    <App />
+    <TelemetryProvider
+      isTelemetryEnabled={window.triplex.isTelemetryEnabled}
+      secretKey="xzT0UQNnSMa1Z3KW8k6oWw"
+      sessionId={window.triplex.sessionId}
+      trackingId="G-EC2Q4TXGD0"
+      userId={window.triplex.userId}
+      version={version}
+    >
+      <App />
+    </TelemetryProvider>
   </Suspense>
 );

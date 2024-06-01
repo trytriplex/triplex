@@ -192,10 +192,10 @@ interface Events {
   ): void;
 }
 
-export function useAnalytics() {
+export function useTelemetry() {
   const sendEvent = useContext(AnalyticsContext);
   if (sendEvent === noopEvents && process.env.NODE_ENV !== "test") {
-    throw new Error("invariant: analytics not set up");
+    throw new Error("invariant: telemetry not set up");
   }
 
   return sendEvent;
@@ -206,17 +206,18 @@ export function useScreenView(
   screen_class: "Dialog" | "Drawer" | "Screen" | "Panel",
   isEnabled = true
 ) {
-  const analytics = useAnalytics();
+  const telemetry = useTelemetry();
 
   useEffect(() => {
     if (isEnabled) {
-      analytics.screenView(name, screen_class);
+      telemetry.screenView(name, screen_class);
     }
-  }, [analytics, isEnabled, name, screen_class]);
+  }, [telemetry, isEnabled, name, screen_class]);
 }
 
-export function Analytics({
+export function TelemetryProvider({
   children,
+  isTelemetryEnabled = true,
   secretKey,
   sessionId,
   trackingId,
@@ -224,6 +225,7 @@ export function Analytics({
   version,
 }: {
   children: React.ReactNode;
+  isTelemetryEnabled?: boolean;
   secretKey: string;
   sessionId: string;
   trackingId: string;
@@ -269,16 +271,20 @@ export function Analytics({
         );
       }
 
-      analytics.current?.event(eventName, params);
+      if (isTelemetryEnabled) {
+        analytics.current?.event(eventName, params);
+      }
     }
   });
 
   const screenView: Events["screenView"] = useEvent(
     (screen_name, page_title) => {
-      analytics.current?.event("screen_view", {
-        page_title,
-        screen_name,
-      });
+      if (isTelemetryEnabled) {
+        analytics.current?.event("screen_view", {
+          page_title,
+          screen_name,
+        });
+      }
     }
   );
 

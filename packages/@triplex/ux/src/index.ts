@@ -15,8 +15,8 @@ export { toJSONString } from "./util/string";
 export {
   type ActionId,
   type ActionIdSafe,
-  Analytics,
-  useAnalytics,
+  TelemetryProvider,
+  useTelemetry,
   useScreenView,
-} from "./components/analytics";
+} from "./components/telemetry";
 export { useEvent } from "./util/use-event";

@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useAnalytics, type ActionId } from "@triplex/ux";
+import { useTelemetry, type ActionId } from "@triplex/ux";
 import { type ReactNode } from "react";
 import { cn } from "../ds/cn";
 
@@ -25,7 +25,7 @@ export function IDELink({
   path: string;
   title?: string;
 }) {
-  const analytics = useAnalytics();
+  const telemetry = useTelemetry();
 
   return (
     <a
@@ -39,7 +39,7 @@ export function IDELink({
         // to keep the websocket connections open. Without it they close and never reopen.
         e.preventDefault();
         window.triplex.openIDE(path, { column, line });
-        analytics.event(actionId);
+        telemetry.event(actionId);
       }}
       title={title}
     >

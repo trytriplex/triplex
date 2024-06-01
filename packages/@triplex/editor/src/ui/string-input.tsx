@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { useAnalytics, useEvent, type ActionIdSafe } from "@triplex/ux";
+import { useEvent, useTelemetry, type ActionIdSafe } from "@triplex/ux";
 import { useEffect, useRef, useState, type KeyboardEventHandler } from "react";
 import { IconButton } from "../ds/button";
 import { sentenceCase } from "../util/string";
@@ -33,7 +33,7 @@ export function StringInput({
 }) {
   const [value, setValue] = useState(defaultValue);
   const ref = useRef<HTMLInputElement>(null!);
-  const analytics = useAnalytics();
+  const telemetry = useTelemetry();
 
   useEffect(() => {
     ref.current.value = defaultValue || "";
@@ -59,7 +59,7 @@ export function StringInput({
 
     if (defaultValue !== nextValue) {
       onConfirm(nextValue);
-      analytics.event(`${actionId}_confirm`);
+      telemetry.event(`${actionId}_confirm`);
     }
   });
 

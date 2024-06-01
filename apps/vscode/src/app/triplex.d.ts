@@ -22,5 +22,8 @@ declare interface Window {
       exportName: string;
       path: string;
     };
+    isTelemetryEnabled: boolean;
+    sessionId: string;
+    userId: string;
   };
 }

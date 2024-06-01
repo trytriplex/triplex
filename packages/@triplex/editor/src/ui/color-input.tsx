@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { useAnalytics, useEvent, type ActionIdSafe } from "@triplex/ux";
+import { useEvent, useTelemetry, type ActionIdSafe } from "@triplex/ux";
 import { useEffect, useRef, useState, type FormEventHandler } from "react";
 import tinycolor from "tinycolor2";
 import { IconButton } from "../ds/button";
@@ -32,7 +32,7 @@ export function ColorInput({
     ? defaultValueColor.toHexString()
     : undefined;
   const [hasChanged, setHasChanged] = useState(false);
-  const analytics = useAnalytics();
+  const telemetry = useTelemetry();
 
   useEffect(() => {
     if (!ref.current) {
@@ -45,7 +45,7 @@ export function ColorInput({
         defaultValueHex !== e.target.value
       ) {
         onConfirm(e.target.value);
-        analytics.event(`${actionId}_confirm`);
+        telemetry.event(`${actionId}_confirm`);
       }
     };
 
@@ -55,7 +55,7 @@ export function ColorInput({
     return () => {
       element.removeEventListener("change", cb);
     };
-  }, [defaultValueHex, onConfirm, actionId, analytics]);
+  }, [defaultValueHex, onConfirm, actionId, telemetry]);
 
   const onChangeHandler: FormEventHandler<HTMLInputElement> = (e) => {
     if (e.target instanceof HTMLInputElement) {
@@ -69,7 +69,7 @@ export function ColorInput({
       onChange(undefined);
       onConfirm(undefined);
       setHasChanged(false);
-      analytics.event(`${actionId}_clear`);
+      telemetry.event(`${actionId}_clear`);
     }
   });
 

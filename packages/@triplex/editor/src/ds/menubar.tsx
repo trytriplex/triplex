@@ -6,7 +6,7 @@
  */
 // eslint-disable-next-line import/no-namespace
 import * as RadixMenubar from "@radix-ui/react-menubar";
-import { useAnalytics, useEvent, type ActionId } from "@triplex/ux";
+import { useEvent, useTelemetry, type ActionId } from "@triplex/ux";
 import { type ReactNode } from "react";
 import { cn } from "./cn";
 
@@ -48,12 +48,12 @@ export function MenuItem({
   rslot,
   ...props
 }: RadixMenubar.MenuItemProps & { actionId: ActionId; rslot?: ReactNode }) {
-  const analytics = useAnalytics();
+  const telemetry = useTelemetry();
 
   const onClickHandler: React.MouseEventHandler<HTMLDivElement> = useEvent(
     (e) => {
       onClick?.(e);
-      analytics.event(actionId);
+      telemetry.event(actionId);
     }
   );
 

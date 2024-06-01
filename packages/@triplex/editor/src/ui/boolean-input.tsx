@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { CheckIcon } from "@radix-ui/react-icons";
-import { useAnalytics, type ActionIdSafe } from "@triplex/ux";
+import { useTelemetry, type ActionIdSafe } from "@triplex/ux";
 import { useEffect, useRef, type ChangeEventHandler } from "react";
 import { sentenceCase } from "../util/string";
 
@@ -25,7 +25,7 @@ export function BooleanInput({
   onConfirm: (value?: boolean) => void;
 }) {
   const ref = useRef<HTMLInputElement>(null!);
-  const analytics = useAnalytics();
+  const telemetry = useTelemetry();
 
   useEffect(() => {
     ref.current.checked = defaultValue;
@@ -35,7 +35,7 @@ export function BooleanInput({
     const nextValue = e.target.checked;
     onChange(nextValue);
     onConfirm(nextValue);
-    analytics.event(`${actionId}_confirm`);
+    telemetry.event(`${actionId}_confirm`);
   };
 
   return (
