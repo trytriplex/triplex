@@ -360,6 +360,7 @@ export function Camera({ children }: { children?: React.ReactNode }) {
 
   return (
     <CameraContext.Provider value={context}>
+      {children}
       <perspectiveCamera
         far={100_000}
         layers={ALL_LAYERS}
@@ -390,7 +391,6 @@ export function Camera({ children }: { children?: React.ReactNode }) {
         enabled={isTriplexCamera}
         ref={controlsRef}
       />
-      {children}
 
       {import.meta.env.VITE_TRIPLEX_ENV === "test" && (
         <Tunnel.In>

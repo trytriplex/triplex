@@ -27,7 +27,7 @@ const tweenCamera = (
     new Vector3(position.x, position.y, position.z)
   );
   controls.rotateTo(point.theta, point.phi, true);
-  controls.fitToSphere(scene, true);
+  controls.fitToSphere(scene.children[0], true);
 };
 
 type GenericProps = {

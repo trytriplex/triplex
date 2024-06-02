@@ -222,7 +222,7 @@ export function Controls() {
                 : "Set Play Camera (Editor)"
             }
             onClick={(e) => {
-              if (e instanceof MouseEvent && e.target) {
+              if ("clientX" in e && e.target) {
                 e.target.dispatchEvent(
                   new MouseEvent("contextmenu", {
                     bubbles: true,
