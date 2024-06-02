@@ -1,5 +1,18 @@
 # @triplex/client
 
+## 0.67.3
+
+### Patch Changes
+
+- b8b97458: Forward keypress events to the parent document.
+- Updated dependencies [b8b97458]
+- Updated dependencies [cb41e650]
+- Updated dependencies [c9c2bd90]
+- Updated dependencies [b8b97458]
+  - @triplex/renderer-r3f@0.67.3
+  - @triplex/bridge@0.67.3
+  - @triplex/renderer-react@0.67.3
+
 ## 0.67.2
 
 ### Patch Changes

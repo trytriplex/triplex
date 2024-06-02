@@ -1,5 +1,12 @@
 # @triplex/bridge
 
+## 0.67.3
+
+### Patch Changes
+
+- c9c2bd90: Fix response message not being sent inside vsce.
+- b8b97458: Forward keypress events to the parent document.
+
 ## 0.67.2
 
 ## 0.67.1

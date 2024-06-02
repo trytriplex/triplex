@@ -1,5 +1,18 @@
 # @triplex/editor
 
+## 0.67.3
+
+### Patch Changes
+
+- ba66926c: Turn on the React Compiler for the editor.
+- Updated dependencies [c9c2bd90]
+- Updated dependencies [ba66926c]
+- Updated dependencies [c9c2bd90]
+- Updated dependencies [b8b97458]
+  - @triplex/ux@0.67.3
+  - @triplex/ws@0.67.3
+  - @triplex/bridge@0.67.3
+
 ## 0.67.2
 
 ### Patch Changes

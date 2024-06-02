@@ -1,5 +1,22 @@
 # @triplex/renderer-r3f
 
+## 0.67.3
+
+### Patch Changes
+
+- b8b97458: Fix camera being stuck in a modifier state when document loses
+  focus.
+- cb41e650: Viewcube now only focuses on the user land scene instead of the
+  entire scene.
+- b8b97458: Forward keypress events to the parent document.
+- Updated dependencies [c9c2bd90]
+- Updated dependencies [ba66926c]
+- Updated dependencies [c9c2bd90]
+- Updated dependencies [b8b97458]
+  - @triplex/ux@0.67.3
+  - @triplex/ws@0.67.3
+  - @triplex/bridge@0.67.3
+
 ## 0.67.2
 
 ### Patch Changes

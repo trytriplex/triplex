@@ -1,5 +1,11 @@
 # @triplex/ws-client
 
+## 0.67.3
+
+### Patch Changes
+
+- ba66926c: Turn on the React Compiler for the editor.
+
 ## 0.67.2
 
 ## 0.67.1

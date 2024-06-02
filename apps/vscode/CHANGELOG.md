@@ -1,5 +1,17 @@
 # @triplex/vscode
 
+## 0.0.4
+
+### Patch Changes
+
+- 9dc6a74d: Add play controls.
+- 45b1c4d4: Refactor to use vsce custom editor.
+- c9c2bd90: Add scene controls.
+- b8b97458: Forward keypress events to the parent document.
+- Updated dependencies [b8b97458]
+  - @triplex/client@0.67.3
+  - @triplex/server@0.67.3
+
 ## 0.0.3
 
 ### Patch Changes
