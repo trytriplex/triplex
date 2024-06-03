@@ -5,9 +5,10 @@
 [![Version](https://img.shields.io/github/v/release/try-triplex/triplex?style=flat&colorA=000000&colorB=000000&label=latest&logo=&logoColor=000000)](https://github.com/try-triplex/triplex/releases)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/itsdouges?style=flat&colorA=000000&colorB=000000&label=sponsor&logo=&logoColor=000000)](https://github.com/sponsors/itsdouges)
 
-This extension adds [Triplex](https://triplex.dev) support to VS Code. Triplex
-is the [React Three Fiber](https://github.com/pmndrs/react-three-fiber) visual
-IDE.
+Triplex is the [React Three Fiber](https://github.com/pmndrs/react-three-fiber)
+visual IDE. This extension adds Triplex support to VS Code.
+
+Visit https://triplex.dev/docs/overview to get started.
 
 <p align="center">
   <img alt="image" src="https://github.com/try-triplex/triplex/assets/6801309/bf77374a-3eb0-4b1f-aa5a-9e84acb1a400">

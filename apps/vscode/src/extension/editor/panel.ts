@@ -60,7 +60,7 @@ export async function initializeWebviewPanel(
     return project.ports;
   }
 
-  const promise = new Promise<TriplexProjectData>((resolve) => {
+  const promise = new Promise<TriplexProjectData>((resolve, reject) => {
     const config = getConfig(triplexProjectCwd);
     const disposables: (() => void)[] = [];
 
@@ -147,8 +147,6 @@ export async function initializeWebviewPanel(
             '"/__base_url_replace__/assets/index.css"',
             panel.webview.asWebviewUri(cssPath).toString()
           );
-
-        panel.webview.html = preload(initialState) + constructedHTML;
       } else {
         const editorDevPort = await getPort();
         const { createDevServer } = require("../../../scripts/dev");
@@ -161,12 +159,10 @@ export async function initializeWebviewPanel(
         constructedHTML =
           `<base href="http://localhost:${editorDevPort}" />` + html;
 
-        panel.webview.html = preload(initialState) + constructedHTML;
-
         disposables.push(() => cleanup());
       }
 
-      const dispose = () => {
+      const projectDisposable = () => {
         if (panelRegistry.size === 0) {
           // Kill all projects if there are no more active panels.
           disposables.forEach((dispose) => dispose());
@@ -176,13 +172,25 @@ export async function initializeWebviewPanel(
 
       panel.onDidDispose(() => {
         panelRegistry.delete(scopedFileName);
-        dispose();
+        projectDisposable();
       });
+
+      try {
+        panel.webview.html = preload(initialState) + constructedHTML;
+      } catch {
+        // If this fails the webview has been disposed prematurely. Clean up time!
+        panelRegistry.delete(scopedFileName);
+        projectDisposable();
+        reject({
+          message: "Triplex webview has been disposed during initialization.",
+        });
+        return;
+      }
 
       resolve({
         buildHtml: (initialState: { exportName: string; path: string }) =>
           preload(initialState) + constructedHTML,
-        dispose,
+        dispose: projectDisposable,
         ports,
       });
     }
