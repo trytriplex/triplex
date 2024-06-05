@@ -21,8 +21,6 @@ import {
 } from "react";
 import {
   Box3,
-  MathUtils,
-  type Group,
   type OrthographicCamera,
   type PerspectiveCamera,
   type Vector3Tuple,
@@ -34,7 +32,6 @@ import { Tunnel } from "./tunnel";
 
 const TRIPLEX_CAMERA_NAME = "__triplex_camera";
 const DEFAULT_CAMERA = "perspective";
-const TEMP_BOX3 = new Box3();
 const DEFAULT_POSITION: Vector3Tuple = [0, 0, 1];
 const CameraAction = CCIMPL.ACTION;
 
@@ -105,34 +102,26 @@ export function useCamera() {
 
 export function FitCameraToScene({
   children,
-  trigger,
+  id,
 }: {
   children: React.ReactNode;
-  trigger?: string;
+  id?: string;
 }) {
   const { controls } = useCamera();
   const scene = useThree((store) => store.scene);
-  const ref = useRef<Group>(null!);
 
   useLayoutEffect(() => {
     if (controls.current) {
-      const box = TEMP_BOX3.setFromObject(ref.current);
+      const box = new Box3().setFromObject(scene);
       if (box.isEmpty()) {
         return;
       }
 
-      controls.current.reset();
-      controls.current.fitToBox(box, false, {
-        paddingBottom: 0.5,
-        paddingLeft: 0.5,
-        paddingRight: 0.5,
-        paddingTop: 0.5,
-      });
-      controls.current.rotate(0, MathUtils.degToRad(-22), false);
+      controls.current.fitToSphere(scene, false);
     }
-  }, [controls, scene, trigger]);
+  }, [controls, scene, id]);
 
-  return <group ref={ref}>{children}</group>;
+  return <>{children}</>;
 }
 
 export function Camera({ children }: { children?: React.ReactNode }) {

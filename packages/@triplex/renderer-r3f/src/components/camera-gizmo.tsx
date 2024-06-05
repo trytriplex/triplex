@@ -9,7 +9,9 @@ import { send } from "@triplex/bridge/client";
 import { type default as CameraControls } from "camera-controls";
 import { useMemo, useState } from "react";
 import {
+  Box3,
   CanvasTexture,
+  Sphere,
   Spherical,
   Vector3,
   type Object3D,
@@ -17,6 +19,27 @@ import {
 } from "three";
 import { GizmoHelper } from "triplex-drei";
 import { useCamera } from "./camera";
+
+/**
+ * Builds a sphere of the current scene excluding very large objects like
+ * TransformControls.
+ */
+function buildSceneSphere(scene: Object3D) {
+  let sceneBox = new Box3();
+
+  scene.children.forEach((child) => {
+    const localBox = new Box3().setFromObject(child);
+    const length = localBox.max.lengthSq();
+
+    if (length === Number.POSITIVE_INFINITY || length > 1_000_000) {
+      return;
+    }
+
+    sceneBox = sceneBox.union(localBox);
+  });
+
+  return sceneBox.getBoundingSphere(new Sphere());
+}
 
 const tweenCamera = (
   controls: CameraControls,
@@ -26,8 +49,10 @@ const tweenCamera = (
   const point = new Spherical().setFromVector3(
     new Vector3(position.x, position.y, position.z)
   );
+  const sphere = buildSceneSphere(scene);
+
   controls.rotateTo(point.theta, point.phi, true);
-  controls.fitToSphere(scene.children[0], true);
+  controls.fitToSphere(sphere, true);
 };
 
 type GenericProps = {

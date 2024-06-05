@@ -10,7 +10,9 @@ import { join } from "upath";
 
 export async function resolveExecPath() {
   try {
-    return await downloadAndUnzipVSCode({ version: "insiders" });
+    return await downloadAndUnzipVSCode({
+      version: process.env.CI ? "1.89.1" : "insiders",
+    });
   } catch {
     // eslint-disable-next-line no-console
     console.log(

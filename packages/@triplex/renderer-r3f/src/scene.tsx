@@ -134,7 +134,7 @@ export function SceneFrame({
                     }
                   >
                     <FitCameraToScene
-                      trigger={component.path + component.exportName}
+                      id={component.path + component.exportName}
                     >
                       <SceneLoader
                         exportName={component.exportName}
