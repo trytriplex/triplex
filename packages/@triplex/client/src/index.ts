@@ -13,6 +13,7 @@ import react from "@vitejs/plugin-react";
 import express from "express";
 import { join, normalize } from "upath";
 import tsconfigPaths from "vite-tsconfig-paths";
+import { version } from "../package.json";
 import triplexBabelPlugin from "./babel-plugin";
 import { transformNodeModulesJSXPlugin } from "./node-modules-plugin";
 import { getPort } from "./port";
@@ -42,7 +43,7 @@ export async function createServer({
   const vite = await createViteServer({
     appType: "custom",
     assetsInclude: renderer.manifest.bundler?.assetsInclude,
-    cacheDir: "node_modules/.triplex",
+    cacheDir: `node_modules/.triplex-${version}`,
     configFile: false,
     define: config.define,
     logLevel: "error",
