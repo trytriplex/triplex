@@ -9,7 +9,7 @@ import {
   type TriplexMeta,
   type TriplexResolvedMeta,
 } from "@triplex/bridge/client";
-import { type Object3D } from "three";
+import { Box3, Sphere, type Object3D } from "three";
 
 export type EditorNodeData = RendererElementProps["__meta"] & {
   parentPath: string;
@@ -194,3 +194,24 @@ export const resolveObject3D = (
 
   return null;
 };
+
+/**
+ * Builds a sphere of the current scene excluding very large objects like
+ * TransformControls.
+ */
+export function buildSceneSphere(scene: Object3D) {
+  let sceneBox = new Box3();
+
+  scene.children.forEach((child) => {
+    const localBox = new Box3().setFromObject(child);
+    const length = localBox.max.lengthSq();
+
+    if (length === Number.POSITIVE_INFINITY || length > 1_000_000) {
+      return;
+    }
+
+    sceneBox = sceneBox.union(localBox);
+  });
+
+  return sceneBox.getBoundingSphere(new Sphere());
+}

@@ -20,14 +20,13 @@ import {
   useState,
 } from "react";
 import {
-  Box3,
   type OrthographicCamera,
   type PerspectiveCamera,
   type Vector3Tuple,
 } from "three";
 import { CameraControls } from "triplex-drei";
 import { ALL_LAYERS } from "../util/layers";
-import { findObject3D } from "../util/scene";
+import { buildSceneSphere, findObject3D } from "../util/scene";
 import { Tunnel } from "./tunnel";
 
 const TRIPLEX_CAMERA_NAME = "__triplex_camera";
@@ -112,11 +111,13 @@ export function FitCameraToScene({
 
   useLayoutEffect(() => {
     if (controls.current) {
-      const box = new Box3().setFromObject(scene);
-      if (box.isEmpty()) {
+      const sphere = buildSceneSphere(scene);
+      if (sphere.isEmpty()) {
         return;
       }
 
+      // Z forward rotation.
+      controls.current.rotateTo(0, 1.570_796_326_794_896_6, false);
       controls.current.fitToSphere(scene, false);
     }
   }, [controls, scene, id]);
