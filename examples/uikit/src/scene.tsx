@@ -13,11 +13,7 @@ export function SplashScene() {
   return (
     <>
       <color args={["white"]} attach="background" />
-      <PerspectiveCamera
-        makeDefault
-        manual
-        position={[0, 0, 5]}
-      />
+      <PerspectiveCamera makeDefault manual position={[0, 0, 5]} />
       <Circle color="#d63f84" position={[1.4, 1.4, 0]} size={1.6} />
       <Circle color="#5e4a9b" position={[-1.3, 1.4, 0]} size={0.3} />
       <Ring />
@@ -35,7 +31,7 @@ export function SplashScene() {
       />
       <pointLight intensity={50} position={[3.76, 2.92, 3.56]} />
       <pointLight intensity={50} position={[-3.88, -0.7, 3.24]} />
-      <spotLight intensity={30} position={[-1, 1, 3]} />
+      <spotLight castShadow intensity={30} position={[-1, 1, 3]} />
       <ambientLight intensity={4} />
     </>
   );
@@ -148,6 +144,7 @@ export function UIKitExample() {
   return (
     <>
       <Gltf
+        castShadow
         position={[1.02, 1.54, -1.72]}
         receiveShadow
         rotation={[0, -0.296_705_972_839_036_05, 0]}
@@ -157,8 +154,8 @@ export function UIKitExample() {
       <LoginScreen />
       <PerspectiveCamera
         makeDefault
-        position={[0, 0.48, 2.66]}
-        rotation={[-0.001_067_835_399_251_84, 0, 0]}
+        position={[0, 0.8, 2.5]}
+        rotation={[0, 0, 0]}
       />
       <ambientLight intensity={3} />
       <pointLight castShadow intensity={30} position={[2.92, 0.82, -2.74]} />
