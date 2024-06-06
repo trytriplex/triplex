@@ -43,12 +43,12 @@ describe("camera", () => {
   });
 
   it("should default to rest modifiers", async () => {
-    const controlsRef: React.MutableRefObject<CameraControlsImpl | null> = {
+    let controlsRef: React.MutableRefObject<CameraControlsImpl | null> = {
       current: null,
     };
     function HoistControls() {
       const { controls } = useCamera();
-      controlsRef.current = controls.current;
+      controlsRef = controls;
       return null;
     }
 
@@ -64,13 +64,32 @@ describe("camera", () => {
     });
   });
 
-  it("should should apply truck modifier when pressing shift", async () => {
-    const controlsRef: React.MutableRefObject<CameraControlsImpl | null> = {
+  it("should unmount controls when userland", async () => {
+    let controlsRef: React.MutableRefObject<CameraControlsImpl | null> = {
       current: null,
     };
     function HoistControls() {
       const { controls } = useCamera();
-      controlsRef.current = controls.current;
+      controlsRef = controls;
+      return null;
+    }
+
+    await render(
+      <Camera defaultCamera="user">
+        <HoistControls />
+      </Camera>
+    );
+
+    expect(controlsRef.current).toEqual(null);
+  });
+
+  it("should should apply truck modifier when pressing shift", async () => {
+    let controlsRef: React.MutableRefObject<CameraControlsImpl | null> = {
+      current: null,
+    };
+    function HoistControls() {
+      const { controls } = useCamera();
+      controlsRef = controls;
       return null;
     }
     const { act, fireDOMEvent } = await render(
@@ -85,12 +104,12 @@ describe("camera", () => {
   });
 
   it("should reset modifiers when releasing shift", async () => {
-    const controlsRef: React.MutableRefObject<CameraControlsImpl | null> = {
+    let controlsRef: React.MutableRefObject<CameraControlsImpl | null> = {
       current: null,
     };
     function HoistControls() {
       const { controls } = useCamera();
-      controlsRef.current = controls.current;
+      controlsRef = controls;
       return null;
     }
     const { act, fireDOMEvent } = await render(
@@ -113,12 +132,12 @@ describe("camera", () => {
   });
 
   it("should reset modifiers when document frame loses focus", async () => {
-    const controlsRef: React.MutableRefObject<CameraControlsImpl | null> = {
+    let controlsRef: React.MutableRefObject<CameraControlsImpl | null> = {
       current: null,
     };
     function HoistControls() {
       const { controls } = useCamera();
-      controlsRef.current = controls.current;
+      controlsRef = controls;
       return null;
     }
     const { act, fireDOMEvent } = await render(
@@ -126,6 +145,7 @@ describe("camera", () => {
         <HoistControls />
       </Camera>
     );
+
     await act(() => fireDOMEvent.keyDown(document, { key: "Shift" }));
 
     await act(() => {

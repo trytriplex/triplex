@@ -125,11 +125,17 @@ export function FitCameraToScene({
   return <>{children}</>;
 }
 
-export function Camera({ children }: { children?: React.ReactNode }) {
+export function Camera({
+  children,
+  defaultCamera = DEFAULT_CAMERA,
+}: {
+  children?: React.ReactNode;
+  defaultCamera?: "perspective" | "orthographic" | "user";
+}) {
   // This is the source of truth for what camera is active.
   // When this is set it propagates to the editor frame in the effect.
   const [type, setType] = useState<"perspective" | "orthographic" | "user">(
-    DEFAULT_CAMERA
+    defaultCamera
   );
   const scene = useThree((state) => state.scene);
   const set = useThree((state) => state.set);
@@ -138,7 +144,7 @@ export function Camera({ children }: { children?: React.ReactNode }) {
   const prevTriplexCamera = useRef<"perspective" | "orthographic">();
   const orthCameraRef = useRef<OrthographicCamera>(null!);
   const perspCameraRef = useRef<PerspectiveCamera>(null!);
-  const controlsRef = useRef<CameraControlsImpl>(null!);
+  const controlsRef = useRef<CameraControlsImpl>(null);
   const [activeCamera, setActiveCamera] = useState<CameraType | undefined>(
     undefined
   );
@@ -150,6 +156,10 @@ export function Camera({ children }: { children?: React.ReactNode }) {
   );
 
   useEffect(() => {
+    if (!controlsRef.current) {
+      return;
+    }
+
     switch (modifier) {
       case "Control":
         apply(controlsRef.current.touches, touchHotkeys.ctrl);
@@ -166,7 +176,7 @@ export function Camera({ children }: { children?: React.ReactNode }) {
         apply(controlsRef.current.mouseButtons, mouseHotkeys.rest);
         break;
     }
-  }, [modifier]);
+  }, [modifier, activeCamera]);
 
   useEffect(() => {
     let intervalId: number;
@@ -374,13 +384,14 @@ export function Camera({ children }: { children?: React.ReactNode }) {
         ref={orthCameraRef}
         zoom={100}
       />
-      <CameraControls
-        // We don't want user land cameras to be able to be affected by these controls
-        // So we explicitly set the camera instead of relying on "default camera" behaviour.
-        camera={activeCamera}
-        enabled={isTriplexCamera}
-        ref={controlsRef}
-      />
+      {isTriplexCamera && (
+        <CameraControls
+          // We don't want user land cameras to be able to be affected by these controls
+          // So we explicitly set the camera instead of relying on "default camera" behaviour.
+          camera={activeCamera}
+          ref={controlsRef}
+        />
+      )}
 
       {import.meta.env.VITE_TRIPLEX_ENV === "test" && (
         <Tunnel.In>

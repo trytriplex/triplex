@@ -154,8 +154,8 @@ export function UIKitExample() {
       <LoginScreen />
       <PerspectiveCamera
         makeDefault
-        position={[0, 0.8, 2.5]}
-        rotation={[0, 0, 0]}
+        position={[0, 0.5, 2.5]}
+        rotation={[MathUtils.degToRad(-9), 0, 0]}
       />
       <ambientLight intensity={3} />
       <pointLight castShadow intensity={30} position={[2.92, 0.82, -2.74]} />
