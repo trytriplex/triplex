@@ -133,22 +133,20 @@ export function ControlsMenu() {
       </div>
 
       <div className="flex rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1 text-neutral-400">
+        <IconButton
+          actionId="scene_frame_reset"
+          icon={ResetIcon}
+          label="Reset Scene"
+          onClick={refresh}
+        />
+        <Separator />
         {playState !== "edit" && (
-          <>
-            <IconButton
-              actionId="scene_frame_reset"
-              icon={ResetIcon}
-              label="Reset Scene"
-              onClick={refresh}
-            />
-            <Separator />
-            <IconButton
-              actionId="scene_frame_stop"
-              icon={StopIcon}
-              label="Stop Scene"
-              onClick={() => setPlayState("edit")}
-            />
-          </>
+          <IconButton
+            actionId="scene_frame_stop"
+            icon={StopIcon}
+            label="Stop Scene"
+            onClick={() => setPlayState("edit")}
+          />
         )}
 
         {playState === "play" && (
