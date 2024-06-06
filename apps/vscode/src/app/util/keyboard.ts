@@ -15,7 +15,7 @@ export function onKeyDown(
   }
 
   const callback = (e: KeyboardEvent) => {
-    if (e.key === key) {
+    if (e.key === key && e.metaKey === false) {
       cb(e);
     }
   };

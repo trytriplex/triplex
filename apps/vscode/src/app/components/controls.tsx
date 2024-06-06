@@ -22,6 +22,7 @@ import {
 import { useEffect, useReducer, useState } from "react";
 import { onVSCE } from "../util/bridge";
 import { IconButton } from "./button";
+import { Separator } from "./separator";
 
 interface PlayState {
   camera: "default" | "editor";
@@ -102,12 +103,7 @@ export function Controls() {
         {controls.map((control, index) => {
           switch (control.type) {
             case "separator": {
-              return (
-                <div
-                  className="border-r-overlay -my-0.5 mx-0.5 border-r"
-                  key={control.type + index}
-                />
-              );
+              return <Separator key={control.type + index} />;
             }
 
             case "button-group": {
@@ -177,22 +173,20 @@ export function Controls() {
       </div>
 
       <div className="bg-overlay border-overlay shadow-overlay pointer-events-auto flex rounded border p-0.5">
+        <IconButton
+          actionId="scene_frame_reset"
+          icon={ResetIcon}
+          label="Reset"
+          onClick={() => send("request-refresh-scene", undefined)}
+        />
+        <Separator />
         {play.state !== "edit" && (
-          <>
-            <IconButton
-              actionId="scene_frame_reset"
-              icon={ResetIcon}
-              label="Reset"
-              onClick={() => send("request-refresh-scene", undefined)}
-            />
-
-            <IconButton
-              actionId="scene_frame_stop"
-              icon={StopIcon}
-              label="Stop"
-              onClick={() => dispatch("state-edit")}
-            />
-          </>
+          <IconButton
+            actionId="scene_frame_stop"
+            icon={StopIcon}
+            label="Stop"
+            onClick={() => dispatch("state-edit")}
+          />
         )}
 
         <div className="hover:bg-hover flex">
