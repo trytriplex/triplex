@@ -18,7 +18,7 @@ export function Circle({
 }) {
   return (
     <Float>
-      <mesh position={position}>
+      <mesh castShadow position={position} receiveShadow>
         <sphereGeometry args={[size, 30, 30]} />
         <meshStandardMaterial color={color} />
       </mesh>
@@ -39,7 +39,7 @@ export function SemiCircle({
 }) {
   return (
     <Float>
-      <mesh position={position} rotation={rotation}>
+      <mesh castShadow position={position} receiveShadow rotation={rotation}>
         <sphereGeometry args={[size, 30, 30, 0, Math.PI * 2, 0, Math.PI / 2]} />
         <meshStandardMaterial color={color} />
       </mesh>
@@ -50,7 +50,7 @@ export function SemiCircle({
 export function Ring() {
   return (
     <Float>
-      <mesh position={[-1.2, 1.4, 0]}>
+      <mesh castShadow position={[-1.2, 1.4, 0]} receiveShadow>
         <ringGeometry args={[1.27, 1.3, 60]} />
         <meshStandardMaterial
           color="#5e4a9b"
