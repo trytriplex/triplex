@@ -5,37 +5,11 @@
  * file in the root directory of this source tree.
  */
 import { Gltf, PerspectiveCamera } from "@react-three/drei";
+import { CuboidCollider, Physics, RigidBody } from "@react-three/rapier";
 import { Container, Portal, Root, Text } from "@react-three/uikit";
+import { useState } from "react";
 import { MathUtils, MeshStandardMaterial, type Vector3Tuple } from "three";
 import { Circle, Ring, SemiCircle } from "./shapes";
-
-export function SplashScene() {
-  return (
-    <>
-      <color args={["white"]} attach="background" />
-      <PerspectiveCamera makeDefault manual position={[0, 0, 5]} />
-      <Circle color="#d63f84" position={[1.4, 1.4, 0]} size={1.6} />
-      <Circle color="#5e4a9b" position={[-1.3, 1.4, 0]} size={0.3} />
-      <Ring />
-      <SemiCircle
-        color="#d63f84"
-        position={[-0.8, -0.8, 0]}
-        rotation={[-0.2, 0.1, 2.6]}
-        size={0.7}
-      />
-      <SemiCircle
-        color="#5e4a9b"
-        position={[-0.3, -0.1, 0]}
-        rotation={[MathUtils.degToRad(-2), 0, MathUtils.degToRad(180)]}
-        size={0.5}
-      />
-      <pointLight intensity={50} position={[3.76, 2.92, 3.56]} />
-      <pointLight intensity={50} position={[-3.88, -0.7, 3.24]} />
-      <spotLight castShadow intensity={30} position={[-1, 1, 3]} />
-      <ambientLight intensity={4} />
-    </>
-  );
-}
 
 export function LoginScreen({
   position,
@@ -44,6 +18,8 @@ export function LoginScreen({
   position?: Vector3Tuple;
   rotation?: Vector3Tuple;
 }) {
+  const [active, setActive] = useState(false);
+
   return (
     <group position={position} rotation={rotation}>
       <Root flexDirection="column">
@@ -68,7 +44,7 @@ export function LoginScreen({
             transformTranslateZ={0.1}
             width={100}
           >
-            <SplashScene />
+            <SplashScene active={active} />
           </Portal>
 
           <Container flexDirection="column" gap={8}>
@@ -124,6 +100,7 @@ export function LoginScreen({
               flexDirection="column"
               gap={6}
               hover={{ backgroundOpacity: 0.9 }}
+              onClick={() => setActive(true)}
               paddingX={11}
               paddingY={5}
               panelMaterialClass={MeshStandardMaterial}
@@ -137,6 +114,47 @@ export function LoginScreen({
         </Container>
       </Root>
     </group>
+  );
+}
+
+export function SplashScene({ active }: { active: boolean }) {
+  return (
+    <Physics paused={!active}>
+      <CuboidCollider args={[10, 0.5, 10]} position={[0, -3, 0]} />
+      <CuboidCollider args={[0.5, 10, 10]} position={[-5, -3, 0]} />
+      <CuboidCollider args={[0.5, 10, 10]} position={[5, -3, 0]} />
+      <CuboidCollider args={[10, 10, 0.5]} position={[0, -3, -5]} />
+      <CuboidCollider args={[10, 10, 0.5]} position={[0, -3, 5]} />
+      <color args={["white"]} attach="background" />
+      <PerspectiveCamera makeDefault manual position={[0, 0, 5]} />
+      <RigidBody colliders={"ball"} position={[1.4, 1.4, 0]} restitution={1}>
+        <Circle color="#d63f84" size={1.6} />
+      </RigidBody>
+      <RigidBody colliders={"ball"} position={[-1.3, 1.4, 0]} restitution={1}>
+        <Circle color="#5e4a9b" size={0.3} />
+      </RigidBody>
+      <Ring />
+      <RigidBody
+        colliders={"hull"}
+        position={[-0.8, -0.8, 0]}
+        restitution={1}
+        rotation={[-0.2, 0.1, 2.6]}
+      >
+        <SemiCircle color="#d63f84" size={0.7} />
+      </RigidBody>
+      <RigidBody
+        colliders={"hull"}
+        position={[-0.3, -0.1, 0]}
+        restitution={1}
+        rotation={[MathUtils.degToRad(-2), 0, MathUtils.degToRad(180)]}
+      >
+        <SemiCircle color="#5e4a9b" size={0.5} />
+      </RigidBody>
+      <pointLight intensity={50} position={[3.76, 2.92, 3.56]} />
+      <pointLight intensity={50} position={[-3.88, -0.7, 3.24]} />
+      <spotLight castShadow intensity={30} position={[-1, 1, 3]} />
+      <ambientLight intensity={4} />
+    </Physics>
   );
 }
 
