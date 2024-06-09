@@ -20,6 +20,8 @@ import {
   useState,
 } from "react";
 import {
+  Spherical,
+  Vector3,
   type OrthographicCamera,
   type PerspectiveCamera,
   type Vector3Tuple,
@@ -116,9 +118,12 @@ export function FitCameraToScene({
         return;
       }
 
-      // Z forward rotation.
-      controls.current.rotateTo(0, 1.570_796_326_794_896_6, false);
-      controls.current.fitToSphere(scene, false);
+      const point = new Spherical().setFromVector3(
+        // Z forward rotation.
+        new Vector3(0, 0, 1)
+      );
+      controls.current.rotateTo(point.theta, point.phi, false);
+      controls.current.fitToSphere(sphere, false);
     }
   }, [controls, scene, id]);
 
