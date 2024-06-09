@@ -1,5 +1,19 @@
 # @triplex/vscode
 
+## 0.0.5
+
+### Patch Changes
+
+- 04b96fde: Add readme.
+- cba1c8db: Internal pkg refactor.
+- 22b75f50: Dispose the project when closed prematurely during initialization.
+- 0d2ae698: Reset control now shown always.
+- 0d2ae698: Prevent controls being fired when saving.
+- 08f3d647: Add error boundaries to the root elements.
+- Updated dependencies [cde561dc]
+  - @triplex/client@0.67.4
+  - @triplex/server@0.67.4
+
 ## 0.0.4
 
 ### Patch Changes

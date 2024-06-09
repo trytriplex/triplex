@@ -1,5 +1,19 @@
 # @triplex/editor
 
+## 0.67.4
+
+### Patch Changes
+
+- cba1c8db: Internal pkg refactor.
+- abbbf7c9: Reset control now always shown.
+- 08f3d647: Add error boundaries to the root elements.
+- Updated dependencies [08f3d647]
+- Updated dependencies [cba1c8db]
+  - @triplex/ws@0.67.4
+  - @triplex/lib@0.67.4
+  - @triplex/ux@0.67.4
+  - @triplex/bridge@0.67.4
+
 ## 0.67.3
 
 ### Patch Changes

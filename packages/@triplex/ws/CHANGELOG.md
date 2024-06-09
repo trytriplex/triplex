@@ -1,5 +1,12 @@
 # @triplex/ws-client
 
+## 0.67.4
+
+### Patch Changes
+
+- 08f3d647: WebSockets now reconnect after being disconnected when the host goes
+  to sleep.
+
 ## 0.67.3
 
 ### Patch Changes

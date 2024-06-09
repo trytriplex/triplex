@@ -1,5 +1,13 @@
 # @triplex/renderer-react
 
+## 0.67.4
+
+### Patch Changes
+
+- Updated dependencies [08f3d647]
+  - @triplex/ws@0.67.4
+  - @triplex/bridge@0.67.4
+
 ## 0.67.3
 
 ### Patch Changes

@@ -1,7 +1,7 @@
 {
   "name": "triplex-vsce",
   "displayName": "Triplex",
-  "version": "0.0.4",
+  "version": "0.0.5",
   "private": true,
   "description": "The React Three Fiber visual IDE.",
   "categories": [
@@ -86,15 +86,15 @@
     "workspaceContains:**/*.{jsx,tsx}"
   ],
   "dependencies": {
-    "@triplex/client": "0.67.3",
-    "@triplex/server": "0.67.3"
+    "@triplex/client": "0.67.4",
+    "@triplex/server": "0.67.4"
   },
   "devDependencies": {
     "@radix-ui/react-icons": "^1.3.0",
-    "@triplex/bridge": "0.67.3",
-    "@triplex/lib": "0.67.3",
-    "@triplex/ux": "0.67.3",
-    "@triplex/ws": "0.67.3",
+    "@triplex/bridge": "0.67.4",
+    "@triplex/lib": "0.67.4",
+    "@triplex/ux": "0.67.4",
+    "@triplex/ws": "0.67.4",
     "@types/vscode": "^1.88.0",
     "@vitejs/plugin-react": "^4.1.0",
     "@vscode/test-electron": "^2.3.9",

@@ -1,5 +1,19 @@
 # @triplex/client
 
+## 0.67.4
+
+### Patch Changes
+
+- cde561dc: Clear triplex cache every version.
+- Updated dependencies [ce57e0d6]
+- Updated dependencies [b2bf1662]
+- Updated dependencies [88198788]
+- Updated dependencies [b8e0ee3a]
+- Updated dependencies [cba1c8db]
+  - @triplex/renderer-r3f@0.67.4
+  - @triplex/renderer-react@0.67.4
+  - @triplex/bridge@0.67.4
+
 ## 0.67.3
 
 ### Patch Changes

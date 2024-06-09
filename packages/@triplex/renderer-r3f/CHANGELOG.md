@@ -1,5 +1,23 @@
 # @triplex/renderer-r3f
 
+## 0.67.4
+
+### Patch Changes
+
+- ce57e0d6: Focusing the scene of opened components now ignores huge objects
+  like transform controls.
+- b2bf1662: Reset rotation when switching between components.
+- 88198788: Remove intermediate group introduced during the viewcube focus
+  refactor.
+- b8e0ee3a: Controls are now unmounted when the active camera is not owned by
+  triplex.
+- cba1c8db: Internal pkg refactor.
+- Updated dependencies [08f3d647]
+- Updated dependencies [cba1c8db]
+  - @triplex/ws@0.67.4
+  - @triplex/lib@0.67.4
+  - @triplex/bridge@0.67.4
+
 ## 0.67.3
 
 ### Patch Changes
