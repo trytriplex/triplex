@@ -276,6 +276,9 @@ importers:
       react-dom:
         specifier: ^18.0.0
         version: 18.2.0(react@18.2.0)
+      react-error-boundary:
+        specifier: ^3.1.4
+        version: 3.1.4(react@18.2.0)
       tailwindcss:
         specifier: ^3.3.2
         version: 3.3.2
@@ -11907,7 +11910,6 @@ packages:
     dependencies:
       '@babel/runtime': 7.22.3
       react: 18.2.0
-    dev: false
 
   /react-is@16.13.1:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}

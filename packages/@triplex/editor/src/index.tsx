@@ -12,6 +12,8 @@ import { version } from "../package.json";
 import { EditorFrame } from "./editor";
 import { LoadingTriangle } from "./ui/loading-triagle";
 import "./styles.css";
+import { ErrorBoundary } from "react-error-boundary";
+import { ErrorSplash } from "./ui/error-splash";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
@@ -23,9 +25,13 @@ createRoot(document.getElementById("root")!).render(
       version={version}
     >
       <BrowserRouter>
-        <Suspense fallback={<LoadingTriangle />}>
-          <EditorFrame />
-        </Suspense>
+        <ErrorBoundary
+          fallbackRender={({ error }) => <ErrorSplash error={error} />}
+        >
+          <Suspense fallback={<LoadingTriangle />}>
+            <EditorFrame />
+          </Suspense>
+        </ErrorBoundary>
       </BrowserRouter>
     </TelemetryProvider>
   </StrictMode>

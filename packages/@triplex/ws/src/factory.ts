@@ -53,6 +53,59 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
     }
   >();
 
+  function createRecoverableWebSocket({
+    onClose,
+    onError,
+    onMessage,
+    path,
+    url,
+  }: {
+    onClose: () => void;
+    onError: () => void;
+    onMessage: (data: unknown) => void;
+    path: string;
+    url: string;
+  }) {
+    let ws = recreate();
+
+    function recreate() {
+      const ws = new WebSocket(url);
+
+      ws.addEventListener("open", () => {
+        ws.send(path);
+      });
+
+      ws.addEventListener("message", (e) => {
+        const parsed = parseJSON(e.data);
+        onMessage(parsed);
+      });
+
+      ws.addEventListener("error", () => {
+        onError();
+      });
+
+      ws.addEventListener("close", ({ code }) => {
+        if (code === 1006) {
+          // The websocket connection closed from some local browser related issue.
+          // Try and reconnect in a second.
+          setTimeout(() => {
+            if (ws.readyState === WebSocket.CLOSED) {
+              recreate();
+            }
+          }, 1000);
+        } else {
+          onClose();
+        }
+      });
+
+      return ws;
+    }
+
+    return {
+      close: () => ws.close(),
+    };
+  }
+
   function wsQuery<TValue>(path: string) {
     function load() {
       if (queryCache.has(path)) {
@@ -60,10 +113,26 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
       }
 
       const resolvedOpts = typeof opts === "function" ? opts() : opts;
-      const ws = new WebSocket(resolvedOpts.url);
       const deferred = defer();
       const subscriptions: (() => void)[] = [];
-      let cleanupTimeoutId: number | undefined;
+
+      let cleanupTimeoutId: number;
+
+      const ws = createRecoverableWebSocket({
+        onClose: () => {
+          queryCache.delete(path);
+        },
+        onError: () => {
+          deferred.reject();
+        },
+        onMessage: (data) => {
+          valueCache.set(path, data);
+          subscriptions.forEach((cb) => cb());
+          deferred.resolve();
+        },
+        path,
+        url: resolvedOpts.url,
+      });
 
       function subscribe(onStoreChanged: () => void) {
         subscriptions.push(onStoreChanged);
@@ -86,25 +155,6 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
           }, 9999);
         };
       }
-
-      ws.addEventListener("open", () => {
-        ws.send(path);
-      });
-
-      ws.addEventListener("message", (e) => {
-        const parsed = parseJSON(e.data);
-        valueCache.set(path, parsed);
-        subscriptions.forEach((cb) => cb());
-        deferred.resolve();
-      });
-
-      ws.addEventListener("error", () => {
-        deferred.reject();
-      });
-
-      ws.addEventListener("close", () => {
-        queryCache.delete(path);
-      });
 
       queryCache.set(path, {
         deferred,

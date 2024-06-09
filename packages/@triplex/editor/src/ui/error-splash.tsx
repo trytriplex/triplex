@@ -4,11 +4,14 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { useScreenView } from "@triplex/ux";
 import { ExternalLink } from "../ds/external-link";
 
-export function ErrorSplash() {
+export function ErrorSplash({ error }: { error?: Error }) {
   const params = new URLSearchParams(location.search);
-  const error = params.get("error") || "Unknown error";
+  const stringError = params.get("error") || "Unknown error";
+
+  useScreenView("error_splash", "Screen");
 
   return (
     <>
@@ -16,18 +19,18 @@ export function ErrorSplash() {
 
       <div className="fixed inset-0 mx-auto flex max-w-2xl flex-col justify-center gap-4 p-4 lg:max-w-4xl">
         <h1 className="text-center text-5xl font-semibold tracking-tight text-neutral-200">
-          Triplex couldn&apos;t start up
+          An unexpected error occurred
         </h1>
 
         <p className="mx-auto max-w-2xl text-center text-lg text-neutral-400">
-          We&apos;re looking into it. Meanwhile, close and re-open Triplex and
-          try again. If the problem persists try restarting your computer.
+          We&apos;re looking into it. Meanwhile try re-opening Triplex and try
+          again. If the problem persists try restarting your computer.
         </p>
 
         <div className="mx-auto flex items-center gap-2">
           <ExternalLink
             actionId="errorsplash_contact_email"
-            to="mailto:team@triplex.dev"
+            to="mailto:support@triplex.dev"
           >
             Contact us
           </ExternalLink>
@@ -45,7 +48,7 @@ export function ErrorSplash() {
         </div>
 
         <code className="mx-auto max-w-2xl bg-white/5 px-4 py-2 text-center text-sm text-neutral-400">
-          {JSON.parse(error)}
+          {error ? error.message : JSON.parse(stringError)}
         </code>
       </div>
     </>

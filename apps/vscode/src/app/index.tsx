@@ -7,21 +7,27 @@
 import { TelemetryProvider } from "@triplex/ux";
 import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
+import { ErrorBoundary } from "react-error-boundary";
 import { version } from "../../package.json";
 import { App } from "./components/app";
 import "./styles.css";
+import { ErrorSplash } from "./components/error-splash";
 
 createRoot(document.getElementById("root")!).render(
-  <Suspense>
-    <TelemetryProvider
-      isTelemetryEnabled={window.triplex.isTelemetryEnabled}
-      secretKey="xzT0UQNnSMa1Z3KW8k6oWw"
-      sessionId={window.triplex.sessionId}
-      trackingId="G-EC2Q4TXGD0"
-      userId={window.triplex.userId}
-      version={version}
+  <TelemetryProvider
+    isTelemetryEnabled={window.triplex.isTelemetryEnabled}
+    secretKey="xzT0UQNnSMa1Z3KW8k6oWw"
+    sessionId={window.triplex.sessionId}
+    trackingId="G-EC2Q4TXGD0"
+    userId={window.triplex.userId}
+    version={version}
+  >
+    <ErrorBoundary
+      fallbackRender={({ error }) => <ErrorSplash error={error} />}
     >
-      <App />
-    </TelemetryProvider>
-  </Suspense>
+      <Suspense>
+        <App />
+      </Suspense>
+    </ErrorBoundary>
+  </TelemetryProvider>
 );
