@@ -6,6 +6,7 @@ on:
       - packages/**
       - apps/vscode/**
       - pnpm-lock.yaml
+      - package.json
       - .github/workflows/**
 
 env:

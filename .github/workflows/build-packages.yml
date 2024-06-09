@@ -5,6 +5,7 @@ on:
     paths:
       - packages/**
       - pnpm-lock.yaml
+      - package.json
       - .github/workflows/**
 
 env:
