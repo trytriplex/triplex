@@ -5,7 +5,8 @@
  * file in the root directory of this source tree.
  */
 import { Cross2Icon } from "@radix-ui/react-icons";
-import { useEvent, useTelemetry, type ActionIdSafe } from "@triplex/ux";
+import { useEvent } from "@triplex/lib";
+import { useTelemetry, type ActionIdSafe } from "@triplex/ux";
 import { useEffect, useRef, useState, type KeyboardEventHandler } from "react";
 import { IconButton } from "../ds/button";
 import { sentenceCase } from "../util/string";

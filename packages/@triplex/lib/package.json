@@ -1,8 +1,7 @@
 {
-  "name": "@triplex/ux",
+  "name": "@triplex/lib",
   "version": "0.67.3",
   "private": true,
-  "description": "Common UI agnostic components for Triplex user experiences.",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "exports": {
     ".": {
@@ -17,11 +16,6 @@
   "scripts": {
     "build": "swc ./src -d ./dist",
     "typedef": "tsc"
-  },
-  "dependencies": {
-    "@radix-ui/react-icons": "^1.3.0",
-    "@triplex/bridge": "0.67.3",
-    "@triplex/lib": "0.67.3"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.59",

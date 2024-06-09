@@ -92,6 +92,7 @@
   "devDependencies": {
     "@radix-ui/react-icons": "^1.3.0",
     "@triplex/bridge": "0.67.3",
+    "@triplex/lib": "0.67.3",
     "@triplex/ux": "0.67.3",
     "@triplex/ws": "0.67.3",
     "@types/vscode": "^1.88.0",

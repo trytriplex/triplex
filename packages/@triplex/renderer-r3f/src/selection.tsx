@@ -6,7 +6,7 @@
  */
 import { useFrame, useThree } from "@react-three/fiber";
 import { compose, on, send } from "@triplex/bridge/client";
-import { useEvent } from "@triplex/ux";
+import { useEvent } from "@triplex/lib";
 import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws/react";
 import {
   createContext,

@@ -8,15 +8,12 @@ export {
   ButtonControl,
   ButtonGroupControl,
   ToggleButtonControl,
-} from "./components/controls";
-export { LocalSpaceIcon, WorldSpaceIcon } from "./components/icons";
-export { cn } from "./util/tw-merge";
-export { toJSONString } from "./util/string";
+} from "./controls";
+export { LocalSpaceIcon, WorldSpaceIcon } from "./icons";
 export {
   type ActionId,
   type ActionIdSafe,
   TelemetryProvider,
   useTelemetry,
   useScreenView,
-} from "./components/telemetry";
-export { useEvent } from "./util/use-event";
+} from "./telemetry";

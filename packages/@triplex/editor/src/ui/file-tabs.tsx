@@ -5,7 +5,8 @@
  * file in the root directory of this source tree.
  */
 import { Component1Icon, Cross2Icon, CubeIcon } from "@radix-ui/react-icons";
-import { useEvent, useTelemetry } from "@triplex/ux";
+import { useEvent } from "@triplex/lib";
+import { useTelemetry } from "@triplex/ux";
 import { useLazySubscription } from "@triplex/ws/react";
 import { useEffect, useRef } from "react";
 import { IconButton } from "../ds/button";

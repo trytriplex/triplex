@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "@triplex/bridge": "0.67.3",
-    "@triplex/ux": "0.67.3",
+    "@triplex/lib": "0.67.3",
     "@triplex/ws": "0.67.3",
     "react-error-boundary": "^3.1.4",
     "suspend-react": "^0.1.3",

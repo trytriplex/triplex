@@ -5,7 +5,8 @@
  * file in the root directory of this source tree.
  */
 import { type IconProps } from "@radix-ui/react-icons/dist/types";
-import { cn, useEvent, useTelemetry, type ActionId } from "@triplex/ux";
+import { cn, useEvent } from "@triplex/lib";
+import { useTelemetry, type ActionId } from "@triplex/ux";
 import { VSCodeButton } from "@vscode/webview-ui-toolkit/react";
 import { useEffect, type ComponentType } from "react";
 import { onKeyDown } from "../util/keyboard";

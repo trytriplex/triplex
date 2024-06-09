@@ -12,10 +12,10 @@ import {
   StopIcon,
 } from "@radix-ui/react-icons";
 import { on, send, type Controls } from "@triplex/bridge/host";
+import { cn } from "@triplex/lib";
 import {
   ButtonControl,
   ButtonGroupControl,
-  cn,
   ToggleButtonControl,
   type ActionId,
 } from "@triplex/ux";

@@ -13,7 +13,7 @@ import {
   MobileIcon,
 } from "@radix-ui/react-icons";
 import { compose } from "@triplex/bridge/host";
-import { useEvent } from "@triplex/ux";
+import { useEvent } from "@triplex/lib";
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import { IconButton } from "./ds/button";
 import { cn } from "./ds/cn";

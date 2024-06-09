@@ -5,13 +5,13 @@
  * file in the root directory of this source tree.
  */
 import { CaretDownIcon, CaretRightIcon } from "@radix-ui/react-icons";
+import { useEvent } from "@triplex/lib";
 import type {
   Folder as FolderType,
   ProjectAsset as ProjectAssetType,
   ProjectCustomComponent,
   ProjectHostComponent,
 } from "@triplex/server";
-import { useEvent } from "@triplex/ux";
 import {
   preloadSubscription,
   useLazySubscription,

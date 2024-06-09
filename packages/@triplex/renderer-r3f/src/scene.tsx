@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { on, send } from "@triplex/bridge/client";
-import { useEvent } from "@triplex/ux";
+import { useEvent } from "@triplex/lib";
 import {
   Suspense,
   useCallback,

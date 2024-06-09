@@ -21,6 +21,7 @@
     "@radix-ui/react-menubar": "^1.0.4",
     "@radix-ui/react-scroll-area": "^1.0.5",
     "@triplex/bridge": "0.67.3",
+    "@triplex/lib": "0.67.3",
     "@triplex/ux": "0.67.3",
     "@triplex/ws": "0.67.3",
     "react-compiler-runtime": "workspace:*",

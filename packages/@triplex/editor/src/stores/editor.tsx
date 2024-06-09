@@ -4,8 +4,8 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { useEvent } from "@triplex/lib";
 import type { ComponentTarget, ComponentType } from "@triplex/server";
-import { useEvent } from "@triplex/ux";
 import { startTransition, useCallback, useMemo } from "react";
 import { useSearchParams } from "react-router-dom";
 import { create } from "zustand";
