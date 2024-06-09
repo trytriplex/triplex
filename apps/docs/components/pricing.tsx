@@ -115,7 +115,7 @@ export function Pricing() {
         cta={
           <Link
             className="block rounded bg-blue-400 py-2 text-center font-bold text-neutral-800"
-            href="mailto:team@triplex.dev"
+            href="mailto:support@triplex.dev"
           >
             Contact Us
           </Link>
