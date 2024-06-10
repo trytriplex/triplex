@@ -24,6 +24,8 @@ jobs:
 
       - name: Setup node
         uses: actions/setup-node@v4
+        width:
+          node-version: 20.14.0
 
       - name: Install dependencies
         run: yarn install
