@@ -18,14 +18,8 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
-      - name: Read node version
-        run: echo "NVMRC=$(cat .nvmrc)" >> $GITHUB_OUTPUT
-        id: nvm
-
       - name: Setup node
-        uses: actions/setup-node@v3
-        with:
-          node-version: ${{ steps.nvm.outputs.NVMRC }}
+        uses: actions/setup-node@v4
 
       - name: Install dependencies
         run: yarn install
