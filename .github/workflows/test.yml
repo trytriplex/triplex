@@ -24,7 +24,7 @@ jobs:
 
       - name: Setup node
         uses: actions/setup-node@v4
-        width:
+        with:
           node-version-file: "package.json"
 
       - name: Install dependencies
