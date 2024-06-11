@@ -115,7 +115,7 @@ export function createServer({
     const line = Number(context.params.line);
     const column = Number(context.params.column);
 
-    await sourceFile.edit((source) => {
+    const [ids] = await sourceFile.edit((source) => {
       move(
         source,
         {
@@ -130,7 +130,7 @@ export function createServer({
       );
     });
 
-    context.response.body = { message: "success" };
+    context.response.body = { message: "success", ...ids };
   });
 
   /**
@@ -144,7 +144,7 @@ export function createServer({
     const column = Number(context.params.column);
     const sourceFile = project.getSourceFile(path);
 
-    const result = await sourceFile.edit((source) => {
+    const [ids, result] = await sourceFile.edit((source) => {
       const jsxElement = getJsxElementAtOrThrow(source, line, column);
       const action = upsertProp(jsxElement, name, value);
 
@@ -157,23 +157,27 @@ export function createServer({
     const parentExportName = getJsxElementParentExportNameOrThrow(result.node);
     sourceFile.open(parentExportName);
 
-    context.response.body = { action: result.action, message: "success" };
+    context.response.body = {
+      ...ids,
+      action: result.action,
+      message: "success",
+    };
   });
 
-  router.post("/scene/:path/undo", (context) => {
-    const { path } = context.params;
+  router.post("/scene/:path/undo/:id?", (context) => {
+    const { id, path } = context.params;
     const sourceFile = project.getSourceFile(path);
 
-    sourceFile.undo();
+    sourceFile.undo(id ? Number(id) : undefined);
 
     context.response.body = { message: "success" };
   });
 
-  router.post("/scene/:path/redo", (context) => {
-    const { path } = context.params;
+  router.post("/scene/:path/redo/:id?", (context) => {
+    const { id, path } = context.params;
     const sourceFile = project.getSourceFile(path);
 
-    sourceFile.redo();
+    sourceFile.redo(id ? Number(id) : undefined);
 
     context.response.body = { message: "success" };
   });
@@ -184,11 +188,11 @@ export function createServer({
       const { column, line, path } = context.params;
       const sourceFile = project.getSourceFile(path);
 
-      const result = await sourceFile.edit((source) => {
+      const [ids, result] = await sourceFile.edit((source) => {
         return duplicate(source, Number(line), Number(column));
       });
 
-      context.response.body = { ...result };
+      context.response.body = { ...result, ...ids };
     }
   );
 
@@ -196,11 +200,11 @@ export function createServer({
     const { column, line, path } = context.params;
     const sourceFile = project.getSourceFile(path);
 
-    await sourceFile.edit((source) => {
+    const [ids] = await sourceFile.edit((source) => {
       commentComponent(source, Number(line), Number(column));
     });
 
-    context.response.body = { message: "success" };
+    context.response.body = { message: "success", ...ids };
   });
 
   router.post("/scene/new", (context) => {
@@ -220,11 +224,16 @@ export function createServer({
     const { path } = context.params;
     const sourceFile = project.getSourceFile(path);
 
-    const { exportName } = await sourceFile.edit((source) => {
+    const [ids, { exportName }] = await sourceFile.edit((source) => {
       return create(source, renderer.manifest.templates.newElements);
     });
 
-    context.response.body = { exportName, path };
+    context.response.body = {
+      exportName,
+      path,
+      redoID: ids.redoID,
+      undoID: ids.undoID,
+    };
   });
 
   router.post("/scene/:path/save", async (context) => {
@@ -267,22 +276,22 @@ export function createServer({
     const body = await context.request.body({ type: "json" }).value;
     const { name: newName } = body as { name: string };
 
-    await sourceFile.edit((source) => {
+    const [ids] = await sourceFile.edit((source) => {
       rename(source, exportName, newName);
     });
 
-    context.response.body = { message: "success" };
+    context.response.body = { message: "success", ...ids };
   });
 
   router.post("/scene/:path/object/:line/:column/restore", async (context) => {
     const { column, line, path } = context.params;
     const sourceFile = project.getSourceFile(path);
 
-    await sourceFile.edit((source) => {
+    const [ids] = await sourceFile.edit((source) => {
       uncommentComponent(source, Number(line), Number(column));
     });
 
-    context.response.body = { message: "success" };
+    context.response.body = { message: "success", ...ids };
   });
 
   router.post("/scene/:path/:exportName/object", async (context) => {
@@ -294,11 +303,11 @@ export function createServer({
     };
     const sourceFile = project.getSourceFile(path);
 
-    const result = await sourceFile.edit((source) => {
+    const [ids, result] = await sourceFile.edit((source) => {
       return add(source, exportName, type, target);
     });
 
-    context.response.body = { ...result };
+    context.response.body = { ...result, ...ids };
   });
 
   router.post("/project/save-all", async (context) => {

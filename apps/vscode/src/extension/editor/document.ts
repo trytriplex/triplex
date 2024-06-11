@@ -85,7 +85,7 @@ export class TriplexDocument implements vscode.CustomDocument {
     propName: string;
     propValue: unknown;
   }) {
-    await fetch(
+    const result = await fetch(
       `http://localhost:${this._context.ports.server}/scene/object/${
         data.line
       }/${data.column}/prop?value=${encodeURIComponent(
@@ -95,13 +95,17 @@ export class TriplexDocument implements vscode.CustomDocument {
       )}`
     );
 
+    const response: { redoID: number; undoID: number } = await result.json();
+
     this._onDidChange.fire({
       label: "Upsert prop",
       redo: async () => {
         await fetch(
           `http://localhost:${
             this._context.ports.server
-          }/scene/${encodeURIComponent(this.uri.fsPath)}/redo`,
+          }/scene/${encodeURIComponent(this.uri.fsPath)}/redo/${
+            response.redoID
+          }`,
           {
             method: "POST",
           }
@@ -111,7 +115,9 @@ export class TriplexDocument implements vscode.CustomDocument {
         await fetch(
           `http://localhost:${
             this._context.ports.server
-          }/scene/${encodeURIComponent(this.uri.fsPath)}/undo`,
+          }/scene/${encodeURIComponent(this.uri.fsPath)}/undo/${
+            response.undoID
+          }`,
           {
             method: "POST",
           }

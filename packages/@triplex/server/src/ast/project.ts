@@ -236,7 +236,12 @@ export function ${componentName}() {
         callback: (
           sourceFile: SourceFile
         ) => TResult extends SourceFile ? never : TResult
-      ) => {
+      ): Promise<
+        [
+          ids: { redoID: number; undoID: number },
+          result: TResult extends SourceFile ? never : TResult
+        ]
+      > => {
         if (!persistedSourceFile.has(sourceFile)) {
           // Lazily set the current source file as the persisted source file
           // before any changes have been made.
@@ -258,7 +263,7 @@ export function ${componentName}() {
 
         flushDirtyState();
 
-        return result;
+        return [{ redoID: undoStackIndex, undoID: undoStackIndex - 1 }, result];
       },
       isDirty: () => {
         return modifiedSourceFiles.has(sourceFile);
@@ -316,7 +321,7 @@ export function ${componentName}() {
       read: () => {
         return sourceFile as SourceFileReadOnly;
       },
-      redo: () => {
+      redo: (id?: number) => {
         const undoStack = sourceFileHistory.get(sourceFile);
         const undoStackIndex = sourceFileHistoryIndex.get(sourceFile);
 
@@ -324,7 +329,7 @@ export function ${componentName}() {
           return;
         }
 
-        const nextIndex = undoStackIndex + 1;
+        const nextIndex = id ?? undoStackIndex + 1;
         const nextSourceCode = undoStack[nextIndex];
         if (!nextSourceCode) {
           return;
@@ -373,7 +378,7 @@ export function ${componentName}() {
           invalidateThumbnail({ exportName, path });
         }
       },
-      undo: () => {
+      undo: (id?: number) => {
         const undoStack = sourceFileHistory.get(sourceFile);
         const undoStackIndex = sourceFileHistoryIndex.get(sourceFile);
 
@@ -381,7 +386,7 @@ export function ${componentName}() {
           return;
         }
 
-        const nextIndex = undoStackIndex - 1;
+        const nextIndex = id ?? undoStackIndex - 1;
         const nextSourceCode = undoStack[nextIndex];
 
         if (!nextSourceCode) {

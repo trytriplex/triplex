@@ -783,7 +783,7 @@ describe("component service", () => {
     const sourceFile = project.createSourceFile("Untitled");
     const saveFile = () => project.saveAll();
     const addComponent = async (exportName: string) => {
-      const pos = await sourceFile.edit((source) =>
+      const [, pos] = await sourceFile.edit((source) =>
         add(source, "Untitled", {
           exportName,
           path: join(__dirname, "__mocks__", "room.tsx"),

@@ -250,6 +250,85 @@ describe("project ast", () => {
     expect(cb).not.toHaveBeenCalled();
   });
 
+  it("should undo to a specific revision", async () => {
+    const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "<></>" },
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+    const sourceFile = project.createSourceFile("Untitled");
+
+    await sourceFile.edit((source) => {
+      source.addFunction({
+        name: "aaa",
+      });
+    });
+    const [ids] = await sourceFile.edit((source) => {
+      source.addFunction({
+        name: "bbb",
+      });
+    });
+    await sourceFile.edit((source) => {
+      source.addFunction({
+        name: "ccc",
+      });
+    });
+
+    // Will undo to the revsion prior to this one
+    sourceFile.undo(ids.undoID);
+
+    expect(sourceFile.read().getText()).toMatchInlineSnapshot(`
+      "export function Untitled() {
+        return <></>;
+      }
+
+      function aaa() {
+      }
+      "
+    `);
+  });
+
+  it("should redo to a specific revision", async () => {
+    const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "<></>" },
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+    const sourceFile = project.createSourceFile("Untitled");
+
+    const [ids] = await sourceFile.edit((source) => {
+      source.addFunction({
+        name: "foo",
+      });
+    });
+    await sourceFile.edit((source) => {
+      source.addFunction({
+        name: "bar",
+      });
+    });
+    await sourceFile.edit((source) => {
+      source.addFunction({
+        name: "baz",
+      });
+    });
+
+    sourceFile.undo();
+    sourceFile.undo();
+    sourceFile.undo();
+    sourceFile.undo();
+    sourceFile.redo(ids.redoID);
+
+    expect(sourceFile.read().getText()).toMatchInlineSnapshot(`
+      "export function Untitled() {
+        return <></>;
+      }
+
+      function foo() {
+      }
+      "
+    `);
+  });
+
   it("should undo to a past state and not go out of bounds", async () => {
     const project = createProject({
       cwd: process.cwd(),
