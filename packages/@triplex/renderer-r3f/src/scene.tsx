@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { on, send } from "@triplex/bridge/client";
+import { compose, on, send } from "@triplex/bridge/client";
 import { useEvent } from "@triplex/lib";
 import {
   Suspense,
@@ -83,7 +83,14 @@ export function SceneFrame({
   }, []);
 
   useEffect(() => {
-    return on("request-refresh-scene", incrementReset);
+    return compose([
+      on("request-refresh-scene", incrementReset),
+      on("request-state-change", ({ state }) => {
+        if (state === "edit") {
+          incrementReset();
+        }
+      }),
+    ]);
   }, []);
 
   return (
