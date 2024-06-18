@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { spawnSync } from "node:child_process";
-import { test as base, type TestInfo } from "@playwright/test";
+import { test as base, type Electron, type TestInfo } from "@playwright/test";
 import { resolveCliArgsFromVSCodeExecutablePath } from "@vscode/test-electron";
 import pkg from "package.json";
 import { _electron as electron } from "playwright";
@@ -33,6 +33,25 @@ async function tryInstallBundledExtension() {
   );
 }
 
+const launchElectronWithRetry = async (
+  opts: Parameters<Electron["launch"]>[0],
+  retries = 2
+): ReturnType<Electron["launch"]> => {
+  try {
+    return await electron.launch(opts);
+  } catch (error) {
+    if (retries === 0) {
+      throw error;
+    }
+
+    // eslint-disable-next-line no-console
+    console.log(error);
+    // eslint-disable-next-line no-console
+    console.log(`Failed to launch electron, retrying ${retries} times...`);
+    return launchElectronWithRetry(opts, retries - 1);
+  }
+};
+
 async function launch(testInfo: TestInfo) {
   const isSmokeTest =
     process.env.SMOKE_TEST && testInfo.tags.includes("@vsce_smoke");
@@ -45,7 +64,7 @@ async function launch(testInfo: TestInfo) {
   const [, ...args] = await resolveCliArgsFromVSCodeExecutablePath(
     executablePath
   );
-  const app = await electron.launch({
+  const app = await launchElectronWithRetry({
     args: [
       ...args,
       join(process.cwd(), "examples/test-fixture"),

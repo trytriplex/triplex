@@ -7,40 +7,44 @@
 import {
   broadcastForwardedKeydownEvents,
   compose,
-  on,
   send,
 } from "@triplex/bridge/host";
 import { useScreenView } from "@triplex/ux";
 import { useEffect } from "react";
+import { useInitSceneSync, useSceneStore } from "../stores/scene";
 import { onVSCE } from "../util/bridge";
 import { ContextPanel } from "./context-panel";
 import { Controls } from "./controls";
+import { ScenePanel } from "./scene-panel";
 
 export function App() {
+  const initSync = useInitSceneSync();
+  const syncContext = useSceneStore((store) => store.syncContext);
+
   useScreenView("app", "Panel");
 
   useEffect(() => {
     return compose([
-      on("ready", () => {
-        send("request-open-component", {
-          encodedProps: "",
-          exportName: window.triplex.initialState.exportName,
-          path: window.triplex.initialState.path,
-        });
-      }),
+      initSync(),
       onVSCE("vscode:request-open-component", (data) => {
         send("request-open-component", {
           encodedProps: "",
           exportName: data.exportName,
           path: data.path,
         });
+
+        syncContext({
+          exportName: data.exportName,
+          path: data.path,
+        });
       }),
       broadcastForwardedKeydownEvents(),
     ]);
-  }, []);
+  }, [initSync, syncContext]);
 
   return (
     <>
+      <ScenePanel />
       <ContextPanel />
       <Controls />
       <iframe

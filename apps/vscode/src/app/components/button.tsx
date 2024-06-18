@@ -8,7 +8,12 @@ import { type IconProps } from "@radix-ui/react-icons/dist/types";
 import { cn, useEvent } from "@triplex/lib";
 import { useTelemetry, type ActionId } from "@triplex/ux";
 import { VSCodeButton } from "@vscode/webview-ui-toolkit/react";
-import { useEffect, type ComponentType } from "react";
+import {
+  forwardRef,
+  useEffect,
+  type ComponentType,
+  type CSSProperties,
+} from "react";
 import { onKeyDown } from "../util/keyboard";
 
 export function IconButton({
@@ -61,3 +66,64 @@ export function IconButton({
     </VSCodeButton>
   );
 }
+
+interface PressableProps {
+  accelerator?: string;
+  actionId: ActionId;
+  children?: React.ReactNode;
+  className?: string;
+  onClick: (e: React.MouseEvent | KeyboardEvent) => void;
+  style?: CSSProperties;
+  title?: string;
+  vscodeContext?: Record<string, unknown>;
+}
+
+export const Pressable = forwardRef<HTMLButtonElement, PressableProps>(
+  (
+    {
+      accelerator,
+      actionId,
+      children,
+      className,
+      onClick,
+      style,
+      title,
+      vscodeContext,
+    },
+    ref
+  ) => {
+    const telemetry = useTelemetry();
+    const onClickHandler = useEvent((e: React.MouseEvent | KeyboardEvent) => {
+      telemetry.event(actionId);
+      onClick(e);
+    });
+
+    useEffect(() => {
+      if (!accelerator) {
+        return;
+      }
+
+      return onKeyDown(accelerator, onClickHandler);
+    }, [accelerator, actionId, telemetry, onClickHandler]);
+
+    return (
+      <button
+        className={cn([
+          "focus-visible:outline-selected focus-visible:outline-default select-none focus-visible:outline",
+          className,
+        ])}
+        data-vscode-context={
+          vscodeContext ? JSON.stringify(vscodeContext) : undefined
+        }
+        onClick={onClickHandler}
+        ref={ref}
+        style={style}
+        title={title}
+      >
+        {children}
+      </button>
+    );
+  }
+);
+
+Pressable.displayName = "Pressable";

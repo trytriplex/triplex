@@ -17,7 +17,10 @@ module.exports = {
   ],
   theme: {
     backgroundColor: {
+      "active-selected": "var(--vscode-list-activeSelectionBackground)",
       hover: "var(--vscode-toolbar-hoverBackground)",
+      "inactive-selected": "var(--vscode-list-inactiveSelectionBackground)",
+      "list-hovered": "var(--vscode-list-hoverBackground)",
       overlay: "var(--panel-view-background)",
       selected: "var(--vscode-toolbar-activeBackground)",
     },
@@ -37,8 +40,20 @@ module.exports = {
     fontWeight: {
       default: "var(--vscode-font-weight)",
     },
+    outlineColor: {
+      selected: "var(--focus-border)",
+    },
+    outlineOffset: {
+      button: "var(--button-icon-outline-offset)",
+      inset: "-1px",
+    },
+    outlineWidth: {
+      default: "calc(var(--border-width) * 1px)",
+    },
     textColor: {
+      "active-selected": "var(--vscode-list-activeSelectionForeground)",
       default: "var(--vscode-foreground)",
+      "list-hovered": "var(--vscode-list-hoverForeground)",
       selected: "var(--vscode-tab-activeForeground)",
     },
   },

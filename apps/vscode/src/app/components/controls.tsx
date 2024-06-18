@@ -23,6 +23,7 @@ import { useEffect, useReducer, useState } from "react";
 import { onVSCE } from "../util/bridge";
 import { IconButton } from "./button";
 import { Separator } from "./separator";
+import { Surface } from "./surface";
 
 interface PlayState {
   camera: "default" | "editor";
@@ -87,18 +88,15 @@ export function Controls() {
 
   return (
     <div
-      className="pointer-events-none absolute left-0 right-0 top-2 z-10 flex justify-center gap-1"
+      className="pointer-events-none absolute left-0 right-0 top-2 flex justify-center gap-1"
       data-vscode-context={JSON.stringify({
         preventDefaultContextMenuItems: true,
       })}
     >
-      <div
-        className={cn([
-          "bg-overlay border-overlay shadow-overlay pointer-events-auto flex rounded border p-0.5",
-          play.state === "play" && "hidden",
-        ])}
-        // @ts-expect-error — updating React types will make this go away
-        inert={play.state === "play" ? "true" : undefined}
+      <Surface
+        className="p-0.5"
+        direction="horizontal"
+        isHidden={play.state === "play"}
       >
         {controls.map((control, index) => {
           switch (control.type) {
@@ -170,9 +168,9 @@ export function Controls() {
               return null;
           }
         })}
-      </div>
+      </Surface>
 
-      <div className="bg-overlay border-overlay shadow-overlay pointer-events-auto flex rounded border p-0.5">
+      <Surface className="p-0.5" direction="horizontal">
         <IconButton
           actionId="scene_frame_reset"
           icon={ResetIcon}
@@ -233,7 +231,7 @@ export function Controls() {
             }}
           />
         </div>
-      </div>
+      </Surface>
     </div>
   );
 }

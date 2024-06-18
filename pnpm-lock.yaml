@@ -291,6 +291,9 @@ importers:
       vite:
         specifier: ^4.5.3
         version: 4.5.3(@types/node@18.11.18)
+      zustand:
+        specifier: ^4.3.2
+        version: 4.3.2(react@18.2.0)
 
   examples-private/custom-renderer:
     dependencies:
@@ -799,7 +802,7 @@ importers:
         version: 10.4.16(postcss@8.4.32)
       babel-plugin-react-compiler:
         specifier: latest
-        version: 0.0.0-experimental-938cd9a-20240601
+        version: 0.0.0-experimental-592953e-20240517
       tailwindcss:
         specifier: ^3.3.2
         version: 3.3.2
@@ -5105,8 +5108,8 @@ packages:
       typed-rest-client: 1.8.11
     dev: true
 
-  /babel-plugin-react-compiler@0.0.0-experimental-938cd9a-20240601:
-    resolution: {integrity: sha512-t+uBHxbfxq2z4j83ZYgOsV0dlSaRgPfhrYB5+CMv6ByXUAv5wm7m7YLFx67fWKrG3eDhq3+KH1OMeFypuDLkUA==}
+  /babel-plugin-react-compiler@0.0.0-experimental-592953e-20240517:
+    resolution: {integrity: sha512-OjG1SVaeQZaJrqkMFJatg8W/MTow8Ak5rx2SI0ETQBO1XvOk/XZGMbltNCPdFJLKghBYoBjC+Y3Ap/Xr7B01mA==}
     dependencies:
       '@babel/generator': 7.2.0
       '@babel/types': 7.24.5
@@ -14760,7 +14763,6 @@ packages:
     dependencies:
       react: 18.2.0
       use-sync-external-store: 1.2.0(react@18.2.0)
-    dev: false
 
   /zustand@4.5.2(@types/react@18.3.3)(react@18.2.0):
     resolution: {integrity: sha512-2cN1tPkDVkwCy5ickKrI7vijSjPksFRfqS6237NzT0vqSsztTNnQdHw9mmN7uBdk3gceVXU0a+21jFzFzAc9+g==}
