@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 const assignedKeys: string[] = [];
+const inputTags = ["INPUT", "VSCODE-TEXT-FIELD", "VSCODE-TEXT-AREA"];
 
 export function onKeyDown(
   key: KeyboardEvent["key"],
@@ -15,7 +16,14 @@ export function onKeyDown(
   }
 
   const callback = (e: KeyboardEvent) => {
-    if (e.key === key && e.metaKey === false) {
+    if (
+      e.key === key &&
+      e.metaKey === false &&
+      !(
+        document.activeElement &&
+        inputTags.includes(document.activeElement.tagName)
+      )
+    ) {
       cb(e);
     }
   };

@@ -14,7 +14,7 @@ import { useEffect } from "react";
 import { useInitSceneSync, useSceneStore } from "../stores/scene";
 import { onVSCE } from "../util/bridge";
 import { ContextPanel } from "./context-panel";
-import { Controls } from "./controls";
+import { FloatingControls } from "./controls";
 import { ScenePanel } from "./scene-panel";
 
 export function App() {
@@ -43,16 +43,18 @@ export function App() {
   }, [initSync, syncContext]);
 
   return (
-    <>
+    <div className="fixed inset-0 flex">
       <ScenePanel />
       <ContextPanel />
-      <Controls />
-      <iframe
-        allow="cross-origin-isolated"
-        className="absolute inset-0 h-full w-full"
-        id="scene"
-        src={`http://localhost:${window.triplex.env.ports.client}/scene.html`}
-      />
-    </>
+      <div className="relative h-full w-full">
+        <FloatingControls />
+        <iframe
+          allow="cross-origin-isolated"
+          className="h-full w-full"
+          id="scene"
+          src={`http://localhost:${window.triplex.env.ports.client}/scene.html`}
+        />
+      </div>
+    </div>
   );
 }

@@ -5,13 +5,13 @@
  * file in the root directory of this source tree.
  */
 import {
-  BoxIcon,
   ChevronDownIcon,
   ChevronRightIcon,
-  MinusIcon,
+  Component1Icon,
 } from "@radix-ui/react-icons";
 import { cn } from "@triplex/lib";
 import { type JsxElementPositions } from "@triplex/server";
+import { VSCodeTextField } from "@vscode/webview-ui-toolkit/react";
 import { Suspense, useLayoutEffect, useReducer, useRef, useState } from "react";
 import { useLazySubscription } from "../hooks/ws";
 import { useSceneStore } from "../stores/scene";
@@ -53,7 +53,7 @@ function SceneElement(props: JsxElementPositions & { level: number }) {
           isSelected && !isActive && "bg-inactive-selected",
           !isSelected && "hover:bg-list-hovered hover:text-list-hovered",
         ])}
-        style={{ paddingLeft: props.level * 13 }}
+        style={{ paddingLeft: props.level * 12 }}
       >
         {isCustomComponent ? (
           <Pressable
@@ -135,33 +135,57 @@ function SceneElements({
   ));
 }
 
-export function ScenePanel() {
-  const [isExpanded, toggleExpanded] = useReducer((state) => !state, true);
+function ElementsPanel() {
   const context = useSceneStore((store) => store.context);
 
   return (
-    <div className="absolute left-3 top-2 flex flex-col items-start gap-1">
-      <Surface className="p-0.5">
-        <IconButton
-          actionId="scenepanel_component"
-          icon={isExpanded ? MinusIcon : BoxIcon}
-          label="View scene elements"
-          onClick={toggleExpanded}
+    <Surface
+      className="w-48 flex-shrink-0 overflow-auto border-r pb-1.5"
+      shape="square"
+    >
+      <div className="flex border-t border-t-transparent p-1.5">
+        <VSCodeTextField
+          className="w-full opacity-70 focus:opacity-100"
+          onFocus={(e) => e.stopPropagation()}
+          placeholder="Filter elements..."
         />
-      </Surface>
+      </div>
+      <ul>
+        <SceneElements exportName={context.exportName} path={context.path} />
+      </ul>
+    </Surface>
+  );
+}
 
-      {isExpanded && (
+export function ScenePanel() {
+  const [shown, setShown] = useState<"elements" | undefined>(undefined);
+
+  return (
+    <>
+      <div
+        className={cn([
+          !shown && "absolute left-1.5 top-1.5 gap-1 rounded border p-0.5",
+          shown && "border-l border-r border-t border-t-transparent p-1.5",
+          "bg-overlay border-overlay z-10 flex flex-col items-start opacity-90",
+        ])}
+      >
+        <IconButton
+          actionId="scenepanel_elements_toggle"
+          icon={Component1Icon}
+          isSelected={shown === "elements"}
+          label="View Scene Elements"
+          onClick={() =>
+            setShown(shown === "elements" ? undefined : "elements")
+          }
+          spacing={shown ? "spacious" : "default"}
+        />
+      </div>
+
+      {shown === "elements" && (
         <Suspense>
-          <Surface className="max-h-[80vh] w-64 overflow-auto py-1">
-            <ul>
-              <SceneElements
-                exportName={context.exportName}
-                path={context.path}
-              />
-            </ul>
-          </Surface>
+          <ElementsPanel />
         </Suspense>
       )}
-    </div>
+    </>
   );
 }

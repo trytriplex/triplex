@@ -31,11 +31,13 @@ export function Surface({
   className,
   direction = "vertical",
   isHidden,
+  shape = "rounded",
 }: {
   children: React.ReactNode;
   className?: string;
   direction?: "horizontal" | "vertical";
   isHidden?: boolean;
+  shape?: "rounded" | "square";
 }) {
   const listeners = useRef<StateListener[]>([]);
 
@@ -50,16 +52,18 @@ export function Surface({
     <SurfaceStateContext.Provider value={addListener}>
       <div
         className={cn([
-          className,
-          "bg-overlay border-overlay shadow-overlay group pointer-events-auto relative z-10 flex select-none rounded border opacity-90",
+          "bg-overlay border-overlay shadow-overlay group pointer-events-auto z-10 flex select-none opacity-90",
           isHidden && "hidden",
           direction === "horizontal" && "flex-row",
           direction === "vertical" && "flex-col",
+          shape === "rounded" && "rounded",
+          className,
         ])}
         // @ts-expect-error — updating React types will make this go away
         inert={isHidden ? "true" : undefined}
         onBlur={() => listeners.current.forEach((cb) => cb(false))}
         onFocus={() => listeners.current.forEach((cb) => cb(true))}
+        tabIndex={-1}
       >
         {children}
       </div>

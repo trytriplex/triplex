@@ -59,7 +59,7 @@ function playReducer(state: PlayState, action: StateAction): PlayState {
   }
 }
 
-export function Controls() {
+export function FloatingControls() {
   const [controls, setControls] = useState<Controls>();
   const [play, dispatch] = useReducer(playReducer, {
     camera: "editor",
@@ -88,13 +88,13 @@ export function Controls() {
 
   return (
     <div
-      className="pointer-events-none absolute left-0 right-0 top-2 flex justify-center gap-1"
+      className="pointer-events-none absolute left-0 right-0 top-1.5 flex justify-center gap-1"
       data-vscode-context={JSON.stringify({
         preventDefaultContextMenuItems: true,
       })}
     >
       <Surface
-        className="p-0.5"
+        className="border p-0.5"
         direction="horizontal"
         isHidden={play.state === "play"}
       >
@@ -170,7 +170,7 @@ export function Controls() {
         })}
       </Surface>
 
-      <Surface className="p-0.5" direction="horizontal">
+      <Surface className="border p-0.5" direction="horizontal">
         <IconButton
           actionId="scene_frame_reset"
           icon={ResetIcon}

@@ -27,6 +27,7 @@ module.exports = {
     borderColor: {
       overlay: "var(--panel-view-border)",
       selected: "var(--vscode-focusBorder)",
+      transparent: "transparent",
     },
     boxShadow: {
       overlay: "var(--vscode-widget-shadow)",

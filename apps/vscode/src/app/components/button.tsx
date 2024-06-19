@@ -32,7 +32,7 @@ export function IconButton({
   isSelected?: boolean;
   label: string;
   onClick: (e: React.MouseEvent | KeyboardEvent) => void;
-  spacing?: "default" | "thin";
+  spacing?: "default" | "thin" | "spacious";
   vscodeContext?: Record<string, unknown>;
 }) {
   const telemetry = useTelemetry();
@@ -53,7 +53,7 @@ export function IconButton({
     <VSCodeButton
       appearance="icon"
       aria-label={label + (isSelected ? " active" : "")}
-      className={isSelected ? "bg-selected text-selected" : ""}
+      className={cn([isSelected ? "bg-selected text-selected" : ""])}
       data-vscode-context={
         vscodeContext ? JSON.stringify(vscodeContext) : undefined
       }
@@ -61,7 +61,11 @@ export function IconButton({
       title={label + (accelerator ? ` (${accelerator.toUpperCase()})` : "")}
     >
       <Icon
-        className={cn([spacing === "thin" && "-mx-1", "pointer-events-none"])}
+        className={cn([
+          spacing === "spacious" && "m-0.5",
+          spacing === "thin" && "-mx-1",
+          "pointer-events-none",
+        ])}
       />
     </VSCodeButton>
   );
