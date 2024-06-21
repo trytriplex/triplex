@@ -8,7 +8,7 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="bg-neutral-950 relative col-span-full border-t border-neutral-800">
+    <footer className="relative col-span-full border-t border-neutral-800 bg-neutral-950">
       <div className="mx-auto flex justify-center gap-14 px-10 py-10 lg:w-full lg:max-w-[79rem] lg:gap-32">
         <div className="lg:mr-auto">
           <div className="flex gap-1">
@@ -123,7 +123,7 @@ export function Footer() {
                 className="text-sm text-neutral-400 hover:text-neutral-200"
                 href="https://discord.gg/nBzRBUEs4b"
               >
-                Community
+                Discord
               </Link>
             </li>
             <li>

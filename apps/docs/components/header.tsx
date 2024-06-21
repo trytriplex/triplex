@@ -6,7 +6,7 @@
  */
 import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { type ReactNode, useEffect } from "react";
+import { useEffect, type ReactNode } from "react";
 import { useSearchStore } from "../stores/search";
 import { cn } from "../util/cn";
 
@@ -49,7 +49,7 @@ export function Header({
           "z-50 col-span-full row-start-1 flex h-16 items-center gap-6 border-b px-10",
         ])}
       >
-        <span className="mr-3">
+        <span className="mr-3 opacity-0">
           <Link
             aria-label="Triplex home"
             className="font text-[2.5rem] text-neutral-300"
