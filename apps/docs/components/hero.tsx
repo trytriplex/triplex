@@ -45,7 +45,7 @@ export function Hero() {
     >
       <div className="w-full px-10 xl:px-28">
         <div className="flex flex-col items-center gap-8 lg:gap-4">
-          <span className="z-10 mb-3 rounded-full border border-blue-400 px-2 text-center text-sm font-semibold text-blue-300">
+          <span className="z-10 mb-3 rounded-full border border-pink-400 px-2 text-center text-sm font-semibold text-pink-300">
             <a
               className="[text-shadow:black_1px_0_20px]"
               href="https://forms.gle/tgM5JJNFrhEC32n98"
