@@ -106,9 +106,6 @@ importers:
       '@types/three':
         specifier: ^0.163.0
         version: 0.163.0
-      '@vercel/analytics':
-        specifier: ^1.0.1
-        version: 1.0.1
       '@vercel/og':
         specifier: ^0.5.9
         version: 0.5.9
@@ -4549,10 +4546,6 @@ packages:
     dependencies:
       '@use-gesture/core': 10.2.24
       react: 18.2.0
-
-  /@vercel/analytics@1.0.1:
-    resolution: {integrity: sha512-Ux0c9qUfkcPqng3vrR0GTrlQdqNJ2JREn/2ydrVuKwM3RtMfF2mWX31Ijqo1opSjNAq6rK76PwtANw6kl6TAow==}
-    dev: false
 
   /@vercel/og@0.5.9:
     resolution: {integrity: sha512-CtjaV/BVHtNCjRtxGqn8Q6AKFLqcG34Byxr91+mY+4eqyp/09LVe9jEeY9WXjbaKvu8syWPMteTpY+YQUQYzSg==}

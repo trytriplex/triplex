@@ -15,7 +15,6 @@
     "@react-three/fiber": "^8.16.1",
     "@types/flexsearch": "^0.7.3",
     "@types/three": "^0.163.0",
-    "@vercel/analytics": "^1.0.1",
     "@vercel/og": "^0.5.9",
     "autoprefixer": "^10.4.14",
     "flexsearch": "0.7.21",

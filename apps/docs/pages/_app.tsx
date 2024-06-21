@@ -4,7 +4,6 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { Analytics } from "@vercel/analytics/react";
 import { type AppProps } from "next/app";
 import { Karla } from "next/font/google";
 import "../globals.css";
@@ -24,8 +23,14 @@ export default function App({ Component, pageProps }: AppProps) {
           font-family: ${karla.style.fontFamily};
         }
       `}</style>
+      <script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-5M74J509GN"
+      ></script>
+      <script>
+        {`window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-5M74J509GN');`}
+      </script>
       <Component {...pageProps} />
-      <Analytics />
     </>
   );
 }
