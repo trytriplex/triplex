@@ -43,15 +43,28 @@ export function Hero() {
       className="relative -mb-20 flex h-[80lvh] min-h-[400px] items-center pt-28"
       id="hero-section"
     >
-      <div className="max-w-[80rem] px-10 xl:px-28">
-        <div className="flex flex-col items-center gap-8 md:items-start lg:gap-4">
-          <h1 className="max-w-2xl text-center text-5xl font-bold tracking-tighter text-neutral-200 md:text-left md:text-6xl lg:max-w-4xl lg:text-7xl">
+      <div className="w-full px-10 xl:px-28">
+        <div className="flex flex-col items-center gap-8 lg:gap-4">
+          <span className="z-10 mb-3 rounded-full border border-blue-400 px-2 text-center text-sm font-semibold text-blue-300">
+            <a
+              className="[text-shadow:black_1px_0_20px]"
+              href="https://forms.gle/tgM5JJNFrhEC32n98"
+              rel="noreferrer"
+              target="_blank"
+            >
+              {" "}
+              Triplex for VS Code is coming — join the waitlist
+            </a>
+          </span>
+
+          <h1 className="max-w-2xl text-center text-5xl font-bold tracking-tighter text-neutral-200 [text-shadow:black_1px_0_50px] md:text-6xl lg:max-w-3xl lg:text-7xl">
             Visually Edit React Three Fiber Components
           </h1>
-          <span className="text-center text-2xl font-medium tracking-tight text-neutral-300 md:max-w-3xl md:text-left lg:text-3xl">
+          <span className="text-center text-2xl font-medium tracking-tight text-neutral-200 [text-shadow:black_1px_0_20px] md:max-w-3xl lg:text-3xl">
             Your component types populate the editor, build scenes, reusable
             components, and more.
           </span>
+
           <div className="flex flex-col gap-4 md:mt-8 md:flex-row">
             <DownloadLink variant="bold" />
 
