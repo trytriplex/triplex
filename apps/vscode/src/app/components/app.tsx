@@ -43,7 +43,7 @@ export function App() {
   }, [initSync, syncContext]);
 
   return (
-    <div className="fixed inset-0 flex">
+    <div className="fixed inset-0 flex select-none">
       <ScenePanel />
       <ContextPanel />
       <div className="relative h-full w-full">

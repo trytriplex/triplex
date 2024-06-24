@@ -27,7 +27,7 @@
     "lint": "eslint ./ --cache",
     "test": "vitest",
     "test:e2e": "playwright test",
-    "typedef": "pnpm --filter @triplex/* --filter create-triplex-project typedef"
+    "typedef": "pnpm --filter @triplex/* --filter create-triplex-project --filter triplex-vsce typedef"
   },
   "lint-staged": {
     "*.{ts,tsx}": "eslint --cache --fix"

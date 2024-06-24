@@ -7,15 +7,34 @@
 import {
   ChevronDownIcon,
   ChevronRightIcon,
-  Component1Icon,
+  LayersIcon,
 } from "@radix-ui/react-icons";
+import { send } from "@triplex/bridge/host";
 import { cn } from "@triplex/lib";
 import { type JsxElementPositions } from "@triplex/server";
-import { VSCodeTextField } from "@vscode/webview-ui-toolkit/react";
+import {
+  BooleanInput,
+  LiteralUnionInput,
+  NumberInput,
+  PropInput,
+  StringInput,
+  TupleInput,
+  UnionInput,
+  type RenderInputs,
+} from "@triplex/ux/inputs";
+import {
+  VSCodeCheckbox,
+  VSCodeDropdown,
+  VSCodeOption,
+  VSCodeTextField,
+} from "@vscode/webview-ui-toolkit/react";
 import { Suspense, useLayoutEffect, useReducer, useRef, useState } from "react";
 import { useLazySubscription } from "../hooks/ws";
-import { useSceneStore } from "../stores/scene";
+import { useSceneStore, type ElementLocation } from "../stores/scene";
+import { type SuppressVSCodeError } from "../types";
+import { sendVSCE } from "../util/bridge";
 import { IconButton, Pressable } from "./button";
+import { ScrollContainer } from "./scroll-container";
 import { Surface, useOnSurfaceStateChange } from "./surface";
 
 function SceneElement(props: JsxElementPositions & { level: number }) {
@@ -137,23 +156,215 @@ function SceneElements({
 
 function ElementsPanel() {
   const context = useSceneStore((store) => store.context);
+  const selected = useSceneStore((store) => store.selected);
 
   return (
     <Surface
-      className="w-48 flex-shrink-0 overflow-auto border-r pb-1.5"
+      className="grid h-full w-48 flex-shrink-0 grid-rows-[1fr_2fr] overflow-hidden border-r pb-1.5"
       shape="square"
     >
-      <div className="flex border-t border-t-transparent p-1.5">
+      <ScrollContainer>
+        <div className="min-w-0">
+          <div className="bg-overlay flex border-t border-t-transparent p-1.5">
+            <VSCodeTextField
+              className="w-full opacity-70 focus:opacity-100"
+              onFocus={(e) => e.stopPropagation()}
+              placeholder="Filter elements..."
+            />
+          </div>
+          <ul>
+            <Suspense>
+              <SceneElements
+                exportName={context.exportName}
+                path={context.path}
+              />
+            </Suspense>
+          </ul>
+        </div>
+      </ScrollContainer>
+      <ScrollContainer className="border-overlay border-t">
+        <Suspense>{selected && <Selection selected={selected} />}</Suspense>
+      </ScrollContainer>
+    </Surface>
+  );
+}
+
+const renderPropInputs: RenderInputs = ({ onChange, onConfirm, prop }) => {
+  if (prop.type === "string") {
+    return (
+      <StringInput
+        actionId="scene_controls"
+        name={prop.prop.name}
+        onChange={onChange}
+        onConfirm={onConfirm}
+        persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
+        required={prop.prop.required}
+      >
+        {({ onChange, ref, ...props }) => (
+          <VSCodeTextField
+            {...props}
+            className="w-full"
+            onInput={onChange as SuppressVSCodeError}
+            ref={ref as SuppressVSCodeError}
+          >
+            {prop.prop.name}
+          </VSCodeTextField>
+        )}
+      </StringInput>
+    );
+  }
+
+  if (prop.type === "number") {
+    return (
+      <NumberInput
+        actionId="scene_controls"
+        name={prop.prop.name}
+        onChange={onChange}
+        onConfirm={onConfirm}
+        persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
+        required={prop.prop.required}
+      >
+        {({ onChange, ref, ...props }) => (
+          <div>
+            <label className="block">{prop.prop.name}</label>
+            <input
+              {...props}
+              className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder mb-1 h-[26px] w-full rounded-sm border px-[9px] focus:outline-none"
+              onInput={onChange}
+              ref={ref}
+              type="number"
+            />
+          </div>
+        )}
+      </NumberInput>
+    );
+  }
+
+  if (prop.type === "boolean") {
+    return (
+      <BooleanInput
+        actionId="scene_controls"
+        name={prop.prop.name}
+        onChange={onChange}
+        onConfirm={onConfirm}
+        persistedValue={"value" in prop.prop ? prop.prop.value : false}
+      >
+        {({ onChange, ref, ...props }) => (
+          <VSCodeCheckbox
+            {...props}
+            className="m-0"
+            onChange={onChange as SuppressVSCodeError}
+            ref={ref as SuppressVSCodeError}
+          >
+            {prop.prop.name}
+          </VSCodeCheckbox>
+        )}
+      </BooleanInput>
+    );
+  }
+
+  if (prop.type === "union") {
+    return (
+      <div>
+        <label className="block">{prop.prop.name}</label>
+        <UnionInput
+          onChange={onChange}
+          onConfirm={onConfirm}
+          persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
+          values={prop.prop.shape}
+        >
+          {renderPropInputs}
+        </UnionInput>
+      </div>
+    );
+  }
+
+  if (prop.type === "tuple") {
+    return (
+      <div>
+        <label className="block">{prop.prop.name}</label>
+        <TupleInput
+          onChange={onChange}
+          onConfirm={onConfirm}
+          persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
+          values={prop.prop.shape}
+        >
+          {renderPropInputs}
+        </TupleInput>
+      </div>
+    );
+  }
+
+  if (prop.type === "union-literal") {
+    return (
+      <LiteralUnionInput
+        actionId="scene_controls"
+        name={prop.prop.name}
+        onChange={onChange}
+        onConfirm={onConfirm}
+        persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
+        required={prop.prop.required}
+        values={prop.prop.shape}
+      >
+        {({ onChange, options, ref, ...props }) => (
+          <div>
+            <label className="block" htmlFor={props.id}>
+              {prop.prop.name}
+            </label>
+            <VSCodeDropdown
+              {...props}
+              className="w-full"
+              onChange={onChange as SuppressVSCodeError}
+              ref={ref as SuppressVSCodeError}
+            >
+              {options.map((option) => (
+                <VSCodeOption key={option[0]} value={option[1]}>
+                  {option[0]}
+                </VSCodeOption>
+              ))}
+            </VSCodeDropdown>
+          </div>
+        )}
+      </LiteralUnionInput>
+    );
+  }
+
+  return null;
+};
+
+export function Selection({ selected }: { selected: ElementLocation }) {
+  const props = useLazySubscription(
+    "/scene/:path/object/:line/:column",
+    selected
+  );
+
+  return (
+    <>
+      <div className="bg-overlay flex border-t border-t-transparent p-1.5">
         <VSCodeTextField
           className="w-full opacity-70 focus:opacity-100"
           onFocus={(e) => e.stopPropagation()}
-          placeholder="Filter elements..."
+          placeholder="Filter props..."
         />
       </div>
-      <ul>
-        <SceneElements exportName={context.exportName} path={context.path} />
-      </ul>
-    </Surface>
+      <div className="flex flex-col gap-1.5 px-2">
+        <PropInput
+          onChange={(propName, propValue) =>
+            send("request-set-element-prop", {
+              ...selected,
+              propName,
+              propValue,
+            })
+          }
+          onConfirm={(propName, propValue) => {
+            sendVSCE("element-set-prop", { ...selected, propName, propValue });
+          }}
+          props={props.props}
+        >
+          {renderPropInputs}
+        </PropInput>
+      </div>
+    </>
   );
 }
 
@@ -161,17 +372,17 @@ export function ScenePanel() {
   const [shown, setShown] = useState<"elements" | undefined>(undefined);
 
   return (
-    <>
+    <div className="flex flex-col">
       <div
         className={cn([
-          !shown && "absolute left-1.5 top-1.5 gap-1 rounded border p-0.5",
-          shown && "border-l border-r border-t border-t-transparent p-1.5",
+          !shown && "absolute left-[5px] top-[5px] gap-1 rounded border p-0.5",
+          shown && "border-b border-r p-1.5",
           "bg-overlay border-overlay z-10 flex flex-col items-start opacity-90",
         ])}
       >
         <IconButton
           actionId="scenepanel_elements_toggle"
-          icon={Component1Icon}
+          icon={LayersIcon}
           isSelected={shown === "elements"}
           label="View Scene Elements"
           onClick={() =>
@@ -181,11 +392,7 @@ export function ScenePanel() {
         />
       </div>
 
-      {shown === "elements" && (
-        <Suspense>
-          <ElementsPanel />
-        </Suspense>
-      )}
-    </>
+      {shown === "elements" && <ElementsPanel />}
+    </div>
   );
 }

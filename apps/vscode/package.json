@@ -34,7 +34,7 @@
     "prepack": "node ../../scripts/workspace-run.js ./apply-publish-config.js",
     "pack": "node scripts/pack.js",
     "publish": "cd out && vsce publish --no-dependencies",
-    "typedef": "tsc"
+    "typedef": "tsc -p ./tsconfig.json && tsc -p ./src/app/tsconfig.json"
   },
   "contributes": {
     "commands": [

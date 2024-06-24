@@ -8,14 +8,14 @@ import { compose, on, send } from "@triplex/bridge/host";
 import { useCallback } from "react";
 import { create } from "zustand";
 
-interface ElementLocation {
+export interface ElementLocation {
   column: number;
   line: number;
   parentPath: string;
   path: string;
 }
 
-interface SceneStore {
+export interface SceneStore {
   blurElement(): void;
   context: {
     exportName: string;

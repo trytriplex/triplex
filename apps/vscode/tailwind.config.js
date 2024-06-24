@@ -12,6 +12,7 @@ const { join } = require("upath");
 module.exports = {
   content: [
     join(__dirname, "./src/app/**/*.tsx"),
+    join(__dirname, "../packages/@triplex/ux/**/*.tsx"),
     join(__dirname, "./index.html"),
     join(__dirname, "./loading.html"),
   ],
@@ -20,11 +21,16 @@ module.exports = {
       "active-selected": "var(--vscode-list-activeSelectionBackground)",
       hover: "var(--vscode-toolbar-hoverBackground)",
       "inactive-selected": "var(--vscode-list-inactiveSelectionBackground)",
+      input: "var(--vscode-input-background)",
       "list-hovered": "var(--vscode-list-hoverBackground)",
       overlay: "var(--panel-view-background)",
+      scrollbar: "var(--vscode-scrollbarSlider-background)",
+      "scrollbar-active": "var(--vscode-scrollbarSlider-activeBackground)",
+      "scrollbar-hovered": "var(--vscode-scrollbarSlider-hoverBackground)",
       selected: "var(--vscode-toolbar-activeBackground)",
     },
     borderColor: {
+      input: "var(--vscode-dropdown-border)",
       overlay: "var(--panel-view-border)",
       selected: "var(--vscode-focusBorder)",
       transparent: "transparent",
@@ -54,6 +60,8 @@ module.exports = {
     textColor: {
       "active-selected": "var(--vscode-list-activeSelectionForeground)",
       default: "var(--vscode-foreground)",
+      input: "var(--vscode-input-foreground)",
+      "input-placeholder": "var(--vscode-input-placeholderForeground)",
       "list-hovered": "var(--vscode-list-hoverForeground)",
       selected: "var(--vscode-tab-activeForeground)",
     },

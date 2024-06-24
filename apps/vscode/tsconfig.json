@@ -1,7 +1,7 @@
 {
   "extends": "../../.tsconfig/node.json",
   "include": ["."],
-  "exclude": ["dist", "build", "node_modules"],
+  "exclude": ["dist", "build", "node_modules", "src/app"],
   "ts-node": {
     "transpileOnly": true,
     "swc": true

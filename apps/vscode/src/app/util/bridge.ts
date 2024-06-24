@@ -6,6 +6,14 @@
  */
 import { on, type ClientSendEventData } from "@triplex/bridge/host";
 
+declare global {
+  interface Window {
+    acquireVsCodeApi: () => {
+      postMessage: (data: unknown) => void;
+    };
+  }
+}
+
 export const vscode = window.acquireVsCodeApi();
 
 export interface VSCodeEvent {
@@ -37,6 +45,13 @@ export function onVSCE<TEvent extends keyof VSCodeEvent>(
   return () => {
     window.removeEventListener("message", cb);
   };
+}
+
+export function sendVSCE<TEvent extends keyof ClientSendEventData>(
+  eventName: TEvent,
+  data: ClientSendEventData[TEvent]
+) {
+  vscode.postMessage({ data, eventName });
 }
 
 export function forwardClientMessages(eventName: keyof ClientSendEventData) {
