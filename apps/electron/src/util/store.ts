@@ -23,9 +23,7 @@ export const userStore = new Store<{ userId: string }>({
   },
 });
 
-/**
- * Holds the global configuration for the editor.
- */
+/** Holds the global configuration for the editor. */
 export const editorConfigStore = new Store<EditorSettings>({
   name: "editor-config",
   schema: {

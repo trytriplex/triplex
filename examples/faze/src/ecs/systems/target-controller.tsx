@@ -15,7 +15,7 @@ const V1 = new Vector3();
 
 export function useTargetController() {
   const { entities } = useEntities(
-    world.with("target", "velocity", "sceneObject")
+    world.with("target", "velocity", "sceneObject"),
   );
 
   useFrame((_, delta) => {
@@ -59,7 +59,7 @@ export function useTargetController() {
 
       const nextVelocityVector = sub(
         copy(V1, target),
-        sceneObject.current.position
+        sceneObject.current.position,
       )
         .normalize()
         .multiplyScalar(speed || 1);

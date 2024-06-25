@@ -57,7 +57,7 @@ export function SceneFrame({
         exportName: target.exportName,
         path: target.path,
       });
-    }
+    },
   );
 
   const onFocus = useCallback(
@@ -75,7 +75,7 @@ export function SceneFrame({
         path: data.path,
       });
     },
-    []
+    [],
   );
 
   const onBlurObject = useCallback(() => {

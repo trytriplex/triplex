@@ -8,6 +8,6 @@ declare module "launch-editor" {
   export default function launch(
     path: string,
     optionalEditor?: string,
-    err?: (fileName: string, errMsg: string) => void
+    err?: (fileName: string, errMsg: string) => void,
   );
 }

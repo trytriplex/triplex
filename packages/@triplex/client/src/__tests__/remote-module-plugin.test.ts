@@ -32,7 +32,7 @@ describe("virtual plugin", () => {
     });
 
     const actual = await plugin.load?.(
-      join(__dirname, "fixtures", "index.tsx")
+      join(__dirname, "fixtures", "index.tsx"),
     );
 
     expect(actual).toEqual("code");

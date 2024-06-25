@@ -25,12 +25,12 @@ const exec = promisify(execCb);
 async function main() {
   program
     .description(
-      "Initializes a Triplex project into a new or existing repository.\nPassing any args will run in non-interactive mode."
+      "Initializes a Triplex project into a new or existing repository.\nPassing any args will run in non-interactive mode.",
     )
     .option("--name <name>", "name of your project")
     .option(
       "--pkg-manager <name>",
-      "package manager to use when installing dependencies"
+      "package manager to use when installing dependencies",
     )
     .option("--cwd <cwd>", "target working directory")
     .action(async (args) => {
@@ -43,7 +43,7 @@ async function main() {
         // Non-interactive mode
         if (!args.pkgManager) {
           program.error(
-            "Missing --pkg-manager arg. Valid values are: npm, pnpm, yarn."
+            "Missing --pkg-manager arg. Valid values are: npm, pnpm, yarn.",
           );
         }
 
@@ -53,7 +53,7 @@ async function main() {
 
         if (!["npm", "yarn", "pnpm"].includes(args.pkgManager)) {
           program.error(
-            `The package manager ${args.pkgManager} is not supported.`
+            `The package manager ${args.pkgManager} is not supported.`,
           );
         }
 

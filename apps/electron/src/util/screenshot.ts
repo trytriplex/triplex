@@ -28,7 +28,7 @@ function buildPath({ exportName, path }: { exportName: string; path: string }) {
     appDataDir,
     "tmp",
     "thumbnails",
-    `${filepathHash}-${exportName}.png`
+    `${filepathHash}-${exportName}.png`,
   );
 
   return thumbnailPath;
@@ -59,8 +59,8 @@ export async function screenshotComponent({
 
   thumbnailWindow.loadURL(
     `http://localhost:${port}/__thumbnail?path=${encodeURIComponent(
-      path
-    )}&exportName=${exportName}`
+      path,
+    )}&exportName=${exportName}`,
   );
 
   return new Promise((resolve, reject) => {
@@ -79,7 +79,7 @@ export async function screenshotComponent({
               undefined,
               {
                 stayHidden: true,
-              }
+              },
             );
 
             thumbnailWindow.close();
@@ -90,7 +90,7 @@ export async function screenshotComponent({
             resolve(thumbnailPath);
           }, screenShotTimeout);
         }
-      }
+      },
     );
   });
 }

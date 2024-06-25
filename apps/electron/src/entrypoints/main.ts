@@ -117,7 +117,7 @@ function prepareMenu() {
     const defaultMenu = Menu.buildFromTemplate(
       process.platform === "darwin"
         ? [appMenu, defaultFileMenu]
-        : [defaultFileMenu]
+        : [defaultFileMenu],
     );
     Menu.setApplicationMenu(defaultMenu);
     setMenuClickHandlers();
@@ -130,7 +130,7 @@ function prepareMenu() {
       // eslint-disable-next-line unicorn/consistent-function-scoping
       const callback = (_: unknown, data: MenuItemConstructorOptions[]) => {
         const menu = Menu.buildFromTemplate(
-          process.platform === "darwin" ? [appMenu, ...data] : data
+          process.platform === "darwin" ? [appMenu, ...data] : data,
         );
 
         Menu.setApplicationMenu(menu);
@@ -157,7 +157,7 @@ function prepareMenu() {
 async function showSaveDialog(
   activeWindow: BrowserWindow,
   defaultPath: string,
-  cwd: string
+  cwd: string,
 ): Promise<string | undefined> {
   const { filePath } = await dialog.showSaveDialog(activeWindow, {
     defaultPath,
@@ -183,7 +183,7 @@ async function showSaveDialog(
 
     if (response === 1) {
       shell.openExternal(
-        "https://triplex.dev/docs/supporting/saving-outside-cwd"
+        "https://triplex.dev/docs/supporting/saving-outside-cwd",
       );
     }
   }
@@ -193,13 +193,13 @@ async function showSaveDialog(
 
 function applyWindowIpcHandlers(
   activeWindow: BrowserWindow,
-  { cwd }: { cwd: string }
+  { cwd }: { cwd: string },
 ) {
   activeWindow.webContents.ipc.handle(
     "show-save-dialog",
     (_, filename: string) => {
       return showSaveDialog(activeWindow, filename, cwd);
-    }
+    },
   );
 
   activeWindow.webContents.on("before-input-event", (_, input) => {
@@ -331,14 +331,14 @@ async function main() {
     });
 
     await activeProjectWindow.loadFile(
-      require.resolve(`@triplex/editor/loading.html`)
+      require.resolve(`@triplex/editor/loading.html`),
     );
 
     try {
       const result = await ensureDepsInstall(
         cwd,
         welcomeWindow || activeProjectWindow,
-        abortContoller.signal
+        abortContoller.signal,
       );
 
       if (result === false) {
@@ -356,12 +356,12 @@ async function main() {
           detail: error.message,
           message: "Could not install project dependencies",
           type: "error",
-        }
+        },
       );
 
       if (response === 1) {
         shell.openExternal(
-          "https://triplex.dev/docs/supporting/installing-dependencies"
+          "https://triplex.dev/docs/supporting/installing-dependencies",
         );
       }
 
@@ -390,7 +390,7 @@ async function main() {
         {
           cwd,
           data: { config, ports, renderer },
-        }
+        },
       );
 
       p.on("invalidate-thumbnail", (data) => {
@@ -440,29 +440,29 @@ async function main() {
               "Cross-Origin-Resource-Policy": "cross-origin",
             },
           });
-        }
+        },
       );
 
       await (process.env.TRIPLEX_ENV === "development"
         ? activeProjectWindow.loadURL(
-            `http://localhost:${editorDevPort}${searchParams}`
+            `http://localhost:${editorDevPort}${searchParams}`,
           )
         : activeProjectWindow.loadFile(
             require.resolve(`@triplex/editor/dist/index.html`),
-            { search: searchParams }
+            { search: searchParams },
           ));
     } catch (error) {
       const searchParams = `?error=${encodeURIComponent(
-        JSON.stringify(error)
+        JSON.stringify(error),
       )}`;
 
       await (process.env.TRIPLEX_ENV === "development"
         ? activeProjectWindow.loadURL(
-            `http://localhost:${editorDevPort}/fallback-error.html${searchParams}`
+            `http://localhost:${editorDevPort}/fallback-error.html${searchParams}`,
           )
         : activeProjectWindow.loadFile(
             require.resolve(`@triplex/editor/dist/fallback-error.html`),
-            { search: searchParams }
+            { search: searchParams },
           ));
     }
   }
@@ -553,7 +553,7 @@ async function main() {
 
         if (response === 1) {
           shell.openExternal(
-            "https://triplex.dev/docs/supporting/installing-dependencies"
+            "https://triplex.dev/docs/supporting/installing-dependencies",
           );
         }
 
@@ -576,7 +576,7 @@ async function main() {
         // Need to figure out how best we can support it with the file:// URL.
         const filename = opts ? path : path;
         shell.openPath(filename);
-      }
+      },
     );
 
     ipcMain.on("update-editor-config", (_, key: string, value: unknown) => {

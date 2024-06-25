@@ -12,7 +12,7 @@ const args = Array.from(process.argv).reduce((acc, arg) => {
 
     if (key.match(/[A-Z]/)) {
       throw new Error(
-        `invariant: key ${key} must be lowercase for cross platform support`
+        `invariant: key ${key} must be lowercase for cross platform support`,
       );
     }
 

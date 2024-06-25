@@ -35,7 +35,7 @@ describe("scene object component", () => {
             translate: false,
           }}
         />
-      </SceneObjectContext.Provider>
+      </SceneObjectContext.Provider>,
     );
 
     expect(toGraph()).toMatchInlineSnapshot(`
@@ -67,7 +67,7 @@ describe("scene object component", () => {
           }}
           ref={ref}
         />
-      </SceneObjectContext.Provider>
+      </SceneObjectContext.Provider>,
     );
 
     expect(getTriplexMeta(ref.current)?.name).toEqual("mesh");
@@ -120,7 +120,7 @@ describe("scene object component", () => {
             ref={ref3}
           />
         </SceneObject>
-      </SceneObjectContext.Provider>
+      </SceneObjectContext.Provider>,
     );
 
     expect(getTriplexMeta(ref1.current)?.name).toEqual("group-1");
@@ -162,14 +162,14 @@ describe("scene object component", () => {
             translate: false,
           }}
         />
-      </SceneObjectContext.Provider>
+      </SceneObjectContext.Provider>,
     );
 
     expect(
       resolveObject3DMeta(ref.current!, {
         elements: [{ column: 1, line: 1 }],
         path: "/foo",
-      })
+      }),
     ).toMatchObject({
       column: 1,
       line: 1,
@@ -209,7 +209,7 @@ describe("scene object component", () => {
               attach="shadow-camera"
             />
           </SceneObject>
-        </SceneObjectContext.Provider>
+        </SceneObjectContext.Provider>,
       );
     } catch (error_) {
       error = error_ as Error;
@@ -266,7 +266,7 @@ describe("scene object component", () => {
             }}
           />
         </SceneObject>
-      </SceneObjectContext.Provider>
+      </SceneObjectContext.Provider>,
     );
 
     const actual = resolveObject3DMeta(ref.current!, {
@@ -342,7 +342,7 @@ describe("scene object component", () => {
             }}
           />
         </SceneObject>
-      </SceneObjectContext.Provider>
+      </SceneObjectContext.Provider>,
     );
 
     const actual = resolveObject3DMeta(ref.current!, {
@@ -403,7 +403,7 @@ describe("scene object component", () => {
             translate: false,
           }}
         />
-      </Camera>
+      </Camera>,
     );
 
     expect(tree.getByName("__stub_map_controls__")).toBeUndefined();
@@ -424,14 +424,14 @@ describe("scene object component", () => {
             translate: false,
           }}
         />
-      </Camera>
+      </Camera>,
     );
 
     await act(() => {
       return send(
         "request-state-change",
         { camera: "default", state: "play" },
-        true
+        true,
       );
     });
 

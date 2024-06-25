@@ -91,15 +91,15 @@ export const scripts = {
 
           ${metaHot}.data.render = bootstrap(document.getElementById('root'));
           ${metaHot}.data.render({ config: ${JSON.stringify(
-        template.config
-      )}, files, provider });
+            template.config,
+          )}, files, provider });
         }
 
         ${metaHot}.accept((mod) => {
           if (mod) {
             ${metaHot}.data.render({ config: ${JSON.stringify(
-        template.config
-      )}, files: mod.files, provider: mod.provider });
+              template.config,
+            )}, files: mod.files, provider: mod.provider });
           }
         });
       }
@@ -132,7 +132,7 @@ export const scripts = {
   invalidateHMRHeader: `import { __hmr_import } from "triplex:hmr-import";`,
   thumbnail: (
     template: TemplateOpts,
-    { exportName, path }: { exportName: string; path: string }
+    { exportName, path }: { exportName: string; path: string },
   ) =>
     [
       `import { thumbnail } from "${template.pkgName}";`,

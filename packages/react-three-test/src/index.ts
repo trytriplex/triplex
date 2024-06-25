@@ -13,7 +13,7 @@ global.IS_REACT_ACT_ENVIRONMENT = true;
 
 function find(
   nodes: TreeNode[],
-  predicate: (node: TreeNode) => boolean
+  predicate: (node: TreeNode) => boolean,
 ): TreeNode | undefined {
   for (const node of nodes) {
     if (predicate(node)) {
@@ -43,7 +43,7 @@ export async function render(jsx: JSX.Element) {
   return {
     ...controls,
     act: renderer.act as (
-      cb: () => unknown | Promise<unknown>
+      cb: () => unknown | Promise<unknown>,
     ) => Promise<unknown>,
     get canvas() {
       return canvas;

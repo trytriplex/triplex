@@ -12,14 +12,14 @@ test("undo an action", async ({ editorR3F }) => {
   await editorR3F.contextPanel.input("Position").locator.fill("2");
   await editorR3F.keyboard.press("Enter");
   await expect(
-    editorR3F.fileTabs.tab("scene.tsx").unsavedIndicator
+    editorR3F.fileTabs.tab("scene.tsx").unsavedIndicator,
   ).toBeVisible();
   await editorR3F.contextPanel.waitForInputValue("number", "2");
 
   await editorR3F.undo();
 
   await expect(
-    editorR3F.fileTabs.tab("scene.tsx").unsavedIndicator
+    editorR3F.fileTabs.tab("scene.tsx").unsavedIndicator,
   ).toBeHidden();
 });
 
@@ -28,17 +28,17 @@ test("redo an action", async ({ editorR3F }) => {
   await editorR3F.contextPanel.input("Position").locator.fill("2");
   await editorR3F.keyboard.press("Enter");
   await expect(
-    editorR3F.fileTabs.tab("scene.tsx").unsavedIndicator
+    editorR3F.fileTabs.tab("scene.tsx").unsavedIndicator,
   ).toBeVisible();
   await editorR3F.contextPanel.waitForInputValue("number", "2");
   await editorR3F.undo();
   await expect(
-    editorR3F.fileTabs.tab("scene.tsx").unsavedIndicator
+    editorR3F.fileTabs.tab("scene.tsx").unsavedIndicator,
   ).toBeHidden();
 
   await editorR3F.redo();
 
   await expect(
-    editorR3F.fileTabs.tab("scene.tsx").unsavedIndicator
+    editorR3F.fileTabs.tab("scene.tsx").unsavedIndicator,
   ).toBeVisible();
 });

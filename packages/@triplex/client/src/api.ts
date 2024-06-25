@@ -8,7 +8,7 @@ export async function getCode(path: string, port: number): Promise<string> {
   const { default: fetch } = await import("node-fetch");
 
   const result = await fetch(
-    `http://127.0.0.1:${port}/fs/${encodeURIComponent(path)}`
+    `http://127.0.0.1:${port}/fs/${encodeURIComponent(path)}`,
   );
 
   if (!result.ok) {

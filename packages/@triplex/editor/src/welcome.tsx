@@ -138,7 +138,7 @@ function WelcomeScreen() {
             icon={GlobeIcon}
             onClick={() =>
               window.triplex.openLink(
-                "https://github.com/try-triplex/triplex/releases"
+                "https://github.com/try-triplex/triplex/releases",
               )
             }
             size="tight"
@@ -174,5 +174,5 @@ createRoot(document.getElementById("root")!).render(
     >
       <WelcomeScreen />
     </TelemetryProvider>
-  </StrictMode>
+  </StrictMode>,
 );

@@ -16,7 +16,7 @@ globalThis.DOMRect = class DOMRect {
     public x = 0,
     public y = 0,
     public width = 0,
-    public height = 0
+    public height = 0,
   ) {}
   static fromRect(other?: DOMRectInit): DOMRect {
     return new DOMRect(other?.x, other?.y, other?.width, other?.height);

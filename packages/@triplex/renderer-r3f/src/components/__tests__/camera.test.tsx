@@ -55,7 +55,7 @@ describe("camera", () => {
     await render(
       <Camera>
         <HoistControls />
-      </Camera>
+      </Camera>,
     );
 
     expect(controlsRef.current).toEqual({
@@ -77,7 +77,7 @@ describe("camera", () => {
     await render(
       <Camera defaultCamera="user">
         <HoistControls />
-      </Camera>
+      </Camera>,
     );
 
     expect(controlsRef.current).toEqual(null);
@@ -95,7 +95,7 @@ describe("camera", () => {
     const { act, fireDOMEvent } = await render(
       <Camera>
         <HoistControls />
-      </Camera>
+      </Camera>,
     );
 
     await act(() => fireDOMEvent.keyDown(document, { key: "Shift" }));
@@ -115,7 +115,7 @@ describe("camera", () => {
     const { act, fireDOMEvent } = await render(
       <Camera>
         <HoistControls />
-      </Camera>
+      </Camera>,
     );
     await act(() => fireDOMEvent.keyDown(document, { key: "Shift" }));
 
@@ -143,7 +143,7 @@ describe("camera", () => {
     const { act, fireDOMEvent } = await render(
       <Camera>
         <HoistControls />
-      </Camera>
+      </Camera>,
     );
 
     await act(() => fireDOMEvent.keyDown(document, { key: "Shift" }));

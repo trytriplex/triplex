@@ -32,11 +32,11 @@ export function forwardKeydownEvents() {
 export function on<TEvent extends HostSendEventName>(
   eventName: TEvent,
   callback: (
-    data: HostSendEventData[TEvent]
+    data: HostSendEventData[TEvent],
   ) =>
     | void
     | HostSendEventResponse[TEvent]
-    | Promise<HostSendEventResponse[TEvent]>
+    | Promise<HostSendEventResponse[TEvent]>,
 ) {
   const cb = async (e: MessageEvent) => {
     if (typeof e.data === "object" && e.data.eventName === eventName) {
@@ -65,7 +65,7 @@ export function on<TEvent extends HostSendEventName>(
 export function send<TEvent extends ClientSendEventName>(
   eventName: TEvent,
   data: ClientSendEventData[TEvent],
-  awaitResponse = false
+  awaitResponse = false,
 ): Promise<ClientSendEventResponse[TEvent]> {
   if (eventName.startsWith("self:")) {
     window.postMessage({ data, eventName }, "*");
@@ -89,7 +89,7 @@ export function send<TEvent extends ClientSendEventName>(
 
 function respond<TEvent extends keyof HostSendEventResponse>(
   eventName: TEvent,
-  data: HostSendEventResponse[TEvent]
+  data: HostSendEventResponse[TEvent],
 ) {
   window.parent.postMessage({ data, eventName: `${eventName}Response` }, "*");
 }
@@ -111,7 +111,7 @@ export type UnknownComponent = (props: Record<string, unknown>) => JSX.Element;
 export type Config = { provider: string };
 
 export type BootstrapFunction = (
-  container: HTMLElement
+  container: HTMLElement,
 ) => (opts: {
   config: Config;
   files: Modules;
@@ -119,7 +119,7 @@ export type BootstrapFunction = (
 }) => void;
 
 export type ThumbnailFunction = (
-  container: HTMLElement
+  container: HTMLElement,
 ) => (opts: {
   component: UnknownComponent;
   provider: ProviderComponent;

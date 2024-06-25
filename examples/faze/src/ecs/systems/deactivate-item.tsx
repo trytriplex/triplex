@@ -12,7 +12,7 @@ import { world } from "../store";
 export function useDeactivateItem() {
   const { entities: items } = useEntities(world.with("item", "focused"));
   const { entities: players } = useEntities(
-    world.with("player", "focused", "velocity")
+    world.with("player", "focused", "velocity"),
   );
   const { entities: npcs } = useEntities(world.with("npc", "focused"));
 

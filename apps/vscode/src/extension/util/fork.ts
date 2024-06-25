@@ -17,7 +17,7 @@ const log = logger("process_fork");
  */
 export function fork<TData extends Record<string, unknown>>(
   filename: string,
-  { cwd, data }: { cwd: string; data: TData & { cwd: string } }
+  { cwd, data }: { cwd: string; data: TData & { cwd: string } },
 ): Promise<{
   data?: Record<string, unknown>;
   kill(): void;
@@ -99,7 +99,7 @@ export function fork<TData extends Record<string, unknown>>(
           },
           on(
             eventName: string,
-            callback: (data: Record<string, unknown>) => void
+            callback: (data: Record<string, unknown>) => void,
           ) {
             messageCallbacks[eventName] = callback;
           },

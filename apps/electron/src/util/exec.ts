@@ -9,7 +9,7 @@ import { env } from "./env";
 
 export async function exec(
   cmd: string,
-  { cwd, signal }: { cwd?: string; signal?: AbortSignal }
+  { cwd, signal }: { cwd?: string; signal?: AbortSignal },
 ) {
   return new Promise<void>((resolve, reject) => {
     execCb(
@@ -25,7 +25,7 @@ export async function exec(
         }
 
         resolve();
-      }
+      },
     );
   });
 }

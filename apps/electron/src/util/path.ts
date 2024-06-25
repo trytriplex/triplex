@@ -9,7 +9,7 @@ import { join, resolve } from "upath";
 
 export async function findParentFile(
   dirpath: string,
-  filename: string
+  filename: string,
 ): Promise<string> {
   const next = resolve(dirpath, "..");
 

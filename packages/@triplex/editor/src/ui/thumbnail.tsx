@@ -62,8 +62,8 @@ export function AssetThumbnail({
                     `http://localhost:${
                       window.triplex.env.ports.client
                     }/__thumbnail?path=${encodeURIComponent(
-                      asset.path
-                    )}&exportName=${asset.exportName}`
+                      asset.path,
+                    )}&exportName=${asset.exportName}`,
                   )
                 }
                 size="sm"

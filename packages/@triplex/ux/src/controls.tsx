@@ -99,7 +99,7 @@ export function ButtonGroupControl({
             send("control-triggered", { id: control.id });
             setSelected(control.id);
           },
-        })
+        }),
       )}
     </>
   );

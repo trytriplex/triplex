@@ -39,7 +39,7 @@ describe("transform transpiled jsx", () => {
     `);
 
     expect(actual?.code).toMatchInlineSnapshot(
-      "\"document.createElement('div', {});\""
+      "\"document.createElement('div', {});\"",
     );
   });
 

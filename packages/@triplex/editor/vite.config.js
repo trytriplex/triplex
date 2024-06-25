@@ -7,9 +7,7 @@
 import react from "@vitejs/plugin-react";
 import { resolve } from "upath";
 
-/**
- * @type {import("vite").UserConfig}
- */
+/** @type {import("vite").UserConfig} */
 export default {
   base: "./",
   build: {

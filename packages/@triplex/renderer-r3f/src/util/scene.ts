@@ -21,7 +21,7 @@ export type EditorNodeData = RendererElementProps["__meta"] & {
 
 export const findTransformedSceneObject = (
   sceneObject: Object3D,
-  filter: { transform: "translate" | "scale" | "rotate" }
+  filter: { transform: "translate" | "scale" | "rotate" },
 ): Object3D => {
   let foundExactSceneObject: Object3D | undefined = undefined;
   let foundTranslatedSceneObject: Object3D | undefined;
@@ -52,7 +52,7 @@ export const findTransformedSceneObject = (
 };
 
 export function hasTriplexMeta(
-  obj: Object3D
+  obj: Object3D,
 ): obj is Object3D & { __triplex: TriplexMeta & { __r3f: unknown } } {
   if ("__triplex" in obj) {
     return true;
@@ -75,7 +75,7 @@ export function isActiveElement(
   filter: {
     elements: { column: number; line: number }[];
     path: string;
-  }
+  },
 ): boolean {
   if (filter.path === node.path) {
     for (const element of filter.elements) {
@@ -95,7 +95,7 @@ export function resolveObject3DMeta(
         elements: { column: number; line: number }[];
         path: string;
       }
-    | { column: number; line: number; path: string }
+    | { column: number; line: number; path: string },
 ): TriplexResolvedMeta | null {
   let parentObject: Object3D | null = obj;
 
@@ -130,7 +130,7 @@ export function resolveObject3DMeta(
 
 export const findObject3D = (
   scene: Object3D,
-  filter: { column: number; line: number; path: string }
+  filter: { column: number; line: number; path: string },
 ): Object3D | null => {
   let foundSceneObject: Object3D | null = null;
 
@@ -171,7 +171,7 @@ export const resolveObject3D = (
     line: number;
     path: string;
     transform: "translate" | "scale" | "rotate";
-  }
+  },
 ): EditorNodeData | null => {
   const target = findObject3D(scene, filter);
 

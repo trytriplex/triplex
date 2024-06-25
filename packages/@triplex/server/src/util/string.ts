@@ -5,12 +5,10 @@
  * file in the root directory of this source tree.
  */
 
-/**
- * Converts an object to JSON while ensuring undefined values are preserved.
- */
+/** Converts an object to JSON while ensuring undefined values are preserved. */
 export function stringifyJSON(value: unknown): string {
   return JSON.stringify(value, (_k, v) =>
-    v === undefined ? "__UNDEFINED__" : v
+    v === undefined ? "__UNDEFINED__" : v,
   );
 }
 

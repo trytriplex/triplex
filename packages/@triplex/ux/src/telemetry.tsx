@@ -43,7 +43,7 @@ export type ActionIdSafe = `${ActionContext}_${ActionGroup}${string}`;
 function mergeDeepDuplicates<TValue>(
   value: TValue,
   index: number,
-  array: TValue[]
+  array: TValue[],
 ) {
   return (
     index === array.length - 1 ||
@@ -71,7 +71,7 @@ class Analytics4 {
     trackingID: string,
     secretKey: string,
     clientID: string,
-    sessionID: string
+    sessionID: string,
   ) {
     this.trackingID = trackingID;
     this.secretKey = secretKey;
@@ -153,7 +153,7 @@ class Analytics4 {
         {
           body: JSON.stringify(payload),
           method: "POST",
-        }
+        },
       ).catch(() => {
         // Swallow any errors
       });
@@ -184,11 +184,11 @@ interface Events {
    */
   event(
     name?: ActionId,
-    params?: Record<string, string | number | boolean>
+    params?: Record<string, string | number | boolean>,
   ): void;
   screenView(
     name: string,
-    screen_class: "Dialog" | "Drawer" | "Screen" | "Panel"
+    screen_class: "Dialog" | "Drawer" | "Screen" | "Panel",
   ): void;
 }
 
@@ -204,7 +204,7 @@ export function useTelemetry() {
 export function useScreenView(
   name: string,
   screen_class: "Dialog" | "Drawer" | "Screen" | "Panel",
-  isEnabled = true
+  isEnabled = true,
 ) {
   const telemetry = useTelemetry();
 
@@ -243,7 +243,7 @@ export function TelemetryProvider({
       trackingId,
       secretKey,
       userId,
-      sessionId
+      sessionId,
     );
 
     analytics.current.setParams({
@@ -267,7 +267,7 @@ export function TelemetryProvider({
         /^[a-z]$/.test(eventName.replaceAll("_", ""))
       ) {
         throw new Error(
-          "invariant: invalid event name should be in the form [a-z] with underscores only."
+          "invariant: invalid event name should be in the form [a-z] with underscores only.",
         );
       }
 
@@ -285,7 +285,7 @@ export function TelemetryProvider({
           screen_name,
         });
       }
-    }
+    },
   );
 
   const callbacks = useMemo(
@@ -293,7 +293,7 @@ export function TelemetryProvider({
       event,
       screenView,
     }),
-    [event, screenView]
+    [event, screenView],
   );
 
   return (

@@ -16,7 +16,7 @@ if (!examples.includes(example)) {
   console.error(
     `
 "${example}" is not an available example of [${examples.join(", ")}]
-`
+`,
   );
 } else {
   spawn("npx", ["triplex", "editor"], {

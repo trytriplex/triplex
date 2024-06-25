@@ -9,7 +9,7 @@ const inputTags = ["INPUT", "VSCODE-TEXT-FIELD", "VSCODE-TEXT-AREA"];
 
 export function onKeyDown(
   key: KeyboardEvent["key"],
-  cb: (e: KeyboardEvent) => void
+  cb: (e: KeyboardEvent) => void,
 ) {
   if (assignedKeys.includes(key)) {
     throw new Error(`invariant: "${key}" key already assigned`);

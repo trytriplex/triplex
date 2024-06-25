@@ -27,7 +27,7 @@ type HelperInstance = Object3D & { dispose: () => void; update: () => void };
 const HELPER_SIZE = 0.2;
 
 export const getHelperForElement = (
-  name: string
+  name: string,
 ): [Helper, unknown[]] | undefined => {
   switch (name) {
     // Rect area lights helper has been removed from core. For now we just use a standard
@@ -119,7 +119,7 @@ export function Helper({
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             ref={helperRef as any}
           />,
-          scene
+          scene,
         )}
       </>
     );

@@ -24,7 +24,7 @@ export async function createDevServer(): Promise<{
                 // @ts-expect-error
                 "../tailwind.config.js"
               )
-            ).default
+            ).default,
           ),
         ],
       },

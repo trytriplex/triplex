@@ -10,7 +10,7 @@ import { parseJSON } from "./string";
 export function on<TEventName extends keyof TWSEventDefinition>(
   eventName: TEventName,
   callback: (data: TWSEventDefinition[TEventName]["data"]) => void,
-  port: number
+  port: number,
 ) {
   const WS: typeof WebSocket =
     typeof WebSocket === "undefined" ? require("ws") : WebSocket;

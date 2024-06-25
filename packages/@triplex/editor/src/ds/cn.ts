@@ -8,7 +8,7 @@ type ClassNames = string | false | undefined | ClassNames[];
 
 function collectDecls(
   classNames: ClassNames[],
-  outDecls: Record<string, string>
+  outDecls: Record<string, string>,
 ): void {
   for (let i = 0; i < classNames.length; i++) {
     const className = classNames[i];

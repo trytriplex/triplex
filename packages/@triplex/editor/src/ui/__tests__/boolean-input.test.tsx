@@ -20,7 +20,7 @@ describe("boolean input", () => {
         name="name"
         onChange={() => {}}
         onConfirm={() => {}}
-      />
+      />,
     );
     const element = getByTestId("boolean-false") as HTMLInputElement;
 
@@ -31,7 +31,7 @@ describe("boolean input", () => {
         name="name"
         onChange={() => {}}
         onConfirm={() => {}}
-      />
+      />,
     );
 
     expect(element.checked).toEqual(true);

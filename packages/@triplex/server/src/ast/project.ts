@@ -73,7 +73,7 @@ async function persistSourceFile({
       const prettierConfig = await resolveConfig(prettierConfigPath);
       if (prettierConfig) {
         // A prettier config was found so we will use that to format.
-        const source = format(sourceFile.getFullText(), {
+        const source = await format(sourceFile.getFullText(), {
           ...prettierConfig,
           filepath: sourceFile.getFilePath(),
         });

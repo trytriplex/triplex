@@ -221,7 +221,7 @@ export function FloatingControls() {
                     bubbles: true,
                     clientX: e.clientX,
                     clientY: e.clientY,
-                  })
+                  }),
                 );
               }
             }}

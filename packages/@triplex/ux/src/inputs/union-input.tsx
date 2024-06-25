@@ -33,7 +33,7 @@ export function UnionInput({
         Object.assign(
           {},
           value,
-          persistedValue ? { value: persistedValue } : {}
+          persistedValue ? { value: persistedValue } : {},
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ) as any,
       ]}

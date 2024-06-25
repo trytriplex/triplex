@@ -18,11 +18,11 @@ type AnyFunction = (...args: any[]) => any;
  * - Properties or state accessed within the callback will always be "current"
  */
 export function useEvent<TCallback extends AnyFunction>(
-  callback: TCallback
+  callback: TCallback,
 ): TCallback {
   // Keep track of the latest callback:
   const latestRef = useRef<TCallback>(
-    invariant_shouldNotBeInvokedBeforeMount as any
+    invariant_shouldNotBeInvokedBeforeMount as any,
   );
 
   useInsertionEffect(() => {
@@ -45,7 +45,7 @@ export function useEvent<TCallback extends AnyFunction>(
  */
 function invariant_shouldNotBeInvokedBeforeMount() {
   throw new Error(
-    "INVALID_USEEVENT_INVOCATION: the callback from useEvent cannot be invoked before the component has mounted."
+    "INVALID_USEEVENT_INVOCATION: the callback from useEvent cannot be invoked before the component has mounted.",
   );
 }
 

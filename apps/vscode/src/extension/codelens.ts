@@ -20,13 +20,13 @@ export class TriplexCodelensProvider implements vscode.CodeLensProvider {
         { language: "typescriptreact", scheme: "file" },
         { language: "javascriptreact", scheme: "file" },
       ],
-      new TriplexCodelensProvider()
+      new TriplexCodelensProvider(),
     );
   }
 
   provideCodeLenses(
     doc: vscode.TextDocument,
-    _token: vscode.CancellationToken
+    _token: vscode.CancellationToken,
   ): vscode.ProviderResult<vscode.CodeLens[]> {
     const cwd = resolveProjectCwd(dirname(doc.fileName));
     if (!cwd) {
@@ -50,7 +50,7 @@ export class TriplexCodelensProvider implements vscode.CodeLensProvider {
     while ((matchRegExp = regex.exec(text)) !== null) {
       const componentName = matchRegExp[1];
       const foundExport = foundExports.find(
-        (exp) => exp.name === componentName
+        (exp) => exp.name === componentName,
       );
 
       if (!foundExport) {
@@ -63,7 +63,7 @@ export class TriplexCodelensProvider implements vscode.CodeLensProvider {
       const position = new vscode.Position(line.lineNumber, indexOf);
       const range = doc.getWordRangeAtPosition(
         position,
-        new RegExp(this.regex)
+        new RegExp(this.regex),
       );
 
       if (range) {
@@ -75,7 +75,7 @@ export class TriplexCodelensProvider implements vscode.CodeLensProvider {
             command: "triplex.start",
             title: "Open in Triplex",
             tooltip: `Will open the ${foundExport.name} component in Triplex`,
-          })
+          }),
         );
       }
     }

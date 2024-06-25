@@ -86,7 +86,7 @@ export function NPCEntity({
   const reconciledPositions =
     positionsOverride || [position].concat(positions || []);
   const nextPosition = fromArray(
-    reconciledPositions[index % reconciledPositions.length]
+    reconciledPositions[index % reconciledPositions.length],
   );
 
   const controller = useMemo(
@@ -104,7 +104,7 @@ export function NPCEntity({
         setPositionsOverride(undefined);
       },
     }),
-    []
+    [],
   );
 
   const onClickHandler = useCallback(() => {

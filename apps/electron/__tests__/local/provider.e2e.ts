@@ -9,6 +9,6 @@ import { test } from "../utils/runner";
 
 test("provider controls show set up CTA", async ({ editorLocal }) => {
   await expect(editorLocal.contextPanel.locator).toHaveText(
-    /Set up a provider component/
+    /Set up a provider component/,
   );
 });

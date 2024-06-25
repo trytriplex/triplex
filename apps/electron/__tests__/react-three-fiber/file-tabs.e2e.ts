@@ -76,7 +76,7 @@ test("reopen tab", async ({ editorR3F }) => {
   await expect(editorR3F.fileTabs.activeTab).toHaveText("scene.tsx");
   await expect(editorR3F.fileTabs.locator).toHaveText(
     // scene.tsx should be first!
-    "scene.tsxuntitled.tsxuntitled1.tsx"
+    "scene.tsxuntitled.tsxuntitled1.tsx",
   );
 });
 

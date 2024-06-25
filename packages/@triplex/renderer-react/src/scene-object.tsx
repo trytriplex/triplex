@@ -14,7 +14,7 @@ function useForceRender() {
 
 function useSceneObjectProps(
   meta: RendererElementProps["__meta"],
-  props: Record<string, unknown>
+  props: Record<string, unknown>,
 ): Record<string, unknown> {
   const forceRender = useForceRender();
   const intermediateProps = useRef<Record<string, unknown>>({});
@@ -116,7 +116,7 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 
 SceneObject.displayName = "SceneObject";

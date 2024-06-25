@@ -132,7 +132,7 @@ function BridgeReceiveEvents() {
             exportName: data.exportName,
             path: data.path,
           },
-          data.entered ? { entered: true } : undefined
+          data.entered ? { entered: true } : undefined,
         );
       }),
       on("element-set-prop", (data) => {

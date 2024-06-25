@@ -31,10 +31,10 @@ declare interface Window {
     };
     handleMenuItemPress: (callback: (id: string) => void) => () => void;
     handleProgressBarChange: (
-      callback: (progress: number) => void
+      callback: (progress: number) => void,
     ) => () => void;
     handleWindowStateChange: (
-      callback: (state: WindowState) => void
+      callback: (state: WindowState) => void,
     ) => () => void;
     openIDE: (path: string, opts?: { column: number; line: number }) => void;
     openLink: (url: string) => void;
@@ -43,7 +43,7 @@ declare interface Window {
     sessionId: string;
     setEditorConfig: <TKey extends keyof EditorConfig>(
       key: TKey,
-      value: EditorConfig[TKey]
+      value: EditorConfig[TKey],
     ) => void;
     setMenu: (menu: import("electron").MenuItemConstructorOptions[]) => void;
     showSaveDialog: (filename: string) => Promise<string | undefined>;

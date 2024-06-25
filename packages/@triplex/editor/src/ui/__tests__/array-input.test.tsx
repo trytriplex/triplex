@@ -26,7 +26,7 @@ describe("array input", () => {
         path="/box.tsx"
         value={[1, 2]}
         values={[{ kind: "number" }, { kind: "number" }]}
-      />
+      />,
     );
     const result = getByTestId("number-1");
 
@@ -50,7 +50,7 @@ describe("array input", () => {
         path="/box.tsx"
         value={[5, 6]}
         values={[{ kind: "number" }, { kind: "number" }]}
-      />
+      />,
     );
     const result = getByTestId("number-5");
 
@@ -76,7 +76,7 @@ describe("array input", () => {
           { kind: "number", required: true },
           { kind: "number", required: true },
         ]}
-      />
+      />,
     );
 
     const element = getByTestId("number-99");
@@ -105,7 +105,7 @@ describe("array input", () => {
           { kind: "number", required: true },
           { kind: "number", required: true },
         ]}
-      />
+      />,
     );
 
     const first = getByTestId("number-200");
@@ -140,7 +140,7 @@ describe("array input", () => {
         path="/box.tsx"
         value={[22, 33]}
         values={[{ kind: "number" }, { kind: "number" }]}
-      />
+      />,
     );
     const first = getByTestId("number-22");
 
@@ -169,7 +169,7 @@ describe("array input", () => {
           { kind: "number", required: true },
           { kind: "string" },
         ]}
-      />
+      />,
     );
     const first = getByTestId("number-66");
 
@@ -199,7 +199,7 @@ describe("array input", () => {
           { kind: "number", required: true },
           { kind: "string" },
         ]}
-      />
+      />,
     );
     const first = getByTestId("number-888");
 
@@ -226,7 +226,7 @@ describe("array input", () => {
           { kind: "number", required: true },
           { kind: "number", required: true },
         ]}
-      />
+      />,
     );
     const element = getByTestId("number-1") as HTMLInputElement;
 
@@ -252,7 +252,7 @@ describe("array input", () => {
           { kind: "number", required: true },
           { kind: "number", required: true },
         ]}
-      />
+      />,
     );
     const element = getByTestId("position[1]") as HTMLInputElement;
 

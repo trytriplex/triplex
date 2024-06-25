@@ -53,7 +53,7 @@ type InputTypes =
 export interface RenderInput<
   Props,
   TElement = HTMLInputElement,
-  Actions = object
+  Actions = object,
 > {
   (
     props: {
@@ -62,7 +62,7 @@ export interface RenderInput<
       ref: RefObject<TElement>;
       required?: boolean;
     } & Props,
-    actions: Actions
+    actions: Actions,
   ): JSX.Element;
 }
 

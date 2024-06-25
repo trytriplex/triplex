@@ -54,7 +54,7 @@ export function UnionInput({
             Object.assign(
               {},
               value,
-              defaultValue ? { value: defaultValue } : {}
+              defaultValue ? { value: defaultValue } : {},
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
             ) as any
           }

@@ -39,7 +39,7 @@ export function PropField({
     <div className="-mt-2 grid flex-shrink grid-cols-2 gap-2 px-4 py-2 first-of-type:mt-0 hover:bg-white/[2%]">
       <label
         className={cn([
-          labelAlignment === "start" ? "mt-[5px] self-start" : "self-center ",
+          labelAlignment === "start" ? "mt-[5px] self-start" : "self-center",
           "text-right text-xs text-neutral-400",
         ])}
         htmlFor={htmlFor}

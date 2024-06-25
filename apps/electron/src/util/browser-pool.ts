@@ -9,7 +9,7 @@ import { defer } from "./promise";
 
 export function createWindowBrowserPool(
   options?: Electron.BrowserWindowConstructorOptions,
-  maxBrowserCount = 5
+  maxBrowserCount = 5,
 ) {
   const browserWindows: BrowserWindow[] = [];
   const waiting: (() => void)[] = [];

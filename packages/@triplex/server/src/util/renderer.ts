@@ -20,7 +20,7 @@ import { type ReconciledRenderer, type RendererManifest } from "../types";
 
 async function findParentFile(
   dirpath: string,
-  filename: string
+  filename: string,
 ): Promise<string> {
   const next = resolve(dirpath, "..");
 
@@ -46,14 +46,14 @@ function validateManifest(manifest: unknown): RendererManifest {
           category: string("category must be a string"),
           name: string("name must be a string"),
           type: literal("host", 'type must be "host"'),
-        })
+        }),
       ),
     }),
     bundler: optional(
       object({
         assetsInclude: optional(array(string())),
         dedupe: optional(array(string())),
-      })
+      }),
     ),
     stage: object({
       defaultFrame: union([literal("expanded"), literal("intrinsic")]),
@@ -105,7 +105,7 @@ export async function getRendererMeta(opts: {
   } catch (error) {
     const wrappedError = new AggregateError(
       [error],
-      `invariant: failed to resolve renderer "${opts.filepath}" check inner errors.`
+      `invariant: failed to resolve renderer "${opts.filepath}" check inner errors.`,
     );
 
     throw wrappedError;

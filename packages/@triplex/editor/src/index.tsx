@@ -34,5 +34,5 @@ createRoot(document.getElementById("root")!).render(
         </ErrorBoundary>
       </BrowserRouter>
     </TelemetryProvider>
-  </StrictMode>
+  </StrictMode>,
 );

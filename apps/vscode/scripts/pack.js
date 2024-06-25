@@ -13,7 +13,7 @@ const tempDir = ".tmp";
 const outDir = "out";
 const nmSrc = join(
   process.cwd(),
-  `${tempDir}/linux-unpacked/resources/app/node_modules`
+  `${tempDir}/linux-unpacked/resources/app/node_modules`,
 );
 const nmDest = join(process.cwd(), `${outDir}/node_modules`);
 const staticSrc = join(process.cwd(), `static`);
@@ -23,7 +23,7 @@ const copyToDest = (...filenames) => {
   filenames.forEach((filename) => {
     copyFileSync(
       join(process.cwd(), filename),
-      join(process.cwd(), outDir, filename)
+      join(process.cwd(), outDir, filename),
     );
   });
 };
@@ -46,7 +46,7 @@ async function main() {
     "README.md",
     "loading.html",
     "LICENSE",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
   );
 
   await createVSIX({ cwd: join(process.cwd(), outDir), dependencies: false });

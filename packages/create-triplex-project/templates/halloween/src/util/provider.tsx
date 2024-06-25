@@ -14,9 +14,7 @@ export default function Provider({
    * @max 10
    */
   rayleigh?: number;
-  /**
-   * Shows stars in the skybox when enabled.
-   */
+  /** Shows stars in the skybox when enabled. */
   stars?: boolean;
 }) {
   return (

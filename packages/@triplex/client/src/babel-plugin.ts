@@ -14,7 +14,7 @@ const AUTOMATIC_JSX_RUNTIME = ["jsx", "jsxs", "_jsx", "_jsxs"];
 function isNodeModulesComponent(
   path: NodePath,
   elementName: string,
-  cwd: string
+  cwd: string,
 ) {
   try {
     const binding = path.scope.getBinding(elementName);
@@ -78,7 +78,7 @@ export default function triplexBabelPlugin({
               // Since the current props can be manually created it could be anything.
               // We spread it in instead of taking its properties.
               t.spreadElement(
-                t.isExpression(props) ? props : t.identifier("undefined")
+                t.isExpression(props) ? props : t.identifier("undefined"),
               ),
               t.objectProperty(t.identifier("__component"), componentArg),
               t.objectProperty(
@@ -86,21 +86,21 @@ export default function triplexBabelPlugin({
                 t.objectExpression([
                   t.objectProperty(
                     t.stringLiteral("path"),
-                    t.stringLiteral("")
+                    t.stringLiteral(""),
                   ),
                   t.objectProperty(
                     t.stringLiteral("name"),
-                    t.stringLiteral(elementName)
+                    t.stringLiteral(elementName),
                   ),
                   t.objectProperty(
                     t.stringLiteral("line"),
-                    t.numericLiteral(-2)
+                    t.numericLiteral(-2),
                   ),
                   t.objectProperty(
                     t.stringLiteral("column"),
-                    t.numericLiteral(-2)
+                    t.numericLiteral(-2),
                   ),
-                ])
+                ]),
               ),
             ]),
             ...path.node.arguments.slice(2),
@@ -124,7 +124,7 @@ export default function triplexBabelPlugin({
               path.node.callee.expressions[1].type === "MemberExpression" &&
               path.node.callee.expressions[1].property.type === "Identifier" &&
               AUTOMATIC_JSX_RUNTIME.includes(
-                path.node.callee.expressions[1].property.name
+                path.node.callee.expressions[1].property.name,
               ))) &&
           t.isExpression(path.node.arguments[0]) &&
           !cache.has(path.node)
@@ -147,21 +147,21 @@ export default function triplexBabelPlugin({
                 t.objectExpression([
                   t.objectProperty(
                     t.stringLiteral("path"),
-                    t.stringLiteral("")
+                    t.stringLiteral(""),
                   ),
                   t.objectProperty(
                     t.stringLiteral("name"),
-                    t.stringLiteral(elementName)
+                    t.stringLiteral(elementName),
                   ),
                   t.objectProperty(
                     t.stringLiteral("line"),
-                    t.numericLiteral(-2)
+                    t.numericLiteral(-2),
                   ),
                   t.objectProperty(
                     t.stringLiteral("column"),
-                    t.numericLiteral(-2)
+                    t.numericLiteral(-2),
                   ),
-                ])
+                ]),
               ),
             ]),
             ...path.node.arguments.slice(2),
@@ -311,7 +311,7 @@ export default function triplexBabelPlugin({
             }
 
             return true;
-          }
+          },
         );
 
         const newNode = t.jsxElement(
@@ -322,8 +322,8 @@ export default function triplexBabelPlugin({
               t.jsxExpressionContainer(
                 elementType === "custom"
                   ? t.identifier(elementName)
-                  : t.stringLiteral(elementName)
-              )
+                  : t.stringLiteral(elementName),
+              ),
             ),
             t.jsxAttribute(
               t.jsxIdentifier("__meta"),
@@ -332,35 +332,35 @@ export default function triplexBabelPlugin({
                   t.objectProperty(
                     t.stringLiteral("path"),
                     t.stringLiteral(
-                      pass.filename ? normalize(pass.filename) : ""
-                    )
+                      pass.filename ? normalize(pass.filename) : "",
+                    ),
                   ),
                   t.objectProperty(
                     t.stringLiteral("name"),
-                    t.stringLiteral(elementName)
+                    t.stringLiteral(elementName),
                   ),
                   t.objectProperty(
                     t.stringLiteral("line"),
-                    t.numericLiteral(line)
+                    t.numericLiteral(line),
                   ),
                   t.objectProperty(
                     t.stringLiteral("column"),
-                    t.numericLiteral(column)
+                    t.numericLiteral(column),
                   ),
                   t.objectProperty(
                     t.stringLiteral("translate"),
-                    t.booleanLiteral(transformsFound.translate)
+                    t.booleanLiteral(transformsFound.translate),
                   ),
                   t.objectProperty(
                     t.stringLiteral("rotate"),
-                    t.booleanLiteral(transformsFound.rotate)
+                    t.booleanLiteral(transformsFound.rotate),
                   ),
                   t.objectProperty(
                     t.stringLiteral("scale"),
-                    t.booleanLiteral(transformsFound.scale)
+                    t.booleanLiteral(transformsFound.scale),
                   ),
-                ])
-              )
+                ]),
+              ),
             ),
             t.jsxAttribute(
               t.jsxIdentifier("key"),
@@ -369,14 +369,14 @@ export default function triplexBabelPlugin({
                   ? t.binaryExpression(
                       "+",
                       t.stringLiteral(elementName + line + column),
-                      keyNode
+                      keyNode,
                     )
-                  : t.stringLiteral(elementName + line + column)
-              )
+                  : t.stringLiteral(elementName + line + column),
+              ),
             ),
           ]),
           t.jsxClosingElement(t.jsxIdentifier(SCENE_OBJECT_COMPONENT_NAME)),
-          path.node.children
+          path.node.children,
         );
 
         path.replaceWith(newNode);
@@ -399,16 +399,16 @@ export default function triplexBabelPlugin({
                   "=",
                   t.memberExpression(
                     t.identifier(key),
-                    t.identifier("triplexMeta")
+                    t.identifier("triplexMeta"),
                   ),
                   t.objectExpression([
                     t.objectProperty(
                       t.stringLiteral("lighting"),
-                      t.stringLiteral(value.lighting)
+                      t.stringLiteral(value.lighting),
                     ),
-                  ])
-                )
-              )
+                  ]),
+                ),
+              ),
             );
           }
 

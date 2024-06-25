@@ -8,7 +8,7 @@ import { HttpError, type RouterContext } from "@oakserver/oak";
 
 export function getParam<T extends string>(
   context: RouterContext<T>,
-  key: string
+  key: string,
 ) {
   const path = context.request.url.searchParams.get(key);
   if (!path) {

@@ -46,14 +46,14 @@ export class TriplexEditorProvider
   backupCustomDocument(
     document: TriplexDocument,
     context: vscode.CustomDocumentBackupContext,
-    cancellation: vscode.CancellationToken
+    cancellation: vscode.CancellationToken,
   ) {
     return document.backup(context, cancellation);
   }
 
   saveCustomDocument(
     document: TriplexDocument,
-    cancellation: vscode.CancellationToken
+    cancellation: vscode.CancellationToken,
   ) {
     return document.save(cancellation);
   }
@@ -67,7 +67,7 @@ export class TriplexEditorProvider
   openCustomDocument(
     uri: vscode.Uri,
     _openContext: vscode.CustomDocumentOpenContext,
-    _token: vscode.CancellationToken
+    _token: vscode.CancellationToken,
   ) {
     const document = new TriplexDocument(uri);
 
@@ -84,7 +84,7 @@ export class TriplexEditorProvider
   async resolveCustomEditor(
     document: TriplexDocument,
     panel: vscode.WebviewPanel,
-    _token: vscode.CancellationToken
+    _token: vscode.CancellationToken,
   ) {
     const scopedFileName = document.uri.fsPath;
     const triplexProjectCwd = resolveProjectCwd(dirname(scopedFileName));
@@ -100,7 +100,7 @@ export class TriplexEditorProvider
     // Show something as fast as possible before doing anything.
     const html = await vscode.workspace.fs
       .readFile(
-        vscode.Uri.file(join(this._context.extensionPath, "loading.html"))
+        vscode.Uri.file(join(this._context.extensionPath, "loading.html")),
       )
       .then((res) => res.toString());
 
@@ -126,7 +126,7 @@ export class TriplexEditorProvider
 
   revertCustomDocument(
     document: TriplexDocument,
-    cancellation: vscode.CancellationToken
+    cancellation: vscode.CancellationToken,
   ) {
     return document.revert(cancellation);
   }
@@ -134,7 +134,7 @@ export class TriplexEditorProvider
   saveCustomDocumentAs(
     document: TriplexDocument,
     destination: vscode.Uri,
-    cancellation: vscode.CancellationToken
+    cancellation: vscode.CancellationToken,
   ) {
     return document.saveAs(destination, cancellation);
   }
@@ -143,7 +143,7 @@ export class TriplexEditorProvider
     const disposables = [
       vscode.commands.registerCommand("triplex.set-camera-default", () => {
         const activePanel = Array.from(this.activePanels.values()).find(
-          (panel) => panel.active
+          (panel) => panel.active,
         );
 
         if (activePanel) {
@@ -154,7 +154,7 @@ export class TriplexEditorProvider
       }),
       vscode.commands.registerCommand("triplex.set-camera-editor", () => {
         const activePanel = Array.from(this.activePanels.values()).find(
-          (panel) => panel.active
+          (panel) => panel.active,
         );
 
         if (activePanel) {
@@ -167,7 +167,9 @@ export class TriplexEditorProvider
         "triplex.start",
         async (ctx?: { exportName: string; path: string }) => {
           const scopedFileName = normalize(
-            ctx?.path || vscode.window.activeTextEditor?.document.fileName || ""
+            ctx?.path ||
+              vscode.window.activeTextEditor?.document.fileName ||
+              "",
           );
 
           if (!scopedFileName) {
@@ -201,10 +203,10 @@ export class TriplexEditorProvider
               // See: https://github.com/microsoft/vscode/issues/213633
               vscode.Uri.file(scopedFileName).with({ query: "triplex" }),
               TriplexEditorProvider.viewType,
-              vscode.ViewColumn.Beside
+              vscode.ViewColumn.Beside,
             );
           }
-        }
+        },
       ),
       vscode.window.registerCustomEditorProvider(
         TriplexEditorProvider.viewType,
@@ -214,7 +216,7 @@ export class TriplexEditorProvider
           webviewOptions: {
             retainContextWhenHidden: true,
           },
-        }
+        },
       ),
     ];
 

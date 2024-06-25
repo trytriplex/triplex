@@ -26,7 +26,7 @@ function merge(a: unknown[], b: Record<string, unknown>) {
 
 function isAnyRequiredValueUndefined(
   tupleTypes: TupleType["shape"],
-  nextValue: unknown[]
+  nextValue: unknown[],
 ) {
   for (let i = 0; i < tupleTypes.length; i++) {
     const type = tupleTypes[i];
@@ -43,7 +43,7 @@ function isAnyRequiredValueUndefined(
 
 function dropUnneededOptionalValues(
   valueDef: TupleType["shape"],
-  nextValues: unknown[]
+  nextValues: unknown[],
 ) {
   const clearedValues: unknown[] = [];
 

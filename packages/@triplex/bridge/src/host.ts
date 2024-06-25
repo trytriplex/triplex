@@ -38,11 +38,11 @@ export function broadcastForwardedKeydownEvents() {
 export function on<TEvent extends ClientSendEventName>(
   eventName: TEvent,
   callback: (
-    data: ClientSendEventData[TEvent]
+    data: ClientSendEventData[TEvent],
   ) =>
     | void
     | ClientSendEventResponse[TEvent]
-    | Promise<ClientSendEventResponse[TEvent]>
+    | Promise<ClientSendEventResponse[TEvent]>,
 ) {
   const cb = async (e: MessageEvent) => {
     if (typeof e.data === "object" && e.data.eventName === eventName) {
@@ -75,7 +75,7 @@ function getMessageWindow() {
 export function send<TEvent extends HostSendEventName>(
   eventName: TEvent,
   data: HostSendEventData[TEvent],
-  awaitResponse = false
+  awaitResponse = false,
 ): Promise<HostSendEventResponse[TEvent]> {
   const messageWindow = getMessageWindow();
 
@@ -84,7 +84,7 @@ export function send<TEvent extends HostSendEventName>(
       data,
       eventName,
     },
-    "*"
+    "*",
   );
 
   if (awaitResponse) {
@@ -103,7 +103,7 @@ export function send<TEvent extends HostSendEventName>(
 
 function respond<TEvent extends keyof ClientSendEventResponse>(
   eventName: TEvent,
-  data: ClientSendEventResponse[TEvent]
+  data: ClientSendEventResponse[TEvent],
 ) {
   const messageWindow = getMessageWindow();
 
@@ -112,7 +112,7 @@ function respond<TEvent extends keyof ClientSendEventResponse>(
       data,
       eventName: `${eventName}Response`,
     },
-    "*"
+    "*",
   );
 }
 

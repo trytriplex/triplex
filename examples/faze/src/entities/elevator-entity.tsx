@@ -14,7 +14,7 @@ import { TERRAIN } from "../utils/layers";
 
 type Enumerate<
   N extends number,
-  Acc extends number[] = []
+  Acc extends number[] = [],
 > = Acc["length"] extends N
   ? Acc[number]
   : Enumerate<N, [...Acc, Acc["length"]]>;
@@ -29,17 +29,11 @@ export function ElevatorEntity<TLevels extends [number, ...number[]]>({
   levels,
   position,
 }: {
-  /**
-   * Current level the elevator is on.
-   */
+  /** Current level the elevator is on. */
   level?: Range<0, TLevels["length"]>;
-  /**
-   * Y height of each level.
-   */
+  /** Y height of each level. */
   levels: TLevels;
-  /**
-   * Position of the elevator.
-   */
+  /** Position of the elevator. */
   position: Vector3Tuple;
 }) {
   const map = useTexture("/textures/light/texture_08.png");

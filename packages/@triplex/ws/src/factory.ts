@@ -30,7 +30,7 @@ function defer() {
 
 export function buildPath(
   route: string,
-  params: Record<string, string | number | boolean | undefined>
+  params: Record<string, string | number | boolean | undefined>,
 ): string {
   let path = route;
 
@@ -179,7 +179,7 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
 
       if (typeof value === "object" && "error" in value) {
         throw new Error(
-          `Error reading "${decodeURIComponent(path)}" - [${value.error}]`
+          `Error reading "${decodeURIComponent(path)}" - [${value.error}]`,
         );
       }
 
@@ -207,7 +207,7 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
       ? [route: TRoute]
       : [
           route: TRoute,
-          params: RemapWithNumber<TWSRouteDefinition[TRoute]["params"]>
+          params: RemapWithNumber<TWSRouteDefinition[TRoute]["params"]>,
         ]
   ): void {
     const [route, params = {}] = args;
@@ -220,19 +220,19 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
       ? [route: TRoute]
       : [
           route: TRoute,
-          params: RemapWithNumber<TWSRouteDefinition[TRoute]["params"]>
+          params: RemapWithNumber<TWSRouteDefinition[TRoute]["params"]>,
         ]
   ): TWSRouteDefinition[TRoute]["data"] {
     const [route, params = {}] = args;
     const query = wsQuery<TWSRouteDefinition[TRoute]["data"]>(
-      buildPath(route, params)
+      buildPath(route, params),
     );
 
     query.load();
 
     const data = useSyncExternalStore<TWSRouteDefinition[TRoute]["data"]>(
       useCallback((onStoreChanged) => query.subscribe(onStoreChanged), [query]),
-      query.read
+      query.read,
     );
 
     return data;
@@ -243,17 +243,17 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
       ? [route: TRoute]
       : [
           route: TRoute,
-          params: RemapWithNumber<TWSRouteDefinition[TRoute]["params"]>
+          params: RemapWithNumber<TWSRouteDefinition[TRoute]["params"]>,
         ]
   ): TWSRouteDefinition[TRoute]["data"] {
     const [route, params = {}] = args;
     const query = wsQuery<TWSRouteDefinition[TRoute]["data"]>(
-      buildPath(route, params)
+      buildPath(route, params),
     );
 
     const data = useSyncExternalStore<TWSRouteDefinition[TRoute]["data"]>(
       useCallback((onStoreChanged) => query.subscribe(onStoreChanged), [query]),
-      query.read
+      query.read,
     );
 
     return data;
@@ -266,7 +266,7 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
           route: TRoute,
           params: RemapWithNumber<TWSRouteDefinition[TRoute]["params"]> & {
             disabled?: boolean;
-          }
+          },
         ]
   ): TWSRouteDefinition[TRoute]["data"] | null {
     const [route, params = {}] = args;

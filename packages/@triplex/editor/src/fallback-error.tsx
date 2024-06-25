@@ -12,5 +12,5 @@ import { ErrorSplash } from "./ui/error-splash";
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <ErrorSplash />
-  </StrictMode>
+  </StrictMode>,
 );

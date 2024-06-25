@@ -22,7 +22,7 @@ import { useCamera } from "./camera";
 const tweenCamera = (
   controls: CameraControls,
   scene: Object3D,
-  position: Vector3
+  position: Vector3,
 ) => {
   const sphere = buildSceneSphere(scene);
   if (sphere.isEmpty()) {
@@ -30,7 +30,7 @@ const tweenCamera = (
   }
 
   const point = new Spherical().setFromVector3(
-    new Vector3(position.x, position.y, position.z)
+    new Vector3(position.x, position.y, position.z),
   );
   controls.rotateTo(point.theta, point.phi, true);
   controls.fitToSphere(sphere, true);
@@ -89,7 +89,7 @@ const edgeDimensions = edges.map(
   (edge) =>
     edge
       .toArray()
-      .map((axis: number): number => (axis == 0 ? 0.5 : 0.25)) as Vector3Tuple
+      .map((axis: number): number => (axis == 0 ? 0.5 : 0.25)) as Vector3Tuple,
 );
 
 const FaceMaterial = ({

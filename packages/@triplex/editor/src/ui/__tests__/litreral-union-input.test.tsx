@@ -26,7 +26,7 @@ describe("literal union input", () => {
           { kind: "boolean", literal: false },
           { kind: "string", literal: "one" },
         ]}
-      />
+      />,
     );
 
     const select = getByTestId("select-union") as HTMLSelectElement;
@@ -47,7 +47,7 @@ describe("literal union input", () => {
           { kind: "boolean", literal: false },
           { kind: "string", literal: "one" },
         ]}
-      />
+      />,
     );
     const select = getByTestId("select-union") as HTMLInputElement;
 
@@ -62,7 +62,7 @@ describe("literal union input", () => {
           { kind: "boolean", literal: false },
           { kind: "string", literal: "one" },
         ]}
-      />
+      />,
     );
 
     expect(select.value).toEqual("1");
@@ -81,7 +81,7 @@ describe("literal union input", () => {
           { kind: "boolean", literal: false },
           { kind: "string", literal: "one" },
         ]}
-      />
+      />,
     );
     const select = getByTestId("select-union") as HTMLSelectElement;
 
@@ -104,7 +104,7 @@ describe("literal union input", () => {
           { kind: "boolean", literal: false },
           { kind: "number", literal: 123 },
         ]}
-      />
+      />,
     );
     const select = getByTestId("select-union") as HTMLSelectElement;
 
@@ -127,7 +127,7 @@ describe("literal union input", () => {
           { kind: "boolean", literal: false },
           { kind: "string", literal: "foo" },
         ]}
-      />
+      />,
     );
     const select = getByTestId("select-union") as HTMLSelectElement;
 
@@ -150,7 +150,7 @@ describe("literal union input", () => {
           { kind: "boolean", literal: false },
           { kind: "string", literal: "foo" },
         ]}
-      />
+      />,
     );
     const select = getByTestId("select-union") as HTMLSelectElement;
 

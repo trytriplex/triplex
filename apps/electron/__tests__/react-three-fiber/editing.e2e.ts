@@ -32,7 +32,7 @@ test("update child component name prop", async ({ editorR3F }) => {
 
   await expect(child.locator).toHaveText("foo (boxGeometry)");
   await expect(
-    editorR3F.fileTabs.tab("box.tsx").unsavedIndicator
+    editorR3F.fileTabs.tab("box.tsx").unsavedIndicator,
   ).toBeVisible();
 });
 
@@ -52,5 +52,5 @@ test.fixme(
     await button.click();
     await expect(editorR3F.contextPanel.heading).toHaveText("Box");
     await expect(button.locator).toHaveText("Box");
-  }
+  },
 );

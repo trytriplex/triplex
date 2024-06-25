@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 export function flatten<TItem extends { children: TItem[] }>(
-  arr: TItem[]
+  arr: TItem[],
 ): TItem[] {
   const result: TItem[] = [];
 

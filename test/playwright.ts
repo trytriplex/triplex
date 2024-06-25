@@ -16,11 +16,11 @@ export async function resolveExecPath() {
   } catch {
     // eslint-disable-next-line no-console
     console.log(
-      "No available internet connection, using cached version of VS Code"
+      "No available internet connection, using cached version of VS Code",
     );
     return join(
       process.cwd(),
-      ".vscode-test/vscode-darwin-arm64-insiders/Visual Studio Code - Insiders.app/Contents/MacOS/Electron"
+      ".vscode-test/vscode-darwin-arm64-insiders/Visual Studio Code - Insiders.app/Contents/MacOS/Electron",
     );
   }
 }

@@ -6,9 +6,7 @@
  */
 const { join } = require("upath");
 
-/**
- * @type {import("tailwindcss").Config}
- */
+/** @type {import("tailwindcss").Config} */
 module.exports = {
   content: [
     join(__dirname, "./src/app/**/*.tsx"),

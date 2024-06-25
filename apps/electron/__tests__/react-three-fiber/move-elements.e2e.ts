@@ -16,7 +16,7 @@ test("dragging before an element", async ({ editorR3F }) => {
   });
 
   await expect(editorR3F.scenePanel.allElements.nth(1)).toHaveText(
-    "PerspectiveCamera"
+    "PerspectiveCamera",
   );
 });
 
@@ -29,7 +29,7 @@ test("dragging after an element", async ({ editorR3F }) => {
   });
 
   await expect(editorR3F.scenePanel.allElements.nth(1)).toHaveText(
-    "ambientLight"
+    "ambientLight",
   );
 });
 
@@ -40,6 +40,6 @@ test("drag into an element", async ({ editorR3F }) => {
   await source.locator.dragTo(destination.locator);
 
   await expect(editorR3F.scenePanel.allElements.nth(3)).toHaveText(
-    "ambientLight"
+    "ambientLight",
   );
 });

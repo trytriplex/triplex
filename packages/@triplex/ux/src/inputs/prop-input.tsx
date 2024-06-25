@@ -50,7 +50,7 @@ export function PropInput({
     } else if (prop.kind === "union") {
       const isLiteralUnion = prop.shape.every(
         (
-          value
+          value,
         ): value is
           | NumberLiteralType
           | StringLiteralType
@@ -58,7 +58,7 @@ export function PropInput({
           (value.kind === "string" ||
             value.kind === "number" ||
             value.kind === "boolean") &&
-          "literal" in value
+          "literal" in value,
       );
 
       if (isLiteralUnion) {

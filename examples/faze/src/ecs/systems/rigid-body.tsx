@@ -6,7 +6,7 @@
  */
 import { useFrame } from "@react-three/fiber";
 import { useEntities } from "miniplex/react";
-import { type Intersection, type Object3D, Raycaster, Vector3 } from "three";
+import { Raycaster, Vector3, type Intersection, type Object3D } from "three";
 import { add, copy, isEmpty2, reset2, sub2 } from "../../math/vectors";
 import { noop } from "../../utils/functions";
 import { TERRAIN } from "../../utils/layers";
@@ -19,7 +19,7 @@ const intersects: Intersection<Object3D>[] = [];
 
 export function useRigidBody() {
   const { entities } = useEntities(
-    world.with("velocity", "rigidBody", "box", "sceneObject")
+    world.with("velocity", "rigidBody", "box", "sceneObject"),
   );
 
   useFrame((state, delta) => {

@@ -42,7 +42,7 @@ test("enter camera block changing host camera", async ({ editorR3F }) => {
   await editorR3F.controls.button("Switch To Orthographic").click();
 
   await expect(
-    editorR3F.controls.button("Switch To Orthographic")
+    editorR3F.controls.button("Switch To Orthographic"),
   ).toBeVisible();
   await expect(editorR3F.controls.button("Switch To Perspective")).toBeHidden();
 });

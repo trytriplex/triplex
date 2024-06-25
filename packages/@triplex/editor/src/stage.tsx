@@ -36,7 +36,7 @@ export function Stage({ children }: { children: React.ReactNode }) {
   const [isDragging, setIsDragging] = useState(false);
   const [isActive, setIsActive] = useState(true);
   const [frameSize, setFrameSize] = useState<[number, number]>(
-    FRAME_SIZES.square
+    FRAME_SIZES.square,
   );
   const frame = useCanvasStage((store) => store.frame);
   const setFrame = useCanvasStage((store) => store.setFrame);
@@ -47,7 +47,7 @@ export function Stage({ children }: { children: React.ReactNode }) {
   const increaseZoom = useCanvasStage((store) => store.increaseZoom);
   const decreaseZoom = useCanvasStage((store) => store.decreaseZoom);
   const fitFrameToViewportCounter = useCanvasStage(
-    (store) => store.fitFrameToViewportCounter
+    (store) => store.fitFrameToViewportCounter,
   );
   const normalizedZoom = zoom / 100;
   const frameRatio =
@@ -67,11 +67,11 @@ export function Stage({ children }: { children: React.ReactNode }) {
   const sizeFrameToCanvas = useEvent((opts?: { zoomIn: boolean }) => {
     const nextZoom = Math.min(
       Math.round(
-        (ref.current.clientWidth / canvasRef.current.clientWidth) * 100
+        (ref.current.clientWidth / canvasRef.current.clientWidth) * 100,
       ),
       Math.round(
-        (ref.current.clientHeight / canvasRef.current.clientHeight) * 100
-      )
+        (ref.current.clientHeight / canvasRef.current.clientHeight) * 100,
+      ),
     );
 
     const frameRatio = ref.current.clientWidth / ref.current.clientHeight;

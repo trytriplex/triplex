@@ -13,7 +13,7 @@ test("default to translate", async ({ vsce }) => {
   const panel = vsce.resolvePanel();
 
   await expect(
-    panel.locator.getByRole("button", { name: "Translate" })
+    panel.locator.getByRole("button", { name: "Translate" }),
   ).toHaveAccessibleName("Translate active");
 });
 
@@ -24,7 +24,7 @@ test("switch to scale via click", async ({ vsce }) => {
   await panel.locator.getByRole("button", { name: "Scale" }).click();
 
   await expect(
-    panel.locator.getByRole("button", { name: "Scale" })
+    panel.locator.getByRole("button", { name: "Scale" }),
   ).toHaveAccessibleName("Scale active");
 });
 
@@ -35,6 +35,6 @@ test("switch to rotate via hotkey", async ({ vsce }) => {
   await panel.locator.getByRole("button", { name: "Scale" }).press("r");
 
   await expect(
-    panel.locator.getByRole("button", { name: "Rotate" })
+    panel.locator.getByRole("button", { name: "Rotate" }),
   ).toHaveAccessibleName("Rotate active");
 });

@@ -218,9 +218,7 @@ export interface CustomJsxElementPosition {
   line: number;
   name: string;
   parentPath: string;
-  /**
-   * Path will be defined if the jsx element exists in local source code.
-   */
+  /** Path will be defined if the jsx element exists in local source code. */
   path?: string;
   type: "custom";
 }
@@ -297,9 +295,7 @@ export interface TriplexConfig {
 }
 
 export interface RendererManifest {
-  /**
-   * Assets your renderer makes available inside the editor UI.
-   */
+  /** Assets your renderer makes available inside the editor UI. */
   assets: {
     /**
      * Host elements can be added through the assets drawer. For example when
@@ -310,9 +306,7 @@ export interface RendererManifest {
      */
     hostElements: Array<{ category: string; name: string; type: "host" }>;
   };
-  /**
-   * Configuration for the Triplex bundler.
-   */
+  /** Configuration for the Triplex bundler. */
   bundler?: {
     /**
      * Glob patterns to match for files that should be considered static assets.
@@ -328,9 +322,7 @@ export interface RendererManifest {
      */
     dedupe?: string[];
   };
-  /**
-   * Renderer specific configuration for the canvas stage.
-   */
+  /** Renderer specific configuration for the canvas stage. */
   stage: {
     /**
      * Initial state of the frame. `"expanded"` means the frame is expanded to
@@ -339,41 +331,29 @@ export interface RendererManifest {
      */
     defaultFrame: "expanded" | "intrinsic";
   };
-  /**
-   * Templates used for different use cases across Triplex.
-   */
+  /** Templates used for different use cases across Triplex. */
   templates: {
-    /**
-     * The elements returned from a new component.
-     */
+    /** The elements returned from a new component. */
     newElements: string;
   };
 }
 
-/**
- * Information about a renderer that has been sourced from the file system.
- */
+/** Information about a renderer that has been sourced from the file system. */
 export interface ReconciledRenderer {
   manifest: RendererManifest;
   path: string;
   root: string;
 }
 
-/**
- * Settings for a project that are persisted to the file system.
- */
+/** Settings for a project that are persisted to the file system. */
 export interface ProjectSettings {
   frame: "expanded" | "intrinsic";
 }
 
-/**
- * Settings for the editor that are persisted to the file system.
- */
+/** Settings for the editor that are persisted to the file system. */
 export interface EditorSettings {}
 
-/**
- * Exposed ports used for Triplex.
- */
+/** Exposed ports used for Triplex. */
 export interface TriplexPorts {
   client: number;
   server: number;

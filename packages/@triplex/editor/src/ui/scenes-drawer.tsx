@@ -94,7 +94,7 @@ function Scenes({ filter = "" }: { filter?: string }) {
                             exportName: exp.exportName,
                             path: file.path,
                           },
-                          { skipTransition: true }
+                          { skipTransition: true },
                         );
                       }}
                     />

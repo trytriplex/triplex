@@ -11,7 +11,7 @@ import { world } from "../store";
 
 export function useDeactivateNpcs() {
   const { entities: players } = useEntities(
-    world.with("player", "focused", "velocity")
+    world.with("player", "focused", "velocity"),
   );
   const { entities: npcs } = useEntities(world.with("npc", "focused"));
 

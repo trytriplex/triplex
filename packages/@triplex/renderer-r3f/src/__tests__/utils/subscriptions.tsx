@@ -10,7 +10,7 @@ import { vi, type Mock } from "vitest";
 
 vi.mock("@triplex/ws/react", async () => {
   const client = (await vi.importActual(
-    "@triplex/ws/react"
+    "@triplex/ws/react",
   )) as typeof import("@triplex/ws/react");
 
   return {
@@ -22,11 +22,11 @@ vi.mock("@triplex/ws/react", async () => {
 export const useSubscriptionEffectMock = useSubscriptionEffect as Mock;
 
 export function mockUseSubscriptionEffect<
-  TRoute extends keyof TWSRouteDefinition
+  TRoute extends keyof TWSRouteDefinition,
 >(
   path: TRoute,
   params: TWSRouteDefinition[TRoute]["params"],
-  data: Partial<TWSRouteDefinition[TRoute]["data"]>
+  data: Partial<TWSRouteDefinition[TRoute]["data"]>,
 ) {
   useSubscriptionEffectMock.mockImplementation(
     (slice: string, sliceData: Record<string, string>) => {
@@ -34,6 +34,6 @@ export function mockUseSubscriptionEffect<
         return data;
       }
       return null;
-    }
+    },
   );
 }

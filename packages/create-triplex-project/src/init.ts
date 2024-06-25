@@ -103,7 +103,7 @@ export async function init({
     const parsed = JSON.parse(packageJson);
     const pkgJSON = await fs.readFile(
       join(templateDir, `package.json`),
-      "utf8"
+      "utf8",
     );
     const pkgJSONParsed = JSON.parse(pkgJSON);
 
@@ -120,7 +120,7 @@ export async function init({
 
     const result = JSON.stringify(parsed, null, 2).replace(
       "{triplex_version}",
-      `${version}`
+      `${version}`,
     );
 
     await fs.writeFile(packageJsonPath, result + "\n");
@@ -128,11 +128,11 @@ export async function init({
     // Create
     const pkgJson = await fs.readFile(
       join(templateDir, `package.json`),
-      "utf8"
+      "utf8",
     );
     await fs.writeFile(
       packageJsonPath,
-      pkgJson.replace("{app_name}", name).replace("{triplex_version}", version)
+      pkgJson.replace("{app_name}", name).replace("{triplex_version}", version),
     );
   }
 
@@ -142,7 +142,7 @@ export async function init({
     const readme = await fs.readFile(join(templateDir, `README.md`), "utf8");
     await fs.writeFile(
       readmePath,
-      readme.replace("{pkg_manager}", pkgManager).replace("{app_name}", name)
+      readme.replace("{pkg_manager}", pkgManager).replace("{app_name}", name),
     );
   }
 

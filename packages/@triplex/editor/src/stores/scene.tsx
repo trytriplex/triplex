@@ -15,9 +15,7 @@ export interface FocusedObject {
 }
 
 interface BridgeContext {
-  /**
-   * Removes focus from the currently selected scene object.
-   */
+  /** Removes focus from the currently selected scene object. */
   blur(): void;
   /**
    * Optimistically delete a component from the scene before it has been deleted
@@ -28,26 +26,18 @@ interface BridgeContext {
     line: number;
     parentPath: string;
   }): void;
-  /**
-   * Focus a scene object.
-   */
+  /** Focus a scene object. */
   focus(sceneObject: FocusedObject): void;
-  /**
-   * Jumps the viewport to the focused scene object, if any.
-   */
+  /** Jumps the viewport to the focused scene object, if any. */
   jumpTo(sceneObject?: { column: number; line: number; path: string }): void;
-  /**
-   * Navigate to a new component.
-   */
+  /** Navigate to a new component. */
   navigateTo(sceneObject?: {
     encodedProps: string;
     exportName: string;
     path: string;
   }): void;
   playCamera: "default" | "editor";
-  /**
-   * Current state of the scene.
-   */
+  /** Current state of the scene. */
   playState: "play" | "pause" | "edit";
   /**
    * Value is `true` when the scene is ready else `false`. If the scene is not
@@ -66,13 +56,9 @@ interface BridgeContext {
    * @see {@link ./editor.tsx}
    */
   reset(): void;
-  /**
-   * Set play camera for the scene when playing.
-   */
+  /** Set play camera for the scene when playing. */
   setPlayCamera(camera: "default" | "editor"): void;
-  /**
-   * Set play state for the scene.
-   */
+  /** Set play state for the scene. */
   setPlayState(state: "play" | "pause" | "edit"): void;
   /**
    * Sets the temporary value of a prop.
@@ -159,5 +145,5 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     setPropValue(data) {
       send("request-set-element-prop", data);
     },
-  })
+  }),
 );

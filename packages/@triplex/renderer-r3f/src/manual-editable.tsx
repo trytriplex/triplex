@@ -10,9 +10,7 @@ import { useEffect } from "react";
 import { SceneObject } from "./scene-object";
 import { useSceneState } from "./stores/scene-state";
 
-/**
- * Used for bespoke use cases such as the loaded scene or the global provider.
- */
+/** Used for bespoke use cases such as the loaded scene or the global provider. */
 export function ManualEditableSceneObject({
   children,
   component: SceneComponent,

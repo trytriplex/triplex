@@ -44,7 +44,7 @@ export const IconButton = forwardRef<
       testId,
       variant = "default",
     },
-    ref
+    ref,
   ) => (
     <Pressable
       accelerator={isDisabled ? undefined : accelerator}
@@ -85,7 +85,7 @@ export const IconButton = forwardRef<
     >
       <Icon className="pointer-events-none" />
     </Pressable>
-  )
+  ),
 );
 
 IconButton.displayName = "IconButton";
@@ -120,7 +120,7 @@ export const Button = forwardRef<
       testId,
       variant = "default",
     },
-    ref
+    ref,
   ) => (
     <Pressable
       className={cn([
@@ -149,7 +149,7 @@ export const Button = forwardRef<
       {Icon && <Icon />}
       {children}
     </Pressable>
-  )
+  ),
 );
 
 Button.displayName = "Button";

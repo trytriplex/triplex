@@ -29,5 +29,5 @@ createRoot(document.getElementById("root")!).render(
         <AppRoot />
       </Suspense>
     </ErrorBoundary>
-  </TelemetryProvider>
+  </TelemetryProvider>,
 );

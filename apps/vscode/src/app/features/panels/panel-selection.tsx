@@ -28,7 +28,7 @@ function SelectionPanelLoadable({
   const selected = useDeferredValue(inSelected);
   const props = useLazySubscription(
     "/scene/:path/object/:line/:column",
-    selected
+    selected,
   );
 
   return (

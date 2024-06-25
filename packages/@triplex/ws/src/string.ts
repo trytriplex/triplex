@@ -5,9 +5,7 @@
  * file in the root directory of this source tree.
  */
 
-/**
- * Parses JSON while handling preserved undefined values.
- */
+/** Parses JSON while handling preserved undefined values. */
 export function parseJSON(value: string) {
   return JSON.parse(value, (_k, v) => (v === "__UNDEFINED__" ? undefined : v));
 }

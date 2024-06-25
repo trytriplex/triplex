@@ -28,12 +28,10 @@ export function sentenceCase(string: string) {
   return result[0].toUpperCase() + result.slice(1);
 }
 
-/**
- * Converts an object to JSON while ensuring undefined values are preserved.
- */
+/** Converts an object to JSON while ensuring undefined values are preserved. */
 export function stringifyJSON(value: unknown): string {
   const str = JSON.stringify(value, (_k, v) =>
-    v === undefined ? "__UNDEFINED__" : v
+    v === undefined ? "__UNDEFINED__" : v,
   );
 
   return str.replaceAll('"__UNDEFINED__"', "undefined");

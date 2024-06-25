@@ -46,7 +46,7 @@ function getStepFunc(delta: number, element: HTMLInputElement) {
 
 function getIterations(
   delta: number,
-  modifiers: { ctrl: boolean; shift: boolean }
+  modifiers: { ctrl: boolean; shift: boolean },
 ) {
   const iterations = Math.abs(delta);
 
@@ -59,7 +59,7 @@ function getIterations(
 
 function toNumber(
   num: string | number | boolean | undefined,
-  defaultValue: number
+  defaultValue: number,
 ): number {
   if (typeof num === "number") {
     return num;
@@ -202,7 +202,7 @@ export function NumberInput({
         onChangeHandler();
       }
     },
-    [isPointerLock, modifier, onChangeHandler]
+    [isPointerLock, modifier, onChangeHandler],
   );
 
   const onMouseUpHandler: MouseEventHandler = useCallback(async () => {
@@ -250,7 +250,7 @@ export function NumberInput({
 
       setIsPointerLock(true);
     },
-    [isLinux]
+    [isLinux],
   );
 
   const onKeyDownHandler: KeyboardEventHandler<HTMLInputElement> = useEvent(
@@ -262,7 +262,7 @@ export function NumberInput({
       ) {
         ref.current.blur();
       }
-    }
+    },
   );
 
   const incrementUp = useCallback(() => {
@@ -346,6 +346,10 @@ export function NumberInput({
       required,
       step,
     },
-    { clear: clearInputValue, decrement: incrementDown, increment: incrementUp }
+    {
+      clear: clearInputValue,
+      decrement: incrementDown,
+      increment: incrementUp,
+    },
   );
 }

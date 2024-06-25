@@ -23,7 +23,7 @@ test(
     await vsce.codelens("Scene").click();
 
     await expect(vsce.loadedComponent).toHaveText("Scene");
-  }
+  },
 );
 
 test("reopening a file after closing", async ({ vsce }) => {

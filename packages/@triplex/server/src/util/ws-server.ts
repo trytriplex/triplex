@@ -29,17 +29,18 @@ type ExtractParams<TRoute extends string> =
   TRoute extends `${infer TStart}/${infer TEnd}`
     ? ExtractParams<TStart> & ExtractParams<TEnd>
     : TRoute extends `:${infer TParam}`
-    ? { [P in TParam]: string }
-    : // eslint-disable-next-line @typescript-eslint/ban-types
-      {};
+      ? { [P in TParam]: string }
+      : // eslint-disable-next-line @typescript-eslint/ban-types
+        {};
 
-export type RouteParams<TRoute extends string> = ValidateShape<
-  ExtractParams<TRoute>,
-  // eslint-disable-next-line @typescript-eslint/ban-types
-  {}
-> extends never
-  ? ExtractParams<TRoute>
-  : never;
+export type RouteParams<TRoute extends string> =
+  ValidateShape<
+    ExtractParams<TRoute>,
+    // eslint-disable-next-line @typescript-eslint/ban-types
+    {}
+  > extends never
+    ? ExtractParams<TRoute>
+    : never;
 
 function decodeParams(params?: Record<string, string> | null) {
   if (!params) {
@@ -60,7 +61,7 @@ interface AliveWebSocket extends WebSocket {
 }
 
 function collectTypes<TRoutes extends Array<Record<string, unknown>>>(
-  _: TRoutes
+  _: TRoutes,
 ): UnionToIntersection<TRoutes[number]> {
   // This is opaque, purely used to return what the types are.
   // Accessing it at runtime won't do anything.
@@ -71,7 +72,7 @@ export function createTWS() {
   const server = createServer();
   const wss = new WebSocketServer<AliveWebSocket>({ server });
   const routeHandlers: ((
-    path: string
+    path: string,
   ) => ((ws: WebSocket) => Promise<void>) | false)[] = [];
   const eventHandlers: Record<string, (ws: WebSocket) => void> = {};
 
@@ -117,17 +118,17 @@ export function createTWS() {
   function route<
     TData,
     TRoute extends `/${string}`,
-    TRouteParams extends RouteParams<TRoute>
+    TRouteParams extends RouteParams<TRoute>,
   >(
     opts: (RouteOpts & { path: TRoute }) | TRoute,
     cb: (
       params: TRouteParams,
-      state: { type: "push" | "pull" }
+      state: { type: "push" | "pull" },
     ) => Promise<TData> | TData,
     pushConstructor?: (
       push: () => void,
-      params: TRouteParams
-    ) => Promise<void> | void
+      params: TRouteParams,
+    ) => Promise<void> | void,
   ): Record<TRoute, { data: TData; params: TRouteParams }> {
     const handler = (path: string) => {
       const route = typeof opts === "string" ? opts : opts.path;
@@ -137,7 +138,7 @@ export function createTWS() {
       if (matches.matches) {
         return async (ws: WebSocket) => {
           const params: TRouteParams = decodeParams(
-            matches.params
+            matches.params,
           ) as TRouteParams;
 
           async function sendMessage(type: "push" | "pull") {
@@ -154,7 +155,7 @@ export function createTWS() {
             } catch (error) {
               if (error instanceof Error) {
                 ws.send(
-                  JSON.stringify({ error: error.stack || error.message })
+                  JSON.stringify({ error: error.stack || error.message }),
                 );
               } else {
                 ws.send(JSON.stringify({ error }));
@@ -174,7 +175,7 @@ export function createTWS() {
             } catch (error) {
               if (error instanceof Error) {
                 ws.send(
-                  JSON.stringify({ error: error.stack || error.message })
+                  JSON.stringify({ error: error.stack || error.message }),
                 );
               } else {
                 ws.send(JSON.stringify({ error }));
@@ -199,7 +200,7 @@ export function createTWS() {
 
   function createEvent<TRoute extends string, TData>(
     eventName: TRoute,
-    init: (sendEvent: (data: TData) => void) => Promise<void> | void
+    init: (sendEvent: (data: TData) => void) => Promise<void> | void,
   ): Record<TRoute, { data: TData }> {
     const handler = (ws: WebSocket) => {
       async function sendEvent(data: TData) {

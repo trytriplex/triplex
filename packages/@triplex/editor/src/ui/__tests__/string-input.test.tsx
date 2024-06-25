@@ -20,7 +20,7 @@ describe("string input", () => {
         name="name"
         onChange={() => {}}
         onConfirm={() => {}}
-      />
+      />,
     );
     const element = getByTestId("string-my-name") as HTMLInputElement;
 
@@ -31,7 +31,7 @@ describe("string input", () => {
         name="name"
         onChange={() => {}}
         onConfirm={() => {}}
-      />
+      />,
     );
 
     expect(element.value).toEqual("updated-name");

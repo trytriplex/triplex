@@ -8,13 +8,11 @@ import { type ClientSendEventData } from "@triplex/bridge/host";
 import type * as vscode from "vscode";
 import { type VSCodeEvent } from "../../app/util/bridge";
 
-/**
- * Sends a message to the webview extension.
- */
+/** Sends a message to the webview extension. */
 export function sendVSCE<TEventName extends keyof VSCodeEvent>(
   webview: vscode.Webview,
   eventName: TEventName,
-  data: VSCodeEvent[TEventName]
+  data: VSCodeEvent[TEventName],
 ) {
   webview.postMessage({
     data,
@@ -25,7 +23,7 @@ export function sendVSCE<TEventName extends keyof VSCodeEvent>(
 export function on<TEventName extends keyof ClientSendEventData>(
   webview: vscode.Webview,
   eventName: TEventName,
-  cb: (data: ClientSendEventData[TEventName]) => void
+  cb: (data: ClientSendEventData[TEventName]) => void,
 ) {
   const disposable = webview.onDidReceiveMessage((e) => {
     if (

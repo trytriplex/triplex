@@ -126,16 +126,14 @@ export function createServer({
           column: destCol,
           line: destLine,
         },
-        action
+        action,
       );
     });
 
     context.response.body = { message: "success", ...ids };
   });
 
-  /**
-   * Update or add a prop to a jsx element.
-   */
+  /** Update or add a prop to a jsx element. */
   router.get("/scene/object/:line/:column/prop", async (context) => {
     const path = getParam(context, "path");
     const value = getParam(context, "value");
@@ -193,7 +191,7 @@ export function createServer({
       });
 
       context.response.body = { ...result, ...ids };
-    }
+    },
   );
 
   router.post("/scene/:path/object/:line/:column/delete", async (context) => {
@@ -316,9 +314,7 @@ export function createServer({
     context.response.body = { message: "success" };
   });
 
-  /**
-   * Resets the scene to what is currently saved to fs.
-   */
+  /** Resets the scene to what is currently saved to fs. */
   router.get("/scene/:path/reset", async (context) => {
     const path = context.params.path;
     const sourceFile = await project.getSourceFile(path);
@@ -354,7 +350,7 @@ export function createServer({
         project.onSourceFileChange((e) => {
           sendEvent(e);
         });
-      }
+      },
     ),
   ]);
 
@@ -376,7 +372,7 @@ export function createServer({
         watcher.on("add", push);
         watcher.on("change", push);
         watcher.on("unlink", push);
-      }
+      },
     ),
     tws.route(
       "/scene/components",
@@ -390,7 +386,7 @@ export function createServer({
         watcher.on("unlinkDir", push);
         watcher.on("add", push);
         watcher.on("unlink", push);
-      }
+      },
     ),
     tws.route(
       "/scene/assets",
@@ -404,7 +400,7 @@ export function createServer({
         watcher.on("unlinkDir", push);
         watcher.on("add", push);
         watcher.on("unlink", push);
-      }
+      },
     ),
     tws.route(
       "/scene/assets/:folderPath",
@@ -414,7 +410,7 @@ export function createServer({
         const parsed: ProjectAsset[] = result.map((asset) =>
           Object.assign(asset, {
             path: asset.path.replace(config.publicDir, ""),
-          })
+          }),
         );
 
         return parsed;
@@ -423,7 +419,7 @@ export function createServer({
         const watcher = watch(folderPath, { ignored: /node_modules/ });
         watcher.on("add", push);
         watcher.on("unlink", push);
-      }
+      },
     ),
     tws.route(
       "/scene/components/:folderPath",
@@ -440,7 +436,7 @@ export function createServer({
         const watcher = watch(folderPath, { ignored: /node_modules/ });
         watcher.on("add", push);
         watcher.on("unlink", push);
-      }
+      },
     ),
     tws.route("/folder", async () => {
       return { name: basename(config.cwd) };
@@ -452,7 +448,7 @@ export function createServer({
       },
       async (push) => {
         project.onStateChange(push);
-      }
+      },
     ),
     tws.route(
       { defer: true, path: "/scene/:path/:exportName" },
@@ -468,7 +464,7 @@ export function createServer({
       async (push, { path }) => {
         const sourceFile = await project.getSourceFile(path);
         sourceFile.onModified(push);
-      }
+      },
     ),
     tws.route(
       { defer: true, path: "/scene/:path/:exportName/props" },
@@ -481,7 +477,7 @@ export function createServer({
         const sourceFile = await project.getSourceFile(path);
         sourceFile.onModified(push);
         sourceFile.onDependencyModified(push);
-      }
+      },
     ),
     tws.route(
       { defer: true, path: "/scene/:path/object/:line/:column" },
@@ -496,7 +492,7 @@ export function createServer({
           if (type === "pull") {
             // Initial request - throw an error.
             throw new Error(
-              `invariant: component at ${line}:${column} not found`
+              `invariant: component at ${line}:${column} not found`,
             );
           } else {
             return {
@@ -511,7 +507,7 @@ export function createServer({
         const tag = getJsxTag(sceneObject);
         const { props, transforms } = getJsxElementProps(
           sourceFile.read(),
-          sceneObject
+          sceneObject,
         );
 
         if (tag.type === "custom") {
@@ -538,7 +534,7 @@ export function createServer({
         const sourceFile = await project.getSourceFile(path);
         sourceFile.onModified(push);
         sourceFile.onDependencyModified(push);
-      }
+      },
     ),
   ]);
 

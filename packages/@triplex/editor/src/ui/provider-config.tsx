@@ -39,7 +39,7 @@ function Inputs() {
 
         return acc;
       }, {}),
-    [data.props]
+    [data.props],
   );
 
   return (

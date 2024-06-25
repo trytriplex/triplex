@@ -105,12 +105,12 @@ export function PropInput({
   if (prop.kind === "union") {
     const isLiteralUnion = prop.shape.every(
       (
-        value
+        value,
       ): value is NumberLiteralType | StringLiteralType | BooleanLiteralType =>
         (value.kind === "string" ||
           value.kind === "number" ||
           value.kind === "boolean") &&
-        "literal" in value
+        "literal" in value,
     );
 
     if (isLiteralUnion) {

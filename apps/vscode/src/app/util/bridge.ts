@@ -32,7 +32,7 @@ export interface VSCodeEvent {
  */
 export function onVSCE<TEvent extends keyof VSCodeEvent>(
   eventName: TEvent,
-  callback: (data: VSCodeEvent[TEvent]) => void
+  callback: (data: VSCodeEvent[TEvent]) => void,
 ) {
   const cb = async (e: MessageEvent) => {
     if (typeof e.data === "object" && e.data.eventName === eventName) {
@@ -49,7 +49,7 @@ export function onVSCE<TEvent extends keyof VSCodeEvent>(
 
 export function sendVSCE<TEvent extends keyof ClientSendEventData>(
   eventName: TEvent,
-  data: ClientSendEventData[TEvent]
+  data: ClientSendEventData[TEvent],
 ) {
   vscode.postMessage({ data, eventName });
 }

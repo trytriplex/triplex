@@ -143,8 +143,8 @@ function Folder({
             ? filesCount > 0 && !isSelected
               ? "assetsdrawer_assets_open"
               : isExpanded
-              ? "assetsdrawer_assets_collapse"
-              : "assetsdrawer_assets_expand"
+                ? "assetsdrawer_assets_collapse"
+                : "assetsdrawer_assets_expand"
             : "assetsdrawer_assets_open"
         }
         style={{ paddingLeft: (level + 1) * 8 }}
@@ -178,7 +178,7 @@ function Folder({
 
 function renderFolder(
   folder: FolderType,
-  { onClick, selected }: { onClick: (path: string) => void; selected?: string }
+  { onClick, selected }: { onClick: (path: string) => void; selected?: string },
 ) {
   return (
     <Folder
@@ -189,7 +189,7 @@ function renderFolder(
       text={folder.name}
     >
       {folder.children.map((child) =>
-        renderFolder(child, { onClick, selected })
+        renderFolder(child, { onClick, selected }),
       )}
     </Folder>
   );
@@ -208,14 +208,14 @@ function ComponentFolder({
     `/scene/${folderPath.category}/:folderPath`,
     {
       folderPath: folderPath.path,
-    }
+    },
   );
   const normalizedFilter = filter.replaceAll(" ", "");
   const filteredComponents = components.map((component) =>
     // Ensure the name is lower case and has no spaces
     component.name.toLowerCase().replaceAll(" ", "").includes(normalizedFilter)
       ? component
-      : null
+      : null,
   );
 
   if (components.length === 0) {
@@ -336,7 +336,7 @@ function ComponentsDrawer({
                       onClick: (path: string) =>
                         onSelected({ category: "components", path }),
                       selected: selected?.path,
-                    })
+                    }),
                   )}
                 </Folder>
                 <Folder text="Assets">
@@ -345,7 +345,7 @@ function ComponentsDrawer({
                       onClick: (path: string) =>
                         onSelected({ category: "assets", path }),
                       selected: selected?.path,
-                    })
+                    }),
                   )}
                 </Folder>
               </div>

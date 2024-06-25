@@ -14,7 +14,7 @@ const V1 = new Vector3();
 
 export function useDialogController() {
   const { entities } = useEntities(
-    world.with("dialog", "sceneObject", "parent")
+    world.with("dialog", "sceneObject", "parent"),
   );
 
   useFrame(() => {

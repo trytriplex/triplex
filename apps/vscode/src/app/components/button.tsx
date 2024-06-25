@@ -94,7 +94,7 @@ export const Pressable = forwardRef<HTMLButtonElement, PressableProps>(
       title,
       vscodeContext,
     },
-    ref
+    ref,
   ) => {
     const telemetry = useTelemetry();
     const onClickHandler = useEvent((e: React.MouseEvent | KeyboardEvent) => {
@@ -127,7 +127,7 @@ export const Pressable = forwardRef<HTMLButtonElement, PressableProps>(
         {children}
       </button>
     );
-  }
+  },
 );
 
 Pressable.displayName = "Pressable";

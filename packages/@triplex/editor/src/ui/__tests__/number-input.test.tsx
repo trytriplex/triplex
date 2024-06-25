@@ -33,7 +33,7 @@ describe("number input", () => {
           in: (value) => (value || 0) + 10,
           out: (value) => (value || 0) - 10,
         }}
-      />
+      />,
     );
 
     const element = getByTestId("number-10") as HTMLInputElement;
@@ -53,7 +53,7 @@ describe("number input", () => {
           in: (val) => (val || 0) + 1,
           out: (val) => (val || 0) - 1,
         }}
-      />
+      />,
     );
     const element = getByTestId("number-10") as HTMLInputElement;
 
@@ -68,7 +68,7 @@ describe("number input", () => {
           in: (val) => (val || 0) + 1,
           out: (val) => (val || 0) - 1,
         }}
-      />
+      />,
     );
 
     expect(element.valueAsNumber).toEqual(21);
@@ -88,7 +88,7 @@ describe("number input", () => {
           in: (value) => (value || 0) + 10,
           out: (value) => (value || 0) - 10,
         }}
-      />
+      />,
     );
     const element = getByTestId("number-11") as HTMLInputElement;
 
@@ -108,7 +108,7 @@ describe("number input", () => {
         name="x"
         onChange={change}
         onConfirm={confirm}
-      />
+      />,
     );
     const element = getByLabelText("Decrease By 0.02");
 
@@ -129,7 +129,7 @@ describe("number input", () => {
         name="x"
         onChange={change}
         onConfirm={confirm}
-      />
+      />,
     );
     const element = getByLabelText("Increase By 0.02");
 
@@ -150,7 +150,7 @@ describe("number input", () => {
         name="x"
         onChange={change}
         onConfirm={confirm}
-      />
+      />,
     );
     const element = getByLabelText("Clear Value");
 
@@ -169,7 +169,7 @@ describe("number input", () => {
         name="x"
         onChange={() => {}}
         onConfirm={() => {}}
-      />
+      />,
     );
     const element = getByTestId("number-10");
 
@@ -188,7 +188,7 @@ describe("number input", () => {
         name="x"
         onChange={() => {}}
         onConfirm={() => {}}
-      />
+      />,
     );
     const element = getByTestId("number-10");
 
@@ -211,7 +211,7 @@ describe("number input", () => {
           onChange={() => {}}
           onConfirm={() => {}}
         />
-      </>
+      </>,
     );
     const iframe = getByTestId("iframe");
     iframe.focus();
@@ -232,7 +232,7 @@ describe("number input", () => {
         name="x"
         onChange={change}
         onConfirm={confirm}
-      />
+      />,
     );
     const element = getByTestId("number-10");
 
@@ -253,7 +253,7 @@ describe("number input", () => {
         name="x"
         onChange={change}
         onConfirm={confirm}
-      />
+      />,
     );
     const element = getByTestId("number-10");
     fireEvent.mouseDown(element);
@@ -274,7 +274,7 @@ describe("number input", () => {
         name="x"
         onChange={change}
         onConfirm={confirm}
-      />
+      />,
     );
     const element = getByTestId("number-10.2");
     fireEvent.mouseDown(element);
@@ -298,7 +298,7 @@ describe("number input", () => {
         name="x"
         onChange={change}
         onConfirm={confirm}
-      />
+      />,
     );
     const element = getByTestId("number-10.2");
     fireEvent.mouseDown(element);
@@ -320,7 +320,7 @@ describe("number input", () => {
         name="x"
         onChange={change}
         onConfirm={confirm}
-      />
+      />,
     );
     const element = getByTestId("number-10");
     fireEvent.mouseDown(element);
@@ -341,7 +341,7 @@ describe("number input", () => {
         name="x"
         onChange={change}
         onConfirm={confirm}
-      />
+      />,
     );
     const element = getByTestId("number-10");
     fireEvent.mouseDown(element);
@@ -362,7 +362,7 @@ describe("number input", () => {
         name="x"
         onChange={change}
         onConfirm={confirm}
-      />
+      />,
     );
     const element = getByTestId("number-10");
     fireEvent.mouseDown(element);
@@ -383,7 +383,7 @@ describe("number input", () => {
         name="x"
         onChange={() => {}}
         onConfirm={() => {}}
-      />
+      />,
     );
     const element = getByLabelText("Clear Value");
     const inputElement = getByTestId("number-10");
@@ -405,7 +405,7 @@ describe("number input", () => {
           onChange={change}
           onConfirm={confirm}
         />
-      </PropTagContext.Provider>
+      </PropTagContext.Provider>,
     );
     const element = getByTestId("number-10");
 
@@ -428,7 +428,7 @@ describe("number input", () => {
           onChange={change}
           onConfirm={confirm}
         />
-      </PropTagContext.Provider>
+      </PropTagContext.Provider>,
     );
     const element = getByTestId("number-10");
 
@@ -449,7 +449,7 @@ describe("number input", () => {
         name="x"
         onChange={change}
         onConfirm={confirm}
-      />
+      />,
     );
     const element = getByTestId("number-10");
 

@@ -10,6 +10,6 @@ import { test } from "../utils/runner";
 test("renderer starts", async ({ editorLocal }) => {
   await expect(editorLocal.scenePanel.heading).toHaveText("Button");
   await expect(
-    editorLocal.scenePanel.elementButton("button").locator
+    editorLocal.scenePanel.elementButton("button").locator,
   ).toBeVisible();
 });

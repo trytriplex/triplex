@@ -37,7 +37,7 @@ export function getConfig(cwd: string): ReconciledTriplexConfig {
   const publicDir: string = join(
     cwd,
     ".triplex",
-    config.publicDir || DEFAULT_PUBLIC_DIR
+    config.publicDir || DEFAULT_PUBLIC_DIR,
   );
 
   const provider: string = config.provider
@@ -45,19 +45,19 @@ export function getConfig(cwd: string): ReconciledTriplexConfig {
     : DEFAULT_PROVIDER;
 
   const files: string[] = (config.files || DEFAULT_FILES).map((file: string) =>
-    join(cwd, ".triplex", file)
+    join(cwd, ".triplex", file),
   );
 
   const components: string[] = (config.components || DEFAULT_COMPONENTS).map(
-    (file: string) => join(cwd, ".triplex", file)
+    (file: string) => join(cwd, ".triplex", file),
   );
 
   const assetsDir = normalize(
     join(
       publicDir,
       config.assetsDir || DEFAULT_ASSETS_DIR,
-      `/**/*.(${STATIC_ASSETS.join("|")})`
-    )
+      `/**/*.(${STATIC_ASSETS.join("|")})`,
+    ),
   );
 
   const renderer: string =
@@ -80,7 +80,7 @@ export function getConfig(cwd: string): ReconciledTriplexConfig {
 
 function _resolveProjectCwd(
   startPath: string,
-  __fallbackPkgJsonPath?: string
+  __fallbackPkgJsonPath?: string,
 ): string | undefined {
   const next = resolve(startPath, "..");
 

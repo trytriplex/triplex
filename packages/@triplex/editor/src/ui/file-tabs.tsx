@@ -36,7 +36,7 @@ function FallbackTab({
 
     for (let i = index; i <= 8; i++) {
       cleanup.push(
-        window.triplex.accelerator(`CommandOrCtrl+${i + 1}`, onClickHandler)
+        window.triplex.accelerator(`CommandOrCtrl+${i + 1}`, onClickHandler),
       );
     }
 
@@ -78,7 +78,7 @@ function FileTab({
       import.meta.env.VITE_TRIPLEX_ENV !== "test" &&
       isDirty &&
       !confirm(
-        `Closing this tab will throw away changes you have made to ${children}, continue?`
+        `Closing this tab will throw away changes you have made to ${children}, continue?`,
       )
     ) {
       return;
@@ -102,7 +102,7 @@ function FileTab({
 
     return window.triplex.accelerator(
       `CommandOrCtrl+${index + 1}`,
-      onClickHandler
+      onClickHandler,
     );
   }, [index, onClickHandler]);
 
@@ -193,7 +193,7 @@ export function FileTabs() {
         path: nextFilePath,
       });
       telemetry.event("tabbar_file_switch");
-    }
+    },
   );
 
   const onCloseHandler = useEvent(
@@ -233,7 +233,7 @@ export function FileTabs() {
       telemetry.event("tabbar_file_close");
 
       previouslyClosedTabs.current.push({ exportName, filePath, index });
-    }
+    },
   );
 
   return (

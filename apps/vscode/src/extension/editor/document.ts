@@ -8,7 +8,7 @@ import * as vscode from "vscode";
 
 function toJSONString(value: unknown): string {
   const str = JSON.stringify(value, (_k, v) =>
-    v === undefined ? "__UNDEFINED__" : v
+    v === undefined ? "__UNDEFINED__" : v,
   );
 
   return str.replaceAll('"__UNDEFINED__"', "undefined");
@@ -31,7 +31,7 @@ export class TriplexDocument implements vscode.CustomDocument {
 
   async backup(
     _context: vscode.CustomDocumentBackupContext,
-    _cancellation: vscode.CancellationToken
+    _cancellation: vscode.CancellationToken,
   ): Promise<vscode.CustomDocumentBackup> {
     return {
       delete() {},
@@ -50,23 +50,23 @@ export class TriplexDocument implements vscode.CustomDocument {
       }/scene/${encodeURIComponent(this.uri.fsPath)}/save`,
       {
         method: "POST",
-      }
+      },
     );
   }
 
   async saveAs(
     destination: vscode.Uri,
-    _cancellation: vscode.CancellationToken
+    _cancellation: vscode.CancellationToken,
   ) {
     await fetch(
       `http://localhost:${
         this._context.ports.server
       }/scene/${encodeURIComponent(
-        this.uri.fsPath
+        this.uri.fsPath,
       )}/save-as?newPath=${encodeURIComponent(destination.fsPath)}`,
       {
         method: "POST",
-      }
+      },
     );
   }
 
@@ -74,7 +74,7 @@ export class TriplexDocument implements vscode.CustomDocument {
     await fetch(
       `http://localhost:${
         this._context.ports.server
-      }/scene/${encodeURIComponent(this.uri.fsPath)}/reset`
+      }/scene/${encodeURIComponent(this.uri.fsPath)}/reset`,
     );
   }
 
@@ -89,10 +89,10 @@ export class TriplexDocument implements vscode.CustomDocument {
       `http://localhost:${this._context.ports.server}/scene/object/${
         data.line
       }/${data.column}/prop?value=${encodeURIComponent(
-        toJSONString(data.propValue)
+        toJSONString(data.propValue),
       )}&path=${encodeURIComponent(data.path)}&name=${encodeURIComponent(
-        data.propName
-      )}`
+        data.propName,
+      )}`,
     );
 
     const response: { redoID: number; undoID: number } = await result.json();
@@ -108,7 +108,7 @@ export class TriplexDocument implements vscode.CustomDocument {
           }`,
           {
             method: "POST",
-          }
+          },
         );
       },
       undo: async () => {
@@ -120,7 +120,7 @@ export class TriplexDocument implements vscode.CustomDocument {
           }`,
           {
             method: "POST",
-          }
+          },
         );
       },
     });

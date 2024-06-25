@@ -13,7 +13,7 @@ import { indeterminate } from "./progress-bar";
 export async function ensureDepsInstall(
   cwd: string,
   window: BrowserWindow,
-  signal: AbortSignal
+  signal: AbortSignal,
 ) {
   const dir = await readdir(cwd);
   if (

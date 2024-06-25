@@ -37,7 +37,7 @@ describe("scene frame", () => {
     const { getInstance } = await render(
       <SceneProvider value={{}}>
         <SceneFrame provider={Provider} providerPath="" />
-      </SceneProvider>
+      </SceneProvider>,
     );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -55,7 +55,7 @@ describe("scene frame", () => {
           provider={({ children }) => <>{children}</>}
           providerPath=""
         />
-      </SceneProvider>
+      </SceneProvider>,
     );
 
     await act(() =>
@@ -66,8 +66,8 @@ describe("scene frame", () => {
           exportName: "Scene",
           path: "/foo",
         },
-        true
-      )
+        true,
+      ),
     );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any

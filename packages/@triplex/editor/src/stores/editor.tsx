@@ -86,7 +86,7 @@ export function useEditor() {
             type,
           }),
           method: "POST",
-        }
+        },
       );
 
       const result = (await res.json()) as {
@@ -104,7 +104,7 @@ export function useEditor() {
 
       return result;
     },
-    [path, exportName, scene]
+    [path, exportName, scene],
   );
 
   const deleteComponent = useCallback(
@@ -120,7 +120,7 @@ export function useEditor() {
         }/scene/${encodeURIComponent(toDelete.parentPath)}/object/${
           toDelete.line
         }/${toDelete.column}/delete`,
-        { method: "POST" }
+        { method: "POST" },
       );
       scene.deleteComponent({
         column: toDelete.column,
@@ -130,7 +130,7 @@ export function useEditor() {
 
       scene.blur();
     },
-    [scene, target]
+    [scene, target],
   );
 
   const exitComponent = useCallback(() => {
@@ -141,7 +141,7 @@ export function useEditor() {
     fetch(
       `http://localhost:${
         window.triplex.env.ports.server
-      }/scene/${encodeURIComponent(filePath)}/close`
+      }/scene/${encodeURIComponent(filePath)}/close`,
     );
   });
 
@@ -150,7 +150,7 @@ export function useEditor() {
       path: string,
       source: { column: number; line: number },
       destination: { column: number; line: number },
-      action: "move-before" | "move-after" | "make-child" | "reparent"
+      action: "move-before" | "move-after" | "make-child" | "reparent",
     ) => {
       fetch(
         `http://localhost:${
@@ -160,9 +160,9 @@ export function useEditor() {
         }/move?destLine=${destination.line}&destCol=${
           destination.column
         }&action=${action}`,
-        { method: "POST" }
+        { method: "POST" },
       );
-    }
+    },
   );
 
   const persistPropValue = useCallback(
@@ -181,13 +181,13 @@ export function useEditor() {
         `http://localhost:${window.triplex.env.ports.server}/scene/object/${
           data.line
         }/${data.column}/prop?value=${encodeURIComponent(
-          stringifyJSON(data.propValue)
+          stringifyJSON(data.propValue),
         )}&path=${encodeURIComponent(data.path)}&name=${encodeURIComponent(
-          data.propName
-        )}`
+          data.propName,
+        )}`,
       );
     },
-    [scene]
+    [scene],
   );
 
   const reset = useCallback(() => {
@@ -197,7 +197,7 @@ export function useEditor() {
     fetch(
       `http://localhost:${
         window.triplex.env.ports.server
-      }/scene/${encodeURIComponent(path)}/reset`
+      }/scene/${encodeURIComponent(path)}/reset`,
     );
   }, [path, scene]);
 
@@ -212,7 +212,7 @@ export function useEditor() {
         entered?: true;
         replace?: true;
         skipTransition?: boolean;
-      } = {}
+      } = {},
     ) => {
       if (
         componentParams.path === path &&
@@ -257,7 +257,7 @@ export function useEditor() {
         });
       }
     },
-    [exportName, path, setSearchParams]
+    [exportName, path, setSearchParams],
   );
 
   const saveAs = useCallback(async () => {
@@ -270,11 +270,11 @@ export function useEditor() {
       `http://localhost:${
         window.triplex.env.ports.server
       }/scene/${encodeURIComponent(path)}/save-as?newPath=${encodeURIComponent(
-        newPath
+        newPath,
       )}`,
       {
         method: "POST",
-      }
+      },
     );
 
     if (newPath !== path) {
@@ -285,7 +285,7 @@ export function useEditor() {
           exportName,
           path: newPath,
         },
-        { skipTransition: true }
+        { skipTransition: true },
       );
     }
   }, [encodedProps, exportName, path, set]);
@@ -297,7 +297,7 @@ export function useEditor() {
       }/scene/${encodeURIComponent(path)}/save`,
       {
         method: "POST",
-      }
+      },
     );
     const data = await response.json();
 
@@ -311,7 +311,7 @@ export function useEditor() {
       `http://localhost:${window.triplex.env.ports.server}/project/save-all`,
       {
         method: "POST",
-      }
+      },
     );
   }, []);
 
@@ -320,9 +320,9 @@ export function useEditor() {
       fetch(
         `http://localhost:${
           window.triplex.env.ports.server
-        }/scene/${encodeURIComponent(path)}/${exportName}/open?index=${index}`
+        }/scene/${encodeURIComponent(path)}/${exportName}/open?index=${index}`,
       );
-    }
+    },
   );
 
   const newFile = useCallback(async () => {
@@ -330,7 +330,7 @@ export function useEditor() {
       `http://localhost:${window.triplex.env.ports.server}/scene/new`,
       {
         method: "POST",
-      }
+      },
     );
     const data = await result.json();
 
@@ -340,7 +340,7 @@ export function useEditor() {
         exportName: data.exportName,
         path: data.path,
       },
-      { skipTransition: true }
+      { skipTransition: true },
     );
   }, [set]);
 
@@ -349,7 +349,7 @@ export function useEditor() {
       `http://localhost:${
         window.triplex.env.ports.server
       }/scene/${encodeURIComponent(path)}/new`,
-      { method: "POST" }
+      { method: "POST" },
     );
     const data = await result.json();
 
@@ -374,7 +374,7 @@ export function useEditor() {
       }/scene/${encodeURIComponent(path)}/object/${target.line}/${
         target.column
       }/duplicate`,
-      { method: "POST" }
+      { method: "POST" },
     );
 
     pos = await response.json();
@@ -394,7 +394,7 @@ export function useEditor() {
       }/scene/${encodeURIComponent(path)}/undo`,
       {
         method: "POST",
-      }
+      },
     );
   });
 
@@ -405,7 +405,7 @@ export function useEditor() {
       }/scene/${encodeURIComponent(path)}/redo`,
       {
         method: "POST",
-      }
+      },
     );
   });
 
@@ -416,18 +416,14 @@ export function useEditor() {
        * `save()` is called.
        */
       addComponent,
-      /**
-       * Closes the file, clearing out any intermediate state.
-       */
+      /** Closes the file, clearing out any intermediate state. */
       close,
       /**
        * Deletes the currently focused scene object. Able to be undone. Is not
        * persisted until `save()` is called.
        */
       deleteComponent,
-      /**
-       * Duplicates the selected element into the scene.
-       */
+      /** Duplicates the selected element into the scene. */
       duplicateSelection,
       /**
        * Encoded (via `encodeURIComponent()`) props used to hydrate the loaded
@@ -441,13 +437,9 @@ export function useEditor() {
        * @see {@link ./scene.tsx}
        */
       enteredComponent,
-      /**
-       * Exits the currently entered component and goes back to the parent.
-       */
+      /** Exits the currently entered component and goes back to the parent. */
       exitComponent,
-      /**
-       * Returns the scene export name that is currently open.
-       */
+      /** Returns the scene export name that is currently open. */
       exportName,
       /**
        * Focuses the passed scene object. Will blur the currently focused scene
@@ -458,68 +450,44 @@ export function useEditor() {
        * @see {@link ./scene.tsx}
        */
       focus,
-      /**
-       * If the file is opened at a particular index this will be set.
-       */
+      /** If the file is opened at a particular index this will be set. */
       index,
-      /**
-       * Moves the element to a new location.
-       */
+      /** Moves the element to a new location. */
       move,
       /**
        * Creates a new intermediate component in the open file and transitions
        * the editor to it.
        */
       newComponent,
-      /**
-       * Creates a new intermediate file and transitions the editor to the file.
-       */
+      /** Creates a new intermediate file and transitions the editor to the file. */
       newFile,
-      /**
-       * Opens the file at the passed in path and export name.
-       */
+      /** Opens the file at the passed in path and export name. */
       open,
-      /**
-       * Current value of the scene path.
-       */
+      /** Current value of the scene path. */
       path,
       /**
        * Persists the passed in prop value to the scene frame and web server,
        * and makes it available as an undo/redo action.
        */
       persistPropValue,
-      /**
-       * Re-applies the last action.
-       */
+      /** Re-applies the last action. */
       redo,
-      /**
-       * Resets the scene throwing away any unsaved state.
-       */
+      /** Resets the scene throwing away any unsaved state. */
       reset,
-      /**
-       * Saves the current file to the filesystem.
-       */
+      /** Saves the current file to the filesystem. */
       save,
-      /**
-       * Saves all currently opened files that aren't "new" to the filesystem.
-       */
+      /** Saves all currently opened files that aren't "new" to the filesystem. */
       saveAll,
       /**
        * Presents a dialog to choose where to save the file to, and if chosen
        * persists to the filesystem.
        */
       saveAs,
-      /**
-       * Sets the loaded scene to a specific path, export name, and props.
-       */
+      /** Sets the loaded scene to a specific path, export name, and props. */
       set,
-      /**
-       * Returns the currently focused scene object, else `null`.
-       */
+      /** Returns the currently focused scene object, else `null`. */
       target,
-      /**
-       * Unapplies the last action.
-       */
+      /** Unapplies the last action. */
       undo,
     }),
     [
@@ -547,6 +515,6 @@ export function useEditor() {
       set,
       target,
       undo,
-    ]
+    ],
   );
 }

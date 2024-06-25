@@ -12,9 +12,7 @@ import { Tunnel } from "./components/tunnel";
 import { useScenes } from "./context";
 import { ManualEditableSceneObject } from "./manual-editable";
 
-/**
- * This is used for e2e testing both the dev and prod smoke test build.
- */
+/** This is used for e2e testing both the dev and prod smoke test build. */
 function LoadedNotifierForTesting({ exportName }: { exportName: string }) {
   useEffect(() => {
     send("component-rendered", undefined);
@@ -50,7 +48,7 @@ export function SceneLoader({
 }) {
   const scenes = useScenes();
   const componentFilename = Object.keys(scenes).find((filename) =>
-    path ? path.endsWith(filename) : false
+    path ? path.endsWith(filename) : false,
   );
 
   if (!componentFilename || !exportName) {

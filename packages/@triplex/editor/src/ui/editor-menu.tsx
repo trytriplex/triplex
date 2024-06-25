@@ -69,7 +69,7 @@ const shortcut = (key: string, { meta = false, shift = false } = {}) => {
 
 function findMenuItem(
   id: string,
-  menuitems: MenuItem["submenu"] = []
+  menuitems: MenuItem["submenu"] = [],
 ): MenuItem | undefined {
   for (let i = 0; i < menuitems.length; i++) {
     const item = menuitems[i];
@@ -365,14 +365,14 @@ export function EditorMenu() {
       navigateTo,
       exitComponent,
       deleteComponent,
-    ]
+    ],
   );
 
   useEffect(() => {
     window.triplex.setMenu(
       // Eliminate functions before sending the data by stringifying it first.
       // eslint-disable-next-line unicorn/prefer-structured-clone
-      JSON.parse(JSON.stringify(menubar))
+      JSON.parse(JSON.stringify(menubar)),
     );
   }, [menubar]);
 

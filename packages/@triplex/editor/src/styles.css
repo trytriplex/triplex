@@ -81,11 +81,16 @@ input[type="number"]::-webkit-outer-spin-button {
 
 html {
   -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: "rlig" 1, "calt" 1, "ss01" 1;
+  font-feature-settings:
+    "rlig" 1,
+    "calt" 1,
+    "ss01" 1;
 }
 
 .bg-checker {
-  background-position: 0px 0px, 10px 10px;
+  background-position:
+    0px 0px,
+    10px 10px;
   background-size: 20px 20px;
   background-image: linear-gradient(
       45deg,

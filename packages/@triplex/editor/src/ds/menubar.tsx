@@ -55,7 +55,7 @@ export function MenuItem({
     (e) => {
       onClick?.(e);
       telemetry.event(actionId);
-    }
+    },
   );
 
   return (

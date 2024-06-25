@@ -28,7 +28,7 @@ export const bootstrap: BootstrapFunction = (container) => {
         files={opts.files}
         provider={opts.provider}
         providerPath={opts.config.provider}
-      />
+      />,
     );
   };
 };
@@ -59,7 +59,7 @@ export const thumbnail: ThumbnailFunction = (container) => {
             <ambientLight intensity={2} />
           </ErrorBoundary>
         </Ready>
-      </Canvas>
+      </Canvas>,
     );
   };
 };

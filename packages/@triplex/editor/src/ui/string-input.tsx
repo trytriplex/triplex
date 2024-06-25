@@ -74,7 +74,7 @@ export function StringInput({
       if (e.key === "Enter") {
         ref.current.blur();
       }
-    }
+    },
   );
 
   return (

@@ -26,7 +26,7 @@ export const PrimitiveProvider = forwardRef<unknown, { children: JSX.Element }>(
         {cloneElement(children, { ref })}
       </PrimitiveContext.Provider>
     );
-  }
+  },
 );
 
 PrimitiveProvider.displayName = "PrimitiveProvider";
@@ -67,7 +67,7 @@ export const Pressable = forwardRef<
       testId,
       title,
     },
-    ref
+    ref,
   ) => {
     const telemetry = useTelemetry();
     const props = useContext(PrimitiveContext);
@@ -139,7 +139,7 @@ export const Pressable = forwardRef<
         {children}
       </div>
     );
-  }
+  },
 );
 
 Pressable.displayName = "Pressable";

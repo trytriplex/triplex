@@ -35,7 +35,7 @@ export function ControlsMenu() {
   const frame = useCanvasStage((store) => store.frame);
   const resetZoom = useCanvasStage((store) => store.resetZoom);
   const fitFrameToViewport = useCanvasStage(
-    (store) => store.fitFrameToViewport
+    (store) => store.fitFrameToViewport,
   );
 
   useEffect(() => {

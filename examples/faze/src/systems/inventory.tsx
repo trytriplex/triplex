@@ -6,7 +6,7 @@
  */
 import { useEntities } from "miniplex/react";
 import { useEffect, useState } from "react";
-import { type Item, items } from "../ecs/components/item";
+import { items, type Item } from "../ecs/components/item";
 import {
   useActiveItem,
   useActivePlayer,

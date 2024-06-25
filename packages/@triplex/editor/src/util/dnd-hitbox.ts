@@ -152,7 +152,7 @@ function getInstruction({
 
 function isShallowEqual(
   a: Record<string, unknown>,
-  b: Record<string, unknown>
+  b: Record<string, unknown>,
 ): boolean {
   const aKeys = Object.keys(a).sort();
   const bKeys = Object.keys(b).sort();
@@ -210,7 +210,7 @@ export function attachInstruction(
     ...rest
   }: Parameters<typeof getInstruction>[0] & {
     block?: InstructionType[];
-  }
+  },
 ): Record<string | symbol, unknown> {
   const desired: Instruction = getInstruction(rest);
   const withBlock: Instruction = applyInstructionBlock({
@@ -226,7 +226,7 @@ export function attachInstruction(
 }
 
 export function extractInstruction(
-  userData: Record<string | symbol, unknown>
+  userData: Record<string | symbol, unknown>,
 ): Instruction | null {
   return (userData[uniqueKey] as Instruction) ?? null;
 }

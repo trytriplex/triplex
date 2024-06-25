@@ -47,7 +47,7 @@ export interface ToggleButtonControl {
       id: string;
       isSelected?: boolean;
       label: string;
-    }
+    },
   ];
   id: string;
   type: "toggle-button";

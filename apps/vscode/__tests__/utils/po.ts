@@ -11,7 +11,7 @@ export class ExtensionPage {
 
   codelens(componentName: string) {
     return this.page.getByTitle(
-      `Will open the ${componentName} component in Triplex`
+      `Will open the ${componentName} component in Triplex`,
     );
   }
 

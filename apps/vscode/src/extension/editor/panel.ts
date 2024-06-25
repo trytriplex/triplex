@@ -37,7 +37,7 @@ export async function initializeWebviewPanel(
     path: string;
     projectRegistry: Map<string, TriplexProject>;
     triplexProjectCwd: string;
-  }
+  },
 ) {
   const resolveProject = projectRegistry.get(triplexProjectCwd);
   const scopedFileName = path;
@@ -96,7 +96,7 @@ export async function initializeWebviewPanel(
         {
           cwd: context.extensionPath,
           data: args,
-        }
+        },
       );
 
       disposables.push(() => p.kill());
@@ -129,10 +129,10 @@ export async function initializeWebviewPanel(
 
       if (process.env.NODE_ENV === "production") {
         const cssPath = vscode.Uri.file(
-          join(context.extensionPath, "dist/assets/index.css")
+          join(context.extensionPath, "dist/assets/index.css"),
         );
         const jsPath = vscode.Uri.file(
-          join(context.extensionPath, "dist/index.js")
+          join(context.extensionPath, "dist/index.js"),
         );
         const html = await vscode.workspace.fs
           .readFile(vscode.Uri.file(join(__dirname, "index.html")))
@@ -141,11 +141,11 @@ export async function initializeWebviewPanel(
         constructedHTML = html
           .replace(
             '"/__base_url_replace__/index.js"',
-            panel.webview.asWebviewUri(jsPath).toString()
+            panel.webview.asWebviewUri(jsPath).toString(),
           )
           .replace(
             '"/__base_url_replace__/assets/index.css"',
-            panel.webview.asWebviewUri(cssPath).toString()
+            panel.webview.asWebviewUri(cssPath).toString(),
           );
       } else {
         const editorDevPort = await getPort();
@@ -153,7 +153,7 @@ export async function initializeWebviewPanel(
         const devServer = await createDevServer();
         const cleanup = await devServer.listen(editorDevPort);
         const html = await fetch(`http://localhost:${editorDevPort}`).then(
-          (res) => res.text()
+          (res) => res.text(),
         );
 
         constructedHTML =

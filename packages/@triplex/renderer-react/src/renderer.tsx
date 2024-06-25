@@ -39,7 +39,7 @@ function RenderComponent({ files }: { files: Modules }) {
 
   const Component = suspend(async () => {
     const modulePath = Object.keys(files).find((x) =>
-      component.path.endsWith(x)
+      component.path.endsWith(x),
     );
     if (!modulePath) {
       throw new Error("invariant");

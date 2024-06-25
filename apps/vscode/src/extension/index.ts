@@ -12,7 +12,7 @@ import { TriplexEditorProvider } from "./editor";
 export function activate(context: vscode.ExtensionContext) {
   context.subscriptions.push(
     TriplexCodelensProvider.register(),
-    TriplexEditorProvider.register(context)
+    TriplexEditorProvider.register(context),
   );
 }
 

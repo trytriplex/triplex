@@ -12,13 +12,13 @@ export const config = {
 
 async function getAssets() {
   const imageData = fetch(new URL("./bg.png", import.meta.url)).then(
-    (res) => res.arrayBuffer() as unknown as string
+    (res) => res.arrayBuffer() as unknown as string,
   );
   const bold = fetch(new URL("./Karla-Bold.ttf", import.meta.url)).then((res) =>
-    res.arrayBuffer()
+    res.arrayBuffer(),
   );
   const medium = fetch(new URL("./Karla-Medium.ttf", import.meta.url)).then(
-    (res) => res.arrayBuffer()
+    (res) => res.arrayBuffer(),
   );
 
   return Promise.all([imageData, bold, medium]);
@@ -114,6 +114,6 @@ export default async function (request: Request) {
       ],
       height: 720,
       width: 1280,
-    }
+    },
   );
 }

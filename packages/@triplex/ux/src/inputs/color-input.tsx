@@ -92,6 +92,6 @@ export function ColorInput({
       clear: clearInputValue,
       contrast: persistedValueColor?.isLight() ? "light" : "dark",
       hasChanged,
-    }
+    },
   );
 }

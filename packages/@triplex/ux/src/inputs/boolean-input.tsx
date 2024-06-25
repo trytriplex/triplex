@@ -50,6 +50,6 @@ export function BooleanInput({
       onChange: onChangeHandler,
       ref,
     },
-    {}
+    {},
   );
 }

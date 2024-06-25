@@ -10,6 +10,6 @@ import { test } from "../utils/runner";
 test("renderer starts", async ({ editorReact }) => {
   await expect(editorReact.scenePanel.heading).toHaveText("StickerSheetButton");
   await expect(
-    editorReact.scenePanel.elementButton("button").locator
+    editorReact.scenePanel.elementButton("button").locator,
   ).toBeVisible();
 });

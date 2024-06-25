@@ -88,7 +88,7 @@ function ComponentHeading() {
   });
 
   const onChangeComponentHandler: ChangeEventHandler<HTMLSelectElement> = (
-    e
+    e,
   ) => {
     const nextValue = e.target.value;
 
@@ -158,14 +158,14 @@ function ComponentHeading() {
                   encodeURIComponent(
                     JSON.stringify({
                       files: window.triplex.env.config.files.map((file) =>
-                        file.replace(window.triplex.env.config.cwd, "..")
+                        file.replace(window.triplex.env.config.cwd, ".."),
                       ),
                       path: scene.path.replace(
                         window.triplex.env.config.cwd,
-                        ".."
+                        "..",
                       ),
-                    })
-                  )
+                    }),
+                  ),
               )
             }
           />
@@ -312,14 +312,14 @@ function LiveEditPropsButton() {
 
 function matchesFilter(
   filter: string | undefined,
-  element: JsxElementPositions
+  element: JsxElementPositions,
 ) {
   if (!filter || element.name.toLowerCase().includes(filter.toLowerCase())) {
     return "exact";
   }
 
   const childMatches = element.children.some((child) =>
-    matchesFilter(filter, child)
+    matchesFilter(filter, child),
   );
 
   if (childMatches) {
@@ -434,7 +434,7 @@ function JsxElementButton({
             indentPerLevel: 13,
             input: args.input,
             mode: "standard",
-          }
+          },
         );
       },
       onDrag: (args) => {
@@ -459,7 +459,7 @@ function JsxElementButton({
               column: element.column,
               line: element.line,
             },
-            instruction.type
+            instruction.type,
           );
         }
 
@@ -521,7 +521,7 @@ function JsxElementButton({
                 dragState.type === "make-child" && "outline",
                 dragState.type === "move-before" && "border-t-2",
                 dragState.type === "move-after" && "border-b-2",
-                "absolute -bottom-0.5 -left-0.5 right-0 top-0 outline-2 -outline-offset-2 ",
+                "absolute -bottom-0.5 -left-0.5 right-0 top-0 outline-2 -outline-offset-2",
               ])}
             />
           )}

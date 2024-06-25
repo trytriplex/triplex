@@ -15,9 +15,8 @@ import { ExtensionPage } from "./po";
 
 async function tryInstallBundledExtension() {
   const executablePath = await resolveExecPath();
-  const [cli, ...args] = await resolveCliArgsFromVSCodeExecutablePath(
-    executablePath
-  );
+  const [cli, ...args] =
+    await resolveCliArgsFromVSCodeExecutablePath(executablePath);
 
   spawnSync(
     cli,
@@ -29,13 +28,13 @@ async function tryInstallBundledExtension() {
     {
       encoding: "utf8",
       stdio: "inherit",
-    }
+    },
   );
 }
 
 const launchElectronWithRetry = async (
   opts: Parameters<Electron["launch"]>[0],
-  retries = 2
+  retries = 2,
 ): ReturnType<Electron["launch"]> => {
   try {
     return await electron.launch(opts);
@@ -61,9 +60,8 @@ async function launch(testInfo: TestInfo) {
 
   const logs: string[] = [];
   const executablePath = await resolveExecPath();
-  const [, ...args] = await resolveCliArgsFromVSCodeExecutablePath(
-    executablePath
-  );
+  const [, ...args] =
+    await resolveCliArgsFromVSCodeExecutablePath(executablePath);
   const app = await launchElectronWithRetry({
     args: [
       ...args,
@@ -101,7 +99,7 @@ async function launch(testInfo: TestInfo) {
   app
     .process()
     .stderr!.on("data", (error) =>
-      logs.push("[main:error] " + error.toString())
+      logs.push("[main:error] " + error.toString()),
     );
 
   window.on("console", (msg) => {

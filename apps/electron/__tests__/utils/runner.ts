@@ -18,7 +18,7 @@ async function launch(
   opts: {
     exportName: string;
     path: string;
-  }
+  },
 ) {
   const logs: string[] = [];
   const app = await electron.launch({
@@ -43,7 +43,7 @@ async function launch(
   app
     .process()
     .stderr!.on("data", (error) =>
-      logs.push("[main:error] " + error.toString())
+      logs.push("[main:error] " + error.toString()),
     );
 
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -82,27 +82,19 @@ async function launch(
 }
 
 const test = _test.extend<{
-  /**
-   * Starts the custom local renderer for Triplex.
-   */
+  /** Starts the custom local renderer for Triplex. */
   editorLocal: EditorPage;
-  /**
-   * Starts the React Three Fiber renderer for Triplex.
-   */
+  /** Starts the React Three Fiber renderer for Triplex. */
   editorR3F: EditorPage;
-  /**
-   * Starts the React renderer for Triplex.
-   */
+  /** Starts the React renderer for Triplex. */
   editorReact: EditorPage;
-  /**
-   * First file to open for the test.
-   */
+  /** First file to open for the test. */
   file: { exportName: string; path: string };
 }>({
   editorLocal: async ({ file }, use, testInfo) => {
     const { app, logs, sceneReadyPromise, window } = await launch(
       "examples-private/custom-renderer",
-      file
+      file,
     );
     const page = new EditorPage(window, sceneReadyPromise, testInfo);
 
@@ -114,7 +106,7 @@ const test = _test.extend<{
   editorR3F: async ({ file }, use, testInfo) => {
     const { app, logs, sceneReadyPromise, window } = await launch(
       "examples/test-fixture",
-      file
+      file,
     );
     const page = new EditorPage(window, sceneReadyPromise, testInfo);
 
@@ -126,7 +118,7 @@ const test = _test.extend<{
   editorReact: async ({ file }, use, testInfo) => {
     const { app, logs, sceneReadyPromise, window } = await launch(
       "examples-private/react-dom",
-      file
+      file,
     );
     const page = new EditorPage(window, sceneReadyPromise, testInfo);
 

@@ -34,7 +34,7 @@ describe("babel plugin", () => {
           plugin({ exclude: ["/hello.tsx"] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -63,7 +63,7 @@ describe("babel plugin", () => {
           require.resolve("@babel/plugin-syntax-jsx"),
           [require.resolve("react-refresh/babel"), { skipEnvCheck: true }],
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -105,7 +105,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -133,7 +133,7 @@ describe("babel plugin", () => {
           plugin({ exclude: ["is/a/path"] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -164,7 +164,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -223,7 +223,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [""] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -258,7 +258,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -293,7 +293,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -333,7 +333,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -394,7 +394,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -434,7 +434,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -470,7 +470,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -524,7 +524,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -592,7 +592,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -618,7 +618,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -644,7 +644,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -671,7 +671,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -699,7 +699,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -732,7 +732,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -765,7 +765,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -801,7 +801,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -837,7 +837,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -876,7 +876,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
@@ -915,7 +915,7 @@ describe("babel plugin", () => {
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
-      }
+      },
     );
 
     expect(result?.code).toMatchInlineSnapshot(`

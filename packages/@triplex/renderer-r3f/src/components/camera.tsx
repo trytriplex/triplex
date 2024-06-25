@@ -64,7 +64,7 @@ interface CameraContextType {
 
 function apply<TKey extends string>(
   a: Record<TKey, number>,
-  b: Partial<Record<TKey, number>>
+  b: Partial<Record<TKey, number>>,
 ) {
   const allB = b as Record<TKey, number>;
   for (const key in b) {
@@ -120,7 +120,7 @@ export function FitCameraToScene({
 
       const point = new Spherical().setFromVector3(
         // Z forward rotation.
-        new Vector3(0, 0, 1)
+        new Vector3(0, 0, 1),
       );
       controls.current.rotateTo(point.theta, point.phi, false);
       controls.current.fitToSphere(sphere, false);
@@ -140,7 +140,7 @@ export function Camera({
   // This is the source of truth for what camera is active.
   // When this is set it propagates to the editor frame in the effect.
   const [type, setType] = useState<"perspective" | "orthographic" | "user">(
-    defaultCamera
+    defaultCamera,
   );
   const scene = useThree((state) => state.scene);
   const set = useThree((state) => state.set);
@@ -151,13 +151,13 @@ export function Camera({
   const perspCameraRef = useRef<PerspectiveCamera>(null!);
   const controlsRef = useRef<CameraControlsImpl>(null);
   const [activeCamera, setActiveCamera] = useState<CameraType | undefined>(
-    undefined
+    undefined,
   );
   const isTriplexCamera =
     activeCamera && activeCamera.name === TRIPLEX_CAMERA_NAME;
   const previousUserlandCamera = useRef<CameraType | undefined>();
   const [modifier, setModifier] = useState<"Rest" | "Shift" | "Control">(
-    "Rest"
+    "Rest",
   );
 
   useEffect(() => {
@@ -232,7 +232,7 @@ export function Camera({
       document.removeEventListener("keyup", resetFromKeyUp);
       document.removeEventListener(
         "visibilitychange",
-        resetFromVisibilityChange
+        resetFromVisibilityChange,
       );
     };
   }, []);
@@ -289,7 +289,7 @@ export function Camera({
             setActiveCamera(
               prevTriplexCamera.current === "orthographic"
                 ? orthCameraRef.current
-                : perspCameraRef.current
+                : perspCameraRef.current,
             );
             return { handled: true };
           }
@@ -360,7 +360,7 @@ export function Camera({
       controls: controlsRef,
       isTriplexCamera: !!isTriplexCamera,
     }),
-    [activeCamera, isTriplexCamera]
+    [activeCamera, isTriplexCamera],
   );
 
   return (

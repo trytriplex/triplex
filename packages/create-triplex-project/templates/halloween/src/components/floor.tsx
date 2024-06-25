@@ -1,5 +1,9 @@
 import { Clone, Gltf, useGLTF } from "@react-three/drei";
-import { type MeshStandardMaterial, type Object3D, type Vector3Tuple } from "three";
+import {
+  type MeshStandardMaterial,
+  type Object3D,
+  type Vector3Tuple,
+} from "three";
 import { Primitive } from "../util/primitive";
 
 export function Path({

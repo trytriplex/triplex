@@ -78,7 +78,7 @@ export function Selection({
     path: string;
   }>();
   const [transform, setTransform] = useState<"translate" | "rotate" | "scale">(
-    "translate"
+    "translate",
   );
   const scene = useThree((store) => store.scene);
   const gl = useThree((store) => store.gl);
@@ -92,7 +92,7 @@ export function Selection({
       disabled: !selected || (selected?.line === -1 && selected?.column === -1),
       line: selected?.line,
       path: selected?.parentPath,
-    }
+    },
   );
   const sceneData = useSubscriptionEffect("/scene/:path/:exportName", {
     disabled: !filter.exportName || !filter.path,
@@ -101,10 +101,10 @@ export function Selection({
   });
   const sceneElements = useMemo(
     () => flatten(sceneData?.sceneObjects || []),
-    [sceneData]
+    [sceneData],
   );
   const [selectedObject, setSelectedObject] = useState<EditorNodeData | null>(
-    null
+    null,
   );
   const disableSelection = useRef(false);
   const { controls } = useCamera();
@@ -214,7 +214,7 @@ export function Selection({
         if (box.min.x === Number.POSITIVE_INFINITY) {
           box.setFromCenterAndSize(
             targetSceneObject.position,
-            new Vector3(0.5, 0.5, 0.5)
+            new Vector3(0.5, 0.5, 0.5),
           );
         }
 
@@ -353,7 +353,7 @@ export function Selection({
         });
         send("track", { actionId: "element_transform_scale" });
       }
-    }
+    },
   );
 
   const sceneObjectMountHandler = useEvent(
@@ -374,7 +374,7 @@ export function Selection({
 
         setSelectedObject(result);
       }
-    }
+    },
   );
 
   useEffect(() => {

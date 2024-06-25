@@ -14,7 +14,7 @@ function useForceRender() {
 
 function useProps(
   meta: RendererElementProps["__meta"],
-  props: Record<string, unknown>
+  props: Record<string, unknown>,
 ): Record<string, unknown> {
   const forceRender = useForceRender();
   const intermediateProps = useRef<Record<string, unknown>>({});
@@ -95,7 +95,7 @@ export const RendererElement = forwardRef<unknown, RendererElementProps>(
         {children}
       </Component>
     );
-  }
+  },
 );
 
 RendererElement.displayName = "RendererElement";

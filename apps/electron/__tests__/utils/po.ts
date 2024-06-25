@@ -14,7 +14,7 @@ export class EditorPage {
   constructor(
     public readonly page: Page,
     scenePromise: Promise<void>,
-    testInfo: TestInfo
+    testInfo: TestInfo,
   ) {
     this.#sceneReady = scenePromise;
     this.#testInfo = testInfo;
@@ -176,7 +176,7 @@ export class EditorPage {
       elementButton: (
         name: string,
         at: number = 0,
-        rootLocator = this.page.getByTestId(`SceneElement(${name})`)
+        rootLocator = this.page.getByTestId(`SceneElement(${name})`),
       ) => {
         const locator = rootLocator.getByRole("button", { name }).nth(at);
 
@@ -247,11 +247,11 @@ export class EditorPage {
             await asset.click();
           },
           openFolder: async (
-            name: "built-in" | "components" | { name: string }
+            name: "built-in" | "components" | { name: string },
           ) => {
             const folder = locator.getByText(
               typeof name === "string" ? name : name.name,
-              { exact: true }
+              { exact: true },
             );
             await folder.click();
           },

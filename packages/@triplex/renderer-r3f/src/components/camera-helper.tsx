@@ -217,7 +217,7 @@ function setPoint(
   camera: Camera,
   x: number,
   y: number,
-  z: number
+  z: number,
 ) {
   _vector.set(x, y, z).unproject(camera);
 

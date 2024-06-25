@@ -58,7 +58,7 @@ export function remoteModulePlugin({
             server.reloadModule(mod);
           }
         },
-        ports.ws
+        ports.ws,
       );
     },
     enforce: "pre",

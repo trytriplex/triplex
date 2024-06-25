@@ -66,21 +66,21 @@ describe("init command", () => {
 
       expect(stubFs.copyFile).toHaveBeenCalledWith(
         join(templateDir, "gitignore"),
-        join(cwd, "fresh-local", ".gitignore")
+        join(cwd, "fresh-local", ".gitignore"),
       );
       expect(stubFs.copyFile).toHaveBeenCalledWith(
         join(templateDir, "tsconfig.json"),
-        join(cwd, "fresh-local", "tsconfig.json")
+        join(cwd, "fresh-local", "tsconfig.json"),
       );
       expect(stubFs.cp).toHaveBeenCalledWith(
         join(templateDir, "halloween", "src"),
         join(cwd, "fresh-local", "src"),
-        { recursive: true }
+        { recursive: true },
       );
       expect(stubFs.cp).toHaveBeenCalledWith(
         join(templateDir, "halloween", ".triplex"),
         join(cwd, "fresh-local", ".triplex"),
-        { recursive: true }
+        { recursive: true },
       );
     });
 
@@ -124,7 +124,7 @@ describe("init command", () => {
     "three": "^0.163.0"
   }
 }
-`.replaceAll("\n", EOL)
+`.replaceAll("\n", EOL),
       );
     });
   });
@@ -156,7 +156,7 @@ describe("init command", () => {
       expect(stubFs.cp).toHaveBeenCalledWith(
         join(templateDir, "halloween", "src"),
         join(cwd, "src/triplex-examples"),
-        { recursive: true }
+        { recursive: true },
       );
     });
 
@@ -199,7 +199,7 @@ describe("init command", () => {
     "node_modules"
   ]
 }
-`
+`,
       );
     });
 
@@ -227,7 +227,7 @@ describe("init command", () => {
       });
 
       expect(stubFs.writeFile).not.toHaveBeenCalledWith(
-        join(cwd, ".gitignore")
+        join(cwd, ".gitignore"),
       );
     });
 
@@ -270,7 +270,7 @@ describe("init command", () => {
   },
   "scripts": {}
 }
-`
+`,
       );
     });
 
@@ -326,7 +326,7 @@ describe("init command", () => {
       });
 
       expect(openPath).toEqual(
-        join(cwd, "packages/triplex-examples/scene.tsx")
+        join(cwd, "packages/triplex-examples/scene.tsx"),
       );
     });
   });

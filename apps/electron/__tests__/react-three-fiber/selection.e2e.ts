@@ -29,7 +29,7 @@ test.describe(() => {
     await editorR3F.frame.click();
 
     await expect(editorR3F.contextPanel.heading).toHaveText(
-      "PerspectiveCamera"
+      "PerspectiveCamera",
     );
   });
 });

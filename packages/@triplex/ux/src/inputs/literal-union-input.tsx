@@ -107,6 +107,6 @@ export function LiteralUnionInput({
       options: isValueDefined ? options : [placeholderOption, ...options],
       ref,
     },
-    { clear: onClear, isValuePersisted: isValueDefined }
+    { clear: onClear, isValuePersisted: isValueDefined },
   );
 }
