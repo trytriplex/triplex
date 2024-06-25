@@ -371,6 +371,7 @@ export function EditorMenu() {
   useEffect(() => {
     window.triplex.setMenu(
       // Eliminate functions before sending the data by stringifying it first.
+      // eslint-disable-next-line unicorn/prefer-structured-clone
       JSON.parse(JSON.stringify(menubar))
     );
   }, [menubar]);

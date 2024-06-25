@@ -119,7 +119,7 @@ describe("component service", () => {
 
     expect(
       getJsxElementAt(sourceFile, result.line, result.column)?.getText()
-    ).toMatchInlineSnapshot('"<StubComponent color=\\"blurple\\"/>"');
+    ).toMatchInlineSnapshot(String.raw`"<StubComponent color=\"blurple\"/>"`);
   });
 
   it("should add element to component with no top level fragment or group", () => {
@@ -195,7 +195,7 @@ describe("component service", () => {
 
     expect(
       getJsxElementAt(sourceFile, result.line, result.column)?.getText()
-    ).toMatchInlineSnapshot('"<StubComponent color=\\"red\\"/>"');
+    ).toMatchInlineSnapshot(String.raw`"<StubComponent color=\"red\"/>"`);
   });
 
   it("should add default component to shorthand fragment", () => {
@@ -902,7 +902,7 @@ describe("component service", () => {
 
     expect(
       getJsxElementAtOrThrow(sourceFile, actual.line, actual.column).getText()
-    ).toMatchInlineSnapshot('"<mesh name=\\"foo\\"/>"');
+    ).toMatchInlineSnapshot(String.raw`"<mesh name=\"foo\"/>"`);
     expect(getExportName(sourceFile, "EmptyGroup").declaration.getText())
       .toMatchInlineSnapshot(`
         "export function EmptyGroup() {
