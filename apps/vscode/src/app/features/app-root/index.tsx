@@ -7,25 +7,37 @@
 import {
   broadcastForwardedKeydownEvents,
   compose,
+  on,
   send,
 } from "@triplex/bridge/host";
-import { useScreenView } from "@triplex/ux";
+import { useScreenView, useTelemetry, type ActionId } from "@triplex/ux";
 import { useEffect } from "react";
-import { useInitSceneSync, useSceneStore } from "../stores/scene";
-import { onVSCE } from "../util/bridge";
-import { ContextPanel } from "./context-panel";
-import { FloatingControls } from "./controls";
-import { ScenePanel } from "./scene-panel";
+import { useInitSceneSync, useSceneStore } from "../../stores/scene";
+import { forwardClientMessages, onVSCE } from "../../util/bridge";
+import { onKeyDown } from "../../util/keyboard";
+import { FloatingControls } from "../floating-controls";
+import { Panels } from "../panels";
 
-export function App() {
+export function AppRoot() {
   const initSync = useInitSceneSync();
   const syncContext = useSceneStore((store) => store.syncContext);
+  const telemetry = useTelemetry();
 
   useScreenView("app", "Panel");
 
   useEffect(() => {
     return compose([
       initSync(),
+      onKeyDown("Escape", () => {
+        send("request-blur-element", undefined);
+      }),
+      onKeyDown("f", () => {
+        send("request-jump-to-element", undefined);
+      }),
+      on("track", (data) => {
+        telemetry.event(`scene_${data.actionId}` as ActionId);
+      }),
+      forwardClientMessages("element-set-prop"),
       onVSCE("vscode:request-open-component", (data) => {
         send("request-open-component", {
           encodedProps: "",
@@ -40,12 +52,11 @@ export function App() {
       }),
       broadcastForwardedKeydownEvents(),
     ]);
-  }, [initSync, syncContext]);
+  }, [initSync, syncContext, telemetry]);
 
   return (
     <div className="fixed inset-0 flex select-none">
-      <ScenePanel />
-      <ContextPanel />
+      <Panels />
       <div className="relative h-full w-full">
         <FloatingControls />
         <iframe

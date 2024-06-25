@@ -20,10 +20,10 @@ import {
   type ActionId,
 } from "@triplex/ux";
 import { useEffect, useReducer, useState } from "react";
-import { onVSCE } from "../util/bridge";
-import { IconButton } from "./button";
-import { Separator } from "./separator";
-import { Surface } from "./surface";
+import { IconButton } from "../../components/button";
+import { Separator } from "../../components/separator";
+import { Surface } from "../../components/surface";
+import { onVSCE } from "../../util/bridge";
 
 interface PlayState {
   camera: "default" | "editor";

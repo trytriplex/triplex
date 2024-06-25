@@ -9,9 +9,9 @@ import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 import { version } from "../../package.json";
-import { App } from "./components/app";
+import { AppRoot } from "./features/app-root";
 import "./styles.css";
-import { ErrorSplash } from "./components/error-splash";
+import { ErrorSplash } from "./features/error-splash";
 
 createRoot(document.getElementById("root")!).render(
   <TelemetryProvider
@@ -26,7 +26,7 @@ createRoot(document.getElementById("root")!).render(
       fallbackRender={({ error }) => <ErrorSplash error={error} />}
     >
       <Suspense>
-        <App />
+        <AppRoot />
       </Suspense>
     </ErrorBoundary>
   </TelemetryProvider>
