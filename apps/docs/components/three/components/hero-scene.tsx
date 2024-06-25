@@ -19,7 +19,7 @@ export function HeroScene() {
       ref.current.rotation,
       [(state.pointer.y * Math.PI) / 50, (state.pointer.x * Math.PI) / 20, 0],
       0.05,
-      delta
+      delta,
     );
   });
 

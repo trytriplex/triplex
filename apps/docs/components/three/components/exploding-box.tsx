@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { useEffect, useLayoutEffect } from "react";
-import { type Vector3Tuple, type Group } from "three";
+import { type Group, type Vector3Tuple } from "three";
 import { useRefs } from "../../use-refs";
 
 interface ExplodingBoxProps {
@@ -63,7 +63,7 @@ export function ExplodingBox({ position, rotation, stage }: ExplodingBoxProps) {
           }
         });
       },
-      { threshold: increments }
+      { threshold: increments },
     );
 
     const observe = (element: HTMLElement | null) => {

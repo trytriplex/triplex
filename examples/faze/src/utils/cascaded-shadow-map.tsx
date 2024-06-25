@@ -7,9 +7,9 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useLayoutEffect, useMemo } from "react";
 import {
+  Vector3,
   type OrthographicCamera,
   type PerspectiveCamera,
-  Vector3,
   type Vector3Tuple,
 } from "three";
 import CSM, { type CSMParams } from "three-csm";
@@ -108,7 +108,7 @@ export function CascadedShadowMap({
       mode,
       shadowBias,
       shadowMapSize,
-    ]
+    ],
   );
 
   useFrame(() => {

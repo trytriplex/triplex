@@ -7,7 +7,13 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEntities } from "miniplex/react";
 import { useEffect, useRef } from "react";
-import { type Intersection, type Object3D, Plane, Raycaster, Vector3 } from "three";
+import {
+  Plane,
+  Raycaster,
+  Vector3,
+  type Intersection,
+  type Object3D,
+} from "three";
 import { TERRAIN } from "../../utils/layers";
 import { world } from "../store";
 
@@ -51,7 +57,7 @@ export function useTerrainPointer() {
       raycaster.setFromCamera({ x, y }, camera);
       const intersectionOnParentPlane = raycaster.ray.intersectPlane(
         PLANE,
-        V1_TEMP
+        V1_TEMP,
       );
 
       if (intersectionOnParentPlane) {

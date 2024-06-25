@@ -28,7 +28,7 @@ function gerstnerWave(wave: Vector4Tuple, time: number, position: Vector3) {
   const waveResult = V3.set(
     d.x * (a * Math.cos(f)),
     a * Math.sin(f),
-    d.y * (a * Math.cos(f))
+    d.y * (a * Math.cos(f)),
   );
 
   return waveResult;

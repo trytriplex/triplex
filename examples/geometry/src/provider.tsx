@@ -6,7 +6,7 @@
  */
 import type { PresetsType } from "@react-three/drei/helpers/environment-assets";
 import { Physics } from "@react-three/rapier";
-import { createContext, type ReactNode, useContext } from "react";
+import { createContext, useContext, type ReactNode } from "react";
 
 const Context = createContext<boolean | null>(null);
 

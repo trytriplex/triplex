@@ -12,7 +12,7 @@ import {
   useGLTF,
 } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
-import { type ReactNode, useRef } from "react";
+import { useRef, type ReactNode } from "react";
 import { type Mesh } from "three";
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any

@@ -15,7 +15,7 @@ const V1 = new Vector3();
 
 export function useKinematicBody() {
   const { entities } = useEntities(
-    world.with("velocity", "kinematicBody", "sceneObject")
+    world.with("velocity", "kinematicBody", "sceneObject"),
   );
 
   useFrame((_, delta) => {

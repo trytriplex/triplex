@@ -10,7 +10,7 @@ export const noop = () => {};
 
 export function useCacheWhile<TValue>(
   value: TValue | undefined,
-  predicate: boolean
+  predicate: boolean,
 ): TValue | undefined {
   const cached = useRef<TValue>();
 

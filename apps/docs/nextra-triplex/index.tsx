@@ -74,7 +74,7 @@ const components: Components = {
     const code = applyAction(JSON.stringify(meta, null, 2), targetValue);
 
     return (
-      <pre className="whitespace-break-spaces mt-5 rounded-xl bg-white/5 p-3 text-lg text-neutral-300 md:text-base">
+      <pre className="mt-5 whitespace-break-spaces rounded-xl bg-white/5 p-3 text-lg text-neutral-300 md:text-base">
         <code>{code}</code>
       </pre>
     );
@@ -143,7 +143,7 @@ const components: Components = {
     <p className="mt-6 text-xl text-neutral-300 md:text-lg">{children}</p>
   ),
   pre: ({ children }) => (
-    <pre className="whitespace-break-spaces mt-5 rounded-xl bg-white/5 p-3 text-lg text-neutral-300 md:text-base">
+    <pre className="mt-5 whitespace-break-spaces rounded-xl bg-white/5 p-3 text-lg text-neutral-300 md:text-base">
       {children}
     </pre>
   ),
@@ -166,7 +166,7 @@ const friendlyDate = (date: string): string => {
 function renderDocsItem(
   link: ReturnType<typeof normalizePages>["docsDirectories"][0],
   route: string,
-  level = 0
+  level = 0,
 ): JSX.Element | null {
   if (!link.isUnderCurrentDocsTree) {
     return null;
@@ -340,7 +340,7 @@ function SearchModal({
 
   return (
     <dialog
-      className="bg-neutral-950 m-auto mt-10 w-full rounded-lg border border-neutral-700 p-0 backdrop:bg-black/70 md:mt-32 md:max-w-2xl"
+      className="m-auto mt-10 w-full rounded-lg border border-neutral-700 bg-neutral-950 p-0 backdrop:bg-black/70 md:mt-32 md:max-w-2xl"
       ref={ref}
     >
       <form method="dialog">
@@ -393,13 +393,13 @@ function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
         locale: "en_US",
         route,
       }),
-    [pageMap, route]
+    [pageMap, route],
   );
 
   const previousPage = result.flatDocsDirectories[result.activeIndex - 1];
   const nextPage = result.flatDocsDirectories[result.activeIndex + 1];
   const pageItems = result.flatDocsDirectories.filter(
-    (item) => item.isUnderCurrentDocsTree
+    (item) => item.isUnderCurrentDocsTree,
   );
 
   useEffect(() => {
@@ -423,7 +423,7 @@ function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
       </Header>
 
       {isNavMenuOpen && (
-        <div className="bg-neutral-950 absolute left-0 right-0 top-16 z-50 border-b border-neutral-900 px-10 py-6 text-white md:hidden">
+        <div className="absolute left-0 right-0 top-16 z-50 border-b border-neutral-900 bg-neutral-950 px-10 py-6 text-white md:hidden">
           {result.topLevelNavbarItems.map((item) => (
             <div className="mb-2" key={item.title}>
               <Link

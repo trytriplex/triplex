@@ -7,7 +7,7 @@
 import { useFrame } from "@react-three/fiber";
 import { useEntities } from "miniplex/react";
 import { useLayoutEffect } from "react";
-import { MathUtils, type PerspectiveCamera, Vector3 } from "three";
+import { MathUtils, Vector3, type PerspectiveCamera } from "three";
 import { add, damp } from "../../math/vectors";
 import { world } from "../store";
 
@@ -15,10 +15,10 @@ const V1 = new Vector3();
 
 export function useCamera() {
   const { entities: activeEntities } = useEntities(
-    world.with("focused", "sceneObject")
+    world.with("focused", "sceneObject"),
   );
   const { entities: cameras } = useEntities(
-    world.with("camera", "sceneObject")
+    world.with("camera", "sceneObject"),
   );
 
   const camera = cameras[0];
@@ -76,7 +76,7 @@ export function useCamera() {
       cameraObject.zoom,
       target.zoom || 1,
       5,
-      delta
+      delta,
     );
     cameraObject.updateProjectionMatrix();
   });

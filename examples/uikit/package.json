@@ -13,8 +13,8 @@
     "@react-three/uikit": "^0.3.6",
     "@types/react": "^18.0.0",
     "@types/three": "^0.163.0",
-    "react-dom": "^18.0.0",
     "react": "^18.0.0",
+    "react-dom": "^18.0.0",
     "three": "^0.163.0"
   }
 }

@@ -16,18 +16,14 @@ export interface OnWorldEventHandler {
       | "move-start"
       | "move-stop"
       | "player-approach"
-      | "player-leave"
+      | "player-leave",
   ): void;
 }
 
 export interface EntityComponents {
-  /**
-   * Entity components
-   */
+  /** Entity components */
   activateDistance?: number;
-  /**
-   * Entity tags
-   */
+  /** Entity tags */
   billboard?: true;
   box?: BoundingBoxRef;
   camera?: true;
@@ -44,9 +40,7 @@ export interface EntityComponents {
   name?: string;
   npc?: true;
   offset?: VectorXyz;
-  /**
-   * Entity callbacks
-   */
+  /** Entity callbacks */
   onWorldEvent?: OnWorldEventHandler;
   parent?: EntityComponents;
   player?: true;

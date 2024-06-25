@@ -6,7 +6,7 @@
  */
 import { World } from "miniplex";
 import { createReactAPI, useEntities } from "miniplex/react";
-import { type ReactNode, useCallback, useMemo, useState } from "react";
+import { useCallback, useMemo, useState, type ReactNode } from "react";
 import { type Item } from "./components/item";
 import { type EntityComponents } from "./types";
 
@@ -50,7 +50,7 @@ export const useCurrentEntity = () => {
 
 export function useActivePlayer() {
   const { entities } = useEntities(
-    world.with("player", "inventory", "focused")
+    world.with("player", "inventory", "focused"),
   );
 
   if (entities.length === 0) {
@@ -64,7 +64,7 @@ export function useActivePlayer() {
 
 export function useActiveItem() {
   const { entities } = useEntities(
-    world.with("name", "count", "item", "focused")
+    world.with("name", "count", "item", "focused"),
   );
 
   return entities.length
@@ -95,7 +95,7 @@ export function useActivePlayerInventory() {
         player.inventory[itemName] = 1;
       }
     },
-    [player]
+    [player],
   );
 
   const remove = useCallback(
@@ -114,7 +114,7 @@ export function useActivePlayerInventory() {
         }
       }
     },
-    [player]
+    [player],
   );
 
   return useMemo(
@@ -122,6 +122,6 @@ export function useActivePlayerInventory() {
       add,
       remove,
     }),
-    [add, remove]
+    [add, remove],
   );
 }

@@ -11,7 +11,7 @@ import { world } from "../store";
 export function useBillboard() {
   const { entities } = useEntities(world.with("billboard", "sceneObject"));
   const { entities: cameras } = useEntities(
-    world.with("camera", "sceneObject")
+    world.with("camera", "sceneObject"),
   );
 
   const camera = cameras[0];
@@ -19,7 +19,7 @@ export function useBillboard() {
   useFrame(() => {
     for (const { sceneObject } of entities) {
       sceneObject.current.quaternion.copy(
-        camera.sceneObject.current.quaternion
+        camera.sceneObject.current.quaternion,
       );
     }
   });

@@ -29,7 +29,7 @@ export function FoliageMaterial() {
       u_windSpeed: { value: 2.0 },
       u_windTime: { value: 0.0 },
     }),
-    []
+    [],
   );
 
   return (

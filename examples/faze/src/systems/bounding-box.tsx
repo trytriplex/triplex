@@ -13,7 +13,14 @@ import {
   useRef,
   useState,
 } from "react";
-import { Box3, type Group, type Mesh, type Object3D, Vector3, type Vector3Tuple } from "three";
+import {
+  Box3,
+  Vector3,
+  type Group,
+  type Mesh,
+  type Object3D,
+  type Vector3Tuple,
+} from "three";
 
 const boxes: Box3[] = [];
 const V1 = new Vector3();
@@ -82,7 +89,7 @@ export const BoundingBox = forwardRef<
         box.setFromObject(cachedMeshRef.current!);
       },
     }),
-    [box, skip]
+    [box, skip],
   );
 
   useLayoutEffect(() => {
@@ -103,7 +110,7 @@ export const BoundingBox = forwardRef<
       const max = V2.set(
         props.position[0] + props.width,
         props.position[1] + props.height,
-        props.position[2] + props.depth
+        props.position[2] + props.depth,
       );
 
       box.set(min, max);

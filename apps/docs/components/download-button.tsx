@@ -31,25 +31,25 @@ export function DownloadButton() {
   useEffect(() => {
     async function req() {
       const res = await fetch(
-        "https://api.github.com/repos/try-triplex/triplex/releases/latest"
+        "https://api.github.com/repos/try-triplex/triplex/releases/latest",
       );
       const json = await res.json();
 
       if (navigator.platform.match("Mac")) {
         const macOS: Asset[] = json.assets.filter((asset: Asset) =>
-          asset.name.endsWith(".dmg")
+          asset.name.endsWith(".dmg"),
         );
 
         setAssets(macOS);
       } else if (navigator.platform.match("Win")) {
         const windows: Asset[] = json.assets.filter((asset: Asset) =>
-          asset.name.endsWith(".exe")
+          asset.name.endsWith(".exe"),
         );
 
         setAssets(windows);
       } else if (navigator.platform.match("Linux")) {
         const linux: Asset[] = json.assets.filter((asset: Asset) =>
-          asset.name.endsWith(".AppImage")
+          asset.name.endsWith(".AppImage"),
         );
 
         setAssets(linux);

@@ -13,7 +13,7 @@ import { world } from "../store";
 export function usePlayerApproach() {
   const { entities } = useEntities(world.with("playerNear", "sceneObject"));
   const { entities: players } = useEntities(
-    world.with("player", "sceneObject")
+    world.with("player", "sceneObject"),
   );
 
   useFrame(() => {
@@ -29,7 +29,7 @@ export function usePlayerApproach() {
         const player = players[n];
         const distance = distanceToSquared(
           sceneObject.current.position,
-          player.sceneObject.current.position
+          player.sceneObject.current.position,
         );
 
         if (distance < activateDistance && !entity.playerNear) {

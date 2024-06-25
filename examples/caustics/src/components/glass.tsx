@@ -37,7 +37,7 @@ export function Glass({
         side: FrontSide,
         transparent: true,
       }),
-    []
+    [],
   );
 
   useLayoutEffect(() => {
