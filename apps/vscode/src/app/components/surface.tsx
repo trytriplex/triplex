@@ -27,12 +27,14 @@ export function useOnSurfaceStateChange(cb: StateListener) {
 }
 
 export function Surface({
+  bg,
   children,
   className,
   direction = "vertical",
   isHidden,
   shape = "rounded",
 }: {
+  bg?: "overlay" | "editor";
   children: React.ReactNode;
   className?: string;
   direction?: "horizontal" | "vertical";
@@ -52,12 +54,14 @@ export function Surface({
     <SurfaceStateContext.Provider value={addListener}>
       <div
         className={cn([
-          "bg-overlay border-overlay shadow-overlay group pointer-events-auto z-10 flex select-none opacity-90 focus:outline-none",
+          "border-overlay shadow-overlay group pointer-events-auto z-10 flex select-none opacity-90 focus:outline-none",
           isHidden && "hidden",
           direction === "horizontal" && "flex-row",
           direction === "vertical" && "flex-col",
           shape === "rounded" && "rounded",
           className,
+          bg === "overlay" && "bg-overlay",
+          bg === "editor" && "bg-editor",
         ])}
         // @ts-expect-error — updating React types will make this go away
         inert={isHidden ? "true" : undefined}

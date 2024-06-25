@@ -75,6 +75,7 @@ function toNumber(
 export function NumberInput({
   actionId,
   children,
+  label,
   name,
   onChange,
   onConfirm,
@@ -94,6 +95,7 @@ export function NumberInput({
       onMouseDown: MouseEventHandler<HTMLInputElement>;
       onMouseMove: MouseEventHandler<HTMLInputElement>;
       onMouseUp: MouseEventHandler<HTMLInputElement>;
+      placeholder?: string;
       step: number;
     },
     HTMLInputElement,
@@ -339,6 +341,7 @@ export function NumberInput({
       onMouseDown: onMouseDownHandler,
       onMouseMove: onMouseMoveHandler,
       onMouseUp: onMouseUpHandler,
+      placeholder: label,
       ref,
       required,
       step,

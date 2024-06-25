@@ -19,6 +19,7 @@ module.exports = {
   theme: {
     backgroundColor: {
       "active-selected": "var(--vscode-list-activeSelectionBackground)",
+      editor: "var(--vscode-editor-background)",
       hover: "var(--vscode-toolbar-hoverBackground)",
       "inactive-selected": "var(--vscode-list-inactiveSelectionBackground)",
       input: "var(--vscode-input-background)",

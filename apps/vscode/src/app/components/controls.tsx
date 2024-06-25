@@ -94,6 +94,7 @@ export function FloatingControls() {
       })}
     >
       <Surface
+        bg="overlay"
         className="border p-0.5"
         direction="horizontal"
         isHidden={play.state === "play"}
@@ -170,7 +171,7 @@ export function FloatingControls() {
         })}
       </Surface>
 
-      <Surface className="border p-0.5" direction="horizontal">
+      <Surface bg="overlay" className="border p-0.5" direction="horizontal">
         <IconButton
           actionId="scene_frame_reset"
           icon={ResetIcon}

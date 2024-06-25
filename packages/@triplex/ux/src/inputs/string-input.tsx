@@ -18,6 +18,7 @@ import { type RenderInput } from "./types";
 export function StringInput({
   actionId,
   children,
+  label,
   name,
   onChange = noop,
   onConfirm = noop,
@@ -29,8 +30,10 @@ export function StringInput({
     defaultValue: string | undefined;
     onBlur: FocusEventHandler<HTMLInputElement>;
     onKeyDown: KeyboardEventHandler<HTMLInputElement>;
+    placeholder?: string;
     value: string | undefined;
   }>;
+  label?: string;
   name: string;
   onChange?: (value: string | undefined) => void;
   onConfirm?: (value: string | undefined) => void;
@@ -90,6 +93,7 @@ export function StringInput({
       onBlur: onConfirmHandler,
       onChange: onChangeHandler,
       onKeyDown: onKeyDownHandler,
+      placeholder: label,
       ref,
       required,
       value,

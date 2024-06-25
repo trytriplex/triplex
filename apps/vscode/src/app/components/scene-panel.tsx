@@ -28,7 +28,14 @@ import {
   VSCodeOption,
   VSCodeTextField,
 } from "@vscode/webview-ui-toolkit/react";
-import { Suspense, useLayoutEffect, useReducer, useRef, useState } from "react";
+import {
+  Suspense,
+  useDeferredValue,
+  useLayoutEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import { useLazySubscription } from "../hooks/ws";
 import { useSceneStore, type ElementLocation } from "../stores/scene";
 import { type SuppressVSCodeError } from "../types";
@@ -160,12 +167,12 @@ function ElementsPanel() {
 
   return (
     <Surface
-      className="grid h-full w-48 flex-shrink-0 grid-rows-[1fr_2fr] overflow-hidden border-r pb-1.5"
+      className="grid w-48 flex-1 flex-shrink-0 grid-rows-[1fr_2fr] overflow-hidden"
       shape="square"
     >
       <ScrollContainer>
         <div className="min-w-0">
-          <div className="bg-overlay flex border-t border-t-transparent p-1.5">
+          <div className="flex px-1.5 pb-1.5">
             <VSCodeTextField
               className="w-full opacity-70 focus:opacity-100"
               onFocus={(e) => e.stopPropagation()}
@@ -181,9 +188,11 @@ function ElementsPanel() {
             </Suspense>
           </ul>
         </div>
+        <div className="h-1.5" />
       </ScrollContainer>
       <ScrollContainer className="border-overlay border-t">
         <Suspense>{selected && <Selection selected={selected} />}</Suspense>
+        <div className="h-1" />
       </ScrollContainer>
     </Surface>
   );
@@ -194,6 +203,7 @@ const renderPropInputs: RenderInputs = ({ onChange, onConfirm, prop }) => {
     return (
       <StringInput
         actionId="scene_controls"
+        label={prop.prop.label}
         name={prop.prop.name}
         onChange={onChange}
         onConfirm={onConfirm}
@@ -218,6 +228,7 @@ const renderPropInputs: RenderInputs = ({ onChange, onConfirm, prop }) => {
     return (
       <NumberInput
         actionId="scene_controls"
+        label={prop.prop.label}
         name={prop.prop.name}
         onChange={onChange}
         onConfirm={onConfirm}
@@ -226,7 +237,11 @@ const renderPropInputs: RenderInputs = ({ onChange, onConfirm, prop }) => {
       >
         {({ onChange, ref, ...props }) => (
           <div>
-            <label className="block">{prop.prop.name}</label>
+            {prop.prop.name && (
+              <label className="block" htmlFor={props.id}>
+                {prop.prop.name}
+              </label>
+            )}
             <input
               {...props}
               className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder mb-1 h-[26px] w-full rounded-sm border px-[9px] focus:outline-none"
@@ -250,14 +265,17 @@ const renderPropInputs: RenderInputs = ({ onChange, onConfirm, prop }) => {
         persistedValue={"value" in prop.prop ? prop.prop.value : false}
       >
         {({ onChange, ref, ...props }) => (
-          <VSCodeCheckbox
-            {...props}
-            className="m-0"
-            onChange={onChange as SuppressVSCodeError}
-            ref={ref as SuppressVSCodeError}
-          >
-            {prop.prop.name}
-          </VSCodeCheckbox>
+          <div>
+            <label className="block" htmlFor={props.id}>
+              {prop.prop.name}
+            </label>
+            <VSCodeCheckbox
+              {...props}
+              className="m-0"
+              onChange={onChange as SuppressVSCodeError}
+              ref={ref as SuppressVSCodeError}
+            />
+          </div>
         )}
       </BooleanInput>
     );
@@ -332,7 +350,12 @@ const renderPropInputs: RenderInputs = ({ onChange, onConfirm, prop }) => {
   return null;
 };
 
-export function Selection({ selected }: { selected: ElementLocation }) {
+export function Selection({
+  selected: inSelected,
+}: {
+  selected: ElementLocation;
+}) {
+  const selected = useDeferredValue(inSelected);
   const props = useLazySubscription(
     "/scene/:path/object/:line/:column",
     selected
@@ -340,14 +363,14 @@ export function Selection({ selected }: { selected: ElementLocation }) {
 
   return (
     <>
-      <div className="bg-overlay flex border-t border-t-transparent p-1.5">
+      <div className="flex p-1.5">
         <VSCodeTextField
           className="w-full opacity-70 focus:opacity-100"
           onFocus={(e) => e.stopPropagation()}
           placeholder="Filter props..."
         />
       </div>
-      <div className="flex flex-col gap-1.5 px-2">
+      <div className="flex flex-col gap-1.5 px-1.5">
         <PropInput
           onChange={(propName, propValue) =>
             send("request-set-element-prop", {
@@ -372,12 +395,13 @@ export function ScenePanel() {
   const [shown, setShown] = useState<"elements" | undefined>(undefined);
 
   return (
-    <div className="flex flex-col">
+    <div className={cn(["border-overlay flex flex-col border-r"])}>
       <div
         className={cn([
-          !shown && "absolute left-[5px] top-[5px] gap-1 rounded border p-0.5",
-          shown && "border-b border-r p-1.5",
-          "bg-overlay border-overlay z-10 flex flex-col items-start opacity-90",
+          !shown &&
+            "bg-overlay border-overlay absolute left-[5px] top-[5px] gap-1 rounded border p-0.5",
+          shown && "p-1.5",
+          "z-10 flex flex-col items-start opacity-90",
         ])}
       >
         <IconButton
