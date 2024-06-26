@@ -36,6 +36,7 @@ module.exports = {
     },
     boxShadow: {
       overlay: "var(--vscode-widget-shadow)",
+      scrollbar: "var(--vscode-scrollbar-shadow) 0 6px 6px -6px inset",
     },
     fontFamily: {
       default: "var(--vscode-font-family)",

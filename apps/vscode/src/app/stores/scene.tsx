@@ -14,6 +14,17 @@ export interface ElementLocation {
   parentPath: string;
   path: string;
 }
+export type PlayStateAction =
+  | "camera-default"
+  | "camera-editor"
+  | "state-play"
+  | "state-pause"
+  | "state-edit";
+
+export interface PlayState {
+  camera: "default" | "editor";
+  state: "play" | "pause" | "edit";
+}
 
 export interface SceneStore {
   blurElement(): void;
@@ -22,16 +33,43 @@ export interface SceneStore {
     path: string;
   };
   focusElement(selected: ElementLocation): void;
+  playState: PlayState;
   selected: ElementLocation | undefined;
+  setPlayState(action: PlayStateAction): void;
   syncContext(ctx: SceneStore["context"]): void;
   syncSelected(selected: SceneStore["selected"]): void;
 }
 
-export const useSceneStore = create<SceneStore>((set) => ({
+function playReducer(state: PlayState, action: PlayStateAction): PlayState {
+  switch (action) {
+    case "camera-default":
+      return { ...state, camera: "default" };
+
+    case "camera-editor":
+      return { ...state, camera: "editor" };
+
+    case "state-play":
+      return { ...state, state: "play" };
+
+    case "state-pause":
+      return { ...state, state: "pause" };
+
+    case "state-edit":
+      return { ...state, state: "edit" };
+
+    default:
+      return state;
+  }
+}
+
+export const useSceneStore = create<SceneStore>((set, get) => ({
   blurElement: () => send("request-blur-element", undefined),
   context: window.triplex.initialState,
   focusElement: (data) => send("request-focus-element", data),
+  playState: { camera: "editor", state: "edit" },
   selected: undefined,
+  setPlayState: (action: PlayStateAction) =>
+    set({ playState: playReducer(get().playState, action) }),
   syncContext: (ctx) => set({ context: ctx }),
   syncSelected: (selected) => set({ selected }),
 }));

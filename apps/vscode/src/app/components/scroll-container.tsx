@@ -6,6 +6,8 @@
  */
 import { Root, Scrollbar, Thumb, Viewport } from "@radix-ui/react-scroll-area";
 import { cn } from "@triplex/lib";
+import rafSchd from "raf-schd";
+import { useEffect, useRef, useState } from "react";
 
 export function ScrollContainer({
   children,
@@ -14,9 +16,34 @@ export function ScrollContainer({
   children: React.ReactNode;
   className?: string;
 }) {
+  const [showOverflow, setOverflow] = useState(false);
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) {
+      return;
+    }
+
+    const callback = rafSchd(() => {
+      setOverflow(el.scrollTop > 0);
+    });
+
+    el.addEventListener("scroll", callback);
+
+    return () => {
+      el.removeEventListener("scroll", callback);
+    };
+  }, []);
+
   return (
     <Root className={cn(["min-w-0 flex-shrink overflow-hidden", className])}>
-      <Viewport className="h-full [&>div]:!block">{children}</Viewport>
+      {showOverflow && (
+        <div className="shadow-scrollbar absolute left-[1px] right-[1px] top-0 z-10 h-1" />
+      )}
+      <Viewport className="h-full [&>div]:!block" ref={ref}>
+        {children}
+      </Viewport>
       <Scrollbar
         className="z-50 flex touch-none select-none data-[orientation=horizontal]:h-2 data-[orientation=vertical]:w-2 data-[orientation=horizontal]:flex-col"
         orientation="vertical"

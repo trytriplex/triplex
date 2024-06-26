@@ -19,52 +19,17 @@ import {
   ToggleButtonControl,
   type ActionId,
 } from "@triplex/ux";
-import { useEffect, useReducer, useState } from "react";
+import { useEffect, useState } from "react";
 import { IconButton } from "../../components/button";
 import { Separator } from "../../components/separator";
 import { Surface } from "../../components/surface";
+import { useSceneStore } from "../../stores/scene";
 import { onVSCE } from "../../util/bridge";
-
-interface PlayState {
-  camera: "default" | "editor";
-  state: "play" | "pause" | "edit";
-}
-
-type StateAction =
-  | "camera-default"
-  | "camera-editor"
-  | "state-play"
-  | "state-pause"
-  | "state-edit";
-
-function playReducer(state: PlayState, action: StateAction): PlayState {
-  switch (action) {
-    case "camera-default":
-      return { ...state, camera: "default" };
-
-    case "camera-editor":
-      return { ...state, camera: "editor" };
-
-    case "state-play":
-      return { ...state, state: "play" };
-
-    case "state-pause":
-      return { ...state, state: "pause" };
-
-    case "state-edit":
-      return { ...state, state: "edit" };
-
-    default:
-      return state;
-  }
-}
 
 export function FloatingControls() {
   const [controls, setControls] = useState<Controls>();
-  const [play, dispatch] = useReducer(playReducer, {
-    camera: "editor",
-    state: "edit",
-  });
+  const play = useSceneStore((store) => store.playState);
+  const dispatch = useSceneStore((store) => store.setPlayState);
 
   useEffect(() => {
     return on("set-controls", (data) => {
@@ -80,7 +45,7 @@ export function FloatingControls() {
     return onVSCE("vscode:play-camera", ({ name }) => {
       dispatch(name === "default" ? "camera-default" : "camera-editor");
     });
-  }, []);
+  }, [dispatch]);
 
   if (!controls) {
     return null;
@@ -93,83 +58,92 @@ export function FloatingControls() {
         preventDefaultContextMenuItems: true,
       })}
     >
-      <Surface
-        bg="overlay"
-        className="border p-0.5"
-        direction="horizontal"
-        isHidden={play.state === "play"}
-      >
-        {controls.map((control, index) => {
-          switch (control.type) {
-            case "separator": {
-              return <Separator key={control.type + index} />;
-            }
+      {controls.length > 0 && (
+        <Surface
+          bg="overlay"
+          className="border p-0.5"
+          direction="horizontal"
+          isHidden={play.state === "play"}
+        >
+          {controls.map((control, index) => {
+            switch (control.type) {
+              case "separator": {
+                return <Separator key={control.type + index} />;
+              }
 
-            case "button-group": {
-              return (
-                <ButtonGroupControl control={control} key={control.id}>
-                  {({ Icon, accelerator, id, isSelected, label, onClick }) => (
-                    <div
-                      className={cn([
-                        "relative -my-0.5 flex py-0.5",
-                        isSelected &&
-                          "after:border-b-selected after:absolute after:bottom-0 after:left-0 after:right-0 after:border-b",
-                      ])}
-                      key={label}
-                    >
+              case "button-group": {
+                return (
+                  <ButtonGroupControl control={control} key={control.id}>
+                    {({
+                      Icon,
+                      accelerator,
+                      id,
+                      isSelected,
+                      label,
+                      onClick,
+                    }) => (
+                      <div
+                        className={cn([
+                          "relative -my-0.5 flex py-0.5",
+                          isSelected &&
+                            "after:border-b-selected after:absolute after:bottom-0 after:left-0 after:right-0 after:border-b",
+                        ])}
+                        key={label}
+                      >
+                        <IconButton
+                          accelerator={accelerator}
+                          actionId={("scene_controls_" + id) as ActionId}
+                          icon={Icon}
+                          isSelected={isSelected}
+                          label={label}
+                          onClick={onClick}
+                        />
+                      </div>
+                    )}
+                  </ButtonGroupControl>
+                );
+              }
+
+              case "toggle-button": {
+                return (
+                  <ToggleButtonControl control={control} key={control.id}>
+                    {({ Icon, accelerator, id, label, onClick }) => (
                       <IconButton
                         accelerator={accelerator}
                         actionId={("scene_controls_" + id) as ActionId}
                         icon={Icon}
-                        isSelected={isSelected}
+                        key={label}
                         label={label}
                         onClick={onClick}
                       />
-                    </div>
-                  )}
-                </ButtonGroupControl>
-              );
-            }
+                    )}
+                  </ToggleButtonControl>
+                );
+              }
 
-            case "toggle-button": {
-              return (
-                <ToggleButtonControl control={control} key={control.id}>
-                  {({ Icon, accelerator, id, label, onClick }) => (
-                    <IconButton
-                      accelerator={accelerator}
-                      actionId={("scene_controls_" + id) as ActionId}
-                      icon={Icon}
-                      key={label}
-                      label={label}
-                      onClick={onClick}
-                    />
-                  )}
-                </ToggleButtonControl>
-              );
-            }
+              case "button": {
+                return (
+                  <ButtonControl control={control} key={control.id}>
+                    {({ Icon, accelerator, id, label, onClick }) => (
+                      <IconButton
+                        accelerator={accelerator}
+                        actionId={("scene_controls_" + id) as ActionId}
+                        icon={Icon}
+                        key={label}
+                        label={label}
+                        onClick={onClick}
+                      />
+                    )}
+                  </ButtonControl>
+                );
+              }
 
-            case "button": {
-              return (
-                <ButtonControl control={control} key={control.id}>
-                  {({ Icon, accelerator, id, label, onClick }) => (
-                    <IconButton
-                      accelerator={accelerator}
-                      actionId={("scene_controls_" + id) as ActionId}
-                      icon={Icon}
-                      key={label}
-                      label={label}
-                      onClick={onClick}
-                    />
-                  )}
-                </ButtonControl>
-              );
+              default:
+                return null;
             }
-
-            default:
-              return null;
-          }
-        })}
-      </Surface>
+          })}
+        </Surface>
+      )}
 
       <Surface bg="overlay" className="border p-0.5" direction="horizontal">
         <IconButton

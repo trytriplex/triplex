@@ -9,11 +9,17 @@ import { cn } from "@triplex/lib";
 import { Suspense, useState } from "react";
 import { IconButton } from "../../components/button";
 import { Surface } from "../../components/surface";
+import { useSceneStore } from "../../stores/scene";
 import { ElementsPanel } from "./panel-elements";
 import { SelectionPanel } from "./panel-selection";
 
 export function Panels() {
   const [shown, setShown] = useState<"elements" | undefined>(undefined);
+  const play = useSceneStore((store) => store.playState);
+
+  if (play.state === "play") {
+    return null;
+  }
 
   return (
     <div
@@ -45,7 +51,7 @@ export function Panels() {
       {shown === "elements" && (
         <Suspense>
           <Surface
-            className="grid w-full flex-1 flex-shrink-0 grid-rows-[1fr_2fr] overflow-hidden"
+            className="grid h-full flex-1 overflow-hidden [grid-auto-rows:1fr]"
             shape="square"
           >
             <ElementsPanel />

@@ -237,6 +237,9 @@ importers:
       '@triplex/ws':
         specifier: 0.67.4
         version: link:../../packages/@triplex/ws
+      '@types/raf-schd':
+        specifier: ^4.0.3
+        version: 4.0.3
       '@types/vscode':
         specifier: ^1.88.0
         version: 1.88.0
@@ -267,6 +270,9 @@ importers:
       get-port:
         specifier: ^7.0.0
         version: 7.0.0
+      raf-schd:
+        specifier: ^4.0.3
+        version: 4.0.3
       react:
         specifier: ^18.0.0
         version: 18.2.0
@@ -4257,6 +4263,10 @@ packages:
 
   /@types/qs@6.9.7:
     resolution: {integrity: sha512-FGa1F62FT09qcrueBA6qYTrJPVDzah9a+493+o2PCXsesWHIn27G98TsSMs3WPNbZIEj4+VJf6saSFpvD+3Zsw==}
+    dev: true
+
+  /@types/raf-schd@4.0.3:
+    resolution: {integrity: sha512-dXFOLpls9K3eXBupCtMhvtbPtWVAkwa5tkqdMj1uVwYBYdPu2kVX1mGVp2qFpfeNNub85B0vzFfxA4URA0TnPA==}
     dev: true
 
   /@types/range-parser@1.2.4:
@@ -12094,7 +12104,6 @@ packages:
 
   /raf-schd@4.0.3:
     resolution: {integrity: sha512-tQkJl2GRWh83ui2DiPTJz9wEiMN20syf+5oKfB03yYP7ioZcJwsIK8FjrtLwH1m7C7e+Tt2yYBlrOpdT+dyeIQ==}
-    dev: false
 
   /range-parser@1.2.1:
     resolution: {integrity: sha512-Hrgsx+orqoygnmhFbKaHE6c296J+HTAQXoxEF6gNupROmmGJRoyzfG3ccAveqCBrwr/2yxQ5BVd/GTl5agOwSg==}
