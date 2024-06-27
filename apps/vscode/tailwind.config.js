@@ -60,10 +60,13 @@ module.exports = {
     textColor: {
       "active-selected": "var(--vscode-list-activeSelectionForeground)",
       default: "var(--vscode-foreground)",
+      error: "var(--vscode-editorError-foreground)",
+      info: "var(--vscode-editorInfo-foreground)",
       input: "var(--vscode-input-foreground)",
       "input-placeholder": "var(--vscode-input-placeholderForeground)",
       "list-hovered": "var(--vscode-list-hoverForeground)",
       selected: "var(--vscode-tab-activeForeground)",
+      warning: "var(--vscode-editorWarning-foreground)",
     },
   },
 };

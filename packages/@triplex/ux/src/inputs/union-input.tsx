@@ -29,14 +29,14 @@ export function UnionInput({
     <PropInput
       onChange={onChange}
       onConfirm={onConfirm}
-      props={[
+      prop={
         Object.assign(
           {},
           value,
           persistedValue ? { value: persistedValue } : {},
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ) as any,
-      ]}
+        ) as any
+      }
     >
       {children}
     </PropInput>

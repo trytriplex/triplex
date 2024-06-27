@@ -5,7 +5,15 @@
  * file in the root directory of this source tree.
  */
 const assignedKeys: string[] = [];
-const inputTags = ["INPUT", "VSCODE-TEXT-FIELD", "VSCODE-TEXT-AREA"];
+
+const inputTags = [
+  "CHECKBOX",
+  "DROPDOWN",
+  "INPUT",
+  "SELECT",
+  "TEXT-FIELD",
+  "TEXTAREA",
+];
 
 export function onKeyDown(
   key: KeyboardEvent["key"],
@@ -21,7 +29,7 @@ export function onKeyDown(
       e.metaKey === false &&
       !(
         document.activeElement &&
-        inputTags.includes(document.activeElement.tagName)
+        inputTags.some((tag) => document.activeElement?.tagName.includes(tag))
       )
     ) {
       cb(e);

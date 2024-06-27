@@ -4,6 +4,9 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { cn } from "@triplex/lib";
+import { type DeclaredProp, type Prop } from "@triplex/server";
 import {
   BooleanInput,
   LiteralUnionInput,
@@ -20,6 +23,13 @@ import {
   VSCodeTextField,
 } from "@vscode/webview-ui-toolkit/react";
 import { type SuppressVSCodeError } from "../../types";
+
+const createIssueURL = (prop: DeclaredProp | Prop) =>
+  encodeURI(
+    "https://github.com/try-triplex/triplex/issues/new?title=Unsupported input request&body=Please describe your use case and what the prop type is here.\n\n---\n\nMeta:\n```\n" +
+      JSON.stringify(prop, null, 2) +
+      "\n```",
+  );
 
 export const renderPropInputs: RenderInputs = ({
   onChange,
@@ -61,8 +71,9 @@ export const renderPropInputs: RenderInputs = ({
         onConfirm={onConfirm}
         persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
         required={prop.prop.required}
+        shouldDisablePointerLock
       >
-        {({ onChange, ref, ...props }) => (
+        {({ ref, ...props }) => (
           <div>
             {prop.prop.name && (
               <label className="block" htmlFor={props.id}>
@@ -72,7 +83,6 @@ export const renderPropInputs: RenderInputs = ({
             <input
               {...props}
               className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder mb-1 h-[26px] w-full rounded-sm border px-[9px] focus:outline-none"
-              onInput={onChange}
               ref={ref}
               type="number"
             />
@@ -162,9 +172,9 @@ export const renderPropInputs: RenderInputs = ({
               onChange={onChange as SuppressVSCodeError}
               ref={ref as SuppressVSCodeError}
             >
-              {options.map((option) => (
-                <VSCodeOption key={option[0]} value={option[1]}>
-                  {option[0]}
+              {options.map(([label, value], index) => (
+                <VSCodeOption key={`${label}-${value}-${index}`} value={value}>
+                  {label}
                 </VSCodeOption>
               ))}
             </VSCodeDropdown>
@@ -174,5 +184,36 @@ export const renderPropInputs: RenderInputs = ({
     );
   }
 
-  return null;
+  const isControlledInCode = "value" in prop.prop && prop.prop.value;
+
+  return (
+    <div>
+      <label className="block">{prop.prop.name}</label>
+      <a
+        className="hover:text-input text-input focus:border-selected bg-input border-input mb-1 flex h-[26px] w-full cursor-pointer items-center rounded-sm border px-[9px] focus:outline-none"
+        href={isControlledInCode ? undefined : createIssueURL(prop.prop)}
+        title={
+          isControlledInCode
+            ? "This prop is controlled by code."
+            : "This field is not supported, please raise an issue on Github."
+        }
+      >
+        <span className="overflow-hidden text-ellipsis whitespace-nowrap text-neutral-400">
+          {"value" in prop.prop && prop.prop.value ? (
+            `{${prop.prop.value}}`
+          ) : (
+            <i>Unsupported</i>
+          )}
+        </span>
+        <div
+          className={cn([
+            "ml-auto flex-shrink-0",
+            isControlledInCode ? "text-warning" : "text-error",
+          ])}
+        >
+          <ExclamationTriangleIcon />
+        </div>
+      </a>
+    </div>
+  );
 };

@@ -54,7 +54,7 @@ export function Surface({
     <SurfaceStateContext.Provider value={addListener}>
       <div
         className={cn([
-          "border-overlay shadow-overlay group pointer-events-auto z-10 flex select-none opacity-90 focus:outline-none",
+          "border-overlay shadow-overlay group pointer-events-auto z-10 flex select-none focus:outline-none",
           isHidden && "hidden",
           direction === "horizontal" && "flex-row",
           direction === "vertical" && "flex-col",

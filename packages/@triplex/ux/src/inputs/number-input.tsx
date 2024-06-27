@@ -81,6 +81,7 @@ export function NumberInput({
   onConfirm,
   persistedValue,
   required,
+  shouldDisablePointerLock,
   transformValue = { in: (value) => value, out: (value) => value },
   ...tags
 }: {
@@ -113,6 +114,7 @@ export function NumberInput({
   onConfirm: (value: number | undefined) => void;
   persistedValue?: number;
   required?: boolean;
+  shouldDisablePointerLock?: boolean;
   step?: number;
   testId?: string;
   transformValue?: {
@@ -121,7 +123,8 @@ export function NumberInput({
   };
 }) {
   const telemetry = useTelemetry();
-  const isLinux = navigator.platform.startsWith("Linux");
+  const disablePointerLock =
+    shouldDisablePointerLock || navigator.platform.startsWith("Linux");
   const [isPointerLock, setIsPointerLock] = useState(false);
   const [modifier, setModifier] = useState({ ctrl: false, shift: false });
   const isDragging = useRef(false);
@@ -225,7 +228,7 @@ export function NumberInput({
 
   const onMouseDownHandler: MouseEventHandler = useCallback(
     async (e) => {
-      if (isLinux || document.activeElement === ref.current) {
+      if (disablePointerLock || document.activeElement === ref.current) {
         // Pointer lock isn't well supported on Linux so we ignore it.
         // We're focused in the input already, bail out!
         return;
@@ -250,7 +253,7 @@ export function NumberInput({
 
       setIsPointerLock(true);
     },
-    [isLinux],
+    [disablePointerLock],
   );
 
   const onKeyDownHandler: KeyboardEventHandler<HTMLInputElement> = useEvent(

@@ -86,8 +86,9 @@ export function LiteralUnionInput({
   };
 
   const onKeyDownHandler: KeyboardEventHandler<HTMLSelectElement> = (e) => {
-    if (e.key === "Backspace") {
+    if (e.key === "Backspace" && !required) {
       onClear();
+      ref.current.blur();
       telemetry.event(`${actionId}_clear`);
     }
   };

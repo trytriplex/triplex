@@ -127,10 +127,10 @@ export function TupleInput({
             key={index}
             onChange={onChangeHandler}
             onConfirm={onConfirmHandler}
-            props={[
+            prop={
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              { ...val, value: persistedValueArr[index] as string } as any,
-            ]}
+              { ...val, value: persistedValueArr[index] as string } as any
+            }
           >
             {children}
           </PropInput>
