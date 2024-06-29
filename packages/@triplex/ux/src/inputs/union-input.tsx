@@ -5,9 +5,9 @@
  * file in the root directory of this source tree.
  */
 import type { Type } from "@triplex/server";
-import { useState } from "react";
+import { useReducer } from "react";
 import { PropInput } from "./prop-input";
-import { type RenderInputs } from "./types";
+import { type RenderInputsWithAction } from "./types";
 
 export function UnionInput({
   children,
@@ -16,13 +16,13 @@ export function UnionInput({
   persistedValue,
   values,
 }: {
-  children: RenderInputs;
+  children: RenderInputsWithAction<{ toggle: () => void }>;
   onChange: (value: unknown) => void;
   onConfirm: (value: unknown) => void;
   persistedValue?: string | number | boolean;
   values: Type[];
 }) {
-  const [index] = useState(0);
+  const [index, toggle] = useReducer((prev) => prev + 1, 0);
   const value = values[index % values.length];
 
   return (
@@ -38,7 +38,7 @@ export function UnionInput({
         ) as any
       }
     >
-      {children}
+      {(props) => children(props, { toggle })}
     </PropInput>
   );
 }

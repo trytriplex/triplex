@@ -45,7 +45,7 @@ function SelectionPanelLoadable({
           placeholder="Filter props..."
         />
       </div>
-      <div className="flex flex-col gap-1.5 px-1.5">
+      <div className="flex flex-col gap-1 px-1.5">
         {props.props.map((prop) => (
           <PropInput
             key={selected.path + prop.name + selected.column + selected.line}

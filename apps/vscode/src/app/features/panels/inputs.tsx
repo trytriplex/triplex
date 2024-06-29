@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
+import { ExclamationTriangleIcon, SwitchIcon } from "@radix-ui/react-icons";
 import { cn } from "@triplex/lib";
 import { type DeclaredProp, type Prop } from "@triplex/server";
 import {
@@ -22,6 +22,7 @@ import {
   VSCodeOption,
   VSCodeTextField,
 } from "@vscode/webview-ui-toolkit/react";
+import { IconButton } from "../../components/button";
 import { type SuppressVSCodeError } from "../../types";
 
 const createIssueURL = (prop: DeclaredProp | Prop) =>
@@ -50,7 +51,7 @@ export const renderPropInputs: RenderInputs = ({
         {({ onChange, ref, ...props }) => (
           <VSCodeTextField
             {...props}
-            className="w-full"
+            className="mb-1 w-full"
             onInput={onChange as SuppressVSCodeError}
             ref={ref as SuppressVSCodeError}
           >
@@ -128,7 +129,18 @@ export const renderPropInputs: RenderInputs = ({
           persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
           values={prop.prop.shape}
         >
-          {renderPropInputs}
+          {(props, actions) => (
+            <div className="flex items-start gap-1">
+              {renderPropInputs(props)}
+              <IconButton
+                actionId="contextpanel_input_union_switch"
+                icon={SwitchIcon}
+                label="Switch prop type"
+                onClick={actions.toggle}
+                spacing="spacious"
+              />
+            </div>
+          )}
         </UnionInput>
       </div>
     );
@@ -168,7 +180,7 @@ export const renderPropInputs: RenderInputs = ({
             </label>
             <VSCodeDropdown
               {...props}
-              className="w-full"
+              className="mb-1 w-full"
               onChange={onChange as SuppressVSCodeError}
               ref={ref as SuppressVSCodeError}
             >
