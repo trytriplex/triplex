@@ -382,12 +382,13 @@ function JsxElementButton({
     target.parentPath === element.parentPath;
   const showExpander =
     element.type === "custom" && element.exportName && element.path;
-  const [isExpanded, setIsExpanded] = useState(false);
+  const [isUserExpanded, setIsExpanded] = useState(false);
   const [, startTransition] = useTransition();
   const show = useAssetsDrawer((store) => store.show);
   const ref = useRef<HTMLDivElement>(null);
   const match = matchesFilter(filter, element);
   const [dragState, setDragState] = useState<false | Instruction>(false);
+  const isExpanded = isUserExpanded || !!filter;
 
   interface DragData {
     column: number;
@@ -491,6 +492,7 @@ function JsxElementButton({
         <Pressable
           className={cn([
             match === false && "hidden",
+            match === "child" && "opacity-50",
             selected
               ? "border-l-blue-400 bg-white/5 text-blue-400"
               : "text-neutral-400 hover:bg-white/5 active:bg-white/10",
