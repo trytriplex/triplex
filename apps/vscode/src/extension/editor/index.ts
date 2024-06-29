@@ -121,6 +121,10 @@ export class TriplexEditorProvider
       on(panel.webview, "element-set-prop", (prop) => {
         document.upsertProp(prop);
       });
+
+      on(panel.webview, "error", (error) => {
+        vscode.window.showErrorMessage(error.message);
+      });
     });
   }
 

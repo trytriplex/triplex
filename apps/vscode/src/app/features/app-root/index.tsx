@@ -38,6 +38,7 @@ export function AppRoot() {
         telemetry.event(`scene_${data.actionId}` as ActionId);
       }),
       forwardClientMessages("element-set-prop"),
+      forwardClientMessages("error"),
       onVSCE("vscode:request-open-component", (data) => {
         send("request-open-component", {
           encodedProps: "",
