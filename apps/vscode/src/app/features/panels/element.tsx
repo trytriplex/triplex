@@ -11,14 +11,34 @@ import { Suspense, useLayoutEffect, useReducer, useRef, useState } from "react";
 import { Pressable } from "../../components/button";
 import { useOnSurfaceStateChange } from "../../components/surface";
 import { useLazySubscription } from "../../hooks/ws";
+import { useFilter } from "../../stores/filter-elements";
 import { useSceneStore } from "../../stores/scene";
+
+function matchesFilter(
+  filter: string | undefined,
+  element: JsxElementPositions,
+) {
+  if (!filter || element.name.toLowerCase().includes(filter.toLowerCase())) {
+    return "exact";
+  }
+
+  const childMatches = element.children.some((child) =>
+    matchesFilter(filter, child),
+  );
+
+  if (childMatches) {
+    return "child";
+  }
+
+  return false;
+}
 
 export function SceneElement(props: JsxElementPositions & { level: number }) {
   const selected = useSceneStore((store) => store.selected);
   const focusElement = useSceneStore((store) => store.focusElement);
   const ref = useRef<HTMLButtonElement>(null);
   const [isActive, setIsActive] = useState(false);
-  const [isExpanded, toggleExpanded] = useReducer((state) => !state, false);
+  const [isUserExpanded, toggleExpanded] = useReducer((state) => !state, false);
   const isCustomComponent =
     props.type === "custom" && props.exportName && props.path;
   const isSelected =
@@ -26,6 +46,9 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
     selected.column === props.column &&
     selected.line === props.line &&
     selected.path === props.parentPath;
+  const filter = useFilter((state) => state.filter);
+  const matches = matchesFilter(filter, props);
+  const isExpanded = isUserExpanded || !!filter;
 
   useOnSurfaceStateChange((active) => {
     setIsActive(active);
@@ -41,6 +64,8 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
     <li>
       <div
         className={cn([
+          matches == false && "hidden",
+          matches === "child" && "opacity-50",
           "relative flex items-stretch gap-1 py-[1px] pr-4",
           isSelected &&
             isActive &&
