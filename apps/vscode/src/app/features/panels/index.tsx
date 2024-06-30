@@ -22,18 +22,19 @@ export function Panels() {
   }
 
   return (
-    <div
+    <Surface
       className={cn([
         "border-overlay flex flex-col border-r",
         shown && "w-48 flex-shrink-0",
       ])}
+      shape="square"
     >
       <div
         className={cn([
           !shown &&
             "bg-overlay border-overlay absolute left-[5px] top-[5px] gap-1 rounded border p-0.5",
           shown && "p-1.5",
-          "z-10 flex flex-col items-start opacity-90",
+          "z-10 flex items-start opacity-90",
         ])}
       >
         <IconButton
@@ -50,17 +51,14 @@ export function Panels() {
 
       {shown === "elements" && (
         <Suspense>
-          <Surface
-            className="grid h-full flex-1 overflow-hidden [grid-auto-rows:1fr]"
-            shape="square"
-          >
+          <div className="grid overflow-hidden [grid-auto-rows:1fr]">
             <ElementsPanel />
             <Suspense>
               <SelectionPanel />
             </Suspense>
-          </Surface>
+          </div>
         </Suspense>
       )}
-    </div>
+    </Surface>
   );
 }
