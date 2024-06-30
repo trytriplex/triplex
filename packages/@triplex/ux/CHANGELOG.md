@@ -1,5 +1,15 @@
 # @triplex/ux
 
+## 0.67.5
+
+### Patch Changes
+
+- a1121431: Vsce element controls.
+- f1c507e9: Fix input bugs.
+- Updated dependencies [a1121431]
+  - @triplex/lib@0.67.5
+  - @triplex/bridge@0.67.5
+
 ## 0.67.4
 
 ### Patch Changes

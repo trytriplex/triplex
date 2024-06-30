@@ -1,5 +1,17 @@
 # @triplex/editor
 
+## 0.67.5
+
+### Patch Changes
+
+- 85eec02a: Element filter now expands custom components.
+- Updated dependencies [a1121431]
+- Updated dependencies [f1c507e9]
+  - @triplex/lib@0.67.5
+  - @triplex/ux@0.67.5
+  - @triplex/ws@0.67.5
+  - @triplex/bridge@0.67.5
+
 ## 0.67.4
 
 ### Patch Changes

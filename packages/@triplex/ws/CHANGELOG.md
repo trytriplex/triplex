@@ -1,5 +1,7 @@
 # @triplex/ws-client
 
+## 0.67.5
+
 ## 0.67.4
 
 ### Patch Changes

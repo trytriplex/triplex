@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.67.5
+
+### Patch Changes
+
+- 1ba572ca: Undo/redo now are triggered using explicit ids.
+- a1121431: Vsce element controls.
+
 ## 0.67.4
 
 ## 0.67.3

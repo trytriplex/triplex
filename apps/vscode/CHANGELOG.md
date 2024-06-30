@@ -1,5 +1,19 @@
 # @triplex/vscode
 
+## 0.0.6
+
+### Patch Changes
+
+- 1ba572ca: Undo/redo now are triggered using explicit ids.
+- 8ec6f701: Add scene panel.
+- a1121431: Vsce element controls.
+- 8a399d50: Hide scene panel during play.
+- f1c507e9: Fix input bugs.
+- Updated dependencies [1ba572ca]
+- Updated dependencies [a1121431]
+  - @triplex/server@0.67.5
+  - @triplex/client@0.67.5
+
 ## 0.0.5
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @triplex/lib
 
+## 0.67.5
+
+### Patch Changes
+
+- a1121431: Vsce element controls.
+
 ## 0.67.4
 
 ### Patch Changes

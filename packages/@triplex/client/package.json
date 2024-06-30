@@ -1,6 +1,6 @@
 {
   "name": "@triplex/client",
-  "version": "0.67.4",
+  "version": "0.67.5",
   "private": true,
   "repository": "https://github.com/try-triplex/triplex-monorepo",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
@@ -16,9 +16,9 @@
   "dependencies": {
     "@babel/core": "^7.24.5",
     "@babel/types": "^7.24.5",
-    "@triplex/bridge": "0.67.4",
-    "@triplex/renderer-r3f": "0.67.4",
-    "@triplex/renderer-react": "0.67.4",
+    "@triplex/bridge": "0.67.5",
+    "@triplex/renderer-r3f": "0.67.5",
+    "@triplex/renderer-react": "0.67.5",
     "@vitejs/plugin-react": "^4.1.0",
     "express": "^4.19.2",
     "vite": "^4.5.3"
@@ -27,8 +27,8 @@
     "@babel/plugin-syntax-jsx": "^7.24.1",
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
-    "@triplex/server": "0.67.4",
-    "@triplex/ws": "0.67.4",
+    "@triplex/server": "0.67.5",
+    "@triplex/ws": "0.67.5",
     "@types/babel__core": "^7.20.5",
     "@types/express": "^4.17.16",
     "@types/node": "^18.11.18",

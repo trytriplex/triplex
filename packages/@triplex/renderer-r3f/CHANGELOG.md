@@ -1,5 +1,15 @@
 # @triplex/renderer-r3f
 
+## 0.67.5
+
+### Patch Changes
+
+- 201367eb: Reset scene when entering edit mode.
+- Updated dependencies [a1121431]
+  - @triplex/lib@0.67.5
+  - @triplex/ws@0.67.5
+  - @triplex/bridge@0.67.5
+
 ## 0.67.4
 
 ### Patch Changes
