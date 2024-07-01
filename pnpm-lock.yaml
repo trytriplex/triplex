@@ -51,7 +51,7 @@ importers:
         version: 1.6.2(eslint@8.51.0)
       eslint-plugin-react-compiler:
         specifier: latest
-        version: 0.0.0-experimental-0998c1e-20240625(eslint@8.51.0)
+        version: 0.0.0-experimental-51a85ea-20240601(eslint@8.51.0)
       husky:
         specifier: ^9.0.11
         version: 9.0.11
@@ -805,7 +805,7 @@ importers:
         version: 10.4.16(postcss@8.4.32)
       babel-plugin-react-compiler:
         specifier: latest
-        version: 0.0.0-experimental-696af53-20240625
+        version: 0.0.0-experimental-592953e-20240517
       tailwindcss:
         specifier: ^3.3.2
         version: 3.3.2
@@ -971,9 +971,6 @@ importers:
       picomatch:
         specifier: ^2.3.1
         version: 2.3.1
-      prettier:
-        specifier: ^2.8.3
-        version: 2.8.3
       readdirp:
         specifier: ^3.6.0
         version: 3.6.0
@@ -1002,9 +999,6 @@ importers:
       '@types/picomatch':
         specifier: ^2.3.0
         version: 2.3.0
-      '@types/prettier':
-        specifier: ^2.7.2
-        version: 2.7.2
       '@types/react':
         specifier: 18.3.3
         version: 18.3.3
@@ -4254,10 +4248,6 @@ packages:
     dev: true
     optional: true
 
-  /@types/prettier@2.7.2:
-    resolution: {integrity: sha512-KufADq8uQqo1pYKVIYzfKbJfBAc0sOeXqGbFaSpv8MRmC/zXgowNZmFcbngndGk922QDmOASEXUZCaY48gs4cg==}
-    dev: true
-
   /@types/prop-types@15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
 
@@ -5161,8 +5151,8 @@ packages:
       typed-rest-client: 1.8.11
     dev: true
 
-  /babel-plugin-react-compiler@0.0.0-experimental-696af53-20240625:
-    resolution: {integrity: sha512-OUDKms8qmcm5bX0D+sJWC1YcKcd7AZ2aJ7eY6gkR+Xr7PDfkXLbqAld4Qs9B0ntjVbUMEtW/PjlQrxDtY4raHg==}
+  /babel-plugin-react-compiler@0.0.0-experimental-592953e-20240517:
+    resolution: {integrity: sha512-OjG1SVaeQZaJrqkMFJatg8W/MTow8Ak5rx2SI0ETQBO1XvOk/XZGMbltNCPdFJLKghBYoBjC+Y3Ap/Xr7B01mA==}
     dependencies:
       '@babel/generator': 7.2.0
       '@babel/types': 7.24.5
@@ -7333,8 +7323,8 @@ packages:
       globals: 13.23.0
     dev: false
 
-  /eslint-plugin-react-compiler@0.0.0-experimental-0998c1e-20240625(eslint@8.51.0):
-    resolution: {integrity: sha512-npq2RomExoQI3jETs4OrifaygyJYgOcX/q74Q9OC7GmffLh5zSJaQpzjs2fi61NMNkJyIvTBD0C6sKTGGcetOw==}
+  /eslint-plugin-react-compiler@0.0.0-experimental-51a85ea-20240601(eslint@8.51.0):
+    resolution: {integrity: sha512-ROiKTVu9pZsNHyJepZj/JULWnkw8+I8+9gOF/MkJ8Q22/9f9MkPQkD2f6FXzVH+iyWbp7DQ3RXKhB3hWhf8AIg==}
     engines: {node: ^14.17.0 || ^16.0.0 || >= 18.0.0}
     peerDependencies:
       eslint: '>=7'

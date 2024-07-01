@@ -21,7 +21,6 @@
     "glob-parent": "^6.0.2",
     "node-match-path": "^0.6.3",
     "picomatch": "^2.3.1",
-    "prettier": "^2.8.3",
     "readdirp": "^3.6.0",
     "ts-morph": "^21.0.1",
     "ws": "^8.12.0"
@@ -33,7 +32,6 @@
     "@types/glob-parent": "^5.1.1",
     "@types/node": "^18.11.18",
     "@types/picomatch": "^2.3.0",
-    "@types/prettier": "^2.7.2",
     "@types/react": "^18.0.27",
     "@types/three": "^0.163.0",
     "@types/ws": "^8.5.4",

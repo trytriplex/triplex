@@ -6,7 +6,6 @@
  */
 import { existsSync, writeFileSync } from "node:fs";
 import { watch } from "chokidar";
-import { format, resolveConfig, resolveConfigFile } from "prettier";
 import { Project, type ProjectOptions, type SourceFile } from "ts-morph";
 import { join, normalize } from "upath";
 import { deleteCommentComponents } from "../services/component";
@@ -54,6 +53,34 @@ export function _createProject(opts: ProjectOptions & { cwd?: string }) {
   return project;
 }
 
+async function tryPrettierFormat(cwd: string, sourceFile: SourceFile) {
+  try {
+    const prettierPath = require.resolve("prettier", { paths: [cwd] });
+    const { default: prettier } = await import(prettierPath);
+    const prettierConfigPath = await prettier.resolveConfigFile(cwd);
+
+    if (prettierConfigPath) {
+      const prettierConfig = await prettier.resolveConfig(prettierConfigPath);
+      if (prettierConfig) {
+        // A prettier config was found so we will use that to format.
+        const source = await prettier.format(sourceFile.getFullText(), {
+          ...prettierConfig,
+          filepath: sourceFile.getFilePath(),
+        });
+        sourceFile.replaceWithText(source);
+        return true;
+      }
+    }
+  } catch (error) {
+    // Gracefully handle a prettier error.
+    // eslint-disable-next-line no-console
+    console.log(error);
+    throw error;
+  }
+
+  return false;
+}
+
 async function persistSourceFile({
   cwd,
   newPath,
@@ -67,26 +94,15 @@ async function persistSourceFile({
     // Only delete + format if the file is modified.
     deleteCommentComponents(sourceFile);
 
-    // TODO: Move config resolution out of this function.
-    const prettierConfigPath = await resolveConfigFile(cwd);
-    if (prettierConfigPath) {
-      const prettierConfig = await resolveConfig(prettierConfigPath);
-      if (prettierConfig) {
-        // A prettier config was found so we will use that to format.
-        const source = await format(sourceFile.getFullText(), {
-          ...prettierConfig,
-          filepath: sourceFile.getFilePath(),
-        });
-        sourceFile.replaceWithText(source);
-      } else {
-        // No prettier config was found - so we'll use the default ts formatter.
-        sourceFile.formatText({
-          convertTabsToSpaces: true,
-          ensureNewLineAtEndOfFile: true,
-          indentSize: 2,
-          trimTrailingWhitespace: true,
-        });
-      }
+    const success = await tryPrettierFormat(cwd, sourceFile);
+    if (!success) {
+      // No prettier config was found - so we'll use the default ts formatter.
+      sourceFile.formatText({
+        convertTabsToSpaces: true,
+        ensureNewLineAtEndOfFile: true,
+        indentSize: 2,
+        trimTrailingWhitespace: true,
+      });
     }
   }
 
@@ -210,7 +226,7 @@ export function ${componentName}() {
 
     function flushDirtyState() {
       const persisted = normalizeLineEndings(
-        persistedSourceFile.get(sourceFile) || ""
+        persistedSourceFile.get(sourceFile) || "",
       );
       const current = normalizeLineEndings(sourceFile.getFullText());
       const isDirty = modifiedSourceFiles.has(sourceFile);
@@ -234,12 +250,12 @@ export function ${componentName}() {
       },
       edit: async <TResult>(
         callback: (
-          sourceFile: SourceFile
-        ) => TResult extends SourceFile ? never : TResult
+          sourceFile: SourceFile,
+        ) => TResult extends SourceFile ? never : TResult,
       ): Promise<
         [
           ids: { redoID: number; undoID: number },
-          result: TResult extends SourceFile ? never : TResult
+          result: TResult extends SourceFile ? never : TResult,
         ]
       > => {
         if (!persistedSourceFile.has(sourceFile)) {
@@ -281,7 +297,7 @@ export function ${componentName}() {
 
           dependencyModifiedCallbacks.set(
             path,
-            callbacks.filter((callback) => callback !== wrappedCb)
+            callbacks.filter((callback) => callback !== wrappedCb),
           );
         };
       },
@@ -411,7 +427,7 @@ export function ${componentName}() {
       persistSourceFile({
         cwd,
         sourceFile,
-      })
+      }),
     );
 
     await Promise.all(promises);
