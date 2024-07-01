@@ -27,6 +27,8 @@ async function tryInstallBundledExtension() {
     ],
     {
       encoding: "utf8",
+      // "shell: true" is needed so this works on Windows otherwise it fails silently.
+      shell: process.platform === "win32",
       stdio: "inherit",
     },
   );
@@ -43,8 +45,8 @@ const launchElectronWithRetry = async (
       throw error;
     }
 
-    // eslint-disable-next-line no-console
-    console.log(error);
+    // eslint-disable-next-line no-console, @typescript-eslint/no-explicit-any
+    console.log((error as any).error);
     // eslint-disable-next-line no-console
     console.log(`Failed to launch electron, retrying ${retries} times...`);
     return launchElectronWithRetry(opts, retries - 1);
@@ -54,6 +56,7 @@ const launchElectronWithRetry = async (
 async function launch(testInfo: TestInfo) {
   const isSmokeTest =
     process.env.SMOKE_TEST && testInfo.tags.includes("@vsce_smoke");
+
   if (isSmokeTest) {
     await tryInstallBundledExtension();
   }
@@ -82,6 +85,7 @@ async function launch(testInfo: TestInfo) {
       "--new-window", // Opens a new session of VS Code instead of restoring the previous session (default).
       "--no-sandbox", // https://github.com/microsoft/vscode/issues/84238
       "--skip-welcome",
+      "--skip-release-notes",
     ],
     env: {
       ...process.env,

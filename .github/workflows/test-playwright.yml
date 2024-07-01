@@ -68,7 +68,7 @@ jobs:
     # Merge reports after playwright-tests, even if some shards have failed
     if: always()
 
-    needs: [playwright]
+    needs: playwright
 
     runs-on: ubuntu-latest
 

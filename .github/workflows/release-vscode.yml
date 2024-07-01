@@ -39,7 +39,7 @@ jobs:
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER
         if: steps.check.outcome == 'success'
 
-      - name: Install dependencies
+      - name: Install dependencies (force)
         run: pnpm i --force
         if: steps.check.outcome == 'success'
 
