@@ -45,10 +45,21 @@ const launchElectronWithRetry = async (
       throw error;
     }
 
+    const nextMs = (1 / retries) * 2000;
+
     // eslint-disable-next-line no-console, @typescript-eslint/no-explicit-any
     console.log((error as any).error);
     // eslint-disable-next-line no-console
-    console.log(`Failed to launch electron, retrying ${retries} times...`);
+    console.log(
+      `Failed to launch electron, retrying ${retries} times in ${nextMs}ms...`,
+    );
+
+    await new Promise<void>((resolve) =>
+      setTimeout(() => {
+        resolve();
+      }, nextMs),
+    );
+
     return launchElectronWithRetry(opts, retries - 1);
   }
 };
