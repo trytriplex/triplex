@@ -1,5 +1,7 @@
 # @triplex/lib
 
+## 0.67.6
+
 ## 0.67.5
 
 ### Patch Changes

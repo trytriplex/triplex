@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.67.6
+
+### Patch Changes
+
+- 050e5845: Formatting on save now uses the userland prettier module. If none is found it falls back to tsc formatting.
+
 ## 0.67.5
 
 ### Patch Changes

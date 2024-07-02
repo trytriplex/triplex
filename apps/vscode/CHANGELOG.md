@@ -1,5 +1,16 @@
 # @triplex/vscode
 
+## 0.0.7
+
+### Patch Changes
+
+- e4081607: Prevent hotkeys double firing when modifier keys are pressed.
+- a7862f3c: Strip meta.
+- a7862f3c: Fix x-plat builds.
+- Updated dependencies [050e5845]
+  - @triplex/server@0.67.6
+  - @triplex/client@0.67.6
+
 ## 0.0.6
 
 ### Patch Changes
