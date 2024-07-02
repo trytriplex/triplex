@@ -28,6 +28,7 @@ export function Panels() {
         shown && "w-48 flex-shrink-0",
       ])}
       shape="square"
+      testId="panels"
     >
       <div
         className={cn([

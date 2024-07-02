@@ -16,7 +16,7 @@ export class ExtensionPage {
   }
 
   get loadedComponent() {
-    const locator = this.resolvePanel()
+    const locator = this.resolveEditor()
       .locator.frameLocator("#scene")
       .getByTestId("scene-loaded-meta");
 
@@ -34,7 +34,7 @@ export class ExtensionPage {
     };
   }
 
-  resolvePanel({
+  resolveEditor({
     filename = "scene.tsx",
     project = "test-fixture",
   }: { filename?: string; project?: string } = {}) {
@@ -47,8 +47,14 @@ export class ExtensionPage {
         return this.scene.getByTestId("camera-panel");
       },
       locator,
+      get panels() {
+        return locator.getByTestId("panels");
+      },
       get scene() {
         return locator.frameLocator("#scene");
+      },
+      get togglePanelsButton() {
+        return locator.getByRole("button", { name: "View Scene Elements" });
       },
     };
   }

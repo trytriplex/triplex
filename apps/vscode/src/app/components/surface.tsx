@@ -33,6 +33,7 @@ export function Surface({
   direction = "vertical",
   isHidden,
   shape = "rounded",
+  testId,
 }: {
   bg?: "overlay" | "editor";
   children: React.ReactNode;
@@ -40,6 +41,7 @@ export function Surface({
   direction?: "horizontal" | "vertical";
   isHidden?: boolean;
   shape?: "rounded" | "square";
+  testId?: string;
 }) {
   const listeners = useRef<StateListener[]>([]);
 
@@ -63,6 +65,7 @@ export function Surface({
           bg === "overlay" && "bg-overlay",
           bg === "editor" && "bg-editor",
         ])}
+        data-testid={testId}
         // @ts-expect-error — updating React types will make this go away
         inert={isHidden ? "true" : undefined}
         onBlur={() => listeners.current.forEach((cb) => cb(false))}

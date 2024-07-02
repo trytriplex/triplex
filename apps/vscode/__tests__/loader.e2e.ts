@@ -10,7 +10,7 @@ import { test } from "./utils/runner";
 test("default to perspective camera", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
 
-  const panel = vsce.resolvePanel();
+  const panel = vsce.resolveEditor();
 
   await expect(panel.devOnlyCameraPanel).toHaveText(/type: perspective/);
   await expect(panel.devOnlyCameraPanel).toHaveText(/name: __triplex_camera/);

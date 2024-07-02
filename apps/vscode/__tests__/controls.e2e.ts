@@ -10,7 +10,7 @@ import { test } from "./utils/runner";
 test("default to translate", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
 
-  const panel = vsce.resolvePanel();
+  const panel = vsce.resolveEditor();
 
   await expect(
     panel.locator.getByRole("button", { name: "Translate" }),
@@ -19,7 +19,7 @@ test("default to translate", async ({ vsce }) => {
 
 test("switch to scale via click", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
-  const panel = vsce.resolvePanel();
+  const panel = vsce.resolveEditor();
 
   await panel.locator.getByRole("button", { name: "Scale" }).click();
 
@@ -30,7 +30,7 @@ test("switch to scale via click", async ({ vsce }) => {
 
 test("switch to rotate via hotkey", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
-  const panel = vsce.resolvePanel();
+  const panel = vsce.resolveEditor();
 
   await panel.locator.getByRole("button", { name: "Scale" }).press("r");
 

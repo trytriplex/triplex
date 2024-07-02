@@ -7,7 +7,14 @@
 import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { cn } from "@triplex/lib";
 import { type JsxElementPositions } from "@triplex/server";
-import { Suspense, useLayoutEffect, useReducer, useRef, useState } from "react";
+import {
+  Suspense,
+  useId,
+  useLayoutEffect,
+  useReducer,
+  useRef,
+  useState,
+} from "react";
 import { Pressable } from "../../components/button";
 import { useOnSurfaceStateChange } from "../../components/surface";
 import { useLazySubscription } from "../../hooks/ws";
@@ -34,6 +41,7 @@ function matchesFilter(
 }
 
 export function SceneElement(props: JsxElementPositions & { level: number }) {
+  const id = useId();
   const selected = useSceneStore((store) => store.selected);
   const focusElement = useSceneStore((store) => store.focusElement);
   const ref = useRef<HTMLButtonElement>(null);
@@ -93,6 +101,7 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
         <Pressable
           actionId="scenepanel_element_focus"
           className="outline-offset-inset absolute inset-0"
+          labelledBy={id}
           onClick={() => {
             focusElement({
               column: props.column,
@@ -104,8 +113,12 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
           ref={ref}
           title={props.name}
         />
-        <span className="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap">
+        <span
+          className="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap"
+          id={id}
+        >
           {props.name}
+          {isSelected && <span className="sr-only">selected</span>}
         </span>
       </div>
       {(props.children.length > 0 || isCustomComponent) && (

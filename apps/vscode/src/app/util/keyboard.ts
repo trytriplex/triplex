@@ -26,7 +26,7 @@ export function onKeyDown(
 
   const callback = (e: KeyboardEvent) => {
     if (
-      e.key === key &&
+      e.key.toLowerCase() === key &&
       e.metaKey === false &&
       e.ctrlKey === false &&
       e.altKey === false &&
