@@ -1,5 +1,16 @@
 # @triplex/electron
 
+## 0.67.7
+
+### Patch Changes
+
+- 23eaef8a: Fix compound hotkeys in electron not being functional.
+- Updated dependencies [e958b697]
+  - @triplex/server@0.67.7
+  - @triplex/client@0.67.7
+  - @triplex/editor@0.67.7
+  - create-triplex-project@0.67.7
+
 ## 0.67.6
 
 ### Patch Changes

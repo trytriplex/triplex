@@ -1,6 +1,6 @@
 {
   "name": "@triplex/lib",
-  "version": "0.67.6",
+  "version": "0.67.7",
   "private": true,
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
   "exports": {

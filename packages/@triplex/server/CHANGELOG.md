@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.67.7
+
+### Patch Changes
+
+- e958b697: Remove error thrown during save when searching for prettier module.
+
 ## 0.67.6
 
 ### Patch Changes

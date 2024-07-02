@@ -1,5 +1,14 @@
 # @triplex/renderer-r3f
 
+## 0.67.7
+
+### Patch Changes
+
+- 23eaef8a: Fix compound hotkeys in electron not being functional.
+  - @triplex/ws@0.67.7
+  - @triplex/bridge@0.67.7
+  - @triplex/lib@0.67.7
+
 ## 0.67.6
 
 ### Patch Changes

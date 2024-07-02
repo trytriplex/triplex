@@ -1,5 +1,14 @@
 # @triplex/vscode
 
+## 0.0.8
+
+### Patch Changes
+
+- 23eaef8a: Fix compound hotkeys in electron not being functional.
+- Updated dependencies [e958b697]
+  - @triplex/server@0.67.7
+  - @triplex/client@0.67.7
+
 ## 0.0.7
 
 ### Patch Changes
