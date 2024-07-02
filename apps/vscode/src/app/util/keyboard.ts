@@ -27,6 +27,9 @@ export function onKeyDown(
     if (
       e.key === key &&
       e.metaKey === false &&
+      e.ctrlKey === false &&
+      e.altKey === false &&
+      e.shiftKey === false &&
       !(
         document.activeElement &&
         inputTags.some((tag) => document.activeElement?.tagName.includes(tag))
