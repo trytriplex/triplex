@@ -16,9 +16,10 @@ const inputTags = [
 ];
 
 export function onKeyDown(
-  key: KeyboardEvent["key"],
+  inKey: KeyboardEvent["key"],
   cb: (e: KeyboardEvent) => void,
 ) {
+  const key = inKey.toLowerCase();
   if (assignedKeys.includes(key)) {
     throw new Error(`invariant: "${key}" key already assigned`);
   }
