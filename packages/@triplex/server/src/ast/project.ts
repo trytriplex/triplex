@@ -72,10 +72,9 @@ async function tryPrettierFormat(cwd: string, sourceFile: SourceFile) {
       }
     }
   } catch (error) {
-    // Gracefully handle a prettier error.
+    // We log and continue saving even if an error occurred during formatting.
     // eslint-disable-next-line no-console
-    console.log(error);
-    throw error;
+    console.error(error);
   }
 
   return false;
