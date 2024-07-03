@@ -82,18 +82,16 @@ async function launch(
 }
 
 const test = _test.extend<{
-  /** Starts the custom local renderer for Triplex. */
-  editorLocal: EditorPage;
-  /** Starts the React Three Fiber renderer for Triplex. */
-  editorR3F: EditorPage;
-  /** Starts the React renderer for Triplex. */
-  editorReact: EditorPage;
-  /** First file to open for the test. */
-  file: { exportName: string; path: string };
+  /**
+   * Defaults to the react-three-fiber project folder. Use the `file` option to
+   * specify a different project and file/component to open.
+   */
+  electron: EditorPage;
+  file: { exportName: string; path: string; project?: string };
 }>({
-  editorLocal: async ({ file }, use, testInfo) => {
+  electron: async ({ file }, use, testInfo) => {
     const { app, logs, sceneReadyPromise, window } = await launch(
-      "examples-private/custom-renderer",
+      file.project || "examples/test-fixture",
       file,
     );
     const page = new EditorPage(window, sceneReadyPromise, testInfo);
@@ -103,31 +101,13 @@ const test = _test.extend<{
     app.process().kill();
     await app.close();
   },
-  editorR3F: async ({ file }, use, testInfo) => {
-    const { app, logs, sceneReadyPromise, window } = await launch(
-      "examples/test-fixture",
-      file,
-    );
-    const page = new EditorPage(window, sceneReadyPromise, testInfo);
-
-    await runUseWithTrace({ logs, page, testInfo, use });
-
-    app.process().kill();
-    await app.close();
-  },
-  editorReact: async ({ file }, use, testInfo) => {
-    const { app, logs, sceneReadyPromise, window } = await launch(
-      "examples-private/react-dom",
-      file,
-    );
-    const page = new EditorPage(window, sceneReadyPromise, testInfo);
-
-    await runUseWithTrace({ logs, page, testInfo, use });
-
-    app.process().kill();
-    await app.close();
-  },
-  file: [{ exportName: "", path: "" }, { option: true }],
+  file: [
+    {
+      exportName: "Scene",
+      path: "src/scene.tsx",
+    },
+    { option: true },
+  ],
 });
 
 export { test };

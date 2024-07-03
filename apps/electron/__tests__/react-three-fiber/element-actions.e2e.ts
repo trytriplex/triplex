@@ -7,8 +7,8 @@
 import { expect } from "@playwright/test";
 import { test } from "../utils/runner";
 
-test("delete child element", async ({ editorR3F }) => {
-  const parent = editorR3F.scenePanel.elementButton("Box");
+test("delete child element", async ({ electron }) => {
+  const parent = electron.scenePanel.elementButton("Box");
   await parent.expandButton.click({ force: true });
   const child = parent.childElementButton("meshStandardMaterial");
 
@@ -17,71 +17,71 @@ test("delete child element", async ({ editorR3F }) => {
   await expect(child.locator).toBeHidden();
 });
 
-test("delete parent element", async ({ editorR3F }) => {
-  const parent = editorR3F.scenePanel.elementButton("Box");
+test("delete parent element", async ({ electron }) => {
+  const parent = electron.scenePanel.elementButton("Box");
 
   await parent.deleteButton.click();
 
   await expect(parent.locator).toBeHidden();
 });
 
-test("enter camera", async ({ editorR3F }) => {
-  const parent = editorR3F.scenePanel.elementButton("PerspectiveCamera");
-  await editorR3F.waitForScene();
+test("enter camera", async ({ electron }) => {
+  const parent = electron.scenePanel.elementButton("PerspectiveCamera");
+  await electron.waitForScene();
 
   await parent.customAction("Enter Camera").click();
 
   await expect(parent.customAction("Exit Camera")).toBeVisible();
 });
 
-test("enter camera block changing host camera", async ({ editorR3F }) => {
-  const parent = editorR3F.scenePanel.elementButton("PerspectiveCamera");
-  await editorR3F.waitForScene();
+test("enter camera block changing host camera", async ({ electron }) => {
+  const parent = electron.scenePanel.elementButton("PerspectiveCamera");
+  await electron.waitForScene();
 
   await parent.customAction("Enter Camera").click();
-  await editorR3F.controls.button("Switch To Orthographic").click();
+  await electron.controls.button("Switch To Orthographic").click();
 
   await expect(
-    editorR3F.controls.button("Switch To Orthographic"),
+    electron.controls.button("Switch To Orthographic"),
   ).toBeVisible();
-  await expect(editorR3F.controls.button("Switch To Perspective")).toBeHidden();
+  await expect(electron.controls.button("Switch To Perspective")).toBeHidden();
 });
 
-test("focus parent element", async ({ editorR3F }) => {
-  const parent = editorR3F.scenePanel.elementButton("Box");
+test("focus parent element", async ({ electron }) => {
+  const parent = electron.scenePanel.elementButton("Box");
 
   await parent.click();
 
-  await expect(editorR3F.contextPanel.heading).toHaveText("Box");
+  await expect(electron.contextPanel.heading).toHaveText("Box");
 });
 
-test("focus child element", async ({ editorR3F }) => {
-  const parent = editorR3F.scenePanel.elementButton("Box");
-  await editorR3F.waitForScene();
+test("focus child element", async ({ electron }) => {
+  const parent = electron.scenePanel.elementButton("Box");
+  await electron.waitForScene();
   await parent.expandButton.click({ force: true });
   const child = parent.childElementButton("hello-world");
 
   await child.locator.click();
 
-  await expect(editorR3F.contextPanel.heading).toHaveText("mesh");
+  await expect(electron.contextPanel.heading).toHaveText("mesh");
 });
 
-test("enter custom element and back", async ({ editorR3F }) => {
-  const element = editorR3F.scenePanel.elementButton("Box");
+test("enter custom element and back", async ({ electron }) => {
+  const element = electron.scenePanel.elementButton("Box");
   await element.click();
-  await expect(editorR3F.contextPanel.heading).toHaveText("Box");
+  await expect(electron.contextPanel.heading).toHaveText("Box");
 
   await element.dblclick();
-  await expect(editorR3F.scenePanel.heading).toHaveText("Box");
-  await editorR3F.scenePanel.exitSelectionButton.click();
+  await expect(electron.scenePanel.heading).toHaveText("Box");
+  await electron.scenePanel.exitSelectionButton.click();
 
-  await expect(editorR3F.scenePanel.heading).toHaveText("Scene");
+  await expect(electron.scenePanel.heading).toHaveText("Scene");
 });
 
-test("elements from node modules cant be entered", async ({ editorR3F }) => {
-  const parent = editorR3F.scenePanel.elementButton("PerspectiveCamera");
+test("elements from node modules cant be entered", async ({ electron }) => {
+  const parent = electron.scenePanel.elementButton("PerspectiveCamera");
 
   await parent.dblclick();
 
-  await expect(editorR3F.scenePanel.heading).toHaveText("Scene");
+  await expect(electron.scenePanel.heading).toHaveText("Scene");
 });

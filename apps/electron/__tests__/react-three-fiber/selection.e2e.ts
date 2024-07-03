@@ -7,12 +7,12 @@
 import { expect } from "@playwright/test";
 import { test } from "../utils/runner";
 
-test("select custom component", async ({ editorR3F }) => {
-  await editorR3F.waitForScene();
+test("select custom component", async ({ electron }) => {
+  await electron.waitForScene();
 
-  await editorR3F.frame.click();
+  await electron.frame.click();
 
-  await expect(editorR3F.contextPanel.heading).toHaveText("Box");
+  await expect(electron.contextPanel.heading).toHaveText("Box");
 });
 
 test.describe(() => {
@@ -23,14 +23,12 @@ test.describe(() => {
     },
   });
 
-  test("select camera component", async ({ editorR3F }) => {
-    await editorR3F.waitForScene();
+  test("select camera component", async ({ electron }) => {
+    await electron.waitForScene();
 
-    await editorR3F.frame.click();
+    await electron.frame.click();
 
-    await expect(editorR3F.contextPanel.heading).toHaveText(
-      "PerspectiveCamera",
-    );
+    await expect(electron.contextPanel.heading).toHaveText("PerspectiveCamera");
   });
 });
 
@@ -42,12 +40,12 @@ test.describe(() => {
     },
   });
 
-  test("select host element mesh", async ({ editorR3F }) => {
-    await editorR3F.waitForScene();
+  test("select host element mesh", async ({ electron }) => {
+    await electron.waitForScene();
 
-    await editorR3F.frame.click();
+    await electron.frame.click();
 
-    await expect(editorR3F.contextPanel.heading).toHaveText("mesh");
+    await expect(electron.contextPanel.heading).toHaveText("mesh");
   });
 });
 
@@ -59,12 +57,12 @@ test.describe(() => {
     },
   });
 
-  test("select host element light", async ({ editorR3F }) => {
-    await editorR3F.waitForScene();
+  test("select host element light", async ({ electron }) => {
+    await electron.waitForScene();
 
-    await editorR3F.frame.click();
+    await electron.frame.click();
 
-    await expect(editorR3F.contextPanel.heading).toHaveText("ambientLight");
+    await expect(electron.contextPanel.heading).toHaveText("ambientLight");
   });
 });
 
@@ -77,13 +75,13 @@ test.describe(() => {
   });
 
   test("select node module component using automatic runtime", async ({
-    editorR3F,
+    electron,
   }) => {
-    await editorR3F.waitForScene();
+    await electron.waitForScene();
 
-    await editorR3F.frame.click();
+    await electron.frame.click();
 
-    await expect(editorR3F.contextPanel.heading).toHaveText("Container");
+    await expect(electron.contextPanel.heading).toHaveText("Container");
   });
 });
 
@@ -96,12 +94,12 @@ test.describe(() => {
   });
 
   test("select component in scene of deeply nested component", async ({
-    editorR3F,
+    electron,
   }) => {
-    await editorR3F.waitForScene();
+    await electron.waitForScene();
 
-    await editorR3F.frame.click();
+    await electron.frame.click();
 
-    await expect(editorR3F.contextPanel.heading).toHaveText("Inbuilt2");
+    await expect(electron.contextPanel.heading).toHaveText("Inbuilt2");
   });
 });

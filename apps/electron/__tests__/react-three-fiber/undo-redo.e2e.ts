@@ -7,38 +7,38 @@
 import { expect } from "@playwright/test";
 import { test } from "../utils/runner";
 
-test("undo an action", async ({ editorR3F }) => {
-  await editorR3F.scenePanel.elementButton("Box").click();
-  await editorR3F.contextPanel.input("Position").locator.fill("2");
-  await editorR3F.keyboard.press("Enter");
+test("undo an action", async ({ electron }) => {
+  await electron.scenePanel.elementButton("Box").click();
+  await electron.contextPanel.input("Position").locator.fill("2");
+  await electron.keyboard.press("Enter");
   await expect(
-    editorR3F.fileTabs.tab("scene.tsx").unsavedIndicator,
+    electron.fileTabs.tab("scene.tsx").unsavedIndicator,
   ).toBeVisible();
-  await editorR3F.contextPanel.waitForInputValue("number", "2");
+  await electron.contextPanel.waitForInputValue("number", "2");
 
-  await editorR3F.undo();
+  await electron.undo();
 
   await expect(
-    editorR3F.fileTabs.tab("scene.tsx").unsavedIndicator,
+    electron.fileTabs.tab("scene.tsx").unsavedIndicator,
   ).toBeHidden();
 });
 
-test("redo an action", async ({ editorR3F }) => {
-  await editorR3F.scenePanel.elementButton("Box").click();
-  await editorR3F.contextPanel.input("Position").locator.fill("2");
-  await editorR3F.keyboard.press("Enter");
+test("redo an action", async ({ electron }) => {
+  await electron.scenePanel.elementButton("Box").click();
+  await electron.contextPanel.input("Position").locator.fill("2");
+  await electron.keyboard.press("Enter");
   await expect(
-    editorR3F.fileTabs.tab("scene.tsx").unsavedIndicator,
+    electron.fileTabs.tab("scene.tsx").unsavedIndicator,
   ).toBeVisible();
-  await editorR3F.contextPanel.waitForInputValue("number", "2");
-  await editorR3F.undo();
+  await electron.contextPanel.waitForInputValue("number", "2");
+  await electron.undo();
   await expect(
-    editorR3F.fileTabs.tab("scene.tsx").unsavedIndicator,
+    electron.fileTabs.tab("scene.tsx").unsavedIndicator,
   ).toBeHidden();
 
-  await editorR3F.redo();
+  await electron.redo();
 
   await expect(
-    editorR3F.fileTabs.tab("scene.tsx").unsavedIndicator,
+    electron.fileTabs.tab("scene.tsx").unsavedIndicator,
   ).toBeVisible();
 });

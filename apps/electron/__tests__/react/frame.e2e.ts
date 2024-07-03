@@ -7,28 +7,38 @@
 import { expect } from "@playwright/test";
 import { test } from "../utils/runner";
 
-test("default activated frame", async ({ editorReact }) => {
-  await expect(editorReact.frame.expandButton).toBeAttached();
-  await expect(editorReact.frame.activateButton).not.toBeAttached();
-});
+test.describe(() => {
+  test.use({
+    file: {
+      exportName: "StickerSheetButton",
+      path: "src/sheets.tsx",
+      project: "examples-private/react-dom",
+    },
+  });
 
-test("de-activating frame", async ({ editorReact }) => {
-  await editorReact.frame.deactivateButton.click();
+  test("default activated frame", async ({ electron }) => {
+    await expect(electron.frame.expandButton).toBeAttached();
+    await expect(electron.frame.activateButton).not.toBeAttached();
+  });
 
-  await expect(editorReact.frame.expandButton).not.toBeAttached();
-  await expect(editorReact.frame.activateButton).toBeAttached();
-});
+  test("de-activating frame", async ({ electron }) => {
+    await electron.frame.deactivateButton.click();
 
-test("expand frame", async ({ editorReact }) => {
-  await editorReact.frame.expandButton.click();
+    await expect(electron.frame.expandButton).not.toBeAttached();
+    await expect(electron.frame.activateButton).toBeAttached();
+  });
 
-  await expect(editorReact.frame.locator).toHaveClass(/h-full w-full/);
-});
+  test("expand frame", async ({ electron }) => {
+    await electron.frame.expandButton.click();
 
-test("collapse frame", async ({ editorReact }) => {
-  await editorReact.frame.expandButton.click();
+    await expect(electron.frame.locator).toHaveClass(/h-full w-full/);
+  });
 
-  await editorReact.frame.collapseButton.click();
+  test("collapse frame", async ({ electron }) => {
+    await electron.frame.expandButton.click();
 
-  await expect(editorReact.frame.locator).not.toHaveClass(/h-full w-full/);
+    await electron.frame.collapseButton.click();
+
+    await expect(electron.frame.locator).not.toHaveClass(/h-full w-full/);
+  });
 });

@@ -7,11 +7,12 @@
 import { MapControls, PerspectiveCamera } from "@react-three/drei";
 import Box from "./geometry/box";
 
-interface SceneProps {
-  name?: string;
-  value?: number;
-  variant?: "giant" | "small";
-  visible?: boolean;
+export function Plane() {
+  return (
+    <mesh>
+      <planeGeometry />
+    </mesh>
+  );
 }
 
 export function Scene({
@@ -45,10 +46,9 @@ export function Scene({
   );
 }
 
-export function Plane() {
-  return (
-    <mesh>
-      <planeGeometry />
-    </mesh>
-  );
+interface SceneProps {
+  name?: string;
+  value?: number;
+  variant?: "giant" | "small";
+  visible?: boolean;
 }

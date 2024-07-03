@@ -7,100 +7,100 @@
 import { expect } from "@playwright/test";
 import { test } from "../utils/runner";
 
-test("default to perspective camera", async ({ editorR3F }) => {
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/type: perspective/);
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(
+test("default to perspective camera", async ({ electron }) => {
+  await expect(electron.devOnlyCameraPanel).toHaveText(/type: perspective/);
+  await expect(electron.devOnlyCameraPanel).toHaveText(
     /name: __triplex_camera/,
   );
 });
 
-test("switch to orthographic camera and back", async ({ editorR3F }) => {
-  await editorR3F.waitForScene();
+test("switch to orthographic camera and back", async ({ electron }) => {
+  await electron.waitForScene();
 
-  await editorR3F.controls.button("Switch To Orthographic").click();
+  await electron.controls.button("Switch To Orthographic").click();
 
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/type: orthographic/);
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(
+  await expect(electron.devOnlyCameraPanel).toHaveText(/type: orthographic/);
+  await expect(electron.devOnlyCameraPanel).toHaveText(
     /name: __triplex_camera/,
   );
 
-  await editorR3F.controls.button("Switch To Perspective").click();
+  await electron.controls.button("Switch To Perspective").click();
 
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/type: perspective/);
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(
+  await expect(electron.devOnlyCameraPanel).toHaveText(/type: perspective/);
+  await expect(electron.devOnlyCameraPanel).toHaveText(
     /name: __triplex_camera/,
   );
 });
 
-test("switch to play mode and back", async ({ editorR3F }) => {
-  await editorR3F.waitForScene();
+test("switch to play mode and back", async ({ electron }) => {
+  await electron.waitForScene();
 
-  await editorR3F.controls.button("Play Scene").click();
+  await electron.controls.button("Play Scene").click();
 
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/type: perspective/);
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(
+  await expect(electron.devOnlyCameraPanel).toHaveText(/type: perspective/);
+  await expect(electron.devOnlyCameraPanel).toHaveText(
     /name: __triplex_camera/,
   );
 
-  await editorR3F.controls.button("Stop Scene").click();
+  await electron.controls.button("Stop Scene").click();
 
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/type: perspective/);
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(
+  await expect(electron.devOnlyCameraPanel).toHaveText(/type: perspective/);
+  await expect(electron.devOnlyCameraPanel).toHaveText(
     /name: __triplex_camera/,
   );
 });
 
 test("switch to play mode and toggle to default camera", async ({
-  editorR3F,
+  electron,
 }) => {
-  await editorR3F.waitForScene();
+  await electron.waitForScene();
 
-  await editorR3F.controls.button("Play Scene").click();
+  await electron.controls.button("Play Scene").click();
 
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/type: perspective/);
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(
+  await expect(electron.devOnlyCameraPanel).toHaveText(/type: perspective/);
+  await expect(electron.devOnlyCameraPanel).toHaveText(
     /name: __triplex_camera/,
   );
 
-  await editorR3F.controls.button("Play Options").click();
-  await editorR3F.page.getByText("Default camera").click();
+  await electron.controls.button("Play Options").click();
+  await electron.page.getByText("Default camera").click();
 
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/type: user/);
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/name: user_defined/);
+  await expect(electron.devOnlyCameraPanel).toHaveText(/type: user/);
+  await expect(electron.devOnlyCameraPanel).toHaveText(/name: user_defined/);
 });
 
 test("toggle to default camera and switch to play mode", async ({
-  editorR3F,
+  electron,
 }) => {
-  await editorR3F.waitForScene();
+  await electron.waitForScene();
 
-  await editorR3F.controls.button("Play Options").click();
-  await editorR3F.page.getByText("Default camera").click();
+  await electron.controls.button("Play Options").click();
+  await electron.page.getByText("Default camera").click();
 
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/type: perspective/);
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(
+  await expect(electron.devOnlyCameraPanel).toHaveText(/type: perspective/);
+  await expect(electron.devOnlyCameraPanel).toHaveText(
     /name: __triplex_camera/,
   );
 
-  await editorR3F.controls.button("Play Scene").click();
+  await electron.controls.button("Play Scene").click();
 
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/type: user/);
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/name: user_defined/);
+  await expect(electron.devOnlyCameraPanel).toHaveText(/type: user/);
+  await expect(electron.devOnlyCameraPanel).toHaveText(/name: user_defined/);
 });
 
 // This is currently a bug where the camera isn't unset when removing it as default
 // This could be a bug in Triplex or R3F. Need to investigate.
 test.skip("unset userland camera to use default camera in play mode", async ({
-  editorR3F,
+  electron,
 }) => {
-  await editorR3F.waitForScene();
-  const parent = editorR3F.scenePanel.elementButton("PerspectiveCamera");
+  await electron.waitForScene();
+  const parent = electron.scenePanel.elementButton("PerspectiveCamera");
   await parent.click();
-  const input = editorR3F.contextPanel.input("Make Default").locator;
+  const input = electron.contextPanel.input("Make Default").locator;
 
   await input.uncheck();
-  await editorR3F.controls.button("Play Scene").click();
+  await electron.controls.button("Play Scene").click();
 
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/name: \(empty\)/);
-  await expect(editorR3F.devOnlyCameraPanel).toHaveText(/type: user/);
+  await expect(electron.devOnlyCameraPanel).toHaveText(/name: \(empty\)/);
+  await expect(electron.devOnlyCameraPanel).toHaveText(/type: user/);
 });

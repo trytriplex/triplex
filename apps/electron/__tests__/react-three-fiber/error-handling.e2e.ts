@@ -7,22 +7,22 @@
 import { expect } from "@playwright/test";
 import { test } from "../utils/runner";
 
-test("render error", async ({ editorR3F }) => {
-  await editorR3F.waitForScene();
-  await editorR3F.openFileButton.click();
+test("render error", async ({ electron }) => {
+  await electron.waitForScene();
+  await electron.openFileButton.click();
 
-  await editorR3F.fileDrawer.thumbnail("Render Error").click();
+  await electron.fileDrawer.thumbnail("Render Error").click();
 
-  await expect(editorR3F.errorOverlay.locator).toBeVisible();
+  await expect(electron.errorOverlay.locator).toBeVisible();
 });
 
-test("syntax error", async ({ editorR3F }) => {
-  await editorR3F.waitForScene();
-  await editorR3F.openFileButton.click();
+test("syntax error", async ({ electron }) => {
+  await electron.waitForScene();
+  await electron.openFileButton.click();
 
-  await editorR3F.fileDrawer.thumbnail("Syntax Error").click();
+  await electron.fileDrawer.thumbnail("Syntax Error").click();
 
-  await expect(editorR3F.errorOverlay.locator).toBeVisible();
+  await expect(electron.errorOverlay.locator).toBeVisible();
 });
 
 test.describe(() => {
@@ -33,9 +33,9 @@ test.describe(() => {
     },
   });
 
-  test("unsafe ref access should not throw", async ({ editorR3F }) => {
-    await editorR3F.waitForScene();
+  test("unsafe ref access should not throw", async ({ electron }) => {
+    await electron.waitForScene();
 
-    await expect(editorR3F.errorOverlay.locator).toBeHidden();
+    await expect(electron.errorOverlay.locator).toBeHidden();
   });
 });

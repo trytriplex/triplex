@@ -40,7 +40,7 @@ export async function initializeWebviewPanel(
   },
 ) {
   const resolveProject = projectRegistry.get(triplexProjectCwd);
-  const scopedFileName = path;
+  const scopedFileName = normalize(path);
   const scopedExportName = exportName;
 
   panelRegistry.set(scopedFileName, panel);

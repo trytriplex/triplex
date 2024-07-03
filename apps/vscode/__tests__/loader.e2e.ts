@@ -36,7 +36,7 @@ test("reopening a file after closing", async ({ vsce }) => {
   await expect(vsce.loadedComponent).toHaveText("Scene");
 });
 
-test.skip("opening another scene using codelens", async ({ vsce }) => {
+test("opening another scene using codelens", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
   await expect(vsce.loadedComponent).toHaveText("Scene");
 

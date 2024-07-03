@@ -7,12 +7,22 @@
 import { expect } from "@playwright/test";
 import { test } from "../utils/runner";
 
-test("thumbnail loads", async ({ editorLocal }) => {
-  const drawer = await editorLocal.assetsDrawer.open();
-  await drawer.openFolder({ name: "files" });
+test.describe(() => {
+  test.use({
+    file: {
+      exportName: "Button",
+      path: "src/files/button.tsx",
+      project: "examples-private/custom-renderer",
+    },
+  });
 
-  const thumbnail = editorLocal.page.getByTestId("Thumbnail(Button)");
+  test("thumbnail loads", async ({ electron }) => {
+    const drawer = await electron.assetsDrawer.open();
+    await drawer.openFolder({ name: "files" });
 
-  await expect(thumbnail).toHaveJSProperty("complete", true);
-  await expect(thumbnail).not.toHaveJSProperty("naturalWidth", 0);
+    const thumbnail = electron.page.getByTestId("Thumbnail(Button)");
+
+    await expect(thumbnail).toHaveJSProperty("complete", true);
+    await expect(thumbnail).not.toHaveJSProperty("naturalWidth", 0);
+  });
 });

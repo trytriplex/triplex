@@ -7,8 +7,17 @@
 import { expect } from "@playwright/test";
 import { test } from "../utils/runner";
 
-test("provider controls show set up CTA", async ({ editorLocal }) => {
-  await expect(editorLocal.contextPanel.locator).toHaveText(
-    /Set up a provider component/,
-  );
+test.describe(() => {
+  test.use({
+    file: {
+      exportName: "Button",
+      path: "src/files/button.tsx",
+      project: "examples-private/custom-renderer",
+    },
+  });
+  test("provider controls show set up CTA", async ({ electron }) => {
+    await expect(electron.contextPanel.locator).toHaveText(
+      /Set up a provider component/,
+    );
+  });
 });

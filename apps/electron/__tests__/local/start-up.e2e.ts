@@ -7,9 +7,19 @@
 import { expect } from "@playwright/test";
 import { test } from "../utils/runner";
 
-test("renderer starts", async ({ editorLocal }) => {
-  await expect(editorLocal.scenePanel.heading).toHaveText("Button");
-  await expect(
-    editorLocal.scenePanel.elementButton("button").locator,
-  ).toBeVisible();
+test.describe(() => {
+  test.use({
+    file: {
+      exportName: "Button",
+      path: "src/files/button.tsx",
+      project: "examples-private/custom-renderer",
+    },
+  });
+
+  test("renderer starts", async ({ electron }) => {
+    await expect(electron.scenePanel.heading).toHaveText("Button");
+    await expect(
+      electron.scenePanel.elementButton("button").locator,
+    ).toBeVisible();
+  });
 });

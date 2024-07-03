@@ -7,9 +7,19 @@
 import { expect } from "@playwright/test";
 import { test } from "../utils/runner";
 
-test("renderer starts", async ({ editorReact }) => {
-  await expect(editorReact.scenePanel.heading).toHaveText("StickerSheetButton");
-  await expect(
-    editorReact.scenePanel.elementButton("button").locator,
-  ).toBeVisible();
+test.describe(() => {
+  test.use({
+    file: {
+      exportName: "StickerSheetButton",
+      path: "src/sheets.tsx",
+      project: "examples-private/react-dom",
+    },
+  });
+
+  test("renderer starts", async ({ electron }) => {
+    await expect(electron.scenePanel.heading).toHaveText("StickerSheetButton");
+    await expect(
+      electron.scenePanel.elementButton("button").locator,
+    ).toBeVisible();
+  });
 });

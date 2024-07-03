@@ -7,8 +7,8 @@
 import { expect } from "@playwright/test";
 import { test } from "../utils/runner";
 
-test("provider controls default values", async ({ editorR3F }) => {
-  const panel = editorR3F.contextPanel;
+test("provider controls default values", async ({ electron }) => {
+  const panel = electron.contextPanel;
   await expect(panel.input("Barbar").locator).toHaveValue("1");
   await expect(panel.input("Batbat").locator).toHaveValue("100");
   await expect(panel.input("Bazbaz").locator).toHaveValue("jelly");
@@ -16,9 +16,9 @@ test("provider controls default values", async ({ editorR3F }) => {
 });
 
 test("provider controls set and clear back to default value", async ({
-  editorR3F,
+  electron,
 }) => {
-  const panel = editorR3F.contextPanel;
+  const panel = electron.contextPanel;
   await panel.input("Barbar").locator.selectOption("foo");
   await expect(panel.input("Barbar").locator).toHaveValue("0");
 
@@ -27,10 +27,10 @@ test("provider controls set and clear back to default value", async ({
   await expect(panel.input("Barbar").locator).toHaveValue("1");
 });
 
-test("component controls default values", async ({ editorR3F }) => {
-  await editorR3F.waitForScene();
-  await editorR3F.propControls.openButton.click();
-  const panel = editorR3F.contextPanel;
+test("component controls default values", async ({ electron }) => {
+  await electron.waitForScene();
+  await electron.propControls.openButton.click();
+  const panel = electron.contextPanel;
 
   await expect(panel.input("Value").locator).toHaveValue("100");
   await expect(panel.input("Variant").locator).toHaveValue("0");
@@ -39,11 +39,11 @@ test("component controls default values", async ({ editorR3F }) => {
 });
 
 test("component controls set and clear back to default value", async ({
-  editorR3F,
+  electron,
 }) => {
-  await editorR3F.waitForScene();
-  await editorR3F.propControls.openButton.click();
-  const input = editorR3F.contextPanel.input("Variant").locator;
+  await electron.waitForScene();
+  await electron.propControls.openButton.click();
+  const input = electron.contextPanel.input("Variant").locator;
   await input.selectOption("small");
   await expect(input).toHaveValue("1");
 
@@ -52,21 +52,21 @@ test("component controls set and clear back to default value", async ({
   await expect(input).toHaveValue("0");
 });
 
-test("component props default values", async ({ editorR3F }) => {
-  await editorR3F.waitForScene();
-  const panel = editorR3F.contextPanel;
-  await editorR3F.scenePanel.elementButton("Box").click();
+test("component props default values", async ({ electron }) => {
+  await electron.waitForScene();
+  const panel = electron.contextPanel;
+  await electron.scenePanel.elementButton("Box").click();
 
   await expect(panel.input("Color").locator).toHaveValue("2");
   await expect(panel.input("Size").locator).toHaveValue("1");
 });
 
 test("component props set and clear back to default value", async ({
-  editorR3F,
+  electron,
 }) => {
-  await editorR3F.waitForScene();
-  await editorR3F.scenePanel.elementButton("Box").click();
-  const input = editorR3F.contextPanel.input("Color").locator;
+  await electron.waitForScene();
+  await electron.scenePanel.elementButton("Box").click();
+  const input = electron.contextPanel.input("Color").locator;
   await input.selectOption("green");
   await expect(input).toHaveValue("1");
 

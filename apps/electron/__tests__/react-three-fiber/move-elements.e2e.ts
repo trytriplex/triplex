@@ -7,39 +7,39 @@
 import { expect } from "@playwright/test";
 import { test } from "../utils/runner";
 
-test("dragging before an element", async ({ editorR3F }) => {
-  const source = editorR3F.scenePanel.elementButton("PerspectiveCamera");
-  const destination = editorR3F.scenePanel.elementButton("Box");
+test("dragging before an element", async ({ electron }) => {
+  const source = electron.scenePanel.elementButton("PerspectiveCamera");
+  const destination = electron.scenePanel.elementButton("Box");
 
   await source.locator.dragTo(destination.locator, {
     targetPosition: { x: 1, y: 1 },
   });
 
-  await expect(editorR3F.scenePanel.allElements.nth(1)).toHaveText(
+  await expect(electron.scenePanel.allElements.nth(1)).toHaveText(
     "PerspectiveCamera",
   );
 });
 
-test("dragging after an element", async ({ editorR3F }) => {
-  const source = editorR3F.scenePanel.elementButton("ambientLight");
-  const destination = editorR3F.scenePanel.elementButton("Box");
+test("dragging after an element", async ({ electron }) => {
+  const source = electron.scenePanel.elementButton("ambientLight");
+  const destination = electron.scenePanel.elementButton("Box");
 
   await source.locator.dragTo(destination.locator, {
     targetPosition: { x: 0, y: 25 },
   });
 
-  await expect(editorR3F.scenePanel.allElements.nth(1)).toHaveText(
+  await expect(electron.scenePanel.allElements.nth(1)).toHaveText(
     "ambientLight",
   );
 });
 
-test("drag into an element", async ({ editorR3F }) => {
-  const source = editorR3F.scenePanel.elementButton("ambientLight");
-  const destination = editorR3F.scenePanel.elementButton("group");
+test("drag into an element", async ({ electron }) => {
+  const source = electron.scenePanel.elementButton("ambientLight");
+  const destination = electron.scenePanel.elementButton("group");
 
   await source.locator.dragTo(destination.locator);
 
-  await expect(editorR3F.scenePanel.allElements.nth(3)).toHaveText(
+  await expect(electron.scenePanel.allElements.nth(3)).toHaveText(
     "ambientLight",
   );
 });

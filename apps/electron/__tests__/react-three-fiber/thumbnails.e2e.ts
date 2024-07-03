@@ -8,11 +8,11 @@ import { expect } from "@playwright/test";
 import { test } from "../utils/runner";
 
 // TODO: Test is flakey think up a better way to test / implement.
-test.fixme("thumbnail loads", async ({ editorR3F }) => {
-  const drawer = await editorR3F.assetsDrawer.open();
+test.fixme("thumbnail loads", async ({ electron }) => {
+  const drawer = await electron.assetsDrawer.open();
   await drawer.openFolder({ name: "geometry" });
 
-  const thumbnail = editorR3F.page.getByTestId("Thumbnail(Box)");
+  const thumbnail = electron.page.getByTestId("Thumbnail(Box)");
 
   await expect(thumbnail).toHaveJSProperty("complete", true);
   await expect(thumbnail).not.toHaveJSProperty("naturalWidth", 0);

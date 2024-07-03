@@ -7,22 +7,32 @@
 import { expect } from "@playwright/test";
 import { test } from "../utils/runner";
 
-test("provider controls default values", async ({ editorReact }) => {
-  const panel = editorReact.contextPanel;
-  await expect(panel.input("Bar").locator).toHaveValue("1");
-  await expect(panel.input("Bat").locator).toHaveValue("100");
-  await expect(panel.input("Baz").locator).toHaveValue("jelly");
-  await expect(panel.input("Foo").locator).toBeChecked();
-});
+test.describe(() => {
+  test.use({
+    file: {
+      exportName: "StickerSheetButton",
+      path: "src/sheets.tsx",
+      project: "examples-private/react-dom",
+    },
+  });
 
-test("provider controls set and clear back to default value", async ({
-  editorReact,
-}) => {
-  const panel = editorReact.contextPanel;
-  await panel.input("Bar").locator.selectOption("foo");
-  await expect(panel.input("Bar").locator).toHaveValue("0");
+  test("provider controls default values", async ({ electron }) => {
+    const panel = electron.contextPanel;
+    await expect(panel.input("Bar").locator).toHaveValue("1");
+    await expect(panel.input("Bat").locator).toHaveValue("100");
+    await expect(panel.input("Baz").locator).toHaveValue("jelly");
+    await expect(panel.input("Foo").locator).toBeChecked();
+  });
 
-  await panel.input("Bar").locator.press("Backspace");
+  test("provider controls set and clear back to default value", async ({
+    electron,
+  }) => {
+    const panel = electron.contextPanel;
+    await panel.input("Bar").locator.selectOption("foo");
+    await expect(panel.input("Bar").locator).toHaveValue("0");
 
-  await expect(panel.input("Bar").locator).toHaveValue("1");
+    await panel.input("Bar").locator.press("Backspace");
+
+    await expect(panel.input("Bar").locator).toHaveValue("1");
+  });
 });
