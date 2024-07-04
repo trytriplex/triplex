@@ -115,6 +115,7 @@ export interface ClientSendEventData {
     ctrlKey: boolean;
     isComposing: boolean;
     key: string;
+    keyCode: number;
     location: number;
     metaKey: boolean;
     repeat: boolean;

@@ -83,6 +83,7 @@ export const renderPropInputs: RenderInputs = ({
             )}
             <input
               {...props}
+              aria-label={prop.prop.label}
               className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder mb-1 h-[26px] w-full rounded-sm border px-[9px] focus:outline-none"
               ref={ref}
               type="number"

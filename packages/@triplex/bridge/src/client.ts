@@ -21,6 +21,8 @@ export function forwardKeydownEvents() {
       ctrlKey: e.ctrlKey,
       isComposing: e.isComposing,
       key: e.key,
+      // key code is needed for Windows support.
+      keyCode: e.keyCode,
       location: e.location,
       metaKey: e.metaKey,
       repeat: e.repeat,
