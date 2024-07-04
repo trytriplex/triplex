@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.67.8
+
+### Patch Changes
+
+- 3952a1c8: Fix hotkeys with modifiers (shift/cmd/etc) not functioning on Windows.
+
 ## 0.67.7
 
 ## 0.67.6

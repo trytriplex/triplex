@@ -1,5 +1,14 @@
 # @triplex/vscode
 
+## 0.0.9
+
+### Patch Changes
+
+- cd444563: Opening subsequent components with CodeLens in the same file now works as expected on Windows.
+- 2c991e7b: Fix blur element regression.
+  - @triplex/client@0.67.8
+  - @triplex/server@0.67.8
+
 ## 0.0.8
 
 ### Patch Changes
