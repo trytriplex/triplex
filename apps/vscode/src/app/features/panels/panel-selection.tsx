@@ -5,9 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { send } from "@triplex/bridge/host";
-import { cn } from "@triplex/lib";
 import { PropInput } from "@triplex/ux/inputs";
-import { VSCodeTextField } from "@vscode/webview-ui-toolkit/react";
 import { useDeferredValue, useEffect, useRef } from "react";
 import { ScrollContainer } from "../../components/scroll-container";
 import { useLazySubscription } from "../../hooks/ws";
@@ -43,14 +41,12 @@ function SelectionPanelLoadable({
   return (
     <ScrollContainer className="border-overlay border-t">
       <div className="flex p-1.5" ref={ref}>
-        <VSCodeTextField
-          className={cn([!filter && "opacity-70", "w-full focus:opacity-100"])}
-          onFocus={(e) => e.stopPropagation()}
-          onInput={(e) => {
-            if (e.currentTarget && "value" in e.currentTarget) {
-              setFilter(e.currentTarget.value as string);
-            }
+        <input
+          className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder h-[26px] w-full rounded-sm border px-[9px] focus:outline-none"
+          onChange={(e) => {
+            setFilter(e.currentTarget.value);
           }}
+          onFocus={(e) => e.stopPropagation()}
           placeholder="Filter props..."
           value={filter}
         />

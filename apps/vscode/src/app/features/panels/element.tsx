@@ -9,6 +9,7 @@ import { cn } from "@triplex/lib";
 import { type JsxElementPositions } from "@triplex/server";
 import {
   Suspense,
+  useDeferredValue,
   useId,
   useLayoutEffect,
   useReducer,
@@ -146,7 +147,7 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
 }
 
 export function SceneElements({
-  exportName,
+  exportName: inExportName,
   level = 1,
   path,
 }: {
@@ -154,6 +155,7 @@ export function SceneElements({
   level?: number;
   path: string;
 }) {
+  const exportName = useDeferredValue(inExportName);
   const elements = useLazySubscription("/scene/:path/:exportName", {
     exportName,
     path,

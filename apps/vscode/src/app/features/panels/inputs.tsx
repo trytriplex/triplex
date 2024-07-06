@@ -16,12 +16,7 @@ import {
   UnionInput,
   type RenderInputs,
 } from "@triplex/ux/inputs";
-import {
-  VSCodeCheckbox,
-  VSCodeDropdown,
-  VSCodeOption,
-  VSCodeTextField,
-} from "@vscode/webview-ui-toolkit/react";
+import { VSCodeCheckbox } from "@vscode/webview-ui-toolkit/react";
 import { IconButton } from "../../components/button";
 import { type SuppressVSCodeError } from "../../types";
 
@@ -49,14 +44,19 @@ export const renderPropInputs: RenderInputs = ({
         required={prop.prop.required}
       >
         {({ onChange, ref, ...props }) => (
-          <VSCodeTextField
-            {...props}
-            className="mb-1 w-full"
-            onInput={onChange as SuppressVSCodeError}
-            ref={ref as SuppressVSCodeError}
-          >
-            {prop.prop.name}
-          </VSCodeTextField>
+          <div>
+            {prop.prop.name && (
+              <label className="block" htmlFor={props.id}>
+                {prop.prop.name}
+              </label>
+            )}
+            <input
+              {...props}
+              className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder mb-1 h-[26px] w-full rounded-sm border px-[9px] focus:outline-none"
+              onChange={onChange}
+              ref={ref}
+            />
+          </div>
         )}
       </StringInput>
     );
@@ -179,18 +179,18 @@ export const renderPropInputs: RenderInputs = ({
             <label className="block" htmlFor={props.id}>
               {prop.prop.name}
             </label>
-            <VSCodeDropdown
+            <select
               {...props}
-              className="mb-1 w-full"
-              onChange={onChange as SuppressVSCodeError}
-              ref={ref as SuppressVSCodeError}
+              className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder mb-1 h-[26px] w-full rounded-sm border px-1.5 focus:outline-none"
+              onChange={onChange}
+              ref={ref}
             >
               {options.map(([label, value], index) => (
-                <VSCodeOption key={`${label}-${value}-${index}`} value={value}>
+                <option key={`${label}-${value}-${index}`} value={value}>
                   {label}
-                </VSCodeOption>
+                </option>
               ))}
-            </VSCodeDropdown>
+            </select>
           </div>
         )}
       </LiteralUnionInput>

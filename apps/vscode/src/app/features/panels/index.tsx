@@ -10,7 +10,8 @@ import { Suspense, useState } from "react";
 import { IconButton } from "../../components/button";
 import { Surface } from "../../components/surface";
 import { useSceneStore } from "../../stores/scene";
-import { ElementsPanel } from "./panel-elements";
+import { ElementSelect } from "./element-select";
+import { ElementsPanel, FilterElements } from "./panel-elements";
 import { SelectionPanel } from "./panel-selection";
 
 export function Panels() {
@@ -33,9 +34,9 @@ export function Panels() {
       <div
         className={cn([
           !shown &&
-            "bg-overlay border-overlay absolute left-[5px] top-[5px] gap-1 rounded border p-0.5",
-          shown && "p-1.5",
-          "z-10 flex items-start opacity-90",
+            "bg-overlay border-overlay absolute left-[5px] top-[5px] rounded border p-0.5",
+          shown && "relative gap-1 p-1.5",
+          "z-20 flex items-start opacity-90",
         ])}
       >
         <IconButton
@@ -48,11 +49,17 @@ export function Panels() {
           }
           spacing={shown ? "spacious" : "default"}
         />
+        {shown && (
+          <>
+            <ElementSelect />
+            <FilterElements />
+          </>
+        )}
       </div>
 
       {shown === "elements" && (
         <Suspense>
-          <div className="grid overflow-hidden [grid-auto-rows:1fr]">
+          <div className="grid h-full overflow-hidden [grid-auto-rows:1fr_2fr]">
             <ElementsPanel />
             <Suspense>
               <SelectionPanel />

@@ -37,16 +37,17 @@ export function AppRoot() {
       on("track", (data) => {
         telemetry.event(`scene_${data.actionId}` as ActionId);
       }),
+      on("component-opened", (data) => {
+        syncContext({
+          exportName: data.exportName,
+          path: data.path,
+        });
+      }),
       forwardClientMessages("element-set-prop"),
       forwardClientMessages("error"),
       onVSCE("vscode:request-open-component", (data) => {
         send("request-open-component", {
           encodedProps: "",
-          exportName: data.exportName,
-          path: data.path,
-        });
-
-        syncContext({
           exportName: data.exportName,
           path: data.path,
         });

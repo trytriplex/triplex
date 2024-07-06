@@ -8,7 +8,6 @@ import { noop, useEvent } from "@triplex/lib";
 import {
   useEffect,
   useRef,
-  useState,
   type FocusEventHandler,
   type KeyboardEventHandler,
 } from "react";
@@ -31,7 +30,6 @@ export function StringInput({
     onBlur: FocusEventHandler<HTMLInputElement>;
     onKeyDown: KeyboardEventHandler<HTMLInputElement>;
     placeholder?: string;
-    value: string | undefined;
   }>;
   label?: string;
   name: string;
@@ -40,13 +38,11 @@ export function StringInput({
   persistedValue?: string;
   required?: boolean;
 }) {
-  const [value, setValue] = useState(persistedValue);
   const ref = useRef<HTMLInputElement>(null!);
   const telemetry = useTelemetry();
 
   useEffect(() => {
     ref.current.value = persistedValue || "";
-    setValue(persistedValue || "");
   }, [persistedValue]);
 
   const onChangeHandler = useEvent(() => {
@@ -57,7 +53,6 @@ export function StringInput({
     }
 
     onChange(nextValue);
-    setValue(nextValue);
   });
 
   const onConfirmHandler = useEvent(() => {
@@ -96,7 +91,6 @@ export function StringInput({
       placeholder: label,
       ref,
       required,
-      value,
     },
     {
       clear: onClear,
