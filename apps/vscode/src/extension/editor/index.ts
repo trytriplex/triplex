@@ -125,6 +125,15 @@ export class TriplexEditorProvider
       on(panel.webview, "error", (error) => {
         vscode.window.showErrorMessage(error.message);
       });
+
+      on(panel.webview, "element-duplicate", async (element) => {
+        const newElement = await document.duplicateElement(element);
+
+        sendVSCE(panel.webview, "vscode:request-focus-element", {
+          ...element,
+          ...newElement,
+        });
+      });
     });
   }
 

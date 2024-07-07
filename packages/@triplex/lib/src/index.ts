@@ -7,5 +7,6 @@
 export { cn } from "./tw-merge";
 export { toJSONString } from "./string";
 export { useEvent } from "./use-event";
+export { type Accelerator, onKeyDown } from "./keyboard";
 
 export const noop = () => {};

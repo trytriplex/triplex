@@ -10,13 +10,35 @@ import {
   on,
   send,
 } from "@triplex/bridge/host";
+import { onKeyDown } from "@triplex/lib";
 import { useScreenView, useTelemetry, type ActionId } from "@triplex/ux";
 import { useEffect } from "react";
 import { useInitSceneSync, useSceneStore } from "../../stores/scene";
-import { forwardClientMessages, onVSCE } from "../../util/bridge";
-import { onKeyDown } from "../../util/keyboard";
+import { forwardClientMessages, onVSCE, sendVSCE } from "../../util/bridge";
 import { FloatingControls } from "../floating-controls";
 import { Panels } from "../panels";
+
+function Events() {
+  const selected = useSceneStore((store) => store.selected);
+
+  useEffect(() => {
+    return compose([
+      onKeyDown("Escape", () => {
+        send("request-blur-element", undefined);
+      }),
+      onKeyDown("F", () => {
+        send("request-jump-to-element", undefined);
+      }),
+      onKeyDown("CommandOrCtrl+D", () => {
+        if (selected) {
+          sendVSCE("element-duplicate", selected);
+        }
+      }),
+    ]);
+  }, [selected]);
+
+  return null;
+}
 
 export function AppRoot() {
   const initSync = useInitSceneSync();
@@ -28,12 +50,6 @@ export function AppRoot() {
   useEffect(() => {
     return compose([
       initSync(),
-      onKeyDown("Escape", () => {
-        send("request-blur-element", undefined);
-      }),
-      onKeyDown("f", () => {
-        send("request-jump-to-element", undefined);
-      }),
       on("track", (data) => {
         telemetry.event(`scene_${data.actionId}` as ActionId);
       }),
@@ -58,6 +74,7 @@ export function AppRoot() {
 
   return (
     <div className="fixed inset-0 flex select-none">
+      <Events />
       <Panels />
       <div className="relative h-full w-full">
         <FloatingControls />

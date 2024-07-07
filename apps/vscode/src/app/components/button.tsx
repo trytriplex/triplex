@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { type IconProps } from "@radix-ui/react-icons/dist/types";
-import { cn, useEvent } from "@triplex/lib";
+import { cn, onKeyDown, useEvent, type Accelerator } from "@triplex/lib";
 import { useTelemetry, type ActionId } from "@triplex/ux";
 import { VSCodeButton } from "@vscode/webview-ui-toolkit/react";
 import {
@@ -14,7 +14,6 @@ import {
   type ComponentType,
   type CSSProperties,
 } from "react";
-import { onKeyDown } from "../util/keyboard";
 
 export function IconButton({
   accelerator,
@@ -26,7 +25,7 @@ export function IconButton({
   spacing,
   vscodeContext,
 }: {
-  accelerator?: string;
+  accelerator?: Accelerator;
   actionId: ActionId;
   icon: ComponentType<IconProps>;
   isSelected?: boolean;
@@ -72,7 +71,7 @@ export function IconButton({
 }
 
 interface PressableProps {
-  accelerator?: string;
+  accelerator?: Accelerator;
   actionId: ActionId;
   children?: React.ReactNode;
   className?: string;

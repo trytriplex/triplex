@@ -22,6 +22,7 @@ import {
   type ButtonGroupControl,
   type ToggleButtonControl,
 } from "@triplex/bridge/host";
+import { type Accelerator } from "@triplex/lib";
 import { useState } from "react";
 import { LocalSpaceIcon, WorldSpaceIcon } from "./icons";
 
@@ -47,7 +48,7 @@ const icons = {
 interface ControlProps<TControl> {
   children: (props: {
     Icon: () => JSX.Element;
-    accelerator?: string;
+    accelerator?: Accelerator;
     id: string;
     isSelected: boolean;
     label: string;
@@ -65,7 +66,7 @@ export function ToggleButtonControl({
 
   return children({
     Icon: (button.icon ? icons[button.icon] : BoxIcon) as () => JSX.Element,
-    accelerator: control.accelerator,
+    accelerator: control.accelerator as Accelerator,
     id: control.id,
     isSelected: !!button.isSelected,
     label: button.label,
@@ -91,7 +92,7 @@ export function ButtonGroupControl({
           Icon: (control.icon
             ? icons[control.icon]
             : BoxIcon) as () => JSX.Element,
-          accelerator: control.accelerator,
+          accelerator: control.accelerator as Accelerator,
           id: control.id,
           isSelected: control.id === selected,
           label: control.label,
@@ -111,7 +112,7 @@ export function ButtonControl({
 }: ControlProps<ButtonControl>) {
   return children({
     Icon: (control.icon ? icons[control.icon] : BoxIcon) as () => JSX.Element,
-    accelerator: control.accelerator,
+    accelerator: control.accelerator as Accelerator,
     id: control.id,
     isSelected: false,
     label: control.label,

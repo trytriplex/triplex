@@ -16,12 +16,25 @@ declare global {
 
 export const vscode = window.acquireVsCodeApi();
 
-export interface VSCodeEvent {
+export interface FromVSCodeEvent {
   "vscode:play-camera": {
     name: "default" | "editor";
   };
+  "vscode:request-focus-element": {
+    column: number;
+    line: number;
+    path: string;
+  };
   "vscode:request-open-component": {
     exportName: string;
+    path: string;
+  };
+}
+
+export interface ToVSCodeEvent extends ClientSendEventData {
+  "element-duplicate": {
+    column: number;
+    line: number;
     path: string;
   };
 }
@@ -30,9 +43,9 @@ export interface VSCodeEvent {
  * Receives a message from the parent VSCode extension. Should be used in the
  * VSCE webview.
  */
-export function onVSCE<TEvent extends keyof VSCodeEvent>(
+export function onVSCE<TEvent extends keyof FromVSCodeEvent>(
   eventName: TEvent,
-  callback: (data: VSCodeEvent[TEvent]) => void,
+  callback: (data: FromVSCodeEvent[TEvent]) => void,
 ) {
   const cb = async (e: MessageEvent) => {
     if (typeof e.data === "object" && e.data.eventName === eventName) {
@@ -47,9 +60,9 @@ export function onVSCE<TEvent extends keyof VSCodeEvent>(
   };
 }
 
-export function sendVSCE<TEvent extends keyof ClientSendEventData>(
+export function sendVSCE<TEvent extends keyof ToVSCodeEvent>(
   eventName: TEvent,
-  data: ClientSendEventData[TEvent],
+  data: ToVSCodeEvent[TEvent],
 ) {
   vscode.postMessage({ data, eventName });
 }

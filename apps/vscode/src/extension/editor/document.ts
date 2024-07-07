@@ -23,6 +23,8 @@ export class TriplexDocument implements vscode.CustomDocument {
 
   private _context: { ports: { server: number } } = { ports: { server: -1 } };
 
+  onDidChange = this._onDidChange.event;
+
   get uri() {
     return this._uri;
   }
@@ -85,27 +87,63 @@ export class TriplexDocument implements vscode.CustomDocument {
     propName: string;
     propValue: unknown;
   }) {
-    const result = await fetch(
-      `http://localhost:${this._context.ports.server}/scene/object/${
-        data.line
-      }/${data.column}/prop?value=${encodeURIComponent(
-        toJSONString(data.propValue),
-      )}&path=${encodeURIComponent(data.path)}&name=${encodeURIComponent(
-        data.propName,
-      )}`,
-    );
+    return this.undoableAction("Upsert prop", async () => {
+      const result = await fetch(
+        `http://localhost:${this._context.ports.server}/scene/object/${
+          data.line
+        }/${data.column}/prop?value=${encodeURIComponent(
+          toJSONString(data.propValue),
+        )}&path=${encodeURIComponent(data.path)}&name=${encodeURIComponent(
+          data.propName,
+        )}`,
+      );
 
-    const response: { redoID: number; undoID: number } = await result.json();
+      const response: { redoID: number; undoID: number } = await result.json();
+      return response;
+    });
+  }
+
+  async duplicateElement(element: {
+    column: number;
+    line: number;
+    path: string;
+  }) {
+    return this.undoableAction("Duplicate element", async () => {
+      const result = await fetch(
+        `http://localhost:${
+          this._context.ports.server
+        }/scene/${encodeURIComponent(element.path)}/object/${element.line}/${
+          element.column
+        }/duplicate`,
+        { method: "POST" },
+      );
+
+      const response: {
+        column: number;
+        line: number;
+        redoID: number;
+        undoID: number;
+      } = await result.json();
+
+      return response;
+    });
+  }
+
+  private async undoableAction<
+    TResponse extends { redoID: number; undoID: number },
+  >(
+    label: string,
+    callback: () => Promise<TResponse>,
+  ): Promise<Omit<TResponse, "redoID" | "undoID">> {
+    const { redoID, undoID, ...response } = await callback();
 
     this._onDidChange.fire({
-      label: "Upsert prop",
+      label,
       redo: async () => {
         await fetch(
           `http://localhost:${
             this._context.ports.server
-          }/scene/${encodeURIComponent(this.uri.fsPath)}/redo/${
-            response.redoID
-          }`,
+          }/scene/${encodeURIComponent(this.uri.fsPath)}/redo/${redoID}`,
           {
             method: "POST",
           },
@@ -115,18 +153,16 @@ export class TriplexDocument implements vscode.CustomDocument {
         await fetch(
           `http://localhost:${
             this._context.ports.server
-          }/scene/${encodeURIComponent(this.uri.fsPath)}/undo/${
-            response.undoID
-          }`,
+          }/scene/${encodeURIComponent(this.uri.fsPath)}/undo/${undoID}`,
           {
             method: "POST",
           },
         );
       },
     });
-  }
 
-  onDidChange = this._onDidChange.event;
+    return response;
+  }
 
   dispose(): void {
     this._onDidChange.dispose();
