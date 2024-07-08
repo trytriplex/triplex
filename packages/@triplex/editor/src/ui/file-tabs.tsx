@@ -4,7 +4,12 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { Component1Icon, Cross2Icon, CubeIcon } from "@radix-ui/react-icons";
+import {
+  Cross2Icon,
+  CubeIcon,
+  DashboardIcon,
+  PlusIcon,
+} from "@radix-ui/react-icons";
 import { useEvent } from "@triplex/lib";
 import { useTelemetry } from "@triplex/ux";
 import { useLazySubscription } from "@triplex/ws/react";
@@ -243,7 +248,7 @@ export function FileTabs() {
     >
       <IconButton
         actionId="tabbar_project_components"
-        icon={() => <Component1Icon className="rotate-45" />}
+        icon={DashboardIcon}
         isDisabled={playState === "play"}
         label="Open Component..."
         onClick={() => showOverlay("open-scene")}
@@ -286,13 +291,12 @@ export function FileTabs() {
           />
         )}
 
-        <Pressable
-          className="h-full flex-grow"
-          doublePressActionId="tabbar_file_new"
+        <IconButton
+          actionId="tabbar_file_new"
+          className="ml-1"
+          icon={PlusIcon}
           label="New File"
-          onDoublePress={newFile}
-          pressActionId="(UNSAFE_SKIP)"
-          tabIndex={-1}
+          onClick={newFile}
         />
       </div>
     </nav>

@@ -118,7 +118,7 @@ export class EditorPage {
   async newFile() {
     await this.waitForScene();
     const button = this.page.getByLabel("New file");
-    await button.dblclick();
+    await button.click();
     await expect
       .poll(async () => this.page.getByTestId("scene-element").count())
       .toBe(3);
