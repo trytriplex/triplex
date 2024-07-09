@@ -1,5 +1,16 @@
 # @triplex/editor
 
+## 0.67.9
+
+### Patch Changes
+
+- 0af90052: Update icon used on the open files button.
+- 0af90052: Add explicit new file button.
+  - @triplex/bridge@0.67.9
+  - @triplex/lib@0.67.9
+  - @triplex/ux@0.67.9
+  - @triplex/ws@0.67.9
+
 ## 0.67.8
 
 ### Patch Changes

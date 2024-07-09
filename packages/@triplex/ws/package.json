@@ -1,6 +1,6 @@
 {
   "name": "@triplex/ws",
-  "version": "0.67.8",
+  "version": "0.67.9",
   "private": true,
   "description": "The React Three Fiber editor.",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
@@ -31,8 +31,8 @@
   "devDependencies": {
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
-    "@triplex/bridge": "0.67.8",
-    "@triplex/server": "0.67.8",
+    "@triplex/bridge": "0.67.9",
+    "@triplex/server": "0.67.9",
     "@types/react": "^18.0.27",
     "react-compiler-runtime": "workspace:*",
     "typescript": "^5.5.2"

@@ -1,5 +1,19 @@
 # @triplex/vscode
 
+## 0.0.10
+
+### Patch Changes
+
+- d0f01ca5: Elements filter is now accessed behind a button in the editor panel.
+- d0f01ca5: Prop controls now take up more space in the panel.
+- d0f01ca5: There is now a control for quickly switching between components in the current
+  file in the editor panel.
+- d0f01ca5: Stabilise state changes using transitions.
+- d0f01ca5: Remove usage of vsce inputs.
+- f035ce9c: Add duplicate command, use via `CommandOrCtrl+D`.
+  - @triplex/client@0.67.9
+  - @triplex/server@0.67.9
+
 ## 0.0.9
 
 ### Patch Changes

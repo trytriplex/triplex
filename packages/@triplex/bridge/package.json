@@ -1,6 +1,6 @@
 {
   "name": "@triplex/bridge",
-  "version": "0.67.8",
+  "version": "0.67.9",
   "private": true,
   "description": "The React Three Fiber editor.",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
