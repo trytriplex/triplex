@@ -24,27 +24,34 @@ export function ElementSelect() {
   const context = useSceneStore((store) => store.context);
 
   return (
-    <select
-      aria-label="Switch component"
-      className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder h-[26px] w-full rounded-sm border px-1.5 focus:outline-none"
-      onChange={(e) => {
-        const exportName = e.target.value;
-
-        if (!exportName) {
-          return;
-        }
-
-        send("request-open-component", {
-          encodedProps: "",
-          exportName,
-          path: context.path,
-        });
-      }}
-      value={context.exportName}
+    <Suspense
+      fallback={
+        <select className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder h-[26px] w-full rounded-sm border px-1.5 focus:outline-none">
+          <option>{context.exportName}</option>
+        </select>
+      }
     >
-      <Suspense>
+      <select
+        aria-label="Switch component"
+        className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder h-[26px] w-full rounded-sm border px-1.5 focus:outline-none"
+        data-testid="ElementSelect"
+        onChange={(e) => {
+          const exportName = e.target.value;
+
+          if (!exportName) {
+            return;
+          }
+
+          send("request-open-component", {
+            encodedProps: "",
+            exportName,
+            path: context.path,
+          });
+        }}
+        value={context.exportName}
+      >
         <ElementOptions />
-      </Suspense>
-    </select>
+      </select>
+    </Suspense>
   );
 }

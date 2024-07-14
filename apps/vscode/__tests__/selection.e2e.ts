@@ -33,3 +33,15 @@ test("blurring an element", async ({ vsce }) => {
     editor.panels.getByRole("button", { exact: true, name: "ambientLight" }),
   ).toBeVisible();
 });
+
+test("default component switcher to initially opened component", async ({
+  vsce,
+}) => {
+  await vsce.codelens("Scene").click();
+  await expect(vsce.loadedComponent).toHaveText("Scene");
+  const editor = vsce.resolveEditor();
+
+  await editor.togglePanelsButton.click();
+
+  await expect(editor.panels.getByTestId("ElementSelect")).toHaveValue("Scene");
+});
