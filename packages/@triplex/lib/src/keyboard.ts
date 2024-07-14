@@ -17,6 +17,7 @@ const inputTags = [
 
 type Modifiers = "CommandOrCtrl" | "Shift";
 type Keys =
+  | "Backspace"
   | "Escape"
   | "A"
   | "B"

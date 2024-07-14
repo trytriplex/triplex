@@ -134,6 +134,11 @@ export class TriplexEditorProvider
           ...newElement,
         });
       });
+
+      on(panel.webview, "element-delete", async (element) => {
+        sendVSCE(panel.webview, "vscode:request-blur-element", undefined);
+        await document.deleteElement(element);
+      });
     });
   }
 
@@ -153,28 +158,39 @@ export class TriplexEditorProvider
   }
 
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
-    const disposables = [
-      vscode.commands.registerCommand("triplex.set-camera-default", () => {
-        const activePanel = Array.from(this.activePanels.values()).find(
-          (panel) => panel.active,
-        );
+    const resolveActivePanel = (cb: (p: vscode.WebviewPanel) => void) => {
+      const panel = Array.from(this.activePanels.values()).find(
+        (panel) => panel.active,
+      );
 
-        if (activePanel) {
-          sendVSCE(activePanel.webview, "vscode:play-camera", {
+      if (panel) {
+        cb(panel);
+      }
+    };
+
+    const disposables = [
+      vscode.commands.registerCommand("triplex.element-delete", (args) => {
+        resolveActivePanel((panel) => {
+          sendVSCE(panel.webview, "vscode:request-delete-element", {
+            column: args.column,
+            line: args.line,
+            parentPath: args.parentPath,
+          });
+        });
+      }),
+      vscode.commands.registerCommand("triplex.set-camera-default", () => {
+        resolveActivePanel((panel) => {
+          sendVSCE(panel.webview, "vscode:play-camera", {
             name: "default",
           });
-        }
+        });
       }),
       vscode.commands.registerCommand("triplex.set-camera-editor", () => {
-        const activePanel = Array.from(this.activePanels.values()).find(
-          (panel) => panel.active,
-        );
-
-        if (activePanel) {
-          sendVSCE(activePanel.webview, "vscode:play-camera", {
+        resolveActivePanel((panel) => {
+          sendVSCE(panel.webview, "vscode:play-camera", {
             name: "editor",
           });
-        }
+        });
       }),
       vscode.commands.registerCommand(
         "triplex.start",

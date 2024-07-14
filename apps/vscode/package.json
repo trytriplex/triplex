@@ -32,8 +32,7 @@
       {
         "category": "Triplex",
         "command": "triplex.start",
-        "title": "Open File",
-        "when": "editorFocus && (resourceExtname === .jsx || resourceExtname === .tsx)"
+        "title": "Open File"
       },
       {
         "category": "Triplex",
@@ -44,6 +43,11 @@
         "category": "Triplex",
         "command": "triplex.set-camera-default",
         "title": "Default Camera"
+      },
+      {
+        "category": "Triplex",
+        "command": "triplex.element-delete",
+        "title": "Delete"
       }
     ],
     "customEditors": [
@@ -59,6 +63,24 @@
       }
     ],
     "menus": {
+      "commandPalette": [
+        {
+          "command": "triplex.element-delete",
+          "when": "false"
+        },
+        {
+          "command": "triplex.set-camera-editor",
+          "when": "activeCustomEditorId == 'triplex.editor'"
+        },
+        {
+          "command": "triplex.set-camera-default",
+          "when": "activeCustomEditorId == 'triplex.editor'"
+        },
+        {
+          "command": "triplex.start",
+          "when": "(resourceExtname === .jsx || resourceExtname === .tsx) && activeCustomEditorId != 'triplex.editor'"
+        }
+      ],
       "webview/context": [
         {
           "command": "triplex.set-camera-editor",
@@ -69,6 +91,10 @@
           "command": "triplex.set-camera-default",
           "when": "webviewSection == 'play-camera'",
           "group": "camera@2"
+        },
+        {
+          "command": "triplex.element-delete",
+          "when": "webviewSection == 'element-actions'"
         }
       ]
     }

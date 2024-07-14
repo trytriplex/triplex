@@ -113,6 +113,13 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
           }}
           ref={ref}
           title={props.name}
+          vscodeContext={{
+            column: props.column,
+            line: props.line,
+            parentPath: props.parentPath,
+            preventDefaultContextMenuItems: true,
+            webviewSection: "element-actions",
+          }}
         />
         <span
           className="w-full min-w-0 overflow-hidden text-ellipsis whitespace-nowrap"

@@ -23,6 +23,12 @@ function Events() {
 
   useEffect(() => {
     return compose([
+      onKeyDown("Backspace", () => {
+        if (selected) {
+          send("request-delete-element", selected);
+          sendVSCE("element-delete", selected);
+        }
+      }),
       onKeyDown("Escape", () => {
         send("request-blur-element", undefined);
       }),
@@ -61,12 +67,19 @@ export function AppRoot() {
       }),
       forwardClientMessages("element-set-prop"),
       forwardClientMessages("error"),
+      onVSCE("vscode:request-delete-element", (data) => {
+        send("request-delete-element", data);
+        sendVSCE("element-delete", data);
+      }),
       onVSCE("vscode:request-open-component", (data) => {
         send("request-open-component", {
           encodedProps: "",
           exportName: data.exportName,
           path: data.path,
         });
+      }),
+      onVSCE("vscode:request-blur-element", () => {
+        send("request-blur-element", undefined);
       }),
       broadcastForwardedKeydownEvents(),
     ]);

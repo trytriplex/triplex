@@ -129,6 +129,32 @@ export class TriplexDocument implements vscode.CustomDocument {
     });
   }
 
+  async deleteElement(element: {
+    column: number;
+    line: number;
+    parentPath: string;
+  }) {
+    return this.undoableAction("Delete element", async () => {
+      const result = await fetch(
+        `http://localhost:${
+          this._context.ports.server
+        }/scene/${encodeURIComponent(element.parentPath)}/object/${element.line}/${
+          element.column
+        }/delete`,
+        { method: "POST" },
+      );
+
+      const response: {
+        column: number;
+        line: number;
+        redoID: number;
+        undoID: number;
+      } = await result.json();
+
+      return response;
+    });
+  }
+
   private async undoableAction<
     TResponse extends { redoID: number; undoID: number },
   >(

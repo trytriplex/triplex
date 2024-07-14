@@ -20,6 +20,12 @@ export interface FromVSCodeEvent {
   "vscode:play-camera": {
     name: "default" | "editor";
   };
+  "vscode:request-blur-element": void;
+  "vscode:request-delete-element": {
+    column: number;
+    line: number;
+    parentPath: string;
+  };
   "vscode:request-focus-element": {
     column: number;
     line: number;
@@ -32,6 +38,11 @@ export interface FromVSCodeEvent {
 }
 
 export interface ToVSCodeEvent extends ClientSendEventData {
+  "element-delete": {
+    column: number;
+    line: number;
+    parentPath: string;
+  };
   "element-duplicate": {
     column: number;
     line: number;

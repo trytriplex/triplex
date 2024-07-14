@@ -20,3 +20,15 @@ test("fill number input", async ({ vsce }) => {
 
   await expect(input).toHaveValue("0.5");
 });
+
+test("delete element", async ({ vsce }) => {
+  await vsce.codelens("Plane").click();
+  await expect(vsce.loadedComponent).toHaveText("Plane");
+  const { panels, togglePanelsButton } = vsce.resolveEditor();
+  await togglePanelsButton.click();
+  await panels.getByRole("button", { name: "planeGeometry" }).click();
+
+  await vsce.page.keyboard.press("Backspace");
+
+  await expect(panels).not.toContainText("planeGeometry");
+});
