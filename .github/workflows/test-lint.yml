@@ -9,6 +9,8 @@ env:
 
 jobs:
   lint:
+    timeout-minutes: 20
+
     runs-on: ubuntu-latest
 
     steps:
