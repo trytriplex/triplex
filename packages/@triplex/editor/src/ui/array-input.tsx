@@ -113,7 +113,6 @@ export function TupleInput({
         };
 
         const onConfirmHandler = (value: unknown) => {
-          // eslint-disable-next-line react-compiler/react-compiler
           intermediateValues.current[index] = value;
 
           const nextValue = merge(defaultValue, intermediateValues.current);

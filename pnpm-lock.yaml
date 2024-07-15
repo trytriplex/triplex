@@ -50,7 +50,7 @@ importers:
         specifier: ^1.6.2
         version: 1.6.2(eslint@8.51.0)
       eslint-plugin-react-compiler:
-        specifier: latest
+        specifier: 0.0.0-experimental-0998c1e-20240625
         version: 0.0.0-experimental-0998c1e-20240625(eslint@8.51.0)
       husky:
         specifier: ^9.0.11
@@ -261,6 +261,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.32)
+      babel-plugin-react-compiler:
+        specifier: 0.0.0-experimental-696af53-20240625
+        version: 0.0.0-experimental-696af53-20240625
       electron:
         specifier: 27.1.0
         version: 27.1.0
@@ -276,6 +279,9 @@ importers:
       react:
         specifier: ^18.0.0
         version: 18.2.0
+      react-compiler-runtime:
+        specifier: workspace:*
+        version: link:../../packages/react-compiler-runtime
       react-dom:
         specifier: ^18.0.0
         version: 18.2.0(react@18.2.0)
@@ -804,7 +810,7 @@ importers:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.32)
       babel-plugin-react-compiler:
-        specifier: latest
+        specifier: 0.0.0-experimental-696af53-20240625
         version: 0.0.0-experimental-696af53-20240625
       tailwindcss:
         specifier: ^3.3.2

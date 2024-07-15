@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { builtinModules } from "node:module";
+import react from "@vitejs/plugin-react";
 import { resolve } from "upath";
 import { defineConfig } from "vite";
 import pkg from "./package.json";
@@ -69,6 +70,20 @@ export default defineConfig(({ mode }) => {
         "process.env.NODE_ENV": '"production"',
       },
       mode: "production",
+      plugins: [
+        react({
+          babel: {
+            plugins: [
+              [
+                "babel-plugin-react-compiler",
+                {
+                  runtimeModule: "react-compiler-runtime",
+                },
+              ],
+            ],
+          },
+        }),
+      ],
     };
   }
 

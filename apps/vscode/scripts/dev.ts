@@ -31,7 +31,23 @@ export async function createDevServer() {
     define: {
       "process.env.VITE_TRIPLEX_ENV": '"development"',
     },
-    plugins: [react()],
+    plugins: [
+      react({
+        babel: {
+          plugins: [
+            [
+              // We need to find the actual path for this plugin. For some reason
+              // Babel can't resolve it without it, it might be because of how vsce
+              // Runs the project with a different cwd, but I'm not 100% sure.
+              require.resolve("babel-plugin-react-compiler"),
+              {
+                runtimeModule: "react-compiler-runtime",
+              },
+            ],
+          ],
+        },
+      }),
+    ],
     root: join(__dirname, "../"),
   });
 
