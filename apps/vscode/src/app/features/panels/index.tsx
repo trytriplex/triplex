@@ -17,6 +17,7 @@ import { SelectionPanel } from "./panel-selection";
 export function Panels() {
   const [shown, setShown] = useState<"elements" | undefined>(undefined);
   const play = useSceneStore((store) => store.playState);
+  const selected = useSceneStore((store) => store.selected);
 
   if (play.state === "play") {
     return null;
@@ -42,7 +43,7 @@ export function Panels() {
         <IconButton
           actionId="scenepanel_elements_toggle"
           icon={LayersIcon}
-          isSelected={shown === "elements"}
+          isSelected={!!selected || shown === "elements"}
           label="View Scene Elements"
           onClick={() =>
             setShown(shown === "elements" ? undefined : "elements")

@@ -9,17 +9,18 @@ export type ClientSendEventName = keyof ClientSendEventData;
 type Icon =
   | "all-sides"
   | "angle"
-  | "exit"
-  | "grid"
   | "camera"
-  | "height"
-  | "local"
-  | "world"
-  | "size"
-  | "move"
+  | "cursor"
+  | "exit"
   | "exit"
   | "grid-perspective"
-  | "transform";
+  | "grid"
+  | "height"
+  | "local"
+  | "move"
+  | "size"
+  | "transform"
+  | "world";
 
 export interface ButtonGroupControl {
   buttons: {

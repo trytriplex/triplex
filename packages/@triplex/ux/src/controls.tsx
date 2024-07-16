@@ -9,6 +9,7 @@ import {
   AngleIcon,
   BoxIcon,
   CameraIcon,
+  CursorArrowIcon,
   ExitIcon,
   GridIcon,
   HeightIcon,
@@ -30,6 +31,7 @@ const icons = {
   "all-sides": AllSidesIcon,
   angle: AngleIcon,
   camera: CameraIcon,
+  cursor: CursorArrowIcon,
   exit: ExitIcon,
   grid: GridIcon,
   "grid-perspective": () => (

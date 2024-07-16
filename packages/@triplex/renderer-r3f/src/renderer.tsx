@@ -65,7 +65,15 @@ export function Renderer({
           type: "toggle-button",
         },
         {
+          type: "separator",
+        },
+        {
           buttons: [
+            {
+              icon: "cursor",
+              id: "none",
+              label: "Select",
+            },
             {
               accelerator: "T",
               icon: "move",
@@ -85,7 +93,7 @@ export function Renderer({
               label: "Scale",
             },
           ],
-          defaultSelected: "translate",
+          defaultSelected: "none",
           id: "transform_controls",
           type: "button-group",
         },

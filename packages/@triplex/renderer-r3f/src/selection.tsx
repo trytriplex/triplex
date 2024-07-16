@@ -77,9 +77,9 @@ export function Selection({
     parentPath: string;
     path: string;
   }>();
-  const [transform, setTransform] = useState<"translate" | "rotate" | "scale">(
-    "translate",
-  );
+  const [transform, setTransform] = useState<
+    "none" | "translate" | "rotate" | "scale"
+  >("none");
   const scene = useThree((store) => store.scene);
   const gl = useThree((store) => store.gl);
   const camera = useThree((store) => store.camera);
@@ -126,7 +126,8 @@ export function Selection({
       switch (data.id) {
         case "translate":
         case "scale":
-        case "rotate": {
+        case "rotate":
+        case "none": {
           setTransform(data.id);
           break;
         }
@@ -363,7 +364,8 @@ export function Selection({
         !selectedObject &&
         selected.path === path &&
         selected.line === line &&
-        selected.column === column
+        selected.column === column &&
+        transform !== "none"
       ) {
         const result = resolveObject3D(scene, {
           column: selected.column,
@@ -432,7 +434,7 @@ export function Selection({
         </SelectionContext.Provider>
       </SceneObjectEventsContext.Provider>
 
-      {selectedObject && (
+      {selectedObject && transform !== "none" && (
         <TransformControls
           enabled={
             !!selectedSceneObject && selectedSceneObject.transforms[transform]

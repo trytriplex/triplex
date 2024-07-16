@@ -7,14 +7,14 @@
 import { expect } from "@playwright/test";
 import { test } from "./utils/runner";
 
-test("default to translate", async ({ vsce }) => {
+test("default to pointer", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
 
   const panel = vsce.resolveEditor();
 
   await expect(
-    panel.locator.getByRole("button", { name: "Translate" }),
-  ).toHaveAccessibleName("Translate active");
+    panel.locator.getByRole("button", { name: "Select" }),
+  ).toHaveAccessibleName("Select active");
 });
 
 test("switch to scale via click", async ({ vsce }) => {

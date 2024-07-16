@@ -21,8 +21,10 @@ export type EditorNodeData = RendererElementProps["__meta"] & {
 
 export const findTransformedSceneObject = (
   sceneObject: Object3D,
-  filter: { transform: "translate" | "scale" | "rotate" },
+  filter: { transform: "none" | "translate" | "scale" | "rotate" },
 ): Object3D => {
+  const transform =
+    filter.transform === "none" ? "translate" : filter.transform;
   let foundExactSceneObject: Object3D | undefined = undefined;
   let foundTranslatedSceneObject: Object3D | undefined;
 
@@ -36,7 +38,7 @@ export const findTransformedSceneObject = (
     // and the next triplex boundary has the transform prop applied - if it
     // does we've found the scene object we're interested in!
     // This data is set by the @triplex/client babel plugin.
-    if (!foundExactSceneObject && meta[filter.transform]) {
+    if (!foundExactSceneObject && meta[transform]) {
       foundExactSceneObject = child;
     }
 
@@ -170,7 +172,7 @@ export const resolveObject3D = (
     column: number;
     line: number;
     path: string;
-    transform: "translate" | "scale" | "rotate";
+    transform: "none" | "translate" | "scale" | "rotate";
   },
 ): EditorNodeData | null => {
   const target = findObject3D(scene, filter);
