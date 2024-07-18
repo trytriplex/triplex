@@ -16,10 +16,12 @@ export async function startProject({
   config,
   ports,
   renderer,
+  userId,
 }: {
   config: ReconciledTriplexConfig;
   ports: TriplexPorts;
   renderer: ReconciledRenderer;
+  userId: string;
 }) {
   const backend = await createBackend({
     config,
@@ -30,6 +32,7 @@ export async function startProject({
     config,
     ports,
     renderer,
+    userId,
   });
   const closeFrontend = await frontend.listen(ports.client);
 

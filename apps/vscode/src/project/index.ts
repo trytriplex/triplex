@@ -20,6 +20,7 @@ export type Args = {
   cwd: string;
   ports: TriplexPorts;
   renderer: ReconciledRenderer;
+  userId: string;
 };
 
 async function main() {

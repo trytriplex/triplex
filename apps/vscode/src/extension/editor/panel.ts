@@ -82,6 +82,7 @@ export async function initializeWebviewPanel(
         cwd: triplexProjectCwd,
         ports,
         renderer,
+        userId: vscode.env.machineId,
       };
 
       const initialState = {

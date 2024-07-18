@@ -25,6 +25,7 @@ export async function createServer({
   config,
   ports,
   renderer,
+  userId,
 }: {
   config: ReconciledTriplexConfig;
   ports: TriplexPorts;
@@ -33,6 +34,7 @@ export async function createServer({
     path: string;
     root: string;
   };
+  userId: string;
 }) {
   const normalizedCwd = normalize(config.cwd);
   const tsConfig = join(normalizedCwd, "tsconfig.json");
@@ -100,6 +102,7 @@ export async function createServer({
     fileGlobs: config.files.map((f) => `'${f.replace(normalizedCwd, "")}'`),
     pkgName: "__triplex_renderer__",
     ports,
+    userId,
   };
 
   app.use(vite.middlewares);

@@ -8,6 +8,11 @@
       "types": "./src/index.ts",
       "module": "./src/index.ts",
       "default": "./src/index.ts"
+    },
+    "./fg": {
+      "types": "./src/fg.tsx",
+      "module": "./src/fg.tsx",
+      "default": "./src/fg.tsx"
     }
   },
   "files": [
@@ -16,6 +21,9 @@
   "scripts": {
     "build": "swc ./src -d ./dist",
     "typedef": "tsc"
+  },
+  "dependencies": {
+    "statsig-js": "^5.1.0"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.59",
@@ -33,6 +41,11 @@
         "types": "./dist/index.d.ts",
         "module": "./dist/index.js",
         "default": "./dist/index.js"
+      },
+      "./fg": {
+        "types": "./src/fg.d.ts",
+        "module": "./src/fg.js",
+        "default": "./src/fg.js"
       }
     }
   }

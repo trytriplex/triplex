@@ -33,6 +33,7 @@ async function main() {
       config: ReconciledTriplexConfig;
       ports: TriplexPorts;
       renderer: ReconciledRenderer;
+      userId: string;
     } = JSON.parse(process.env.TRIPLEX_DATA);
 
     await startProject(data);

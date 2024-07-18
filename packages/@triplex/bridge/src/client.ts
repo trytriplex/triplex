@@ -118,6 +118,7 @@ export type BootstrapFunction = (
   config: Config;
   files: Modules;
   provider: ProviderComponent;
+  userId: string;
 }) => void;
 
 export type ThumbnailFunction = (

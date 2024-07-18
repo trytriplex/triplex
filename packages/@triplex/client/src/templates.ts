@@ -24,6 +24,7 @@ interface TemplateOpts {
   fileGlobs: string[];
   pkgName: string;
   ports: TriplexPorts;
+  userId: string;
 }
 
 export const scripts = {
@@ -92,14 +93,14 @@ export const scripts = {
           ${metaHot}.data.render = bootstrap(document.getElementById('root'));
           ${metaHot}.data.render({ config: ${JSON.stringify(
             template.config,
-          )}, files, provider });
+          )}, files, provider, userId: "${template.userId}" });
         }
 
         ${metaHot}.accept((mod) => {
           if (mod) {
             ${metaHot}.data.render({ config: ${JSON.stringify(
               template.config,
-            )}, files: mod.files, provider: mod.provider });
+            )}, files: mod.files, provider: mod.provider, userId: "${template.userId}" });
           }
         });
       }

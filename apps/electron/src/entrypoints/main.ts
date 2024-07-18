@@ -389,7 +389,7 @@ async function main() {
         join(__dirname, "./project.ts"),
         {
           cwd,
-          data: { config, ports, renderer },
+          data: { config, ports, renderer, userId: USER_ID },
         },
       );
 

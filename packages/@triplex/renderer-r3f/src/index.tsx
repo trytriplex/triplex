@@ -10,6 +10,7 @@ import {
   type BootstrapFunction,
   type ThumbnailFunction,
 } from "@triplex/bridge/client";
+import { initFeatureGates } from "@triplex/lib/fg";
 import { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
@@ -22,7 +23,9 @@ init({ RendererElement: SceneObject });
 export const bootstrap: BootstrapFunction = (container) => {
   const root = createRoot(container);
 
-  return (opts) => {
+  return async (opts) => {
+    await initFeatureGates({ userId: opts.userId });
+
     root.render(
       <Renderer
         files={opts.files}

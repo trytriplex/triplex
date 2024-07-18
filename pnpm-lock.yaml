@@ -830,6 +830,9 @@ importers:
       react:
         specifier: ^18.0.0
         version: 18.2.0
+      statsig-js:
+        specifier: ^5.1.0
+        version: 5.1.0
     devDependencies:
       '@swc/cli':
         specifier: ^0.1.59
@@ -9342,6 +9345,10 @@ packages:
     resolution: {integrity: sha512-QAdOptna2NYiSSpv0O/BwoHBSmz4YhpzJHyi+fnMRTXFjp7B8i/YG5Z8IfusxB1ufjcD2Sre1F3R+nX3fvy7gg==}
     hasBin: true
 
+  /js-sha256@0.11.0:
+    resolution: {integrity: sha512-6xNlKayMZvds9h1Y1VWc0fQHQ82BxTXizWPEtEeGvmOUYpBRy4gbWroHLpzowe6xiQhHpelCQiE7HEdznyBL9Q==}
+    dev: false
+
   /js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -13114,6 +13121,13 @@ packages:
 
   /stats.js@0.17.0:
     resolution: {integrity: sha512-hNKz8phvYLPEcRkeG1rsGmV5ChMjKDAWU7/OJJdDErPBNChQXxCo3WZurGpnWc6gZhAzEPFad1aVgyOANH1sMw==}
+
+  /statsig-js@5.1.0:
+    resolution: {integrity: sha512-LTJUkJktM5/wf7CpBbifwKaV4Yq4rqFwi4DnVm8pMI7x8pTENyER8wp5feg+nZFyTv/0w4QPWmYUatFIMtvjFw==}
+    dependencies:
+      js-sha256: 0.11.0
+      uuid: 9.0.1
+    dev: false
 
   /statuses@2.0.1:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}
