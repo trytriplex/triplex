@@ -21,11 +21,13 @@ export interface FromVSCodeEvent {
     name: "default" | "editor";
   };
   "vscode:request-blur-element": void;
-  "vscode:request-delete-element": {
-    column: number;
-    line: number;
-    parentPath: string;
-  };
+  "vscode:request-delete-element":
+    | {
+        column: number;
+        line: number;
+        parentPath: string;
+      }
+    | undefined;
   "vscode:request-focus-element": {
     column: number;
     line: number;

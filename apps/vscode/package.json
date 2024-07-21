@@ -62,6 +62,13 @@
         "priority": "option"
       }
     ],
+    "keybindings": [
+      {
+        "command": "triplex.element-delete",
+        "key": "Backspace",
+        "when": "activeCustomEditorId == 'triplex.editor'"
+      }
+    ],
     "menus": {
       "commandPalette": [
         {

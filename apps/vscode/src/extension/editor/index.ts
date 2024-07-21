@@ -171,11 +171,17 @@ export class TriplexEditorProvider
     const disposables = [
       vscode.commands.registerCommand("triplex.element-delete", (args) => {
         resolveActivePanel((panel) => {
-          sendVSCE(panel.webview, "vscode:request-delete-element", {
-            column: args.column,
-            line: args.line,
-            parentPath: args.parentPath,
-          });
+          sendVSCE(
+            panel.webview,
+            "vscode:request-delete-element",
+            args
+              ? {
+                  column: args.column,
+                  line: args.line,
+                  parentPath: args.parentPath,
+                }
+              : undefined,
+          );
         });
       }),
       vscode.commands.registerCommand("triplex.set-camera-default", () => {

@@ -14,7 +14,11 @@ export async function initFeatureGates({ userId }: { userId: string }) {
   }
 
   if (initialized) {
-    throw new Error("invariant: already initialized");
+    if (process.env.NODE_ENV !== "production") {
+      // eslint-disable-next-line no-console
+      console.log("Statsig already initialized, skipping.");
+    }
+    return;
   }
 
   initialized = true;
