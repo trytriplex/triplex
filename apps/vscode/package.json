@@ -48,6 +48,11 @@
         "category": "Triplex",
         "command": "triplex.element-delete",
         "title": "Delete"
+      },
+      {
+        "category": "Triplex",
+        "command": "triplex.element-duplicate",
+        "title": "Duplicate"
       }
     ],
     "customEditors": [
@@ -67,12 +72,22 @@
         "command": "triplex.element-delete",
         "key": "Backspace",
         "when": "activeCustomEditorId == 'triplex.editor'"
+      },
+      {
+        "command": "triplex.element-duplicate",
+        "key": "Ctrl+D",
+        "mac": "Cmd+D",
+        "when": "activeCustomEditorId == 'triplex.editor'"
       }
     ],
     "menus": {
       "commandPalette": [
         {
           "command": "triplex.element-delete",
+          "when": "false"
+        },
+        {
+          "command": "triplex.element-duplicate",
           "when": "false"
         },
         {
@@ -100,8 +115,14 @@
           "group": "camera@2"
         },
         {
+          "command": "triplex.element-duplicate",
+          "when": "webviewSection == 'element-actions'",
+          "group": "1_actions"
+        },
+        {
           "command": "triplex.element-delete",
-          "when": "webviewSection == 'element-actions'"
+          "when": "webviewSection == 'element-actions'",
+          "group": "9_danger"
         }
       ]
     }

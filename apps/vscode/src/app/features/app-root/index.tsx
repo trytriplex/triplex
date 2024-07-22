@@ -30,16 +30,17 @@ function Events() {
           sendVSCE("element-delete", target);
         }
       }),
+      onVSCE("vscode:request-duplicate-element", (data) => {
+        const target = data || selected;
+        if (target) {
+          sendVSCE("element-duplicate", target);
+        }
+      }),
       onKeyDown("Escape", () => {
         send("request-blur-element", undefined);
       }),
       onKeyDown("F", () => {
         send("request-jump-to-element", undefined);
-      }),
-      onKeyDown("CommandOrCtrl+D", () => {
-        if (selected) {
-          sendVSCE("element-duplicate", selected);
-        }
       }),
     ]);
   }, [selected]);

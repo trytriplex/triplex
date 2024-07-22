@@ -178,7 +178,22 @@ export class TriplexEditorProvider
               ? {
                   column: args.column,
                   line: args.line,
-                  parentPath: args.parentPath,
+                  path: args.path,
+                }
+              : undefined,
+          );
+        });
+      }),
+      vscode.commands.registerCommand("triplex.element-duplicate", (args) => {
+        resolveActivePanel((panel) => {
+          sendVSCE(
+            panel.webview,
+            "vscode:request-duplicate-element",
+            args
+              ? {
+                  column: args.column,
+                  line: args.line,
+                  path: args.path,
                 }
               : undefined,
           );

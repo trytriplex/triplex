@@ -125,7 +125,7 @@ export function useEditor() {
       scene.deleteComponent({
         column: toDelete.column,
         line: toDelete.line,
-        parentPath: toDelete.parentPath,
+        path: toDelete.parentPath,
       });
 
       scene.blur();

@@ -25,7 +25,14 @@ export interface FromVSCodeEvent {
     | {
         column: number;
         line: number;
-        parentPath: string;
+        path: string;
+      }
+    | undefined;
+  "vscode:request-duplicate-element":
+    | {
+        column: number;
+        line: number;
+        path: string;
       }
     | undefined;
   "vscode:request-focus-element": {
@@ -43,7 +50,7 @@ export interface ToVSCodeEvent extends ClientSendEventData {
   "element-delete": {
     column: number;
     line: number;
-    parentPath: string;
+    path: string;
   };
   "element-duplicate": {
     column: number;

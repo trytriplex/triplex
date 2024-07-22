@@ -116,7 +116,7 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
           vscodeContext={{
             column: props.column,
             line: props.line,
-            parentPath: props.parentPath,
+            path: props.parentPath,
             preventDefaultContextMenuItems: true,
             webviewSection: "element-actions",
           }}

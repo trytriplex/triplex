@@ -24,7 +24,7 @@ interface BridgeContext {
   deleteComponent(component: {
     column: number;
     line: number;
-    parentPath: string;
+    path: string;
   }): void;
   /** Focus a scene object. */
   focus(sceneObject: FocusedObject): void;

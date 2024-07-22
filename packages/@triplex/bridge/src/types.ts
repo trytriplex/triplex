@@ -164,7 +164,7 @@ export interface HostSendEventData {
   "request-delete-element": {
     column: number;
     line: number;
-    parentPath: string;
+    path: string;
   };
   "request-focus-element": {
     column: number;

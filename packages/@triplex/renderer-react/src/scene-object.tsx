@@ -88,7 +88,7 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
           if (
             data.column === __meta.column &&
             data.line === __meta.line &&
-            data.parentPath === __meta.path
+            data.path === __meta.path
           ) {
             setIsDeleted(true);
           }
