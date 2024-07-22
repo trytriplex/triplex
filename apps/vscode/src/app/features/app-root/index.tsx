@@ -39,8 +39,9 @@ function Events() {
       onKeyDown("Escape", () => {
         send("request-blur-element", undefined);
       }),
-      onKeyDown("F", () => {
-        send("request-jump-to-element", undefined);
+      onVSCE("vscode:request-jump-to-element", (data) => {
+        const target = data || selected;
+        send("request-jump-to-element", target);
       }),
     ]);
   }, [selected]);

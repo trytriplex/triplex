@@ -199,6 +199,21 @@ export class TriplexEditorProvider
           );
         });
       }),
+      vscode.commands.registerCommand("triplex.element-jump-to", (args) => {
+        resolveActivePanel((panel) => {
+          sendVSCE(
+            panel.webview,
+            "vscode:request-jump-to-element",
+            args
+              ? {
+                  column: args.column,
+                  line: args.line,
+                  path: args.path,
+                }
+              : undefined,
+          );
+        });
+      }),
       vscode.commands.registerCommand("triplex.set-camera-default", () => {
         resolveActivePanel((panel) => {
           sendVSCE(panel.webview, "vscode:play-camera", {

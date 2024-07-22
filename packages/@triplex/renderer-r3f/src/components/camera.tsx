@@ -414,10 +414,38 @@ export function Camera({
             }}
           >
             {`name: ${activeCamera?.name || "(empty)"}
-type: ${type}`}
+type: ${type}
+pos: `}
+            <PullCameraPosition__DEV_ONLY__ controls={controlsRef} />
           </pre>
         </Tunnel.In>
       )}
     </CameraContext.Provider>
   );
+}
+
+function PullCameraPosition__DEV_ONLY__({
+  controls,
+}: {
+  controls: React.RefObject<CCIMPL>;
+}) {
+  const [pos, setPos] = useState<string | number>("");
+
+  useEffect(() => {
+    const id = setInterval(() => {
+      setPos(
+        controls.current
+          ?.getTarget(new Vector3())
+          .toArray()
+          .map((p) => Math.round(p * 100) / 100)
+          .join(",") || "(empty)",
+      );
+    }, 1000);
+
+    return () => {
+      clearInterval(id);
+    };
+  }, [controls]);
+
+  return pos;
 }

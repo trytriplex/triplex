@@ -45,3 +45,15 @@ test("default component switcher to initially opened component", async ({
 
   await expect(editor.panels.getByTestId("ElementSelect")).toHaveValue("Scene");
 });
+
+test("jump to element", async ({ vsce }) => {
+  await vsce.codelens("Scene").click();
+  await expect(vsce.loadedComponent).toHaveText("Scene");
+  const editor = vsce.resolveEditor();
+  await editor.togglePanelsButton.click();
+  await editor.panels.getByRole("button", { name: "ambientLight" }).click();
+
+  await vsce.page.keyboard.press("f");
+
+  await expect(editor.devOnlyCameraPanel).toHaveText(/pos: 2\.12,0,-0\.88/);
+});

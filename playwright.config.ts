@@ -35,5 +35,10 @@ export default defineConfig({
   snapshotPathTemplate: "{testDir}/__snapshots__/{testFileName}-{arg}{ext}",
   testMatch: /e2e\.ts$/,
   timeout: 120_000,
+  use: {
+    trace: {
+      mode: "on-first-retry",
+    },
+  },
   workers: 1,
 });

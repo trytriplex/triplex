@@ -40,6 +40,13 @@ export interface FromVSCodeEvent {
     line: number;
     path: string;
   };
+  "vscode:request-jump-to-element":
+    | {
+        column: number;
+        line: number;
+        path: string;
+      }
+    | undefined;
   "vscode:request-open-component": {
     exportName: string;
     path: string;

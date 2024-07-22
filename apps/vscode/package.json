@@ -53,6 +53,11 @@
         "category": "Triplex",
         "command": "triplex.element-duplicate",
         "title": "Duplicate"
+      },
+      {
+        "category": "Triplex",
+        "command": "triplex.element-jump-to",
+        "title": "Jump To"
       }
     ],
     "customEditors": [
@@ -78,6 +83,11 @@
         "key": "Ctrl+D",
         "mac": "Cmd+D",
         "when": "activeCustomEditorId == 'triplex.editor'"
+      },
+      {
+        "command": "triplex.element-jump-to",
+        "key": "F",
+        "when": "activeCustomEditorId == 'triplex.editor'"
       }
     ],
     "menus": {
@@ -88,6 +98,10 @@
         },
         {
           "command": "triplex.element-duplicate",
+          "when": "false"
+        },
+        {
+          "command": "triplex.element-jump-to",
           "when": "false"
         },
         {
@@ -115,14 +129,19 @@
           "group": "camera@2"
         },
         {
+          "command": "triplex.element-jump-to",
+          "when": "webviewSection == 'element-actions'",
+          "group": "1_navigation"
+        },
+        {
           "command": "triplex.element-duplicate",
           "when": "webviewSection == 'element-actions'",
-          "group": "1_actions"
+          "group": "2_modification"
         },
         {
           "command": "triplex.element-delete",
           "when": "webviewSection == 'element-actions'",
-          "group": "9_danger"
+          "group": "99_danger"
         }
       ]
     }
