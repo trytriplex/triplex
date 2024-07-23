@@ -1,5 +1,20 @@
 # @triplex/renderer-r3f
 
+## 0.68.0
+
+### Minor Changes
+
+- 60ee4011: Add none transform option. The renderer now defaults to this.
+
+### Patch Changes
+
+- 5b6671c2: Bootstrap statsig.
+- Updated dependencies [5b6671c2]
+- Updated dependencies [60ee4011]
+  - @triplex/lib@0.68.0
+  - @triplex/bridge@0.68.0
+  - @triplex/ws@0.68.0
+
 ## 0.67.9
 
 ### Patch Changes

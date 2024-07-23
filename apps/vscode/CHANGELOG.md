@@ -1,5 +1,19 @@
 # @triplex/vscode
 
+## 0.0.11
+
+### Patch Changes
+
+- dd99789a: App now runs with the React Compiler turned on.
+- bfdfdc22: Expose jump to element command in the element actions menu.
+- 2f68ff8f: Delete command now exposed via contributed keybinding.
+- a52fead7: Expose duplicate command in the element actions menu.
+- 37b4d9a0: Component switcher now correctly sets default value.
+- dd99789a: Upgrade React Compiler.
+- d083ff13: Add delete element action.
+  - @triplex/client@0.68.0
+  - @triplex/server@0.68.0
+
 ## 0.0.10
 
 ### Patch Changes

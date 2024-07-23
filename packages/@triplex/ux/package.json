@@ -1,6 +1,6 @@
 {
   "name": "@triplex/ux",
-  "version": "0.67.9",
+  "version": "0.68.0",
   "private": true,
   "description": "Common UI agnostic components for Triplex user experiences.",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
@@ -26,14 +26,14 @@
   "dependencies": {
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-scroll-area": "^1.0.5",
-    "@triplex/bridge": "0.67.9",
-    "@triplex/lib": "0.67.9",
+    "@triplex/bridge": "0.68.0",
+    "@triplex/lib": "0.68.0",
     "tinycolor2": "^1.6.0"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
-    "@triplex/server": "0.67.9",
+    "@triplex/server": "0.68.0",
     "@types/react": "^18.0.27",
     "@types/tinycolor2": "^1.4.3",
     "react-compiler-runtime": "workspace:*",

@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.68.0
+
+### Minor Changes
+
+- 60ee4011: Add none transform option. The renderer now defaults to this.
+
 ## 0.67.9
 
 ## 0.67.8

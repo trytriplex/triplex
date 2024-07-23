@@ -1,5 +1,11 @@
 # @triplex/lib
 
+## 0.68.0
+
+### Patch Changes
+
+- 5b6671c2: Bootstrap statsig.
+
 ## 0.67.9
 
 ## 0.67.8
