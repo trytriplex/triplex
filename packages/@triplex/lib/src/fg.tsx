@@ -8,7 +8,15 @@ import Statsig from "statsig-js";
 
 let initialized = false;
 
-export async function initFeatureGates({ userId }: { userId: string }) {
+export async function initFeatureGates({
+  environment = process.env.NODE_ENV === "production"
+    ? "production"
+    : "development",
+  userId,
+}: {
+  environment?: "production" | "development" | "local";
+  userId: string;
+}) {
   if (!userId) {
     throw new Error("invariant: missing userId");
   }
@@ -28,17 +36,21 @@ export async function initFeatureGates({ userId }: { userId: string }) {
     { userID: userId },
     {
       environment: {
-        tier:
-          process.env.NODE_ENV === "production" ? "production" : "development",
+        tier: environment,
       },
+      localMode: environment === "local",
     },
   );
 }
 
 export function fg(key: string): boolean {
-  if (!initialized) {
-    throw new Error("invariant: call initFeatureGates first");
-  }
-
   return Statsig.getFeatureGate(key).value;
+}
+
+export function overrideFg(key: string, value: boolean) {
+  Statsig.overrideGate(key, value);
+}
+
+export function clearFgOverrides() {
+  Statsig.removeGateOverride();
 }

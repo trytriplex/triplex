@@ -23,6 +23,7 @@ import { TransformControls } from "./components/transform-controls";
 import { SceneObjectContext } from "./scene-object";
 import { SceneObjectEventsContext } from "./stores/selection";
 import { flatten } from "./util/array";
+import { SELECTION_LAYER_INDEX } from "./util/layers";
 import { encodeProps } from "./util/props";
 import {
   findObject3D,
@@ -159,6 +160,19 @@ export function Selection({
     });
 
     setSelectedObject(result);
+
+    const sceneObject = result?.sceneObject;
+    if (!sceneObject) {
+      return;
+    }
+
+    sceneObject.traverse((child) => child.layers.enable(SELECTION_LAYER_INDEX));
+
+    return () => {
+      sceneObject.traverse((child) =>
+        child.layers.disable(SELECTION_LAYER_INDEX),
+      );
+    };
   }, [scene, selected, transform]);
 
   useEffect(() => {

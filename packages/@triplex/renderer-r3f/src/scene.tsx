@@ -6,6 +6,7 @@
  */
 import { compose, on, send } from "@triplex/bridge/client";
 import { useEvent } from "@triplex/lib";
+import { fg } from "@triplex/lib/fg";
 import {
   Suspense,
   useCallback,
@@ -20,6 +21,7 @@ import { Canvas } from "./canvas";
 import { Camera, FitCameraToScene } from "./components/camera";
 import { CameraGizmo } from "./components/camera-gizmo";
 import { LoadingTriangle } from "./components/loading-triangle";
+import { PostProcessing } from "./components/post-processing";
 import { SubsequentSuspense } from "./components/suspense";
 import { Tunnel } from "./components/tunnel";
 import { SceneLoader } from "./loader";
@@ -172,6 +174,7 @@ export function SceneFrame({
         sectionSize={3}
         side={2}
       />
+      {fg("selection_postprocessing") && <PostProcessing />}
     </Canvas>
   );
 }

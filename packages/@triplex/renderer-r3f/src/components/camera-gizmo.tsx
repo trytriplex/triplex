@@ -16,6 +16,7 @@ import {
   type Vector3Tuple,
 } from "three";
 import { GizmoHelper } from "triplex-drei";
+import { editorLayer } from "../util/layers";
 import { buildSceneSphere } from "../util/scene";
 import { useCamera } from "./camera";
 
@@ -236,7 +237,12 @@ export function CameraGizmo() {
   }
 
   return (
-    <GizmoHelper alignment="bottom-right" margin={[50, 50]} renderPriority={2}>
+    <GizmoHelper
+      alignment="bottom-right"
+      layers={editorLayer}
+      margin={[50, 50]}
+      renderPriority={2}
+    >
       <GizmoViewcube
         color="rgb(30 30 30)"
         font="30px ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, sans-serif"

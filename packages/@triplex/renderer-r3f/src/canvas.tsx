@@ -13,11 +13,12 @@ export function Canvas({ children }: { children: React.ReactNode }) {
 
   return (
     <RCanvas
-      gl={
-        typeof window.triplex.renderer.attributes.gl === "object"
+      gl={{
+        ...(typeof window.triplex.renderer.attributes.gl === "object"
           ? window.triplex.renderer.attributes.gl
-          : undefined
-      }
+          : undefined),
+        antialias: false,
+      }}
       raycaster={{
         layers:
           playState === "play"

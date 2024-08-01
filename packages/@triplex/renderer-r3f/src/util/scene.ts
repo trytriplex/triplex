@@ -10,6 +10,7 @@ import {
   type TriplexResolvedMeta,
 } from "@triplex/bridge/client";
 import { Box3, Sphere, type Object3D } from "three";
+import { editorLayer } from "./layers";
 
 export type EditorNodeData = RendererElementProps["__meta"] & {
   parentPath: string;
@@ -205,6 +206,11 @@ export function buildSceneSphere(scene: Object3D) {
   let sceneBox = new Box3();
 
   scene.children.forEach((child) => {
+    if (child.layers.test(editorLayer)) {
+      // Skip over anything that is in the editor layer.
+      return;
+    }
+
     const localBox = new Box3().setFromObject(child);
     const length = localBox.max.lengthSq();
 

@@ -27,7 +27,7 @@ import {
   type Vector3Tuple,
 } from "three";
 import { CameraControls } from "triplex-drei";
-import { ALL_LAYERS } from "../util/layers";
+import { allLayers } from "../util/layers";
 import { buildSceneSphere, findObject3D } from "../util/scene";
 import { Tunnel } from "./tunnel";
 
@@ -368,7 +368,7 @@ export function Camera({
       {children}
       <perspectiveCamera
         far={100_000}
-        layers={ALL_LAYERS}
+        layers={allLayers}
         // Opt out from r3f auto update updating the frustum.
         // @ts-expect-error
         manual
@@ -379,7 +379,7 @@ export function Camera({
       />
       <orthographicCamera
         far={100_000}
-        layers={ALL_LAYERS}
+        layers={allLayers}
         // Opt out from r3f auto update updating the frustum.
         // @ts-expect-error
         manual

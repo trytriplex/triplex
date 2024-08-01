@@ -4,8 +4,9 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { clearFgOverrides, initFeatureGates } from "@triplex/lib/fg";
 import { createElement, forwardRef } from "react";
-import { vi } from "vitest";
+import { afterEach, beforeAll, vi } from "vitest";
 
 globalThis.DOMRect = class DOMRect {
   bottom: number = 0;
@@ -47,6 +48,14 @@ vi.mock("triplex-drei", () => ({
   Grid: () => null,
   MapControls: () => createElement("mesh", { name: "__stub_map_controls__" }),
 }));
+
+beforeAll(async () => {
+  await initFeatureGates({ environment: "local", userId: "__TEST_USER__" });
+});
+
+afterEach(() => {
+  clearFgOverrides();
+});
 
 globalThis.ResizeObserver = class ResizeObserver {
   observe() {}

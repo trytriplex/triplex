@@ -1,9 +1,10 @@
 {
   "plugins": [
     "@ianvs/prettier-plugin-sort-imports",
+    "prettier-plugin-glsl",
     "prettier-plugin-jsdoc",
-    "prettier-plugin-tailwindcss",
-    "prettier-plugin-packagejson"
+    "prettier-plugin-packagejson",
+    "prettier-plugin-tailwindcss"
   ],
   "proseWrap": "always",
   "jsdocSingleLineComment": false,

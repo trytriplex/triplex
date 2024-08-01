@@ -6,6 +6,7 @@
  */
 // @vitest-environment jsdom
 import { send } from "@triplex/bridge/host";
+import { overrideFg } from "@triplex/lib/fg";
 import { render } from "react-three-test";
 import { type Color } from "three";
 import { describe, expect, it, vi } from "vitest";
@@ -21,6 +22,10 @@ vi.mock("@react-three/fiber", async () => ({
 
 vi.mock("@triplex/ws/react");
 
+vi.mock("../components/post-processing", () => ({
+  PostProcessing: () => null,
+}));
+
 window.triplex = { env: { ports: {} }, renderer: { attributes: {} } };
 
 function Provider({ children }: { children?: React.ReactNode }) {
@@ -34,6 +39,7 @@ function Provider({ children }: { children?: React.ReactNode }) {
 
 describe("scene frame", () => {
   it("should apply color to canvas background set in provider", async () => {
+    overrideFg("selection_postprocessing", true);
     const { getInstance } = await render(
       <SceneProvider value={{}}>
         <SceneFrame provider={Provider} providerPath="" />

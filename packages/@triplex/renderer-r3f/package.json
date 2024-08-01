@@ -11,7 +11,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "swc ./src -d ./dist",
+    "build": "vite build",
     "typedef": "tsc"
   },
   "dependencies": {
@@ -37,7 +37,8 @@
     "react-dom": "^18.0.0",
     "three": "^0.163.0",
     "typescript": "^5.5.2",
-    "vite": "^4.5.3"
+    "vite": "^4.5.3",
+    "vite-plugin-glsl": "^1.1.2"
   },
   "peerDependencies": {
     "@react-three/fiber": "^8.0.0",
@@ -46,8 +47,8 @@
     "three": ">=0.153.0"
   },
   "publishConfig": {
-    "main": "./dist/index.js",
-    "module": "./dist/index.js",
+    "main": "./dist/index.mjs",
+    "module": "./dist/index.mjs",
     "types": "./dist/index.d.ts"
   }
 }

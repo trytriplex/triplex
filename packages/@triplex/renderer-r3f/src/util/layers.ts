@@ -17,5 +17,9 @@ export const HIDDEN_LAYER_INDEX = 30;
 export const hiddenLayer = new Layers();
 hiddenLayer.set(HIDDEN_LAYER_INDEX);
 
-export const ALL_LAYERS = new Layers();
-ALL_LAYERS.enableAll();
+export const SELECTION_LAYER_INDEX = 29;
+export const selectionLayer = new Layers();
+selectionLayer.set(SELECTION_LAYER_INDEX);
+
+export const allLayers = new Layers();
+allLayers.enableAll();

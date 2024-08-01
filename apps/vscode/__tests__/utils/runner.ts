@@ -97,6 +97,7 @@ async function launch(testInfo: TestInfo) {
       "--no-sandbox", // https://github.com/microsoft/vscode/issues/84238
       "--skip-welcome",
       "--skip-release-notes",
+      "--use-gl=egl",
     ],
     env: {
       ...process.env,
