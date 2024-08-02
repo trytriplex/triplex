@@ -21,6 +21,7 @@ const placeholderFiles = 10;
 
 interface TemplateOpts {
   config: ReconciledTriplexConfig;
+  fgEnvironmentOverride: "production" | "staging" | "development" | "local";
   fileGlobs: string[];
   pkgName: string;
   ports: TriplexPorts;
@@ -93,14 +94,14 @@ export const scripts = {
           ${metaHot}.data.render = bootstrap(document.getElementById('root'));
           ${metaHot}.data.render({ config: ${JSON.stringify(
             template.config,
-          )}, files, provider, userId: "${template.userId}" });
+          )}, files, provider, userId: "${template.userId}", fgEnvironmentOverride: ${template.fgEnvironmentOverride ? `"${template.fgEnvironmentOverride}"` : "undefined"} });
         }
 
         ${metaHot}.accept((mod) => {
           if (mod) {
             ${metaHot}.data.render({ config: ${JSON.stringify(
               template.config,
-            )}, files: mod.files, provider: mod.provider, userId: "${template.userId}" });
+            )}, files: mod.files, provider: mod.provider, userId: "${template.userId}", fgEnvironmentOverride: ${template.fgEnvironmentOverride ? `"${template.fgEnvironmentOverride}"` : "undefined"} });
           }
         });
       }

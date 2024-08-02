@@ -116,6 +116,7 @@ export type BootstrapFunction = (
   container: HTMLElement,
 ) => (opts: {
   config: Config;
+  fgEnvironmentOverride: "local" | "development" | "staging" | "production";
   files: Modules;
   provider: ProviderComponent;
   userId: string;

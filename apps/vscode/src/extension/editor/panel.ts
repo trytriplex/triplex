@@ -80,6 +80,11 @@ export async function initializeWebviewPanel(
       const args: Args = {
         config,
         cwd: triplexProjectCwd,
+        fgEnvironmentOverride: process.env.FG_ENVIRONMENT_OVERRIDE as
+          | "production"
+          | "staging"
+          | "development"
+          | "local",
         ports,
         renderer,
         userId: vscode.env.machineId,

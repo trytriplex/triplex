@@ -14,11 +14,13 @@ import {
 
 export async function startProject({
   config,
+  fgEnvironmentOverride,
   ports,
   renderer,
   userId,
 }: {
   config: ReconciledTriplexConfig;
+  fgEnvironmentOverride: "production" | "staging" | "development" | "local";
   ports: TriplexPorts;
   renderer: ReconciledRenderer;
   userId: string;
@@ -30,6 +32,7 @@ export async function startProject({
   const closeBackend = await backend.listen(ports);
   const frontend = await createFrontend({
     config,
+    fgEnvironmentOverride,
     ports,
     renderer,
     userId,

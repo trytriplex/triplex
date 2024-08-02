@@ -29,6 +29,7 @@ async function launch(
     cwd: join(__dirname, "../.."),
     env: {
       ...process.env,
+      FG_ENVIRONMENT_OVERRIDE: "local",
       FORCE_EDITOR_TEST_FIXTURE: join(process.cwd(), textFixturePath),
       FORCE_EXPORT_NAME: opts.exportName,
       FORCE_PATH: opts.path,

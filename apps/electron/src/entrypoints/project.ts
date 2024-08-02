@@ -31,6 +31,7 @@ async function main() {
 
     const data: {
       config: ReconciledTriplexConfig;
+      fgEnvironmentOverride: "production" | "staging" | "development" | "local";
       ports: TriplexPorts;
       renderer: ReconciledRenderer;
       userId: string;

@@ -24,7 +24,10 @@ export const bootstrap: BootstrapFunction = (container) => {
   const root = createRoot(container);
 
   return async (opts) => {
-    await initFeatureGates({ userId: opts.userId });
+    await initFeatureGates({
+      environment: opts.fgEnvironmentOverride,
+      userId: opts.userId,
+    });
 
     root.render(
       <Renderer

@@ -23,11 +23,13 @@ import { createHTML, loading, scripts } from "./templates";
 
 export async function createServer({
   config,
+  fgEnvironmentOverride,
   ports,
   renderer,
   userId,
 }: {
   config: ReconciledTriplexConfig;
+  fgEnvironmentOverride: "production" | "staging" | "development" | "local";
   ports: TriplexPorts;
   renderer: {
     manifest: RendererManifest;
@@ -99,6 +101,7 @@ export async function createServer({
 
   const htmlConfig = {
     config,
+    fgEnvironmentOverride,
     fileGlobs: config.files.map((f) => `'${f.replace(normalizedCwd, "")}'`),
     pkgName: "__triplex_renderer__",
     ports,

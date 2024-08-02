@@ -18,6 +18,7 @@ const log = logger("project");
 export type Args = {
   config: ReconciledTriplexConfig;
   cwd: string;
+  fgEnvironmentOverride: "production" | "staging" | "development" | "local";
   ports: TriplexPorts;
   renderer: ReconciledRenderer;
   userId: string;

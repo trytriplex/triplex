@@ -12,6 +12,7 @@ declare interface Window {
   triplex: {
     env: {
       config: ReconciledTriplexConfig;
+      fgEnvironmentOverride: "production" | "staging" | "development" | "local";
       ports: TriplexPorts;
     };
     initialState: {

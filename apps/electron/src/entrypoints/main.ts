@@ -389,7 +389,17 @@ async function main() {
         join(__dirname, "./project.ts"),
         {
           cwd,
-          data: { config, ports, renderer, userId: USER_ID },
+          data: {
+            config,
+            fgEnvironmentOverride: process.env.FG_ENVIRONMENT_OVERRIDE as
+              | "production"
+              | "staging"
+              | "development"
+              | "local",
+            ports,
+            renderer,
+            userId: USER_ID,
+          },
         },
       );
 

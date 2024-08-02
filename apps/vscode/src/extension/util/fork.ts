@@ -36,6 +36,7 @@ export function fork<TData extends Record<string, unknown>>(
     fork = forkChild(filename, ["--inspect-port=0"], {
       cwd: data.cwd,
       env: {
+        FG_ENVIRONMENT_OVERRIDE: process.env.FG_ENVIRONMENT_OVERRIDE,
         NODE_OPTIONS: `-r ${join(cwd, "hook-fork.js")}`,
         NODE_PATH: cwd,
         TRIPLEX_DATA: JSON.stringify(data),
@@ -52,6 +53,7 @@ export function fork<TData extends Record<string, unknown>>(
       cwd: data.cwd,
       env: {
         DEBUG: "triplex",
+        FG_ENVIRONMENT_OVERRIDE: process.env.FG_ENVIRONMENT_OVERRIDE,
         NODE_PATH: cwd,
         TRIPLEX_DATA: JSON.stringify(data),
         TRIPLEX_ENV: "production",
