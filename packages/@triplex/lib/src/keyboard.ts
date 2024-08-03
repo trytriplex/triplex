@@ -4,6 +4,14 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { useEffect } from "react";
+
+/**
+ * Copyright (c) Michael Dougall. All rights reserved.
+ *
+ * This source code is licensed under the GPL-3.0 license found in the LICENSE
+ * file in the root directory of this source tree.
+ */
 const assignedKeys: string[] = [];
 
 const inputTags = [
@@ -104,4 +112,37 @@ export function onKeyDown(
     assignedKeys.splice(assignedKeys.indexOf(accelerator), 1);
     window.removeEventListener("keydown", callback);
   };
+}
+
+/**
+ * This prevents VS Code from handling keyboard shortcuts when an input is
+ * focused. Any key down events that are have modifiers are allowed to
+ * propagate.
+ */
+export function useBlockInputPropagation() {
+  useEffect(() => {
+    const callback = () => {};
+
+    window.addEventListener(
+      "keydown",
+      (e) => {
+        const activeElement = document.activeElement;
+
+        if (
+          activeElement &&
+          e.metaKey === false &&
+          e.ctrlKey === false &&
+          e.altKey === false &&
+          inputTags.some((tag) => activeElement.tagName.includes(tag))
+        ) {
+          e.stopPropagation();
+        }
+      },
+      true,
+    );
+
+    return () => {
+      window.removeEventListener("keydown", callback, true);
+    };
+  }, []);
 }

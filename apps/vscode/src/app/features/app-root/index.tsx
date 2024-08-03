@@ -10,7 +10,7 @@ import {
   on,
   send,
 } from "@triplex/bridge/host";
-import { onKeyDown } from "@triplex/lib";
+import { onKeyDown, useBlockInputPropagation } from "@triplex/lib";
 import { useScreenView, useTelemetry, type ActionId } from "@triplex/ux";
 import { useEffect } from "react";
 import { useInitSceneSync, useSceneStore } from "../../stores/scene";
@@ -55,6 +55,7 @@ export function AppRoot() {
   const telemetry = useTelemetry();
 
   useScreenView("app", "Panel");
+  useBlockInputPropagation();
 
   useEffect(() => {
     return compose([
