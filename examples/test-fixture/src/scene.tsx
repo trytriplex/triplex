@@ -11,6 +11,7 @@ export function Plane() {
   return (
     <mesh>
       <planeGeometry />
+      <meshBasicMaterial color={"#dd8d8d"} visible={true} />
     </mesh>
   );
 }

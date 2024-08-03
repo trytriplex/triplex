@@ -42,6 +42,12 @@ export function ColorInput({
   const telemetry = useTelemetry();
 
   useEffect(() => {
+    if (ref.current) {
+      ref.current.value = persistedValue || "";
+    }
+  }, [persistedValue]);
+
+  useEffect(() => {
     if (!ref.current) {
       return;
     }

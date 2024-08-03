@@ -4,11 +4,16 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { ExclamationTriangleIcon, SwitchIcon } from "@radix-ui/react-icons";
+import {
+  Cross2Icon,
+  ExclamationTriangleIcon,
+  SwitchIcon,
+} from "@radix-ui/react-icons";
 import { cn } from "@triplex/lib";
 import { type DeclaredProp, type Prop } from "@triplex/server";
 import {
   BooleanInput,
+  ColorInput,
   LiteralUnionInput,
   NumberInput,
   StringInput,
@@ -18,6 +23,7 @@ import {
 } from "@triplex/ux/inputs";
 import { VSCodeCheckbox } from "@vscode/webview-ui-toolkit/react";
 import { IconButton } from "../../components/button";
+import { Label } from "../../components/label";
 import { type SuppressVSCodeError } from "../../types";
 
 const createIssueURL = (prop: DeclaredProp | Prop) =>
@@ -33,6 +39,52 @@ export const renderPropInputs: RenderInputs = ({
   prop,
 }) => {
   if (prop.type === "string") {
+    if (/[Cc]olor/.test(prop.prop.name)) {
+      const persistedValue = "value" in prop.prop ? prop.prop.value : undefined;
+
+      return (
+        <ColorInput
+          actionId="scene_controls"
+          name={prop.prop.name}
+          onChange={onChange}
+          onConfirm={onConfirm}
+          persistedValue={persistedValue}
+          required={prop.prop.required}
+        >
+          {({ ref, ...props }, { clear, hasChanged }) => (
+            <div className="w-full">
+              {prop.prop.name && (
+                <Label description={prop.prop.description} htmlFor={props.id}>
+                  {prop.prop.name}
+                </Label>
+              )}
+              <div className="mb-1 flex items-center gap-1">
+                <input
+                  {...props}
+                  className={cn([
+                    !hasChanged &&
+                      !persistedValue &&
+                      "[&::-webkit-color-swatch]:bg-[transparent!important]",
+                    "text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder h-[26px] w-[26px] rounded-sm border focus:outline-none [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:rounded-sm [&::-webkit-color-swatch]:border-none",
+                  ])}
+                  ref={ref}
+                  type="color"
+                />
+                {!!persistedValue && (
+                  <IconButton
+                    actionId="scene_controls_clear"
+                    icon={Cross2Icon}
+                    label="Clear value"
+                    onClick={clear}
+                  />
+                )}
+              </div>
+            </div>
+          )}
+        </ColorInput>
+      );
+    }
+
     return (
       <StringInput
         actionId="scene_controls"
@@ -46,9 +98,9 @@ export const renderPropInputs: RenderInputs = ({
         {({ onChange, ref, ...props }) => (
           <div>
             {prop.prop.name && (
-              <label className="block" htmlFor={props.id}>
+              <Label description={prop.prop.description} htmlFor={props.id}>
                 {prop.prop.name}
-              </label>
+              </Label>
             )}
             <input
               {...props}
@@ -77,9 +129,9 @@ export const renderPropInputs: RenderInputs = ({
         {({ ref, ...props }) => (
           <div>
             {prop.prop.name && (
-              <label className="block" htmlFor={props.id}>
+              <Label description={prop.prop.description} htmlFor={props.id}>
                 {prop.prop.name}
-              </label>
+              </Label>
             )}
             <input
               {...props}
@@ -105,9 +157,9 @@ export const renderPropInputs: RenderInputs = ({
       >
         {({ onChange, ref, ...props }) => (
           <div>
-            <label className="block" htmlFor={props.id}>
+            <Label description={prop.prop.description} htmlFor={props.id}>
               {prop.prop.name}
-            </label>
+            </Label>
             <VSCodeCheckbox
               {...props}
               className="m-0"
@@ -122,17 +174,17 @@ export const renderPropInputs: RenderInputs = ({
 
   if (prop.type === "union") {
     return (
-      <div>
-        <label className="block">{prop.prop.name}</label>
-        <UnionInput
-          onChange={onChange}
-          onConfirm={onConfirm}
-          persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
-          values={prop.prop.shape}
-        >
-          {(props, actions) => (
-            <div className="flex items-start gap-1">
-              {renderPropInputs(props)}
+      <UnionInput
+        name={prop.prop.name}
+        onChange={onChange}
+        onConfirm={onConfirm}
+        persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
+        values={prop.prop.shape}
+      >
+        {(props, actions) => (
+          <div className="flex items-start gap-1">
+            {renderPropInputs(props)}
+            <div className="mt-5 flex">
               <IconButton
                 actionId="contextpanel_input_union_switch"
                 icon={SwitchIcon}
@@ -141,16 +193,18 @@ export const renderPropInputs: RenderInputs = ({
                 spacing="spacious"
               />
             </div>
-          )}
-        </UnionInput>
-      </div>
+          </div>
+        )}
+      </UnionInput>
     );
   }
 
   if (prop.type === "tuple") {
     return (
       <div>
-        <label className="block">{prop.prop.name}</label>
+        <Label description={prop.prop.description} htmlFor="">
+          {prop.prop.name}
+        </Label>
         <TupleInput
           onChange={onChange}
           onConfirm={onConfirm}
@@ -176,9 +230,9 @@ export const renderPropInputs: RenderInputs = ({
       >
         {({ onChange, options, ref, ...props }) => (
           <div>
-            <label className="block" htmlFor={props.id}>
+            <Label description={prop.prop.description} htmlFor={props.id}>
               {prop.prop.name}
-            </label>
+            </Label>
             <select
               {...props}
               className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder mb-1 h-[26px] w-full rounded-sm border px-1.5 focus:outline-none"
@@ -201,7 +255,9 @@ export const renderPropInputs: RenderInputs = ({
 
   return (
     <div>
-      <label className="block">{prop.prop.name}</label>
+      <Label description={prop.prop.description} htmlFor="">
+        {prop.prop.name}
+      </Label>
       <a
         className="hover:text-input text-input focus:border-selected bg-input border-input mb-1 flex h-[26px] w-full cursor-pointer items-center rounded-sm border px-[9px] focus:outline-none"
         href={isControlledInCode ? undefined : createIssueURL(prop.prop)}
