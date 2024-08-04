@@ -1,5 +1,15 @@
 # @triplex/ux
 
+## 0.68.1
+
+### Patch Changes
+
+- 22164772: Color input now sets value when persisted value prop changes.
+- 22164772: Union input now passes along name to children inputs.
+- Updated dependencies [a5df6744]
+  - @triplex/lib@0.68.1
+  - @triplex/bridge@0.68.1
+
 ## 0.68.0
 
 ### Minor Changes

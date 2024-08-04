@@ -1,6 +1,6 @@
 {
   "name": "@triplex/server",
-  "version": "0.68.0",
+  "version": "0.68.1",
   "private": true,
   "repository": "https://github.com/try-triplex/triplex-monorepo",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",

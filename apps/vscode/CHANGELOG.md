@@ -1,5 +1,16 @@
 # @triplex/vscode
 
+## 0.0.12
+
+### Patch Changes
+
+- 22164772: Add color input.
+- c96826c8: Add resize to scene panel.
+- a5df6744: Block input keydown event propagation to prevent unmodified keybindings from being fired.
+- 22164772: Pass through description titles to prop inputs.
+  - @triplex/client@0.68.1
+  - @triplex/server@0.68.1
+
 ## 0.0.11
 
 ### Patch Changes

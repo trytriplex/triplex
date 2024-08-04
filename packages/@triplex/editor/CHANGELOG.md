@@ -1,5 +1,18 @@
 # @triplex/editor
 
+## 0.68.1
+
+### Patch Changes
+
+- 6a1ca455: Upgrade pdnd.
+- Updated dependencies [22164772]
+- Updated dependencies [a5df6744]
+- Updated dependencies [22164772]
+  - @triplex/ux@0.68.1
+  - @triplex/lib@0.68.1
+  - @triplex/bridge@0.68.1
+  - @triplex/ws@0.68.1
+
 ## 0.68.0
 
 ### Minor Changes

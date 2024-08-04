@@ -1,5 +1,16 @@
 # @triplex/renderer-r3f
 
+## 0.68.1
+
+### Patch Changes
+
+- b2a850fb: Add selection outline postprocessing under a feature gate. This feature will
+  become available to everyone through a gradual rollout.
+- Updated dependencies [a5df6744]
+  - @triplex/lib@0.68.1
+  - @triplex/bridge@0.68.1
+  - @triplex/ws@0.68.1
+
 ## 0.68.0
 
 ### Minor Changes

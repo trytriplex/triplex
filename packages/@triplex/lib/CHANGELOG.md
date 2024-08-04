@@ -1,5 +1,11 @@
 # @triplex/lib
 
+## 0.68.1
+
+### Patch Changes
+
+- a5df6744: Block input keydown event propagation to prevent unmodified keybindings from being fired.
+
 ## 0.68.0
 
 ### Patch Changes
