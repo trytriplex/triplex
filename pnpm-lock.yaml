@@ -8,9 +8,6 @@ overrides:
   '@types/react': 18.3.3
 
 patchedDependencies:
-  '@atlaskit/pragmatic-drag-and-drop@0.24.0':
-    hash: 2flpdewlyog7stqhk3y3x644xy
-    path: patches/@atlaskit__pragmatic-drag-and-drop@0.24.0.patch
   '@vscode/vsce@2.26.0':
     hash: huvjfoblogcm7d5dqcfnn2zmzu
     path: patches/@vscode__vsce@2.26.0.patch
@@ -725,8 +722,8 @@ importers:
   packages/@triplex/editor:
     dependencies:
       '@atlaskit/pragmatic-drag-and-drop':
-        specifier: ^0.24.0
-        version: 0.24.0(patch_hash=2flpdewlyog7stqhk3y3x644xy)
+        specifier: ^1.2.3
+        version: 1.2.3
       '@radix-ui/react-dialog':
         specifier: ^1.0.5
         version: 1.0.5(@types/react-dom@18.0.10)(@types/react@18.3.3)(react-dom@18.2.0)(react@18.2.0)
@@ -1254,14 +1251,13 @@ packages:
       '@jridgewell/gen-mapping': 0.3.5
       '@jridgewell/trace-mapping': 0.3.25
 
-  /@atlaskit/pragmatic-drag-and-drop@0.24.0(patch_hash=2flpdewlyog7stqhk3y3x644xy):
-    resolution: {integrity: sha512-5LvAC7AUzZxlKWgAzizyV/OZMFj9dVB4OpKOC0f2drddJCZfklX2Mg9SYvMgU+7aPLtAXuo97Dl+4yIpkukYHQ==}
+  /@atlaskit/pragmatic-drag-and-drop@1.2.3:
+    resolution: {integrity: sha512-VmoQ9liCS2sfOxkkSid81u8ldHar9fTFvjxgl7hufC1WNZC6Ia8Q3kgwKwih6jy1LKjkXDdmYYdA5GETuClHOQ==}
     dependencies:
       '@babel/runtime': 7.22.3
-      bind-event-listener: 2.1.1
+      bind-event-listener: 3.0.0
       raf-schd: 4.0.3
     dev: false
-    patched: true
 
   /@azure/abort-controller@1.1.0:
     resolution: {integrity: sha512-TrRLIoSQVzfAJX9H1JeFjzAoDGcoK1IYX1UImfceTZpsyYfWr09Ss1aHW1y5TrrR3iq6RZLBwJ3E24uwPhwahw==}
@@ -5262,8 +5258,8 @@ packages:
     resolution: {integrity: sha512-v4N2l3RxL+m4zDxyxz3Ne2aTmiPn8ZUpKFpdPtO+ItW1NcTCXA7JeHG5GMBSvoKSkQZ9ycS+EouDVxYB9ufKWA==}
     dev: false
 
-  /bind-event-listener@2.1.1:
-    resolution: {integrity: sha512-O+a5c0D2se/u2VlBJmPRn45IB6R4mYMh1ok3dWxrIZ2pmLqzggBhb875mbq73508ylzofc0+hT9W41x4Y2s8lg==}
+  /bind-event-listener@3.0.0:
+    resolution: {integrity: sha512-PJvH288AWQhKs2v9zyfYdPzlPqf5bXbGMmhmUIY9x4dAUGIWgomO771oBQNwJnMQSnUIXhKu6sgzpBRXTlvb8Q==}
     dev: false
 
   /bl@1.2.3:

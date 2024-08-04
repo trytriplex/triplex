@@ -7,7 +7,7 @@
 import {
   draggable,
   dropTargetForElements,
-} from "@atlaskit/pragmatic-drag-and-drop/adapter/element";
+} from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import {
   ArrowLeftIcon,
   ArrowRightIcon,
