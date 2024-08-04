@@ -34,7 +34,8 @@ type ActionGroup =
   | "input"
   | "logs"
   | "project"
-  | "provider";
+  | "provider"
+  | "resize";
 
 export type ActionId = ActionIdSafe | "(UNSAFE_SKIP)";
 

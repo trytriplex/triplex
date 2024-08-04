@@ -4,15 +4,110 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
+import { disableNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/disable-native-drag-preview";
+import { preventUnhandled } from "@atlaskit/pragmatic-drag-and-drop/prevent-unhandled";
+import { type DragLocationHistory } from "@atlaskit/pragmatic-drag-and-drop/types";
 import { LayersIcon } from "@radix-ui/react-icons";
 import { cn } from "@triplex/lib";
-import { Suspense, useState } from "react";
+import { useTelemetry } from "@triplex/ux";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { IconButton } from "../../components/button";
 import { Surface } from "../../components/surface";
 import { useSceneStore } from "../../stores/scene";
 import { ElementSelect } from "./element-select";
 import { ElementsPanel, FilterElements } from "./panel-elements";
 import { SelectionPanel } from "./panel-selection";
+
+function getProposedWidth({
+  initialWidth,
+  location,
+}: {
+  initialWidth: number;
+  location: DragLocationHistory;
+}): number {
+  const diffX = location.current.input.clientX - location.initial.input.clientX;
+  const proposedWidth = initialWidth + diffX;
+  return Math.min(Math.max(192, proposedWidth), 384);
+}
+
+export function PanelContainer({
+  children,
+  isExpanded,
+}: {
+  children: React.ReactNode;
+  isExpanded: boolean;
+}) {
+  const ref = useRef<HTMLDivElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
+  const [persistedWidth, setPersistedWidth] = useState(192);
+  const [state, setState] = useState<"idle" | "drag">("idle");
+  const telemetry = useTelemetry();
+
+  useEffect(() => {
+    if (!ref.current || !isExpanded) {
+      return;
+    }
+
+    return draggable({
+      element: ref.current,
+      onDrag({ location }) {
+        containerRef.current?.style.setProperty(
+          "--local-resizing-width",
+          `${getProposedWidth({ initialWidth: persistedWidth, location })}px`,
+        );
+      },
+      onDragStart() {
+        telemetry.event("scenepanel_resize_start");
+        setState("drag");
+      },
+      onDrop({ location }) {
+        telemetry.event("scenepanel_resize_end");
+        setState("idle");
+        preventUnhandled.stop();
+        setPersistedWidth(
+          getProposedWidth({ initialWidth: persistedWidth, location }),
+        );
+        containerRef.current?.style.removeProperty("--local-resizing-width");
+      },
+      onGenerateDragPreview: ({ nativeSetDragImage }) => {
+        disableNativeDragPreview({ nativeSetDragImage });
+        preventUnhandled.start();
+      },
+    });
+  }, [isExpanded, persistedWidth, telemetry]);
+
+  return (
+    <div className="relative flex">
+      <Surface
+        className={cn([
+          "border-overlay flex flex-col border-r",
+          isExpanded && "flex-shrink-0",
+        ])}
+        ref={containerRef}
+        shape="square"
+        style={{
+          width: isExpanded
+            ? `clamp(192px, var(--local-resizing-width, ${persistedWidth}px), 50vw)`
+            : undefined,
+        }}
+        testId="panels"
+      >
+        {children}
+      </Surface>
+      {isExpanded && (
+        <div
+          className={cn([
+            state === "drag" && "opacity-100",
+            "absolute -right-0.5 bottom-0 top-0 z-10 w-1 cursor-col-resize bg-[var(--vscode-sash-hoverBorder)] opacity-0 delay-0 duration-100 hover:opacity-100 hover:transition-opacity hover:delay-200 hover:duration-150",
+          ])}
+          data-testid="panel-drag-handle"
+          ref={ref}
+        />
+      )}
+    </div>
+  );
+}
 
 export function Panels() {
   const [shown, setShown] = useState<"elements" | undefined>(undefined);
@@ -24,14 +119,7 @@ export function Panels() {
   }
 
   return (
-    <Surface
-      className={cn([
-        "border-overlay flex flex-col border-r",
-        shown && "w-48 flex-shrink-0",
-      ])}
-      shape="square"
-      testId="panels"
-    >
+    <PanelContainer isExpanded={!!shown}>
       <div
         className={cn([
           !shown &&
@@ -68,6 +156,6 @@ export function Panels() {
           </div>
         </Suspense>
       )}
-    </Surface>
+    </PanelContainer>
   );
 }

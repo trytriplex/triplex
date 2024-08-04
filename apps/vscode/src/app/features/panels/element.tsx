@@ -97,7 +97,7 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
             {isExpanded ? <ChevronDownIcon /> : <ChevronRightIcon />}
           </Pressable>
         ) : (
-          <span className="w-[14px]" />
+          <span className="w-[14px] flex-shrink-0" />
         )}
         <Pressable
           actionId="scenepanel_element_focus"
