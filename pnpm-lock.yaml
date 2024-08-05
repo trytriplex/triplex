@@ -34,6 +34,9 @@ importers:
       '@swc/core':
         specifier: ^1.6.5
         version: 1.6.5
+      '@testing-library/react':
+        specifier: ^14.0.0
+        version: 14.0.0(react-dom@18.2.0)(react@18.2.0)
       '@triplex/lib':
         specifier: workspace:*
         version: link:packages/@triplex/lib
@@ -3978,7 +3981,6 @@ packages:
       '@types/react-dom': 18.0.10
       react: 18.2.0
       react-dom: 18.2.0(react@18.2.0)
-    dev: true
 
   /@theguild/remark-mermaid@0.0.5(react@18.2.0):
     resolution: {integrity: sha512-e+ZIyJkEv9jabI4m7q29wZtZv+2iwPGsXJ2d46Zi7e+QcFudiyuqhLhHG/3gX3ZEB+hxTch+fpItyMS8jwbIcw==}

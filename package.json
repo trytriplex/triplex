@@ -39,6 +39,7 @@
     "@nkzw/eslint-config": "^1.17.0",
     "@playwright/test": "^1.44.1",
     "@swc/core": "^1.6.5",
+    "@testing-library/react": "^14.0.0",
     "@triplex/lib": "workspace:*",
     "cross-env": "^7.0.3",
     "eslint": "^8.51.0",

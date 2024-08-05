@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { cleanup } from "@testing-library/react";
 import { clearFgOverrides, initFeatureGates } from "@triplex/lib/fg";
 import { createElement, forwardRef } from "react";
 import { afterEach, beforeAll, vi } from "vitest";
@@ -55,6 +56,7 @@ beforeAll(async () => {
 
 afterEach(() => {
   clearFgOverrides();
+  cleanup();
 });
 
 globalThis.ResizeObserver = class ResizeObserver {
