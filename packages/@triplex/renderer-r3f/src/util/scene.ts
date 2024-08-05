@@ -91,6 +91,28 @@ export function isActiveElement(
   return false;
 }
 
+export function isObjectVisible(obj: Object3D): boolean {
+  const isMesh = "isMesh" in obj;
+
+  if (!isMesh || !obj.visible) {
+    return false;
+  }
+
+  // This mesh is visible however we need to check all parents just in case
+  // one of them is invisible.
+  let parentObject: Object3D | null = obj;
+
+  while (parentObject) {
+    if (!parentObject.visible) {
+      return false;
+    }
+
+    parentObject = parentObject.parent;
+  }
+
+  return true;
+}
+
 export function resolveObject3DMeta(
   obj: Object3D,
   filter:

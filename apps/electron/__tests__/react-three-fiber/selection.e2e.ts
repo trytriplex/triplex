@@ -81,7 +81,26 @@ test.describe(() => {
 
     await electron.frame.click();
 
-    await expect(electron.contextPanel.heading).toHaveText("Container");
+    await expect(electron.contextPanel.heading).toHaveText("Portal");
+  });
+});
+
+test.describe(() => {
+  test.use({
+    file: {
+      exportName: "ThirdParty",
+      path: "src/third-party.tsx",
+    },
+  });
+
+  test("select node module component using classic runtime", async ({
+    electron,
+  }) => {
+    await electron.waitForScene();
+
+    await electron.frame.click();
+
+    await expect(electron.contextPanel.heading).toHaveText("Box");
   });
 });
 
@@ -101,5 +120,43 @@ test.describe(() => {
     await electron.frame.click();
 
     await expect(electron.contextPanel.heading).toHaveText("Inbuilt2");
+  });
+});
+
+test.describe(() => {
+  test.use({
+    file: {
+      exportName: "InvisibleMesh",
+      path: "src/visibility.tsx",
+    },
+  });
+
+  test("select visible mesh behind invisible mesh", async ({ electron }) => {
+    await electron.waitForScene();
+
+    await electron.frame.click();
+
+    await expect(electron.contextPanel.input("Name").locator).toHaveValue(
+      "visible",
+    );
+  });
+});
+
+test.describe(() => {
+  test.use({
+    file: {
+      exportName: "InvisibleParent",
+      path: "src/visibility.tsx",
+    },
+  });
+
+  test("select visible mesh behind invisible parent", async ({ electron }) => {
+    await electron.waitForScene();
+
+    await electron.frame.click();
+
+    await expect(electron.contextPanel.input("Name").locator).toHaveValue(
+      "visible",
+    );
   });
 });

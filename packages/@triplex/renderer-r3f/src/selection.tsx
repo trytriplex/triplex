@@ -27,6 +27,7 @@ import { SELECTION_LAYER_INDEX } from "./util/layers";
 import { encodeProps } from "./util/props";
 import {
   findObject3D,
+  isObjectVisible as isMeshVisible,
   resolveObject3D,
   resolveObject3DMeta,
   type EditorNodeData,
@@ -413,15 +414,18 @@ export function Selection({
 
       raycaster.setFromCamera(new Vector2(x, y), camera);
 
-      const result = raycaster
-        .intersectObject(scene)
-        .filter((found) => "isMesh" in found.object);
+      const result = raycaster.intersectObject(scene).filter((found) => {
+        return isMeshVisible(found.object);
+      });
 
       for (const found of result) {
         if (trySelectObject(found.object)) {
           return;
         }
       }
+
+      setSelected(undefined);
+      onBlur();
     };
 
     gl.domElement.addEventListener("mousedown", mouseDownHandler);
@@ -436,6 +440,7 @@ export function Selection({
     canvasSize.height,
     canvasSize.width,
     gl.domElement,
+    onBlur,
     scene,
     trySelectObject,
   ]);
