@@ -1,5 +1,15 @@
 # @triplex/renderer-r3f
 
+## 0.68.2
+
+### Patch Changes
+
+- 16117f1a: Invisible scene objects can no longer be selected in the scene.
+- 16117f1a: You can now unselect by clicking on empty space.
+  - @triplex/bridge@0.68.2
+  - @triplex/lib@0.68.2
+  - @triplex/ws@0.68.2
+
 ## 0.68.1
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @triplex/editor
 
+## 0.68.2
+
+### Patch Changes
+
+- Updated dependencies [1ee10f79]
+- Updated dependencies [1ee10f79]
+  - @triplex/ux@0.68.2
+  - @triplex/bridge@0.68.2
+  - @triplex/lib@0.68.2
+  - @triplex/ws@0.68.2
+
 ## 0.68.1
 
 ### Patch Changes

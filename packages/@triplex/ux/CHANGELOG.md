@@ -1,5 +1,14 @@
 # @triplex/ux
 
+## 0.68.2
+
+### Patch Changes
+
+- 1ee10f79: Fix color input setting unparsed persisted values instead of the transformed hex value.
+- 1ee10f79: Color input now uses blur event instead of native change event when confirming the changed value. This fixes the default value "" being considered the same as "#000".
+  - @triplex/bridge@0.68.2
+  - @triplex/lib@0.68.2
+
 ## 0.68.1
 
 ### Patch Changes

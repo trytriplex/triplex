@@ -1,7 +1,7 @@
 {
   "name": "triplex-vsce",
   "displayName": "Trplx",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "private": true,
   "description": "Coming soon..",
   "categories": [],
@@ -150,16 +150,16 @@
     "workspaceContains:**/*.{jsx,tsx}"
   ],
   "dependencies": {
-    "@triplex/client": "0.68.1",
-    "@triplex/server": "0.68.1"
+    "@triplex/client": "0.68.2",
+    "@triplex/server": "0.68.2"
   },
   "devDependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^1.2.3",
     "@radix-ui/react-icons": "^1.3.0",
-    "@triplex/bridge": "0.68.1",
-    "@triplex/lib": "0.68.1",
-    "@triplex/ux": "0.68.1",
-    "@triplex/ws": "0.68.1",
+    "@triplex/bridge": "0.68.2",
+    "@triplex/lib": "0.68.2",
+    "@triplex/ux": "0.68.2",
+    "@triplex/ws": "0.68.2",
     "@types/raf-schd": "^4.0.3",
     "@types/vscode": "^1.88.0",
     "@vitejs/plugin-react": "^4.1.0",

@@ -1,5 +1,15 @@
 # @triplex/vscode
 
+## 0.0.13
+
+### Patch Changes
+
+- f7fa4c78: Panel min/max size has been increased.
+- 21a64166: Fix webview shifting 4px when selecting an element for the first time.
+- f7fa4c78: Panel splitter resizing now uses initial DOM width instead of state width.
+  - @triplex/client@0.68.2
+  - @triplex/server@0.68.2
+
 ## 0.0.12
 
 ### Patch Changes
