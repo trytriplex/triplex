@@ -19,6 +19,11 @@ import { ElementSelect } from "./element-select";
 import { ElementsPanel, FilterElements } from "./panel-elements";
 import { SelectionPanel } from "./panel-selection";
 
+const panelSize = {
+  max: 2024,
+  min: 128,
+};
+
 function getProposedWidth({
   initialWidth,
   location,
@@ -28,7 +33,7 @@ function getProposedWidth({
 }): number {
   const diffX = location.current.input.clientX - location.initial.input.clientX;
   const proposedWidth = initialWidth + diffX;
-  return Math.min(Math.max(192, proposedWidth), 384);
+  return Math.min(Math.max(panelSize.min, proposedWidth), panelSize.max);
 }
 
 export function PanelContainer({
@@ -51,31 +56,41 @@ export function PanelContainer({
 
     return draggable({
       element: ref.current,
-      onDrag({ location }) {
+      getInitialData() {
+        const width = containerRef.current?.getBoundingClientRect().width;
+        if (!width) {
+          throw new Error("invariant: container resolved to no width");
+        }
+
+        return { width };
+      },
+      onDrag({ location, source }) {
+        const initialWidth: number = Number(source.data.width);
+
         containerRef.current?.style.setProperty(
           "--local-resizing-width",
-          `${getProposedWidth({ initialWidth: persistedWidth, location })}px`,
+          `${getProposedWidth({ initialWidth, location })}px`,
         );
       },
       onDragStart() {
         telemetry.event("scenepanel_resize_start");
         setState("drag");
       },
-      onDrop({ location }) {
+      onDrop({ location, source }) {
+        const initialWidth: number = Number(source.data.width);
+
         telemetry.event("scenepanel_resize_end");
         setState("idle");
         preventUnhandled.stop();
-        setPersistedWidth(
-          getProposedWidth({ initialWidth: persistedWidth, location }),
-        );
+        setPersistedWidth(getProposedWidth({ initialWidth, location }));
         containerRef.current?.style.removeProperty("--local-resizing-width");
       },
-      onGenerateDragPreview: ({ nativeSetDragImage }) => {
+      onGenerateDragPreview({ nativeSetDragImage }) {
         disableNativeDragPreview({ nativeSetDragImage });
         preventUnhandled.start();
       },
     });
-  }, [isExpanded, persistedWidth, telemetry]);
+  }, [isExpanded, telemetry]);
 
   return (
     <div className="relative flex">
@@ -88,7 +103,7 @@ export function PanelContainer({
         shape="square"
         style={{
           width: isExpanded
-            ? `clamp(192px, var(--local-resizing-width, ${persistedWidth}px), 50vw)`
+            ? `clamp(${panelSize.min}px, var(--local-resizing-width, ${persistedWidth}px), 50vw)`
             : undefined,
         }}
         testId="panels"
