@@ -35,12 +35,12 @@ function SelectionPanelLoadable({
   );
 
   useEffect(() => {
-    ref.current?.scrollIntoView({ block: "start" });
+    ref.current?.scroll({ top: 0 });
   }, [selected]);
 
   return (
-    <ScrollContainer className="border-overlay border-t">
-      <div className="flex p-1.5" ref={ref}>
+    <ScrollContainer className="border-overlay border-t" ref={ref}>
+      <div className="flex p-1.5">
         <input
           className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder h-[26px] w-full rounded-sm border px-[9px] focus:outline-none"
           onChange={(e) => {

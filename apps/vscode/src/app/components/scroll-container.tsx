@@ -7,20 +7,22 @@
 import { Root, Scrollbar, Thumb, Viewport } from "@radix-ui/react-scroll-area";
 import { cn } from "@triplex/lib";
 import rafSchd from "raf-schd";
-import { useEffect, useRef, useState } from "react";
+import { forwardRef, useEffect, useRef, useState } from "react";
+import { useMergeRefs } from "use-callback-ref";
 
-export function ScrollContainer({
-  children,
-  className,
-}: {
-  children: React.ReactNode;
-  className?: string;
-}) {
+export const ScrollContainer = forwardRef<
+  HTMLDivElement,
+  {
+    children: React.ReactNode;
+    className?: string;
+  }
+>(({ children, className }, fref) => {
   const [showOverflow, setOverflow] = useState(false);
-  const ref = useRef<HTMLDivElement>(null);
+  const scrollContainer = useRef<HTMLDivElement>(null);
+  const ref = useMergeRefs([fref, scrollContainer]);
 
   useEffect(() => {
-    const el = ref.current;
+    const el = scrollContainer.current;
     if (!el) {
       return;
     }
@@ -52,4 +54,6 @@ export function ScrollContainer({
       </Scrollbar>
     </Root>
   );
-}
+});
+
+ScrollContainer.displayName = "ScrollContainer";
