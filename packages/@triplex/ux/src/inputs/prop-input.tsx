@@ -21,11 +21,13 @@ export function PropInput({
   children,
   onChange,
   onConfirm,
+  path,
   prop,
 }: {
   children: RenderInputs;
   onChange: (value: unknown) => void;
   onConfirm: (value: unknown) => void;
+  path: string;
   prop: DeclaredProp | UndeclaredProp;
 }) {
   const isUnhandled =
@@ -37,6 +39,7 @@ export function PropInput({
     return children({
       onChange: noop,
       onConfirm: noop,
+      path,
       prop: {
         prop,
         type: "unhandled",
@@ -57,6 +60,7 @@ export function PropInput({
       return children({
         onChange,
         onConfirm,
+        path,
         prop: {
           prop: prop as PropWithValue<UnionLiteralType>,
           type: "union-literal",
@@ -72,6 +76,7 @@ export function PropInput({
           {children({
             onChange,
             onConfirm,
+            path,
             prop: {
               prop,
               type: "union",
@@ -84,6 +89,7 @@ export function PropInput({
     return children({
       onChange,
       onConfirm,
+      path,
       prop: {
         prop,
         type: "tuple",
@@ -93,6 +99,7 @@ export function PropInput({
     return children({
       onChange,
       onConfirm,
+      path,
       prop: {
         prop,
         type: "number",
@@ -102,6 +109,7 @@ export function PropInput({
     return children({
       onChange,
       onConfirm,
+      path,
       prop: {
         prop,
         type: "boolean",
@@ -111,6 +119,7 @@ export function PropInput({
     return children({
       onChange,
       onConfirm,
+      path,
       prop: {
         prop,
         type: "string",

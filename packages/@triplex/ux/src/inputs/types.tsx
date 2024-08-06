@@ -70,6 +70,7 @@ export interface RenderInputs {
   (props: {
     onChange: (value: unknown) => void;
     onConfirm: (value: unknown) => void;
+    path: string;
     prop: InputTypes;
   }): JSX.Element | null;
 }
@@ -79,6 +80,7 @@ export interface RenderInputsWithAction<TActions> {
     props: {
       onChange: (value: unknown) => void;
       onConfirm: (value: unknown) => void;
+      path: string;
       prop: InputTypes;
     },
     actions: TActions,

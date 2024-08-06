@@ -96,8 +96,8 @@ export function PanelContainer({
     <div className="relative flex">
       <Surface
         className={cn([
-          "border-overlay flex flex-col border-r",
-          isExpanded && "flex-shrink-0",
+          "flex flex-col",
+          isExpanded && "flex-shrink-0 border-r",
         ])}
         ref={containerRef}
         shape="square"
@@ -137,9 +137,9 @@ export function Panels() {
     <PanelContainer isExpanded={!!shown}>
       <div
         className={cn([
-          !shown &&
-            "bg-overlay border-overlay absolute left-[5px] top-[5px] rounded border p-0.5",
-          shown && "relative gap-1 p-1.5",
+          shown
+            ? "relative gap-1 p-1.5"
+            : "bg-overlay border-overlay absolute left-[5px] top-[5px] rounded border p-0.5",
           "z-20 flex items-start opacity-90",
         ])}
       >

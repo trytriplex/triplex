@@ -30,7 +30,7 @@ module.exports = {
     },
     borderColor: {
       input: "var(--vscode-dropdown-border)",
-      overlay: "var(--panel-view-border)",
+      overlay: "var(--vscode-panel-border)",
       selected: "var(--vscode-focusBorder)",
       transparent: "transparent",
     },

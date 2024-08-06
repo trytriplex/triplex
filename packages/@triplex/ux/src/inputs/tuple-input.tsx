@@ -73,12 +73,14 @@ export function TupleInput({
   children,
   onChange,
   onConfirm,
+  path,
   persistedValue,
   values,
 }: {
   children: RenderInputs;
   onChange: (value: unknown[]) => void;
   onConfirm: (value: unknown[]) => void;
+  path: string;
   persistedValue: unknown[] | unknown;
   values: TupleType["shape"];
 }) {
@@ -126,6 +128,7 @@ export function TupleInput({
             key={index}
             onChange={onChangeHandler}
             onConfirm={onConfirmHandler}
+            path={path}
             prop={
               // eslint-disable-next-line @typescript-eslint/no-explicit-any
               { ...val, value: persistedValueArr[index] as string } as any

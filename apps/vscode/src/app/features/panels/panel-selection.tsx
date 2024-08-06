@@ -74,6 +74,7 @@ function SelectionPanelLoadable({
                   propValue,
                 });
               }}
+              path={selected.parentPath}
               prop={prop}
             >
               {renderPropInputs}

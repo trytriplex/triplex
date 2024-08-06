@@ -14,6 +14,7 @@ export function UnionInput({
   name,
   onChange,
   onConfirm,
+  path,
   persistedValue,
   values,
 }: {
@@ -21,6 +22,7 @@ export function UnionInput({
   name: string;
   onChange: (value: unknown) => void;
   onConfirm: (value: unknown) => void;
+  path: string;
   persistedValue?: string | number | boolean;
   values: Type[];
 }) {
@@ -31,6 +33,7 @@ export function UnionInput({
     <PropInput
       onChange={onChange}
       onConfirm={onConfirm}
+      path={path}
       prop={
         Object.assign(
           { name },

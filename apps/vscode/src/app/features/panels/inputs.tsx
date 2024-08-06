@@ -33,9 +33,18 @@ const createIssueURL = (prop: DeclaredProp | Prop) =>
       "\n```",
   );
 
+const createCodeLink = (path: string, prop: DeclaredProp | Prop) => {
+  if ("value" in prop) {
+    return encodeURI(`vscode://file/${path}:${prop.line}:${prop.column}`);
+  }
+
+  return "";
+};
+
 export const renderPropInputs: RenderInputs = ({
   onChange,
   onConfirm,
+  path,
   prop,
 }) => {
   if (prop.type === "string") {
@@ -178,6 +187,7 @@ export const renderPropInputs: RenderInputs = ({
         name={prop.prop.name}
         onChange={onChange}
         onConfirm={onConfirm}
+        path={path}
         persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
         values={prop.prop.shape}
       >
@@ -208,6 +218,7 @@ export const renderPropInputs: RenderInputs = ({
         <TupleInput
           onChange={onChange}
           onConfirm={onConfirm}
+          path={path}
           persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
           values={prop.prop.shape}
         >
@@ -260,7 +271,11 @@ export const renderPropInputs: RenderInputs = ({
       </Label>
       <a
         className="hover:text-input text-input focus:border-selected bg-input border-input mb-1 flex h-[26px] w-full cursor-pointer items-center rounded-sm border px-[9px] focus:outline-none"
-        href={isControlledInCode ? undefined : createIssueURL(prop.prop)}
+        href={
+          isControlledInCode
+            ? createCodeLink(path, prop.prop)
+            : createIssueURL(prop.prop)
+        }
         title={
           isControlledInCode
             ? "This prop is controlled by code."
