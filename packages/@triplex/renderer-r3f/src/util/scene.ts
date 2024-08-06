@@ -93,6 +93,11 @@ export function isActiveElement(
 
 export function isObjectVisible(obj: Object3D): boolean {
   const isMesh = "isMesh" in obj;
+  const isInteractionPanel = "isInteractionPanel" in obj;
+
+  if (isInteractionPanel) {
+    return true;
+  }
 
   if (!isMesh || !obj.visible) {
     return false;

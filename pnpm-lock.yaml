@@ -595,8 +595,8 @@ importers:
         specifier: ^8.16.1
         version: 8.16.1(react-dom@18.2.0)(react@18.2.0)(three@0.163.0)
       '@react-three/uikit':
-        specifier: ^0.3.6
-        version: 0.3.6(@react-three/fiber@8.16.1)(@types/react@18.3.3)(react@18.2.0)(three@0.163.0)
+        specifier: ^0.4.0
+        version: 0.4.0(@react-three/fiber@8.16.1)(@types/react@18.3.3)(react@18.2.0)(three@0.163.0)
       '@types/react':
         specifier: 18.3.3
         version: 18.3.3
@@ -625,8 +625,8 @@ importers:
         specifier: ^1.1.1
         version: 1.1.1(@react-three/fiber@8.16.1)(react@18.2.0)(three@0.163.0)
       '@react-three/uikit':
-        specifier: ^0.3.6
-        version: 0.3.6(@react-three/fiber@8.16.1)(@types/react@18.3.3)(react@18.2.0)(three@0.163.0)
+        specifier: ^0.4.0
+        version: 0.4.0(@react-three/fiber@8.16.1)(@types/react@18.3.3)(react@18.2.0)(three@0.163.0)
       '@types/react':
         specifier: 18.3.3
         version: 18.3.3
@@ -2843,8 +2843,8 @@ packages:
       playwright: 1.44.1
     dev: false
 
-  /@pmndrs/uikit@0.3.6(three@0.163.0):
-    resolution: {integrity: sha512-TGcOV2cJTdNFUyEWfTlxuiZmb+jZtBe+CS5ZdR7Weco3BE0m830x0M2UEkPGdw+6Ch8IzPKf5w2pEPtVPCA6QQ==}
+  /@pmndrs/uikit@0.4.0(three@0.163.0):
+    resolution: {integrity: sha512-tbHxbssMH230T7j0NMwk8zwPuIo9ifDJpnIRLxCsiGm7xs8xnDInR8r7siFTHypZ5NIiiDvnm8QGHkY+jZdBNw==}
     peerDependencies:
       three: '>=0.160'
     dependencies:
@@ -3593,14 +3593,14 @@ packages:
       three: 0.163.0
     dev: false
 
-  /@react-three/uikit@0.3.6(@react-three/fiber@8.16.1)(@types/react@18.3.3)(react@18.2.0)(three@0.163.0):
-    resolution: {integrity: sha512-kDKcFR+XbfUIfS7tnViMzJetA01TysZTVXJm2x3Ve+/viYJuX9ISCKFABNQ76iVWNYMhobS2VAb0/8l+shUJLA==}
+  /@react-three/uikit@0.4.0(@react-three/fiber@8.16.1)(@types/react@18.3.3)(react@18.2.0)(three@0.163.0):
+    resolution: {integrity: sha512-VE0xbliPk6JkX+9q0vBdGkiqGLW/Z45u0UtiaVyYKd3HdN6Kw+K34DifG8QlHROMm1oSYDG0lZ9ghkGYgSBT8w==}
     hasBin: true
     peerDependencies:
       '@react-three/fiber': '>=8'
       react: '>=18'
     dependencies:
-      '@pmndrs/uikit': 0.3.6(three@0.163.0)
+      '@pmndrs/uikit': 0.4.0(three@0.163.0)
       '@preact/signals-core': 1.5.1
       '@react-three/fiber': 8.16.1(react-dom@18.2.0)(react@18.2.0)(three@0.163.0)
       chalk: 5.3.0
