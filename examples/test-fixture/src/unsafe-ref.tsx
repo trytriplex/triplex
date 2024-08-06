@@ -9,6 +9,8 @@
 import { useLayoutEffect, useRef, useState } from "react";
 import { type Mesh } from "three";
 
+const visible = true;
+
 export const UnsafeRefAccess = () => {
   const ref = useRef<Mesh>(null!);
   const [, setRe] = useState(false);
@@ -27,7 +29,7 @@ export const UnsafeRefAccess = () => {
   }, []);
 
   return (
-    <mesh ref={ref}>
+    <mesh ref={ref} visible={visible}>
       <boxGeometry />
       <meshStandardMaterial />
     </mesh>
