@@ -13,6 +13,7 @@ import { type RenderInput } from "./types";
 export function ColorInput({
   actionId,
   children,
+  defaultValue = "",
   name,
   onChange,
   onConfirm,
@@ -23,8 +24,9 @@ export function ColorInput({
   children: RenderInput<
     { defaultValue: string | undefined; onBlur: () => void },
     HTMLInputElement,
-    { clear: () => void; contrast: "light" | "dark"; hasChanged: boolean }
+    { clear: () => void; hasChanged: boolean }
   >;
+  defaultValue?: string;
   name: string;
   onChange: (value: string | undefined) => void;
   onConfirm: (value: string | undefined) => void;
@@ -38,14 +40,18 @@ export function ColorInput({
   const persistedValueHex = persistedValueColor
     ? persistedValueColor.toHexString()
     : undefined;
-  const [hasChanged, setHasChanged] = useState(false);
+  const [hasChanged, setHasChanged] = useState(!!defaultValue);
   const telemetry = useTelemetry();
+  const defaultValueHex = defaultValue
+    ? tinycolor(defaultValue).toHexString()
+    : "";
+  const actualValueHex = persistedValueHex ?? defaultValueHex;
 
   useEffect(() => {
     if (ref.current) {
-      ref.current.value = persistedValueHex || "";
+      ref.current.value = actualValueHex;
     }
-  }, [persistedValueHex]);
+  }, [defaultValue, actualValueHex]);
 
   const onChangeHandler: FormEventHandler<HTMLInputElement> = (e) => {
     if (e.target instanceof HTMLInputElement) {
@@ -74,7 +80,7 @@ export function ColorInput({
 
   return children(
     {
-      defaultValue: persistedValueHex,
+      defaultValue: actualValueHex,
       id: name,
       onBlur: onBlurHandler,
       onChange: onChangeHandler,
@@ -83,7 +89,6 @@ export function ColorInput({
     },
     {
       clear: clearInputValue,
-      contrast: persistedValueColor?.isLight() ? "light" : "dark",
       hasChanged,
     },
   );

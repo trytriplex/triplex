@@ -27,7 +27,7 @@ import { type SourceFileReadOnly } from "./project";
 
 export function unrollType(
   type: Type,
-  unionLabels: Record<string, string> = {}
+  unionLabels: Record<string, string> = {},
 ): UnrolledType {
   if (type.isNumber()) {
     return {
@@ -90,7 +90,7 @@ export function unrollType(
       .filter(
         // Remove duplicates if any exist
         (v, i, a) =>
-          a.findIndex((v2) => JSON.stringify(v2) === JSON.stringify(v)) === i
+          a.findIndex((v2) => JSON.stringify(v2) === JSON.stringify(v)) === i,
       );
 
     if (shape.length === 1) {
@@ -220,7 +220,7 @@ function extractJSDoc(symbol: SymbolType) {
 function collectUnionLabels(
   propType: Type,
   outLabels: Record<string, Record<string, string>>,
-  propDecl: PropertySignature
+  propDecl: PropertySignature,
 ): Record<string, string> | undefined {
   let propTypeName = propType.getText();
 
@@ -277,7 +277,7 @@ function collectUnionLabels(
 }
 
 export function resolveExpressionValue(
-  expression: Expression | undefined
+  expression: Expression | undefined,
 ): ExpressionValue {
   // Value is inside a JSX expression
   if (Node.isIdentifier(expression)) {
@@ -338,7 +338,7 @@ export function resolveExpressionValue(
 }
 
 export function getJsxElementPropTypes(
-  element: JsxSelfClosingElement | JsxElement
+  element: JsxSelfClosingElement | JsxElement,
 ) {
   const props: (Prop | DeclaredProp)[] = [];
   const attributes = getAttributes(element);
@@ -389,7 +389,7 @@ export function getJsxElementPropTypes(
     const unionLabels = collectUnionLabels(
       propType,
       unionValueLabels,
-      propDeclaration
+      propDeclaration,
     );
     const defaultValue = defaultValues[propName];
 
@@ -398,7 +398,7 @@ export function getJsxElementPropTypes(
       const value = resolveExpressionValue(
         Node.isJsxExpression(initializer)
           ? initializer.getExpressionOrThrow()
-          : initializer
+          : initializer,
       );
       const { column, line } = element
         .getSourceFile()
@@ -510,7 +510,7 @@ export function getJsxElementPropTypes(
 
 function getComponentPropsObjectBinding(
   declaration: Node,
-  propsSymbolType?: SymbolType
+  propsSymbolType?: SymbolType,
 ) {
   const valueDeclaration = propsSymbolType?.getValueDeclaration();
   if (Node.isParameterDeclaration(valueDeclaration)) {
@@ -539,9 +539,9 @@ function getComponentPropsObjectBinding(
 
 export function getFunctionPropTypes(
   sourceFile: SourceFileReadOnly,
-  exportName: string
+  exportName: string,
 ) {
-  const propTypes: (Prop & { defaultValue?: ExpressionValue })[] = [];
+  const propTypes: Prop[] = [];
   const empty = {
     props: propTypes,
     transforms: { rotate: false, scale: false, translate: false },

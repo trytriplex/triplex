@@ -154,6 +154,7 @@ export interface RendererElementProps {
   __meta: EmbeddedMeta;
   attach?: unknown;
   children?: unknown;
+  forceInsideSceneObjectContext?: boolean;
   name?: string;
   position?: unknown;
   rotation?: unknown;

@@ -9,24 +9,32 @@ import { fireEvent, render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { ColorInput } from "../color-input";
 
+const TestHarness = (testProps: {
+  defaultValue?: string;
+  onChange?: (value?: string) => void;
+  onConfirm?: (value?: string) => void;
+  persistedValue?: string;
+}) => (
+  <ColorInput
+    actionId="assetsdrawer_assets"
+    name="color"
+    onChange={vi.fn()}
+    onConfirm={vi.fn()}
+    {...testProps}
+  >
+    {(props) => <input {...props} data-testid="input" type="color" />}
+  </ColorInput>
+);
+
 describe("color input", () => {
   it("should update value when persisted value changes", () => {
-    const jsx = (val: string) => (
-      <ColorInput
-        actionId="assetsdrawer_changelog_ok"
-        name="foo"
-        onChange={vi.fn()}
-        onConfirm={vi.fn()}
-        persistedValue={val}
-      >
-        {(props) => <input {...props} data-testid="input" type="color" />}
-      </ColorInput>
+    const { getByTestId, rerender } = render(
+      <TestHarness persistedValue="#fff" />,
     );
-    const { getByTestId, rerender } = render(jsx("#fff"));
 
-    rerender(jsx("#000"));
+    rerender(<TestHarness persistedValue="#000" />);
+
     const input = getByTestId("input") as HTMLInputElement;
-
     expect(input.value).toEqual("#000000");
   });
 
@@ -34,14 +42,7 @@ describe("color input", () => {
     const confirm = vi.fn();
     const change = vi.fn();
     const { getByTestId } = render(
-      <ColorInput
-        actionId="assetsdrawer_changelog_ok"
-        name="foo"
-        onChange={change}
-        onConfirm={confirm}
-      >
-        {(props) => <input {...props} data-testid="input" type="color" />}
-      </ColorInput>,
+      <TestHarness onChange={change} onConfirm={confirm} />,
     );
     const input = getByTestId("input") as HTMLInputElement;
 
@@ -53,16 +54,24 @@ describe("color input", () => {
   });
 
   it("should transform non-hex color to hex color", () => {
+    const { getByTestId } = render(<TestHarness persistedValue="blue" />);
+
+    const input = getByTestId("input") as HTMLInputElement;
+
+    expect(input.value).toEqual("#0000ff");
+  });
+
+  it("should transform non-hex default color to hex color", () => {
+    const { getByTestId } = render(<TestHarness defaultValue="blue" />);
+
+    const input = getByTestId("input") as HTMLInputElement;
+
+    expect(input.value).toEqual("#0000ff");
+  });
+
+  it("should prioritize persisted vaclue over default value", () => {
     const { getByTestId } = render(
-      <ColorInput
-        actionId="assetsdrawer_changelog_ok"
-        name="foo"
-        onChange={vi.fn()}
-        onConfirm={vi.fn()}
-        persistedValue="blue"
-      >
-        {(props) => <input {...props} data-testid="input" type="color" />}
-      </ColorInput>,
+      <TestHarness defaultValue="green" persistedValue="blue" />,
     );
 
     const input = getByTestId("input") as HTMLInputElement;

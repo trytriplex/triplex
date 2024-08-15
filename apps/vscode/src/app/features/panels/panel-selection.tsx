@@ -6,8 +6,7 @@
  */
 import { send } from "@triplex/bridge/host";
 import { PropInput } from "@triplex/ux/inputs";
-import { useDeferredValue, useEffect, useRef } from "react";
-import { ScrollContainer } from "../../components/scroll-container";
+import { useDeferredValue } from "react";
 import { useLazySubscription } from "../../hooks/ws";
 import { useFilter } from "../../stores/filter-props";
 import { useSceneStore, type ElementLocation } from "../../stores/scene";
@@ -25,7 +24,6 @@ function SelectionPanelLoadable({
 }: {
   selected: ElementLocation;
 }) {
-  const ref = useRef<HTMLDivElement>(null);
   const selected = useDeferredValue(inSelected);
   const filter = useFilter((state) => state.filter);
   const setFilter = useFilter((state) => state.set);
@@ -34,12 +32,8 @@ function SelectionPanelLoadable({
     selected,
   );
 
-  useEffect(() => {
-    ref.current?.scroll({ top: 0 });
-  }, [selected]);
-
   return (
-    <ScrollContainer className="border-overlay border-t" ref={ref}>
+    <>
       <div className="flex p-1.5">
         <input
           className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder h-[26px] w-full rounded-sm border px-[9px] focus:outline-none"
@@ -82,6 +76,6 @@ function SelectionPanelLoadable({
           );
         })}
       </div>
-    </ScrollContainer>
+    </>
   );
 }

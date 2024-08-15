@@ -16,6 +16,7 @@ import {
   ColorInput,
   LiteralUnionInput,
   NumberInput,
+  resolveDefaultValue,
   StringInput,
   TupleInput,
   UnionInput,
@@ -54,6 +55,7 @@ export const renderPropInputs: RenderInputs = ({
       return (
         <ColorInput
           actionId="scene_controls"
+          defaultValue={resolveDefaultValue(prop.prop, "string")}
           name={prop.prop.name}
           onChange={onChange}
           onConfirm={onConfirm}
@@ -97,6 +99,7 @@ export const renderPropInputs: RenderInputs = ({
     return (
       <StringInput
         actionId="scene_controls"
+        defaultValue={resolveDefaultValue(prop.prop, "string")}
         label={prop.prop.label}
         name={prop.prop.name}
         onChange={onChange}
@@ -127,6 +130,7 @@ export const renderPropInputs: RenderInputs = ({
     return (
       <NumberInput
         actionId="scene_controls"
+        defaultValue={resolveDefaultValue(prop.prop, "number")}
         label={prop.prop.label}
         name={prop.prop.name}
         onChange={onChange}
@@ -159,6 +163,7 @@ export const renderPropInputs: RenderInputs = ({
     return (
       <BooleanInput
         actionId="scene_controls"
+        defaultValue={resolveDefaultValue(prop.prop, "boolean")}
         name={prop.prop.name}
         onChange={onChange}
         onConfirm={onConfirm}
@@ -232,6 +237,7 @@ export const renderPropInputs: RenderInputs = ({
     return (
       <LiteralUnionInput
         actionId="scene_controls"
+        defaultValue={resolveDefaultValue(prop.prop, "string")}
         name={prop.prop.name}
         onChange={onChange}
         onConfirm={onConfirm}

@@ -21,6 +21,7 @@ import { type RenderInput } from "./types";
 export function LiteralUnionInput({
   actionId,
   children,
+  defaultValue = "",
   name,
   onChange,
   onConfirm,
@@ -39,6 +40,7 @@ export function LiteralUnionInput({
     HTMLSelectElement,
     { clear: () => void; isValuePersisted: boolean }
   >;
+  defaultValue?: string;
   name: string;
   onChange: (value: number | string | boolean | undefined) => void;
   onConfirm: (value: number | string | boolean | undefined) => void;
@@ -52,8 +54,10 @@ export function LiteralUnionInput({
 
   useEffect(() => {
     const index = values.findIndex((v) => v.literal === persistedValue);
-    ref.current.value = index !== -1 ? `${index}` : "";
-  }, [persistedValue, values]);
+    const defaultIndex = values.findIndex((v) => v.literal === defaultValue);
+    ref.current.value =
+      index !== -1 ? `${index}` : defaultIndex !== -1 ? `${defaultIndex}` : "";
+  }, [defaultValue, persistedValue, values]);
 
   const onChangeHandler: ChangeEventHandler<HTMLSelectElement> = (e) => {
     const currentValue = persistedValue ?? undefined;
@@ -91,11 +95,13 @@ export function LiteralUnionInput({
     }
   };
 
-  const placeholderOption: [string, string] = ["Select value...", ""];
-  const options: [string, string][] = values.map((value, index) => [
-    `${value.label || value.literal}`,
-    `${index}`,
-  ]);
+  const placeholderOption: [label: string, value: string] = [
+    "Select value...",
+    "",
+  ];
+  const options: [label: string, value: string][] = values.map(
+    (value, index) => [`${value.label || value.literal}`, `${index}`],
+  );
 
   return children(
     {

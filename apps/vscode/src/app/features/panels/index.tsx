@@ -11,12 +11,14 @@ import { type DragLocationHistory } from "@atlaskit/pragmatic-drag-and-drop/type
 import { LayersIcon } from "@radix-ui/react-icons";
 import { cn } from "@triplex/lib";
 import { useTelemetry } from "@triplex/ux";
-import { Suspense, useEffect, useRef, useState } from "react";
+import { Suspense, useDeferredValue, useEffect, useRef, useState } from "react";
 import { IconButton } from "../../components/button";
+import { ScrollContainer } from "../../components/scroll-container";
 import { Surface } from "../../components/surface";
 import { useSceneStore } from "../../stores/scene";
 import { ElementSelect } from "./element-select";
 import { ElementsPanel, FilterElements } from "./panel-elements";
+import { ProviderControlsPanel } from "./panel-provider";
 import { SelectionPanel } from "./panel-selection";
 
 const panelSize = {
@@ -125,9 +127,19 @@ export function PanelContainer({
 }
 
 export function Panels() {
-  const [shown, setShown] = useState<"elements" | undefined>(undefined);
+  const [realShown, setShown] = useState<"elements" | undefined>(undefined);
   const play = useSceneStore((store) => store.playState);
-  const selected = useSceneStore((store) => store.selected);
+  const realSelected = useSceneStore((store) => store.selected);
+  // We defer the values so when suspense is triggered we continue to
+  // show the previous state rather than showing nothing.
+  const shown = useDeferredValue(realShown);
+  const selected = useDeferredValue(realSelected);
+
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    ref.current?.scroll({ top: 0 });
+  }, [selected]);
 
   if (play.state === "play") {
     return null;
@@ -161,16 +173,24 @@ export function Panels() {
         )}
       </div>
 
-      {shown === "elements" && (
+      <div
+        className={shown ? "flex h-full flex-col overflow-hidden" : "hidden"}
+      >
         <Suspense>
-          <div className="grid h-full overflow-hidden [grid-auto-rows:1fr_2fr]">
+          <ScrollContainer className="h-1/2">
             <ElementsPanel />
+            <div className="h-1.5" />
+          </ScrollContainer>
+          <ScrollContainer className="border-overlay h-1/2 border-t" ref={ref}>
             <Suspense>
-              <SelectionPanel />
+              {selected && <SelectionPanel />}
+              <div className={selected ? "hidden" : undefined}>
+                <ProviderControlsPanel />
+              </div>
             </Suspense>
-          </div>
+          </ScrollContainer>
         </Suspense>
-      )}
+      </div>
     </PanelContainer>
   );
 }

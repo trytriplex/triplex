@@ -13,3 +13,4 @@ export { StringInput } from "./string-input";
 export { TupleInput } from "./tuple-input";
 export { UnionInput } from "./union-input";
 export type { RenderInput, RenderInputs } from "./types";
+export { resolveDefaultValue } from "./default-value";

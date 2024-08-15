@@ -17,6 +17,7 @@ import { type RenderInput } from "./types";
 export function StringInput({
   actionId,
   children,
+  defaultValue = "",
   label,
   name,
   onChange = noop,
@@ -31,6 +32,7 @@ export function StringInput({
     onKeyDown: KeyboardEventHandler<HTMLInputElement>;
     placeholder?: string;
   }>;
+  defaultValue?: string;
   label?: string;
   name: string;
   onChange?: (value: string | undefined) => void;
@@ -40,10 +42,11 @@ export function StringInput({
 }) {
   const ref = useRef<HTMLInputElement>(null!);
   const telemetry = useTelemetry();
+  const actualValue = persistedValue ?? defaultValue;
 
   useEffect(() => {
-    ref.current.value = persistedValue || "";
-  }, [persistedValue]);
+    ref.current.value = actualValue;
+  }, [actualValue]);
 
   const onChangeHandler = useEvent(() => {
     const nextValue = ref.current.value || undefined;
@@ -83,7 +86,7 @@ export function StringInput({
 
   return children(
     {
-      defaultValue: persistedValue,
+      defaultValue: actualValue,
       id: name,
       onBlur: onConfirmHandler,
       onChange: onChangeHandler,

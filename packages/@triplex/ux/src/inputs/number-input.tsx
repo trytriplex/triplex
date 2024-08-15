@@ -75,6 +75,7 @@ function toNumber(
 export function NumberInput({
   actionId,
   children,
+  defaultValue,
   label,
   name,
   onChange,
@@ -106,6 +107,7 @@ export function NumberInput({
       increment: () => void;
     }
   >;
+  defaultValue?: number;
   label?: string;
   max?: number;
   min?: number;
@@ -132,12 +134,11 @@ export function NumberInput({
   const step = toNumber(tags.step, stepModifier(modifier));
   const max = toNumber(tags.max, Number.POSITIVE_INFINITY);
   const min = toNumber(tags.min, Number.NEGATIVE_INFINITY);
-  const transformedDefaultValue = transformValue.in(persistedValue);
+  const actualValue = transformValue.in(persistedValue ?? defaultValue);
 
   useEffect(() => {
-    ref.current.value =
-      transformedDefaultValue !== undefined ? `${transformedDefaultValue}` : "";
-  }, [transformedDefaultValue]);
+    ref.current.value = actualValue !== undefined ? `${actualValue}` : "";
+  }, [actualValue]);
 
   const onChangeHandler = useCallback(() => {
     const nextValue = Number.isNaN(ref.current.valueAsNumber)
@@ -167,7 +168,7 @@ export function NumberInput({
       return;
     }
 
-    if (transformedDefaultValue !== nextValue) {
+    if (actualValue !== nextValue) {
       onConfirm(nextValue);
       telemetry.event(`${actionId}_confirm`);
     }
@@ -287,8 +288,8 @@ export function NumberInput({
       if (document.pointerLockElement !== ref.current) {
         setIsPointerLock(false);
 
-        if (typeof transformedDefaultValue === "number") {
-          ref.current.valueAsNumber = transformedDefaultValue;
+        if (typeof actualValue === "number") {
+          ref.current.valueAsNumber = actualValue;
         } else {
           ref.current.value = "";
         }
@@ -302,7 +303,7 @@ export function NumberInput({
     return () => {
       document.removeEventListener("pointerlockchange", callback);
     };
-  }, [isPointerLock, onChangeHandler, transformedDefaultValue]);
+  }, [isPointerLock, onChangeHandler, actualValue]);
 
   useEffect(() => {
     if (!isPointerLock) {
@@ -334,7 +335,7 @@ export function NumberInput({
 
   return children(
     {
-      defaultValue: transformedDefaultValue,
+      defaultValue: actualValue,
       id: name,
       max,
       min,

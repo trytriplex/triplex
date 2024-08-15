@@ -27,7 +27,7 @@ export function ErrorSplash({ error }: { error: Error }) {
           </a>
         </div>
 
-        <code className="mx-auto max-w-2xl bg-white/5 px-4 py-2 text-center">
+        <code className="mx-auto max-h-32 max-w-2xl overflow-auto bg-white/5 px-4 py-2 text-center">
           {error.message}
         </code>
       </div>

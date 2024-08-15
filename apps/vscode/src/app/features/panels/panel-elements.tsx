@@ -7,7 +7,6 @@
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useLayoutEffect, useReducer, useRef } from "react";
 import { IconButton } from "../../components/button";
-import { ScrollContainer } from "../../components/scroll-container";
 import { useFilter } from "../../stores/filter-elements";
 import { useSceneStore } from "../../stores/scene";
 import { SceneElements } from "./element";
@@ -68,11 +67,8 @@ export function ElementsPanel() {
   const context = useSceneStore((store) => store.context);
 
   return (
-    <ScrollContainer>
-      <ul>
-        <SceneElements exportName={context.exportName} path={context.path} />
-      </ul>
-      <div className="h-1.5" />
-    </ScrollContainer>
+    <ul>
+      <SceneElements exportName={context.exportName} path={context.path} />
+    </ul>
   );
 }

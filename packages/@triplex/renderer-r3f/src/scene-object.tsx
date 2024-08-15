@@ -133,7 +133,10 @@ function ParentComponentMetaProvider({
 export const SceneObjectContext = createContext(false);
 
 export const SceneObject = forwardRef<unknown, RendererElementProps>(
-  ({ __component: Component, __meta, ...props }, ref) => {
+  (
+    { __component: Component, __meta, forceInsideSceneObjectContext, ...props },
+    ref,
+  ) => {
     const { children, ...reconciledProps } = useSceneObjectProps(__meta, props);
     const [isDeleted, setIsDeleted] = useState(false);
     const onSceneObjectMount = useOnSceneObjectMount();
@@ -187,7 +190,7 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
       // We don't want this component to affect Triplex when looking through the camera.
       // E.g. user land controls. Get rid of the problem altogether!
       return <>{props.children}</>;
-    } else if (insideSceneObjectContext) {
+    } else if (forceInsideSceneObjectContext || insideSceneObjectContext) {
       const helper =
         typeof Component === "string"
           ? getHelperForElement(Component)
