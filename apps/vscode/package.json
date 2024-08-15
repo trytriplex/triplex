@@ -1,16 +1,30 @@
 {
   "name": "triplex-vsce",
-  "displayName": "Trplx",
+  "displayName": "Triplex for VS Code",
   "version": "0.0.13",
   "private": true,
-  "description": "Coming soon..",
-  "categories": [],
-  "keywords": [],
+  "description": "The React Three Fiber visual IDE.",
+  "categories": [
+    "Visualization",
+    "Other"
+  ],
+  "keywords": [
+    "threejs",
+    "r3f",
+    "react",
+    "react-three-fiber",
+    "visual-editor"
+  ],
+  "bugs": {
+    "url": "https://github.com/try-triplex/triplex/issues/new",
+    "email": "support@triplex.dev"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/try-triplex/triplex"
   },
   "license": "SEE LICENSE IN LICENSE",
+  "qna": "https://triplex.dev/docs/faq",
   "publisher": "trytriplex",
   "main": "./hook-extension.js",
   "files": [
@@ -191,6 +205,8 @@
     "main": "./dist/extension.js"
   },
   "icon": "./static/logo.png",
+  "preview": true,
+  "pricing": "Free",
   "sponsor": {
     "url": "https://github.com/sponsors/itsdouges"
   }
