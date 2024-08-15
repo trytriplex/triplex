@@ -13,6 +13,7 @@ import { useEffect } from "react";
  * file in the root directory of this source tree.
  */
 const assignedKeys: string[] = [];
+const excludedKeys = ["Escape", "Enter"];
 
 const inputTags = [
   "CHECKBOX",
@@ -121,25 +122,22 @@ export function onKeyDown(
  */
 export function useBlockInputPropagation() {
   useEffect(() => {
-    const callback = () => {};
+    const callback = (e: KeyboardEvent) => {
+      const activeElement = document.activeElement;
 
-    window.addEventListener(
-      "keydown",
-      (e) => {
-        const activeElement = document.activeElement;
+      if (
+        activeElement &&
+        e.metaKey === false &&
+        e.ctrlKey === false &&
+        e.altKey === false &&
+        excludedKeys.includes(e.key) === false &&
+        inputTags.some((tag) => activeElement.tagName.includes(tag))
+      ) {
+        e.stopPropagation();
+      }
+    };
 
-        if (
-          activeElement &&
-          e.metaKey === false &&
-          e.ctrlKey === false &&
-          e.altKey === false &&
-          inputTags.some((tag) => activeElement.tagName.includes(tag))
-        ) {
-          e.stopPropagation();
-        }
-      },
-      true,
-    );
+    window.addEventListener("keydown", callback, true);
 
     return () => {
       window.removeEventListener("keydown", callback, true);

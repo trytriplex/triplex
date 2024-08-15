@@ -18,6 +18,8 @@ test("fill number input", async ({ vsce }) => {
   await input.fill("0.5");
   await input.press("Enter");
 
+  // Escape should blur the input.
+  await expect(input).not.toBeFocused();
   await expect(input).toHaveValue("0.5");
 });
 
