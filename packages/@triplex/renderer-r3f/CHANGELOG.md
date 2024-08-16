@@ -1,5 +1,15 @@
 # @triplex/renderer-r3f
 
+## 0.68.3
+
+### Patch Changes
+
+- 11c2cb65: uikit@0.4.0+ scene objects can now be selected through the scene.
+- Updated dependencies [1c9c343a]
+  - @triplex/lib@0.68.3
+  - @triplex/bridge@0.68.3
+  - @triplex/ws@0.68.3
+
 ## 0.68.2
 
 ### Patch Changes

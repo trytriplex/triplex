@@ -1,5 +1,17 @@
 # @triplex/vscode
 
+## 0.0.14
+
+### Patch Changes
+
+- 4ab74c91: Fix error splash screen having a huge stack trace unexpectedly.
+- 4ab74c91: Add provider controls to the scene panel.
+- 4ab74c91: Support default values in string, number, boolean, and literal union inputs.
+- 0d97596c: Add link to code for controlled props.
+- 0d97596c: Fix borders flashing between two different colors on initial load.
+  - @triplex/client@0.68.3
+  - @triplex/server@0.68.3
+
 ## 0.0.13
 
 ### Patch Changes

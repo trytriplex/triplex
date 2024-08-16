@@ -1,5 +1,15 @@
 # @triplex/ux
 
+## 0.68.3
+
+### Patch Changes
+
+- 4ab74c91: Support default values in string, number, boolean, and literal union inputs.
+- 0d97596c: Add link to code for controlled props.
+- Updated dependencies [1c9c343a]
+  - @triplex/lib@0.68.3
+  - @triplex/bridge@0.68.3
+
 ## 0.68.2
 
 ### Patch Changes

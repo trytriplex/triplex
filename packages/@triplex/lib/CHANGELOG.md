@@ -1,5 +1,11 @@
 # @triplex/lib
 
+## 0.68.3
+
+### Patch Changes
+
+- 1c9c343a: Fix input propagation hook from blocking backspace, escape, and enter keys.
+
 ## 0.68.2
 
 ## 0.68.1

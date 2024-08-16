@@ -1,5 +1,14 @@
 # @triplex/client
 
+## 0.68.3
+
+### Patch Changes
+
+- Updated dependencies [11c2cb65]
+  - @triplex/renderer-r3f@0.68.3
+  - @triplex/bridge@0.68.3
+  - @triplex/renderer-react@0.68.3
+
 ## 0.68.2
 
 ### Patch Changes
