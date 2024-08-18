@@ -8,12 +8,21 @@ import { compose, on, send } from "@triplex/bridge/host";
 import { useCallback } from "react";
 import { create } from "zustand";
 
-export interface ElementLocation {
-  column: number;
-  line: number;
-  parentPath: string;
-  path: string;
-}
+export type ElementLocation =
+  | {
+      column: number;
+      line: number;
+      parentPath: string;
+      path: string;
+    }
+  | {
+      column: number;
+      exportName: string;
+      line: number;
+      parentPath: string;
+      path: string;
+    };
+
 export type PlayStateAction =
   | "camera-default"
   | "camera-editor"
@@ -65,7 +74,9 @@ function playReducer(state: PlayState, action: PlayStateAction): PlayState {
 export const useSceneStore = create<SceneStore>((set, get) => ({
   blurElement: () => send("request-blur-element", undefined),
   context: window.triplex.initialState,
-  focusElement: (data) => send("request-focus-element", data),
+  focusElement: (data) => {
+    send("request-focus-element", data);
+  },
   playState: { camera: "editor", state: "edit" },
   selected: undefined,
   setPlayState: (action: PlayStateAction) =>

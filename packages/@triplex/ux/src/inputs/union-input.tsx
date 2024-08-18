@@ -26,7 +26,7 @@ export function UnionInput({
   persistedValue?: string | number | boolean;
   values: Type[];
 }) {
-  const [index, toggle] = useReducer((prev) => prev + 1, 0);
+  const [index, toggle] = useReducer((prev: number) => prev + 1, 0);
   const value = values[index % values.length];
 
   return (

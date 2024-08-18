@@ -25,22 +25,30 @@ function Events() {
     return compose([
       onVSCE("vscode:request-delete-element", (data) => {
         const target = data || selected;
-        if (target) {
-          send("request-delete-element", target);
-          sendVSCE("element-delete", target);
+        if (!target || "exportName" in target) {
+          return;
         }
+
+        send("request-delete-element", target);
+        sendVSCE("element-delete", target);
       }),
       onVSCE("vscode:request-duplicate-element", (data) => {
         const target = data || selected;
-        if (target) {
-          sendVSCE("element-duplicate", target);
+        if (!target || "exportName" in target) {
+          return;
         }
+
+        sendVSCE("element-duplicate", target);
       }),
       onKeyDown("Escape", () => {
         send("request-blur-element", undefined);
       }),
       onVSCE("vscode:request-jump-to-element", (data) => {
         const target = data || selected;
+        if (target && "exportName" in target) {
+          return;
+        }
+
         send("request-jump-to-element", target);
       }),
     ]);

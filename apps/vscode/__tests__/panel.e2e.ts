@@ -20,3 +20,23 @@ test("resizing the scene panel", async ({ vsce }) => {
 
   await expect(editor.panels).not.toHaveAttribute("style", initialStyle || "");
 });
+
+test.describe(() => {
+  test.use({
+    filename: "examples/test-fixture/src/controls.tsx",
+  });
+
+  test("component controls updates prop value", async ({ vsce }) => {
+    await vsce.codelens("ComponentControlsTest").click();
+    const { componentControlsButtons, panels, scene, togglePanelsButton } =
+      vsce.resolveEditor();
+    await togglePanelsButton.click();
+    await componentControlsButtons.open.click();
+    const input = panels.getByLabel("color", { exact: true });
+
+    await input.selectOption("green");
+
+    const element = scene.getByTestId("component-props");
+    await expect(element).toContainText(`"color":"green"`);
+  });
+});

@@ -9,7 +9,7 @@ import { test as base, type Electron, type TestInfo } from "@playwright/test";
 import { resolveCliArgsFromVSCodeExecutablePath } from "@vscode/test-electron";
 import pkg from "package.json";
 import { _electron as electron } from "playwright";
-import { join } from "upath";
+import { basename, join } from "upath";
 import { resolveExecPath, runUseWithTrace } from "../../../../test/playwright";
 import { ExtensionPage } from "./po";
 
@@ -64,7 +64,13 @@ const launchElectronWithRetry = async (
   }
 };
 
-async function launch(testInfo: TestInfo) {
+async function launch({
+  filename,
+  testInfo,
+}: {
+  filename: string;
+  testInfo: TestInfo;
+}) {
   const isSmokeTest =
     process.env.SMOKE_TEST && testInfo.tags.includes("@vsce_smoke");
 
@@ -80,7 +86,7 @@ async function launch(testInfo: TestInfo) {
     args: [
       ...args,
       join(process.cwd(), "examples/test-fixture"),
-      join(process.cwd(), "examples/test-fixture/src/scene.tsx"),
+      join(process.cwd(), filename),
       process.env.CI ? "--headless" : "",
       // Args found from https://github.com/microsoft/playwright/issues/22351
       "--disable-gpu-sandbox", // https://github.com/microsoft/vscode-test/issues/221
@@ -134,15 +140,15 @@ async function launch(testInfo: TestInfo) {
 }
 
 const test = base.extend<{
+  filename: string;
   vsce: ExtensionPage;
 }>({
-  vsce: async ({}, use, testInfo) => {
-    const { app, logs, window } = await launch(testInfo);
-    const page = new ExtensionPage(window);
+  filename: ["examples/test-fixture/src/scene.tsx", { option: true }],
+  vsce: async ({ filename }, use, testInfo) => {
+    const { app, logs, window } = await launch({ filename, testInfo });
+    const page = new ExtensionPage(window, basename(filename), "test-fixture");
 
     await runUseWithTrace({ logs, page, testInfo, use });
-
-    app.process().kill();
     await app.close();
   },
 });

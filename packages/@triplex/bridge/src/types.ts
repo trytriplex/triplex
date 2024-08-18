@@ -168,6 +168,7 @@ export interface HostSendEventData {
   };
   "request-focus-element": {
     column: number;
+    exportName?: string;
     line: number;
     parentPath: string;
     path: string;

@@ -18,7 +18,7 @@ function ProviderProps() {
     path: window.triplex.env.config.provider,
   });
   const props = data.props.filter((prop) => prop.name !== "children");
-  const [resetKey, resetForm] = useReducer((val) => val + 1, 0);
+  const [resetKey, resetForm] = useReducer((val: number) => val + 1, 0);
 
   return (
     <>

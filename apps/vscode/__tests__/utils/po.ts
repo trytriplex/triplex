@@ -4,15 +4,27 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { expect } from "@playwright/test";
 import { type Page } from "playwright";
 
 export class ExtensionPage {
-  constructor(public readonly page: Page) {}
+  constructor(
+    public readonly page: Page,
+    public readonly filename: string,
+    public readonly project: string,
+  ) {}
 
   codelens(componentName: string) {
-    return this.page.getByTitle(
+    const locator = this.page.getByTitle(
       `Will open the ${componentName} component in Triplex`,
     );
+
+    return {
+      click: async () => {
+        await locator.click();
+        await expect(this.loadedComponent).toHaveText(componentName);
+      },
+    };
   }
 
   get loadedComponent() {
@@ -34,15 +46,24 @@ export class ExtensionPage {
     };
   }
 
-  resolveEditor({
-    filename = "scene.tsx",
-    project = "test-fixture",
-  }: { filename?: string; project?: string } = {}) {
+  resolveEditor() {
     const locator = this.page
       .frameLocator(".webview.ready")
-      .frameLocator(`#active-frame[title="${filename} (${project})"]`);
+      .frameLocator(
+        `#active-frame[title="${this.filename} (${this.project})"]`,
+      );
 
     return {
+      get componentControlsButtons() {
+        return {
+          close: locator.getByRole("button", {
+            name: "Close Component Controls",
+          }),
+          open: locator.getByRole("button", {
+            name: "Open Component Controls",
+          }),
+        };
+      },
       get devOnlyCameraPanel() {
         return this.scene.getByTestId("camera-panel");
       },

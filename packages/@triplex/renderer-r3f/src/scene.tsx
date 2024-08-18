@@ -69,13 +69,7 @@ export function SceneFrame({
       parentPath: string;
       path: string;
     }) => {
-      // This will be serialized so we create a new object just in case.
-      send("element-focused", {
-        column: data.column,
-        line: data.line,
-        parentPath: data.parentPath,
-        path: data.path,
-      });
+      send("element-focused", data);
     },
     [],
   );

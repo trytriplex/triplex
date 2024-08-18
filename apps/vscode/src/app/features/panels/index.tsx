@@ -8,7 +8,7 @@ import { draggable } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { disableNativeDragPreview } from "@atlaskit/pragmatic-drag-and-drop/element/disable-native-drag-preview";
 import { preventUnhandled } from "@atlaskit/pragmatic-drag-and-drop/prevent-unhandled";
 import { type DragLocationHistory } from "@atlaskit/pragmatic-drag-and-drop/types";
-import { LayersIcon } from "@radix-ui/react-icons";
+import { LayersIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import { cn } from "@triplex/lib";
 import { useTelemetry } from "@triplex/ux";
 import { Suspense, useDeferredValue, useEffect, useRef, useState } from "react";
@@ -129,12 +129,15 @@ export function PanelContainer({
 export function Panels() {
   const [realShown, setShown] = useState<"elements" | undefined>(undefined);
   const play = useSceneStore((store) => store.playState);
+  const focusElement = useSceneStore((store) => store.focusElement);
+  const blurElement = useSceneStore((store) => store.blurElement);
+  const context = useSceneStore((store) => store.context);
   const realSelected = useSceneStore((store) => store.selected);
   // We defer the values so when suspense is triggered we continue to
   // show the previous state rather than showing nothing.
   const shown = useDeferredValue(realShown);
   const selected = useDeferredValue(realSelected);
-
+  const isComponentControlsShown = selected && "exportName" in selected;
   const ref = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -168,6 +171,30 @@ export function Panels() {
         {shown && (
           <>
             <ElementSelect />
+            <IconButton
+              actionId="scenepanel_component_edit"
+              icon={Pencil2Icon}
+              isSelected={isComponentControlsShown}
+              label={
+                isComponentControlsShown
+                  ? "Close Component Controls"
+                  : "Open Component Controls"
+              }
+              onClick={() => {
+                if (isComponentControlsShown) {
+                  blurElement();
+                } else {
+                  focusElement({
+                    column: -1,
+                    exportName: context.exportName,
+                    line: -1,
+                    parentPath: "",
+                    path: context.path,
+                  });
+                }
+              }}
+              spacing="spacious"
+            />
             <FilterElements />
           </>
         )}

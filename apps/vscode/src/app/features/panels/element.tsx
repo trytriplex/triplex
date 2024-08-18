@@ -52,6 +52,7 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
     props.type === "custom" && props.exportName && props.path;
   const isSelected =
     selected &&
+    "column" in selected &&
     selected.column === props.column &&
     selected.line === props.line &&
     selected.path === props.parentPath;
