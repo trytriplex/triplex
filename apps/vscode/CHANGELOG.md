@@ -1,5 +1,15 @@
 # @triplex/vscode
 
+## 0.0.15
+
+### Patch Changes
+
+- 35920ba3: Add component controls.
+- Updated dependencies [d78010e0]
+- Updated dependencies [d78010e0]
+  - @triplex/server@0.68.4
+  - @triplex/client@0.68.4
+
 ## 0.0.14
 
 ### Patch Changes

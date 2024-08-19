@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.68.4
+
+### Patch Changes
+
+- d78010e0: Fix redo state being lost after saving.
+- d78010e0: The undo stack is no longer modified during an edit if nothing changed.
+
 ## 0.68.3
 
 ## 0.68.2

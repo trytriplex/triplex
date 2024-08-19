@@ -1,5 +1,14 @@
 # @triplex/editor
 
+## 0.68.4
+
+### Patch Changes
+
+- @triplex/ux@0.68.4
+- @triplex/ws@0.68.4
+- @triplex/bridge@0.68.4
+- @triplex/lib@0.68.4
+
 ## 0.68.3
 
 ### Patch Changes
