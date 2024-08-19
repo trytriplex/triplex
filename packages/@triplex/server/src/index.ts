@@ -166,18 +166,14 @@ export function createServer({
     const { id, path } = context.params;
     const sourceFile = project.getSourceFile(path);
 
-    sourceFile.undo(id ? Number(id) : undefined);
-
-    context.response.body = { message: "success" };
+    context.response.body = sourceFile.undo(id ? Number(id) : undefined);
   });
 
   router.post("/scene/:path/redo/:id?", (context) => {
     const { id, path } = context.params;
     const sourceFile = project.getSourceFile(path);
 
-    sourceFile.redo(id ? Number(id) : undefined);
-
-    context.response.body = { message: "success" };
+    context.response.body = sourceFile.redo(id ? Number(id) : undefined);
   });
 
   router.post(

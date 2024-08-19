@@ -137,7 +137,7 @@ export function createProject({
   const openedSourceFiles = new Map<SourceFile, string>();
   const newSourceFiles = new Set<SourceFile>();
   const sourceFileHistory = new Map<SourceFile, string[]>();
-  const sourceFileHistoryIndex = new Map<SourceFile, number>();
+  const sourceFileHistoryPointer = new Map<SourceFile, number>();
   const persistedSourceFile = new Map<SourceFile, string>();
 
   // Watch the all files inside cwd and watch for changes.
@@ -257,28 +257,38 @@ export function ${componentName}() {
           result: TResult extends SourceFile ? never : TResult,
         ]
       > => {
+        const currentFullText = sourceFile.getFullText();
+
         if (!persistedSourceFile.has(sourceFile)) {
           // Lazily set the current source file as the persisted source file
           // before any changes have been made.
-          persistedSourceFile.set(sourceFile, sourceFile.getFullText());
+          persistedSourceFile.set(sourceFile, currentFullText);
         }
 
         const undoStack = sourceFileHistory.get(sourceFile) || [
-          sourceFile.getFullText(),
+          currentFullText,
         ];
-        let undoStackIndex = sourceFileHistoryIndex.get(sourceFile) || 0;
+        let undoStackPointer =
+          sourceFileHistoryPointer.get(sourceFile) || undoStack.length - 1;
 
         const result = await callback(sourceFile);
 
-        undoStackIndex += 1;
-        undoStack.length = undoStackIndex;
-        undoStack.push(sourceFile.getFullText());
-        sourceFileHistoryIndex.set(sourceFile, undoStackIndex);
-        sourceFileHistory.set(sourceFile, undoStack);
+        const nextFullText = sourceFile.getFullText();
 
-        flushDirtyState();
+        if (nextFullText !== currentFullText) {
+          // Source has changed so we'll add it to the undo stack.
+          undoStackPointer += 1;
+          undoStack.length = undoStackPointer;
+          undoStack.push(nextFullText);
+          sourceFileHistoryPointer.set(sourceFile, undoStackPointer);
+          sourceFileHistory.set(sourceFile, undoStack);
+          flushDirtyState();
+        }
 
-        return [{ redoID: undoStackIndex, undoID: undoStackIndex - 1 }, result];
+        return [
+          { redoID: undoStackPointer, undoID: undoStackPointer - 1 },
+          result,
+        ];
       },
       isDirty: () => {
         return modifiedSourceFiles.has(sourceFile);
@@ -338,23 +348,39 @@ export function ${componentName}() {
       },
       redo: (id?: number) => {
         const undoStack = sourceFileHistory.get(sourceFile);
-        const undoStackIndex = sourceFileHistoryIndex.get(sourceFile);
+        const undoStackIndex = sourceFileHistoryPointer.get(sourceFile);
 
-        if (!undoStack || undoStackIndex === undefined) {
-          return;
+        if (!undoStack) {
+          return {
+            message: "Source file has no history.",
+            state: "unmodified",
+          };
+        }
+
+        if (undoStackIndex === undefined) {
+          return {
+            message: "Source file has no history pointer.",
+            state: "unmodified",
+          };
         }
 
         const nextIndex = id ?? undoStackIndex + 1;
         const nextSourceCode = undoStack[nextIndex];
+
         if (!nextSourceCode) {
-          return;
+          return {
+            message: `Source file has no history at index "${nextIndex}".`,
+            state: "unmodified",
+          };
         }
 
         sourceFile.replaceWithText(nextSourceCode);
 
-        sourceFileHistoryIndex.set(sourceFile, nextIndex);
+        sourceFileHistoryPointer.set(sourceFile, nextIndex);
 
         flushDirtyState();
+
+        return { index: nextIndex, state: "modified" };
       },
       reset: async () => {
         await sourceFile.refreshFromFileSystem();
@@ -370,6 +396,18 @@ export function ${componentName}() {
         }
 
         const exportName = openedSourceFiles.get(sourceFile);
+        const filePath = sourceFile.getFilePath();
+        const startAgainWhenChangedWatcher = watch(filePath, {
+          ignoreInitial: true,
+        }).once("change", async () => {
+          // Start watching the file again after the save has completed and watcher events
+          // have been flushed. We do this to resiliently skip the change event in the global watcher.
+          await startAgainWhenChangedWatcher.close();
+          watcher.add(filePath);
+        });
+
+        // Stop watching the file during the save so it doesn't trigger a change event in the global watcher.
+        watcher.unwatch(filePath);
 
         await persistSourceFile({
           cwd,
@@ -379,9 +417,11 @@ export function ${componentName}() {
 
         const sourceText = sourceFile.getFullText();
         const undoStack = sourceFileHistory.get(sourceFile);
+        const undoStackPointer = sourceFileHistoryPointer.get(sourceFile);
 
-        if (undoStack) {
-          undoStack[undoStack.length - 1] = sourceText;
+        if (undoStack && undoStackPointer !== undefined) {
+          // Replace the current pointer with the formatted source text.
+          undoStack[undoStackPointer] = sourceText;
         }
 
         persistedSourceFile.set(sourceFile, sourceText);
@@ -390,29 +430,44 @@ export function ${componentName}() {
         onStateChangeCallbacks.forEach((cb) => cb());
 
         if (exportName) {
-          invalidateThumbnail({ exportName, path });
+          invalidateThumbnail({ exportName, path: filePath });
         }
       },
       undo: (id?: number) => {
         const undoStack = sourceFileHistory.get(sourceFile);
-        const undoStackIndex = sourceFileHistoryIndex.get(sourceFile);
+        const undoStackIndex = sourceFileHistoryPointer.get(sourceFile);
 
-        if (!undoStack || undoStackIndex === undefined) {
-          return;
+        if (!undoStack) {
+          return {
+            message: "Source file has no history.",
+            state: "unmodified",
+          };
+        }
+
+        if (undoStackIndex === undefined) {
+          return {
+            message: "Source file has no history pointer.",
+            state: "unmodified",
+          };
         }
 
         const nextIndex = id ?? undoStackIndex - 1;
         const nextSourceCode = undoStack[nextIndex];
 
         if (!nextSourceCode) {
-          return;
+          return {
+            message: `Source file has no history at index "${nextIndex}".`,
+            state: "unmodified",
+          };
         }
 
         sourceFile.replaceWithText(nextSourceCode);
 
-        sourceFileHistoryIndex.set(sourceFile, nextIndex);
+        sourceFileHistoryPointer.set(sourceFile, nextIndex);
 
         flushDirtyState();
+
+        return { index: nextIndex, state: "modified" };
       },
     };
   }
