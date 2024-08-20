@@ -1,5 +1,13 @@
 # @triplex/vscode
 
+## 0.0.16
+
+### Patch Changes
+
+- b6d89da7: The input panel layout has been refactored to keep the type toggle button always aligned with the first input.
+  - @triplex/client@0.68.5
+  - @triplex/server@0.68.5
+
 ## 0.0.15
 
 ### Patch Changes

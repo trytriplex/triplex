@@ -1,5 +1,14 @@
 # @triplex/renderer-r3f
 
+## 0.68.5
+
+### Patch Changes
+
+- ea7e0420: Renderer now hides scene helpers when playing the scene.
+  - @triplex/bridge@0.68.5
+  - @triplex/lib@0.68.5
+  - @triplex/ws@0.68.5
+
 ## 0.68.4
 
 ### Patch Changes

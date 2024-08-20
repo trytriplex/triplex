@@ -1,5 +1,13 @@
 # @triplex/ux
 
+## 0.68.5
+
+### Patch Changes
+
+- b6d89da7: The string and number inputs now default to string and number placeholders when labels are undefined, respectively.
+  - @triplex/bridge@0.68.5
+  - @triplex/lib@0.68.5
+
 ## 0.68.4
 
 ### Patch Changes
