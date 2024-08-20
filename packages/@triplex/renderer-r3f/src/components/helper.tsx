@@ -13,6 +13,7 @@ import {
 import { useLayoutEffect, useRef, useState } from "react";
 import { type Mesh, type Object3D } from "three";
 import "./camera-helper";
+import { usePlayState } from "../stores/state";
 import { editorLayer, hiddenLayer } from "../util/layers";
 
 type Helper =
@@ -89,6 +90,7 @@ export function Helper({
   const [target, setTarget] = useState<Object3D | null>(null);
   const helperRef = useRef<HelperInstance>(null);
   const scene = useThree((three) => three.scene);
+  const state = usePlayState();
 
   useLayoutEffect(() => {
     if (targetRef && targetRef.current) {
@@ -118,6 +120,7 @@ export function Helper({
             layers={hiddenLayer}
             // eslint-disable-next-line @typescript-eslint/no-explicit-any
             ref={helperRef as any}
+            visible={state !== "play"}
           />,
           scene,
         )}

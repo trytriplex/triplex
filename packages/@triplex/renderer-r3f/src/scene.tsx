@@ -16,10 +16,10 @@ import {
   type PropsWithChildren,
 } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { Grid } from "triplex-drei";
 import { Canvas } from "./canvas";
 import { Camera, FitCameraToScene } from "./components/camera";
 import { CameraGizmo } from "./components/camera-gizmo";
+import { TriplexGrid } from "./components/grid";
 import { LoadingTriangle } from "./components/loading-triangle";
 import { PostProcessing } from "./components/post-processing";
 import { SubsequentSuspense } from "./components/suspense";
@@ -27,7 +27,6 @@ import { Tunnel } from "./components/tunnel";
 import { SceneLoader } from "./loader";
 import { ManualEditableSceneObject } from "./manual-editable";
 import { Selection } from "./selection";
-import { editorLayer } from "./util/layers";
 
 export function SceneFrame({
   provider: Provider,
@@ -153,21 +152,9 @@ export function SceneFrame({
             <CameraGizmo />
           </Suspense>
         </ErrorBoundary>
+        <TriplexGrid />
       </Camera>
 
-      <Grid
-        cellColor="#6f6f6f"
-        cellSize={1}
-        cellThickness={1.0}
-        fadeDistance={100}
-        fadeStrength={5}
-        followCamera
-        infiniteGrid
-        layers={editorLayer}
-        sectionColor="#9d4b4b"
-        sectionSize={3}
-        side={2}
-      />
       {fg("selection_postprocessing") && <PostProcessing />}
     </Canvas>
   );
