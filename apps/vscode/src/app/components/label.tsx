@@ -9,12 +9,20 @@ export function Label({
   description,
   htmlFor,
 }: {
-  children: string;
+  children?: string;
   description?: string;
   htmlFor: string;
 }) {
+  if (children === undefined) {
+    // We return an empty div so we keep union input
+    // grid layouts functional and have the label take
+    // the first grid item using the auto placement.
+    // See: https://github.com/try-triplex/triplex-monorepo/blob/4ab74c910ebbe67673b3a20baa9e377600380e7d/apps/vscode/src/app/features/panels/inputs.tsx#L194
+    return <div />;
+  }
+
   return (
-    <div>
+    <div className="col-span-2 mt-1">
       <label htmlFor={htmlFor} title={description}>
         {children}
       </label>

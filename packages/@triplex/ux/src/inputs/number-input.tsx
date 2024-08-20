@@ -345,7 +345,7 @@ export function NumberInput({
       onMouseDown: onMouseDownHandler,
       onMouseMove: onMouseMoveHandler,
       onMouseUp: onMouseUpHandler,
-      placeholder: label,
+      placeholder: label || "number",
       ref,
       required,
       step,

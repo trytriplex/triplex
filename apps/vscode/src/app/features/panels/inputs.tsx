@@ -63,12 +63,10 @@ export const renderPropInputs: RenderInputs = ({
           required={prop.prop.required}
         >
           {({ ref, ...props }, { clear, hasChanged }) => (
-            <div className="w-full">
-              {prop.prop.name && (
-                <Label description={prop.prop.description} htmlFor={props.id}>
-                  {prop.prop.name}
-                </Label>
-              )}
+            <>
+              <Label description={prop.prop.description} htmlFor={props.id}>
+                {prop.prop.name}
+              </Label>
               <div className="mb-1 flex items-center gap-1">
                 <input
                   {...props}
@@ -90,7 +88,7 @@ export const renderPropInputs: RenderInputs = ({
                   />
                 )}
               </div>
-            </div>
+            </>
           )}
         </ColorInput>
       );
@@ -108,19 +106,17 @@ export const renderPropInputs: RenderInputs = ({
         required={prop.prop.required}
       >
         {({ onChange, ref, ...props }) => (
-          <div>
-            {prop.prop.name && (
-              <Label description={prop.prop.description} htmlFor={props.id}>
-                {prop.prop.name}
-              </Label>
-            )}
+          <>
+            <Label description={prop.prop.description} htmlFor={props.id}>
+              {prop.prop.name}
+            </Label>
             <input
               {...props}
               className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder mb-1 h-[26px] w-full rounded-sm border px-[9px] focus:outline-none"
               onChange={onChange}
               ref={ref}
             />
-          </div>
+          </>
         )}
       </StringInput>
     );
@@ -140,12 +136,10 @@ export const renderPropInputs: RenderInputs = ({
         shouldDisablePointerLock
       >
         {({ ref, ...props }) => (
-          <div>
-            {prop.prop.name && (
-              <Label description={prop.prop.description} htmlFor={props.id}>
-                {prop.prop.name}
-              </Label>
-            )}
+          <>
+            <Label description={prop.prop.description} htmlFor={props.id}>
+              {prop.prop.name}
+            </Label>
             <input
               {...props}
               aria-label={prop.prop.label}
@@ -153,7 +147,7 @@ export const renderPropInputs: RenderInputs = ({
               ref={ref}
               type="number"
             />
-          </div>
+          </>
         )}
       </NumberInput>
     );
@@ -170,7 +164,7 @@ export const renderPropInputs: RenderInputs = ({
         persistedValue={"value" in prop.prop ? prop.prop.value : false}
       >
         {({ onChange, ref, ...props }) => (
-          <div>
+          <>
             <Label description={prop.prop.description} htmlFor={props.id}>
               {prop.prop.name}
             </Label>
@@ -180,7 +174,7 @@ export const renderPropInputs: RenderInputs = ({
               onChange={onChange as SuppressVSCodeError}
               ref={ref as SuppressVSCodeError}
             />
-          </div>
+          </>
         )}
       </BooleanInput>
     );
@@ -197,9 +191,9 @@ export const renderPropInputs: RenderInputs = ({
         values={prop.prop.shape}
       >
         {(props, actions) => (
-          <div className="flex items-start gap-1">
+          <div className="grid grid-flow-col gap-x-1 [grid-template-columns:auto_1fr] [grid-template:'a_.'_'a_action']">
             {renderPropInputs(props)}
-            <div className="mt-5 flex">
+            <div className="flex self-start [grid-area:action]">
               <IconButton
                 actionId="contextpanel_input_union_switch"
                 icon={SwitchIcon}
@@ -216,20 +210,22 @@ export const renderPropInputs: RenderInputs = ({
 
   if (prop.type === "tuple") {
     return (
-      <div>
+      <>
         <Label description={prop.prop.description} htmlFor="">
           {prop.prop.name}
         </Label>
-        <TupleInput
-          onChange={onChange}
-          onConfirm={onConfirm}
-          path={path}
-          persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
-          values={prop.prop.shape}
-        >
-          {renderPropInputs}
-        </TupleInput>
-      </div>
+        <div>
+          <TupleInput
+            onChange={onChange}
+            onConfirm={onConfirm}
+            path={path}
+            persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
+            values={prop.prop.shape}
+          >
+            {renderPropInputs}
+          </TupleInput>
+        </div>
+      </>
     );
   }
 
@@ -246,7 +242,7 @@ export const renderPropInputs: RenderInputs = ({
         values={prop.prop.shape}
       >
         {({ onChange, options, ref, ...props }) => (
-          <div>
+          <>
             <Label description={prop.prop.description} htmlFor={props.id}>
               {prop.prop.name}
             </Label>
@@ -262,7 +258,7 @@ export const renderPropInputs: RenderInputs = ({
                 </option>
               ))}
             </select>
-          </div>
+          </>
         )}
       </LiteralUnionInput>
     );
@@ -271,7 +267,7 @@ export const renderPropInputs: RenderInputs = ({
   const isControlledInCode = "value" in prop.prop && prop.prop.value;
 
   return (
-    <div>
+    <>
       <Label description={prop.prop.description} htmlFor="">
         {prop.prop.name}
       </Label>
@@ -304,6 +300,6 @@ export const renderPropInputs: RenderInputs = ({
           <ExclamationTriangleIcon />
         </div>
       </a>
-    </div>
+    </>
   );
 };
