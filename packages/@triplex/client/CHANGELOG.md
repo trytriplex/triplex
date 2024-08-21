@@ -1,5 +1,13 @@
 # @triplex/client
 
+## 0.68.6
+
+### Patch Changes
+
+- @triplex/bridge@0.68.6
+- @triplex/renderer-r3f@0.68.6
+- @triplex/renderer-react@0.68.6
+
 ## 0.68.5
 
 ### Patch Changes

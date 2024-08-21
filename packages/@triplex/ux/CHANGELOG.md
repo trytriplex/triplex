@@ -1,5 +1,13 @@
 # @triplex/ux
 
+## 0.68.6
+
+### Patch Changes
+
+- 4cf3e526: Fix union inputs missing descriptions.
+  - @triplex/bridge@0.68.6
+  - @triplex/lib@0.68.6
+
 ## 0.68.5
 
 ### Patch Changes

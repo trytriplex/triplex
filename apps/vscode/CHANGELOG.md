@@ -1,5 +1,14 @@
 # @triplex/vscode
 
+## 0.0.17
+
+### Patch Changes
+
+- 4cf3e526: Color input no longer has a clear button.
+- 4cf3e526: Fix union inputs missing descriptions.
+  - @triplex/client@0.68.6
+  - @triplex/server@0.68.6
+
 ## 0.0.16
 
 ### Patch Changes
