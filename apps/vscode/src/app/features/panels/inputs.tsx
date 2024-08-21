@@ -4,11 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import {
-  Cross2Icon,
-  ExclamationTriangleIcon,
-  SwitchIcon,
-} from "@radix-ui/react-icons";
+import { ExclamationTriangleIcon, SwitchIcon } from "@radix-ui/react-icons";
 import { cn } from "@triplex/lib";
 import { type DeclaredProp, type Prop } from "@triplex/server";
 import {
@@ -62,7 +58,7 @@ export const renderPropInputs: RenderInputs = ({
           persistedValue={persistedValue}
           required={prop.prop.required}
         >
-          {({ ref, ...props }, { clear, hasChanged }) => (
+          {({ ref, ...props }, { hasChanged }) => (
             <>
               <Label description={prop.prop.description} htmlFor={props.id}>
                 {prop.prop.name}
@@ -79,14 +75,6 @@ export const renderPropInputs: RenderInputs = ({
                   ref={ref}
                   type="color"
                 />
-                {!!persistedValue && (
-                  <IconButton
-                    actionId="scene_controls_clear"
-                    icon={Cross2Icon}
-                    label="Clear value"
-                    onClick={clear}
-                  />
-                )}
               </div>
             </>
           )}
@@ -183,6 +171,7 @@ export const renderPropInputs: RenderInputs = ({
   if (prop.type === "union") {
     return (
       <UnionInput
+        description={prop.prop.description}
         name={prop.prop.name}
         onChange={onChange}
         onConfirm={onConfirm}
@@ -191,7 +180,10 @@ export const renderPropInputs: RenderInputs = ({
         values={prop.prop.shape}
       >
         {(props, actions) => (
-          <div className="grid grid-flow-col gap-x-1 [grid-template-columns:auto_1fr] [grid-template:'a_.'_'a_action']">
+          <div
+            className="grid grid-flow-col gap-x-1 [grid-template:'input_.'_'input_action']"
+            style={{ gridTemplateColumns: "auto 1fr" }}
+          >
             {renderPropInputs(props)}
             <div className="flex self-start [grid-area:action]">
               <IconButton

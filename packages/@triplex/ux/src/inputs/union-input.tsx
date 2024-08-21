@@ -11,6 +11,7 @@ import { type RenderInputsWithAction } from "./types";
 
 export function UnionInput({
   children,
+  description,
   name,
   onChange,
   onConfirm,
@@ -19,6 +20,7 @@ export function UnionInput({
   values,
 }: {
   children: RenderInputsWithAction<{ toggle: () => void }>;
+  description?: string;
   name: string;
   onChange: (value: unknown) => void;
   onConfirm: (value: unknown) => void;
@@ -36,7 +38,7 @@ export function UnionInput({
       path={path}
       prop={
         Object.assign(
-          { name },
+          { description, name },
           value,
           persistedValue ? { value: persistedValue } : {},
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
