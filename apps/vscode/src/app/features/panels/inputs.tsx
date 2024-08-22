@@ -158,7 +158,7 @@ export const renderPropInputs: RenderInputs = ({
             </Label>
             <VSCodeCheckbox
               {...props}
-              className="m-0"
+              className="mb-1 mt-0"
               onChange={onChange as SuppressVSCodeError}
               ref={ref as SuppressVSCodeError}
             />

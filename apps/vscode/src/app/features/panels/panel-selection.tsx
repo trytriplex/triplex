@@ -100,7 +100,7 @@ function SelectionPanelLoadable({
 
       {props.props.length === 0 && !isPropsForComponent && <NoPropsCTA />}
 
-      <div className="px-1.5" key={resetKey}>
+      <div className="flex flex-col px-1.5" key={resetKey}>
         {props.props.map((prop) => {
           if (!prop.name.toLowerCase().includes(filter?.toLowerCase() || "")) {
             return null;

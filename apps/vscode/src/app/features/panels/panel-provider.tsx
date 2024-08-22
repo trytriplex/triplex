@@ -51,7 +51,7 @@ function ProviderProps() {
         </div>
       )}
 
-      <div className="flex flex-col gap-1 px-1.5" key={resetKey}>
+      <div className="flex flex-col px-1.5" key={resetKey}>
         {props.map((prop) => (
           <PropInput
             key={prop.name}
