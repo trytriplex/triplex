@@ -6,11 +6,12 @@
  */
 import { readFileSync } from "node:fs";
 import { inferExports, resolveProjectCwd } from "@triplex/server";
-import { dirname, join, normalize } from "upath";
+import { dirname, normalize } from "upath";
 import * as vscode from "vscode";
 import { on, sendVSCE } from "../util/bridge";
 import { TriplexDocument } from "./document";
-import { initializeWebviewPanel, type TriplexProject } from "./panel";
+import { initializeWebviewPanel } from "./panel";
+import { type TriplexProjectResolver } from "./project";
 
 function getFallbackExportName(filepath: string): string {
   const code = readFileSync(filepath, "utf8");
@@ -29,8 +30,11 @@ export class TriplexEditorProvider
 {
   private static readonly viewType = "triplex.editor";
   private static _nextExportName = "";
-  private static readonly activePanels = new Map<string, vscode.WebviewPanel>();
-  private static readonly activeProjects = new Map<string, TriplexProject>();
+  private static readonly panelCache = new Map<string, vscode.WebviewPanel>();
+  private static readonly projectCache = new Map<
+    string,
+    TriplexProjectResolver
+  >();
   private constructor(private readonly _context: vscode.ExtensionContext) {}
 
   get nextExportName() {
@@ -93,25 +97,12 @@ export class TriplexEditorProvider
       return;
     }
 
-    panel.webview.options = {
-      enableScripts: true,
-    };
-
-    // Show something as fast as possible before doing anything.
-    const html = await vscode.workspace.fs
-      .readFile(
-        vscode.Uri.file(join(this._context.extensionPath, "loading.html")),
-      )
-      .then((res) => res.toString());
-
-    panel.webview.html = html;
-
     initializeWebviewPanel(panel, {
       context: this._context,
       exportName: this.nextExportName,
-      panelRegistry: TriplexEditorProvider.activePanels,
+      panelCache: TriplexEditorProvider.panelCache,
       path: scopedFileName,
-      projectRegistry: TriplexEditorProvider.activeProjects,
+      projectCache: TriplexEditorProvider.projectCache,
       triplexProjectCwd,
     }).then((ports) => {
       document.setContext(ports.server);
@@ -159,7 +150,7 @@ export class TriplexEditorProvider
 
   public static register(context: vscode.ExtensionContext): vscode.Disposable {
     const resolveActivePanel = (cb: (p: vscode.WebviewPanel) => void) => {
-      const panel = Array.from(this.activePanels.values()).find(
+      const panel = Array.from(this.panelCache.values()).find(
         (panel) => panel.active,
       );
 
@@ -242,7 +233,7 @@ export class TriplexEditorProvider
           }
 
           const existingPanel =
-            TriplexEditorProvider.activePanels.get(scopedFileName);
+            TriplexEditorProvider.panelCache.get(scopedFileName);
 
           const nextExportName =
             ctx?.exportName || getFallbackExportName(scopedFileName);

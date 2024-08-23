@@ -14,7 +14,18 @@ export class ExtensionPage {
     public readonly project: string,
   ) {}
 
-  codelens(componentName: string) {
+  codelens(
+    componentName: string,
+    {
+      skipWait = false,
+    }: {
+      /**
+       * Resolves immediately after clicking instead of waiting for the
+       * component to fully load.
+       */
+      skipWait?: boolean;
+    } = {},
+  ) {
     const locator = this.page.getByTitle(
       `Will open the ${componentName} component in Triplex`,
     );
@@ -22,7 +33,9 @@ export class ExtensionPage {
     return {
       click: async () => {
         await locator.click();
-        await expect(this.loadedComponent).toHaveText(componentName);
+        if (!skipWait) {
+          await expect(this.loadedComponent).toHaveText(componentName);
+        }
       },
     };
   }
