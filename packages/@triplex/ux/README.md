@@ -1,4 +1,4 @@
 # @triplex/ux
 
-Contains common functionality for Triplex experiences without being tied to
-specific UI.
+The package contains common UI features such as input behaviour without being
+tied to a specific styling library.
