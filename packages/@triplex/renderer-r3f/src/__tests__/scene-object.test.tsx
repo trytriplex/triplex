@@ -20,6 +20,56 @@ import {
 import { nested } from "./__stubs__/scene-objects";
 
 describe("scene object component", () => {
+  it("should forcibly disable scroll controls when viewing through triplex camera", async () => {
+    const { toTree } = await render(
+      <SceneObjectContext.Provider value={true}>
+        <Camera>
+          <SceneObject
+            __component={(props: unknown) => <mesh userData={{ props }} />}
+            __meta={{
+              column: 1,
+              line: 1,
+              name: "ScrollControls",
+              path: "",
+              rotate: false,
+              scale: false,
+              translate: false,
+            }}
+          />
+        </Camera>
+      </SceneObjectContext.Provider>,
+    );
+
+    const tree = toTree();
+
+    expect(tree?.[0].props.userData.props.enabled).toBe(false);
+  });
+
+  it("should enable scroll controls when viewing through userland camera", async () => {
+    const { toTree } = await render(
+      <SceneObjectContext.Provider value={true}>
+        <Camera defaultCamera="user">
+          <SceneObject
+            __component={(props: unknown) => <mesh userData={{ props }} />}
+            __meta={{
+              column: 1,
+              line: 1,
+              name: "ScrollControls",
+              path: "",
+              rotate: false,
+              scale: false,
+              translate: false,
+            }}
+          />
+        </Camera>
+      </SceneObjectContext.Provider>,
+    );
+
+    const tree = toTree();
+
+    expect(tree?.[0].props.userData.props.enabled).toBe(undefined);
+  });
+
   it("should not render a group", async () => {
     const { toGraph } = await render(
       <SceneObjectContext.Provider value={true}>

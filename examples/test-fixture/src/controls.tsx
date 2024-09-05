@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { useEffect } from "react";
+import { addDOMTestData } from "./util/add-dom-data";
 
 export function ComponentControlsTest({
   color = "blue",
@@ -12,17 +13,7 @@ export function ComponentControlsTest({
   color?: "red" | "green" | "blue";
 }) {
   useEffect(() => {
-    const element = document.createElement("div");
-    element.setAttribute("data-testid", "component-props");
-    element.textContent = JSON.stringify({
-      color,
-    });
-    element.style.display = "none";
-    document.body.append(element);
-
-    return () => {
-      element.remove();
-    };
+    return addDOMTestData("component-props", { color });
   }, [color]);
 
   return (

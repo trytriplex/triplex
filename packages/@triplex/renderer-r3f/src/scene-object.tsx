@@ -29,7 +29,11 @@ import { useSelectSceneObject } from "./selection";
 import { useOnSceneObjectMount } from "./stores/selection";
 
 const permanentlyExcluded = [/^Canvas$/];
-const excludedWhenTriplexCamera = [/^Ecctrl$/, /Controls$/];
+const disabledWhenTriplexCamera = [
+  /^PresentationControls$/,
+  /^ScrollControls$/,
+];
+const passThroughWhenTriplexCamera = [/^Ecctrl$/, /Controls$/];
 
 function useForceRender() {
   const [, setState] = useState(false);
@@ -185,7 +189,8 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
       return <>{props.children}</>;
     } else if (
       isTriplexCamera &&
-      excludedWhenTriplexCamera.some((r) => r.test(__meta.name))
+      !disabledWhenTriplexCamera.some((r) => r.test(__meta.name)) &&
+      passThroughWhenTriplexCamera.some((r) => r.test(__meta.name))
     ) {
       // We don't want this component to affect Triplex when looking through the camera.
       // E.g. user land controls. Get rid of the problem altogether!
@@ -200,12 +205,19 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
         parents: parentMeta,
         props,
       };
+      // For specific controls components that we know can be disabled we disable them via
+      // props when the editor scene is viewing through the triplex camera.
+      const shouldDisable =
+        type === "custom" &&
+        isTriplexCamera &&
+        disabledWhenTriplexCamera.some((r) => r.test(__meta.name));
 
       return (
         <ParentComponentMetaProvider type={type} value={triplexMeta}>
           <Component
             ref={type === "host" ? mergedRefs : ref}
             {...reconciledProps}
+            {...(shouldDisable ? { enabled: false } : undefined)}
           >
             {type === "custom" ? (
               // This keeps any preconditions for custom components valid
