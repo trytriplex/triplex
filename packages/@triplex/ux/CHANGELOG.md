@@ -1,5 +1,12 @@
 # @triplex/ux
 
+## 0.68.7
+
+### Patch Changes
+
+- @triplex/bridge@0.68.7
+- @triplex/lib@0.68.7
+
 ## 0.68.6
 
 ### Patch Changes

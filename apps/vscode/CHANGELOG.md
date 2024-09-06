@@ -1,5 +1,13 @@
 # @triplex/vscode
 
+## 0.0.18
+
+### Patch Changes
+
+- 3157221e: Fix inconsistent spacing between prop inputs in the context panel.
+  - @triplex/client@0.68.7
+  - @triplex/server@0.68.7
+
 ## 0.0.17
 
 ### Patch Changes

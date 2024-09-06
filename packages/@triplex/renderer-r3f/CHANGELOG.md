@@ -1,5 +1,14 @@
 # @triplex/renderer-r3f
 
+## 0.68.7
+
+### Patch Changes
+
+- 909bed1a: Fix ScrollControls throwing errors when opened inside Triplex.
+  - @triplex/bridge@0.68.7
+  - @triplex/lib@0.68.7
+  - @triplex/ws@0.68.7
+
 ## 0.68.6
 
 ### Patch Changes
