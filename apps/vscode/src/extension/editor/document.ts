@@ -22,6 +22,7 @@ export class TriplexDocument implements vscode.CustomDocument {
   }>();
 
   private _context: { ports: { server: number } } = { ports: { server: -1 } };
+  private _modifiedPaths: Record<string, true> = {};
 
   onDidChange = this._onDidChange.event;
 
@@ -46,14 +47,16 @@ export class TriplexDocument implements vscode.CustomDocument {
   }
 
   async save(_cancellation: vscode.CancellationToken) {
-    await fetch(
-      `http://localhost:${
-        this._context.ports.server
-      }/scene/${encodeURIComponent(this.uri.fsPath)}/save`,
-      {
-        method: "POST",
-      },
-    );
+    for (const path in this._modifiedPaths) {
+      await fetch(
+        `http://localhost:${
+          this._context.ports.server
+        }/scene/${encodeURIComponent(path)}/save`,
+        {
+          method: "POST",
+        },
+      );
+    }
   }
 
   async saveAs(
@@ -99,21 +102,18 @@ export class TriplexDocument implements vscode.CustomDocument {
       );
 
       const response: { redoID: number; undoID: number } = await result.json();
-      return response;
+
+      return { ...response, path: data.path };
     });
   }
 
-  async duplicateElement(element: {
-    column: number;
-    line: number;
-    path: string;
-  }) {
+  async duplicateElement(data: { column: number; line: number; path: string }) {
     return this.undoableAction("Duplicate element", async () => {
       const result = await fetch(
         `http://localhost:${
           this._context.ports.server
-        }/scene/${encodeURIComponent(element.path)}/object/${element.line}/${
-          element.column
+        }/scene/${encodeURIComponent(data.path)}/object/${data.line}/${
+          data.column
         }/duplicate`,
         { method: "POST" },
       );
@@ -125,17 +125,17 @@ export class TriplexDocument implements vscode.CustomDocument {
         undoID: number;
       } = await result.json();
 
-      return response;
+      return { ...response, path: data.path };
     });
   }
 
-  async deleteElement(element: { column: number; line: number; path: string }) {
+  async deleteElement(data: { column: number; line: number; path: string }) {
     return this.undoableAction("Delete element", async () => {
       const result = await fetch(
         `http://localhost:${
           this._context.ports.server
-        }/scene/${encodeURIComponent(element.path)}/object/${element.line}/${
-          element.column
+        }/scene/${encodeURIComponent(data.path)}/object/${data.line}/${
+          data.column
         }/delete`,
         { method: "POST" },
       );
@@ -147,17 +147,19 @@ export class TriplexDocument implements vscode.CustomDocument {
         undoID: number;
       } = await result.json();
 
-      return response;
+      return { ...response, path: data.path };
     });
   }
 
   private async undoableAction<
-    TResponse extends { redoID: number; undoID: number },
+    TResponse extends { path: string; redoID: number; undoID: number },
   >(
     label: string,
     callback: () => Promise<TResponse>,
-  ): Promise<Omit<TResponse, "redoID" | "undoID">> {
-    const { redoID, undoID, ...response } = await callback();
+  ): Promise<Omit<TResponse, "redoID" | "undoID" | "path">> {
+    const { path, redoID, undoID, ...response } = await callback();
+
+    this._modifiedPaths[path] = true;
 
     this._onDidChange.fire({
       label,
@@ -165,7 +167,7 @@ export class TriplexDocument implements vscode.CustomDocument {
         await fetch(
           `http://localhost:${
             this._context.ports.server
-          }/scene/${encodeURIComponent(this.uri.fsPath)}/redo/${redoID}`,
+          }/scene/${encodeURIComponent(path)}/redo/${redoID}`,
           {
             method: "POST",
           },
@@ -175,7 +177,7 @@ export class TriplexDocument implements vscode.CustomDocument {
         await fetch(
           `http://localhost:${
             this._context.ports.server
-          }/scene/${encodeURIComponent(this.uri.fsPath)}/undo/${undoID}`,
+          }/scene/${encodeURIComponent(path)}/undo/${undoID}`,
           {
             method: "POST",
           },

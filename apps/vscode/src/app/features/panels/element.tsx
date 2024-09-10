@@ -93,9 +93,14 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
                 : "scenepanel_element_expand"
             }
             className="z-10 -ml-1.5 px-0.5"
+            describedBy={id}
             onClick={toggleExpanded}
           >
-            {isExpanded ? <ChevronDownIcon /> : <ChevronRightIcon />}
+            {isExpanded ? (
+              <ChevronDownIcon aria-label="Hide Children" />
+            ) : (
+              <ChevronRightIcon aria-label="Show Children" />
+            )}
           </Pressable>
         ) : (
           <span className="w-[14px] flex-shrink-0" />

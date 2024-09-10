@@ -29,7 +29,7 @@ export class TriplexEditorProvider
   implements vscode.CustomEditorProvider<TriplexDocument>
 {
   private static readonly viewType = "triplex.editor";
-  private static _nextExportName = "";
+  private static _next: undefined | { exportName: string };
   private static readonly panelCache = new Map<string, vscode.WebviewPanel>();
   private static readonly projectCache = new Map<
     string,
@@ -37,14 +37,13 @@ export class TriplexEditorProvider
   >();
   private constructor(private readonly _context: vscode.ExtensionContext) {}
 
-  get nextExportName() {
-    const next = TriplexEditorProvider._nextExportName;
-    TriplexEditorProvider._nextExportName = "";
+  get next() {
+    const next = TriplexEditorProvider._next;
     return next;
   }
 
-  static set nextExportName(value: string) {
-    this._nextExportName = value;
+  static set next(value: TriplexEditorProvider["next"]) {
+    this._next = value;
   }
 
   backupCustomDocument(
@@ -97,9 +96,16 @@ export class TriplexEditorProvider
       return;
     }
 
+    const panelContext = this.next;
+    if (!panelContext) {
+      // Missing initial data.
+      return;
+    }
+
+    // We deliberately don't await the initialization so vscode can show the Triplex loading screen immediately.
     initializeWebviewPanel(panel, {
       context: this._context,
-      exportName: this.nextExportName,
+      exportName: panelContext.exportName,
       panelCache: TriplexEditorProvider.panelCache,
       path: scopedFileName,
       projectCache: TriplexEditorProvider.projectCache,
@@ -107,8 +113,6 @@ export class TriplexEditorProvider
     }).then((ports) => {
       document.setContext(ports.server);
 
-      // When the panel is ready we set up event listeners to mutate the document
-      // We don't await this so the panel can have the loading screen appear immediately.
       on(panel.webview, "element-set-prop", (prop) => {
         document.upsertProp(prop);
       });
@@ -248,7 +252,7 @@ export class TriplexEditorProvider
             // We set this here as we need to pass the data onto the webview resolver but
             // it only gets access to the uri path — if we add the export name as a query
             // it is considered a unique file name so opens another editor which isn't correct.
-            this.nextExportName = nextExportName;
+            this.next = { exportName: nextExportName };
 
             vscode.commands.executeCommand(
               "vscode.openWith",

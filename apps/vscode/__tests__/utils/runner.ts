@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { spawnSync } from "node:child_process";
+import fs from "node:fs";
 import { test as base, type Electron, type TestInfo } from "@playwright/test";
 import { resolveCliArgsFromVSCodeExecutablePath } from "@vscode/test-electron";
 import pkg from "package.json";
@@ -141,14 +142,32 @@ async function launch({
 
 const test = base.extend<{
   filename: string;
+  snapshot: (path?: string) => string;
   vsce: ExtensionPage;
 }>({
   filename: ["examples/test-fixture/src/scene.tsx", { option: true }],
+  snapshot: async ({ filename }, use) => {
+    await use((path) =>
+      fs.readFileSync(join(process.cwd(), path ?? filename), "utf8"),
+    );
+  },
   vsce: async ({ filename }, use, testInfo) => {
+    const { status } = spawnSync("git diff --exit-code examples", {
+      shell: true,
+    });
+
+    if (status !== null && status !== 0) {
+      throw new Error(
+        "invariant: unstaged changes inside examples need to be resolved before running tests",
+      );
+    }
+
     const { app, logs, window } = await launch({ filename, testInfo });
     const page = new ExtensionPage(window, basename(filename), "test-fixture");
 
     await runUseWithTrace({ logs, page, testInfo, use });
+    // Cleanup any files created or modified by
+    spawnSync("git checkout examples", { shell: true });
     await app.close();
   },
 });

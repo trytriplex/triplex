@@ -75,6 +75,7 @@ interface PressableProps {
   actionId: ActionId;
   children?: React.ReactNode;
   className?: string;
+  describedBy?: string;
   labelledBy?: string;
   onClick: (e: React.MouseEvent | KeyboardEvent) => void;
   style?: CSSProperties;
@@ -89,6 +90,7 @@ export const Pressable = forwardRef<HTMLButtonElement, PressableProps>(
       actionId,
       children,
       className,
+      describedBy,
       labelledBy,
       onClick,
       style,
@@ -113,6 +115,7 @@ export const Pressable = forwardRef<HTMLButtonElement, PressableProps>(
 
     return (
       <button
+        aria-describedby={describedBy}
         aria-labelledby={labelledBy}
         className={cn([
           "focus-visible:outline-selected focus-visible:outline-default select-none focus-visible:outline",
