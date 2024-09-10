@@ -4,7 +4,11 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { ExclamationTriangleIcon, SwitchIcon } from "@radix-ui/react-icons";
+import {
+  CheckIcon,
+  ExclamationTriangleIcon,
+  SwitchIcon,
+} from "@radix-ui/react-icons";
 import { cn } from "@triplex/lib";
 import { type DeclaredProp, type Prop } from "@triplex/server";
 import {
@@ -18,10 +22,8 @@ import {
   UnionInput,
   type RenderInputs,
 } from "@triplex/ux/inputs";
-import { VSCodeCheckbox } from "@vscode/webview-ui-toolkit/react";
 import { IconButton } from "../../components/button";
 import { Label } from "../../components/label";
-import { type SuppressVSCodeError } from "../../types";
 
 const createIssueURL = (prop: DeclaredProp | Prop) =>
   encodeURI(
@@ -156,12 +158,16 @@ export const renderPropInputs: RenderInputs = ({
             <Label description={prop.prop.description} htmlFor={props.id}>
               {prop.prop.name}
             </Label>
-            <VSCodeCheckbox
-              {...props}
-              className="mb-1 mt-0"
-              onChange={onChange as SuppressVSCodeError}
-              ref={ref as SuppressVSCodeError}
-            />
+            <div className="text-input focus-within:border-selected bg-input border-input mb-1 grid h-5 w-5 rounded-sm border">
+              <input
+                {...props}
+                className="grid-col peer h-full w-full appearance-none opacity-0 [grid-column:1] [grid-row:1]"
+                onChange={onChange}
+                ref={ref}
+                type="checkbox"
+              />
+              <CheckIcon className="pointer-events-none h-full w-full opacity-0 [grid-column:1] [grid-row:1] peer-checked:opacity-100" />
+            </div>
           </>
         )}
       </BooleanInput>

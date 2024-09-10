@@ -11,6 +11,8 @@ import { BooleanInput } from "../boolean-input";
 
 const TestHarness = (testProps: {
   defaultValue?: boolean;
+  onChange?: (value?: boolean) => void;
+  onConfirm?: (value?: boolean) => void;
   persistedValue?: boolean;
 }) => (
   <BooleanInput
@@ -60,5 +62,28 @@ describe("boolean input", () => {
 
     const element = getByTestId("bool") as HTMLInputElement;
     expect(element.checked).toEqual(true);
+  });
+
+  it("should not callback events when updating the persisted value", () => {
+    const onChange = vi.fn();
+    const onConfirm = vi.fn();
+    const { rerender } = render(
+      <TestHarness
+        onChange={onChange}
+        onConfirm={onConfirm}
+        persistedValue={true}
+      />,
+    );
+
+    rerender(
+      <TestHarness
+        onChange={onChange}
+        onConfirm={onConfirm}
+        persistedValue={false}
+      />,
+    );
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onConfirm).not.toHaveBeenCalled();
   });
 });
