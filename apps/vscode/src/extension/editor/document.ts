@@ -17,8 +17,8 @@ function toJSONString(value: unknown): string {
 export class TriplexDocument implements vscode.CustomDocument {
   private _onDidChange = new vscode.EventEmitter<{
     label: string;
-    redo(): void;
-    undo(): void;
+    redo(): Promise<void>;
+    undo(): Promise<void>;
   }>();
 
   private _context: { ports: { server: number } } = { ports: { server: -1 } };
@@ -76,11 +76,13 @@ export class TriplexDocument implements vscode.CustomDocument {
   }
 
   async revert(_cancellation: vscode.CancellationToken) {
-    await fetch(
-      `http://localhost:${
-        this._context.ports.server
-      }/scene/${encodeURIComponent(this.uri.fsPath)}/reset`,
-    );
+    for (const path in this._modifiedPaths) {
+      await fetch(
+        `http://localhost:${
+          this._context.ports.server
+        }/scene/${encodeURIComponent(path)}/reset`,
+      );
+    }
   }
 
   async upsertProp(data: {

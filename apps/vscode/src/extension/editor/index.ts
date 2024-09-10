@@ -74,10 +74,12 @@ export class TriplexEditorProvider
   ) {
     const document = new TriplexDocument(uri);
 
-    document.onDidChange((data) => {
+    document.onDidChange((event) => {
       this._onDidChangeCustomDocument.fire({
         document,
-        ...data,
+        label: event.label,
+        redo: event.redo,
+        undo: event.undo,
       });
     });
 
