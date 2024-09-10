@@ -28,8 +28,6 @@ jobs:
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
         if: steps.check.outcome == 'success'
-        with:
-          version: 8.6.1
 
       - name: Setup node
         uses: actions/setup-node@v4
