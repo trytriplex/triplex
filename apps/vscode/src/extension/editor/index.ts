@@ -116,36 +116,41 @@ export class TriplexEditorProvider
     }).then((ports) => {
       document.setContext(ports.server);
 
-      onWS(
-        "fs-external-change",
-        (data) => {
-          document.undoableAction("Sync from filesystem", () => data, {
-            skipDirtyCheck: true,
+      const disposables = [
+        onWS(
+          "fs-external-change",
+          (data) => {
+            if (data.path !== scopedFileName) {
+              // We're only interested in changes that were made to this document.
+              return;
+            }
+            document.undoableAction("Sync from filesystem", () => data, {
+              skipDirtyCheck: true,
+            });
+          },
+          ports.ws,
+        ),
+        on(panel.webview, "element-set-prop", (prop) => {
+          document.upsertProp(prop);
+        }),
+        on(panel.webview, "error", (error) => {
+          vscode.window.showErrorMessage(error.message);
+        }),
+        on(panel.webview, "element-duplicate", async (element) => {
+          const newElement = await document.duplicateElement(element);
+          sendVSCE(panel.webview, "vscode:request-focus-element", {
+            ...element,
+            ...newElement,
           });
-        },
-        ports.ws,
-      );
+        }),
+        on(panel.webview, "element-delete", async (element) => {
+          sendVSCE(panel.webview, "vscode:request-blur-element", undefined);
+          await document.deleteElement(element);
+        }),
+      ];
 
-      on(panel.webview, "element-set-prop", (prop) => {
-        document.upsertProp(prop);
-      });
-
-      on(panel.webview, "error", (error) => {
-        vscode.window.showErrorMessage(error.message);
-      });
-
-      on(panel.webview, "element-duplicate", async (element) => {
-        const newElement = await document.duplicateElement(element);
-
-        sendVSCE(panel.webview, "vscode:request-focus-element", {
-          ...element,
-          ...newElement,
-        });
-      });
-
-      on(panel.webview, "element-delete", async (element) => {
-        sendVSCE(panel.webview, "vscode:request-blur-element", undefined);
-        await document.deleteElement(element);
+      panel.onDidDispose(() => {
+        disposables.forEach((dispose) => dispose());
       });
     });
   }
