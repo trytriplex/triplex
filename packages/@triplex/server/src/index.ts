@@ -348,6 +348,14 @@ export function createServer({
         });
       },
     ),
+    tws.createEvent<
+      "fs-external-change",
+      { path: string; redoID: number; undoID: number }
+    >("fs-external-change", (sendEvent) => {
+      project.onSourceFileExternalChange((e) => {
+        sendEvent(e);
+      });
+    }),
   ]);
 
   const wsRoutesDef = tws.collectTypes([

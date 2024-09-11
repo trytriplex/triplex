@@ -6,6 +6,7 @@
  */
 import { readFileSync } from "node:fs";
 import { inferExports, resolveProjectCwd } from "@triplex/server";
+import { on as onWS } from "@triplex/ws";
 import { dirname, normalize } from "upath";
 import * as vscode from "vscode";
 import { on, sendVSCE } from "../util/bridge";
@@ -114,6 +115,16 @@ export class TriplexEditorProvider
       triplexProjectCwd,
     }).then((ports) => {
       document.setContext(ports.server);
+
+      onWS(
+        "fs-external-change",
+        (data) => {
+          document.undoableAction("Sync from filesystem", () => data, {
+            skipDirtyCheck: true,
+          });
+        },
+        ports.ws,
+      );
 
       on(panel.webview, "element-set-prop", (prop) => {
         document.upsertProp(prop);

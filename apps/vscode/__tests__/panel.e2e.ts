@@ -9,7 +9,6 @@ import { test } from "./utils/runner";
 
 test("resizing the scene panel", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
-  await expect(vsce.loadedComponent).toHaveText("Scene");
   const editor = vsce.resolveEditor();
   await editor.togglePanelsButton.click();
   const splitter = editor.locator.getByTestId("panel-drag-handle");

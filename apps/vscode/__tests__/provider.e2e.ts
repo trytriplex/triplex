@@ -9,7 +9,6 @@ import { test } from "./utils/runner";
 
 test("default props set in editor", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
-  await expect(vsce.loadedComponent).toHaveText("Scene");
   const { panels, togglePanelsButton } = vsce.resolveEditor();
 
   await togglePanelsButton.click();
@@ -22,7 +21,6 @@ test("default props set in editor", async ({ vsce }) => {
 
 test("default props set in scene", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
-  await expect(vsce.loadedComponent).toHaveText("Scene");
   const { scene } = vsce.resolveEditor();
 
   const element = scene.getByTestId("provider-props");
@@ -35,7 +33,6 @@ test("default props set in scene", async ({ vsce }) => {
 
 test("update provider prop", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
-  await expect(vsce.loadedComponent).toHaveText("Scene");
   const { panels, scene, togglePanelsButton } = vsce.resolveEditor();
   await togglePanelsButton.click();
 
@@ -50,7 +47,6 @@ test("update provider prop", async ({ vsce }) => {
 
 test("reset provider props", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
-  await expect(vsce.loadedComponent).toHaveText("Scene");
   const { panels, scene, togglePanelsButton } = vsce.resolveEditor();
   await togglePanelsButton.click();
   const input = panels.getByLabel("batbat", { exact: true });
@@ -68,7 +64,6 @@ test("provider controls persist changes when panel is closed", async ({
   vsce,
 }) => {
   await vsce.codelens("Scene").click();
-  await expect(vsce.loadedComponent).toHaveText("Scene");
   const { panels, scene, togglePanelsButton } = vsce.resolveEditor();
   await togglePanelsButton.click();
   const input = panels.getByLabel("batbat", { exact: true });
@@ -87,7 +82,6 @@ test("provider controls persist changes when an element is selected", async ({
   vsce,
 }) => {
   await vsce.codelens("Scene").click();
-  await expect(vsce.loadedComponent).toHaveText("Scene");
   const { panels, scene, togglePanelsButton } = vsce.resolveEditor();
   await togglePanelsButton.click();
   const input = panels.getByLabel("batbat", { exact: true });

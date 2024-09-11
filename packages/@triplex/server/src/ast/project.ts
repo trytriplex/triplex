@@ -132,6 +132,9 @@ export function createProject({
   const onSourceFileChangeCallbacks = new Set<
     (e: SourceFileChangedEvent) => void
   >();
+  const onSourceFileExternalChangeCallbacks = new Set<
+    (e: { path: string; redoID: number; undoID: number }) => void
+  >();
   const modifiedSourceFiles = new Set<SourceFile>();
   const initializedSourceFiles = new Set<SourceFile>();
   const openedSourceFiles = new Map<SourceFile, string>();
@@ -154,9 +157,11 @@ export function createProject({
 
     const sourceFile = getSourceFile(path);
 
-    await sourceFile.edit((source) => {
+    const [ids] = await sourceFile.edit((source) => {
       return source.refreshFromFileSystem();
     });
+
+    onSourceFileExternalChangeCallbacks.forEach((cb) => cb({ ...ids, path }));
 
     privateSourceFile.getReferencingSourceFiles().forEach((refFile) => {
       const path = refFile.getFilePath();
@@ -532,12 +537,28 @@ export function ${componentName}() {
     };
   }
 
+  function onSourceFileExternalChange(
+    callback: (e: { path: string; redoID: number; undoID: number }) => void,
+  ) {
+    onSourceFileExternalChangeCallbacks.add(callback);
+
+    return () => {
+      const callbacks = onSourceFileExternalChangeCallbacks.has(callback);
+      if (!callbacks) {
+        return;
+      }
+
+      onSourceFileExternalChangeCallbacks.delete(callback);
+    };
+  }
+
   return {
     createSourceFile,
     cwd: () => cwd,
     getSourceFile,
     getState,
     onSourceFileChange,
+    onSourceFileExternalChange,
     onStateChange,
     saveAll,
   };

@@ -5,7 +5,8 @@
  * file in the root directory of this source tree.
  */
 import { spawnSync } from "node:child_process";
-import fs from "node:fs";
+import { readFileSync } from "node:fs";
+import { writeFile } from "node:fs/promises";
 import { test as base, type Electron, type TestInfo } from "@playwright/test";
 import { resolveCliArgsFromVSCodeExecutablePath } from "@vscode/test-electron";
 import pkg from "package.json";
@@ -142,13 +143,18 @@ async function launch({
 
 const test = base.extend<{
   filename: string;
+  setSnapshot: (cb: (contents: string) => string) => Promise<void>;
   snapshot: (path?: string) => string;
   vsce: ExtensionPage;
 }>({
   filename: ["examples/test-fixture/src/scene.tsx", { option: true }],
+  setSnapshot: async ({ filename, snapshot }, use) => {
+    const contents = snapshot();
+    await use((cb) => writeFile(join(process.cwd(), filename), cb(contents)));
+  },
   snapshot: async ({ filename }, use) => {
     await use((path) =>
-      fs.readFileSync(join(process.cwd(), path ?? filename), "utf8"),
+      readFileSync(join(process.cwd(), path ?? filename), "utf8"),
     );
   },
   vsce: async ({ filename }, use, testInfo) => {

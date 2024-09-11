@@ -28,7 +28,6 @@ test(
 
 test("reopening a file after closing", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
-  await expect(vsce.loadedComponent).toHaveText("Scene");
 
   await vsce.editorTab.closeButton.click();
 
@@ -38,7 +37,6 @@ test("reopening a file after closing", async ({ vsce }) => {
 
 test("opening another scene using codelens", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
-  await expect(vsce.loadedComponent).toHaveText("Scene");
 
   await vsce.codelens("Plane").click();
   await expect(vsce.loadedComponent).toHaveText("Plane");

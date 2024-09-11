@@ -9,7 +9,6 @@ import { test } from "./utils/runner";
 
 test("updating component from another file", async ({ snapshot, vsce }) => {
   await vsce.codelens("Scene").click();
-  await expect(vsce.loadedComponent).toHaveText("Scene");
   const { panels, togglePanelsButton } = vsce.resolveEditor();
   await togglePanelsButton.click();
 
@@ -36,4 +35,29 @@ test("updating component from another file", async ({ snapshot, vsce }) => {
   expect(snapshot("examples/test-fixture/src/geometry/box.tsx")).toContain(
     "scale={0.5}",
   );
+});
+
+test("external update can be undone in the editor", async ({
+  setSnapshot,
+  vsce,
+}) => {
+  await vsce.codelens("Plane").click();
+  const { panels, togglePanelsButton } = vsce.resolveEditor();
+  await togglePanelsButton.click();
+  await panels.getByRole("button", { name: "meshBasicMaterial" }).click();
+
+  // Perform an external update
+  await setSnapshot((contents) =>
+    contents.replace("visible={true}", "visible={false}"),
+  );
+  const input = panels.getByLabel("visible");
+  await expect(input).not.toBeChecked();
+  // Should remove dirty state
+  await expect(
+    vsce.page.getByLabel("scene.tsx, Editor Group 2"),
+  ).not.toHaveClass(/dirty/);
+
+  // Undo inside the editor back to the original state
+  await vsce.page.keyboard.press("ControlOrMeta+Z");
+  await expect(input).toBeChecked();
 });

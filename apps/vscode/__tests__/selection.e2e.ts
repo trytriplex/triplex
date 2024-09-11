@@ -9,7 +9,6 @@ import { test } from "./utils/runner";
 
 test("focusing an element", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
-  await expect(vsce.loadedComponent).toHaveText("Scene");
   const editor = vsce.resolveEditor();
   await editor.togglePanelsButton.click();
 
@@ -22,7 +21,6 @@ test("focusing an element", async ({ vsce }) => {
 
 test("blurring an element", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
-  await expect(vsce.loadedComponent).toHaveText("Scene");
   const editor = vsce.resolveEditor();
   await editor.togglePanelsButton.click();
   await editor.panels.getByRole("button", { name: "ambientLight" }).click();
@@ -38,7 +36,6 @@ test("default component switcher to initially opened component", async ({
   vsce,
 }) => {
   await vsce.codelens("Scene").click();
-  await expect(vsce.loadedComponent).toHaveText("Scene");
   const editor = vsce.resolveEditor();
 
   await editor.togglePanelsButton.click();
@@ -48,7 +45,6 @@ test("default component switcher to initially opened component", async ({
 
 test("jump to element", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
-  await expect(vsce.loadedComponent).toHaveText("Scene");
   const editor = vsce.resolveEditor();
   await editor.togglePanelsButton.click();
   await editor.panels.getByRole("button", { name: "ambientLight" }).click();

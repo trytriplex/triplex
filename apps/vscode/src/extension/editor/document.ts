@@ -23,6 +23,7 @@ export class TriplexDocument implements vscode.CustomDocument {
 
   private _context: { ports: { server: number } } = { ports: { server: -1 } };
   private _modifiedPaths: Record<string, true> = {};
+  private _skipNextSave = false;
 
   onDidChange = this._onDidChange.event;
 
@@ -47,6 +48,11 @@ export class TriplexDocument implements vscode.CustomDocument {
   }
 
   async save(_cancellation: vscode.CancellationToken) {
+    if (this._skipNextSave) {
+      this._skipNextSave = false;
+      return;
+    }
+
     for (const path in this._modifiedPaths) {
       await fetch(
         `http://localhost:${
@@ -153,11 +159,21 @@ export class TriplexDocument implements vscode.CustomDocument {
     });
   }
 
-  private async undoableAction<
+  async undoableAction<
     TResponse extends { path: string; redoID: number; undoID: number },
   >(
     label: string,
-    callback: () => Promise<TResponse>,
+    callback: () => Promise<TResponse> | TResponse,
+    opts?: {
+      /**
+       * Immediately forces the document to be saved but skips calling the
+       * Triplex backend. This is done to get rid of the dirty state inside VS
+       * Code when the change originates from outside of Triplex.
+       *
+       * Only use this if you know what you're doing!
+       */
+      skipDirtyCheck?: boolean;
+    },
   ): Promise<Omit<TResponse, "redoID" | "undoID" | "path">> {
     const { path, redoID, undoID, ...response } = await callback();
 
@@ -186,6 +202,11 @@ export class TriplexDocument implements vscode.CustomDocument {
         );
       },
     });
+
+    if (opts?.skipDirtyCheck) {
+      this._skipNextSave = true;
+      vscode.workspace.save(this.uri);
+    }
 
     return response;
   }
