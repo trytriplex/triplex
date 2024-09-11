@@ -1,5 +1,16 @@
 # @triplex/vscode
 
+## 0.0.19
+
+### Patch Changes
+
+- 54a59b63: Changes originating from outside of Triplex for VS Code are now added to the undo/redo stack in the editor.
+- e74bf3c4: Modifying elements that live in another file now have their changes persisted
+  when saving.
+- Updated dependencies [54a59b63]
+  - @triplex/server@0.68.8
+  - @triplex/client@0.68.8
+
 ## 0.0.18
 
 ### Patch Changes

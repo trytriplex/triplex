@@ -1,5 +1,13 @@
 # @triplex/ux
 
+## 0.68.8
+
+### Patch Changes
+
+- 07acd338: Fix boolean input firing on change / on confirm events more than expected when the persisted value updates.
+  - @triplex/bridge@0.68.8
+  - @triplex/lib@0.68.8
+
 ## 0.68.7
 
 ### Patch Changes

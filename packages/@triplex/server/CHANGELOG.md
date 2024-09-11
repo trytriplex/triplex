@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.68.8
+
+### Patch Changes
+
+- 54a59b63: Changes originating from outside of Triplex for VS Code are now added to the undo/redo stack in the editor.
+
 ## 0.68.7
 
 ## 0.68.6
