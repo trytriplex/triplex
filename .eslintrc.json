@@ -1,15 +1,33 @@
 {
-  "extends": ["@nkzw"],
-  "ignorePatterns": ["dist", "build", "test-results", "syntax-error.tsx"],
+  "extends": ["@nkzw", "plugin:playwright/recommended"],
+  "ignorePatterns": [
+    "dist",
+    "build",
+    "playwright-report",
+    "test-results",
+    "syntax-error.tsx"
+  ],
   "overrides": [
     {
       "files": ["**/create-triplex-project/templates/**"],
       "rules": {
         "header/header": "off"
       }
+    },
+    {
+      "files": [
+        "./apps/vscode/**",
+        "./packages/@triplex/editor/**",
+        "./packages/@triplex/bridge/**",
+        "./packages/@triplex/ux/**",
+        "./packages/@triplex/ws/**"
+      ],
+      "rules": {
+        "react-compiler/react-compiler": "error"
+      }
     }
   ],
-  "plugins": ["header"],
+  "plugins": ["react-compiler", "header"],
   "rules": {
     "@nkzw/no-instanceof": "off",
     "@typescript-eslint/consistent-type-imports": [
@@ -25,18 +43,24 @@
     "@typescript-eslint/no-unnecessary-type-constraint": "off",
     "@typescript-eslint/no-unused-vars": [
       "error",
-      { "argsIgnorePattern": "^_" }
+      { "argsIgnorePattern": "^_", "ignoreRestSiblings": true }
     ],
+    "brace-style": "off",
     "header/header": ["error", "scripts/header.js"],
     "import/no-extraneous-dependencies": "off",
+    "import/no-namespace": "off",
     "import/no-unresolved": "off",
     "no-extra-parens": "off",
     "no-inner-declarations": "off",
     "no-unused-expressions": "off",
+    "playwright/no-focused-test": "off",
+    "playwright/no-force-option": "off",
+    "playwright/no-standalone-expect": "off",
     "prefer-const": "off",
     "react/no-unknown-property": "off",
-    "unicorn/prefer-ternary": "off",
     "space-before-function-paren": "off",
+    "unicorn/consistent-function-scoping": "off",
+    "unicorn/prefer-ternary": "off",
     "unicorn/prefer-top-level-await": "off"
   }
 }

@@ -57,7 +57,7 @@ const components: Components = {
       return (
         value.slice(0, startIndex) +
         (action === "add" ? "+" : "-") +
-        value.slice(startIndex + 1, value.length)
+        value.slice(startIndex + 1)
       );
     };
     const search = useSearchParams();
@@ -166,7 +166,7 @@ const friendlyDate = (date: string): string => {
 function renderDocsItem(
   link: ReturnType<typeof normalizePages>["docsDirectories"][0],
   route: string,
-  level = 0,
+  level = 0
 ): JSX.Element | null {
   if (!link.isUnderCurrentDocsTree) {
     return null;
@@ -393,13 +393,13 @@ function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
         locale: "en_US",
         route,
       }),
-    [pageMap, route],
+    [pageMap, route]
   );
 
   const previousPage = result.flatDocsDirectories[result.activeIndex - 1];
   const nextPage = result.flatDocsDirectories[result.activeIndex + 1];
   const pageItems = result.flatDocsDirectories.filter(
-    (item) => item.isUnderCurrentDocsTree,
+    (item) => item.isUnderCurrentDocsTree
   );
 
   useEffect(() => {
