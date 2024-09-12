@@ -17,6 +17,7 @@ export function UnionInput({
   onConfirm,
   path,
   persistedValue,
+  tags,
   values,
 }: {
   children: RenderInputsWithAction<{ toggle: () => void }>;
@@ -26,6 +27,7 @@ export function UnionInput({
   onConfirm: (value: unknown) => void;
   path: string;
   persistedValue?: string | number | boolean;
+  tags?: Record<string, string | number | boolean>;
   values: Type[];
 }) {
   const [index, toggle] = useReducer((prev: number) => prev + 1, 0);
@@ -38,7 +40,7 @@ export function UnionInput({
       path={path}
       prop={
         Object.assign(
-          { description, name },
+          { description, name, tags },
           value,
           persistedValue ? { value: persistedValue } : {},
           // eslint-disable-next-line @typescript-eslint/no-explicit-any

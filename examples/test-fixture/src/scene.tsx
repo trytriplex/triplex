@@ -49,6 +49,11 @@ export function Scene({
 
 interface SceneProps {
   name?: string;
+  /**
+   * @min 1
+   * @max 10
+   * @step 0.5
+   */
   value?: number;
   variant?: "giant" | "small";
   visible?: boolean;

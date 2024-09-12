@@ -62,7 +62,11 @@ export const renderPropInputs: RenderInputs = ({
         >
           {({ ref, ...props }, { hasChanged }) => (
             <>
-              <Label description={prop.prop.description} htmlFor={props.id}>
+              <Label
+                description={prop.prop.description}
+                htmlFor={props.id}
+                tags={prop.prop.tags}
+              >
                 {prop.prop.name}
               </Label>
               <div className="mb-1 flex items-center gap-1">
@@ -97,7 +101,11 @@ export const renderPropInputs: RenderInputs = ({
       >
         {({ onChange, ref, ...props }) => (
           <>
-            <Label description={prop.prop.description} htmlFor={props.id}>
+            <Label
+              description={prop.prop.description}
+              htmlFor={props.id}
+              tags={prop.prop.tags}
+            >
               {prop.prop.name}
             </Label>
             <input
@@ -115,6 +123,7 @@ export const renderPropInputs: RenderInputs = ({
   if (prop.type === "number") {
     return (
       <NumberInput
+        {...prop.prop.tags}
         actionId="scene_controls"
         defaultValue={resolveDefaultValue(prop.prop, "number")}
         label={prop.prop.label}
@@ -127,7 +136,11 @@ export const renderPropInputs: RenderInputs = ({
       >
         {({ ref, ...props }) => (
           <>
-            <Label description={prop.prop.description} htmlFor={props.id}>
+            <Label
+              description={prop.prop.description}
+              htmlFor={props.id}
+              tags={prop.prop.tags}
+            >
               {prop.prop.name}
             </Label>
             <input
@@ -155,7 +168,11 @@ export const renderPropInputs: RenderInputs = ({
       >
         {({ onChange, ref, ...props }) => (
           <>
-            <Label description={prop.prop.description} htmlFor={props.id}>
+            <Label
+              description={prop.prop.description}
+              htmlFor={props.id}
+              tags={prop.prop.tags}
+            >
               {prop.prop.name}
             </Label>
             <div className="text-input focus-within:border-selected bg-input border-input mb-1 grid h-5 w-5 rounded-sm border">
@@ -183,12 +200,13 @@ export const renderPropInputs: RenderInputs = ({
         onConfirm={onConfirm}
         path={path}
         persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
+        tags={prop.prop.tags}
         values={prop.prop.shape}
       >
         {(props, actions) => (
           <div
             className="grid grid-flow-col gap-x-1 [grid-template:'input_.'_'input_action']"
-            style={{ gridTemplateColumns: "auto 1fr" }}
+            style={{ gridTemplateColumns: "minmax(auto, 10fr) 1fr" }}
           >
             {renderPropInputs(props)}
             <div className="flex self-start [grid-area:action]">
@@ -209,7 +227,11 @@ export const renderPropInputs: RenderInputs = ({
   if (prop.type === "tuple") {
     return (
       <>
-        <Label description={prop.prop.description} htmlFor="">
+        <Label
+          description={prop.prop.description}
+          htmlFor=""
+          tags={prop.prop.tags}
+        >
           {prop.prop.name}
         </Label>
         <div>
@@ -241,7 +263,11 @@ export const renderPropInputs: RenderInputs = ({
       >
         {({ onChange, options, ref, ...props }) => (
           <>
-            <Label description={prop.prop.description} htmlFor={props.id}>
+            <Label
+              description={prop.prop.description}
+              htmlFor={props.id}
+              tags={prop.prop.tags}
+            >
               {prop.prop.name}
             </Label>
             <select
@@ -266,7 +292,11 @@ export const renderPropInputs: RenderInputs = ({
 
   return (
     <>
-      <Label description={prop.prop.description} htmlFor="">
+      <Label
+        description={prop.prop.description}
+        htmlFor=""
+        tags={prop.prop.tags}
+      >
         {prop.prop.name}
       </Label>
       <a

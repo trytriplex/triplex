@@ -23,7 +23,7 @@ function Box({
    * @max 2
    * @step 0.1
    */
-  size?: number;
+  size?: number | string;
 }) {
   const ok = {};
   const [hover, setHover] = useState(false);
