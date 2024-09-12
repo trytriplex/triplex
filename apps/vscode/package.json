@@ -1,7 +1,7 @@
 {
   "name": "triplex-vsce",
   "displayName": "Triplex for VS Code",
-  "version": "0.0.19",
+  "version": "0.0.20",
   "private": true,
   "description": "The React Three Fiber visual IDE.",
   "categories": [

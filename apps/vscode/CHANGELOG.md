@@ -1,5 +1,13 @@
 # @triplex/vscode
 
+## 0.0.20
+
+### Patch Changes
+
+- 592aa63f: Prop tags are now passed to number and union inputs.
+- a92281f3: Fix external changes affecting all documents instead of the one it originated from.
+- a92281f3: Listeners are now disposed of when the panel is disposed.
+
 ## 0.0.19
 
 ### Patch Changes
