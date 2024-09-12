@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+// eslint-disable-next-line @typescript-eslint/no-require-imports
 const { exec } = require("node:child_process");
 
 const script = process.argv[2];

@@ -27,6 +27,8 @@
     "@swc/core": "^1.6.5",
     "eslint": "^8.51.0",
     "eslint-plugin-header": "^3.1.1",
+    "eslint-plugin-playwright": "^1.6.2",
+    "eslint-plugin-react-compiler": "0.0.0-experimental-0998c1e-20240625",
     "jsdom": "^21.1.0",
     "prettier": "^2.8.3",
     "prettier-plugin-jsdoc": "^0.4.2",
