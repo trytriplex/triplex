@@ -12,6 +12,7 @@ import type {
   ClientSendEventName,
   ClientSendEventResponse,
   Controls,
+  ExtensionPointElement,
   HostSendEventData,
   HostSendEventName,
   HostSendEventResponse,
@@ -25,6 +26,7 @@ export {
   ButtonControl,
   ButtonGroupControl,
   SeparatorControl,
+  ExtensionPointElement,
   ClientSendEventData,
   ToggleButtonControl,
 };
@@ -38,7 +40,7 @@ export function broadcastForwardedKeydownEvents() {
 export function on<TEvent extends ClientSendEventName>(
   eventName: TEvent,
   callback: (
-    data: ClientSendEventData[TEvent],
+    args: ClientSendEventData[TEvent],
   ) =>
     | void
     | ClientSendEventResponse[TEvent]

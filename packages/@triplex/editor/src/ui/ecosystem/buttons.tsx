@@ -4,138 +4,108 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import {
-  AllSidesIcon,
-  AngleIcon,
-  BoxIcon,
-  CameraIcon,
-  CursorArrowIcon,
-  ExitIcon,
-  GridIcon,
-  HeightIcon,
-  MoveIcon,
-  SizeIcon,
-  TransformIcon,
-} from "@radix-ui/react-icons";
-import {
-  type ButtonControl,
-  type ButtonGroupControl,
-  type ToggleButtonControl,
+import type {
+  ButtonControl,
+  ButtonGroupControl,
+  ExtensionPointElement,
+  ToggleButtonControl,
 } from "@triplex/bridge/host";
-import { type ActionIdSafe } from "@triplex/ux";
-import { useState } from "react";
+import {
+  ButtonControl as ButtonControlImpl,
+  ButtonGroupControl as ButtonGroupControlImpl,
+  ToggleButtonControl as ToggleButtonControlImpl,
+  type ActionIdSafe,
+} from "@triplex/ux";
 import { IconButton } from "../../ds/button";
-import { LocalSpaceIcon, WorldSpaceIcon } from "../../ds/icons";
 
-const icons = {
-  "all-sides": AllSidesIcon,
-  angle: AngleIcon,
-  camera: CameraIcon,
-  cursor: CursorArrowIcon,
-  exit: ExitIcon,
-  grid: GridIcon,
-  "grid-perspective": () => (
-    <div className="[transform:perspective(30px)_rotateX(45deg)]">
-      <GridIcon />
-    </div>
-  ),
-  height: HeightIcon,
-  local: LocalSpaceIcon,
-  move: MoveIcon,
-  size: SizeIcon,
-  transform: TransformIcon,
-  world: WorldSpaceIcon,
-};
-
-interface ControlProps<TControl> {
+type ControlProps<TControl> = {
   actionId: ActionIdSafe;
   control: TControl;
-  onClick: (id: string) => unknown;
+  data?: Record<string, unknown>;
   size?: "md" | "sm" | "xs";
-}
+} & ({ scope: "scene" } | { data: ExtensionPointElement; scope: "element" });
 
 export function ToggleButton({
   actionId,
   control,
-  onClick,
+  data,
+  scope,
   size,
 }: ControlProps<ToggleButtonControl>) {
-  const [index, setIndex] = useState(0);
-  const button = control.buttons[index % control.buttons.length];
+  const props = scope === "scene" ? { scope } : { data, scope };
 
   return (
-    <IconButton
-      accelerator={control.accelerator}
-      actionId={`${actionId}_${button.id}`}
-      color="inherit"
-      icon={button.icon ? icons[button.icon] : BoxIcon}
-      isSelected={button.isSelected}
-      label={button.label}
-      onClick={async () => {
-        const result = await onClick(button.id);
-        if (
-          result &&
-          typeof result === "object" &&
-          "handled" in result &&
-          result.handled
-        ) {
-          setIndex((prev) => prev + 1);
-        }
-      }}
-      size={size}
-      testId={button.id}
-    />
+    <ToggleButtonControlImpl control={control} {...props}>
+      {(button) => (
+        <IconButton
+          accelerator={control.accelerator}
+          actionId={`${actionId}_${button.id}`}
+          color="inherit"
+          icon={button.Icon}
+          isSelected={button.isSelected}
+          label={button.label}
+          onClick={button.onClick}
+          size={size}
+          testId={button.id}
+        />
+      )}
+    </ToggleButtonControlImpl>
   );
 }
 
 export function ButtonGroup({
   actionId,
   control,
-  onClick,
+  data,
+  scope,
   size,
 }: ControlProps<ButtonGroupControl>) {
-  const [selected, setSelected] = useState(control.defaultSelected);
+  const props = scope === "scene" ? { scope } : { data, scope };
 
   return (
-    <>
-      {control.buttons.map((control) => (
+    <ButtonGroupControlImpl control={control} {...props}>
+      {(button) => (
         <IconButton
-          accelerator={control.accelerator}
-          actionId={`${actionId}_${control.id}`}
+          accelerator={button.accelerator}
+          actionId={`${actionId}_${button.id}`}
           color="inherit"
-          icon={control.icon ? icons[control.icon] : BoxIcon}
-          isSelected={control.id === selected}
-          key={control.id}
-          label={control.label}
-          onClick={() => {
-            onClick(control.id);
-            setSelected(control.id);
-          }}
+          icon={button.Icon}
+          isSelected={button.isSelected}
+          key={button.id}
+          label={button.label}
+          onClick={button.onClick}
           size={size}
-          testId={control.id}
+          testId={button.id}
         />
-      ))}
-    </>
+      )}
+    </ButtonGroupControlImpl>
   );
 }
 
 export function Button({
   actionId,
   control,
-  onClick,
+  data,
+  scope,
   size,
 }: ControlProps<ButtonControl>) {
+  const props = scope === "scene" ? { scope } : { data, scope };
+
   return (
-    <IconButton
-      accelerator={control.accelerator}
-      actionId={`${actionId}_${control.id}`}
-      color="inherit"
-      icon={control.icon ? icons[control.icon] : BoxIcon}
-      key={control.id}
-      label={control.label}
-      onClick={() => onClick(control.id)}
-      size={size}
-      testId={control.id}
-    />
+    <ButtonControlImpl control={control} {...props}>
+      {(button) => (
+        <IconButton
+          accelerator={button.accelerator}
+          actionId={`${actionId}_${button.id}`}
+          color="inherit"
+          icon={button.Icon}
+          key={button.id}
+          label={button.label}
+          onClick={button.onClick}
+          size={size}
+          testId={button.id}
+        />
+      )}
+    </ButtonControlImpl>
   );
 }

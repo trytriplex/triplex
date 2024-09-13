@@ -21,6 +21,7 @@ import {
   send,
   type ButtonControl,
   type ButtonGroupControl,
+  type ExtensionPointElement,
   type ToggleButtonControl,
 } from "@triplex/bridge/host";
 import { type Accelerator } from "@triplex/lib";
@@ -47,7 +48,7 @@ const icons = {
   world: WorldSpaceIcon,
 };
 
-interface ControlProps<TControl> {
+type ControlProps<TControl> = {
   children: (props: {
     Icon: () => JSX.Element;
     accelerator?: Accelerator;
@@ -57,11 +58,14 @@ interface ControlProps<TControl> {
     onClick: () => void;
   }) => JSX.Element;
   control: TControl;
-}
+  data?: Record<string, unknown>;
+} & ({ scope: "scene" } | { data: ExtensionPointElement; scope: "element" });
 
 export function ToggleButtonControl({
   children,
   control,
+  data,
+  scope,
 }: ControlProps<ToggleButtonControl>) {
   const [index, setIndex] = useState(0);
   const button = control.buttons[index % control.buttons.length];
@@ -69,11 +73,17 @@ export function ToggleButtonControl({
   return children({
     Icon: (button.icon ? icons[button.icon] : BoxIcon) as () => JSX.Element,
     accelerator: control.accelerator as Accelerator,
-    id: control.id,
+    id: button.id,
     isSelected: !!button.isSelected,
     label: button.label,
     onClick: async () => {
-      const result = await send("control-triggered", { id: button.id }, true);
+      const result = await send(
+        "extension-point-triggered",
+        scope === "scene"
+          ? { id: button.id, scope }
+          : { data, id: button.id, scope },
+        true,
+      );
       if (result.handled) {
         setIndex((prev) => prev + 1);
       }
@@ -84,23 +94,30 @@ export function ToggleButtonControl({
 export function ButtonGroupControl({
   children,
   control,
+  data,
+  scope,
 }: ControlProps<ButtonGroupControl>) {
   const [selected, setSelected] = useState(control.defaultSelected);
 
   return (
     <>
-      {control.buttons.map((control) =>
+      {control.buttons.map((button) =>
         children({
-          Icon: (control.icon
-            ? icons[control.icon]
+          Icon: (button.icon
+            ? icons[button.icon]
             : BoxIcon) as () => JSX.Element,
-          accelerator: control.accelerator as Accelerator,
-          id: control.id,
-          isSelected: control.id === selected,
-          label: control.label,
+          accelerator: button.accelerator as Accelerator,
+          id: button.id,
+          isSelected: button.id === selected,
+          label: button.label,
           onClick: () => {
-            send("control-triggered", { id: control.id });
-            setSelected(control.id);
+            send(
+              "extension-point-triggered",
+              scope === "scene"
+                ? { id: button.id, scope }
+                : { data, id: button.id, scope },
+            );
+            setSelected(button.id);
           },
         }),
       )}
@@ -111,6 +128,8 @@ export function ButtonGroupControl({
 export function ButtonControl({
   children,
   control,
+  data,
+  scope,
 }: ControlProps<ButtonControl>) {
   return children({
     Icon: (control.icon ? icons[control.icon] : BoxIcon) as () => JSX.Element,
@@ -118,6 +137,12 @@ export function ButtonControl({
     id: control.id,
     isSelected: false,
     label: control.label,
-    onClick: () => send("control-triggered", { id: control.id }),
+    onClick: () =>
+      send(
+        "extension-point-triggered",
+        scope === "scene"
+          ? { id: control.id, scope }
+          : { data, id: control.id, scope },
+      ),
   });
 }

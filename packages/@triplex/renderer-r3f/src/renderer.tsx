@@ -24,8 +24,8 @@ export function Renderer({
   providerPath: string;
 }) {
   useEffect(() => {
-    send("set-element-actions", {
-      actions: [
+    send("set-extension-points", {
+      elements: [
         {
           buttons: [
             {
@@ -40,14 +40,11 @@ export function Renderer({
             },
           ],
           filter: "PerspectiveCamera|OrthographicCamera",
-          id: "enter_camera",
+          groupId: "enter_camera",
           type: "toggle-button",
         },
       ],
-    });
-
-    send("set-controls", {
-      controls: [
+      scene: [
         {
           buttons: [
             {
@@ -61,7 +58,7 @@ export function Renderer({
               label: "Set World Transform",
             },
           ],
-          id: "transform_space",
+          groupId: "transform_space",
           type: "toggle-button",
         },
         {
@@ -94,7 +91,7 @@ export function Renderer({
             },
           ],
           defaultSelected: "none",
-          id: "transform_controls",
+          groupId: "transform_controls",
           type: "button-group",
         },
         {
@@ -113,7 +110,7 @@ export function Renderer({
               label: "Switch To Perspective",
             },
           ],
-          id: "camera_switcher",
+          groupId: "camera_switcher",
           type: "toggle-button",
         },
       ],

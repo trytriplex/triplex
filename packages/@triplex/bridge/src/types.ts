@@ -30,7 +30,7 @@ export interface ButtonGroupControl {
     label: string;
   }[];
   defaultSelected?: string;
-  id: string;
+  groupId: string;
   type: "button-group";
 }
 
@@ -50,7 +50,7 @@ export interface ToggleButtonControl {
       label: string;
     },
   ];
-  id: string;
+  groupId: string;
   type: "toggle-button";
 }
 
@@ -123,11 +123,9 @@ export interface ClientSendEventData {
     shiftKey: boolean;
   };
   ready: undefined;
-  "set-controls": {
-    controls: Controls;
-  };
-  "set-element-actions": {
-    actions: Actions;
+  "set-extension-points": {
+    elements: Actions;
+    scene: Controls;
   };
   track: { actionId: string };
 }
@@ -141,25 +139,29 @@ export interface ClientSendEventResponse {
   error: void;
   keydown: void;
   ready: void;
-  "set-controls": void;
-  "set-element-actions": void;
+  "set-extension-points": void;
   track: void;
 }
 
 export type HostSendEventName = keyof HostSendEventData;
 
+export interface ExtensionPointElement {
+  column: number;
+  line: number;
+  parentPath: string;
+}
+
 export interface HostSendEventData {
-  "control-triggered": {
-    id: string;
-  };
-  "element-action-triggered": {
-    data: {
-      column: number;
-      line: number;
-      parentPath: string;
-    };
-    id: string;
-  };
+  "extension-point-triggered":
+    | {
+        id: string;
+        scope: "scene";
+      }
+    | {
+        data: ExtensionPointElement;
+        id: string;
+        scope: "element";
+      };
   "request-blur-element": undefined;
   "request-delete-element": {
     column: number;
@@ -215,8 +217,7 @@ export interface HostSendEventData {
 }
 
 export interface HostSendEventResponse {
-  "control-triggered": { handled: boolean };
-  "element-action-triggered": { handled: boolean };
+  "extension-point-triggered": { handled: boolean };
   "request-blur-element": void;
   "request-delete-element": void;
   "request-focus-element": void;

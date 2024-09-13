@@ -250,7 +250,11 @@ export function Camera({
 
   useEffect(() => {
     return compose([
-      on("control-triggered", (data) => {
+      on("extension-point-triggered", (data) => {
+        if (data.scope !== "scene") {
+          return;
+        }
+
         switch (data.id) {
           case "perspective":
           case "orthographic": {
@@ -263,7 +267,11 @@ export function Camera({
           }
         }
       }),
-      on("element-action-triggered", (data) => {
+      on("extension-point-triggered", (data) => {
+        if (data.scope !== "element") {
+          return;
+        }
+
         switch (data.id) {
           case "camera_enter": {
             const camera = findObject3D(scene, {

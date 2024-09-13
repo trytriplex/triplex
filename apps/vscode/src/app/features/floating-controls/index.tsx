@@ -32,8 +32,8 @@ export function FloatingControls() {
   const dispatch = useSceneStore((store) => store.setPlayState);
 
   useEffect(() => {
-    return on("set-controls", (data) => {
-      setControls(data.controls);
+    return on("set-extension-points", (data) => {
+      setControls(data.scene);
     });
   }, []);
 
@@ -73,7 +73,11 @@ export function FloatingControls() {
 
               case "button-group": {
                 return (
-                  <ButtonGroupControl control={control} key={control.id}>
+                  <ButtonGroupControl
+                    control={control}
+                    key={control.groupId}
+                    scope="scene"
+                  >
                     {({
                       Icon,
                       accelerator,
@@ -106,7 +110,11 @@ export function FloatingControls() {
 
               case "toggle-button": {
                 return (
-                  <ToggleButtonControl control={control} key={control.id}>
+                  <ToggleButtonControl
+                    control={control}
+                    key={control.groupId}
+                    scope="scene"
+                  >
                     {({ Icon, accelerator, id, label, onClick }) => (
                       <IconButton
                         accelerator={accelerator}
@@ -123,7 +131,11 @@ export function FloatingControls() {
 
               case "button": {
                 return (
-                  <ButtonControl control={control} key={control.id}>
+                  <ButtonControl
+                    control={control}
+                    key={control.id}
+                    scope="scene"
+                  >
                     {({ Icon, accelerator, id, label, onClick }) => (
                       <IconButton
                         accelerator={accelerator}

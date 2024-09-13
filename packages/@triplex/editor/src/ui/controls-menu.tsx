@@ -13,7 +13,7 @@ import {
   SizeIcon,
   StopIcon,
 } from "@radix-ui/react-icons";
-import { on, send, type Controls } from "@triplex/bridge/host";
+import { on, type Controls } from "@triplex/bridge/host";
 import { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Button as DSButton, IconButton } from "../ds/button";
@@ -39,8 +39,8 @@ export function ControlsMenu() {
   );
 
   useEffect(() => {
-    return on("set-controls", (data) => {
-      setControls(data.controls);
+    return on("set-extension-points", (data) => {
+      setControls(data.scene);
     });
   }, []);
 
@@ -72,7 +72,7 @@ export function ControlsMenu() {
                     actionId="scene_controls"
                     control={control}
                     key={control.id}
-                    onClick={(id) => send("control-triggered", { id })}
+                    scope="scene"
                   />
                 );
               }
@@ -82,8 +82,8 @@ export function ControlsMenu() {
                   <ButtonGroup
                     actionId="scene_controls"
                     control={control}
-                    key={control.id}
-                    onClick={(id) => send("control-triggered", { id })}
+                    key={control.groupId}
+                    scope="scene"
                   />
                 );
               }
@@ -93,8 +93,8 @@ export function ControlsMenu() {
                   <ToggleButton
                     actionId="scene_controls"
                     control={control}
-                    key={control.id}
-                    onClick={(id) => send("control-triggered", { id }, true)}
+                    key={control.groupId}
+                    scope="scene"
                   />
                 );
               }

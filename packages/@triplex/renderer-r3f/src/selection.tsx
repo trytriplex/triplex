@@ -124,7 +124,11 @@ export function Selection({
   }, [onBlur]);
 
   useEffect(() => {
-    return on("control-triggered", (data) => {
+    return on("extension-point-triggered", (data) => {
+      if (data.scope !== "scene") {
+        return;
+      }
+
       switch (data.id) {
         case "translate":
         case "scale":

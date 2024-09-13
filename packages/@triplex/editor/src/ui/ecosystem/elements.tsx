@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { on, send, type Actions } from "@triplex/bridge/host";
+import { on, type Actions } from "@triplex/bridge/host";
 import { createContext, useContext, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Button, ButtonGroup, ToggleButton } from "./buttons";
@@ -19,8 +19,8 @@ export function ElementActionProvider({
   const [actions, setActions] = useState<Actions>([]);
 
   useEffect(() => {
-    return on("set-element-actions", (data) => {
-      setActions(data.actions);
+    return on("set-extension-points", (data) => {
+      setActions(data.elements);
     });
   }, []);
 
@@ -58,8 +58,9 @@ export function RenderActions({
               <Button
                 actionId="scenepanel_element"
                 control={action}
+                data={data}
                 key={action.id}
-                onClick={(id) => send("element-action-triggered", { data, id })}
+                scope="element"
                 size="sm"
               />
             );
@@ -70,8 +71,9 @@ export function RenderActions({
               <ButtonGroup
                 actionId="scenepanel_element"
                 control={action}
-                key={action.id}
-                onClick={(id) => send("element-action-triggered", { data, id })}
+                data={data}
+                key={action.groupId}
+                scope="element"
                 size="sm"
               />
             );
@@ -82,10 +84,9 @@ export function RenderActions({
               <ToggleButton
                 actionId="scenepanel_element"
                 control={action}
-                key={action.id}
-                onClick={(id) =>
-                  send("element-action-triggered", { data, id }, true)
-                }
+                data={data}
+                key={action.groupId}
+                scope="element"
                 size="sm"
               />
             );

@@ -60,12 +60,9 @@ export function Renderer({
   providerPath: string;
 }) {
   useEffect(() => {
-    send("set-element-actions", {
-      actions: [],
-    });
-
-    send("set-controls", {
-      controls: [],
+    send("set-extension-points", {
+      elements: [],
+      scene: [],
     });
 
     send("ready", undefined);
