@@ -1,5 +1,13 @@
 # @triplex/vscode
 
+## 0.0.21
+
+### Patch Changes
+
+- 740ff8f2: Default editor lights can now be turned on or off through the floating controls panel. Previously they would either be always on (if you had no lights in your component) or always off (if you did have lights). Now you can choose.
+  - @triplex/client@0.69.0
+  - @triplex/server@0.69.0
+
 ## 0.0.20
 
 ### Patch Changes

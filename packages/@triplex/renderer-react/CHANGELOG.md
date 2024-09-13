@@ -1,5 +1,15 @@
 # @triplex/renderer-react
 
+## 0.69.0
+
+### Patch Changes
+
+- fd4fa16f: Internal refactor to consolidate extension points to use a common implementation.
+- Updated dependencies [fd4fa16f]
+- Updated dependencies [740ff8f2]
+  - @triplex/bridge@0.69.0
+  - @triplex/ws@0.69.0
+
 ## 0.68.8
 
 ### Patch Changes

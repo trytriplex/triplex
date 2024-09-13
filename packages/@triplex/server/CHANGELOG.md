@@ -1,5 +1,7 @@
 # @triplex/server
 
+## 0.69.0
+
 ## 0.68.8
 
 ### Patch Changes
