@@ -1,5 +1,7 @@
 # create-triplex-project
 
+## 0.69.0
+
 ## 0.68.8
 
 ## 0.68.7
