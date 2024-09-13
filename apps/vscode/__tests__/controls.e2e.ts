@@ -38,3 +38,24 @@ test("switch to rotate via hotkey", async ({ vsce }) => {
     panel.locator.getByRole("button", { name: "Rotate" }),
   ).toHaveAccessibleName("Rotate active");
 });
+
+test("lights set on load", async ({ vsce }) => {
+  await vsce.codelens("Scene").click();
+  const panel = vsce.resolveEditor();
+
+  await expect(
+    panel.locator.getByRole("button", { name: "Turn On Default Lights" }),
+  ).toBeVisible();
+  await expect(panel.scene.getByTestId("scene-lights-off")).toBeVisible();
+});
+
+test("lights turned on", async ({ vsce }) => {
+  await vsce.codelens("Scene").click();
+  const panel = vsce.resolveEditor();
+
+  await panel.locator
+    .getByRole("button", { name: "Turn On Default Lights" })
+    .click();
+
+  await expect(panel.scene.getByTestId("scene-lights-on")).toBeVisible();
+});

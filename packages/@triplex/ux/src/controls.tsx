@@ -13,11 +13,14 @@ import {
   ExitIcon,
   GridIcon,
   HeightIcon,
+  MoonIcon,
   MoveIcon,
   SizeIcon,
+  SunIcon,
   TransformIcon,
 } from "@radix-ui/react-icons";
 import {
+  on,
   send,
   type ButtonControl,
   type ButtonGroupControl,
@@ -25,7 +28,7 @@ import {
   type ToggleButtonControl,
 } from "@triplex/bridge/host";
 import { type Accelerator } from "@triplex/lib";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { LocalSpaceIcon, WorldSpaceIcon } from "./icons";
 
 const icons = {
@@ -42,8 +45,10 @@ const icons = {
   ),
   height: HeightIcon,
   local: LocalSpaceIcon,
+  moon: MoonIcon,
   move: MoveIcon,
   size: SizeIcon,
+  sun: SunIcon,
   transform: TransformIcon,
   world: WorldSpaceIcon,
 };
@@ -69,6 +74,20 @@ export function ToggleButtonControl({
 }: ControlProps<ToggleButtonControl>) {
   const [index, setIndex] = useState(0);
   const button = control.buttons[index % control.buttons.length];
+
+  useEffect(() => {
+    return on("extension-point-triggered", (data) => {
+      const indexToSet = control.buttons.findIndex(
+        (button) => button.id === data.id,
+      );
+
+      if (indexToSet === -1) {
+        return;
+      }
+
+      setIndex(indexToSet);
+    });
+  }, [control.buttons]);
 
   return children({
     Icon: (button.icon ? icons[button.icon] : BoxIcon) as () => JSX.Element,

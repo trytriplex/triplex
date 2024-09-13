@@ -10,7 +10,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { suspend } from "suspend-react";
 import { Tunnel } from "./components/tunnel";
 import { useScenes } from "./context";
-import { ManualEditableSceneObject } from "./manual-editable";
+import { SceneRenderer } from "./scene-renderer";
 
 /** This is used for e2e testing both the dev and prod smoke test build. */
 function LoadedNotifierForTesting({ exportName }: { exportName: string }) {
@@ -47,16 +47,16 @@ export function SceneLoader({
   sceneProps: Record<string, unknown>;
 }) {
   const scenes = useScenes();
-  const componentFilename = Object.keys(scenes).find((filename) =>
+  const relativePathToPickComponent = Object.keys(scenes).find((filename) =>
     path ? path.endsWith(filename) : false,
   );
 
-  if (!componentFilename || !exportName) {
+  if (!relativePathToPickComponent || !exportName) {
     return null;
   }
 
   const { SceneComponent, triplexMeta } = suspend(async () => {
-    const resolvedModule = await scenes[componentFilename]();
+    const resolvedModule = await scenes[relativePathToPickComponent]();
     const moduleExport = resolvedModule[exportName];
 
     return {
@@ -66,53 +66,35 @@ export function SceneLoader({
           ? moduleExport.triplexMeta
           : undefined,
     };
-  }, [exportName, scenes, componentFilename]);
+  }, [exportName, scenes, relativePathToPickComponent]);
+
+  const parsedTriplexMeta: Record<string, unknown> = (
+    triplexMeta && typeof triplexMeta === "object" ? triplexMeta : {}
+  ) as Record<string, unknown>;
 
   return (
-    <>
-      <ErrorBoundary
-        fallbackRender={() => null}
-        onError={(err) =>
-          send("error", {
-            message: err.message,
-            source: path,
-            stack: err.message,
-            subtitle:
-              "The scene could not be rendered because there was an error in a component. Resolve the errors and try again.",
-            title: "Could not render scene",
-          })
-        }
-        resetKeys={[SceneComponent]}
-      >
-        <LoadedNotifierForTesting exportName={exportName} />
-        <ManualEditableSceneObject
-          component={SceneComponent}
-          exportName={exportName}
-          id={-1}
-          path={path}
-          staticSceneProps={sceneProps}
-        />
-      </ErrorBoundary>
-
-      {triplexMeta &&
-        typeof triplexMeta === "object" &&
-        "lighting" in triplexMeta &&
-        triplexMeta.lighting === "default" && (
-          <>
-            <hemisphereLight
-              color="#87CEEB"
-              groundColor="#362907"
-              intensity={0.3}
-            />
-            <ambientLight intensity={0.3} />
-            <directionalLight intensity={0.5} position={[2.5, 8, 5]} />
-            <pointLight
-              color="#eef4aa"
-              intensity={0.5}
-              position={[-10, 0, -20]}
-            />
-          </>
-        )}
-    </>
+    <ErrorBoundary
+      fallbackRender={() => null}
+      onError={(err) =>
+        send("error", {
+          message: err.message,
+          source: path,
+          stack: err.message,
+          subtitle:
+            "The scene could not be rendered because there was an error in a component. Resolve the errors and try again.",
+          title: "Could not render scene",
+        })
+      }
+      resetKeys={[SceneComponent]}
+    >
+      <LoadedNotifierForTesting exportName={exportName} />
+      <SceneRenderer
+        component={SceneComponent}
+        exportName={exportName}
+        path={path}
+        props={sceneProps}
+        triplexMeta={parsedTriplexMeta}
+      />
+    </ErrorBoundary>
   );
 }

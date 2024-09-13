@@ -100,6 +100,25 @@ export function Renderer({
         {
           buttons: [
             {
+              icon: "moon",
+              id: "default_lights_on",
+              label: "Turn On Default Lights",
+            },
+            {
+              icon: "sun",
+              id: "default_lights_off",
+              label: "Turn Off Default Lights",
+            },
+          ],
+          groupId: "lights",
+          type: "toggle-button",
+        },
+        {
+          type: "separator",
+        },
+        {
+          buttons: [
+            {
               icon: "grid-perspective",
               id: "orthographic",
               label: "Switch To Orthographic",

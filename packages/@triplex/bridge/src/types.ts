@@ -17,8 +17,10 @@ type Icon =
   | "grid"
   | "height"
   | "local"
+  | "moon"
   | "move"
   | "size"
+  | "sun"
   | "transform"
   | "world";
 
@@ -110,6 +112,7 @@ export interface ClientSendEventData {
     subtitle: string;
     title: string;
   };
+  "extension-point-triggered": { id: string };
   keydown: {
     altKey: boolean;
     code: string;
@@ -137,6 +140,7 @@ export interface ClientSendEventResponse {
   "element-focused": void;
   "element-set-prop": void;
   error: void;
+  "extension-point-triggered": void;
   keydown: void;
   ready: void;
   "set-extension-points": void;
