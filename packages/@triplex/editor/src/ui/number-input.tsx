@@ -224,7 +224,6 @@ export function NumberInput({
         element.blur();
       }
 
-      // @ts-expect-error Unadjusted movement isn't available in DOM types currently.
       // We use unadjusted movement as on Windows odd behaviour occurs without it
       // Such as mouse move events being fired before moving the mouse, and HUGE values
       // For e.movementX.

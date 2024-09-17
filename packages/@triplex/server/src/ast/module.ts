@@ -10,7 +10,7 @@ import { resolveExportDeclaration } from "./jsx";
 import { type SourceFileReadOnly } from "./project";
 
 export function getElementFilePath(
-  element: JsxSelfClosingElement | JsxElement
+  element: JsxSelfClosingElement | JsxElement,
 ): { exportName: string; filePath: string } {
   const tagNode = Node.isJsxSelfClosingElement(element)
     ? element.getTagNameNode()
@@ -27,6 +27,7 @@ export function getElementFilePath(
     if (Node.isImportClause(declaration)) {
       const moduleFilePath = declaration
         .getParent()
+        // @ts-expect-error Upgrading TSC breaks this. Fix it!
         .getModuleSpecifierSourceFile()
         ?.getFilePath();
 
@@ -43,6 +44,7 @@ export function getElementFilePath(
         .getParent()
         .getParent()
         .getParent()
+        // @ts-expect-error Upgrading TSC breaks this. Fix it!
         .getModuleSpecifierSourceFile()
         ?.getFilePath();
 
@@ -79,7 +81,7 @@ export function getElementFilePath(
 
 export function getExportName(
   sourceFile: SourceFileReadOnly,
-  exportName: string
+  exportName: string,
 ) {
   const symbols = sourceFile.getExportSymbols();
 
@@ -109,7 +111,7 @@ export function getExportName(
     }
 
     throw new Error(
-      "invariant: default export should be a function declaration"
+      "invariant: default export should be a function declaration",
     );
   }
 

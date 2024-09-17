@@ -995,7 +995,7 @@ describe("type infer", () => {
             },
           ],
           "tags": {
-            "default": "{@link THREE.FrontSide }",
+            "default": "{@link THREE.FrontSide}",
           },
         },
       ]

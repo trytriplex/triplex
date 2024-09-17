@@ -1330,7 +1330,7 @@ describe("jsx ast extractor", () => {
             },
           ],
           "tags": {
-            "default": "{@link THREE.FrontSide }",
+            "default": "{@link THREE.FrontSide}",
           },
         },
         {
