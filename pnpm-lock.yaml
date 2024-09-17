@@ -271,8 +271,8 @@ importers:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.32)
       babel-plugin-react-compiler:
-        specifier: 0.0.0-experimental-696af53-20240625
-        version: 0.0.0-experimental-696af53-20240625
+        specifier: 0.0.0-experimental-23b8160-20240916
+        version: 0.0.0-experimental-23b8160-20240916
       electron:
         specifier: 27.1.0
         version: 27.1.0
@@ -822,8 +822,8 @@ importers:
         specifier: ^10.4.16
         version: 10.4.16(postcss@8.4.32)
       babel-plugin-react-compiler:
-        specifier: 0.0.0-experimental-696af53-20240625
-        version: 0.0.0-experimental-696af53-20240625
+        specifier: 0.0.0-experimental-23b8160-20240916
+        version: 0.0.0-experimental-23b8160-20240916
       tailwindcss:
         specifier: ^3.3.2
         version: 3.3.2(ts-node@10.9.1(@swc/core@1.6.5(@swc/helpers@0.5.2))(@types/node@18.11.18)(typescript@5.6.2))
@@ -3257,8 +3257,8 @@ packages:
   azure-devops-node-api@12.5.0:
     resolution: {integrity: sha512-R5eFskGvOm3U/GzeAuxRkUsAl0hrAwGgWn6zAd2KrZmrEhWZVqLew4OOupbQlXUuojUzpGtq62SmdhJ06N88og==}
 
-  babel-plugin-react-compiler@0.0.0-experimental-696af53-20240625:
-    resolution: {integrity: sha512-OUDKms8qmcm5bX0D+sJWC1YcKcd7AZ2aJ7eY6gkR+Xr7PDfkXLbqAld4Qs9B0ntjVbUMEtW/PjlQrxDtY4raHg==}
+  babel-plugin-react-compiler@0.0.0-experimental-23b8160-20240916:
+    resolution: {integrity: sha512-Ou/Jo2dxmTEYOsvsYzykhLMsDDcH+ol8zp5ZzudzQAEia08aqa7lzJf9CC0nh2paPmk1tv7uWlflZYB+PMzljw==}
 
   bail@2.0.2:
     resolution: {integrity: sha512-0xO6mYd7JB2YesxDKplafRpsiOzPt9V02ddPCLbY1xYGPOX24NTyN50qnUxgCPcSoYMhKpAuBTjQoRZCAkUDRw==}
@@ -11071,7 +11071,7 @@ snapshots:
       tunnel: 0.0.6
       typed-rest-client: 1.8.11
 
-  babel-plugin-react-compiler@0.0.0-experimental-696af53-20240625:
+  babel-plugin-react-compiler@0.0.0-experimental-23b8160-20240916:
     dependencies:
       '@babel/generator': 7.2.0
       '@babel/types': 7.25.6
