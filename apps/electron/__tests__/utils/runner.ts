@@ -13,6 +13,35 @@ import { runUseWithTrace } from "../../../../test/playwright";
 import { defer } from "../../src/util/promise";
 import { EditorPage } from "./po";
 
+function getExecPath() {
+  const platform = process.platform;
+  const paths: Record<string, [string, string]> = {
+    darwin: [
+      "apps/electron/targets/mac-arm64/Triplex.app/Contents/MacOS/Triplex",
+      "apps/electron/targets/mac-arm64/Triplex.app/Contents/Resources/app",
+    ],
+    linux: [
+      "apps/electron/targets/linux-unpacked/triplex-electron",
+      "apps/electron/targets/linux-unpacked/resources/app",
+    ],
+    win32: [
+      "apps/electron/targets/win-unpacked/Triplex.exe",
+      "apps/electron/targets/win-unpacked/resources/app",
+    ],
+  };
+
+  if (!paths[platform]) {
+    throw new Error('Unsupported platform: "' + platform + '"');
+  }
+
+  const [execPath, cwd] = paths[platform];
+
+  return {
+    cwd: join(process.cwd(), cwd),
+    path: join(process.cwd(), execPath),
+  };
+}
+
 async function launch(
   textFixturePath: string,
   opts: {
@@ -20,13 +49,15 @@ async function launch(
     path: string;
   },
 ) {
+  const path = getExecPath();
   const logs: string[] = [];
+
   const app = await electron.launch({
     args: [
-      join(__dirname, "../..", "hook-main.js"),
+      process.env.SMOKE_TEST ? "" : join(__dirname, "../..", "hook-main.js"),
       process.env.CI ? "--headless" : "",
     ],
-    cwd: join(__dirname, "../.."),
+    cwd: process.env.SMOKE_TEST ? "/" : join(__dirname, "../.."),
     env: {
       ...process.env,
       FG_ENVIRONMENT_OVERRIDE: "local",
@@ -35,6 +66,7 @@ async function launch(
       FORCE_PATH: opts.path,
       VITE_TRIPLEX_ENV: "test",
     },
+    executablePath: process.env.SMOKE_TEST ? path.path : undefined,
   });
 
   app

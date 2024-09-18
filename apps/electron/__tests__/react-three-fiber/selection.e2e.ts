@@ -112,15 +112,17 @@ test.describe(() => {
     },
   });
 
-  test("select component in scene of deeply nested component", async ({
-    electron,
-  }) => {
-    await electron.waitForScene();
+  test(
+    "select component in scene of deeply nested component",
+    { tag: "@electron_smoke" },
+    async ({ electron }) => {
+      await electron.waitForScene();
 
-    await electron.frame.click();
+      await electron.frame.click();
 
-    await expect(electron.contextPanel.heading).toHaveText("Inbuilt2");
-  });
+      await expect(electron.contextPanel.heading).toHaveText("Inbuilt2");
+    },
+  );
 });
 
 test.describe(() => {

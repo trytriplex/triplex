@@ -39,3 +39,59 @@ jobs:
 
       - name: Build targets
         run: pnpm electron:build-targets
+
+  smoke-test:
+    needs: build
+
+    timeout-minutes: 20
+
+    runs-on: ${{ matrix.os }}
+
+    env:
+      SMOKE_TEST: true
+      DEBUG: pw:browser*
+
+    strategy:
+      fail-fast: false
+
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+
+      - name: Setup node
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: "package.json"
+
+      - name: Setup pnpm config
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+
+      - name: Install dependencies
+        run: pnpm i
+
+      - name: Build target
+        run: pnpm electron:build
+
+      - name: Run smoke tests
+        if: matrix.os == 'ubuntu-latest'
+        run:
+          xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" --
+          pnpm test:e2e --grep="@electron_smoke" --reporter html
+
+      - name: Run smoke tests
+        if: matrix.os != 'ubuntu-latest'
+        run: pnpm test:e2e --grep="@electron_smoke" --reporter html
+
+      - name: Upload HTML report
+        if: ${{ !cancelled() }}
+        uses: actions/upload-artifact@v4.3.5
+        with:
+          name: playwright-report-${{ matrix.os }}
+          path: playwright-report
+          retention-days: 14
