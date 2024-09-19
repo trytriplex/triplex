@@ -1,5 +1,18 @@
 # @triplex/electron
 
+## 0.69.1
+
+### Patch Changes
+
+- 26e30829: Upgrade Electron to v32.
+- 50c28c96: Upgrade tsc.
+- Updated dependencies [50c28c96]
+- Updated dependencies [060f66ac]
+  - create-triplex-project@0.69.1
+  - @triplex/client@0.69.1
+  - @triplex/editor@0.69.1
+  - @triplex/server@0.69.1
+
 ## 0.69.0
 
 ### Patch Changes

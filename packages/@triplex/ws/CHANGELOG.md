@@ -1,5 +1,11 @@
 # @triplex/ws-client
 
+## 0.69.1
+
+### Patch Changes
+
+- 50c28c96: Upgrade tsc.
+
 ## 0.69.0
 
 ## 0.68.8

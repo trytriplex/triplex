@@ -1,5 +1,15 @@
 # @triplex/vscode
 
+## 0.0.22
+
+### Patch Changes
+
+- 50c28c96: Upgrade tsc.
+- 060f66ac: Upgrade react-compiler to latest.
+- Updated dependencies [50c28c96]
+  - @triplex/client@0.69.1
+  - @triplex/server@0.69.1
+
 ## 0.0.21
 
 ### Patch Changes

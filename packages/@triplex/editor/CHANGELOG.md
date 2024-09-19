@@ -1,5 +1,17 @@
 # @triplex/editor
 
+## 0.69.1
+
+### Patch Changes
+
+- 50c28c96: Upgrade tsc.
+- 060f66ac: Upgrade react-compiler to latest.
+- Updated dependencies [50c28c96]
+  - @triplex/bridge@0.69.1
+  - @triplex/lib@0.69.1
+  - @triplex/ux@0.69.1
+  - @triplex/ws@0.69.1
+
 ## 0.69.0
 
 ### Minor Changes

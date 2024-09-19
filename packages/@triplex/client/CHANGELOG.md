@@ -1,5 +1,15 @@
 # @triplex/client
 
+## 0.69.1
+
+### Patch Changes
+
+- 50c28c96: Upgrade tsc.
+- Updated dependencies [50c28c96]
+  - @triplex/renderer-react@0.69.1
+  - @triplex/renderer-r3f@0.69.1
+  - @triplex/bridge@0.69.1
+
 ## 0.69.0
 
 ### Patch Changes

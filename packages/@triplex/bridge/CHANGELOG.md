@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.69.1
+
+### Patch Changes
+
+- 50c28c96: Upgrade tsc.
+
 ## 0.69.0
 
 ### Minor Changes
