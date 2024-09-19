@@ -6,8 +6,10 @@
  */
 import { createServer } from "node:http";
 import { match } from "node-match-path";
-import { WebSocketServer, type WebSocket } from "ws";
+import { type WebSocket, type WebSocketServer as WSS } from "ws";
 import { stringifyJSON } from "./string";
+
+const { WebSocketServer } = require("ws") as { WebSocketServer: typeof WSS };
 
 export type UnionToIntersection<U> = (
   U extends unknown ? (k: U) => void : never
