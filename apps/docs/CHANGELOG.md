@@ -1,5 +1,11 @@
 # @docs/triplex
 
+## 0.2.4
+
+### Patch Changes
+
+- 50c28c96: Upgrade tsc.
+
 ## 0.2.3
 
 ### Patch Changes
