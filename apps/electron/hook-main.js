@@ -6,6 +6,7 @@
  */
 require("ts-node").register({ project: __dirname + "/tsconfig.json" });
 
+process.env.VITE_CJS_IGNORE_WARNING = true;
 process.env.TRIPLEX_ENV = "development";
 process.env.VITE_TRIPLEX_ENV = process.env.VITE_TRIPLEX_ENV || "development";
 

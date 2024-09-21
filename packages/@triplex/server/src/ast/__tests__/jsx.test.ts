@@ -1248,7 +1248,7 @@ describe("jsx ast extractor", () => {
           },
         },
         {
-          "description": "Override the renderer's default precision for this material. Can be \\"highp\\", \\"mediump\\" or \\"lowp\\". Defaults is null.",
+          "description": "Override the renderer's default precision for this material. Can be "highp", "mediump" or "lowp". Defaults is null.",
           "kind": "union",
           "name": "precision",
           "required": true,
@@ -1897,7 +1897,7 @@ describe("jsx ast extractor", () => {
           "name": "name",
           "required": true,
           "tags": {
-            "defaultValue": "\`\\"\\"\`",
+            "defaultValue": "\`""\`",
             "remarks": "_(doesn't need to be unique)_.",
           },
         },
@@ -2162,7 +2162,7 @@ describe("jsx ast extractor", () => {
           "name": "name",
           "required": true,
           "tags": {
-            "defaultValue": "\`\\"\\"\`",
+            "defaultValue": "\`""\`",
             "remarks": "_(doesn't need to be unique)_.",
           },
         },
@@ -2573,7 +2573,7 @@ describe("jsx ast extractor", () => {
           "name": "name",
           "required": true,
           "tags": {
-            "defaultValue": "\`\\"\\"\`",
+            "defaultValue": "\`""\`",
             "remarks": "_(doesn't need to be unique)_.",
           },
         },

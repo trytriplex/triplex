@@ -12,7 +12,6 @@ import type {
 import react from "@vitejs/plugin-react";
 import express from "express";
 import { join, normalize } from "upath";
-import tsconfigPaths from "vite-tsconfig-paths";
 import { version } from "../package.json";
 import triplexBabelPlugin from "./babel-plugin";
 import { transformNodeModulesJSXPlugin } from "./node-modules-plugin";
@@ -43,6 +42,7 @@ export async function createServer({
   const app = express();
   const { createServer: createViteServer } = await import("vite");
   const { default: glsl } = await import("vite-plugin-glsl");
+  const { default: tsconfigPaths } = await import("vite-tsconfig-paths");
 
   const vite = await createViteServer({
     appType: "custom",

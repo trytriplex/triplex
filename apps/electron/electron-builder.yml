@@ -1,6 +1,6 @@
 appId: dev.triplex.app
 asar: false
-copyright: Copyright © 2023 Michael Dougall
+copyright: Copyright © 2023 - Present Michael Dougall
 
 directories:
   output: targets

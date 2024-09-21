@@ -7,10 +7,6 @@
 import { type TriplexPorts } from "@triplex/server";
 import { on } from "@triplex/ws";
 import anymatch from "anymatch";
-import {
-  type ViteDevServer,
-  // @ts-expect-error
-} from "vite";
 import { getCode } from "./api";
 
 function match(target: string, normalizedFiles: string[]): boolean {
@@ -49,7 +45,9 @@ export function remoteModulePlugin({
   ports: TriplexPorts;
 }) {
   return {
-    configureServer(server: ViteDevServer) {
+    // We need to update to ESM to fix this.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    configureServer(server: any) {
       on(
         "fs-change",
         async (e) => {

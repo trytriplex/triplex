@@ -33,6 +33,7 @@ export default defineConfig(({ mode }) => {
             assetFileNames: "assets/[name].[ext]",
             chunkFileNames: "assets/[name].js",
             entryFileNames: "[name].js",
+            format: "cjs",
           },
         },
         ssr: true,
@@ -45,7 +46,6 @@ export default defineConfig(({ mode }) => {
       mode: "production",
       ssr: {
         external: externalConfig,
-        format: "cjs",
         noExternal: true,
       },
     };

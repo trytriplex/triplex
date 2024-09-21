@@ -26,6 +26,7 @@ export default defineConfig({
     rollupOptions: {
       external: externalConfig,
       output: {
+        format: "cjs",
         inlineDynamicImports: true,
       },
     },
@@ -34,7 +35,6 @@ export default defineConfig({
   },
   ssr: {
     external: externalConfig,
-    format: "cjs",
     noExternal: true,
   },
 });

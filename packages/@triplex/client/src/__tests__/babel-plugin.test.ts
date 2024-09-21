@@ -38,15 +38,15 @@ describe("babel plugin", () => {
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
-      "<SceneObject scale={scale} __component={\\"group\\"} __meta={{
-        \\"path\\": \\"\\",
-        \\"name\\": \\"group\\",
-        \\"line\\": 2,
-        \\"column\\": 7,
-        \\"translate\\": false,
-        \\"rotate\\": false,
-        \\"scale\\": true
-      }} key={\\"group27\\"}></SceneObject>;"
+      "<SceneObject scale={scale} __component={"group"} __meta={{
+        "path": "",
+        "name": "group",
+        "line": 2,
+        "column": 7,
+        "translate": false,
+        "rotate": false,
+        "scale": true
+      }} key={"group27"}></SceneObject>;"
     `);
   });
 
@@ -68,22 +68,22 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "export function Component() {
-        return <SceneObject scale={scale} __component={\\"group\\"} __meta={{
-          \\"path\\": \\"\\",
-          \\"name\\": \\"group\\",
-          \\"line\\": 3,
-          \\"column\\": 16,
-          \\"translate\\": false,
-          \\"rotate\\": false,
-          \\"scale\\": true
-        }} key={\\"group316\\"}></SceneObject>;
+        return <SceneObject scale={scale} __component={"group"} __meta={{
+          "path": "",
+          "name": "group",
+          "line": 3,
+          "column": 16,
+          "translate": false,
+          "rotate": false,
+          "scale": true
+        }} key={"group316"}></SceneObject>;
       }
       _c = Component;
       Component.triplexMeta = {
-        \\"lighting\\": \\"default\\"
+        "lighting": "default"
       };
       var _c;
-      $RefreshReg$(_c, \\"Component\\");"
+      $RefreshReg$(_c, "Component");"
     `);
   });
 
@@ -110,15 +110,15 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "import { RigidBody } from '@react-three/rapier';
-      <SceneObject name=\\"box\\" type=\\"dynamic\\" position={position} colliders=\\"cuboid\\" canSleep={false} __component={RigidBody} __meta={{
-        \\"path\\": \\"\\",
-        \\"name\\": \\"RigidBody\\",
-        \\"line\\": 3,
-        \\"column\\": 7,
-        \\"translate\\": true,
-        \\"rotate\\": false,
-        \\"scale\\": false
-      }} key={\\"RigidBody37\\"}>
+      <SceneObject name="box" type="dynamic" position={position} colliders="cuboid" canSleep={false} __component={RigidBody} __meta={{
+        "path": "",
+        "name": "RigidBody",
+        "line": 3,
+        "column": 7,
+        "translate": true,
+        "rotate": false,
+        "scale": false
+      }} key={"RigidBody37"}>
             </SceneObject>;"
     `);
   });
@@ -137,15 +137,15 @@ describe("babel plugin", () => {
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
-      "<SceneObject __component={\\"group\\"} __meta={{
-        \\"path\\": \\"\\",
-        \\"name\\": \\"group\\",
-        \\"line\\": 2,
-        \\"column\\": 7,
-        \\"translate\\": false,
-        \\"rotate\\": false,
-        \\"scale\\": false
-      }} key={\\"group27\\"}></SceneObject>;"
+      "<SceneObject __component={"group"} __meta={{
+        "path": "",
+        "name": "group",
+        "line": 2,
+        "column": 7,
+        "translate": false,
+        "rotate": false,
+        "scale": false
+      }} key={"group27"}></SceneObject>;"
     `);
   });
 
@@ -168,42 +168,42 @@ describe("babel plugin", () => {
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
-      "<SceneObject scale={scale} __component={\\"group\\"} __meta={{
-        \\"path\\": \\"\\",
-        \\"name\\": \\"group\\",
-        \\"line\\": 2,
-        \\"column\\": 7,
-        \\"translate\\": false,
-        \\"rotate\\": false,
-        \\"scale\\": true
-      }} key={\\"group27\\"}>
-              <SceneObject position={[1, 1, 1]} __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"\\",
-          \\"name\\": \\"mesh\\",
-          \\"line\\": 3,
-          \\"column\\": 9,
-          \\"translate\\": true,
-          \\"rotate\\": false,
-          \\"scale\\": false
-        }} key={\\"mesh39\\"}>
-                <SceneObject args={[1, 1, 1]} __component={\\"boxGeometry\\"} __meta={{
-            \\"path\\": \\"\\",
-            \\"name\\": \\"boxGeometry\\",
-            \\"line\\": 4,
-            \\"column\\": 11,
-            \\"translate\\": false,
-            \\"rotate\\": false,
-            \\"scale\\": false
-          }} key={\\"boxGeometry411\\"}></SceneObject>
-                <SceneObject color=\\"black\\" __component={\\"standardMaterial\\"} __meta={{
-            \\"path\\": \\"\\",
-            \\"name\\": \\"standardMaterial\\",
-            \\"line\\": 5,
-            \\"column\\": 11,
-            \\"translate\\": false,
-            \\"rotate\\": false,
-            \\"scale\\": false
-          }} key={\\"standardMaterial511\\"}></SceneObject>
+      "<SceneObject scale={scale} __component={"group"} __meta={{
+        "path": "",
+        "name": "group",
+        "line": 2,
+        "column": 7,
+        "translate": false,
+        "rotate": false,
+        "scale": true
+      }} key={"group27"}>
+              <SceneObject position={[1, 1, 1]} __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 3,
+          "column": 9,
+          "translate": true,
+          "rotate": false,
+          "scale": false
+        }} key={"mesh39"}>
+                <SceneObject args={[1, 1, 1]} __component={"boxGeometry"} __meta={{
+            "path": "",
+            "name": "boxGeometry",
+            "line": 4,
+            "column": 11,
+            "translate": false,
+            "rotate": false,
+            "scale": false
+          }} key={"boxGeometry411"}></SceneObject>
+                <SceneObject color="black" __component={"standardMaterial"} __meta={{
+            "path": "",
+            "name": "standardMaterial",
+            "line": 5,
+            "column": 11,
+            "translate": false,
+            "rotate": false,
+            "scale": false
+          }} key={"standardMaterial511"}></SceneObject>
               </SceneObject>
             </SceneObject>;"
     `);
@@ -228,18 +228,18 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "export function HelloWorld() {
-        return <SceneObject __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"\\",
-          \\"name\\": \\"mesh\\",
-          \\"line\\": 4,
-          \\"column\\": 11,
-          \\"translate\\": false,
-          \\"rotate\\": false,
-          \\"scale\\": false
-        }} key={\\"mesh411\\"}></SceneObject>;
+        return <SceneObject __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 4,
+          "column": 11,
+          "translate": false,
+          "rotate": false,
+          "scale": false
+        }} key={"mesh411"}></SceneObject>;
       }
       HelloWorld.triplexMeta = {
-        \\"lighting\\": \\"default\\"
+        "lighting": "default"
       };"
     `);
   });
@@ -263,18 +263,18 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "export function HelloWorld() {
-        return <SceneObject __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"\\",
-          \\"name\\": \\"mesh\\",
-          \\"line\\": 4,
-          \\"column\\": 11,
-          \\"translate\\": false,
-          \\"rotate\\": false,
-          \\"scale\\": false
-        }} key={\\"mesh411\\"}></SceneObject>;
+        return <SceneObject __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 4,
+          "column": 11,
+          "translate": false,
+          "rotate": false,
+          "scale": false
+        }} key={"mesh411"}></SceneObject>;
       }
       HelloWorld.triplexMeta = {
-        \\"lighting\\": \\"default\\"
+        "lighting": "default"
       };"
     `);
   });
@@ -298,18 +298,18 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "export const HelloWorld = () => {
-        return <SceneObject __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"\\",
-          \\"name\\": \\"mesh\\",
-          \\"line\\": 4,
-          \\"column\\": 11,
-          \\"translate\\": false,
-          \\"rotate\\": false,
-          \\"scale\\": false
-        }} key={\\"mesh411\\"}></SceneObject>;
+        return <SceneObject __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 4,
+          "column": 11,
+          "translate": false,
+          "rotate": false,
+          "scale": false
+        }} key={"mesh411"}></SceneObject>;
       };
       HelloWorld.triplexMeta = {
-        \\"lighting\\": \\"default\\"
+        "lighting": "default"
       };"
     `);
   });
@@ -339,38 +339,38 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "export const HelloWorld = () => {
         return <>
-                  <SceneObject visible __component={\\"mesh\\"} __meta={{
-            \\"path\\": \\"\\",
-            \\"name\\": \\"mesh\\",
-            \\"line\\": 5,
-            \\"column\\": 13,
-            \\"translate\\": false,
-            \\"rotate\\": false,
-            \\"scale\\": false
-          }} key={\\"mesh513\\"}>
-                    <SceneObject __component={\\"boxGeometry\\"} __meta={{
-              \\"path\\": \\"\\",
-              \\"name\\": \\"boxGeometry\\",
-              \\"line\\": 6,
-              \\"column\\": 15,
-              \\"translate\\": false,
-              \\"rotate\\": false,
-              \\"scale\\": false
-            }} key={\\"boxGeometry615\\"}></SceneObject>
+                  <SceneObject visible __component={"mesh"} __meta={{
+            "path": "",
+            "name": "mesh",
+            "line": 5,
+            "column": 13,
+            "translate": false,
+            "rotate": false,
+            "scale": false
+          }} key={"mesh513"}>
+                    <SceneObject __component={"boxGeometry"} __meta={{
+              "path": "",
+              "name": "boxGeometry",
+              "line": 6,
+              "column": 15,
+              "translate": false,
+              "rotate": false,
+              "scale": false
+            }} key={"boxGeometry615"}></SceneObject>
                   </SceneObject>
-                  <SceneObject __component={\\"spotLight\\"} __meta={{
-            \\"path\\": \\"\\",
-            \\"name\\": \\"spotLight\\",
-            \\"line\\": 8,
-            \\"column\\": 13,
-            \\"translate\\": false,
-            \\"rotate\\": false,
-            \\"scale\\": false
-          }} key={\\"spotLight813\\"}></SceneObject>
+                  <SceneObject __component={"spotLight"} __meta={{
+            "path": "",
+            "name": "spotLight",
+            "line": 8,
+            "column": 13,
+            "translate": false,
+            "rotate": false,
+            "scale": false
+          }} key={"spotLight813"}></SceneObject>
                 </>;
       };
       HelloWorld.triplexMeta = {
-        \\"lighting\\": \\"custom\\"
+        "lighting": "custom"
       };"
     `);
   });
@@ -402,18 +402,18 @@ describe("babel plugin", () => {
       const okThen = () => {};
       function HelloWorld() {
         const onClick = () => {};
-        return <SceneObject __component={\\"group\\"} __meta={{
-          \\"path\\": \\"\\",
-          \\"name\\": \\"group\\",
-          \\"line\\": 9,
-          \\"column\\": 11,
-          \\"translate\\": false,
-          \\"rotate\\": false,
-          \\"scale\\": false
-        }} key={\\"group911\\"}></SceneObject>;
+        return <SceneObject __component={"group"} __meta={{
+          "path": "",
+          "name": "group",
+          "line": 9,
+          "column": 11,
+          "translate": false,
+          "rotate": false,
+          "scale": false
+        }} key={"group911"}></SceneObject>;
       }
       HelloWorld.triplexMeta = {
-        \\"lighting\\": \\"default\\"
+        "lighting": "default"
       };"
     `);
   });
@@ -439,19 +439,19 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "const HelloWorld = () => {
-        return <SceneObject __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"\\",
-          \\"name\\": \\"mesh\\",
-          \\"line\\": 4,
-          \\"column\\": 11,
-          \\"translate\\": false,
-          \\"rotate\\": false,
-          \\"scale\\": false
-        }} key={\\"mesh411\\"}></SceneObject>;
+        return <SceneObject __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 4,
+          "column": 11,
+          "translate": false,
+          "rotate": false,
+          "scale": false
+        }} key={"mesh411"}></SceneObject>;
       };
       export default HelloWorld;
       HelloWorld.triplexMeta = {
-        \\"lighting\\": \\"default\\"
+        "lighting": "default"
       };"
     `);
   });
@@ -475,18 +475,18 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "export const HelloWorld = forwardRef(ref => {
-        return <SceneObject ref={ref} __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"\\",
-          \\"name\\": \\"mesh\\",
-          \\"line\\": 4,
-          \\"column\\": 11,
-          \\"translate\\": false,
-          \\"rotate\\": false,
-          \\"scale\\": false
-        }} key={\\"mesh411\\"}></SceneObject>;
+        return <SceneObject ref={ref} __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 4,
+          "column": 11,
+          "translate": false,
+          "rotate": false,
+          "scale": false
+        }} key={"mesh411"}></SceneObject>;
       });
       HelloWorld.triplexMeta = {
-        \\"lighting\\": \\"default\\"
+        "lighting": "default"
       };"
     `);
   });
@@ -534,50 +534,50 @@ describe("babel plugin", () => {
         scale
       }) {
         const ok = {};
-        return <SceneObject visible scale={scale} __component={\\"group\\"} __meta={{
-          \\"path\\": \\"\\",
-          \\"name\\": \\"group\\",
-          \\"line\\": 9,
-          \\"column\\": 11,
-          \\"translate\\": false,
-          \\"rotate\\": false,
-          \\"scale\\": true
-        }} key={\\"group911\\"}>
+        return <SceneObject visible scale={scale} __component={"group"} __meta={{
+          "path": "",
+          "name": "group",
+          "line": 9,
+          "column": 11,
+          "translate": false,
+          "rotate": false,
+          "scale": true
+        }} key={"group911"}>
                   <SceneObject {...ok} userData={{
             hello: true
-          }} onClick={() => {}} visible={true} position={position} rotation={rotation} __component={\\"mesh\\"} __meta={{
-            \\"path\\": \\"\\",
-            \\"name\\": \\"mesh\\",
-            \\"line\\": 10,
-            \\"column\\": 13,
-            \\"translate\\": true,
-            \\"rotate\\": false,
-            \\"scale\\": false
-          }} key={\\"mesh1013\\"}>
-                    <SceneObject args={[1, 1, 1]} __component={\\"boxGeometry\\"} __meta={{
-              \\"path\\": \\"\\",
-              \\"name\\": \\"boxGeometry\\",
-              \\"line\\": 18,
-              \\"column\\": 15,
-              \\"translate\\": false,
-              \\"rotate\\": false,
-              \\"scale\\": false
-            }} key={\\"boxGeometry1815\\"}></SceneObject>
-                    <SceneObject color=\\"#00ff00\\" __component={\\"meshStandardMaterial\\"} __meta={{
-              \\"path\\": \\"\\",
-              \\"name\\": \\"meshStandardMaterial\\",
-              \\"line\\": 19,
-              \\"column\\": 15,
-              \\"translate\\": false,
-              \\"rotate\\": false,
-              \\"scale\\": false
-            }} key={\\"meshStandardMaterial1915\\"}></SceneObject>
+          }} onClick={() => {}} visible={true} position={position} rotation={rotation} __component={"mesh"} __meta={{
+            "path": "",
+            "name": "mesh",
+            "line": 10,
+            "column": 13,
+            "translate": true,
+            "rotate": false,
+            "scale": false
+          }} key={"mesh1013"}>
+                    <SceneObject args={[1, 1, 1]} __component={"boxGeometry"} __meta={{
+              "path": "",
+              "name": "boxGeometry",
+              "line": 18,
+              "column": 15,
+              "translate": false,
+              "rotate": false,
+              "scale": false
+            }} key={"boxGeometry1815"}></SceneObject>
+                    <SceneObject color="#00ff00" __component={"meshStandardMaterial"} __meta={{
+              "path": "",
+              "name": "meshStandardMaterial",
+              "line": 19,
+              "column": 15,
+              "translate": false,
+              "rotate": false,
+              "scale": false
+            }} key={"meshStandardMaterial1915"}></SceneObject>
                   </SceneObject>
                 </SceneObject>;
       }
       export default Box;
       Box.triplexMeta = {
-        \\"lighting\\": \\"default\\"
+        "lighting": "default"
       };"
     `);
   });
@@ -597,14 +597,14 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "<SceneObject __component={CustomComponent} __meta={{
-        \\"path\\": \\"\\",
-        \\"name\\": \\"CustomComponent\\",
-        \\"line\\": 2,
-        \\"column\\": 7,
-        \\"translate\\": false,
-        \\"rotate\\": false,
-        \\"scale\\": false
-      }} key={\\"CustomComponent27\\"}></SceneObject>;"
+        "path": "",
+        "name": "CustomComponent",
+        "line": 2,
+        "column": 7,
+        "translate": false,
+        "rotate": false,
+        "scale": false
+      }} key={"CustomComponent27"}></SceneObject>;"
     `);
   });
 
@@ -623,14 +623,14 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "<SceneObject __component={CustomComponent} __meta={{
-        \\"path\\": \\"\\",
-        \\"name\\": \\"CustomComponent\\",
-        \\"line\\": 2,
-        \\"column\\": 7,
-        \\"translate\\": false,
-        \\"rotate\\": false,
-        \\"scale\\": false
-      }} key={\\"CustomComponent27\\" + \\"existing\\"}></SceneObject>;"
+        "path": "",
+        "name": "CustomComponent",
+        "line": 2,
+        "column": 7,
+        "translate": false,
+        "rotate": false,
+        "scale": false
+      }} key={"CustomComponent27" + "existing"}></SceneObject>;"
     `);
   });
 
@@ -649,14 +649,14 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "<SceneObject __component={CustomComponent} __meta={{
-        \\"path\\": \\"\\",
-        \\"name\\": \\"CustomComponent\\",
-        \\"line\\": 2,
-        \\"column\\": 7,
-        \\"translate\\": false,
-        \\"rotate\\": false,
-        \\"scale\\": false
-      }} key={\\"CustomComponent27\\" + 10}></SceneObject>;"
+        "path": "",
+        "name": "CustomComponent",
+        "line": 2,
+        "column": 7,
+        "translate": false,
+        "rotate": false,
+        "scale": false
+      }} key={"CustomComponent27" + 10}></SceneObject>;"
     `);
   });
 
@@ -675,15 +675,15 @@ describe("babel plugin", () => {
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
-      "<SceneObject position={position} __component={\\"mesh\\"} __meta={{
-        \\"path\\": \\"\\",
-        \\"name\\": \\"mesh\\",
-        \\"line\\": 2,
-        \\"column\\": 7,
-        \\"translate\\": true,
-        \\"rotate\\": false,
-        \\"scale\\": false
-      }} key={\\"mesh27\\"}></SceneObject>;"
+      "<SceneObject position={position} __component={"mesh"} __meta={{
+        "path": "",
+        "name": "mesh",
+        "line": 2,
+        "column": 7,
+        "translate": true,
+        "rotate": false,
+        "scale": false
+      }} key={"mesh27"}></SceneObject>;"
     `);
   });
 
@@ -704,18 +704,18 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "function Component(props) {
-        return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"\\",
-          \\"name\\": \\"mesh\\",
-          \\"line\\": 3,
-          \\"column\\": 16,
-          \\"translate\\": true,
-          \\"rotate\\": true,
-          \\"scale\\": true
-        }} key={\\"mesh316\\"}></SceneObject>;
+        return <SceneObject {...props} __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 3,
+          "column": 16,
+          "translate": true,
+          "rotate": true,
+          "scale": true
+        }} key={"mesh316"}></SceneObject>;
       }
       Component.triplexMeta = {
-        \\"lighting\\": \\"default\\"
+        "lighting": "default"
       };"
     `);
   });
@@ -737,18 +737,18 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "const Component = forwardRef(props => {
-        return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"\\",
-          \\"name\\": \\"mesh\\",
-          \\"line\\": 3,
-          \\"column\\": 16,
-          \\"translate\\": true,
-          \\"rotate\\": true,
-          \\"scale\\": true
-        }} key={\\"mesh316\\"}></SceneObject>;
+        return <SceneObject {...props} __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 3,
+          "column": 16,
+          "translate": true,
+          "rotate": true,
+          "scale": true
+        }} key={"mesh316"}></SceneObject>;
       });
       Component.triplexMeta = {
-        \\"lighting\\": \\"default\\"
+        "lighting": "default"
       };"
     `);
   });
@@ -773,18 +773,18 @@ describe("babel plugin", () => {
         name,
         ...props
       }) {
-        return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"\\",
-          \\"name\\": \\"mesh\\",
-          \\"line\\": 3,
-          \\"column\\": 16,
-          \\"translate\\": true,
-          \\"rotate\\": true,
-          \\"scale\\": true
-        }} key={\\"mesh316\\"}></SceneObject>;
+        return <SceneObject {...props} __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 3,
+          "column": 16,
+          "translate": true,
+          "rotate": true,
+          "scale": true
+        }} key={"mesh316"}></SceneObject>;
       }
       Component.triplexMeta = {
-        \\"lighting\\": \\"default\\"
+        "lighting": "default"
       };"
     `);
   });
@@ -809,18 +809,18 @@ describe("babel plugin", () => {
         name,
         ...props
       }) => {
-        return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"\\",
-          \\"name\\": \\"mesh\\",
-          \\"line\\": 3,
-          \\"column\\": 16,
-          \\"translate\\": true,
-          \\"rotate\\": true,
-          \\"scale\\": true
-        }} key={\\"mesh316\\"}></SceneObject>;
+        return <SceneObject {...props} __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 3,
+          "column": 16,
+          "translate": true,
+          "rotate": true,
+          "scale": true
+        }} key={"mesh316"}></SceneObject>;
       });
       Component.triplexMeta = {
-        \\"lighting\\": \\"default\\"
+        "lighting": "default"
       };"
     `);
   });
@@ -848,18 +848,18 @@ describe("babel plugin", () => {
         scale,
         ...props
       }) {
-        return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"\\",
-          \\"name\\": \\"mesh\\",
-          \\"line\\": 3,
-          \\"column\\": 16,
-          \\"translate\\": false,
-          \\"rotate\\": false,
-          \\"scale\\": false
-        }} key={\\"mesh316\\"}></SceneObject>;
+        return <SceneObject {...props} __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 3,
+          "column": 16,
+          "translate": false,
+          "rotate": false,
+          "scale": false
+        }} key={"mesh316"}></SceneObject>;
       }
       Component.triplexMeta = {
-        \\"lighting\\": \\"default\\"
+        "lighting": "default"
       };"
     `);
   });
@@ -887,18 +887,18 @@ describe("babel plugin", () => {
         scale,
         ...props
       }) => {
-        return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"\\",
-          \\"name\\": \\"mesh\\",
-          \\"line\\": 3,
-          \\"column\\": 16,
-          \\"translate\\": false,
-          \\"rotate\\": false,
-          \\"scale\\": false
-        }} key={\\"mesh316\\"}></SceneObject>;
+        return <SceneObject {...props} __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 3,
+          "column": 16,
+          "translate": false,
+          "rotate": false,
+          "scale": false
+        }} key={"mesh316"}></SceneObject>;
       });
       Component.triplexMeta = {
-        \\"lighting\\": \\"default\\"
+        "lighting": "default"
       };"
     `);
   });
@@ -920,18 +920,18 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "const Component = forwardRef(function Hello(props) {
-        return <SceneObject {...props} __component={\\"mesh\\"} __meta={{
-          \\"path\\": \\"\\",
-          \\"name\\": \\"mesh\\",
-          \\"line\\": 3,
-          \\"column\\": 16,
-          \\"translate\\": false,
-          \\"rotate\\": false,
-          \\"scale\\": false
-        }} key={\\"mesh316\\"}></SceneObject>;
+        return <SceneObject {...props} __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 3,
+          "column": 16,
+          "translate": false,
+          "rotate": false,
+          "scale": false
+        }} key={"mesh316"}></SceneObject>;
       });
       Component.triplexMeta = {
-        \\"lighting\\": \\"default\\"
+        "lighting": "default"
       };"
     `);
   });

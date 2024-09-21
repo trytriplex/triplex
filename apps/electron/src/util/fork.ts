@@ -43,6 +43,7 @@ export function fork<TData extends Record<string, unknown>>(
         NODE_PATH: process.cwd(),
         TRIPLEX_DATA: JSON.stringify(data),
         TRIPLEX_ENV: "development",
+        VITE_CJS_IGNORE_WARNING: "true",
         VITE_TRIPLEX_ENV: process.env.VITE_TRIPLEX_ENV,
       },
       // Pass through inspect if the parent has it enabled.
@@ -61,6 +62,7 @@ export function fork<TData extends Record<string, unknown>>(
         NODE_PATH: process.cwd(),
         TRIPLEX_DATA: JSON.stringify(data),
         TRIPLEX_ENV: "production",
+        VITE_CJS_IGNORE_WARNING: "true",
         VITE_TRIPLEX_ENV: "production",
       },
       // We set the forked process to silent so we can capture errors.

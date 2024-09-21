@@ -8,7 +8,7 @@
   "author": "Michael Dougall <support@triplex.dev>",
   "main": "./hook-main.js",
   "scripts": {
-    "build": "vite build",
+    "build": "cross-env VITE_CJS_IGNORE_WARNING=true vite build",
     "build-target": "rimraf targets && pnpm prep-workspace && cross-env USE_HARD_LINKS=false electron-builder --publish never && pnpm cleanup-workspace",
     "build-targets": "rimraf targets && pnpm prep-workspace && cross-env USE_HARD_LINKS=false electron-builder --publish never --mac dir:x64 dir:arm64 --win dir:x64 dir:ia32 --linux AppImage:x64 AppImage:arm64 && pnpm cleanup-workspace",
     "cleanup-workspace": "git checkout ../../packages/*/package.json ../../packages/@triplex/*/package.json",
@@ -40,7 +40,7 @@
     "ts-node": "^10.9.1",
     "typescript": "^5.6.2",
     "upath": "^2.0.1",
-    "vite": "^4.5.3"
+    "vite": "^5.4.6"
   },
   "productName": "Triplex"
 }

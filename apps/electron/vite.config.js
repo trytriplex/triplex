@@ -29,7 +29,7 @@ export default defineConfig({
         resolve(__dirname, "src/entrypoints/project.ts"),
       ],
       output: {
-        inlineDynamicImports: false,
+        format: "cjs",
       },
     },
     ssr: true,
@@ -37,7 +37,6 @@ export default defineConfig({
   },
   ssr: {
     external: externalConfig,
-    format: "cjs",
     noExternal: true,
   },
 });

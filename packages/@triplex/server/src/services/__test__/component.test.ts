@@ -44,7 +44,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/empty.tsx")
+      join(__dirname, "__mocks__/empty.tsx"),
     );
 
     rename(sourceFile, "EmptyFragment", "MyNewName");
@@ -58,7 +58,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/reuse.tsx")
+      join(__dirname, "__mocks__/reuse.tsx"),
     );
 
     rename(sourceFile, "NamedExport", "NewExport");
@@ -72,7 +72,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/reuse.tsx")
+      join(__dirname, "__mocks__/reuse.tsx"),
     );
 
     rename(sourceFile, "Reuse", "AnotherOne");
@@ -94,7 +94,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
 
     rename(sourceFile, "default", "MyNewName");
@@ -107,7 +107,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/empty.tsx")
+      join(__dirname, "__mocks__/empty.tsx"),
     );
 
     const result = add(sourceFile, "EmptyFragment", {
@@ -118,8 +118,8 @@ describe("component service", () => {
     });
 
     expect(
-      getJsxElementAt(sourceFile, result.line, result.column)?.getText()
-    ).toMatchInlineSnapshot(String.raw`"<StubComponent color=\"blurple\"/>"`);
+      getJsxElementAt(sourceFile, result.line, result.column)?.getText(),
+    ).toMatchInlineSnapshot(`"<StubComponent color="blurple"/>"`);
   });
 
   it("should add element to component with no top level fragment or group", () => {
@@ -127,7 +127,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/empty.tsx")
+      join(__dirname, "__mocks__/empty.tsx"),
     );
 
     const res = add(sourceFile, "EmptyMesh", {
@@ -137,7 +137,7 @@ describe("component service", () => {
     });
 
     expect(
-      getJsxElementAtOrThrow(sourceFile, res.line, res.column).getText()
+      getJsxElementAtOrThrow(sourceFile, res.line, res.column).getText(),
     ).toMatchInlineSnapshot('"<mesh />"');
     expect(getExportName(sourceFile, "EmptyMesh").declaration.getText())
       .toMatchInlineSnapshot(`
@@ -152,7 +152,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/empty.tsx")
+      join(__dirname, "__mocks__/empty.tsx"),
     );
 
     add(sourceFile, "EmptyFragment", {
@@ -163,7 +163,7 @@ describe("component service", () => {
 
     const result = getExportName(
       sourceFile,
-      "EmptyFragment"
+      "EmptyFragment",
     ).declaration.getText();
     expect(result).toMatchInlineSnapshot(`
       "export function EmptyFragment() {
@@ -183,7 +183,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/empty.tsx")
+      join(__dirname, "__mocks__/empty.tsx"),
     );
 
     const result = add(sourceFile, "FragmentFragment", {
@@ -194,8 +194,8 @@ describe("component service", () => {
     });
 
     expect(
-      getJsxElementAt(sourceFile, result.line, result.column)?.getText()
-    ).toMatchInlineSnapshot(String.raw`"<StubComponent color=\"red\"/>"`);
+      getJsxElementAt(sourceFile, result.line, result.column)?.getText(),
+    ).toMatchInlineSnapshot(`"<StubComponent color="red"/>"`);
   });
 
   it("should add default component to shorthand fragment", () => {
@@ -203,7 +203,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/empty.tsx")
+      join(__dirname, "__mocks__/empty.tsx"),
     );
 
     add(sourceFile, "EmptyFragment", {
@@ -215,7 +215,7 @@ describe("component service", () => {
 
     const result = getExportName(
       sourceFile,
-      "EmptyFragment"
+      "EmptyFragment",
     ).declaration.getText();
     expect(result).toMatchInlineSnapshot(`
       "export function EmptyFragment() {
@@ -224,7 +224,7 @@ describe("component service", () => {
             <mesh
               position={[1.231_212_312_331_23, 1.232_123_123_312_3, 1.121_231_213_123_123]}
             ></mesh>
-          <StubComponent color=\\"red\\"/></>
+          <StubComponent color="red"/></>
         );
       }"
     `);
@@ -235,7 +235,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
 
     add(sourceFile, "default", {
@@ -246,7 +246,7 @@ describe("component service", () => {
     });
 
     expect(sourceFile.getText()).toContain(
-      'import { Box as Box1 } from "./components/box"'
+      'import { Box as Box1 } from "./components/box"',
     );
   });
 
@@ -255,7 +255,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/empty.tsx")
+      join(__dirname, "__mocks__/empty.tsx"),
     );
 
     add(sourceFile, "FragmentFragment", {
@@ -267,7 +267,7 @@ describe("component service", () => {
 
     const result = getExportName(
       sourceFile,
-      "FragmentFragment"
+      "FragmentFragment",
     ).declaration.getText();
     expect(result).toMatchInlineSnapshot(`
       "export function FragmentFragment() {
@@ -281,7 +281,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
 
     add(sourceFile, "default", {
@@ -292,10 +292,10 @@ describe("component service", () => {
     });
 
     expect(
-      sourceFile.getText().match(/from "@react-three\/drei"/g)
+      sourceFile.getText().match(/from "@react-three\/drei"/g),
     ).toHaveLength(1);
     expect(sourceFile.getText()).toContain(
-      'import { Sphere, RoundedBox } from "@react-three/drei";'
+      'import { Sphere, RoundedBox } from "@react-three/drei";',
     );
   });
 
@@ -304,7 +304,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
 
     add(sourceFile, "default", {
@@ -315,7 +315,7 @@ describe("component service", () => {
     });
 
     expect(sourceFile.getText()).toContain(
-      'import { Box as Box1, RoundedBox } from "@react-three/drei"'
+      'import { Box as Box1, RoundedBox } from "@react-three/drei"',
     );
     expect(sourceFile.getText()).not.toContain("<Box>");
     expect(sourceFile.getText()).toContain("<Box1 />");
@@ -326,7 +326,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/empty.tsx")
+      join(__dirname, "__mocks__/empty.tsx"),
     );
 
     add(sourceFile, "FragmentFragment", {
@@ -337,7 +337,7 @@ describe("component service", () => {
     });
 
     expect(sourceFile.getText()).toContain(
-      'import { NamedComponent } from "./stub-component";'
+      'import { NamedComponent } from "./stub-component";',
     );
   });
 
@@ -346,7 +346,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/reuse.tsx")
+      join(__dirname, "__mocks__/reuse.tsx"),
     );
 
     add(sourceFile, "Reuse", {
@@ -364,7 +364,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
 
     add(sourceFile, "default", {
@@ -375,10 +375,10 @@ describe("component service", () => {
     });
 
     expect(
-      sourceFile.getText().match(/from "@react-three\/drei"/g)
+      sourceFile.getText().match(/from "@react-three\/drei"/g),
     ).toHaveLength(1);
     expect(sourceFile.getText()).toContain(
-      'import { RoundedBox } from "@react-three/drei";'
+      'import { RoundedBox } from "@react-three/drei";',
     );
   });
 
@@ -387,7 +387,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/empty.tsx")
+      join(__dirname, "__mocks__/empty.tsx"),
     );
 
     add(sourceFile, "FragmentFragment", {
@@ -398,7 +398,7 @@ describe("component service", () => {
     });
 
     expect(sourceFile.getText()).toContain(
-      'import StubComponent from "../stub-component";'
+      'import StubComponent from "../stub-component";',
     );
   });
 
@@ -407,7 +407,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/empty.tsx")
+      join(__dirname, "__mocks__/empty.tsx"),
     );
 
     add(sourceFile, "FragmentFragment", {
@@ -418,7 +418,7 @@ describe("component service", () => {
     });
 
     expect(sourceFile.getText()).toContain(
-      'import { Box } from "@react-three/drei";'
+      'import { Box } from "@react-three/drei";',
     );
   });
 
@@ -427,7 +427,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
     const jsxElement = getJsxElementAt(sourceFile, 12, 7);
     if (!jsxElement) {
@@ -451,7 +451,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/magic-box.tsx")
+      join(__dirname, "__mocks__/magic-box.tsx"),
     );
     const jsxElement = getJsxElementAt(sourceFile, 10, 3);
     if (!jsxElement) {
@@ -464,7 +464,7 @@ describe("component service", () => {
     upsertProp(jsxElement, "rotation", "[11, 22, 33]");
 
     expect(openingElement.getText()).toMatchInlineSnapshot(
-      '"<mesh castShadow receiveShadow rotation={[11, 22, 33]}>"'
+      '"<mesh castShadow receiveShadow rotation={[11, 22, 33]}>"',
     );
   });
 
@@ -473,7 +473,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
     const jsxElement = getJsxElementAt(sourceFile, 12, 7);
     if (!jsxElement) {
@@ -483,7 +483,7 @@ describe("component service", () => {
     upsertProp(
       jsxElement,
       "scale",
-      "[2.1533738875412312312312324957, -0.4755261123123123123514452274, 0.22680781231231231239335122342]"
+      "[2.1533738875412312312312324957, -0.4755261123123123123514452274, 0.22680781231231231239335122342]",
     );
 
     expect(getJsxElementAt(sourceFile, 27, 7)).toBeDefined();
@@ -494,7 +494,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
     const jsxElement = getJsxElementAt(sourceFile, 12, 7);
     if (!jsxElement) {
@@ -504,7 +504,7 @@ describe("component service", () => {
     upsertProp(
       jsxElement,
       "position",
-      "[2.1533738871232135412312324957, -0.4755261212312332131514452274, 0.22680121231233123789335122342]"
+      "[2.1533738871232135412312324957, -0.4755261212312332131514452274, 0.22680121231233123789335122342]",
     );
 
     expect(getJsxElementAt(sourceFile, 27, 7)).toBeDefined();
@@ -515,7 +515,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
     const jsxElement = getJsxElementAt(sourceFile, 12, 7);
     if (!jsxElement) {
@@ -539,7 +539,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
     expect(getJsxElementsPositions(sourceFile, "default").length).toEqual(4);
 
@@ -554,7 +554,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
     commentComponent(sourceFile, 12, 7);
 
@@ -568,7 +568,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
     commentComponent(sourceFile, 12, 7);
 
@@ -594,7 +594,7 @@ describe("component service", () => {
                 rotation={[0, 0.25, 0]}
                 scale={[1, 1.5, 1]}
               >
-                <meshStandardMaterial color=\\"purple\\" />
+                <meshStandardMaterial color="purple" />
               </RoundedBox>
             </>
           );
@@ -607,7 +607,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
 
     commentComponent(sourceFile, 47, 7);
@@ -622,7 +622,7 @@ describe("component service", () => {
               rotation={[0, 0.25, 0]}
               scale={[1, 1.5, 1]}
             >
-              _/@@ @triplex_deleted <meshStandardMaterial color=\\"purple\\" />@/_
+              _/@@ @triplex_deleted <meshStandardMaterial color="purple" />@/_
             </RoundedBox>*/}
           </>
         )"
@@ -634,7 +634,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
     commentComponent(sourceFile, 47, 7);
     commentComponent(sourceFile, 42, 5);
@@ -650,7 +650,7 @@ describe("component service", () => {
               rotation={[0, 0.25, 0]}
               scale={[1, 1.5, 1]}
             >
-              {/** @triplex_deleted <meshStandardMaterial color=\\"purple\\" />*/}
+              {/** @triplex_deleted <meshStandardMaterial color="purple" />*/}
             </RoundedBox>
           </>
         )"
@@ -662,7 +662,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
     commentComponent(sourceFile, 47, 7);
     commentComponent(sourceFile, 42, 5);
@@ -679,7 +679,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
 
     const result = add(
@@ -691,7 +691,7 @@ describe("component service", () => {
         props: { color: "blurple" },
         type: "custom",
       },
-      { action: "child", column: 7, exportName: "", line: 56, path: "" }
+      { action: "child", column: 7, exportName: "", line: 56, path: "" },
     );
 
     expect(result).toEqual({ column: 19, line: 56 });
@@ -701,7 +701,7 @@ describe("component service", () => {
           return (
             <>
               <RoundedBox />
-              <RoundedBox><AddComponent1 color=\\"blurple\\"/></RoundedBox>
+              <RoundedBox><AddComponent1 color="blurple"/></RoundedBox>
             </>
           );
         }"
@@ -713,7 +713,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
 
     const result = add(
@@ -725,7 +725,7 @@ describe("component service", () => {
         props: { color: "blurple" },
         type: "custom",
       },
-      { action: "child", column: 7, exportName: "", line: 55, path: "" }
+      { action: "child", column: 7, exportName: "", line: 55, path: "" },
     );
 
     expect(result).toEqual({ column: 19, line: 55 });
@@ -734,7 +734,7 @@ describe("component service", () => {
         "export function AddComponent() {
           return (
             <>
-              <RoundedBox><AddComponent1 color=\\"blurple\\"/></RoundedBox>
+              <RoundedBox><AddComponent1 color="blurple"/></RoundedBox>
               <RoundedBox></RoundedBox>
             </>
           );
@@ -747,7 +747,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
 
     add(
@@ -758,7 +758,7 @@ describe("component service", () => {
         props: { color: "blurple" },
         type: "host",
       },
-      { action: "child", column: 7, exportName: "", line: 55, path: "" }
+      { action: "child", column: 7, exportName: "", line: 55, path: "" },
     );
     const result = add(
       sourceFile,
@@ -768,7 +768,7 @@ describe("component service", () => {
         props: { color: "blurple" },
         type: "host",
       },
-      { action: "child", column: 7, exportName: "", line: 55, path: "" }
+      { action: "child", column: 7, exportName: "", line: 55, path: "" },
     );
 
     expect(result).toEqual({ column: 49, line: 55 });
@@ -789,17 +789,17 @@ describe("component service", () => {
           path: join(__dirname, "__mocks__", "room.tsx"),
           props: {},
           type: "custom",
-        })
+        }),
       );
       const element = getJsxElementAt(sourceFile.read(), pos.line, pos.column);
       if (!element) {
         // eslint-disable-next-line no-console
         console.log(
           `${exportName}@${pos.line}:${pos.column}\n`,
-          sourceFile.read().getText()
+          sourceFile.read().getText(),
         );
         throw new Error(
-          `could not find at ${exportName}@${pos.line}:${pos.column}`
+          `could not find at ${exportName}@${pos.line}:${pos.column}`,
         );
       }
       getJsxElementPropTypes(element);
@@ -821,7 +821,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/empty.tsx")
+      join(__dirname, "__mocks__/empty.tsx"),
     );
 
     add(sourceFile, "EmptyArrowFunction", {
@@ -831,7 +831,7 @@ describe("component service", () => {
     });
 
     expect(
-      getExportName(sourceFile, "EmptyArrowFunction").declaration.getText()
+      getExportName(sourceFile, "EmptyArrowFunction").declaration.getText(),
     ).toMatchInlineSnapshot('"EmptyArrowFunction = () => <><group /></>"');
   });
 
@@ -840,7 +840,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/docs.tsx")
+      join(__dirname, "__mocks__/docs.tsx"),
     );
     const result = add(
       sourceFile,
@@ -850,13 +850,13 @@ describe("component service", () => {
         props: {},
         type: "host",
       },
-      { action: "child", column: 7, exportName: "", line: 31, path: "" }
+      { action: "child", column: 7, exportName: "", line: 31, path: "" },
     );
 
     const createdElement = getJsxElementAt(
       sourceFile,
       result.line,
-      result.column
+      result.column,
     );
 
     expect(createdElement).toBeDefined();
@@ -867,7 +867,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/empty.tsx")
+      join(__dirname, "__mocks__/empty.tsx"),
     );
 
     const actual = add(sourceFile, "ArrowFuncReturnGroup", {
@@ -877,12 +877,12 @@ describe("component service", () => {
     });
 
     expect(
-      getJsxElementAtOrThrow(sourceFile, actual.line, actual.column).getText()
+      getJsxElementAtOrThrow(sourceFile, actual.line, actual.column).getText(),
     ).toMatchInlineSnapshot('"<group />"');
     expect(
-      getExportName(sourceFile, "ArrowFuncReturnGroup").declaration.getText()
+      getExportName(sourceFile, "ArrowFuncReturnGroup").declaration.getText(),
     ).toMatchInlineSnapshot(
-      '"ArrowFuncReturnGroup = () => <><group /><group></group></>"'
+      '"ArrowFuncReturnGroup = () => <><group /><group></group></>"',
     );
   });
 
@@ -891,7 +891,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/empty.tsx")
+      join(__dirname, "__mocks__/empty.tsx"),
     );
 
     const actual = add(sourceFile, "EmptyGroup", {
@@ -901,12 +901,12 @@ describe("component service", () => {
     });
 
     expect(
-      getJsxElementAtOrThrow(sourceFile, actual.line, actual.column).getText()
-    ).toMatchInlineSnapshot(String.raw`"<mesh name=\"foo\"/>"`);
+      getJsxElementAtOrThrow(sourceFile, actual.line, actual.column).getText(),
+    ).toMatchInlineSnapshot(`"<mesh name="foo"/>"`);
     expect(getExportName(sourceFile, "EmptyGroup").declaration.getText())
       .toMatchInlineSnapshot(`
         "export function EmptyGroup() {
-          return <><mesh name=\\"foo\\"/><group></group></>;
+          return <><mesh name="foo"/><group></group></>;
         }"
       `);
   });
@@ -916,7 +916,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/breakfast.tsx")
+      join(__dirname, "__mocks__/breakfast.tsx"),
     );
     const element = getJsxElementAt(sourceFile, 16, 7)!;
 
@@ -930,14 +930,14 @@ describe("component service", () => {
         "export function Scene() {
           return (
             <>
-              <Berry position={[0, 0, 0]} variant=\\"blueberry\\" />
+              <Berry position={[0, 0, 0]} variant="blueberry" />
               <Berry
                 position={[]}
 
 
-                variant={\\"raspberry\\"}
+                variant={"raspberry"}
               />
-              <Berry position={[0, 0, 0]} variant=\\"blueberry\\" />
+              <Berry position={[0, 0, 0]} variant="blueberry" />
             </>
           );
         }"
@@ -949,14 +949,14 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/breakfast.tsx")
+      join(__dirname, "__mocks__/breakfast.tsx"),
     );
     const element = getJsxElementAt(sourceFile, 16, 7)!;
 
     upsertProp(
       element,
       "position",
-      "[-12225343900291231231231232192334,122262112312312312355004431233018,222224123123123123966135358083713]"
+      "[-12225343900291231231231232192334,122262112312312312355004431233018,222224123123123123966135358083713]",
     );
 
     // The sibling elements should remain on the same lines.
@@ -967,14 +967,14 @@ describe("component service", () => {
         "export function Scene() {
           return (
             <>
-              <Berry position={[0, 0, 0]} variant=\\"blueberry\\" />
+              <Berry position={[0, 0, 0]} variant="blueberry" />
               <Berry
                 position={[-12225343900291231231231232192334,122262112312312312355004431233018,222224123123123123966135358083713]}
 
 
-                variant={\\"raspberry\\"}
+                variant={"raspberry"}
               />
-              <Berry position={[0, 0, 0]} variant=\\"blueberry\\" />
+              <Berry position={[0, 0, 0]} variant="blueberry" />
             </>
           );
         }"
@@ -986,7 +986,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/breakfast.tsx")
+      join(__dirname, "__mocks__/breakfast.tsx"),
     );
 
     const result = duplicate(sourceFile, 15, 7);
@@ -997,14 +997,14 @@ describe("component service", () => {
         "export function Scene() {
           return (
             <>
-              <Berry position={[0, 0, 0]} variant=\\"blueberry\\" /><Berry position={[0, 0, 0]} variant=\\"blueberry\\" />
+              <Berry position={[0, 0, 0]} variant="blueberry" /><Berry position={[0, 0, 0]} variant="blueberry" />
               <Berry
                 position={[
                   -1.534_390_029_419_233_4, 1.615_500_443_123_301_8, 0.249_661_353_580_837_13,
                 ]}
-                variant={\\"raspberry\\"}
+                variant={"raspberry"}
               />
-              <Berry position={[0, 0, 0]} variant=\\"blueberry\\" />
+              <Berry position={[0, 0, 0]} variant="blueberry" />
             </>
           );
         }"
@@ -1016,7 +1016,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
     const source = { column: 7, line: 18 };
     const destination = { column: 7, line: 12 };
@@ -1048,7 +1048,7 @@ describe("component service", () => {
                 rotation={[0, 0.25, 0]}
                 scale={[1, 1.5, 1]}
               >
-                <meshStandardMaterial color=\\"purple\\" />
+                <meshStandardMaterial color="purple" />
               </RoundedBox>
             </>
           );
@@ -1061,7 +1061,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
     const source = { column: 7, line: 12 };
     const destination = { column: 7, line: 18 };
@@ -1093,7 +1093,7 @@ describe("component service", () => {
                 rotation={[0, 0.25, 0]}
                 scale={[1, 1.5, 1]}
               >
-                <meshStandardMaterial color=\\"purple\\" />
+                <meshStandardMaterial color="purple" />
               </RoundedBox>
             </>
           );
@@ -1106,7 +1106,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
     const source = { column: 7, line: 12 };
     const destination = { column: 7, line: 18 };
@@ -1140,7 +1140,7 @@ describe("component service", () => {
                 rotation={[0, 0.25, 0]}
                 scale={[1, 1.5, 1]}
               >
-                <meshStandardMaterial color=\\"purple\\" />
+                <meshStandardMaterial color="purple" />
               </RoundedBox>
             </>
           );
@@ -1153,7 +1153,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
     const source = { column: 7, line: 18 };
     const destination = { column: 7, line: 12 };
@@ -1162,35 +1162,35 @@ describe("component service", () => {
 
     expect(getExportName(sourceFile, "default").declaration.getText())
       .toMatchInlineSnapshot(`
-      "export default function Scene() {
-        return (
-          <>
-            <RoundedBox
-                        position={[0.283_739_024, -1.462_969_218_752_609_3, -0.887_002_380_509_703_6]}
-                        rotation={[
-                          2.153_373_887_542_495_7, -0.475_526_151_445_227_4, 0.226_807_893_351_223_42,
-                        ]}
-                      ><RoundedBox></RoundedBox></RoundedBox>
-            
+        "export default function Scene() {
+          return (
+            <>
+              <RoundedBox
+                          position={[0.283_739_024, -1.462_969_218_752_609_3, -0.887_002_380_509_703_6]}
+                          rotation={[
+                            2.153_373_887_542_495_7, -0.475_526_151_445_227_4, 0.226_807_893_351_223_42,
+                          ]}
+                        ><RoundedBox></RoundedBox></RoundedBox>
+              
 
-            <RoundedBox
-              position={[
-                -2.813_889_551_893_372, 0.001_771_287_222_706_030_6, 2.132_940_941_397_735_4,
-              ]}
-              scale={[0.630_216_523_313_958, 0.630_216_523_313_957_7, 0.630_216_523_313_957_7]}
-            />
+              <RoundedBox
+                position={[
+                  -2.813_889_551_893_372, 0.001_771_287_222_706_030_6, 2.132_940_941_397_735_4,
+                ]}
+                scale={[0.630_216_523_313_958, 0.630_216_523_313_957_7, 0.630_216_523_313_957_7]}
+              />
 
-            <RoundedBox
-              position={[3, 0, 2]}
-              rotation={[0, 0.25, 0]}
-              scale={[1, 1.5, 1]}
-            >
-              <meshStandardMaterial color=\\"purple\\" />
-            </RoundedBox>
-          </>
-        );
-      }"
-    `);
+              <RoundedBox
+                position={[3, 0, 2]}
+                rotation={[0, 0.25, 0]}
+                scale={[1, 1.5, 1]}
+              >
+                <meshStandardMaterial color="purple" />
+              </RoundedBox>
+            </>
+          );
+        }"
+      `);
   });
 
   it("should move an element to be a child of an element with pre-existing children", () => {
@@ -1198,7 +1198,7 @@ describe("component service", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/add-prop.tsx")
+      join(__dirname, "__mocks__/add-prop.tsx"),
     );
     const source = { column: 7, line: 12 };
     const destination = { column: 7, line: 27 };
@@ -1230,7 +1230,7 @@ describe("component service", () => {
                               rotation={[
                                 2.153_373_887_542_495_7, -0.475_526_151_445_227_4, 0.226_807_893_351_223_42,
                               ]}
-                            /><meshStandardMaterial color=\\"purple\\" />
+                            /><meshStandardMaterial color="purple" />
                   </RoundedBox>
             </>
           );
