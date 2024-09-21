@@ -1,5 +1,15 @@
 # @triplex/editor
 
+## 0.69.2
+
+### Patch Changes
+
+- 967bfbd0: Upgrade vite to v5.
+  - @triplex/ux@0.69.2
+  - @triplex/ws@0.69.2
+  - @triplex/bridge@0.69.2
+  - @triplex/lib@0.69.2
+
 ## 0.69.1
 
 ### Patch Changes

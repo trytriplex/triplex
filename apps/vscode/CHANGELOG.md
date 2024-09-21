@@ -1,5 +1,14 @@
 # @triplex/vscode
 
+## 0.0.23
+
+### Patch Changes
+
+- 967bfbd0: Upgrade vite to v5.
+- Updated dependencies [967bfbd0]
+  - @triplex/client@0.69.2
+  - @triplex/server@0.69.2
+
 ## 0.0.22
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @triplex/electron
 
+## 0.69.2
+
+### Patch Changes
+
+- 967bfbd0: Upgrade vite to v5.
+- Updated dependencies [967bfbd0]
+  - @triplex/client@0.69.2
+  - @triplex/editor@0.69.2
+  - @triplex/server@0.69.2
+  - create-triplex-project@0.69.2
+
 ## 0.69.1
 
 ### Patch Changes

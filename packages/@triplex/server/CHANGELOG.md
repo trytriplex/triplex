@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.69.2
+
+### Patch Changes
+
+- 967bfbd0: Upgrade vite to v5.
+
 ## 0.69.1
 
 ### Patch Changes
