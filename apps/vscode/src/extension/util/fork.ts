@@ -6,9 +6,9 @@
  */
 import { fork as forkChild } from "node:child_process";
 import { join } from "upath";
-import { logger } from "../../util/log/node";
+import { logger } from "../../util/log/vscode";
 
-const log = logger("process_fork");
+const log = logger("project");
 
 /**
  * Forks a sub-process that points to an entrypoint. The entrypoint must call
@@ -31,7 +31,7 @@ export function fork<TData extends Record<string, unknown>>(
   let fork: ReturnType<typeof forkChild>;
 
   if (process.env.TRIPLEX_ENV === "development") {
-    log("start dev fork");
+    log("Starting project (dev)...");
 
     fork = forkChild(filename, ["--inspect-port=0"], {
       cwd: data.cwd,
@@ -49,7 +49,7 @@ export function fork<TData extends Record<string, unknown>>(
       silent: true,
     });
   } else {
-    log("start prod fork");
+    log("Starting project...");
     fork = forkChild(filename.replace(".ts", ".js"), [], {
       cwd: data.cwd,
       env: {
@@ -70,7 +70,7 @@ export function fork<TData extends Record<string, unknown>>(
   return new Promise((resolve, reject) => {
     fork.on("error", (e) => {
       reject(e);
-      log("error", e);
+      log("Error", e);
     });
 
     fork.stderr?.on("data", (data) => {
@@ -81,7 +81,7 @@ export function fork<TData extends Record<string, unknown>>(
       }
 
       reject(err);
-      log("stderr", err);
+      log("Error", err);
     });
 
     fork.on("message", (e) => {
@@ -91,7 +91,7 @@ export function fork<TData extends Record<string, unknown>>(
       };
 
       if (eventObject.eventName === "ready") {
-        log("ready", eventObject.data);
+        log("Started.", eventObject.data);
 
         resolve({
           data: eventObject.data,

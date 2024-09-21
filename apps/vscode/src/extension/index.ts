@@ -6,14 +6,23 @@
  */
 
 import type * as vscode from "vscode";
+import { version } from "../../package.json";
+import * as output from "../util/log/vscode";
 import { TriplexCodelensProvider } from "./codelens";
 import { TriplexEditorProvider } from "./editor";
 
+const log = output.logger("main");
+
 export function activate(context: vscode.ExtensionContext) {
+  log(`Triplex for VS Code v${version} activating...`);
+
   context.subscriptions.push(
     TriplexCodelensProvider.register(),
     TriplexEditorProvider.register(context),
+    output,
   );
+
+  log(`Activated.`);
 }
 
 export function deactivate() {}
