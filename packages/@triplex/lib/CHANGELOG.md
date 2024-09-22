@@ -1,5 +1,11 @@
 # @triplex/lib
 
+## 0.69.3
+
+### Patch Changes
+
+- 6dca038: Test bump.
+
 ## 0.69.2
 
 ## 0.69.1
@@ -24,7 +30,8 @@
 
 ### Patch Changes
 
-- 1c9c343a: Fix input propagation hook from blocking backspace, escape, and enter keys.
+- 1c9c343a: Fix input propagation hook from blocking backspace, escape, and
+  enter keys.
 
 ## 0.68.2
 
@@ -32,7 +39,8 @@
 
 ### Patch Changes
 
-- a5df6744: Block input keydown event propagation to prevent unmodified keybindings from being fired.
+- a5df6744: Block input keydown event propagation to prevent unmodified
+  keybindings from being fired.
 
 ## 0.68.0
 

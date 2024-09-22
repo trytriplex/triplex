@@ -155,10 +155,10 @@ importers:
   apps/electron:
     dependencies:
       '@triplex/client':
-        specifier: 0.69.2
+        specifier: 0.69.3
         version: link:../../packages/@triplex/client
       '@triplex/editor':
-        specifier: 0.69.2
+        specifier: 0.69.3
         version: link:../../packages/@triplex/editor
       '@triplex/server':
         specifier: 0.69.2
@@ -222,7 +222,7 @@ importers:
   apps/vscode:
     dependencies:
       '@triplex/client':
-        specifier: 0.69.2
+        specifier: 0.69.3
         version: link:../../packages/@triplex/client
       '@triplex/server':
         specifier: 0.69.2
@@ -244,10 +244,10 @@ importers:
         specifier: 0.69.2
         version: link:../../packages/@triplex/bridge
       '@triplex/lib':
-        specifier: 0.69.2
+        specifier: 0.69.3
         version: link:../../packages/@triplex/lib
       '@triplex/ux':
-        specifier: 0.69.2
+        specifier: 0.69.3
         version: link:../../packages/@triplex/ux
       '@triplex/ws':
         specifier: 0.69.2
@@ -673,7 +673,7 @@ importers:
         specifier: 0.69.2
         version: link:../bridge
       '@triplex/renderer-r3f':
-        specifier: 0.69.2
+        specifier: 0.69.3
         version: link:../renderer-r3f
       '@triplex/renderer-react':
         specifier: 0.69.2
@@ -764,10 +764,10 @@ importers:
         specifier: 0.69.2
         version: link:../bridge
       '@triplex/lib':
-        specifier: 0.69.2
+        specifier: 0.69.3
         version: link:../lib
       '@triplex/ux':
-        specifier: 0.69.2
+        specifier: 0.69.3
         version: link:../ux
       '@triplex/ws':
         specifier: 0.69.2
@@ -877,7 +877,7 @@ importers:
         specifier: 0.69.2
         version: link:../bridge
       '@triplex/lib':
-        specifier: 0.69.2
+        specifier: 0.69.3
         version: link:../lib
       '@triplex/ws':
         specifier: 0.69.2
@@ -1078,7 +1078,7 @@ importers:
         specifier: 0.69.2
         version: link:../bridge
       '@triplex/lib':
-        specifier: 0.69.2
+        specifier: 0.69.3
         version: link:../lib
       react:
         specifier: ^18.0.0

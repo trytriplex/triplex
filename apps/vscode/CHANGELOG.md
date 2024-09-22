@@ -1,5 +1,13 @@
 # @triplex/vscode
 
+## 0.0.24
+
+### Patch Changes
+
+- 412b35b: Logs are now piped to an output channel.
+- 2986748: Set up new Sentry project.
+  - @triplex/client@0.69.3
+
 ## 0.0.23
 
 ### Patch Changes
@@ -23,7 +31,10 @@
 
 ### Patch Changes
 
-- 740ff8f2: Default editor lights can now be turned on or off through the floating controls panel. Previously they would either be always on (if you had no lights in your component) or always off (if you did have lights). Now you can choose.
+- 740ff8f2: Default editor lights can now be turned on or off through the
+  floating controls panel. Previously they would either be always on (if you had
+  no lights in your component) or always off (if you did have lights). Now you
+  can choose.
   - @triplex/client@0.69.0
   - @triplex/server@0.69.0
 
@@ -32,16 +43,18 @@
 ### Patch Changes
 
 - 592aa63f: Prop tags are now passed to number and union inputs.
-- a92281f3: Fix external changes affecting all documents instead of the one it originated from.
+- a92281f3: Fix external changes affecting all documents instead of the one it
+  originated from.
 - a92281f3: Listeners are now disposed of when the panel is disposed.
 
 ## 0.0.19
 
 ### Patch Changes
 
-- 54a59b63: Changes originating from outside of Triplex for VS Code are now added to the undo/redo stack in the editor.
-- e74bf3c4: Modifying elements that live in another file now have their changes persisted
-  when saving.
+- 54a59b63: Changes originating from outside of Triplex for VS Code are now
+  added to the undo/redo stack in the editor.
+- e74bf3c4: Modifying elements that live in another file now have their changes
+  persisted when saving.
 - Updated dependencies [54a59b63]
   - @triplex/server@0.68.8
   - @triplex/client@0.68.8
@@ -67,7 +80,8 @@
 
 ### Patch Changes
 
-- b6d89da7: The input panel layout has been refactored to keep the type toggle button always aligned with the first input.
+- b6d89da7: The input panel layout has been refactored to keep the type toggle
+  button always aligned with the first input.
   - @triplex/client@0.68.5
   - @triplex/server@0.68.5
 
@@ -87,7 +101,8 @@
 
 - 4ab74c91: Fix error splash screen having a huge stack trace unexpectedly.
 - 4ab74c91: Add provider controls to the scene panel.
-- 4ab74c91: Support default values in string, number, boolean, and literal union inputs.
+- 4ab74c91: Support default values in string, number, boolean, and literal union
+  inputs.
 - 0d97596c: Add link to code for controlled props.
 - 0d97596c: Fix borders flashing between two different colors on initial load.
   - @triplex/client@0.68.3
@@ -98,8 +113,10 @@
 ### Patch Changes
 
 - f7fa4c78: Panel min/max size has been increased.
-- 21a64166: Fix webview shifting 4px when selecting an element for the first time.
-- f7fa4c78: Panel splitter resizing now uses initial DOM width instead of state width.
+- 21a64166: Fix webview shifting 4px when selecting an element for the first
+  time.
+- f7fa4c78: Panel splitter resizing now uses initial DOM width instead of state
+  width.
   - @triplex/client@0.68.2
   - @triplex/server@0.68.2
 
@@ -109,7 +126,8 @@
 
 - 22164772: Add color input.
 - c96826c8: Add resize to scene panel.
-- a5df6744: Block input keydown event propagation to prevent unmodified keybindings from being fired.
+- a5df6744: Block input keydown event propagation to prevent unmodified
+  keybindings from being fired.
 - 22164772: Pass through description titles to prop inputs.
   - @triplex/client@0.68.1
   - @triplex/server@0.68.1
@@ -134,8 +152,8 @@
 
 - d0f01ca5: Elements filter is now accessed behind a button in the editor panel.
 - d0f01ca5: Prop controls now take up more space in the panel.
-- d0f01ca5: There is now a control for quickly switching between components in the current
-  file in the editor panel.
+- d0f01ca5: There is now a control for quickly switching between components in
+  the current file in the editor panel.
 - d0f01ca5: Stabilise state changes using transitions.
 - d0f01ca5: Remove usage of vsce inputs.
 - f035ce9c: Add duplicate command, use via `CommandOrCtrl+D`.
@@ -146,7 +164,8 @@
 
 ### Patch Changes
 
-- cd444563: Opening subsequent components with CodeLens in the same file now works as expected on Windows.
+- cd444563: Opening subsequent components with CodeLens in the same file now
+  works as expected on Windows.
 - 2c991e7b: Fix blur element regression.
   - @triplex/client@0.67.8
   - @triplex/server@0.67.8

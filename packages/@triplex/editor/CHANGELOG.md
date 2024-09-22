@@ -1,5 +1,14 @@
 # @triplex/editor
 
+## 0.69.3
+
+### Patch Changes
+
+- 2986748: Set up new Sentry project.
+- Updated dependencies [6dca038]
+  - @triplex/lib@0.69.3
+  - @triplex/ux@0.69.3
+
 ## 0.69.2
 
 ### Patch Changes
@@ -26,11 +35,15 @@
 
 ### Minor Changes
 
-- 740ff8f2: Default editor lights can now be turned on or off through the floating controls panel. Previously they would either be always on (if you had no lights in your component) or always off (if you did have lights). Now you can choose.
+- 740ff8f2: Default editor lights can now be turned on or off through the
+  floating controls panel. Previously they would either be always on (if you had
+  no lights in your component) or always off (if you did have lights). Now you
+  can choose.
 
 ### Patch Changes
 
-- fd4fa16f: Internal refactor to consolidate extension points to use a common implementation.
+- fd4fa16f: Internal refactor to consolidate extension points to use a common
+  implementation.
 - Updated dependencies [fd4fa16f]
 - Updated dependencies [740ff8f2]
   - @triplex/bridge@0.69.0

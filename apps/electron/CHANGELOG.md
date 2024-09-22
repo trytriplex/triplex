@@ -1,5 +1,14 @@
 # @triplex/electron
 
+## 0.69.3
+
+### Patch Changes
+
+- 2986748: Set up new Sentry project.
+- Updated dependencies [2986748]
+  - @triplex/editor@0.69.3
+  - @triplex/client@0.69.3
+
 ## 0.69.2
 
 ### Patch Changes
