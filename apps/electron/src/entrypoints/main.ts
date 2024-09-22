@@ -33,7 +33,7 @@ import { editorConfigStore, getProjectStore, userStore } from "../util/store";
 
 if (process.env.TRIPLEX_ENV !== "development") {
   init({
-    dsn: "https://2dda5a93222a45468f0d672d11f356a7@o4505148024356864.ingest.sentry.io/4505148028092416",
+    dsn: "https://465c2b265422fda6d76957f5a4854ffb@o4507990276177920.ingest.us.sentry.io/4507990300229632",
   });
 }
 

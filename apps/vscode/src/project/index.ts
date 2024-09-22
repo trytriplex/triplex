@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { init } from "@sentry/node";
 import { createServer as createClientServer } from "@triplex/client";
 import {
   createServer,
@@ -19,6 +20,7 @@ export type Args = {
   config: ReconciledTriplexConfig;
   cwd: string;
   fgEnvironmentOverride: "production" | "staging" | "development" | "local";
+  isTelemetryEnabled: boolean;
   ports: TriplexPorts;
   renderer: ReconciledRenderer;
   userId: string;
@@ -33,6 +35,12 @@ async function main() {
   }
 
   const data: Args = JSON.parse(process.env.TRIPLEX_DATA);
+
+  if (process.env.TRIPLEX_ENV !== "development" && data.isTelemetryEnabled) {
+    init({
+      dsn: "https://cae61a2a840cbbe7f17e240c99ad0346@o4507990276177920.ingest.us.sentry.io/4507990321725440",
+    });
+  }
 
   log("start server");
   const server = await createServer(data);

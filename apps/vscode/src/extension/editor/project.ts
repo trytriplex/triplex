@@ -57,6 +57,7 @@ export async function resolveProject(
         | "staging"
         | "development"
         | "local",
+      isTelemetryEnabled: vscode.env.isTelemetryEnabled,
       ports,
       renderer,
       userId: vscode.env.machineId,

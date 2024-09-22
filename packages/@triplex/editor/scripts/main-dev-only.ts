@@ -29,6 +29,9 @@ export async function createDevServer(): Promise<{
         ],
       },
     },
+    define: {
+      "process.env.NODE_ENV": '"development"',
+    },
     root: join(__dirname, "../"),
   });
 

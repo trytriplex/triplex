@@ -170,6 +170,8 @@
   "devDependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^1.2.3",
     "@radix-ui/react-icons": "^1.3.0",
+    "@sentry/node": "^8.30.0",
+    "@sentry/react": "^8.30.0",
     "@triplex/bridge": "0.69.2",
     "@triplex/lib": "0.69.2",
     "@triplex/ux": "0.69.2",
