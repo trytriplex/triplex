@@ -6,6 +6,9 @@
  */
 export default {
   test: {
+    expect: {
+      requireAssertions: true,
+    },
     setupFiles: "./test/setup.ts",
   },
 };

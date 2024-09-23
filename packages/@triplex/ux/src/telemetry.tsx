@@ -79,18 +79,18 @@ class Analytics4 {
     this.clientID = clientID;
     this.sessionID = sessionID;
 
-    if (document.visibilityState === "visible") {
+    if (document.hasFocus()) {
       this.engagementTimestamp = Date.now();
     }
   }
 
   setVisibility() {
-    const visibility = document.visibilityState;
+    const visibility = document.hasFocus();
 
-    if (visibility === "hidden") {
-      this.engagementTimestamp = undefined;
-    } else {
+    if (visibility) {
       this.engagementTimestamp = Date.now();
+    } else {
+      this.engagementTimestamp = undefined;
     }
   }
 
@@ -125,7 +125,7 @@ class Analytics4 {
   }
 
   event(eventName: string, params?: Record<string, string | number | boolean>) {
-    this.collectedEvents.push({
+    const eventPayload = {
       name: eventName,
       params: {
         engagement_time_msec:
@@ -134,7 +134,9 @@ class Analytics4 {
         ...this.customParams,
         ...params,
       },
-    });
+    };
+
+    this.collectedEvents.push(eventPayload);
 
     window.clearTimeout(this.fireEventTimeoutId);
 
@@ -161,17 +163,19 @@ class Analytics4 {
 
       this.collectedEvents = [];
     }, 333);
+
+    return eventPayload.params;
   }
 }
 
-const noopEvents: Events = {
-  event() {},
-  screenView() {},
+const noopEvents: TelemetryFunctions = {
+  event: () => false,
+  screenView: () => false,
 };
 
-const AnalyticsContext = createContext<Events>(noopEvents);
+const AnalyticsContext = createContext<TelemetryFunctions>(noopEvents);
 
-interface Events {
+export interface TelemetryFunctions {
   /**
    * `analytics.event("tabbar_file_close")`
    *
@@ -186,11 +190,11 @@ interface Events {
   event(
     name?: ActionId,
     params?: Record<string, string | number | boolean>,
-  ): void;
+  ): false | Record<string, unknown>;
   screenView(
     name: string,
     screen_class: "Dialog" | "Drawer" | "Screen" | "Panel",
-  ): void;
+  ): false | Record<string, unknown>;
 }
 
 export function useTelemetry() {
@@ -218,6 +222,7 @@ export function useScreenView(
 
 export function TelemetryProvider({
   children,
+  engagementDurationStrategy = "visibilitychange",
   isTelemetryEnabled = true,
   secretKey,
   sessionId,
@@ -226,6 +231,7 @@ export function TelemetryProvider({
   version,
 }: {
   children: React.ReactNode;
+  engagementDurationStrategy?: "polling" | "visibilitychange";
   isTelemetryEnabled?: boolean;
   secretKey: string;
   sessionId: string;
@@ -251,18 +257,45 @@ export function TelemetryProvider({
       app_version: process.env.NODE_ENV === "production" ? version : "local",
       env: process.env.NODE_ENV === "production" ? "production" : "local",
     });
-
-    const setVisibility = analytics.current.setVisibility;
-
-    document.addEventListener("visibilitychange", setVisibility);
-
-    return () => {
-      document.removeEventListener("visibilitychange", setVisibility);
-    };
   }, [secretKey, sessionId, trackingId, userId, version]);
 
-  const event: Events["event"] = useEvent((eventName, params) => {
-    if (eventName && eventName !== "(UNSAFE_SKIP)") {
+  useEffect(() => {
+    if (!analytics.current) {
+      return;
+    }
+
+    const setVisibility = analytics.current.setVisibility.bind(
+      analytics.current,
+    );
+
+    if (engagementDurationStrategy === "visibilitychange") {
+      document.addEventListener("visibilitychange", setVisibility);
+
+      return () => {
+        document.removeEventListener("visibilitychange", setVisibility);
+      };
+    }
+
+    if (engagementDurationStrategy === "polling") {
+      let previousDocumentHasFocus = document.hasFocus();
+
+      const intervalId = window.setInterval(() => {
+        const nextDocumentHasFocus = document.hasFocus();
+
+        if (nextDocumentHasFocus !== previousDocumentHasFocus) {
+          setVisibility();
+          previousDocumentHasFocus = nextDocumentHasFocus;
+        }
+      }, 200);
+
+      return () => {
+        window.clearInterval(intervalId);
+      };
+    }
+  }, [engagementDurationStrategy]);
+
+  const event: TelemetryFunctions["event"] = useEvent((eventName, params) => {
+    if (eventName && eventName !== "(UNSAFE_SKIP)" && analytics.current) {
       if (
         process.env.NODE_ENV !== "production" &&
         /^[a-z]$/.test(eventName.replaceAll("_", ""))
@@ -273,19 +306,23 @@ export function TelemetryProvider({
       }
 
       if (isTelemetryEnabled) {
-        analytics.current?.event(eventName, params);
+        return analytics.current.event(eventName, params);
       }
     }
+
+    return false;
   });
 
-  const screenView: Events["screenView"] = useEvent(
+  const screenView: TelemetryFunctions["screenView"] = useEvent(
     (screen_name, page_title) => {
-      if (isTelemetryEnabled) {
-        analytics.current?.event("screen_view", {
+      if (isTelemetryEnabled && analytics.current) {
+        return analytics.current.event("screen_view", {
           page_title,
           screen_name,
         });
       }
+
+      return false;
     },
   );
 

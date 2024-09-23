@@ -25,6 +25,7 @@ if (
 
 createRoot(document.getElementById("root")!).render(
   <TelemetryProvider
+    engagementDurationStrategy="polling"
     isTelemetryEnabled={window.triplex.isTelemetryEnabled}
     secretKey="xzT0UQNnSMa1Z3KW8k6oWw"
     sessionId={window.triplex.sessionId}

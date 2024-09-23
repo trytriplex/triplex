@@ -806,14 +806,19 @@ describe("component service", () => {
       await saveFile();
     };
 
-    await addComponent("Wall");
-    await addComponent("Floor");
-    await addComponent("BackWall");
-    await addComponent("Table");
-    await addComponent("CollectionOfCans");
-    await addComponent("TableBox");
-    await addComponent("WallpaperAndLights");
-    await addComponent("Lamps");
+    const runAdds = async () => {
+      await addComponent("Wall");
+      await addComponent("Floor");
+      await addComponent("BackWall");
+      await addComponent("Table");
+      await addComponent("CollectionOfCans");
+      await addComponent("TableBox");
+      await addComponent("WallpaperAndLights");
+      await addComponent("Lamps");
+      return true;
+    };
+
+    await expect(runAdds()).resolves.toEqual(true);
   }, 30_000);
 
   it("should add a jsx element to an array function", () => {
