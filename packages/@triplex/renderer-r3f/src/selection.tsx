@@ -218,7 +218,14 @@ export function Selection({
         }
       }),
       on("request-blur-element", () => {
-        setSelected(undefined);
+        setSelected((prevSelected) => {
+          if (prevSelected) {
+            send("track", { actionId: "element_blur" });
+          }
+
+          return undefined;
+        });
+
         onBlur();
       }),
       on("request-jump-to-element", (sceneObject) => {
@@ -229,6 +236,8 @@ export function Selection({
         if (!targetSceneObject) {
           return;
         }
+
+        send("track", { actionId: "element_jumpto" });
 
         const box = new Box3().setFromObject(targetSceneObject);
         if (box.min.x === Number.POSITIVE_INFINITY) {
@@ -248,6 +257,7 @@ export function Selection({
       on("request-focus-element", (data) => {
         setSelected(data);
         onFocus(data);
+        send("track", { actionId: "element_focus" });
       }),
     ]);
   }, [
@@ -310,7 +320,6 @@ export function Selection({
 
       setSelected(target);
       onFocus(target);
-      send("track", { actionId: "element_focus" });
 
       return true;
     }
@@ -424,11 +433,19 @@ export function Selection({
 
       for (const found of result) {
         if (trySelectObject(found.object)) {
+          send("track", { actionId: "element_focus" });
           return;
         }
       }
 
-      setSelected(undefined);
+      setSelected((previouslySelected) => {
+        if (previouslySelected) {
+          send("track", { actionId: "element_blur" });
+        }
+
+        return undefined;
+      });
+
       onBlur();
     };
 

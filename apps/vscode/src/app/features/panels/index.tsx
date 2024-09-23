@@ -10,7 +10,7 @@ import { preventUnhandled } from "@atlaskit/pragmatic-drag-and-drop/prevent-unha
 import { type DragLocationHistory } from "@atlaskit/pragmatic-drag-and-drop/types";
 import { LayersIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import { cn } from "@triplex/lib";
-import { useTelemetry } from "@triplex/ux";
+import { useScreenView, useTelemetry } from "@triplex/ux";
 import { Suspense, useDeferredValue, useEffect, useRef, useState } from "react";
 import { IconButton } from "../../components/button";
 import { ScrollContainer } from "../../components/scroll-container";
@@ -140,6 +140,8 @@ export function Panels() {
   const isComponentControlsShown = selected && "exportName" in selected;
   const ref = useRef<HTMLDivElement>(null);
 
+  useScreenView("scene", "Panel", shown === "elements");
+
   useEffect(() => {
     ref.current?.scroll({ top: 0 });
   }, [selected]);
@@ -159,7 +161,11 @@ export function Panels() {
         ])}
       >
         <IconButton
-          actionId="scenepanel_elements_toggle"
+          actionId={
+            shown === "elements"
+              ? "scenepanel_elements_close"
+              : "scenepanel_elements_open"
+          }
           icon={LayersIcon}
           isSelected={!!selected || shown === "elements"}
           label="View Scene Elements"
@@ -172,7 +178,7 @@ export function Panels() {
           <>
             <ElementSelect />
             <IconButton
-              actionId="scenepanel_component_edit"
+              actionId="scenepanel_component_controls"
               icon={Pencil2Icon}
               isSelected={isComponentControlsShown}
               label={

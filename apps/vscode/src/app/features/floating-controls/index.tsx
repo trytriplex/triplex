@@ -17,6 +17,7 @@ import {
   ButtonControl,
   ButtonGroupControl,
   ToggleButtonControl,
+  useTelemetry,
   type ActionId,
 } from "@triplex/ux";
 import { useEffect, useState } from "react";
@@ -30,6 +31,7 @@ export function FloatingControls() {
   const [controls, setControls] = useState<Controls>();
   const play = useSceneStore((store) => store.playState);
   const dispatch = useSceneStore((store) => store.setPlayState);
+  const telemetry = useTelemetry();
 
   useEffect(() => {
     return on("set-extension-points", (data) => {
@@ -43,9 +45,10 @@ export function FloatingControls() {
 
   useEffect(() => {
     return onVSCE("vscode:play-camera", ({ name }) => {
+      telemetry.event(`scene_controls_camera_${name}`);
       dispatch(name === "default" ? "camera-default" : "camera-editor");
     });
-  }, [dispatch]);
+  }, [dispatch, telemetry]);
 
   if (!controls) {
     return null;

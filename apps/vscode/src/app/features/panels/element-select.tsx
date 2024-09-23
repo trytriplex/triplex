@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { send } from "@triplex/bridge/host";
+import { useTelemetry } from "@triplex/ux";
 import { Suspense } from "react";
 import { useLazySubscription } from "../../hooks/ws";
 import { useSceneStore } from "../../stores/scene";
@@ -22,6 +23,7 @@ function ElementOptions() {
 
 export function ElementSelect() {
   const context = useSceneStore((store) => store.context);
+  const telemetry = useTelemetry();
 
   return (
     <Suspense
@@ -41,6 +43,8 @@ export function ElementSelect() {
           if (!exportName) {
             return;
           }
+
+          telemetry.event("scenepanel_element_switch");
 
           send("request-open-component", {
             encodedProps: "",

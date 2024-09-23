@@ -20,6 +20,7 @@ import { Panels } from "../panels";
 
 function Events() {
   const selected = useSceneStore((store) => store.selected);
+  const telemetry = useTelemetry();
 
   useEffect(() => {
     return compose([
@@ -31,6 +32,7 @@ function Events() {
 
         send("request-delete-element", target);
         sendVSCE("element-delete", target);
+        telemetry.event("contextmenu_element_delete");
       }),
       onVSCE("vscode:request-duplicate-element", (data) => {
         const target = data || selected;
@@ -39,9 +41,11 @@ function Events() {
         }
 
         sendVSCE("element-duplicate", target);
+        telemetry.event("contextmenu_element_duplicate");
       }),
       onKeyDown("Escape", () => {
         send("request-blur-element", undefined);
+        telemetry.event("contextmenu_element_blur");
       }),
       onVSCE("vscode:request-jump-to-element", (data) => {
         const target = data || selected;
@@ -50,9 +54,10 @@ function Events() {
         }
 
         send("request-jump-to-element", target);
+        telemetry.event("contextmenu_element_jumpto");
       }),
     ]);
-  }, [selected]);
+  }, [selected, telemetry]);
 
   return null;
 }
@@ -62,7 +67,7 @@ export function AppRoot() {
   const syncContext = useSceneStore((store) => store.syncContext);
   const telemetry = useTelemetry();
 
-  useScreenView("app", "Panel");
+  useScreenView("app", "Screen");
   useBlockInputPropagation();
 
   useEffect(() => {

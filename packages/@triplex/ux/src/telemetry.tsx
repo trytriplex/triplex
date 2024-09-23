@@ -18,6 +18,7 @@ type ActionContext =
   | "errorflag"
   | "scenepanel"
   | "tabbar"
+  | "contextmenu"
   | "welcome";
 
 type ActionGroup =
@@ -215,7 +216,12 @@ export function useScreenView(
 
   useEffect(() => {
     if (isEnabled) {
-      telemetry.screenView(name, screen_class);
+      setTimeout(() => {
+        // HACK
+        // In the vsce the first screen view when loading the app isn't fired for some reason.
+        // As a workaround because I'm lazy we delay it and then it works fine.
+        telemetry.screenView(name, screen_class);
+      }, 0);
     }
   }, [telemetry, isEnabled, name, screen_class]);
 }
@@ -314,11 +320,11 @@ export function TelemetryProvider({
   });
 
   const screenView: TelemetryFunctions["screenView"] = useEvent(
-    (screen_name, page_title) => {
+    (page_title, screen_class) => {
       if (isTelemetryEnabled && analytics.current) {
         return analytics.current.event("screen_view", {
           page_title,
-          screen_name,
+          screen_class,
         });
       }
 
