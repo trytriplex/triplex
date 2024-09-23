@@ -36,7 +36,7 @@ async function main() {
 
   const data: Args = JSON.parse(process.env.TRIPLEX_DATA);
 
-  if (process.env.TRIPLEX_ENV !== "development" && data.isTelemetryEnabled) {
+  if (process.env.NODE_ENV === "production" && data.isTelemetryEnabled) {
     init({
       dsn: "https://cae61a2a840cbbe7f17e240c99ad0346@o4507990276177920.ingest.us.sentry.io/4507990321725440",
     });

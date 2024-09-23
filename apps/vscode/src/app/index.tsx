@@ -15,7 +15,7 @@ import { ErrorSplash } from "./features/error-splash";
 import "./styles.css";
 
 if (
-  process.env.TRIPLEX_ENV !== "development" &&
+  process.env.NODE_ENV === "production" &&
   window.triplex.isTelemetryEnabled
 ) {
   init({

@@ -12,10 +12,7 @@ import * as output from "../util/log/vscode";
 import { TriplexCodelensProvider } from "./codelens";
 import { TriplexEditorProvider } from "./editor";
 
-if (
-  process.env.TRIPLEX_ENV !== "development" &&
-  vscode.env.isTelemetryEnabled
-) {
+if (process.env.NODE_ENV === "production" && vscode.env.isTelemetryEnabled) {
   init({
     dsn: "https://cae61a2a840cbbe7f17e240c99ad0346@o4507990276177920.ingest.us.sentry.io/4507990321725440",
   });

@@ -29,6 +29,7 @@ export async function createDevServer() {
       },
     },
     define: {
+      "process.env.TRIPLEX_ENV": '"development"',
       "process.env.VITE_TRIPLEX_ENV": '"development"',
     },
     plugins: [

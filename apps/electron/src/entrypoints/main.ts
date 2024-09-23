@@ -31,7 +31,7 @@ import type { startProject } from "../util/project";
 import { invalidateScreenshot, screenshotComponent } from "../util/screenshot";
 import { editorConfigStore, getProjectStore, userStore } from "../util/store";
 
-if (process.env.TRIPLEX_ENV !== "development") {
+if (process.env.NODE_ENV === "production") {
   init({
     dsn: "https://465c2b265422fda6d76957f5a4854ffb@o4507990276177920.ingest.us.sentry.io/4507990300229632",
   });
