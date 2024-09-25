@@ -4,6 +4,6 @@
   "private": true,
   "main": "index.js",
   "dependencies": {
-    "react": "^18.2.0"
+    "react": "^18.3.1"
   }
 }

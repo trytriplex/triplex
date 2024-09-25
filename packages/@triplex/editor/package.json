@@ -41,19 +41,19 @@
     "@triplex/server": "^0.69.2",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
-    "@types/three": "^0.163.0",
+    "@types/three": "^0.168.0",
     "@types/tinycolor2": "^1.4.3",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.16",
     "babel-plugin-react-compiler": "0.0.0-experimental-23b8160-20240916",
     "tailwindcss": "^3.3.2",
-    "three": "^0.163.0",
+    "three": "^0.168.0",
     "typescript": "^5.6.2",
     "vite": "^5.4.6"
   },
   "peerDependencies": {
-    "@react-three/fiber": "^8.0.0",
-    "react": "^18.0.0",
+    "@react-three/fiber": ">=8.0.0",
+    "react": ">=18.0.0",
     "three": ">=0.153.0"
   }
 }

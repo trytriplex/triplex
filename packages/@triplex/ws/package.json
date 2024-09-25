@@ -38,7 +38,7 @@
     "typescript": "^5.6.2"
   },
   "peerDependencies": {
-    "react": "^18.0.0"
+    "react": ">=18.0.0"
   },
   "optionalDependencies": {
     "ws": "^8.12.0"
