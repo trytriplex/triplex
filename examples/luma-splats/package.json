@@ -8,13 +8,13 @@
   },
   "dependencies": {
     "@lumaai/luma-web": "^0.1.14",
-    "@react-three/drei": "^9.103.0",
-    "@react-three/fiber": "^8.16.1",
-    "@react-three/rapier": "^1.1.1",
-    "@types/react": "^18.0.0",
-    "@types/three": "^0.163.0",
-    "react": "^18.0.0",
-    "react-dom": "^18.0.0",
-    "three": "^0.163.0"
+    "@react-three/drei": "^9.114.0",
+    "@react-three/fiber": "^8.17.8",
+    "@react-three/rapier": "^1.4.0",
+    "@types/react": "^18.3.9",
+    "@types/three": "^0.168.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "three": "^0.168.0"
   }
 }
