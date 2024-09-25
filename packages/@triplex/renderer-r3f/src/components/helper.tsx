@@ -11,7 +11,7 @@ import {
   type ThreeEvent,
 } from "@react-three/fiber";
 import { useLayoutEffect, useRef, useState } from "react";
-import { type Mesh, type Object3D } from "three";
+import { type Group, type Object3D } from "three";
 import "./camera-helper";
 import { usePlayState } from "../stores/state";
 import { editorLayer, hiddenLayer } from "../util/layers";
@@ -25,7 +25,7 @@ type Helper =
 
 type HelperInstance = Object3D & { dispose: () => void; update: () => void };
 
-const HELPER_SIZE = 0.2;
+const HELPER_SIZE = 0.1;
 
 export const getHelperForElement = (
   name: string,
@@ -63,16 +63,20 @@ function HelperIcon({
   onClick: (e: ThreeEvent<MouseEvent>) => void;
   target: Object3D;
 }) {
-  const ref = useRef<Mesh>(null!);
+  const ref = useRef<Group>(null!);
 
   useFrame(() => {
     ref.current.position.copy(target.position);
   });
 
   return (
-    <mesh layers={editorLayer} onClick={onClick} ref={ref} visible={false}>
-      <boxGeometry args={[HELPER_SIZE, HELPER_SIZE, HELPER_SIZE]} />
-    </mesh>
+    <group ref={ref}>
+      <mesh layers={editorLayer} onClick={onClick} visible={false}>
+        <boxGeometry
+          args={[HELPER_SIZE * 2, HELPER_SIZE * 2, HELPER_SIZE * 2]}
+        />
+      </mesh>
+    </group>
   );
 }
 

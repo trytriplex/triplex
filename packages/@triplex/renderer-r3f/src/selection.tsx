@@ -17,8 +17,16 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { Box3, Raycaster, Vector2, Vector3, type Object3D } from "three";
+import {
+  Box3,
+  Camera,
+  Raycaster,
+  Vector2,
+  Vector3,
+  type Object3D,
+} from "three";
 import { useCamera } from "./components/camera";
+import { CameraPreview } from "./components/camera-preview";
 import { TransformControls } from "./components/transform-controls";
 import { SceneObjectContext } from "./scene-object";
 import { SceneObjectEventsContext } from "./stores/selection";
@@ -488,6 +496,10 @@ export function Selection({
           space={space}
           translationSnap={0.02}
         />
+      )}
+
+      {selectedObject && selectedObject.sceneObject instanceof Camera && (
+        <CameraPreview camera={selectedObject.sceneObject} />
       )}
     </SceneObjectContext.Provider>
   );

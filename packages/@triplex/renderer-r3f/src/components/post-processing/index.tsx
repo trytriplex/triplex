@@ -8,19 +8,10 @@ import { useFrame } from "@react-three/fiber";
 import { useRef, useState } from "react";
 import { Vector2, type ShaderMaterial } from "three";
 import { useFBO } from "triplex-drei";
+import { hash } from "../../util/hash";
 import { editorLayer, SELECTION_LAYER_INDEX } from "../../util/layers";
 import frag from "./frag.glsl";
 import vert from "./vert.glsl";
-
-function hash(str: string) {
-  let hash = 0;
-  for (let i = 0; i < str.length; i++) {
-    const char = str.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-  }
-  // Convert to 32bit unsigned integer in base 36 and pad with "0" to ensure length is 7.
-  return (hash >>> 0).toString(36).padStart(7, "0");
-}
 
 export function PostProcessing({ debug = false }: { debug?: boolean }) {
   const renderTarget = useFBO();

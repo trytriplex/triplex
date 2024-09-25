@@ -4,11 +4,18 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-export default {
-  test: {
-    expect: {
-      requireAssertions: true,
+import { defineConfig } from "vitest/config";
+
+export default defineConfig(async () => {
+  const { default: glsl } = await import("vite-plugin-glsl");
+
+  return {
+    plugins: [glsl()],
+    test: {
+      expect: {
+        requireAssertions: true,
+      },
+      setupFiles: "./test/setup.ts",
     },
-    setupFiles: "./test/setup.ts",
-  },
-};
+  };
+});
