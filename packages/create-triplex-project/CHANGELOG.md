@@ -1,5 +1,11 @@
 # create-triplex-project
 
+## 0.69.3
+
+### Patch Changes
+
+- 2ff6b88: Upgrade three, react-three-fiber, react deps.
+
 ## 0.69.2
 
 ## 0.69.1
