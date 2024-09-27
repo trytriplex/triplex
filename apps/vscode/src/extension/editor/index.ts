@@ -9,10 +9,13 @@ import { inferExports, resolveProjectCwd } from "@triplex/server";
 import { on as onWS } from "@triplex/ws";
 import { dirname, normalize } from "upath";
 import * as vscode from "vscode";
+import { logger } from "../../util/log/vscode";
 import { on, sendVSCE } from "../util/bridge";
 import { TriplexDocument } from "./document";
 import { initializeWebviewPanel } from "./panel";
 import { type TriplexProjectResolver } from "./project";
+
+const log = logger("scene");
 
 function getFallbackExportName(filepath: string): string {
   const code = readFileSync(filepath, "utf8");
@@ -135,6 +138,7 @@ export class TriplexEditorProvider
         }),
         on(panel.webview, "error", (error) => {
           vscode.window.showErrorMessage(error.message);
+          log.error(error.message);
         }),
         on(panel.webview, "element-duplicate", async (element) => {
           const newElement = await document.duplicateElement(element);

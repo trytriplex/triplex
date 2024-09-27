@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { createServer as createHttpServer } from "node:http";
 import type {
   ReconciledTriplexConfig,
   RendererManifest,
@@ -15,7 +16,6 @@ import { join, normalize } from "upath";
 import { version } from "../package.json";
 import triplexBabelPlugin from "./babel-plugin";
 import { transformNodeModulesJSXPlugin } from "./node-modules-plugin";
-import { getPort } from "./port";
 import { remoteModulePlugin } from "./remote-module-plugin";
 import { scenePlugin } from "./scene-plugin";
 import { createHTML, loading, scripts } from "./templates";
@@ -40,6 +40,7 @@ export async function createServer({
   const normalizedCwd = normalize(config.cwd);
   const tsConfig = join(normalizedCwd, "tsconfig.json");
   const app = express();
+  const httpServer = createHttpServer(app);
   const { createServer: createViteServer } = await import("vite");
   const { default: glsl } = await import("vite-plugin-glsl");
   const { default: tsconfigPaths } = await import("vite-tsconfig-paths");
@@ -57,7 +58,7 @@ export async function createServer({
     plugins: [
       remoteModulePlugin({ cwd: normalizedCwd, files: config.files, ports }),
       // ---------------------------------------------------------------
-      // TODO: Vite plugins should be loaded from a renderer's manfiest
+      // TODO: Vite plugins should be loaded from a renderer's manifest
       // instead of hardcoded. We'll cross this bridge to resolve later.
       react({
         babel: {
@@ -84,16 +85,10 @@ export async function createServer({
     },
     root: normalizedCwd,
     server: {
-      headers: {
-        // Needed for any static assets loaded through the Vite server.
-        // These headers are needed to enable shared array buffers.
-        // See: https://web.dev/articles/cross-origin-isolation-guide
-        "Cross-Origin-Embedder-Policy": "require-corp",
-        "Cross-Origin-Opener-Policy": "same-origin",
-      },
       hmr: {
         overlay: false,
-        port: await getPort(),
+        path: "/__hmr_client__",
+        server: httpServer,
       },
       middlewareMode: true,
     },
@@ -108,6 +103,17 @@ export async function createServer({
     userId,
   };
 
+  app.use((_, res, next) => {
+    res.set({
+      // These headers are needed to enable shared array buffers.
+      // See: https://web.dev/articles/cross-origin-isolation-guide
+      "Cross-Origin-Embedder-Policy": "require-corp",
+      "Cross-Origin-Opener-Policy": "same-origin",
+      "Cross-Origin-Resource-Policy": "cross-origin",
+    });
+    next();
+  });
+
   app.use(vite.middlewares);
 
   app.get("/scene.html", async (_, res, next) => {
@@ -117,16 +123,7 @@ export async function createServer({
       });
       const html = await vite.transformIndexHtml("scene", template);
 
-      res
-        .status(200)
-        .set({
-          "Content-Type": "text/html",
-          // These headers are needed to enable shared array buffers.
-          // See: https://web.dev/articles/cross-origin-isolation-guide
-          "Cross-Origin-Embedder-Policy": "require-corp",
-          "Cross-Origin-Opener-Policy": "same-origin",
-        })
-        .end(html);
+      res.status(200).set({ "Content-Type": "text/html" }).end(html);
     } catch (error) {
       vite.ssrFixStacktrace(error as Error);
       next(error);
@@ -149,16 +146,7 @@ export async function createServer({
         template,
       );
 
-      res
-        .status(200)
-        .set({
-          "Content-Type": "text/html",
-          // These headers are needed to enable shared array buffers.
-          // See: https://web.dev/articles/cross-origin-isolation-guide
-          "Cross-Origin-Embedder-Policy": "require-corp",
-          "Cross-Origin-Opener-Policy": "same-origin",
-        })
-        .end(html);
+      res.status(200).set({ "Content-Type": "text/html" }).end(html);
     } catch (error) {
       vite.ssrFixStacktrace(error as Error);
       next(error);
@@ -167,7 +155,7 @@ export async function createServer({
 
   return {
     listen: async (port: number) => {
-      const server = await app.listen(port);
+      const server = await httpServer.listen(port);
 
       const close = async () => {
         try {

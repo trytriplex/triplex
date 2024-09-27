@@ -11,9 +11,25 @@ const outputChannel = vscode.window.createOutputChannel("Triplex", {
 });
 
 export function logger(scope: string) {
-  return (...msg: unknown[]) => {
-    outputChannel.appendLine(`[${scope}] ` + msg.join(" "));
+  const buildLog = (...msg: unknown[]) => `[${scope}] ` + msg.join(" ");
+
+  const log = (...msg: unknown[]) => {
+    outputChannel.info(buildLog(msg));
   };
+
+  log.error = (...msg: unknown[]) => {
+    outputChannel.error(buildLog(msg));
+  };
+
+  log.debug = (...msg: unknown[]) => {
+    outputChannel.debug(buildLog(msg));
+  };
+
+  log.info = (...msg: unknown[]) => {
+    outputChannel.info(buildLog(msg));
+  };
+
+  return log;
 }
 
 export function dispose() {

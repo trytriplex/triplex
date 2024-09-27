@@ -18,3 +18,19 @@ test.describe(() => {
     await expect(vsce.loadedComponent).toHaveText("ScrollTestFixture");
   });
 });
+
+test.describe(() => {
+  test.use({
+    filename: "examples/test-fixture/src/sab.tsx",
+  });
+
+  test(
+    "shared array buffers load without errors",
+    { tag: "@vsce_smoke" },
+    async ({ vsce }) => {
+      await vsce.codelens("SharedArrayBufferTest").click();
+
+      await expect(vsce.loadedComponent).toHaveText("SharedArrayBufferTest");
+    },
+  );
+});

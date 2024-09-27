@@ -27,6 +27,14 @@ export class EditorPage {
     return locator;
   }
 
+  get loadedComponent() {
+    const locator = this.page
+      .frameLocator("#scene")
+      .getByTestId("scene-loaded-meta");
+
+    return locator;
+  }
+
   get fileDrawer() {
     const locator = this.page.getByTestId("file-drawer");
 

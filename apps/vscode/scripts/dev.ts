@@ -50,6 +50,16 @@ export async function createDevServer() {
       }),
     ],
     root: join(__dirname, "../"),
+    server: {
+      headers: {
+        "Cross-Origin-Embedder-Policy": "require-corp",
+        "Cross-Origin-Opener-Policy": "same-origin",
+        "Cross-Origin-Resource-Policy": "cross-origin",
+      },
+      hmr: {
+        path: "/__hmr_dev__",
+      },
+    },
   });
 
   return {

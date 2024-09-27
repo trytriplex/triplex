@@ -105,6 +105,7 @@ async function launch({
       "--no-sandbox", // https://github.com/microsoft/vscode/issues/84238
       "--skip-welcome",
       "--skip-release-notes",
+      "--enable-coi",
     ],
     env: {
       ...process.env,
