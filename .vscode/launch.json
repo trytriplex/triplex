@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Run VSCode",
+      "name": "Run VS Code",
       "type": "extensionHost",
       "request": "launch",
       "args": [
@@ -10,7 +10,8 @@
         "${workspaceFolder}/examples/test-fixture/src/scene.tsx",
         "--disable-extensions",
         "--new-window",
-        "--extensionDevelopmentPath=${workspaceFolder}/apps/vscode"
+        "--extensionDevelopmentPath=${workspaceFolder}/apps/vscode",
+        "--enable-coi"
       ]
     },
     {
