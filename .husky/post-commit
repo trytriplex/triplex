@@ -1,0 +1,6 @@
+# If any MDX files have changed in the docs we codegen the sitemap.
+if [[ $(git diff --name-only @~..@ -- 'apps/docs/*.mdx') ]]; then
+  pnpm --filter=@docs/triplex run build:sitemap
+  git add ./apps/docs/public/sitemap.xml
+  git commit -m "chore: codegen sitemap"
+fi

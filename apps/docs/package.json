@@ -6,6 +6,7 @@
   "license": "GPL-3.0",
   "scripts": {
     "build": "NEXT_PUBLIC_URL=https://triplex-docs-$(git branch --show-current)-try-triplex.vercel.app next build",
+    "build:sitemap": "ts-node ./scripts/generate-sitemap.ts",
     "dev": "NEXT_PUBLIC_URL=localhost:3000 next",
     "typedef": "tsc"
   },
@@ -28,5 +29,8 @@
     "three": "^0.168.0",
     "typescript": "^5.6.2",
     "zustand": "^4.3.2"
+  },
+  "devDependencies": {
+    "readdirp": "^3.6.0"
   }
 }
