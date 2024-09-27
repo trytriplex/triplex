@@ -1,5 +1,17 @@
 # @triplex/electron
 
+## 0.69.4
+
+### Patch Changes
+
+- 73db08f: Sentry is now only enabled in production.
+- Updated dependencies [2ff6b88]
+- Updated dependencies [c6630d2]
+- Updated dependencies [73db08f]
+  - create-triplex-project@0.69.3
+  - @triplex/client@0.69.4
+  - @triplex/editor@0.69.4
+
 ## 0.69.3
 
 ### Patch Changes

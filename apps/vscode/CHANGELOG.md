@@ -1,5 +1,14 @@
 # @triplex/vscode
 
+## 0.0.25
+
+### Patch Changes
+
+- c686a64: Telemetry now tracks engagement only when the editor has focus.
+- 73db08f: Sentry is now only enabled in production.
+- Updated dependencies [c6630d2]
+  - @triplex/client@0.69.4
+
 ## 0.0.24
 
 ### Patch Changes

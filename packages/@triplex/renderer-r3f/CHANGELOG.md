@@ -1,5 +1,12 @@
 # @triplex/renderer-r3f
 
+## 0.69.4
+
+### Patch Changes
+
+- b73ba38: When selecting a camera element a preview is displayed in the bottom
+  left of the scene.
+
 ## 0.69.3
 
 ### Patch Changes

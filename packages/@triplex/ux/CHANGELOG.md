@@ -1,5 +1,11 @@
 # @triplex/ux
 
+## 0.69.4
+
+### Patch Changes
+
+- c686a64: Telemetry now tracks engagement only when the editor has focus.
+
 ## 0.69.3
 
 ### Patch Changes

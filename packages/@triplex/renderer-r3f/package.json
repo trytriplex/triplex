@@ -1,6 +1,6 @@
 {
   "name": "@triplex/renderer-r3f",
-  "version": "0.69.3",
+  "version": "0.69.4",
   "private": true,
   "description": "The React Three Fiber editor.",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",

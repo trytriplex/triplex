@@ -1,6 +1,6 @@
 {
   "name": "@triplex/editor",
-  "version": "0.69.3",
+  "version": "0.69.4",
   "private": true,
   "description": "The React Three Fiber editor.",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",
@@ -23,7 +23,7 @@
     "@sentry/react": "^8.30.0",
     "@triplex/bridge": "0.69.2",
     "@triplex/lib": "0.69.3",
-    "@triplex/ux": "0.69.3",
+    "@triplex/ux": "0.69.4",
     "@triplex/ws": "0.69.2",
     "react-compiler-runtime": "workspace:*",
     "react-dom": "^18.2.0",

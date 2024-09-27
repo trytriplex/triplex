@@ -1,5 +1,13 @@
 # @triplex/editor
 
+## 0.69.4
+
+### Patch Changes
+
+- 73db08f: Sentry is now only enabled in production.
+- Updated dependencies [c686a64]
+  - @triplex/ux@0.69.4
+
 ## 0.69.3
 
 ### Patch Changes

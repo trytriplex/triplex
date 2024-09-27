@@ -1,6 +1,6 @@
 {
   "name": "@triplex/ux",
-  "version": "0.69.3",
+  "version": "0.69.4",
   "private": true,
   "description": "Common UI agnostic components for Triplex user experiences.",
   "author": "Michael Dougall (https://twitter.com/itsdouges)",

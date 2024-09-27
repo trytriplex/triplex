@@ -1,5 +1,13 @@
 # @triplex/client
 
+## 0.69.4
+
+### Patch Changes
+
+- c6630d2: Fix Vite instance being unable to reconnect when OS wakes from sleep.
+- Updated dependencies [b73ba38]
+  - @triplex/renderer-r3f@0.69.4
+
 ## 0.69.3
 
 ### Patch Changes
