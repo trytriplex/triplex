@@ -38,7 +38,7 @@
     "build": "cross-env VITE_CJS_IGNORE_WARNING=true vite build --mode vsce && cross-env VITE_CJS_IGNORE_WARNING=true vite build --mode app",
     "prepack": "node ../../scripts/workspace-run.js ./apply-publish-config.js",
     "pack": "node scripts/pack.js",
-    "publish": "cd out && vsce publish --no-dependencies",
+    "publish": "cd out && vsce publish --no-dependencies --skip-duplicate",
     "typedef": "tsc -p ./tsconfig.json && tsc -p ./src/app/tsconfig.json"
   },
   "contributes": {
