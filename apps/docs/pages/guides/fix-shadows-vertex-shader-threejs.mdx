@@ -1,0 +1,65 @@
+---
+title: How To Fix Mesh Shadows After Using a Vertex Shader
+date: 2024-10-09
+description:
+  Displacing vertices with a GLSL vertex shader can make for fantastic results
+  but it's very easy to leave out a crucial step to ensure shadows remain
+  correct.
+---
+
+If you forget to define a custom depth and distance material on a mesh after
+applying a vertex shader its shadow won't look correct.
+
+<iframe
+  className="my-10 h-96 w-full overflow-hidden focus:outline-none"
+  src="https://codesandbox.io/embed/q7cc8g?view=preview&module=%2Fsrc%2Fcircle.tsx&hidenavigation=1"
+  title="Shadows broken example"
+/>
+
+## Tools Needed For The Fix
+
+- The same
+  [GLSL vertex shader](https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_on_the_web/GLSL_Shaders#vertex_shaders)
+  used previously
+- The
+  [THREE-CustomShaderMaterial](https://github.com/FarazzShaikh/THREE-CustomShaderMaterial)
+  library for Three.js which heavily reduces boilerplate code
+- Custom [depth](https://threejs.org/docs/#api/en/materials/MeshDepthMaterial)
+  and
+  [distance](https://threejs.org/docs/#api/en/materials/MeshDistanceMaterial)
+  materials
+
+## Applying The Missing Materials
+
+Depth and distance materials are used to create shadow maps for spot lights and
+point lights respectively. The fix is a matter of adding custom ones to the mesh
+using the same vertex shader used previously.
+
+```diff
+<mesh position={[0, 0.2, 3]} castShadow receiveShadow>
+  <sphereGeometry args={[0.75, 100, 100]} />
+  <CustomShaderMaterial
+    baseMaterial={MeshStandardMaterial}
+    vertexShader={vertexShader}
+    color="red"
+  />
++  <CustomShaderMaterial
++    attach="customDistanceMaterial"
++    baseMaterial={MeshDistanceMaterial}
++    vertexShader={vertexShader}
++  />
++  <CustomShaderMaterial
++    attach="customDepthMaterial"
++    baseMaterial={MeshDepthMaterial}
++    vertexShader={vertexShader}
++  />
+</mesh>
+```
+
+<iframe
+  className="my-10 h-96 w-full overflow-hidden focus:outline-none"
+  src="https://codesandbox.io/embed/n3d67m?view=preview&module=%2Fsrc%2Fcircle.tsx&hidenavigation=1"
+  title="Shadows fixed example"
+/>
+
+The shadow looks like a tear drop just like the mesh.
