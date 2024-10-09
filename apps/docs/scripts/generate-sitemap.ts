@@ -16,16 +16,23 @@ function getLastModifiedDateTime(fullPath: string) {
   const result = execSync(
     `git log -1 --pretty="format:%ci" ${fullPath}`,
   ).toString();
-  return result || undefined;
+
+  if (result) {
+    return new Date(result).toISOString().slice(0, 10);
+  }
+
+  return undefined;
 }
 
 const changeHints = [
   ["/blog", "weekly"],
   ["/docs", "monthly"],
+  ["/guides", "monthly"],
 ] as const;
 
 const priorityHints = [
-  ["/blog/", 0.6],
+  ["/blog/", 0.7],
+  ["/guides/", 0.6],
   ["/download", 0.9],
 ] as const;
 
@@ -39,7 +46,7 @@ async function main() {
 
       sitemap.push({
         changeFrequency:
-          changeHints.find(([hint]) => url.includes(hint))?.[1] ?? "yearly",
+          changeHints.find(([hint]) => url.includes(hint))?.[1] ?? "monthly",
         lastModified: getLastModifiedDateTime(entry.fullPath),
         priority: path
           ? priorityHints.find(([hint]) => url.includes(hint))?.[1] ?? 0.5

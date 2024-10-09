@@ -27,6 +27,9 @@
   "blog": {
     "title": "Blog"
   },
+  "guides": {
+    "type": "hidden"
+  },
   "pricing": {
     "title": "Pricing",
     "href": "/pricing",

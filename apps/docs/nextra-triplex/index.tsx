@@ -23,6 +23,7 @@ import { Footer } from "../components/footer";
 import { Header, HeaderItem } from "../components/header";
 import { useSearchStore } from "../stores/search";
 import { cn } from "../util/cn";
+import { friendlyDate } from "../util/date";
 import { BASE_URL } from "../util/url";
 
 const components: Components = {
@@ -155,18 +156,10 @@ const components: Components = {
   ul: ({ children }) => <ul className="mt-5 list-disc">{children}</ul>,
 };
 
-const friendlyDate = (date: string): string => {
-  return new Date(date).toLocaleDateString("en-US", {
-    day: "numeric",
-    month: "long",
-    year: "numeric",
-  });
-};
-
 function renderDocsItem(
   link: ReturnType<typeof normalizePages>["docsDirectories"][0],
   route: string,
-  level = 0
+  level = 0,
 ): JSX.Element | null {
   if (!link.isUnderCurrentDocsTree) {
     return null;
@@ -393,13 +386,13 @@ function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
         locale: "en_US",
         route,
       }),
-    [pageMap, route]
+    [pageMap, route],
   );
 
   const previousPage = result.flatDocsDirectories[result.activeIndex - 1];
   const nextPage = result.flatDocsDirectories[result.activeIndex + 1];
   const pageItems = result.flatDocsDirectories.filter(
-    (item) => item.isUnderCurrentDocsTree
+    (item) => item.isUnderCurrentDocsTree,
   );
 
   useEffect(() => {
