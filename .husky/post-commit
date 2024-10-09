@@ -1,3 +1,8 @@
+BRANCH_NAME=$(git branch | grep '*' | sed 's/* //')
+if [[ $BRANCH_NAME =~ "no branch" ]]; then
+  exit 0
+fi
+
 # If any MDX files have changed in the docs we codegen the sitemap.
 if [[ $(git diff --name-only @~..@ -- 'apps/docs/*.mdx') ]]; then
   pnpm --filter=@docs/triplex run build:sitemap
