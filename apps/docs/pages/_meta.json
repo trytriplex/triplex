@@ -39,13 +39,13 @@
   },
   "github": {
     "title": "Visit Github",
-    "href": "https://github.com/try-triplex/triplex",
+    "href": "https://github.com/trytriplex/triplex",
     "type": "hidden",
     "newWindow": true
   },
   "bugs": {
     "title": "Raise an issue",
-    "href": "https://github.com/try-triplex/triplex/issues/new",
+    "href": "https://github.com/trytriplex/triplex/issues/new",
     "type": "hidden"
   },
   "discord": {
