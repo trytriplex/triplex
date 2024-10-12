@@ -22,7 +22,7 @@ export function ErrorSplash({ error }: { error: Error }) {
         <div className="mx-auto flex items-center gap-2">
           <a href="mailto:support@triplex.dev">Contact us</a>
           <span className="text-xs">•</span>
-          <a href="https://github.com/try-triplex/triplex/issues/new">
+          <a href="https://github.com/trytriplex/triplex/issues/new">
             Report a bug
           </a>
         </div>

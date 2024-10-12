@@ -6,7 +6,7 @@ module.exports = {
   },
   getStaticConfig() {
     return {
-      repository: "git@github.com:try-triplex/triplex.git",
+      repository: "git@github.com:trytriplex/triplex.git",
     };
   },
   getPathMappings() {

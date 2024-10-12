@@ -138,7 +138,7 @@ function WelcomeScreen() {
             icon={GlobeIcon}
             onClick={() =>
               window.triplex.openLink(
-                "https://github.com/try-triplex/triplex/releases",
+                "https://github.com/trytriplex/triplex/releases",
               )
             }
             size="tight"

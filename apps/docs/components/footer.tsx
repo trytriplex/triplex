@@ -21,7 +21,7 @@ export function Footer() {
             <a
               aria-label="Github"
               className="-mt-0.5 text-neutral-400 hover:text-neutral-200"
-              href="https://github.com/try-triplex/triplex"
+              href="https://github.com/trytriplex/triplex"
               rel="noreferrer"
               target="_blank"
             >
@@ -107,7 +107,7 @@ export function Footer() {
             <li>
               <Link
                 className="text-sm text-neutral-400 hover:text-neutral-200"
-                href="https://github.com/try-triplex/triplex/releases"
+                href="https://github.com/trytriplex/triplex/releases"
               >
                 Changelog
               </Link>
@@ -137,7 +137,7 @@ export function Footer() {
             <li>
               <Link
                 className="text-sm text-neutral-400 hover:text-neutral-200"
-                href="https://github.com/try-triplex/triplex/issues/new"
+                href="https://github.com/trytriplex/triplex/issues/new"
               >
                 Raise an Issue
               </Link>
@@ -159,7 +159,7 @@ export function Footer() {
             <li>
               <Link
                 className="text-sm text-neutral-400 hover:text-neutral-200"
-                href="https://github.com/try-triplex/triplex"
+                href="https://github.com/trytriplex/triplex"
               >
                 Github
               </Link>

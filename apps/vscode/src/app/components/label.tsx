@@ -34,7 +34,7 @@ export function Label({
     // We return an empty div so we keep union input
     // grid layouts functional and have the label take
     // the first grid item using the auto placement.
-    // See: https://github.com/try-triplex/triplex-monorepo/blob/4ab74c910ebbe67673b3a20baa9e377600380e7d/apps/vscode/src/app/features/panels/inputs.tsx#L194
+    // See: https://github.com/trytriplex/triplex-monorepo/blob/4ab74c910ebbe67673b3a20baa9e377600380e7d/apps/vscode/src/app/features/panels/inputs.tsx#L194
     return <div />;
   }
 

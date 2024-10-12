@@ -68,7 +68,7 @@ export function ErrorBoundary({
             <div className="flex items-center gap-2">
               <ExternalLink
                 actionId="errorboundary_contact_issue"
-                to="https://github.com/try-triplex/triplex/issues/new"
+                to="https://github.com/trytriplex/triplex/issues/new"
               >
                 Report a bug
               </ExternalLink>

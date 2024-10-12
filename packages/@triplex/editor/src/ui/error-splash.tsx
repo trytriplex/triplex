@@ -37,7 +37,7 @@ export function ErrorSplash({ error }: { error?: Error }) {
           <span className="text-xs text-neutral-400">•</span>
           <ExternalLink
             actionId="errorsplash_contact_issue"
-            to="https://github.com/try-triplex/triplex/issues/new"
+            to="https://github.com/trytriplex/triplex/issues/new"
           >
             Report a bug
           </ExternalLink>

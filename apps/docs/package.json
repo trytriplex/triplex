@@ -5,7 +5,7 @@
   "description": "The React Three Fiber editor.",
   "license": "GPL-3.0",
   "scripts": {
-    "build": "NEXT_PUBLIC_URL=https://triplex-docs-$(git branch --show-current)-try-triplex.vercel.app next build",
+    "build": "NEXT_PUBLIC_URL=https://triplex-docs-$(git branch --show-current)-trytriplex.vercel.app next build",
     "build:sitemap": "ts-node ./scripts/generate-sitemap.ts",
     "dev": "NEXT_PUBLIC_URL=localhost:3000 next",
     "typedef": "tsc"

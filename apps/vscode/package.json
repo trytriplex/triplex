@@ -16,12 +16,12 @@
     "visual-editor"
   ],
   "bugs": {
-    "url": "https://github.com/try-triplex/triplex/issues/new",
+    "url": "https://github.com/trytriplex/triplex/issues/new",
     "email": "support@triplex.dev"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/try-triplex/triplex"
+    "url": "https://github.com/trytriplex/triplex"
   },
   "license": "SEE LICENSE IN LICENSE",
   "qna": "https://triplex.dev/docs/faq",

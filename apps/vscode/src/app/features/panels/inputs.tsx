@@ -27,7 +27,7 @@ import { Label } from "../../components/label";
 
 const createIssueURL = (prop: DeclaredProp | Prop) =>
   encodeURI(
-    "https://github.com/try-triplex/triplex/issues/new?title=Unsupported input request&body=Please describe your use case and what the prop type is here.\n\n---\n\nMeta:\n```\n" +
+    "https://github.com/trytriplex/triplex/issues/new?title=Unsupported input request&body=Please describe your use case and what the prop type is here.\n\n---\n\nMeta:\n```\n" +
       JSON.stringify(prop, null, 2) +
       "\n```",
   );

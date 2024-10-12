@@ -7,11 +7,11 @@ on-top of the Vite bundler.
 
 - The client supports multiple renderes (react-three-fiber / react-dom / ...)
   via a
-  [consistent API](https://github.com/try-triplex/triplex-monorepo/blob/fbcd188bd1fe3a96e56402045aef891f89c773f3/packages/@triplex/client/src/templates.ts#L95)
+  [consistent API](https://github.com/trytriplex/triplex-monorepo/blob/fbcd188bd1fe3a96e56402045aef891f89c773f3/packages/@triplex/client/src/templates.ts#L95)
 - The [babel plugin](./src/babel-plugin.ts) wraps all user land JSX elements and
   is used for scene selection in conjunction with the SceneObject component
   defined via the
-  [render API](https://github.com/try-triplex/triplex-monorepo/blob/fbcd188bd1fe3a96e56402045aef891f89c773f3/packages/@triplex/client/src/templates.ts#L95).
+  [render API](https://github.com/trytriplex/triplex-monorepo/blob/fbcd188bd1fe3a96e56402045aef891f89c773f3/packages/@triplex/client/src/templates.ts#L95).
 - The [node modules plugin](./src/node-modules-plugin.ts) forces all JSX
   elements found in node modules to be transformed into a scene object to power
   scene selection.

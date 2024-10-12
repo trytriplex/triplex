@@ -57,7 +57,7 @@ describe("undo/redo edge cases", () => {
   );
 
   // TODO: This unit test is flakey on Windows. It could be the fix, or it could be the test.
-  // See: https://github.com/try-triplex/triplex-monorepo/blob/fa8fa3f5227cfee4ba8055e22a153223ee1a4a47/packages/@triplex/server/src/ast/project.ts#L410
+  // See: https://github.com/trytriplex/triplex-monorepo/blob/fa8fa3f5227cfee4ba8055e22a153223ee1a4a47/packages/@triplex/server/src/ast/project.ts#L410
   it.skip(
     "should not trigger a watcher event when saving",
     async () => {
