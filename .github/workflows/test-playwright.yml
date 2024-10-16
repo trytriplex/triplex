@@ -16,6 +16,9 @@ jobs:
 
     runs-on: ${{ matrix.os }}
 
+    env:
+      DEBUG: pw:browser*
+
     strategy:
       fail-fast: false
 
@@ -44,8 +47,12 @@ jobs:
       - name: Run end-to-end tests
         if: matrix.os == 'ubuntu-latest'
         run:
-          xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" --
-          pnpm test:e2e --shard ${{ matrix.shard }}
+          # Workaround for Electron apps failing to initialize on Ubuntu 24.04 due to AppArmor restrictions
+          # Disables unprivileged user namespaces restriction to allow Electron apps to run
+          # Reference: https://github.com/electron/electron/issues/42510
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 xvfb-run
+          --auto-servernum --server-args="-screen 0 1280x960x24" -- pnpm
+          test:e2e --shard ${{ matrix.shard }}
         env:
           PWTEST_BLOB_REPORT_NAME: ${{ matrix.os }}
 

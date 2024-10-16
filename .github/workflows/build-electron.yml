@@ -81,8 +81,12 @@ jobs:
       - name: Run smoke tests
         if: matrix.os == 'ubuntu-latest'
         run:
-          xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" --
-          pnpm test:e2e --grep="@electron_smoke" --reporter html
+          # Workaround for Electron apps failing to initialize on Ubuntu 24.04 due to AppArmor restrictions
+          # Disables unprivileged user namespaces restriction to allow Electron apps to run
+          # Reference: https://github.com/electron/electron/issues/42510
+          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 xvfb-run
+          --auto-servernum --server-args="-screen 0 1280x960x24" -- pnpm
+          test:e2e --grep="@electron_smoke" --reporter html
 
       - name: Run smoke tests
         if: matrix.os != 'ubuntu-latest'
