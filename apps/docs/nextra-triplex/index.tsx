@@ -25,6 +25,7 @@ import { useSearchStore } from "../stores/search";
 import { cn } from "../util/cn";
 import { friendlyDate } from "../util/date";
 import { BASE_URL } from "../util/url";
+import { SideNavItem } from "./side-nav-item";
 
 const components: Components = {
   MetaDiff: ({
@@ -161,12 +162,8 @@ function renderDocsItem(
   route: string,
   level = 0,
 ): JSX.Element | null {
-  if (!link.isUnderCurrentDocsTree) {
+  if (!link.isUnderCurrentDocsTree || link.type === "separator") {
     return null;
-  }
-
-  if (link.type === "separator") {
-    return <div className="h-6" key={link.name} />;
   }
 
   const url =
@@ -176,7 +173,7 @@ function renderDocsItem(
   if (link.kind === "Folder") {
     return (
       <Fragment key={url}>
-        <div className="mt-6 pl-10 text-base font-bold text-neutral-200">
+        <div className="mt-6 py-1 text-base font-medium text-neutral-200">
           {link.title}
         </div>
         {link.children &&
@@ -186,19 +183,17 @@ function renderDocsItem(
   }
 
   return (
-    <Fragment key={url}>
-      <Link
-        className={cn([
-          route === url
-            ? "text-blue-400"
-            : "text-neutral-300 hover:text-neutral-100",
-          "block rounded py-1 pl-10 pr-6 text-base",
-        ])}
-        href={url}
-      >
-        {link.title}
-      </Link>
-    </Fragment>
+    <SideNavItem
+      href={url}
+      isChildSelected={link.children?.some((child) => child.route === route)}
+      isSelected={route === url}
+      key={url}
+      level={level}
+      title={link.title}
+    >
+      {link.children &&
+        link.children.map((item) => renderDocsItem(item, route, level + 1))}
+    </SideNavItem>
   );
 }
 
@@ -450,7 +445,7 @@ function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
           aria-label="pages navigation"
           className="col-span-3 hidden w-full max-w-[280px] justify-self-end md:block"
         >
-          <div className="sticky top-10">
+          <div className="sticky top-10 pl-10">
             {result.docsDirectories.map((item) => renderDocsItem(item, route))}
           </div>
         </nav>
