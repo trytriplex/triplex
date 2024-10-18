@@ -7,6 +7,7 @@
 import nextra from "nextra";
 
 const withNextra = nextra({
+  codeHighlight: true,
   staticImage: true,
   theme: "./nextra-triplex",
 });

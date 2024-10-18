@@ -104,12 +104,20 @@ const components: Components = {
       {children}
     </Link>
   ),
-  code: ({ children }) =>
-    typeof children === "string" ? (
-      <code className="text rounded bg-white/10 px-1.5 py-0.5">{children}</code>
+  code: ({ children }) => {
+    return typeof children === "string" ? (
+      // Inline code
+      <code className="border border-neutral-800 px-1.5 py-0.5 font-mono text-lg text-neutral-300 md:text-base">
+        {children}
+      </code>
     ) : (
-      <code>{children}</code>
-    ),
+      // Code block powered by shiki
+      // See: https://shiki.matsu.io/guide/theme-colors#css-variables-theme
+      <code className="[--shiki-color-text:#ccfbf1] [--shiki-token-comment:#16a34a] [--shiki-token-constant:#5eead4] [--shiki-token-function:#5eead4] [--shiki-token-keyword:#60a5fa] [--shiki-token-link:#facc15] [--shiki-token-parameter:#9ca3af] [--shiki-token-punctuation:#2dd4bf] [--shiki-token-string-expression:#fda4af] [&_.highlighted]:border [&_.highlighted]:border-yellow-500 [&_.highlighted]:bg-slate-800 [&_.line.highlighted]:float-left [&_.line.highlighted]:w-full">
+        {children}
+      </code>
+    );
+  },
   h1: () => (
     <i className="text-red-400">Define title frontmatter instead of heading</i>
   ),
@@ -144,11 +152,13 @@ const components: Components = {
   p: ({ children }) => (
     <p className="mt-6 text-xl text-neutral-300 md:text-lg">{children}</p>
   ),
-  pre: ({ children }) => (
-    <pre className="mt-5 whitespace-break-spaces rounded-xl bg-white/5 p-3 text-lg text-neutral-300 md:text-base">
-      {children}
-    </pre>
-  ),
+  pre: ({ children }) => {
+    return (
+      <pre className="mt-5 whitespace-break-spaces border border-neutral-800 p-3 text-lg text-neutral-300 md:text-base">
+        {children}
+      </pre>
+    );
+  },
   table: ({ children }) => <table className="mt-5">{children}</table>,
   td: ({ children }) => <td className="text-neutral-300">{children}</td>,
   th: ({ children }) => (
