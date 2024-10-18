@@ -107,7 +107,7 @@ const components: Components = {
   code: ({ children }) => {
     return typeof children === "string" ? (
       // Inline code
-      <code className="border border-neutral-800 px-1.5 py-0.5 font-mono text-lg text-neutral-300 md:text-base">
+      <code className="border border-neutral-700 px-1.5 py-0.5 font-mono text-lg text-neutral-300 md:text-base">
         {children}
       </code>
     ) : (
@@ -152,11 +152,18 @@ const components: Components = {
   p: ({ children }) => (
     <p className="mt-6 text-xl text-neutral-300 md:text-lg">{children}</p>
   ),
-  pre: ({ children }) => {
+  pre: ({ children, ...props }) => {
     return (
-      <pre className="mt-5 whitespace-break-spaces border border-neutral-800 p-3 text-lg text-neutral-300 md:text-base">
-        {children}
-      </pre>
+      <div className="mt-5">
+        {"filename" in props && typeof props.filename === "string" && (
+          <div className="border border-b-0 border-neutral-700 bg-neutral-900 py-0.5 pl-3">
+            <span className="text-sm text-neutral-300">{props.filename}</span>
+          </div>
+        )}
+        <pre className="whitespace-break-spaces border border-neutral-700 p-3 text-lg text-neutral-300 md:text-base">
+          {children}
+        </pre>
+      </div>
     );
   },
   table: ({ children }) => <table className="mt-5">{children}</table>,
