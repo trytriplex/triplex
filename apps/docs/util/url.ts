@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 export const BASE_URL =
-  process.env.NODE_ENV === "production"
+  process.env.NEXT_PUBLIC_VERCEL_ENV === "production"
     ? "https://triplex.dev"
     : process.env.NEXT_PUBLIC_VERCEL_URL
       ? `https://${process.env.NEXT_PUBLIC_VERCEL_URL}`

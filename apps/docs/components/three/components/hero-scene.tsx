@@ -4,7 +4,6 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { Grid, PerspectiveCamera } from "@react-three/drei";
 import { useFrame } from "@react-three/fiber";
 import { easing } from "maath";
 import { useRef } from "react";
@@ -25,12 +24,6 @@ export function HeroScene() {
 
   return (
     <>
-      <PerspectiveCamera
-        makeDefault
-        position={[0, 6.92, 13.68]}
-        rotation={[-0.374_547_657_477_983_13, 0, 0]}
-      />
-
       <ambientLight args={[undefined, 1]} />
 
       <group ref={ref}>
@@ -56,17 +49,6 @@ export function HeroScene() {
         position={[-1.4, 0.22, 0]}
         rotation={[0, -0.785_398_163_397_448_3, 0]}
         stage={true}
-      />
-
-      <Grid
-        cellColor="#6f6f6f"
-        cellSize={2}
-        cellThickness={1.0}
-        fadeDistance={30}
-        fadeStrength={2}
-        infiniteGrid
-        sectionColor="#9d4b4b"
-        sectionSize={6}
       />
     </>
   );

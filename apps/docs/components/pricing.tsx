@@ -29,12 +29,12 @@ function PricingPanel({
   return (
     <li
       className={cn([
-        "flex w-full max-w-sm basis-1/3 flex-col gap-2 rounded-xl border border-neutral-800 p-4 lg:w-auto",
+        "flex w-full max-w-sm basis-1/3 flex-col gap-3 rounded-xl border border-neutral-800 p-4 lg:w-auto",
         highlight &&
           "relative bg-neutral-950 before:absolute before:-inset-2 before:-z-10 before:rounded-2xl before:bg-blue-400 lg:mt-0",
       ])}
     >
-      <h2 className="mt-2 text-center text-3xl font-extrabold text-neutral-200">
+      <h2 className="mt-2 text-center text-3xl font-bold text-neutral-200">
         {name}
       </h2>
 
@@ -67,13 +67,13 @@ export function Pricing() {
           <>
             <Link
               className="block rounded border border-neutral-800 py-2 text-center font-semibold text-neutral-300"
-              href="https://github.com/sponsors/itsdouges/sponsorships?sponsor=itsdouges&preview=true&frequency=recurring&amount=5"
+              href="https://github.com/sponsors/itsdouges/sponsorships?sponsor=itsdouges&preview=true&frequency=recurring&amount=19"
             >
               Sponsor Development
             </Link>
 
-            <div className="mt-2 text-center">
-              <Link className="text-sm text-neutral-300" href="/download">
+            <div className="mt-3 text-center">
+              <Link className="text-base text-neutral-300" href="/download">
                 Download Now
               </Link>
             </div>
@@ -88,12 +88,12 @@ export function Pricing() {
           <li>
             <DetailsSummary
               details="Develop with Triplex on your OS of choice."
-              summary="Visual editor for macOS & Windows"
+              summary="Visual IDE for macOS, Windows, Linux"
             />
           </li>
           <li>
             <DetailsSummary
-              details="Create as many Triplex projects as you want through the editor."
+              details="Create as many Triplex projects as you want for use in the editor."
               summary="Unlimited projects"
             />
           </li>
@@ -105,7 +105,7 @@ export function Pricing() {
           </li>
           <li>
             <DetailsSummary
-              details="Create support tickets through Github."
+              details="Create support tickets through GitHub."
               summary="Web-based support"
             />
           </li>
@@ -120,7 +120,7 @@ export function Pricing() {
             Contact Us
           </Link>
         }
-        description="Paid plans available 2024. Contact us for expression of interest."
+        description="Paid plans available soon. Contact us for expression of interest."
         highlight
         name="Team"
         perMonthLabel=""
@@ -153,7 +153,7 @@ function DetailsSummary({
       <summary className="flex cursor-pointer list-none items-center gap-4 font-semibold text-neutral-300">
         <ChevronRightIcon className="group-open:rotate-90" /> {summary}
       </summary>
-      <p className="pl-8 text-neutral-300">{details}</p>
+      <p className="mt-1 pl-8 text-neutral-300">{details}</p>
     </details>
   );
 }

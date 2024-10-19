@@ -5,9 +5,6 @@
 [![Version](https://img.shields.io/github/v/release/trytriplex/triplex?style=flat&colorA=000000&colorB=000000&label=latest&logo=&logoColor=000000)](https://github.com/trytriplex/triplex/releases)
 [![GitHub Sponsors](https://img.shields.io/github/sponsors/itsdouges?style=flat&colorA=000000&colorB=000000&label=sponsor&logo=&logoColor=000000)](https://github.com/sponsors/itsdouges)
 
-The visual IDE for
-[React Three Fiber](https://github.com/pmndrs/react-three-fiber).
-
 ## Getting Started
 
 Visit https://triplex.dev/docs/overview to get started with Triplex.

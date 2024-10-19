@@ -1,6 +1,5 @@
 ---
 title: How To Fix Mesh Shadows After Using a Vertex Shader
-date: 2024-10-09
 description:
   Displacing vertices with a GLSL vertex shader can make for fantastic results
   but it's very easy to leave out a crucial step to ensure shadows remain
@@ -16,7 +15,7 @@ applying a vertex shader its shadow won't look correct.
   title="Shadows broken example"
 />
 
-## Tools Needed For The Fix
+## Tools needed for the fix
 
 - The same
   [GLSL vertex shader](https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_on_the_web/GLSL_Shaders#vertex_shaders)
@@ -29,7 +28,7 @@ applying a vertex shader its shadow won't look correct.
   [distance](https://threejs.org/docs/#api/en/materials/MeshDistanceMaterial)
   materials
 
-## Applying The Missing Materials
+## Applying the missing materials
 
 Depth and distance materials are used to create shadow maps for spot lights and
 point lights respectively. The fix is a matter of adding custom ones to the mesh

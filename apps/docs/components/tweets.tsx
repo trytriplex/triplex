@@ -37,9 +37,7 @@ export function Tweet({
       />
 
       <div className="flex flex-col justify-start">
-        <span className="font-extrabold tracking-tight text-white/90">
-          {name}
-        </span>
+        <span className="font-extrabold text-white/90">{name}</span>
         <span className="text-base text-white/70">{tag}</span>
       </div>
 

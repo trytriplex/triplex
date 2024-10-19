@@ -1,16 +1,14 @@
 {
+  "*": {
+    "theme": {
+      "feedback": true,
+      "pagination": true,
+      "breadcrumb": true
+    }
+  },
   "overview": "Get Started",
   "setup": "Setup",
   "get-started": "Get Started",
-  "guides": "Guides",
-  "faq": {
-    "title": "FAQ",
-    "display": "hidden",
-    "theme": {
-      "breadcrumb": false,
-      "pagination": false
-    }
-  },
   "supporting": {
     "type": "page",
     "title": "Supporting",

@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { CaretDownIcon, CaretRightIcon } from "@radix-ui/react-icons";
+import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { Fragment, useState } from "react";
 import { cn } from "../util/cn";
@@ -24,7 +24,9 @@ export function SideNavItem({
   level: number;
   title: string;
 }) {
-  const [childrenOpen, setChildrenOpen] = useState(isChildSelected);
+  const [childrenOpen, setChildrenOpen] = useState(
+    isSelected || isChildSelected,
+  );
   const shouldNestChildren = !!children && level > 0;
 
   return (
@@ -34,12 +36,13 @@ export function SideNavItem({
           level > 1 && !isSelected && "border-l border-neutral-800",
           level > 1 && isSelected && "border-l border-blue-400",
           !!children && level > 0 && "pl-1",
-          !!children && level === 0 && "mt-6 font-medium",
-          isSelected
-            ? "text-blue-400"
-            : "text-neutral-300 hover:text-neutral-100",
-          "flex items-center py-1 text-base",
-          shouldNestChildren && "mb-1",
+          level === 0 && "mt-6 font-medium",
+          isSelected && "text-blue-400",
+          !isSelected && level === 0 && "text-neutral-100",
+          !isSelected &&
+            level >= 1 &&
+            "text-neutral-300 hover:text-neutral-100",
+          "flex w-full items-center gap-2 py-1.5 text-base",
         ])}
         href={href}
         onClick={() =>
@@ -56,9 +59,9 @@ export function SideNavItem({
         {title}
         {shouldNestChildren &&
           (childrenOpen ? (
-            <CaretDownIcon className="ml-auto" />
+            <ChevronDownIcon className="ml-auto" />
           ) : (
-            <CaretRightIcon className="ml-auto" />
+            <ChevronRightIcon className="ml-auto" />
           ))}
       </Link>
       {shouldNestChildren && childrenOpen && (

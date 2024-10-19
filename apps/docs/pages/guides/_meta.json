@@ -1,7 +1,9 @@
 {
   "*": {
     "theme": {
-      "pagination": false
+      "layout": "full",
+      "pagination": false,
+      "feedback": true
     }
   }
 }
