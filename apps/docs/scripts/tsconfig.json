@@ -12,8 +12,7 @@
     "noEmit": true,
     "incremental": true,
     "module": "CommonJS",
-    "resolveJsonModule": true,
-    "types": ["@react-three/fiber"]
+    "resolveJsonModule": true
   },
   "ts-node": {
     "transpileOnly": true,
