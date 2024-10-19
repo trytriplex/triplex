@@ -6,7 +6,13 @@
  */
 import { existsSync, writeFileSync } from "node:fs";
 import { watch } from "chokidar";
-import { Project, type ProjectOptions, type SourceFile } from "ts-morph";
+import {
+  getCompilerOptionsFromTsConfig,
+  ModuleResolutionKind,
+  Project,
+  type ProjectOptions,
+  type SourceFile,
+} from "ts-morph";
 import { join, normalize } from "upath";
 import { deleteCommentComponents } from "../services/component";
 import { type SourceFileChangedEvent } from "../types";
@@ -32,20 +38,30 @@ export function _createProject(opts: ProjectOptions & { cwd?: string }) {
     writeFileSync(tsConfigPath, JSON.stringify(baseTsConfig, null, 2) + "\n");
   }
 
+  const { options } = getCompilerOptionsFromTsConfig(tsConfigPath);
+
   const project = new Project({
     ...opts,
     compilerOptions: {
       // This ensures that even if a project is misconfigured we can still infer types from JS.
       allowJs: true,
+      // This forces the module resolution to use the bundler algorithm. This fixes @react-three/uikit for use in Triplex
+      // without userland needing to fix it.
+      // See: https://devblogs.microsoft.com/typescript/announcing-typescript-5-0/#--moduleresolution-bundler
+      moduleResolution: ModuleResolutionKind.Bundler,
       // Having this as `true` results in 100% CPU utilization when importing modules from
       // node_modules. We set this to false to ensure that consumers of triplex never run into
       // this.
       preserveSymlinks: false,
-      // We turn this off to we can effectively ignore null and undefined when fetching
+      // We turn this off so we can effectively ignore null and undefined when fetching
       // the types of jsx elements. This makes everything much easier to reason about.
       // Meaning instead of us having to manually iterate and ignore type values they just
       // aren't ever defined.
       strictNullChecks: false,
+      // This ensures React Three Fiber host elements are present even if they're not in the module graph.
+      // We set this as an override but import the types from the options to ensure that we don't remove any
+      // user defined types.
+      types: (options.types || []).concat("@react-three/fiber"),
     },
     skipAddingFilesFromTsConfig: true,
   });

@@ -1,7 +1,6 @@
 {
   "compilerOptions": {
     "jsx": "react-jsx",
-    "types": ["@react-three/fiber"],
     "strict": true
   },
   "include": ["."]

@@ -3,8 +3,7 @@
     "esModuleInterop": true,
     "jsx": "preserve",
     "lib": ["es2022"],
-    "strict": true,
-    "types": ["@react-three/fiber"]
+    "strict": true
   },
   "include": ["."]
 }
