@@ -15,6 +15,11 @@ const withNextra = nextra({
 export default withNextra({
   redirects: async () => [
     {
+      destination: "/docs/get-started",
+      permanent: false,
+      source: "/docs",
+    },
+    {
       destination: "/guides/use-leva-with-triplex",
       permanent: false,
       source: "/docs/guides/leva-controls",

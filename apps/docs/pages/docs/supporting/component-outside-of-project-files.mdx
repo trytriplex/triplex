@@ -2,9 +2,7 @@
 title: Component Outside of Project Files
 ---
 
-This file lives outside of your declared project file in
-[your config](/docs/get-started/settings), meaning Triplex won't be able to find
-it when opening files.
+This file lives outside of your declared project file in [your config](/docs/get-started/settings), meaning Triplex won't be able to find it when opening files.
 
 To resolve, either:
 
@@ -12,7 +10,6 @@ To resolve, either:
 
    <MetaDiff source="files" target="path" action="add" transform="glob" />
 
-2. Move the file underneath one of the directories defined in the `files`
-   property of your config:
+2. Move the file underneath one of the directories defined in the `files` property of your config:
 
    <PickMeta pick="files" />

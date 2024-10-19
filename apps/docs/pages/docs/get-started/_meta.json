@@ -1,12 +1,4 @@
 {
-  "user-interface": "",
-  "declaring-props": "",
-  "settings": "",
-  "common-gotchas": "",
-  "faq": {
-    "title": "FAQ",
-    "theme": {
-      "pagination": false
-    }
-  }
+  "vscode": "VS Code",
+  "standalone": "Standalone"
 }

@@ -1,0 +1,40 @@
+---
+title: Triplex Standalone
+---
+
+import { DashboardIcon } from "@radix-ui/react-icons";
+import { ButtonExample } from "../../../components/button-example";
+
+Triplex Standalone is the desktop version of Triplex for macOS, Windows, and Linux. As a desktop application it's feature rich and easy to get started for everyone.
+
+## Installation
+
+1. Visit the [Download page](/download)
+2. Download the inferred installer for your operating system; or
+3. Alternatively select a specific installer
+
+For operating system specific steps see:
+
+- [macOS](/docs/get-started/standalone/macos)
+- [Windows](/docs/get-started/standalone/windows)
+- [Linux](/docs/get-started/standalone/linux)
+
+## Opening Components
+
+### Using the Open Component action
+
+Find the <ButtonExample icon={DashboardIcon} href="/docs/building-your-scene/learn-the-ui/tab-bar" name="Open Component" /> action at the top left area of the user interface and click it to be presented a list of components to open.
+
+### Excluding files
+
+By default all React components can be opened by Triplex. When wanting to scope the files that can be opened you can create a `.triplex/config.json` file and populate the `"files"` field.
+
+For example the following configuration marks all tsx files inside the components folder can be opened, anything else is excluded.
+
+```json filename=".triplex/config.json"
+{
+  "files": ["../src/components/**/*.tsx"]
+}
+```
+
+For more information see [config.json Options > files](/docs/api-reference/config-options/files).

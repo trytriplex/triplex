@@ -2,18 +2,15 @@
 title: Troubleshoot Installing Dependencies
 ---
 
-Triplex uses [npm](https://www.npmjs.com) to source third-party artifacts,
-however you need a _package manager_ to have them installed into your project.
+Triplex uses [npm](https://www.npmjs.com) to source third-party artifacts, however you need a _package manager_ to have them installed into your project.
 
-Triplex doesn't (currently) come with an out-of-the-box package manager so you
-need to install one yourself.
+Triplex doesn't (currently) come with an out-of-the-box package manager so you need to install one yourself.
 
 ## pnpm
 
 Install using a standalone script.
 
-See [pnpm's installation docs](https://pnpm.io/installation) for more
-information.
+See [pnpm's installation docs](https://pnpm.io/installation) for more information.
 
 ### Windows
 
@@ -31,23 +28,17 @@ curl -fsSL https://get.pnpm.io/install.sh | sh -
 
 ## npm
 
-Install together with Node.js. The easiest way is to use an installer, find one
-on the [Node.js download page](https://nodejs.org/en/download/).
+Install together with Node.js. The easiest way is to use an installer, find one on the [Node.js download page](https://nodejs.org/en/download/).
 
-See
-[npm's installation docs](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
-for more information.
+See [npm's installation docs](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm) for more information.
 
 ## Yarn
 
-Install together with Node.js. The easiest way is to use an installer, find one
-on the [Node.js download page](https://nodejs.org/en/download/). Afterwards use
-`corepack` to enable `yarn`:
+Install together with Node.js. The easiest way is to use an installer, find one on the [Node.js download page](https://nodejs.org/en/download/). Afterwards use `corepack` to enable `yarn`:
 
 ```sh
 corepack enable
 corepack prepare yarn@stable --activate
 ```
 
-See [Yarn's installation docs](https://yarnpkg.com/getting-started/install) for
-more information.
+See [Yarn's installation docs](https://yarnpkg.com/getting-started/install) for more information.
