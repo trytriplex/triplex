@@ -11,7 +11,8 @@ const outputChannel = vscode.window.createOutputChannel("Triplex", {
 });
 
 export function logger(scope: string) {
-  const buildLog = (...msg: unknown[]) => `[${scope}] ` + msg.join(" ");
+  const buildLog = (...msg: unknown[]) =>
+    `[${scope}] ` + msg.filter(Boolean).join(" ");
 
   const log = (...msg: unknown[]) => {
     outputChannel.info(buildLog(msg));

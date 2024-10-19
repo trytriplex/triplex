@@ -1,5 +1,12 @@
 {
   "user-interface": "",
   "declaring-props": "",
-  "settings": ""
+  "settings": "",
+  "common-gotchas": "",
+  "faq": {
+    "title": "FAQ",
+    "theme": {
+      "pagination": false
+    }
+  }
 }

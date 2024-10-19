@@ -9,17 +9,17 @@ import Link from "next/link";
 export function Footer() {
   return (
     <footer className="relative col-span-full border-t border-neutral-800 bg-neutral-950">
-      <div className="mx-auto flex justify-center gap-14 px-10 py-10 lg:w-full lg:max-w-[79rem] lg:gap-32">
-        <div className="lg:mr-auto">
+      <div className="mx-auto flex gap-14 px-6 py-10 md:px-8 lg:w-full lg:gap-32 lg:px-20">
+        <div className="lg:mr-auto lg:flex-shrink-0">
           <div className="flex gap-1">
             <span className="text-sm text-neutral-400">
-              <span className="font-bold text-neutral-200">Triplex</span> —
+              <span className="font-medium text-neutral-200">Triplex</span> —
               Built in Sydney, Australia
             </span>
           </div>
-          <div className="mt-4 flex gap-2">
+          <div className="mt-4 flex items-center gap-2">
             <a
-              aria-label="Github"
+              aria-label="GitHub"
               className="-mt-0.5 text-neutral-400 hover:text-neutral-200"
               href="https://github.com/trytriplex/triplex"
               rel="noreferrer"
@@ -60,7 +60,6 @@ export function Footer() {
             >
               <svg
                 className="text-current"
-                data-testid="geist-icon"
                 height="16"
                 strokeLinejoin="round"
                 viewBox="0 0 16 16"
@@ -74,12 +73,33 @@ export function Footer() {
                 />
               </svg>
             </a>
+            <a
+              aria-label="YouTube"
+              className="ml-0.5 text-neutral-400 hover:text-neutral-200"
+              href="https://www.youtube.com/@trytriplex"
+              rel="noreferrer"
+              target="_blank"
+            >
+              <svg className="w-6" height="20" viewBox="0 0 28 20" width="28">
+                <g>
+                  <path
+                    d="M27.9727 3.12324C27.6435 1.89323 26.6768 0.926623 25.4468 0.597366C23.2197 2.24288e-07 14.285 0 14.285 0C14.285 0 5.35042 2.24288e-07 3.12323 0.597366C1.89323 0.926623 0.926623 1.89323 0.597366 3.12324C2.24288e-07 5.35042 0 10 0 10C0 10 2.24288e-07 14.6496 0.597366 16.8768C0.926623 18.1068 1.89323 19.0734 3.12323 19.4026C5.35042 20 14.285 20 14.285 20C14.285 20 23.2197 20 25.4468 19.4026C26.6768 19.0734 27.6435 18.1068 27.9727 16.8768C28.5701 14.6496 28.5701 10 28.5701 10C28.5701 10 28.5677 5.35042 27.9727 3.12324Z"
+                    fill="currentColor"
+                  />
+                  <path
+                    d="M11.4253 14.2854L18.8477 10.0004L11.4253 5.71533V14.2854Z"
+                    fill="black"
+                  />
+                </g>
+              </svg>
+            </a>
           </div>
         </div>
-
-        <div className="flex flex-wrap gap-14 lg:gap-32">
+        <div className="grid w-full gap-14 sm:justify-end sm:[grid-template-columns:repeat(auto-fit,7rem)] xl:gap-32">
           <ul className="flex flex-col gap-4">
-            <span className="text-sm font-bold text-neutral-200">Product</span>
+            <span className="text-sm font-medium text-neutral-200">
+              Product
+            </span>
             <li>
               <Link
                 className="text-sm text-neutral-400 hover:text-neutral-200"
@@ -115,7 +135,7 @@ export function Footer() {
           </ul>
 
           <ul className="flex flex-col gap-4">
-            <span className="text-sm font-bold text-neutral-200">
+            <span className="text-sm font-medium text-neutral-200">
               Resources
             </span>
             <li>
@@ -153,7 +173,7 @@ export function Footer() {
           </ul>
 
           <ul className="flex flex-col gap-4">
-            <span className="text-sm font-bold text-neutral-200">
+            <span className="text-sm font-medium text-neutral-200">
               Developers
             </span>
             <li>
@@ -161,7 +181,7 @@ export function Footer() {
                 className="text-sm text-neutral-400 hover:text-neutral-200"
                 href="https://github.com/trytriplex/triplex"
               >
-                Github
+                GitHub
               </Link>
             </li>
             <li>
@@ -182,7 +202,7 @@ export function Footer() {
             </li>
           </ul>
           <ul className="flex flex-col gap-4">
-            <span className="text-sm font-bold text-neutral-200">Legal</span>
+            <span className="text-sm font-medium text-neutral-200">Legal</span>
 
             <li>
               <Link

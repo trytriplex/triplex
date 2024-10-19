@@ -10,7 +10,7 @@ import { friendlyDate } from "../util/date";
 
 export function PagesList({ route }: { route: string }) {
   return (
-    <div className="mt-6 flex flex-col gap-4">
+    <div className="mt-6 flex flex-col gap-10">
       {getPagesUnderRoute(route)
         .filter((page) => page.route !== route)
         .flatMap((page) => (page.kind === "Folder" ? page.children : page))
@@ -18,21 +18,21 @@ export function PagesList({ route }: { route: string }) {
           (page) =>
             page.kind === "MdxPage" && (
               <Link
-                className="flex flex-col gap-1"
+                className="group flex flex-col"
                 href={page.route}
                 key={page.route}
               >
-                <div className="text-2xl font-medium text-neutral-200">
-                  {page.frontMatter?.title || page.meta?.title || page.name}
-                </div>
-                <div className="text-lg text-neutral-300">
-                  {page.frontMatter?.description || "(empty)"}
-                </div>
                 {page.frontMatter?.date && (
-                  <time className="text-neutral-400">
-                    {friendlyDate(page.frontMatter?.date)}
+                  <time className="text-sm text-neutral-400">
+                    {friendlyDate(page.frontMatter.date)}
                   </time>
                 )}
+                <div className="text-xl font-medium text-neutral-100 group-hover:underline">
+                  {page.frontMatter?.title || page.meta?.title || page.name}
+                </div>
+                <div className="text-base text-neutral-400">
+                  {page.frontMatter?.description || "(empty description)"}
+                </div>
               </Link>
             ),
         )}

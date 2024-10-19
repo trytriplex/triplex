@@ -4,8 +4,9 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import Link from "next/link";
 import { useEffect, useState } from "react";
-import { cn } from "../util/cn";
+import { useBeginDownloadURL } from "../util/download";
 
 interface Asset {
   browser_download_url: string;
@@ -13,16 +14,19 @@ interface Asset {
 }
 
 export function DownloadButton() {
-  const [platform, setPlatform] = useState("macOS");
+  const [platform, setPlatform] = useState<
+    "macOS" | "Windows" | "Linux" | "Unsupported"
+  >("macOS");
   const [assets, setAssets] = useState<Asset[]>([]);
+  const beginDownload = useBeginDownloadURL();
 
   useEffect(() => {
     if (navigator.platform.match("Mac")) {
-      setPlatform("macOS (ARM64)");
+      setPlatform("macOS");
     } else if (navigator.platform.match("Win")) {
       setPlatform("Windows");
     } else if (navigator.platform.match("Linux")) {
-      setPlatform("Linux (ARM64)");
+      setPlatform("Linux");
     } else {
       setPlatform("Unsupported");
     }
@@ -59,41 +63,22 @@ export function DownloadButton() {
     req();
   }, []);
 
+  const downloadURL = assets[0] ? assets[0].browser_download_url : "#";
+
   return (
-    <>
-      <a
-        className={cn([
-          platform === "Unsupported"
-            ? "cursor-not-allowed bg-neutral-500/80"
-            : "cursor-pointer bg-blue-400",
-          "mb-2 rounded-full px-12 py-4 text-center text-xl font-bold tracking-tight text-neutral-900",
-        ])}
-        href={assets[0] ? assets[0].browser_download_url : "#"}
-        rel="noreferrer"
-        target="_blank"
-      >
-        {platform === "Unsupported"
-          ? "Unsupported Platform"
-          : `Download for ${platform}`}
-      </a>
-
-      {platform === "Unsupported" && (
-        <p className="pt-3 text-center text-sm text-neutral-400">
-          Triplex supports macOS, Windows, and Linux.
-        </p>
-      )}
-
-      {assets.map((asset) => (
-        <a
-          className="pt-3 text-center text-sm text-neutral-400 hover:text-neutral-300"
-          href={asset.browser_download_url}
-          key={asset.name}
-          rel="noreferrer"
-          target="_blank"
-        >
-          {asset.name}
-        </a>
-      ))}
-    </>
+    <Link
+      className="z-10 cursor-pointer bg-blue-400 px-8 py-4 text-center text-2xl font-medium text-neutral-900"
+      href={platform === "Unsupported" ? "/download" : downloadURL}
+      onClick={(e) => {
+        if (platform !== "Unsupported") {
+          beginDownload(e, `/docs/overview?dl=${platform.toLowerCase()}`);
+        }
+      }}
+      target={platform === "Unsupported" ? undefined : "_blank"}
+    >
+      {platform === "Unsupported"
+        ? "Download Triplex"
+        : `Download for ${platform}`}
+    </Link>
   );
 }

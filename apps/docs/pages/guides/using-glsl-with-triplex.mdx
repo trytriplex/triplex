@@ -1,5 +1,5 @@
 ---
-title: GLSL Shaders
+title: Using GLSL Shaders With Triplex
 description:
   GLSL shaders are small programs that are ran on the GPU. When imported they
   have their include statements resolved and are then available as a string for
@@ -23,6 +23,8 @@ And use them as needed, for example here it's used with
 
 ```diff
 import CustomShaderMaterial from "three-custom-shader-material";
+import frag from "./frag.glsl";
+import vert from "./vert.glsl";
 
 export function WaterMaterial({
   color,
@@ -51,12 +53,44 @@ export function WaterMaterial({
     <CustomShaderMaterial
       baseMaterial={MeshStandardMaterial}
       color={color}
-+      fragmentShader={frag}
-+      vertexShader={vert}
++     fragmentShader={frag}
++     vertexShader={vert}
       ref={ref}
       metalness={0.1}
       transparent
       uniforms={uniforms}
     />
   );
+```
+
+## Types
+
+When using TypeScript make sure to have a global type definition declared for
+these files:
+
+```ts
+// types/shaders.d.ts
+declare module "*.glsl" {
+  export default string;
+}
+
+declare module "*.wglsl" {
+  export default string;
+}
+
+declare module "*.vert" {
+  export default string;
+}
+
+declare module "*.frag" {
+  export default string;
+}
+
+declare module "*.vs" {
+  export default string;
+}
+
+declare module "*.fs" {
+  export default string;
+}
 ```

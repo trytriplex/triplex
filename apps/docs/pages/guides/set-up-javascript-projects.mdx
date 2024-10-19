@@ -1,13 +1,9 @@
 ---
+title: Set Up JavaScript Projects For Triplex
 description:
-  Triplex works best with TypeScript as the rich type information is used to
-  populate the editor controls, however if you're not yet using TypeScript
-  you're still able to use Triplex.
+  If you're using JavaScript you can still get a lot of the benefits of Triplex.
+  When you move to TypeScript you'll get even more.
 ---
-
-Triplex works best with TypeScript as the rich type information is used to
-populate the editor controls, however if you're not yet using TypeScript you're
-still able to use Triplex.
 
 ## Set up config file
 
@@ -48,7 +44,8 @@ a `.tsconfig.json` file to the root of your project.
 
 You can still get some inference for your own components by giving some hints.
 For declared props if you add default props to them the editor can infer the
-primitive type (string, number, or boolean).
+primitive type (string, number, or boolean). We recommend migrating to
+TypeScript to get the most out of Triplex.
 
 ```jsx
 export function Component({ color = "red", x = 0, visible = true }) {

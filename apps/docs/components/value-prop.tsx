@@ -30,15 +30,15 @@ export function ValueProp({
   title: string;
 }) {
   return (
-    <div className="mx-auto min-h-[150vh] max-w-4xl text-center lg:text-left odd:lg:text-right xl:-translate-x-28 odd:xl:translate-x-28">
+    <div className="mx-auto px-8 lg:px-20">
       <section
-        className="sticky top-0 flex min-h-[100lvh] flex-col justify-center gap-10 px-10"
+        className="top-0 flex h-0 min-h-[100lvh] flex-col items-center justify-stretch gap-10 text-center lg:flex-row lg:text-left"
         id={`value-prop-${index}`}
       >
-        <div>
+        <div className="mx-auto text-center lg:basis-1/2">
           <h2
             className={cn([
-              "inline bg-gradient-to-r box-decoration-clone bg-clip-text text-4xl font-extrabold tracking-tight text-transparent mix-blend-difference md:text-5xl lg:text-6xl",
+              "inline bg-gradient-to-r box-decoration-clone bg-clip-text text-4xl font-extrabold text-transparent md:text-5xl lg:text-5xl",
               fromIndexes[index % fromIndexes.length],
               toIndexes[index % toIndexes.length],
             ])}
@@ -46,10 +46,16 @@ export function ValueProp({
             {title}{" "}
           </h2>
 
-          <p className="inline text-4xl font-medium tracking-tight text-neutral-200 md:text-5xl lg:text-6xl">
+          <p className="inline text-4xl font-medium text-neutral-200 md:text-5xl lg:text-5xl">
             {text}
           </p>
         </div>
+        {/* <div className="relative h-2/3 w-full basis-1/2 border border-[#9d4b4b] bg-neutral-950/90">
+          <div
+            className="absolute inset-0 opacity-80 [background:repeating-linear-gradient(transparent,transparent_var(--size),#292929_var(--size),#292929_calc(var(--size)+1px)),repeating-linear-gradient(to_right,transparent,transparent_var(--size),#292929_var(--size),#292929_calc(var(--size)+1px))]"
+            style={{ "--size": "170px" }}
+          />
+        </div> */}
       </section>
     </div>
   );

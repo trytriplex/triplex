@@ -4,8 +4,13 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons";
+import {
+  ArrowLeftIcon,
+  ArrowRightIcon,
+  ChevronRightIcon,
+} from "@radix-ui/react-icons";
 import Head from "next/head";
+import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import type { NextraThemeLayoutProps } from "nextra";
@@ -19,11 +24,13 @@ import {
   useState,
   type MouseEventHandler,
 } from "react";
+import { SendFeedback } from "../components/feedback";
 import { Footer } from "../components/footer";
 import { Header, HeaderItem } from "../components/header";
 import { useSearchStore } from "../stores/search";
 import { cn } from "../util/cn";
 import { friendlyDate } from "../util/date";
+import socials from "../util/socials.json";
 import { BASE_URL } from "../util/url";
 import { SideNavItem } from "./side-nav-item";
 
@@ -97,7 +104,7 @@ const components: Components = {
     );
   },
   Video: ({ src }) => (
-    <video className="mt-8 w-full rounded-xl" controls src={src} />
+    <video className="mt-5 w-full rounded-xl" controls src={src} />
   ),
   a: ({ children, href }) => (
     <Link className="text-blue-400 underline" href={href || ""}>
@@ -122,35 +129,41 @@ const components: Components = {
     <i className="text-red-400">Define title frontmatter instead of heading</i>
   ),
   h2: ({ children, id }) => (
-    <h2
-      className="mt-14 text-4xl font-bold tracking-tight text-neutral-200"
-      id={id}
-    >
-      {children}
-    </h2>
+    <div className="mt-14">
+      <h2
+        className="inline scroll-m-20 text-3xl font-medium text-neutral-200 target:bg-blue-400 target:text-neutral-900"
+        id={id}
+      >
+        {children}
+      </h2>
+    </div>
   ),
   h3: ({ children, id }) => (
-    <h3
-      className="mt-10 text-2xl font-bold tracking-tight text-neutral-200"
-      id={id}
-    >
-      {children}
-    </h3>
+    <div className="mt-10">
+      <h3
+        className="inline scroll-m-20 text-2xl font-medium text-neutral-200 target:bg-blue-400 target:text-neutral-900"
+        id={id}
+      >
+        {children}
+      </h3>
+    </div>
   ),
   h4: ({ children, id }) => (
-    <h4
-      className="mt-6 text-xl font-bold tracking-tight text-neutral-200"
-      id={id}
-    >
-      {children}
-    </h4>
+    <div className="mt-6">
+      <h4
+        className="inline scroll-m-20 text-xl font-medium text-neutral-200 target:bg-blue-400 target:text-neutral-900"
+        id={id}
+      >
+        {children}
+      </h4>
+    </div>
   ),
   li: ({ children }) => (
     <li className="ml-4 text-xl text-neutral-300 md:text-lg">{children}</li>
   ),
-  ol: ({ children }) => <ol className="mt-8 list-decimal">{children}</ol>,
+  ol: ({ children }) => <ol className="mt-5 list-decimal">{children}</ol>,
   p: ({ children }) => (
-    <p className="mt-6 text-xl text-neutral-300 md:text-lg">{children}</p>
+    <p className="mt-5 text-xl text-neutral-300 md:text-lg">{children}</p>
   ),
   pre: ({ children, ...props }) => {
     return (
@@ -190,7 +203,7 @@ function renderDocsItem(
   if (link.kind === "Folder") {
     return (
       <Fragment key={url}>
-        <div className="mt-6 py-1 text-base font-medium text-neutral-200">
+        <div className="mt-6 py-1.5 text-base font-medium text-neutral-100">
           {link.title}
         </div>
         {link.children &&
@@ -263,7 +276,7 @@ function SearchModal({
       });
     });
 
-    return foundResults;
+    return foundResults.slice(0, 5);
   }, [filter, index]);
 
   useEffect(() => {
@@ -406,6 +419,15 @@ function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
   const pageItems = result.flatDocsDirectories.filter(
     (item) => item.isUnderCurrentDocsTree,
   );
+  const selectedHeaderItem = result.topLevelNavbarItems.findLast((item) => {
+    const toFind = item.route || item.href;
+    if (toFind) {
+      return route.startsWith(toFind);
+    }
+
+    return false;
+  });
+  const hasPageAuthorOrDate = frontMatter.date || frontMatter.author;
 
   useEffect(() => {
     setNavOpen(false);
@@ -413,13 +435,11 @@ function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
 
   return (
     <>
-      <Header
-        appearance="transparent"
-        onShowNav={() => setNavOpen((prev) => !prev)}
-      >
+      <Header onShowNav={() => setNavOpen((prev) => !prev)}>
         {result.topLevelNavbarItems.map((item) => (
           <HeaderItem
-            href={item.children?.[0].route || item.href || item.route}
+            href={item.href || item.children?.[0].route || item.route}
+            isSelected={selectedHeaderItem === item}
             key={item.title}
           >
             {item.title}
@@ -428,7 +448,7 @@ function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
       </Header>
 
       {isNavMenuOpen && (
-        <div className="absolute left-0 right-0 top-16 z-50 border-b border-neutral-900 bg-neutral-950 px-10 py-6 text-white md:hidden">
+        <div className="fixed left-0 right-0 top-14 z-40 max-h-[calc(100vh-3.5rem)] overflow-auto border-b border-neutral-900 bg-neutral-950 px-6 py-6 text-white md:hidden">
           {result.topLevelNavbarItems.map((item) => (
             <div className="mb-2" key={item.title}>
               <Link
@@ -457,12 +477,12 @@ function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
         </div>
       )}
 
-      {result.activeThemeContext.layout !== "raw" && (
+      {result.activeThemeContext.layout === "default" && (
         <nav
-          aria-label="pages navigation"
-          className="col-span-3 hidden w-full max-w-[280px] justify-self-end md:block"
+          aria-label="page tree"
+          className="col-span-3 hidden w-full pr-10 pt-12 md:block md:pb-10 lg:pb-14"
         >
-          <div className="sticky top-10 pl-10">
+          <div className="sticky top-20 flex flex-col items-start pl-6 md:pl-8 lg:pl-20">
             {result.docsDirectories.map((item) => renderDocsItem(item, route))}
           </div>
         </nav>
@@ -470,92 +490,186 @@ function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
 
       <main
         className={cn([
-          route === "/" ? "row-start-1" : "",
           "relative",
-          result.activeThemeContext.layout === "raw"
-            ? "col-span-full"
-            : "col-span-full max-w-5xl px-10 md:col-span-8 md:p-0 xl:col-span-6",
+          result.activeThemeContext.layout === "raw" && "col-span-full",
+          result.activeThemeContext.layout === "default" &&
+            "col-span-full px-6 md:col-span-9 md:pl-0 md:pr-8 lg:pr-20",
+          result.activeThemeContext.layout === "full" &&
+            "col-span-full mx-auto w-full max-w-7xl px-6",
         ])}
       >
         {result.activeThemeContext.layout !== "raw" && (
-          <>
-            <h1 className="text-5xl font-bold tracking-tight text-neutral-300">
-              {title}
-            </h1>
-            {frontMatter.date && (
-              <div className="mt-2">
-                (
-                <time className="text-neutral-400" dateTime={frontMatter.date}>
-                  {friendlyDate(frontMatter.date)}
-                </time>
-                <span className="text-neutral-400"> · </span>
-                <a
-                  className="text-neutral-400 hover:text-neutral-200"
-                  href="https://twitter.com/_douges"
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Michael Dougall
-                </a>
-                )
-              </div>
-            )}
-          </>
+          <div
+            className="relative -mx-6 flex border-b border-t border-neutral-700 md:mx-0 md:mt-8 md:border"
+            style={{ "--grid": "100px" }}
+          >
+            <div className="relative flex basis-2/3 flex-col justify-center gap-2 px-6 py-8 [background:repeating-linear-gradient(transparent,transparent_var(--grid),#292929_var(--grid),#292929_calc(var(--grid)+1px)),repeating-linear-gradient(to_right,transparent,transparent_var(--grid),#292929_var(--grid),#292929_calc(var(--grid)+1px))] md:min-h-[16rem] md:px-14 md:py-14 lg:min-h-[20rem] lg:basis-3/5">
+              {hasPageAuthorOrDate && (
+                <div className="space-x-1">
+                  {frontMatter.date && (
+                    <time
+                      className="text-neutral-400"
+                      dateTime={frontMatter.date}
+                    >
+                      {friendlyDate(frontMatter.date)}
+                    </time>
+                  )}
+                  {frontMatter.author && frontMatter.date && (
+                    <span className="text-neutral-400"> · </span>
+                  )}
+                  {frontMatter.author && (
+                    <a
+                      className="text-neutral-400 underline hover:text-neutral-100"
+                      href={
+                        frontMatter.author in socials
+                          ? socials[frontMatter.author as keyof typeof socials]
+                              .url
+                          : "#"
+                      }
+                      rel="noreferrer"
+                      target="_blank"
+                    >
+                      {frontMatter.author}
+                    </a>
+                  )}
+                </div>
+              )}
+              {!hasPageAuthorOrDate && result.activeThemeContext.breadcrumb && (
+                <div className="flex flex-wrap items-center gap-x-0.5">
+                  {result.activePath.map((path, index) =>
+                    index === 0 ? null : (
+                      <Fragment key={path.route}>
+                        <Link
+                          className="text-base text-neutral-400 hover:text-neutral-300"
+                          href={path.kind === "MdxPage" ? path.route : ""}
+                        >
+                          {path.title}
+                        </Link>
+                        {index !== result.activePath.length - 1 && (
+                          <ChevronRightIcon className="text-neutral-400" />
+                        )}
+                      </Fragment>
+                    ),
+                  )}
+                </div>
+              )}
+              <h1 className="text-3xl font-bold text-neutral-200 lg:text-4xl">
+                {title}
+              </h1>
+              {frontMatter.description && (
+                <div className="text-lg text-neutral-400">
+                  {frontMatter.description}
+                </div>
+              )}
+            </div>
+            <div className="relative basis-1/2 overflow-hidden">
+              <div className="absolute -left-full bottom-0 right-0 top-0 [background:repeating-conic-gradient(#141414_0%_25%,#212121_0%_50%)_left_top/calc(var(--grid)*2+2px)_calc(var(--grid)*2+2px)]" />
+              {frontMatter.image && (
+                <Image
+                  alt=""
+                  className="rounded-none object-cover py-1 pr-1"
+                  fill
+                  src={frontMatter.image}
+                />
+              )}
+            </div>
+            <div className="pointer-events-none absolute inset-0 border-4 border-neutral-950" />
+          </div>
         )}
 
-        {children}
+        <div
+          className={cn([
+            result.activeThemeContext.layout === "raw" && "contents",
+            result.activeThemeContext.layout !== "raw" &&
+              "grid grid-cols-12 py-10 md:px-14 lg:py-14",
+          ])}
+        >
+          <div
+            className={cn([
+              result.activeThemeContext.layout === "raw" && "contents",
+              result.activeThemeContext.layout !== "raw" &&
+                "col-span-full xl:col-span-9 [&>*:first-child]:m-0",
+            ])}
+          >
+            {children}
 
-        {result.activeThemeContext.layout !== "raw" &&
-          result.activeThemeContext.pagination !== false && (
-            <nav aria-label="page navigation" className="flex pt-14">
-              {previousPage && (
-                <div className="flex items-center gap-2">
-                  <ArrowLeftIcon className="text-neutral-400" />
-                  <Link
-                    className="text-2xl font-medium text-neutral-300 md:text-xl"
-                    href={previousPage.route}
+            {(result.activeThemeContext.pagination ||
+              ("feedback" in result.activeThemeContext &&
+                typeof result.activeThemeContext.feedback === "boolean" &&
+                result.activeThemeContext.feedback)) && (
+              <div className="mt-10 flex flex-col gap-10 border-t border-neutral-800 pt-8 lg:mt-20 lg:pt-12">
+                {result.activeThemeContext.pagination && (
+                  <nav aria-label="pages navigation" className="flex">
+                    {previousPage && (
+                      <div className="flex flex-col">
+                        <span className="-mb-0.5 ml-[15px] pl-2 text-sm text-neutral-400">
+                          Previous
+                        </span>
+                        <Link
+                          className="flex items-center gap-2 text-xl text-neutral-300 hover:text-neutral-100 md:text-lg"
+                          href={previousPage.route}
+                        >
+                          <ArrowLeftIcon className="text-neutral-400" />
+                          {previousPage.title}
+                        </Link>
+                      </div>
+                    )}
+                    {nextPage && nextPage.route !== "#" && (
+                      <div className="ml-auto flex flex-col">
+                        <span className="-mb-0.5 text-sm text-neutral-400">
+                          Next
+                        </span>
+                        <Link
+                          className="flex items-center gap-2 text-xl text-neutral-300 hover:text-neutral-100 md:text-lg"
+                          href={nextPage.route}
+                        >
+                          {nextPage.title}
+                          <ArrowRightIcon className="text-neutral-400" />
+                        </Link>
+                      </div>
+                    )}
+                  </nav>
+                )}
+                {"feedback" in result.activeThemeContext &&
+                  typeof result.activeThemeContext.feedback === "boolean" &&
+                  result.activeThemeContext.feedback && <SendFeedback />}
+              </div>
+            )}
+          </div>
+          {result.activeThemeContext.layout !== "raw" && !!headings.length && (
+            <nav
+              aria-label="on this page"
+              className="col-span-3 hidden justify-self-start pl-10 xl:block"
+            >
+              <div className="sticky top-20 flex flex-col gap-2">
+                <span className="text-sm font-medium text-neutral-200">
+                  On this page
+                </span>
+                {headings.map((h) => (
+                  <div key={h.id} style={{ paddingLeft: (h.depth - 2) * 8 }}>
+                    <Link
+                      className="text-sm text-neutral-400 hover:text-neutral-200"
+                      href={`#${h.id}`}
+                    >
+                      {h.value}
+                    </Link>
+                  </div>
+                ))}
+                <div className="mt-2 border-t border-neutral-800 pt-3">
+                  <a
+                    className="text-sm text-neutral-400 hover:text-neutral-200"
+                    href={`https://github.com/try-triplex/triplex/tree/main/apps/docs/${pageOpts.filePath}`}
+                    rel="noreferrer"
+                    target="_blank"
                   >
-                    {previousPage.title}
-                  </Link>
+                    Suggest an edit to this page
+                  </a>
                 </div>
-              )}
-              {nextPage && nextPage.route !== "#" && (
-                <div className="ml-auto flex items-center gap-2">
-                  <Link
-                    className="text-2xl font-medium text-neutral-300 md:text-xl"
-                    href={nextPage.route}
-                  >
-                    {nextPage.title}
-                  </Link>
-                  <ArrowRightIcon className="text-neutral-400" />
-                </div>
-              )}
+              </div>
             </nav>
           )}
+        </div>
       </main>
-
-      {result.activeThemeContext.layout !== "raw" && headings.length && (
-        <nav
-          aria-label="page contents"
-          className="col-span-3 hidden justify-self-start pr-10 xl:block"
-        >
-          <div className="sticky top-10">
-            <span className="text-sm font-extrabold text-neutral-300">
-              Content
-            </span>
-            {headings.map((h) => (
-              <div key={h.id} style={{ paddingLeft: (h.depth - 2) * 8 }}>
-                <Link
-                  className="text-sm text-neutral-300 hover:text-neutral-100"
-                  href={`#${h.id}`}
-                >
-                  {h.value}
-                </Link>
-              </div>
-            ))}
-          </div>
-        </nav>
-      )}
 
       <Footer />
 
@@ -573,18 +687,16 @@ export default function TriplexTheme({
   themeConfig,
 }: NextraThemeLayoutProps) {
   const { frontMatter, title } = pageOpts;
-
-  const imgTitle = encodeURIComponent(frontMatter.ogTitle || title);
-  const imgDate = frontMatter.date
-    ? encodeURIComponent(friendlyDate(frontMatter.date))
-    : "";
-  const imgSubTitle = encodeURIComponent(frontMatter.description || "");
-  const ogImageUrl = `${BASE_URL}/api/og?title=${imgTitle}&subtitle=${imgSubTitle}&date=${imgDate}`;
+  const imgTitle = encodeURIComponent(
+    frontMatter.ogTitle || frontMatter.title || title,
+  );
+  const ogImageUrl = `${BASE_URL}/api/og?title=${imgTitle}`;
 
   return (
-    <div className="relative grid grid-cols-12 gap-x-10 gap-y-20">
+    <div className="relative grid grid-cols-12">
       <Head>
-        <title>{title}</title>
+        <link href="/favicon.svg" rel="icon" />
+        <title>{`${title} • Triplex`}</title>
         <meta content={title} property="og:title" />
         {frontMatter.description && (
           <>

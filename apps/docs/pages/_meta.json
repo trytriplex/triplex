@@ -1,6 +1,10 @@
 {
   "*": {
-    "type": "page"
+    "type": "page",
+    "theme": {
+      "pagination": false,
+      "breadcrumb": false
+    }
   },
   "index": {
     "display": "hidden",
@@ -20,15 +24,13 @@
     "title": "Docs",
     "href": "/docs/overview"
   },
-  "faq": {
-    "title": "FAQ",
-    "href": "/docs/faq"
+  "guides": {
+    "title": "Guides",
+    "href": "/guides"
   },
   "blog": {
-    "title": "Blog"
-  },
-  "guides": {
-    "type": "hidden"
+    "title": "Blog",
+    "href": "/blog"
   },
   "pricing": {
     "title": "Pricing",
@@ -38,7 +40,7 @@
     }
   },
   "github": {
-    "title": "Visit Github",
+    "title": "Visit GitHub",
     "href": "https://github.com/trytriplex/triplex",
     "type": "hidden",
     "newWindow": true
