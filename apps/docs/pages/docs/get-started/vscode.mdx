@@ -1,0 +1,35 @@
+---
+title: Triplex for VS Code
+---
+
+Triplex for VS Code turns [Visual Studio Code](https://code.visualstudio.com/) into a visual IDE, bringing the best features of Triplex for you to stay in context while coding.
+
+## Installation
+
+1. Visit the [Visual Studio Code marketplace](https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce)
+2. Press the "Install" button
+3. Make sure "Auto update" is checked
+
+## Opening Components
+
+### Using the CodeLens action
+
+The "Open in Triplex" [CodeLens](https://code.visualstudio.com/blogs/2017/02/12/code-lens-roundup) action appears next to component functions. Clicking it opens the component in Triplex.
+
+### Using the Command Palette
+
+While viewing a `tsx` or `jsx` file selecting the "Triplex: Open File" action in the [Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette) will open the first found component in that file in Triplex.
+
+### Excluding files
+
+By default all React components can be opened by Triplex. When wanting to scope the files that can be opened you can create a `.triplex/config.json` file and populate the `"files"` field.
+
+For example the following configuration marks all tsx files inside the components folder can be opened, anything else is excluded.
+
+```json filename=".triplex/config.json"
+{
+  "files": ["../src/components/**/*.tsx"]
+}
+```
+
+For more information see [config.json Options > files](/docs/api-reference/config-options/files).

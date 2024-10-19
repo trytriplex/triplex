@@ -1,0 +1,9 @@
+{
+  "files": "files",
+  "components": "components",
+  "provider": "provider",
+  "assets-dir": "assetsDir",
+  "public-dir": "publicDir",
+  "define": "define",
+  "renderer-attributes": "rendererAttributes"
+}

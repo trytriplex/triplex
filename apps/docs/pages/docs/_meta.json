@@ -6,8 +6,6 @@
       "breadcrumb": true
     }
   },
-  "overview": "Get Started",
-  "setup": "Setup",
   "get-started": "Get Started",
   "supporting": {
     "type": "page",
@@ -16,5 +14,8 @@
     "theme": {
       "pagination": false
     }
-  }
+  },
+  "building-your-scene": "",
+  "api-reference": "API Reference",
+  "community": ""
 }
