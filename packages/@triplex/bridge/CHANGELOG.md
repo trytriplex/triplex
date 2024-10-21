@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.69.3
+
+### Patch Changes
+
+- 652c1cc: Update package json meta.
+
 ## 0.69.2
 
 ## 0.69.1
@@ -82,8 +88,7 @@
 
 ### Minor Changes
 
-- 625e23a: The selection system has been reimplemented, removing the need for
-  intermediate group elements powering scene lookups.
+- 625e23a: The selection system has been reimplemented, removing the need for intermediate group elements powering scene lookups.
 
 ## 0.65.2
 
@@ -178,9 +183,7 @@
 ### Minor Changes
 
 - 5c1fc3d: Add editing child jsx elements through the Triplex UI.
-- 2b61384: Adding an asset is now contextual, the original button adds to the
-  open component, while the add buttons on each element in the left scene panel
-  add to it as a child.
+- 2b61384: Adding an asset is now contextual, the original button adds to the open component, while the add buttons on each element in the left scene panel add to it as a child.
 
 ## 0.56.1
 
@@ -188,8 +191,7 @@
 
 ### Minor Changes
 
-- 32a110f: Add top-level scene component to the scene panel. When selected users
-  can modify the props during their seession to see what happens.
+- 32a110f: Add top-level scene component to the scene panel. When selected users can modify the props during their seession to see what happens.
 
 ### Patch Changes
 
@@ -215,8 +217,7 @@
 
 ### Minor Changes
 
-- 8fad65a: Adds camera type to controls menu, allowing you to switch between
-  perspective and orthographic camera.
+- 8fad65a: Adds camera type to controls menu, allowing you to switch between perspective and orthographic camera.
 - e0038f6: Add support for viewing through a user land camera.
 
 ## 0.53.1
@@ -225,8 +226,7 @@
 
 ### Minor Changes
 
-- c71412b: Adds refresh scene action available in the File menubar and through
-  cmd/ctrl + r.
+- c71412b: Adds refresh scene action available in the File menubar and through cmd/ctrl + r.
 
 ## 0.52.0
 
@@ -272,16 +272,13 @@
 
 - 0242833: Scene now removes intermediate state when resetting.
 - 4d8d9cc: Builds are now minified.
-- 557648e: Editor has been extracted out of the client dev server and now is
-  bundled when published to npm.
+- 557648e: Editor has been extracted out of the client dev server and now is bundled when published to npm.
 
 ## 0.43.0
 
 ### Minor Changes
 
-- b7bbeba: When adding a new element to the scene if you have a selection it
-  will be added as a child. If you have no selection it will be added to the
-  root component.
+- b7bbeba: When adding a new element to the scene if you have a selection it will be added as a child. If you have no selection it will be added to the root component.
 
 ## 0.42.0
 
@@ -297,8 +294,7 @@
 
 ### Minor Changes
 
-- 23fe64a: Adds delete scene object. Access through the context panel when
-  focusing on a scene object.
+- 23fe64a: Adds delete scene object. Access through the context panel when focusing on a scene object.
 - 1a2ecea: Iframe client bridge can now wait for a response from host.
 
 ## 0.36.0
@@ -309,10 +305,7 @@
 
 ### Minor Changes
 
-- 2a64658: The context panel now displays all available props on a component
-  even if they aren't yet declared thanks to the TypeScript compiler and
-  ts-morph. Not all prop types are supported currently, if you have one that you
-  expected to be available but isn't please reach out.
+- 2a64658: The context panel now displays all available props on a component even if they aren't yet declared thanks to the TypeScript compiler and ts-morph. Not all prop types are supported currently, if you have one that you expected to be available but isn't please reach out.
 
 ## 0.33.0
 
@@ -324,9 +317,7 @@
 
 ### Minor Changes
 
-- c87a5f3: Undo/redo now available. When manipulating the scene through
-  transform controls or the context panel each persisted manipulation will be
-  able to be undone (and redone) using hotkeys and the edit menu actions.
+- c87a5f3: Undo/redo now available. When manipulating the scene through transform controls or the context panel each persisted manipulation will be able to be undone (and redone) using hotkeys and the edit menu actions.
 
 ## 0.31.0
 
@@ -378,8 +369,7 @@
 
 ### Minor Changes
 
-- e54e0f8: Bridge events now flow unidirectionally enabling the editor ui to
-  initiate events to the scene, such as navigate and focus.
+- e54e0f8: Bridge events now flow unidirectionally enabling the editor ui to initiate events to the scene, such as navigate and focus.
 
 ## 0.14.0
 
@@ -399,8 +389,7 @@
 
 ### Minor Changes
 
-- ac9624f: Fixes client/host race condition where host would send events before
-  the client has connected.
+- ac9624f: Fixes client/host race condition where host would send events before the client has connected.
 
 ## 0.4.0
 

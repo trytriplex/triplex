@@ -1,5 +1,11 @@
 # @docs/triplex
 
+## 0.2.5
+
+### Patch Changes
+
+- 652c1cc: Update package json meta.
+
 ## 0.2.4
 
 ### Patch Changes

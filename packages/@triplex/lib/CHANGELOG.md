@@ -1,5 +1,11 @@
 # @triplex/lib
 
+## 0.69.4
+
+### Patch Changes
+
+- 652c1cc: Update package json meta.
+
 ## 0.69.3
 
 ### Patch Changes
@@ -30,8 +36,7 @@
 
 ### Patch Changes
 
-- 1c9c343a: Fix input propagation hook from blocking backspace, escape, and
-  enter keys.
+- 1c9c343a: Fix input propagation hook from blocking backspace, escape, and enter keys.
 
 ## 0.68.2
 
@@ -39,8 +44,7 @@
 
 ### Patch Changes
 
-- a5df6744: Block input keydown event propagation to prevent unmodified
-  keybindings from being fired.
+- a5df6744: Block input keydown event propagation to prevent unmodified keybindings from being fired.
 
 ## 0.68.0
 

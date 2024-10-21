@@ -1,5 +1,11 @@
 # @triplex/ws-client
 
+## 0.69.3
+
+### Patch Changes
+
+- 652c1cc: Update package json meta.
+
 ## 0.69.2
 
 ## 0.69.1
@@ -42,8 +48,7 @@
 
 ### Patch Changes
 
-- 08f3d647: WebSockets now reconnect after being disconnected when the host goes
-  to sleep.
+- 08f3d647: WebSockets now reconnect after being disconnected when the host goes to sleep.
 
 ## 0.67.3
 
@@ -89,8 +94,7 @@
 
 ### Patch Changes
 
-- bad0a57: Triplex now finds random open ports every time a project is opened
-  instead of using hardcoded ones.
+- bad0a57: Triplex now finds random open ports every time a project is opened instead of using hardcoded ones.
 
 ## 0.61.2
 
@@ -159,8 +163,7 @@
 
 ### Patch Changes
 
-- a060d2c: Fix websocket server connection listener being called on every router
-  handler setup.
+- a060d2c: Fix websocket server connection listener being called on every router handler setup.
 
 ## 0.54.1
 
@@ -172,8 +175,7 @@
 
 ### Patch Changes
 
-- aa3a982: Fixed three peer dependency not being loose enough and
-  react-three-fiber and react being missing from peer dependencies.
+- aa3a982: Fixed three peer dependency not being loose enough and react-three-fiber and react being missing from peer dependencies.
 
 ## 0.52.0
 
@@ -225,8 +227,7 @@
 
 ### Minor Changes
 
-- ee2494b: Websocket connections are now cleaned up after a period of time if
-  there are no more subscriptions.
+- ee2494b: Websocket connections are now cleaned up after a period of time if there are no more subscriptions.
 
 ## 0.39.0
 
@@ -242,10 +243,7 @@
 
 ### Minor Changes
 
-- 2a64658: The context panel now displays all available props on a component
-  even if they aren't yet declared thanks to the TypeScript compiler and
-  ts-morph. Not all prop types are supported currently, if you have one that you
-  expected to be available but isn't please reach out.
+- 2a64658: The context panel now displays all available props on a component even if they aren't yet declared thanks to the TypeScript compiler and ts-morph. Not all prop types are supported currently, if you have one that you expected to be available but isn't please reach out.
 
 ## 0.33.0
 

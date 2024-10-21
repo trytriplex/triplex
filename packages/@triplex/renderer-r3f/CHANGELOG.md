@@ -1,11 +1,20 @@
 # @triplex/renderer-r3f
 
+## 0.69.5
+
+### Patch Changes
+
+- 652c1cc: Update package json meta.
+- Updated dependencies [652c1cc]
+  - @triplex/bridge@0.69.3
+  - @triplex/lib@0.69.4
+  - @triplex/ws@0.69.3
+
 ## 0.69.4
 
 ### Patch Changes
 
-- b73ba38: When selecting a camera element a preview is displayed in the bottom
-  left of the scene.
+- b73ba38: When selecting a camera element a preview is displayed in the bottom left of the scene.
 
 ## 0.69.3
 
@@ -37,15 +46,11 @@
 
 ### Minor Changes
 
-- 740ff8f2: Default editor lights can now be turned on or off through the
-  floating controls panel. Previously they would either be always on (if you had
-  no lights in your component) or always off (if you did have lights). Now you
-  can choose.
+- 740ff8f2: Default editor lights can now be turned on or off through the floating controls panel. Previously they would either be always on (if you had no lights in your component) or always off (if you did have lights). Now you can choose.
 
 ### Patch Changes
 
-- fd4fa16f: Internal refactor to consolidate extension points to use a common
-  implementation.
+- fd4fa16f: Internal refactor to consolidate extension points to use a common implementation.
 - Updated dependencies [fd4fa16f]
 - Updated dependencies [740ff8f2]
   - @triplex/bridge@0.69.0
@@ -118,8 +123,7 @@
 
 ### Patch Changes
 
-- b2a850fb: Add selection outline postprocessing under a feature gate. This
-  feature will become available to everyone through a gradual rollout.
+- b2a850fb: Add selection outline postprocessing under a feature gate. This feature will become available to everyone through a gradual rollout.
 - Updated dependencies [a5df6744]
   - @triplex/lib@0.68.1
   - @triplex/bridge@0.68.1
@@ -188,13 +192,10 @@
 
 ### Patch Changes
 
-- ce57e0d6: Focusing the scene of opened components now ignores huge objects
-  like transform controls.
+- ce57e0d6: Focusing the scene of opened components now ignores huge objects like transform controls.
 - b2bf1662: Reset rotation when switching between components.
-- 88198788: Remove intermediate group introduced during the viewcube focus
-  refactor.
-- b8e0ee3a: Controls are now unmounted when the active camera is not owned by
-  triplex.
+- 88198788: Remove intermediate group introduced during the viewcube focus refactor.
+- b8e0ee3a: Controls are now unmounted when the active camera is not owned by triplex.
 - cba1c8db: Internal pkg refactor.
 - Updated dependencies [08f3d647]
 - Updated dependencies [cba1c8db]
@@ -206,10 +207,8 @@
 
 ### Patch Changes
 
-- b8b97458: Fix camera being stuck in a modifier state when document loses
-  focus.
-- cb41e650: Viewcube now only focuses on the user land scene instead of the
-  entire scene.
+- b8b97458: Fix camera being stuck in a modifier state when document loses focus.
+- cb41e650: Viewcube now only focuses on the user land scene instead of the entire scene.
 - b8b97458: Forward keypress events to the parent document.
 - Updated dependencies [c9c2bd90]
 - Updated dependencies [ba66926c]
@@ -239,8 +238,7 @@
 ### Minor Changes
 
 - a7b3058: Add viewcube to the viewport.
-- f14b92b: Scene selection is now powered by an out-of-band raycaster. By
-  default scenes no-longer receive events when in edit mode.
+- f14b92b: Scene selection is now powered by an out-of-band raycaster. By default scenes no-longer receive events when in edit mode.
 - 55ecc10: Add camera switcher for play state.
 - b4886f6: Add play/pause scene states.
 - 2e0acc7: Left click with ctrl modifier now dollys the camera.
@@ -248,8 +246,7 @@
 ### Patch Changes
 
 - 6f3d8de: Upgrade three deps (r3f/drei/three).
-- 1d415ae: Controls are now enabled when playing the scene through the default
-  camera.
+- 1d415ae: Controls are now enabled when playing the scene through the default camera.
 - 3343fad: Hard refresh now reloads the entire editor.
 - Updated dependencies [55ecc10]
 - Updated dependencies [b4886f6]
@@ -261,8 +258,7 @@
 
 ### Minor Changes
 
-- 625e23a: The selection system has been reimplemented, removing the need for
-  intermediate group elements powering scene lookups.
+- 625e23a: The selection system has been reimplemented, removing the need for intermediate group elements powering scene lookups.
 
 ### Patch Changes
 
@@ -306,8 +302,7 @@
 - 399713d: Exclude Canvas elements from being rendered to the scene.
 - 1df7cc9: Fix non-camera scene objects having an enter camera action.
 - 44a0156: Fix userland controls affecting transform controls.
-- 343a7e4: Fix camera changes affecting transform controls by no-longer
-  disabling controls on transform controls drag.
+- 343a7e4: Fix camera changes affecting transform controls by no-longer disabling controls on transform controls drag.
   - @triplex/ws@0.64.4
   - @triplex/bridge@0.64.4
 
@@ -340,10 +335,8 @@
 
 ### Patch Changes
 
-- a153ee8: Fix error resolution for the provider component. Now when any errors
-  inside it get fixed the scene successfully re-renders.
-- a153ee8: Errors thrown during the initial render are now visible as an error
-  notification.
+- a153ee8: Fix error resolution for the provider component. Now when any errors inside it get fixed the scene successfully re-renders.
+- a153ee8: Errors thrown during the initial render are now visible as an error notification.
 - Updated dependencies [8712a12]
   - @triplex/bridge@0.64.0
   - @triplex/ws@0.64.0
@@ -373,9 +366,7 @@
 - cea76c2: Simplify bridge event names.
 - 99b97cf: Remove need for router inside the r3f renderer.
 - cdbdc16: Remove redundant bridge events for element props.
-- 99b97cf: Error boundaries now reset when the source module and/or open
-  component changes enabling the editor to remain functional even if an error
-  has ocurred.
+- 99b97cf: Error boundaries now reset when the source module and/or open component changes enabling the editor to remain functional even if an error has ocurred.
 - 7313788: Internal refactor.
 - fe7c5f9: Config now passed to renderer func.
 - Updated dependencies [bad0a57]
@@ -452,16 +443,11 @@
 
 ### Minor Changes
 
-- 26bd068: Scene modules are now loaded remotely instead of from the fs. This is
-  going to raise the ceiling on features we can implement as now everything
-  becomes a mutation to the remote source instead of that AND also trying to
-  handle the intermediate state in the scene prior to it being flushed to the
-  fs. Super excited about this.
+- 26bd068: Scene modules are now loaded remotely instead of from the fs. This is going to raise the ceiling on features we can implement as now everything becomes a mutation to the remote source instead of that AND also trying to handle the intermediate state in the scene prior to it being flushed to the fs. Super excited about this.
 
 ### Patch Changes
 
-- ce8a108: Exit selection command can now be triggered using the (SHIFT +
-  CmdOrControl + F) hotkey.
+- ce8a108: Exit selection command can now be triggered using the (SHIFT + CmdOrControl + F) hotkey.
 - ce8a108: Add transform actions to selection menu.
 - 8dd7cd1: Scene/client pkgs now bundled with vite.
 - ce8a108: Fix saving accidentally triggered scale transform mode.
@@ -476,10 +462,8 @@
 
 - 85447c2: Upgrade three.js.
 - 250c9ab: Fixes GLTF selection choosing an unexpected scene object.
-- 85447c2: Scene helpers are now portalled to be direct descendents of the scene
-  instance.
-- 85447c2: Provider no longer has any intermediate groups between it and the
-  rendered canvas element.
+- 85447c2: Scene helpers are now portalled to be direct descendents of the scene instance.
+- 85447c2: Provider no longer has any intermediate groups between it and the rendered canvas element.
 - 250c9ab: Fix scene object throwing during HMR when path is undefined.
 - b5247c2: Apply lint and prettier fixes.
 - Updated dependencies [b5247c2]
@@ -503,8 +487,7 @@
 
 ### Patch Changes
 
-- 3e1e081: Transform will no longer be incidentally changed when saving the
-  scene on macOS.
+- 3e1e081: Transform will no longer be incidentally changed when saving the scene on macOS.
 - 3e1e081: Changes to provider are now flushed throughout the scene during hmr.
 - Updated dependencies [3e1e081]
   - @triplex/bridge@0.58.0
@@ -522,9 +505,7 @@
 
 ### Patch Changes
 
-- d32cf94: Fixes bugs with the new Triplex provider, previously it would be
-  rendered outside the Canvas element as well as being unintentionally
-  transformed into a scene object.
+- d32cf94: Fixes bugs with the new Triplex provider, previously it would be rendered outside the Canvas element as well as being unintentionally transformed into a scene object.
   - @triplex/bridge@0.57.1
   - @triplex/ws-client@0.57.1
 
@@ -533,9 +514,7 @@
 ### Minor Changes
 
 - 5c1fc3d: Add editing child jsx elements through the Triplex UI.
-- 2b61384: Adding an asset is now contextual, the original button adds to the
-  open component, while the add buttons on each element in the left scene panel
-  add to it as a child.
+- 2b61384: Adding an asset is now contextual, the original button adds to the open component, while the add buttons on each element in the left scene panel add to it as a child.
 
 ### Patch Changes
 
@@ -549,8 +528,7 @@
 
 ### Patch Changes
 
-- e4345ef: Selecting scene objects now bails out from traversing the Three.js
-  scene when it is a host element inside the currently open file.
+- e4345ef: Selecting scene objects now bails out from traversing the Three.js scene when it is a host element inside the currently open file.
   - @triplex/ws-client@0.56.1
   - @triplex/bridge@0.56.1
 
@@ -559,11 +537,8 @@
 ### Minor Changes
 
 - 463789f: Adds end-to-end typesafe ws router.
-- 32a110f: Add top-level scene component to the scene panel. When selected users
-  can modify the props during their seession to see what happens.
-- 47483b9: The data that powers the context panel props is now sourced from
-  types first instead of defined props first, resulting in tuple type data no
-  longer being lost after a prop has been set.
+- 32a110f: Add top-level scene component to the scene panel. When selected users can modify the props during their seession to see what happens.
+- 47483b9: The data that powers the context panel props is now sourced from types first instead of defined props first, resulting in tuple type data no longer being lost after a prop has been set.
 
 ### Patch Changes
 
@@ -624,8 +599,7 @@
 
 ### Patch Changes
 
-- 3711009: The Triplex orthographic cameras near plane has been decreased to
-  ensure objects stay within view in the scene.
+- 3711009: The Triplex orthographic cameras near plane has been decreased to ensure objects stay within view in the scene.
   - @triplex/bridge@0.54.1
   - @triplex/ws-client@0.54.1
 
@@ -633,17 +607,14 @@
 
 ### Minor Changes
 
-- 36c2d9c: Adds camera helpers for perspective and orthographic cameras rendered
-  in the scene.
+- 36c2d9c: Adds camera helpers for perspective and orthographic cameras rendered in the scene.
 - d2d40f6: Helpers for lights are now shown in the editor.
-- 8fad65a: Adds camera type to controls menu, allowing you to switch between
-  perspective and orthographic camera.
+- 8fad65a: Adds camera type to controls menu, allowing you to switch between perspective and orthographic camera.
 - e0038f6: Add support for viewing through a user land camera.
 
 ### Patch Changes
 
-- 36c2d9c: Editor controls no longer affect user land cameras when they have
-  been set with `makeDefault={true}`.
+- 36c2d9c: Editor controls no longer affect user land cameras when they have been set with `makeDefault={true}`.
 - Updated dependencies [8fad65a]
 - Updated dependencies [e0038f6]
   - @triplex/bridge@0.54.0
@@ -661,13 +632,11 @@
 
 ### Minor Changes
 
-- c71412b: Adds refresh scene action available in the File menubar and through
-  cmd/ctrl + r.
+- c71412b: Adds refresh scene action available in the File menubar and through cmd/ctrl + r.
 
 ### Patch Changes
 
-- aa3a982: Fixed three peer dependency not being loose enough and
-  react-three-fiber and react being missing from peer dependencies.
+- aa3a982: Fixed three peer dependency not being loose enough and react-three-fiber and react being missing from peer dependencies.
 - Updated dependencies [aa3a982]
 - Updated dependencies [c71412b]
   - @triplex/ws-client@0.53.0
@@ -697,8 +666,7 @@
 
 ### Patch Changes
 
-- 6179fef: Scene objects that are attached to a parent are no longer wrapped in
-  a triplex group.
+- 6179fef: Scene objects that are attached to a parent are no longer wrapped in a triplex group.
   - @triplex/bridge@0.51.0
   - @triplex/ws-client@0.51.0
 
@@ -706,12 +674,8 @@
 
 ### Patch Changes
 
-- b7c966c: The scene traversal that takes place during a selection now stops at
-  the first found object instead of continuing until no children remain. Any odd
-  scene transforms should now be fixed.
-- 3c19632: Scene components now better handle edge cases. When children as
-  function the function behavior is respected. When children end up being falsy
-  we no longer render the intermediate scene elements.
+- b7c966c: The scene traversal that takes place during a selection now stops at the first found object instead of continuing until no children remain. Any odd scene transforms should now be fixed.
+- 3c19632: Scene components now better handle edge cases. When children as function the function behavior is respected. When children end up being falsy we no longer render the intermediate scene elements.
   - @triplex/bridge@0.50.1
   - @triplex/ws-client@0.50.1
 
@@ -738,8 +702,7 @@
 
 ### Minor Changes
 
-- 6fe34af: Windows support is here. Now Triplex cli and electron can be ran on
-  Windows, as well as the local dev loop now being functional.
+- 6fe34af: Windows support is here. Now Triplex cli and electron can be ran on Windows, as well as the local dev loop now being functional.
 
 ### Patch Changes
 
@@ -750,8 +713,7 @@
 
 ### Minor Changes
 
-- 4164026: Add support for the scene to know what environment it is running in
-  (either web or electron).
+- 4164026: Add support for the scene to know what environment it is running in (either web or electron).
 
 ### Patch Changes
 
@@ -827,15 +789,10 @@
 
 ### Minor Changes
 
-- 6dfb22d: The add scene component now cleans up all intermediate state when a
-  file has been saved.
-- 6dfb22d: The scene loader nolonger holds onto a stale module reference if the
-  module changes during HMR.
-- 01cd388: Intermediate state when adding components to a scene is blown away
-  when any hmr after event occurs.
-- b7bbeba: When adding a new element to the scene if you have a selection it
-  will be added as a child. If you have no selection it will be added to the
-  root component.
+- 6dfb22d: The add scene component now cleans up all intermediate state when a file has been saved.
+- 6dfb22d: The scene loader nolonger holds onto a stale module reference if the module changes during HMR.
+- 01cd388: Intermediate state when adding components to a scene is blown away when any hmr after event occurs.
+- b7bbeba: When adding a new element to the scene if you have a selection it will be added as a child. If you have no selection it will be added to the root component.
 
 ### Patch Changes
 
@@ -861,14 +818,9 @@
 
 ### Minor Changes
 
-- dac7c76: Selection for scene objects is now more resilient being able to be
-  set before scene objects are actually available.
-- dac7c76: When selecting a scene object that has disabled transforms the scene
-  frame now tries to find a backup selection so the gizmo stays ontop of the
-  object instead of being moved back to world [0,0,0].
-- a2a2f4b: When unapplying a prop to a component such as performing an undo it
-  is now applied as expected in the scene. Previously only the context panel
-  would be updated with the new value.
+- dac7c76: Selection for scene objects is now more resilient being able to be set before scene objects are actually available.
+- dac7c76: When selecting a scene object that has disabled transforms the scene frame now tries to find a backup selection so the gizmo stays ontop of the object instead of being moved back to world [0,0,0].
+- a2a2f4b: When unapplying a prop to a component such as performing an undo it is now applied as expected in the scene. Previously only the context panel would be updated with the new value.
 
 ### Patch Changes
 
@@ -887,8 +839,7 @@
 
 ### Minor Changes
 
-- 06471f6: The components virtual module has been removed in favor of passing
-  down as props instead.
+- 06471f6: The components virtual module has been removed in favor of passing down as props instead.
 
 ### Patch Changes
 
@@ -899,14 +850,10 @@
 
 ### Minor Changes
 
-- 0e781ac: Scene no longer assumes `triplexMeta` is always available on the
-  loaded scene component.
-- 23fe64a: Adds delete scene object. Access through the context panel when
-  focusing on a scene object.
-- 1a2ecea: Components can now be added to the scene through the add component
-  button in the scene panel.
-- 1a2ecea: The triplex config now has a new property called `components` - use
-  to mark files that are able to be added to scenes.
+- 0e781ac: Scene no longer assumes `triplexMeta` is always available on the loaded scene component.
+- 23fe64a: Adds delete scene object. Access through the context panel when focusing on a scene object.
+- 1a2ecea: Components can now be added to the scene through the add component button in the scene panel.
+- 1a2ecea: The triplex config now has a new property called `components` - use to mark files that are able to be added to scenes.
 
 ### Patch Changes
 
@@ -937,10 +884,7 @@
 
 ### Minor Changes
 
-- 2a64658: The context panel now displays all available props on a component
-  even if they aren't yet declared thanks to the TypeScript compiler and
-  ts-morph. Not all prop types are supported currently, if you have one that you
-  expected to be available but isn't please reach out.
+- 2a64658: The context panel now displays all available props on a component even if they aren't yet declared thanks to the TypeScript compiler and ts-morph. Not all prop types are supported currently, if you have one that you expected to be available but isn't please reach out.
 
 ### Patch Changes
 
@@ -953,8 +897,7 @@
 ### Minor Changes
 
 - 1067d23: Adds transform controls to the ui.
-- 1067d23: Transform control hotkeys now continue to function even when there is
-  no scene object currently selected.
+- 1067d23: Transform control hotkeys now continue to function even when there is no scene object currently selected.
 
 ### Patch Changes
 
@@ -966,9 +909,7 @@
 
 ### Minor Changes
 
-- c87a5f3: Undo/redo now available. When manipulating the scene through
-  transform controls or the context panel each persisted manipulation will be
-  able to be undone (and redone) using hotkeys and the edit menu actions.
+- c87a5f3: Undo/redo now available. When manipulating the scene through transform controls or the context panel each persisted manipulation will be able to be undone (and redone) using hotkeys and the edit menu actions.
 
 ### Patch Changes
 
@@ -980,8 +921,7 @@
 
 ### Minor Changes
 
-- 48002a7: When transitioning to a scene object any props that are jsx elements
-  are now removed preventing serialization errors.
+- 48002a7: When transitioning to a scene object any props that are jsx elements are now removed preventing serialization errors.
 
 ### Patch Changes
 
@@ -1004,9 +944,7 @@
 
 ### Minor Changes
 
-- 0d83ef2: When selecting a scene object triplex now continues traversing down
-  the tree looking for the appropriate object to use rather than stopping at the
-  first encountered triplex boundary.
+- 0d83ef2: When selecting a scene object triplex now continues traversing down the tree looking for the appropriate object to use rather than stopping at the first encountered triplex boundary.
 
 ### Patch Changes
 
@@ -1017,11 +955,8 @@
 
 ### Minor Changes
 
-- aa1aa8c: Scene transformation using ts-morph has been replaced with Babel
-  significantly speeding up initial load and saving. The need for the
-  `.triplex/tmp` folder is now gone and thus no longer used.
-- aa1aa8c: Line and column numbers for scene objects have been corrected and are
-  now consistent across editor, scene, and server.
+- aa1aa8c: Scene transformation using ts-morph has been replaced with Babel significantly speeding up initial load and saving. The need for the `.triplex/tmp` folder is now gone and thus no longer used.
+- aa1aa8c: Line and column numbers for scene objects have been corrected and are now consistent across editor, scene, and server.
 
 ### Patch Changes
 
@@ -1032,15 +967,11 @@
 
 ### Minor Changes
 
-- 56f2b3e: Scene objects that have no dimensions (such as lights) can now be
-  focused.
-- fa35cde: JSX element type inference has been removed from the critical path of
-  the scene transform.
-- 1e405c3: Scene object selection is now scoped to ensure only selecting objects
-  from the current open scene.
+- 56f2b3e: Scene objects that have no dimensions (such as lights) can now be focused.
+- fa35cde: JSX element type inference has been removed from the critical path of the scene transform.
+- 1e405c3: Scene object selection is now scoped to ensure only selecting objects from the current open scene.
 - fa35cde: Fix unguarded three.js child check.
-- 9b1d135: When transitioning to a scene and it has a position prop set it is
-  replaced with the world position.
+- 9b1d135: When transitioning to a scene and it has a position prop set it is replaced with the world position.
 
 ### Patch Changes
 
@@ -1051,10 +982,8 @@
 
 ### Minor Changes
 
-- 9d400e4: Selected objects now operate in local space when a parent scene
-  object is scaled.
-- e532920: When traversing the Three.js scene to find the appropriate scene
-  object to select it now stops traversal when reaching a triplex boundary.
+- 9d400e4: Selected objects now operate in local space when a parent scene object is scaled.
+- e532920: When traversing the Three.js scene to find the appropriate scene object to select it now stops traversal when reaching a triplex boundary.
 
 ### Patch Changes
 
@@ -1066,8 +995,7 @@
 
 ### Minor Changes
 
-- aaac9cc: Scene navigation now guards against empty paths (meaning there's
-  nowhere to navigate to).
+- aaac9cc: Scene navigation now guards against empty paths (meaning there's nowhere to navigate to).
 
 ### Patch Changes
 
@@ -1141,13 +1069,10 @@
 ### Minor Changes
 
 - d8e1602: Fixed non-scene objects not being able to be selected through the UI.
-- 7ff35f3: Transform controls now longer continuously error when a scene object
-  has been removed from the scene.
+- 7ff35f3: Transform controls now longer continuously error when a scene object has been removed from the scene.
 - 7ff35f3: Upgrades @react-three/fiber to latest.
-- e7c026b: Selecting host scene objects now have the correct objects selected
-  instead of the wrapping parent group
-- 7ff35f3: Navigating to host elements is no longer possible (as there is
-  nowhere to navigate to).
+- e7c026b: Selecting host scene objects now have the correct objects selected instead of the wrapping parent group
+- 7ff35f3: Navigating to host elements is no longer possible (as there is nowhere to navigate to).
 - 2fa7c45: Adds author field to package.json.
 
 ### Patch Changes
@@ -1162,8 +1087,7 @@
 
 ### Minor Changes
 
-- e54e0f8: Bridge events now flow unidirectionally enabling the editor ui to
-  initiate events to the scene, such as navigate and focus.
+- e54e0f8: Bridge events now flow unidirectionally enabling the editor ui to initiate events to the scene, such as navigate and focus.
 
 ### Patch Changes
 
@@ -1182,23 +1106,16 @@
 
 ### Minor Changes
 
-- 99075ff: Transformed scene entrypoints now export the variable `triplexMeta`
-  instead of `__r3fEditorMeta`.
-- 99075ff: When being loaded for the first time scenes will now suspend. This
-  means for any errors thrown during loaded are now propagated to the nearest
-  error boundary.
-- cfbd47b: When transitioning between scenes there is no longer a flash of
-  hidden scene objects.
+- 99075ff: Transformed scene entrypoints now export the variable `triplexMeta` instead of `__r3fEditorMeta`.
+- 99075ff: When being loaded for the first time scenes will now suspend. This means for any errors thrown during loaded are now propagated to the nearest error boundary.
+- cfbd47b: When transitioning between scenes there is no longer a flash of hidden scene objects.
 - 969feab: Removes unneeded fetch calls.
 - cc917d7: Adds usage of ws-client pkg.
 - a4d6882: Passes name during object focus.
-- 99075ff: Adds error boundaries so the app doesn't blow up when a scene isn't
-  found.
-- 7bebe67: When transforming a selected scene object the intended object
-  object3d is now modified instead of the parent group.
+- 99075ff: Adds error boundaries so the app doesn't blow up when a scene isn't found.
+- 7bebe67: When transforming a selected scene object the intended object object3d is now modified instead of the parent group.
 - 99075ff: Scene now loads updated triplex meta when the source file changes.
-- cfbd47b: The hotkey check when navigating to a child scene now checks for
-  shift usage instead of upper "f".
+- cfbd47b: The hotkey check when navigating to a child scene now checks for shift usage instead of upper "f".
 
 ### Patch Changes
 
@@ -1211,8 +1128,7 @@
 
 ### Minor Changes
 
-- 55f0206: Scene components now appear nested when children of other components
-  in the UI.
+- 55f0206: Scene components now appear nested when children of other components in the UI.
 
 ## 0.10.0
 
@@ -1229,8 +1145,7 @@
 
 ### Minor Changes
 
-- ac9624f: Fixes client/host race condition where host would send events before
-  the client has connected.
+- ac9624f: Fixes client/host race condition where host would send events before the client has connected.
 
 ### Patch Changes
 
@@ -1253,8 +1168,7 @@
 
 ### Minor Changes
 
-- 5498a39: Scene frame now correctly calls back to the react refresh registry on
-  hmr.
+- 5498a39: Scene frame now correctly calls back to the react refresh registry on hmr.
 
 ## 0.5.0
 

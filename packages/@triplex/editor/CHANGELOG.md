@@ -1,5 +1,17 @@
 # @triplex/editor
 
+## 0.69.5
+
+### Patch Changes
+
+- 652c1cc: Remove initialize option from project creation. Only creating a new project is supported.
+- 652c1cc: Update package json meta.
+- Updated dependencies [652c1cc]
+  - @triplex/bridge@0.69.3
+  - @triplex/lib@0.69.4
+  - @triplex/ux@0.69.5
+  - @triplex/ws@0.69.3
+
 ## 0.69.4
 
 ### Patch Changes
@@ -43,15 +55,11 @@
 
 ### Minor Changes
 
-- 740ff8f2: Default editor lights can now be turned on or off through the
-  floating controls panel. Previously they would either be always on (if you had
-  no lights in your component) or always off (if you did have lights). Now you
-  can choose.
+- 740ff8f2: Default editor lights can now be turned on or off through the floating controls panel. Previously they would either be always on (if you had no lights in your component) or always off (if you did have lights). Now you can choose.
 
 ### Patch Changes
 
-- fd4fa16f: Internal refactor to consolidate extension points to use a common
-  implementation.
+- fd4fa16f: Internal refactor to consolidate extension points to use a common implementation.
 - Updated dependencies [fd4fa16f]
 - Updated dependencies [740ff8f2]
   - @triplex/bridge@0.69.0
@@ -257,8 +265,7 @@
 
 ### Minor Changes
 
-- f14b92b: Scene selection is now powered by an out-of-band raycaster. By
-  default scenes no-longer receive events when in edit mode.
+- f14b92b: Scene selection is now powered by an out-of-band raycaster. By default scenes no-longer receive events when in edit mode.
 - 55ecc10: Add camera switcher for play state.
 - b4886f6: Add play/pause scene states.
 
@@ -277,8 +284,7 @@
 
 ### Minor Changes
 
-- 625e23a: The selection system has been reimplemented, removing the need for
-  intermediate group elements powering scene lookups.
+- 625e23a: The selection system has been reimplemented, removing the need for intermediate group elements powering scene lookups.
 
 ### Patch Changes
 
@@ -327,8 +333,7 @@
 
 ### Patch Changes
 
-- 1d9c390: Fix user land modules being forcibly invalidated during HMR causing
-  unexpected behaviour.
+- 1d9c390: Fix user land modules being forcibly invalidated during HMR causing unexpected behaviour.
   - @triplex/ws@0.64.3
   - @triplex/bridge@0.64.3
 
@@ -351,21 +356,17 @@
 ### Minor Changes
 
 - 0868337: Add support for SharedBufferArray.
-- f0444d6: Component controls, provider controls, and component prop controls
-  now show default props when no value has been set.
+- f0444d6: Component controls, provider controls, and component prop controls now show default props when no value has been set.
 - 09d435f: Add zoom controls.
 - 9567579: Add canvas frame.
 
 ### Patch Changes
 
-- f0444d6: Fix string literal union input resetting the value on clear to
-  nothing instead of the default value.
-- 777b2f5: Improve UI/UX of error screen shown when loading a project fails, now
-  showing the actual error message.
+- f0444d6: Fix string literal union input resetting the value on clear to nothing instead of the default value.
+- 777b2f5: Improve UI/UX of error screen shown when loading a project fails, now showing the actual error message.
 - a153ee8: Error notifications now display the latest error first.
 - f0444d6: Fix select input not being cleared when pressing backspace.
-- a153ee8: Errors thrown during the initial render are now visible as an error
-  notification.
+- a153ee8: Errors thrown during the initial render are now visible as an error notification.
 - Updated dependencies [8712a12]
   - @triplex/bridge@0.64.0
   - @triplex/ws@0.64.0
@@ -375,8 +376,7 @@
 ### Minor Changes
 
 - 4c48d66: Add host element declarations to renderer manifest.
-- 8eddebb: The canvas can now be set to take up all available space in the
-  editor or take up the space between panels.
+- 8eddebb: The canvas can now be set to take up all available space in the editor or take up the space between panels.
 
 ### Patch Changes
 
@@ -393,23 +393,20 @@
 ### Minor Changes
 
 - 11a548a: File browser now displays thumbnails.
-- 273c586: Create / open project flow has had its UX changed to improve
-  understanding what is actually happening.
+- 273c586: Create / open project flow has had its UX changed to improve understanding what is actually happening.
 - 0909731: Add Linux support.
 - 3612434: Add thumbnail support for renderers.
 
 ### Patch Changes
 
-- bad0a57: Triplex now finds random open ports every time a project is opened
-  instead of using hardcoded ones.
+- bad0a57: Triplex now finds random open ports every time a project is opened instead of using hardcoded ones.
 - cea76c2: Simplify bridge event names.
 - b629d57: Component thumbnail has had its design simplified.
 - e2608a8: Editor scene now has improved contrast against the editor and tabs.
 - 0909731: Fix hotkeys firing when they shouldn't.
 - 99b97cf: Remove need for router inside the r3f renderer.
 - b629d57: Open component drawer now has distinct sections for files.
-- 1d7e53f: Editor now flushes events back to the editor when the "ready" event
-  is called multiple times.
+- 1d7e53f: Editor now flushes events back to the editor when the "ready" event is called multiple times.
 - cdbdc16: Remove redundant bridge events for element props.
 - Updated dependencies [bad0a57]
 - Updated dependencies [cea76c2]
@@ -444,8 +441,7 @@
 
 ### Minor Changes
 
-- 3920fd3: Scene elements can now be moved before/after/into other scene
-  elements with drag and drop.
+- 3920fd3: Scene elements can now be moved before/after/into other scene elements with drag and drop.
 - b407820: Add file tabs.
 - 5299234: Add open file button to tabs.
 - 3091229: Add new undo/redo system. Any edits are now flushed through this.
@@ -457,15 +453,13 @@
 - d583e42: You can no-longer enter an element from node modules.
 - d583e42: Fix ide link for unsupported props.
 - d583e42: Assets now displayed as the last folder in the assets drawer.
-- b407820: Save is now correctly scoped to the currently opened file. Save all
-  replaces the original functionality.
+- b407820: Save is now correctly scoped to the currently opened file. Save all replaces the original functionality.
 - 2f569d5: Inputs nolonger remount when value changes from source.
 - af8c06e: Inputs now confirm their value when pressing enter.
 - af8c06e: Color input now displays a focus state.
 - 5efeea0: Normalize paths using upath instead of node built-in.
 - b407820: Add hotkeys for file tabs.
-- ab35f91: Refactor modified to be a different state to new file. New files now
-  shown as italic and not initially modified.
+- ab35f91: Refactor modified to be a different state to new file. New files now shown as italic and not initially modified.
 - cba2b47: Transform controls now has capped precision.
 - Updated dependencies [b407820]
   - @triplex/bridge@0.61.0
@@ -475,8 +469,7 @@
 
 ### Patch Changes
 
-- b82d12e: Provider controls have now moved above the open component to
-  hopefully provider a more intuitive ux.
+- b82d12e: Provider controls have now moved above the open component to hopefully provider a more intuitive ux.
   - @triplex/bridge@0.60.1
   - @triplex/ws@0.60.1
 
@@ -489,16 +482,12 @@
 ### Patch Changes
 
 - 7a250ba: Remove unused code paths missed by a previous refactor.
-- 722ac20: Context panel now closes when the element has been lost. This could
-  happen from being deleted in code, re-ordering, anything.
+- 722ac20: Context panel now closes when the element has been lost. This could happen from being deleted in code, re-ordering, anything.
 - b42550f: Copy/paste text is now available in the edit menu.
-- b42550f: When focusing inputs you will no longer trigger unexpected hotkeys
-  such as transform mode changes when typing.
+- b42550f: When focusing inputs you will no longer trigger unexpected hotkeys such as transform mode changes when typing.
 - eb37a51: IDE links now opened through the `launch-editor` package.
 - 0cce596: Error overlay no longer closers after a HMR event.
-- 000008d: Element actions are now located in the scene panel, with the enter
-  selection action being removed from the UI altogether. Access it instead via
-  the "Selection" menu, or via its hotkey (SHIFT+F).
+- 000008d: Element actions are now located in the scene panel, with the enter selection action being removed from the UI altogether. Access it instead via the "Selection" menu, or via its hotkey (SHIFT+F).
 
   Selection actions remain functional via hotkeys: delete, focus, enter.
 
@@ -518,25 +507,17 @@
 
 ### Minor Changes
 
-- 26bd068: Scene modules are now loaded remotely instead of from the fs. This is
-  going to raise the ceiling on features we can implement as now everything
-  becomes a mutation to the remote source instead of that AND also trying to
-  handle the intermediate state in the scene prior to it being flushed to the
-  fs. Super excited about this.
+- 26bd068: Scene modules are now loaded remotely instead of from the fs. This is going to raise the ceiling on features we can implement as now everything becomes a mutation to the remote source instead of that AND also trying to handle the intermediate state in the scene prior to it being flushed to the fs. Super excited about this.
 
 ### Patch Changes
 
-- 2194c85: Triplex now warns you when the file you have open is outside where
-  your project has defined files should be.
-- ce8a108: Exit selection command can now be triggered using the (SHIFT +
-  CmdOrControl + F) hotkey.
+- 2194c85: Triplex now warns you when the file you have open is outside where your project has defined files should be.
+- ce8a108: Exit selection command can now be triggered using the (SHIFT + CmdOrControl + F) hotkey.
 - ce8a108: Add transform actions to selection menu.
 - f2d612b: Editor now shows union literal labels where possible.
-- 1d70f2b: An error screen is now presented to users when Triplex fails to start
-  up a project.
+- 1d70f2b: An error screen is now presented to users when Triplex fails to start up a project.
 - 8dd7cd1: Scene/client pkgs now bundled with vite.
-- 75073e7: Editor now shows a loading screen prior to the project being
-  successfully loaded.
+- 75073e7: Editor now shows a loading screen prior to the project being successfully loaded.
 - ce8a108: Fix saving accidentally triggered scale transform mode.
 - f6e068c: Packages have been moved into namedspaced folders.
 - Updated dependencies [f6e068c]
@@ -599,18 +580,13 @@
 - 5c1fc3d: Add editing child jsx elements through the Triplex UI.
 - 628646e: Context panel now has a filter for props.
 - 7673ae8: A search input filter is now available when opening a component.
-- 2b61384: Adding an asset is now contextual, the original button adds to the
-  open component, while the add buttons on each element in the left scene panel
-  add to it as a child.
+- 2b61384: Adding an asset is now contextual, the original button adds to the open component, while the add buttons on each element in the left scene panel add to it as a child.
 
 ### Patch Changes
 
-- 046cf78: Error notification is now displayed in the bottom left and is
-  emphasized less.
-- 2b61384: When adding new elements to the scene the left scene panel now
-  scrolls to the added element if needed.
-- 628646e: Inputs can now have their content selected with the select all
-  command (cmd + a).
+- 046cf78: Error notification is now displayed in the bottom left and is emphasized less.
+- 2b61384: When adding new elements to the scene the left scene panel now scrolls to the added element if needed.
+- 628646e: Inputs can now have their content selected with the select all command (cmd + a).
 - Updated dependencies [5c1fc3d]
 - Updated dependencies [2b61384]
   - @triplex/bridge@0.57.0
@@ -628,17 +604,13 @@
 ### Minor Changes
 
 - 463789f: Adds end-to-end typesafe ws router.
-- 32a110f: Add top-level scene component to the scene panel. When selected users
-  can modify the props during their seession to see what happens.
-- 47483b9: The data that powers the context panel props is now sourced from
-  types first instead of defined props first, resulting in tuple type data no
-  longer being lost after a prop has been set.
+- 32a110f: Add top-level scene component to the scene panel. When selected users can modify the props during their seession to see what happens.
+- 47483b9: The data that powers the context panel props is now sourced from types first instead of defined props first, resulting in tuple type data no longer being lost after a prop has been set.
 
 ### Patch Changes
 
 - d674f26: Color input can now be cleared when not required.
-- 47483b9: Tuple input no longer fires when required values are only partially
-  filled out.
+- 47483b9: Tuple input no longer fires when required values are only partially filled out.
 - 2e53a2e: Turn off type declaration maps.
 - Updated dependencies [463789f]
 - Updated dependencies [5f7e78f]
@@ -666,8 +638,7 @@
 ### Patch Changes
 
 - ea86fdc: Add license banner.
-- b3d2fa9: Number input no longer calls change and confirm handlers if the value
-  is outside the min/max range.
+- b3d2fa9: Number input no longer calls change and confirm handlers if the value is outside the min/max range.
 - Updated dependencies [ea86fdc]
   - @triplex/ws-client@0.55.1
   - @triplex/bridge@0.55.1
@@ -681,8 +652,7 @@
 - ab909b4: Static assets are now available through the assets drawer.
 - 4fa9018: The number input has been re-written to improve its UX.
 - 44faed1: Jsdoc tags are now returned in the jsx element type response.
-- b6970aa: Number input can now have a min/max value set using `@min` and `@max`
-  jsdoc tags respectively. E.g. `@min 1` will cap the input value to 1.
+- b6970aa: Number input can now have a min/max value set using `@min` and `@max` jsdoc tags respectively. E.g. `@min 1` will cap the input value to 1.
 
 ### Patch Changes
 
@@ -702,11 +672,9 @@
 
 ### Patch Changes
 
-- d58e0b0: During save a route transition will only occur if saving the file to
-  another path.
+- d58e0b0: During save a route transition will only occur if saving the file to another path.
 - 8afea84: Focus state is now handled across the app.
-- cdd6234: Delete and undo/redo actions are no longer double fired when using
-  the hotkey in the editor.
+- cdd6234: Delete and undo/redo actions are no longer double fired when using the hotkey in the editor.
   - @triplex/bridge@0.54.1
   - @triplex/ws-client@0.54.1
 
@@ -714,8 +682,7 @@
 
 ### Minor Changes
 
-- 8fad65a: Adds camera type to controls menu, allowing you to switch between
-  perspective and orthographic camera.
+- 8fad65a: Adds camera type to controls menu, allowing you to switch between perspective and orthographic camera.
 - e0038f6: Add support for viewing through a user land camera.
 
 ### Patch Changes
@@ -737,15 +704,13 @@
 
 ### Minor Changes
 
-- c71412b: Adds refresh scene action available in the File menubar and through
-  cmd/ctrl + r.
+- c71412b: Adds refresh scene action available in the File menubar and through cmd/ctrl + r.
 
 ### Patch Changes
 
 - aa3a982: View logs button no longer is disabled during project creation.
 - aa3a982: React and React Three Fiber are now peer dependencies.
-- aa3a982: Fixed three peer dependency not being loose enough and
-  react-three-fiber and react being missing from peer dependencies.
+- aa3a982: Fixed three peer dependency not being loose enough and react-three-fiber and react being missing from peer dependencies.
 - bddac75: Welcome screen version number now positioned depending on OS.
 - Updated dependencies [aa3a982]
 - Updated dependencies [c71412b]
@@ -756,16 +721,13 @@
 
 ### Minor Changes
 
-- 48016ba: Rotation props are now displayed as degrees in the UI and saved to
-  code as radians. Previously it was all radians which was confusing for pretty
-  much everyone.
+- 48016ba: Rotation props are now displayed as degrees in the UI and saved to code as radians. Previously it was all radians which was confusing for pretty much everyone.
 - fe90482: Logs are now accessible through the View > Logs menubar action.
 - 8d532f5: Editor now shows build time and runtime errors in an error overlay.
 
 ### Patch Changes
 
-- 120f9ef: When updating array inputs undefined optional values are now ignored
-  and discarded.
+- 120f9ef: When updating array inputs undefined optional values are now ignored and discarded.
 - Updated dependencies [8d532f5]
   - @triplex/bridge@0.52.0
   - @triplex/ws-client@0.52.0
@@ -781,16 +743,13 @@
 
 ### Minor Changes
 
-- b61dc2a: The editor menu bar is now displayed in the title bar for Windows and
-  Node.js.
+- b61dc2a: The editor menu bar is now displayed in the title bar for Windows and Node.js.
 
 ### Patch Changes
 
 - b61dc2a: Hotkeys on Windows are now title case.
-- b61dc2a: Menu bar events now originate from the editor source instead of being
-  some in the electron app and some in the editor.
-- c97e359: Inputs no longer call change and confirm handlers with `undefined`
-  values when required.
+- b61dc2a: Menu bar events now originate from the editor source instead of being some in the electron app and some in the editor.
+- c97e359: Inputs no longer call change and confirm handlers with `undefined` values when required.
   - @triplex/bridge@0.51.0
   - @triplex/ws-client@0.51.0
 
@@ -830,8 +789,7 @@
 
 ### Minor Changes
 
-- 6fe34af: Windows support is here. Now Triplex cli and electron can be ran on
-  Windows, as well as the local dev loop now being functional.
+- 6fe34af: Windows support is here. Now Triplex cli and electron can be ran on Windows, as well as the local dev loop now being functional.
 
 ### Patch Changes
 
@@ -847,8 +805,7 @@
 - 1fc7657: Electron app now uses a custom title bar.
 - e8cf76f: Adds native save dialog support.
 - 1fc7657: Window title now uses both the folder name and file name if open.
-- 4164026: Undo/redo menu items now correctly display as enabled or disabled
-  when appropriate.
+- 4164026: Undo/redo menu items now correctly display as enabled or disabled when appropriate.
 
 ### Patch Changes
 
@@ -913,8 +870,7 @@
 - 0242833: Scene now removes intermediate state when resetting.
 - 56b17f0: Adds filter for add element drawer.
 - 4d8d9cc: Builds are now minified.
-- 557648e: Editor has been extracted out of the client dev server and now is
-  bundled when published to npm.
+- 557648e: Editor has been extracted out of the client dev server and now is bundled when published to npm.
 
 ### Patch Changes
 
@@ -928,30 +884,22 @@
 
 ### Minor Changes
 
-- 6dfb22d: Save as action now available in the menubar. Use to save the current
-  open file to another location.
+- 6dfb22d: Save as action now available in the menubar. Use to save the current open file to another location.
 - 6dfb22d: Scroll container thumb scroll areas now take up less space.
-- 6dfb22d: Create a component in the current open file through the component
-  switcher.
+- 6dfb22d: Create a component in the current open file through the component switcher.
 - de54812: Color inputs now show a transparent background when undefined.
-- b7bbeba: Deleting the selected element with backspace now works when focused
-  on any element other than an input.
-- 6dfb22d: A component switcher is now available in the left panel, use it to
-  quickly switch between components in the open file.
+- b7bbeba: Deleting the selected element with backspace now works when focused on any element other than an input.
+- 6dfb22d: A component switcher is now available in the left panel, use it to quickly switch between components in the open file.
 - 6dfb22d: The browser tab title now changes when there are unsaved changes.
 - b7bbeba: String and numbers in props now can have undefined default values.
 - de54812: Prop inputs now are able to be cleared through the ui.
 - de54812: Context panel tuple props now show labels when available.
 - de54812: Checkbox now renders using a custom icon.
-- b7bbeba: When adding a new element to the scene if you have a selection it
-  will be added as a child. If you have no selection it will be added to the
-  root component.
-- 01cd388: Adds context panel indicator to the add component drawer when an
-  element is selected.
+- b7bbeba: When adding a new element to the scene if you have a selection it will be added as a child. If you have no selection it will be added to the root component.
+- 01cd388: Adds context panel indicator to the add component drawer when an element is selected.
 - facc6aa: Saving a new component now prompts for a component name.
 - de54812: Fixed save prop serializing undefined to null.
-- 01cd388: Fixes the context panel unexpectedly when closing the color picker
-  with escape.
+- 01cd388: Fixes the context panel unexpectedly when closing the color picker with escape.
 
 ### Patch Changes
 
@@ -982,13 +930,10 @@
 ### Minor Changes
 
 - a2a2f4b: Removes usage of r3f internals.
-- a2a2f4b: Fixes union input accidentally having default value being applied
-  when it shouldn't.
-- dac7c76: Selection for scene objects is now more resilient being able to be
-  set before scene objects are actually available.
+- a2a2f4b: Fixes union input accidentally having default value being applied when it shouldn't.
+- dac7c76: Selection for scene objects is now more resilient being able to be set before scene objects are actually available.
 - bfb0f7a: Adds an error boundary ui to replace the basic error text version.
-- ee2494b: When clicking ide links such as view source websocket connections no
-  longer close.
+- ee2494b: When clicking ide links such as view source websocket connections no longer close.
 
 ### Patch Changes
 
@@ -1020,8 +965,7 @@
 
 ### Minor Changes
 
-- 23fe64a: Adds delete scene object. Access through the context panel when
-  focusing on a scene object.
+- 23fe64a: Adds delete scene object. Access through the context panel when focusing on a scene object.
 
 ### Patch Changes
 
@@ -1053,12 +997,8 @@
 
 ### Minor Changes
 
-- 2a64658: Prop descriptions are now viewable in the context panel when hovering
-  over prop names.
-- 2a64658: The context panel now displays all available props on a component
-  even if they aren't yet declared thanks to the TypeScript compiler and
-  ts-morph. Not all prop types are supported currently, if you have one that you
-  expected to be available but isn't please reach out.
+- 2a64658: Prop descriptions are now viewable in the context panel when hovering over prop names.
+- 2a64658: The context panel now displays all available props on a component even if they aren't yet declared thanks to the TypeScript compiler and ts-morph. Not all prop types are supported currently, if you have one that you expected to be available but isn't please reach out.
 
 ### Patch Changes
 
@@ -1082,14 +1022,10 @@
 
 ### Minor Changes
 
-- 73d9e8c: Inputs no longer trigger dirty scene state if their value hasn't
-  changed.
-- c87a5f3: Undo/redo now available. When manipulating the scene through
-  transform controls or the context panel each persisted manipulation will be
-  able to be undone (and redone) using hotkeys and the edit menu actions.
+- 73d9e8c: Inputs no longer trigger dirty scene state if their value hasn't changed.
+- c87a5f3: Undo/redo now available. When manipulating the scene through transform controls or the context panel each persisted manipulation will be able to be undone (and redone) using hotkeys and the edit menu actions.
 - c87a5f3: Saving with hotkey is now available when focus is on the ui.
-- c87a5f3: Adds reset command. Use this to throw away all unsaved changes in the
-  scene.
+- c87a5f3: Adds reset command. Use this to throw away all unsaved changes in the scene.
 
 ### Patch Changes
 
@@ -1103,8 +1039,7 @@
 
 - 5ac3a26: UI has been darkened and borders have been deemphasized.
 - a1e3127: When source changes ui now reflects the updated value.
-- 48002a7: Array input no longer caches its value which resulted in unexpected
-  bugs when transforming in scene and then through the ui.
+- 48002a7: Array input no longer caches its value which resulted in unexpected bugs when transforming in scene and then through the ui.
 
 ### Patch Changes
 
@@ -1130,8 +1065,7 @@
 ### Minor Changes
 
 - 0d83ef2: Scene drawer now has correct padding and is increased in width.
-- 0d83ef2: The catch all prop field now has capped height stopping it from
-  looking ridiculous.
+- 0d83ef2: The catch all prop field now has capped height stopping it from looking ridiculous.
 
 ### Patch Changes
 
@@ -1142,11 +1076,8 @@
 
 ### Minor Changes
 
-- aa1aa8c: Scene transformation using ts-morph has been replaced with Babel
-  significantly speeding up initial load and saving. The need for the
-  `.triplex/tmp` folder is now gone and thus no longer used.
-- aa1aa8c: Line and column numbers for scene objects have been corrected and are
-  now consistent across editor, scene, and server.
+- aa1aa8c: Scene transformation using ts-morph has been replaced with Babel significantly speeding up initial load and saving. The need for the `.triplex/tmp` folder is now gone and thus no longer used.
+- aa1aa8c: Line and column numbers for scene objects have been corrected and are now consistent across editor, scene, and server.
 - aa1aa8c: Scene drawer now shows loading text when appropriate.
 
 ### Patch Changes
@@ -1159,8 +1090,7 @@
 ### Minor Changes
 
 - fa35cde: Fixes UI scrolling and contrast bugs.
-- 9b1d135: Increased gutters in the scene panel list as well as fixing the
-  variable width in the context panel.
+- 9b1d135: Increased gutters in the scene panel list as well as fixing the variable width in the context panel.
 - 246217f: Text contrast in the scene and context panel have been improved.
 - e5a3419: Context panel now supports more prop types.
 
@@ -1174,8 +1104,7 @@
 ### Minor Changes
 
 - 785050d: Adds unsaved indicator to the editor.
-- 71374c9: Scene, context, and open scene containers now scroll when overflowing
-  with content.
+- 71374c9: Scene, context, and open scene containers now scroll when overflowing with content.
 
 ### Patch Changes
 
@@ -1262,13 +1191,11 @@
 ### Minor Changes
 
 - e7c026b: Scene drawer no-longer stays open when selecting a scene.
-- 7ff35f3: Context panel no longer throws when navigating between scene and a
-  scene object is selected.
+- 7ff35f3: Context panel no longer throws when navigating between scene and a scene object is selected.
 - e7c026b: Scene panel now shows correctly nested jsx elements.
 - e7c026b: Disabled menu items are now actually disabled.
 - 7ff35f3: Upgrades @react-three/fiber to latest.
-- 7ff35f3: Navigating to host elements is no longer possible (as there is
-  nowhere to navigate to).
+- 7ff35f3: Navigating to host elements is no longer possible (as there is nowhere to navigate to).
 - 2fa7c45: Adds author field to package.json.
 
 ### Patch Changes
@@ -1283,10 +1210,8 @@
 
 ### Minor Changes
 
-- e54e0f8: Editor now has a select menu with useful actions when a scene object
-  is selected.
-- e54e0f8: Bridge events now flow unidirectionally enabling the editor ui to
-  initiate events to the scene, such as navigate and focus.
+- e54e0f8: Editor now has a select menu with useful actions when a scene object is selected.
+- e54e0f8: Bridge events now flow unidirectionally enabling the editor ui to initiate events to the scene, such as navigate and focus.
 
 ### Patch Changes
 
@@ -1298,8 +1223,7 @@
 
 ### Minor Changes
 
-- 7a8083c: The open rpc has been added back to prevent the "flash of no scene"
-  when transitioning between scenes for the first time.
+- 7a8083c: The open rpc has been added back to prevent the "flash of no scene" when transitioning between scenes for the first time.
 
 ### Patch Changes
 
@@ -1310,17 +1234,14 @@
 
 ### Minor Changes
 
-- cfbd47b: When transitioning between scenes there is no longer a flash of
-  hidden scene objects.
+- cfbd47b: When transitioning between scenes there is no longer a flash of hidden scene objects.
 - 969feab: Removes unneeded fetch calls.
 - cc917d7: Adds usage of ws-client pkg.
 - 969feab: Adds react suspense powered websocket abstraction.
 - a4d6882: Adds context panel for selected scene objects.
-- 99075ff: Adds error boundaries so the app doesn't blow up when a scene isn't
-  found.
+- 99075ff: Adds error boundaries so the app doesn't blow up when a scene isn't found.
 - cfbd47b: Scene meta has been extrated into a common hook.
-- 969feab: Scene list and scene components ui now fetch data using the websocket
-  client.
+- 969feab: Scene list and scene components ui now fetch data using the websocket client.
 
 ### Patch Changes
 
@@ -1334,8 +1255,7 @@
 ### Minor Changes
 
 - 55f0206: Fixed focus and blur events between the scene and the editor.
-- 55f0206: Scene components now appear nested when children of other components
-  in the UI.
+- 55f0206: Scene components now appear nested when children of other components in the UI.
 
 ## 0.11.0
 
@@ -1352,16 +1272,13 @@
 
 ### Minor Changes
 
-- a32c72e: Adds the scene component list to the sidebar with the ability to
-  focus scene objects on click. Scene components in this list are also selected
-  when focusing scene objects in the scene.
+- a32c72e: Adds the scene component list to the sidebar with the ability to focus scene objects on click. Scene components in this list are also selected when focusing scene objects in the scene.
 
 ## 0.9.0
 
 ### Minor Changes
 
-- ac9624f: Fixes client/host race condition where host would send events before
-  the client has connected.
+- ac9624f: Fixes client/host race condition where host would send events before the client has connected.
 - 7db42bd: Adds open scene drawer.
 
 ### Patch Changes
@@ -1373,8 +1290,7 @@
 
 ### Minor Changes
 
-- 387f6cd: Editor now able to use tailwindcss during dev, which is compiled away
-  when packaged to npm.
+- 387f6cd: Editor now able to use tailwindcss during dev, which is compiled away when packaged to npm.
 - 387f6cd: Adds a menu bar to the editor.
 
 ## 0.7.0

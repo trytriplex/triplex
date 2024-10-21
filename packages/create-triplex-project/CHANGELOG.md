@@ -1,5 +1,17 @@
 # create-triplex-project
 
+## 0.70.0
+
+### Minor Changes
+
+- 652c1cc: Mutating an existing project is no longer supported.
+- 652c1cc: Update templates and creation flow in anticipation of Triplex for VS Code.
+
+### Patch Changes
+
+- 652c1cc: Update package json meta.
+- 652c1cc: Re-publish package.
+
 ## 0.69.3
 
 ### Patch Changes
@@ -157,8 +169,7 @@
 
 ### Minor Changes
 
-- c9fcf24: Template used during project creation now decides how to configure
-  based on app or node.
+- c9fcf24: Template used during project creation now decides how to configure based on app or node.
 
 ## 0.53.1
 
@@ -180,8 +191,7 @@
 
 ### Patch Changes
 
-- 16d2c14: When installing dependencies the path env var now looks at the
-  default location for node and nvm.
+- 16d2c14: When installing dependencies the path env var now looks at the default location for node and nvm.
 
 ## 0.51.1
 
@@ -200,7 +210,5 @@
 ### Minor Changes
 
 - 8c5611d: Adds cwd arg.
-- 9f0fa17: When running the cli if passing args will now run in non-interactive
-  mode.
-- 9f0fa17: The init command has been extracted to the create-triplex-project
-  package.
+- 9f0fa17: When running the cli if passing args will now run in non-interactive mode.
+- 9f0fa17: The init command has been extracted to the create-triplex-project package.

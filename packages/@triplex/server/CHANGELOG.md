@@ -1,5 +1,13 @@
 # @triplex/server
 
+## 0.69.3
+
+### Patch Changes
+
+- 96c8cb1: TypeScript module resolution is now always forced to use the "bundler" algorithm. There should be no noticeable change.
+- 96c8cb1: Userland tsconfig.json files no longer need to set React Three Fiber types.
+- 652c1cc: Update package json meta.
+
 ## 0.69.2
 
 ### Patch Changes
@@ -104,8 +112,7 @@
 
 ### Patch Changes
 
-- 1d9c390: Fix user land modules being forcibly invalidated during HMR causing
-  unexpected behaviour.
+- 1d9c390: Fix user land modules being forcibly invalidated during HMR causing unexpected behaviour.
 
 ## 0.64.2
 
@@ -118,13 +125,11 @@
 - 8712a12: Add renderer attributes. Refer to docs.
 - 0868337: Add support for SharedBufferArray.
 - 0868337: Add `define` variables support.
-- f0444d6: Component controls, provider controls, and component prop controls
-  now show default props when no value has been set.
+- f0444d6: Component controls, provider controls, and component prop controls now show default props when no value has been set.
 
 ### Patch Changes
 
-- 0868337: Prevent throwing an exception if a component resolves to `any` when
-  resolving its path.
+- 0868337: Prevent throwing an exception if a component resolves to `any` when resolving its path.
 - dca6003: Fix inferring jsx element locations for certain scenarios.
 - 6a65504: Fix adding elements to a component without a top level fragment.
 - f0444d6: Fix default prop parsing from fc component.
@@ -148,20 +153,16 @@
 
 ### Patch Changes
 
-- bad0a57: Triplex now finds random open ports every time a project is opened
-  instead of using hardcoded ones.
+- bad0a57: Triplex now finds random open ports every time a project is opened instead of using hardcoded ones.
 - 490aaf1: New files and components now display a box.
-- c2a0640: Editing children elements now opens the elements file if not yet
-  open.
+- c2a0640: Editing children elements now opens the elements file if not yet open.
 
 ## 0.61.2
 
 ### Patch Changes
 
-- 4a40243: Source files now have events initialized when first explicitly loaded
-  — previously they would be skipped over when implicitly loaded.
-- 4a40243: Source files updates originating from the file system now work with
-  undo/redo.
+- 4a40243: Source files now have events initialized when first explicitly loaded — previously they would be skipped over when implicitly loaded.
+- 4a40243: Source files updates originating from the file system now work with undo/redo.
 
 ## 0.61.1
 
@@ -173,18 +174,15 @@
 
 ### Minor Changes
 
-- 3920fd3: Scene elements can now be moved before/after/into other scene
-  elements with drag and drop.
+- 3920fd3: Scene elements can now be moved before/after/into other scene elements with drag and drop.
 - b407820: Add file tabs.
 - 3091229: Add new undo/redo system. Any edits are now flushed through this.
 
 ### Patch Changes
 
-- b407820: Save is now correctly scoped to the currently opened file. Save all
-  replaces the original functionality.
+- b407820: Save is now correctly scoped to the currently opened file. Save all replaces the original functionality.
 - 5efeea0: Normalize paths using upath instead of node built-in.
-- ab35f91: Refactor modified to be a different state to new file. New files now
-  shown as italic and not initially modified.
+- ab35f91: Refactor modified to be a different state to new file. New files now shown as italic and not initially modified.
 
 ## 0.60.1
 
@@ -205,16 +203,11 @@
 ### Minor Changes
 
 - 26bd068: Add `onSourceFileChange` api to project.
-- 26bd068: Scene modules are now loaded remotely instead of from the fs. This is
-  going to raise the ceiling on features we can implement as now everything
-  becomes a mutation to the remote source instead of that AND also trying to
-  handle the intermediate state in the scene prior to it being flushed to the
-  fs. Super excited about this.
+- 26bd068: Scene modules are now loaded remotely instead of from the fs. This is going to raise the ceiling on features we can implement as now everything becomes a mutation to the remote source instead of that AND also trying to handle the intermediate state in the scene prior to it being flushed to the fs. Super excited about this.
 
 ### Patch Changes
 
-- 2194c85: Triplex now warns you when the file you have open is outside where
-  your project has defined files should be.
+- 2194c85: Triplex now warns you when the file you have open is outside where your project has defined files should be.
 - f2d612b: Editor now shows union literal labels where possible.
 - 8dd7cd1: Scene/client pkgs now bundled with vite.
 - f6e068c: Packages have been moved into namedspaced folders.
@@ -237,10 +230,8 @@
 ### Patch Changes
 
 - 3e1e081: Modified marker is now reset when changes from the file system occur.
-- 221e6a7: Fix default export module names not being inferred correctly when
-  called in a function.
-- 37849fe: Upsert prop no longer shifts sibling elements line numbers if the
-  prop value was smaller than the current value.
+- 221e6a7: Fix default export module names not being inferred correctly when called in a function.
+- 37849fe: Upsert prop no longer shifts sibling elements line numbers if the prop value was smaller than the current value.
 
 ## 0.57.2
 
@@ -256,35 +247,27 @@
 
 - 5c1fc3d: Add editing child jsx elements through the Triplex UI.
 - 6da8bae: Adds context provider support using the `provider` config property.
-- 2b61384: Adding an asset is now contextual, the original button adds to the
-  open component, while the add buttons on each element in the left scene panel
-  add to it as a child.
+- 2b61384: Adding an asset is now contextual, the original button adds to the open component, while the add buttons on each element in the left scene panel add to it as a child.
 
 ### Patch Changes
 
-- bcf7cae: Default export component names are now displayed correctly in the
-  open component drawer.
+- bcf7cae: Default export component names are now displayed correctly in the open component drawer.
 - 730fa7c: Transform controls are now disabled when controlled by code.
 
 ## 0.56.1
 
 ### Patch Changes
 
-- baf33b9: Exports that export a call expression now resolve correctly when
-  opened.
+- baf33b9: Exports that export a call expression now resolve correctly when opened.
 
 ## 0.56.0
 
 ### Minor Changes
 
-- 3724bf9: Name props declared on host elements now take precedence over the
-  element name.
+- 3724bf9: Name props declared on host elements now take precedence over the element name.
 - 463789f: Adds end-to-end typesafe ws router.
-- 32a110f: Add top-level scene component to the scene panel. When selected users
-  can modify the props during their seession to see what happens.
-- 47483b9: The data that powers the context panel props is now sourced from
-  types first instead of defined props first, resulting in tuple type data no
-  longer being lost after a prop has been set.
+- 32a110f: Add top-level scene component to the scene panel. When selected users can modify the props during their seession to see what happens.
+- 47483b9: The data that powers the context panel props is now sourced from types first instead of defined props first, resulting in tuple type data no longer being lost after a prop has been set.
 
 ### Patch Changes
 
@@ -322,19 +305,16 @@
 
 ### Patch Changes
 
-- a060d2c: Fix websocket server connection listener being called on every router
-  handler setup.
+- a060d2c: Fix websocket server connection listener being called on every router handler setup.
 - 9100a37: Revert remove unused on save as it was causing issues.
 
 ## 0.54.1
 
 ### Patch Changes
 
-- 76fd3f3: Fixes a bug on Windows where it would throw assuming you were opening
-  a file out of the open project.
+- 76fd3f3: Fixes a bug on Windows where it would throw assuming you were opening a file out of the open project.
 - cdd6234: On save unused identifiers are now removed.
-- 76fd3f3: Adding custom components to a scene no longer results in mismatches
-  causing the context panel to error.
+- 76fd3f3: Adding custom components to a scene no longer results in mismatches causing the context panel to error.
 - f77c830: Fix prop upsert affecting children jsx elements unexpectedly.
 
 ## 0.54.0
@@ -345,9 +325,7 @@
 
 ### Patch Changes
 
-- 049ac2c: Changes to prop types are now correctly propagating to all
-  referencing modules that import them, previously you would have to restart
-  triplex for the change to be applied.
+- 049ac2c: Changes to prop types are now correctly propagating to all referencing modules that import them, previously you would have to restart triplex for the change to be applied.
 
 ## 0.52.0
 
@@ -357,15 +335,13 @@
 
 ### Patch Changes
 
-- c97e359: Fixes tuple types inside union types not being marked as required
-  when declared as a prop on a component.
+- c97e359: Fixes tuple types inside union types not being marked as required when declared as a prop on a component.
 
 ## 0.50.1
 
 ### Patch Changes
 
-- a101545: The fs watcher used for the save indicator endpoint now uses polling
-  to work around a timing bug.
+- a101545: The fs watcher used for the save indicator endpoint now uses polling to work around a timing bug.
 
 ## 0.50.0
 
@@ -379,8 +355,7 @@
 
 ### Minor Changes
 
-- 6fe34af: Windows support is here. Now Triplex cli and electron can be ran on
-  Windows, as well as the local dev loop now being functional.
+- 6fe34af: Windows support is here. Now Triplex cli and electron can be ran on Windows, as well as the local dev loop now being functional.
 
 ## 0.47.0
 
@@ -414,20 +389,14 @@
 
 ### Minor Changes
 
-- 6dfb22d: Create a component in the current open file through the component
-  switcher.
-- 6dfb22d: A component switcher is now available in the left panel, use it to
-  quickly switch between components in the open file.
+- 6dfb22d: Create a component in the current open file through the component switcher.
+- 6dfb22d: A component switcher is now available in the left panel, use it to quickly switch between components in the open file.
 - b7bbeba: String and numbers in props now can have undefined default values.
 - 6dfb22d: Saving is now skipped if there are no changes to save.
 - de54812: Context panel tuple props now show labels when available.
-- b7bbeba: When adding a new element to the scene if you have a selection it
-  will be added as a child. If you have no selection it will be added to the
-  root component.
-- 6dfb22d: The scene ws listener now pushes when the file its interested in is
-  saved to source.
-- b7bbeba: Geometry and material built-in elements are now exposed in the add
-  component drawer.
+- b7bbeba: When adding a new element to the scene if you have a selection it will be added as a child. If you have no selection it will be added to the root component.
+- 6dfb22d: The scene ws listener now pushes when the file its interested in is saved to source.
+- b7bbeba: Geometry and material built-in elements are now exposed in the add component drawer.
 - facc6aa: Saving a new component now prompts for a component name.
 - 01cd388: Element pos returned after adding a child element is now correct.
 
@@ -437,24 +406,20 @@
 
 ### Minor Changes
 
-- c399ed8: Fixes timing bug by using specific insert and set functions on the
-  import declaration node instead of the generic set.
+- c399ed8: Fixes timing bug by using specific insert and set functions on the import declaration node instead of the generic set.
 
 ## 0.40.0
 
 ### Minor Changes
 
-- bfb0f7a: When initializing a websocket loader it now catches any errors thrown
-  and returns them to the client.
-- 7aa2ead: Shadowed types, interfaces, and imports are now excluded when reading
-  an exports name.
+- bfb0f7a: When initializing a websocket loader it now catches any errors thrown and returns them to the client.
+- 7aa2ead: Shadowed types, interfaces, and imports are now excluded when reading an exports name.
 
 ## 0.39.0
 
 ### Minor Changes
 
-- ca9807e: Save now supports passing in an option arg to copy the file to
-  another location.
+- ca9807e: Save now supports passing in an option arg to copy the file to another location.
 - ca9807e: New files can now be created through the file menu.
 
 ## 0.38.0
@@ -463,8 +428,7 @@
 
 ### Minor Changes
 
-- 23fe64a: Adds delete scene object. Access through the context panel when
-  focusing on a scene object.
+- 23fe64a: Adds delete scene object. Access through the context panel when focusing on a scene object.
 - e480446: Exclude isLight propeties from scene object context panel.
 - 1a2ecea: Adds new endpoint for adding a component to a file.
 
@@ -485,10 +449,7 @@
 
 ### Minor Changes
 
-- 2a64658: The context panel now displays all available props on a component
-  even if they aren't yet declared thanks to the TypeScript compiler and
-  ts-morph. Not all prop types are supported currently, if you have one that you
-  expected to be available but isn't please reach out.
+- 2a64658: The context panel now displays all available props on a component even if they aren't yet declared thanks to the TypeScript compiler and ts-morph. Not all prop types are supported currently, if you have one that you expected to be available but isn't please reach out.
 
 ## 0.33.0
 
@@ -496,20 +457,15 @@
 
 ### Minor Changes
 
-- c87a5f3: Undo/redo now available. When manipulating the scene through
-  transform controls or the context panel each persisted manipulation will be
-  able to be undone (and redone) using hotkeys and the edit menu actions.
-- 3a190f1: API response for prop types now returns an object and works with
-  strict compiler option.
-- c87a5f3: Adds reset command. Use this to throw away all unsaved changes in the
-  scene.
+- c87a5f3: Undo/redo now available. When manipulating the scene through transform controls or the context panel each persisted manipulation will be able to be undone (and redone) using hotkeys and the edit menu actions.
+- 3a190f1: API response for prop types now returns an object and works with strict compiler option.
+- c87a5f3: Adds reset command. Use this to throw away all unsaved changes in the scene.
 
 ## 0.31.0
 
 ### Minor Changes
 
-- dad975f: Watchers have been replaced with ts-morph events where appropriate to
-  prevent race conditions when changing from source.
+- dad975f: Watchers have been replaced with ts-morph events where appropriate to prevent race conditions when changing from source.
 - 6e9b119: Paths passed to globs are now normalized to use POSIX separators.
 
 ## 0.30.0
@@ -524,19 +480,15 @@
 
 ### Minor Changes
 
-- aa1aa8c: Scene transformation using ts-morph has been replaced with Babel
-  significantly speeding up initial load and saving. The need for the
-  `.triplex/tmp` folder is now gone and thus no longer used.
-- aa1aa8c: Line and column numbers for scene objects have been corrected and are
-  now consistent across editor, scene, and server.
+- aa1aa8c: Scene transformation using ts-morph has been replaced with Babel significantly speeding up initial load and saving. The need for the `.triplex/tmp` folder is now gone and thus no longer used.
+- aa1aa8c: Line and column numbers for scene objects have been corrected and are now consistent across editor, scene, and server.
 
 ## 0.27.0
 
 ### Minor Changes
 
 - fa35cde: JSX element type inference has been re-written to be more resilient.
-- fa35cde: JSX element type inference has been removed from the critical path of
-  the scene transform.
+- fa35cde: JSX element type inference has been removed from the critical path of the scene transform.
 - e5a3419: Context panel now supports more prop types.
 
 ## 0.26.0
@@ -545,28 +497,23 @@
 
 - 785050d: Adds unsaved indicator to the editor.
 - 440d427: Server now pings every 30s awaiting a pong from connected clients.
-- b77438d: During transformation any leading trivia found is now stripped from
-  cloned jsx elements.
+- b77438d: During transformation any leading trivia found is now stripped from cloned jsx elements.
 
 ## 0.25.0
 
 ### Minor Changes
 
 - 1be56fe: Scene transform now correctly handles props with dashes.
-- ed6349b: Extracting prop types now returns early instead of throwing for
-  unhandled nodes.
-- aaac9cc: Fix type extraction for jsx elements to handle arrow function
-  components.
+- ed6349b: Extracting prop types now returns early instead of throwing for unhandled nodes.
+- aaac9cc: Fix type extraction for jsx elements to handle arrow function components.
 - 5736992: Server now throws when accessing files outside of cwd.
-- e694cf2: Now override userland config for preserveSymlinks to false to prevent
-  100% CPU utilization.
+- e694cf2: Now override userland config for preserveSymlinks to false to prevent 100% CPU utilization.
 
 ## 0.24.0
 
 ### Minor Changes
 
-- 4f468f6: The server project [ts-morph] now skips adding files from ts config
-  on instantiation.
+- 4f468f6: The server project [ts-morph] now skips adding files from ts config on instantiation.
 
 ## 0.23.0
 
@@ -617,10 +564,8 @@
 
 ### Minor Changes
 
-- 7ff35f3: Context panel no longer throws when navigating between scene and a
-  scene object is selected.
-- 2fa7c45: Adds triplex config and files option, an array of globs for triplex
-  to find scenes with.
+- 7ff35f3: Context panel no longer throws when navigating between scene and a scene object is selected.
+- 2fa7c45: Adds triplex config and files option, an array of globs for triplex to find scenes with.
 - 926359a: Server now gracefully exits when closed.
 - 2fa7c45: Adds author field to package.json.
 - 926359a: The temp folder is now located in .triplex/tmp.
@@ -642,8 +587,7 @@
 
 ### Minor Changes
 
-- 7a8083c: The open rpc has been added back to prevent the "flash of no scene"
-  when transitioning between scenes for the first time.
+- 7a8083c: The open rpc has been added back to prevent the "flash of no scene" when transitioning between scenes for the first time.
 
 ### Patch Changes
 
@@ -654,8 +598,7 @@
 ### Minor Changes
 
 - a4d6882: Adds scene object ws request.
-- 969feab: Adds websocket server and replaces scene and scene components
-  endpoints with it.
+- 969feab: Adds websocket server and replaces scene and scene components endpoints with it.
 - cc917d7: Removes unused apis.
 
 ### Patch Changes
@@ -669,8 +612,7 @@
 
 ### Minor Changes
 
-- 55f0206: Scene components now appear nested when children of other components
-  in the UI.
+- 55f0206: Scene components now appear nested when children of other components in the UI.
 
 ### Patch Changes
 
@@ -692,9 +634,7 @@
 
 ### Minor Changes
 
-- 55e8a52: On save the source file will be formatted with prettier if a
-  prettierrc file was found, else it will be formatted by the TypeScript
-  compiler.
+- 55e8a52: On save the source file will be formatted with prettier if a prettierrc file was found, else it will be formatted by the TypeScript compiler.
 - 7db42bd: Adds /scene route to return all available files in the cwd.
 
 ### Patch Changes

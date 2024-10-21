@@ -1,5 +1,14 @@
 # @triplex/renderer-react
 
+## 0.69.3
+
+### Patch Changes
+
+- 652c1cc: Update package json meta.
+- Updated dependencies [652c1cc]
+  - @triplex/bridge@0.69.3
+  - @triplex/ws@0.69.3
+
 ## 0.69.2
 
 ### Patch Changes

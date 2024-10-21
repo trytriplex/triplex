@@ -1,5 +1,25 @@
 # @triplex/electron
 
+## 0.69.5
+
+### Patch Changes
+
+- 652c1cc: Remove dialog message mentioning the Triplex config when opening a project as it's no longer needed.
+- 652c1cc: You can now select a specific template when creating a new project.
+- 652c1cc: Remove initialize option from project creation. Only creating a new project is supported.
+- 652c1cc: Update package json meta.
+- Updated dependencies [652c1cc]
+- Updated dependencies [652c1cc]
+- Updated dependencies [96c8cb1]
+- Updated dependencies [96c8cb1]
+- Updated dependencies [652c1cc]
+- Updated dependencies [652c1cc]
+- Updated dependencies [652c1cc]
+  - create-triplex-project@0.70.0
+  - @triplex/server@0.69.3
+  - @triplex/editor@0.69.5
+  - @triplex/client@0.69.5
+
 ## 0.69.4
 
 ### Patch Changes
@@ -262,8 +282,7 @@
 
 ### Minor Changes
 
-- 625e23a: The selection system has been reimplemented, removing the need for
-  intermediate group elements powering scene lookups.
+- 625e23a: The selection system has been reimplemented, removing the need for intermediate group elements powering scene lookups.
 
 ### Patch Changes
 
@@ -360,8 +379,7 @@
 
 ### Patch Changes
 
-- 777b2f5: Improve UI/UX of error screen shown when loading a project fails, now
-  showing the actual error message.
+- 777b2f5: Improve UI/UX of error screen shown when loading a project fails, now showing the actual error message.
 - Updated dependencies [f0444d6]
 - Updated dependencies [777b2f5]
 - Updated dependencies [8712a12]
@@ -410,20 +428,16 @@
 
 ### Minor Changes
 
-- 273c586: Create / open project flow has had its UX changed to improve
-  understanding what is actually happening.
+- 273c586: Create / open project flow has had its UX changed to improve understanding what is actually happening.
 - 0909731: Add Linux support.
 - 3612434: Add thumbnail support for renderers.
 
 ### Patch Changes
 
-- bad0a57: Triplex now finds random open ports every time a project is opened
-  instead of using hardcoded ones.
-- 0de7465: Saving files outside of the project folder is now presented with an
-  error message instead of an exception.
+- bad0a57: Triplex now finds random open ports every time a project is opened instead of using hardcoded ones.
+- 0de7465: Saving files outside of the project folder is now presented with an error message instead of an exception.
 - cea76c2: Simplify bridge event names.
-- 547c72d: Finding Triplex config when opening a project now stops when getting
-  to the root directory instead of going forever.
+- 547c72d: Finding Triplex config when opening a project now stops when getting to the root directory instead of going forever.
 - 2ec38a1: Fix ide link not opening.
 - 4e9e389: Open project modal is now tied to a browser window if available.
 - 0909731: Fix hotkeys firing when they shouldn't.
@@ -480,21 +494,18 @@
 
 ### Minor Changes
 
-- 3920fd3: Scene elements can now be moved before/after/into other scene
-  elements with drag and drop.
+- 3920fd3: Scene elements can now be moved before/after/into other scene elements with drag and drop.
 - 5299234: Add open file button to tabs.
 
 ### Patch Changes
 
 - 5299234: Titlebar now goes partially transparent when inactive.
 - 5ceb4de: Upgrade electron dependencies.
-- 755e39a: Triplex now traverses up the folder path to see if it can open a
-  project.
+- 755e39a: Triplex now traverses up the folder path to see if it can open a project.
 - 4664b3c: Fix initial open throwing when no exports were found.
 - 5efeea0: Normalize paths using upath instead of node built-in.
 - b407820: Add hotkeys for file tabs.
-- 755e39a: Open project flow now allows you to create a project without going
-  back to the welcome screen
+- 755e39a: Open project flow now allows you to create a project without going back to the welcome screen
 - Updated dependencies [5299234]
 - Updated dependencies [d583e42]
 - Updated dependencies [d583e42]
@@ -563,18 +574,12 @@
 
 ### Minor Changes
 
-- 26bd068: Scene modules are now loaded remotely instead of from the fs. This is
-  going to raise the ceiling on features we can implement as now everything
-  becomes a mutation to the remote source instead of that AND also trying to
-  handle the intermediate state in the scene prior to it being flushed to the
-  fs. Super excited about this.
+- 26bd068: Scene modules are now loaded remotely instead of from the fs. This is going to raise the ceiling on features we can implement as now everything becomes a mutation to the remote source instead of that AND also trying to handle the intermediate state in the scene prior to it being flushed to the fs. Super excited about this.
 
 ### Patch Changes
 
-- 1d70f2b: An error screen is now presented to users when Triplex fails to start
-  up a project.
-- 75073e7: Editor now shows a loading screen prior to the project being
-  successfully loaded.
+- 1d70f2b: An error screen is now presented to users when Triplex fails to start up a project.
+- 75073e7: Editor now shows a loading screen prior to the project being successfully loaded.
 - Updated dependencies [2194c85]
 - Updated dependencies [ce8a108]
 - Updated dependencies [ce8a108]
@@ -731,8 +736,7 @@
 ### Patch Changes
 
 - ea86fdc: Add license banner.
-- b3d2fa9: Number input no longer calls change and confirm handlers if the value
-  is outside the min/max range.
+- b3d2fa9: Number input no longer calls change and confirm handlers if the value is outside the min/max range.
 - Updated dependencies [ea86fdc]
 - Updated dependencies [b3d2fa9]
   - create-triplex-project@0.55.1
@@ -775,8 +779,7 @@
 
 ### Patch Changes
 
-- a2a8d1e: The welcome screen is now closed as early as possible instead of
-  waiting for the scene to completly open.
+- a2a8d1e: The welcome screen is now closed as early as possible instead of waiting for the scene to completly open.
 - Updated dependencies [d58e0b0]
 - Updated dependencies [8afea84]
 - Updated dependencies [ad66cc8]
@@ -794,8 +797,7 @@
 
 ### Minor Changes
 
-- c9fcf24: Template used during project creation now decides how to configure
-  based on app or node.
+- c9fcf24: Template used during project creation now decides how to configure based on app or node.
 
 ### Patch Changes
 
@@ -812,8 +814,7 @@
 
 ### Patch Changes
 
-- c891574: Replace hardcoded PATH environment variable with values from
-  `shell-env`.
+- c891574: Replace hardcoded PATH environment variable with values from `shell-env`.
 - Updated dependencies [c891574]
   - create-triplex-project@0.53.1
   - @triplex/client@0.53.1
@@ -824,8 +825,7 @@
 
 ### Minor Changes
 
-- b488d29: When installing dependencies a dialog is presented to select a
-  package manager if it could not be inferred.
+- b488d29: When installing dependencies a dialog is presented to select a package manager if it could not be inferred.
 
 ### Patch Changes
 
@@ -853,13 +853,10 @@
 ### Patch Changes
 
 - 8f73338: Windows notifications will now display the correct app name.
-- fe90482: Errors during project creation now bubble up and are exposed to
-  users.
+- fe90482: Errors during project creation now bubble up and are exposed to users.
 - 16bf49e: When calling `exec` nvm's potential location is now accounted for.
-- fe90482: Errors during dependency installation now bubble up and are exposed
-  to users.
-- fe90482: The `/usr/local/bin` folder is now forcibly exposed on the PATH
-  environment variable when executing shell commands.
+- fe90482: Errors during dependency installation now bubble up and are exposed to users.
+- fe90482: The `/usr/local/bin` folder is now forcibly exposed on the PATH environment variable when executing shell commands.
 - Updated dependencies [48016ba]
 - Updated dependencies [16d2c14]
 - Updated dependencies [fe90482]
@@ -883,14 +880,12 @@
 
 ### Minor Changes
 
-- b61dc2a: The editor menu bar is now displayed in the title bar for Windows and
-  Node.js.
+- b61dc2a: The editor menu bar is now displayed in the title bar for Windows and Node.js.
 
 ### Patch Changes
 
 - b61dc2a: The title bar overlay now has a dark background and white text.
-- b61dc2a: Menu bar events now originate from the editor source instead of being
-  some in the electron app and some in the editor.
+- b61dc2a: Menu bar events now originate from the editor source instead of being some in the electron app and some in the editor.
 - Updated dependencies [c97e359]
 - Updated dependencies [b61dc2a]
 - Updated dependencies [b61dc2a]
@@ -930,8 +925,7 @@
 
 ### Minor Changes
 
-- 3eae131: When installing deps fails a learn more button is now available to
-  help troubleshoot.
+- 3eae131: When installing deps fails a learn more button is now available to help troubleshoot.
 - f2be7c9: Windows now also targets 32 bit nsis installer.
 - 3eae131: Welcome screen now shows a progress bar when installing node modules.
 - 8c5611d: Adds create project action to the welcome screen.
@@ -954,10 +948,8 @@
 
 ### Minor Changes
 
-- 6fe34af: Windows support is here. Now Triplex cli and electron can be ran on
-  Windows, as well as the local dev loop now being functional.
-- 5b189b2: When opening a project for the first time if node modules is missing
-  Triplex will try to install missing dependencies.
+- 6fe34af: Windows support is here. Now Triplex cli and electron can be ran on Windows, as well as the local dev loop now being functional.
+- 5b189b2: When opening a project for the first time if node modules is missing Triplex will try to install missing dependencies.
 
 ### Patch Changes
 
@@ -975,10 +967,8 @@
 - 1fc7657: Electron app now uses a custom title bar.
 - 1fc7657: Menu bar now contains view, window, and help.
 - e8cf76f: Adds native save dialog support.
-- 4164026: Add support for the scene to know what environment it is running in
-  (either web or electron).
-- daa2697: When opening a project the first found file and export are now
-  immediately opened.
+- 4164026: Add support for the scene to know what environment it is running in (either web or electron).
+- daa2697: When opening a project the first found file and export are now immediately opened.
 
 ### Patch Changes
 

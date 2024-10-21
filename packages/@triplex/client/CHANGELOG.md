@@ -1,5 +1,15 @@
 # @triplex/client
 
+## 0.69.5
+
+### Patch Changes
+
+- 652c1cc: Update package json meta.
+- Updated dependencies [652c1cc]
+  - @triplex/renderer-react@0.69.3
+  - @triplex/renderer-r3f@0.69.5
+  - @triplex/bridge@0.69.3
+
 ## 0.69.4
 
 ### Patch Changes
@@ -232,8 +242,7 @@
 
 ### Minor Changes
 
-- 625e23a: The selection system has been reimplemented, removing the need for
-  intermediate group elements powering scene lookups.
+- 625e23a: The selection system has been reimplemented, removing the need for intermediate group elements powering scene lookups.
 
 ### Patch Changes
 
@@ -248,8 +257,7 @@
 
 ### Patch Changes
 
-- c1a986d: Fix node modules check on scene elements using the triplex default
-  cwd instead of the opened project cwd.
+- c1a986d: Fix node modules check on scene elements using the triplex default cwd instead of the opened project cwd.
   - @triplex/bridge@0.65.2
   - @triplex/renderer-r3f@0.65.2
   - @triplex/renderer-react@0.65.2
@@ -289,8 +297,7 @@
 
 ### Patch Changes
 
-- 1d9c390: Fix user land modules being forcibly invalidated during HMR causing
-  unexpected behaviour.
+- 1d9c390: Fix user land modules being forcibly invalidated during HMR causing unexpected behaviour.
   - @triplex/renderer-r3f@0.64.3
   - @triplex/renderer-react@0.64.3
   - @triplex/bridge@0.64.3
@@ -357,8 +364,7 @@
 
 ### Patch Changes
 
-- bad0a57: Triplex now finds random open ports every time a project is opened
-  instead of using hardcoded ones.
+- bad0a57: Triplex now finds random open ports every time a project is opened instead of using hardcoded ones.
 - cea76c2: Simplify bridge event names.
 - 7313788: Internal refactor.
 - fe7c5f9: Config now passed to renderer func.
@@ -377,8 +383,7 @@
 
 ### Patch Changes
 
-- 273b644: Fix HMR error when Object namespace has been taken in the module
-  scope.
+- 273b644: Fix HMR error when Object namespace has been taken in the module scope.
   - @triplex/scene@0.61.2
 
 ## 0.61.1
@@ -433,11 +438,7 @@
 
 ### Minor Changes
 
-- 26bd068: Scene modules are now loaded remotely instead of from the fs. This is
-  going to raise the ceiling on features we can implement as now everything
-  becomes a mutation to the remote source instead of that AND also trying to
-  handle the intermediate state in the scene prior to it being flushed to the
-  fs. Super excited about this.
+- 26bd068: Scene modules are now loaded remotely instead of from the fs. This is going to raise the ceiling on features we can implement as now everything becomes a mutation to the remote source instead of that AND also trying to handle the intermediate state in the scene prior to it being flushed to the fs. Super excited about this.
 
 ### Patch Changes
 
@@ -476,8 +477,7 @@
 ### Patch Changes
 
 - 3e1e081: Changes to provider are now flushed throughout the scene during hmr.
-- 3e1e081: Components sourced from node modules now can be flagged as
-  transformed.
+- 3e1e081: Components sourced from node modules now can be flagged as transformed.
 - Updated dependencies [37bf36d]
 - Updated dependencies [3e1e081]
 - Updated dependencies [3e1e081]
@@ -495,9 +495,7 @@
 
 ### Patch Changes
 
-- d32cf94: Fixes bugs with the new Triplex provider, previously it would be
-  rendered outside the Canvas element as well as being unintentionally
-  transformed into a scene object.
+- d32cf94: Fixes bugs with the new Triplex provider, previously it would be rendered outside the Canvas element as well as being unintentionally transformed into a scene object.
 - Updated dependencies [d32cf94]
   - @triplex/scene@0.57.1
 
@@ -509,8 +507,7 @@
 
 ### Patch Changes
 
-- 5c7ba21: Windows no longer throws when opening projects that have escape
-  characters in them.
+- 5c7ba21: Windows no longer throws when opening projects that have escape characters in them.
 - Updated dependencies [5c1fc3d]
 - Updated dependencies [046cf78]
 - Updated dependencies [2b61384]
@@ -577,8 +574,7 @@
 
 ### Patch Changes
 
-- ad66cc8: Add support for scene objects to be passed transform props
-  (`position`, `rotation`, and `scale`) via spread props.
+- ad66cc8: Add support for scene objects to be passed transform props (`position`, `rotation`, and `scale`) via spread props.
 - Updated dependencies [3711009]
   - @triplex/scene@0.54.1
 
@@ -662,8 +658,7 @@
 
 ### Minor Changes
 
-- 6fe34af: Windows support is here. Now Triplex cli and electron can be ran on
-  Windows, as well as the local dev loop now being functional.
+- 6fe34af: Windows support is here. Now Triplex cli and electron can be ran on Windows, as well as the local dev loop now being functional.
 
 ### Patch Changes
 
@@ -674,8 +669,7 @@
 
 ### Minor Changes
 
-- 4164026: Add support for the scene to know what environment it is running in
-  (either web or electron).
+- 4164026: Add support for the scene to know what environment it is running in (either web or electron).
 
 ### Patch Changes
 
@@ -712,8 +706,7 @@
 
 ### Minor Changes
 
-- d67f998: Three package resolutions in the client server now are forcibly
-  resolved from the cwd.
+- d67f998: Three package resolutions in the client server now are forcibly resolved from the cwd.
 - c808957: Removes redundant package alias for `three`.
 
 ### Patch Changes
@@ -741,8 +734,7 @@
 - 5039e39: Adds `cwd` to servers to allow setting it to a new location.
 - 4d8d9cc: Builds are now minified.
 - 5039e39: Adds CSP meta tag to client HTML.
-- 557648e: Editor has been extracted out of the client dev server and now is
-  bundled when published to npm.
+- 557648e: Editor has been extracted out of the client dev server and now is bundled when published to npm.
 
 ### Patch Changes
 
@@ -756,8 +748,7 @@
 
 - 01cd388: Adds transparent checker bg to color picker when no value is defined.
 - 01cd388: Editor is now flushed when a scene adds or removes lights.
-- 6dfb22d: Fixes a HMR bug when a modules exports change and the editor wasn't
-  being flushed with the new exports.
+- 6dfb22d: Fixes a HMR bug when a modules exports change and the editor wasn't being flushed with the new exports.
 
 ### Patch Changes
 
@@ -806,9 +797,7 @@
 
 ### Minor Changes
 
-- a2a2f4b: When unapplying a prop to a component such as performing an undo it
-  is now applied as expected in the scene. Previously only the context panel
-  would be updated with the new value.
+- a2a2f4b: When unapplying a prop to a component such as performing an undo it is now applied as expected in the scene. Previously only the context panel would be updated with the new value.
 
 ### Patch Changes
 
@@ -836,8 +825,7 @@
 
 ### Minor Changes
 
-- 06471f6: The components virtual module has been removed in favor of passing
-  down as props instead.
+- 06471f6: The components virtual module has been removed in favor of passing down as props instead.
 
 ### Patch Changes
 
@@ -849,10 +837,8 @@
 
 ### Minor Changes
 
-- 1a2ecea: Components can now be added to the scene through the add component
-  button in the scene panel.
-- 1a2ecea: The triplex config now has a new property called `components` - use
-  to mark files that are able to be added to scenes.
+- 1a2ecea: Components can now be added to the scene through the add component button in the scene panel.
+- 1a2ecea: The triplex config now has a new property called `components` - use to mark files that are able to be added to scenes.
 
 ### Patch Changes
 
@@ -884,10 +870,7 @@
 
 ### Minor Changes
 
-- 2a64658: The context panel now displays all available props on a component
-  even if they aren't yet declared thanks to the TypeScript compiler and
-  ts-morph. Not all prop types are supported currently, if you have one that you
-  expected to be available but isn't please reach out.
+- 2a64658: The context panel now displays all available props on a component even if they aren't yet declared thanks to the TypeScript compiler and ts-morph. Not all prop types are supported currently, if you have one that you expected to be available but isn't please reach out.
 
 ### Patch Changes
 
@@ -959,9 +942,7 @@
 
 ### Minor Changes
 
-- aa1aa8c: Scene transformation using ts-morph has been replaced with Babel
-  significantly speeding up initial load and saving. The need for the
-  `.triplex/tmp` folder is now gone and thus no longer used.
+- aa1aa8c: Scene transformation using ts-morph has been replaced with Babel significantly speeding up initial load and saving. The need for the `.triplex/tmp` folder is now gone and thus no longer used.
 
 ### Patch Changes
 
@@ -1007,8 +988,7 @@
 
 ### Minor Changes
 
-- 9c807ac: When running r3f is now deduped and forced to
-  [use the version from project root](https://vitejs.dev/config/shared-options.html#resolve-dedupe).
+- 9c807ac: When running r3f is now deduped and forced to [use the version from project root](https://vitejs.dev/config/shared-options.html#resolve-dedupe).
 
 ### Patch Changes
 
@@ -1092,8 +1072,7 @@
 
 ### Minor Changes
 
-- c8ab78b: Scene no longer uses its own copied HMR library and instead leans on
-  the vite react plugin offering.
+- c8ab78b: Scene no longer uses its own copied HMR library and instead leans on the vite react plugin offering.
 - 2fa7c45: Adds author field to package.json.
 - 926359a: The temp folder is now located in .triplex/tmp.
 
@@ -1190,8 +1169,7 @@
 
 ### Minor Changes
 
-- 12ecbc4: Adds --open command to the editor command. Optionally pass in a
-  filepath to open that file initially.
+- 12ecbc4: Adds --open command to the editor command. Optionally pass in a filepath to open that file initially.
 - 7db42bd: Adds slide in animation.
 
 ### Patch Changes
