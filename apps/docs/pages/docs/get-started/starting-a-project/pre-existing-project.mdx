@@ -1,0 +1,45 @@
+---
+title: Pre-Existing Project
+---
+
+Your pre-existing React project can be used with Triplex without needing upfront configuration, however to have a complete experience some set up is needed if you're not using [TypeScript](https://www.typescriptlang.org/).
+
+## Install Types
+
+Component props are inferred by TypeScript and displayed in the [Scene Panel](/docs/building-your-scene/learn-the-ui/scene-panel) as controls. Installing these types enables host elements such as `mesh` and `group` to have their props available as controls.
+
+```bash
+pnpm i @types/react @types/three
+```
+
+## Common Questions
+
+### Why does my component error when opened?
+
+Triplex renders components in a isolated sandbox taking control of rendering the canvas and your component. If your component was not built to be self-contained it may error which is common with components that rely on [Context](https://react.dev/learn/passing-data-deeply-with-context) or global state.
+
+To fix this you can:
+
+- Refactor your component to be more self contained
+- Use a [Provider Component](/docs/building-your-scene/project-config#provider-component) to provide the necessary context
+- Set default props
+
+### Why do my component props not show up in the Scene Panel?
+
+If your project doesn't use TypeScript there is less type information available to populate the editor. You can get some inference for your components by declaring default props.
+
+```tsx /color = "red"/ /x = 0/ /visible = true/
+export function Component({ color = "red", x = 0, visible = true }) {
+  return (
+    <mesh visible={visible}>
+      <meshBasicMaterial color={color} position={[x, 0, 0]} />
+    </mesh>
+  );
+}
+```
+
+We recommend building with TypeScript for the best experience.
+
+### Why is a tsconfig.json file created when opening a component?
+
+The Scene Panel is populated by your component props sourced by the TypeScript compiler which needs this file.

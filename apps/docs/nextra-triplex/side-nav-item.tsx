@@ -6,7 +6,7 @@
  */
 import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
-import { Fragment, useState } from "react";
+import { Fragment, useLayoutEffect, useState } from "react";
 import { cn } from "../util/cn";
 
 export function SideNavItem({
@@ -28,6 +28,12 @@ export function SideNavItem({
     isSelected || isChildSelected,
   );
   const shouldNestChildren = !!children && level > 0;
+
+  useLayoutEffect(() => {
+    if (isChildSelected) {
+      setChildrenOpen(true);
+    }
+  }, [isChildSelected]);
 
   return (
     <Fragment>
@@ -59,13 +65,13 @@ export function SideNavItem({
         {title}
         {shouldNestChildren &&
           (childrenOpen ? (
-            <ChevronDownIcon className="ml-auto" />
+            <ChevronDownIcon className="ml-auto flex-shrink-0" />
           ) : (
-            <ChevronRightIcon className="ml-auto" />
+            <ChevronRightIcon className="ml-auto flex-shrink-0" />
           ))}
       </Link>
       {shouldNestChildren && childrenOpen && (
-        <div className="pl-3">{children}</div>
+        <div className={cn([level < 2 && "pl-3", "w-full"])}>{children}</div>
       )}
       {!shouldNestChildren && children}
     </Fragment>

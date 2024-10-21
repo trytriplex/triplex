@@ -187,6 +187,23 @@ const components: Components = {
   ul: ({ children }) => <ul className="mt-5 list-disc">{children}</ul>,
 };
 
+function hasSelectedChild(
+  item: ReturnType<typeof normalizePages>["docsDirectories"][0],
+  route: string,
+): boolean {
+  if (!item.children) {
+    return false;
+  }
+
+  return item.children.some((child) => {
+    if (child.route === route) {
+      return true;
+    }
+
+    return hasSelectedChild(child, route);
+  });
+}
+
 function renderDocsItem(
   link: ReturnType<typeof normalizePages>["docsDirectories"][0],
   route: string,
@@ -215,7 +232,7 @@ function renderDocsItem(
   return (
     <SideNavItem
       href={url}
-      isChildSelected={link.children?.some((child) => child.route === route)}
+      isChildSelected={hasSelectedChild(link, route)}
       isSelected={route === url}
       key={url}
       level={level}
