@@ -1,4 +1,13 @@
-# create-triplex-project
+# Create Triplex Project
 
-This package contains all templates used to bootstrap new Triplex projects. The
-CLI portion of the code is deprecated and currently unused.
+The fastest way to get started with Triplex is by using creating a project with a template. To get started run the following command and follow the prompts:
+
+```bash
+npx create-triplex-project@latest
+```
+
+Need help? Add `--help` at the end of the command.
+
+```bash
+npx create-triplex-project@latest --help
+```

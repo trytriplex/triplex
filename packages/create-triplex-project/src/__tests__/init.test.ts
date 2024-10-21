@@ -27,7 +27,7 @@ describe("init command", () => {
       const stubExec = vi.fn();
       const cwd = join(__dirname, "__mocks__", "init-new");
 
-      const { openPath } = await init({
+      const { open } = await init({
         __exec: stubExec,
         __fs: stubFs,
         __prompt: vi.fn().mockResolvedValue({ continue: true }),
@@ -35,10 +35,12 @@ describe("init command", () => {
         name: "fresh-local",
         pkgManager: "npm",
         template: "halloween",
-        version: "0.0.0-local",
       });
 
-      expect(openPath).toEqual(join(cwd, "fresh-local", "src/scene.tsx"));
+      expect(open).toEqual({
+        exportName: "default",
+        filepath: join(cwd, "fresh-local", "src/scene.tsx"),
+      });
     });
 
     it("should copy over static files from template dir", async () => {
@@ -61,7 +63,6 @@ describe("init command", () => {
         name: "fresh-local",
         pkgManager: "npm",
         template: "halloween",
-        version: "0.0.0-local",
       });
 
       expect(stubFs.copyFile).toHaveBeenCalledWith(
@@ -73,13 +74,8 @@ describe("init command", () => {
         join(cwd, "fresh-local", "tsconfig.json"),
       );
       expect(stubFs.cp).toHaveBeenCalledWith(
-        join(templateDir, "halloween", "src"),
-        join(cwd, "fresh-local", "src"),
-        { recursive: true },
-      );
-      expect(stubFs.cp).toHaveBeenCalledWith(
-        join(templateDir, "halloween", ".triplex"),
-        join(cwd, "fresh-local", ".triplex"),
+        join(templateDir, "halloween"),
+        join(cwd, "fresh-local"),
         { recursive: true },
       );
     });
@@ -104,7 +100,6 @@ describe("init command", () => {
         name: "fresh-local",
         pkgManager: "npm",
         template: "halloween",
-        version: "0.0.0-local",
       });
 
       expect(stubFs.writeFile).toHaveBeenCalledWith(
@@ -125,208 +120,6 @@ describe("init command", () => {
   }
 }
 `.replaceAll("\n", EOL),
-      );
-    });
-  });
-
-  describe("existing init", () => {
-    it("should copy example files over", async () => {
-      const stubFs: FS = {
-        copyFile: vi.fn(),
-        cp: vi.fn(),
-        mkdir: vi.fn(),
-        readFile,
-        readdir,
-        writeFile: vi.fn(),
-      } as unknown as FS;
-      const stubExec = vi.fn();
-      const cwd = join(__dirname, "__mocks__", "init-existing");
-
-      await init({
-        __exec: stubExec,
-        __fs: stubFs,
-        __prompt: vi.fn().mockResolvedValue({ continue: true }),
-        cwd,
-        name: "",
-        pkgManager: "npm",
-        template: "halloween",
-        version: "0.0.0-local",
-      });
-
-      expect(stubFs.cp).toHaveBeenCalledWith(
-        join(templateDir, "halloween", "src"),
-        join(cwd, "src/triplex-examples"),
-        { recursive: true },
-      );
-    });
-
-    it("should update tsconfig once", async () => {
-      const stubFs: FS = {
-        copyFile: vi.fn(),
-        cp: vi.fn(),
-        mkdir: vi.fn(),
-        readFile,
-        readdir,
-        writeFile: vi.fn(),
-      } as unknown as FS;
-      const stubExec = vi.fn();
-      const cwd = join(__dirname, "__mocks__", "init-existing");
-
-      await init({
-        __exec: stubExec,
-        __fs: stubFs,
-        __prompt: vi.fn().mockResolvedValue({ continue: true }),
-        cwd,
-        name: "",
-        pkgManager: "npm",
-        template: "halloween",
-        version: "0.0.0-local",
-      });
-
-      expect(stubFs.writeFile).toHaveBeenCalledWith(
-        join(cwd, "tsconfig.json"),
-        `{
-  "compilerOptions": {
-    "jsx": "preserve",
-    "types": [
-      "@react-three/fiber"
-    ]
-  },
-  "include": [
-    "."
-  ],
-  "exclude": [
-    "node_modules"
-  ]
-}
-`,
-      );
-    });
-
-    it("should skip git ignore", async () => {
-      const stubFs: FS = {
-        copyFile: vi.fn(),
-        cp: vi.fn(),
-        mkdir: vi.fn(),
-        readFile,
-        readdir,
-        writeFile: vi.fn(),
-      } as unknown as FS;
-      const stubExec = vi.fn();
-      const cwd = join(__dirname, "__mocks__", "init-existing");
-
-      await init({
-        __exec: stubExec,
-        __fs: stubFs,
-        __prompt: vi.fn().mockResolvedValue({ continue: true }),
-        cwd,
-        name: "",
-        pkgManager: "npm",
-        template: "halloween",
-        version: "0.0.0-local",
-      });
-
-      expect(stubFs.writeFile).not.toHaveBeenCalledWith(
-        join(cwd, ".gitignore"),
-      );
-    });
-
-    it("should update pkg json", async () => {
-      const stubFs: FS = {
-        copyFile: vi.fn(),
-        cp: vi.fn(),
-        mkdir: vi.fn(),
-        readFile,
-        readdir,
-        writeFile: vi.fn(),
-      } as unknown as FS;
-      const stubExec = vi.fn();
-      const cwd = join(__dirname, "__mocks__", "init-existing");
-
-      await init({
-        __exec: stubExec,
-        __fs: stubFs,
-        __prompt: vi.fn().mockResolvedValue({ continue: true }),
-        cwd,
-        name: "",
-        pkgManager: "npm",
-        template: "halloween",
-        version: "0.0.0-local",
-      });
-
-      expect(stubFs.writeFile).toHaveBeenCalledWith(
-        join(cwd, "package.json"),
-        `{
-  "name": "app",
-  "dependencies": {
-    "already-exists": "^1.1.1",
-    "@react-three/drei": "^9.114.0",
-    "@react-three/fiber": "^8.17.8",
-    "@types/react": "^18.3.9",
-    "@types/three": "^0.168.0",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "three": "^0.168.0"
-  },
-  "scripts": {}
-}
-`,
-      );
-    });
-
-    it("should return open path", async () => {
-      const stubFs: FS = {
-        copyFile: vi.fn(),
-        cp: vi.fn(),
-        mkdir: vi.fn(),
-        readFile,
-        readdir,
-        writeFile: vi.fn(),
-      } as unknown as FS;
-      const stubExec = vi.fn();
-      const cwd = join(__dirname, "__mocks__", "init-existing");
-
-      const { openPath } = await init({
-        __exec: stubExec,
-        __fs: stubFs,
-        __prompt: vi.fn().mockResolvedValue({ continue: true }),
-        cwd,
-        name: "fresh-local",
-        pkgManager: "npm",
-        template: "halloween",
-        version: "0.0.0-local",
-      });
-
-      expect(openPath).toEqual(join(cwd, "src/triplex-examples/scene.tsx"));
-    });
-  });
-
-  describe("existing init workspace", () => {
-    it("should return open path", async () => {
-      const stubFs: FS = {
-        copyFile: vi.fn(),
-        cp: vi.fn(),
-        mkdir: vi.fn(),
-        readFile,
-        readdir,
-        writeFile: vi.fn(),
-      } as unknown as FS;
-      const stubExec = vi.fn();
-      const cwd = join(__dirname, "__mocks__", "init-existing-workspace");
-
-      const { openPath } = await init({
-        __exec: stubExec,
-        __fs: stubFs,
-        __prompt: vi.fn().mockResolvedValue({ continue: true }),
-        cwd,
-        name: "fresh-local",
-        pkgManager: "npm",
-        template: "halloween",
-        version: "0.0.0-local",
-      });
-
-      expect(openPath).toEqual(
-        join(cwd, "packages/triplex-examples/scene.tsx"),
       );
     });
   });

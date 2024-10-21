@@ -2,7 +2,7 @@
   "name": "@docs/triplex",
   "version": "0.2.4",
   "private": true,
-  "description": "The React Three Fiber editor.",
+  "description": "The visual IDE for the web.",
   "license": "GPL-3.0",
   "scripts": {
     "build": "next build",
