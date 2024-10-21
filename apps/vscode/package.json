@@ -161,7 +161,8 @@
     }
   },
   "activationEvents": [
-    "workspaceContains:**/*.{jsx,tsx}"
+    "workspaceContains:**/*.{jsx,tsx}",
+    "onStartupFinished"
   ],
   "dependencies": {
     "@triplex/client": "0.69.5",
