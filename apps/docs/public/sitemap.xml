@@ -85,7 +85,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -121,19 +121,55 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/starting-a-project</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/vscode</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://triplex.dev/docs/get-started/starting-a-project/create-from-template</loc>
+    <lastmod>2024-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://triplex.dev/docs/get-started/starting-a-project/pre-existing-project</loc>
+    <lastmod>2024-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://triplex.dev/docs/get-started/starting-a-project/starting-from-scratch</loc>
+    <lastmod>2024-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/starting-a-project/your-first-component</loc>
     <lastmod>2024-10-19</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://triplex.dev/docs/get-started/starting-a-project/create-from-template/default</loc>
+    <lastmod>2024-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://triplex.dev/docs/get-started/starting-a-project/create-from-template/empty</loc>
+    <lastmod>2024-10-21</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://triplex.dev/docs/get-started/starting-a-project/create-from-template/halloween</loc>
+    <lastmod>2024-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -175,7 +211,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/development-environment</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-10-21</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
