@@ -1,3 +1,38 @@
 ---
 title: Starting From Scratch
 ---
+
+This guide walks you through the minimum amount of steps to open a component inside Triplex. If you haven't already make sure to install [Node.js](https://nodejs.org/en) and initialize a new project with `npm init` and follow the prompts.
+
+## Install Dependencies
+
+This installs the required packages to your project and places them in its `package.json` file.
+
+```bash
+npm install @types/react @types/react-dom @types/three @react-three/fiber react react-dom three
+```
+
+## Create a Component
+
+This can be anything you want, here we create a box.
+
+```tsx filename="src/scene.tsx"
+export default function Scene() {
+  return (
+    <mesh>
+      <boxGeometry args={[1, 1, 1]} />
+      <meshStandardMaterial color="red" />
+    </mesh>
+  );
+}
+```
+
+## Open in Triplex
+
+Using either [Triplex for VS Code](/docs/get-started/vscode#opening-components) or [Triplex Standalone](/docs/get-started/standalone#opening-components) you can now start building!
+
+## Common Questions
+
+### Why is a tsconfig.json file created when opening a component?
+
+The Scene Panel is populated by your component props sourced by the TypeScript compiler which needs this file.
