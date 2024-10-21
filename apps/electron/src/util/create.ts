@@ -7,17 +7,16 @@
 import { create } from "create-triplex-project";
 import { dialog, Notification, type BrowserWindow } from "electron";
 import { basename } from "upath";
-import { createPkgManagerDialog } from "./dialog";
+import { createPkgManagerDialog, showTemplateSelectionDialog } from "./dialog";
 import { env } from "./env";
 import { indeterminate } from "./progress-bar";
 
 export async function showCreateDialog(browserWindow: BrowserWindow) {
   const { canceled, filePaths } = await dialog.showOpenDialog(browserWindow, {
     buttonLabel: "Create",
-    message:
-      "To create a new project select an empty folder, else select an existing project folder to initialize Triplex in.",
+    message: "To create a new project select an empty folder.",
     properties: ["createDirectory", "openDirectory"],
-    title: "Create / Initialize Project",
+    title: "Create project",
   });
 
   if (canceled || !filePaths[0]) {
@@ -27,21 +26,23 @@ export async function showCreateDialog(browserWindow: BrowserWindow) {
   return filePaths[0];
 }
 
-export async function createProject(window: BrowserWindow, path: string) {
-  const name = basename(path);
+export async function createProject(window: BrowserWindow, cwd: string) {
+  const name = basename(cwd);
 
-  let command: "npm" | "yarn" | "pnpm";
+  const template = await showTemplateSelectionDialog(window);
 
-  const result = await createPkgManagerDialog(window, {
+  if (!template) {
+    return false;
+  }
+
+  const packageManager = await createPkgManagerDialog(window, {
     detail: "If you're unsure select npm.",
     message: "Select a package manager",
   });
 
-  if (result === false) {
+  if (!packageManager) {
     return false;
   }
-
-  command = result;
 
   const complete = indeterminate(window);
 
@@ -54,11 +55,13 @@ export async function createProject(window: BrowserWindow, path: string) {
 
   try {
     await create({
-      cwd: path,
+      cwd,
       env,
       name,
-      packageManager: command,
+      packageManager,
+      template,
     });
+
     return true;
   } finally {
     window.webContents.send("window-state-change", "active");

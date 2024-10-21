@@ -1,4 +1,3 @@
-Thanks for being an early adopter! This folder holds the configuration for
-[Triplex](https://github.com/trytriplex/triplex).
+This folder holds the configuration for [Triplex](https://triplex.dev).
 
-[Learn more](https://triplex.dev/docs/get-started/settings).
+[Learn more](https://triplex.dev/docs/api-reference/config-options).

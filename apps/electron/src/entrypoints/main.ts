@@ -480,8 +480,6 @@ async function main() {
   async function openProjectDialog(): Promise<string | undefined> {
     const browserWindow = welcomeWindow || activeProjectWindow;
     const dialogProps = {
-      message:
-        "Select a folder that contains a Triplex config. If you don't have one yet create / initialize one on the welcome screen.",
       properties: ["openDirectory"],
       title: "Open Project",
     } satisfies OpenDialogOptions;
@@ -555,9 +553,9 @@ async function main() {
           cancelId: -1,
           defaultId: 0,
           detail:
-            "There was an error during project creation, please check your package manager. \n\n" +
-            error.message,
-          message: "Project partially created",
+            error.message ||
+            "Your project may not have been created, please check and try again.",
+          message: "An error ocurred creating your project",
           type: "error",
         });
 

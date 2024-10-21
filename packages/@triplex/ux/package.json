@@ -3,7 +3,11 @@
   "version": "0.69.4",
   "private": true,
   "description": "Common UI agnostic components for Triplex user experiences.",
-  "author": "Michael Dougall (https://twitter.com/itsdouges)",
+  "author": {
+    "name": "Triplex",
+    "email": "support@triplex.dev",
+    "url": "https://x.com/trytriplex"
+  },
   "exports": {
     ".": {
       "types": "./src/index.ts",

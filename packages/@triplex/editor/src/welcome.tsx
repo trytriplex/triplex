@@ -94,7 +94,7 @@ function WelcomeScreen() {
               onClick={() => window.triplex.sendCommand("create-project")}
               size="tight"
             >
-              Create / Initialize Project...
+              Create Project...
             </Button>
           </div>
         </div>

@@ -2,8 +2,12 @@
   "name": "@triplex/editor",
   "version": "0.69.4",
   "private": true,
-  "description": "The React Three Fiber editor.",
-  "author": "Michael Dougall (https://twitter.com/itsdouges)",
+  "description": "The visual IDE for the web.",
+  "author": {
+    "name": "Triplex",
+    "email": "support@triplex.dev",
+    "url": "https://x.com/trytriplex"
+  },
   "main": "./scripts/main-dev-only.ts",
   "types": "./scripts/main-dev-only.ts",
   "files": [

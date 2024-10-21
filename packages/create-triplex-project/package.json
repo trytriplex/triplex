@@ -1,10 +1,20 @@
 {
   "name": "create-triplex-project",
   "version": "0.69.3",
-  "private": true,
-  "description": "The React Three Fiber editor.",
+  "description": "The visual IDE for the web.",
+  "keywords": [
+    "r3f",
+    "react-three-fiber",
+    "react",
+    "three.js",
+    "three"
+  ],
   "license": "GPL-3.0",
-  "author": "Michael Dougall (https://twitter.com/itsdouges)",
+  "author": {
+    "name": "Triplex",
+    "email": "support@triplex.dev",
+    "url": "https://x.com/trytriplex"
+  },
   "main": "./src/index.ts",
   "types": "./src/index.ts",
   "bin": {

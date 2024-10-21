@@ -2,7 +2,11 @@
   "name": "@triplex/lib",
   "version": "0.69.3",
   "private": true,
-  "author": "Michael Dougall (https://twitter.com/itsdouges)",
+  "author": {
+    "name": "Triplex",
+    "email": "support@triplex.dev",
+    "url": "https://x.com/trytriplex"
+  },
   "exports": {
     ".": {
       "types": "./src/index.ts",

@@ -2,10 +2,14 @@
   "name": "@triplex/electron",
   "version": "0.69.4",
   "private": true,
-  "description": "The React Three Fiber editor.",
+  "description": "The visual IDE for the web.",
   "repository": "https://github.com/trytriplex/triplex",
   "license": "GPL-3.0",
-  "author": "Michael Dougall <support@triplex.dev>",
+  "author": {
+    "name": "Triplex",
+    "email": "support@triplex.dev",
+    "url": "https://x.com/trytriplex"
+  },
   "main": "./hook-main.js",
   "scripts": {
     "build": "cross-env VITE_CJS_IGNORE_WARNING=true vite build",
