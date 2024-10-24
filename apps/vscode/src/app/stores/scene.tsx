@@ -77,7 +77,7 @@ export const useSceneStore = create<SceneStore>((set, get) => ({
   focusElement: (data) => {
     send("request-focus-element", data);
   },
-  playState: { camera: "editor", state: "edit" },
+  playState: { camera: "default", state: "edit" },
   selected: undefined,
   setPlayState: (action: PlayStateAction) =>
     set({ playState: playReducer(get().playState, action) }),

@@ -100,7 +100,7 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
     navigateTo(sceneObject) {
       send("request-open-component", sceneObject);
     },
-    playCamera: "editor",
+    playCamera: "default",
     playState: "edit",
     ready: false,
     refresh({ hard }: { hard?: boolean } = {}) {

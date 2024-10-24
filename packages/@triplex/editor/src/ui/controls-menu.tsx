@@ -179,13 +179,13 @@ export function ControlsMenu() {
         >
           <MenuRadioGroup onChange={setPlayCamera} value={playCamera}>
             <MenuRadioItem actionId="scene_frame_camera_editor" value="editor">
-              Editor camera
+              Editor Camera
             </MenuRadioItem>
             <MenuRadioItem
               actionId="scene_frame_camera_default"
               value="default"
             >
-              Default camera
+              Default Camera
             </MenuRadioItem>
           </MenuRadioGroup>
         </Menu>
