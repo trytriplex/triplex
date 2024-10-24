@@ -1,0 +1,18 @@
+---
+title: define
+description: Declare strings that are replaced at runtime.
+---
+
+For advanced use case to replace strings inside source code with arbitrary values. For greater Ecosystem compatibility of your components we recommend not relying on this.
+
+## Usage
+
+Each key will be replaced by its value at runtime.
+
+```json filename=".triplex/config.json"
+{
+  "define": {
+    "process.env.NODE_ENV": "development"
+  }
+}
+```

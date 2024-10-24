@@ -15,6 +15,6 @@
     "skipLibCheck": true,
     "strict": true
   },
-  "include": ["."],
+  "include": [".", ".triplex/*"],
   "exclude": ["node_modules"]
 }
