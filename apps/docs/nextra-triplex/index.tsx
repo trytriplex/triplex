@@ -24,6 +24,8 @@ import {
   useState,
   type MouseEventHandler,
 } from "react";
+import { ActionLink } from "../components/button-example";
+import { KnowledgeCallout } from "../components/callouts";
 import { SendFeedback } from "../components/feedback";
 import { Footer } from "../components/footer";
 import { Header, HeaderItem } from "../components/header";
@@ -35,6 +37,8 @@ import { BASE_URL } from "../util/url";
 import { SideNavItem } from "./side-nav-item";
 
 const components: Components = {
+  ActionLink,
+  KnowledgeCallout,
   MetaDiff: ({
     action,
     source,
@@ -120,7 +124,7 @@ const components: Components = {
     ) : (
       // Code block powered by shiki
       // See: https://shiki.matsu.io/guide/theme-colors#css-variables-theme
-      <code className="[--shiki-color-text:#ccfbf1] [--shiki-token-comment:#16a34a] [--shiki-token-constant:#5eead4] [--shiki-token-function:#5eead4] [--shiki-token-keyword:#60a5fa] [--shiki-token-link:#facc15] [--shiki-token-parameter:#9ca3af] [--shiki-token-punctuation:#2dd4bf] [--shiki-token-string-expression:#fda4af] [&_.highlighted]:border [&_.highlighted]:border-yellow-500 [&_.highlighted]:bg-slate-800 [&_.line.highlighted]:float-left [&_.line.highlighted]:w-full">
+      <code className="[--shiki-color-text:#ccfbf1] [--shiki-token-comment:#16a34a] [--shiki-token-constant:#5eead4] [--shiki-token-function:#5eead4] [--shiki-token-keyword:#60a5fa] [--shiki-token-link:#facc15] [--shiki-token-parameter:#9ca3af] [--shiki-token-punctuation:#2dd4bf] [--shiki-token-string-expression:#fda4af] [&:has(.highlighted)_>:not(.highlighted)]:opacity-40 [&_.highlighted]:bg-white/5 [&_.line.highlighted]:float-left [&_.line.highlighted]:w-full">
         {children}
       </code>
     );
@@ -239,6 +243,7 @@ function renderDocsItem(
       title={link.title}
     >
       {link.children &&
+        !!link.children.length &&
         link.children.map((item) => renderDocsItem(item, route, level + 1))}
     </SideNavItem>
   );
@@ -552,7 +557,7 @@ function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                 </div>
               )}
               {!hasPageAuthorOrDate && result.activeThemeContext.breadcrumb && (
-                <div className="flex flex-wrap items-center gap-x-0.5">
+                <div className="flex flex-wrap items-center gap-0.5">
                   {result.activePath.map((path, index) =>
                     index === 0 ? null : (
                       <Fragment key={path.route}>

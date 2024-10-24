@@ -1,0 +1,187 @@
+---
+title: Triplex Standalone
+---
+
+import {
+  CaretDownIcon,
+  DashboardIcon,
+  MoveIcon,
+  Pencil2Icon,
+  PlayIcon,
+  PlusIcon,
+  SunIcon,
+  TransformIcon,
+} from "@radix-ui/react-icons";
+import { WorldSpaceIcon } from "../../../../../components/icons";
+
+Let's create your first component with Triplex! No experience is needed to follow along however it's assumed you have a project set up after following [Starting a Project](/docs/get-started/starting-a-project).
+
+## Creating a New File
+
+First we are going to make a new file to build our scene in.
+
+1. Find the <ActionLink icon={PlusIcon} href="/docs" name="New File" /> action in the Tab Bar and click it. A new file called untitled.tsx is opened that contains a box.
+
+1. Click on the box in the scene then click & drag to rotate the camera around it.
+
+1. When focused on the mesh, press the `F` hotkey to focus the camera on it.
+
+<KnowledgeCallout>
+  The built-in Camera Controls let you view your scene from different
+  viewpoints. Try zooming in & out by scrolling, and panning by holding `Shift`
+  then dragging.
+</KnowledgeCallout>
+
+Before continuing let's save the file to the file system using the <ActionLink icon="⌘ + S" href="/docs" name="Save" /> action, name it anything you want.
+
+## Adding More Shapes
+
+Now let's add some more shapes to fill the scene out.
+
+1. Click the <ActionLink icon={PlusIcon} href="/docs" name="Add Element" /> action in the Scene Panel. The Assets Panel will open. Search for **Mesh** and click it. Nothing will appear in the scene yet.
+
+1. Hover over the added mesh and click the <ActionLink icon={PlusIcon} href="/docs" name="Add Child Element" /> action then search for **Sphere Geometry** and click it. A sphere will appear in the scene.
+
+1. Hover over the mesh and click the Add Child Element action again then search for **Mesh Standard Material** and click it. The sphere is now shaded.
+
+1. Click the sphere in the scene, then click the <ActionLink icon={MoveIcon} href="/docs" name="Translate" /> action in the Scene Controls, then finally move the sphere off the box.
+
+<KnowledgeCallout>
+  The built-in Transform Controls are shown on selected elements. If the element
+  doesn't declare the prop for the transform mode such as `position` for
+  translate the mode will be disabled.
+</KnowledgeCallout>
+
+Before continuing try adding a cylinder mesh in code instead of the UI. Jump to code quickly by clicking the "View source" link in the Scene Panel.
+
+## Adding Lights
+
+Now let's add [three-point lighting](https://en.wikipedia.org/wiki/Three-point_lighting) to the scene.
+
+1. When no lights are present in the scene default lights are turned on. Click the <ActionLink icon={SunIcon} href="/docs" name="Turn Off Default Lights" /> action in the Scene Controls to turn them off. Click it again to turn it back on.
+
+1. Click the Add Element action in the Scene Panel then search for **Point Light** and click it. A point light will appear in the scene.
+
+1. With the point light selected, go to the Context Panel and update the `Name` prop to "Key light".
+
+1. Position the key light in front and to the side of the scene.
+
+1. Duplicate the key light by selecting it and using the <ActionLink icon="⌘ + D" href="/docs" name="Duplicate Element" /> action. Name the duplicated light "Fill light" and move it to the opposite side of the scene.
+
+1. Create the last light by adding another point light named "Backlight" then move it to the back of the scene.
+
+<KnowledgeCallout>
+  The built-in Scene Helpers are shown for select objects such as lights and
+  cameras helping you see where they have been positioned in your scene.
+</KnowledgeCallout>
+
+Before continuing try adjusting the lights `Intensity` and `Color` props in the Context Panel. The key light should have the highest intensity, then about half as much for the fill light, and then the backlight about the same.
+
+## Adding a Camera
+
+Now let's add a camera to the scene by updating code.
+
+1. Install [Drei](https://github.com/pmndrs/drei) — a companion library for React Three Fiber.
+
+   ```bash filename="Terminal"
+   npm i @react-three/drei
+   ```
+
+1. Import the `PerspectiveCamera` component from Drei, add it to your component then jump back into Triplex. The camera will appear in the scene.
+
+   ```tsx filename="new-scene.tsx" {1,7}
+   import { PerspectiveCamera } from "@react-three/drei";
+
+   export function Untitled() {
+     return (
+       <>
+         ...
+         <PerspectiveCamera />
+       </>
+     );
+   }
+   ```
+
+1. Position and rotate the camera at an angle in-front of the scene. We're operating on vibes here so do what feels good!
+
+1. Click the <ActionLink icon={WorldSpaceIcon} href="/docs" name="Set Local Transform" /> action in the Scene Controls. Transforms now operate in local space, when translating the camera it will move in the direction it's facing. Click again to move back to global space.
+
+1. On the camera set the `Make Default` prop to be checked. When playing your scene this camera will now be used.
+
+1. Click the <ActionLink icon={PlayIcon} href="/docs" name="Play" /> action in the Scene Controls to run the scene through your camera.
+
+1. Click the <ActionLink icon={CaretDownIcon} href="/docs" name="Set Play Camera" /> action next to the Play action to switch to other cameras.
+
+<KnowledgeCallout>
+  Play Controls let you run and interact with your scene. When pressing the stop
+  or the reset action your scene is reset to its initial state.
+</KnowledgeCallout>
+
+Before continuing try adjusting the camera `Fov`, `Near` and `Far` props in the Context Panel. They control the field of view and where objects are rendered in relation to the camera.
+
+## Component Props
+
+Finally we're going to add some props to your component.
+
+1. Click the "View source" link in the Scene Panel to jump to code.
+
+1. Add two props to your component, `backlight` boolean defaulted to `true` and `backlightColor` string.
+
+   ```tsx filename="new-scene.tsx" {2,3,5,6}
+   export function Untitled({
+     backlight = true,
+     backlightColor,
+   }: {
+     backlight?: boolean;
+     backlightColor?: string;
+   }) {
+     // ...
+   }
+   ```
+
+1. Conditionally render the backlight element using the `backlight` prop.
+
+   ```tsx filename="new-scene.tsx" {11}
+   export function Untitled({
+     backlight = true,
+     backlightColor,
+   }: {
+     backlight?: boolean;
+     backlightColor?: string;
+   }) {
+     return (
+       <>
+         ...
+         {backlight && <pointLight name="Backlight" />}
+       </>
+     );
+   }
+   ```
+
+1. Pass the `backlightColor` prop to the backlight element.
+
+   ```tsx filename="new-scene.tsx" {11}
+   export function Untitled({
+     backlight = true,
+     backlightColor,
+   }: {
+     backlight?: boolean;
+     backlightColor?: string;
+   }) {
+     return (
+       <>
+         ...
+         {backlight && <pointLight color={backlightColor} name="Backlight" />}
+       </>
+     );
+   }
+   ```
+
+1. Click the <ActionLink icon={Pencil2Icon} href="/docs" name="Component Controls" /> action in the ScenePanel. The controls shown in the Context Panel are the props the component accepts.
+
+1. Toggle the `backlight` prop on and off, and set the `backlightColor` prop to a color you like. Red is always a good choice!
+
+<KnowledgeCallout>
+  Component Controls let you change the props the open component receives.
+  Useful when you want to see how your component behaves with different values!
+</KnowledgeCallout>
