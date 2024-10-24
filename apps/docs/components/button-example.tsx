@@ -7,24 +7,30 @@
 import { type IconProps } from "@radix-ui/react-icons/dist/types";
 import Link from "next/link";
 
-export function ButtonExample({
+export function ActionLink({
   href,
   icon: Icon,
   name,
 }: {
   href: string;
-  icon: (props: IconProps) => JSX.Element;
+  icon: ((props: IconProps) => JSX.Element) | string;
   name: string;
 }) {
   return (
     <Link
-      className="group inline-flex items-center border border-neutral-700 py-0.5 pl-0.5 pr-2"
+      className="group inline-flex gap-1.5 border border-neutral-700 py-0.5 pl-0.5 pr-1.5"
       href={href}
     >
-      <span className="mr-1 inline-flex bg-white/10 p-1">
-        <Icon className="text-neutral-300" />
+      <span className="flex bg-white/10 p-1">
+        {typeof Icon === "string" ? (
+          <span className="flex h-[15px] items-center text-sm text-neutral-300">
+            {Icon}
+          </span>
+        ) : (
+          <Icon />
+        )}
       </span>
-      <span className="text-center text-sm text-neutral-300 group-hover:text-neutral-100 group-hover:underline">
+      <span className="flex items-center text-center text-sm text-neutral-300 group-hover:underline">
         {name}
       </span>
     </Link>

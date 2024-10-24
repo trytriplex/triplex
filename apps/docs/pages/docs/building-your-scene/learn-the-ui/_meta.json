@@ -4,5 +4,7 @@
   "scene-controls": "",
   "component-panel": "",
   "assets-panel": "",
-  "context-panel": ""
+  "context-panel": "",
+  "tab-bar": "",
+  "menu-bar": ""
 }
