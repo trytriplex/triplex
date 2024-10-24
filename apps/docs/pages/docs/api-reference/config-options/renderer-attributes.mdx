@@ -1,0 +1,21 @@
+---
+title: rendererAttributes
+description: Configuration passed to the renderer.
+---
+
+For advanced use cases where extra configuration is needed for the renderer. For greater Ecosystem compatibility of your components we recommend not relying on this.
+
+## Usage
+
+Properties to pass to the WebGL context. See [WebGLRenderer](https://threejs.org/docs/#api/en/renderers/WebGLRenderer) for possible values.
+
+```json filename=".triplex/config.json"
+{
+  "rendererAttributes": {
+    "gl": {
+      "alpha": true,
+      "logarithmicDepthBuffer": true
+    }
+  }
+}
+```

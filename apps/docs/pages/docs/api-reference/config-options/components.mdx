@@ -1,0 +1,34 @@
+---
+title: components
+description: Paths to component files that should appear in the assets panel.
+---
+
+## Usage
+
+Pass an array of file globs relative to the config file.
+
+```json filename=".triplex/config.json"
+{
+  "files": ["../src/components/**/*.tsx"]
+}
+```
+
+## Multiple Directories
+
+Target different directories by passing in multiple items.
+
+```json filename=".triplex/config.json"
+{
+  "files": ["../src/prefabs/**/*.tsx", "../src/meshes/**/*.tsx"]
+}
+```
+
+## File Extensions
+
+Target files with different file extensions using the pipe operator.
+
+```json filename=".triplex/config.json"
+{
+  "files": ["../src/components/**/*.(tsx|jsx)"]
+}
+```

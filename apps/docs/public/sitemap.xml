@@ -37,7 +37,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/guides/</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.6</priority>
   </url>
@@ -115,7 +115,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/standalone</loc>
-    <lastmod>2024-10-22</lastmod>
+    <lastmod>2024-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -163,7 +163,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/starting-a-project/your-first-component/vscode</loc>
-    <lastmod>2024-10-22</lastmod>
+    <lastmod>2024-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -217,7 +217,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/console-logs</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -234,8 +234,8 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://triplex.dev/docs/building-your-scene/project-config</loc>
-    <lastmod>2024-10-19</lastmod>
+    <loc>https://triplex.dev/docs/building-your-scene/provider-controls</loc>
+    <lastmod>2024-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -307,7 +307,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/learn-the-ui/menu-bar</loc>
-    <lastmod>2024-10-22</lastmod>
+    <lastmod>2024-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -367,7 +367,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/api-reference/config-options</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -379,49 +379,49 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/api-reference/config-options/assets-dir</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/api-reference/config-options/components</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/api-reference/config-options/define</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/api-reference/config-options/files</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/api-reference/config-options/provider</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/api-reference/config-options/public-dir</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/api-reference/config-options/renderer-attributes</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-10-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/blog/</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-10-24</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>

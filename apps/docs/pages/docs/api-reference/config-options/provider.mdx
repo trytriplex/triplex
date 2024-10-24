@@ -1,0 +1,24 @@
+---
+title: provider
+description: Path to your provider component for global & environment configuration.
+---
+
+## Usage
+
+Pass a relative path to your provider component that is the default export.
+
+```json filename=".triplex/config.json"
+{
+  "provider": "./provider.tsx"
+}
+```
+
+```tsx filename=".triplex/provider.tsx"
+export default function ProviderComponent({
+  children,
+}: {
+  children?: React.ReactNode;
+}) {
+  return children;
+}
+```

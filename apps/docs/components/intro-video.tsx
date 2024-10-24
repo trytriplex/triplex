@@ -20,7 +20,7 @@ export function IntroVideo() {
           alt="Screenshot of the Triplex user interface running on macOS"
           className="hidden object-contain md:block"
           fill
-          src="/landing-ui-june-24.png"
+          src="/hero.png"
         />
       </div>
     </div>
