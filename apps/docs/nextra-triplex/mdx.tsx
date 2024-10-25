@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 
+import { CodeIcon, FileTextIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMDXComponents, type Components } from "nextra/mdx";
@@ -93,7 +94,7 @@ export const components: Components = {
   code: ({ children }) => {
     return typeof children === "string" ? (
       // Inline code
-      <code className="border border-neutral-700 px-1.5 py-0.5 font-mono text-lg text-neutral-300 md:text-base">
+      <code className="border border-neutral-700 px-1.5 py-0.5 font-mono text-neutral-300">
         {children}
       </code>
     ) : (
@@ -148,7 +149,14 @@ export const components: Components = {
     return (
       <div className="mt-5">
         {"filename" in props && typeof props.filename === "string" && (
-          <div className="border border-b-0 border-neutral-700 bg-neutral-900 py-0.5 pl-3">
+          <div className="flex items-center gap-2.5 border border-b-0 border-neutral-700 bg-white/5 py-2 pl-3">
+            <span className="rounded border border-neutral-600 p-1">
+              {props.filename.endsWith(".tsx") ? (
+                <CodeIcon className="text-neutral-300" />
+              ) : (
+                <FileTextIcon className="text-neutral-300" />
+              )}
+            </span>
             <span className="text-sm text-neutral-300">{props.filename}</span>
           </div>
         )}

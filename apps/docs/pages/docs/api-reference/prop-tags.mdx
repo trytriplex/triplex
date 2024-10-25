@@ -1,0 +1,42 @@
+---
+description: Prop tags change the behavior of prop controls.
+---
+
+Prop tags only change the behavior of controls inside Triplex.
+
+## `number`
+
+Props that are typed as a number can have their behavior changed by using the following tags.
+
+### `@step`
+
+Changes the step amount when using the number increment/decrement buttons.
+
+```tsx {2}
+interface Props {
+  /** @step 1 */
+  value: number;
+}
+```
+
+### `@min`
+
+Sets the minimum value for the number control.
+
+```tsx {2}
+interface Props {
+  /** @min -3 */
+  value: number;
+}
+```
+
+### `@max`
+
+Sets the maximum value for the number control.
+
+```tsx {2}
+interface Props {
+  /** @max 3 */
+  value: number;
+}
+```
