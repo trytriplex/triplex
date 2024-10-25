@@ -1,4 +1,9 @@
 {
+  "*": {
+    "theme": {
+      "childLinks": true
+    }
+  },
   "vscode": "VS Code",
   "standalone": "Standalone"
 }

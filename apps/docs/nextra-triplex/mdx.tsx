@@ -11,6 +11,7 @@ import { useSearchParams } from "next/navigation";
 import { useMDXComponents, type Components } from "nextra/mdx";
 import { ActionLink } from "../components/button-example";
 import { KnowledgeCallout } from "../components/callouts";
+import { PagesList } from "../components/pages-list";
 
 export const components: Components = {
   ActionLink,
@@ -68,6 +69,7 @@ export const components: Components = {
       </pre>
     );
   },
+  PagesList,
   PickMeta: ({ pick }: { pick: string }) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const { li: ListItem, ul: List } = useMDXComponents() as any;

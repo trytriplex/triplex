@@ -3,10 +3,16 @@
     "theme": {
       "feedback": true,
       "pagination": true,
-      "breadcrumb": true
+      "breadcrumb": true,
+      "childLinks": true
     }
   },
-  "get-started": "Get Started",
+  "get-started": {
+    "title": "Get Started",
+    "theme": {
+      "childLinks": false
+    }
+  },
   "supporting": {
     "type": "page",
     "title": "Supporting",
