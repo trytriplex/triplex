@@ -13,7 +13,8 @@
     "noEmit": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+    "types": ["@react-three/fiber"]
   },
   "include": [".", ".triplex/*"],
   "exclude": ["node_modules"]
