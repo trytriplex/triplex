@@ -17,6 +17,7 @@ import { Fragment, useEffect, useMemo, useState } from "react";
 import { SendFeedback } from "../components/feedback";
 import { Footer } from "../components/footer";
 import { Header, HeaderItem } from "../components/header";
+import { PagesList } from "../components/pages-list";
 import { useSearchStore } from "../stores/search";
 import { cn } from "../util/cn";
 import { friendlyDate } from "../util/date";
@@ -272,10 +273,16 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
             className={cn([
               result.activeThemeContext.layout === "raw" && "contents",
               result.activeThemeContext.layout !== "raw" &&
-                "col-span-full xl:col-span-9 [&>*:first-child]:m-0",
+                "col-span-full xl:col-span-9 [&>*:first-child]:mt-0",
             ])}
           >
             {children}
+
+            {result.activeThemeContext.layout !== "raw" &&
+              "childLinks" in result.activeThemeContext &&
+              !!result.activeThemeContext.childLinks && (
+                <PagesList variant="grid" />
+              )}
 
             {(result.activeThemeContext.pagination ||
               ("feedback" in result.activeThemeContext &&

@@ -17,44 +17,56 @@ export function PagesList({
   route?: string;
   variant?: "list" | "grid";
 }) {
-  const { route: fallbackRoute } = useRouter();
+  const { route: nativeRoute } = useRouter();
+  const pages = [route, nativeRoute]
+    .filter((str): str is string => !!str)
+    .flatMap((route) => getPagesUnderRoute(route))
+    .filter((page) => page.route !== route && page.route !== nativeRoute);
+
+  if (pages.length === 0) {
+    return null;
+  }
 
   return (
     <div
       className={cn([
-        "mt-6",
-        variant === "list" && "flex flex-col gap-10",
-        variant === "grid" && "grid grid-cols-2 gap-6",
+        variant === "list" && "mt-6 flex flex-col gap-10",
+        variant === "grid" && "my-14 grid grid-cols-2 gap-6",
       ])}
     >
-      {getPagesUnderRoute(route || fallbackRoute)
-        .filter((page) => page.route !== route)
-        .flatMap((page) => (page.kind === "Folder" ? page.children : page))
-        .map(
-          (page) =>
-            page.kind === "MdxPage" && (
-              <Link
+      {pages.map(
+        (page) =>
+          page.kind === "MdxPage" && (
+            <Link
+              className={cn([
+                "group flex flex-col",
+                variant === "grid" &&
+                  "justify-center gap-2 border border-neutral-800 p-6",
+              ])}
+              href={page.route}
+              key={page.route}
+            >
+              {page.frontMatter?.date && (
+                <time className="text-sm text-neutral-400">
+                  {friendlyDate(page.frontMatter.date)}
+                </time>
+              )}
+              <div
                 className={cn([
-                  "group flex flex-col",
-                  variant === "grid" && "gap-2 border border-neutral-800 p-6",
+                  "text-xl text-neutral-200 group-hover:underline",
+                  variant === "list" && "font-medium",
                 ])}
-                href={page.route}
-                key={page.route}
               >
-                {page.frontMatter?.date && (
-                  <time className="text-sm text-neutral-400">
-                    {friendlyDate(page.frontMatter.date)}
-                  </time>
-                )}
-                <div className="text-xl font-medium text-neutral-100 group-hover:underline">
-                  {page.frontMatter?.title || page.meta?.title || page.name}
-                </div>
+                {page.frontMatter?.title || page.meta?.title || page.name}
+              </div>
+              {page.frontMatter?.description && (
                 <div className="text-base text-neutral-400">
-                  {page.frontMatter?.description || "(empty description)"}
+                  {page.frontMatter?.description}
                 </div>
-              </Link>
-            ),
-        )}
+              )}
+            </Link>
+          ),
+      )}
     </div>
   );
 }
