@@ -24,7 +24,7 @@ const exec = promisify(execCb);
 
 const DEFAULT_PROJECT_NAME = "my-triplex-project";
 const DEFAULT_PKG_MANAGER = "npm";
-const DEFAULT_TEMPLATE = "default";
+const DEFAULT_TEMPLATE = templates.includes("basic") ? "basic" : templates[0];
 const DEFAULT_CWD = process.cwd();
 
 async function main() {

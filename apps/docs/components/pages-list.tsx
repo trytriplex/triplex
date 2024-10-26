@@ -18,7 +18,7 @@ export function PagesList({
   variant?: "list" | "grid";
 }) {
   const { route: nativeRoute } = useRouter();
-  const pages = [route, nativeRoute]
+  const pages = [nativeRoute, route]
     .filter((str): str is string => !!str)
     .flatMap((route) => getPagesUnderRoute(route))
     .filter((page) => page.route !== route && page.route !== nativeRoute);

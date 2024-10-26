@@ -15,6 +15,11 @@ import { PagesList } from "../components/pages-list";
 
 export const components: Components = {
   ActionLink,
+  Kbd: ({ children }) => (
+    <kbd className="relative rounded border border-neutral-700 bg-white/5 px-1.5 pb-0.5 pt-[3px] font-mono text-sm font-semibold text-neutral-300 after:absolute after:bottom-[-3px] after:left-[-1px] after:right-[-1px] after:top-0 after:rounded-md after:border-b-[3px] after:border-[inherit]">
+      {children}
+    </kbd>
+  ),
   KnowledgeCallout,
   MetaDiff: ({
     action,
@@ -102,7 +107,7 @@ export const components: Components = {
     ) : (
       // Code block powered by shiki
       // See: https://shiki.matsu.io/guide/theme-colors#css-variables-theme
-      <code className="[--shiki-color-text:#ccfbf1] [--shiki-token-comment:#16a34a] [--shiki-token-constant:#5eead4] [--shiki-token-function:#5eead4] [--shiki-token-keyword:#60a5fa] [--shiki-token-link:#facc15] [--shiki-token-parameter:#9ca3af] [--shiki-token-punctuation:#2dd4bf] [--shiki-token-string-expression:#fda4af] [&:has(.highlighted)_:not(.highlighted):not(.line)]:opacity-40 [&_.highlighted>*]:!opacity-100 [&_.highlighted]:bg-white/5 [&_.line.highlighted]:float-left [&_.line.highlighted]:w-full">
+      <code className="leading-6 [--shiki-color-text:#d4d4d4] [--shiki-token-comment:#16a34a] [--shiki-token-constant:#5eead4] [--shiki-token-function:#5eead4] [--shiki-token-keyword:#60a5fa] [--shiki-token-link:#facc15] [--shiki-token-parameter:#9ca3af] [--shiki-token-punctuation:#2dd4bf] [--shiki-token-string-expression:#fda4af] [--shiki-token-string:#4ade80] [&:has(.highlighted)_:not(.highlighted):not(.line)]:opacity-60 [&_.highlighted>*]:!opacity-100 [&_.highlighted]:bg-white/10 [&_.line.highlighted]:float-left [&_.line.highlighted]:w-full">
         {children}
       </code>
     );
@@ -148,30 +153,44 @@ export const components: Components = {
     <p className="mt-5 text-xl text-neutral-300 md:text-lg">{children}</p>
   ),
   pre: ({ children, ...props }) => {
+    const codeIcon = ["Terminal", ".tsx", ".jsx"];
+    const filename =
+      "filename" in props && typeof props.filename === "string"
+        ? props.filename
+        : "";
+
     return (
       <div className="mt-5">
-        {"filename" in props && typeof props.filename === "string" && (
+        {filename && (
           <div className="flex items-center gap-2.5 border border-b-0 border-neutral-700 bg-white/5 py-2 pl-3">
             <span className="rounded border border-neutral-600 p-1">
-              {props.filename.endsWith(".tsx") ? (
+              {codeIcon.some((code) => filename.endsWith(code)) ? (
                 <CodeIcon className="text-neutral-300" />
               ) : (
                 <FileTextIcon className="text-neutral-300" />
               )}
             </span>
-            <span className="text-sm text-neutral-300">{props.filename}</span>
+            <span className="text-sm text-neutral-300">{filename}</span>
           </div>
         )}
-        <pre className="whitespace-break-spaces border border-neutral-700 p-3 text-lg text-neutral-300 md:text-base">
+        <pre className="whitespace-break-spaces border border-neutral-700 p-3 text-sm text-neutral-300">
           {children}
         </pre>
       </div>
     );
   },
-  table: ({ children }) => <table className="mt-5">{children}</table>,
-  td: ({ children }) => <td className="text-neutral-300">{children}</td>,
+  table: ({ children }) => (
+    <table className="mt-5 w-full table-fixed">{children}</table>
+  ),
+  td: ({ children }) => (
+    <td className="border-t border-neutral-800 p-2 text-neutral-300">
+      {children}
+    </td>
+  ),
   th: ({ children }) => (
-    <th className="text-left text-neutral-400">{children}</th>
+    <th className="py-2.5 text-center font-normal text-neutral-200">
+      {children}
+    </th>
   ),
   ul: ({ children }) => <ul className="mt-5 list-disc">{children}</ul>,
 };
