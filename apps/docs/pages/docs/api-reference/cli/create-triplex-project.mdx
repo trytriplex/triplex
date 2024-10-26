@@ -1,0 +1,24 @@
+---
+title: create-triplex-project
+---
+
+The `create-triplex-project` CLI bootstraps a new project for you using [official templates](/docs/get-started/starting-a-project/create-from-template). It's the fastest way to get started developing your next scene.
+
+## Usage
+
+```bash filename="Terminal"
+npx create-triplex-project@latest [options]
+```
+
+## Options
+
+The following options are available.
+
+When passing any options the CLI runs in non-interactive mode meaning it will skip prompts and use default values where missing.
+
+| Option | Description |
+| --- | --- |
+| `--name <name>` | Name of your project (default: "my-triplex-project") |
+| `--template <name>` | Official template to use (default: "basic") |
+| `--pkg-manager <name>` | Package manager to use for installing dependencies (default: "npm") |
+| `--cwd <cwd>` | Directory to install to (default: cwd) |

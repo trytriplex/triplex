@@ -1,3 +1,41 @@
 ---
 title: Create From Template
 ---
+
+Creating a new project from a template is the fastest way to start developing your next scene with Triplex.
+
+## Using the CLI
+
+In a folder where your projects live run [create-triplex-project](/docs/api-reference/cli/create-triplex-project):
+
+```bash filename="Terminal"
+npx create-triplex-project@latest
+```
+
+When running you'll see the following prompts, if you're not sure what to choose press enter to accept the default.
+
+```text filename="Terminal"
+What should we call your project? my-triplex-project
+What template would you like to use? basic
+What package manager do you use? pnpm
+Will initialize into a new folder, continue? Yes / No
+Open project in Visual Studio Code? Yes / No
+```
+
+After answering the prompts your project will be created and dependencies installed using the package manager you chose.
+
+## Using Triplex Standalone
+
+Create a new project from a template using Triplex Standalone.
+
+1. Open Triplex Standalone
+1. Click the "Create Project..." action
+1. Select a folder to install the template into
+1. Select the template you want to use (see below)
+1. Select the package manager you want to use (npm/yarn/pnpm)
+
+After answering the prompts your project will be created and dependencies installed using the package manager you chose.
+
+## Official Templates
+
+Templates for creating all kinds of projects are [sourced from the official repository](https://github.com/trytriplex/triplex/tree/main/packages/create-triplex-project/templates). Is there a template missing? [Create an issue](https://github.com/trytriplex/triplex/issues/new) or pull request and let's get it added! To explore the available templates navigate to them below.

@@ -1,5 +1,5 @@
 ---
-title: Triplex Standalone
+title: Using Triplex Standalone
 ---
 
 import {
@@ -18,13 +18,13 @@ Let's create your first component with Triplex! No experience is needed to follo
 
 ## Creating a New File
 
-First we are going to make a new file to build our scene in.
+First we are going to make a new file to build our scene in. With Triplex Standalone open:
 
 1. Find the <ActionLink icon={PlusIcon} href="/docs" name="New File" /> action in the Tab Bar and click it. A new file called untitled.tsx is opened that contains a box.
 
 1. Click on the box in the scene then click & drag to rotate the camera around it.
 
-1. When focused on the mesh, press the `F` hotkey to focus the camera on it.
+1. When focused on the mesh press the <Kbd>F</Kbd> key to focus the camera on it.
 
 <KnowledgeCallout>
   The built-in Camera Controls let you view your scene from different
@@ -87,7 +87,7 @@ Now let's add a camera to the scene by updating code.
    npm i @react-three/drei
    ```
 
-1. Import the `PerspectiveCamera` component from Drei, add it to your component then jump back into Triplex. The camera will appear in the scene.
+1. Copy the highlighted code into your component then jump back into Triplex Standalone. The camera will appear in the scene.
 
    ```tsx filename="new-scene.tsx" {1,7}
    import { PerspectiveCamera } from "@react-three/drei";
@@ -125,7 +125,7 @@ Finally we're going to add some props to your component.
 
 1. Click the "View source" link in the Scene Panel to jump to code.
 
-1. Add two props to your component, `backlight` boolean defaulted to `true` and `backlightColor` string.
+1. Add two props to your component, the `backlight` prop should be a boolean that defaults to `true` and the `backlightColor` prop should be a string.
 
    ```tsx filename="new-scene.tsx" {2,3,5,6}
    export function Untitled({
@@ -158,9 +158,9 @@ Finally we're going to add some props to your component.
    }
    ```
 
-1. Pass the `backlightColor` prop to the backlight element.
+1. Pass the `backlightColor` prop to the backlight point light.
 
-   ```tsx filename="new-scene.tsx" {11}
+   ```tsx filename="new-scene.tsx" {/color={backlightColor}/}
    export function Untitled({
      backlight = true,
      backlightColor,
