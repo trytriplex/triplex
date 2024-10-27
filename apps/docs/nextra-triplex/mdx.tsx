@@ -188,7 +188,7 @@ export const components: Components = {
     </td>
   ),
   th: ({ children }) => (
-    <th className="py-2.5 text-center font-normal text-neutral-200">
+    <th className="py-2.5 text-center font-medium text-neutral-200">
       {children}
     </th>
   ),

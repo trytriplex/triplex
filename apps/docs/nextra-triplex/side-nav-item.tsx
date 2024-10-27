@@ -24,16 +24,16 @@ export function SideNavItem({
   level: number;
   title: string;
 }) {
-  const [childrenOpen, setChildrenOpen] = useState(
-    isSelected || isChildSelected,
-  );
+  const shouldExpandChildren = isSelected || isChildSelected;
+
+  const [childrenOpen, setChildrenOpen] = useState(shouldExpandChildren);
   const shouldNestChildren = !!children && level > 0;
 
   useLayoutEffect(() => {
-    if (isChildSelected) {
+    if (shouldExpandChildren) {
       setChildrenOpen(true);
     }
-  }, [isChildSelected]);
+  }, [shouldExpandChildren]);
 
   return (
     <Fragment>

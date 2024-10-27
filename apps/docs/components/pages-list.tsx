@@ -41,7 +41,7 @@ export function PagesList({
               className={cn([
                 "group flex flex-col",
                 variant === "grid" &&
-                  "justify-center gap-2 border border-neutral-800 p-6",
+                  "justify-center gap-1 border border-neutral-800 p-6",
               ])}
               href={page.route}
               key={page.route}
