@@ -10,7 +10,7 @@ import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMDXComponents, type Components } from "nextra/mdx";
 import { ActionLink } from "../components/button-example";
-import { KnowledgeCallout } from "../components/callouts";
+import { KnowledgeCallout, YouWillLearnCallout } from "../components/callouts";
 import { PagesList } from "../components/pages-list";
 
 export const components: Components = {
@@ -93,6 +93,7 @@ export const components: Components = {
   Video: ({ src }) => (
     <video className="mt-5 w-full rounded-xl" controls src={src} />
   ),
+  YouWillLearnCallout,
   a: ({ children, href }) => (
     <Link className="text-blue-400 underline" href={href || ""}>
       {children}

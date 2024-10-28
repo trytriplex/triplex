@@ -1,0 +1,40 @@
+---
+title: Code-First
+description: Learn how Triplex supports code-first development.
+---
+
+Not all scenes and behavior can be created visually either for technical or taste reasons, however Triplex still works great with a code-first workflow.
+
+## Two-Way Sync
+
+Triplex doesn't just save your changes back to source, it's also immediately synchronized from changes made to your source files outside of Triplex. This enables you to iterate in code and see the results in the Scene, and if using [Triplex for VS Code](/docs/get-started/vscode) you don't even have to leave your IDE.
+
+<KnowledgeCallout>
+  Using Triplex as a code-first workflow feels very similar to using
+  [Storybook](https://storybook.js.org/) but with the added benefit of its
+  productivity features and dependencies being handled for you.
+</KnowledgeCallout>
+
+## World-Class Dev Environment
+
+Triplex runs your scene using [Vite](https://vite.dev/) a popular build tool for the web, along with enabling productivity features like [Hot Module Replacement](https://vitejs.dev/guide/features.html#hot-module-replacement) and [React Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+
+This means you get a fast, responsive local development environment without having to do work to get it set up.
+
+## Managed Dependencies
+
+Unlike traditional development tools Triplex isn't installed into your repository but instead as a [standalone app](/docs/get-started/standalone) and VS Code extension. This means you don't have to worry about managing dependencies and you can use the latest features without waiting for your team to upgrade.
+
+Here are common scenarios that are no longer an issue:
+
+- Duplicate dependencies causing errors
+- Dependency bloat causing install times to increase
+- Upgrade pain from upgrading between major versions
+- Transitive dependency versions blocking upgrades
+- Dependencies needing interventions because of security violations
+
+<KnowledgeCallout>
+  While Triplex manages dependencies for you it still uses your projects
+  dependencies where appropriate. Anything you import along with environment
+  dependencies such as `react` and `react-dom` are sourced from your project.
+</KnowledgeCallout>
