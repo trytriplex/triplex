@@ -1,7 +1,32 @@
-Key points to make:
+---
+description: Learn how to change the props your component is given during development.
+---
 
-- alternative to leva
-- same power from prop controls
-- use cases to use it for
-- how it's "live"
-- how to reset props
+import { EraserIcon, Pencil2Icon } from "@radix-ui/react-icons";
+
+Seeing how your component behaves when given different props is a key part of developing with Triplex. With Component Controls the props of the open component can be changed at any time by clicking the <ActionLink icon={Pencil2Icon} href="/docs" name="Component Controls" /> action in the Scene Panel.
+
+## Making Changes
+
+With Component Controls open you can change the value of props through the UI. The behavior is the same as [Editing Props](/docs/building-your-scene/components/editing-props) with one difference — changes are only temporary for the current session.
+
+For more advanced and specific scenarios we recommend creating example components with props needed for testing.
+
+## Resetting Changes
+
+To reset props back to their default values click the <ActionLink icon={EraserIcon} href="/docs" name="Reset Props" /> action.
+
+<KnowledgeCallout>
+  Props that have [default values](https://react.dev/learn/passing-props-to-a-component#specifying-a-default-value-for-a-prop) set through destructured args are respected by Component Controls, including when resetting props back to their default values.
+
+```tsx /x = 10/
+export function Component({ x = 10 }: { x: number });
+```
+
+</KnowledgeCallout>
+
+## Alternative to Leva
+
+Writing code with [Leva](https://github.com/pmndrs/leva) is a common way to have your component be configurable during development. With Component Controls you're able to decide if you want to maintain that code or not.
+
+See the [Replacing Leva With Component Props](http://localhost:3000/guides/use-leva-with-triplex) guide for how to go about it.

@@ -1,11 +1,54 @@
-Key points to make:
+---
+description: Learn how your component props can be edited through the UI.
+---
 
-- powered by typescript
-- available modifiers on inputs
-- editing props in elements of other components
-- prop type Toggle
-- how to view prop descriptions
-- unsupported props
-- props controlled by code
-- intermediate states when editing vs. needing to save
-- segue into component controls
+import { ExclamationTriangleIcon, SwitchIcon } from "@radix-ui/react-icons";
+
+Your component props can be inspected and edited thanks to [TypeScript](https://www.typescriptlang.org/), even if your project isn't using it.
+
+When an element is selected its props are displayed in the Context Area.
+
+## Making Changes
+
+For a given prop find it in the Context Area and change its value. When blurring away from the input the change will be applied and ready to save. Once you've made all the changes you want make sure to save it back to source using the <ActionLink icon="⌘ + S" href="/docs" name="Save" /> action.
+
+Props with an _italic label_ means that they have a description available. Hover over the label to see the description.
+
+{/* prettier-ignore */}
+<KnowledgeCallout>
+To give your own component props a description add a multi-line comment above it.
+
+```tsx {2}
+interface Props {
+  /** Position of the object on the x-axis. */
+  x: number;
+}
+```
+
+</KnowledgeCallout>
+
+## Cycle Through Prop Types
+
+For props that can be given different values use the <ActionLink name="Switch Prop Type" icon={SwitchIcon} href="#prop-type-toggle" /> action to cycle through them.
+
+{/* prettier-ignore */}
+<KnowledgeCallout>
+Union type props can be given different values through the UI. The following example declares a prop that can be given a number, string, or boolean.
+
+```tsx /value: number | string | boolean/
+export function Component({}: { value: number | string | boolean });
+```
+
+</KnowledgeCallout>
+
+## Code-Controlled Props
+
+Props that have dynamic values are considered controlled by code and can't be edited through the UI. You'll see the <ActionLink name="Controlled By Code" icon={ExclamationTriangleIcon} href="#prop-type-toggle" /> action next to it, interacting with it jumps you to its code declaration.
+
+## Unsupported Props
+
+Some props just can't be edited through the UI. Sorry! You'll see the <ActionLink name="Unsupported Prop" icon={ExclamationTriangleIcon} href="#prop-type-toggle" /> action next to it, interacting with it opens GitHub for you to create an issue to gauge community interest for adding support.
+
+## Next Steps
+
+For an exhaustive list of supported props see [API Reference > Props](/docs/api-reference/props), otherwise continue to learn about [Component Controls](/docs/building-your-scene/components/component-controls).

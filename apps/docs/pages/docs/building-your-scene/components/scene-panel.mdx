@@ -1,0 +1,33 @@
+---
+description: Learn how your component is represented in the Scene Panel.
+---
+
+import { CaretDownIcon, CaretRightIcon } from "@radix-ui/react-icons";
+
+When opening a component in Triplex its elements are displayed in the Scene Panel. These elements can have their props inspected and edited through the [UI controls](/docs/building-your-scene/components/editing-props) and [Scene](/docs/building-your-scene/scene/transform-controls).
+
+Elements can be both host elements such as `mesh` and `group`, and custom components such as `YourPrefabComponent` and `PerspectiveCamera`. To tell them apart host elements always start with a lowercase letter where as custom components start with an uppercase letter.
+
+## Inspecting Custom Components
+
+Clicking on the <ActionLink name="View Child Elements" href="/" icon={CaretRightIcon} /> action on a custom component will reveal that components elements. You're able to inspect and edit them just as you can elements owned by the open component.
+
+Editing the elements will modify that component in its file when saving.
+
+<KnowledgeCallout>
+  Custom components that are sourced from node modules cannot be inspected or
+  edited.
+</KnowledgeCallout>
+
+## Switching Between Components
+
+You can switch between the components declared in a file by using the <ActionLink name="Component Switcher" icon={CaretDownIcon} href="/" /> at the top of the Scene Panel.
+
+<KnowledgeCallout>
+  Switching components will not lose any changes you've made. Triplex will keep
+  all the changes you've made until you save or close the file.
+</KnowledgeCallout>
+
+## Next Steps
+
+For an exhaustive list of features in the Scene Panel see [Learn the UI > Scene Panel](/docs/building-your-scene/learn-the-ui/scene-panel), otherwise continue to learn about [Editing Props](/docs/building-your-scene/components/editing-props).
