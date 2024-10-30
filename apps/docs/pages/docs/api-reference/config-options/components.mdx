@@ -1,4 +1,5 @@
 ---
+app: Standalone
 title: components
 description: Paths to component files that should appear in the Assets Panel.
 ---
@@ -25,10 +26,10 @@ Target different directories by passing in multiple items.
 
 ## File Extensions
 
-Target files with different file extensions using the pipe operator.
+Target files with different file extensions using expansions.
 
 ```json filename=".triplex/config.json"
 {
-  "files": ["../src/components/**/*.(tsx|jsx)"]
+  "files": ["../src/components/**/*.{jsx,tsx}"]
 }
 ```

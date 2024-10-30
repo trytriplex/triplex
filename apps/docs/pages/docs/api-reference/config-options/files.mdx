@@ -27,10 +27,10 @@ Target different directories by passing in multiple items.
 
 ## File Extensions
 
-Target files with different file extensions using the pipe operator.
+Target files with different file extensions using expansions.
 
 ```json filename=".triplex/config.json"
 {
-  "files": ["../src/**/*.(tsx|jsx)"]
+  "files": ["../src/**/*.{jsx,tsx}"]
 }
 ```
