@@ -1,0 +1,27 @@
+---
+description: Transform Controls are used to move, rotate, and scale objects in the Scene.
+---
+
+import { AngleIcon, CursorArrowIcon } from "@radix-ui/react-icons";
+
+Transform Controls appear on selected elements that take the appropriate props for the transform mode. It is used to move, rotate, and scale scene objects.
+
+- **position** — Enables translate mode for the scene object
+- **rotation** — Enables rotate mode for the scene object
+- **scale** — Enables scale mode for the scene object
+
+If the element does not take the prop for the mode Transform Controls will be disabled.
+
+## Transform Modes
+
+The [Scene Controls](/docs) contains the transform mode actions, interacting with them sets the mode accordingly. For example clicking the <ActionLink icon={AngleIcon} href="/docs" name="Rotate" /> action enables the rotate mode.
+
+Each mode has a corresponding hotkey you can use instead of clicking the action.
+
+- Translate — <Kbd>T</Kbd>
+- Rotate — <Kbd>R</Kbd>
+- Scale — <Kbd>S</Kbd>
+
+## Turn Off Transform Controls
+
+Turn off Transform Controls clicking the <ActionLink icon={CursorArrowIcon} href="/docs" name="Select" /> action in the Scene Controls.

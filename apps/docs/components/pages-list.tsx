@@ -53,11 +53,21 @@ export function PagesList({
               )}
               <div
                 className={cn([
-                  "text-xl text-neutral-200 group-hover:underline",
+                  "inline-flex flex-wrap items-center gap-1 text-xl text-neutral-200",
                   variant === "list" && "font-medium",
                 ])}
               >
-                {page.frontMatter?.title || page.meta?.title || page.name}
+                <span className="group-hover:underline">
+                  {page.frontMatter?.title || page.meta?.title || page.name}
+                </span>
+                {page.frontMatter?.app && (
+                  <div
+                    className="inline-block rounded bg-white/10 px-1 py-0.5 text-xs font-normal text-neutral-400"
+                    title={`Only available in ${page.frontMatter.app}.`}
+                  >
+                    {page.frontMatter.app}
+                  </div>
+                )}
               </div>
               {page.frontMatter?.description && (
                 <div className="text-base text-neutral-400">
