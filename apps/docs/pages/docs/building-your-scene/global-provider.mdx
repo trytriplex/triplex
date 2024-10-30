@@ -1,0 +1,83 @@
+---
+description: The Global Provider is used to configure the environment of your project.
+---
+
+Your components are opened in an isolated sandbox — so they might not have the necessary environment to be rendered. Using the Global Provider you can configure the environment needed by your components.
+
+## Adding the Global Provider
+
+1. Create a provider component somewhere in your project.
+
+   ```tsx filename=".triplex/provider.tsx"
+   export default function Provider({
+     children,
+   }: {
+     children?: React.ReactNode;
+   }) {
+     return children;
+   }
+   ```
+
+2. Update your config to use the provider.
+
+   ```json filename=".triplex/config.json"
+   {
+     "provider": "./provider.tsx"
+   }
+   ```
+
+3. Configure the environment as you need. Here we set up [Rapier physics](https://github.com/pmndrs/react-three-rapier).
+
+   ```tsx filename=".triplex/provider.tsx" {1,8}
+   import { Physics } from "@react-three/rapier";
+
+   export default function Provider({
+     children,
+   }: {
+     children?: React.ReactNode;
+   }) {
+     return <Physics>{children}</Physics>;
+   }
+   ```
+
+4. Now components that use physics such as [RigidBody](https://github.com/pmndrs/react-three-rapier?tab=readme-ov-file#the-rigidbody-component) and [Colliders](https://github.com/pmndrs/react-three-rapier?tab=readme-ov-file#collider-components) can render without erroring.
+
+## Provider Controls
+
+Props declared on the Global Provider component are available as controls in the Scene Panel enabling dynamic configuration of your environment at runtime.
+
+Taking the Rapier example above, having physics be usable is great but having them run all the time... isn't. Especially when you're wanting to edit or inspect your scene!
+
+To fix this we can disable the simulation using props.
+
+1. Declare a boolean prop on the component.
+
+   ```tsx filename=".triplex/provider.tsx" {3,5}
+   export default function Provider({
+     children,
+     physicsEnabled = false,
+   }: {
+     physicsEnabled: boolean;
+     children?: React.ReactNode;
+   }) {
+     return <Physics>{children}</Physics>;
+   }
+   ```
+
+2. Pass the prop to the Physics component.
+
+   ```tsx filename=".triplex/provider.tsx" /paused={!physicsEnabled}/
+   export default function Provider({
+     children,
+     physicsEnabled = false,
+   }: {
+     physicsEnabled: boolean;
+     children?: React.ReactNode;
+   }) {
+     return <Physics paused={!physicsEnabled}>{children}</Physics>;
+   }
+   ```
+
+3. The prop now appears in the Scene Panel and can be toggled on and off.
+
+For an exhaustive list of supported props see [API Reference > Props](/docs/api-reference/props).
