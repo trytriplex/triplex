@@ -239,8 +239,16 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                   )}
                 </div>
               )}
-              <h1 className="text-3xl font-bold text-neutral-200 lg:text-4xl">
+              <h1 className="flex flex-wrap items-center gap-2 text-3xl font-bold text-neutral-200 lg:text-4xl">
                 {title}
+                {frontMatter.app && (
+                  <div
+                    className="inline-block rounded bg-white/10 px-1 py-0.5 text-xs font-normal text-neutral-400"
+                    title={`Only available in ${frontMatter.app}.`}
+                  >
+                    {frontMatter.app}
+                  </div>
+                )}
               </h1>
               {frontMatter.description && (
                 <div className="text-lg text-neutral-400">

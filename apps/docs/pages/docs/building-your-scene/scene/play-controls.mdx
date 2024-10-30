@@ -1,9 +1,64 @@
+---
+description: Play Controls let you interact with your scene.
+---
+
+import {
+  CaretDownIcon,
+  PauseIcon,
+  PlayIcon,
+  ResetIcon,
+  StopIcon,
+} from "@radix-ui/react-icons";
+
+## Starting the Scene
+
+Start your scene by clicking the <ActionLink icon={PlayIcon} href="/docs" name="Play" /> action in the Scene Controls. The editor will switch to the default camera, turn on raycasting for your scene, enable controls such as map controls if any are rendered in the scene, and hide the editor UI.
+
+This action is only available in edit and pause states.
+
+<KnowledgeCallout>
+  Play Controls don't currently control the frame loop, meaning it's always
+  running even in edit mode. If you'd like to see this implemented please
+  [comment on GitHub](https://github.com/trytriplex/triplex/issues/215).
+</KnowledgeCallout>
+
+## Pausing the Scene
+
+Pause your scene by clicking the <ActionLink icon={PauseIcon} href="/docs" name="Pause" /> action in the Scene Controls. This will pause your scene in its current state and bring up the editor UI for you to make any adjustments or inspect the scene.
+
+This action is only available in play state.
+
+## Resetting the Scene
+
+To reset the scene back to its default state click the <ActionLink icon={ResetIcon} href="/docs" name="Reset" /> action in the Scene Controls. State is reset by re-mounting your component.
+
+If you have global state stored outside of React you'll need to reset it yourself. One method to do this is by resetting it [in an effect](https://react.dev/reference/react/useEffect):
+
+```tsx
+useEffect(() => {
+  // Instantiate state if needed here
+  return () => {
+    // Reset state here
+  };
+}, []);
+```
+
+This action is available in all states.
+
+## Stopping the Scene
+
+Stop running your scene by clicking the <ActionLink icon={StopIcon} href="/docs" name="Stop" /> action in the Scene Controls. This will reset the scene and brings the editor UI back.
+
+This action is available in play and pause states.
+
 ## Camera Selection
 
-## Play
+To play your scene through a different camera click the <ActionLink icon={CaretDownIcon} href="/docs" name="Set Play Camera" /> action next to the Play action. This is useful when needing to debug from a specific viewpoint while the scene is interactive.
 
-## Pause
+To change what the default camera is set the `makeDefault` prop to `true` on any camera component from the [Drei](https://github.com/pmndrs/drei) library.
 
-## Stop
+```tsx /makeDefault/
+import { PerspectiveCamera } from "@react-three/drei";
 
-## Reset
+<PerspectiveCamera makeDefault />;
+```
