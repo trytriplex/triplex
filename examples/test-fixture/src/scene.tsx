@@ -40,6 +40,10 @@ export function Scene({
           <boxGeometry />
           <meshStandardMaterial />
         </mesh>
+        <mesh position={[0.04, 0, -1.7]} scale={[2.42, 2.24, 1]}>
+          <boxGeometry />
+          <meshStandardMaterial />
+        </mesh>
       </group>
 
       <MapControls makeDefault={false} />
