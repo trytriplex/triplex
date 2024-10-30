@@ -423,6 +423,10 @@ export function Selection({
     };
 
     const mouseUpHandler = (e: MouseEvent) => {
+      const selectionMode: "cycle" | "default" =
+        // If there have been 2 or more consecutive clicks we change the selection mode to cycle.
+        e.detail >= 2 ? "cycle" : "default";
+
       const delta =
         Math.abs(e.offsetX - origin[0]) + Math.abs(e.offsetY - origin[1]);
 
@@ -439,22 +443,37 @@ export function Selection({
         return isMeshVisible(found.object);
       });
 
-      for (const found of result) {
-        if (trySelectObject(found.object)) {
+      if (selectionMode === "default") {
+        for (const found of result) {
+          if (trySelectObject(found.object)) {
+            send("track", { actionId: "element_focus" });
+            return;
+          }
+        }
+
+        // Nothing was selected so we blur the current selection.
+        // This only happens for the default selection mode.
+        setSelected((previouslySelected) => {
+          if (previouslySelected) {
+            send("track", { actionId: "element_blur" });
+          }
+
+          return undefined;
+        });
+
+        onBlur();
+      } else if (selectionMode === "cycle") {
+        const currentIndex = result.findIndex(
+          (found) => found.object === selectedObject?.sceneObject,
+        );
+
+        const nextIndex = (currentIndex + 1) % result.length;
+
+        if (trySelectObject(result[nextIndex].object)) {
           send("track", { actionId: "element_focus" });
           return;
         }
       }
-
-      setSelected((previouslySelected) => {
-        if (previouslySelected) {
-          send("track", { actionId: "element_blur" });
-        }
-
-        return undefined;
-      });
-
-      onBlur();
     };
 
     gl.domElement.addEventListener("mousedown", mouseDownHandler);
@@ -471,6 +490,7 @@ export function Selection({
     gl.domElement,
     onBlur,
     scene,
+    selectedObject,
     trySelectObject,
   ]);
 
