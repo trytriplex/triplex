@@ -391,13 +391,13 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/api-reference/config-options/assets-dir</loc>
-    <lastmod>2024-10-28</lastmod>
+    <lastmod>2024-10-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/api-reference/config-options/components</loc>
-    <lastmod>2024-10-28</lastmod>
+    <lastmod>2024-10-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -409,7 +409,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/api-reference/config-options/files</loc>
-    <lastmod>2024-10-24</lastmod>
+    <lastmod>2024-10-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
