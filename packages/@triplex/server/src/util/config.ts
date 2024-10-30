@@ -6,6 +6,7 @@
  */
 import { readdirSync, readFileSync } from "node:fs";
 import { join, normalize, resolve } from "upath";
+import { array, object, optional, parse, string } from "valibot";
 import {
   type ReconciledTriplexConfig,
   type SecretTriplexConfig,
@@ -20,16 +21,26 @@ const DEFAULT_PROVIDER = "triplex:empty-provider.tsx";
 const DEFAULT_PUBLIC_DIR = "../public";
 const DEFAULT_ASSETS_DIR = "assets";
 
+const schema = object({
+  assetsDir: optional(string()),
+  components: optional(array(string())),
+  define: optional(object({})),
+  files: optional(array(string())),
+  provider: optional(string()),
+  publicDir: optional(string()),
+  renderer: optional(string()),
+  rendererAttributes: optional(object({})),
+});
+
 export function getConfig(cwd: string): ReconciledTriplexConfig {
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // TODO: VALIDATE THIS CONFIG!!!!
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let config: TriplexConfig & SecretTriplexConfig;
 
   try {
-    const conf = readFileSync(join(cwd, ".triplex/config.json"), "utf8");
-    config = JSON.parse(conf);
+    const configString = readFileSync(
+      join(cwd, ".triplex/config.json"),
+      "utf8",
+    );
+    config = parse(schema, JSON.parse(configString));
   } catch {
     config = {};
   }
