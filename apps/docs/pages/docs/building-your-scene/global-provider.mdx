@@ -4,6 +4,12 @@ description: The Global Provider is used to configure the environment of your pr
 
 Your components are opened in an isolated sandbox — so they might not have the necessary environment to be rendered. Using the Global Provider you can configure the environment needed by your components.
 
+<KnowledgeCallout>
+  Provider components are a common way for configuring your environment in
+  React. If you're not familiar with them please read [Passing Data Deeply with
+  Context](https://react.dev/learn/passing-data-deeply-with-context).
+</KnowledgeCallout>
+
 ## Adding the Global Provider
 
 1. Create a provider component somewhere in your project.
@@ -18,7 +24,7 @@ Your components are opened in an isolated sandbox — so they might not have the
    }
    ```
 
-2. Update your config to use the provider.
+2. Update your config to use the provider. Make sure to restart Triplex after making this change.
 
    ```json filename=".triplex/config.json"
    {
@@ -26,7 +32,7 @@ Your components are opened in an isolated sandbox — so they might not have the
    }
    ```
 
-3. Configure the environment as you need. Here we set up [Rapier physics](https://github.com/pmndrs/react-three-rapier).
+3. Configure the environment as needed. Here we set up [Rapier physics](https://github.com/pmndrs/react-three-rapier).
 
    ```tsx filename=".triplex/provider.tsx" {1,8}
    import { Physics } from "@react-three/rapier";

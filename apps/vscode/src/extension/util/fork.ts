@@ -6,9 +6,9 @@
  */
 import { fork as forkChild } from "node:child_process";
 import { join } from "upath";
-import { logger } from "../../util/log/vscode";
+import { logFromFork, logger } from "../../util/log/vscode";
 
-const log = logger("project");
+const log = logger("fork_parent");
 
 /**
  * Forks a sub-process that points to an entrypoint. The entrypoint must call
@@ -31,7 +31,7 @@ export function fork<TData extends Record<string, unknown>>(
   let fork: ReturnType<typeof forkChild>;
 
   if (process.env.TRIPLEX_ENV === "development") {
-    log("Starting project (dev)...");
+    log.debug("Starting project (dev)...");
 
     fork = forkChild(filename, ["--inspect-port=0"], {
       cwd: data.cwd,
@@ -49,7 +49,7 @@ export function fork<TData extends Record<string, unknown>>(
       silent: true,
     });
   } else {
-    log("Starting project...");
+    log.debug("Starting project...");
     fork = forkChild(filename.replace(".ts", ".js"), [], {
       cwd: data.cwd,
       env: {
@@ -67,10 +67,12 @@ export function fork<TData extends Record<string, unknown>>(
     });
   }
 
+  logFromFork(fork);
+
   return new Promise((resolve, reject) => {
     fork.on("error", (e) => {
       reject(e);
-      log("Error", e);
+      log.error("Error", e);
     });
 
     fork.stderr?.on("data", (data) => {
@@ -81,7 +83,8 @@ export function fork<TData extends Record<string, unknown>>(
       }
 
       reject(err);
-      log("Error", err);
+
+      log.debug(err);
     });
 
     fork.on("message", (e) => {
@@ -91,14 +94,14 @@ export function fork<TData extends Record<string, unknown>>(
       };
 
       if (eventObject.eventName === "ready") {
-        log("Started.", eventObject.data);
+        log.debug("Started.");
 
         resolve({
           data: eventObject.data,
           kill() {
             if (!fork.kill("SIGTERM")) {
               // eslint-disable-next-line no-console
-              console.error("could not kill fork");
+              log.debug("Project fork could not be terminated.");
             }
           },
           on(

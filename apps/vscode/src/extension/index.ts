@@ -14,15 +14,13 @@ import { TriplexEditorProvider } from "./editor";
 const log = output.logger("main");
 
 export function activate(context: vscode.ExtensionContext) {
-  log(`Triplex for VS Code v${version} activating...`);
-
   context.subscriptions.push(
     TriplexCodelensProvider.register(),
     TriplexEditorProvider.register(context),
     output,
   );
 
-  log(`Activated.`);
+  log.info(`Triplex for VS Code v${version} activated.`);
 }
 
 export function deactivate() {}

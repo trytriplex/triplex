@@ -12,9 +12,9 @@ import {
   type ReconciledTriplexConfig,
   type TriplexPorts,
 } from "@triplex/server";
-import { logger } from "../util/log/node";
+import { logger } from "../util/log/fork";
 
-const log = logger("project");
+const log = logger("fork_process");
 
 export type Args = {
   config: ReconciledTriplexConfig;
@@ -27,7 +27,7 @@ export type Args = {
 };
 
 async function main() {
-  log("init");
+  log.debug("init");
   const cleanupFunctions: (() => void)[] = [];
 
   if (!process.env.TRIPLEX_DATA) {
@@ -42,15 +42,15 @@ async function main() {
     });
   }
 
-  log("start server");
+  log.debug("start server");
   const server = await createServer(data);
   cleanupFunctions.push(await server.listen(data.ports));
 
-  log("start client");
+  log.debug("start client");
   const client = await createClientServer(data);
   cleanupFunctions.push(await client.listen(data.ports.client));
 
-  log("ready");
+  log.debug("ready");
   process.send?.({
     eventName: "ready",
   });
