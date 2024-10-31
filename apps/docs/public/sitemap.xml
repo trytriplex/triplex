@@ -223,7 +223,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/global-provider</loc>
-    <lastmod>2024-10-30</lastmod>
+    <lastmod>2024-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -330,14 +330,14 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://triplex.dev/docs/building-your-scene/console-logs/developer-console</loc>
-    <lastmod>2024-10-19</lastmod>
+    <loc>https://triplex.dev/docs/building-your-scene/console-logs/dev-tools</loc>
+    <lastmod>2024-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/console-logs/logs</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-10-31</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
