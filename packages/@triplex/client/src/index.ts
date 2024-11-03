@@ -53,7 +53,7 @@ export async function createServer({
     define: config.define,
     logLevel: "error",
     optimizeDeps: {
-      esbuildOptions: { plugins: [transformNodeModulesJSXPlugin] },
+      esbuildOptions: { plugins: [transformNodeModulesJSXPlugin()] },
     },
     plugins: [
       remoteModulePlugin({ cwd: normalizedCwd, files: config.files, ports }),
