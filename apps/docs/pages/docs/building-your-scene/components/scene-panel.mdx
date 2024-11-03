@@ -8,6 +8,11 @@ When opening a component in Triplex its elements are displayed in the Scene Pane
 
 Elements can be both host elements such as `mesh` and `group`, and custom components such as `YourPrefabComponent` and `PerspectiveCamera`. To tell them apart host elements always start with a lowercase letter where as custom components start with an uppercase letter.
 
+<KnowledgeCallout>
+  If you find elements of the same name being hard to differentiate setting a
+  `name` prop on them will be reflected in the Scene Panel.
+</KnowledgeCallout>
+
 ## Inspecting Custom Components
 
 Clicking on the <ActionLink name="View Child Elements" href="/" icon={CaretRightIcon} /> action on a custom component will reveal that components elements. You're able to inspect and edit them just as you can elements owned by the open component.

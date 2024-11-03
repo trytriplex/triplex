@@ -12,7 +12,14 @@ Your components are opened in an isolated sandbox — so they might not have the
 
 ## Adding the Global Provider
 
-1. Create a provider component somewhere in your project.
+1. If you haven't already create the config file from the root of your project.
+
+   ```bash filename="<root>"
+   npx make-dir-cli .triplex
+   npx touch .triplex/config.json
+   ```
+
+1. Create a provider component, place it anywhere you'd like. Here we create it in the .triplex folder.
 
    ```tsx filename=".triplex/provider.tsx"
    export default function Provider({
@@ -24,7 +31,7 @@ Your components are opened in an isolated sandbox — so they might not have the
    }
    ```
 
-2. Update your config to use the provider. Make sure to restart Triplex after making this change.
+1. Update your config to use the provider. Make sure to restart Triplex after making this change.
 
    ```json filename=".triplex/config.json"
    {
@@ -32,7 +39,7 @@ Your components are opened in an isolated sandbox — so they might not have the
    }
    ```
 
-3. Configure the environment as needed. Here we set up [Rapier physics](https://github.com/pmndrs/react-three-rapier).
+1. Configure the environment as needed. Here we set up [Rapier physics](https://github.com/pmndrs/react-three-rapier).
 
    ```tsx filename=".triplex/provider.tsx" {1,8}
    import { Physics } from "@react-three/rapier";
@@ -46,13 +53,13 @@ Your components are opened in an isolated sandbox — so they might not have the
    }
    ```
 
-4. Now components that use physics such as [RigidBody](https://github.com/pmndrs/react-three-rapier?tab=readme-ov-file#the-rigidbody-component) and [Colliders](https://github.com/pmndrs/react-three-rapier?tab=readme-ov-file#collider-components) can render without erroring.
+1. Now components that use physics such as [RigidBody](https://github.com/pmndrs/react-three-rapier?tab=readme-ov-file#the-rigidbody-component) and [Colliders](https://github.com/pmndrs/react-three-rapier?tab=readme-ov-file#collider-components) can render without erroring.
 
 ## Provider Controls
 
-Props declared on the Global Provider component are available as controls in the Scene Panel enabling dynamic configuration of your environment at runtime.
+Props declared on the provider component are available as controls in the Scene Panel. This enables dynamic configuration of your environment at runtime.
 
-Taking the Rapier example above, having physics be usable is great but having them run all the time... isn't. Especially when you're wanting to edit or inspect your scene!
+Taking the Rapier example above having physics be usable is great but having them run all the time... isn't. Especially when you're wanting to edit or inspect your scene!
 
 To fix this we can disable the simulation using props.
 

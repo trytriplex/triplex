@@ -5,5 +5,10 @@
     }
   },
   "vscode": "Visual Studio Code",
-  "standalone": "Standalone"
+  "standalone": {
+    "title": "Standalone",
+    "theme": {
+      "childLinks": false
+    }
+  }
 }
