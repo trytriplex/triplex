@@ -35,12 +35,12 @@ export default withNextra({
       source: "/docs/guides/glsl-support",
     },
     {
-      destination: "/guides/set-up-javascript-projects",
+      destination: "/docs/get-started/starting-a-project/pre-existing-project",
       permanent: false,
       source: "/docs/guides/javascript-projects",
     },
     {
-      destination: "/guides/set-up-provider-component-for-controls",
+      destination: "/docs/building-your-scene/global-provider",
       permanent: false,
       source: "/docs/guides/provider-controls",
     },

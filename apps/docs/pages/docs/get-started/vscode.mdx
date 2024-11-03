@@ -1,6 +1,6 @@
 ---
 title: Triplex for VS Code
-description: Triplex for VS Code turns Visual Studio Code into a visual IDE.
+description: Turn Visual Studio Code into a visual IDE.
 ---
 
 Triplex for VS Code turns [Visual Studio Code](https://code.visualstudio.com/) into a visual IDE, bringing the best features of Triplex for you to stay in context while coding.
@@ -23,7 +23,7 @@ While viewing a `tsx` or `jsx` file selecting the <ActionLink name="Triplex: Ope
 
 ### Excluding files
 
-By default all React components can be opened by Triplex. When wanting to scope the files that can be opened you can create a `.triplex/config.json` file and populate the `"files"` field.
+By default all React components can be opened by Triplex. When wanting to scope the files that can be opened you can create a [configuration file](/docs/api-reference/config-options) and populate the `"files"` field.
 
 For example the following configuration marks all tsx files inside the components folder can be opened, anything else is excluded.
 
@@ -42,3 +42,9 @@ For more information see [config.json Options > files](/docs/api-reference/confi
 Visual Studio Code by default doesn't run in a [secure context](https://developer.mozilla.org/en-US/docs/Web/Security/Secure_Contexts) which means certain APIs are unavailable, like SharedArrayBuffer. To enable these APIs you need to close all instances of Visual Studio Code and then re-open with the `--enable-coi` flag.
 
 This flag was [introduced on September 2022 (version 1.72)](https://code.visualstudio.com/updates/v1_72#_towards-cross-origin-isolation).
+
+## Next Steps
+
+Learn how to start a project and work with Triplex.
+
+<PagesList route="/docs/get-started/starting-a-project" variant="grid" />

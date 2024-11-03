@@ -3,8 +3,17 @@ title: config.json Options
 description: Options change the behavior of Triplex.
 ---
 
+Configuration is is located in the .triplex folder from the root of your project and is optional.
+
+When you need to create one you can run the following commands in your terminal.
+
+```bash filename="<root>"
+npx make-dir-cli .triplex
+npx touch .triplex/config.json
+```
+
 <KnowledgeCallout>
-To have autocomplete in your IDE for the config declare the JSON schema.
+To have autocomplete for configuration in your IDE make sure to declare the `"$schema"` property.
 
 ```json filename=".triplex/config.json"
 {
