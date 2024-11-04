@@ -33,6 +33,35 @@ You can switch between the components declared in a file by using the <ActionLin
   all the changes you've made until you save or close the file.
 </KnowledgeCallout>
 
+## Naming Elements
+
+Elements that appear in the Scene Panel can be given a name by setting the `name` prop. This name will be reflected in the Scene Panel and can be used to identify elements that are hard to differentiate.
+
+For example given the following code:
+
+```tsx
+export function Scene() {
+  return (
+    <>
+      <mesh name="box1">
+        <boxGeometry />
+      </mesh>
+      <mesh name="box2">
+        <boxGeometry />
+      </mesh>
+    </>
+  );
+}
+```
+
+The elements will be rendered in the Scene Panel as "box1 (mesh)" and "box2 (mesh)".
+
+<KnowledgeCallout>
+  Both host elements and custom components can be named, however the value
+  passed to the name prop must be a string literal for it to be reflected in the
+  Scene Panel.
+</KnowledgeCallout>
+
 ## Next Steps
 
 For an exhaustive list of features in the Scene Panel see [Learn the UI > Scene Panel](/docs/building-your-scene/learn-the-ui/scene-panel), otherwise continue to learn about [Editing Props](/docs/building-your-scene/components/editing-props).
