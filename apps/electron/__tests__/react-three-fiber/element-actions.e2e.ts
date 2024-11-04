@@ -26,7 +26,9 @@ test("delete parent element", async ({ electron }) => {
 });
 
 test("enter camera", async ({ electron }) => {
-  const parent = electron.scenePanel.elementButton("PerspectiveCamera");
+  const parent = electron.scenePanel.elementButton(
+    "user_defined (PerspectiveCamera)",
+  );
   await electron.waitForScene();
 
   await parent.customAction("Enter Camera").click();
@@ -35,7 +37,9 @@ test("enter camera", async ({ electron }) => {
 });
 
 test("enter camera block changing host camera", async ({ electron }) => {
-  const parent = electron.scenePanel.elementButton("PerspectiveCamera");
+  const parent = electron.scenePanel.elementButton(
+    "user_defined (PerspectiveCamera)",
+  );
   await electron.waitForScene();
 
   await parent.customAction("Enter Camera").click();
@@ -79,7 +83,9 @@ test("enter custom element and back", async ({ electron }) => {
 });
 
 test("elements from node modules cant be entered", async ({ electron }) => {
-  const parent = electron.scenePanel.elementButton("PerspectiveCamera");
+  const parent = electron.scenePanel.elementButton(
+    "user_defined (PerspectiveCamera)",
+  );
 
   await parent.dblclick();
 

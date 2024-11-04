@@ -92,7 +92,9 @@ test.skip("unset userland camera to use default camera in play mode", async ({
   electron,
 }) => {
   await electron.waitForScene();
-  const parent = electron.scenePanel.elementButton("PerspectiveCamera");
+  const parent = electron.scenePanel.elementButton(
+    "user_defined (PerspectiveCamera)",
+  );
   await parent.click();
   const input = electron.contextPanel.input("Make Default").locator;
 

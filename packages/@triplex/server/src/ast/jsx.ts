@@ -29,7 +29,7 @@ import { getFunctionPropTypes, getJsxElementPropTypes } from "./type-infer";
  */
 export function getAllJsxElements(
   sourceFile: SourceFileReadOnly,
-  exportName?: string
+  exportName?: string,
 ) {
   let nodeToSearch: SourceFileReadOnly | Node = sourceFile;
 
@@ -47,7 +47,7 @@ export function getAllJsxElements(
 
   const jsxElements = nodeToSearch.getDescendantsOfKind(SyntaxKind.JsxElement);
   const jsxSelfClosing = nodeToSearch.getDescendantsOfKind(
-    SyntaxKind.JsxSelfClosingElement
+    SyntaxKind.JsxSelfClosingElement,
   );
 
   const elements: (JsxSelfClosingElement | JsxElement)[] = [];
@@ -63,7 +63,7 @@ export function getJsxTag(node: JsxElement | JsxSelfClosingElement) {
     : node.getTagNameNode().getText();
   const type: "host" | "custom" = /^[a-z]/.exec(name) ? "host" : "custom";
 
-  if (type === "host" && attributes.name) {
+  if (attributes.name) {
     const nameInitializer = attributes.name.getInitializer();
     const initializerValue = Node.isJsxExpression(nameInitializer)
       ? nameInitializer.getExpression()
@@ -146,7 +146,7 @@ export function resolveExportDeclaration(node: Node<ts.Node>) {
 
 export function getJsxElementsPositions(
   sourceFile: SourceFileReadOnly,
-  exportName: string
+  exportName: string,
 ): JsxElementPositions[] {
   const elements: JsxElementPositions[] = [];
   const parentPointers = new Map<Node, JsxElementPositions>();
@@ -160,13 +160,13 @@ export function getJsxElementsPositions(
   }
 
   const declaration = resolveExportDeclaration(
-    foundExport.getDeclarations()[0]
+    foundExport.getDeclarations()[0],
   );
 
   declaration.forEachDescendant((node) => {
     if (Node.isJsxElement(node) || Node.isJsxSelfClosingElement(node)) {
       const { column, line } = sourceFile.getLineAndColumnAtPos(
-        node.getStart()
+        node.getStart(),
       );
       const tag = getJsxTag(node);
       let positions: JsxElementPositions;
@@ -178,7 +178,7 @@ export function getJsxElementsPositions(
           column,
           exportName: paths.exportName,
           line,
-          name: tag.tagName,
+          name: tag.name ? `${tag.name} (${tag.tagName})` : tag.tagName,
           parentPath,
           path: paths.filePath,
           type: "custom",
@@ -214,7 +214,7 @@ export function getJsxElementsPositions(
 }
 
 export function getAttributes(
-  element: JsxSelfClosingElement | JsxElement
+  element: JsxSelfClosingElement | JsxElement,
 ): Record<string, JsxAttribute> {
   const attributes = Node.isJsxSelfClosingElement(element)
     ? element.getAttributes()
@@ -295,7 +295,7 @@ const propsExcludeList: Record<string, true> = {
 };
 
 export function getJsxElementParentExportNameOrThrow(
-  element: JsxSelfClosingElement | JsxElement
+  element: JsxSelfClosingElement | JsxElement,
 ): string {
   const ancestors = element.getAncestors();
   const maxDepth = ancestors.length - 2;
@@ -316,7 +316,7 @@ export function getJsxElementParentExportNameOrThrow(
       }
 
       const decl = ancestor.getFirstDescendantByKind(
-        SyntaxKind.VariableDeclaration
+        SyntaxKind.VariableDeclaration,
       );
       if (decl) {
         const name = decl.getName();
@@ -338,7 +338,7 @@ export function getJsxElementParentExportNameOrThrow(
 
 export function getJsxElementProps(
   _: SourceFileReadOnly,
-  element: JsxSelfClosingElement | JsxElement
+  element: JsxSelfClosingElement | JsxElement,
 ) {
   const { props, transforms } = getJsxElementPropTypes(element);
 
@@ -364,7 +364,7 @@ export function getJsxElementProps(
 
 export function getFunctionProps(
   sourceFile: SourceFileReadOnly,
-  exportName: string
+  exportName: string,
 ) {
   const { props, transforms } = getFunctionPropTypes(sourceFile, exportName);
 
@@ -389,7 +389,7 @@ export function getFunctionProps(
 export function getJsxElementAt(
   sourceFile: SourceFileReadOnly,
   line: number,
-  column: number
+  column: number,
 ) {
   try {
     const sceneObject = getAllJsxElements(sourceFile).find((node) => {
@@ -406,7 +406,7 @@ export function getJsxElementAt(
 export function getJsxElementAtOrThrow(
   sourceFile: SourceFile,
   line: number,
-  column: number
+  column: number,
 ) {
   const sceneObject = getJsxElementAt(sourceFile, line, column);
   if (!sceneObject) {

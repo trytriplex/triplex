@@ -8,7 +8,9 @@ import { expect } from "@playwright/test";
 import { test } from "../utils/runner";
 
 test("dragging before an element", async ({ electron }) => {
-  const source = electron.scenePanel.elementButton("PerspectiveCamera");
+  const source = electron.scenePanel.elementButton(
+    "user_defined (PerspectiveCamera)",
+  );
   const destination = electron.scenePanel.elementButton("Box");
 
   await source.locator.dragTo(destination.locator, {
@@ -16,7 +18,7 @@ test("dragging before an element", async ({ electron }) => {
   });
 
   await expect(electron.scenePanel.allElements.nth(1)).toHaveText(
-    "PerspectiveCamera",
+    "user_defined (PerspectiveCamera)",
   );
 });
 
