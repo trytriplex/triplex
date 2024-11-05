@@ -108,7 +108,7 @@ export const components: Components = {
     ) : (
       // Code block powered by shiki
       // See: https://shiki.matsu.io/guide/theme-colors#css-variables-theme
-      <code className="leading-6 [--shiki-color-text:#d4d4d4] [--shiki-token-comment:#16a34a] [--shiki-token-constant:#5eead4] [--shiki-token-function:#5eead4] [--shiki-token-keyword:#60a5fa] [--shiki-token-link:#facc15] [--shiki-token-parameter:#9ca3af] [--shiki-token-punctuation:#2dd4bf] [--shiki-token-string-expression:#fda4af] [--shiki-token-string:#4ade80] [&:has(.highlighted)_:not(.highlighted):not(.line)]:opacity-60 [&_.highlighted>*]:!opacity-100 [&_.highlighted]:bg-white/10 [&_.line.highlighted]:float-left [&_.line.highlighted]:w-full">
+      <code className="leading-6 [--shiki-color-text:#d4d4d4] [--shiki-token-comment:#16a34a] [--shiki-token-constant:#5eead4] [--shiki-token-function:#5eead4] [--shiki-token-keyword:#60a5fa] [--shiki-token-link:#facc15] [--shiki-token-parameter:#9ca3af] [--shiki-token-punctuation:#2dd4bf] [--shiki-token-string-expression:#fda4af] [--shiki-token-string:#4ade80] [&:has(.highlighted)_:not(.highlighted):not(.line)]:opacity-60 [&_.highlighted>*]:!opacity-100 [&_.highlighted]:bg-white/10 [&_.line.highlighted]:relative [&_.line.highlighted]:float-left [&_.line.highlighted]:-ml-3 [&_.line.highlighted]:w-[calc(100%+24px)] [&_.line.highlighted]:after:absolute [&_.line.highlighted]:after:bottom-0 [&_.line.highlighted]:after:left-[-1px] [&_.line.highlighted]:after:top-0 [&_.line.highlighted]:after:border-l [&_.line.highlighted]:after:border-blue-400">
         {children}
       </code>
     );
@@ -119,7 +119,7 @@ export const components: Components = {
   h2: ({ children, id }) => (
     <div className="mt-14">
       <h2
-        className="inline scroll-m-20 text-3xl font-medium text-neutral-200 target:bg-blue-400 target:text-neutral-900"
+        className="inline scroll-m-20 text-3xl font-medium text-neutral-200 target:font-bold target:text-neutral-800 target:[-webkit-text-stroke:3px_yellow] target:[paint-order:stroke_fill]"
         id={id}
       >
         {children}
@@ -129,7 +129,7 @@ export const components: Components = {
   h3: ({ children, id }) => (
     <div className="mt-10">
       <h3
-        className="inline scroll-m-20 text-2xl font-medium text-neutral-200 target:bg-blue-400 target:text-neutral-900"
+        className="inline scroll-m-20 text-2xl font-medium text-neutral-200 target:font-bold target:text-neutral-800 target:[-webkit-text-stroke:3px_yellow] target:[paint-order:stroke_fill]"
         id={id}
       >
         {children}
@@ -139,7 +139,7 @@ export const components: Components = {
   h4: ({ children, id }) => (
     <div className="mt-6">
       <h4
-        className="inline scroll-m-20 text-xl font-medium text-neutral-200 target:bg-blue-400 target:text-neutral-900"
+        className="inline scroll-m-20 text-xl font-medium text-neutral-200 target:font-bold target:text-neutral-800 target:[-webkit-text-stroke:3px_yellow] target:[paint-order:stroke_fill]"
         id={id}
       >
         {children}

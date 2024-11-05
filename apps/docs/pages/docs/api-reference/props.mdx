@@ -1,0 +1,67 @@
+---
+description: Props are given to components to change their behavior and are represented as controls in the Context Area.
+---
+
+import { SwitchIcon } from "@radix-ui/react-icons";
+
+Props declared on a React component are represented inside the Context Area as controls that can have their values changed and saved back to source code.
+
+## Literal Types
+
+### string
+
+A string type is displayed as a text input.
+
+```tsx /name: string/
+export function Component(props: { name: string });
+```
+
+### number
+
+A number type is displayed as a number input.
+
+```tsx /size: number/
+export function Component(props: { size: number });
+```
+
+### boolean
+
+A boolean type is displayed as a checkbox input.
+
+```tsx /isHidden: boolean/
+export function Component(props: { isHidden: boolean });
+```
+
+## Union Types
+
+### Literal types
+
+A union type prop which has all literal types is displayed as a select input.
+
+```tsx /variant: "primary" | "secondary" | "tertiary"/
+export function Component(props: {
+  variant: "primary" | "secondary" | "tertiary";
+});
+```
+
+### Mixed types
+
+A union type prop which has mixed types is displayed as the appropriate input for each type.
+
+```tsx /color: string | number | [number, number, number]/
+export function Component(props: {
+  color: string | number | [number, number, number];
+});
+```
+
+Switch between types using the <ActionLink name="Switch Prop Type" icon={SwitchIcon} href="/docs/building-your-scene/components/editing-props#cycle-through-prop-types" /> action.
+
+## Tuple Types
+
+A tuple type prop is a finite list of types in an array. It is displayed as a list of inputs appropriate for each individual type.
+
+Here the position prop will be displayed as three number inputs.
+
+```tsx /position: [number, number, number]/
+export function Component(props: { position: [number, number, number] });
+```
