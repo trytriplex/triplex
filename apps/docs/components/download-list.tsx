@@ -180,7 +180,7 @@ export function DownloadList() {
         action={
           <a
             className="ml-auto flex-shrink-0 rounded bg-blue-400 px-3 py-1 font-medium text-neutral-900"
-            href="https://forms.gle/tgM5JJNFrhEC32n98"
+            href="https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce"
             onClick={(e) => {
               beginDownload(e, "/docs/overview?dl=vsce");
             }}
