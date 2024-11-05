@@ -137,9 +137,9 @@ export function Hero() {
         <div className="flex flex-col items-center gap-4 lg:gap-6">
           <Link
             className="z-10 rounded-full border border-pink-400 px-3 py-0.5 text-center font-mono text-sm text-pink-300 [text-shadow:black_1px_0_20px]"
-            href="https://forms.gle/tgM5JJNFrhEC32n98"
+            href="/blog/triplex-for-vscode"
           >
-            Triplex for VS Code is coming
+            Triplex for VS Code now available
           </Link>
 
           <h1 className="max-w-2xl text-center text-6xl font-bold text-neutral-200 [text-shadow:black_1px_0_50px] lg:max-w-3xl lg:text-7xl">
@@ -162,9 +162,9 @@ export function Hero() {
             <span className="text-neutral-300">
               <a
                 className="underline hover:text-neutral-100"
-                href="https://forms.gle/tgM5JJNFrhEC32n98"
+                href="https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce"
                 onClick={(e) => {
-                  beginDownload(e, "/docs/overview?dl=vsce");
+                  beginDownload(e, "/docs/get-started?dl=vsce");
                 }}
                 rel="noreferrer"
                 target="_blank"
