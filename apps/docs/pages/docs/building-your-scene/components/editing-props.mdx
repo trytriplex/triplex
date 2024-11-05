@@ -10,7 +10,7 @@ When an element is selected its props are displayed in the Context Area.
 
 ## Making Changes
 
-For a given prop find it in the Context Area and change its value. When blurring away from the input the change will be applied and ready to save. Once you've made all the changes you want make sure to save it back to source using the <ActionLink icon="⌘ + S" href="/docs" name="Save" /> action.
+For a given prop find it in the Context Area and change its value. When blurring away from the input the change will be applied and ready to save. Once you've made all the changes you want make sure to save it back to source using the <ActionLink icon="⌘ + S" href="/docs/building-your-scene/learn-the-ui/other#save" name="Save" /> action.
 
 Props with an _italic label_ means that they have a description available. Hover over the label to see the description.
 
@@ -29,7 +29,7 @@ interface Props {
 
 ## Cycle Through Prop Types
 
-For props that can be given different values use the <ActionLink name="Switch Prop Type" icon={SwitchIcon} href="#prop-type-toggle" /> action to cycle through them.
+For props that can be given different values use the <ActionLink name="Switch Prop Type" icon={SwitchIcon} href="#cycle-through-prop-types" /> action to cycle through them.
 
 {/* prettier-ignore */}
 <KnowledgeCallout>
@@ -41,13 +41,23 @@ export function Component({}: { value: number | string | boolean });
 
 </KnowledgeCallout>
 
+## Default Props
+
+Default props are respected by the editor controls. If a prop has no value set the default value will be used.
+
+Given the following component declaration when the component is rendered with no props the isVisible prop will appear checked in the UI.
+
+```tsx /isVisible = true/
+export function Component({ isVisible = true }: { isVisible: boolean });
+```
+
 ## Code-Controlled Props
 
-Props that have dynamic values are considered controlled by code and can't be edited through the UI. You'll see the <ActionLink name="Controlled By Code" icon={ExclamationTriangleIcon} href="#prop-type-toggle" /> action next to it, interacting with it jumps you to its code declaration.
+Props that have dynamic values are considered controlled by code and can't be edited through the UI. You'll see the <ActionLink name="Controlled By Code" icon={ExclamationTriangleIcon} href="/docs/building-your-scene/learn-the-ui/other#controlled-by-code" /> action next to it, interacting with it jumps you to its code declaration.
 
 ## Unsupported Props
 
-Some props just can't be edited through the UI. Sorry! You'll see the <ActionLink name="Unsupported Prop" icon={ExclamationTriangleIcon} href="#prop-type-toggle" /> action next to it, interacting with it opens GitHub for you to create an issue to gauge community interest for adding support.
+Some props just can't be edited through the UI. Sorry! You'll see the <ActionLink name="Unsupported Prop" icon={ExclamationTriangleIcon} href="/docs/building-your-scene/learn-the-ui/other#unsupported-prop" /> action next to it, interacting with it opens GitHub for you to create an issue to gauge community interest for adding support.
 
 ## Next Steps
 

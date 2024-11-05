@@ -115,7 +115,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/vscode</loc>
-    <lastmod>2024-11-03</lastmod>
+    <lastmod>2024-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -145,13 +145,13 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/starting-a-project/your-first-component/standalone</loc>
-    <lastmod>2024-10-28</lastmod>
+    <lastmod>2024-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/starting-a-project/your-first-component/vscode</loc>
-    <lastmod>2024-10-26</lastmod>
+    <lastmod>2024-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -217,7 +217,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/learn-the-ui</loc>
-    <lastmod>2024-10-27</lastmod>
+    <lastmod>2024-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -229,13 +229,13 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/scene/frame-controls</loc>
-    <lastmod>2024-10-30</lastmod>
+    <lastmod>2024-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/scene/play-controls</loc>
-    <lastmod>2024-10-30</lastmod>
+    <lastmod>2024-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -247,13 +247,13 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/scene/selecting-elements</loc>
-    <lastmod>2024-10-30</lastmod>
+    <lastmod>2024-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/scene/transform-controls</loc>
-    <lastmod>2024-10-30</lastmod>
+    <lastmod>2024-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -265,55 +265,31 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/scene/scene-helpers/lights</loc>
-    <lastmod>2024-10-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://triplex.dev/docs/building-your-scene/learn-the-ui/assets-panel</loc>
-    <lastmod>2024-10-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://triplex.dev/docs/building-your-scene/learn-the-ui/component-panel</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/learn-the-ui/context-area</loc>
-    <lastmod>2024-10-28</lastmod>
+    <lastmod>2024-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://triplex.dev/docs/building-your-scene/learn-the-ui/menu-bar</loc>
-    <lastmod>2024-10-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://triplex.dev/docs/building-your-scene/learn-the-ui/scene-controls</loc>
-    <lastmod>2024-10-19</lastmod>
+    <loc>https://triplex.dev/docs/building-your-scene/learn-the-ui/other</loc>
+    <lastmod>2024-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/learn-the-ui/scene-panel</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/learn-the-ui/scene</loc>
-    <lastmod>2024-10-19</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://triplex.dev/docs/building-your-scene/learn-the-ui/tab-bar</loc>
-    <lastmod>2024-10-19</lastmod>
+    <lastmod>2024-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -337,19 +313,19 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/components/component-controls</loc>
-    <lastmod>2024-10-28</lastmod>
+    <lastmod>2024-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/components/editing-props</loc>
-    <lastmod>2024-10-28</lastmod>
+    <lastmod>2024-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/components/scene-panel</loc>
-    <lastmod>2024-11-03</lastmod>
+    <lastmod>2024-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -373,7 +349,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/api-reference/props</loc>
-    <lastmod>2024-10-28</lastmod>
+    <lastmod>2024-11-04</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
