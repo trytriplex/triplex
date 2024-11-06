@@ -2,7 +2,7 @@ uniform sampler2D u_maskTexture;
 uniform vec2 u_viewportSize;
 varying vec2 v_uv;
 
-const float LINE_WEIGHT = 9.3;
+const float LINE_WEIGHT = 2.5;
 const vec3 LINE_COLOR = vec3(1.0, 1.0, 0.0);
 
 // Inspired by "Simple GPU Outline Shaders" by Mark Raynsford
