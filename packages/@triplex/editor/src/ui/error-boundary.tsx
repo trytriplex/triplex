@@ -9,14 +9,6 @@ import { ErrorBoundary as ErrorBound } from "react-error-boundary";
 import { ExternalLink } from "../ds/external-link";
 
 function humanize(message: string) {
-  if (message.includes("path is outside of cwd")) {
-    return {
-      description:
-        "Invariant: Only files within the project folder can be opened.",
-      title: "Unable to Load",
-    };
-  }
-
   if (message.includes("not found")) {
     return {
       description: (

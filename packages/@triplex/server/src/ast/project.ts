@@ -13,7 +13,7 @@ import {
   type ProjectOptions,
   type SourceFile,
 } from "ts-morph";
-import { join, normalize } from "upath";
+import { join } from "upath";
 import { deleteCommentComponents } from "../services/component";
 import { type SourceFileChangedEvent } from "../types";
 import { invalidateThumbnail } from "../util/thumbnail";
@@ -231,10 +231,6 @@ export function ${componentName}() {
   }
 
   function getSourceFile(path: string) {
-    if (!normalize(path).startsWith(normalize(cwd))) {
-      throw new Error("invariant: path is outside of cwd");
-    }
-
     const sourceFile =
       project.getSourceFile(path) || project.addSourceFileAtPath(path);
 
