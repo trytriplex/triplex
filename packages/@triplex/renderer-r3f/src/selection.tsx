@@ -303,8 +303,10 @@ export function Selection({
 
   useFrame(() => {
     if (selectedObject && selectedObject.sceneObject.parent === null) {
-      // If the scene object gets removed from the scene unselect it.
-      setSelected(undefined);
+      // The scene object has been removed from the scene. Remove our reference to it.
+      setSelectedObject(null);
+      // Forcibly change the selected reference so we re-fetch the selected scene object.
+      setSelected((selected) => (selected ? { ...selected } : undefined));
     }
   });
 
