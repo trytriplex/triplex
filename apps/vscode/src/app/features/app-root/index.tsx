@@ -5,8 +5,9 @@
  * file in the root directory of this source tree.
  */
 import {
-  broadcastForwardedKeydownEvents,
+  broadcastForwardedKeyboardEvents,
   compose,
+  forwardKeyboardEvents,
   on,
   send,
 } from "@triplex/bridge/host";
@@ -24,6 +25,7 @@ function Events() {
 
   useEffect(() => {
     return compose([
+      forwardKeyboardEvents(),
       onVSCE("vscode:request-delete-element", (data) => {
         const target = data || selected;
         if (!target || "exportName" in target) {
@@ -94,7 +96,7 @@ export function AppRoot() {
       onVSCE("vscode:request-blur-element", () => {
         send("request-blur-element", undefined);
       }),
-      broadcastForwardedKeydownEvents(),
+      broadcastForwardedKeyboardEvents(),
     ]);
   }, [initSync, syncContext, telemetry]);
 

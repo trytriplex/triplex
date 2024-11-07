@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import {
+  broadcastForwardedKeyboardEvents,
   send,
   type Modules,
   type ProviderComponent,
@@ -135,6 +136,8 @@ export function Renderer({
       ],
     });
   }, []);
+
+  useEffect(() => broadcastForwardedKeyboardEvents(), []);
 
   return (
     <SceneProvider value={files}>

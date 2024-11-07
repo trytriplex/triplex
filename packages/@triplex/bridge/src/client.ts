@@ -4,6 +4,8 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { compose } from "./compose";
+import { createKeyboardEventForwarder } from "./keyboard";
 import type {
   ClientSendEventData,
   ClientSendEventName,
@@ -13,21 +15,20 @@ import type {
   HostSendEventResponse,
 } from "./types";
 
-export function forwardKeydownEvents() {
-  document.addEventListener("keydown", (e) => {
-    send("keydown", {
-      altKey: e.altKey,
-      code: e.code,
-      ctrlKey: e.ctrlKey,
-      isComposing: e.isComposing,
-      key: e.key,
-      // key code is needed for Windows support.
-      keyCode: e.keyCode,
-      location: e.location,
-      metaKey: e.metaKey,
-      repeat: e.repeat,
-      shiftKey: e.shiftKey,
-    });
+export function broadcastForwardedKeyboardEvents() {
+  return compose([
+    on("keydown", (data) => {
+      document.dispatchEvent(new KeyboardEvent("keydown", data));
+    }),
+    on("keyup", (data) => {
+      document.dispatchEvent(new KeyboardEvent("keyup", data));
+    }),
+  ]);
+}
+
+export function forwardKeyboardEvents() {
+  return createKeyboardEventForwarder((eventName, data) => {
+    send(eventName, data);
   });
 }
 

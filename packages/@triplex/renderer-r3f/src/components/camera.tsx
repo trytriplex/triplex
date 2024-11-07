@@ -188,6 +188,13 @@ export function Camera({
 
     const applyCameraModifiers = (event: KeyboardEvent) => {
       function beginPollingForDocumentFocusLoss() {
+        if (!document.hasFocus()) {
+          // Iframe document doesn't have focus right now so the event
+          // has originated from the parent document. We skip polling here
+          // and instead wait for the next keyup event to reset the modifier.
+          return;
+        }
+
         window.clearInterval(intervalId);
         intervalId = window.setInterval(() => {
           if (!document.hasFocus()) {

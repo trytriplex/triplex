@@ -4,6 +4,8 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { compose } from "./compose";
+import { createKeyboardEventForwarder } from "./keyboard";
 import type {
   Actions,
   ButtonControl,
@@ -31,9 +33,20 @@ export {
   ToggleButtonControl,
 };
 
-export function broadcastForwardedKeydownEvents() {
-  return on("keydown", (data) => {
-    window.dispatchEvent(new KeyboardEvent("keydown", data));
+export function broadcastForwardedKeyboardEvents() {
+  return compose([
+    on("keydown", (data) => {
+      document.dispatchEvent(new KeyboardEvent("keydown", data));
+    }),
+    on("keyup", (data) => {
+      document.dispatchEvent(new KeyboardEvent("keyup", data));
+    }),
+  ]);
+}
+
+export function forwardKeyboardEvents() {
+  return createKeyboardEventForwarder((eventName, data) => {
+    send(eventName, data);
   });
 }
 
