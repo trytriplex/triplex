@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@react-three/test-renderer": "^8.2.1",
-    "@testing-library/dom": "^9.3.4"
+    "@testing-library/dom": "^10.4.0"
   },
   "peerDependencies": {
     "@react-three/fiber": ">=8.0.0",
