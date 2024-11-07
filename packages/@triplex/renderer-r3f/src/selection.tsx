@@ -442,7 +442,10 @@ export function Selection({
       raycaster.setFromCamera(new Vector2(x, y), camera);
 
       const result = raycaster.intersectObject(scene).filter((found) => {
-        return isMeshVisible(found.object);
+        return (
+          isMeshVisible(found.object) &&
+          found.object.type !== "TransformControlsPlane"
+        );
       });
 
       if (selectionMode === "default") {
