@@ -6,6 +6,7 @@
  */
 import { basename, join, normalize } from "upath";
 import * as vscode from "vscode";
+import { sendVSCE } from "../util/bridge";
 import { getPort } from "../util/port";
 import { resolveProject, type TriplexProjectResolver } from "./project";
 
@@ -45,6 +46,12 @@ export async function initializeWebviewPanel(
 
   panel.onDidDispose(() => {
     panelCache.delete(scopedFileName);
+  });
+
+  panel.onDidChangeViewState((e) => {
+    sendVSCE(panel.webview, "vscode:state-change", {
+      active: e.webviewPanel.active,
+    });
   });
 
   const project = await resolveProject(

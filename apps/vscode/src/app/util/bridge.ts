@@ -51,6 +51,7 @@ export interface FromVSCodeEvent {
     exportName: string;
     path: string;
   };
+  "vscode:state-change": { active: boolean };
 }
 
 export interface ToVSCodeEvent extends ClientSendEventData {

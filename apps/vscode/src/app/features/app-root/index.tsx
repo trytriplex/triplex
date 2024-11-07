@@ -11,9 +11,9 @@ import {
   on,
   send,
 } from "@triplex/bridge/host";
-import { onKeyDown, useBlockInputPropagation } from "@triplex/lib";
+import { cn, onKeyDown, useBlockInputPropagation } from "@triplex/lib";
 import { useScreenView, useTelemetry, type ActionId } from "@triplex/ux";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useInitSceneSync, useSceneStore } from "../../stores/scene";
 import { forwardClientMessages, onVSCE, sendVSCE } from "../../util/bridge";
 import { FloatingControls } from "../floating-controls";
@@ -68,6 +68,7 @@ export function AppRoot() {
   const initSync = useInitSceneSync();
   const syncContext = useSceneStore((store) => store.syncContext);
   const telemetry = useTelemetry();
+  const [blockClicks, setBlockClicks] = useState(false);
 
   useScreenView("app", "Screen");
   useBlockInputPropagation();
@@ -86,6 +87,9 @@ export function AppRoot() {
       }),
       forwardClientMessages("element-set-prop"),
       forwardClientMessages("error"),
+      onVSCE("vscode:state-change", (data) => {
+        setBlockClicks(!data.active);
+      }),
       onVSCE("vscode:request-open-component", (data) => {
         send("request-open-component", {
           encodedProps: "",
@@ -108,7 +112,10 @@ export function AppRoot() {
         <FloatingControls />
         <iframe
           allow="cross-origin-isolated"
-          className="h-full w-full"
+          className={cn([
+            "h-full w-full",
+            blockClicks && "pointer-events-none",
+          ])}
           id="scene"
           src={`http://localhost:${window.triplex.env.ports.client}/scene.html`}
         />
