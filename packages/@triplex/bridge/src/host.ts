@@ -36,10 +36,10 @@ export {
 export function broadcastForwardedKeyboardEvents() {
   return compose([
     on("keydown", (data) => {
-      document.dispatchEvent(new KeyboardEvent("keydown", data));
+      window.dispatchEvent(new KeyboardEvent("keydown", data));
     }),
     on("keyup", (data) => {
-      document.dispatchEvent(new KeyboardEvent("keyup", data));
+      window.dispatchEvent(new KeyboardEvent("keyup", data));
     }),
   ]);
 }

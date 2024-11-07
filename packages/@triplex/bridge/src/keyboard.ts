@@ -47,11 +47,11 @@ export function createKeyboardEventForwarder(
   const keydown = createCallback("keydown");
   const keyup = createCallback("keyup");
 
-  document.addEventListener("keydown", keydown);
-  document.addEventListener("keyup", keyup);
+  window.addEventListener("keydown", keydown);
+  window.addEventListener("keyup", keyup);
 
   return () => {
-    document.removeEventListener("keydown", keydown);
-    document.removeEventListener("keyup", keyup);
+    window.removeEventListener("keydown", keydown);
+    window.removeEventListener("keyup", keyup);
   };
 }

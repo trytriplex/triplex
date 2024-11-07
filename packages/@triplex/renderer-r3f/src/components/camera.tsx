@@ -187,15 +187,21 @@ export function Camera({
     let intervalId: number;
 
     const applyCameraModifiers = (event: KeyboardEvent) => {
+      if (event.key !== "Shift" && event.key !== "Control") {
+        setModifier("Rest");
+        return;
+      }
+
       function beginPollingForDocumentFocusLoss() {
         if (!document.hasFocus()) {
-          // Iframe document doesn't have focus right now so the event
+          // The iframe document doesn't have focus right now so the event
           // has originated from the parent document. We skip polling here
           // and instead wait for the next keyup event to reset the modifier.
           return;
         }
 
         window.clearInterval(intervalId);
+
         intervalId = window.setInterval(() => {
           if (!document.hasFocus()) {
             window.clearInterval(intervalId);
