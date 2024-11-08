@@ -473,8 +473,9 @@ export function Selection({
         );
 
         const nextIndex = (currentIndex + 1) % result.length;
+        const nextObject = result.at(nextIndex)?.object;
 
-        if (trySelectObject(result[nextIndex].object)) {
+        if (nextObject && trySelectObject(nextObject)) {
           send("track", { actionId: "element_focus" });
           return;
         }
