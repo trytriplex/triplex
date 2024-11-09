@@ -1,5 +1,12 @@
 # create-triplex-project
 
+## 0.70.1
+
+### Patch Changes
+
+- 7bbc4a2: Put back r3f types in tsconfig.
+- 7bbc4a2: Default template has been renamed to basic.
+
 ## 0.70.0
 
 ### Minor Changes
