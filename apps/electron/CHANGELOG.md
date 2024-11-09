@@ -1,5 +1,22 @@
 # @triplex/electron
 
+## 0.69.6
+
+### Patch Changes
+
+- 14747d4: Camera Controls now default to default camera.
+- Updated dependencies [14747d4]
+- Updated dependencies [7bbc4a2]
+- Updated dependencies [7bbc4a2]
+- Updated dependencies [2412af5]
+- Updated dependencies [31e7812]
+- Updated dependencies [a1a782c]
+- Updated dependencies [d38608f]
+  - @triplex/editor@0.69.6
+  - create-triplex-project@0.70.1
+  - @triplex/server@0.70.0
+  - @triplex/client@0.69.6
+
 ## 0.69.5
 
 ### Patch Changes

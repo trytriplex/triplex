@@ -1,5 +1,25 @@
 # @triplex/vscode
 
+## 0.1.0
+
+### Minor Changes
+
+- a1a782c: Triplex now respects the name prop set on custom components in the Scene Panel. E.g. given a component Box, if it has a name prop statically set to "foo" it will appear as "foo (Box)" in the Scene Panel.
+
+### Patch Changes
+
+- f6a7756: The first click when re-focusing into the Triplex webview is now ignored to prevent accidental changes.
+- f7c0dee: Triplex for VS Code now is actived `onStartupFinished` to ensure it's available even if the workspace has no tsx/jsx files yet.
+- 14747d4: Play Controls now default to default camera.
+- bcd4b78: Clean up output channel.
+- d38608f: Camera modifiers are now correctly triggered when focused in the parent editor.
+- Updated dependencies [2412af5]
+- Updated dependencies [31e7812]
+- Updated dependencies [a1a782c]
+- Updated dependencies [d38608f]
+  - @triplex/server@0.70.0
+  - @triplex/client@0.69.6
+
 ## 0.0.26
 
 ### Patch Changes

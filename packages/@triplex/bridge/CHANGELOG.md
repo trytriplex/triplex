@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.69.4
+
+### Patch Changes
+
+- d38608f: Camera modifiers are now correctly triggered when focused in the parent editor.
+
 ## 0.69.3
 
 ### Patch Changes

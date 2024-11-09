@@ -1,5 +1,14 @@
 # @triplex/editor
 
+## 0.69.6
+
+### Patch Changes
+
+- 14747d4: Camera Controls now default to default camera.
+- Updated dependencies [d38608f]
+  - @triplex/bridge@0.69.4
+  - @triplex/ux@0.69.6
+
 ## 0.69.5
 
 ### Patch Changes

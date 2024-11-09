@@ -1,5 +1,18 @@
 # @triplex/renderer-r3f
 
+## 0.70.0
+
+### Minor Changes
+
+- ecbb1d7: Cycling through selections is now possible when clicking multiple times. This will cycle between all scene objects that are captured by the raycast.
+
+### Patch Changes
+
+- be3bae6: Resetting the scene no longer loses the selected scene object transform controls.
+- d38608f: Camera modifiers are now correctly triggered when focused in the parent editor.
+- Updated dependencies [d38608f]
+  - @triplex/bridge@0.69.4
+
 ## 0.69.5
 
 ### Patch Changes

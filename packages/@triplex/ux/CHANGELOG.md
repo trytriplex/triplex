@@ -1,5 +1,12 @@
 # @triplex/ux
 
+## 0.69.6
+
+### Patch Changes
+
+- Updated dependencies [d38608f]
+  - @triplex/bridge@0.69.4
+
 ## 0.69.5
 
 ### Patch Changes

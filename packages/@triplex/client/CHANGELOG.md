@@ -1,5 +1,17 @@
 # @triplex/client
 
+## 0.69.6
+
+### Patch Changes
+
+- d38608f: Camera modifiers are now correctly triggered when focused in the parent editor.
+- Updated dependencies [be3bae6]
+- Updated dependencies [ecbb1d7]
+- Updated dependencies [d38608f]
+  - @triplex/renderer-r3f@0.70.0
+  - @triplex/bridge@0.69.4
+  - @triplex/renderer-react@0.69.4
+
 ## 0.69.5
 
 ### Patch Changes

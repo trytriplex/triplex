@@ -1,5 +1,16 @@
 # @triplex/server
 
+## 0.70.0
+
+### Minor Changes
+
+- a1a782c: Triplex now respects the name prop set on custom components in the Scene Panel. E.g. given a component Box, if it has a name prop statically set to "foo" it will appear as "foo (Box)" in the Scene Panel.
+
+### Patch Changes
+
+- 2412af5: Remove outside cwd invariant.
+- 31e7812: The config is now runtime checked for the correct schema.
+
 ## 0.69.3
 
 ### Patch Changes
