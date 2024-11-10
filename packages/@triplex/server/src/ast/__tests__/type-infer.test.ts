@@ -16,7 +16,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/named.tsx")
+      join(__dirname, "__mocks__/named.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 17, 5);
     if (!sceneObject) {
@@ -37,7 +37,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/import-named.tsx")
+      join(__dirname, "__mocks__/import-named.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 17, 7);
     if (!sceneObject) {
@@ -153,7 +153,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/import-named.tsx")
+      join(__dirname, "__mocks__/import-named.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 26, 7);
     if (!sceneObject) {
@@ -187,7 +187,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
+      join(__dirname, "__mocks__/type-extraction.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 25, 10);
     if (!sceneObject) {
@@ -204,7 +204,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/variables.tsx")
+      join(__dirname, "__mocks__/variables.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 44, 7);
     if (!sceneObject) {
@@ -253,7 +253,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/scene.tsx")
+      join(__dirname, "__mocks__/scene.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 34, 7);
     if (!sceneObject) {
@@ -278,7 +278,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
+      join(__dirname, "__mocks__/type-extraction.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 25, 10);
     if (!sceneObject) {
@@ -319,7 +319,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
+      join(__dirname, "__mocks__/type-extraction.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 30, 5);
     if (!sceneObject) {
@@ -335,7 +335,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
+      join(__dirname, "__mocks__/type-extraction.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 30, 5);
     if (!sceneObject) {
@@ -384,7 +384,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/meta.tsx")
+      join(__dirname, "__mocks__/meta.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 41, 10);
 
@@ -417,7 +417,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/union-type-sorting.tsx")
+      join(__dirname, "__mocks__/union-type-sorting.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 8, 10);
     if (!sceneObject) {
@@ -457,7 +457,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/union-type-sorting.tsx")
+      join(__dirname, "__mocks__/union-type-sorting.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 12, 10);
     if (!sceneObject) {
@@ -480,7 +480,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/union-type-sorting.tsx")
+      join(__dirname, "__mocks__/union-type-sorting.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 20, 10);
     if (!sceneObject) {
@@ -503,7 +503,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
+      join(__dirname, "__mocks__/type-extraction.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 30, 5);
     if (!sceneObject) {
@@ -576,7 +576,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
+      join(__dirname, "__mocks__/type-extraction.tsx"),
     );
 
     const { props } = getFunctionPropTypes(sourceFile, "UnionOptional");
@@ -609,7 +609,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/default-props.tsx")
+      join(__dirname, "__mocks__/default-props.tsx"),
     );
     const sceneObject = getJsxElementAtOrThrow(sourceFile, 15, 7);
 
@@ -652,7 +652,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/default-props.tsx")
+      join(__dirname, "__mocks__/default-props.tsx"),
     );
     const sceneObject = getJsxElementAtOrThrow(sourceFile, 14, 7);
 
@@ -712,7 +712,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/default-props.tsx")
+      join(__dirname, "__mocks__/default-props.tsx"),
     );
     const sceneObject = getJsxElementAtOrThrow(sourceFile, 16, 7);
 
@@ -761,7 +761,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
+      join(__dirname, "__mocks__/type-extraction.tsx"),
     );
 
     const { props } = getFunctionPropTypes(sourceFile, "Home");
@@ -832,7 +832,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
+      join(__dirname, "__mocks__/type-extraction.tsx"),
     );
 
     const { props } = getFunctionPropTypes(sourceFile, "ArrowFunc");
@@ -855,7 +855,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
+      join(__dirname, "__mocks__/type-extraction.tsx"),
     );
 
     const { props } = getFunctionPropTypes(sourceFile, "WrappedFunc");
@@ -878,7 +878,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
+      join(__dirname, "__mocks__/type-extraction.tsx"),
     );
 
     const { props } = getFunctionPropTypes(sourceFile, "Provider");
@@ -916,7 +916,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
+      join(__dirname, "__mocks__/type-extraction.tsx"),
     );
 
     const { props } = getFunctionPropTypes(sourceFile, "DefaultProps");
@@ -964,7 +964,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
+      join(__dirname, "__mocks__/type-extraction.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 77, 10);
     const { props } = getJsxElementPropTypes(sceneObject!);
@@ -976,7 +976,7 @@ describe("type infer", () => {
       Default is {@link THREE.FrontSide}. Other options are {@link THREE.BackSide} and {@link THREE.DoubleSide}.",
           "kind": "union",
           "name": "side",
-          "required": true,
+          "required": false,
           "shape": [
             {
               "kind": "number",
@@ -1007,7 +1007,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
+      join(__dirname, "__mocks__/type-extraction.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 77, 10);
     const { props } = getJsxElementPropTypes(sceneObject!);
@@ -1019,7 +1019,7 @@ describe("type infer", () => {
             "description": "Blending source. It's one of the blending mode constants defined in Three.js. Default is {@link SrcAlphaFactor}.",
             "kind": "union",
             "name": "blendSrc",
-            "required": true,
+            "required": false,
             "shape": [
               {
                 "kind": "number",
@@ -1109,7 +1109,7 @@ describe("type infer", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/n_modules.tsx")
+      join(__dirname, "__mocks__/n_modules.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 24, 7);
     const { props } = getJsxElementPropTypes(sceneObject!);

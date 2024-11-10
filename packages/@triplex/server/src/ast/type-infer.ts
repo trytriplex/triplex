@@ -494,11 +494,14 @@ export function getJsxElementPropTypes(
         scale = true;
       }
 
+      const isOptional =
+        !!propDeclaration?.hasQuestionToken?.() || !!tags.default;
+
       props.push({
         ...unrollType(propType, unionLabels),
         description: description || undefined,
         name: propName,
-        required: !propDeclaration?.hasQuestionToken?.(),
+        required: !isOptional,
         tags,
         ...(defaultValue ? { defaultValue } : undefined),
       });

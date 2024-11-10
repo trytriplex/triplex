@@ -524,7 +524,7 @@ describe("jsx ast extractor", () => {
           "description": "Material name. Default is an empty string.",
           "kind": "string",
           "name": "name",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "''",
           },
@@ -533,7 +533,7 @@ describe("jsx ast extractor", () => {
           "description": "Defines whether this material is visible. Default is true.",
           "kind": "boolean",
           "name": "visible",
-          "required": true,
+          "required": false,
           "tags": {
             "default": true,
           },
@@ -583,7 +583,7 @@ describe("jsx ast extractor", () => {
           "description": "Opacity. Default is 1.",
           "kind": "number",
           "name": "opacity",
-          "required": true,
+          "required": false,
           "tags": {
             "default": 1,
           },
@@ -593,7 +593,7 @@ describe("jsx ast extractor", () => {
       When set to true, the extent to which the material is transparent is controlled by setting it's .opacity property.",
           "kind": "boolean",
           "name": "transparent",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "false",
           },
@@ -611,7 +611,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "kind": "number",
           "name": "roughness",
-          "required": true,
+          "required": false,
           "tags": {
             "default": 1,
           },
@@ -642,7 +642,7 @@ describe("jsx ast extractor", () => {
       alphaTest-clipped edges.",
           "kind": "boolean",
           "name": "alphaToCoverage",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "false",
           },
@@ -651,7 +651,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "kind": "number",
           "name": "aoMapIntensity",
-          "required": true,
+          "required": false,
           "tags": {
             "default": 1,
           },
@@ -708,7 +708,7 @@ describe("jsx ast extractor", () => {
           "description": "Blending destination. It's one of the blending mode constants defined in Three.js. Default is {@link OneMinusSrcAlphaFactor}.",
           "kind": "union",
           "name": "blendDst",
-          "required": true,
+          "required": false,
           "shape": [
             {
               "kind": "number",
@@ -789,7 +789,7 @@ describe("jsx ast extractor", () => {
           "description": "The tranparency of the .blendDst. Default is null.",
           "kind": "number",
           "name": "blendDstAlpha",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "null",
           },
@@ -798,7 +798,7 @@ describe("jsx ast extractor", () => {
           "description": "Blending equation to use when applying blending. It's one of the constants defined in Three.js. Default is {@link AddEquation}.",
           "kind": "union",
           "name": "blendEquation",
-          "required": true,
+          "required": false,
           "shape": [
             {
               "kind": "number",
@@ -834,7 +834,7 @@ describe("jsx ast extractor", () => {
           "description": "The tranparency of the .blendEquation. Default is null.",
           "kind": "number",
           "name": "blendEquationAlpha",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "null",
           },
@@ -843,7 +843,7 @@ describe("jsx ast extractor", () => {
           "description": "Which blending to use when displaying objects with this material. Default is {@link NormalBlending}.",
           "kind": "union",
           "name": "blending",
-          "required": true,
+          "required": false,
           "shape": [
             {
               "kind": "number",
@@ -884,7 +884,7 @@ describe("jsx ast extractor", () => {
           "description": "Blending source. It's one of the blending mode constants defined in Three.js. Default is {@link SrcAlphaFactor}.",
           "kind": "union",
           "name": "blendSrc",
-          "required": true,
+          "required": false,
           "shape": [
             {
               "kind": "number",
@@ -969,7 +969,7 @@ describe("jsx ast extractor", () => {
           "description": "The tranparency of the .blendSrc. Default is null.",
           "kind": "number",
           "name": "blendSrcAlpha",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "null",
           },
@@ -978,7 +978,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "kind": "number",
           "name": "bumpScale",
-          "required": true,
+          "required": false,
           "tags": {
             "default": 1,
           },
@@ -987,7 +987,7 @@ describe("jsx ast extractor", () => {
           "description": "Changes the behavior of clipping planes so that only their intersection is clipped, rather than their union. Default is false.",
           "kind": "boolean",
           "name": "clipIntersection",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "false",
           },
@@ -996,7 +996,7 @@ describe("jsx ast extractor", () => {
           "description": "Defines whether to clip shadows according to the clipping planes specified on this material. Default is false.",
           "kind": "boolean",
           "name": "clipShadows",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "false",
           },
@@ -1005,7 +1005,7 @@ describe("jsx ast extractor", () => {
           "description": "Whether to render the material's color. This can be used in conjunction with a mesh's .renderOrder property to create invisible objects that occlude other objects. Default is true.",
           "kind": "boolean",
           "name": "colorWrite",
-          "required": true,
+          "required": false,
           "tags": {
             "default": true,
           },
@@ -1014,7 +1014,7 @@ describe("jsx ast extractor", () => {
           "description": "Which depth function to use. Default is {@link LessEqualDepth}. See the depth mode constants for all possible values.",
           "kind": "union",
           "name": "depthFunc",
-          "required": true,
+          "required": false,
           "shape": [
             {
               "kind": "number",
@@ -1066,7 +1066,7 @@ describe("jsx ast extractor", () => {
       will also be implicitly disabled.",
           "kind": "boolean",
           "name": "depthTest",
-          "required": true,
+          "required": false,
           "tags": {
             "default": true,
           },
@@ -1076,7 +1076,7 @@ describe("jsx ast extractor", () => {
       When drawing 2D overlays it can be useful to disable the depth writing in order to layer several things together without creating z-index artifacts.",
           "kind": "boolean",
           "name": "depthWrite",
-          "required": true,
+          "required": false,
           "tags": {
             "default": true,
           },
@@ -1094,7 +1094,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "kind": "number",
           "name": "displacementScale",
-          "required": true,
+          "required": false,
           "tags": {
             "default": 1,
           },
@@ -1103,7 +1103,7 @@ describe("jsx ast extractor", () => {
           "description": "Whether to apply dithering to the color to remove the appearance of banding. Default is false.",
           "kind": "boolean",
           "name": "dithering",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "false",
           },
@@ -1112,7 +1112,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "kind": "union",
           "name": "emissive",
-          "required": true,
+          "required": false,
           "shape": [
             {
               "kind": "string",
@@ -1149,7 +1149,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "kind": "number",
           "name": "emissiveIntensity",
-          "required": true,
+          "required": false,
           "tags": {
             "default": 1,
           },
@@ -1158,7 +1158,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "kind": "number",
           "name": "envMapIntensity",
-          "required": true,
+          "required": false,
           "tags": {
             "default": 1,
           },
@@ -1167,7 +1167,7 @@ describe("jsx ast extractor", () => {
           "description": "Define whether the material is rendered with flat shading. Default is false.",
           "kind": "boolean",
           "name": "flatShading",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "false",
           },
@@ -1176,7 +1176,7 @@ describe("jsx ast extractor", () => {
           "description": "Whether the material is affected by fog. Default is true.",
           "kind": "boolean",
           "name": "fog",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "fog",
           },
@@ -1185,7 +1185,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "kind": "boolean",
           "name": "forceSinglePass",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "false",
           },
@@ -1194,7 +1194,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "kind": "number",
           "name": "lightMapIntensity",
-          "required": true,
+          "required": false,
           "tags": {
             "default": 1,
           },
@@ -1203,7 +1203,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "kind": "union",
           "name": "normalMapType",
-          "required": true,
+          "required": false,
           "shape": [
             {
               "kind": "number",
@@ -1224,7 +1224,7 @@ describe("jsx ast extractor", () => {
           "description": "Whether to use polygon offset. Default is false. This corresponds to the POLYGON_OFFSET_FILL WebGL feature.",
           "kind": "boolean",
           "name": "polygonOffset",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "false",
           },
@@ -1251,7 +1251,7 @@ describe("jsx ast extractor", () => {
           "description": "Override the renderer's default precision for this material. Can be "highp", "mediump" or "lowp". Defaults is null.",
           "kind": "union",
           "name": "precision",
-          "required": true,
+          "required": false,
           "shape": [
             {
               "kind": "string",
@@ -1274,7 +1274,7 @@ describe("jsx ast extractor", () => {
           "description": "Whether to premultiply the alpha (transparency) value. See WebGL / Materials / Transparency for an example of the difference. Default is false.",
           "kind": "boolean",
           "name": "premultipliedAlpha",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "false",
           },
@@ -1284,7 +1284,7 @@ describe("jsx ast extractor", () => {
       If *null*, the value is opposite that of side, above.",
           "kind": "union",
           "name": "shadowSide",
-          "required": true,
+          "required": false,
           "shape": [
             {
               "kind": "number",
@@ -1311,7 +1311,7 @@ describe("jsx ast extractor", () => {
       Default is {@link THREE.FrontSide}. Other options are {@link THREE.BackSide} and {@link THREE.DoubleSide}.",
           "kind": "union",
           "name": "side",
-          "required": true,
+          "required": false,
           "shape": [
             {
               "kind": "number",
@@ -1337,7 +1337,7 @@ describe("jsx ast extractor", () => {
           "description": "Which stencil operation to perform when the comparison function returns false. Default is {@link KeepStencilOp}. See the stencil operation constants for all possible values.",
           "kind": "union",
           "name": "stencilFail",
-          "required": true,
+          "required": false,
           "shape": [
             {
               "kind": "number",
@@ -1388,7 +1388,7 @@ describe("jsx ast extractor", () => {
           "description": "The stencil comparison function to use. Default is {@link AlwaysStencilFunc}. See stencil operation constants for all possible values.",
           "kind": "union",
           "name": "stencilFunc",
-          "required": true,
+          "required": false,
           "shape": [
             {
               "kind": "number",
@@ -1439,7 +1439,7 @@ describe("jsx ast extractor", () => {
           "description": "The bit mask to use when comparing against the stencil buffer. Default is *0xFF*.",
           "kind": "number",
           "name": "stencilFuncMask",
-          "required": true,
+          "required": false,
           "tags": {
             "default": 255,
           },
@@ -1457,7 +1457,7 @@ describe("jsx ast extractor", () => {
           "description": "Whether rendering this material has any effect on the stencil buffer. Default is *false*.",
           "kind": "boolean",
           "name": "stencilWrite",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "false",
           },
@@ -1466,7 +1466,7 @@ describe("jsx ast extractor", () => {
           "description": "The bit mask to use when writing to the stencil buffer. Default is *0xFF*.",
           "kind": "number",
           "name": "stencilWriteMask",
-          "required": true,
+          "required": false,
           "tags": {
             "default": 255,
           },
@@ -1477,7 +1477,7 @@ describe("jsx ast extractor", () => {
       See the stencil operation constants for all possible values.",
           "kind": "union",
           "name": "stencilZFail",
-          "required": true,
+          "required": false,
           "shape": [
             {
               "kind": "number",
@@ -1530,7 +1530,7 @@ describe("jsx ast extractor", () => {
       See the stencil operation constants for all possible values.",
           "kind": "union",
           "name": "stencilZPass",
-          "required": true,
+          "required": false,
           "shape": [
             {
               "kind": "number",
@@ -1583,7 +1583,7 @@ describe("jsx ast extractor", () => {
       post processing.",
           "kind": "boolean",
           "name": "toneMapped",
-          "required": true,
+          "required": false,
           "tags": {
             "default": true,
           },
@@ -1592,7 +1592,7 @@ describe("jsx ast extractor", () => {
           "description": "Defines whether vertex coloring is used. Default is false.",
           "kind": "boolean",
           "name": "vertexColors",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "false",
           },
@@ -1601,7 +1601,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "kind": "boolean",
           "name": "wireframe",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "false",
           },
@@ -1610,7 +1610,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "kind": "string",
           "name": "wireframeLinecap",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "'round'",
           },
@@ -1619,7 +1619,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "kind": "string",
           "name": "wireframeLinejoin",
-          "required": true,
+          "required": false,
           "tags": {
             "default": "'round'",
           },
@@ -1628,7 +1628,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "kind": "number",
           "name": "wireframeLinewidth",
-          "required": true,
+          "required": false,
           "tags": {
             "default": 1,
           },
