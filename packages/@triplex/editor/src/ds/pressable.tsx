@@ -23,7 +23,13 @@ export const PrimitiveProvider = forwardRef<unknown, { children: JSX.Element }>(
   ({ children, ...props }, ref) => {
     return (
       <PrimitiveContext.Provider value={props}>
-        {cloneElement(children, { ref })}
+        {cloneElement(
+          children,
+          // Waiting to hear back if this is a false positive.
+          // See: https://github.com/reactwg/react-compiler/discussions/32
+          // eslint-disable-next-line react-compiler/react-compiler
+          { ref },
+        )}
       </PrimitiveContext.Provider>
     );
   },

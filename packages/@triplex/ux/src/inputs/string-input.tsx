@@ -85,6 +85,9 @@ export function StringInput({
   );
 
   return children(
+    // Waiting to hear back if this is a false positive.
+    // See: https://github.com/reactwg/react-compiler/discussions/32
+    // eslint-disable-next-line react-compiler/react-compiler
     {
       defaultValue: actualValue,
       id: name,

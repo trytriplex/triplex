@@ -104,6 +104,9 @@ export function LiteralUnionInput({
   );
 
   return children(
+    // Waiting to hear back if this is a false positive.
+    // See: https://github.com/reactwg/react-compiler/discussions/32
+    // eslint-disable-next-line react-compiler/react-compiler
     {
       defaultValue: values.findIndex((v) => v.literal === persistedValue),
       id: name,
@@ -112,6 +115,9 @@ export function LiteralUnionInput({
       options: isValueDefined ? options : [placeholderOption, ...options],
       ref,
     },
+    // Waiting to hear back if this is a false positive.
+    // See: https://github.com/reactwg/react-compiler/discussions/32
+    // eslint-disable-next-line react-compiler/react-compiler
     { clear: onClear, isValuePersisted: isValueDefined },
   );
 }

@@ -77,7 +77,7 @@ export default defineConfig(({ mode }) => {
               [
                 "babel-plugin-react-compiler",
                 {
-                  runtimeModule: "react-compiler-runtime",
+                  target: "18",
                 },
               ],
             ],

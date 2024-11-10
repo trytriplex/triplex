@@ -33,7 +33,6 @@
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
     "@types/react": "^18.0.27",
-    "react-compiler-runtime": "workspace:*",
     "typescript": "^5.6.2"
   },
   "peerDependencies": {

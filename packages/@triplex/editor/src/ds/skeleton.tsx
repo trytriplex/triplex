@@ -4,22 +4,20 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { createContext, useCallback, useContext, useRef } from "react";
+import { createContext, useContext } from "react";
 import { cn } from "./cn";
 
 const widths = ["w-2/4", "w-3/4", "w-3/5", "w-2/5", "w-1/4"];
 const IndexContext = createContext<() => number>(() => 0);
 
 export function SkeletonContainer({ children }: { children: React.ReactNode }) {
-  const index = useRef(0);
-
-  index.current = 0;
+  let index = 0;
 
   return (
     <IndexContext.Provider
-      value={useCallback(() => {
-        return index.current++;
-      }, [])}
+      value={() => {
+        return index++;
+      }}
     >
       {children}
     </IndexContext.Provider>

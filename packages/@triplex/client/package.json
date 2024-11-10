@@ -23,7 +23,7 @@
     "@triplex/bridge": "0.69.4",
     "@triplex/renderer-r3f": "0.70.0",
     "@triplex/renderer-react": "0.69.4",
-    "@vitejs/plugin-react": "^4.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
     "express": "^4.19.2",
     "vite": "^5.4.6"
   },
