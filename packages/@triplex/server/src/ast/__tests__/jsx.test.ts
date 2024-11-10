@@ -401,7 +401,7 @@ describe("jsx ast extractor", () => {
           "description": "Optional name for this {@link THREE.BufferGeometry | BufferGeometry} instance.",
           "kind": "string",
           "name": "name",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`''\`",
           },
@@ -410,7 +410,7 @@ describe("jsx ast extractor", () => {
           "description": "Used to control the morph target behavior; when set to true, the morph target data is treated as relative offsets, rather than as absolute positions/normals.",
           "kind": "boolean",
           "name": "morphTargetsRelative",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`false\`",
           },
@@ -544,7 +544,7 @@ describe("jsx ast extractor", () => {
           "kind": "union",
           "line": 19,
           "name": "color",
-          "required": true,
+          "required": false,
           "shape": [
             {
               "kind": "string",
@@ -1895,7 +1895,7 @@ describe("jsx ast extractor", () => {
           "description": "Optional name of the object",
           "kind": "string",
           "name": "name",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`""\`",
             "remarks": "_(doesn't need to be unique)_.",
@@ -1907,7 +1907,7 @@ describe("jsx ast extractor", () => {
           "kind": "boolean",
           "line": 10,
           "name": "visible",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`true\`",
           },
@@ -1918,7 +1918,7 @@ describe("jsx ast extractor", () => {
           "description": "Whether the object gets rendered into shadow map.",
           "kind": "boolean",
           "name": "castShadow",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`false\`",
           },
@@ -1927,7 +1927,7 @@ describe("jsx ast extractor", () => {
           "description": "Whether the material receives shadows.",
           "kind": "boolean",
           "name": "receiveShadow",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`false\`",
           },
@@ -1937,7 +1937,7 @@ describe("jsx ast extractor", () => {
       If set to \`false\` the object gets rendered every frame even if it is not in the frustum of the camera.",
           "kind": "boolean",
           "name": "frustumCulled",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`true\`",
           },
@@ -1953,7 +1953,7 @@ describe("jsx ast extractor", () => {
           "description": "An instance of material derived from the {@link THREE.Material | Material} base class or an array of materials, defining the object's appearance.",
           "kind": "union",
           "name": "material",
-          "required": true,
+          "required": false,
           "shape": [],
           "tags": {
             "defaultValue": "{@link THREE.MeshBasicMaterial | \`new THREE.MeshBasicMaterial()\`}.",
@@ -1993,7 +1993,7 @@ describe("jsx ast extractor", () => {
       objects to be overridden although opaque and transparent objects remain sorted independently.",
           "kind": "number",
           "name": "renderOrder",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`0\`",
             "remarks": "When this property is set for an instance of {@link Group | Group}, all descendants objects will be sorted and rendered together.
@@ -2160,7 +2160,7 @@ describe("jsx ast extractor", () => {
           "description": "Optional name of the object",
           "kind": "string",
           "name": "name",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`""\`",
             "remarks": "_(doesn't need to be unique)_.",
@@ -2172,7 +2172,7 @@ describe("jsx ast extractor", () => {
           "kind": "boolean",
           "line": 20,
           "name": "visible",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`true\`",
           },
@@ -2185,7 +2185,7 @@ describe("jsx ast extractor", () => {
           "kind": "boolean",
           "line": 20,
           "name": "castShadow",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`false\`",
           },
@@ -2196,7 +2196,7 @@ describe("jsx ast extractor", () => {
           "description": "Whether the material receives shadows.",
           "kind": "boolean",
           "name": "receiveShadow",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`false\`",
           },
@@ -2206,7 +2206,7 @@ describe("jsx ast extractor", () => {
       If set to \`false\` the object gets rendered every frame even if it is not in the frustum of the camera.",
           "kind": "boolean",
           "name": "frustumCulled",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`true\`",
           },
@@ -2222,7 +2222,7 @@ describe("jsx ast extractor", () => {
           "description": "An instance of material derived from the {@link THREE.Material | Material} base class or an array of materials, defining the object's appearance.",
           "kind": "union",
           "name": "material",
-          "required": true,
+          "required": false,
           "shape": [],
           "tags": {
             "defaultValue": "{@link THREE.MeshBasicMaterial | \`new THREE.MeshBasicMaterial()\`}.",
@@ -2262,7 +2262,7 @@ describe("jsx ast extractor", () => {
       objects to be overridden although opaque and transparent objects remain sorted independently.",
           "kind": "number",
           "name": "renderOrder",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`0\`",
             "remarks": "When this property is set for an instance of {@link Group | Group}, all descendants objects will be sorted and rendered together.
@@ -2291,7 +2291,7 @@ describe("jsx ast extractor", () => {
         "kind": "boolean",
         "line": 25,
         "name": "visible",
-        "required": true,
+        "required": false,
         "tags": {
           "defaultValue": "\`true\`",
         },
@@ -2571,7 +2571,7 @@ describe("jsx ast extractor", () => {
           "description": "Optional name of the object",
           "kind": "string",
           "name": "name",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`""\`",
             "remarks": "_(doesn't need to be unique)_.",
@@ -2581,7 +2581,7 @@ describe("jsx ast extractor", () => {
           "description": "Object gets rendered if \`true\`.",
           "kind": "boolean",
           "name": "visible",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`true\`",
           },
@@ -2590,7 +2590,7 @@ describe("jsx ast extractor", () => {
           "description": "Whether the object gets rendered into shadow map.",
           "kind": "boolean",
           "name": "castShadow",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`false\`",
           },
@@ -2599,7 +2599,7 @@ describe("jsx ast extractor", () => {
           "description": "Whether the material receives shadows.",
           "kind": "boolean",
           "name": "receiveShadow",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`false\`",
           },
@@ -2609,7 +2609,7 @@ describe("jsx ast extractor", () => {
       If set to \`false\` the object gets rendered every frame even if it is not in the frustum of the camera.",
           "kind": "boolean",
           "name": "frustumCulled",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`true\`",
           },
@@ -2625,7 +2625,7 @@ describe("jsx ast extractor", () => {
           "description": "An instance of material derived from the {@link THREE.Material | Material} base class or an array of materials, defining the object's appearance.",
           "kind": "union",
           "name": "material",
-          "required": true,
+          "required": false,
           "shape": [],
           "tags": {
             "defaultValue": "{@link THREE.MeshBasicMaterial | \`new THREE.MeshBasicMaterial()\`}.",
@@ -2665,7 +2665,7 @@ describe("jsx ast extractor", () => {
       objects to be overridden although opaque and transparent objects remain sorted independently.",
           "kind": "number",
           "name": "renderOrder",
-          "required": true,
+          "required": false,
           "tags": {
             "defaultValue": "\`0\`",
             "remarks": "When this property is set for an instance of {@link Group | Group}, all descendants objects will be sorted and rendered together.

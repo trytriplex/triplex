@@ -392,6 +392,10 @@ export function getJsxElementPropTypes(
       propDeclaration,
     );
     const defaultValue = defaultValues[propName];
+    const isOptional =
+      !!propDeclaration?.hasQuestionToken?.() ||
+      !!tags.default ||
+      !!tags.defaultValue;
 
     if (declaredProp) {
       const initializer = declaredProp.getInitializer();
@@ -479,7 +483,7 @@ export function getJsxElementPropTypes(
         description: description || undefined,
         line,
         name: propName,
-        required: !propDeclaration?.hasQuestionToken?.(),
+        required: !isOptional,
         tags,
         value: value.value as string,
         valueKind: value.kind,
@@ -493,9 +497,6 @@ export function getJsxElementPropTypes(
       } else if (propName === "scale") {
         scale = true;
       }
-
-      const isOptional =
-        !!propDeclaration?.hasQuestionToken?.() || !!tags.default;
 
       props.push({
         ...unrollType(propType, unionLabels),
