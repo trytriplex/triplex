@@ -65,6 +65,11 @@ export interface ToVSCodeEvent extends ClientSendEventData {
     line: number;
     path: string;
   };
+  notification: {
+    actions: string[];
+    message: string;
+    type: "info" | "warning" | "error";
+  };
 }
 
 /**

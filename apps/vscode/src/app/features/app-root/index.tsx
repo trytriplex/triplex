@@ -14,6 +14,7 @@ import {
 import { cn, onKeyDown, useBlockInputPropagation } from "@triplex/lib";
 import { useScreenView, useTelemetry, type ActionId } from "@triplex/ux";
 import { useEffect, useState } from "react";
+import { preloadSubscription } from "../../hooks/ws";
 import { useInitSceneSync, useSceneStore } from "../../stores/scene";
 import { forwardClientMessages, onVSCE, sendVSCE } from "../../util/bridge";
 import { FloatingControls } from "../floating-controls";
@@ -80,6 +81,7 @@ export function AppRoot() {
         telemetry.event(`scene_${data.actionId}` as ActionId);
       }),
       on("component-opened", (data) => {
+        preloadSubscription("/scene/:path/:exportName/props", data);
         syncContext({
           exportName: data.exportName,
           path: data.path,

@@ -10,12 +10,15 @@ import { preventUnhandled } from "@atlaskit/pragmatic-drag-and-drop/prevent-unha
 import { type DragLocationHistory } from "@atlaskit/pragmatic-drag-and-drop/types";
 import { LayersIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import { cn } from "@triplex/lib";
+import { fg } from "@triplex/lib/fg";
 import { useScreenView, useTelemetry } from "@triplex/ux";
 import { Suspense, useDeferredValue, useEffect, useRef, useState } from "react";
 import { IconButton } from "../../components/button";
 import { ScrollContainer } from "../../components/scroll-container";
 import { Surface } from "../../components/surface";
 import { useSceneStore } from "../../stores/scene";
+import { HasWarningsDot } from "../warnings/warning-has-warnings";
+import { WarningRequiredProps } from "../warnings/warning-required-props";
 import { ElementSelect } from "./element-select";
 import { ElementsPanel, FilterElements } from "./panel-elements";
 import { ProviderControlsPanel } from "./panel-provider";
@@ -174,36 +177,37 @@ export function Panels() {
           }
           spacing={shown ? "spacious" : "default"}
         />
-        {shown && (
-          <>
-            <ElementSelect />
-            <IconButton
-              actionId="scenepanel_component_controls"
-              icon={Pencil2Icon}
-              isSelected={isComponentControlsShown}
-              label={
-                isComponentControlsShown
-                  ? "Close Component Controls"
-                  : "Open Component Controls"
+        <div className={shown ? "contents" : "hidden"}>
+          <ElementSelect />
+          <IconButton
+            actionId="scenepanel_component_controls"
+            icon={Pencil2Icon}
+            isSelected={isComponentControlsShown}
+            label={
+              isComponentControlsShown
+                ? "Close Component Controls"
+                : "Open Component Controls"
+            }
+            onClick={() => {
+              if (isComponentControlsShown) {
+                blurElement();
+              } else {
+                focusElement({
+                  column: -1,
+                  exportName: context.exportName,
+                  line: -1,
+                  parentPath: "",
+                  path: context.path,
+                });
               }
-              onClick={() => {
-                if (isComponentControlsShown) {
-                  blurElement();
-                } else {
-                  focusElement({
-                    column: -1,
-                    exportName: context.exportName,
-                    line: -1,
-                    parentPath: "",
-                    path: context.path,
-                  });
-                }
-              }}
-              spacing="spacious"
-            />
-            <FilterElements />
-          </>
-        )}
+            }}
+            spacing="spacious"
+          >
+            {fg("required_props_indicator") && <WarningRequiredProps />}
+          </IconButton>
+          <FilterElements />
+        </div>
+        {!shown && fg("required_props_indicator") && <HasWarningsDot />}
       </div>
 
       <div

@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { init } from "@sentry/react";
+import { initFeatureGates } from "@triplex/lib/fg";
 import { TelemetryProvider } from "@triplex/ux";
 import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
@@ -12,6 +13,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { version } from "../../package.json";
 import { AppRoot } from "./features/app-root";
 import { ErrorSplash } from "./features/error-splash";
+import { preloadSubscription } from "./hooks/ws";
 import "./styles.css";
 
 if (
@@ -23,22 +25,36 @@ if (
   });
 }
 
-createRoot(document.getElementById("root")!).render(
-  <TelemetryProvider
-    engagementDurationStrategy="polling"
-    isTelemetryEnabled={window.triplex.isTelemetryEnabled}
-    secretKey="xzT0UQNnSMa1Z3KW8k6oWw"
-    sessionId={window.triplex.sessionId}
-    trackingId="G-EC2Q4TXGD0"
-    userId={window.triplex.userId}
-    version={version}
-  >
-    <ErrorBoundary
-      fallbackRender={({ error }) => <ErrorSplash error={error} />}
-    >
-      <Suspense>
-        <AppRoot />
-      </Suspense>
-    </ErrorBoundary>
-  </TelemetryProvider>,
+preloadSubscription(
+  "/scene/:path/:exportName/props",
+  window.triplex.initialState,
 );
+
+async function bootstrap() {
+  await initFeatureGates({
+    environment: window.triplex.env.fgEnvironmentOverride,
+    userId: window.triplex.userId,
+  });
+
+  createRoot(document.getElementById("root")!).render(
+    <TelemetryProvider
+      engagementDurationStrategy="polling"
+      isTelemetryEnabled={window.triplex.isTelemetryEnabled}
+      secretKey="xzT0UQNnSMa1Z3KW8k6oWw"
+      sessionId={window.triplex.sessionId}
+      trackingId="G-EC2Q4TXGD0"
+      userId={window.triplex.userId}
+      version={version}
+    >
+      <ErrorBoundary
+        fallbackRender={({ error }) => <ErrorSplash error={error} />}
+      >
+        <Suspense>
+          <AppRoot />
+        </Suspense>
+      </ErrorBoundary>
+    </TelemetryProvider>,
+  );
+}
+
+bootstrap();

@@ -12,18 +12,20 @@ export function ErrorSplash({ error }: { error: Error }) {
   return (
     <>
       <div className="fixed inset-0 mx-auto flex max-w-2xl flex-col justify-center gap-4 p-4">
-        <h1 className="text-center">An unexpected error occurred</h1>
+        <h1 className="text-heading text-center font-medium">
+          An Unexpected Error Occurred
+        </h1>
 
         <p className="mx-auto max-w-md text-center text-lg">
-          We&apos;re looking into it. Re-open Triplex and try again, if the
-          problem persists try restarting your computer.
+          We&apos;re looking into it. Re-open Triplex for VS Code and try again,
+          if the problem persists try restarting Visual Studio Code.
         </p>
 
         <div className="mx-auto flex items-center gap-2">
-          <a href="mailto:support@triplex.dev">Contact us</a>
+          <a href="https://discord.gg/nBzRBUEs4b">Contact Us</a>
           <span className="text-xs">•</span>
           <a href="https://github.com/trytriplex/triplex/issues/new">
-            Report a bug
+            Report a Bug
           </a>
         </div>
 

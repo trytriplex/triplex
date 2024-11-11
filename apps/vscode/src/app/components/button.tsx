@@ -8,16 +8,13 @@ import { type IconProps } from "@radix-ui/react-icons/dist/types";
 import { cn, onKeyDown, useEvent, type Accelerator } from "@triplex/lib";
 import { useTelemetry, type ActionId } from "@triplex/ux";
 import { VSCodeButton } from "@vscode/webview-ui-toolkit/react";
-import {
-  forwardRef,
-  useEffect,
-  type ComponentType,
-  type CSSProperties,
-} from "react";
+import { useEffect, type ComponentType } from "react";
+import { Pressable } from "./pressable";
 
 export function IconButton({
   accelerator,
   actionId,
+  children,
   icon: Icon,
   isSelected,
   label,
@@ -27,6 +24,7 @@ export function IconButton({
 }: {
   accelerator?: Accelerator;
   actionId: ActionId;
+  children?: React.ReactNode;
   icon: ComponentType<IconProps>;
   isSelected?: boolean;
   label: string;
@@ -52,7 +50,10 @@ export function IconButton({
     <VSCodeButton
       appearance="icon"
       aria-label={label + (isSelected ? " active" : "")}
-      className={cn([isSelected ? "bg-selected text-selected" : ""])}
+      className={cn([
+        "relative",
+        isSelected ? "bg-selected text-selected" : "",
+      ])}
       data-vscode-context={
         vscodeContext ? JSON.stringify(vscodeContext) : undefined
       }
@@ -66,73 +67,39 @@ export function IconButton({
           "pointer-events-none",
         ])}
       />
+      {children}
     </VSCodeButton>
   );
 }
 
-interface PressableProps {
+export function Button({
+  accelerator,
+  actionId,
+  children,
+  onClick,
+  variant = "default",
+  vscodeContext,
+}: {
   accelerator?: Accelerator;
   actionId: ActionId;
-  children?: React.ReactNode;
-  className?: string;
-  describedBy?: string;
-  labelledBy?: string;
+  children: string;
   onClick: (e: React.MouseEvent | KeyboardEvent) => void;
-  style?: CSSProperties;
-  title?: string;
+  variant?: "default" | "cta";
   vscodeContext?: Record<string, unknown>;
+}) {
+  return (
+    <Pressable
+      accelerator={accelerator}
+      actionId={actionId}
+      className={cn([
+        "border-button relative rounded-sm border px-2.5 py-1 text-[12px] outline-offset-[2px]",
+        variant === "default" && "text-subtle bg-neutral hover:bg-hover",
+        variant === "cta" && "text-primary bg-primary hover:bg-primary-hovered",
+      ])}
+      onClick={onClick}
+      vscodeContext={vscodeContext}
+    >
+      {children}
+    </Pressable>
+  );
 }
-
-export const Pressable = forwardRef<HTMLButtonElement, PressableProps>(
-  (
-    {
-      accelerator,
-      actionId,
-      children,
-      className,
-      describedBy,
-      labelledBy,
-      onClick,
-      style,
-      title,
-      vscodeContext,
-    },
-    ref,
-  ) => {
-    const telemetry = useTelemetry();
-    const onClickHandler = useEvent((e: React.MouseEvent | KeyboardEvent) => {
-      telemetry.event(actionId);
-      onClick(e);
-    });
-
-    useEffect(() => {
-      if (!accelerator) {
-        return;
-      }
-
-      return onKeyDown(accelerator, onClickHandler);
-    }, [accelerator, actionId, telemetry, onClickHandler]);
-
-    return (
-      <button
-        aria-describedby={describedBy}
-        aria-labelledby={labelledBy}
-        className={cn([
-          "focus-visible:outline-selected focus-visible:outline-default select-none focus-visible:outline",
-          className,
-        ])}
-        data-vscode-context={
-          vscodeContext ? JSON.stringify(vscodeContext) : undefined
-        }
-        onClick={onClickHandler}
-        ref={ref}
-        style={style}
-        title={title}
-      >
-        {children}
-      </button>
-    );
-  },
-);
-
-Pressable.displayName = "Pressable";

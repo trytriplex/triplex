@@ -5,6 +5,10 @@
       "name": "Run VS Code",
       "type": "extensionHost",
       "request": "launch",
+      "env": {
+        "FG_ENVIRONMENT_OVERRIDE": "development"
+      },
+      "debugWebviews": true,
       "args": [
         "${workspaceFolder}/examples",
         "${workspaceFolder}/examples/test-fixture/src/scene.tsx",

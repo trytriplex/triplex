@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 
-import type * as vscode from "vscode";
+import * as vscode from "vscode";
 import { version } from "../../package.json";
 import * as output from "../util/log/vscode";
 import { TriplexCodelensProvider } from "./codelens";
@@ -21,6 +21,8 @@ export function activate(context: vscode.ExtensionContext) {
   );
 
   log.info(`Triplex for VS Code v${version} activated.`);
+  log.debug(`User ID: ${vscode.env.machineId}.`);
+  log.debug(`FG Env: ${process.env.FG_ENVIRONMENT_OVERRIDE || "production"}.`);
 }
 
 export function deactivate() {}

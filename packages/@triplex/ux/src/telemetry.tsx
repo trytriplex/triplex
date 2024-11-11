@@ -7,12 +7,13 @@
 import { useEvent } from "@triplex/lib";
 import { createContext, useContext, useEffect, useMemo, useRef } from "react";
 
-type ActionContext =
+export type ActionContext =
   | "assetsdrawer"
   | "contextpanel"
   | "projectdrawer"
   | "rootmenu"
   | "scene"
+  | "notification"
   | "errorsplash"
   | "errorboundary"
   | "errorflag"
@@ -21,7 +22,7 @@ type ActionContext =
   | "contextmenu"
   | "welcome";
 
-type ActionGroup =
+export type ActionGroup =
   | "assets"
   | "changelog"
   | "component"

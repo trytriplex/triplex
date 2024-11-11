@@ -69,6 +69,7 @@ export async function initializeWebviewPanel(
       window.triplex = JSON.parse(\`${JSON.stringify({
         env: {
           config: project.args.config,
+          fgEnvironmentOverride: process.env.FG_ENVIRONMENT_OVERRIDE,
           ports: project.args.ports,
         },
         initialState: {

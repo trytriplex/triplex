@@ -16,7 +16,7 @@ function descriptionWithTags(
       .map(([key, value]) => `@${key} ${value}`)
       .join("\n");
   const label = [description, formattedTags].filter(Boolean);
-  return label.join("\n\n");
+  return label.join("\n\n") || undefined;
 }
 
 export function Label({

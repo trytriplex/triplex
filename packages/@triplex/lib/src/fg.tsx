@@ -42,10 +42,15 @@ export async function initFeatureGates({
       localMode: environment === "local",
     },
   );
+
+  if (typeof document !== "undefined") {
+    document.documentElement.setAttribute("data-fg-user", userId);
+    document.documentElement.setAttribute("data-fg-env", environment);
+  }
 }
 
 export function fg(key: string): boolean {
-  return Statsig.getFeatureGate(key).value;
+  return Statsig.checkGate(key);
 }
 
 export function overrideFg(key: string, value: boolean) {

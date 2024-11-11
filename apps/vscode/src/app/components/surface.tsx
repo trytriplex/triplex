@@ -71,7 +71,7 @@ export const Surface = forwardRef<
       <SurfaceStateContext.Provider value={addListener}>
         <div
           className={cn([
-            "border-overlay shadow-overlay group pointer-events-auto z-10 flex select-none focus:outline-none",
+            "border-overlay group pointer-events-auto z-10 flex select-none focus:outline-none",
             isHidden && "hidden",
             direction === "horizontal" && "flex-row",
             direction === "vertical" && "flex-col",

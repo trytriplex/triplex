@@ -13,6 +13,9 @@ export { LocalSpaceIcon, WorldSpaceIcon } from "./icons";
 export {
   type ActionId,
   type ActionIdSafe,
+  type ActionContext,
+  type ActionGroup,
+  type TelemetryFunctions,
   TelemetryProvider,
   useTelemetry,
   useScreenView,

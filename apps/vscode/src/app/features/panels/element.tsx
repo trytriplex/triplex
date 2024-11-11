@@ -16,7 +16,7 @@ import {
   useRef,
   useState,
 } from "react";
-import { Pressable } from "../../components/button";
+import { Pressable } from "../../components/pressable";
 import { useOnSurfaceStateChange } from "../../components/surface";
 import { useLazySubscription } from "../../hooks/ws";
 import { useFilter } from "../../stores/filter-elements";
