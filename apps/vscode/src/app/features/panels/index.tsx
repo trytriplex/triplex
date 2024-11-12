@@ -207,7 +207,7 @@ export function Panels() {
           </IconButton>
           <FilterElements />
         </div>
-        {!shown && fg("required_props_indicator") && <HasWarningsDot />}
+        {!shown && <HasWarningsDot />}
       </div>
 
       <div

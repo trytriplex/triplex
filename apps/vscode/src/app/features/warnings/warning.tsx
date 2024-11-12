@@ -5,16 +5,27 @@
  * file in the root directory of this source tree.
  */
 
+import { cn } from "@triplex/lib";
 import { useTelemetry, type ActionGroup } from "@triplex/ux";
 import { useEffect } from "react";
 import { sendVSCE } from "../../util/bridge";
 import { useUIWarnings } from "./store";
 
-export function WarningDot({ label }: { label: string }) {
+export function WarningDot({
+  label,
+  position = "top-right",
+}: {
+  label: string;
+  position?: "top-right" | "center-right";
+}) {
   return (
     <div
       aria-label={label}
-      className="bg-warning absolute -right-0.5 -top-0.5 h-2 w-2 rounded-full"
+      className={cn([
+        "bg-warning absolute h-2 w-2 rounded-full",
+        position === "top-right" && "-right-0.5 -top-0.5",
+        position === "center-right" && "right-1.5 top-1/2 -translate-y-1/2",
+      ])}
       title={label}
     />
   );
@@ -22,9 +33,11 @@ export function WarningDot({ label }: { label: string }) {
 
 export function WarningPredicate({
   actionId,
+  position,
   predicate,
 }: {
   actionId: `notification_${ActionGroup}${string}`;
+  position?: "top-right" | "center-right";
   predicate: string | false;
 }) {
   const increment = useUIWarnings((store) => store.increment);
@@ -45,7 +58,7 @@ export function WarningPredicate({
   }, [predicate, increment, telemetry, actionId]);
 
   if (predicate) {
-    return <WarningDot label={predicate} />;
+    return <WarningDot label={predicate} position={position} />;
   }
 
   return null;

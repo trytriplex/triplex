@@ -46,4 +46,6 @@ export const RequiredProps = ({
   );
 };
 
-export const RequiredUsage = () => <RequiredProps />;
+export function RequiredUsage() {
+  return <RequiredProps />;
+}

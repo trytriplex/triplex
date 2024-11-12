@@ -73,10 +73,13 @@ export const renderPropInputs: RenderInputs = ({
                 <input
                   {...props}
                   className={cn([
+                    prop.prop.required && persistedValue === undefined
+                      ? "border-danger"
+                      : "border-input",
                     !hasChanged &&
                       !persistedValue &&
                       "[&::-webkit-color-swatch]:bg-[transparent!important]",
-                    "text-input invalid:border-danger focus:border-selected bg-input border-input placeholder:text-input-placeholder h-[26px] w-[26px] rounded-sm border focus:outline-none [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:rounded-sm [&::-webkit-color-swatch]:border-none",
+                    "text-input focus:border-selected bg-input placeholder:text-input-placeholder h-[26px] w-[26px] rounded-sm border focus:outline-none [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:rounded-sm [&::-webkit-color-swatch]:border-none",
                   ])}
                   ref={ref}
                   type="color"
@@ -157,6 +160,8 @@ export const renderPropInputs: RenderInputs = ({
   }
 
   if (prop.type === "boolean") {
+    const persistedValue = "value" in prop.prop ? prop.prop.value : undefined;
+
     return (
       <BooleanInput
         actionId="scene_controls"
@@ -164,7 +169,7 @@ export const renderPropInputs: RenderInputs = ({
         name={prop.prop.name}
         onChange={onChange}
         onConfirm={onConfirm}
-        persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
+        persistedValue={persistedValue}
       >
         {({ onChange, ref, ...props }) => (
           <>
@@ -175,7 +180,14 @@ export const renderPropInputs: RenderInputs = ({
             >
               {prop.prop.name}
             </Label>
-            <div className="text-input focus-within:border-selected bg-input border-input mb-1 grid h-5 w-5 rounded-sm border">
+            <div
+              className={cn([
+                prop.prop.required && persistedValue === undefined
+                  ? "border-danger"
+                  : "border-input",
+                "text-input focus-within:border-selected bg-input mb-1 grid h-5 w-5 rounded-sm border",
+              ])}
+            >
               <input
                 {...props}
                 className="grid-col peer h-full w-full appearance-none opacity-0 [grid-column:1] [grid-row:1]"
