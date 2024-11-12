@@ -8,6 +8,10 @@ import { useEffect, useRef, type ChangeEventHandler } from "react";
 import { useTelemetry, type ActionIdSafe } from "../telemetry";
 import { type RenderInput } from "./types";
 
+function parseValue(value: unknown): boolean | undefined {
+  return typeof value === "boolean" ? value : undefined;
+}
+
 export function BooleanInput({
   actionId,
   children,
@@ -29,11 +33,11 @@ export function BooleanInput({
 }) {
   const ref = useRef<HTMLInputElement>(null!);
   const telemetry = useTelemetry();
-  const initialValue = persistedValue ?? defaultValue;
+  const initialValue = parseValue(persistedValue) ?? defaultValue;
 
   useEffect(() => {
-    ref.current.checked = persistedValue ?? defaultValue;
-  }, [defaultValue, persistedValue]);
+    ref.current.checked = initialValue;
+  }, [initialValue]);
 
   const onChangeHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     const nextValue = e.target.checked;

@@ -11,22 +11,26 @@ import { type RenderInputsWithAction } from "./types";
 
 export function UnionInput({
   children,
+  defaultValue,
   description,
   name,
   onChange,
   onConfirm,
   path,
   persistedValue,
+  required,
   tags,
   values,
 }: {
   children: RenderInputsWithAction<{ toggle: () => void }>;
+  defaultValue?: string | number | boolean | unknown[];
   description?: string;
   name: string;
   onChange: (value: unknown) => void;
   onConfirm: (value: unknown) => void;
   path: string;
-  persistedValue?: string | number | boolean;
+  persistedValue?: string | number | boolean | unknown[];
+  required?: boolean;
   tags?: Record<string, string | number | boolean>;
   values: Type[];
 }) {
@@ -40,9 +44,10 @@ export function UnionInput({
       path={path}
       prop={
         Object.assign(
-          { description, name, tags },
+          { description, name, required, tags },
           value,
-          persistedValue ? { value: persistedValue } : {},
+          defaultValue !== undefined ? { value: defaultValue } : {},
+          persistedValue !== undefined ? { value: persistedValue } : {},
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
         ) as any
       }

@@ -24,10 +24,10 @@ export function SelectionPanel() {
 function LearnToUseCTA({ exportName }: { exportName: string }) {
   return (
     <div className="flex flex-col gap-2 px-4 py-3">
-      <strong>Component controls</strong>
+      <strong>Component Controls</strong>
       <span>
-        Props declared on {exportName} will appear here that can be temporarily
-        set.
+        {`Props declared on ${exportName} will appear here that can be temporarily
+        set.`}
       </span>
       <a
         className="text-link focus-visible:outline-selected focus:outline-[transparent]"

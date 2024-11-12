@@ -19,3 +19,25 @@ function LiteralTypes(_: { value: number | boolean | string }) {
 export function UseLiteralTypes() {
   return <LiteralTypes value="hello" />;
 }
+
+export const RequiredProps = ({
+  defaultBoolean: _ = true,
+  defaultColor: __ = "red",
+  defaultNumber: ___ = 1,
+  defaultString: ____ = "foo",
+  defaultStringLiteral: _____ = "bar",
+  defaultTuple: ______ = [1, 2, 3],
+  defaultUnion: _______ = 333,
+}: {
+  defaultBoolean?: boolean;
+  defaultColor?: string;
+  defaultNumber?: number;
+  defaultString?: string;
+  defaultStringLiteral?: "foo" | "bar";
+  defaultTuple?: [number, number, number];
+  defaultUnion?: number | boolean | string;
+}) => {
+  return <group />;
+};
+
+export const RequiredUsage = () => <RequiredProps />;

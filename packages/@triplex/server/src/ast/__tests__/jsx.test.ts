@@ -23,7 +23,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/box.tsx")
+      join(__dirname, "__mocks__/box.tsx"),
     );
     const sceneObject = getJsxElementAtOrThrow(sourceFile, 18, 7);
 
@@ -37,7 +37,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/box.tsx")
+      join(__dirname, "__mocks__/box.tsx"),
     );
     const sceneObject = getJsxElementAtOrThrow(sourceFile, 25, 10);
 
@@ -51,7 +51,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/shadowed-interface.tsx")
+      join(__dirname, "__mocks__/shadowed-interface.tsx"),
     );
     const sceneObject = getJsxElementAtOrThrow(sourceFile, 14, 3);
 
@@ -65,7 +65,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/scene.tsx")
+      join(__dirname, "__mocks__/scene.tsx"),
     );
     const sceneObject = getJsxElementAtOrThrow(sourceFile, 19, 10);
 
@@ -79,11 +79,11 @@ describe("jsx ast extractor", () => {
   it.todo("should get owner dangling arrow func named export name");
 
   it.todo(
-    "should get jsx element positions from dangling func decl named export name"
+    "should get jsx element positions from dangling func decl named export name",
   );
 
   it.todo(
-    "should get jsx element positions from dangling arrow func named export name"
+    "should get jsx element positions from dangling arrow func named export name",
   );
 
   it("should infer paths for rapier", () => {
@@ -91,7 +91,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/n_modules.tsx")
+      join(__dirname, "__mocks__/n_modules.tsx"),
     );
 
     const elements = getJsxElementsPositions(sourceFile, "default");
@@ -104,7 +104,7 @@ describe("jsx ast extractor", () => {
       line: 19,
       name: "RigidBody",
       parentPath: fromCwd(
-        "packages/@triplex/server/src/ast/__tests__/__mocks__/n_modules.tsx"
+        "packages/@triplex/server/src/ast/__tests__/__mocks__/n_modules.tsx",
       ),
       path: "",
       type: "custom",
@@ -116,7 +116,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/expression.tsx")
+      join(__dirname, "__mocks__/expression.tsx"),
     );
 
     const elements = getJsxElementsPositions(sourceFile, "default");
@@ -130,7 +130,7 @@ describe("jsx ast extractor", () => {
             line: 14,
             name: "boxGeometry",
             parentPath: fromCwd(
-              "/packages/@triplex/server/src/ast/__tests__/__mocks__/expression.tsx"
+              "/packages/@triplex/server/src/ast/__tests__/__mocks__/expression.tsx",
             ),
             type: "host",
           },
@@ -140,7 +140,7 @@ describe("jsx ast extractor", () => {
             line: 15,
             name: "meshStandardMaterial",
             parentPath: fromCwd(
-              "/packages/@triplex/server/src/ast/__tests__/__mocks__/expression.tsx"
+              "/packages/@triplex/server/src/ast/__tests__/__mocks__/expression.tsx",
             ),
             type: "host",
           },
@@ -149,7 +149,7 @@ describe("jsx ast extractor", () => {
         line: 13,
         name: "mesh",
         parentPath: fromCwd(
-          "/packages/@triplex/server/src/ast/__tests__/__mocks__/expression.tsx"
+          "/packages/@triplex/server/src/ast/__tests__/__mocks__/expression.tsx",
         ),
         type: "host",
       },
@@ -161,7 +161,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/scene.tsx")
+      join(__dirname, "__mocks__/scene.tsx"),
     );
 
     const elements = getJsxElementsPositions(sourceFile, "default");
@@ -174,10 +174,10 @@ describe("jsx ast extractor", () => {
         line: 25,
         name: "Box",
         parentPath: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
         ),
         path: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx",
         ),
         type: "custom",
       },
@@ -188,10 +188,10 @@ describe("jsx ast extractor", () => {
         line: 31,
         name: "Cylinder",
         parentPath: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
         ),
         path: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/cylinder.tsx"
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/cylinder.tsx",
         ),
         type: "custom",
       },
@@ -202,10 +202,10 @@ describe("jsx ast extractor", () => {
         line: 34,
         name: "SceneAlt",
         parentPath: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
         ),
         path: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
         ),
         type: "custom",
       },
@@ -216,10 +216,10 @@ describe("jsx ast extractor", () => {
         line: 35,
         name: "SceneWrapped",
         parentPath: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
         ),
         path: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
         ),
         type: "custom",
       },
@@ -230,10 +230,10 @@ describe("jsx ast extractor", () => {
         line: 36,
         name: "SceneArrow",
         parentPath: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
         ),
         path: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
+          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
         ),
         type: "custom",
       },
@@ -245,7 +245,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/scene.tsx")
+      join(__dirname, "__mocks__/scene.tsx"),
     );
 
     const elements = getJsxElementsPositions(sourceFile, "SceneAlt");
@@ -257,10 +257,10 @@ describe("jsx ast extractor", () => {
       line: 13,
       name: "Box",
       parentPath: fromCwd(
-        "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
+        "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
       ),
       path: fromCwd(
-        "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
+        "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx",
       ),
       type: "custom",
     });
@@ -271,7 +271,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/scene.tsx")
+      join(__dirname, "__mocks__/scene.tsx"),
     );
 
     const elements = getJsxElementsPositions(sourceFile, "SceneArrow");
@@ -283,10 +283,10 @@ describe("jsx ast extractor", () => {
       line: 10,
       name: "Box",
       parentPath: fromCwd(
-        "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx"
+        "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
       ),
       path: fromCwd(
-        "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
+        "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx",
       ),
       type: "custom",
     });
@@ -297,7 +297,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/box.tsx")
+      join(__dirname, "__mocks__/box.tsx"),
     );
 
     const elements = getJsxElementsPositions(sourceFile, "default");
@@ -311,7 +311,7 @@ describe("jsx ast extractor", () => {
             line: 18,
             name: "boxGeometry",
             parentPath: fromCwd(
-              "/packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
+              "/packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx",
             ),
             type: "host",
           },
@@ -321,7 +321,7 @@ describe("jsx ast extractor", () => {
             line: 19,
             name: "meshStandardMaterial",
             parentPath: fromCwd(
-              "/packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
+              "/packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx",
             ),
             type: "host",
           },
@@ -330,7 +330,7 @@ describe("jsx ast extractor", () => {
         line: 17,
         name: "mesh",
         parentPath: fromCwd(
-          "/packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
+          "/packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx",
         ),
         type: "host",
       },
@@ -342,7 +342,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/box.tsx")
+      join(__dirname, "__mocks__/box.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 18, 7);
 
@@ -424,7 +424,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/cylinder.tsx")
+      join(__dirname, "__mocks__/cylinder.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 10, 7);
 
@@ -498,7 +498,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/box.tsx")
+      join(__dirname, "__mocks__/box.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 19, 7);
 
@@ -602,7 +602,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "kind": "number",
           "name": "metalness",
-          "required": true,
+          "required": false,
           "tags": {
             "default": 0,
           },
@@ -631,7 +631,7 @@ describe("jsx ast extractor", () => {
       Sets the alpha value to be used when running an alpha test. Default is 0.",
           "kind": "number",
           "name": "alphaTest",
-          "required": true,
+          "required": false,
           "tags": {
             "default": 0,
           },
@@ -661,7 +661,7 @@ describe("jsx ast extractor", () => {
       blending with {@link ConstantAlphaFactor} or {@link OneMinusConstantAlphaFactor}.",
           "kind": "number",
           "name": "blendAlpha",
-          "required": true,
+          "required": false,
           "tags": {
             "default": 0,
           },
@@ -671,7 +671,7 @@ describe("jsx ast extractor", () => {
       blending with {@link ConstantColorFactor} or {@link OneMinusConstantColorFactor}.",
           "kind": "union",
           "name": "blendColor",
-          "required": true,
+          "required": false,
           "shape": [
             {
               "kind": "string",
@@ -1085,7 +1085,7 @@ describe("jsx ast extractor", () => {
           "description": undefined,
           "kind": "number",
           "name": "displacementBias",
-          "required": true,
+          "required": false,
           "tags": {
             "default": 0,
           },
@@ -1233,7 +1233,7 @@ describe("jsx ast extractor", () => {
           "description": "Sets the polygon offset factor. Default is 0.",
           "kind": "number",
           "name": "polygonOffsetFactor",
-          "required": true,
+          "required": false,
           "tags": {
             "default": 0,
           },
@@ -1242,7 +1242,7 @@ describe("jsx ast extractor", () => {
           "description": "Sets the polygon offset units. Default is 0.",
           "kind": "number",
           "name": "polygonOffsetUnits",
-          "required": true,
+          "required": false,
           "tags": {
             "default": 0,
           },
@@ -1448,7 +1448,7 @@ describe("jsx ast extractor", () => {
           "description": "The value to use when performing stencil comparisons or stencil operations. Default is *0*.",
           "kind": "number",
           "name": "stencilRef",
-          "required": true,
+          "required": false,
           "tags": {
             "default": 0,
           },
@@ -1642,7 +1642,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/box.tsx")
+      join(__dirname, "__mocks__/box.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 25, 10);
 
@@ -1697,7 +1697,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/box.tsx")
+      join(__dirname, "__mocks__/box.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 25, 10);
 
@@ -1744,7 +1744,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/with-comments.tsx")
+      join(__dirname, "__mocks__/with-comments.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 10, 5);
 
@@ -2009,7 +2009,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/with-comments.tsx")
+      join(__dirname, "__mocks__/with-comments.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 20, 5);
 
@@ -2278,7 +2278,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
+      join(__dirname, "__mocks__/type-extraction.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 25, 10);
 
@@ -2332,7 +2332,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
+      join(__dirname, "__mocks__/type-extraction.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 41, 5);
 
@@ -2350,11 +2350,11 @@ describe("jsx ast extractor", () => {
           "shape": [
             {
               "kind": "string",
-              "literal": "white",
+              "literal": "black",
             },
             {
               "kind": "string",
-              "literal": "black",
+              "literal": "white",
             },
           ],
           "tags": {},
@@ -2370,7 +2370,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/type-extraction.tsx")
+      join(__dirname, "__mocks__/type-extraction.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 42, 5);
 
@@ -2408,7 +2408,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/box.tsx")
+      join(__dirname, "__mocks__/box.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 17, 5);
 
@@ -2681,7 +2681,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/scene.tsx")
+      join(__dirname, "__mocks__/scene.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 25, 7);
     if (!sceneObject) {
@@ -2797,7 +2797,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/nested.tsx")
+      join(__dirname, "__mocks__/nested.tsx"),
     );
 
     const elements = getJsxElementsPositions(sourceFile, "default");
@@ -2813,7 +2813,7 @@ describe("jsx ast extractor", () => {
                 line: 11,
                 name: "boxGeometry",
                 parentPath: fromCwd(
-                  "/packages/@triplex/server/src/ast/__tests__/__mocks__/nested.tsx"
+                  "/packages/@triplex/server/src/ast/__tests__/__mocks__/nested.tsx",
                 ),
                 type: "host",
               },
@@ -2823,7 +2823,7 @@ describe("jsx ast extractor", () => {
                 line: 12,
                 name: "meshBasicMaterial",
                 parentPath: fromCwd(
-                  "/packages/@triplex/server/src/ast/__tests__/__mocks__/nested.tsx"
+                  "/packages/@triplex/server/src/ast/__tests__/__mocks__/nested.tsx",
                 ),
                 type: "host",
               },
@@ -2832,7 +2832,7 @@ describe("jsx ast extractor", () => {
             line: 10,
             name: "mesh",
             parentPath: fromCwd(
-              "/packages/@triplex/server/src/ast/__tests__/__mocks__/nested.tsx"
+              "/packages/@triplex/server/src/ast/__tests__/__mocks__/nested.tsx",
             ),
             type: "host",
           },
@@ -2841,7 +2841,7 @@ describe("jsx ast extractor", () => {
         line: 9,
         name: "group",
         parentPath: fromCwd(
-          "/packages/@triplex/server/src/ast/__tests__/__mocks__/nested.tsx"
+          "/packages/@triplex/server/src/ast/__tests__/__mocks__/nested.tsx",
         ),
         type: "host",
       },
@@ -2853,7 +2853,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/cylinder.tsx")
+      join(__dirname, "__mocks__/cylinder.tsx"),
     );
 
     const elements = getJsxElementsPositions(sourceFile, "default");
@@ -2867,7 +2867,7 @@ describe("jsx ast extractor", () => {
             line: 10,
             name: "geo-hi (cylinderGeometry)",
             parentPath: fromCwd(
-              "/packages/@triplex/server/src/ast/__tests__/__mocks__/cylinder.tsx"
+              "/packages/@triplex/server/src/ast/__tests__/__mocks__/cylinder.tsx",
             ),
             type: "host",
           },
@@ -2877,7 +2877,7 @@ describe("jsx ast extractor", () => {
             line: 11,
             name: "meshStandardMaterial",
             parentPath: fromCwd(
-              "/packages/@triplex/server/src/ast/__tests__/__mocks__/cylinder.tsx"
+              "/packages/@triplex/server/src/ast/__tests__/__mocks__/cylinder.tsx",
             ),
             type: "host",
           },
@@ -2886,7 +2886,7 @@ describe("jsx ast extractor", () => {
         line: 9,
         name: "this-is-cilly (mesh)",
         parentPath: fromCwd(
-          "/packages/@triplex/server/src/ast/__tests__/__mocks__/cylinder.tsx"
+          "/packages/@triplex/server/src/ast/__tests__/__mocks__/cylinder.tsx",
         ),
         type: "host",
       },
@@ -2898,7 +2898,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/cylinder.tsx")
+      join(__dirname, "__mocks__/cylinder.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 9, 5);
     if (!sceneObject) {
@@ -2916,7 +2916,7 @@ describe("jsx ast extractor", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/cylinder.tsx")
+      join(__dirname, "__mocks__/cylinder.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 10, 7);
     if (!sceneObject) {

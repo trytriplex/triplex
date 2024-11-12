@@ -76,7 +76,7 @@ export const renderPropInputs: RenderInputs = ({
                     !hasChanged &&
                       !persistedValue &&
                       "[&::-webkit-color-swatch]:bg-[transparent!important]",
-                    "text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder h-[26px] w-[26px] rounded-sm border focus:outline-none [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:rounded-sm [&::-webkit-color-swatch]:border-none",
+                    "text-input invalid:border-danger focus:border-selected bg-input border-input placeholder:text-input-placeholder h-[26px] w-[26px] rounded-sm border focus:outline-none [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:rounded-sm [&::-webkit-color-swatch]:border-none",
                   ])}
                   ref={ref}
                   type="color"
@@ -110,7 +110,7 @@ export const renderPropInputs: RenderInputs = ({
             </Label>
             <input
               {...props}
-              className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder mb-1 h-[26px] w-full rounded-sm border px-[9px] focus:outline-none"
+              className="text-input invalid:border-danger focus:border-selected bg-input border-input placeholder:text-input-placeholder mb-1 h-[26px] w-full rounded-sm border px-[9px] focus:outline-none"
               onChange={onChange}
               ref={ref}
             />
@@ -146,7 +146,7 @@ export const renderPropInputs: RenderInputs = ({
             <input
               {...props}
               aria-label={prop.prop.label}
-              className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder mb-1 h-[26px] w-full rounded-sm border px-[9px] focus:outline-none"
+              className="text-input invalid:border-danger focus:border-selected bg-input border-input placeholder:text-input-placeholder mb-1 h-[26px] w-full rounded-sm border px-[9px] focus:outline-none"
               ref={ref}
               type="number"
             />
@@ -164,7 +164,7 @@ export const renderPropInputs: RenderInputs = ({
         name={prop.prop.name}
         onChange={onChange}
         onConfirm={onConfirm}
-        persistedValue={"value" in prop.prop ? prop.prop.value : false}
+        persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
       >
         {({ onChange, ref, ...props }) => (
           <>
@@ -194,12 +194,14 @@ export const renderPropInputs: RenderInputs = ({
   if (prop.type === "union") {
     return (
       <UnionInput
+        defaultValue={resolveDefaultValue(prop.prop, "any")}
         description={prop.prop.description}
         name={prop.prop.name}
         onChange={onChange}
         onConfirm={onConfirm}
         path={path}
         persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
+        required={prop.prop.required}
         tags={prop.prop.tags}
         values={prop.prop.shape}
       >
@@ -236,10 +238,12 @@ export const renderPropInputs: RenderInputs = ({
         </Label>
         <div>
           <TupleInput
+            defaultValue={resolveDefaultValue(prop.prop, "array")}
             onChange={onChange}
             onConfirm={onConfirm}
             path={path}
             persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
+            required={prop.prop.required}
             values={prop.prop.shape}
           >
             {renderPropInputs}
@@ -272,7 +276,7 @@ export const renderPropInputs: RenderInputs = ({
             </Label>
             <select
               {...props}
-              className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder mb-1 h-[26px] w-full rounded-sm border px-1.5 focus:outline-none"
+              className="text-input invalid:border-danger focus:border-selected bg-input border-input placeholder:text-input-placeholder mb-1 h-[26px] w-full rounded-sm border px-1.5 focus:outline-none"
               onChange={onChange}
               ref={ref}
             >
@@ -322,7 +326,7 @@ export const renderPropInputs: RenderInputs = ({
         <div
           className={cn([
             "ml-auto flex-shrink-0",
-            isControlledInCode ? "text-warning" : "text-error",
+            isControlledInCode ? "text-warning" : "text-danger",
           ])}
         >
           <ExclamationTriangleIcon />

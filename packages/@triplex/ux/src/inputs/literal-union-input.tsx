@@ -61,11 +61,17 @@ export function LiteralUnionInput({
 
   const onChangeHandler: ChangeEventHandler<HTMLSelectElement> = (e) => {
     const currentValue = persistedValue ?? undefined;
-    const nextValueIndex = e.target.value ?? undefined;
+    const nextValueIndex = e.target.value ?? "";
 
-    if (nextValueIndex === undefined && required) {
-      // Skip handler if the next value is undefined and it's required
-      return;
+    if (nextValueIndex === "") {
+      // An undefined value has been selected.
+      if (required) {
+        // Skip handler if the next value is undefined and it's required
+        return;
+      } else {
+        onClear();
+        return;
+      }
     }
 
     const nextValue = values[Number(nextValueIndex)].literal;
@@ -95,10 +101,17 @@ export function LiteralUnionInput({
     }
   };
 
+  const shouldShowPlaceholder = !(isValueDefined && required);
+
   const placeholderOption: [label: string, value: string] = [
-    "Select value...",
+    isValueDefined
+      ? defaultValue
+        ? `Clear and use default value "${defaultValue}".`
+        : "Clear prop value."
+      : "Select value...",
     "",
   ];
+
   const options: [label: string, value: string][] = values.map(
     (value, index) => [`${value.label || value.literal}`, `${index}`],
   );
@@ -112,8 +125,11 @@ export function LiteralUnionInput({
       id: name,
       onChange: onChangeHandler,
       onKeyDown: onKeyDownHandler,
-      options: isValueDefined ? options : [placeholderOption, ...options],
+      options: shouldShowPlaceholder
+        ? [placeholderOption, ...options]
+        : options,
       ref,
+      required,
     },
     // Waiting to hear back if this is a false positive.
     // See: https://github.com/reactwg/react-compiler/discussions/32

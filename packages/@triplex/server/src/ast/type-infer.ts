@@ -19,11 +19,73 @@ import type {
   DeclaredProp,
   ExpressionValue,
   Prop,
+  UnionType,
   Type as UnrolledType,
 } from "../types";
 import { getAttributes } from "./jsx";
 import { getExportName } from "./module";
 import { type SourceFileReadOnly } from "./project";
+
+export function sortUnionType(type: UnionType, value: AttributeValue) {
+  const isLiteralUnion = type.shape.every((val) => "literal" in val);
+  if (isLiteralUnion) {
+    // Bail out from sorting literal unions. We don't want their item positions to change in the UI.
+    return;
+  }
+
+  const typeOfValue = typeof value;
+  const isValueAnArray = Array.isArray(value);
+
+  type.shape.sort((typeA, typeB) => {
+    if (typeOfValue === typeA.kind) {
+      return -1;
+    }
+
+    if (typeOfValue === typeB.kind) {
+      return 1;
+    }
+
+    if (isValueAnArray) {
+      if (typeA.kind === "tuple") {
+        let partialMatch = true;
+
+        for (let i = 0; i < value.length; i++) {
+          const typeofElValue = typeof value[i];
+          const elType = typeA.shape[i];
+
+          if (elType.kind !== typeofElValue) {
+            partialMatch = false;
+            break;
+          }
+        }
+
+        if (partialMatch) {
+          return -1;
+        }
+      }
+
+      if (typeB.kind === "tuple") {
+        let partialMatch = true;
+
+        for (let i = 0; i < value.length; i++) {
+          const typeofElValue = typeof value[i];
+          const elType = typeB.shape[i];
+
+          if (elType.kind !== typeofElValue) {
+            partialMatch = false;
+            break;
+          }
+        }
+
+        if (partialMatch) {
+          return 1;
+        }
+      }
+    }
+
+    return 0;
+  });
+}
 
 export function unrollType(
   type: Type,
@@ -394,8 +456,8 @@ export function getJsxElementPropTypes(
     const defaultValue = defaultValues[propName];
     const isOptional =
       !!propDeclaration?.hasQuestionToken?.() ||
-      !!tags.default ||
-      !!tags.defaultValue;
+      tags.default !== undefined ||
+      tags.defaultValue !== undefined;
 
     if (declaredProp) {
       const initializer = declaredProp.getInitializer();
@@ -420,61 +482,8 @@ export function getJsxElementPropTypes(
       }
 
       if (type.kind === "union") {
-        const actualValue = value.value;
-        const typeOfValue = typeof actualValue;
-        const isValueAnArray = Array.isArray(actualValue);
-
-        // Sort the union values to have the one that matches the first
-        // value as the first option.
-        type.shape.sort((typeA, typeB) => {
-          if (typeOfValue === typeA.kind) {
-            return -1;
-          }
-
-          if (typeOfValue === typeB.kind) {
-            return 1;
-          }
-
-          if (isValueAnArray) {
-            if (typeA.kind === "tuple") {
-              let partialMatch = true;
-
-              for (let i = 0; i < actualValue.length; i++) {
-                const typeofElValue = typeof actualValue[i];
-                const elType = typeA.shape[i];
-
-                if (elType.kind !== typeofElValue) {
-                  partialMatch = false;
-                  break;
-                }
-              }
-
-              if (partialMatch) {
-                return -1;
-              }
-            }
-
-            if (typeB.kind === "tuple") {
-              let partialMatch = true;
-
-              for (let i = 0; i < actualValue.length; i++) {
-                const typeofElValue = typeof actualValue[i];
-                const elType = typeB.shape[i];
-
-                if (elType.kind !== typeofElValue) {
-                  partialMatch = false;
-                  break;
-                }
-              }
-
-              if (partialMatch) {
-                return 1;
-              }
-            }
-          }
-
-          return 0;
-        });
+        // Sort the union values to have the one that matches the first value as the first option.
+        sortUnionType(type, value.value);
       }
 
       props.push({
@@ -490,6 +499,8 @@ export function getJsxElementPropTypes(
         ...(defaultValue ? { defaultValue } : undefined),
       });
     } else {
+      const type = unrollType(propType, unionLabels);
+
       if (propName === "rotation") {
         rotate = true;
       } else if (propName === "position") {
@@ -498,8 +509,13 @@ export function getJsxElementPropTypes(
         scale = true;
       }
 
+      if (type.kind === "union" && defaultValue) {
+        // Sort the union values to have the one that matches the first value as the first option.
+        sortUnionType(type, defaultValue.value);
+      }
+
       props.push({
-        ...unrollType(propType, unionLabels),
+        ...type,
         description: description || undefined,
         name: propName,
         required: !isOptional,

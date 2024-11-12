@@ -498,6 +498,29 @@ describe("type infer", () => {
       `);
   });
 
+  it("should sort union types to match the default string value", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/union-type-sorting.tsx"),
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 43, 36);
+    if (!sceneObject) {
+      throw new Error("not found");
+    }
+
+    const { props } = getJsxElementPropTypes(sceneObject);
+    const prop = props.find((type) => type.name === "defaultUnion");
+
+    expect(prop && prop.kind === "union" && prop.shape[0])
+      .toMatchInlineSnapshot(`
+        {
+          "kind": "number",
+        }
+      `);
+  });
+
   it("should show union fourth arg from rotation", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),

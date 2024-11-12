@@ -22,7 +22,7 @@ const TestHarness = (testProps: {
     onConfirm={vi.fn()}
     {...testProps}
   >
-    {(props) => <input {...props} data-testid="input" type="string" />}
+    {(props) => <input {...props} data-testid="input" type="number" />}
   </NumberInput>
 );
 

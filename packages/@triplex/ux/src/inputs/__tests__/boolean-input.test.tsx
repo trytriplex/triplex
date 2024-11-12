@@ -86,4 +86,16 @@ describe("boolean input", () => {
     expect(onChange).not.toHaveBeenCalled();
     expect(onConfirm).not.toHaveBeenCalled();
   });
+
+  it("should ignore values that aren't boolean", () => {
+    const { getByTestId } = render(
+      <TestHarness
+        // @ts-expect-error
+        persistedValue="foo"
+      />,
+    );
+
+    const element = getByTestId("bool") as HTMLInputElement;
+    expect(element.checked).toEqual(false);
+  });
 });

@@ -79,7 +79,7 @@ function ProviderProps() {
 function LearnToUseCTA() {
   return (
     <div className="flex flex-col gap-2 px-4 py-3">
-      <strong>Provider controls</strong>
+      <strong>Provider Controls</strong>
       <span className="text-xs text-neutral-400">
         Props declared on your provider component will appear here to configure.
       </span>
@@ -96,7 +96,7 @@ function LearnToUseCTA() {
 function SetUpCTA() {
   return (
     <div className="flex flex-col gap-2 px-4 py-3">
-      <strong>Provider controls</strong>
+      <strong>Provider Controls</strong>
       Set up a provider component and its props will appear here to configure.
       <div>
         <a

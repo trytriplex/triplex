@@ -37,6 +37,7 @@ module.exports = {
     },
     borderColor: {
       button: "var(--vscode-button-border)",
+      danger: "var(--vscode-editorError-foreground)",
       input: "var(--vscode-dropdown-border)",
       overlay: "var(--vscode-panel-border)",
       selected: "var(--vscode-focusBorder)",
@@ -70,8 +71,8 @@ module.exports = {
     },
     textColor: {
       "active-selected": "var(--vscode-list-activeSelectionForeground)",
+      danger: "var(--vscode-editorError-foreground)",
       default: "var(--vscode-foreground)",
-      error: "var(--vscode-editorError-foreground)",
       info: "var(--vscode-editorInfo-foreground)",
       input: "var(--vscode-input-foreground)",
       "input-placeholder": "var(--vscode-input-placeholderForeground)",

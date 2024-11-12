@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 // @vitest-environment jsdom
-import { render } from "@testing-library/react";
+import { fireEvent, render } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { LiteralUnionInput } from "../literal-union-input";
 
@@ -14,6 +14,7 @@ const TestHarness = (testProps: {
   onChange?: (value?: string | number | boolean) => void;
   onConfirm?: (value?: string | number | boolean) => void;
   persistedValue?: string;
+  required?: boolean;
 }) => (
   <LiteralUnionInput
     actionId="assetsdrawer_assets"
@@ -82,5 +83,101 @@ describe("literal union input", () => {
 
     const input = getByTestId("input") as HTMLInputElement;
     expect(input.value).toEqual("1");
+  });
+
+  it("should callback with undefined when optional", () => {
+    const onChange = vi.fn();
+    const onConfirm = vi.fn();
+    const { getByTestId } = render(
+      <TestHarness
+        onChange={onChange}
+        onConfirm={onConfirm}
+        persistedValue="bar"
+      />,
+    );
+    const input = getByTestId("input") as HTMLInputElement;
+
+    fireEvent.change(input, { target: { value: "" } });
+
+    expect(onChange).toHaveBeenCalledWith(undefined);
+    expect(onConfirm).toHaveBeenCalledWith(undefined);
+  });
+
+  it("should not callback when required", () => {
+    const onChange = vi.fn();
+    const onConfirm = vi.fn();
+    const { getByTestId } = render(
+      <TestHarness
+        onChange={onChange}
+        onConfirm={onConfirm}
+        persistedValue="bar"
+        required
+      />,
+    );
+    const input = getByTestId("input") as HTMLInputElement;
+
+    fireEvent.change(input, { target: { value: "" } });
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onConfirm).not.toHaveBeenCalled();
+  });
+
+  it("should delete via backspace when optional", () => {
+    const onChange = vi.fn();
+    const onConfirm = vi.fn();
+    const { getByTestId } = render(
+      <TestHarness
+        onChange={onChange}
+        onConfirm={onConfirm}
+        persistedValue="bar"
+      />,
+    );
+    const input = getByTestId("input") as HTMLInputElement;
+
+    fireEvent.keyDown(input, { key: "Backspace" });
+
+    expect(onChange).toHaveBeenCalledWith(undefined);
+    expect(onConfirm).toHaveBeenCalledWith(undefined);
+  });
+
+  it("should hide clear option when required", () => {
+    const { getByTestId } = render(
+      <TestHarness persistedValue="bar" required />,
+    );
+
+    expect(getByTestId("input").children[0]).toMatchInlineSnapshot(`
+      <option
+        selected=""
+        value="0"
+      >
+        bar
+      </option>
+    `);
+  });
+
+  it("should show clear option when optional", () => {
+    const { getByTestId } = render(<TestHarness persistedValue="bar" />);
+
+    expect(getByTestId("input").children[0]).toMatchInlineSnapshot(`
+      <option
+        value=""
+      >
+        Clear prop value.
+      </option>
+    `);
+  });
+
+  it("should show reset option when optional and default value exists", () => {
+    const { getByTestId } = render(
+      <TestHarness defaultValue="foo" persistedValue="bar" />,
+    );
+
+    expect(getByTestId("input").children[0]).toMatchInlineSnapshot(`
+      <option
+        value=""
+      >
+        Clear and use default value "foo".
+      </option>
+    `);
   });
 });

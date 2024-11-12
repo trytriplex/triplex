@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import type { TupleType } from "@triplex/server";
-import { useRef } from "react";
+import { useLayoutEffect, useRef, useState } from "react";
 import { PropInput } from "./prop-input";
 import { type RenderInputs } from "./types";
 
@@ -41,9 +41,27 @@ function isAnyRequiredValueUndefined(
   return false;
 }
 
+function areAllValuesUndefined(
+  tupleTypes: TupleType["shape"],
+  nextValue: unknown[],
+) {
+  let allUndefined = true;
+
+  for (let i = 0; i < tupleTypes.length; i++) {
+    const value = nextValue[i];
+    const isUndefinedOrEmptyString = value === undefined || value === "";
+    if (!isUndefinedOrEmptyString) {
+      allUndefined = false;
+    }
+  }
+
+  return allUndefined;
+}
+
 function dropUnneededOptionalValues(
   valueDef: TupleType["shape"],
   nextValues: unknown[],
+  required: boolean,
 ) {
   const clearedValues: unknown[] = [];
 
@@ -66,28 +84,40 @@ function dropUnneededOptionalValues(
     }
   }
 
+  if (!required && clearedValues.filter(Boolean).length === 0) {
+    return undefined;
+  }
+
   return clearedValues;
 }
 
 export function TupleInput({
   children,
+  defaultValue,
   onChange,
   onConfirm,
   path,
   persistedValue,
+  required = false,
   values,
 }: {
   children: RenderInputs;
-  onChange: (value: unknown[]) => void;
-  onConfirm: (value: unknown[]) => void;
+  defaultValue?: unknown[];
+  onChange: (value: unknown[] | undefined) => void;
+  onConfirm: (value: unknown[] | undefined) => void;
   path: string;
-  persistedValue: unknown[] | unknown;
+  persistedValue: unknown[] | unknown | undefined;
+  required?: boolean;
   values: TupleType["shape"];
 }) {
-  const persistedValueArr = Array.isArray(persistedValue)
-    ? persistedValue
-    : [persistedValue];
+  const initialValue = persistedValue ?? defaultValue;
+  const valueArr = Array.isArray(initialValue) ? initialValue : [initialValue];
   const intermediateValues = useRef<Record<string, unknown>>({});
+  const [respectRequiredProp, setRespectRequiredProp] = useState(required);
+
+  useLayoutEffect(() => {
+    setRespectRequiredProp(required);
+  }, [required]);
 
   return (
     <>
@@ -95,31 +125,45 @@ export function TupleInput({
         const onChangeHandler = (value: unknown) => {
           intermediateValues.current[index] = value;
 
-          const nextValue = merge(
-            persistedValueArr,
-            intermediateValues.current,
+          const nextValue = merge(valueArr, intermediateValues.current);
+
+          const allValuesUndefined = areAllValuesUndefined(values, nextValue);
+          const someRequiredValueUndefined = isAnyRequiredValueUndefined(
+            values,
+            nextValue,
           );
 
-          if (isAnyRequiredValueUndefined(values, nextValue)) {
+          if (allValuesUndefined && !required) {
+            // Continue to event handler.
+            setRespectRequiredProp(false);
+          } else if (someRequiredValueUndefined) {
+            // Return early all values that are required must be defined.
+            setRespectRequiredProp(true);
             return;
           }
 
-          onChange(dropUnneededOptionalValues(values, nextValue));
+          onChange(dropUnneededOptionalValues(values, nextValue, required));
         };
 
         const onConfirmHandler = (value: unknown) => {
           intermediateValues.current[index] = value;
 
-          const nextValue = merge(
-            persistedValueArr,
-            intermediateValues.current,
+          const nextValue = merge(valueArr, intermediateValues.current);
+
+          const allValuesUndefined = areAllValuesUndefined(values, nextValue);
+          const someRequiredValueUndefined = isAnyRequiredValueUndefined(
+            values,
+            nextValue,
           );
 
-          if (isAnyRequiredValueUndefined(values, nextValue)) {
+          if (allValuesUndefined && !required) {
+            // Continue to event handler.
+          } else if (someRequiredValueUndefined) {
+            // Return early all values that are required must be defined.
             return;
           }
 
-          onConfirm(dropUnneededOptionalValues(values, nextValue));
+          onConfirm(dropUnneededOptionalValues(values, nextValue, required));
           intermediateValues.current = {};
         };
 
@@ -130,8 +174,12 @@ export function TupleInput({
             onConfirm={onConfirmHandler}
             path={path}
             prop={
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              { ...val, value: persistedValueArr[index] as string } as any
+              {
+                ...val,
+                ...(respectRequiredProp ? {} : { required: false }),
+                value: valueArr[index] as string,
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              } as any
             }
           >
             {children}
