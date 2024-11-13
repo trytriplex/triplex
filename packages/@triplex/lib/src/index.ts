@@ -12,5 +12,11 @@ export {
   onKeyDown,
   useBlockInputPropagation,
 } from "./keyboard";
+export {
+  type Modifiers,
+  applyStepModifiers,
+  useStepModifiers,
+  resolveValue,
+} from "./use-step-modifiers";
 
 export const noop = () => {};

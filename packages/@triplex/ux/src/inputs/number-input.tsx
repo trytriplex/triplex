@@ -5,9 +5,14 @@
  * file in the root directory of this source tree.
  */
 
-import { useEvent } from "@triplex/lib";
 import {
-  useCallback,
+  applyStepModifiers,
+  resolveValue,
+  useEvent,
+  useStepModifiers,
+  type Modifiers,
+} from "@triplex/lib";
+import {
   useEffect,
   useRef,
   useState,
@@ -17,20 +22,6 @@ import {
 } from "react";
 import { useTelemetry, type ActionIdSafe } from "../telemetry";
 import { type RenderInput } from "./types";
-
-function stepModifier(modifiers: { ctrl: boolean; shift: boolean }) {
-  let step = 0.02;
-
-  if (modifiers.ctrl) {
-    step *= 25;
-  }
-
-  if (modifiers.shift) {
-    step /= 10;
-  }
-
-  return step;
-}
 
 function getStepFunc(delta: number, element: HTMLInputElement) {
   if (delta > 0) {
@@ -44,10 +35,7 @@ function getStepFunc(delta: number, element: HTMLInputElement) {
   return () => {};
 }
 
-function getIterations(
-  delta: number,
-  modifiers: { ctrl: boolean; shift: boolean },
-) {
+function getIterations(delta: number, modifiers: Modifiers) {
   const iterations = Math.abs(delta);
 
   if (modifiers.ctrl) {
@@ -128,11 +116,11 @@ export function NumberInput({
   const pointerCaptureFallback =
     pointerMode === "capture" || navigator.platform.startsWith("Linux");
   const [isPointerLock, setIsPointerLock] = useState(false);
-  const [modifier, setModifier] = useState({ ctrl: false, shift: false });
+  const modifiers = useStepModifiers({ isDisabled: !isPointerLock });
   const isDragging = useRef(false);
   const activePointerCaptureId = useRef<number | undefined>();
   const ref = useRef<HTMLInputElement>(null!);
-  const step = toNumber(tags.step, stepModifier(modifier));
+  const step = applyStepModifiers(toNumber(tags.step, 0.02), modifiers);
   const max = toNumber(tags.max, Number.POSITIVE_INFINITY);
   const min = toNumber(tags.min, Number.NEGATIVE_INFINITY);
   const actualValue = transformValue.in(persistedValue ?? defaultValue);
@@ -141,10 +129,10 @@ export function NumberInput({
     ref.current.value = actualValue !== undefined ? `${actualValue}` : "";
   }, [actualValue]);
 
-  const onChangeHandler = useCallback(() => {
+  const onChangeHandler = useEvent(() => {
     const nextValue = Number.isNaN(ref.current.valueAsNumber)
       ? undefined
-      : transformValue.out(ref.current.valueAsNumber);
+      : resolveValue(transformValue.out(ref.current.valueAsNumber), step);
 
     if (typeof nextValue === "number" && (min > nextValue || max < nextValue)) {
       // Next value is outside the min / max range so skip the handler.
@@ -152,12 +140,12 @@ export function NumberInput({
     }
 
     onChange(nextValue);
-  }, [max, min, onChange, transformValue]);
+  });
 
   const onConfirmHandler = useEvent(() => {
     const nextValue = Number.isNaN(ref.current.valueAsNumber)
       ? undefined
-      : transformValue.out(ref.current.valueAsNumber);
+      : resolveValue(transformValue.out(ref.current.valueAsNumber), step);
 
     if (nextValue === undefined && required) {
       // Skip handler if the next value is undefined and it's required
@@ -185,87 +173,78 @@ export function NumberInput({
     ref.current.focus();
   });
 
-  const onPointerMoveHandler: PointerEventHandler = useCallback(
-    (e) => {
-      if (isPointerLock) {
-        isDragging.current = true;
-        const movement =
-          // When running tests we use clientX purely as JSDOM doesn't support
-          // Setting movementX. It's shit but at least this let's test things.
-          // See: https://github.com/jsdom/jsdom/issues/3209
-          process.env.NODE_ENV === "test" ? e.clientX : e.movementX;
-        const iterations = getIterations(movement, modifier);
-        const stepFunc = getStepFunc(movement, ref.current);
+  const onPointerMoveHandler: PointerEventHandler = useEvent((e) => {
+    if (isPointerLock) {
+      isDragging.current = true;
+      const movement =
+        // When running tests we use clientX purely as JSDOM doesn't support
+        // Setting movementX. It's shit but at least this let's test things.
+        // See: https://github.com/jsdom/jsdom/issues/3209
+        process.env.NODE_ENV === "test" ? e.clientX : e.movementX;
+      const iterations = getIterations(movement, modifiers);
+      const stepFunc = getStepFunc(movement, ref.current);
 
-        for (let i = 0; i < iterations; i++) {
-          // Call the step function for each pixel of movement.
-          // The further the distance the more times the step func
-          // Is called.
-          stepFunc();
-        }
-
-        onChangeHandler();
-      }
-    },
-    [isPointerLock, modifier, onChangeHandler],
-  );
-
-  const onPointerUpHandler: PointerEventHandler = useCallback(
-    async (e) => {
-      if (!isDragging.current) {
-        // A drag was never started so focus on the input instead.
-        ref.current.focus();
-        ref.current.select();
+      for (let i = 0; i < iterations; i++) {
+        // Call the step function for each pixel of movement.
+        // The further the distance the more times the step func
+        // Is called.
+        stepFunc();
       }
 
-      if (isPointerLock) {
-        if (pointerCaptureFallback) {
-          ref.current.releasePointerCapture(e.pointerId);
-        } else {
-          await document.exitPointerLock?.();
-        }
-        setIsPointerLock(false);
-        onConfirmHandler();
-      } else {
-        // The pointer lock was aborted with escape, nothing to do.
-      }
+      onChangeHandler();
+    }
+  });
 
-      isDragging.current = false;
-    },
-    [pointerCaptureFallback, isPointerLock, onConfirmHandler],
-  );
+  const onPointerUpHandler: PointerEventHandler = useEvent(async (e) => {
+    if (!isDragging.current) {
+      // A drag was never started so focus on the input instead.
+      ref.current.focus();
+      ref.current.select();
+    }
 
-  const onPointerDownHandler: PointerEventHandler = useCallback(
-    async (e) => {
-      if (document.activeElement === ref.current) {
-        // We're focused in the input already, bail out!
-        return;
-      }
-
-      e.preventDefault();
-
-      if (document.activeElement?.tagName === "IFRAME") {
-        // If it's an iframe blur so the events get captured for mouse down / mouse up.
-        const element: HTMLIFrameElement =
-          document.activeElement as HTMLIFrameElement;
-        element.blur();
-      }
-
+    if (isPointerLock) {
       if (pointerCaptureFallback) {
-        activePointerCaptureId.current = e.pointerId;
-        ref.current.setPointerCapture(e.pointerId);
+        ref.current.releasePointerCapture(e.pointerId);
       } else {
-        await ref.current.requestPointerLock?.({
-          // We use unadjusted movement as on Windows odd behavior occurs without it, such as
-          // mouse move events being fired before moving the mouse, and HUGE values for e.movementX.
-          unadjustedMovement: true,
-        });
+        await document.exitPointerLock?.();
       }
+      setIsPointerLock(false);
+      onConfirmHandler();
+    } else {
+      // The pointer lock was aborted with escape, nothing to do.
+    }
 
-      setIsPointerLock(true);
-    },
-    [pointerCaptureFallback],
-  );
+    isDragging.current = false;
+  });
+
+  const onPointerDownHandler: PointerEventHandler = useEvent(async (e) => {
+    if (document.activeElement === ref.current) {
+      // We're focused in the input already, bail out!
+      return;
+    }
+
+    e.preventDefault();
+
+    if (document.activeElement?.tagName === "IFRAME") {
+      // If it's an iframe blur so the events get captured for mouse down / mouse up.
+      const element: HTMLIFrameElement =
+        document.activeElement as HTMLIFrameElement;
+      element.blur();
+    }
+
+    if (pointerCaptureFallback) {
+      activePointerCaptureId.current = e.pointerId;
+      ref.current.setPointerCapture(e.pointerId);
+    } else {
+      await ref.current.requestPointerLock?.({
+        // We use unadjusted movement as on Windows odd behavior occurs without it, such as
+        // mouse move events being fired before moving the mouse, and HUGE values for e.movementX.
+        unadjustedMovement: true,
+      });
+    }
+
+    setIsPointerLock(true);
+  });
 
   const onKeyDownHandler: KeyboardEventHandler<HTMLInputElement> = useEvent(
     (e) => {
@@ -279,17 +258,17 @@ export function NumberInput({
     },
   );
 
-  const incrementUp = useCallback(() => {
+  const incrementUp = useEvent(() => {
     ref.current.stepUp();
     onChangeHandler();
-  }, [onChangeHandler]);
+  });
 
-  const incrementDown = useCallback(() => {
+  const incrementDown = useEvent(() => {
     ref.current.stepDown();
     onChangeHandler();
-  }, [onChangeHandler]);
+  });
 
-  const resetToInitialValue = useCallback(() => {
+  const resetToInitialValue = useEvent(() => {
     if (typeof actualValue === "number") {
       ref.current.valueAsNumber = actualValue;
     } else {
@@ -297,7 +276,7 @@ export function NumberInput({
     }
 
     onChangeHandler();
-  }, [actualValue, onChangeHandler]);
+  });
 
   useEffect(() => {
     if (!isPointerLock) {
@@ -335,34 +314,6 @@ export function NumberInput({
       document.removeEventListener("keydown", escapeListenerHandler);
     };
   }, [isPointerLock, onChangeHandler, actualValue, resetToInitialValue]);
-
-  useEffect(() => {
-    if (!isPointerLock) {
-      return;
-    }
-
-    const keydownHandler = (e: KeyboardEvent) => {
-      if (e.ctrlKey) {
-        setModifier((prev) => ({ ...prev, ctrl: true }));
-      }
-
-      if (e.shiftKey) {
-        setModifier((prev) => ({ ...prev, shift: true }));
-      }
-    };
-
-    const keyupHandler = (e: KeyboardEvent) => {
-      setModifier({ ctrl: e.ctrlKey, shift: e.shiftKey });
-    };
-
-    document.addEventListener("keydown", keydownHandler);
-    document.addEventListener("keyup", keyupHandler);
-
-    return () => {
-      document.removeEventListener("keydown", keydownHandler);
-      document.removeEventListener("keyup", keyupHandler);
-    };
-  }, [isPointerLock]);
 
   return children(
     {

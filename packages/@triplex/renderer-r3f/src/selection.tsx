@@ -94,7 +94,6 @@ export function Selection({
   const gl = useThree((store) => store.gl);
   const camera = useThree((store) => store.camera);
   const canvasSize = useThree((store) => store.size);
-  const [isDragging, setIsDragging] = useState(false);
   const selectedSceneObject = useSubscriptionEffect(
     "/scene/:path/object/:line/:column",
     {
@@ -289,18 +288,6 @@ export function Selection({
     });
   }, [selectedSceneObject]);
 
-  useEffect(() => {
-    const callback = (e: KeyboardEvent) => {
-      if (isDragging && e.key === "Escape") {
-        e.preventDefault();
-      }
-    };
-
-    document.addEventListener("keydown", callback);
-
-    return () => document.removeEventListener("keydown", callback);
-  }, [isDragging]);
-
   useFrame(() => {
     if (selectedObject && selectedObject.sceneObject.parent === null) {
       // The scene object has been removed from the scene. Remove our reference to it.
@@ -337,63 +324,54 @@ export function Selection({
     return false;
   });
 
-  const onMouseDownHandler = useEvent(() => {
-    setIsDragging(true);
+  const onCompleteTransformHandler = useEvent(() => {
+    if (!selectedObject || !selectedSceneObject) {
+      return;
+    }
+
+    if (transform === "translate") {
+      const position =
+        selectedObject.space === "world"
+          ? selectedObject.sceneObject.getWorldPosition(V1).toArray()
+          : selectedObject.sceneObject.position.toArray();
+
+      send("element-set-prop", {
+        column: selectedObject.column,
+        line: selectedObject.line,
+        path: selectedObject.path,
+        propName: "position",
+        propValue: position.map(strip),
+      });
+      send("track", { actionId: "element_transform_translate" });
+    }
+
+    if (transform === "rotate") {
+      const rotation = selectedObject.sceneObject.rotation.toArray();
+      rotation.pop();
+
+      send("element-set-prop", {
+        column: selectedObject.column,
+        line: selectedObject.line,
+        path: selectedObject.path,
+        propName: "rotation",
+        propValue: rotation,
+      });
+      send("track", { actionId: "element_transform_rotate" });
+    }
+
+    if (transform === "scale") {
+      const scale = selectedObject.sceneObject.scale.toArray();
+
+      send("element-set-prop", {
+        column: selectedObject.column,
+        line: selectedObject.line,
+        path: selectedObject.path,
+        propName: "scale",
+        propValue: scale.map(strip),
+      });
+      send("track", { actionId: "element_transform_scale" });
+    }
   });
-
-  const onMouseUpHandler = useEvent(
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    (e: any) => {
-      setIsDragging(false);
-
-      if (!e || !selectedObject || !selectedSceneObject) {
-        return;
-      }
-
-      if (e.mode === "translate") {
-        const position =
-          selectedObject.space === "world"
-            ? selectedObject.sceneObject.getWorldPosition(V1).toArray()
-            : selectedObject.sceneObject.position.toArray();
-
-        send("element-set-prop", {
-          column: selectedObject.column,
-          line: selectedObject.line,
-          path: selectedObject.path,
-          propName: "position",
-          propValue: position.map(strip),
-        });
-        send("track", { actionId: "element_transform_translate" });
-      }
-
-      if (e.mode === "rotate") {
-        const rotation = selectedObject.sceneObject.rotation.toArray();
-        rotation.pop();
-
-        send("element-set-prop", {
-          column: selectedObject.column,
-          line: selectedObject.line,
-          path: selectedObject.path,
-          propName: "rotation",
-          propValue: rotation,
-        });
-        send("track", { actionId: "element_transform_rotate" });
-      }
-
-      if (e.mode === "scale") {
-        const scale = selectedObject.sceneObject.scale.toArray();
-
-        send("element-set-prop", {
-          column: selectedObject.column,
-          line: selectedObject.line,
-          path: selectedObject.path,
-          propName: "scale",
-          propValue: scale.map(strip),
-        });
-        send("track", { actionId: "element_transform_scale" });
-      }
-    },
-  );
 
   const sceneObjectMountHandler = useEvent(
     (path: string, line: number, column: number) => {
@@ -515,12 +493,8 @@ export function Selection({
           }
           mode={transform}
           object={selectedObject.sceneObject}
-          onMouseDown={onMouseDownHandler}
-          onMouseUp={onMouseUpHandler}
-          rotationSnap={Math.PI / 180}
-          scaleSnap={0.02}
+          onCompleteTransform={onCompleteTransformHandler}
           space={space}
-          translationSnap={0.02}
         />
       )}
 
