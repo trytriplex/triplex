@@ -118,6 +118,81 @@ describe("undo/redo edge cases", () => {
     { timeout: 10_000 },
   );
 
+  it("should undo to the original state (0) instead of the first state (1) [ids]", async () => {
+    const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "" },
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+    // Starts at 0
+    const sourceFile = project.getSourceFile(
+      join(__dirname, "__mocks__", "box.tsx"),
+    );
+    const originalText = sourceFile.read().getText();
+    const undoLog: [{ undoID: number }, void][] = [];
+
+    undoLog.push(
+      await sourceFile.edit((s) => {
+        s.addClass({ name: "Foo" });
+      }),
+      await sourceFile.edit((s) => {
+        s.addClass({ name: "Bar" });
+      }),
+    );
+
+    await sourceFile.undo(undoLog.pop()![0].undoID);
+    await sourceFile.undo(undoLog.pop()![0].undoID);
+
+    undoLog.push(
+      await sourceFile.edit((s) => {
+        s.addClass({ name: "Baz" });
+      }),
+      await sourceFile.edit((s) => {
+        s.addClass({ name: "Jar" });
+      }),
+    );
+
+    await sourceFile.undo(undoLog.pop()![0].undoID);
+    await sourceFile.undo(undoLog.pop()![0].undoID);
+
+    expect(sourceFile.read().getText()).toEqual(originalText);
+  });
+
+  it("should undo to the original state (0) instead of the first state (1) [loose]", async () => {
+    const project = createProject({
+      cwd: process.cwd(),
+      templates: { newElements: "" },
+      tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
+    });
+    // Starts at 0
+    const sourceFile = project.getSourceFile(
+      join(__dirname, "__mocks__", "box.tsx"),
+    );
+    const originalText = sourceFile.read().getText();
+
+    await sourceFile.edit((s) => {
+      s.addClass({ name: "Foo" });
+    });
+    await sourceFile.edit((s) => {
+      s.addClass({ name: "Bar" });
+    });
+
+    await sourceFile.undo();
+    await sourceFile.undo();
+
+    await sourceFile.edit((s) => {
+      s.addClass({ name: "Baz" });
+    });
+    await sourceFile.edit((s) => {
+      s.addClass({ name: "Jar" });
+    });
+
+    await sourceFile.undo();
+    await sourceFile.undo();
+
+    expect(sourceFile.read().getText()).toEqual(originalText);
+  });
+
   it("should not add to the undo stack if nothing changed", async () => {
     const project = createProject({
       cwd: process.cwd(),

@@ -285,8 +285,7 @@ export function ${componentName}() {
         const undoStack = sourceFileHistory.get(sourceFile) || [
           currentFullText,
         ];
-        let undoStackPointer =
-          sourceFileHistoryPointer.get(sourceFile) || undoStack.length - 1;
+        let undoStackPointer = sourceFileHistoryPointer.get(sourceFile) || 0;
 
         const result = await callback(sourceFile);
 
