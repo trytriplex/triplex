@@ -116,8 +116,9 @@ export function TupleInput({
   const [respectRequiredProp, setRespectRequiredProp] = useState(required);
 
   useLayoutEffect(() => {
+    // Re-set respecting the required prop if default / persisted / required props change.
     setRespectRequiredProp(required);
-  }, [required]);
+  }, [defaultValue, persistedValue, required]);
 
   return (
     <>

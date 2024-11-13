@@ -22,6 +22,24 @@ test("fill number input", async ({ vsce }) => {
   await expect(input).toHaveValue("0.5");
 });
 
+test("drag to change number input", async ({ vsce }) => {
+  test.skip(
+    process.platform === "win32",
+    "Skip on Windows for now as the notifications are blocking input.",
+  );
+  await vsce.codelens("Plane").click();
+  const { panels, togglePanelsButton } = vsce.resolveEditor();
+  await togglePanelsButton.click();
+  await panels.getByRole("button", { name: "planeGeometry" }).click();
+  const input = panels.getByLabel("width", { exact: true });
+
+  await input.dragTo(input, { force: true, targetPosition: { x: 100, y: 0 } });
+
+  // Escape should blur the input.
+  await expect(input).not.toBeFocused();
+  await expect(input).toHaveValue(/(0.24)|(0.36)/);
+});
+
 test("delete element", async ({ vsce }) => {
   await vsce.codelens("Plane").click();
   const { panels, togglePanelsButton } = vsce.resolveEditor();

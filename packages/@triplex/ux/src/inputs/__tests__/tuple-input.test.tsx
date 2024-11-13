@@ -215,6 +215,40 @@ describe("tuple input", () => {
     inputs.forEach((input) => expect(input.required).toBeTruthy());
   });
 
+  it("should not respect the required flag if the parent clears its value", () => {
+    const { getAllByTestId, rerender } = render(
+      <TestHarness
+        values={[
+          { kind: "number", required: true },
+          { kind: "number", required: true },
+        ]}
+      />,
+    );
+    const inputs = getAllByTestId("input") as HTMLInputElement[];
+
+    fireEvent.change(inputs[0], { target: { value: "2" } });
+    fireEvent.change(inputs[1], { target: { value: "1" } });
+    rerender(
+      <TestHarness
+        persistedValue={[1, 2]}
+        values={[
+          { kind: "number", required: true },
+          { kind: "number", required: true },
+        ]}
+      />,
+    );
+    rerender(
+      <TestHarness
+        values={[
+          { kind: "number", required: true },
+          { kind: "number", required: true },
+        ]}
+      />,
+    );
+
+    inputs.forEach((input) => expect(input.required).toBeFalsy());
+  });
+
   it("should set initial values from default prop", () => {
     const { getAllByTestId } = render(
       <TestHarness

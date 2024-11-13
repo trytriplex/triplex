@@ -123,6 +123,8 @@ export const renderPropInputs: RenderInputs = ({
   }
 
   if (prop.type === "number") {
+    const persistedValue = "value" in prop.prop ? prop.prop.value : undefined;
+
     return (
       <NumberInput
         {...prop.prop.tags}
@@ -132,9 +134,9 @@ export const renderPropInputs: RenderInputs = ({
         name={prop.prop.name}
         onChange={onChange}
         onConfirm={onConfirm}
-        persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
+        persistedValue={persistedValue}
+        pointerMode="capture"
         required={prop.prop.required}
-        shouldDisablePointerLock
       >
         {({ ref, ...props }) => (
           <>
@@ -148,7 +150,7 @@ export const renderPropInputs: RenderInputs = ({
             <input
               {...props}
               aria-label={prop.prop.label}
-              className="text-input invalid:border-danger focus:border-selected bg-input border-input placeholder:text-input-placeholder mb-1 h-[26px] w-full rounded-sm border px-[9px] focus:outline-none"
+              className="text-input border-input invalid:border-danger focus:border-selected bg-input placeholder:text-input-placeholder mb-1 h-[26px] w-full cursor-col-resize rounded-sm border px-[9px] [color-scheme:dark] [font-variant-numeric:tabular-nums] focus:cursor-text focus:outline-none"
               ref={ref}
               type="number"
             />

@@ -13,7 +13,7 @@ import {
   useState,
   type FocusEventHandler,
   type KeyboardEventHandler,
-  type MouseEventHandler,
+  type PointerEventHandler,
 } from "react";
 import { useTelemetry, type ActionIdSafe } from "../telemetry";
 import { type RenderInput } from "./types";
@@ -81,8 +81,8 @@ export function NumberInput({
   onChange,
   onConfirm,
   persistedValue,
+  pointerMode = "lock",
   required,
-  shouldDisablePointerLock,
   transformValue = { in: (value) => value, out: (value) => value },
   ...tags
 }: {
@@ -94,9 +94,9 @@ export function NumberInput({
       min: number;
       onBlur: FocusEventHandler<HTMLInputElement>;
       onKeyDown: KeyboardEventHandler<HTMLInputElement>;
-      onMouseDown: MouseEventHandler<HTMLInputElement>;
-      onMouseMove: MouseEventHandler<HTMLInputElement>;
-      onMouseUp: MouseEventHandler<HTMLInputElement>;
+      onPointerDown: PointerEventHandler<HTMLInputElement>;
+      onPointerMove: PointerEventHandler<HTMLInputElement>;
+      onPointerUp: PointerEventHandler<HTMLInputElement>;
       placeholder?: string;
       step: number;
     },
@@ -115,8 +115,8 @@ export function NumberInput({
   onChange: (value: number | undefined) => void;
   onConfirm: (value: number | undefined) => void;
   persistedValue?: number;
+  pointerMode?: "capture" | "lock";
   required?: boolean;
-  shouldDisablePointerLock?: boolean;
   step?: number;
   testId?: string;
   transformValue?: {
@@ -125,11 +125,12 @@ export function NumberInput({
   };
 }) {
   const telemetry = useTelemetry();
-  const disablePointerLock =
-    shouldDisablePointerLock || navigator.platform.startsWith("Linux");
+  const pointerCaptureFallback =
+    pointerMode === "capture" || navigator.platform.startsWith("Linux");
   const [isPointerLock, setIsPointerLock] = useState(false);
   const [modifier, setModifier] = useState({ ctrl: false, shift: false });
   const isDragging = useRef(false);
+  const activePointerCaptureId = useRef<number | undefined>();
   const ref = useRef<HTMLInputElement>(null!);
   const step = toNumber(tags.step, stepModifier(modifier));
   const max = toNumber(tags.max, Number.POSITIVE_INFINITY);
@@ -184,7 +185,7 @@ export function NumberInput({
     ref.current.focus();
   });
 
-  const onMouseMoveHandler: MouseEventHandler = useCallback(
+  const onPointerMoveHandler: PointerEventHandler = useCallback(
     (e) => {
       if (isPointerLock) {
         isDragging.current = true;
@@ -209,28 +210,34 @@ export function NumberInput({
     [isPointerLock, modifier, onChangeHandler],
   );
 
-  const onMouseUpHandler: MouseEventHandler = useCallback(async () => {
-    if (!isDragging.current) {
-      // A drag was never started so focus on the input instead.
-      ref.current.focus();
-      ref.current.select();
-    }
-
-    if (isPointerLock) {
-      await document.exitPointerLock?.();
-      setIsPointerLock(false);
-      onConfirmHandler();
-    } else {
-      // The pointer lock was aborted with escape, nothing to do.
-    }
-
-    isDragging.current = false;
-  }, [isPointerLock, onConfirmHandler]);
-
-  const onMouseDownHandler: MouseEventHandler = useCallback(
+  const onPointerUpHandler: PointerEventHandler = useCallback(
     async (e) => {
-      if (disablePointerLock || document.activeElement === ref.current) {
-        // Pointer lock isn't well supported on Linux so we ignore it.
+      if (!isDragging.current) {
+        // A drag was never started so focus on the input instead.
+        ref.current.focus();
+        ref.current.select();
+      }
+
+      if (isPointerLock) {
+        if (pointerCaptureFallback) {
+          ref.current.releasePointerCapture(e.pointerId);
+        } else {
+          await document.exitPointerLock?.();
+        }
+        setIsPointerLock(false);
+        onConfirmHandler();
+      } else {
+        // The pointer lock was aborted with escape, nothing to do.
+      }
+
+      isDragging.current = false;
+    },
+    [pointerCaptureFallback, isPointerLock, onConfirmHandler],
+  );
+
+  const onPointerDownHandler: PointerEventHandler = useCallback(
+    async (e) => {
+      if (document.activeElement === ref.current) {
         // We're focused in the input already, bail out!
         return;
       }
@@ -244,16 +251,20 @@ export function NumberInput({
         element.blur();
       }
 
-      // We use unadjusted movement as on Windows odd behaviour occurs without it
-      // Such as mouse move events being fired before moving the mouse, and HUGE values
-      // For e.movementX.
-      await ref.current.requestPointerLock?.({
-        unadjustedMovement: true,
-      });
+      if (pointerCaptureFallback) {
+        activePointerCaptureId.current = e.pointerId;
+        ref.current.setPointerCapture(e.pointerId);
+      } else {
+        await ref.current.requestPointerLock?.({
+          // We use unadjusted movement as on Windows odd behavior occurs without it, such as
+          // mouse move events being fired before moving the mouse, and HUGE values for e.movementX.
+          unadjustedMovement: true,
+        });
+      }
 
       setIsPointerLock(true);
     },
-    [disablePointerLock],
+    [pointerCaptureFallback],
   );
 
   const onKeyDownHandler: KeyboardEventHandler<HTMLInputElement> = useEvent(
@@ -278,31 +289,52 @@ export function NumberInput({
     onChangeHandler();
   }, [onChangeHandler]);
 
+  const resetToInitialValue = useCallback(() => {
+    if (typeof actualValue === "number") {
+      ref.current.valueAsNumber = actualValue;
+    } else {
+      ref.current.value = "";
+    }
+
+    onChangeHandler();
+  }, [actualValue, onChangeHandler]);
+
   useEffect(() => {
     if (!isPointerLock) {
       return;
     }
 
-    const callback = () => {
+    const pointerLockChangeHandler = () => {
       if (document.pointerLockElement !== ref.current) {
         setIsPointerLock(false);
-
-        if (typeof actualValue === "number") {
-          ref.current.valueAsNumber = actualValue;
-        } else {
-          ref.current.value = "";
-        }
-
-        onChangeHandler();
+        resetToInitialValue();
       }
     };
 
-    document.addEventListener("pointerlockchange", callback);
+    /**
+     * When pointer is locked we listen for escape being pressed and cancel the
+     * pointer.
+     */
+    const escapeListenerHandler = (e: KeyboardEvent) => {
+      if (e.key === "Escape" && activePointerCaptureId.current) {
+        e.stopPropagation();
+        setIsPointerLock(false);
+        ref.current.releasePointerCapture(activePointerCaptureId.current);
+        resetToInitialValue();
+      }
+    };
+
+    document.addEventListener("pointerlockchange", pointerLockChangeHandler);
+    document.addEventListener("keydown", escapeListenerHandler);
 
     return () => {
-      document.removeEventListener("pointerlockchange", callback);
+      document.removeEventListener(
+        "pointerlockchange",
+        pointerLockChangeHandler,
+      );
+      document.removeEventListener("keydown", escapeListenerHandler);
     };
-  }, [isPointerLock, onChangeHandler, actualValue]);
+  }, [isPointerLock, onChangeHandler, actualValue, resetToInitialValue]);
 
   useEffect(() => {
     if (!isPointerLock) {
@@ -341,9 +373,9 @@ export function NumberInput({
       onBlur: onConfirmHandler,
       onChange: onChangeHandler,
       onKeyDown: onKeyDownHandler,
-      onMouseDown: onMouseDownHandler,
-      onMouseMove: onMouseMoveHandler,
-      onMouseUp: onMouseUpHandler,
+      onPointerDown: onPointerDownHandler,
+      onPointerMove: onPointerMoveHandler,
+      onPointerUp: onPointerUpHandler,
       placeholder: label || "number",
       ref,
       required,
