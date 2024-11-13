@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import type { Type } from "@triplex/server";
-import { useReducer } from "react";
+import { useCallback, useLayoutEffect, useReducer, useRef } from "react";
 import { PropInput } from "./prop-input";
 import { type RenderInputsWithAction } from "./types";
 
@@ -36,23 +36,39 @@ export function UnionInput({
 }) {
   const [index, toggle] = useReducer((prev: number) => prev + 1, 0);
   const value = values[index % values.length];
+  const ref = useRef<HTMLDivElement>(null);
+  const hasToggled = useRef(false);
+
+  const cycleThroughPropTypes = useCallback(() => {
+    hasToggled.current = true;
+    toggle();
+  }, []);
+
+  useLayoutEffect(() => {
+    if (hasToggled.current && ref.current) {
+      ref.current.scrollIntoView({ block: "nearest" });
+    }
+  }, [index]);
 
   return (
-    <PropInput
-      onChange={onChange}
-      onConfirm={onConfirm}
-      path={path}
-      prop={
-        Object.assign(
-          { description, name, required, tags },
-          value,
-          defaultValue !== undefined ? { value: defaultValue } : {},
-          persistedValue !== undefined ? { value: persistedValue } : {},
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        ) as any
-      }
-    >
-      {(props) => children(props, { toggle })}
-    </PropInput>
+    <>
+      <PropInput
+        onChange={onChange}
+        onConfirm={onConfirm}
+        path={path}
+        prop={
+          Object.assign(
+            { description, name, required, tags },
+            value,
+            defaultValue !== undefined ? { value: defaultValue } : {},
+            persistedValue !== undefined ? { value: persistedValue } : {},
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          ) as any
+        }
+      >
+        {(props) => children(props, { toggle: cycleThroughPropTypes })}
+      </PropInput>
+      <div ref={ref} />
+    </>
   );
 }
