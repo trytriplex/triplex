@@ -22,7 +22,10 @@ export function ColorInput({
 }: {
   actionId: ActionIdSafe;
   children: RenderInput<
-    { defaultValue: string | undefined; onBlur: () => void },
+    {
+      defaultValue: string | undefined;
+      onBlur: () => void;
+    },
     HTMLInputElement,
     { clear: () => void; hasChanged: boolean }
   >;
@@ -40,7 +43,9 @@ export function ColorInput({
   const persistedValueHex = persistedValueColor
     ? persistedValueColor.toHexString()
     : undefined;
-  const [hasChanged, setHasChanged] = useState(!!defaultValue);
+  const [hasChanged, setHasChanged] = useState(
+    !!defaultValue || !!persistedValue,
+  );
   const telemetry = useTelemetry();
   const defaultValueHex = defaultValue
     ? tinycolor(defaultValue).toHexString()
@@ -50,29 +55,31 @@ export function ColorInput({
   useEffect(() => {
     if (ref.current) {
       ref.current.value = actualValueHex;
+      setHasChanged(!!defaultValue || !!persistedValue);
     }
-  }, [defaultValue, actualValueHex]);
+  }, [defaultValue, actualValueHex, persistedValue]);
 
   const onChangeHandler: FormEventHandler<HTMLInputElement> = (e) => {
     if (e.target instanceof HTMLInputElement) {
-      setHasChanged(true);
+      setHasChanged(!!e.target.value || !!defaultValue);
       onChange(e.target.value);
     }
   };
 
   const clearInputValue = useEvent(() => {
-    if (persistedValue !== undefined) {
-      onChange(undefined);
-      onConfirm(undefined);
-      setHasChanged(false);
-      telemetry.event(`${actionId}_clear`);
+    if (required || !persistedValue) {
+      return;
     }
+
+    onChange(undefined);
+    onConfirm(undefined);
+    setHasChanged(!!defaultValue);
+    telemetry.event(`${actionId}_clear`);
   });
 
   const onBlurHandler = () => {
     const nextValue = ref.current?.value;
-    if (nextValue !== persistedValueHex) {
-      setHasChanged(true);
+    if (nextValue !== persistedValueHex && hasChanged) {
       onConfirm(nextValue);
       telemetry.event(`${actionId}_confirm`);
     }

@@ -77,8 +77,7 @@ export const renderPropInputs: RenderInputs = ({
                       ? "border-danger"
                       : "border-input",
                     !hasChanged &&
-                      !persistedValue &&
-                      "[&::-webkit-color-swatch]:bg-[transparent!important]",
+                      "[&::-webkit-color-swatch]:[background:repeating-conic-gradient(#717171_0%_25%,transparent_0%_50%)_50%_/_26px_26px!important]",
                     "text-input focus:border-selected bg-input placeholder:text-input-placeholder h-[26px] w-[26px] rounded-sm border focus:outline-none [&::-webkit-color-swatch-wrapper]:p-0 [&::-webkit-color-swatch]:rounded-sm [&::-webkit-color-swatch]:border-none",
                   ])}
                   ref={ref}
