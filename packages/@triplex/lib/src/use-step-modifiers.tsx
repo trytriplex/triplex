@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useEffect, useState } from "react";
+import { useEffect, useLayoutEffect, useState } from "react";
 
 export interface Modifiers {
   ctrl: boolean;
@@ -34,17 +34,6 @@ export function applyStepModifiers(
   return step;
 }
 
-export function resolveValue(
-  value: number | undefined,
-  step: number,
-): number | undefined {
-  if (value !== undefined) {
-    return Math.round(value / step) * step;
-  }
-
-  return value;
-}
-
 export function useStepModifiers({
   isDisabled,
 }: { isDisabled?: boolean } = {}): Modifiers {
@@ -52,6 +41,16 @@ export function useStepModifiers({
     ctrl: false,
     shift: false,
   });
+
+  useLayoutEffect(() => {
+    if (isDisabled) {
+      return;
+    }
+
+    return () => {
+      setModifiers({ ctrl: false, shift: false });
+    };
+  }, [isDisabled]);
 
   useEffect(() => {
     if (isDisabled) {

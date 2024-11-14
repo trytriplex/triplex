@@ -16,7 +16,7 @@ export {
   type Modifiers,
   applyStepModifiers,
   useStepModifiers,
-  resolveValue,
 } from "./use-step-modifiers";
+export { draggableNumberInputContextMenuFix } from "./contextmenu";
 
 export const noop = () => {};

@@ -11,7 +11,12 @@ import {
   on,
   send,
 } from "@triplex/bridge/host";
-import { cn, onKeyDown, useBlockInputPropagation } from "@triplex/lib";
+import {
+  cn,
+  draggableNumberInputContextMenuFix,
+  onKeyDown,
+  useBlockInputPropagation,
+} from "@triplex/lib";
 import { useScreenView, useTelemetry, type ActionId } from "@triplex/ux";
 import { useEffect, useState } from "react";
 import { preloadSubscription } from "../../hooks/ws";
@@ -77,6 +82,7 @@ export function AppRoot() {
   useEffect(() => {
     return compose([
       initSync(),
+      draggableNumberInputContextMenuFix(),
       on("track", (data) => {
         telemetry.event(`scene_${data.actionId}` as ActionId);
       }),

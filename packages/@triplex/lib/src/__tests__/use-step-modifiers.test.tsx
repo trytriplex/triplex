@@ -4,16 +4,12 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+// @vitest-environment jsdom
+import { fireEvent, renderHook } from "@testing-library/react";
 import { describe, expect, it } from "vitest";
-import { applyStepModifiers, resolveValue } from "../use-step-modifiers";
+import { applyStepModifiers, useStepModifiers } from "../use-step-modifiers";
 
 describe("step modifiers", () => {
-  it("should round to the nearest step value", () => {
-    expect(resolveValue(0.6, 1)).toBe(1);
-    expect(resolveValue(2.213, 1)).toBe(2);
-    expect(resolveValue(undefined, 1)).toBe(undefined);
-  });
-
   it("should return ctrl step", () => {
     const actual = applyStepModifiers(
       { ctrl: 10, default: 1 },
@@ -66,5 +62,60 @@ describe("step modifiers", () => {
     );
 
     expect(actual).toBe(1);
+  });
+
+  it("should set ctrl modifier", () => {
+    const { result } = renderHook(() => {
+      return useStepModifiers({ isDisabled: false });
+    });
+
+    fireEvent.keyDown(window, { ctrlKey: true });
+
+    expect(result.current).toEqual({ ctrl: true, shift: false });
+  });
+
+  it("should set shift modifier", () => {
+    const { result } = renderHook(() => {
+      return useStepModifiers({ isDisabled: false });
+    });
+
+    fireEvent.keyDown(window, { shiftKey: true });
+
+    expect(result.current).toEqual({ ctrl: false, shift: true });
+  });
+
+  it("should set both modifiers", () => {
+    const { result } = renderHook(() => {
+      return useStepModifiers({ isDisabled: false });
+    });
+
+    fireEvent.keyDown(window, { ctrlKey: true, shiftKey: true });
+
+    expect(result.current).toEqual({ ctrl: true, shift: true });
+  });
+
+  it("should keep a modifier when releasing one", () => {
+    const { result } = renderHook(() => {
+      return useStepModifiers({ isDisabled: false });
+    });
+
+    fireEvent.keyDown(window, { ctrlKey: true, shiftKey: true });
+    fireEvent.keyUp(window, { ctrlKey: false, shiftKey: true });
+
+    expect(result.current).toEqual({ ctrl: false, shift: true });
+  });
+
+  it("should reset state when disabled", () => {
+    const { rerender, result } = renderHook(
+      ({ isDisabled = false }: { isDisabled?: boolean } = {}) => {
+        return useStepModifiers({ isDisabled });
+      },
+    );
+
+    fireEvent.keyDown(window, { ctrlKey: true, shiftKey: true });
+    // This is emulating that the key up event has been lost.
+    rerender({ isDisabled: true });
+
+    expect(result.current).toEqual({ ctrl: false, shift: false });
   });
 });

@@ -130,6 +130,7 @@ export function useBlockInputPropagation() {
         e.metaKey === false &&
         e.ctrlKey === false &&
         e.altKey === false &&
+        e.shiftKey === false &&
         excludedKeys.includes(e.key) === false &&
         inputTags.some((tag) => activeElement.tagName.includes(tag))
       ) {

@@ -7,7 +7,6 @@
 
 import {
   applyStepModifiers,
-  resolveValue,
   useEvent,
   useStepModifiers,
   type Modifiers,
@@ -86,13 +85,14 @@ export function NumberInput({
       onPointerMove: PointerEventHandler<HTMLInputElement>;
       onPointerUp: PointerEventHandler<HTMLInputElement>;
       placeholder?: string;
-      step: number;
+      step: "any" | number;
     },
     HTMLInputElement,
     {
       clear: () => void;
       decrement: () => void;
       increment: () => void;
+      isActive: boolean;
     }
   >;
   defaultValue?: number;
@@ -116,7 +116,10 @@ export function NumberInput({
   const pointerCaptureFallback =
     pointerMode === "capture" || navigator.platform.startsWith("Linux");
   const [isPointerLock, setIsPointerLock] = useState(false);
-  const modifiers = useStepModifiers({ isDisabled: !isPointerLock });
+  const [isFocused, setIsFocused] = useState(false);
+  const modifiers = useStepModifiers({
+    isDisabled: !isPointerLock && !isFocused,
+  });
   const isDragging = useRef(false);
   const activePointerCaptureId = useRef<number | undefined>();
   const ref = useRef<HTMLInputElement>(null!);
@@ -124,15 +127,36 @@ export function NumberInput({
   const max = toNumber(tags.max, Number.POSITIVE_INFINITY);
   const min = toNumber(tags.min, Number.NEGATIVE_INFINITY);
   const actualValue = transformValue.in(persistedValue ?? defaultValue);
+  const isActive = isFocused || isPointerLock;
 
   useEffect(() => {
     ref.current.value = actualValue !== undefined ? `${actualValue}` : "";
   }, [actualValue]);
 
+  useEffect(() => {
+    const element = ref.current;
+
+    const onFocusHandler = () => {
+      setIsFocused(true);
+    };
+
+    const onBlurHandler = () => {
+      setIsFocused(false);
+    };
+
+    element.addEventListener("focus", onFocusHandler);
+    element.addEventListener("blur", onBlurHandler);
+
+    return () => {
+      element.removeEventListener("focus", onFocusHandler);
+      element.removeEventListener("blur", onBlurHandler);
+    };
+  }, []);
+
   const onChangeHandler = useEvent(() => {
     const nextValue = Number.isNaN(ref.current.valueAsNumber)
       ? undefined
-      : resolveValue(transformValue.out(ref.current.valueAsNumber), step);
+      : transformValue.out(ref.current.valueAsNumber);
 
     if (typeof nextValue === "number" && (min > nextValue || max < nextValue)) {
       // Next value is outside the min / max range so skip the handler.
@@ -145,7 +169,7 @@ export function NumberInput({
   const onConfirmHandler = useEvent(() => {
     const nextValue = Number.isNaN(ref.current.valueAsNumber)
       ? undefined
-      : resolveValue(transformValue.out(ref.current.valueAsNumber), step);
+      : transformValue.out(ref.current.valueAsNumber);
 
     if (nextValue === undefined && required) {
       // Skip handler if the next value is undefined and it's required
@@ -218,7 +242,7 @@ export function NumberInput({
   });
 
   const onPointerDownHandler: PointerEventHandler = useEvent(async (e) => {
-    if (document.activeElement === ref.current) {
+    if (document.activeElement === ref.current || e.button !== 0) {
       // We're focused in the input already, bail out!
       return;
     }
@@ -330,12 +354,16 @@ export function NumberInput({
       placeholder: label || "number",
       ref,
       required,
-      step,
+      // We conditionally apply this as the step attribute brings along validation
+      // which we can't control. Since we use step here as only a modifier / guide and
+      // not validation it's set to "any" when not active.
+      step: isActive ? step : "any",
     },
     {
       clear: clearInputValue,
       decrement: incrementDown,
       increment: incrementUp,
+      isActive: isFocused || isPointerLock,
     },
   );
 }
