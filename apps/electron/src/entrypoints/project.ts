@@ -13,7 +13,7 @@ import {
 import { logger } from "../util/log";
 import { startProject } from "../util/project";
 
-if (process.env.NODE_ENV === "production") {
+if (process.env.NODE_ENV !== "development") {
   init({
     dsn: "https://465c2b265422fda6d76957f5a4854ffb@o4507990276177920.ingest.us.sentry.io/4507990300229632",
   });

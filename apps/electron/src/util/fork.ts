@@ -39,6 +39,7 @@ export function fork<TData extends Record<string, unknown>>(
     fork = forkChild(filename, [], {
       cwd,
       env: {
+        NODE_ENV: "development",
         NODE_OPTIONS: `-r ${join(process.cwd(), "hook-fork.js")}`,
         NODE_PATH: process.cwd(),
         TRIPLEX_DATA: JSON.stringify(data),
@@ -59,6 +60,7 @@ export function fork<TData extends Record<string, unknown>>(
       cwd,
       env: {
         DEBUG: "triplex",
+        NODE_ENV: "production",
         NODE_PATH: process.cwd(),
         TRIPLEX_DATA: JSON.stringify(data),
         TRIPLEX_ENV: "production",
