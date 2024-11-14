@@ -124,10 +124,10 @@ async function persistSourceFile({
   if (newPath && newPath !== sourceFile.getFilePath()) {
     // Force save even if it isn't modified
     const result = sourceFile.copy(newPath);
-    await result.save();
+    result.saveSync();
   } else if (!sourceFile.isSaved()) {
     // Save only if the file is modified
-    await sourceFile.save();
+    sourceFile.saveSync();
   }
 }
 
