@@ -1,5 +1,26 @@
 # @triplex/editor
 
+## 0.69.7
+
+### Patch Changes
+
+- 726094c: Upgrade react-compiler.
+- Updated dependencies [8c56ae8]
+- Updated dependencies [b11fe78]
+- Updated dependencies [f8a755c]
+- Updated dependencies [b11fe78]
+- Updated dependencies [d0cddb1]
+- Updated dependencies [b11fe78]
+- Updated dependencies [b11fe78]
+- Updated dependencies [726094c]
+- Updated dependencies [b11fe78]
+- Updated dependencies [b11fe78]
+- Updated dependencies [4eacf57]
+- Updated dependencies [b11fe78]
+- Updated dependencies [8c56ae8]
+  - @triplex/ux@0.69.7
+  - @triplex/lib@0.69.5
+
 ## 0.69.6
 
 ### Patch Changes

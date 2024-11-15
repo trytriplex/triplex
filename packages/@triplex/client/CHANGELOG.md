@@ -1,5 +1,11 @@
 # @triplex/client
 
+## 0.69.7
+
+### Patch Changes
+
+- @triplex/renderer-r3f@0.70.1
+
 ## 0.69.6
 
 ### Patch Changes

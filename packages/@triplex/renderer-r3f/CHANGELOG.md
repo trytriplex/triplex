@@ -1,5 +1,12 @@
 # @triplex/renderer-r3f
 
+## 0.70.1
+
+### Patch Changes
+
+- Updated dependencies [d0cddb1]
+  - @triplex/lib@0.69.5
+
 ## 0.70.0
 
 ### Minor Changes

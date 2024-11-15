@@ -1,5 +1,25 @@
 # @triplex/ux
 
+## 0.69.7
+
+### Patch Changes
+
+- 8c56ae8: Fix number input drag behavior.
+- b11fe78: Tuple inputs now show invalid state when partially filled out and some required items are missing.
+- f8a755c: When cycling through prop types in the union input it will be scrolled into view if required.
+- b11fe78: Add invalid state to all prop controls.
+- d0cddb1: Number inputs now correctly round to the nearest step value.
+- b11fe78: Union inputs now respect default values set on props.
+- b11fe78: Fix tuple inputs behavior when required / optional.
+- 726094c: Upgrade react-compiler.
+- b11fe78: Tuple inputs now respect default values set on props.
+- b11fe78: Boolean input now respects default values set on props.
+- 4eacf57: Color input now has a checkered background when no color has been set.
+- b11fe78: Literal union inputs can now be cleared through a UI selection when optional.
+- 8c56ae8: Fix number input step buttons color mode.
+- Updated dependencies [d0cddb1]
+  - @triplex/lib@0.69.5
+
 ## 0.69.6
 
 ### Patch Changes

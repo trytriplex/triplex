@@ -1,5 +1,11 @@
 # @triplex/lib
 
+## 0.69.5
+
+### Patch Changes
+
+- d0cddb1: Number inputs now correctly round to the nearest step value.
+
 ## 0.69.4
 
 ### Patch Changes

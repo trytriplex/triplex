@@ -1,5 +1,14 @@
 # @triplex/server
 
+## 0.70.1
+
+### Patch Changes
+
+- 08f61b5: Fix initial undo ID being set to length - 1 instead of 0 resulting in unexpected behavior when undo/redoing.
+- 0393dfd: Fix threejs host elements having required props unexpectedly.
+- b11fe78: Union literal props are no longer sorted resulting in stable options in the UI.
+- 84f8a37: Saves are now synchronously applied.
+
 ## 0.70.0
 
 ### Minor Changes

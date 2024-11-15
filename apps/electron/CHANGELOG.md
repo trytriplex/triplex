@@ -1,5 +1,19 @@
 # @triplex/electron
 
+## 0.69.7
+
+### Patch Changes
+
+- cf929fe: Sentry error logging is fixed.
+- Updated dependencies [08f61b5]
+- Updated dependencies [0393dfd]
+- Updated dependencies [726094c]
+- Updated dependencies [b11fe78]
+- Updated dependencies [84f8a37]
+  - @triplex/server@0.70.1
+  - @triplex/editor@0.69.7
+  - @triplex/client@0.69.7
+
 ## 0.69.6
 
 ### Patch Changes

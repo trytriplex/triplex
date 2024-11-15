@@ -36,7 +36,7 @@
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
     "@triplex/bridge": "0.69.4",
-    "@triplex/server": "0.70.0",
+    "@triplex/server": "0.70.1",
     "@types/react": "^18.0.27",
     "typescript": "^5.6.2"
   },

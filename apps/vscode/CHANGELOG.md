@@ -1,5 +1,30 @@
 # @triplex/vscode
 
+## 0.1.1
+
+### Patch Changes
+
+- 8c56ae8: Fix number input drag behavior.
+- b11fe78: Tuple inputs now show invalid state when partially filled out and some required items are missing.
+- 82265f5: Missing element props indicator.
+- b11fe78: Add invalid state to all prop controls.
+- c7b2857: Add warning dialog when a component is missing required props.
+- c7b2857: Component switcher now shows ellipsis if the component name is longer than the container.
+- b11fe78: Union inputs now respect default values set on props.
+- b11fe78: Fix tuple inputs behavior when required / optional.
+- 726094c: Upgrade react-compiler.
+- b11fe78: Tuple inputs now respect default values set on props.
+- b11fe78: Boolean input now respects default values set on props.
+- 4eacf57: Color input now has a checkered background when no color has been set.
+- b11fe78: Literal union inputs can now be cleared through a UI selection when optional.
+- 8c56ae8: Fix number input step buttons color mode.
+- Updated dependencies [08f61b5]
+- Updated dependencies [0393dfd]
+- Updated dependencies [b11fe78]
+- Updated dependencies [84f8a37]
+  - @triplex/server@0.70.1
+  - @triplex/client@0.69.7
+
 ## 0.1.0
 
 ### Minor Changes

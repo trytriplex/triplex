@@ -1,7 +1,7 @@
 {
   "name": "triplex-vsce",
   "displayName": "Triplex for VS Code",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "description": "The React Three Fiber visual IDE.",
   "categories": [
@@ -165,8 +165,8 @@
     "onStartupFinished"
   ],
   "dependencies": {
-    "@triplex/client": "0.69.6",
-    "@triplex/server": "0.70.0"
+    "@triplex/client": "0.69.7",
+    "@triplex/server": "0.70.1"
   },
   "devDependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^1.2.3",
@@ -174,8 +174,8 @@
     "@sentry/node": "^8.30.0",
     "@sentry/react": "^8.30.0",
     "@triplex/bridge": "0.69.4",
-    "@triplex/lib": "0.69.4",
-    "@triplex/ux": "0.69.6",
+    "@triplex/lib": "0.69.5",
+    "@triplex/ux": "0.69.7",
     "@triplex/ws": "0.69.3",
     "@types/raf-schd": "^4.0.3",
     "@types/vscode": "^1.88.0",
