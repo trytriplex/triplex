@@ -446,9 +446,23 @@ export function Selection({
 
         onBlur();
       } else if (selectionMode === "cycle") {
-        const currentIndex = result.findIndex(
-          (found) => found.object === selectedObject?.sceneObject,
-        );
+        const currentIndex = result.findIndex((found) => {
+          if (found.object === selectedObject?.sceneObject) {
+            // We found a direct match!
+            return true;
+          }
+
+          // We need to check the scene objects parents to find a match.
+          let parent = found.object.parent;
+          while (parent) {
+            if (parent === selectedObject?.sceneObject) {
+              return true;
+            }
+            parent = parent.parent;
+          }
+
+          return false;
+        });
 
         const nextIndex = (currentIndex + 1) % result.length;
         const nextObject = result.at(nextIndex)?.object;
