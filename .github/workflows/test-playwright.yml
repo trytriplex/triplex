@@ -46,13 +46,7 @@ jobs:
 
       - name: Run end-to-end tests
         if: matrix.os == 'ubuntu-latest'
-        run:
-          # Workaround for Electron apps failing to initialize on Ubuntu 24.04 due to AppArmor restrictions
-          # Disables unprivileged user namespaces restriction to allow Electron apps to run
-          # Reference: https://github.com/electron/electron/issues/42510
-          sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0 xvfb-run
-          --auto-servernum --server-args="-screen 0 1280x960x24" -- pnpm
-          test:e2e --shard ${{ matrix.shard }}
+        run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- pnpm test:e2e --shard ${{ matrix.shard }}
         env:
           PWTEST_BLOB_REPORT_NAME: ${{ matrix.os }}
 
@@ -104,9 +98,7 @@ jobs:
           path: blob-reports
 
       - name: Merge into HTML Report
-        run:
-          npx playwright merge-reports --reporter html,github --config
-          test/merge.config.ts ./blob-reports
+        run: npx playwright merge-reports --reporter html,github --config test/merge.config.ts ./blob-reports
 
       - name: Upload HTML report
         uses: actions/upload-artifact@v3

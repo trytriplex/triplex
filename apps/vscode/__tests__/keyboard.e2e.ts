@@ -25,12 +25,12 @@ test("trigger command palette inside frame", async ({ vsce }) => {
   await vsce.loadedComponent.dispatchEvent("keydown", {
     altKey: false,
     code: "KeyP",
-    ctrlKey: process.platform === "win32",
+    ctrlKey: process.platform !== "darwin",
     isComposing: false,
     key: "p",
     keyCode: 80,
     location: 0,
-    metaKey: process.platform !== "win32",
+    metaKey: process.platform === "darwin",
     repeat: false,
     shiftKey: true,
   });
