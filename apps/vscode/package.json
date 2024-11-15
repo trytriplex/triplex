@@ -90,18 +90,18 @@
       {
         "command": "triplex.element-delete",
         "key": "Backspace",
-        "when": "activeCustomEditorId == 'triplex.editor'"
+        "when": "!inputFocus && activeCustomEditorId == 'triplex.editor'"
       },
       {
         "command": "triplex.element-duplicate",
         "key": "Ctrl+D",
         "mac": "Cmd+D",
-        "when": "activeCustomEditorId == 'triplex.editor'"
+        "when": "!inputFocus && activeCustomEditorId == 'triplex.editor'"
       },
       {
         "command": "triplex.element-jump-to",
         "key": "F",
-        "when": "activeCustomEditorId == 'triplex.editor'"
+        "when": "!inputFocus && activeCustomEditorId == 'triplex.editor'"
       }
     ],
     "menus": {
