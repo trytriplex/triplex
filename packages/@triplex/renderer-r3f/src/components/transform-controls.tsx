@@ -44,6 +44,7 @@ export function TransformControls({
   useEffect(() => {
     const callback = (event: { value: boolean }) => {
       if (controls.current) {
+        // eslint-disable-next-line react-compiler/react-compiler
         controls.current.enabled = !event.value;
       }
     };

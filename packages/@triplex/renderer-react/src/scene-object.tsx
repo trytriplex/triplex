@@ -21,6 +21,7 @@ function useSceneObjectProps(
   const propsRef = useRef<Record<string, unknown>>({});
 
   // Assign all current top-level props to a ref so we can access it in an effect.
+  // eslint-disable-next-line react-compiler/react-compiler
   Object.assign(propsRef.current, props);
 
   useEffect(() => {
@@ -60,6 +61,7 @@ function useSceneObjectProps(
     ]);
   }, [meta.column, meta.line, meta.name, meta.path, forceRender]);
 
+  // eslint-disable-next-line react-compiler/react-compiler
   const nextProps = { ...props, ...intermediateProps.current };
 
   for (const key in nextProps) {

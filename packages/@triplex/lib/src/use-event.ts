@@ -30,12 +30,15 @@ export function useEvent<TCallback extends AnyFunction>(
   }, [callback]);
 
   const stableRef = useRef<TCallback>(null as any);
+  // eslint-disable-next-line react-compiler/react-compiler
   if (!stableRef.current) {
+    // eslint-disable-next-line react-compiler/react-compiler
     stableRef.current = ((...args: any[]) => {
       return latestRef.current(...args);
     }) as TCallback;
   }
 
+  // eslint-disable-next-line react-compiler/react-compiler
   return stableRef.current;
 }
 

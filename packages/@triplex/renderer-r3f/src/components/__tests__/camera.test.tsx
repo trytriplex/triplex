@@ -48,6 +48,7 @@ describe("camera", () => {
     };
     function HoistControls() {
       const { controls } = useCamera();
+      // eslint-disable-next-line react-compiler/react-compiler
       controlsRef = controls;
       return null;
     }
@@ -70,6 +71,7 @@ describe("camera", () => {
     };
     function HoistControls() {
       const { controls } = useCamera();
+      // eslint-disable-next-line react-compiler/react-compiler
       controlsRef = controls;
       return null;
     }
@@ -89,6 +91,7 @@ describe("camera", () => {
     };
     function HoistControls() {
       const { controls } = useCamera();
+      // eslint-disable-next-line react-compiler/react-compiler
       controlsRef = controls;
       return null;
     }
@@ -109,6 +112,7 @@ describe("camera", () => {
     };
     function HoistControls() {
       const { controls } = useCamera();
+      // eslint-disable-next-line react-compiler/react-compiler
       controlsRef = controls;
       return null;
     }
@@ -137,6 +141,7 @@ describe("camera", () => {
     };
     function HoistControls() {
       const { controls } = useCamera();
+      // eslint-disable-next-line react-compiler/react-compiler
       controlsRef = controls;
       return null;
     }
