@@ -317,7 +317,7 @@ export class TriplexEditorProvider
         {
           supportsMultipleEditorsPerDocument: false,
           webviewOptions: {
-            retainContextWhenHidden: true,
+            retainContextWhenHidden: false,
           },
         },
       ),
