@@ -9,13 +9,13 @@ export function LoadingTriangle() {
     <div
       style={{
         alignItems: "center",
-        bottom: 12,
         display: "flex",
         height: 50,
         justifyContent: "center",
         pointerEvents: "none",
         position: "fixed",
         right: 12,
+        top: 12,
         width: 50,
       }}
     >

@@ -145,7 +145,7 @@ export const scripts = {
 };
 
 export const loading = () => `
-<div style="align-items:center;bottom:12px;display:flex;height:50px;justify-content:center;pointer-events:none;position:fixed;right:12px;width:50px;">
+<div style="align-items:center;top:12px;display:flex;height:50px;justify-content:center;pointer-events:none;position:fixed;right:12px;width:50px;">
   <style>
   .loading--animate-dashes {
     stroke-dasharray: 25;
