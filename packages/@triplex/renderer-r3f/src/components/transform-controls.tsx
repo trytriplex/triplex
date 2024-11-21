@@ -15,11 +15,11 @@ import { useCamera } from "./camera";
 
 const steps = {
   rotate: {
-    ctrl: MathUtils.degToRad(5),
+    ctrl: MathUtils.degToRad(10),
     default: Math.PI / 180,
   },
-  scale: { ctrl: 0.1, default: 0.0042 },
-  translate: { ctrl: 1, default: 0.027_93 },
+  scale: { ctrl: 0.1, default: 0.01 },
+  translate: { ctrl: 1, default: 0.01 },
 };
 
 export function TransformControls({
