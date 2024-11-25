@@ -188,7 +188,7 @@ export interface HostSendEventData {
         path: string;
       }
     | undefined;
-  "request-refresh-scene": undefined;
+  "request-refresh-scene": { hard: true } | undefined;
   "request-reset-prop": {
     column: number;
     line: number;

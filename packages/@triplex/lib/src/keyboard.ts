@@ -4,7 +4,6 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useEffect } from "react";
 
 /**
  * Copyright (c) Michael Dougall. All rights reserved.
@@ -55,10 +54,24 @@ type Keys =
   | "Y"
   | "Z";
 
-export type Accelerator = Keys | `${Modifiers}+${Keys}`;
+export type Accelerator =
+  | Keys
+  | `${Modifiers}+${Keys}`
+  | `CommandOrCtrl+Shift+${Keys}`;
 
 function parseAccelerator(accelerator: Accelerator) {
-  if (accelerator.includes("+")) {
+  if (accelerator.includes("CommandOrCtrl+Shift+")) {
+    const [, , key] = accelerator.split("+");
+    const parsedKey = key.length === 1 ? key.toLowerCase() : key;
+    const isWindows = navigator.userAgent.includes("Windows");
+
+    return {
+      ctrl: isWindows,
+      key: parsedKey,
+      meta: !isWindows,
+      shift: true,
+    };
+  } else if (accelerator.includes("+")) {
     const [modifier, key] = accelerator.split("+");
     const parsedKey = key.length === 1 ? key.toLowerCase() : key;
     const isWindows = navigator.userAgent.includes("Windows");
@@ -120,28 +133,26 @@ export function onKeyDown(
  * focused. Any key down events that are have modifiers are allowed to
  * propagate.
  */
-export function useBlockInputPropagation() {
-  useEffect(() => {
-    const callback = (e: KeyboardEvent) => {
-      const activeElement = document.activeElement;
+export function blockInputPropagation() {
+  const callback = (e: KeyboardEvent) => {
+    const activeElement = document.activeElement;
 
-      if (
-        activeElement &&
-        e.metaKey === false &&
-        e.ctrlKey === false &&
-        e.altKey === false &&
-        e.shiftKey === false &&
-        excludedKeys.includes(e.key) === false &&
-        inputTags.some((tag) => activeElement.tagName.includes(tag))
-      ) {
-        e.stopPropagation();
-      }
-    };
+    if (
+      activeElement &&
+      e.metaKey === false &&
+      e.ctrlKey === false &&
+      e.altKey === false &&
+      e.shiftKey === false &&
+      excludedKeys.includes(e.key) === false &&
+      inputTags.some((tag) => activeElement.tagName.includes(tag))
+    ) {
+      e.stopPropagation();
+    }
+  };
 
-    window.addEventListener("keydown", callback, true);
+  window.addEventListener("keydown", callback, true);
 
-    return () => {
-      window.removeEventListener("keydown", callback, true);
-    };
-  }, []);
+  return () => {
+    window.removeEventListener("keydown", callback, true);
+  };
 }

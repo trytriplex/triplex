@@ -51,6 +51,8 @@ export interface FromVSCodeEvent {
     exportName: string;
     path: string;
   };
+  "vscode:request-refresh-scene": undefined;
+  "vscode:request-reload-scene": undefined;
   "vscode:state-change": { active: boolean };
 }
 

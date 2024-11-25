@@ -72,6 +72,16 @@
         "category": "Triplex",
         "command": "triplex.element-jump-to",
         "title": "Jump To"
+      },
+      {
+        "category": "Triplex",
+        "command": "triplex.refresh-scene",
+        "title": "Refresh Scene"
+      },
+      {
+        "category": "Triplex",
+        "command": "triplex.reload-scene",
+        "title": "Reload Scene"
       }
     ],
     "customEditors": [
@@ -102,6 +112,18 @@
         "command": "triplex.element-jump-to",
         "key": "F",
         "when": "!inputFocus && activeCustomEditorId == 'triplex.editor'"
+      },
+      {
+        "command": "triplex.refresh-scene",
+        "key": "Ctrl+R",
+        "mac": "Cmd+R",
+        "when": "!inputFocus && activeCustomEditorId == 'triplex.editor'"
+      },
+      {
+        "command": "triplex.reload-scene",
+        "key": "Ctrl+Shift+R",
+        "mac": "Cmd+Shift+R",
+        "when": "!inputFocus && activeCustomEditorId == 'triplex.editor'"
       }
     ],
     "menus": {
@@ -124,6 +146,14 @@
         },
         {
           "command": "triplex.set-camera-default",
+          "when": "activeCustomEditorId == 'triplex.editor'"
+        },
+        {
+          "command": "triplex.refresh-scene",
+          "when": "activeCustomEditorId == 'triplex.editor'"
+        },
+        {
+          "command": "triplex.reload-scene",
           "when": "activeCustomEditorId == 'triplex.editor'"
         },
         {

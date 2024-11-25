@@ -266,6 +266,16 @@ export class TriplexEditorProvider
           });
         });
       }),
+      vscode.commands.registerCommand("triplex.refresh-scene", () => {
+        resolveActivePanel((panel) => {
+          sendVSCE(panel.webview, "vscode:request-refresh-scene", undefined);
+        });
+      }),
+      vscode.commands.registerCommand("triplex.reload-scene", () => {
+        resolveActivePanel((panel) => {
+          sendVSCE(panel.webview, "vscode:request-reload-scene", undefined);
+        });
+      }),
       vscode.commands.registerCommand(
         "triplex.start",
         async (ctx?: { exportName: string; path: string }) => {

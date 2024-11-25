@@ -54,6 +54,12 @@ export const scripts = {
       export { provider, files };
 
       if (${metaHot}) {
+        on("request-refresh-scene", (opts) => {
+          if (opts?.hard) {
+            window.location.reload();
+          }
+        });
+
         window.addEventListener("error", (e) => {
           if (
             ((error) =>
