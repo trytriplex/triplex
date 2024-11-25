@@ -6,8 +6,10 @@
  */
 import { send } from "@triplex/bridge/client";
 import { Fragment, useEffect } from "react";
-import { ErrorBoundary } from "react-error-boundary";
 import { suspend } from "suspend-react";
+import { FitCameraToScene } from "./components/camera";
+import { ErrorBoundaryForScene } from "./components/error-boundary";
+import { ErrorFallback } from "./components/error-fallback";
 import { Tunnel } from "./components/tunnel";
 import { useScenes } from "./context";
 import { SceneRenderer } from "./scene-renderer";
@@ -73,28 +75,30 @@ export function SceneLoader({
   ) as Record<string, unknown>;
 
   return (
-    <ErrorBoundary
-      fallbackRender={() => null}
+    <ErrorBoundaryForScene
+      fallbackRender={() => <ErrorFallback />}
       onError={(err) =>
         send("error", {
           message: err.message,
           source: path,
           stack: err.message,
           subtitle:
-            "The scene could not be rendered because there was an error in a component. Resolve the errors and try again.",
-          title: "Could not render scene",
+            "An error was thrown when rendering the scene which could be from missing props, context, or a bug.",
+          title: "Render Error",
         })
       }
       resetKeys={[SceneComponent]}
     >
-      <LoadedNotifierForTesting exportName={exportName} />
-      <SceneRenderer
-        component={SceneComponent}
-        exportName={exportName}
-        path={path}
-        props={sceneProps}
-        triplexMeta={parsedTriplexMeta}
-      />
-    </ErrorBoundary>
+      <FitCameraToScene id={path + exportName}>
+        <LoadedNotifierForTesting exportName={exportName} />
+        <SceneRenderer
+          component={SceneComponent}
+          exportName={exportName}
+          path={path}
+          props={sceneProps}
+          triplexMeta={parsedTriplexMeta}
+        />
+      </FitCameraToScene>
+    </ErrorBoundaryForScene>
   );
 }

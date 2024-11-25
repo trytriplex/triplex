@@ -54,10 +54,32 @@ export const scripts = {
       export { provider, files };
 
       if (${metaHot}) {
+        window.addEventListener("error", (e) => {
+          if (
+            ((error) =>
+            error.stack && error.stack.indexOf("invokeGuardedCallbackDev") >= 0)(
+            new Error()
+          )) {
+            // Ignore errors that will be processed a React error boundary.
+            // See: https://github.com/facebook/react/issues/10474
+            return true;
+          }
+
+          send("error", {
+            col: e.colno,
+            line: e.lineno,
+            title: "Unhandled Error",
+            subtitle: "An error was thrown which may affect how your scene behaves. Resolve the error and try again.",
+            message: e.error.message,
+            source: e.filename,
+            stack: e.error.stack,
+          });
+        });
+
         ${metaHot}.on("vite:error", (e) => {
           send("error", {
-            title: "Could not parse file",
-            subtitle: "The scene could not be rendered as there was an error parsing its file. Resolve syntax errors and try again.",
+            title: "Module Error",
+            subtitle: "The scene could not be rendered as there was an error parsing its module. Resolve the error and try again.",
             message: e.err.message,
             col: e.err.loc?.column,
             line: e.err.loc?.line,
@@ -67,30 +89,26 @@ export const scripts = {
         });
 
         ${metaHot}.on("vite:afterUpdate", (e) => {
+          // We defer this to have a higher chance that a fast refresh has completed.
+          // See: https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/src/refreshUtils.js#L17
+          setTimeout(() => {
+            send("self:request-reset-error-boundary", undefined);
+          }, 96);
           const paths = e.updates.map((update) => update.path);
-
           paths.forEach((path) => {
             send("self:request-reset-file", { path });
           });
         });
 
-        if (!${metaHot}.data.render) {
-          window.addEventListener("error", (e) => {
-            requestAnimationFrame(() => {
-              // Flush this error one frame later to ensure any duplicate errors
-              // sent from the renderer get prioritized over this generic one.
-              send("error", {
-                col: e.colno,
-                line: e.lineno,
-                title: "Could not run code",
-                subtitle: "There was an error which may have affected the rendering of your scene. Resolve any errors and try again.",
-                message: e.error.message,
-                source: e.filename,
-                stack: e.error.stack,
-              });
-            });
-          });
+        // This is patched into the react-refresh runtime so we can be notified
+        // on completion of a fast refresh. We need this as relying on the HMR
+        // events alone come with incorrect timing as they're not guaranteed to
+        // be fired after the refresh is complete.
+        window.notifyRefreshComplete = () => {
+          send("self:request-reset-error-boundary", undefined);
+        };
 
+        if (!${metaHot}.data.render) {
           ${metaHot}.data.render = bootstrap(document.getElementById('root'));
           ${metaHot}.data.render({ config: ${JSON.stringify(
             template.config,

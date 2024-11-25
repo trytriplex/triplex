@@ -4,8 +4,8 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { on, send, type SceneComponent } from "@triplex/bridge/client";
-import { useEffect, useLayoutEffect, useState } from "react";
+import { compose, on, send, type SceneComponent } from "@triplex/bridge/client";
+import { useEffect, useLayoutEffect, useReducer, useState } from "react";
 import { Tunnel } from "./components/tunnel";
 import { SceneObject } from "./scene-object";
 
@@ -22,12 +22,23 @@ export function SceneRenderer({
   props: Record<string, unknown>;
   triplexMeta: Record<string, unknown>;
 }) {
+  const [resetCount, incrementReset] = useReducer((s: number) => s + 1, 0);
   const sceneHasStaticallyDefinedLights =
     "lighting" in triplexMeta && triplexMeta.lighting === "default";
-
   const [showDefaultLights, setDefaultLights] = useState(
     sceneHasStaticallyDefinedLights,
   );
+
+  useEffect(() => {
+    return compose([
+      on("request-refresh-scene", incrementReset),
+      on("request-state-change", ({ state }) => {
+        if (state === "edit") {
+          incrementReset();
+        }
+      }),
+    ]);
+  }, []);
 
   useEffect(() => {
     return on("extension-point-triggered", (data) => {
@@ -70,6 +81,7 @@ export function SceneRenderer({
           path,
         }}
         forceInsideSceneObjectContext
+        key={resetCount}
         {...props}
       />
 

@@ -1,0 +1,15 @@
+diff --git a/cjs/react-refresh-runtime.development.js b/cjs/react-refresh-runtime.development.js
+index 73748ad1b9ce8967849a549243835efa19727531..27f0834c2c97e6e407ad35b501d4ce3ea8ef6b67 100644
+--- a/cjs/react-refresh-runtime.development.js
++++ b/cjs/react-refresh-runtime.development.js
+@@ -278,6 +278,10 @@ function performReactRefresh() {
+ 
+     return update;
+   } finally {
++    if (window.notifyRefreshComplete) {
++      window.notifyRefreshComplete();
++    }
++
+     isPerformingRefresh = false;
+   }
+ }

@@ -90,7 +90,7 @@ function getMessageWindow() {
 export function send<TEvent extends HostSendEventName>(
   eventName: TEvent,
   data: HostSendEventData[TEvent],
-  awaitResponse = false,
+  awaitResponse = process.env.NODE_ENV === "test",
 ): Promise<HostSendEventResponse[TEvent]> {
   const messageWindow = getMessageWindow();
 

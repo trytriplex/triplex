@@ -124,6 +124,7 @@ export function AppRoot() {
             "h-full w-full",
             blockClicks && "pointer-events-none",
           ])}
+          data-testid="scene"
           id="scene"
           src={`http://localhost:${window.triplex.env.ports.client}/scene.html`}
         />

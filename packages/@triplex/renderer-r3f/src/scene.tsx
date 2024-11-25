@@ -4,21 +4,15 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { compose, on, send } from "@triplex/bridge/client";
+import { send } from "@triplex/bridge/client";
 import { useEvent } from "@triplex/lib";
 import { fg } from "@triplex/lib/fg";
-import {
-  Suspense,
-  useCallback,
-  useEffect,
-  useReducer,
-  useState,
-  type PropsWithChildren,
-} from "react";
-import { ErrorBoundary } from "react-error-boundary";
+import { Suspense, useCallback, useState, type PropsWithChildren } from "react";
 import { Canvas } from "./canvas";
-import { Camera, FitCameraToScene } from "./components/camera";
+import { Camera } from "./components/camera";
 import { CameraGizmo } from "./components/camera-gizmo";
+import { ErrorBoundaryForScene } from "./components/error-boundary";
+import { ErrorFallback } from "./components/error-fallback";
 import { TriplexGrid } from "./components/grid";
 import { LoadingTriangle } from "./components/loading-triangle";
 import { PostProcessing } from "./components/post-processing";
@@ -35,12 +29,12 @@ export function SceneFrame({
   provider: (props: PropsWithChildren) => JSX.Element;
   providerPath: string;
 }) {
-  const [resetCount, incrementReset] = useReducer((s: number) => s + 1, 0);
   const [component, setComponent] = useState<{
     exportName: string;
     path: string;
     props: Record<string, unknown>;
   }>({ exportName: "", path: "", props: {} });
+
   const onNavigate = useEvent(
     (target: {
       exportName: string;
@@ -77,22 +71,11 @@ export function SceneFrame({
     send("element-blurred", undefined);
   }, []);
 
-  useEffect(() => {
-    return compose([
-      on("request-refresh-scene", incrementReset),
-      on("request-state-change", ({ state }) => {
-        if (state === "edit") {
-          incrementReset();
-        }
-      }),
-    ]);
-  }, []);
-
   return (
     <Canvas>
       <Camera>
-        <ErrorBoundary
-          fallbackRender={() => null}
+        <ErrorBoundaryForScene
+          fallbackRender={() => <ErrorFallback />}
           onError={(err) =>
             send("error", {
               message: err.message,
@@ -124,34 +107,39 @@ export function SceneFrame({
                 onFocus={onFocus}
                 onNavigate={onNavigate}
               >
-                <ErrorBoundary
-                  fallbackRender={() => null}
-                  resetKeys={[component]}
+                <SubsequentSuspense
+                  fallback={
+                    <Tunnel.In>
+                      <LoadingTriangle />
+                    </Tunnel.In>
+                  }
                 >
-                  <SubsequentSuspense
-                    fallback={
-                      <Tunnel.In>
-                        <LoadingTriangle />
-                      </Tunnel.In>
+                  <ErrorBoundaryForScene
+                    fallbackRender={() => <ErrorFallback />}
+                    onError={(err) =>
+                      send("error", {
+                        message: err.message,
+                        source: component.path,
+                        stack: err.message,
+                        subtitle:
+                          "The scene could not be rendered as there was an error parsing its module. Resolve the error and try again.",
+                        title: "Module Error",
+                      })
                     }
+                    resetKeys={[component]}
                   >
-                    <FitCameraToScene
-                      id={component.path + component.exportName}
-                    >
-                      <SceneLoader
-                        exportName={component.exportName}
-                        key={resetCount}
-                        path={component.path}
-                        sceneProps={component.props}
-                      />
-                    </FitCameraToScene>
-                  </SubsequentSuspense>
-                </ErrorBoundary>
+                    <SceneLoader
+                      exportName={component.exportName}
+                      path={component.path}
+                      sceneProps={component.props}
+                    />
+                  </ErrorBoundaryForScene>
+                </SubsequentSuspense>
               </Selection>
             </ManualEditableSceneObject>
             <CameraGizmo />
           </Suspense>
-        </ErrorBoundary>
+        </ErrorBoundaryForScene>
         <TriplexGrid />
       </Camera>
 

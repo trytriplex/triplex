@@ -137,7 +137,7 @@ export class TriplexEditorProvider
           document.upsertProp(prop);
         }),
         on(panel.webview, "error", (error) => {
-          vscode.window.showErrorMessage(error.message);
+          vscode.window.showErrorMessage(`${error.title}: ${error.message}`);
           log.error(error.message);
         }),
         on(panel.webview, "element-duplicate", async (element) => {

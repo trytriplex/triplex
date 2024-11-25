@@ -15,6 +15,7 @@ import { useEffect } from "react";
 import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 import { Bounds } from "triplex-drei";
+import { ErrorFallback } from "./components/error-fallback";
 import { Renderer } from "./renderer";
 import { SceneObject } from "./scene-object";
 
@@ -55,7 +56,7 @@ export const thumbnail: ThumbnailFunction = (container) => {
     root.render(
       <Canvas shadows style={{ inset: 0, position: "absolute" }}>
         <Ready>
-          <ErrorBoundary fallbackRender={() => null}>
+          <ErrorBoundary fallbackRender={() => <ErrorFallback />}>
             <Bounds fit>
               <Provider>
                 <Component />

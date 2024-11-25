@@ -27,6 +27,7 @@ import { useCamera } from "./components/camera";
 import { getHelperForElement, Helper } from "./components/helper";
 import { useSelectSceneObject } from "./selection";
 import { useOnSceneObjectMount } from "./stores/selection";
+import { hash } from "./util/hash";
 
 const permanentlyExcluded = [/^Canvas$/];
 const disabledWhenTriplexCamera = [
@@ -34,6 +35,20 @@ const disabledWhenTriplexCamera = [
   /^ScrollControls$/,
 ];
 const passThroughWhenTriplexCamera = [/^Ecctrl$/, /Controls$/];
+
+function getKey(
+  name: unknown,
+  props: Record<string, unknown>,
+): string | undefined {
+  if (
+    (typeof name === "string" && name === "shaderMaterial") ||
+    name === "rawShaderMaterial"
+  ) {
+    return hash(String(props.fragmentShader) + String(props.vertexShader));
+  }
+
+  return undefined;
+}
 
 function useForceRender() {
   const [, setState] = useState(false);
@@ -214,10 +229,12 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
         type === "custom" &&
         isTriplexCamera &&
         disabledWhenTriplexCamera.some((r) => r.test(__meta.name));
+      const key = getKey(Component, props);
 
       return (
         <ParentComponentMetaProvider type={type} value={triplexMeta}>
           <Component
+            key={key}
             ref={type === "host" ? mergedRefs : ref}
             {...reconciledProps}
             {...(shouldDisable ? { enabled: false } : undefined)}

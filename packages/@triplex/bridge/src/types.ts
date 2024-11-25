@@ -212,6 +212,7 @@ export interface HostSendEventData {
     camera: "default" | "editor";
     state: "play" | "pause" | "edit";
   };
+  "self:request-reset-error-boundary": undefined;
   "self:request-reset-file": { path: string };
 }
 
@@ -230,5 +231,6 @@ export interface HostSendEventResponse {
   "request-restore-element": void;
   "request-set-element-prop": void;
   "request-state-change": void;
+  "self:request-reset-error-boundary": void;
   "self:request-reset-file": void;
 }
