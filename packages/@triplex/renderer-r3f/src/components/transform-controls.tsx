@@ -79,7 +79,7 @@ export function TransformControls({
   });
 
   const onMouseUpHandler = useEvent(() => {
-    setIsDragging(true);
+    setIsDragging(false);
     onCompleteTransform?.();
   });
 
