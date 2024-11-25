@@ -153,3 +153,21 @@ test.describe("when an error is thrown during glsl compilation", () => {
     );
   });
 });
+
+test.describe("when an error is thrown during glsl compilation (2)", () => {
+  test.use({
+    filename: "examples/test-fixture/src/throws-error-glsl-fallback.tsx",
+  });
+
+  test("should show a notification for varying failure", async ({ vsce }) => {
+    await vsce.codelens("GLSLErrorFallback").click();
+
+    await expect(
+      vsce.page.getByRole("dialog", {
+        name: "source: Triplex for VS Code, notification",
+      }),
+    ).toHaveText(
+      /GLSL Error: A shader failed to compile because of the error "FRAGMENT varying/,
+    );
+  });
+});

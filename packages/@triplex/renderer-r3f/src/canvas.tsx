@@ -49,7 +49,7 @@ export function Canvas({ children }: { children: React.ReactNode }) {
   const onShaderError = useEvent(
     (
       gl: WebGLRenderingContext,
-      _: WebGLProgram,
+      program: WebGLProgram,
       glVertexShader: WebGLShader,
       glFragmentShader: WebGLShader,
     ) => {
@@ -65,8 +65,11 @@ export function Canvas({ children }: { children: React.ReactNode }) {
       } else if (fragmentErrors) {
         errorMessage = `A fragment shader failed to compile because of the error ${fragmentErrors}.`;
       } else {
-        errorMessage =
-          "A shader failed to compile but no error message was provided.";
+        const programLog = gl
+          .getProgramInfoLog(program)
+          ?.trim()
+          .replaceAll("\n", "");
+        errorMessage = `A shader failed to compile because of the error "${programLog}".`;
       }
 
       send("error", {
