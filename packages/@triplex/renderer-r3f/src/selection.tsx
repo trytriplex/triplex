@@ -8,15 +8,7 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { compose, on, send } from "@triplex/bridge/client";
 import { useEvent } from "@triplex/lib";
 import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws/react";
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-  type ReactNode,
-} from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import {
   Box3,
   Camera,
@@ -35,6 +27,7 @@ import { SELECTION_LAYER_INDEX } from "./util/layers";
 import { encodeProps } from "./util/props";
 import {
   findObject3D,
+  isMatchingTriplexMeta,
   isObjectVisible as isMeshVisible,
   resolveObject3D,
   resolveObject3DMeta,
@@ -49,14 +42,6 @@ const V1 = new Vector3();
 // We use this as a default raycaster so it is fired on the default layer (0) instead
 // Of the editor layer (31).
 const raycaster = new Raycaster();
-const SelectionContext = createContext<(select: Object3D) => void>(() => {
-  throw new Error("invariant");
-});
-
-export const useSelectSceneObject = () => {
-  const select = useContext(SelectionContext);
-  return select;
-};
 
 export function Selection({
   children,
@@ -447,7 +432,10 @@ export function Selection({
         onBlur();
       } else if (selectionMode === "cycle") {
         const currentIndex = result.findIndex((found) => {
-          if (found.object === selectedObject?.sceneObject) {
+          if (
+            found.object === selectedObject?.sceneObject ||
+            isMatchingTriplexMeta(found.object, selectedObject?.sceneObject)
+          ) {
             // We found a direct match!
             return true;
           }
@@ -495,9 +483,7 @@ export function Selection({
   return (
     <SceneObjectContext.Provider value={true}>
       <SceneObjectEventsContext.Provider value={sceneObjectMountHandler}>
-        <SelectionContext.Provider value={trySelectObject}>
-          {children}
-        </SelectionContext.Provider>
+        {children}
       </SceneObjectEventsContext.Provider>
 
       {selectedObject && transform !== "none" && (

@@ -21,6 +21,7 @@ export function PostProcessing({ debug = false }: { debug?: boolean }) {
   );
 
   useFrame((state) => {
+    const currentLayersMask = state.camera.layers.mask;
     const prevBg = state.scene.background;
     state.scene.background = null;
     state.gl.setRenderTarget(renderTarget);
@@ -30,7 +31,7 @@ export function PostProcessing({ debug = false }: { debug?: boolean }) {
     state.gl.render(state.scene, state.camera);
 
     state.gl.setRenderTarget(null);
-    state.camera.layers.enableAll();
+    state.camera.layers.mask = currentLayersMask;
     state.scene.background = prevBg;
   });
 

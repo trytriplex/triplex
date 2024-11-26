@@ -19,6 +19,24 @@ test("focusing an element", async ({ vsce }) => {
   ).toBeVisible();
 });
 
+test.describe(() => {
+  test.use({
+    filename: "examples/test-fixture/src/lights.tsx",
+  });
+
+  test("focusing a light", async ({ vsce }) => {
+    await vsce.codelens("PointLight").click();
+    const { locator, panels, togglePanelsButton } = vsce.resolveEditor();
+
+    await locator.getByTestId("scene").click({ force: true });
+    await togglePanelsButton.click();
+
+    await expect(
+      panels.getByRole("button", { name: "pointLight selected" }),
+    ).toBeVisible();
+  });
+});
+
 test("blurring an element", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
   const editor = vsce.resolveEditor();

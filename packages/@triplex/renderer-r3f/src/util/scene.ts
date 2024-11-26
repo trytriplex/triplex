@@ -64,7 +64,9 @@ export function hasTriplexMeta(
   return false;
 }
 
-export function getTriplexMeta(obj: Object3D | null): TriplexMeta | undefined {
+export function getTriplexMeta(
+  obj: Object3D | null | undefined,
+): TriplexMeta | undefined {
   if (obj && hasTriplexMeta(obj)) {
     const { __r3f: _, ...meta } = obj.__triplex;
     return meta;
@@ -95,7 +97,7 @@ export function isObjectVisible(obj: Object3D): boolean {
   const isMesh = "isMesh" in obj;
   const isInteractionPanel = "isInteractionPanel" in obj;
 
-  if (isInteractionPanel) {
+  if (isInteractionPanel || obj.name === "forced_visible") {
     return true;
   }
 
@@ -249,4 +251,22 @@ export function buildSceneSphere(scene: Object3D) {
   });
 
   return sceneBox.getBoundingSphere(new Sphere());
+}
+
+export function isMatchingTriplexMeta(
+  objectA: Object3D,
+  objectB: Object3D | undefined,
+): boolean {
+  const objectAMeta = getTriplexMeta(objectA);
+  const objectBMeta = getTriplexMeta(objectB);
+
+  if (objectAMeta && objectBMeta) {
+    return (
+      objectAMeta.column === objectBMeta.column &&
+      objectAMeta.line === objectBMeta.line &&
+      objectAMeta.path === objectBMeta.path
+    );
+  }
+
+  return false;
 }

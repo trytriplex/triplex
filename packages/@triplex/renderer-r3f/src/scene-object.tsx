@@ -24,8 +24,7 @@ import {
 import { type Object3D } from "three";
 import { mergeRefs } from "use-callback-ref";
 import { useCamera } from "./components/camera";
-import { getHelperForElement, Helper } from "./components/helper";
-import { useSelectSceneObject } from "./selection";
+import { hasHelper, Helper } from "./components/helper";
 import { useOnSceneObjectMount } from "./stores/selection";
 import { hash } from "./util/hash";
 
@@ -164,7 +163,6 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
     const parentMeta = useContext(ParentComponentMetaContext);
     const type = typeof Component === "string" ? "host" : "custom";
     const hostRef = useRef<Object3D>(null);
-    const selectSceneObject = useSelectSceneObject();
     const insideSceneObjectContext = useContext(SceneObjectContext);
     // eslint-disable-next-line react-compiler/react-compiler
     const mergedRefs = useMemo(() => mergeRefs([ref, hostRef]), [ref]);
@@ -214,10 +212,6 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
       // E.g. user land controls. Get rid of the problem altogether!
       return <>{props.children}</>;
     } else if (forceInsideSceneObjectContext || insideSceneObjectContext) {
-      const helper =
-        typeof Component === "string"
-          ? getHelperForElement(Component)
-          : undefined;
       const triplexMeta: TriplexMeta = {
         ...__meta,
         parents: parentMeta,
@@ -250,25 +244,14 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
               <>
                 {children}
                 <primitive attach="__triplex" object={triplexMeta} />
+                {hasHelper(Component) && (
+                  <Helper>
+                    <primitive attach="__triplex" object={triplexMeta} />
+                  </Helper>
+                )}
               </>
             )}
           </Component>
-
-          {helper && (
-            <Helper
-              args={helper[1]}
-              helperName={helper[0]}
-              onClick={(e) => {
-                if (e.delta > 1 || !hostRef.current) {
-                  return;
-                }
-
-                e.stopPropagation();
-                selectSceneObject(hostRef.current);
-              }}
-              targetRef={hostRef}
-            />
-          )}
         </ParentComponentMetaProvider>
       );
     }

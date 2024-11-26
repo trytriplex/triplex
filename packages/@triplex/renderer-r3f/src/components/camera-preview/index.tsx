@@ -9,7 +9,7 @@ import { useState } from "react";
 import { type Camera, type PerspectiveCamera as PCT } from "three";
 import { PerspectiveCamera, useFBO } from "triplex-drei";
 import { hash } from "../../util/hash";
-import { DEFAULT_LAYER_INDEX, HIDDEN_LAYER_INDEX } from "../../util/layers";
+import { HIDDEN_LAYER_INDEX } from "../../util/layers";
 import frag from "./frag.glsl";
 import vert from "./vert.glsl";
 
@@ -18,11 +18,8 @@ export function CameraPreview({ camera }: { camera: Camera }) {
   const scene = useThree((state) => state.scene);
 
   useFrame((state) => {
-    const currentLayers = camera.layers.mask;
     state.gl.setRenderTarget(renderTarget);
-    camera.layers.set(DEFAULT_LAYER_INDEX);
     state.gl.render(state.scene, camera);
-    camera.layers.set(currentLayers);
     state.gl.setRenderTarget(null);
   });
 
