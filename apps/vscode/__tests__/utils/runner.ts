@@ -170,7 +170,11 @@ const test = base.extend<{
     }
 
     const { app, logs, window } = await launch({ filename, testInfo });
-    const page = new ExtensionPage(window, basename(filename), "test-fixture");
+    const page = new ExtensionPage(
+      window,
+      basename(filename),
+      filename.split("/")[1],
+    );
 
     await runUseWithTrace({ logs, page, testInfo, use });
     // Cleanup any files created or modified by

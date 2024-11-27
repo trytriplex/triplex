@@ -4,165 +4,205 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import {
-  type ReconciledTriplexConfig,
-  type TriplexPorts,
-} from "@triplex/server";
+import { type InitializationConfig } from "./types";
 
 const suffix = "ta.hot";
-const metaHot = "imp" + "ort.me" + suffix;
+const import_meta_hot = "imp" + "ort.me" + suffix;
 /**
  * We set aside a static amount of virtual modules to be used when creating new
  * files. If someone tries to create over this limit they won't see anything in
  * their scene until they save. We're choosing 10 as the arbitrary number for
  * now.
  */
-const placeholderFiles = 10;
-
-interface TemplateOpts {
-  config: ReconciledTriplexConfig;
-  fgEnvironmentOverride: "production" | "staging" | "development" | "local";
-  fileGlobs: string[];
-  pkgName: string;
-  ports: TriplexPorts;
-  userId: string;
-}
+const placeholderFileCount = 10;
 
 export const scripts = {
-  bootstrap: (template: TemplateOpts) =>
-    [
-      `import { bootstrap } from "${template.pkgName}";`,
-      `import Provider from "triplex:global-provider.jsx";`,
-      'import { forwardKeyboardEvents, on, send } from "@triplex/bridge/client";',
-      `const projectFiles = import.meta.glob([${template.fileGlobs}]);`,
-      `window.triplex = JSON.parse(\`${JSON.stringify({
-        env: { ports: template.ports },
-        renderer: { attributes: template.config.rendererAttributes },
-      })}\`);`,
-      "const tempFiles = {",
-      Array(placeholderFiles)
-        .fill(undefined)
-        .map((_, i) => {
-          const n = i || "";
-          return `'/src/untitled${n}.tsx':() => import('triplex:/src/untitled${n}.tsx')`;
-        }),
-      "};",
-      `
-      const files = Object.assign(tempFiles, projectFiles);
+  bootstrap: (template: InitializationConfig) => `
+    import { send } from "@triplex/bridge/client";
 
-      // Need to export for HMR support later down the template.
-      export { files };
+    export async function bootstrap() {
+      try {
+        const { default: Provider } = await import("triplex:global-provider.jsx");
+        const { bootstrap: resolveRender } = await import("${template.pkgName}");
+        const render = resolveRender(document.getElementById("root"));
 
-      if (${metaHot}) {
-        on("request-refresh-scene", (opts) => {
-          if (opts?.hard) {
-            window.location.reload();
-          }
-        });
-
-        window.addEventListener("error", (e) => {
-          if (
-            ((error) =>
-            error.stack && error.stack.indexOf("invokeGuardedCallbackDev") >= 0)(
-            new Error()
-          )) {
-            // Ignore errors that will be processed a React error boundary.
-            // See: https://github.com/facebook/react/issues/10474
-            return true;
-          }
-
-          send("error", {
-            col: e.colno,
-            line: e.lineno,
-            title: "Unhandled Error",
-            subtitle: "An error was thrown which may affect how your scene behaves. Resolve the error and try again.",
-            message: e.error.message,
-            source: e.filename,
-            stack: e.error.stack,
+        return async ({ config, files }) => {
+          await render({
+            config,
+            fgEnvironmentOverride: ${template.fgEnvironmentOverride ? `"${template.fgEnvironmentOverride}"` : "undefined"},
+            files,
+            provider: Provider,
+            userId: "${template.userId}",
           });
-        });
-
-        ${metaHot}.on("vite:error", (e) => {
-          send("error", {
-            title: "Module Error",
-            subtitle: "The scene could not be rendered as there was an error parsing its module. Resolve the error and try again.",
-            message: e.err.message,
-            col: e.err.loc?.column,
-            line: e.err.loc?.line,
-            stack: e.err.stack,
-            source: e.err.id,
-          });
-        });
-
-        ${metaHot}.on("vite:afterUpdate", (e) => {
-          // We defer this to have a higher chance that a fast refresh has completed.
-          // See: https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/src/refreshUtils.js#L17
-          setTimeout(() => {
-            send("self:request-reset-error-boundary", undefined);
-          }, 96);
-          const paths = e.updates.map((update) => update.path);
-          paths.forEach((path) => {
-            send("self:request-reset-file", { path });
-          });
-        });
-
-        // This is patched into the react-refresh runtime so we can be notified
-        // on completion of a fast refresh. We need this as relying on the HMR
-        // events alone come with incorrect timing as they're not guaranteed to
-        // be fired after the refresh is complete.
-        window.notifyRefreshComplete = () => {
-          send("self:request-reset-error-boundary", undefined);
         };
-
-        if (!${metaHot}.data.render) {
-          ${metaHot}.data.render = bootstrap(document.getElementById('root'));
-          ${metaHot}.data.render({ config: ${JSON.stringify(
-            template.config,
-          )}, files, provider: Provider, userId: "${template.userId}", fgEnvironmentOverride: ${template.fgEnvironmentOverride ? `"${template.fgEnvironmentOverride}"` : "undefined"} });
-        }
-
-        ${metaHot}.accept((mod) => {
-          if (mod) {
-            ${metaHot}.data.render({ config: ${JSON.stringify(
-              template.config,
-            )}, files: mod.files, provider: Provider, userId: "${template.userId}", fgEnvironmentOverride: ${template.fgEnvironmentOverride ? `"${template.fgEnvironmentOverride}"` : "undefined"} });
-          }
+      } catch (e) {
+        // Notify the parent editor that we failed to bootstrap the renderer.
+        send("error", {
+          col: e.loc?.column,
+          id: "renderer_bootstrap_failure",
+          line: e.loc?.line,
+          message: e.message,
+          source: e.id,
+          stack: e.stack,
+          subtitle: "An error prevented Triplex for starting, check the editor for how to proceed.",
+          title: "Triplex Could Not Start",
+          type: "unrecoverable",
         });
+
+        // Re-throw the error so any other code stops executing.
+        throw e;
       }
-      `,
-      `
-      // Forward keydown events to the parent window to prevent the client iframe
-      // from swallowing events and the parent document being none-the-wiser.
-      forwardKeyboardEvents();
-      `,
-    ].join(""),
+    }
+  `,
   defaultProvider: `export default function Fragment({children}){return children;}`,
   // Hides vite-ignored dynamic import so that Vite can skip analysis if no other
   // dynamic import is present (https://github.com/vitejs/vite/pull/12732)
   dynamicImportHMR: `export const __hmr_import = (url) => import(/* @vite-ignore */ url);`,
-  globalProviderModule: (config: TemplateOpts["config"]) => `
-    import UserProvidedProvider from "${config.provider}";
+  globalProviderModule: (template: InitializationConfig) => `
+    import UserProvidedProvider from "${template.config.provider}";
+
     export default function GlobalProvider(props) {
       return <UserProvidedProvider {...props} />;
+    }
+  `,
+  init: (template: InitializationConfig) => `
+    import { forwardKeyboardEvents, on, send } from "@triplex/bridge/client";
+    import { bootstrap } from "triplex:bootstrap.tsx";
+
+    export const files = {
+      ${Array.from({ length: placeholderFileCount }).map((_, i) => {
+        const n = i || "";
+        return `'/src/untitled${n}.tsx':() => import('triplex:/src/untitled${n}.tsx')`;
+      })},
+      ...import.meta.glob([${template.fileGlobs}]),
+    };
+
+    export const config = ${JSON.stringify(template.config)};
+
+    async function initialize() {
+      window.triplex = JSON.parse(\`${JSON.stringify({
+        env: { ports: template.ports },
+        renderer: { attributes: template.config.rendererAttributes },
+      })}\`);
+
+      // Forward keydown events to the parent window to prevent the client iframe
+      // from swallowing events and the parent document being none-the-wiser.
+      forwardKeyboardEvents();
+
+      // Listen to any requests from the parent editor to refresh the scene frame.
+      on("request-refresh-scene", (opts) => {
+        if (opts?.hard) {
+          window.location.reload();
+        }
+      });
+
+      // This is patched into the react-refresh runtime so we can be notified
+      // on completion of a fast refresh. We need this as relying on the HMR
+      // events alone come with incorrect timing as they're not guaranteed to
+      // be fired after the refresh is complete.
+      window.notifyRefreshComplete = () => {
+        send("self:request-reset-error-boundary", undefined);
+      };
+
+      // Notify the parent editor of any unhandled errors.
+      window.addEventListener("error", (e) => {
+        if (
+          ((error) =>
+          error.stack && error.stack.indexOf("invokeGuardedCallbackDev") >= 0)(
+          new Error()
+        )) {
+          // Ignore errors that will be processed a React error boundary.
+          // See: https://github.com/facebook/react/issues/10474
+          return true;
+        }
+
+        send("error", {
+          col: e.colno,
+          line: e.lineno,
+          message: e.error.message,
+          source: e.filename,
+          stack: e.error.stack,
+          subtitle: "An error was thrown which may affect how your scene behaves. Resolve the error and try again.",
+          title: "Unhandled Error",
+        });
+      });
+
+      // Grab hold of the resolved render function and keep it available across HMR updates.
+      // We do this so we don't throw away the state of the renderer.
+      // One caveat is the bootstrap function can't be HMRd during development.
+      return await bootstrap();
+    }
+
+    if (${import_meta_hot}) {
+      // Notify error boundaries after a HMR event has completed. This has to be
+      // orchestrated after React Fast Refresh otherwise we can rapidly trigger error
+      // boundaries which is janky and unexpected by users.
+      // NOTE: This is kept at the top module scope so it's reset every time a HMR event is fired.
+      ${import_meta_hot}.on("vite:afterUpdate", (e) => {
+        // We defer this to have a higher chance that a fast refresh has completed.
+        // See: https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/src/refreshUtils.js#L17
+        setTimeout(() => {
+          send("self:request-reset-error-boundary", undefined);
+        }, 96);
+
+        const paths = e.updates.map((update) => update.path);
+        paths.forEach((path) => {
+          send("self:request-reset-file", { path });
+        });
+      });
+
+      // Notify the parent editor of any module errors sourced from Vite.
+      // NOTE: This is kept at the top module scope so it's reset every time a HMR event is fired.
+      ${import_meta_hot}.on("vite:error", (e) => {
+        send("error", {
+          col: e.err.loc?.column,
+          line: e.err.loc?.line,
+          message: e.err.message,
+          source: e.err.id,
+          stack: e.err.stack,
+          subtitle: "The scene could not be rendered as there was an error parsing its module. Resolve the error and try again.",
+          title: "Module Error",
+        });
+      });
+
+      if (!${import_meta_hot}.data.initialized) {
+        // We only want to do a side-effect initialization once. Afterwards we rely
+        // on accepting the new module through HMR to then re-bootstrap the renderer.
+        ${import_meta_hot}.data.initialized = true;
+        initialize().then((render) => {
+          ${import_meta_hot}.data.render = render;
+          ${import_meta_hot}.data.render({ config, files });
+        });
+      }
+
+      ${import_meta_hot}.accept((mod) => {
+        if (mod) {
+          ${import_meta_hot}.data.render({ config: mod.config, files: mod.files });
+        }
+      });
+    } else {
+      initialize().then((render) => {
+        render({ config, files });
+      });
     }
   `,
   // If the exports change, or if triplex meta changes, invalidate HMR
   // and force parents up the chain to refresh flushing changes through the editor
   // when the provider has changed - we want to flush it through the whole app!
   invalidateHMRFooter: `
-    if (${metaHot}) {
+    if (${import_meta_hot}) {
       __hmr_import(import.meta.url).then((currentModule) => {
-        ${metaHot}.accept((nextModule) => {
+        ${import_meta_hot}.accept((nextModule) => {
           const currentKeys = globalThis.Object.entries(currentModule).map(([key, value]) => typeof value.triplexMeta ? key + JSON.stringify(value.triplexMeta) : key).sort();
           const nextKeys = globalThis.Object.entries(nextModule).map(([key, value]) => typeof value.triplexMeta ? key + JSON.stringify(value.triplexMeta) : key).sort();
-          if (JSON.stringify(currentKeys) !== JSON.stringify(nextKeys)){${metaHot}.invalidate();}
+          if (JSON.stringify(currentKeys) !== JSON.stringify(nextKeys)){${import_meta_hot}.invalidate();}
         });
       });
     }
   `,
   invalidateHMRHeader: `import { __hmr_import } from "triplex:hmr-import";`,
   thumbnail: (
-    template: TemplateOpts,
+    template: InitializationConfig,
     { exportName, path }: { exportName: string; path: string },
   ) =>
     [

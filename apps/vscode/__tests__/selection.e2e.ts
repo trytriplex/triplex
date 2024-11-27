@@ -26,9 +26,9 @@ test.describe(() => {
 
   test("focusing a light", async ({ vsce }) => {
     await vsce.codelens("PointLight").click();
-    const { locator, panels, togglePanelsButton } = vsce.resolveEditor();
+    const { panels, scene, togglePanelsButton } = vsce.resolveEditor();
 
-    await locator.getByTestId("scene").click({ force: true });
+    await scene.click();
     await togglePanelsButton.click();
 
     await expect(

@@ -4,42 +4,43 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { type ReconciledTriplexConfig } from "@triplex/server";
 import { scripts } from "./templates";
+import { type InitializationConfig } from "./types";
 
 const emptyProviderId = "triplex:empty-provider.jsx";
 const globalProviderId = "triplex:global-provider.jsx";
+const bootstrapModuleId = "triplex:bootstrap.tsx";
 const hmrImportId = "triplex:hmr-import";
 
-export function scenePlugin({ config }: { config: ReconciledTriplexConfig }) {
+export function scenePlugin(template: InitializationConfig) {
   return {
     enforce: "pre",
     async load(id: string) {
-      if (id === emptyProviderId) {
-        return scripts.defaultProvider;
-      }
+      switch (id) {
+        case "\0" + hmrImportId:
+          return scripts.dynamicImportHMR;
 
-      if (id === "\0" + hmrImportId) {
-        return scripts.dynamicImportHMR;
-      }
+        case bootstrapModuleId:
+          return scripts.bootstrap(template);
 
-      if (id === globalProviderId) {
-        return scripts.globalProviderModule(config);
+        case emptyProviderId:
+          return scripts.defaultProvider;
+
+        case globalProviderId:
+          return scripts.globalProviderModule(template);
       }
     },
     name: "triplex:scene-plugin",
     resolveId(id: string) {
-      if (id === hmrImportId) {
-        // Return the id as a virtual module so no other plugins transform it.
-        return "\0" + hmrImportId;
-      }
+      switch (id) {
+        case hmrImportId:
+          // Return the id as a virtual module so no other plugins transform it.
+          return "\0" + hmrImportId;
 
-      if (id === emptyProviderId) {
-        return emptyProviderId;
-      }
-
-      if (id === globalProviderId) {
-        return globalProviderId;
+        case bootstrapModuleId:
+        case emptyProviderId:
+        case globalProviderId:
+          return id;
       }
     },
     transform(code: string, id: string) {

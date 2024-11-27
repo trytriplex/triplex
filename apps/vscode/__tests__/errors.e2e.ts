@@ -171,3 +171,18 @@ test.describe("when an error is thrown during glsl compilation (2)", () => {
     );
   });
 });
+
+test.describe("when an error is thrown resolving a renderer", () => {
+  test.use({
+    filename: "examples-private/error-renderer/src/examples/scene.tsx",
+  });
+
+  test("should show unrecoverable splash screen", async ({ vsce }) => {
+    await vsce.codelens("Component", { skipWait: true }).click();
+    const { locator } = vsce.resolveEditor();
+
+    await expect(locator.getByTestId("ErrorSplash")).toHaveText(
+      /An Unexpected Error Occurred/,
+    );
+  });
+});

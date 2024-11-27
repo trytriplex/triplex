@@ -59,7 +59,17 @@ export class ExtensionPage {
     };
   }
 
+  dismissAllNotifications() {
+    return this.page
+      .getByLabel("Clear Notification")
+      .all()
+      .then((buttons) => {
+        return Promise.all(buttons.map((button) => button.click()));
+      });
+  }
+
   resolveEditor() {
+    const that = this;
     const locator = this.page
       .frameLocator(".webview.ready")
       .frameLocator(
@@ -78,14 +88,21 @@ export class ExtensionPage {
         };
       },
       get devOnlyCameraPanel() {
-        return this.scene.getByTestId("camera-panel");
+        return this.scene.locator.getByTestId("camera-panel");
       },
       locator,
       get panels() {
         return locator.getByTestId("panels");
       },
       get scene() {
-        return locator.frameLocator("#scene");
+        const frameLocator = locator.frameLocator("#scene");
+        return {
+          async click() {
+            await that.dismissAllNotifications();
+            return locator.getByTestId("scene").click({ force: true });
+          },
+          locator: frameLocator,
+        };
       },
       get togglePanelsButton() {
         return locator.getByRole("button", { name: "View Scene Elements" });

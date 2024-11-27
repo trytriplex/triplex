@@ -9,10 +9,9 @@ import { initFeatureGates } from "@triplex/lib/fg";
 import { TelemetryProvider } from "@triplex/ux";
 import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
-import { ErrorBoundary } from "react-error-boundary";
 import { version } from "../../package.json";
+import { RootErrorBoundary } from "./components/root-error-boundary";
 import { AppRoot } from "./features/app-root";
-import { ErrorSplash } from "./features/error-splash";
 import { preloadSubscription } from "./hooks/ws";
 import "./styles.css";
 
@@ -46,13 +45,11 @@ async function bootstrap() {
       userId={window.triplex.userId}
       version={version}
     >
-      <ErrorBoundary
-        fallbackRender={({ error }) => <ErrorSplash error={error} />}
-      >
+      <RootErrorBoundary>
         <Suspense>
           <AppRoot />
         </Suspense>
-      </ErrorBoundary>
+      </RootErrorBoundary>
     </TelemetryProvider>,
   );
 }

@@ -35,7 +35,7 @@ test.describe(() => {
 
     await input.selectOption("green");
 
-    const element = scene.getByTestId("component-props");
+    const element = scene.locator.getByTestId("component-props");
     await expect(element).toContainText(`"color":"green"`);
   });
 });

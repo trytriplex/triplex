@@ -1,0 +1,9 @@
+{
+  "name": "@example/error-renderer",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "echo \"Not implemented\"",
+    "typedef": "echo \"Not implemented\""
+  }
+}

@@ -74,7 +74,7 @@ export async function initializeWebviewPanel(
         },
         initialState: {
           exportName,
-          path: normalize(path),
+          path: scopedFileName,
         },
         isTelemetryEnabled: vscode.env.isTelemetryEnabled,
         sessionId: vscode.env.sessionId,

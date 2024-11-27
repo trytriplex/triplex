@@ -6,12 +6,15 @@
  */
 import { useScreenView } from "@triplex/ux";
 
-export function ErrorSplash({ error }: { error: Error }) {
+export function ErrorSplash({ error }: { error: Error | { message: string } }) {
   useScreenView("error_splash", "Screen");
 
   return (
     <>
-      <div className="fixed inset-0 mx-auto flex max-w-2xl flex-col justify-center gap-4 p-4">
+      <div
+        className="fixed inset-0 mx-auto flex max-w-2xl flex-col justify-center gap-4 p-4"
+        data-testid="ErrorSplash"
+      >
         <h1 className="text-heading text-center font-medium">
           An Unexpected Error Occurred
         </h1>

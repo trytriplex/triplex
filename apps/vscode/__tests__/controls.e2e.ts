@@ -46,7 +46,9 @@ test("lights set on load", async ({ vsce }) => {
   await expect(
     panel.locator.getByRole("button", { name: "Turn On Default Lights" }),
   ).toBeVisible();
-  await expect(panel.scene.getByTestId("scene-lights-off")).toBeVisible();
+  await expect(
+    panel.scene.locator.getByTestId("scene-lights-off"),
+  ).toBeVisible();
 });
 
 test("lights turned on", async ({ vsce }) => {
@@ -57,5 +59,7 @@ test("lights turned on", async ({ vsce }) => {
     .getByRole("button", { name: "Turn On Default Lights" })
     .click();
 
-  await expect(panel.scene.getByTestId("scene-lights-on")).toBeVisible();
+  await expect(
+    panel.scene.locator.getByTestId("scene-lights-on"),
+  ).toBeVisible();
 });

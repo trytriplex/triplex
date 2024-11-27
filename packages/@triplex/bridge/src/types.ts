@@ -107,12 +107,14 @@ export interface ClientSendEventData {
   };
   error: {
     col?: number;
+    id?: string;
     line?: number;
     message: string;
     source?: string;
     stack?: string;
     subtitle: string;
     title: string;
+    type?: "default" | "unrecoverable";
   };
   "extension-point-triggered": { id: string };
   keydown: KeyboardEventObject;

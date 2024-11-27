@@ -32,7 +32,8 @@ const schema = object({
   rendererAttributes: optional(object({})),
 });
 
-export function getConfig(cwd: string): ReconciledTriplexConfig {
+export function getConfig(_cwd: string): ReconciledTriplexConfig {
+  const cwd = normalize(_cwd);
   let config: TriplexConfig & SecretTriplexConfig;
 
   try {

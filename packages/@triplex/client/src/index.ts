@@ -12,7 +12,7 @@ import type {
 } from "@triplex/server";
 import react from "@vitejs/plugin-react";
 import express from "express";
-import { join, normalize } from "upath";
+import { join } from "upath";
 import { version } from "../package.json";
 import triplexBabelPlugin from "./babel-plugin";
 import { transformNodeModulesJSXPlugin } from "./node-modules-plugin";
@@ -37,13 +37,21 @@ export async function createServer({
   };
   userId: string;
 }) {
-  const normalizedCwd = normalize(config.cwd);
-  const tsConfig = join(normalizedCwd, "tsconfig.json");
+  const tsConfig = join(config.cwd, "tsconfig.json");
   const app = express();
   const httpServer = createHttpServer(app);
   const { createServer: createViteServer } = await import("vite");
   const { default: glsl } = await import("vite-plugin-glsl");
   const { default: tsconfigPaths } = await import("vite-tsconfig-paths");
+
+  const initializationConfig = {
+    config,
+    fgEnvironmentOverride,
+    fileGlobs: config.files.map((f) => `'${f.replace(config.cwd, "")}'`),
+    pkgName: "__triplex_renderer__",
+    ports,
+    userId,
+  };
 
   const vite = await createViteServer({
     appType: "custom",
@@ -56,7 +64,7 @@ export async function createServer({
       esbuildOptions: { plugins: [transformNodeModulesJSXPlugin()] },
     },
     plugins: [
-      remoteModulePlugin({ cwd: normalizedCwd, files: config.files, ports }),
+      remoteModulePlugin({ cwd: config.cwd, files: config.files, ports }),
       // ---------------------------------------------------------------
       // TODO: Vite plugins should be loaded from a renderer's manifest
       // instead of hardcoded. We'll cross this bridge to resolve later.
@@ -64,7 +72,7 @@ export async function createServer({
         babel: {
           plugins: [
             triplexBabelPlugin({
-              cwd: normalizedCwd,
+              cwd: config.cwd,
               exclude: [config.provider, renderer.root],
             }),
           ],
@@ -72,7 +80,7 @@ export async function createServer({
       }),
       glsl(),
       // ---------------------------------------------------------------
-      scenePlugin({ config }),
+      scenePlugin(initializationConfig),
       tsconfigPaths({ projects: [tsConfig] }),
     ],
     publicDir: config.publicDir,
@@ -83,7 +91,7 @@ export async function createServer({
       },
       dedupe: renderer.manifest.bundler?.dedupe,
     },
-    root: normalizedCwd,
+    root: config.cwd,
     server: {
       hmr: {
         overlay: false,
@@ -93,15 +101,6 @@ export async function createServer({
       middlewareMode: true,
     },
   });
-
-  const htmlConfig = {
-    config,
-    fgEnvironmentOverride,
-    fileGlobs: config.files.map((f) => `'${f.replace(normalizedCwd, "")}'`),
-    pkgName: "__triplex_renderer__",
-    ports,
-    userId,
-  };
 
   app.use((_, res, next) => {
     res.set({
@@ -118,7 +117,7 @@ export async function createServer({
 
   app.get("/scene.html", async (_, res, next) => {
     try {
-      const template = createHTML(scripts.bootstrap(htmlConfig), {
+      const template = createHTML(scripts.init(initializationConfig), {
         initial: loading(),
       });
       const html = await vite.transformIndexHtml("scene", template);
@@ -139,7 +138,7 @@ export async function createServer({
       }
 
       const template = createHTML(
-        scripts.thumbnail(htmlConfig, { exportName, path }),
+        scripts.thumbnail(initializationConfig, { exportName, path }),
       );
       const html = await vite.transformIndexHtml(
         `thumbnail_${path}_${exportName}`,
