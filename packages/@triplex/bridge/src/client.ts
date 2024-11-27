@@ -107,7 +107,9 @@ export type Module = Record<string, SceneComponent>;
 
 export type Modules = Record<string, () => Promise<Module>>;
 
-export type ProviderComponent = (props: { children?: unknown }) => JSX.Element;
+export type ProviderComponent = (props: {
+  children?: React.ReactNode;
+}) => JSX.Element;
 
 export type UnknownComponent = (props: Record<string, unknown>) => JSX.Element;
 

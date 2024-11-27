@@ -7,7 +7,7 @@
 import { send } from "@triplex/bridge/client";
 import { Fragment, useEffect } from "react";
 import { suspend } from "suspend-react";
-import { FitCameraToScene } from "./components/camera";
+import { FitCameraToScene } from "./components/camera-fit-scene";
 import { ErrorBoundaryForScene } from "./components/error-boundary";
 import { ErrorFallback } from "./components/error-fallback";
 import { Tunnel } from "./components/tunnel";
@@ -89,8 +89,8 @@ export function SceneLoader({
       }
       resetKeys={[SceneComponent]}
     >
-      <FitCameraToScene id={path + exportName}>
-        <LoadedNotifierForTesting exportName={exportName} />
+      <LoadedNotifierForTesting exportName={exportName} />
+      <FitCameraToScene resetKeys={[path, exportName]}>
         <SceneRenderer
           component={SceneComponent}
           exportName={exportName}

@@ -113,7 +113,7 @@ function SetUpCTA() {
 export function ProviderControlsPanel() {
   const isProviderSetUp =
     window.triplex.env.config.provider &&
-    window.triplex.env.config.provider !== "triplex:empty-provider.tsx";
+    window.triplex.env.config.provider !== "triplex:empty-provider.jsx";
 
   return <>{isProviderSetUp ? <ProviderProps /> : <SetUpCTA />}</>;
 }

@@ -12,7 +12,8 @@
     "noEmit": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+    "types": ["@triplex/bridge/types/renderer"]
   },
   "include": ["."],
   "exclude": ["node_modules"]

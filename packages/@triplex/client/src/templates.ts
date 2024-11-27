@@ -32,7 +32,7 @@ export const scripts = {
   bootstrap: (template: TemplateOpts) =>
     [
       `import { bootstrap } from "${template.pkgName}";`,
-      `import provider from "${template.config.provider}";`,
+      `import Provider from "triplex:global-provider.jsx";`,
       'import { forwardKeyboardEvents, on, send } from "@triplex/bridge/client";',
       `const projectFiles = import.meta.glob([${template.fileGlobs}]);`,
       `window.triplex = JSON.parse(\`${JSON.stringify({
@@ -51,7 +51,7 @@ export const scripts = {
       const files = Object.assign(tempFiles, projectFiles);
 
       // Need to export for HMR support later down the template.
-      export { provider, files };
+      export { files };
 
       if (${metaHot}) {
         on("request-refresh-scene", (opts) => {
@@ -118,14 +118,14 @@ export const scripts = {
           ${metaHot}.data.render = bootstrap(document.getElementById('root'));
           ${metaHot}.data.render({ config: ${JSON.stringify(
             template.config,
-          )}, files, provider, userId: "${template.userId}", fgEnvironmentOverride: ${template.fgEnvironmentOverride ? `"${template.fgEnvironmentOverride}"` : "undefined"} });
+          )}, files, provider: Provider, userId: "${template.userId}", fgEnvironmentOverride: ${template.fgEnvironmentOverride ? `"${template.fgEnvironmentOverride}"` : "undefined"} });
         }
 
         ${metaHot}.accept((mod) => {
           if (mod) {
             ${metaHot}.data.render({ config: ${JSON.stringify(
               template.config,
-            )}, files: mod.files, provider: mod.provider, userId: "${template.userId}", fgEnvironmentOverride: ${template.fgEnvironmentOverride ? `"${template.fgEnvironmentOverride}"` : "undefined"} });
+            )}, files: mod.files, provider: Provider, userId: "${template.userId}", fgEnvironmentOverride: ${template.fgEnvironmentOverride ? `"${template.fgEnvironmentOverride}"` : "undefined"} });
           }
         });
       }
@@ -140,14 +140,19 @@ export const scripts = {
   // Hides vite-ignored dynamic import so that Vite can skip analysis if no other
   // dynamic import is present (https://github.com/vitejs/vite/pull/12732)
   dynamicImportHMR: `export const __hmr_import = (url) => import(/* @vite-ignore */ url);`,
+  globalProviderModule: (config: TemplateOpts["config"]) => `
+    import UserProvidedProvider from "${config.provider}";
+    export default function GlobalProvider(props) {
+      return <UserProvidedProvider {...props} />;
+    }
+  `,
   // If the exports change, or if triplex meta changes, invalidate HMR
   // and force parents up the chain to refresh flushing changes through the editor
   // when the provider has changed - we want to flush it through the whole app!
-  invalidateHMRFooter: (providerModule: string) => `
+  invalidateHMRFooter: `
     if (${metaHot}) {
       __hmr_import(import.meta.url).then((currentModule) => {
         ${metaHot}.accept((nextModule) => {
-          if (import.meta.url.includes("${providerModule}")){${metaHot}.invalidate();return;}
           const currentKeys = globalThis.Object.entries(currentModule).map(([key, value]) => typeof value.triplexMeta ? key + JSON.stringify(value.triplexMeta) : key).sort();
           const nextKeys = globalThis.Object.entries(nextModule).map(([key, value]) => typeof value.triplexMeta ? key + JSON.stringify(value.triplexMeta) : key).sort();
           if (JSON.stringify(currentKeys) !== JSON.stringify(nextKeys)){${metaHot}.invalidate();}

@@ -17,7 +17,7 @@ const STATIC_ASSETS: string[] = ["glb", "gltf"];
 const DEFAULT_FILES: string[] = ["../**/*.{jsx,tsx}"];
 const DEFAULT_COMPONENTS: string[] = [];
 const DEFAULT_RENDERER = "react-three-fiber";
-const DEFAULT_PROVIDER = "triplex:empty-provider.tsx";
+const DEFAULT_PROVIDER = "triplex:empty-provider.jsx";
 const DEFAULT_PUBLIC_DIR = "../public";
 const DEFAULT_ASSETS_DIR = "assets";
 

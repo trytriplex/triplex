@@ -20,7 +20,6 @@ import {
   useState,
 } from "react";
 import {
-  Spherical,
   Vector3,
   type OrthographicCamera,
   type PerspectiveCamera,
@@ -28,7 +27,7 @@ import {
 } from "three";
 import { CameraControls } from "triplex-drei";
 import { allLayers } from "../util/layers";
-import { buildSceneSphere, findObject3D } from "../util/scene";
+import { findObject3D } from "../util/scene";
 import { Tunnel } from "./tunnel";
 
 const TRIPLEX_CAMERA_NAME = "__triplex_camera";
@@ -99,35 +98,6 @@ function fitCameraToViewport(camera: CameraType, size: Size) {
 export function useCamera() {
   const context = useContext(CameraContext);
   return context;
-}
-
-export function FitCameraToScene({
-  children,
-  id,
-}: {
-  children: React.ReactNode;
-  id?: string;
-}) {
-  const { controls } = useCamera();
-  const scene = useThree((store) => store.scene);
-
-  useLayoutEffect(() => {
-    if (controls.current) {
-      const sphere = buildSceneSphere(scene);
-      if (sphere.isEmpty()) {
-        return;
-      }
-
-      const point = new Spherical().setFromVector3(
-        // Z forward rotation.
-        new Vector3(0, 0, 1),
-      );
-      controls.current.rotateTo(point.theta, point.phi, false);
-      controls.current.fitToSphere(sphere, false);
-    }
-  }, [controls, scene, id]);
-
-  return <>{children}</>;
 }
 
 export function Camera({

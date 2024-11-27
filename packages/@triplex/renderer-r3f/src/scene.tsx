@@ -4,10 +4,10 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { send } from "@triplex/bridge/client";
+import { send, type ProviderComponent } from "@triplex/bridge/client";
 import { useEvent } from "@triplex/lib";
 import { fg } from "@triplex/lib/fg";
-import { Suspense, useCallback, useState, type PropsWithChildren } from "react";
+import { Suspense, useCallback, useState } from "react";
 import { Canvas } from "./canvas";
 import { Camera } from "./components/camera";
 import { CameraGizmo } from "./components/camera-gizmo";
@@ -26,7 +26,7 @@ export function SceneFrame({
   provider: Provider,
   providerPath,
 }: {
-  provider: (props: PropsWithChildren) => JSX.Element;
+  provider: ProviderComponent;
   providerPath: string;
 }) {
   const [component, setComponent] = useState<{

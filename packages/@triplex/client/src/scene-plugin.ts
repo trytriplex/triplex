@@ -7,7 +7,8 @@
 import { type ReconciledTriplexConfig } from "@triplex/server";
 import { scripts } from "./templates";
 
-const emptyProviderId = "triplex:empty-provider.tsx";
+const emptyProviderId = "triplex:empty-provider.jsx";
+const globalProviderId = "triplex:global-provider.jsx";
 const hmrImportId = "triplex:hmr-import";
 
 export function scenePlugin({ config }: { config: ReconciledTriplexConfig }) {
@@ -21,6 +22,10 @@ export function scenePlugin({ config }: { config: ReconciledTriplexConfig }) {
       if (id === "\0" + hmrImportId) {
         return scripts.dynamicImportHMR;
       }
+
+      if (id === globalProviderId) {
+        return scripts.globalProviderModule(config);
+      }
     },
     name: "triplex:scene-plugin",
     resolveId(id: string) {
@@ -31,6 +36,10 @@ export function scenePlugin({ config }: { config: ReconciledTriplexConfig }) {
 
       if (id === emptyProviderId) {
         return emptyProviderId;
+      }
+
+      if (id === globalProviderId) {
+        return globalProviderId;
       }
     },
     transform(code: string, id: string) {
@@ -46,11 +55,7 @@ export function scenePlugin({ config }: { config: ReconciledTriplexConfig }) {
       }
 
       // This forces modules with JSX to invalidate themselves if their exports change.
-      return (
-        scripts.invalidateHMRHeader +
-        code +
-        scripts.invalidateHMRFooter(config.provider.replace(config.cwd, ""))
-      );
+      return scripts.invalidateHMRHeader + code + scripts.invalidateHMRFooter;
     },
   } as const;
 }
