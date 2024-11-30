@@ -46,7 +46,7 @@ describe("babel plugin", () => {
         "translate": false,
         "rotate": false,
         "scale": true
-      }} key={"group27"}></SceneObject>;"
+      }}></SceneObject>;"
     `);
   });
 
@@ -76,7 +76,7 @@ describe("babel plugin", () => {
           "translate": false,
           "rotate": false,
           "scale": true
-        }} key={"group316"}></SceneObject>;
+        }}></SceneObject>;
       }
       _c = Component;
       Component.triplexMeta = {
@@ -118,7 +118,7 @@ describe("babel plugin", () => {
         "translate": true,
         "rotate": false,
         "scale": false
-      }} key={"RigidBody37"}>
+      }}>
             </SceneObject>;"
     `);
   });
@@ -145,7 +145,7 @@ describe("babel plugin", () => {
         "translate": false,
         "rotate": false,
         "scale": false
-      }} key={"group27"}></SceneObject>;"
+      }}></SceneObject>;"
     `);
   });
 
@@ -176,7 +176,7 @@ describe("babel plugin", () => {
         "translate": false,
         "rotate": false,
         "scale": true
-      }} key={"group27"}>
+      }}>
               <SceneObject position={[1, 1, 1]} __component={"mesh"} __meta={{
           "path": "",
           "name": "mesh",
@@ -185,7 +185,7 @@ describe("babel plugin", () => {
           "translate": true,
           "rotate": false,
           "scale": false
-        }} key={"mesh39"}>
+        }}>
                 <SceneObject args={[1, 1, 1]} __component={"boxGeometry"} __meta={{
             "path": "",
             "name": "boxGeometry",
@@ -194,7 +194,7 @@ describe("babel plugin", () => {
             "translate": false,
             "rotate": false,
             "scale": false
-          }} key={"boxGeometry411"}></SceneObject>
+          }}></SceneObject>
                 <SceneObject color="black" __component={"standardMaterial"} __meta={{
             "path": "",
             "name": "standardMaterial",
@@ -203,7 +203,7 @@ describe("babel plugin", () => {
             "translate": false,
             "rotate": false,
             "scale": false
-          }} key={"standardMaterial511"}></SceneObject>
+          }}></SceneObject>
               </SceneObject>
             </SceneObject>;"
     `);
@@ -236,7 +236,7 @@ describe("babel plugin", () => {
           "translate": false,
           "rotate": false,
           "scale": false
-        }} key={"mesh411"}></SceneObject>;
+        }}></SceneObject>;
       }
       HelloWorld.triplexMeta = {
         "lighting": "default"
@@ -271,7 +271,7 @@ describe("babel plugin", () => {
           "translate": false,
           "rotate": false,
           "scale": false
-        }} key={"mesh411"}></SceneObject>;
+        }}></SceneObject>;
       }
       HelloWorld.triplexMeta = {
         "lighting": "default"
@@ -306,7 +306,7 @@ describe("babel plugin", () => {
           "translate": false,
           "rotate": false,
           "scale": false
-        }} key={"mesh411"}></SceneObject>;
+        }}></SceneObject>;
       };
       HelloWorld.triplexMeta = {
         "lighting": "default"
@@ -347,7 +347,7 @@ describe("babel plugin", () => {
             "translate": false,
             "rotate": false,
             "scale": false
-          }} key={"mesh513"}>
+          }}>
                     <SceneObject __component={"boxGeometry"} __meta={{
               "path": "",
               "name": "boxGeometry",
@@ -356,7 +356,7 @@ describe("babel plugin", () => {
               "translate": false,
               "rotate": false,
               "scale": false
-            }} key={"boxGeometry615"}></SceneObject>
+            }}></SceneObject>
                   </SceneObject>
                   <SceneObject __component={"spotLight"} __meta={{
             "path": "",
@@ -366,7 +366,7 @@ describe("babel plugin", () => {
             "translate": false,
             "rotate": false,
             "scale": false
-          }} key={"spotLight813"}></SceneObject>
+          }}></SceneObject>
                 </>;
       };
       HelloWorld.triplexMeta = {
@@ -410,7 +410,7 @@ describe("babel plugin", () => {
           "translate": false,
           "rotate": false,
           "scale": false
-        }} key={"group911"}></SceneObject>;
+        }}></SceneObject>;
       }
       HelloWorld.triplexMeta = {
         "lighting": "default"
@@ -447,7 +447,7 @@ describe("babel plugin", () => {
           "translate": false,
           "rotate": false,
           "scale": false
-        }} key={"mesh411"}></SceneObject>;
+        }}></SceneObject>;
       };
       export default HelloWorld;
       HelloWorld.triplexMeta = {
@@ -483,7 +483,7 @@ describe("babel plugin", () => {
           "translate": false,
           "rotate": false,
           "scale": false
-        }} key={"mesh411"}></SceneObject>;
+        }}></SceneObject>;
       });
       HelloWorld.triplexMeta = {
         "lighting": "default"
@@ -542,7 +542,7 @@ describe("babel plugin", () => {
           "translate": false,
           "rotate": false,
           "scale": true
-        }} key={"group911"}>
+        }}>
                   <SceneObject {...ok} userData={{
             hello: true
           }} onClick={() => {}} visible={true} position={position} rotation={rotation} __component={"mesh"} __meta={{
@@ -553,7 +553,7 @@ describe("babel plugin", () => {
             "translate": true,
             "rotate": false,
             "scale": false
-          }} key={"mesh1013"}>
+          }}>
                     <SceneObject args={[1, 1, 1]} __component={"boxGeometry"} __meta={{
               "path": "",
               "name": "boxGeometry",
@@ -562,7 +562,7 @@ describe("babel plugin", () => {
               "translate": false,
               "rotate": false,
               "scale": false
-            }} key={"boxGeometry1815"}></SceneObject>
+            }}></SceneObject>
                     <SceneObject color="#00ff00" __component={"meshStandardMaterial"} __meta={{
               "path": "",
               "name": "meshStandardMaterial",
@@ -571,7 +571,7 @@ describe("babel plugin", () => {
               "translate": false,
               "rotate": false,
               "scale": false
-            }} key={"meshStandardMaterial1915"}></SceneObject>
+            }}></SceneObject>
                   </SceneObject>
                 </SceneObject>;
       }
@@ -604,7 +604,7 @@ describe("babel plugin", () => {
         "translate": false,
         "rotate": false,
         "scale": false
-      }} key={"CustomComponent27"}></SceneObject>;"
+      }}></SceneObject>;"
     `);
   });
 
@@ -622,7 +622,7 @@ describe("babel plugin", () => {
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
-      "<SceneObject __component={CustomComponent} __meta={{
+      "<SceneObject key="existing" __component={CustomComponent} __meta={{
         "path": "",
         "name": "CustomComponent",
         "line": 2,
@@ -630,7 +630,7 @@ describe("babel plugin", () => {
         "translate": false,
         "rotate": false,
         "scale": false
-      }} key={"CustomComponent27" + "existing"}></SceneObject>;"
+      }}></SceneObject>;"
     `);
   });
 
@@ -648,7 +648,7 @@ describe("babel plugin", () => {
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
-      "<SceneObject __component={CustomComponent} __meta={{
+      "<SceneObject key={10} __component={CustomComponent} __meta={{
         "path": "",
         "name": "CustomComponent",
         "line": 2,
@@ -656,7 +656,7 @@ describe("babel plugin", () => {
         "translate": false,
         "rotate": false,
         "scale": false
-      }} key={"CustomComponent27" + 10}></SceneObject>;"
+      }}></SceneObject>;"
     `);
   });
 
@@ -683,7 +683,7 @@ describe("babel plugin", () => {
         "translate": true,
         "rotate": false,
         "scale": false
-      }} key={"mesh27"}></SceneObject>;"
+      }}></SceneObject>;"
     `);
   });
 
@@ -712,7 +712,7 @@ describe("babel plugin", () => {
           "translate": true,
           "rotate": true,
           "scale": true
-        }} key={"mesh316"}></SceneObject>;
+        }}></SceneObject>;
       }
       Component.triplexMeta = {
         "lighting": "default"
@@ -745,7 +745,7 @@ describe("babel plugin", () => {
           "translate": true,
           "rotate": true,
           "scale": true
-        }} key={"mesh316"}></SceneObject>;
+        }}></SceneObject>;
       });
       Component.triplexMeta = {
         "lighting": "default"
@@ -781,7 +781,7 @@ describe("babel plugin", () => {
           "translate": true,
           "rotate": true,
           "scale": true
-        }} key={"mesh316"}></SceneObject>;
+        }}></SceneObject>;
       }
       Component.triplexMeta = {
         "lighting": "default"
@@ -817,7 +817,7 @@ describe("babel plugin", () => {
           "translate": true,
           "rotate": true,
           "scale": true
-        }} key={"mesh316"}></SceneObject>;
+        }}></SceneObject>;
       });
       Component.triplexMeta = {
         "lighting": "default"
@@ -856,7 +856,7 @@ describe("babel plugin", () => {
           "translate": false,
           "rotate": false,
           "scale": false
-        }} key={"mesh316"}></SceneObject>;
+        }}></SceneObject>;
       }
       Component.triplexMeta = {
         "lighting": "default"
@@ -895,7 +895,7 @@ describe("babel plugin", () => {
           "translate": false,
           "rotate": false,
           "scale": false
-        }} key={"mesh316"}></SceneObject>;
+        }}></SceneObject>;
       });
       Component.triplexMeta = {
         "lighting": "default"
@@ -928,7 +928,7 @@ describe("babel plugin", () => {
           "translate": false,
           "rotate": false,
           "scale": false
-        }} key={"mesh316"}></SceneObject>;
+        }}></SceneObject>;
       });
       Component.triplexMeta = {
         "lighting": "default"

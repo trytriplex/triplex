@@ -5,7 +5,6 @@
  * file in the root directory of this source tree.
  */
 import type { NodePath, PluginObj } from "@babel/core";
-// eslint-disable-next-line import/no-namespace
 import * as t from "@babel/types";
 import { normalize } from "upath";
 
@@ -249,9 +248,7 @@ export default function triplexBabelPlugin({
         const line = path.node.loc.start.line;
         // Align to tsc where column numbers start from 1
         const column = path.node.loc.start.column + 1;
-        // We grab the key node if defined and combine it later in the
-        // transform to keep it stable.
-        let keyNode: t.Expression | undefined;
+
         const transformsFound = {
           rotate: false,
           scale: false,
@@ -261,19 +258,6 @@ export default function triplexBabelPlugin({
         const attributes = path.node.openingElement.attributes.filter(
           (attr) => {
             if (attr.type === "JSXAttribute") {
-              if (attr.name.name === "key") {
-                if (t.isStringLiteral(attr.value)) {
-                  keyNode = attr.value;
-                } else if (
-                  t.isJSXExpressionContainer(attr.value) &&
-                  t.isExpression(attr.value.expression)
-                ) {
-                  keyNode = attr.value.expression;
-                }
-
-                return false;
-              }
-
               if (
                 elementType === "host" ||
                 isNodeModulesComponent(path, elementName, cwd)
@@ -360,18 +344,6 @@ export default function triplexBabelPlugin({
                     t.booleanLiteral(transformsFound.scale),
                   ),
                 ]),
-              ),
-            ),
-            t.jsxAttribute(
-              t.jsxIdentifier("key"),
-              t.jsxExpressionContainer(
-                keyNode
-                  ? t.binaryExpression(
-                      "+",
-                      t.stringLiteral(elementName + line + column),
-                      keyNode,
-                    )
-                  : t.stringLiteral(elementName + line + column),
               ),
             ),
           ]),
