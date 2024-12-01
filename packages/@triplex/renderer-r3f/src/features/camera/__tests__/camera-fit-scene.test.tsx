@@ -13,7 +13,7 @@ import { FitCameraToScene } from "../camera-fit-scene";
 const fitToSphere = vi.fn();
 const rotateTo = vi.fn();
 
-vi.mock("../camera", () => ({
+vi.mock("../context", () => ({
   useCamera: () => ({
     controls: { current: { fitToSphere, rotateTo } },
   }),

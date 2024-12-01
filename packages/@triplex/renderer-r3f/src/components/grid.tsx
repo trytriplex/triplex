@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { Grid } from "triplex-drei";
-import { usePlayState } from "../stores/state";
+import { usePlayState } from "../stores/use-play-state";
 import { editorLayer } from "../util/layers";
 
 export function TriplexGrid() {

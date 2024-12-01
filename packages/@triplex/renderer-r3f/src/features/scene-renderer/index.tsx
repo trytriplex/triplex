@@ -6,8 +6,8 @@
  */
 import { compose, on, send, type SceneComponent } from "@triplex/bridge/client";
 import { useEffect, useLayoutEffect, useReducer, useState } from "react";
-import { Tunnel } from "./components/tunnel";
-import { SceneObject } from "./scene-object";
+import { Tunnel } from "../../components/tunnel";
+import { SceneElement } from "../scene-element";
 
 export function SceneRenderer({
   component: SceneComponent,
@@ -72,7 +72,7 @@ export function SceneRenderer({
 
   return (
     <>
-      <SceneObject
+      <SceneElement
         __component={SceneComponent}
         __meta={{
           column: -1,

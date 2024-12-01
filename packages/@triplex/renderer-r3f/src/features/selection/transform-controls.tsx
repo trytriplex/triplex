@@ -11,7 +11,7 @@ import {
   TransformControls as TransformControlsImpl,
   type TransformControlsProps,
 } from "triplex-drei";
-import { useCamera } from "./camera";
+import { useCamera } from "../camera/context";
 
 const steps = {
   rotate: {

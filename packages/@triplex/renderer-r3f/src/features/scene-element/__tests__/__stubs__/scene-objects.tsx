@@ -5,11 +5,12 @@
  * file in the root directory of this source tree.
  */
 import { Fragment } from "react";
-import { SceneObject, SceneObjectContext } from "../../scene-object";
+import { SceneElement } from "../../";
+import { SceneObjectContext } from "../../context";
 
 function Component({ children }: { children: React.ReactNode }) {
   return (
-    <SceneObject
+    <SceneElement
       __component="group"
       __meta={{
         column: 1,
@@ -21,7 +22,7 @@ function Component({ children }: { children: React.ReactNode }) {
         translate: false,
       }}
     >
-      <SceneObject
+      <SceneElement
         __component="mesh"
         __meta={{
           column: 22,
@@ -34,14 +35,14 @@ function Component({ children }: { children: React.ReactNode }) {
         }}
       >
         {children}
-      </SceneObject>
-    </SceneObject>
+      </SceneElement>
+    </SceneElement>
   );
 }
 
 export const nested = () => (
   <SceneObjectContext.Provider value={true}>
-    <SceneObject
+    <SceneElement
       __component={Fragment}
       __meta={{
         column: 1,
@@ -53,7 +54,7 @@ export const nested = () => (
         translate: false,
       }}
     >
-      <SceneObject
+      <SceneElement
         __component={Component}
         __meta={{
           column: 10,
@@ -65,6 +66,6 @@ export const nested = () => (
           translate: false,
         }}
       />
-    </SceneObject>
+    </SceneElement>
   </SceneObjectContext.Provider>
 );

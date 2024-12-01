@@ -7,8 +7,8 @@
 import { Canvas as RCanvas } from "@react-three/fiber";
 import { send } from "@triplex/bridge/client";
 import { useEvent } from "@triplex/lib";
-import { usePlayState } from "./stores/state";
-import { defaultLayer, editorLayer } from "./util/layers";
+import { usePlayState } from "../../stores/use-play-state";
+import { defaultLayer, editorLayer } from "../../util/layers";
 
 // Inspired from from Three.js
 // See: https://github.com/mrdoob/three.js/blob/34ba5129de62d538c17616f50cd00e36fdb98398/src/renderers/webgl/WebGLProgram.js#L14

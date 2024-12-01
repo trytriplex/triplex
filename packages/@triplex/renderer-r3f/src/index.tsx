@@ -16,10 +16,10 @@ import { createRoot } from "react-dom/client";
 import { ErrorBoundary } from "react-error-boundary";
 import { Bounds } from "triplex-drei";
 import { ErrorFallback } from "./components/error-fallback";
-import { Renderer } from "./renderer";
-import { SceneObject } from "./scene-object";
+import { App } from "./features/app";
+import { SceneElement } from "./features/scene-element";
 
-init({ RendererElement: SceneObject });
+init({ RendererElement: SceneElement });
 
 export const bootstrap: BootstrapFunction = (container) => {
   const root = createRoot(container);
@@ -31,7 +31,7 @@ export const bootstrap: BootstrapFunction = (container) => {
     });
 
     root.render(
-      <Renderer
+      <App
         files={opts.files}
         provider={opts.provider}
         providerPath={opts.config.provider}

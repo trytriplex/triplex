@@ -16,9 +16,9 @@ import {
   type Vector3Tuple,
 } from "three";
 import { GizmoHelper } from "triplex-drei";
-import { editorLayer } from "../util/layers";
-import { buildSceneSphere } from "../util/scene";
-import { useCamera } from "./camera";
+import { editorLayer } from "../../util/layers";
+import { buildSceneSphere } from "../../util/scene";
+import { useCamera } from "./context";
 
 const tweenCamera = (
   controls: CameraControls,

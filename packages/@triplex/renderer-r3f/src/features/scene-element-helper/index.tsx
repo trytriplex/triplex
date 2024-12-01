@@ -7,8 +7,8 @@
 import { createPortal, useFrame, useThree } from "@react-three/fiber";
 import React, { useCallback, useRef, useState } from "react";
 import { type Mesh, type Object3D } from "three";
-import { usePlayState } from "../stores/state";
-import { hiddenLayer, SELECTION_LAYER_INDEX } from "../util/layers";
+import { usePlayState } from "../../stores/use-play-state";
+import { hiddenLayer, SELECTION_LAYER_INDEX } from "../../util/layers";
 import "./camera-helper";
 
 export type Helper =

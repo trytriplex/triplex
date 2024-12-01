@@ -10,15 +10,7 @@ import {
   default as CCIMPL,
   type default as CameraControlsImpl,
 } from "camera-controls";
-import {
-  createContext,
-  useContext,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
 import {
   Vector3,
   type OrthographicCamera,
@@ -26,9 +18,14 @@ import {
   type Vector3Tuple,
 } from "three";
 import { CameraControls } from "triplex-drei";
-import { allLayers } from "../util/layers";
-import { findObject3D } from "../util/scene";
-import { Tunnel } from "./tunnel";
+import { Tunnel } from "../../components/tunnel";
+import { allLayers } from "../../util/layers";
+import { findObject3D } from "../../util/scene";
+import {
+  CameraContext,
+  type CameraContextType,
+  type CameraType,
+} from "./context";
 
 const TRIPLEX_CAMERA_NAME = "__triplex_camera";
 const DEFAULT_CAMERA = "perspective";
@@ -53,14 +50,6 @@ const touchHotkeys = {
   shift: {},
 } satisfies Record<string, Partial<CameraControlsImpl["touches"]>>;
 
-type CameraType = OrthographicCamera | PerspectiveCamera;
-
-interface CameraContextType {
-  camera: CameraType | undefined;
-  controls: React.MutableRefObject<CameraControlsImpl | null>;
-  isTriplexCamera: boolean;
-}
-
 function apply<TKey extends string>(
   a: Record<TKey, number>,
   b: Partial<Record<TKey, number>>,
@@ -70,12 +59,6 @@ function apply<TKey extends string>(
     a[key] = allB[key];
   }
 }
-
-const CameraContext = createContext<CameraContextType>({
-  camera: undefined,
-  controls: { current: null },
-  isTriplexCamera: true,
-});
 
 function fitCameraToViewport(camera: CameraType, size: Size) {
   if ("isOrthographicCamera" in camera) {
@@ -93,11 +76,6 @@ function fitCameraToViewport(camera: CameraType, size: Size) {
     camera.aspect = size.width / size.height;
     camera.updateProjectionMatrix();
   }
-}
-
-export function useCamera() {
-  const context = useContext(CameraContext);
-  return context;
 }
 
 export function Camera({

@@ -10,13 +10,14 @@ import { Fragment } from "react";
 import { render } from "react-three-test";
 import { MapControls } from "triplex-drei";
 import { describe, expect, it } from "vitest";
-import { Camera } from "../components/camera";
-import { SceneObject, SceneObjectContext } from "../scene-object";
+import { SceneElement } from "../";
 import {
   findObject3D,
   getTriplexMeta,
   resolveObject3DMeta,
-} from "../util/scene";
+} from "../../../util/scene";
+import { Camera } from "../../camera";
+import { SceneObjectContext } from "../context";
 import { nested } from "./__stubs__/scene-objects";
 
 describe("scene object component", () => {
@@ -24,7 +25,7 @@ describe("scene object component", () => {
     const { toTree } = await render(
       <SceneObjectContext.Provider value={true}>
         <Camera>
-          <SceneObject
+          <SceneElement
             __component={(props: unknown) => <mesh userData={{ props }} />}
             __meta={{
               column: 1,
@@ -49,7 +50,7 @@ describe("scene object component", () => {
     const { toTree } = await render(
       <SceneObjectContext.Provider value={true}>
         <Camera defaultCamera="user">
-          <SceneObject
+          <SceneElement
             __component={(props: unknown) => <mesh userData={{ props }} />}
             __meta={{
               column: 1,
@@ -73,7 +74,7 @@ describe("scene object component", () => {
   it("should not render a group", async () => {
     const { toGraph } = await render(
       <SceneObjectContext.Provider value={true}>
-        <SceneObject
+        <SceneElement
           __component="mesh"
           __meta={{
             column: 1,
@@ -104,7 +105,7 @@ describe("scene object component", () => {
 
     await render(
       <SceneObjectContext.Provider value={true}>
-        <SceneObject
+        <SceneElement
           __component="mesh"
           __meta={{
             column: 1,
@@ -130,7 +131,7 @@ describe("scene object component", () => {
 
     await render(
       <SceneObjectContext.Provider value={true}>
-        <SceneObject
+        <SceneElement
           __component="group"
           __meta={{
             column: 1,
@@ -143,7 +144,7 @@ describe("scene object component", () => {
           }}
           ref={ref1}
         >
-          <SceneObject
+          <SceneElement
             __component="group"
             __meta={{
               column: 1,
@@ -156,7 +157,7 @@ describe("scene object component", () => {
             }}
             ref={ref2}
           />
-          <SceneObject
+          <SceneElement
             __component="group"
             __meta={{
               column: 1,
@@ -169,7 +170,7 @@ describe("scene object component", () => {
             }}
             ref={ref3}
           />
-        </SceneObject>
+        </SceneElement>
       </SceneObjectContext.Provider>,
     );
 
@@ -182,7 +183,7 @@ describe("scene object component", () => {
     const ref = { current: null };
     function Component() {
       return (
-        <SceneObject
+        <SceneElement
           __component="mesh"
           __meta={{
             column: 1,
@@ -200,7 +201,7 @@ describe("scene object component", () => {
 
     await render(
       <SceneObjectContext.Provider value={true}>
-        <SceneObject
+        <SceneElement
           __component={Component}
           __meta={{
             column: 1,
@@ -233,7 +234,7 @@ describe("scene object component", () => {
     try {
       await render(
         <SceneObjectContext.Provider value={true}>
-          <SceneObject
+          <SceneElement
             __component="directionalLight"
             __meta={{
               column: 10,
@@ -245,7 +246,7 @@ describe("scene object component", () => {
               translate: false,
             }}
           >
-            <SceneObject
+            <SceneElement
               __component="orthographicCamera"
               __meta={{
                 column: 10,
@@ -258,7 +259,7 @@ describe("scene object component", () => {
               }}
               attach="shadow-camera"
             />
-          </SceneObject>
+          </SceneElement>
         </SceneObjectContext.Provider>,
       );
     } catch (error_) {
@@ -272,7 +273,7 @@ describe("scene object component", () => {
     const ref = { current: null };
     function Component({ children }: { children: React.ReactNode }) {
       return (
-        <SceneObject
+        <SceneElement
           __component="mesh"
           __meta={{
             column: 1,
@@ -286,12 +287,12 @@ describe("scene object component", () => {
           ref={ref}
         >
           {children}
-        </SceneObject>
+        </SceneElement>
       );
     }
     await render(
       <SceneObjectContext.Provider value={true}>
-        <SceneObject
+        <SceneElement
           __component={Fragment}
           __meta={{
             column: 1,
@@ -303,7 +304,7 @@ describe("scene object component", () => {
             translate: false,
           }}
         >
-          <SceneObject
+          <SceneElement
             __component={Component}
             __meta={{
               column: 1,
@@ -315,7 +316,7 @@ describe("scene object component", () => {
               translate: false,
             }}
           />
-        </SceneObject>
+        </SceneElement>
       </SceneObjectContext.Provider>,
     );
 
@@ -335,7 +336,7 @@ describe("scene object component", () => {
     const ref = { current: null };
     function Component({ children }: { children: React.ReactNode }) {
       return (
-        <SceneObject
+        <SceneElement
           __component="group"
           __meta={{
             column: 1,
@@ -347,7 +348,7 @@ describe("scene object component", () => {
             translate: false,
           }}
         >
-          <SceneObject
+          <SceneElement
             __component="mesh"
             __meta={{
               column: 1,
@@ -361,13 +362,13 @@ describe("scene object component", () => {
             ref={ref}
           >
             {children}
-          </SceneObject>
-        </SceneObject>
+          </SceneElement>
+        </SceneElement>
       );
     }
     await render(
       <SceneObjectContext.Provider value={true}>
-        <SceneObject
+        <SceneElement
           __component={Fragment}
           __meta={{
             column: 1,
@@ -379,7 +380,7 @@ describe("scene object component", () => {
             translate: false,
           }}
         >
-          <SceneObject
+          <SceneElement
             __component={Component}
             __meta={{
               column: 1,
@@ -391,7 +392,7 @@ describe("scene object component", () => {
               translate: false,
             }}
           />
-        </SceneObject>
+        </SceneElement>
       </SceneObjectContext.Provider>,
     );
 
@@ -441,7 +442,7 @@ describe("scene object component", () => {
   it("should not render userland controls when triplex camera is active", async () => {
     const { tree } = await render(
       <Camera>
-        <SceneObject
+        <SceneElement
           __component={MapControls}
           __meta={{
             column: 1,
@@ -462,7 +463,7 @@ describe("scene object component", () => {
   it("should render userland controls when triplex camera is not active", async () => {
     const { act, tree } = await render(
       <Camera>
-        <SceneObject
+        <SceneElement
           __component={MapControls}
           __meta={{
             column: 1,

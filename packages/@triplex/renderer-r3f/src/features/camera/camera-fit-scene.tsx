@@ -7,8 +7,8 @@
 import { useThree } from "@react-three/fiber";
 import { useLayoutEffect } from "react";
 import { Spherical, Vector3 } from "three";
-import { buildSceneSphere } from "../util/scene";
-import { useCamera } from "./camera";
+import { buildSceneSphere } from "../../util/scene";
+import { useCamera } from "./context";
 
 let previousResetKey: string | undefined | null = null;
 

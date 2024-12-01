@@ -17,22 +17,21 @@ import {
   Vector3,
   type Object3D,
 } from "three";
-import { useCamera } from "./components/camera";
-import { CameraPreview } from "./components/camera-preview";
-import { TransformControls } from "./components/transform-controls";
-import { SceneObjectContext } from "./scene-object";
-import { SceneObjectEventsContext } from "./stores/selection";
-import { flatten } from "./util/array";
-import { SELECTION_LAYER_INDEX } from "./util/layers";
-import { encodeProps } from "./util/props";
+import { flatten } from "../../util/array";
+import { encodeProps } from "../../util/props";
 import {
   findObject3D,
   isMatchingTriplexMeta,
   isObjectVisible as isMeshVisible,
   resolveObject3D,
   resolveObject3DMeta,
-  type EditorNodeData,
-} from "./util/scene";
+} from "../../util/scene";
+import { CameraPreview } from "../camera-preview";
+import { useCamera } from "../camera/context";
+import { SceneObjectContext } from "../scene-element/context";
+import { SceneObjectEventsContext } from "../scene-element/use-scene-element-events";
+import { TransformControls } from "./transform-controls";
+import { useSelectedObject } from "./use-selected-object";
 
 function strip(num: number): number {
   return +Number.parseFloat(Number(num).toPrecision(15));
@@ -42,28 +41,6 @@ const V1 = new Vector3();
 // We use this as a default raycaster so it is fired on the default layer (0) instead
 // Of the editor layer (31).
 const raycaster = new Raycaster();
-
-function useSelectedObjectStore() {
-  const [selectedObject, setObject] = useState<EditorNodeData | null>(null);
-
-  const setSelectedObject = useEvent((object: EditorNodeData | null) => {
-    if (selectedObject) {
-      selectedObject.sceneObject.traverse((child) =>
-        child.layers.disable(SELECTION_LAYER_INDEX),
-      );
-    }
-
-    setObject(object);
-
-    if (object) {
-      object.sceneObject.traverse((child) =>
-        child.layers.enable(SELECTION_LAYER_INDEX),
-      );
-    }
-  });
-
-  return [selectedObject, setSelectedObject] as const;
-}
 
 export function Selection({
   children,
@@ -119,7 +96,7 @@ export function Selection({
     () => flatten(sceneData?.sceneObjects || []),
     [sceneData],
   );
-  const [selectedObject, setSelectedObject] = useSelectedObjectStore();
+  const [selectedObject, setSelectedObject] = useSelectedObject();
   const disableSelection = useRef(false);
   const { controls } = useCamera();
 

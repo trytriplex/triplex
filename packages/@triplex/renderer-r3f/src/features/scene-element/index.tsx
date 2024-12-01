@@ -11,10 +11,7 @@ import {
   type TriplexMeta,
 } from "@triplex/bridge/client";
 import {
-  createContext,
   forwardRef,
-  Fragment,
-  useCallback,
   useContext,
   useEffect,
   useMemo,
@@ -23,10 +20,16 @@ import {
 } from "react";
 import { type Object3D } from "three";
 import { mergeRefs } from "use-callback-ref";
-import { useCamera } from "./components/camera";
-import { hasHelper, Helper } from "./components/helper";
-import { useSceneObjectEvents } from "./stores/selection";
-import { hash } from "./util/hash";
+import { useCamera } from "../camera/context";
+import { hasHelper, Helper } from "../scene-element-helper";
+import { buildElementKey } from "./build-element-key";
+import {
+  ParentComponentMetaContext,
+  ParentComponentMetaProvider,
+  SceneObjectContext,
+} from "./context";
+import { useSceneObjectEvents } from "./use-scene-element-events";
+import { useTemporaryProps } from "./use-temporary-props";
 
 const permanentlyExcluded = [/^Canvas$/];
 const disabledWhenTriplexCamera = [
@@ -35,129 +38,12 @@ const disabledWhenTriplexCamera = [
 ];
 const passThroughWhenTriplexCamera = [/^Ecctrl$/, /Controls$/];
 
-function getKey(
-  name: unknown,
-  props: Record<string, unknown>,
-): string | undefined {
-  if (
-    (typeof name === "string" && name === "shaderMaterial") ||
-    name === "rawShaderMaterial"
-  ) {
-    return hash(String(props.fragmentShader) + String(props.vertexShader));
-  }
-
-  return undefined;
-}
-
-function useForceRender() {
-  const [, setState] = useState(false);
-  return useCallback(() => setState((prev) => !prev), []);
-}
-
-function useSceneObjectProps(
-  meta: RendererElementProps["__meta"],
-  props: Record<string, unknown>,
-): Record<string, unknown> {
-  const forceRender = useForceRender();
-  const intermediateProps = useRef<Record<string, unknown>>({});
-  const propsRef = useRef<Record<string, unknown>>({});
-
-  // Assign all current top-level props to a ref so we can access it in an effect.
-  // eslint-disable-next-line react-compiler/react-compiler
-  Object.assign(propsRef.current, props);
-
-  useEffect(() => {
-    return compose([
-      on("self:request-reset-file", ({ path }) => {
-        if (meta.path.endsWith(path)) {
-          intermediateProps.current = {};
-        }
-      }),
-      on("request-reset-scene", () => {
-        if (Object.keys(intermediateProps.current).length) {
-          intermediateProps.current = {};
-          forceRender();
-        }
-      }),
-      on("request-set-element-prop", (data) => {
-        if (
-          "column" in data &&
-          data.column === meta.column &&
-          data.line === meta.line &&
-          data.path === meta.path
-        ) {
-          intermediateProps.current[data.propName] = data.propValue;
-          forceRender();
-        }
-      }),
-      on("request-reset-prop", (data) => {
-        if (
-          data.column === meta.column &&
-          data.line === meta.line &&
-          data.path === meta.path
-        ) {
-          delete intermediateProps.current[data.propName];
-          forceRender();
-        }
-      }),
-    ]);
-  }, [meta.column, meta.line, meta.name, meta.path, forceRender]);
-
-  // eslint-disable-next-line react-compiler/react-compiler
-  const nextProps = { ...props, ...intermediateProps.current };
-
-  for (const key in nextProps) {
-    const value = nextProps[key];
-    if (value === undefined) {
-      // If the value is undefined we remove it from props altogether.
-      // If props are spread onto the host jsx element in r3f this means it
-      // gets completely removed and r3f will reset its value back to default.
-      // For props directly assigned we instead transform it in the babel plugin
-      // to be conditionally applied instead.
-      delete nextProps[key];
-    }
-  }
-
-  return nextProps;
-}
-
-const ParentComponentMetaContext = createContext<TriplexMeta[]>([]);
-
-function ParentComponentMetaProvider({
-  children,
-  type,
-  value,
-}: {
-  children: React.ReactNode;
-  type: "host" | "custom";
-  value: TriplexMeta;
-}) {
-  const parents = useContext(ParentComponentMetaContext);
-  // We keep a list of all parents at each level because not all nodes
-  // are injected into the Three.js scene. Meaning if we just used a single
-  // parent we'd lose data.
-  const values = useMemo(() => [value, ...parents], [parents, value]);
-
-  if (type === "host") {
-    // We only store parent data of custom components.
-    return <Fragment>{children}</Fragment>;
-  }
-
-  return (
-    <ParentComponentMetaContext.Provider value={values}>
-      {children}
-    </ParentComponentMetaContext.Provider>
-  );
-}
-
-export const SceneObjectContext = createContext(false);
-
-export const SceneObject = forwardRef<unknown, RendererElementProps>(
+export const SceneElement = forwardRef<unknown, RendererElementProps>(
   (
     { __component: Component, __meta, forceInsideSceneObjectContext, ...props },
     ref,
   ) => {
-    const { children, ...reconciledProps } = useSceneObjectProps(__meta, props);
+    const { children, ...reconciledProps } = useTemporaryProps(__meta, props);
     const [isDeleted, setIsDeleted] = useState(false);
     const { onSceneObjectCommitted } = useSceneObjectEvents();
     const parentMeta = useContext(ParentComponentMetaContext);
@@ -223,7 +109,7 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
         type === "custom" &&
         isTriplexCamera &&
         disabledWhenTriplexCamera.some((r) => r.test(__meta.name));
-      const key = getKey(Component, props);
+      const key = buildElementKey(Component, props);
 
       return (
         <ParentComponentMetaProvider type={type} value={triplexMeta}>
@@ -264,4 +150,4 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
   },
 );
 
-SceneObject.displayName = "SceneObject";
+SceneElement.displayName = "SceneElement";

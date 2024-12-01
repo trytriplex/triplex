@@ -11,7 +11,8 @@ import {
 } from "camera-controls";
 import { render } from "react-three-test";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { Camera, useCamera } from "../camera";
+import { Camera } from "../";
+import { useCamera } from "../context";
 
 const defaultModifiers = {
   left: CCIMPL.ACTION.ROTATE,

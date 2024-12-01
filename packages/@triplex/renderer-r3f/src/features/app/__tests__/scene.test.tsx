@@ -10,8 +10,7 @@ import { overrideFg } from "@triplex/lib/fg";
 import { render } from "react-three-test";
 import { type Color } from "three";
 import { describe, expect, it, vi } from "vitest";
-import { SceneProvider } from "../context";
-import { SceneFrame } from "../scene";
+import { App } from "../";
 
 vi.mock("@react-three/fiber", async () => ({
   ...(await vi.importActual<Record<string, unknown>>("@react-three/fiber")),
@@ -22,7 +21,11 @@ vi.mock("@react-three/fiber", async () => ({
 
 vi.mock("@triplex/ws/react");
 
-vi.mock("../components/post-processing", () => ({
+vi.mock("../../../components/tunnel", () => ({
+  Tunnel: { In: () => null, Out: () => null },
+}));
+
+vi.mock("../../post-processing", () => ({
   PostProcessing: () => null,
 }));
 
@@ -41,9 +44,7 @@ describe("scene frame", () => {
   it("should apply color to canvas background set in provider", async () => {
     overrideFg("selection_postprocessing", true);
     const { getInstance } = await render(
-      <SceneProvider value={{}}>
-        <SceneFrame provider={Provider} providerPath="" />
-      </SceneProvider>,
+      <App files={{}} provider={Provider} providerPath="" />,
     );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -56,12 +57,11 @@ describe("scene frame", () => {
       return <color args={["#ffffff"]} attach="background" />;
     }
     const { act, getInstance } = await render(
-      <SceneProvider value={{ "/foo": () => Promise.resolve({ Scene }) }}>
-        <SceneFrame
-          provider={({ children }) => <>{children}</>}
-          providerPath=""
-        />
-      </SceneProvider>,
+      <App
+        files={{ "/foo": () => Promise.resolve({ Scene }) }}
+        provider={({ children }) => <>{children}</>}
+        providerPath=""
+      />,
     );
 
     await act(() =>
