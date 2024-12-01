@@ -19,6 +19,6 @@ export const SceneObjectEventsContext = createContext<
  * To work around this we callback on mount, just in case, to after-the-fact set
  * the selected element.
  */
-export function useOnSceneObjectMount() {
-  return useContext(SceneObjectEventsContext);
+export function useSceneObjectEvents() {
+  return { onSceneObjectCommitted: useContext(SceneObjectEventsContext) };
 }

@@ -71,3 +71,17 @@ test("jump to element", async ({ vsce }) => {
 
   await expect(editor.devOnlyCameraPanel).toHaveText(/pos: 2\.12,0,-0\.88/);
 });
+
+test("duplicating an element should be selected", async ({ vsce }) => {
+  await vsce.codelens("Scene").click();
+  const editor = vsce.resolveEditor();
+  await editor.togglePanelsButton.click();
+  await editor.panels.getByRole("button", { exact: true, name: "Box" }).click();
+
+  await vsce.page.keyboard.press("ControlOrMeta+D");
+
+  const secondBoxElement = editor.panels
+    .getByRole("button", { name: "Box" })
+    .nth(1);
+  await expect(secondBoxElement).toHaveAccessibleName(/selected/);
+});

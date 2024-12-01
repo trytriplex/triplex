@@ -43,6 +43,28 @@ const V1 = new Vector3();
 // Of the editor layer (31).
 const raycaster = new Raycaster();
 
+function useSelectedObjectStore() {
+  const [selectedObject, setObject] = useState<EditorNodeData | null>(null);
+
+  const setSelectedObject = useEvent((object: EditorNodeData | null) => {
+    if (selectedObject) {
+      selectedObject.sceneObject.traverse((child) =>
+        child.layers.disable(SELECTION_LAYER_INDEX),
+      );
+    }
+
+    setObject(object);
+
+    if (object) {
+      object.sceneObject.traverse((child) =>
+        child.layers.enable(SELECTION_LAYER_INDEX),
+      );
+    }
+  });
+
+  return [selectedObject, setSelectedObject] as const;
+}
+
 export function Selection({
   children,
   filter,
@@ -97,9 +119,7 @@ export function Selection({
     () => flatten(sceneData?.sceneObjects || []),
     [sceneData],
   );
-  const [selectedObject, setSelectedObject] = useState<EditorNodeData | null>(
-    null,
-  );
+  const [selectedObject, setSelectedObject] = useSelectedObjectStore();
   const disableSelection = useRef(false);
   const { controls } = useCamera();
 
@@ -157,20 +177,7 @@ export function Selection({
     });
 
     setSelectedObject(result);
-
-    const sceneObject = result?.sceneObject;
-    if (!sceneObject) {
-      return;
-    }
-
-    sceneObject.traverse((child) => child.layers.enable(SELECTION_LAYER_INDEX));
-
-    return () => {
-      sceneObject.traverse((child) =>
-        child.layers.disable(SELECTION_LAYER_INDEX),
-      );
-    };
-  }, [scene, selected, transform]);
+  }, [scene, selected, setSelectedObject, transform]);
 
   useEffect(() => {
     send("ready", undefined);
@@ -358,15 +365,14 @@ export function Selection({
     }
   });
 
-  const sceneObjectMountHandler = useEvent(
+  const onSceneObjectCommitted = useEvent(
     (path: string, line: number, column: number) => {
       if (
         selected &&
         !selectedObject &&
         selected.path === path &&
         selected.line === line &&
-        selected.column === column &&
-        transform !== "none"
+        selected.column === column
       ) {
         const result = resolveObject3D(scene, {
           column: selected.column,
@@ -375,7 +381,10 @@ export function Selection({
           transform,
         });
 
-        setSelectedObject(result);
+        if (result && selectedObject !== result?.sceneObject) {
+          // We've found a scene object to select.
+          setSelectedObject(result);
+        }
       }
     },
   );
@@ -482,7 +491,7 @@ export function Selection({
 
   return (
     <SceneObjectContext.Provider value={true}>
-      <SceneObjectEventsContext.Provider value={sceneObjectMountHandler}>
+      <SceneObjectEventsContext.Provider value={onSceneObjectCommitted}>
         {children}
       </SceneObjectEventsContext.Provider>
 

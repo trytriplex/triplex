@@ -73,6 +73,12 @@ export function Events() {
         sendVSCE("element-duplicate", target);
         telemetry.event("contextmenu_element_duplicate");
       }),
+      onVSCE("vscode:request-focus-element", (target) => {
+        send("request-focus-element", {
+          ...target,
+          parentPath: target.path,
+        });
+      }),
       onKeyDown("Escape", () => {
         send("request-blur-element", undefined);
         telemetry.event("contextmenu_element_blur");

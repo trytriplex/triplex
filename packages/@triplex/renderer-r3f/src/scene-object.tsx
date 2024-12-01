@@ -25,7 +25,7 @@ import { type Object3D } from "three";
 import { mergeRefs } from "use-callback-ref";
 import { useCamera } from "./components/camera";
 import { hasHelper, Helper } from "./components/helper";
-import { useOnSceneObjectMount } from "./stores/selection";
+import { useSceneObjectEvents } from "./stores/selection";
 import { hash } from "./util/hash";
 
 const permanentlyExcluded = [/^Canvas$/];
@@ -159,7 +159,7 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
   ) => {
     const { children, ...reconciledProps } = useSceneObjectProps(__meta, props);
     const [isDeleted, setIsDeleted] = useState(false);
-    const onSceneObjectMount = useOnSceneObjectMount();
+    const { onSceneObjectCommitted } = useSceneObjectEvents();
     const parentMeta = useContext(ParentComponentMetaContext);
     const type = typeof Component === "string" ? "host" : "custom";
     const hostRef = useRef<Object3D>(null);
@@ -192,8 +192,8 @@ export const SceneObject = forwardRef<unknown, RendererElementProps>(
     }, [__meta.column, __meta.line, __meta.path]);
 
     useEffect(() => {
-      onSceneObjectMount(__meta.path, __meta.line, __meta.column);
-    }, [__meta.column, __meta.line, __meta.path, onSceneObjectMount]);
+      onSceneObjectCommitted(__meta.path, __meta.line, __meta.column);
+    }, [__meta.column, __meta.line, __meta.path, onSceneObjectCommitted]);
 
     if (isDeleted) {
       // This component will eventually unmount when deleted as its removed
