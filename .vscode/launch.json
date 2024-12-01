@@ -2,7 +2,7 @@
   "version": "0.2.0",
   "configurations": [
     {
-      "name": "Run VS Code",
+      "name": "Run Triplex for VS Code",
       "type": "extensionHost",
       "request": "launch",
       "env": {
@@ -21,7 +21,7 @@
     {
       "args": [".", "--inspect"],
       "cwd": "${workspaceFolder}/apps/electron",
-      "name": "Run Electron",
+      "name": "Run Triplex Standalone",
       "outputCapture": "std",
       "request": "launch",
       "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
