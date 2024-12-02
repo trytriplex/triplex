@@ -102,7 +102,7 @@ describe("camera", () => {
       </Camera>,
     );
 
-    await act(() => fireDOMEvent.keyDown(document, { key: "Shift" }));
+    await act(() => fireDOMEvent.keyDown(window, { key: "Shift" }));
 
     expect(controlsRef.current?.mouseButtons.left).toEqual(CCIMPL.ACTION.TRUCK);
   });
@@ -122,11 +122,11 @@ describe("camera", () => {
         <HoistControls />
       </Camera>,
     );
-    await act(() => fireDOMEvent.keyDown(document, { key: "Shift" }));
+    await act(() => fireDOMEvent.keyDown(window, { key: "Shift" }));
 
     await act(() => {
       setVisibility("hidden");
-      fireDOMEvent(document, new Event("visibilitychange"));
+      fireDOMEvent(window, new Event("visibilitychange"));
       setVisibility("visible");
     });
 
@@ -152,7 +152,7 @@ describe("camera", () => {
       </Camera>,
     );
 
-    await act(() => fireDOMEvent.keyDown(document, { key: "Shift" }));
+    await act(() => fireDOMEvent.keyDown(window, { key: "Shift" }));
 
     await act(() => {
       setDocumentFocus(false);

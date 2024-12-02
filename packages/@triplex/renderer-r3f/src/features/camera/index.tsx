@@ -184,17 +184,14 @@ export function Camera({
       }
     };
 
-    document.addEventListener("keydown", applyCameraModifiers);
-    document.addEventListener("keyup", resetFromKeyUp);
-    document.addEventListener("visibilitychange", resetFromVisibilityChange);
+    window.addEventListener("keydown", applyCameraModifiers);
+    window.addEventListener("keyup", resetFromKeyUp);
+    window.addEventListener("visibilitychange", resetFromVisibilityChange);
 
     return () => {
-      document.removeEventListener("keydown", applyCameraModifiers);
-      document.removeEventListener("keyup", resetFromKeyUp);
-      document.removeEventListener(
-        "visibilitychange",
-        resetFromVisibilityChange,
-      );
+      window.removeEventListener("keydown", applyCameraModifiers);
+      window.removeEventListener("keyup", resetFromKeyUp);
+      window.removeEventListener("visibilitychange", resetFromVisibilityChange);
     };
   }, []);
 
