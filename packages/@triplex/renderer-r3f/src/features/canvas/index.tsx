@@ -90,7 +90,7 @@ export function Canvas({ children }: { children: React.ReactNode }) {
         ...(typeof window.triplex.renderer.attributes.gl === "object"
           ? window.triplex.renderer.attributes.gl
           : undefined),
-        antialias: false,
+        antialias: true,
       }}
       raycaster={{
         layers:

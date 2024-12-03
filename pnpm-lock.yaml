@@ -927,6 +927,9 @@ importers:
       suspend-react:
         specifier: ^0.1.3
         version: 0.1.3(react@18.3.1)
+      tinycolor2:
+        specifier: ^1.6.0
+        version: 1.6.0
       triplex-drei:
         specifier: npm:@react-three/drei@^9.114.0
         version: '@react-three/drei@9.114.0(@react-three/fiber@8.17.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.168.0))(@types/react@18.3.3)(@types/three@0.168.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.168.0)'

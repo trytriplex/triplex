@@ -20,6 +20,7 @@ import { LoadingTriangle } from "../../components/loading-triangle";
 import { SubsequentSuspense } from "../../components/suspense";
 import { Tunnel } from "../../components/tunnel";
 import { Camera } from "../camera";
+import { CameraAxisHelper } from "../camera/camera-axis-helper";
 import { CameraGizmo } from "../camera/camera-gizmo";
 import { Canvas } from "../canvas";
 import { PostProcessing } from "../post-processing";
@@ -268,7 +269,11 @@ export function App({
                   </SubsequentSuspense>
                 </Selection>
               </SceneElement>
-              <CameraGizmo />
+              {fg("camera_axis_helper") ? (
+                <CameraAxisHelper />
+              ) : (
+                <CameraGizmo />
+              )}
             </Suspense>
           </ErrorBoundaryForScene>
           <TriplexGrid />
