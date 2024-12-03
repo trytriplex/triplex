@@ -18,7 +18,7 @@ test.describe("when an error is thrown on render", () => {
   }) => {
     await vsce.codelens("ErrorsDuringRender", { skipWait: true }).click();
     const notifications = vsce.page.getByRole("dialog", {
-      name: "source: Triplex for VS Code, notification",
+      name: /source: Triplex for VS Code/,
     });
 
     // Error should not bubble up to the unhandled listener as we have logic to ignore it.
@@ -49,7 +49,7 @@ test.describe("when an error is thrown on missing module", () => {
       .codelens("ErrorsDuringDependencyResolution", { skipWait: true })
       .click();
     const notifications = vsce.page.getByRole("dialog", {
-      name: "source: Triplex for VS Code, notification",
+      name: /source: Triplex for VS Code/,
     });
 
     // Error should not bubble up to the unhandled listener as we have logic to ignore it.
@@ -81,7 +81,7 @@ test.describe("when an error is thrown during module initialization", () => {
     await vsce.codelens("ErrorsDuringModuleInit", { skipWait: true }).click();
 
     const notifications = vsce.page.getByRole("dialog", {
-      name: "source: Triplex for VS Code, notification",
+      name: /source: Triplex for VS Code/,
     });
 
     // Error should not bubble up to the unhandled listener as we have logic to ignore it.
@@ -106,7 +106,7 @@ test.describe("when an error is thrown on interaction", () => {
 
     await expect(
       vsce.page.getByRole("dialog", {
-        name: "source: Triplex for VS Code, notification",
+        name: /source: Triplex for VS Code/,
       }),
     ).toHaveText("Unhandled Error: Throwing an error on interaction.");
   });
@@ -124,7 +124,7 @@ test.describe("when an error is thrown during glsl compilation", () => {
 
     await expect(
       vsce.page.getByRole("dialog", {
-        name: "source: Triplex for VS Code, notification",
+        name: /source: Triplex for VS Code/,
       }),
     ).toHaveText(/GLSL Error: Vertex and fragment shaders failed to compile/);
   });
@@ -134,7 +134,7 @@ test.describe("when an error is thrown during glsl compilation", () => {
 
     await expect(
       vsce.page.getByRole("dialog", {
-        name: "source: Triplex for VS Code, notification",
+        name: /source: Triplex for VS Code/,
       }),
     ).toHaveText(
       /GLSL Error: A vertex shader failed to compile because of the error/,
@@ -146,7 +146,7 @@ test.describe("when an error is thrown during glsl compilation", () => {
 
     await expect(
       vsce.page.getByRole("dialog", {
-        name: "source: Triplex for VS Code, notification",
+        name: /source: Triplex for VS Code/,
       }),
     ).toHaveText(
       /GLSL Error: A fragment shader failed to compile because of the error/,
@@ -164,7 +164,7 @@ test.describe("when an error is thrown during glsl compilation (2)", () => {
 
     await expect(
       vsce.page.getByRole("dialog", {
-        name: "source: Triplex for VS Code, notification",
+        name: /source: Triplex for VS Code/,
       }),
     ).toHaveText(
       /GLSL Error: A shader failed to compile because of the error "FRAGMENT varying/,
