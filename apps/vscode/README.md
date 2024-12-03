@@ -1,15 +1,7 @@
-# Triplex for VS Code (preview)
+Triplex for VS Code is in development and released as **BETA**, there will be bugs and friction points. Make sure to join the [Discord server](https://discord.gg/nBzRBUEs4b) for support and to give feedback.
 
-[![Discord](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fdiscord.com%2Fapi%2Finvites%2FnBzRBUEs4b%3Fwith_counts%3Dtrue&query=%24.approximate_member_count&style=flat&colorA=000000&colorB=000000&label=discord&logo=&logoColor=000000)](https://discord.gg/nBzRBUEs4b)
-[![Downloads](https://img.shields.io/github/downloads/trytriplex/triplex/total?style=flat&colorA=000000&colorB=000000&label=downloads&logo=&logoColor=000000)](https://triplex.dev/download)
-[![Version](https://img.shields.io/github/v/release/trytriplex/triplex?style=flat&colorA=000000&colorB=000000&label=latest&logo=&logoColor=000000)](https://github.com/trytriplex/triplex/releases)
-[![GitHub Sponsors](https://img.shields.io/github/sponsors/itsdouges?style=flat&colorA=000000&colorB=000000&label=sponsor&logo=&logoColor=000000)](https://github.com/sponsors/itsdouges)
+# Setup
 
-## Set up
+By default all React components can be opened by Triplex. When wanting to scope it down you can create a `.triplex/config.json` file and populate the `"files"` field.
 
-By default all React components can be opened by Triplex. When wanting to scope
-it down you can create a `.triplex/config.json` file and populate the `"files"`
-field.
-
-Learn more in the
-[project settings documentation](https://triplex.dev/docs/get-started/settings).
+Learn more in the [project settings documentation](https://triplex.dev/docs/get-started/settings).

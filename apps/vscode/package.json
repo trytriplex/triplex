@@ -1,9 +1,9 @@
 {
   "name": "triplex-vsce",
-  "displayName": "Triplex for VS Code",
+  "displayName": "Triplex for VS Code [BETA]",
   "version": "0.1.1",
   "private": true,
-  "description": "The React Three Fiber visual IDE.",
+  "description": "The visual IDE for the web.",
   "categories": [
     "Visualization",
     "Other"
@@ -13,7 +13,7 @@
     "r3f",
     "react",
     "react-three-fiber",
-    "visual-editor"
+    "visual-ide"
   ],
   "bugs": {
     "url": "https://github.com/trytriplex/triplex/issues/new",
