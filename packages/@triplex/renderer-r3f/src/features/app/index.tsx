@@ -17,7 +17,6 @@ import { ErrorBoundaryForScene } from "../../components/error-boundary";
 import { ErrorFallback } from "../../components/error-fallback";
 import { TriplexGrid } from "../../components/grid";
 import { LoadingTriangle } from "../../components/loading-triangle";
-import { SubsequentSuspense } from "../../components/suspense";
 import { Tunnel } from "../../components/tunnel";
 import { Camera } from "../camera";
 import { CameraAxisHelper } from "../camera/camera-axis-helper";
@@ -239,7 +238,7 @@ export function App({
                   onFocus={onFocus}
                   onNavigate={onNavigate}
                 >
-                  <SubsequentSuspense
+                  <Suspense
                     fallback={
                       <Tunnel.In>
                         <LoadingTriangle />
@@ -266,7 +265,7 @@ export function App({
                         sceneProps={component.props}
                       />
                     </ErrorBoundaryForScene>
-                  </SubsequentSuspense>
+                  </Suspense>
                 </Selection>
               </SceneElement>
               {fg("camera_axis_helper") ? (
