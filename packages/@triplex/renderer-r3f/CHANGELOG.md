@@ -1,5 +1,31 @@
 # @triplex/renderer-r3f
 
+## 0.70.2
+
+### Patch Changes
+
+- 7c49f9f: Fix pressing escape not blurring the selected scene object after performing a transform with transform controls.
+- 51d16cd: Errors thrown when rendering, initializing modules, importing dependencies, interacting with scene objects, and GLSL compilation are now all captured and notifies you of the error. Where possible the errors are now also recoverable, meaning you can update your code, save, and continue right where you leftoff.
+- 8752e68: Duplicated elements are now focused.
+- 5be8d67: Transform steps have been rounded to whole decimals.
+- b1b39e7: The global provider infrastructure has been refactored to not cause jarring hot module reloads when its contents change.
+- a871eb9: Selection cycle now correctly works with custom components and groups.
+- 097f148: The selection outline post processing effect no longer unintentionally turns on all layers for the camera now, instead only turning on what was initially turned on.
+- 57ca5bc: Fix camera modifiers not being applied when initially focused inside editor controls.
+- 9f689b7: Remove unstable subsequent suspense boundary that was causing instability.
+- 097f148: Selecting helper objects such as cameras and lights now participate in the mesh based selection system enabling selection cylcing and selection outlines.
+- 74b3de8: Progressively testing axis helper.
+- a89da48: Internal file restructure.
+- 51d16cd: Shader material elements now automatically recompile when their fragment or vertex shader prop changes.
+- 7493473: Add hard reload for the scene via CommandOrCtrl+Shift+R.
+- dbab960: Loading spinner has moved to the top right of the scene.
+- Updated dependencies [51d16cd]
+- Updated dependencies [b1b39e7]
+- Updated dependencies [7493473]
+- Updated dependencies [7493473]
+  - @triplex/bridge@0.69.5
+  - @triplex/lib@0.69.6
+
 ## 0.70.1
 
 ### Patch Changes

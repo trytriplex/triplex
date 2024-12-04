@@ -1,5 +1,12 @@
 # @triplex/lib
 
+## 0.69.6
+
+### Patch Changes
+
+- 7493473: Add refresh for the scene via CommandOrCtrl+R.
+- 7493473: Add hard reload for the scene via CommandOrCtrl+Shift+R.
+
 ## 0.69.5
 
 ### Patch Changes

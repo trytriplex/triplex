@@ -1,5 +1,16 @@
 # @triplex/renderer-react
 
+## 0.69.5
+
+### Patch Changes
+
+- b1b39e7: The global provider infrastructure has been refactored to not cause jarring hot module reloads when its contents change.
+- Updated dependencies [51d16cd]
+- Updated dependencies [b1b39e7]
+- Updated dependencies [7493473]
+- Updated dependencies [7493473]
+  - @triplex/bridge@0.69.5
+
 ## 0.69.4
 
 ### Patch Changes

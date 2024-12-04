@@ -1,5 +1,24 @@
 # @triplex/vscode
 
+## 0.1.2
+
+### Patch Changes
+
+- 51d16cd: Errors thrown when rendering, initializing modules, importing dependencies, interacting with scene objects, and GLSL compilation are now all captured and notifies you of the error. Where possible the errors are now also recoverable, meaning you can update your code, save, and continue right where you leftoff.
+- 8752e68: Duplicated elements are now focused.
+- 13d55d9: Fix Triplex taking priority over other Visual Studio Code hotkeys when not focused but active.
+- 7493473: Add refresh for the scene via CommandOrCtrl+R.
+- 5075bf4: The editor is now unloaded when hidden.
+- 7493473: Add hard reload for the scene via CommandOrCtrl+Shift+R.
+- Updated dependencies [51d16cd]
+- Updated dependencies [8752e68]
+- Updated dependencies [b1b39e7]
+- Updated dependencies [91ae968]
+- Updated dependencies [7493473]
+- Updated dependencies [dbab960]
+- Updated dependencies [9255c16]
+  - @triplex/client@0.69.8
+
 ## 0.1.1
 
 ### Patch Changes

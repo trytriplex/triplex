@@ -1,6 +1,6 @@
 {
   "name": "@triplex/bridge",
-  "version": "0.69.4",
+  "version": "0.69.5",
   "private": true,
   "description": "The visual IDE for the web.",
   "author": {

@@ -1,5 +1,14 @@
 # @triplex/bridge
 
+## 0.69.5
+
+### Patch Changes
+
+- 51d16cd: Errors thrown when rendering, initializing modules, importing dependencies, interacting with scene objects, and GLSL compilation are now all captured and notifies you of the error. Where possible the errors are now also recoverable, meaning you can update your code, save, and continue right where you leftoff.
+- b1b39e7: The global provider infrastructure has been refactored to not cause jarring hot module reloads when its contents change.
+- 7493473: Add refresh for the scene via CommandOrCtrl+R.
+- 7493473: Add hard reload for the scene via CommandOrCtrl+Shift+R.
+
 ## 0.69.4
 
 ### Patch Changes

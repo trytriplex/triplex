@@ -1,5 +1,36 @@
 # @triplex/client
 
+## 0.69.8
+
+### Patch Changes
+
+- 51d16cd: Errors thrown when rendering, initializing modules, importing dependencies, interacting with scene objects, and GLSL compilation are now all captured and notifies you of the error. Where possible the errors are now also recoverable, meaning you can update your code, save, and continue right where you leftoff.
+- 8752e68: Duplicated elements are now focused.
+- b1b39e7: The global provider infrastructure has been refactored to not cause jarring hot module reloads when its contents change.
+- 91ae968: Initialization errors are now caught in the renderer when starting up Triplex.
+- 7493473: Add refresh for the scene via CommandOrCtrl+R.
+- dbab960: Loading spinner has moved to the top right of the scene.
+- 9255c16: Remove forced key set on transformed scene objects.
+- Updated dependencies [7c49f9f]
+- Updated dependencies [51d16cd]
+- Updated dependencies [8752e68]
+- Updated dependencies [5be8d67]
+- Updated dependencies [b1b39e7]
+- Updated dependencies [a871eb9]
+- Updated dependencies [097f148]
+- Updated dependencies [57ca5bc]
+- Updated dependencies [9f689b7]
+- Updated dependencies [097f148]
+- Updated dependencies [74b3de8]
+- Updated dependencies [7493473]
+- Updated dependencies [a89da48]
+- Updated dependencies [51d16cd]
+- Updated dependencies [7493473]
+- Updated dependencies [dbab960]
+  - @triplex/renderer-r3f@0.70.2
+  - @triplex/bridge@0.69.5
+  - @triplex/renderer-react@0.69.5
+
 ## 0.69.7
 
 ### Patch Changes

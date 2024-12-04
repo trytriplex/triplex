@@ -1,6 +1,6 @@
 {
   "name": "@triplex/renderer-react",
-  "version": "0.69.4",
+  "version": "0.69.5",
   "private": true,
   "description": "The visual IDE for the web.",
   "author": {
@@ -19,7 +19,7 @@
     "typedef": "tsc"
   },
   "dependencies": {
-    "@triplex/bridge": "0.69.4",
+    "@triplex/bridge": "0.69.5",
     "@triplex/ws": "0.69.3",
     "react-error-boundary": "^3.1.4",
     "suspend-react": "^0.1.3"
