@@ -4,10 +4,10 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useFrame, useThree } from "@react-three/fiber";
+import { useThree } from "@react-three/fiber";
 import { compose, on, send } from "@triplex/bridge/client";
 import { useEvent } from "@triplex/lib";
-import { preloadSubscription, useSubscriptionEffect } from "@triplex/ws/react";
+import { useSubscriptionEffect } from "@triplex/ws/react";
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import {
   Box3,
@@ -23,7 +23,6 @@ import {
   findObject3D,
   isMatchingTriplexMeta,
   isObjectVisible as isMeshVisible,
-  resolveObject3D,
   resolveObject3DMeta,
 } from "../../util/scene";
 import { CameraPreview } from "../camera-preview";
@@ -31,6 +30,7 @@ import { useCamera } from "../camera/context";
 import { SceneObjectContext } from "../scene-element/context";
 import { SceneObjectEventsContext } from "../scene-element/use-scene-element-events";
 import { TransformControls } from "./transform-controls";
+import { type Space, type TransformControlMode } from "./types";
 import { useSelectedObject } from "./use-selected-object";
 
 function strip(num: number): number {
@@ -64,29 +64,12 @@ export function Selection({
     props: Record<string, unknown>;
   }) => void;
 }) {
-  const [space, setSpace] = useState<"world" | "local">("world");
-  const [selected, setSelected] = useState<{
-    column: number;
-    line: number;
-    parentPath: string;
-    path: string;
-  }>();
-  const [transform, setTransform] = useState<
-    "none" | "translate" | "rotate" | "scale"
-  >("none");
+  const [space, setSpace] = useState<Space>("world");
+  const [transform, setTransform] = useState<TransformControlMode>("none");
   const scene = useThree((store) => store.scene);
   const gl = useThree((store) => store.gl);
   const camera = useThree((store) => store.camera);
   const canvasSize = useThree((store) => store.size);
-  const selectedSceneObject = useSubscriptionEffect(
-    "/scene/:path/object/:line/:column",
-    {
-      column: selected?.column,
-      disabled: !selected || (selected?.line === -1 && selected?.column === -1),
-      line: selected?.line,
-      path: selected?.parentPath,
-    },
-  );
   const sceneData = useSubscriptionEffect("/scene/:path/:exportName", {
     disabled: !filter.exportName || !filter.path,
     exportName: filter.exportName,
@@ -96,21 +79,33 @@ export function Selection({
     () => flatten(sceneData?.sceneObjects || []),
     [sceneData],
   );
-  const [selectedObject, setSelectedObject] = useSelectedObject();
+  const [resolvedObjects, selectionActions] = useSelectedObject({ transform });
   const disableSelection = useRef(false);
   const { controls } = useCamera();
+  const lastSelectedObject = resolvedObjects.at(-1);
+  const lastSelectedObjectProps = useSubscriptionEffect(
+    "/scene/:path/object/:line/:column",
+    {
+      column: lastSelectedObject?.column,
+      disabled:
+        !lastSelectedObject ||
+        (lastSelectedObject?.line === -1 && lastSelectedObject?.column === -1),
+      line: lastSelectedObject?.line,
+      path: lastSelectedObject?.path,
+    },
+  );
 
   useEffect(() => {
     return on("request-state-change", ({ state }) => {
       if (state === "play") {
-        setSelected(undefined);
+        selectionActions.clear();
         onBlur();
         disableSelection.current = true;
       } else {
         disableSelection.current = false;
       }
     });
-  }, [onBlur]);
+  }, [onBlur, selectionActions]);
 
   useEffect(() => {
     return on("extension-point-triggered", (data) => {
@@ -141,29 +136,14 @@ export function Selection({
   }, []);
 
   useEffect(() => {
-    if (!selected) {
-      setSelectedObject(null);
-      return;
-    }
-
-    const result = resolveObject3D(scene, {
-      column: selected.column,
-      line: selected.line,
-      path: selected.parentPath,
-      transform,
-    });
-
-    setSelectedObject(result);
-  }, [scene, selected, setSelectedObject, transform]);
-
-  useEffect(() => {
     send("ready", undefined);
   }, []);
 
   useEffect(() => {
     return compose([
       on("request-open-component", (sceneObject) => {
-        if (!sceneObject && (!selectedObject || !selectedSceneObject)) {
+        const lastSelectedObject = resolvedObjects.at(-1);
+        if (!sceneObject && !lastSelectedObject) {
           return;
         }
 
@@ -175,39 +155,33 @@ export function Selection({
               ? JSON.parse(sceneObject.encodedProps)
               : {},
           });
-          setSelected(undefined);
+          selectionActions.clear();
           onBlur();
         } else if (
-          selectedObject &&
-          selectedSceneObject &&
-          selectedSceneObject.type === "custom" &&
-          selectedSceneObject.path &&
-          selectedSceneObject.exportName
+          lastSelectedObject &&
+          lastSelectedObjectProps &&
+          lastSelectedObjectProps.type === "custom" &&
+          lastSelectedObjectProps.path &&
+          lastSelectedObjectProps.exportName
         ) {
           onNavigate({
-            exportName: selectedSceneObject.exportName,
-            path: selectedSceneObject.path,
-            props: encodeProps(selectedObject),
+            exportName: lastSelectedObjectProps.exportName,
+            path: lastSelectedObjectProps.path,
+            props: encodeProps(lastSelectedObject),
           });
-          setSelected(undefined);
+          selectionActions.clear();
           onBlur();
         }
       }),
       on("request-blur-element", () => {
-        setSelected((prevSelected) => {
-          if (prevSelected) {
-            send("track", { actionId: "element_blur" });
-          }
-
-          return undefined;
-        });
-
+        selectionActions.clear();
+        send("track", { actionId: "element_blur" });
         onBlur();
       }),
       on("request-jump-to-element", (sceneObject) => {
         const targetSceneObject = sceneObject
           ? findObject3D(scene, sceneObject)
-          : selectedObject?.sceneObject;
+          : resolvedObjects.at(-1)?.sceneObject;
 
         if (!targetSceneObject) {
           return;
@@ -231,40 +205,21 @@ export function Selection({
         });
       }),
       on("request-focus-element", (data) => {
-        setSelected(data);
+        selectionActions.select(data, "replace");
         onFocus(data);
         send("track", { actionId: "element_focus" });
       }),
     ]);
   }, [
     controls,
+    lastSelectedObjectProps,
     onBlur,
     onFocus,
     onNavigate,
+    resolvedObjects,
     scene,
-    selectedObject,
-    selectedSceneObject,
+    selectionActions,
   ]);
-
-  useEffect(() => {
-    if (!selectedSceneObject || selectedSceneObject.type === "host") {
-      return;
-    }
-
-    preloadSubscription("/scene/:path/:exportName", {
-      exportName: selectedSceneObject.exportName,
-      path: selectedSceneObject.path,
-    });
-  }, [selectedSceneObject]);
-
-  useFrame(() => {
-    if (selectedObject && selectedObject.sceneObject.parent === null) {
-      // The scene object has been removed from the scene. Remove our reference to it.
-      setSelectedObject(null);
-      // Forcibly change the selected reference so we re-fetch the selected scene object.
-      setSelected((selected) => (selected ? { ...selected } : undefined));
-    }
-  });
 
   const trySelectObject = useEvent((object: Object3D) => {
     if (disableSelection.current) {
@@ -284,7 +239,7 @@ export function Selection({
         path: data.path,
       };
 
-      setSelected(target);
+      selectionActions.select(target, "replace");
       onFocus(target);
 
       return true;
@@ -294,77 +249,51 @@ export function Selection({
   });
 
   const onCompleteTransformHandler = useEvent(() => {
-    if (!selectedObject || !selectedSceneObject) {
-      return;
-    }
+    for (const object of resolvedObjects) {
+      if (transform === "translate") {
+        const position =
+          object.space === "world"
+            ? object.sceneObject.getWorldPosition(V1).toArray()
+            : object.sceneObject.position.toArray();
 
-    if (transform === "translate") {
-      const position =
-        selectedObject.space === "world"
-          ? selectedObject.sceneObject.getWorldPosition(V1).toArray()
-          : selectedObject.sceneObject.position.toArray();
+        send("element-set-prop", {
+          column: object.column,
+          line: object.line,
+          path: object.path,
+          propName: "position",
+          propValue: position.map(strip),
+        });
+        send("track", { actionId: "element_transform_translate" });
+      }
 
-      send("element-set-prop", {
-        column: selectedObject.column,
-        line: selectedObject.line,
-        path: selectedObject.path,
-        propName: "position",
-        propValue: position.map(strip),
-      });
-      send("track", { actionId: "element_transform_translate" });
-    }
+      if (transform === "rotate") {
+        const rotation = object.sceneObject.rotation.toArray();
+        rotation.pop();
 
-    if (transform === "rotate") {
-      const rotation = selectedObject.sceneObject.rotation.toArray();
-      rotation.pop();
+        send("element-set-prop", {
+          column: object.column,
+          line: object.line,
+          path: object.path,
+          propName: "rotation",
+          propValue: rotation,
+        });
+        send("track", { actionId: "element_transform_rotate" });
+      }
 
-      send("element-set-prop", {
-        column: selectedObject.column,
-        line: selectedObject.line,
-        path: selectedObject.path,
-        propName: "rotation",
-        propValue: rotation,
-      });
-      send("track", { actionId: "element_transform_rotate" });
-    }
+      if (transform === "scale") {
+        const scale = object.sceneObject.scale.toArray();
 
-    if (transform === "scale") {
-      const scale = selectedObject.sceneObject.scale.toArray();
-
-      send("element-set-prop", {
-        column: selectedObject.column,
-        line: selectedObject.line,
-        path: selectedObject.path,
-        propName: "scale",
-        propValue: scale.map(strip),
-      });
-      send("track", { actionId: "element_transform_scale" });
+        send("element-set-prop", {
+          column: object.column,
+          line: object.line,
+          path: object.path,
+          propName: "scale",
+          propValue: scale.map(strip),
+        });
+        send("track", { actionId: "element_transform_scale" });
+      }
     }
   });
-
-  const onSceneObjectCommitted = useEvent(
-    (path: string, line: number, column: number) => {
-      if (
-        selected &&
-        !selectedObject &&
-        selected.path === path &&
-        selected.line === line &&
-        selected.column === column
-      ) {
-        const result = resolveObject3D(scene, {
-          column: selected.column,
-          line: selected.line,
-          path: selected.parentPath,
-          transform,
-        });
-
-        if (result && selectedObject !== result?.sceneObject) {
-          // We've found a scene object to select.
-          setSelectedObject(result);
-        }
-      }
-    },
-  );
 
   useEffect(() => {
     let origin = [-1, -1];
@@ -407,20 +336,15 @@ export function Selection({
 
         // Nothing was selected so we blur the current selection.
         // This only happens for the default selection mode.
-        setSelected((previouslySelected) => {
-          if (previouslySelected) {
-            send("track", { actionId: "element_blur" });
-          }
-
-          return undefined;
-        });
-
+        selectionActions.clear();
+        send("track", { actionId: "element_blur" });
         onBlur();
       } else if (selectionMode === "cycle") {
+        const lastObject = resolvedObjects.at(-1);
         const currentIndex = result.findIndex((found) => {
           if (
-            found.object === selectedObject?.sceneObject ||
-            isMatchingTriplexMeta(found.object, selectedObject?.sceneObject)
+            found.object === lastObject?.sceneObject ||
+            isMatchingTriplexMeta(found.object, lastObject?.sceneObject)
           ) {
             // We found a direct match!
             return true;
@@ -429,7 +353,7 @@ export function Selection({
           // We need to check the scene objects parents to find a match.
           let parent = found.object.parent;
           while (parent) {
-            if (parent === selectedObject?.sceneObject) {
+            if (parent === lastObject?.sceneObject) {
               return true;
             }
             parent = parent.parent;
@@ -461,32 +385,37 @@ export function Selection({
     canvasSize.width,
     gl.domElement,
     onBlur,
+    resolvedObjects,
     scene,
-    selectedObject,
+    selectionActions,
     trySelectObject,
   ]);
 
   return (
     <SceneObjectContext.Provider value={true}>
-      <SceneObjectEventsContext.Provider value={onSceneObjectCommitted}>
+      <SceneObjectEventsContext.Provider
+        value={selectionActions.resolveObjectsIfMissing}
+      >
         {children}
       </SceneObjectEventsContext.Provider>
 
-      {selectedObject && transform !== "none" && (
+      {resolvedObjects.length && transform !== "none" && (
         <TransformControls
           enabled={
-            !!selectedSceneObject && selectedSceneObject.transforms[transform]
+            resolvedObjects.length === 1 &&
+            lastSelectedObjectProps?.transforms[transform]
           }
           mode={transform}
-          object={selectedObject.sceneObject}
+          object={lastSelectedObject?.sceneObject}
           onCompleteTransform={onCompleteTransformHandler}
           space={space}
         />
       )}
 
-      {selectedObject && selectedObject.sceneObject instanceof Camera && (
-        <CameraPreview camera={selectedObject.sceneObject} />
-      )}
+      {resolvedObjects.length === 1 &&
+        resolvedObjects[0].sceneObject instanceof Camera && (
+          <CameraPreview camera={resolvedObjects[0].sceneObject} />
+        )}
     </SceneObjectContext.Provider>
   );
 }
