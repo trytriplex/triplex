@@ -10,7 +10,14 @@ import {
   default as CCIMPL,
   type default as CameraControlsImpl,
 } from "camera-controls";
-import { useEffect, useLayoutEffect, useMemo, useRef, useState } from "react";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import {
   Vector3,
   type OrthographicCamera,
@@ -97,39 +104,38 @@ export function Camera({
   const prevTriplexCamera = useRef<"perspective" | "orthographic">();
   const orthCameraRef = useRef<OrthographicCamera>(null!);
   const perspCameraRef = useRef<PerspectiveCamera>(null!);
-  const controlsRef = useRef<CameraControlsImpl>(null);
-  const [activeCamera, setActiveCamera] = useState<CameraType | undefined>(
-    undefined,
-  );
+  const [controlsInstance, setControlsInstance] =
+    useState<CameraControlsImpl | null>(null);
+  const [activeCamera, setActiveCamera] = useState<CameraType | null>(null);
   const isTriplexCamera =
     activeCamera && activeCamera.name === TRIPLEX_CAMERA_NAME;
-  const previousUserlandCamera = useRef<CameraType | undefined>();
+  const previousUserlandCamera = useRef<CameraType | null>(null);
   const [modifier, setModifier] = useState<"Rest" | "Shift" | "Control">(
     "Rest",
   );
 
   useEffect(() => {
-    if (!controlsRef.current) {
+    if (!controlsInstance) {
       return;
     }
 
     switch (modifier) {
       case "Control":
-        apply(controlsRef.current.touches, touchHotkeys.ctrl);
-        apply(controlsRef.current.mouseButtons, mouseHotkeys.ctrl);
+        apply(controlsInstance.touches, touchHotkeys.ctrl);
+        apply(controlsInstance.mouseButtons, mouseHotkeys.ctrl);
         break;
 
       case "Shift":
-        apply(controlsRef.current.touches, touchHotkeys.shift);
-        apply(controlsRef.current.mouseButtons, mouseHotkeys.shift);
+        apply(controlsInstance.touches, touchHotkeys.shift);
+        apply(controlsInstance.mouseButtons, mouseHotkeys.shift);
         break;
 
       default:
-        apply(controlsRef.current.touches, touchHotkeys.rest);
-        apply(controlsRef.current.mouseButtons, mouseHotkeys.rest);
+        apply(controlsInstance.touches, touchHotkeys.rest);
+        apply(controlsInstance.mouseButtons, mouseHotkeys.rest);
         break;
     }
-  }, [modifier, activeCamera]);
+  }, [modifier, activeCamera, controlsInstance]);
 
   useEffect(() => {
     let intervalId: number;
@@ -323,11 +329,15 @@ export function Camera({
   const context: CameraContextType = useMemo(
     () => ({
       camera: activeCamera,
-      controls: controlsRef,
+      controls: controlsInstance,
       isTriplexCamera: !!isTriplexCamera,
     }),
-    [activeCamera, isTriplexCamera],
+    [activeCamera, controlsInstance, isTriplexCamera],
   );
+
+  const setControlsInstanceFromRef = useCallback((ref: CCIMPL | null) => {
+    setControlsInstance(ref);
+  }, []);
 
   return (
     <CameraContext.Provider value={context}>
@@ -360,7 +370,7 @@ export function Camera({
           // We don't want user land cameras to be able to be affected by these controls
           // So we explicitly set the camera instead of relying on "default camera" behaviour.
           camera={activeCamera}
-          ref={controlsRef}
+          ref={setControlsInstanceFromRef}
         />
       )}
 
@@ -382,7 +392,9 @@ export function Camera({
             {`name: ${activeCamera?.name || "(empty)"}
 type: ${type}
 pos: `}
-            <PullCameraPosition__DEV_ONLY__ controls={controlsRef} />
+            {controlsInstance && (
+              <PullCameraPosition controls={controlsInstance} />
+            )}
           </pre>
         </Tunnel.In>
       )}
@@ -390,17 +402,13 @@ pos: `}
   );
 }
 
-function PullCameraPosition__DEV_ONLY__({
-  controls,
-}: {
-  controls: React.RefObject<CCIMPL>;
-}) {
+function PullCameraPosition({ controls }: { controls: CCIMPL }) {
   const [pos, setPos] = useState<string | number>("");
 
   useEffect(() => {
     const id = setInterval(() => {
       setPos(
-        controls.current
+        controls
           ?.getTarget(new Vector3())
           .toArray()
           .map((p) => Math.round(p * 100) / 100)

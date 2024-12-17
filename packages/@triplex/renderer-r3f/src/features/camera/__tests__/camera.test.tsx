@@ -44,9 +44,7 @@ describe("camera", () => {
   });
 
   it("should default to rest modifiers", async () => {
-    let controlsRef: React.MutableRefObject<CameraControlsImpl | null> = {
-      current: null,
-    };
+    let controlsRef: CameraControlsImpl | null = null;
     function HoistControls() {
       const { controls } = useCamera();
       // eslint-disable-next-line react-compiler/react-compiler
@@ -60,16 +58,14 @@ describe("camera", () => {
       </Camera>,
     );
 
-    expect(controlsRef.current).toEqual({
+    expect(controlsRef).toEqual({
       mouseButtons: defaultModifiers,
       touches: {},
     });
   });
 
   it("should unmount controls when userland", async () => {
-    let controlsRef: React.MutableRefObject<CameraControlsImpl | null> = {
-      current: null,
-    };
+    let controlsRef: CameraControlsImpl | null = null;
     function HoistControls() {
       const { controls } = useCamera();
       // eslint-disable-next-line react-compiler/react-compiler
@@ -83,13 +79,11 @@ describe("camera", () => {
       </Camera>,
     );
 
-    expect(controlsRef.current).toEqual(null);
+    expect(controlsRef).toEqual(null);
   });
 
   it("should should apply truck modifier when pressing shift", async () => {
-    let controlsRef: React.MutableRefObject<CameraControlsImpl | null> = {
-      current: null,
-    };
+    let controlsRef: CameraControlsImpl | null = null;
     function HoistControls() {
       const { controls } = useCamera();
       // eslint-disable-next-line react-compiler/react-compiler
@@ -104,13 +98,17 @@ describe("camera", () => {
 
     await act(() => fireDOMEvent.keyDown(window, { key: "Shift" }));
 
-    expect(controlsRef.current?.mouseButtons.left).toEqual(CCIMPL.ACTION.TRUCK);
+    expect(controlsRef).toEqual({
+      mouseButtons: {
+        ...defaultModifiers,
+        left: CCIMPL.ACTION.TRUCK,
+      },
+      touches: {},
+    });
   });
 
   it("should reset modifiers when releasing shift", async () => {
-    let controlsRef: React.MutableRefObject<CameraControlsImpl | null> = {
-      current: null,
-    };
+    let controlsRef: CameraControlsImpl | null = null;
     function HoistControls() {
       const { controls } = useCamera();
       // eslint-disable-next-line react-compiler/react-compiler
@@ -130,16 +128,14 @@ describe("camera", () => {
       setVisibility("visible");
     });
 
-    expect(controlsRef.current).toEqual({
+    expect(controlsRef).toEqual({
       mouseButtons: defaultModifiers,
       touches: {},
     });
   });
 
   it("should reset modifiers when document frame loses focus", async () => {
-    let controlsRef: React.MutableRefObject<CameraControlsImpl | null> = {
-      current: null,
-    };
+    let controlsRef: CameraControlsImpl | null = null;
     function HoistControls() {
       const { controls } = useCamera();
       // eslint-disable-next-line react-compiler/react-compiler
@@ -159,7 +155,7 @@ describe("camera", () => {
       vi.runAllTimers();
     });
 
-    expect(controlsRef.current).toEqual({
+    expect(controlsRef).toEqual({
       mouseButtons: defaultModifiers,
       touches: {},
     });

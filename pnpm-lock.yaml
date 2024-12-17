@@ -733,6 +733,9 @@ importers:
       '@babel/plugin-syntax-jsx':
         specifier: ^7.24.1
         version: 7.24.1(@babel/core@7.26.0)
+      '@react-three/fiber':
+        specifier: ^8.17.8
+        version: 8.17.8(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.168.0)
       '@swc/cli':
         specifier: ^0.1.59
         version: 0.1.59(@swc/core@1.6.5(@swc/helpers@0.5.5))(chokidar@3.5.3)
@@ -763,6 +766,12 @@ importers:
       node-fetch:
         specifier: ^3.3.2
         version: 3.3.2
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      three:
+        specifier: ^0.168.0
+        version: 0.168.0
       typescript:
         specifier: ^5.6.2
         version: 5.6.2
@@ -8178,6 +8187,7 @@ packages:
 
   statsig-js@5.1.0:
     resolution: {integrity: sha512-LTJUkJktM5/wf7CpBbifwKaV4Yq4rqFwi4DnVm8pMI7x8pTENyER8wp5feg+nZFyTv/0w4QPWmYUatFIMtvjFw==}
+    deprecated: Support for this package ends Jan 31 '25. Upgrade to the faster and smaller @statsig/js-client - see docs.statsig.com/js-migration
 
   statuses@2.0.1:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}

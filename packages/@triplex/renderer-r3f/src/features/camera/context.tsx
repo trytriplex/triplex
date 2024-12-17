@@ -10,8 +10,8 @@ import { createContext, useContext } from "react";
 import { type OrthographicCamera, type PerspectiveCamera } from "three";
 
 export interface CameraContextType {
-  camera: CameraType | undefined;
-  controls: React.MutableRefObject<CameraControlsImpl | null>;
+  camera: CameraType | null;
+  controls: CameraControlsImpl | null;
   isTriplexCamera: boolean;
 }
 
@@ -23,7 +23,7 @@ export function useCamera() {
 }
 
 export const CameraContext = createContext<CameraContextType>({
-  camera: undefined,
-  controls: { current: null },
+  camera: null,
+  controls: null,
   isTriplexCamera: true,
 });

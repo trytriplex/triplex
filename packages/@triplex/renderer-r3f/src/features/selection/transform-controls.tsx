@@ -43,9 +43,9 @@ export function TransformControls({
 
   useEffect(() => {
     const callback = (event: { value: boolean }) => {
-      if (controls.current) {
+      if (controls) {
         // eslint-disable-next-line react-compiler/react-compiler
-        controls.current.enabled = !event.value;
+        controls.enabled = !event.value;
       }
     };
 
@@ -56,9 +56,7 @@ export function TransformControls({
     return () => {
       transformControls.removeEventListener("dragging-changed", callback);
     };
-    // When the camera changes the ref of transform controls is re-created
-    // So we need to flush this effect to add the events back.
-  }, [camera, controls]);
+  }, [controls]);
 
   useEffect(() => {
     const callback = (e: KeyboardEvent) => {
@@ -85,7 +83,7 @@ export function TransformControls({
 
   return (
     <TransformControlsImpl
-      camera={camera}
+      camera={camera || undefined}
       enabled={enabled}
       mode={mode}
       object={object}

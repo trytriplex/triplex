@@ -17,6 +17,7 @@ import {
   Vector3,
   type Object3D,
 } from "three";
+import { useSceneStore } from "../../stores/use-scene-store";
 import { flatten } from "../../util/array";
 import { encodeProps } from "../../util/props";
 import {
@@ -45,25 +46,11 @@ const raycaster = new Raycaster();
 export function Selection({
   children,
   filter,
-  onBlur,
-  onFocus,
-  onNavigate,
 }: {
   children?: ReactNode;
   filter: { exportName: string; path: string };
-  onBlur: () => void;
-  onFocus: (node: {
-    column: number;
-    line: number;
-    parentPath: string;
-    path: string;
-  }) => void;
-  onNavigate: (node: {
-    exportName: string;
-    path: string;
-    props: Record<string, unknown>;
-  }) => void;
 }) {
+  const switchToComponent = useSceneStore((store) => store.switchToComponent);
   const [space, setSpace] = useState<Space>("world");
   const [transform, setTransform] = useState<TransformControlMode>("none");
   const scene = useThree((store) => store.scene);
@@ -99,13 +86,13 @@ export function Selection({
     return on("request-state-change", ({ state }) => {
       if (state === "play") {
         selectionActions.clear();
-        onBlur();
+        send("element-blurred", undefined);
         disableSelection.current = true;
       } else {
         disableSelection.current = false;
       }
     });
-  }, [onBlur, selectionActions]);
+  }, [selectionActions]);
 
   useEffect(() => {
     return on("extension-point-triggered", (data) => {
@@ -136,10 +123,6 @@ export function Selection({
   }, []);
 
   useEffect(() => {
-    send("ready", undefined);
-  }, []);
-
-  useEffect(() => {
     return compose([
       on("request-open-component", (sceneObject) => {
         const lastSelectedObject = resolvedObjects.at(-1);
@@ -147,36 +130,29 @@ export function Selection({
           return;
         }
 
-        if (sceneObject) {
-          onNavigate({
-            exportName: sceneObject.exportName,
-            path: sceneObject.path,
-            props: sceneObject.encodedProps
-              ? JSON.parse(sceneObject.encodedProps)
-              : {},
-          });
-          selectionActions.clear();
-          onBlur();
-        } else if (
+        if (
+          !sceneObject &&
+          lastSelectedObject &&
           lastSelectedObject &&
           lastSelectedObjectProps &&
           lastSelectedObjectProps.type === "custom" &&
           lastSelectedObjectProps.path &&
           lastSelectedObjectProps.exportName
         ) {
-          onNavigate({
+          switchToComponent({
             exportName: lastSelectedObjectProps.exportName,
             path: lastSelectedObjectProps.path,
             props: encodeProps(lastSelectedObject),
           });
-          selectionActions.clear();
-          onBlur();
         }
+
+        selectionActions.clear();
+        send("element-blurred", undefined);
       }),
       on("request-blur-element", () => {
         selectionActions.clear();
         send("track", { actionId: "element_blur" });
-        onBlur();
+        send("element-blurred", undefined);
       }),
       on("request-jump-to-element", (sceneObject) => {
         const targetSceneObject = sceneObject
@@ -197,7 +173,7 @@ export function Selection({
           );
         }
 
-        controls.current?.fitToBox(box, false, {
+        controls?.fitToBox(box, false, {
           paddingBottom: 0.5,
           paddingLeft: 0.5,
           paddingRight: 0.5,
@@ -206,19 +182,17 @@ export function Selection({
       }),
       on("request-focus-element", (data) => {
         selectionActions.select(data, "replace");
-        onFocus(data);
+        send("element-focused", data);
         send("track", { actionId: "element_focus" });
       }),
     ]);
   }, [
     controls,
     lastSelectedObjectProps,
-    onBlur,
-    onFocus,
-    onNavigate,
     resolvedObjects,
     scene,
     selectionActions,
+    switchToComponent,
   ]);
 
   const trySelectObject = useEvent((object: Object3D) => {
@@ -240,7 +214,7 @@ export function Selection({
       };
 
       selectionActions.select(target, "replace");
-      onFocus(target);
+      send("element-focused", target);
 
       return true;
     }
@@ -338,7 +312,7 @@ export function Selection({
         // This only happens for the default selection mode.
         selectionActions.clear();
         send("track", { actionId: "element_blur" });
-        onBlur();
+        send("element-blurred", undefined);
       } else if (selectionMode === "cycle") {
         const lastObject = resolvedObjects.at(-1);
         const currentIndex = result.findIndex((found) => {
@@ -384,7 +358,6 @@ export function Selection({
     canvasSize.height,
     canvasSize.width,
     gl.domElement,
-    onBlur,
     resolvedObjects,
     scene,
     selectionActions,
@@ -399,7 +372,7 @@ export function Selection({
         {children}
       </SceneObjectEventsContext.Provider>
 
-      {resolvedObjects.length && transform !== "none" && (
+      {!!resolvedObjects.length && transform !== "none" && (
         <TransformControls
           enabled={
             resolvedObjects.length === 1 &&

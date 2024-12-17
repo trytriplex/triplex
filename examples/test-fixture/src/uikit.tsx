@@ -10,7 +10,7 @@ export function UIKitExample() {
   return (
     <Root>
       <Container>
-        <Portal height={200} width={200}>
+        <Portal height={400} width={400}>
           <mesh>
             <boxGeometry />
           </mesh>

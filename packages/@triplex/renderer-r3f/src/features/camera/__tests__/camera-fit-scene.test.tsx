@@ -15,7 +15,7 @@ const rotateTo = vi.fn();
 
 vi.mock("../context", () => ({
   useCamera: () => ({
-    controls: { current: { fitToSphere, rotateTo } },
+    controls: { fitToSphere, rotateTo },
   }),
 }));
 
@@ -27,9 +27,10 @@ describe("camera fit to scene", () => {
 
   it("should skip fitting if the scene is empty", async () => {
     await render(
-      <FitCameraToScene resetKeys={["1"]}>
+      <>
+        <FitCameraToScene resetKeys={["1"]} />
         <mesh />
-      </FitCameraToScene>,
+      </>,
     );
 
     expect(fitToSphere).not.toHaveBeenCalled();
@@ -38,56 +39,15 @@ describe("camera fit to scene", () => {
 
   it("should fit camera to the scene", async () => {
     await render(
-      <FitCameraToScene resetKeys={["2"]}>
+      <>
+        <FitCameraToScene resetKeys={["2"]} />
         <mesh>
           <boxGeometry />
         </mesh>
-      </FitCameraToScene>,
+      </>,
     );
 
     expect(fitToSphere).toHaveBeenCalled();
     expect(rotateTo).toHaveBeenCalled();
-  });
-
-  it("should skip fitting if the reset key is the same as the previously committed one", async () => {
-    const { update } = await render(
-      <FitCameraToScene resetKeys={["3"]}>
-        <mesh>
-          <boxGeometry />
-        </mesh>
-      </FitCameraToScene>,
-    );
-
-    await update(
-      <FitCameraToScene resetKeys={["3"]}>
-        <mesh>
-          <boxGeometry />
-        </mesh>
-      </FitCameraToScene>,
-    );
-
-    expect(fitToSphere).toHaveBeenCalledOnce();
-    expect(rotateTo).toHaveBeenCalledOnce();
-  });
-
-  it("should skip fitting if the reset key is the same as the previously committed one even if remounting", async () => {
-    const { update } = await render(
-      <FitCameraToScene resetKeys={["4"]}>
-        <mesh>
-          <boxGeometry />
-        </mesh>
-      </FitCameraToScene>,
-    );
-
-    await update(
-      <FitCameraToScene key="reset" resetKeys={["4"]}>
-        <mesh>
-          <boxGeometry />
-        </mesh>
-      </FitCameraToScene>,
-    );
-
-    expect(fitToSphere).toHaveBeenCalledOnce();
-    expect(rotateTo).toHaveBeenCalledOnce();
   });
 });

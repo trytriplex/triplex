@@ -10,7 +10,7 @@ import { overrideFg } from "@triplex/lib/fg";
 import { render } from "react-three-test";
 import { type Color } from "three";
 import { describe, expect, it, vi } from "vitest";
-import { App } from "../";
+import { SceneLoader } from "../../scene-loader";
 
 vi.mock("@react-three/fiber", async () => ({
   ...(await vi.importActual<Record<string, unknown>>("@react-three/fiber")),
@@ -43,8 +43,22 @@ function Provider({ children }: { children?: React.ReactNode }) {
 describe("scene frame", () => {
   it("should apply color to canvas background set in provider", async () => {
     overrideFg("selection_postprocessing", true);
+    function Scene() {
+      return <mesh />;
+    }
+    Scene.triplexMeta = {
+      lighting: "default",
+      root: "react-three-fiber",
+    } as const;
     const { getInstance } = await render(
-      <App files={{}} provider={Provider} providerPath="" />,
+      <SceneLoader
+        exportName="Scene"
+        modules={{ "/foo": () => Promise.resolve({ Scene }) }}
+        path="/foo"
+        provider={Provider}
+        providerPath=""
+        sceneProps={{}}
+      />,
     );
 
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -56,11 +70,18 @@ describe("scene frame", () => {
     function Scene() {
       return <color args={["#ffffff"]} attach="background" />;
     }
+    Scene.triplexMeta = {
+      lighting: "default",
+      root: "react-three-fiber",
+    } as const;
     const { act, getInstance } = await render(
-      <App
-        files={{ "/foo": () => Promise.resolve({ Scene }) }}
+      <SceneLoader
+        exportName="Scene"
+        modules={{ "/foo": () => Promise.resolve({ Scene }) }}
+        path="/foo"
         provider={({ children }) => <>{children}</>}
         providerPath=""
+        sceneProps={{}}
       />,
     );
 

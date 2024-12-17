@@ -10,26 +10,27 @@ import { Spherical, Vector3 } from "three";
 import { buildSceneSphere } from "../../util/scene";
 import { useCamera } from "./context";
 
-let previousResetKey: string | undefined | null = null;
-
-export function FitCameraToScene({
-  children,
-  resetKeys,
-}: {
-  children: React.ReactNode;
-  resetKeys?: string[];
-}) {
+export function FitCameraToScene({ resetKeys }: { resetKeys?: string[] }) {
   const { controls } = useCamera();
   const scene = useThree((store) => store.scene);
   const resetKey = resetKeys?.join("");
 
   useLayoutEffect(() => {
-    if (!controls.current || resetKey === previousResetKey) {
+    if (!controls) {
       return;
     }
 
     const sphere = buildSceneSphere(scene);
-    if (sphere.isEmpty()) {
+    if (
+      sphere.isEmpty() ||
+      /**
+       * There are edge cases where a scene can return NaN for its radius. One
+       * example is the uikit example in test-fixtures doing this on initial
+       * load. To prevent the camera from getting into invalid states we check
+       * this and abort early.
+       */
+      Number.isNaN(sphere.radius)
+    ) {
       return;
     }
 
@@ -37,13 +38,9 @@ export function FitCameraToScene({
       // Z forward rotation.
       new Vector3(0, 0, 1),
     );
-    controls.current.rotateTo(point.theta, point.phi, false);
-    controls.current.fitToSphere(sphere, false);
-
-    // Store the reset key to prevent the camera resetting if the scene re-mounts.
-    // Currently this only happens if the root provider component declared by users changes.
-    previousResetKey = resetKey;
+    controls.rotateTo(point.theta, point.phi, false);
+    controls.fitToSphere(sphere, false);
   }, [controls, scene, resetKey]);
 
-  return <>{children}</>;
+  return null;
 }

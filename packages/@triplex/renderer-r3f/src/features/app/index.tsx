@@ -6,37 +6,32 @@
  */
 import {
   broadcastForwardedKeyboardEvents,
+  compose,
+  on,
   send,
   type Modules,
   type ProviderComponent,
 } from "@triplex/bridge/client";
-import { useEvent } from "@triplex/lib";
-import { fg } from "@triplex/lib/fg";
-import { Suspense, useCallback, useEffect, useState } from "react";
+import { Suspense, useEffect } from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
 import { ErrorFallback } from "../../components/error-fallback";
-import { TriplexGrid } from "../../components/grid";
 import { LoadingTriangle } from "../../components/loading-triangle";
 import { Tunnel } from "../../components/tunnel";
-import { Camera } from "../camera";
-import { CameraAxisHelper } from "../camera/camera-axis-helper";
-import { CameraGizmo } from "../camera/camera-gizmo";
-import { Canvas } from "../canvas";
-import { PostProcessing } from "../post-processing";
-import { SceneElement } from "../scene-element";
+import { useSceneStore } from "../../stores/use-scene-store";
 import { SceneLoader } from "../scene-loader";
-import { Selection } from "../selection";
-import { SceneProvider } from "./context";
 
 export function App({
   files,
-  provider: Provider,
+  provider,
   providerPath,
 }: {
   files: Modules;
   provider: ProviderComponent;
   providerPath: string;
 }) {
+  const component = useSceneStore((store) => store.component);
+  const switchToComponent = useSceneStore((store) => store.switchToComponent);
+
   useEffect(() => {
     send("set-extension-points", {
       elements: [
@@ -150,137 +145,52 @@ export function App({
     });
   }, []);
 
-  useEffect(() => broadcastForwardedKeyboardEvents(), []);
+  useEffect(() => {
+    send("ready", undefined);
+    return compose([
+      broadcastForwardedKeyboardEvents(),
+      on("request-open-component", (sceneObject) => {
+        if (!sceneObject) {
+          return;
+        }
 
-  const [component, setComponent] = useState<{
-    exportName: string;
-    path: string;
-    props: Record<string, unknown>;
-  }>({ exportName: "", path: "", props: {} });
-
-  const onNavigate = useEvent(
-    (target: {
-      exportName: string;
-      path: string;
-      props: Record<string, unknown>;
-    }) => {
-      setComponent({
-        exportName: target.exportName,
-        path: target.path,
-        props: target.props,
-      });
-      send("component-opened", {
-        encodedProps: JSON.stringify(target.props),
-        entered: true,
-        exportName: target.exportName,
-        path: target.path,
-      });
-    },
-  );
-
-  const onFocus = useCallback(
-    (data: {
-      column: number;
-      line: number;
-      parentPath: string;
-      path: string;
-    }) => {
-      send("element-focused", data);
-    },
-    [],
-  );
-
-  const onBlurObject = useCallback(() => {
-    send("element-blurred", undefined);
-  }, []);
+        switchToComponent({
+          exportName: sceneObject.exportName,
+          path: sceneObject.path,
+          props: sceneObject.encodedProps
+            ? JSON.parse(sceneObject.encodedProps)
+            : {},
+        });
+      }),
+    ]);
+  }, [switchToComponent]);
 
   return (
-    <SceneProvider value={files}>
-      <Canvas>
-        <Camera>
-          <ErrorBoundaryForScene
-            fallbackRender={() => <ErrorFallback />}
-            onError={(err) =>
-              send("error", {
-                message: err.message,
-                source: providerPath,
-                stack: err.stack,
-                subtitle:
-                  "The scene could not be rendered because there was an error in the provider component. Resolve the errors and try again.",
-                title: "Could not render scene",
-              })
-            }
-            resetKeys={[component, Provider]}
-          >
-            <Suspense
-              fallback={
-                <Tunnel.In>
-                  <LoadingTriangle />
-                </Tunnel.In>
-              }
-            >
-              <SceneElement
-                __component={Provider}
-                __meta={{
-                  column: -999,
-                  line: -999,
-                  name: "Provider",
-                  path: providerPath,
-                  rotate: false,
-                  scale: false,
-                  translate: false,
-                }}
-                forceInsideSceneObjectContext
-              >
-                <Selection
-                  filter={component}
-                  onBlur={onBlurObject}
-                  onFocus={onFocus}
-                  onNavigate={onNavigate}
-                >
-                  <Suspense
-                    fallback={
-                      <Tunnel.In>
-                        <LoadingTriangle />
-                      </Tunnel.In>
-                    }
-                  >
-                    <ErrorBoundaryForScene
-                      fallbackRender={() => <ErrorFallback />}
-                      onError={(err) =>
-                        send("error", {
-                          message: err.message,
-                          source: component.path,
-                          stack: err.message,
-                          subtitle:
-                            "The scene could not be rendered as there was an error parsing its module. Resolve the error and try again.",
-                          title: "Module Error",
-                        })
-                      }
-                      resetKeys={[component]}
-                    >
-                      <SceneLoader
-                        exportName={component.exportName}
-                        path={component.path}
-                        sceneProps={component.props}
-                      />
-                    </ErrorBoundaryForScene>
-                  </Suspense>
-                </Selection>
-              </SceneElement>
-              {fg("camera_axis_helper") ? (
-                <CameraAxisHelper />
-              ) : (
-                <CameraGizmo />
-              )}
-            </Suspense>
-          </ErrorBoundaryForScene>
-          <TriplexGrid />
-        </Camera>
-
-        {fg("selection_postprocessing") && <PostProcessing />}
-      </Canvas>
+    <ErrorBoundaryForScene
+      fallbackRender={() => <ErrorFallback />}
+      onError={(err) =>
+        send("error", {
+          message: err.message,
+          source: component.path,
+          stack: err.message,
+          subtitle:
+            "The scene could not be rendered as there was an error parsing its module. Resolve the error and try again.",
+          title: "Module Error",
+        })
+      }
+      resetKeys={[component]}
+    >
+      <Suspense fallback={<LoadingTriangle />}>
+        <SceneLoader
+          exportName={component.exportName}
+          modules={files}
+          path={component.path}
+          provider={provider}
+          providerPath={providerPath}
+          sceneProps={component.props}
+        />
+      </Suspense>
       <Tunnel.Out />
-    </SceneProvider>
+    </ErrorBoundaryForScene>
   );
 }

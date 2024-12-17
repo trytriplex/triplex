@@ -12,7 +12,7 @@ export function ErrorSplash({ error }: { error: Error | { message: string } }) {
   return (
     <>
       <div
-        className="fixed inset-0 mx-auto flex max-w-2xl flex-col justify-center gap-4 p-4"
+        className="fixed inset-0 mx-auto flex max-w-2xl flex-col justify-center gap-4 p-10"
         data-testid="ErrorSplash"
       >
         <h1 className="text-heading text-center font-medium">
@@ -24,17 +24,17 @@ export function ErrorSplash({ error }: { error: Error | { message: string } }) {
           if the problem persists try restarting Visual Studio Code.
         </p>
 
+        <code className="mx-auto my-2 max-h-32 max-w-2xl overflow-auto bg-white/5 px-4 py-2 text-left">
+          {"stack" in error ? error.stack : error.message}
+        </code>
+
         <div className="mx-auto flex items-center gap-2">
-          <a href="https://discord.gg/nBzRBUEs4b">Contact Us</a>
+          <a href="https://discord.gg/nBzRBUEs4b">Contact Support</a>
           <span className="text-xs">•</span>
           <a href="https://github.com/trytriplex/triplex/issues/new">
             Report a Bug
           </a>
         </div>
-
-        <code className="mx-auto max-h-32 max-w-2xl overflow-auto bg-white/5 px-4 py-2 text-center">
-          {error.message}
-        </code>
       </div>
     </>
   );

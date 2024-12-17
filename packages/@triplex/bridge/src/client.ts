@@ -101,6 +101,12 @@ export { compose } from "./compose";
 
 export interface SceneComponent {
   (props: unknown): JSX.Element;
+  triplexMeta: SceneMeta;
+}
+
+export interface SceneMeta {
+  lighting: "default" | "custom";
+  root: "react" | "react-three-fiber" | "unknown";
 }
 
 export type Module = Record<string, SceneComponent>;
@@ -127,10 +133,7 @@ export type BootstrapFunction = (
 
 export type ThumbnailFunction = (
   container: HTMLElement,
-) => (opts: {
-  component: UnknownComponent;
-  provider: ProviderComponent;
-}) => void;
+) => (opts: { component: SceneComponent; provider: ProviderComponent }) => void;
 
 export interface EmbeddedMeta {
   column: number;

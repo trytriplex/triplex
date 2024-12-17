@@ -31,7 +31,6 @@ import {
 import { useSceneObjectEvents } from "./use-scene-element-events";
 import { useTemporaryProps } from "./use-temporary-props";
 
-const permanentlyExcluded = [/^Canvas$/];
 const disabledWhenTriplexCamera = [
   /^PresentationControls$/,
   /^ScrollControls$/,
@@ -85,10 +84,6 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
       // This component will eventually unmount when deleted as its removed
       // from source code. To keep things snappy however we delete it optimistically.
       return null;
-    } else if (permanentlyExcluded.some((r) => r.test(__meta.name))) {
-      // We don't want this component to render to the scene and affect Triplex.
-      // Noop it out and render its children.
-      return <>{props.children}</>;
     } else if (
       isTriplexCamera &&
       !disabledWhenTriplexCamera.some((r) => r.test(__meta.name)) &&

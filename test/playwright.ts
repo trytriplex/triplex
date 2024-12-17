@@ -52,7 +52,7 @@ export async function runUseWithTrace<TPage extends { page: Page }>({
     contentType: "text/plain",
   });
 
-  if (testInfo.status !== testInfo.expectedStatus) {
+  if (testInfo.status !== testInfo.expectedStatus && !page.page.isClosed()) {
     const screenshot = await page.page.screenshot();
     await testInfo.attach("screenshot", {
       body: screenshot,

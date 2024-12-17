@@ -101,6 +101,7 @@ test.describe("when an error is thrown on interaction", () => {
     await vsce.codelens("ErrorsDuringInteraction").click();
     const { locator } = await vsce.resolveEditor();
     await locator.getByRole("button", { exact: true, name: "Play" }).click();
+    await vsce.dismissAllNotifications();
 
     await locator.getByTestId("scene").click({ force: true });
 

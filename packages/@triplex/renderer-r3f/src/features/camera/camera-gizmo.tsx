@@ -247,7 +247,7 @@ export function CameraGizmo() {
         color="rgb(30 30 30)"
         font="30px ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Noto Sans, Ubuntu, Cantarell, Helvetica Neue, Arial, sans-serif"
         onClick={(e) => {
-          if (!controls.current) {
+          if (!controls) {
             return null;
           }
 
@@ -258,9 +258,9 @@ export function CameraGizmo() {
             e.eventObject.position.y === 0 &&
             e.eventObject.position.z === 0
           ) {
-            tweenCamera(controls.current, scene, e.face!.normal);
+            tweenCamera(controls, scene, e.face!.normal);
           } else {
-            tweenCamera(controls.current, scene, e.eventObject.position);
+            tweenCamera(controls, scene, e.eventObject.position);
           }
 
           send("track", { actionId: "controls_viewcube" });

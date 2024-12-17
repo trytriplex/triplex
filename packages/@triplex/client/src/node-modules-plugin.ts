@@ -31,7 +31,7 @@ export const transformNodeModulesJSXPlugin = (): Plugin => ({
 
           if (/(\.createElement\()|(jsx\()|(jsxs\()/.test(input)) {
             const result = transformSync(input, {
-              plugins: [babelPlugin({ exclude: [] })],
+              plugins: [babelPlugin({ exclude: [], skipFunctionMeta: true })],
             });
 
             contents = result?.code || input;

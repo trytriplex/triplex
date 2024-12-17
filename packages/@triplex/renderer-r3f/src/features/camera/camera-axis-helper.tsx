@@ -47,7 +47,7 @@ export function CameraAxisHelper() {
     >
       <AxisHelper
         onClick={(e) => {
-          if (!controls.current) {
+          if (!controls) {
             return;
           }
 
@@ -56,9 +56,9 @@ export function CameraAxisHelper() {
             e.eventObject.position.y === 0 &&
             e.eventObject.position.z === 0
           ) {
-            tweenCamera(controls.current, scene, e.face!.normal);
+            tweenCamera(controls, scene, e.face!.normal);
           } else {
-            tweenCamera(controls.current, scene, e.eventObject.position);
+            tweenCamera(controls, scene, e.eventObject.position);
           }
 
           send("track", { actionId: "controls_axishelper" });

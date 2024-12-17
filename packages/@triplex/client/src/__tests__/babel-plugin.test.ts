@@ -80,7 +80,8 @@ describe("babel plugin", () => {
       }
       _c = Component;
       Component.triplexMeta = {
-        "lighting": "default"
+        "lighting": "default",
+        "root": "react-three-fiber"
       };
       var _c;
       $RefreshReg$(_c, "Component");"
@@ -239,7 +240,8 @@ describe("babel plugin", () => {
         }}></SceneObject>;
       }
       HelloWorld.triplexMeta = {
-        "lighting": "default"
+        "lighting": "default",
+        "root": "react-three-fiber"
       };"
     `);
   });
@@ -274,7 +276,8 @@ describe("babel plugin", () => {
         }}></SceneObject>;
       }
       HelloWorld.triplexMeta = {
-        "lighting": "default"
+        "lighting": "default",
+        "root": "react-three-fiber"
       };"
     `);
   });
@@ -309,7 +312,8 @@ describe("babel plugin", () => {
         }}></SceneObject>;
       };
       HelloWorld.triplexMeta = {
-        "lighting": "default"
+        "lighting": "default",
+        "root": "react-three-fiber"
       };"
     `);
   });
@@ -370,7 +374,8 @@ describe("babel plugin", () => {
                 </>;
       };
       HelloWorld.triplexMeta = {
-        "lighting": "custom"
+        "lighting": "custom",
+        "root": "react-three-fiber"
       };"
     `);
   });
@@ -413,7 +418,8 @@ describe("babel plugin", () => {
         }}></SceneObject>;
       }
       HelloWorld.triplexMeta = {
-        "lighting": "default"
+        "lighting": "default",
+        "root": "react-three-fiber"
       };"
     `);
   });
@@ -451,7 +457,8 @@ describe("babel plugin", () => {
       };
       export default HelloWorld;
       HelloWorld.triplexMeta = {
-        "lighting": "default"
+        "lighting": "default",
+        "root": "react-three-fiber"
       };"
     `);
   });
@@ -486,7 +493,8 @@ describe("babel plugin", () => {
         }}></SceneObject>;
       });
       HelloWorld.triplexMeta = {
-        "lighting": "default"
+        "lighting": "default",
+        "root": "react-three-fiber"
       };"
     `);
   });
@@ -577,7 +585,8 @@ describe("babel plugin", () => {
       }
       export default Box;
       Box.triplexMeta = {
-        "lighting": "default"
+        "lighting": "default",
+        "root": "react-three-fiber"
       };"
     `);
   });
@@ -715,7 +724,8 @@ describe("babel plugin", () => {
         }}></SceneObject>;
       }
       Component.triplexMeta = {
-        "lighting": "default"
+        "lighting": "default",
+        "root": "react-three-fiber"
       };"
     `);
   });
@@ -748,7 +758,8 @@ describe("babel plugin", () => {
         }}></SceneObject>;
       });
       Component.triplexMeta = {
-        "lighting": "default"
+        "lighting": "default",
+        "root": "react-three-fiber"
       };"
     `);
   });
@@ -784,7 +795,8 @@ describe("babel plugin", () => {
         }}></SceneObject>;
       }
       Component.triplexMeta = {
-        "lighting": "default"
+        "lighting": "default",
+        "root": "react-three-fiber"
       };"
     `);
   });
@@ -820,7 +832,49 @@ describe("babel plugin", () => {
         }}></SceneObject>;
       });
       Component.triplexMeta = {
-        "lighting": "default"
+        "lighting": "default",
+        "root": "react-three-fiber"
+      };"
+    `);
+  });
+
+  it("should skip nested arrow functions", () => {
+    const result = transformSync(
+      `
+      const Component = forwardRef(({ name, ...props }) => {
+        const shouldSkipThisNode = ({ ...ok }) => {};
+        return <mesh {...props} />
+      });
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "const Component = forwardRef(({
+        name,
+        ...props
+      }) => {
+        const shouldSkipThisNode = ({
+          ...ok
+        }) => {};
+        return <SceneObject {...props} __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 4,
+          "column": 16,
+          "translate": true,
+          "rotate": true,
+          "scale": true
+        }}></SceneObject>;
+      });
+      Component.triplexMeta = {
+        "lighting": "default",
+        "root": "react-three-fiber"
       };"
     `);
   });
@@ -859,7 +913,8 @@ describe("babel plugin", () => {
         }}></SceneObject>;
       }
       Component.triplexMeta = {
-        "lighting": "default"
+        "lighting": "default",
+        "root": "react-three-fiber"
       };"
     `);
   });
@@ -898,7 +953,8 @@ describe("babel plugin", () => {
         }}></SceneObject>;
       });
       Component.triplexMeta = {
-        "lighting": "default"
+        "lighting": "default",
+        "root": "react-three-fiber"
       };"
     `);
   });
@@ -925,14 +981,365 @@ describe("babel plugin", () => {
           "name": "mesh",
           "line": 3,
           "column": 16,
-          "translate": false,
-          "rotate": false,
-          "scale": false
+          "translate": true,
+          "rotate": true,
+          "scale": true
         }}></SceneObject>;
       });
       Component.triplexMeta = {
-        "lighting": "default"
+        "lighting": "default",
+        "root": "react-three-fiber"
       };"
     `);
+  });
+
+  it("should should skip nested function expressions", () => {
+    const result = transformSync(
+      `
+      const Component = forwardRef(function Hello(props) {
+        test(function anotherOne(another) {})
+        return <mesh {...props} />
+      });
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "const Component = forwardRef(function Hello(props) {
+        test(function anotherOne(another) {});
+        return <SceneObject {...props} __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 4,
+          "column": 16,
+          "translate": true,
+          "rotate": true,
+          "scale": true
+        }}></SceneObject>;
+      });
+      Component.triplexMeta = {
+        "lighting": "default",
+        "root": "react-three-fiber"
+      };"
+    `);
+  });
+
+  it("should transform canvas import specifier to triplex", () => {
+    const result = transformSync(
+      `
+      import { Canvas, useThree } from "@react-three/fiber";
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(
+      `
+      "import { useThree } from "@react-three/fiber";
+      import { Canvas } from "triplex:canvas";"
+    `,
+    );
+  });
+
+  it("should skip transforming import specifier", () => {
+    const result = transformSync(
+      `
+      import { Canvas, useThree } from "@react-three/fiber";
+    `,
+      {
+        filename: "file.tsx",
+        plugins: [
+          plugin({ exclude: ["file.tsx"] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(
+      `"import { Canvas, useThree } from "@react-three/fiber";"`,
+    );
+  });
+
+  it("should set react root when canvas is the first found element", () => {
+    const result = transformSync(
+      `
+      import { Canvas } from '@react-three/fiber';
+
+      export function Component() {
+        return <Canvas><mesh /></Canvas>;
+      }
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toContain('"root": "react"');
+  });
+
+  it("should set react root when canvas is the first found element inside a fragment", () => {
+    const result = transformSync(
+      `
+      import { Canvas } from '@react-three/fiber';
+
+      export function Component() {
+        return <><Canvas><mesh /></Canvas></>;
+      }
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toContain('"root": "react"');
+  });
+
+  it("should set react root from basic found html", () => {
+    const result = transformSync(
+      `
+      export function Component() {
+        return <div />;
+      }
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toContain('"root": "react"');
+  });
+
+  it("should forward found root from first found relatively imported component", () => {
+    const result = transformSync(
+      `
+      import { Baz } from 'vite';
+      import { Bar } from './foo';
+
+      export function Component() {
+        return <Baz><Bar /></Baz>;
+      }
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toContain('"root": Bar.triplexMeta.root');
+  });
+
+  it("should forward found root from first found local component", () => {
+    const result = transformSync(
+      `
+      import { Baz } from 'vite';
+
+      function Bar() {
+        return <div />;
+      }
+
+      export function Component() {
+        return <Baz><Bar /></Baz>;
+      }
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toContain('"root": Bar.triplexMeta.root');
+  });
+
+  it("should set triplex meta even with no jsx elements", () => {
+    const result = transformSync(
+      `
+      export function Component() {
+        return null;
+      }
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "export function Component() {
+        return null;
+      }
+      Component.triplexMeta = {
+        "lighting": "default",
+        "root": "unknown"
+      };"
+    `);
+  });
+
+  it("should set react-three-fiber root when using fiber hooks", () => {
+    const result = transformSync(
+      `
+      import { useScroll } from "@react-three/drei";
+
+      export function Component() {
+        useScroll();
+      }
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "import { useScroll } from "@react-three/drei";
+      export function Component() {
+        useScroll();
+      }
+      Component.triplexMeta = {
+        "lighting": "default",
+        "root": "react-three-fiber"
+      };"
+    `);
+  });
+
+  it("should set react-three-fiber root when using fiber components", () => {
+    const result = transformSync(
+      `
+      import { Box } from "@react-three/drei";
+
+      export function Component() {
+        return <Box />;
+      }
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toContain('"root": "react-three-fiber"');
+  });
+
+  it("should skip generating component meta", () => {
+    const result = transformSync(
+      `
+      export function Component() {
+        return <mesh />;
+      }
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [], skipFunctionMeta: true }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).not.toContain("triplexMeta");
+  });
+
+  it("should use the first returned jsx element inside a return statement", () => {
+    const result = transformSync(
+      `
+      import { Html } from '@react-three/drei';
+
+      export function Component() {
+        const inner = <div />;
+        return <group><mesh /><Html>{inner}</Html></group>;
+      }
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toContain(`"root": "react-three-fiber"`);
+  });
+
+  it("should use the first returned jsx element inside a return statement [arrow func]", () => {
+    const result = transformSync(
+      `
+      import { Html } from '@react-three/drei';
+
+      export const Component = () => {
+        const inner = <div />;
+        return <group><mesh /><Html>{inner}</Html></group>;
+      }
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toContain(`"root": "react-three-fiber"`);
+  });
+
+  it("should use the first returned jsx element inside an arrow shorthand", () => {
+    const result = transformSync(
+      `
+      import { Html } from '@react-three/drei';
+
+      const inner = <div />;
+
+      export const Component = () => <group><mesh /><Html>{inner}</Html></group>;
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toContain(`"root": "react-three-fiber"`);
+  });
+
+  it("should ignore non-arrow functions", () => {
+    const result = transformSync(
+      `
+      export const MyString = "hello";
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`"export const MyString = "hello";"`);
   });
 });

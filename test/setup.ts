@@ -6,7 +6,7 @@
  */
 import { cleanup } from "@testing-library/react";
 import { clearFgOverrides, initFeatureGates } from "@triplex/lib/fg";
-import { createElement, forwardRef } from "react";
+import { createElement, forwardRef, useState } from "react";
 import { afterEach, beforeAll, vi } from "vitest";
 
 globalThis.DOMRect = class DOMRect {
@@ -29,12 +29,16 @@ globalThis.DOMRect = class DOMRect {
 };
 
 const CameraControls = forwardRef((props, ref) => {
+  const [instance] = useState(() => ({ mouseButtons: {}, touches: {} }));
+
   return createElement("group", {
     ...props,
     name: "__stub_camera_controls__",
     ref: () => {
       if (typeof ref === "object" && ref && !ref.current) {
-        ref.current = { mouseButtons: {}, touches: {} };
+        ref.current = instance;
+      } else if (typeof ref === "function") {
+        ref(instance);
       }
     },
   });

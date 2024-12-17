@@ -4,42 +4,43 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import type { NodePath, PluginObj } from "@babel/core";
+import type { PluginObj } from "@babel/core";
 import * as t from "@babel/types";
+import type { SceneMeta } from "@triplex/bridge/client";
 import { normalize } from "upath";
+import {
+  extractFunctionArgs,
+  isChildOfReturnStatement,
+  isJSXIdentifierFromNodeModules,
+  resolveIdentifierImportSpecifier,
+} from "./util/babel";
+import { isReactDOMElement } from "./util/is-react-element";
+import {
+  isCanvasFromThreeFiber,
+  isComponentFromThreeFiber,
+  isReactThreeElement,
+  THREE_FIBER_MODULES,
+} from "./util/is-three-element";
 
 const AUTOMATIC_JSX_RUNTIME = ["jsx", "jsxs", "_jsx", "_jsxs"];
+const SCENE_OBJECT_COMPONENT_NAME = "SceneObject";
 
-function isNodeModulesComponent(
-  path: NodePath,
-  elementName: string,
-  cwd: string,
-) {
-  try {
-    const binding = path.scope.getBinding(elementName);
-    if (binding && binding.path.parent.type === "ImportDeclaration") {
-      const location = require.resolve(binding.path.parent.source.value, {
-        paths: [cwd],
-      });
-      return location.includes("node_modules");
-    }
-  } catch {
-    // Ignore
-  }
-
-  return false;
+interface ExtendedSceneMeta {
+  lighting: SceneMeta["lighting"];
+  root: "react" | "react-three-fiber" | "unknown" | t.Expression;
 }
 
 export default function triplexBabelPlugin({
   cwd = process.cwd(),
   exclude: excludeDirs,
+  skipFunctionMeta,
 }: {
   cwd?: string;
   exclude: string[];
+  skipFunctionMeta?: boolean;
 }) {
-  const SCENE_OBJECT_COMPONENT_NAME = "SceneObject";
   const cache = new WeakSet();
-  const triplexMeta = new Map<string, { lighting: "default" | "custom" }>();
+  const metaForCurrentFunction = new Map<string, ExtendedSceneMeta>();
   const exclude = excludeDirs.filter(Boolean);
 
   let shouldSkip = false;
@@ -50,9 +51,46 @@ export default function triplexBabelPlugin({
       }
     | undefined = undefined;
 
+  function initializeMetaForCurrentFunction() {
+    if (
+      !skipFunctionMeta &&
+      currentFunction &&
+      !metaForCurrentFunction.has(currentFunction.name)
+    ) {
+      metaForCurrentFunction.set(currentFunction.name, {
+        lighting: "default",
+        root: "unknown",
+      });
+    }
+  }
+
   const plugin: PluginObj = {
     visitor: {
       CallExpression(path) {
+        if (currentFunction) {
+          const functionMeta = metaForCurrentFunction.get(currentFunction.name);
+          const callee = path.get("callee");
+
+          if (
+            functionMeta &&
+            functionMeta.root === "unknown" &&
+            callee.isIdentifier() &&
+            callee.node.name.startsWith("use")
+          ) {
+            // We've found a hook being used. Now we check if it's a fiber hook.
+            const importSpecifier = resolveIdentifierImportSpecifier(callee);
+            if (
+              importSpecifier &&
+              importSpecifier.parentPath.isImportDeclaration() &&
+              THREE_FIBER_MODULES.test(
+                importSpecifier.parentPath.node.source.value,
+              )
+            ) {
+              functionMeta.root = "react-three-fiber";
+            }
+          }
+        }
+
         if (
           path.node.callee.type === "MemberExpression" &&
           path.node.callee.object.type === "Identifier" &&
@@ -173,42 +211,24 @@ export default function triplexBabelPlugin({
       },
       FunctionDeclaration: {
         enter(path) {
-          if (shouldSkip) {
+          if (
+            shouldSkip ||
+            !path.node.id ||
+            !/^[A-Z]/.exec(path.node.id.name)
+          ) {
             return;
           }
 
-          if (path.node.id && /^[A-Z]/.exec(path.node.id.name)) {
-            const propsArg = path.node.params[0];
-            const destructured: string[] = [];
-            let spreadIdentifier: string | undefined = undefined;
+          const propsArg = path.node.params[0];
+          const { destructured, spreadIdentifier } =
+            extractFunctionArgs(propsArg);
 
-            switch (propsArg?.type) {
-              case "Identifier":
-                spreadIdentifier = propsArg.name;
-                break;
+          currentFunction = {
+            name: path.node.id.name,
+            props: { destructured, spreadIdentifier },
+          };
 
-              case "ObjectPattern":
-                propsArg.properties.forEach((prop) => {
-                  if (
-                    prop.type === "ObjectProperty" &&
-                    prop.key.type === "Identifier"
-                  ) {
-                    destructured.push(prop.key.name);
-                  } else if (
-                    prop.type === "RestElement" &&
-                    prop.argument.type === "Identifier"
-                  ) {
-                    spreadIdentifier = prop.argument.name;
-                  }
-                });
-                break;
-            }
-
-            currentFunction = {
-              name: path.node.id.name,
-              props: { destructured, spreadIdentifier },
-            };
-          }
+          initializeMetaForCurrentFunction();
         },
         exit(path) {
           if (path.node.id && path.node.id.name === currentFunction?.name) {
@@ -231,17 +251,39 @@ export default function triplexBabelPlugin({
 
         cache.add(path.node);
 
-        if (currentFunction && !triplexMeta.has(currentFunction.name)) {
-          triplexMeta.set(currentFunction.name, { lighting: "default" });
-        }
-
         const elementName = path.node.openingElement.name.name;
         const elementType = /^[A-Z]/.exec(elementName) ? "custom" : "host";
+        const functionMeta =
+          currentFunction && metaForCurrentFunction.get(currentFunction.name);
 
-        if (currentFunction && elementName.endsWith("Light")) {
-          const meta = triplexMeta.get(currentFunction.name);
-          if (meta) {
-            meta.lighting = "custom";
+        if (functionMeta) {
+          if (elementName.endsWith("Light")) {
+            functionMeta.lighting = "custom";
+          }
+
+          if (
+            functionMeta.root === "unknown" &&
+            isChildOfReturnStatement(path)
+          ) {
+            if (elementType === "custom") {
+              if (isCanvasFromThreeFiber(path)) {
+                functionMeta.root = "react";
+              } else if (isComponentFromThreeFiber(path)) {
+                functionMeta.root = "react-three-fiber";
+              } else if (!isJSXIdentifierFromNodeModules(path, cwd)) {
+                functionMeta.root = t.memberExpression(
+                  t.memberExpression(
+                    t.identifier(elementName),
+                    t.identifier("triplexMeta"),
+                  ),
+                  t.identifier("root"),
+                );
+              }
+            } else if (isReactDOMElement(elementName)) {
+              functionMeta.root = "react";
+            } else if (isReactThreeElement(elementName)) {
+              functionMeta.root = "react-three-fiber";
+            }
           }
         }
 
@@ -260,7 +302,7 @@ export default function triplexBabelPlugin({
             if (attr.type === "JSXAttribute") {
               if (
                 elementType === "host" ||
-                isNodeModulesComponent(path, elementName, cwd)
+                isJSXIdentifierFromNodeModules(path, cwd)
               ) {
                 if (attr.name.name === "position") {
                   transformsFound.translate = true;
@@ -361,9 +403,42 @@ export default function triplexBabelPlugin({
           }
         },
         exit(path) {
+          if (!shouldSkip) {
+            const importDeclarations = path
+              .get("body")
+              .filter((path) => path.isImportDeclaration());
+            importDeclarations.forEach((path) => {
+              const isReactThreeFiberImport =
+                path.node.source.value === "@react-three/fiber";
+
+              if (!isReactThreeFiberImport) {
+                return;
+              }
+
+              const [canvasImportSpecifier] = path
+                .get("specifiers")
+                .filter(
+                  (spec) =>
+                    spec.node.type === "ImportSpecifier" &&
+                    spec.node.imported.type === "Identifier" &&
+                    spec.node.imported.name === "Canvas",
+                );
+
+              if (canvasImportSpecifier) {
+                path.insertAfter(
+                  t.importDeclaration(
+                    [canvasImportSpecifier.node],
+                    t.stringLiteral("triplex:canvas"),
+                  ),
+                );
+                canvasImportSpecifier.remove();
+              }
+            });
+          }
+
           shouldSkip = false;
 
-          for (const [key, value] of triplexMeta) {
+          for (const [key, value] of metaForCurrentFunction) {
             path.pushContainer(
               "body",
               t.expressionStatement(
@@ -373,65 +448,62 @@ export default function triplexBabelPlugin({
                     t.identifier(key),
                     t.identifier("triplexMeta"),
                   ),
-                  t.objectExpression([
-                    t.objectProperty(
-                      t.stringLiteral("lighting"),
-                      t.stringLiteral(value.lighting),
+                  t.objectExpression(
+                    Object.entries(value).map(([key, value]) =>
+                      t.objectProperty(
+                        t.stringLiteral(key),
+                        typeof value === "string"
+                          ? t.stringLiteral(value)
+                          : value,
+                      ),
                     ),
-                  ]),
+                  ),
                 ),
               ),
             );
           }
 
-          triplexMeta.clear();
+          metaForCurrentFunction.clear();
         },
       },
       VariableDeclarator: {
         enter(path) {
-          if (shouldSkip) {
+          if (
+            shouldSkip ||
+            path.node.id.type !== "Identifier" ||
+            !/^[A-Z]/.exec(path.node.id.name)
+          ) {
             return;
           }
 
-          if (
-            path.node.id.type === "Identifier" &&
-            /^[A-Z]/.exec(path.node.id.name)
-          ) {
-            const destructured: string[] = [];
-            let spreadIdentifier: string | undefined = undefined;
+          let destructured: string[] = [];
+          let spreadIdentifier: string | undefined = undefined;
+          let isFunction = false;
 
-            path.traverse({
-              ArrowFunctionExpression(innerPath) {
-                const propsArg = innerPath.node.params[0];
+          path.traverse({
+            ArrowFunctionExpression(innerPath) {
+              const propsArg = innerPath.node.params[0];
+              ({ destructured, spreadIdentifier } =
+                extractFunctionArgs(propsArg));
+              isFunction = true;
+              innerPath.stop();
+            },
+            FunctionExpression(innerPath) {
+              const propsArg = innerPath.node.params[0];
+              ({ destructured, spreadIdentifier } =
+                extractFunctionArgs(propsArg));
+              isFunction = true;
+              innerPath.stop();
+            },
+          });
 
-                switch (propsArg?.type) {
-                  case "Identifier":
-                    spreadIdentifier = propsArg.name;
-                    break;
-
-                  case "ObjectPattern":
-                    propsArg.properties.forEach((prop) => {
-                      if (
-                        prop.type === "ObjectProperty" &&
-                        prop.key.type === "Identifier"
-                      ) {
-                        destructured.push(prop.key.name);
-                      } else if (
-                        prop.type === "RestElement" &&
-                        prop.argument.type === "Identifier"
-                      ) {
-                        spreadIdentifier = prop.argument.name;
-                      }
-                    });
-                    break;
-                }
-              },
-            });
-
+          if (isFunction) {
             currentFunction = {
               name: path.node.id.name,
               props: { destructured, spreadIdentifier },
             };
+
+            initializeMetaForCurrentFunction();
           }
         },
         exit(path) {

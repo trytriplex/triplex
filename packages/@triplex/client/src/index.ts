@@ -48,7 +48,7 @@ export async function createServer({
     config,
     fgEnvironmentOverride,
     fileGlobs: config.files.map((f) => `'${f.replace(config.cwd, "")}'`),
-    pkgName: "__triplex_renderer__",
+    pkgName: "triplex:renderer",
     ports,
     userId,
   };
@@ -73,7 +73,7 @@ export async function createServer({
           plugins: [
             triplexBabelPlugin({
               cwd: config.cwd,
-              exclude: [config.provider, renderer.root],
+              exclude: [config.provider, renderer.root, "triplex:"],
             }),
           ],
         },
@@ -87,7 +87,8 @@ export async function createServer({
     resolve: {
       alias: {
         "@triplex/bridge/client": require.resolve("@triplex/bridge/client"),
-        __triplex_renderer__: renderer.path,
+        "triplex:canvas": require.resolve("@triplex/renderer-r3f"),
+        "triplex:renderer": renderer.path,
       },
       dedupe: renderer.manifest.bundler?.dedupe,
     },
