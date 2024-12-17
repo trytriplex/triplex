@@ -69,6 +69,13 @@ export function fork<TData extends Record<string, unknown>>(
 
   logFromFork(fork);
 
+  process.once("SIGINT", () => {
+    fork.kill("SIGINT");
+  });
+  process.once("SIGTERM", () => {
+    fork.kill("SIGTERM");
+  });
+
   return new Promise((resolve, reject) => {
     fork.on("error", (e) => {
       reject(e);
