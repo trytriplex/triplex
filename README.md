@@ -19,8 +19,7 @@ Core packages that power Triplex. `@triplex` namespaces most of the business log
 - `client` - Scene runner and userland code execution
 - `lib` - Common UI-agnostic code shared between packages
 - `ux` - Common UI components shared between packages
-- `renderer-r3f` - React Three Fiber renderer implementation
-- `renderer-react` - React DOM renderer implementation
+- `renderer` - React Three Fiber/React renderer implementation
 - `bridge` - Communication layer between editor and renderers
 
 ### Examples

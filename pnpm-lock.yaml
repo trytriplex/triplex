@@ -702,9 +702,9 @@ importers:
       '@triplex/bridge':
         specifier: 0.69.5
         version: link:../bridge
-      '@triplex/renderer-r3f':
+      '@triplex/renderer':
         specifier: 0.70.2
-        version: link:../renderer-r3f
+        version: link:../renderer
       '@vitejs/plugin-react':
         specifier: ^4.3.3
         version: 4.3.3(vite@5.4.6(@types/node@18.11.18))
@@ -904,7 +904,7 @@ importers:
         specifier: ^5.6.2
         version: 5.6.2
 
-  packages/@triplex/renderer-r3f:
+  packages/@triplex/renderer:
     dependencies:
       '@triplex/bridge':
         specifier: 0.69.5

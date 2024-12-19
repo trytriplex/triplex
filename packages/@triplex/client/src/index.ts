@@ -87,7 +87,7 @@ export async function createServer({
     resolve: {
       alias: {
         "@triplex/bridge/client": require.resolve("@triplex/bridge/client"),
-        "triplex:canvas": require.resolve("@triplex/renderer-r3f"),
+        "triplex:canvas": require.resolve("@triplex/renderer"),
         "triplex:renderer": renderer.path,
       },
       dedupe: renderer.manifest.bundler?.dedupe,

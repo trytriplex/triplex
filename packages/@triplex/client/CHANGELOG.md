@@ -27,15 +27,14 @@
 - Updated dependencies [51d16cd]
 - Updated dependencies [7493473]
 - Updated dependencies [dbab960]
-  - @triplex/renderer-r3f@0.70.2
+  - @triplex/renderer@0.70.2
   - @triplex/bridge@0.69.5
-  - @triplex/renderer-react@0.69.5
 
 ## 0.69.7
 
 ### Patch Changes
 
-- @triplex/renderer-r3f@0.70.1
+- @triplex/renderer@0.70.1
 
 ## 0.69.6
 
@@ -45,9 +44,8 @@
 - Updated dependencies [be3bae6]
 - Updated dependencies [ecbb1d7]
 - Updated dependencies [d38608f]
-  - @triplex/renderer-r3f@0.70.0
+  - @triplex/renderer@0.70.0
   - @triplex/bridge@0.69.4
-  - @triplex/renderer-react@0.69.4
 
 ## 0.69.5
 
@@ -55,8 +53,8 @@
 
 - 652c1cc: Update package json meta.
 - Updated dependencies [652c1cc]
-  - @triplex/renderer-react@0.69.3
-  - @triplex/renderer-r3f@0.69.5
+
+  - @triplex/renderer@0.69.5
   - @triplex/bridge@0.69.3
 
 ## 0.69.4
@@ -65,13 +63,13 @@
 
 - c6630d2: Fix Vite instance being unable to reconnect when OS wakes from sleep.
 - Updated dependencies [b73ba38]
-  - @triplex/renderer-r3f@0.69.4
+  - @triplex/renderer@0.69.4
 
 ## 0.69.3
 
 ### Patch Changes
 
-- @triplex/renderer-r3f@0.69.3
+- @triplex/renderer@0.69.3
 
 ## 0.69.2
 
@@ -79,8 +77,8 @@
 
 - 967bfbd0: Upgrade vite to v5.
 - Updated dependencies [967bfbd0]
-  - @triplex/renderer-react@0.69.2
-  - @triplex/renderer-r3f@0.69.2
+
+  - @triplex/renderer@0.69.2
   - @triplex/bridge@0.69.2
 
 ## 0.69.1
@@ -89,8 +87,8 @@
 
 - 50c28c96: Upgrade tsc.
 - Updated dependencies [50c28c96]
-  - @triplex/renderer-react@0.69.1
-  - @triplex/renderer-r3f@0.69.1
+
+  - @triplex/renderer@0.69.1
   - @triplex/bridge@0.69.1
 
 ## 0.69.0
@@ -99,16 +97,15 @@
 
 - Updated dependencies [fd4fa16f]
 - Updated dependencies [740ff8f2]
-  - @triplex/renderer-react@0.69.0
-  - @triplex/renderer-r3f@0.69.0
+
+  - @triplex/renderer@0.69.0
   - @triplex/bridge@0.69.0
 
 ## 0.68.8
 
 ### Patch Changes
 
-- @triplex/renderer-r3f@0.68.8
-- @triplex/renderer-react@0.68.8
+- @triplex/renderer@0.68.8
 - @triplex/bridge@0.68.8
 
 ## 0.68.7
@@ -116,33 +113,29 @@
 ### Patch Changes
 
 - Updated dependencies [909bed1a]
-  - @triplex/renderer-r3f@0.68.7
+  - @triplex/renderer@0.68.7
   - @triplex/bridge@0.68.7
-  - @triplex/renderer-react@0.68.7
 
 ## 0.68.6
 
 ### Patch Changes
 
 - @triplex/bridge@0.68.6
-- @triplex/renderer-r3f@0.68.6
-- @triplex/renderer-react@0.68.6
+- @triplex/renderer@0.68.6
 
 ## 0.68.5
 
 ### Patch Changes
 
 - Updated dependencies [ea7e0420]
-  - @triplex/renderer-r3f@0.68.5
+  - @triplex/renderer@0.68.5
   - @triplex/bridge@0.68.5
-  - @triplex/renderer-react@0.68.5
 
 ## 0.68.4
 
 ### Patch Changes
 
-- @triplex/renderer-r3f@0.68.4
-- @triplex/renderer-react@0.68.4
+- @triplex/renderer@0.68.4
 - @triplex/bridge@0.68.4
 
 ## 0.68.3
@@ -150,9 +143,8 @@
 ### Patch Changes
 
 - Updated dependencies [11c2cb65]
-  - @triplex/renderer-r3f@0.68.3
+  - @triplex/renderer@0.68.3
   - @triplex/bridge@0.68.3
-  - @triplex/renderer-react@0.68.3
 
 ## 0.68.2
 
@@ -160,18 +152,16 @@
 
 - Updated dependencies [16117f1a]
 - Updated dependencies [16117f1a]
-  - @triplex/renderer-r3f@0.68.2
+  - @triplex/renderer@0.68.2
   - @triplex/bridge@0.68.2
-  - @triplex/renderer-react@0.68.2
 
 ## 0.68.1
 
 ### Patch Changes
 
 - Updated dependencies [b2a850fb]
-  - @triplex/renderer-r3f@0.68.1
+  - @triplex/renderer@0.68.1
   - @triplex/bridge@0.68.1
-  - @triplex/renderer-react@0.68.1
 
 ## 0.68.0
 
@@ -179,17 +169,15 @@
 
 - Updated dependencies [5b6671c2]
 - Updated dependencies [60ee4011]
-  - @triplex/renderer-r3f@0.68.0
+  - @triplex/renderer@0.68.0
   - @triplex/bridge@0.68.0
-  - @triplex/renderer-react@0.68.0
 
 ## 0.67.9
 
 ### Patch Changes
 
 - @triplex/bridge@0.67.9
-- @triplex/renderer-r3f@0.67.9
-- @triplex/renderer-react@0.67.9
+- @triplex/renderer@0.67.9
 
 ## 0.67.8
 
@@ -197,24 +185,23 @@
 
 - Updated dependencies [3952a1c8]
   - @triplex/bridge@0.67.8
-  - @triplex/renderer-r3f@0.67.8
-  - @triplex/renderer-react@0.67.8
+  - @triplex/renderer@0.67.8
 
 ## 0.67.7
 
 ### Patch Changes
 
 - Updated dependencies [23eaef8a]
-  - @triplex/renderer-r3f@0.67.7
-  - @triplex/renderer-react@0.67.7
+
+  - @triplex/renderer@0.67.7
+
   - @triplex/bridge@0.67.7
 
 ## 0.67.6
 
 ### Patch Changes
 
-- @triplex/renderer-r3f@0.67.6
-- @triplex/renderer-react@0.67.6
+- @triplex/renderer@0.67.6
 - @triplex/bridge@0.67.6
 
 ## 0.67.5
@@ -222,8 +209,9 @@
 ### Patch Changes
 
 - Updated dependencies [201367eb]
-  - @triplex/renderer-r3f@0.67.5
-  - @triplex/renderer-react@0.67.5
+
+  - @triplex/renderer@0.67.5
+
   - @triplex/bridge@0.67.5
 
 ## 0.67.4
@@ -236,8 +224,9 @@
 - Updated dependencies [88198788]
 - Updated dependencies [b8e0ee3a]
 - Updated dependencies [cba1c8db]
-  - @triplex/renderer-r3f@0.67.4
-  - @triplex/renderer-react@0.67.4
+
+  - @triplex/renderer@0.67.4
+
   - @triplex/bridge@0.67.4
 
 ## 0.67.3
@@ -249,16 +238,14 @@
 - Updated dependencies [cb41e650]
 - Updated dependencies [c9c2bd90]
 - Updated dependencies [b8b97458]
-  - @triplex/renderer-r3f@0.67.3
+  - @triplex/renderer@0.67.3
   - @triplex/bridge@0.67.3
-  - @triplex/renderer-react@0.67.3
 
 ## 0.67.2
 
 ### Patch Changes
 
-- @triplex/renderer-r3f@0.67.2
-- @triplex/renderer-react@0.67.2
+- @triplex/renderer@0.67.2
 - @triplex/bridge@0.67.2
 
 ## 0.67.1
@@ -266,9 +253,8 @@
 ### Patch Changes
 
 - Updated dependencies [e841a67]
-  - @triplex/renderer-r3f@0.67.1
+  - @triplex/renderer@0.67.1
   - @triplex/bridge@0.67.1
-  - @triplex/renderer-react@0.67.1
 
 ## 0.67.0
 
@@ -283,9 +269,8 @@
 - Updated dependencies [6f3d8de]
 - Updated dependencies [1d415ae]
 - Updated dependencies [3343fad]
-  - @triplex/renderer-r3f@0.67.0
+  - @triplex/renderer@0.67.0
   - @triplex/bridge@0.67.0
-  - @triplex/renderer-react@0.67.0
 
 ## 0.66.0
 
@@ -298,9 +283,8 @@
 - 3179ed6: Add support for automatic runtime for scene selection system.
 - Updated dependencies [79a2c59]
 - Updated dependencies [625e23a]
-  - @triplex/renderer-r3f@0.66.0
+  - @triplex/renderer@0.66.0
   - @triplex/bridge@0.66.0
-  - @triplex/renderer-react@0.66.0
 
 ## 0.65.2
 
@@ -308,8 +292,7 @@
 
 - c1a986d: Fix node modules check on scene elements using the triplex default cwd instead of the opened project cwd.
   - @triplex/bridge@0.65.2
-  - @triplex/renderer-r3f@0.65.2
-  - @triplex/renderer-react@0.65.2
+  - @triplex/renderer@0.65.2
 
 ## 0.65.1
 
@@ -317,18 +300,16 @@
 
 - Updated dependencies [983b5d9]
 - Updated dependencies [763f2a1]
-  - @triplex/renderer-r3f@0.65.1
+  - @triplex/renderer@0.65.1
   - @triplex/bridge@0.65.1
-  - @triplex/renderer-react@0.65.1
 
 ## 0.65.0
 
 ### Patch Changes
 
 - Updated dependencies [29c9d95]
-  - @triplex/renderer-r3f@0.65.0
+  - @triplex/renderer@0.65.0
   - @triplex/bridge@0.65.0
-  - @triplex/renderer-react@0.65.0
 
 ## 0.64.4
 
@@ -338,8 +319,9 @@
 - Updated dependencies [1df7cc9]
 - Updated dependencies [44a0156]
 - Updated dependencies [343a7e4]
-  - @triplex/renderer-r3f@0.64.4
-  - @triplex/renderer-react@0.64.4
+
+  - @triplex/renderer@0.64.4
+
   - @triplex/bridge@0.64.4
 
 ## 0.64.3
@@ -347,8 +329,9 @@
 ### Patch Changes
 
 - 1d9c390: Fix user land modules being forcibly invalidated during HMR causing unexpected behaviour.
-  - @triplex/renderer-r3f@0.64.3
-  - @triplex/renderer-react@0.64.3
+
+  - @triplex/renderer@0.64.3
+
   - @triplex/bridge@0.64.3
 
 ## 0.64.2
@@ -357,8 +340,7 @@
 
 - 26ac612: Fix thumbnail renderer throwing when no provider was configured.
   - @triplex/bridge@0.64.2
-  - @triplex/renderer-r3f@0.64.2
-  - @triplex/renderer-react@0.64.2
+  - @triplex/renderer@0.64.2
 
 ## 0.64.1
 
@@ -366,8 +348,7 @@
 
 - 835639f: Fix scene object not being transformed when provider wasn't set.
   - @triplex/bridge@0.64.1
-  - @triplex/renderer-r3f@0.64.1
-  - @triplex/renderer-react@0.64.1
+  - @triplex/renderer@0.64.1
 
 ## 0.64.0
 
@@ -384,9 +365,8 @@
 - Updated dependencies [8712a12]
 - Updated dependencies [a153ee8]
 - Updated dependencies [a153ee8]
-  - @triplex/renderer-r3f@0.64.0
+  - @triplex/renderer@0.64.0
   - @triplex/bridge@0.64.0
-  - @triplex/renderer-react@0.64.0
 
 ## 0.63.0
 
@@ -401,8 +381,8 @@
 - Updated dependencies [0b5fb14]
 - Updated dependencies [4c48d66]
 - Updated dependencies [480866f]
-  - @triplex/renderer-react@0.63.0
-  - @triplex/renderer-r3f@0.63.0
+
+  - @triplex/renderer@0.63.0
   - @triplex/bridge@0.63.0
 
 ## 0.62.0
@@ -424,9 +404,8 @@
 - Updated dependencies [99b97cf]
 - Updated dependencies [7313788]
 - Updated dependencies [fe7c5f9]
-  - @triplex/renderer-r3f@0.62.0
+  - @triplex/renderer@0.62.0
   - @triplex/bridge@0.62.0
-  - @triplex/renderer-react@0.62.0
 
 ## 0.61.2
 

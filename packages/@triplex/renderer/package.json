@@ -1,5 +1,5 @@
 {
-  "name": "@triplex/renderer-r3f",
+  "name": "@triplex/renderer",
   "version": "0.70.2",
   "private": true,
   "description": "The visual IDE for the web.",

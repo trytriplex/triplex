@@ -20,7 +20,7 @@
         "./packages/@triplex/bridge/**",
         "./packages/@triplex/editor/**",
         "./packages/@triplex/lib/**",
-        "./packages/@triplex/renderer-r3f/**",
+        "./packages/@triplex/renderer/**",
         "./packages/@triplex/ux/**",
         "./packages/@triplex/ws/**"
       ],

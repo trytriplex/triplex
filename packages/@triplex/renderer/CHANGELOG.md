@@ -1,4 +1,4 @@
-# @triplex/renderer-r3f
+# @triplex/renderer
 
 ## 0.70.2
 

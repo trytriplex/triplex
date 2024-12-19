@@ -67,7 +67,7 @@ function validateManifest(manifest: unknown): RendererManifest {
 }
 
 const renderers: Record<string, string> = {
-  "react-three-fiber": "@triplex/renderer-r3f",
+  "react-three-fiber": "@triplex/renderer",
 };
 
 export async function getRendererMeta(opts: {

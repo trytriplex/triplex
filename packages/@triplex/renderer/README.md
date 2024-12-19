@@ -1,7 +1,6 @@
-# @triplex/renderer-r3f
+# @triplex/renderer
 
-This package contains code that powers the React Three Fiber renderer. Example
-features include:
+This package contains code that powers the React Three Fiber renderer. Example features include:
 
 - scene object selection
 - grid
