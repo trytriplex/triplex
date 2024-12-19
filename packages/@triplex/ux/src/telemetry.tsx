@@ -81,6 +81,12 @@ class Analytics4 {
     this.clientID = clientID;
     this.sessionID = sessionID;
 
+    // eslint-disable-next-line no-console
+    console.log(
+      "init for",
+      process.env.NODE_ENV === "production" ? "prod" : "dev",
+    );
+
     if (document.hasFocus()) {
       this.engagementTimestamp = Date.now();
     }

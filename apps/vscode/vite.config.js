@@ -41,7 +41,9 @@ export default defineConfig(({ mode }) => {
         target: "node18",
       },
       define: {
-        "process.env.NODE_ENV": '"production"',
+        "process.env.NODE_ENV": process.env.SMOKE_TEST
+          ? '"staging"'
+          : '"production"',
       },
       mode: "production",
       ssr: {
@@ -67,7 +69,9 @@ export default defineConfig(({ mode }) => {
         },
       },
       define: {
-        "process.env.NODE_ENV": '"production"',
+        "process.env.NODE_ENV": process.env.SMOKE_TEST
+          ? '"staging"'
+          : '"production"',
       },
       mode: "production",
       plugins: [

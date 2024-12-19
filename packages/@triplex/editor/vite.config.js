@@ -19,7 +19,12 @@ export default {
       },
     },
   },
-  define: {},
+  define: {
+    "process.env.NODE_ENV": process.env.SMOKE_TEST
+      ? '"staging"'
+      : '"production"',
+  },
+  mode: "production",
   plugins: [
     react({
       babel: {
