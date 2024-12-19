@@ -284,14 +284,6 @@ export interface TriplexConfig {
    * the `"/image.png"` URL.
    */
   publicDir?: string;
-  /**
-   * Extra attributes passed to the renderer. For available attributes refer to
-   * the docs.
-   */
-  rendererAttributes?: Record<
-    string,
-    string | number | object | Array<unknown>
-  >;
 }
 
 export interface RendererManifest {

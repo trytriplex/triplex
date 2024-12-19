@@ -29,7 +29,6 @@ const schema = object({
   provider: optional(string()),
   publicDir: optional(string()),
   renderer: optional(string()),
-  rendererAttributes: optional(object({})),
 });
 
 export function getConfig(_cwd: string): ReconciledTriplexConfig {
@@ -86,7 +85,6 @@ export function getConfig(_cwd: string): ReconciledTriplexConfig {
     provider,
     publicDir,
     renderer,
-    rendererAttributes: config.rendererAttributes || {},
   };
 }
 

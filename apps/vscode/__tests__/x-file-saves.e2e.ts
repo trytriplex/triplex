@@ -7,7 +7,7 @@
 import { expect } from "@playwright/test";
 import { test } from "./utils/runner";
 
-test("updating component from another file", async ({ snapshot, vsce }) => {
+test("updating component from another file", async ({ getFile, vsce }) => {
   await vsce.codelens("Scene").click();
   const { panels, togglePanelsButton } = vsce.resolveEditor();
   await togglePanelsButton.click();
@@ -32,13 +32,13 @@ test("updating component from another file", async ({ snapshot, vsce }) => {
   ).not.toHaveClass(/dirty/);
 
   // Assert the expected changes were persisted.
-  expect(snapshot("examples/test-fixture/src/geometry/box.tsx")).toContain(
+  expect(getFile("examples/test-fixture/src/geometry/box.tsx")).toContain(
     "scale={0.5}",
   );
 });
 
 test("external update can be undone in the editor", async ({
-  setSnapshot,
+  setFile,
   vsce,
 }) => {
   await vsce.codelens("Plane").click();
@@ -47,7 +47,7 @@ test("external update can be undone in the editor", async ({
   await panels.getByRole("button", { name: "meshBasicMaterial" }).click();
 
   // Perform an external update
-  await setSnapshot((contents) =>
+  await setFile((contents) =>
     contents.replace("visible={true}", "visible={false}"),
   );
   const input = panels.getByLabel("visible");

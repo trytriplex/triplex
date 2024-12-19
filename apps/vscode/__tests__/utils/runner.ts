@@ -169,8 +169,8 @@ async function launch({ workerInfo }: { workerInfo: WorkerInfo }) {
 const test = base.extend<
   {
     filename: string;
-    setSnapshot: (cb: (contents: string) => string) => Promise<void>;
-    snapshot: (path?: string) => string;
+    getFile: (path?: string) => string;
+    setFile: (cb: (contents: string) => string) => Promise<void>;
     vsce: ExtensionPage;
   },
   {
@@ -182,14 +182,16 @@ const test = base.extend<
   }
 >({
   filename: ["examples/test-fixture/src/scene.tsx", { option: true }],
-  setSnapshot: async ({ filename, snapshot }, use) => {
-    const contents = snapshot();
-    await use((cb) => writeFile(join(process.cwd(), filename), cb(contents)));
-  },
-  snapshot: async ({ filename }, use) => {
+  getFile: async ({ filename }, use) => {
     await use((path) =>
       readFileSync(join(process.cwd(), path ?? filename), "utf8"),
     );
+  },
+  setFile: async ({ filename, getFile }, use) => {
+    await use(async (cb) => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      await writeFile(join(process.cwd(), filename), cb(getFile()));
+    });
   },
   vsce: async ({ filename, vscode }, use, testInfo) => {
     const { status } = spawnSync("git diff --exit-code examples", {

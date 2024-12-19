@@ -82,7 +82,6 @@ export const scripts = {
     async function initialize() {
       window.triplex = JSON.parse(\`${JSON.stringify({
         env: { ports: template.ports },
-        renderer: { attributes: template.config.rendererAttributes },
       })}\`);
 
       // Forward keydown events to the parent window to prevent the client iframe

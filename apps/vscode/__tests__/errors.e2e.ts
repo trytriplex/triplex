@@ -13,7 +13,7 @@ test.describe("when an error is thrown on render", () => {
   });
 
   test("should show an error notification and then recover", async ({
-    setSnapshot,
+    setFile,
     vsce,
   }) => {
     await vsce.codelens("ErrorsDuringRender", { skipWait: true }).click();
@@ -27,7 +27,7 @@ test.describe("when an error is thrown on render", () => {
       "Render Error: Throwing an error on render.",
     );
 
-    await setSnapshot((file) => {
+    await setFile((file) => {
       const index = file.indexOf("throwsError(");
       return file.slice(0, index) + "// " + file.slice(index);
     });
@@ -42,7 +42,7 @@ test.describe("when an error is thrown on missing module", () => {
   });
 
   test("should show an error notification and then recover", async ({
-    setSnapshot,
+    setFile,
     vsce,
   }) => {
     await vsce
@@ -61,7 +61,7 @@ test.describe("when an error is thrown on missing module", () => {
       /Module Error: Failed to resolve/,
     );
 
-    await setSnapshot((file) => {
+    await setFile((file) => {
       const index = file.indexOf(`import "dont-`);
       return file.slice(0, index) + "// " + file.slice(index);
     });

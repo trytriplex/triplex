@@ -29,7 +29,7 @@ vi.mock("../../post-processing", () => ({
   PostProcessing: () => null,
 }));
 
-window.triplex = { env: { ports: {} }, renderer: { attributes: {} } };
+window.triplex = { env: { ports: {} } };
 
 function Provider({ children }: { children?: React.ReactNode }) {
   return (

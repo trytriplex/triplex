@@ -9,11 +9,5 @@ declare interface Window {
     env: {
       ports: Record<string, number>;
     };
-    renderer: {
-      attributes: Record<
-        string,
-        string | number | Record<string, string | number>
-      >;
-    };
   };
 }
