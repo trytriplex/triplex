@@ -52,6 +52,9 @@ export async function runUseWithTrace<TPage extends { page: Page }>({
     contentType: "text/plain",
   });
 
+  // Reset logs for the next test.
+  logs.length = 0;
+
   if (testInfo.status !== testInfo.expectedStatus && !page.page.isClosed()) {
     const screenshot = await page.page.screenshot();
     await testInfo.attach("screenshot", {

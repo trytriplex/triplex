@@ -7,7 +7,13 @@
 import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { writeFile } from "node:fs/promises";
-import { test as base, type Electron, type TestInfo } from "@playwright/test";
+import {
+  test as base,
+  type Electron,
+  type ElectronApplication,
+  type Page,
+  type WorkerInfo,
+} from "@playwright/test";
 import { resolveCliArgsFromVSCodeExecutablePath } from "@vscode/test-electron";
 import pkg from "package.json";
 import { _electron as electron } from "playwright";
@@ -34,6 +40,27 @@ async function tryInstallBundledExtension() {
       stdio: "inherit",
     },
   );
+}
+
+async function openFile({ filename }: { filename: string }) {
+  const executablePath = await resolveExecPath();
+  const [cli, ...args] =
+    await resolveCliArgsFromVSCodeExecutablePath(executablePath);
+
+  const { status } = spawnSync(
+    cli,
+    [...args, join(process.cwd(), filename), "--reuse-window"],
+    {
+      encoding: "utf8",
+      // "shell: true" is needed so this works on Windows otherwise it fails silently.
+      shell: process.platform === "win32",
+      stdio: "inherit",
+    },
+  );
+
+  if (status !== null && status !== 0) {
+    throw new Error(`invariant: failed to open ${filename} in VS Code.`);
+  }
 }
 
 const launchElectronWithRetry = async (
@@ -66,15 +93,12 @@ const launchElectronWithRetry = async (
   }
 };
 
-async function launch({
-  filename,
-  testInfo,
-}: {
-  filename: string;
-  testInfo: TestInfo;
-}) {
+async function launch({ workerInfo }: { workerInfo: WorkerInfo }) {
   const isSmokeTest =
-    process.env.SMOKE_TEST && testInfo.tags.includes("@vsce_smoke");
+    process.env.SMOKE_TEST &&
+    (Array.isArray(workerInfo.config.grep)
+      ? false
+      : workerInfo.config.grep.test("_smoke"));
 
   if (isSmokeTest) {
     await tryInstallBundledExtension();
@@ -88,7 +112,7 @@ async function launch({
     args: [
       ...args,
       join(process.cwd(), "examples/test-fixture"),
-      join(process.cwd(), filename),
+      join(process.cwd(), "examples/test-fixture/src/scene.tsx"),
       process.env.CI ? "--headless" : "",
       // Args found from https://github.com/microsoft/playwright/issues/22351
       "--disable-gpu-sandbox", // https://github.com/microsoft/vscode-test/issues/221
@@ -142,12 +166,21 @@ async function launch({
   };
 }
 
-const test = base.extend<{
-  filename: string;
-  setSnapshot: (cb: (contents: string) => string) => Promise<void>;
-  snapshot: (path?: string) => string;
-  vsce: ExtensionPage;
-}>({
+const test = base.extend<
+  {
+    filename: string;
+    setSnapshot: (cb: (contents: string) => string) => Promise<void>;
+    snapshot: (path?: string) => string;
+    vsce: ExtensionPage;
+  },
+  {
+    vscode: {
+      app: ElectronApplication;
+      logs: string[];
+      window: Page;
+    };
+  }
+>({
   filename: ["examples/test-fixture/src/scene.tsx", { option: true }],
   setSnapshot: async ({ filename, snapshot }, use) => {
     const contents = snapshot();
@@ -158,7 +191,7 @@ const test = base.extend<{
       readFileSync(join(process.cwd(), path ?? filename), "utf8"),
     );
   },
-  vsce: async ({ filename }, use, testInfo) => {
+  vsce: async ({ filename, vscode }, use, testInfo) => {
     const { status } = spawnSync("git diff --exit-code examples", {
       shell: true,
     });
@@ -169,18 +202,36 @@ const test = base.extend<{
       );
     }
 
-    const { app, logs, window } = await launch({ filename, testInfo });
     const page = new ExtensionPage(
-      window,
+      vscode.window,
       basename(filename),
       filename.split("/")[1],
     );
 
-    await runUseWithTrace({ logs, page, testInfo, use });
-    // Cleanup any files created or modified by
-    spawnSync("git checkout examples", { shell: true });
-    await app.close();
+    await openFile({ filename });
+    await runUseWithTrace({ logs: vscode.logs, page, testInfo, use });
+
+    if (testInfo.status !== "skipped") {
+      // Close the editor to avoid the "Do you want to save changes?" dialog.
+      await page.page.keyboard.press("Escape");
+      await page.page.keyboard.press("ControlOrMeta+Shift+P");
+      await page.page
+        .getByPlaceholder("Type the name of a command")
+        .fill("> Revert and Close Editor");
+      await page.page.keyboard.press("Enter");
+
+      // Cleanup any files created or modified by
+      spawnSync("git checkout examples", { shell: true });
+    }
   },
+  vscode: [
+    async ({}, use, workerInfo) => {
+      const vscode = await launch({ workerInfo });
+      await use(vscode);
+      await vscode.app.close();
+    },
+    { scope: "worker" },
+  ],
 });
 
 export { test };

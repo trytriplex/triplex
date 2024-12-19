@@ -23,16 +23,13 @@ test("fill number input", async ({ vsce }) => {
 });
 
 test("drag to change number input", async ({ vsce }) => {
-  test.skip(
-    process.platform === "win32",
-    "Skip on Windows for now as the notifications are blocking input.",
-  );
   await vsce.codelens("Plane").click();
   const { panels, togglePanelsButton } = vsce.resolveEditor();
   await togglePanelsButton.click();
   await panels.getByRole("button", { name: "planeGeometry" }).click();
   const input = panels.getByLabel("width", { exact: true });
 
+  await vsce.dismissAllNotifications();
   await input.dragTo(input, { force: true, targetPosition: { x: 100, y: 0 } });
 
   // Escape should blur the input.
