@@ -1,5 +1,5 @@
 ---
-"@triplex/renderer-r3f": minor
+"@triplex/renderer": minor
 "@triplex/bridge": minor
 "@triplex/client": minor
 "triplex-vsce": minor

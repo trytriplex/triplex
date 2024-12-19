@@ -1,5 +1,5 @@
 ---
-"@triplex/renderer-r3f": patch
+"@triplex/renderer": patch
 ---
 
 Internal refactor of the selection system.
