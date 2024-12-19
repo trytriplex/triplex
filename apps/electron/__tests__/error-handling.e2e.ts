@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { expect } from "@playwright/test";
-import { test } from "../utils/runner";
+import { test } from "./utils/runner";
 
 test("render error", async ({ electron }) => {
   await electron.waitForScene();

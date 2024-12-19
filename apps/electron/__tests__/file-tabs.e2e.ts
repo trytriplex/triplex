@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { expect } from "@playwright/test";
-import { test } from "../utils/runner";
+import { test } from "./utils/runner";
 
 test("focus on the initial open tab", async ({ electron }) => {
   await expect(electron.fileTabs.activeTab).toHaveText("scene.tsx");

@@ -32,8 +32,8 @@ export class ExtensionPage {
 
     return {
       click: async () => {
-        await this.dismissAllNotifications();
         await locator.click();
+        await this.dismissAllNotifications();
         if (!skipWait) {
           await expect(this.loadedComponent).toHaveText(componentName);
         }

@@ -67,7 +67,6 @@ function validateManifest(manifest: unknown): RendererManifest {
 }
 
 const renderers: Record<string, string> = {
-  "react-dom": "@triplex/renderer-react",
   "react-three-fiber": "@triplex/renderer-r3f",
 };
 

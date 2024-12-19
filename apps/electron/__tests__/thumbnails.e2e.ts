@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { expect } from "@playwright/test";
-import { test } from "../utils/runner";
+import { test } from "./utils/runner";
 
 // TODO: Test is flakey think up a better way to test / implement.
 test.fixme("thumbnail loads", async ({ electron }) => {

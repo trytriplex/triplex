@@ -352,18 +352,6 @@ importers:
 
   examples-private/error-renderer: {}
 
-  examples-private/react-dom:
-    dependencies:
-      '@types/react':
-        specifier: 18.3.3
-        version: 18.3.3
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-
   examples/caustics:
     dependencies:
       '@react-three/drei':
@@ -717,9 +705,6 @@ importers:
       '@triplex/renderer-r3f':
         specifier: 0.70.2
         version: link:../renderer-r3f
-      '@triplex/renderer-react':
-        specifier: 0.69.5
-        version: link:../renderer-react
       '@vitejs/plugin-react':
         specifier: ^4.3.3
         version: 4.3.3(vite@5.4.6(@types/node@18.11.18))
@@ -991,49 +976,6 @@ importers:
       vite-plugin-glsl:
         specifier: ^1.3.0
         version: 1.3.0(rollup@4.21.3)(vite@5.4.6(@types/node@20.16.5))
-
-  packages/@triplex/renderer-react:
-    dependencies:
-      '@triplex/bridge':
-        specifier: 0.69.5
-        version: link:../bridge
-      '@triplex/ws':
-        specifier: 0.69.3
-        version: link:../ws
-      react-error-boundary:
-        specifier: ^3.1.4
-        version: 3.1.4(react@18.3.1)
-      suspend-react:
-        specifier: ^0.1.3
-        version: 0.1.3(react@18.3.1)
-    devDependencies:
-      '@swc/cli':
-        specifier: ^0.1.59
-        version: 0.1.59(@swc/core@1.6.5(@swc/helpers@0.5.5))(chokidar@3.5.3)
-      '@swc/core':
-        specifier: ^1.6.5
-        version: 1.6.5(@swc/helpers@0.5.5)
-      '@triplex/server':
-        specifier: 0.70.1
-        version: link:../server
-      '@types/react':
-        specifier: 18.3.3
-        version: 18.3.3
-      '@types/react-dom':
-        specifier: ^18.0.10
-        version: 18.0.10
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-      typescript:
-        specifier: ^5.6.2
-        version: 5.6.2
-      vite:
-        specifier: ^5.4.6
-        version: 5.4.6(@types/node@20.16.5)
 
   packages/@triplex/server:
     dependencies:

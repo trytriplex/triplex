@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { expect } from "@playwright/test";
-import { test } from "../utils/runner";
+import { test } from "./utils/runner";
 
 test("create new file and insert a box", async ({ electron }) => {
   await electron.newFile();
