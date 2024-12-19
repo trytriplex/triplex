@@ -50,27 +50,6 @@
         "publicDir": {
           "description": "Relative path to a folder used to expose files through the local dev server, such as images, videos, and GLTF/GLB files. For example if the public directory has a `image.png` file then it will be made available at the `\"/image.png\"` URL.",
           "type": "string"
-        },
-        "rendererAttributes": {
-          "additionalProperties": {
-            "anyOf": [
-              {
-                "type": "string"
-              },
-              {
-                "type": "number"
-              },
-              {
-                "type": "object"
-              },
-              {
-                "items": {},
-                "type": "array"
-              }
-            ]
-          },
-          "description": "Extra attributes passed to the renderer. For available attributes refer to the docs.",
-          "type": "object"
         }
       },
       "type": "object"
