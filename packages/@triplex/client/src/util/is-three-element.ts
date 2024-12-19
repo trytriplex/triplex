@@ -151,7 +151,7 @@ const elements: Record<string, boolean> = {
   wireframeGeometry: true,
 } satisfies Record<keyof ThreeElements, boolean>;
 
-export const THREE_FIBER_MODULES = /(^@react-three\/)|(^ecctrl$)/;
+const THREE_FIBER_MODULES = /(^@react-three\/)|(^ecctrl$)/;
 
 export function isReactThreeElement(elementName: string): boolean {
   return elements[elementName] ?? false;
@@ -164,7 +164,7 @@ export function isCanvasFromThreeFiber(path: NodePath<t.JSXElement>): boolean {
   }
 
   const importSpecifierPath = resolveIdentifierImportSpecifier(identifierPath);
-  if (!importSpecifierPath) {
+  if (!importSpecifierPath || !importSpecifierPath.isImportSpecifier()) {
     return false;
   }
 
@@ -198,4 +198,19 @@ export function isComponentFromThreeFiber(path: NodePath<t.JSXElement>) {
   }
 
   return THREE_FIBER_MODULES.test(source.node.value);
+}
+
+export function isHookFromThreeFiber(path: NodePath<t.Identifier>): boolean {
+  if (path.node.name.startsWith("use")) {
+    const importSpecifier = resolveIdentifierImportSpecifier(path);
+    if (
+      importSpecifier &&
+      importSpecifier.parentPath.isImportDeclaration() &&
+      THREE_FIBER_MODULES.test(importSpecifier.parentPath.node.source.value)
+    ) {
+      return true;
+    }
+  }
+
+  return false;
 }

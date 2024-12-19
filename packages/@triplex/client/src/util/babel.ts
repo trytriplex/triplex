@@ -12,7 +12,10 @@ export function resolveIdentifierImportSpecifier(
 ) {
   const name = path.node.name;
   const binding = path.scope.getBinding(name);
-  if (!binding?.path.isImportSpecifier()) {
+  if (
+    !binding?.path.isImportSpecifier() &&
+    !binding?.path.isImportDefaultSpecifier()
+  ) {
     return undefined;
   }
 

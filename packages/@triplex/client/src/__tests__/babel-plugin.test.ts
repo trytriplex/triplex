@@ -1340,6 +1340,80 @@ describe("babel plugin", () => {
       },
     );
 
-    expect(result?.code).toMatchInlineSnapshot(`"export const MyString = "hello";"`);
+    expect(result?.code).toMatchInlineSnapshot(
+      `"export const MyString = "hello";"`,
+    );
+  });
+
+  it("should fallback to react root if jsx elements were found but could not be inferred", () => {
+    const result = transformSync(
+      `
+      import { Dialog } from "@radix-ui/react-dialog";
+
+      export const Component = () => <Dialog>Hello World</Dialog>
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toContain(`"root": "react"`);
+  });
+
+  it("should handle default exports for relative component", () => {
+    const result = transformSync(
+      `
+      import Dialog from "./dialog";
+
+      export const Component = () => <Dialog>Hello World</Dialog>
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toContain(`"root": Dialog.triplexMeta.root`);
+  });
+
+  it("should handle default exports for fallback node_modules component", () => {
+    const result = transformSync(
+      `
+      import Dialog from "@radix-ui/react-dialog";
+
+      export const Component = () => <Dialog>Hello World</Dialog>
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toContain(`"root": "react"`);
+  });
+
+  it("should handle default exports for three fiber component", () => {
+    const result = transformSync(
+      `
+      import Dialog from "@react-three/dialog";
+
+      export const Component = () => <Dialog>Hello World</Dialog>
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toContain(`"root": "react-three-fiber"`);
   });
 });

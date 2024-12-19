@@ -4,7 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import type { PluginObj } from "@babel/core";
+import type { NodePath, PluginObj } from "@babel/core";
 import * as t from "@babel/types";
 import type { SceneMeta } from "@triplex/bridge/client";
 import { normalize } from "upath";
@@ -12,20 +12,19 @@ import {
   extractFunctionArgs,
   isChildOfReturnStatement,
   isJSXIdentifierFromNodeModules,
-  resolveIdentifierImportSpecifier,
 } from "./util/babel";
 import { isReactDOMElement } from "./util/is-react-element";
 import {
   isCanvasFromThreeFiber,
   isComponentFromThreeFiber,
+  isHookFromThreeFiber,
   isReactThreeElement,
-  THREE_FIBER_MODULES,
 } from "./util/is-three-element";
 
 const AUTOMATIC_JSX_RUNTIME = ["jsx", "jsxs", "_jsx", "_jsxs"];
 const SCENE_OBJECT_COMPONENT_NAME = "SceneObject";
 
-interface ExtendedSceneMeta {
+interface ComponentMetadata {
   lighting: SceneMeta["lighting"];
   root: "react" | "react-three-fiber" | "unknown" | t.Expression;
 }
@@ -40,14 +39,18 @@ export default function triplexBabelPlugin({
   skipFunctionMeta?: boolean;
 }) {
   const cache = new WeakSet();
-  const metaForCurrentFunction = new Map<string, ExtendedSceneMeta>();
+  const componentsFoundInPass = new Map<string, ComponentMetadata>();
   const exclude = excludeDirs.filter(Boolean);
 
   let shouldSkip = false;
   let currentFunction:
     | {
+        jsx: boolean;
         name: string;
-        props: { destructured: string[]; spreadIdentifier?: string };
+        props: {
+          destructured: string[];
+          spreadIdentifier?: string;
+        };
       }
     | undefined = undefined;
 
@@ -55,12 +58,28 @@ export default function triplexBabelPlugin({
     if (
       !skipFunctionMeta &&
       currentFunction &&
-      !metaForCurrentFunction.has(currentFunction.name)
+      !componentsFoundInPass.has(currentFunction.name)
     ) {
-      metaForCurrentFunction.set(currentFunction.name, {
+      componentsFoundInPass.set(currentFunction.name, {
         lighting: "default",
         root: "unknown",
       });
+    }
+  }
+
+  function resetCurrentFunction(
+    path: NodePath<t.VariableDeclarator | t.FunctionDeclaration>,
+  ) {
+    if (
+      path.node.id?.type === "Identifier" &&
+      path.node.id.name === currentFunction?.name
+    ) {
+      const meta = componentsFoundInPass.get(currentFunction.name);
+      if (meta?.root === "unknown" && currentFunction.jsx) {
+        meta.root = "react";
+      }
+
+      currentFunction = undefined;
     }
   }
 
@@ -68,26 +87,16 @@ export default function triplexBabelPlugin({
     visitor: {
       CallExpression(path) {
         if (currentFunction) {
-          const functionMeta = metaForCurrentFunction.get(currentFunction.name);
+          const functionMeta = componentsFoundInPass.get(currentFunction.name);
           const callee = path.get("callee");
 
           if (
             functionMeta &&
             functionMeta.root === "unknown" &&
             callee.isIdentifier() &&
-            callee.node.name.startsWith("use")
+            isHookFromThreeFiber(callee)
           ) {
-            // We've found a hook being used. Now we check if it's a fiber hook.
-            const importSpecifier = resolveIdentifierImportSpecifier(callee);
-            if (
-              importSpecifier &&
-              importSpecifier.parentPath.isImportDeclaration() &&
-              THREE_FIBER_MODULES.test(
-                importSpecifier.parentPath.node.source.value,
-              )
-            ) {
-              functionMeta.root = "react-three-fiber";
-            }
+            functionMeta.root = "react-three-fiber";
           }
         }
 
@@ -224,6 +233,7 @@ export default function triplexBabelPlugin({
             extractFunctionArgs(propsArg);
 
           currentFunction = {
+            jsx: false,
             name: path.node.id.name,
             props: { destructured, spreadIdentifier },
           };
@@ -231,9 +241,7 @@ export default function triplexBabelPlugin({
           initializeMetaForCurrentFunction();
         },
         exit(path) {
-          if (path.node.id && path.node.id.name === currentFunction?.name) {
-            currentFunction = undefined;
-          }
+          resetCurrentFunction(path);
         },
       },
       JSXElement(path, pass) {
@@ -254,7 +262,11 @@ export default function triplexBabelPlugin({
         const elementName = path.node.openingElement.name.name;
         const elementType = /^[A-Z]/.exec(elementName) ? "custom" : "host";
         const functionMeta =
-          currentFunction && metaForCurrentFunction.get(currentFunction.name);
+          currentFunction && componentsFoundInPass.get(currentFunction.name);
+
+        if (currentFunction) {
+          currentFunction.jsx = true;
+        }
 
         if (functionMeta) {
           if (elementName.endsWith("Light")) {
@@ -438,7 +450,7 @@ export default function triplexBabelPlugin({
 
           shouldSkip = false;
 
-          for (const [key, value] of metaForCurrentFunction) {
+          for (const [key, value] of componentsFoundInPass) {
             path.pushContainer(
               "body",
               t.expressionStatement(
@@ -449,21 +461,21 @@ export default function triplexBabelPlugin({
                     t.identifier("triplexMeta"),
                   ),
                   t.objectExpression(
-                    Object.entries(value).map(([key, value]) =>
-                      t.objectProperty(
+                    Object.entries(value).map(([key, value]) => {
+                      return t.objectProperty(
                         t.stringLiteral(key),
                         typeof value === "string"
                           ? t.stringLiteral(value)
                           : value,
-                      ),
-                    ),
+                      );
+                    }),
                   ),
                 ),
               ),
             );
           }
 
-          metaForCurrentFunction.clear();
+          componentsFoundInPass.clear();
         },
       },
       VariableDeclarator: {
@@ -499,6 +511,7 @@ export default function triplexBabelPlugin({
 
           if (isFunction) {
             currentFunction = {
+              jsx: false,
               name: path.node.id.name,
               props: { destructured, spreadIdentifier },
             };
@@ -507,12 +520,7 @@ export default function triplexBabelPlugin({
           }
         },
         exit(path) {
-          if (
-            path.node.id.type === "Identifier" &&
-            path.node.id.name === currentFunction?.name
-          ) {
-            currentFunction = undefined;
-          }
+          resetCurrentFunction(path);
         },
       },
     },
