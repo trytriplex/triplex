@@ -22,7 +22,7 @@ import { CameraGizmo } from "../camera/camera-gizmo";
 import { PostProcessing } from "../post-processing";
 import { SceneElement } from "../scene-element";
 import { useLoadedScene } from "../scene-loader/context";
-import { Selection } from "../selection";
+import { ThreeFiberSelection } from "../selection-three-fiber";
 import { CaptureShaderErrors } from "./capture-shader-errors";
 import { SceneLights } from "./scene-lights";
 
@@ -103,7 +103,7 @@ export function Canvas({ children, ...props }: CanvasProps) {
               }}
               forceInsideSceneObjectContext
             >
-              <Selection filter={{ exportName, path }}>
+              <ThreeFiberSelection filter={{ exportName, path }}>
                 <Suspense
                   fallback={
                     <Tunnel.In>
@@ -121,7 +121,7 @@ export function Canvas({ children, ...props }: CanvasProps) {
                     <CameraGizmo />
                   )}
                 </Suspense>
-              </Selection>
+              </ThreeFiberSelection>
             </SceneElement>
           </Suspense>
         </ErrorBoundaryForScene>

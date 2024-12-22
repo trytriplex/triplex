@@ -10,14 +10,8 @@ import { useEvent } from "@triplex/lib";
 import { useEffect, useMemo, useReducer, useState } from "react";
 import { SELECTION_LAYER_INDEX } from "../../util/layers";
 import { resolveObject3D, type EditorNodeData } from "../../util/scene";
+import { useSelectionStore } from "../selection-provider/use-selection-store";
 import { type TransformControlMode } from "./types";
-
-interface SelectionState {
-  column: number;
-  line: number;
-  parentPath: string;
-  path: string;
-}
 
 function incrementReducer(state: number) {
   return state + 1;
@@ -28,7 +22,9 @@ export function useSelectedObject({
 }: {
   transform: TransformControlMode;
 }) {
-  const [selections, setSelections] = useState<SelectionState[]>([]);
+  const selections = useSelectionStore((store) => store.selections);
+  const select = useSelectionStore((store) => store.select);
+  const clear = useSelectionStore((store) => store.clear);
   const [resolvedObjects, setResolvedObjectsAsSideEffect] = useState<
     EditorNodeData[]
   >([]);
@@ -86,40 +82,6 @@ export function useSelectedObject({
     // This will forcibly re-resolve the objects from the renderer scene when the value is changed.
     resolveCount,
   ]);
-
-  const select = useEvent(
-    (
-      element: SelectionState | SelectionState[],
-      action: "replace" | "addition",
-    ) => {
-      switch (action) {
-        case "replace": {
-          const nextSelections = Array.isArray(element) ? element : [element];
-          setSelections(nextSelections);
-          return;
-        }
-
-        case "addition": {
-          setSelections((prevSelections) => {
-            const nextSelections = prevSelections.concat(element);
-            return nextSelections;
-          });
-
-          return;
-        }
-      }
-    },
-  );
-
-  const clear = useEvent(() => {
-    setSelections((prevSelections) => {
-      if (prevSelections.length === 0) {
-        return prevSelections;
-      }
-
-      return [];
-    });
-  });
 
   const resolveObjectsIfMissing = useEvent(
     (path: string, line: number, column: number) => {

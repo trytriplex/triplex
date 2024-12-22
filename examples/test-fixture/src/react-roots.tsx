@@ -6,8 +6,26 @@
  */
 import { Canvas } from "@react-three/fiber";
 
-export function Button() {
-  return <button>Hello World</button>;
+export function Button({
+  text,
+  type = "button",
+  variant = 'default',
+}: {
+  text: string;
+  type?: "submit" | "button";
+  variant?: "default" | "primary";
+}) {
+  return (
+    <button
+      style={{
+        background: variant === "primary" ? "blue" : "gray",
+        color: variant === "primary" ? "white" : "black",
+      }}
+      type={type}
+    >
+      {text}
+    </button>
+  );
 }
 
 export function CanvasExample() {

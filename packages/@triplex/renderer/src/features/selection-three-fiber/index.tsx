@@ -43,7 +43,7 @@ const V1 = new Vector3();
 // Of the editor layer (31).
 const raycaster = new Raycaster();
 
-export function Selection({
+export function ThreeFiberSelection({
   children,
   filter,
 }: {
@@ -146,12 +146,6 @@ export function Selection({
           });
         }
 
-        selectionActions.clear();
-        send("element-blurred", undefined);
-      }),
-      on("request-blur-element", () => {
-        selectionActions.clear();
-        send("track", { actionId: "element_blur" });
         send("element-blurred", undefined);
       }),
       on("request-jump-to-element", (sceneObject) => {
@@ -180,18 +174,12 @@ export function Selection({
           paddingTop: 0.5,
         });
       }),
-      on("request-focus-element", (data) => {
-        selectionActions.select(data, "replace");
-        send("element-focused", data);
-        send("track", { actionId: "element_focus" });
-      }),
     ]);
   }, [
     controls,
     lastSelectedObjectProps,
     resolvedObjects,
     scene,
-    selectionActions,
     switchToComponent,
   ]);
 

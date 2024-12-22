@@ -52,6 +52,14 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
     // eslint-disable-next-line react-compiler/react-compiler
     const mergedRefs = useMemo(() => mergeRefs([ref, hostRef]), [ref]);
     const { isTriplexCamera } = useCamera();
+    const triplexMeta: TriplexMeta = useMemo(
+      () => ({
+        ...__meta,
+        parents: parentMeta,
+        props,
+      }),
+      [__meta, parentMeta, props],
+    );
 
     useEffect(() => {
       return compose([
@@ -80,6 +88,15 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
       onSceneObjectCommitted(__meta.path, __meta.line, __meta.column);
     }, [__meta.column, __meta.line, __meta.path, onSceneObjectCommitted]);
 
+    useEffect(() => {
+      if (type === "custom" || !mergedRefs.current) {
+        return;
+      }
+
+      // @ts-expect-error — Tag this element with meta to power scene selections.
+      mergedRefs.current.__triplex = triplexMeta;
+    }, [__meta, mergedRefs, parentMeta, props, triplexMeta, type]);
+
     if (isDeleted) {
       // This component will eventually unmount when deleted as its removed
       // from source code. To keep things snappy however we delete it optimistically.
@@ -93,11 +110,6 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
       // E.g. user land controls. Get rid of the problem altogether!
       return <>{props.children}</>;
     } else if (forceInsideSceneObjectContext || insideSceneObjectContext) {
-      const triplexMeta: TriplexMeta = {
-        ...__meta,
-        parents: parentMeta,
-        props,
-      };
       // For specific controls components that we know can be disabled we disable them via
       // props when the editor scene is viewing through the triplex camera.
       const shouldDisable =
@@ -124,7 +136,6 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
               // keep things pretty much the same (no Three.js scene mutation).
               <>
                 {children}
-                <primitive attach="__triplex" object={triplexMeta} />
                 {hasHelper(Component) && (
                   <Helper>
                     <primitive attach="__triplex" object={triplexMeta} />

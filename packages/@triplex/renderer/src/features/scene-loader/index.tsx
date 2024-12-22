@@ -8,6 +8,8 @@ import { type Modules, type ProviderComponent } from "@triplex/bridge/client";
 import { useMemo } from "react";
 import { Canvas } from "../canvas";
 import { SceneRenderer } from "../scene-renderer";
+import { SelectionProvider } from "../selection-provider";
+import { ReactDOMSelection } from "../selection-react-dom";
 import { SceneContext } from "./context";
 import { type LoadedSceneContext } from "./types";
 import { useSceneLoader } from "./use-scene-loader";
@@ -53,25 +55,29 @@ export function SceneLoader({
   }
 
   return (
-    <SceneContext.Provider value={sceneContext}>
-      {scene.meta.root === "react" && (
-        <SceneRenderer
-          component={scene.component}
-          exportName={exportName}
-          path={path}
-          props={sceneProps}
-        />
-      )}
-      {scene.meta.root === "react-three-fiber" && (
-        <Canvas>
-          <SceneRenderer
-            component={scene.component}
-            exportName={exportName}
-            path={path}
-            props={sceneProps}
-          />
-        </Canvas>
-      )}
-    </SceneContext.Provider>
+    <SelectionProvider>
+      <SceneContext.Provider value={sceneContext}>
+        {scene.meta.root === "react" && (
+          <ReactDOMSelection>
+            <SceneRenderer
+              component={scene.component}
+              exportName={exportName}
+              path={path}
+              props={sceneProps}
+            />
+          </ReactDOMSelection>
+        )}
+        {scene.meta.root === "react-three-fiber" && (
+          <Canvas>
+            <SceneRenderer
+              component={scene.component}
+              exportName={exportName}
+              path={path}
+              props={sceneProps}
+            />
+          </Canvas>
+        )}
+      </SceneContext.Provider>
+    </SelectionProvider>
   );
 }

@@ -20,6 +20,22 @@ test.describe(() => {
       scene.locator.getByText("HTML CONTENT OUTSIDE CANVAS"),
     ).toBeVisible();
   });
+
+  test("focusing three element then dom element", async ({ vsce }) => {
+    await vsce.codelens("CanvasExample").click();
+    const { panels, togglePanelsButton } = vsce.resolveEditor();
+    await togglePanelsButton.click();
+
+    await panels.getByRole("button", { exact: true, name: "mesh" }).click();
+    await expect(
+      panels.getByRole("button", { name: "selected" }),
+    ).toHaveAccessibleName(/mesh/);
+
+    await panels.getByRole("button", { exact: true, name: "div" }).click();
+    await expect(
+      panels.getByRole("button", { name: "selected" }),
+    ).toHaveAccessibleName(/div/);
+  });
 });
 
 test.describe(() => {

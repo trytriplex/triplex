@@ -41,7 +41,12 @@ export function Label({
   const label = descriptionWithTags(description, tags);
 
   return (
-    <div className={cn(["col-span-2 mt-1", !!label && "italic"])}>
+    <div
+      className={cn([
+        "col-span-2 mt-1 overflow-hidden text-ellipsis",
+        !!label && "italic",
+      ])}
+    >
       <label htmlFor={htmlFor} title={label}>
         {children}
       </label>

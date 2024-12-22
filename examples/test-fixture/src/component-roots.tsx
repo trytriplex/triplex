@@ -16,7 +16,7 @@ export function ReactRoot() {
 }
 
 export function ReactRootFromAnotherModule() {
-  return <Button />;
+  return <Button text="Button"/>;
 }
 
 export function Unknown() {
