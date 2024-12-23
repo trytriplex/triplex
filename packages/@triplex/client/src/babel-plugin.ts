@@ -26,7 +26,7 @@ const SCENE_OBJECT_COMPONENT_NAME = "SceneObject";
 
 interface ComponentMetadata {
   lighting: SceneMeta["lighting"];
-  root: "react" | "react-three-fiber" | "unknown" | t.Expression;
+  root: "react" | "react-three-fiber" | t.Expression | undefined;
 }
 
 export default function triplexBabelPlugin({
@@ -45,6 +45,9 @@ export default function triplexBabelPlugin({
   let shouldSkip = false;
   let currentFunction:
     | {
+        firstCustomComponent?: string;
+        firstHook?: "react-three-fiber";
+        firstHostElement?: "react" | "react-three-fiber";
         jsx: boolean;
         name: string;
         props: {
@@ -62,7 +65,7 @@ export default function triplexBabelPlugin({
     ) {
       componentsFoundInPass.set(currentFunction.name, {
         lighting: "default",
-        root: "unknown",
+        root: undefined,
       });
     }
   }
@@ -72,10 +75,39 @@ export default function triplexBabelPlugin({
   ) {
     if (
       path.node.id?.type === "Identifier" &&
-      path.node.id.name === currentFunction?.name
+      path.node.id.name === currentFunction?.name &&
+      !skipFunctionMeta
     ) {
-      const meta = componentsFoundInPass.get(currentFunction.name);
-      if (meta?.root === "unknown" && currentFunction.jsx) {
+      const meta = componentsFoundInPass.get(currentFunction.name)!;
+
+      if (currentFunction.firstHook) {
+        meta.root = "react-three-fiber";
+      } else if (
+        currentFunction.firstHostElement &&
+        currentFunction.firstCustomComponent
+      ) {
+        meta.root = t.logicalExpression(
+          "||",
+          t.memberExpression(
+            t.memberExpression(
+              t.identifier(currentFunction.firstCustomComponent),
+              t.identifier("triplexMeta"),
+            ),
+            t.identifier("root"),
+          ),
+          t.stringLiteral(currentFunction.firstHostElement),
+        );
+      } else if (currentFunction.firstHostElement) {
+        meta.root = currentFunction.firstHostElement;
+      } else if (currentFunction.firstCustomComponent) {
+        meta.root = t.memberExpression(
+          t.memberExpression(
+            t.identifier(currentFunction.firstCustomComponent),
+            t.identifier("triplexMeta"),
+          ),
+          t.identifier("root"),
+        );
+      } else if (currentFunction.jsx) {
         meta.root = "react";
       }
 
@@ -87,16 +119,10 @@ export default function triplexBabelPlugin({
     visitor: {
       CallExpression(path) {
         if (currentFunction) {
-          const functionMeta = componentsFoundInPass.get(currentFunction.name);
           const callee = path.get("callee");
 
-          if (
-            functionMeta &&
-            functionMeta.root === "unknown" &&
-            callee.isIdentifier() &&
-            isHookFromThreeFiber(callee)
-          ) {
-            functionMeta.root = "react-three-fiber";
+          if (callee.isIdentifier() && isHookFromThreeFiber(callee)) {
+            currentFunction.firstHook ??= "react-three-fiber";
           }
         }
 
@@ -264,37 +290,26 @@ export default function triplexBabelPlugin({
         const functionMeta =
           currentFunction && componentsFoundInPass.get(currentFunction.name);
 
-        if (currentFunction) {
+        if (functionMeta && currentFunction) {
           currentFunction.jsx = true;
-        }
 
-        if (functionMeta) {
           if (elementName.endsWith("Light")) {
             functionMeta.lighting = "custom";
           }
 
-          if (
-            functionMeta.root === "unknown" &&
-            isChildOfReturnStatement(path)
-          ) {
+          if (isChildOfReturnStatement(path)) {
             if (elementType === "custom") {
               if (isCanvasFromThreeFiber(path)) {
-                functionMeta.root = "react";
+                currentFunction.firstHostElement ??= "react";
               } else if (isComponentFromThreeFiber(path)) {
-                functionMeta.root = "react-three-fiber";
+                currentFunction.firstHostElement ??= "react-three-fiber";
               } else if (!isJSXIdentifierFromNodeModules(path, cwd)) {
-                functionMeta.root = t.memberExpression(
-                  t.memberExpression(
-                    t.identifier(elementName),
-                    t.identifier("triplexMeta"),
-                  ),
-                  t.identifier("root"),
-                );
+                currentFunction.firstCustomComponent = elementName;
               }
             } else if (isReactDOMElement(elementName)) {
-              functionMeta.root = "react";
+              currentFunction.firstHostElement ??= "react";
             } else if (isReactThreeElement(elementName)) {
-              functionMeta.root = "react-three-fiber";
+              currentFunction.firstHostElement ??= "react-three-fiber";
             }
           }
         }
@@ -466,7 +481,9 @@ export default function triplexBabelPlugin({
                         t.stringLiteral(key),
                         typeof value === "string"
                           ? t.stringLiteral(value)
-                          : value,
+                          : value === undefined
+                            ? t.identifier("undefined")
+                            : value,
                       );
                     }),
                   ),

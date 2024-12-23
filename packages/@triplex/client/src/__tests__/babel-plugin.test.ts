@@ -1193,7 +1193,7 @@ describe("babel plugin", () => {
       }
       Component.triplexMeta = {
         "lighting": "default",
-        "root": "unknown"
+        "root": undefined
       };"
     `);
   });
@@ -1415,5 +1415,35 @@ describe("babel plugin", () => {
     );
 
     expect(result?.code).toContain(`"root": "react-three-fiber"`);
+  });
+
+  it("should fallback to concrete check", () => {
+    const result = transformSync(
+      `
+        function ContextProvider({ children }) {
+          return children;
+        }
+
+        export function Component() {
+          return (
+            <ContextProvider>
+              <mesh />
+            </ContextProvider>
+          );
+        }
+      `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toContain(`
+Component.triplexMeta = {
+  "lighting": "default",
+  "root": ContextProvider.triplexMeta.root || "react-three-fiber"
+};`);
   });
 });

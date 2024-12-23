@@ -67,3 +67,19 @@ test.describe(() => {
     await expect(scene.locator.getByRole("button")).toBeVisible();
   });
 });
+
+test.describe(() => {
+  test.use({
+    filename: "examples/test-fixture/src/selection-edge-case.tsx",
+  });
+
+  test("unknown custom component but resolved host elements", async ({
+    vsce,
+  }) => {
+    await vsce.codelens("UnknownCustomComponentResolvedHostElements").click();
+
+    await expect(vsce.loadedComponent).toHaveText(
+      `UnknownCustomComponentResolvedHostElements`,
+    );
+  });
+});

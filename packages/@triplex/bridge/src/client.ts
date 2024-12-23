@@ -106,7 +106,7 @@ export interface SceneComponent {
 
 export interface SceneMeta {
   lighting: "default" | "custom";
-  root: "react" | "react-three-fiber" | "unknown";
+  root: "react" | "react-three-fiber" | undefined;
 }
 
 export type Module = Record<string, SceneComponent>;
