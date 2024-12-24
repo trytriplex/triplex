@@ -27,7 +27,7 @@ import {
 import { CameraControls } from "triplex-drei";
 import { Tunnel } from "../../components/tunnel";
 import { allLayers } from "../../util/layers";
-import { findObject3D } from "../../util/scene";
+import { findObject3D } from "../selection-three-fiber/resolver";
 import {
   CameraContext,
   type CameraContextType,

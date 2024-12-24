@@ -11,12 +11,9 @@ import { render } from "react-three-test";
 import { MapControls } from "triplex-drei";
 import { describe, expect, it } from "vitest";
 import { SceneElement } from "../";
-import {
-  findObject3D,
-  getTriplexMeta,
-  resolveObject3DMeta,
-} from "../../../util/scene";
+import { getTriplexMeta, resolveElementMeta } from "../../../util/meta";
 import { Camera } from "../../camera";
+import { findObject3D } from "../../selection-three-fiber/resolver";
 import { SceneObjectContext } from "../context";
 import { nested } from "./__stubs__/scene-objects";
 
@@ -217,7 +214,7 @@ describe("scene object component", () => {
     );
 
     expect(
-      resolveObject3DMeta(ref.current!, {
+      resolveElementMeta(ref.current!, {
         elements: [{ column: 1, line: 1 }],
         path: "/foo",
       }),
@@ -320,7 +317,7 @@ describe("scene object component", () => {
       </SceneObjectContext.Provider>,
     );
 
-    const actual = resolveObject3DMeta(ref.current!, {
+    const actual = resolveElementMeta(ref.current!, {
       elements: [{ column: 1, line: 2 }],
       path: "/foo",
     });
@@ -396,7 +393,7 @@ describe("scene object component", () => {
       </SceneObjectContext.Provider>,
     );
 
-    const actual = resolveObject3DMeta(ref.current!, {
+    const actual = resolveElementMeta(ref.current!, {
       elements: [{ column: 1, line: 2 }],
       path: "/foo",
     });

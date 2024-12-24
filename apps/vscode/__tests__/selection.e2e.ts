@@ -85,3 +85,33 @@ test("duplicating an element should be selected", async ({ vsce }) => {
     .nth(1);
   await expect(secondBoxElement).toHaveAccessibleName(/selected/);
 });
+
+test.describe("react dom", () => {
+  test.use({
+    filename: "examples/test-fixture/src/component-roots.tsx",
+  });
+
+  test("selecting a host element", async ({ vsce }) => {
+    await vsce.codelens("ReactRoot").click();
+    const { panels, scene, togglePanelsButton } = await vsce.resolveEditor();
+    await togglePanelsButton.click();
+
+    await scene.click();
+
+    await expect(
+      panels.getByRole("button", { name: "div" }),
+    ).toHaveAccessibleName(/selected/);
+  });
+
+  test("selecting a custom component", async ({ vsce }) => {
+    await vsce.codelens("ReactRootFromAnotherModule").click();
+    const { panels, scene, togglePanelsButton } = await vsce.resolveEditor();
+    await togglePanelsButton.click();
+
+    await scene.click();
+
+    await expect(
+      panels.getByRole("button", { name: "Button" }),
+    ).toHaveAccessibleName(/selected/);
+  });
+});

@@ -25,6 +25,7 @@ function LoadedNotifierForTesting({ exportName }: { exportName: string }) {
           height: 1,
           left: 0,
           opacity: 0,
+          pointerEvents: "none",
           position: "absolute",
           top: 0,
           width: 1,

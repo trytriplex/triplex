@@ -7,8 +7,12 @@
 import { create } from "zustand";
 import { type SelectionState } from "./types";
 
+export type SelectionListener = (e: MouseEvent) => SelectionState[];
+
 export interface SelectionStore {
   clear: () => void;
+  listen: (cb: SelectionListener) => () => void;
+  listeners: SelectionListener[];
   select: (
     selection: SelectionState | SelectionState[],
     action: "replace" | "addition",
@@ -23,6 +27,22 @@ export const useSelectionStore = create<SelectionStore>((set, get) => ({
       set({ selections: [] });
     }
   },
+  listen: (cb) => {
+    set((state) => {
+      return {
+        listeners: state.listeners.concat(cb),
+      };
+    });
+
+    return () => {
+      set((state) => {
+        return {
+          listeners: state.listeners.filter((listener) => listener !== cb),
+        };
+      });
+    };
+  },
+  listeners: [],
   select: (element, action) => {
     switch (action) {
       case "replace": {

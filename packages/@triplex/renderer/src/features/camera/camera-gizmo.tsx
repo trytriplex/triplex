@@ -17,7 +17,7 @@ import {
 } from "three";
 import { GizmoHelper } from "triplex-drei";
 import { editorLayer } from "../../util/layers";
-import { buildSceneSphere } from "../../util/scene";
+import { buildSceneSphere } from "../../util/three";
 import { useCamera } from "./context";
 
 const tweenCamera = (

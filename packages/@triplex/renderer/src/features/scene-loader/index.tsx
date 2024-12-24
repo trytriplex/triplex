@@ -58,7 +58,7 @@ export function SceneLoader({
     <SelectionProvider>
       <SceneContext.Provider value={sceneContext}>
         {scene.meta.root === "react" && (
-          <ReactDOMSelection>
+          <ReactDOMSelection filter={{ exportName, path }}>
             <SceneRenderer
               component={scene.component}
               exportName={exportName}

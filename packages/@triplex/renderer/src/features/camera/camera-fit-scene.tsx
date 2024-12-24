@@ -7,7 +7,7 @@
 import { useThree } from "@react-three/fiber";
 import { useLayoutEffect } from "react";
 import { Spherical, Vector3 } from "three";
-import { buildSceneSphere } from "../../util/scene";
+import { buildSceneSphere } from "../../util/three";
 import { useCamera } from "./context";
 
 export function FitCameraToScene({ resetKeys }: { resetKeys?: string[] }) {

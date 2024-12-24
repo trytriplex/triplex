@@ -14,6 +14,7 @@ import { createRoot } from "react-dom/client";
 import { App } from "./features/app";
 import { SceneElement } from "./features/scene-element";
 import { SceneScreenshot } from "./features/scene-screenshot";
+import "./styles.css";
 
 init({ RendererElement: SceneElement });
 

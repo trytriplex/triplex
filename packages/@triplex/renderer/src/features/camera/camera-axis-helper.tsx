@@ -9,7 +9,7 @@ import { send } from "@triplex/bridge/client";
 import { Spherical, Vector3, type Object3D } from "three";
 import { GizmoHelper, type CameraControls } from "triplex-drei";
 import { editorLayer } from "../../util/layers";
-import { buildSceneSphere } from "../../util/scene";
+import { buildSceneSphere } from "../../util/three";
 import { AxisHelper } from "./axis-helper";
 import { useCamera } from "./context";
 

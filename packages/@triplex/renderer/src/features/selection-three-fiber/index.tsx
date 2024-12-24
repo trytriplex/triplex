@@ -8,31 +8,25 @@ import { useThree } from "@react-three/fiber";
 import { compose, on, send } from "@triplex/bridge/client";
 import { useEvent } from "@triplex/lib";
 import { useSubscriptionEffect } from "@triplex/ws/react";
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
-import {
-  Box3,
-  Camera,
-  Raycaster,
-  Vector2,
-  Vector3,
-  type Object3D,
-} from "three";
+import { useEffect, useMemo, useState, type ReactNode } from "react";
+import { Box3, Camera, Raycaster, Vector2, Vector3 } from "three";
 import { useSceneStore } from "../../stores/use-scene-store";
 import { flatten } from "../../util/array";
-import { encodeProps } from "../../util/props";
-import {
-  findObject3D,
-  isMatchingTriplexMeta,
-  isObjectVisible as isMeshVisible,
-  resolveObject3DMeta,
-} from "../../util/scene";
+import { SELECTION_LAYER_INDEX } from "../../util/layers";
+import { resolveElementMeta } from "../../util/meta";
+import { encodeProps, isObjectVisible } from "../../util/three";
 import { CameraPreview } from "../camera-preview";
 import { useCamera } from "../camera/context";
 import { SceneObjectContext } from "../scene-element/context";
 import { SceneObjectEventsContext } from "../scene-element/use-scene-element-events";
+import { useSelectionMarshal } from "../selection-provider/use-selection-marhsal";
+import {
+  findObject3D,
+  resolveObject3D,
+  type ResolvedObject3D,
+} from "./resolver";
 import { TransformControls } from "./transform-controls";
 import { type Space, type TransformControlMode } from "./types";
-import { useSelectedObject } from "./use-selected-object";
 
 function strip(num: number): number {
   return +Number.parseFloat(Number(num).toPrecision(15));
@@ -54,7 +48,6 @@ export function ThreeFiberSelection({
   const [space, setSpace] = useState<Space>("world");
   const [transform, setTransform] = useState<TransformControlMode>("none");
   const scene = useThree((store) => store.scene);
-  const gl = useThree((store) => store.gl);
   const camera = useThree((store) => store.camera);
   const canvasSize = useThree((store) => store.size);
   const sceneData = useSubscriptionEffect("/scene/:path/:exportName", {
@@ -62,23 +55,80 @@ export function ThreeFiberSelection({
     exportName: filter.exportName,
     path: filter.path,
   });
-  const sceneElements = useMemo(
+  const elements = useMemo(
     () => flatten(sceneData?.sceneObjects || []),
     [sceneData],
   );
-  const [resolvedObjects, selectionActions] = useSelectedObject({ transform });
-  const disableSelection = useRef(false);
+  const [resolvedObjects, selectionActions] =
+    useSelectionMarshal<ResolvedObject3D>({
+      listener: (e) => {
+        const x = (e.offsetX / canvasSize.width) * 2 - 1;
+        const y = -(e.offsetY / canvasSize.height) * 2 + 1;
+
+        raycaster.setFromCamera(new Vector2(x, y), camera);
+
+        return raycaster
+          .intersectObject(scene)
+          .filter((found) => {
+            return (
+              isObjectVisible(found.object) &&
+              found.object.type !== "TransformControlsPlane"
+            );
+          })
+          .map((found) => {
+            const meta = resolveElementMeta(found.object, {
+              elements,
+              path: filter.path,
+            });
+
+            if (meta) {
+              return {
+                column: meta.column,
+                line: meta.line,
+                parentPath: filter.path,
+                path: meta.path,
+              };
+            }
+
+            return undefined;
+          })
+          .filter((found) => !!found);
+      },
+      onDeselect: (selection) => {
+        selection.object.traverse((child) =>
+          child.layers.disable(SELECTION_LAYER_INDEX),
+        );
+      },
+      onSelect: (selection) => {
+        selection.object.traverse((child) =>
+          child.layers.enable(SELECTION_LAYER_INDEX),
+        );
+      },
+      resolve: (selections) => {
+        return selections
+          .map((selection) => {
+            return resolveObject3D(scene, {
+              column: selection.column,
+              line: selection.line,
+              path: selection.parentPath,
+              transform,
+            });
+          })
+          .filter((selection) => !!selection);
+      },
+    });
   const { controls } = useCamera();
   const lastSelectedObject = resolvedObjects.at(-1);
   const lastSelectedObjectProps = useSubscriptionEffect(
     "/scene/:path/object/:line/:column",
     {
-      column: lastSelectedObject?.column,
+      column: lastSelectedObject?.meta.column,
       disabled:
         !lastSelectedObject ||
-        (lastSelectedObject?.line === -1 && lastSelectedObject?.column === -1),
-      line: lastSelectedObject?.line,
-      path: lastSelectedObject?.path,
+        (lastSelectedObject?.meta.line === -1 &&
+          lastSelectedObject?.meta.column === -1),
+      line: lastSelectedObject?.meta.line,
+      path: lastSelectedObject?.meta.path,
     },
   );
 
@@ -87,9 +137,6 @@ export function ThreeFiberSelection({
       if (state === "play") {
         selectionActions.clear();
         send("element-blurred", undefined);
-        disableSelection.current = true;
-      } else {
-        disableSelection.current = false;
       }
     });
   }, [selectionActions]);
@@ -151,7 +198,7 @@ export function ThreeFiberSelection({
       on("request-jump-to-element", (sceneObject) => {
         const targetSceneObject = sceneObject
           ? findObject3D(scene, sceneObject)
-          : resolvedObjects.at(-1)?.sceneObject;
+          : resolvedObjects.at(-1)?.object;
 
         if (!targetSceneObject) {
           return;
@@ -183,45 +230,18 @@ export function ThreeFiberSelection({
     switchToComponent,
   ]);
 
-  const trySelectObject = useEvent((object: Object3D) => {
-    if (disableSelection.current) {
-      return;
-    }
-
-    const data = resolveObject3DMeta(object, {
-      elements: sceneElements,
-      path: filter.path,
-    });
-
-    if (data) {
-      const target = {
-        column: data.column,
-        line: data.line,
-        parentPath: filter.path,
-        path: data.path,
-      };
-
-      selectionActions.select(target, "replace");
-      send("element-focused", target);
-
-      return true;
-    }
-
-    return false;
-  });
-
   const onCompleteTransformHandler = useEvent(() => {
-    for (const object of resolvedObjects) {
+    for (const selection of resolvedObjects) {
       if (transform === "translate") {
         const position =
-          object.space === "world"
-            ? object.sceneObject.getWorldPosition(V1).toArray()
-            : object.sceneObject.position.toArray();
+          selection.space === "world"
+            ? selection.object.getWorldPosition(V1).toArray()
+            : selection.object.position.toArray();
 
         send("element-set-prop", {
-          column: object.column,
-          line: object.line,
-          path: object.path,
+          column: selection.meta.column,
+          line: selection.meta.line,
+          path: selection.meta.path,
           propName: "position",
           propValue: position.map(strip),
         });
@@ -229,13 +249,13 @@ export function ThreeFiberSelection({
       }
 
       if (transform === "rotate") {
-        const rotation = object.sceneObject.rotation.toArray();
+        const rotation = selection.object.rotation.toArray();
         rotation.pop();
 
         send("element-set-prop", {
-          column: object.column,
-          line: object.line,
-          path: object.path,
+          column: selection.meta.column,
+          line: selection.meta.line,
+          path: selection.meta.path,
           propName: "rotation",
           propValue: rotation,
         });
@@ -243,12 +263,12 @@ export function ThreeFiberSelection({
       }
 
       if (transform === "scale") {
-        const scale = object.sceneObject.scale.toArray();
+        const scale = selection.object.scale.toArray();
 
         send("element-set-prop", {
-          column: object.column,
-          line: object.line,
-          path: object.path,
+          column: selection.meta.column,
+          line: selection.meta.line,
+          path: selection.meta.path,
           propName: "scale",
           propValue: scale.map(strip),
         });
@@ -257,105 +277,10 @@ export function ThreeFiberSelection({
     }
   });
 
-  useEffect(() => {
-    let origin = [-1, -1];
-
-    const mouseDownHandler = (e: MouseEvent) => {
-      origin = [e.offsetX, e.offsetY];
-    };
-
-    const mouseUpHandler = (e: MouseEvent) => {
-      const selectionMode: "cycle" | "default" =
-        // If there have been 2 or more consecutive clicks we change the selection mode to cycle.
-        e.detail >= 2 ? "cycle" : "default";
-
-      const delta =
-        Math.abs(e.offsetX - origin[0]) + Math.abs(e.offsetY - origin[1]);
-
-      if (delta > 1) {
-        return;
-      }
-
-      const x = (e.offsetX / canvasSize.width) * 2 - 1;
-      const y = -(e.offsetY / canvasSize.height) * 2 + 1;
-
-      raycaster.setFromCamera(new Vector2(x, y), camera);
-
-      const result = raycaster.intersectObject(scene).filter((found) => {
-        return (
-          isMeshVisible(found.object) &&
-          found.object.type !== "TransformControlsPlane"
-        );
-      });
-
-      if (selectionMode === "default") {
-        for (const found of result) {
-          if (trySelectObject(found.object)) {
-            send("track", { actionId: "element_focus" });
-            return;
-          }
-        }
-
-        // Nothing was selected so we blur the current selection.
-        // This only happens for the default selection mode.
-        selectionActions.clear();
-        send("track", { actionId: "element_blur" });
-        send("element-blurred", undefined);
-      } else if (selectionMode === "cycle") {
-        const lastObject = resolvedObjects.at(-1);
-        const currentIndex = result.findIndex((found) => {
-          if (
-            found.object === lastObject?.sceneObject ||
-            isMatchingTriplexMeta(found.object, lastObject?.sceneObject)
-          ) {
-            // We found a direct match!
-            return true;
-          }
-
-          // We need to check the scene objects parents to find a match.
-          let parent = found.object.parent;
-          while (parent) {
-            if (parent === lastObject?.sceneObject) {
-              return true;
-            }
-            parent = parent.parent;
-          }
-
-          return false;
-        });
-
-        const nextIndex = (currentIndex + 1) % result.length;
-        const nextObject = result.at(nextIndex)?.object;
-
-        if (nextObject && trySelectObject(nextObject)) {
-          send("track", { actionId: "element_focus" });
-          return;
-        }
-      }
-    };
-
-    gl.domElement.addEventListener("mousedown", mouseDownHandler);
-    gl.domElement.addEventListener("mouseup", mouseUpHandler);
-
-    return () => {
-      gl.domElement.removeEventListener("mousedown", mouseDownHandler);
-      gl.domElement.removeEventListener("mouseup", mouseUpHandler);
-    };
-  }, [
-    camera,
-    canvasSize.height,
-    canvasSize.width,
-    gl.domElement,
-    resolvedObjects,
-    scene,
-    selectionActions,
-    trySelectObject,
-  ]);
-
   return (
     <SceneObjectContext.Provider value={true}>
       <SceneObjectEventsContext.Provider
-        value={selectionActions.resolveObjectsIfMissing}
+        value={selectionActions.resolveIfMissing}
       >
         {children}
       </SceneObjectEventsContext.Provider>
@@ -367,15 +292,15 @@ export function ThreeFiberSelection({
             lastSelectedObjectProps?.transforms[transform]
           }
           mode={transform}
-          object={lastSelectedObject?.sceneObject}
+          object={lastSelectedObject?.object}
           onCompleteTransform={onCompleteTransformHandler}
           space={space}
         />
       )}
 
       {resolvedObjects.length === 1 &&
-        resolvedObjects[0].sceneObject instanceof Camera && (
-          <CameraPreview camera={resolvedObjects[0].sceneObject} />
+        resolvedObjects[0].object instanceof Camera && (
+          <CameraPreview camera={resolvedObjects[0].object} />
         )}
     </SceneObjectContext.Provider>
   );
