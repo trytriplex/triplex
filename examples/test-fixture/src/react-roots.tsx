@@ -7,22 +7,14 @@
 import { Canvas } from "@react-three/fiber";
 
 export function Button({
+  color = "red",
   text,
-  type = "button",
-  variant = 'default',
 }: {
+  color?: "red" | "blue";
   text: string;
-  type?: "submit" | "button";
-  variant?: "default" | "primary";
 }) {
   return (
-    <button
-      style={{
-        background: variant === "primary" ? "blue" : "gray",
-        color: variant === "primary" ? "white" : "black",
-      }}
-      type={type}
-    >
+    <button style={{ color, height: "100vh", width: "100vh" }} type="submit">
       {text}
     </button>
   );
