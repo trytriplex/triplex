@@ -6,10 +6,6 @@
  */
 import { type ReactNode } from "react";
 
-function ContextProvider({ children }: { children: ReactNode }) {
-  return children;
-}
-
 export function UnknownCustomComponentResolvedHostElements() {
   return (
     <>
@@ -20,4 +16,8 @@ export function UnknownCustomComponentResolvedHostElements() {
       </ContextProvider>
     </>
   );
+}
+
+function ContextProvider({ children }: { children: ReactNode }) {
+  return children;
 }
