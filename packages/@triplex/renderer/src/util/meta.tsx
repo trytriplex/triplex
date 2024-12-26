@@ -33,16 +33,20 @@ export function getTriplexMeta(
   return undefined;
 }
 
-export function isActiveElement(
-  node: { column: number; line: number; path: string },
+export function isElementPresentInFilter(
+  element: { column: number; line: number; name: string; path: string },
   filter: {
-    elements: { column: number; line: number }[];
+    elements: { column: number; line: number; name: string }[];
     path: string;
   },
 ): boolean {
-  if (filter.path === node.path) {
-    for (const element of filter.elements) {
-      if (node.line === element.line && node.column === element.column) {
+  if (filter.path === element.path) {
+    for (const obj of filter.elements) {
+      if (
+        obj.name === element.name &&
+        obj.line === element.line &&
+        obj.column === element.column
+      ) {
         return true;
       }
     }
@@ -55,26 +59,44 @@ export function resolveElementMeta(
   obj: Node | Object3D | undefined,
   filter:
     | {
-        elements: { column: number; line: number }[];
+        elements: { column: number; line: number; name: string }[];
         path: string;
       }
     | { column: number; line: number; path: string },
 ): TriplexResolvedMeta | null {
-  let parentObject: Node | Object3D | null = obj ?? null;
+  const objMeta = getTriplexMeta(obj);
+
+  if (!obj || !objMeta) {
+    return null;
+  }
+
+  const doesObjMatchFilter =
+    "column" in filter
+      ? filter.column === objMeta.column &&
+        filter.line === objMeta.line &&
+        objMeta.path === filter.path
+      : isElementPresentInFilter(objMeta, filter);
+
+  if (doesObjMatchFilter) {
+    // We short circuit and immediately return the objects meta if it matches the filter.
+    return objMeta;
+  }
+
+  let parentObject: Node | Object3D | null = obj;
 
   while (parentObject) {
     const meta = getTriplexMeta(parentObject);
     if (meta) {
       // Iterate through parents to find the first component that matches the path.
       for (const parent of meta.parents) {
-        const filterMatches =
+        const doesParentMatchFilter =
           "column" in filter
             ? filter.column === parent.column &&
               filter.line === parent.line &&
               parent.path === filter.path
-            : isActiveElement(parent, filter);
+            : isElementPresentInFilter(parent, filter);
 
-        if (filterMatches) {
+        if (doesParentMatchFilter) {
           return parent;
         }
       }

@@ -15,7 +15,7 @@ export interface ResolvedObject3D {
   space: "local" | "world";
 }
 
-export const findTransformedSceneObject = (
+export const findTransformedObject3D = (
   sceneObject: Object3D,
   filter: { transform: "none" | "translate" | "scale" | "rotate" },
 ): Object3D => {
@@ -102,7 +102,7 @@ export const resolveObject3D = (
     if (meta) {
       const sceneObject = /^[a-z]/.test(meta.name)
         ? target
-        : findTransformedSceneObject(target, filter);
+        : findTransformedObject3D(target, filter);
 
       return {
         meta,

@@ -115,3 +115,23 @@ test.describe("react dom", () => {
     ).toHaveAccessibleName(/selected/);
   });
 });
+
+test.describe(() => {
+  test.use({
+    filename: "examples/test-fixture/src/selection-edge-case.tsx",
+  });
+
+  test("selecting a host element inside a child custom component where both are rendered by the same component", async ({
+    vsce,
+  }) => {
+    await vsce.codelens("UnknownCustomComponentResolvedHostElements").click();
+    const { panels, scene, togglePanelsButton } = await vsce.resolveEditor();
+    await togglePanelsButton.click();
+
+    await scene.click();
+
+    await expect(
+      panels.getByRole("button", { name: "mesh" }),
+    ).toHaveAccessibleName(/selected/);
+  });
+});

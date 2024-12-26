@@ -215,7 +215,7 @@ describe("scene object component", () => {
 
     expect(
       resolveElementMeta(ref.current!, {
-        elements: [{ column: 1, line: 1 }],
+        elements: [{ column: 1, line: 1, name: "Component" }],
         path: "/foo",
       }),
     ).toMatchObject({
@@ -318,7 +318,7 @@ describe("scene object component", () => {
     );
 
     const actual = resolveElementMeta(ref.current!, {
-      elements: [{ column: 1, line: 2 }],
+      elements: [{ column: 1, line: 2, name: "ComponentB" }],
       path: "/foo",
     });
 
@@ -394,7 +394,7 @@ describe("scene object component", () => {
     );
 
     const actual = resolveElementMeta(ref.current!, {
-      elements: [{ column: 1, line: 2 }],
+      elements: [{ column: 1, line: 2, name: "ComponentB" }],
       path: "/foo",
     });
 
