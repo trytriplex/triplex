@@ -1420,15 +1420,87 @@ describe("babel plugin", () => {
   it("should fallback to concrete check", () => {
     const result = transformSync(
       `
-        function ContextProvider({ children }) {
-          return children;
-        }
-
         export function Component() {
           return (
             <ContextProvider>
               <mesh />
             </ContextProvider>
+          );
+        }
+
+        function ContextProvider({ children }) {
+          return children;
+        }
+      `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "export function Component() {
+        return <SceneObject __component={ContextProvider} __meta={{
+          "path": "",
+          "name": "ContextProvider",
+          "line": 4,
+          "column": 13,
+          "translate": false,
+          "rotate": false,
+          "scale": false
+        }}>
+                    <SceneObject __component={"mesh"} __meta={{
+            "path": "",
+            "name": "mesh",
+            "line": 5,
+            "column": 15,
+            "translate": false,
+            "rotate": false,
+            "scale": false
+          }}></SceneObject>
+                  </SceneObject>;
+      }
+      function ContextProvider({
+        children
+      }) {
+        return children;
+      }
+      ContextProvider.triplexMeta = {
+        "lighting": "default",
+        "root": undefined
+      };
+      Component.triplexMeta = {
+        "lighting": "default",
+        "root": ContextProvider.triplexMeta.root || "react-three-fiber"
+      };"
+    `);
+  });
+
+  it("should order meta for many components", () => {
+    const result = transformSync(
+      `
+        export function Inbuilt() {
+          return (
+            <mesh>
+              <boxGeometry />
+            </mesh>
+          );
+        }
+        export function Inbuilt1() {
+          return <Inbuilt />;
+        }
+
+        export function Inbuilt2() {
+          return <Inbuilt1 />;
+        }
+
+        export function Scene() {
+          return (
+            <>
+              <Inbuilt2 />
+            </>
           );
         }
       `,
@@ -1440,10 +1512,101 @@ describe("babel plugin", () => {
       },
     );
 
-    expect(result?.code).toContain(`
-Component.triplexMeta = {
-  "lighting": "default",
-  "root": ContextProvider.triplexMeta.root || "react-three-fiber"
-};`);
+    expect(result?.code).toMatchInlineSnapshot(`
+      "export function Inbuilt() {
+        return <SceneObject __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 4,
+          "column": 13,
+          "translate": false,
+          "rotate": false,
+          "scale": false
+        }}>
+                    <SceneObject __component={"boxGeometry"} __meta={{
+            "path": "",
+            "name": "boxGeometry",
+            "line": 5,
+            "column": 15,
+            "translate": false,
+            "rotate": false,
+            "scale": false
+          }}></SceneObject>
+                  </SceneObject>;
+      }
+      export function Inbuilt1() {
+        return <SceneObject __component={Inbuilt} __meta={{
+          "path": "",
+          "name": "Inbuilt",
+          "line": 10,
+          "column": 18,
+          "translate": false,
+          "rotate": false,
+          "scale": false
+        }}></SceneObject>;
+      }
+      export function Inbuilt2() {
+        return <SceneObject __component={Inbuilt1} __meta={{
+          "path": "",
+          "name": "Inbuilt1",
+          "line": 14,
+          "column": 18,
+          "translate": false,
+          "rotate": false,
+          "scale": false
+        }}></SceneObject>;
+      }
+      export function Scene() {
+        return <>
+                    <SceneObject __component={Inbuilt2} __meta={{
+            "path": "",
+            "name": "Inbuilt2",
+            "line": 20,
+            "column": 15,
+            "translate": false,
+            "rotate": false,
+            "scale": false
+          }}></SceneObject>
+                  </>;
+      }
+      Inbuilt.triplexMeta = {
+        "lighting": "default",
+        "root": "react-three-fiber"
+      };
+      Inbuilt1.triplexMeta = {
+        "lighting": "default",
+        "root": Inbuilt.triplexMeta.root
+      };
+      Inbuilt2.triplexMeta = {
+        "lighting": "default",
+        "root": Inbuilt1.triplexMeta.root
+      };
+      Scene.triplexMeta = {
+        "lighting": "default",
+        "root": Inbuilt2.triplexMeta.root
+      };"
+    `);
+  });
+
+  it("should skip root meta for recursive components", () => {
+    const result = transformSync(
+      `
+        export function Component() {
+          return (
+            <Component>
+              <mesh />
+            </Component>
+          );
+        }
+      `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toContain(`"root": "react-three-fiber"`);
   });
 });

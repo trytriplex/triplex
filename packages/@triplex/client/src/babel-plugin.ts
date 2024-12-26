@@ -29,6 +29,31 @@ interface ComponentMetadata {
   root: "react" | "react-three-fiber" | t.Expression | undefined;
 }
 
+function resolveOrderingFromMap(dependencyMap: Map<string, string>) {
+  const order: string[] = [];
+  const visited = new Set<string>();
+
+  function visit(name: string) {
+    if (visited.has(name)) {
+      return;
+    }
+
+    visited.add(name);
+
+    const dependency = dependencyMap.get(name);
+
+    if (dependency) {
+      visit(dependency);
+    }
+
+    order.push(name);
+  }
+
+  dependencyMap.forEach((_, name) => visit(name));
+
+  return order;
+}
+
 export default function triplexBabelPlugin({
   cwd = process.cwd(),
   exclude: excludeDirs,
@@ -40,6 +65,7 @@ export default function triplexBabelPlugin({
 }) {
   const cache = new WeakSet();
   const componentsFoundInPass = new Map<string, ComponentMetadata>();
+  const componentMetaDependencyMap = new Map<string, string>();
   const exclude = excludeDirs.filter(Boolean);
 
   let shouldSkip = false;
@@ -109,6 +135,13 @@ export default function triplexBabelPlugin({
         );
       } else if (currentFunction.jsx) {
         meta.root = "react";
+      }
+
+      if (currentFunction.firstCustomComponent) {
+        componentMetaDependencyMap.set(
+          currentFunction.name,
+          currentFunction.firstCustomComponent,
+        );
       }
 
       currentFunction = undefined;
@@ -303,7 +336,10 @@ export default function triplexBabelPlugin({
                 currentFunction.firstHostElement ??= "react";
               } else if (isComponentFromThreeFiber(path)) {
                 currentFunction.firstHostElement ??= "react-three-fiber";
-              } else if (!isJSXIdentifierFromNodeModules(path, cwd)) {
+              } else if (
+                !isJSXIdentifierFromNodeModules(path, cwd) &&
+                elementName !== currentFunction.name
+              ) {
                 currentFunction.firstCustomComponent = elementName;
               }
             } else if (isReactDOMElement(elementName)) {
@@ -465,34 +501,46 @@ export default function triplexBabelPlugin({
 
           shouldSkip = false;
 
-          for (const [key, value] of componentsFoundInPass) {
-            path.pushContainer(
-              "body",
-              t.expressionStatement(
-                t.assignmentExpression(
-                  "=",
-                  t.memberExpression(
-                    t.identifier(key),
-                    t.identifier("triplexMeta"),
-                  ),
-                  t.objectExpression(
-                    Object.entries(value).map(([key, value]) => {
-                      return t.objectProperty(
-                        t.stringLiteral(key),
-                        typeof value === "string"
-                          ? t.stringLiteral(value)
-                          : value === undefined
-                            ? t.identifier("undefined")
-                            : value,
-                      );
-                    }),
+          const componentMetaOrder = resolveOrderingFromMap(
+            componentMetaDependencyMap,
+          );
+
+          Array.from(componentsFoundInPass.entries())
+            .sort(([nameA], [nameB]) => {
+              return (
+                componentMetaOrder.indexOf(nameA) -
+                componentMetaOrder.indexOf(nameB)
+              );
+            })
+            .map(([componentName, meta]) => {
+              path.pushContainer(
+                "body",
+                t.expressionStatement(
+                  t.assignmentExpression(
+                    "=",
+                    t.memberExpression(
+                      t.identifier(componentName),
+                      t.identifier("triplexMeta"),
+                    ),
+                    t.objectExpression(
+                      Object.entries(meta).map(([key, value]) => {
+                        return t.objectProperty(
+                          t.stringLiteral(key),
+                          typeof value === "string"
+                            ? t.stringLiteral(value)
+                            : value === undefined
+                              ? t.identifier("undefined")
+                              : value,
+                        );
+                      }),
+                    ),
                   ),
                 ),
-              ),
-            );
-          }
+              );
+            });
 
           componentsFoundInPass.clear();
+          componentMetaDependencyMap.clear();
         },
       },
       VariableDeclarator: {
