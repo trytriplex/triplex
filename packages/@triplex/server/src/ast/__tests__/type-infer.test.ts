@@ -226,8 +226,10 @@ describe("type infer", () => {
           "valueKind": "unhandled",
         },
         {
+          "column": 9,
           "description": undefined,
           "kind": "union",
+          "line": 45,
           "name": "children",
           "required": false,
           "shape": [
@@ -243,6 +245,8 @@ describe("type infer", () => {
             },
           ],
           "tags": {},
+          "value": "{children}",
+          "valueKind": "unhandled",
         },
       ]
     `);

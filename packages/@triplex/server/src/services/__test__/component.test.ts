@@ -39,6 +39,57 @@ describe("component service", () => {
   beforeEach(cleanTmpDir);
   afterEach(cleanTmpDir);
 
+  it("should update jsx text children", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx"),
+    );
+    const jsxElement = getJsxElementAtOrThrow(sourceFile, 18, 7);
+
+    upsertProp(jsxElement, "children", `"Hello World"`);
+
+    expect(jsxElement.getText().replaceAll(/\s/g, "")).toMatchInlineSnapshot(
+      `"<RoundedBox>HelloWorld</RoundedBox>"`,
+    );
+  });
+
+  it("should update number children", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx"),
+    );
+    const jsxElement = getJsxElementAtOrThrow(sourceFile, 18, 7);
+
+    upsertProp(jsxElement, "children", `123`);
+
+    expect(jsxElement.getText().replaceAll(/\s/g, "")).toMatchInlineSnapshot(
+      `"<RoundedBox>{123}</RoundedBox>"`,
+    );
+  });
+
+  it("should update jsx text children on self closing element", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/add-prop.tsx"),
+    );
+
+    upsertProp(
+      getJsxElementAtOrThrow(sourceFile, 55, 7),
+      "children",
+      `"Hello World"`,
+    );
+
+    expect(
+      getJsxElementAtOrThrow(sourceFile, 55, 7).getText().replaceAll(/\s/g, ""),
+    ).toMatchInlineSnapshot(`"<RoundedBox>HelloWorld</RoundedBox>"`);
+  });
+
   it("should rename a function declaration named export", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),

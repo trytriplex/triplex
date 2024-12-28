@@ -7,8 +7,11 @@
 import {
   Node,
   type Expression,
+  type JsxAttribute,
+  type JsxChild,
   type JsxElement,
   type JsxSelfClosingElement,
+  type JsxText,
   type PropertySignature,
   type Symbol as SymbolType,
   type ts,
@@ -25,6 +28,40 @@ import type {
 import { getAttributes } from "./jsx";
 import { getExportName } from "./module";
 import { type SourceFileReadOnly } from "./project";
+
+export function resolveAttributeValue(attribute: JsxAttribute): {
+  start: number;
+  value: ExpressionValue;
+} {
+  const initializer = attribute.getInitializer();
+  const value = resolveExpressionValue(
+    Node.isJsxExpression(initializer)
+      ? initializer.getExpressionOrThrow()
+      : initializer,
+  );
+
+  return { start: attribute.getStart(), value };
+}
+
+export function resolveChildJsxValue(children: JsxChild[]): {
+  start: number;
+  value: ExpressionValue;
+} {
+  if (children.length === 1) {
+    return {
+      start: children[0].getStart(),
+      value: resolveExpressionValue(children[0]),
+    };
+  }
+
+  return {
+    start: children[0].getStart(),
+    value: {
+      kind: "unhandled",
+      value: children.map((child) => child.getText()).join(""),
+    },
+  };
+}
 
 export function sortUnionType(type: UnionType, value: AttributeValue) {
   const isLiteralUnion = type.shape.every((val) => "literal" in val);
@@ -339,7 +376,7 @@ function collectUnionLabels(
 }
 
 export function resolveExpressionValue(
-  expression: Expression | undefined,
+  expression: Expression | JsxText | undefined,
 ): ExpressionValue {
   // Value is inside a JSX expression
   if (Node.isIdentifier(expression)) {
@@ -370,6 +407,10 @@ export function resolveExpressionValue(
 
   if (Node.isStringLiteral(expression)) {
     return { kind: "string", value: expression.getLiteralText() };
+  }
+
+  if (Node.isJsxText(expression)) {
+    return { kind: "string", value: expression.getText() };
   }
 
   if (Node.isNumericLiteral(expression)) {
@@ -403,7 +444,7 @@ export function getJsxElementPropTypes(
   element: JsxSelfClosingElement | JsxElement,
 ) {
   const props: (Prop | DeclaredProp)[] = [];
-  const attributes = getAttributes(element);
+  const { attributes, children } = getAttributes(element);
   const jsxDecl = getJsxDeclProps(element);
   const unionValueLabels: Record<string, Record<string, string>> = {};
   const defaultValues: Record<string, ExpressionValue> = {};
@@ -444,7 +485,6 @@ export function getJsxElementPropTypes(
     const prop = properties[i];
     const declarations = prop.getDeclarations();
     const propName = prop.getName();
-    const declaredProp = attributes[propName];
     const propDeclaration = declarations[0] as PropertySignature;
     const propType = prop.getTypeAtLocation(declaration);
     const { description, tags } = extractJSDoc(prop);
@@ -458,18 +498,19 @@ export function getJsxElementPropTypes(
       !!propDeclaration?.hasQuestionToken?.() ||
       tags.default !== undefined ||
       tags.defaultValue !== undefined;
+    const declaredProp =
+      propName === "children"
+        ? children || attributes[propName]
+        : attributes[propName];
 
     if (declaredProp) {
-      const initializer = declaredProp.getInitializer();
-      const value = resolveExpressionValue(
-        Node.isJsxExpression(initializer)
-          ? initializer.getExpressionOrThrow()
-          : initializer,
-      );
+      const type = unrollType(propType, unionLabels);
+      const { start, value } = Array.isArray(declaredProp)
+        ? resolveChildJsxValue(declaredProp)
+        : resolveAttributeValue(declaredProp);
       const { column, line } = element
         .getSourceFile()
-        .getLineAndColumnAtPos(declaredProp.getStart());
-      const type = unrollType(propType, unionLabels);
+        .getLineAndColumnAtPos(start);
 
       if (value.kind !== "unhandled" && value.kind !== "identifier") {
         if (propName === "rotation") {

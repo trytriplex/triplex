@@ -407,6 +407,32 @@ describe("jsx ast extractor", () => {
           },
         },
         {
+          "description": undefined,
+          "kind": "string",
+          "name": "attach",
+          "required": false,
+          "tags": {},
+        },
+        {
+          "description": undefined,
+          "kind": "union",
+          "name": "children",
+          "required": false,
+          "shape": [
+            {
+              "kind": "string",
+            },
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "boolean",
+              "literal": false,
+            },
+          ],
+          "tags": {},
+        },
+        {
           "description": "Used to control the morph target behavior; when set to true, the morph target data is treated as relative offsets, rather than as absolute positions/normals.",
           "kind": "boolean",
           "name": "morphTargetsRelative",
@@ -655,6 +681,13 @@ describe("jsx ast extractor", () => {
           "tags": {
             "default": 1,
           },
+        },
+        {
+          "description": undefined,
+          "kind": "string",
+          "name": "attach",
+          "required": false,
+          "tags": {},
         },
         {
           "description": "Represents the alpha value of the constant blend color. This property has only an effect when using custom
@@ -982,6 +1015,25 @@ describe("jsx ast extractor", () => {
           "tags": {
             "default": 1,
           },
+        },
+        {
+          "description": undefined,
+          "kind": "union",
+          "name": "children",
+          "required": false,
+          "shape": [
+            {
+              "kind": "string",
+            },
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "boolean",
+              "literal": false,
+            },
+          ],
+          "tags": {},
         },
         {
           "description": "Changes the behavior of clipping planes so that only their intersection is clipped, rather than their union. Default is false.",
@@ -1933,6 +1985,36 @@ describe("jsx ast extractor", () => {
           },
         },
         {
+          "description": undefined,
+          "kind": "string",
+          "name": "attach",
+          "required": false,
+          "tags": {},
+        },
+        {
+          "column": 7,
+          "description": undefined,
+          "kind": "union",
+          "line": 11,
+          "name": "children",
+          "required": false,
+          "shape": [
+            {
+              "kind": "string",
+            },
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "boolean",
+              "literal": false,
+            },
+          ],
+          "tags": {},
+          "value": "<boxGeometry />",
+          "valueKind": "unhandled",
+        },
+        {
           "description": "When this is set, it checks every frame if the object is in the frustum of the camera before rendering the object.
       If set to \`false\` the object gets rendered every frame even if it is not in the frustum of the camera.",
           "kind": "boolean",
@@ -2200,6 +2282,32 @@ describe("jsx ast extractor", () => {
           "tags": {
             "defaultValue": "\`false\`",
           },
+        },
+        {
+          "description": undefined,
+          "kind": "string",
+          "name": "attach",
+          "required": false,
+          "tags": {},
+        },
+        {
+          "description": undefined,
+          "kind": "union",
+          "name": "children",
+          "required": false,
+          "shape": [
+            {
+              "kind": "string",
+            },
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "boolean",
+              "literal": false,
+            },
+          ],
+          "tags": {},
         },
         {
           "description": "When this is set, it checks every frame if the object is in the frustum of the camera before rendering the object.
@@ -2603,6 +2711,36 @@ describe("jsx ast extractor", () => {
           "tags": {
             "defaultValue": "\`false\`",
           },
+        },
+        {
+          "description": undefined,
+          "kind": "string",
+          "name": "attach",
+          "required": false,
+          "tags": {},
+        },
+        {
+          "column": 7,
+          "description": undefined,
+          "kind": "union",
+          "line": 18,
+          "name": "children",
+          "required": false,
+          "shape": [
+            {
+              "kind": "string",
+            },
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "boolean",
+              "literal": false,
+            },
+          ],
+          "tags": {},
+          "value": "<boxGeometry args={[1, 1, 1]} /><meshStandardMaterial color="pink" />",
+          "valueKind": "unhandled",
         },
         {
           "description": "When this is set, it checks every frame if the object is in the frustum of the camera before rendering the object.

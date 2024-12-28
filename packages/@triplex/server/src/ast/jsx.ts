@@ -8,6 +8,7 @@ import {
   Node,
   SyntaxKind,
   type JsxAttribute,
+  type JsxChild,
   type JsxElement,
   type JsxSelfClosingElement,
   type SourceFile,
@@ -57,7 +58,7 @@ export function getAllJsxElements(
 }
 
 export function getJsxTag(node: JsxElement | JsxSelfClosingElement) {
-  const attributes = getAttributes(node);
+  const { attributes } = getAttributes(node);
   const name = Node.isJsxElement(node)
     ? node.getOpeningElement().getTagNameNode().getText()
     : node.getTagNameNode().getText();
@@ -213,20 +214,35 @@ export function getJsxElementsPositions(
   return elements;
 }
 
+export type AttributesResult = {
+  attributes: Record<string, JsxAttribute>;
+  children?: JsxChild[];
+};
+
 export function getAttributes(
   element: JsxSelfClosingElement | JsxElement,
-): Record<string, JsxAttribute> {
+): AttributesResult {
   const attributes = Node.isJsxSelfClosingElement(element)
     ? element.getAttributes()
     : element.getOpeningElement().getAttributes();
-
-  const attrs: Record<string, JsxAttribute> = {};
+  const attrs: AttributesResult = {
+    attributes: {},
+    children: undefined,
+  };
+  const jsxChildren = Node.isJsxElement(element)
+    ? element.getJsxChildren()
+    : [];
 
   for (let i = 0; i < attributes.length; i++) {
     const attr = attributes[i];
     if (Node.isJsxAttribute(attr)) {
-      attrs[attr.getNameNode().getText()] = attr;
+      const propName = attr.getNameNode().getText();
+      attrs.attributes[propName] = attr;
     }
+  }
+
+  if (jsxChildren.length) {
+    attrs.children = jsxChildren;
   }
 
   return attrs;
@@ -248,9 +264,7 @@ const propsSortList: Record<string, number> = [
   "roughness",
 ].reduce((acc, val, index) => Object.assign(acc, { [val]: 1000 - index }), {});
 
-const propsExcludeList: Record<string, true> = {
-  attach: true,
-  children: true,
+const threejsPropsExclusions: Record<string, true> = {
   id: true,
   isAmbientLight: true,
   isBufferGeometry: true,
@@ -280,18 +294,21 @@ const propsExcludeList: Record<string, true> = {
   isShadowMaterial: true,
   isSpotLight: true,
   isSpriteMaterial: true,
-  key: true,
   matrix: true,
   matrixAutoUpdate: true,
   matrixWorldAutoUpdate: true,
   matrixWorldNeedsUpdate: true,
   needsUpdate: true,
-  ref: true,
   steps: true,
   type: true,
   up: true,
   uuid: true,
   version: true,
+};
+
+const globalPropsExclusions: Record<string, true> = {
+  key: true,
+  ref: true,
 };
 
 export function getJsxElementParentExportNameOrThrow(
@@ -341,9 +358,26 @@ export function getJsxElementProps(
   element: JsxSelfClosingElement | JsxElement,
 ) {
   const { props, transforms } = getJsxElementPropTypes(element);
+  const elementPath = (
+    Node.isJsxSelfClosingElement(element)
+      ? element.getTagNameNode()
+      : element.getOpeningElement().getTagNameNode()
+  )
+    .getSymbolOrThrow()
+    .getFullyQualifiedName();
 
   const sortedProps = props
-    .filter((prop) => !propsExcludeList[prop.name] && prop.kind !== "unhandled")
+    .filter((prop) => {
+      if (elementPath.includes("node_modules/@react-three")) {
+        return (
+          !threejsPropsExclusions[prop.name] &&
+          !globalPropsExclusions[prop.name] &&
+          prop.kind !== "unhandled"
+        );
+      }
+
+      return !globalPropsExclusions[prop.name] && prop.kind !== "unhandled";
+    })
     .sort((propA, propB) => {
       const aPos = propsSortList[propA.name] ?? -1;
       const bPos = propsSortList[propB.name] ?? -1;

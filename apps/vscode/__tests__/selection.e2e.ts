@@ -101,9 +101,7 @@ test.describe("react dom", () => {
     await expect(
       panels.getByRole("button", { name: "div" }),
     ).toHaveAccessibleName(/selected/);
-    await expect(
-      scene.locator.getByTestId("Selected(div@15:10)"),
-    ).toBeVisible();
+    await expect(scene.locator.getByTestId("Selected(div@16:5)")).toBeVisible();
   });
 
   test("selecting a custom component", async ({ vsce }) => {

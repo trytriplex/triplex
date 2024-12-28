@@ -12,6 +12,11 @@ export function stringifyJSON(value: unknown): string {
   );
 }
 
+/** Parses JSON while handling preserved undefined values. */
+export function parseJSON(value: string) {
+  return JSON.parse(value, (_k, v) => (v === "__UNDEFINED__" ? undefined : v));
+}
+
 export function padLines(num: number) {
   return "".padEnd(num, "\n");
 }

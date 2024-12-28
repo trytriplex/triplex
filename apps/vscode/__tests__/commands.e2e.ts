@@ -63,3 +63,26 @@ test("backspacing in an input does not delete the element", async ({
 
   await expect(panels).toContainText("planeGeometry");
 });
+
+test.describe(() => {
+  test.use({
+    filename: "examples/test-fixture/src/component-roots.tsx",
+  });
+
+  test("updating children prop", async ({ getFile, vsce }) => {
+    await vsce.codelens("ReactRootFromAnotherModule").click();
+
+    const { panels, togglePanelsButton } = vsce.resolveEditor();
+    await togglePanelsButton.click();
+    await panels.getByRole("button", { name: "Button" }).click();
+    const input = panels.getByLabel("children", { exact: true });
+
+    await input.fill("foo__bar");
+    await input.press("Enter");
+
+    await expect(vsce.tab("component-roots.tsx")).toHaveClass(/dirty/);
+    await vsce.page.keyboard.press("ControlOrMeta+S");
+
+    await expect.poll(() => getFile()).toContain("foo__bar");
+  });
+});

@@ -60,6 +60,10 @@ export class ExtensionPage {
     };
   }
 
+  tab(filename: string) {
+    return this.page.getByLabel(`${filename}, Editor Group 2`);
+  }
+
   dismissAllNotifications() {
     return this.page
       .getByLabel("Clear Notification")

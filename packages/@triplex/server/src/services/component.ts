@@ -21,7 +21,7 @@ import {
 import { getExportName } from "../ast/module";
 import { type ComponentRawType, type ComponentTarget } from "../types";
 import { inferExports } from "../util/module";
-import { padLines } from "../util/string";
+import { padLines, parseJSON } from "../util/string";
 
 function guessComponentNameFromPath(path: string) {
   const name = basename(path)
@@ -39,11 +39,11 @@ function extractPath(dirPath: string, targetPath: string) {
   if (isSrc) {
     const targetFilename = `${basename(targetPath).replace(
       extname(targetPath),
-      ""
+      "",
     )}`;
     const relativePath = relative(
       dirPath,
-      targetPath.replace(basename(targetPath), "")
+      targetPath.replace(basename(targetPath), ""),
     );
 
     if (relativePath === "") {
@@ -86,7 +86,7 @@ function insertJsxElement(
   sourceFile: SourceFile,
   target: Node<ts.Node>,
   componentName: string,
-  componentProps: Record<string, unknown>
+  componentProps: Record<string, unknown>,
 ) {
   const jsxFrag = target.getFirstDescendantByKind(SyntaxKind.JsxFragment);
   const jsxEle = target.getFirstDescendantByKind(SyntaxKind.JsxElement);
@@ -139,7 +139,7 @@ function addToJsxElement(
   sourceFile: SourceFile,
   target: { action: "child"; column: number; line: number },
   componentName: string,
-  componentProps: Record<string, unknown>
+  componentProps: Record<string, unknown>,
 ): { column: number; line: number } {
   const element = getJsxElementAt(sourceFile, target.line, target.column);
   if (!element) {
@@ -200,7 +200,7 @@ export function add(
   sourceFile: SourceFile,
   exportName: string,
   component: ComponentRawType,
-  target?: ComponentTarget
+  target?: ComponentTarget,
 ): { column: number; line: number } {
   const { declaration } = getExportName(sourceFile, exportName);
 
@@ -215,7 +215,7 @@ export function add(
             sourceFile,
             declaration,
             component.name,
-            component.props
+            component.props,
           );
 
       return {
@@ -225,7 +225,7 @@ export function add(
     } else if (component.type === "custom") {
       const moduleSpecifier = extractPath(
         sourceFile.getDirectoryPath(),
-        component.path
+        component.path,
       );
 
       let existingImport = sourceFile.getImportDeclaration((decl) => {
@@ -245,7 +245,7 @@ export function add(
           const foundNamedImport = existingImport
             .getNamedImports()
             .find(
-              (imp) => imp.getNameNode().getText() === component.exportName
+              (imp) => imp.getNameNode().getText() === component.exportName,
             );
 
           if (foundNamedImport) {
@@ -284,7 +284,7 @@ export function add(
             .find(
               (x) =>
                 x.getAliasNode()?.getText() === aliasImportName &&
-                x.getName() === importName
+                x.getName() === importName,
             );
 
           if (!preExistingImport) {
@@ -327,13 +327,13 @@ export function add(
             sourceFile,
             target,
             aliasImportName || importName,
-            component.props
+            component.props,
           )
         : insertJsxElement(
             sourceFile,
             declaration,
             aliasImportName || importName,
-            component.props
+            component.props,
           );
 
       return {
@@ -349,23 +349,43 @@ export function add(
 export function upsertProp(
   jsxElement: JsxElement | JsxSelfClosingElement,
   propName: string,
-  propValue: string
+  propValue: string,
 ) {
-  const attribute = getAttributes(jsxElement)[propName];
-  if (attribute) {
+  const { attributes, children } = getAttributes(jsxElement);
+
+  const existingProp = attributes[propName];
+  if (existingProp) {
     const prevLineSpan =
-      attribute.getEndLineNumber() - attribute.getStartLineNumber();
-    attribute.setInitializer(`{${propValue}}`);
+      existingProp.getEndLineNumber() - existingProp.getStartLineNumber();
+    existingProp.setInitializer(`{${propValue}}`);
     const nextLineSpan =
-      attribute.getEndLineNumber() - attribute.getStartLineNumber();
+      existingProp.getEndLineNumber() - existingProp.getStartLineNumber();
 
     if (nextLineSpan !== prevLineSpan) {
       // We need to update the lines so they remain the same, cut the difference and add it as new lines.
       const lines = prevLineSpan - nextLineSpan;
-      attribute.setInitializer(`{${propValue}}${padLines(lines)}`);
+      existingProp.setInitializer(`{${propValue}}${padLines(lines)}`);
     }
 
     return "updated";
+  }
+
+  if (propName === "children") {
+    const parsedValue = parseJSON(propValue);
+    const jsxChild =
+      typeof parsedValue === "string" ? parsedValue : `{${propValue}}`;
+
+    if (Node.isJsxElement(jsxElement)) {
+      jsxElement.setBodyText(jsxChild);
+    } else {
+      const jsxString = jsxElement.getText();
+      const tagName = jsxElement.getTagNameNode().getText();
+      jsxElement.replaceWithText(
+        jsxString.replace("/>", `>${jsxChild}</${tagName}>`),
+      );
+    }
+
+    return children ? "updated" : "added";
   }
 
   const newAttribute = {
@@ -391,7 +411,7 @@ const DELETE_POST_SAFE = "@/_";
 export function commentComponent(
   sourceFile: SourceFile,
   line: number,
-  column: number
+  column: number,
 ) {
   const jsxElement = getJsxElementAt(sourceFile, line, column);
   if (!jsxElement) {
@@ -409,14 +429,14 @@ export function commentComponent(
 
   sourceFile.replaceText(
     [jsxElement.getStart(), jsxElement.getEnd()],
-    DELETE_PRE + safeText + DELETE_POST
+    DELETE_PRE + safeText + DELETE_POST,
   );
 }
 
 export function uncommentComponent(
   sourceFile: SourceFile,
   line: number,
-  column: number
+  column: number,
 ) {
   const node = sourceFile
     .getDescendantsOfKind(SyntaxKind.JsxExpression)
@@ -471,7 +491,7 @@ export function deleteCommentComponents(sourceFile: SourceFile) {
 export function rename(
   sourceFile: SourceFile,
   exportName: string,
-  newName: string
+  newName: string,
 ) {
   const { declaration } = getExportName(sourceFile, exportName);
 
@@ -481,7 +501,7 @@ export function rename(
 export function duplicate(
   sourceFile: SourceFile,
   line: number,
-  column: number
+  column: number,
 ) {
   const jsxElement = getJsxElementAt(sourceFile, line, column);
   if (!jsxElement) {
@@ -498,17 +518,17 @@ export function move(
   sourceFile: SourceFile,
   source: { column: number; line: number },
   destination: { column: number; line: number },
-  action: "move-before" | "move-after" | "make-child"
+  action: "move-before" | "move-after" | "make-child",
 ) {
   const sourceElement = getJsxElementAtOrThrow(
     sourceFile,
     source.line,
-    source.column
+    source.column,
   );
   const destinationElement = getJsxElementAtOrThrow(
     sourceFile,
     destination.line,
-    destination.column
+    destination.column,
   );
   const sourceText = sourceElement.getText();
 
@@ -539,7 +559,7 @@ export function move(
         const destinationText = destinationElement.getText();
         const tagName = destinationElement.getTagNameNode().getText();
         destinationElement.replaceWithText(
-          destinationText.replace("/>", `>${sourceText}</${tagName}>`)
+          destinationText.replace("/>", `>${sourceText}</${tagName}>`),
         );
       }
       break;
