@@ -12,11 +12,15 @@ export function ThreeFiberRootFromAnotherModule() {
 }
 
 export function ReactRoot() {
-  return <div data-testid="react-root" style={{  height: '100vh', width: '100vh' }}>Hello World</div>;
+  return (
+    <div data-testid="react-root" style={{ height: "100vh", width: "100vh" }}>
+      Hello World
+    </div>
+  );
 }
 
 export function ReactRootFromAnotherModule() {
-  return <Button text="Button"/>;
+  return <Button>Button</Button>;
 }
 
 export function Unknown() {

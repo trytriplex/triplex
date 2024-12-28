@@ -7,15 +7,15 @@
 import { Canvas } from "@react-three/fiber";
 
 export function Button({
+  children,
   color = "red",
-  text,
 }: {
+  children: string;
   color?: "red" | "blue";
-  text: string;
 }) {
   return (
     <button style={{ color, height: "100vh", width: "100vh" }} type="submit">
-      {text}
+      {children}
     </button>
   );
 }
