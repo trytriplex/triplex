@@ -102,6 +102,10 @@ export class ExtensionPage {
             await that.dismissAllNotifications();
             return locator.getByTestId("scene").click({ force: true });
           },
+          async hover() {
+            await that.dismissAllNotifications();
+            return locator.getByTestId("scene").hover();
+          },
           locator: frameLocator,
         };
       },

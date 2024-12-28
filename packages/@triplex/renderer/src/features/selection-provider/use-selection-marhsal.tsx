@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 
-import { useEvent } from "@triplex/lib";
+import { noop, useEvent } from "@triplex/lib";
 import { useEffect, useMemo, useReducer, useState } from "react";
 import { useSelectionStore, type SelectionListener } from "./store";
 import { type SelectionState } from "./types";
@@ -21,20 +21,22 @@ export function useSelectionMarshal<
   T extends { meta: { column: number; line: number; path: string } },
 >({
   listener,
-  onDeselect,
-  onSelect,
+  onDeselect = noop,
+  onSelect = noop,
   resolve,
 }: {
   listener: SelectionListener;
-  onDeselect: SelectionEvent<T>;
-  onSelect: SelectionEvent<T>;
+  onDeselect?: SelectionEvent<T>;
+  onSelect?: SelectionEvent<T>;
   resolve: Resolver<T>;
 }) {
   const selections = useSelectionStore((store) => store.selections);
   const select = useSelectionStore((store) => store.select);
   const clear = useSelectionStore((store) => store.clear);
   const listen = useSelectionStore((store) => store.listen);
-  const [resolved, setResolvedAsSideEffect] = useState<T[]>([]);
+  const hovered = useSelectionStore((store) => store.hovered);
+  const [resolvedSelections, setResolvedSelections] = useState<T[]>([]);
+  const [resolvedHovered, setResolvedHovered] = useState<T | null>(null);
   const [resolveCount, forciblyResolve] = useReducer(incrementReducer, 0);
   const listenerEvent: SelectionListener = useEvent(listener);
   const resolverEvent: Resolver<T> = useEvent(resolve);
@@ -43,13 +45,13 @@ export function useSelectionMarshal<
 
   useEffect(() => {
     if (selections.length === 0) {
-      setResolvedAsSideEffect([]);
+      setResolvedSelections([]);
       return;
     }
 
     const resolved = resolverEvent(selections);
 
-    setResolvedAsSideEffect(resolved);
+    setResolvedSelections(resolved);
 
     resolved.forEach((selection) => onSelectEvent(selection));
 
@@ -57,6 +59,16 @@ export function useSelectionMarshal<
       resolved.forEach((selection) => onDeselectEvent(selection));
     };
   }, [selections, resolveCount, resolverEvent, onSelectEvent, onDeselectEvent]);
+
+  useEffect(() => {
+    if (!hovered) {
+      setResolvedHovered(null);
+      return;
+    }
+
+    const resolved = resolverEvent([hovered]);
+    setResolvedHovered(resolved[0]);
+  }, [hovered, resolverEvent]);
 
   useEffect(() => {
     return listen(listenerEvent);
@@ -70,7 +82,7 @@ export function useSelectionMarshal<
           selection.line === line &&
           selection.column === column,
       );
-      const isObjectMissing = resolved.every(
+      const isObjectMissing = resolvedSelections.every(
         (object) =>
           object.meta.path !== path &&
           object.meta.line !== line &&
@@ -93,5 +105,5 @@ export function useSelectionMarshal<
     [select, clear, resolveIfMissing, forciblyResolve],
   );
 
-  return [resolved, store] as const;
+  return [resolvedSelections, resolvedHovered, store] as const;
 }

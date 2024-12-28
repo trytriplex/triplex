@@ -59,7 +59,7 @@ export function ThreeFiberSelection({
     () => flatten(sceneData?.sceneObjects || []),
     [sceneData],
   );
-  const [resolvedObjects, selectionActions] =
+  const [resolvedObjects, , selectionActions] =
     useSelectionMarshal<ResolvedObject3D>({
       listener: (e) => {
         const x = (e.offsetX / canvasSize.width) * 2 - 1;

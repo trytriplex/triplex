@@ -97,6 +97,7 @@ export function resolveElementsFromPoint(
   root: HTMLElement,
   points: { clientX: number; clientY: number },
 ) {
+  const previousPointerEvents = root.style.pointerEvents;
   // Enable pointer events so the browser can perform hit detection.
   root.style.pointerEvents = "all";
   const elements = document
@@ -104,8 +105,8 @@ export function resolveElementsFromPoint(
     .filter(
       (element) => root.contains(element) && !hasParentSkippedHitTest(element),
     );
-  // Immediately turn it off.
-  root.style.pointerEvents = "none";
+  // Revert to the original pointer events value.
+  root.style.pointerEvents = previousPointerEvents;
 
   return elements;
 }

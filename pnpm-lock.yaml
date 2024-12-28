@@ -918,6 +918,12 @@ importers:
       bind-event-listener:
         specifier: ^3.0.0
         version: 3.0.0
+      debounce:
+        specifier: ^2.2.0
+        version: 2.2.0
+      raf-schd:
+        specifier: ^4.0.3
+        version: 4.0.3
       react-error-boundary:
         specifier: ^3.1.4
         version: 3.1.4(react@18.3.1)
@@ -4477,6 +4483,10 @@ packages:
 
   debounce@1.2.1:
     resolution: {integrity: sha512-XRRe6Glud4rd/ZGQfiV1ruXSfbvfJedlV9Y6zOlP+2K04vBYiJEte6stfFkCP03aMnY5tsipamumUjL14fofug==}
+
+  debounce@2.2.0:
+    resolution: {integrity: sha512-Xks6RUDLZFdz8LIdR6q0MTH44k7FikOmnh5xkSjMig6ch45afc8sjTjRQf3P6ax8dMgcQrYO/AR2RGWURrruqw==}
+    engines: {node: '>=18'}
 
   debug@2.6.9:
     resolution: {integrity: sha512-bC7ElrdJaJnPbAP+1EotYvqZsb3ecl5wi6Bfi6BJTUcNowp6cvspg0jXznRTKDjm/E7AdgFBVeAPVMNcKGsHMA==}
@@ -13234,6 +13244,8 @@ snapshots:
       mimic-fn: 3.1.0
 
   debounce@1.2.1: {}
+
+  debounce@2.2.0: {}
 
   debug@2.6.9:
     dependencies:

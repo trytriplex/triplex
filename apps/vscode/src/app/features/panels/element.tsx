@@ -94,7 +94,7 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
                 ? "scenepanel_element_collapse"
                 : "scenepanel_element_expand"
             }
-            className="z-10 -ml-1.5 px-0.5"
+            className="z-10 -ml-[5px] px-0.5"
             describedBy={id}
             onClick={toggleExpanded}
           >

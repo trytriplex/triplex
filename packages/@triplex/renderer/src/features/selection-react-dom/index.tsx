@@ -6,8 +6,10 @@
  */
 
 import { useSubscriptionEffect } from "@triplex/ws/react";
-import { useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { usePlayState } from "../../stores/use-play-state";
 import { flatten } from "../../util/array";
+import { blockFocusableChildren } from "../../util/focus";
 import { resolveElementMeta } from "../../util/meta";
 import { SceneObjectContext } from "../scene-element/context";
 import { useSelectionMarshal } from "../selection-provider/use-selection-marhsal";
@@ -16,6 +18,7 @@ import {
   resolveElementsFromPoint,
   type ResolvedNode,
 } from "./resolver";
+import { SelectionIndicator } from "./selection-indicator";
 
 export function ReactDOMSelection({
   children,
@@ -24,7 +27,8 @@ export function ReactDOMSelection({
   children: React.ReactNode;
   filter: { exportName: string; path: string };
 }) {
-  const ref = useRef<HTMLDivElement>(null);
+  const playState = usePlayState();
+  const ref = useRef<HTMLDivElement>(null!);
   const sceneData = useSubscriptionEffect("/scene/:path/:exportName", {
     disabled: !filter.exportName || !filter.path,
     exportName: filter.exportName,
@@ -34,10 +38,9 @@ export function ReactDOMSelection({
     () => flatten(sceneData?.sceneObjects || []),
     [sceneData],
   );
-
-  useSelectionMarshal<ResolvedNode>({
+  const [selected, hovered] = useSelectionMarshal<ResolvedNode>({
     listener: (e) => {
-      return resolveElementsFromPoint(ref.current!, e)
+      return resolveElementsFromPoint(ref.current, e)
         .map((element) => {
           const meta = resolveElementMeta(element, {
             elements,
@@ -57,24 +60,39 @@ export function ReactDOMSelection({
         })
         .filter((element) => !!element);
     },
-    onDeselect: () => {},
-    onSelect: () => {},
     resolve: (selections) => resolveDOMNodes(selections),
   });
+
+  useEffect(() => {
+    if (playState === "play") {
+      return;
+    }
+
+    return blockFocusableChildren(ref.current);
+  }, [playState]);
 
   return (
     <SceneObjectContext.Provider value={true}>
       <div
         ref={ref}
-        style={{
-          cursor: "default",
-          display: "contents",
-          pointerEvents: "none",
-          userSelect: "none",
-        }}
+        style={
+          playState === "play"
+            ? {
+                display: "contents",
+              }
+            : {
+                cursor: "default",
+                display: "contents",
+                pointerEvents: "none",
+                userSelect: "none",
+              }
+        }
       >
         {children}
       </div>
+      {playState !== "play" && (
+        <SelectionIndicator hovered={hovered} selected={selected} />
+      )}
     </SceneObjectContext.Provider>
   );
 }

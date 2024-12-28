@@ -11,6 +11,7 @@ export type SelectionListener = (e: MouseEvent) => SelectionState[];
 
 export interface SelectionStore {
   clear: () => void;
+  hovered: SelectionState | null;
   listen: (cb: SelectionListener) => () => void;
   listeners: SelectionListener[];
   select: (
@@ -18,6 +19,7 @@ export interface SelectionStore {
     action: "replace" | "addition",
   ) => void;
   selections: SelectionState[];
+  setHovered: (selection: SelectionState | null) => void;
 }
 
 export const useSelectionStore = create<SelectionStore>((set, get) => ({
@@ -27,6 +29,7 @@ export const useSelectionStore = create<SelectionStore>((set, get) => ({
       set({ selections: [] });
     }
   },
+  hovered: null,
   listen: (cb) => {
     set((state) => {
       return {
@@ -47,17 +50,33 @@ export const useSelectionStore = create<SelectionStore>((set, get) => ({
     switch (action) {
       case "replace": {
         const nextSelections = Array.isArray(element) ? element : [element];
-        set({ selections: nextSelections });
+        set({ hovered: null, selections: nextSelections });
         return;
       }
 
       case "addition": {
         const { selections } = get();
         const nextSelections = selections.concat(element);
-        set({ selections: nextSelections });
+        set({ hovered: null, selections: nextSelections });
         return;
       }
     }
   },
   selections: [],
+  setHovered: (element) =>
+    set((prevState) => {
+      if (
+        element === prevState.hovered ||
+        (element &&
+          prevState.hovered &&
+          element.column === prevState.hovered.column &&
+          element.line === prevState.hovered.line &&
+          element.parentPath === prevState.hovered.parentPath &&
+          element.path === prevState.hovered.path)
+      ) {
+        return prevState;
+      }
+
+      return { hovered: element };
+    }),
 }));

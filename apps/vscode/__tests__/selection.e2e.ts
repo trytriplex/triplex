@@ -101,6 +101,9 @@ test.describe("react dom", () => {
     await expect(
       panels.getByRole("button", { name: "div" }),
     ).toHaveAccessibleName(/selected/);
+    await expect(
+      scene.locator.getByTestId("Selected(div@15:10)"),
+    ).toBeVisible();
   });
 
   test("selecting a custom component", async ({ vsce }) => {
@@ -113,6 +116,21 @@ test.describe("react dom", () => {
     await expect(
       panels.getByRole("button", { name: "Button" }),
     ).toHaveAccessibleName(/selected/);
+    await expect(
+      scene.locator.getByTestId("Selected(button@17:5)"),
+    ).toBeVisible();
+  });
+
+  test("hovering over a component", async ({ vsce }) => {
+    await vsce.codelens("ReactRootFromAnotherModule").click();
+    const { scene, togglePanelsButton } = await vsce.resolveEditor();
+    await togglePanelsButton.click();
+
+    await scene.hover();
+
+    await expect(
+      scene.locator.getByTestId("Hovered(button@17:5)"),
+    ).toBeVisible();
   });
 });
 

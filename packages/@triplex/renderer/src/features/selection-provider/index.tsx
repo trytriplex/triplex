@@ -7,11 +7,13 @@
 
 import { compose, on, send } from "@triplex/bridge/client";
 import { bindAll } from "bind-event-listener";
+import rafSchd from "raf-schd";
 import { useEffect } from "react";
 import { useSelectionStore } from "./store";
 
 export function SelectionProvider({ children }: { children: React.ReactNode }) {
   const selectElement = useSelectionStore((store) => store.select);
+  const setHovered = useSelectionStore((store) => store.setHovered);
   const clearSelection = useSelectionStore((store) => store.clear);
   const listeners = useSelectionStore((store) => store.listeners);
   const selections = useSelectionStore((store) => store.selections);
@@ -38,6 +40,19 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
     let origin = [-1, -1];
 
     return bindAll(document, [
+      {
+        listener: () => {
+          setHovered(null);
+        },
+        type: "mouseout",
+      },
+      {
+        listener: rafSchd((e: MouseEvent) => {
+          const hitTestResult = listeners.flatMap((listener) => listener(e));
+          setHovered(hitTestResult.at(0) ?? null);
+        }),
+        type: "mousemove",
+      },
       {
         listener: (e) => (origin = [e.offsetX, e.offsetY]),
         type: "mousedown",
@@ -97,7 +112,7 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
         type: "mouseup",
       },
     ]);
-  }, [clearSelection, listeners, selectElement, selections]);
+  }, [clearSelection, listeners, selectElement, selections, setHovered]);
 
   return children;
 }
