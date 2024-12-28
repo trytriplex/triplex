@@ -21,5 +21,9 @@ export const SELECTION_LAYER_INDEX = 29;
 export const selectionLayer = new Layers();
 selectionLayer.set(SELECTION_LAYER_INDEX);
 
+export const HOVER_LAYER_INDEX = 28;
+export const hoverLayer = new Layers();
+hoverLayer.set(HOVER_LAYER_INDEX);
+
 export const allLayers = new Layers();
 allLayers.enableAll();

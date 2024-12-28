@@ -22,12 +22,16 @@ export function useSelectionMarshal<
 >({
   listener,
   onDeselect = noop,
+  onHovered = noop,
   onSelect = noop,
+  onSettled = noop,
   resolve,
 }: {
   listener: SelectionListener;
   onDeselect?: SelectionEvent<T>;
+  onHovered?: SelectionEvent<T>;
   onSelect?: SelectionEvent<T>;
+  onSettled?: SelectionEvent<T>;
   resolve: Resolver<T>;
 }) {
   const selections = useSelectionStore((store) => store.selections);
@@ -42,6 +46,8 @@ export function useSelectionMarshal<
   const resolverEvent: Resolver<T> = useEvent(resolve);
   const onSelectEvent: SelectionEvent<T> = useEvent(onSelect);
   const onDeselectEvent: SelectionEvent<T> = useEvent(onDeselect);
+  const onHoveredEvent: SelectionEvent<T> = useEvent(onHovered);
+  const onSettledEvent: SelectionEvent<T> = useEvent(onSettled);
 
   useEffect(() => {
     if (selections.length === 0) {
@@ -66,9 +72,14 @@ export function useSelectionMarshal<
       return;
     }
 
-    const resolved = resolverEvent([hovered]);
-    setResolvedHovered(resolved[0]);
-  }, [hovered, resolverEvent]);
+    const resolved = resolverEvent([hovered]).at(0) ?? null;
+    setResolvedHovered(resolved);
+    resolved && onHoveredEvent(resolved);
+
+    return () => {
+      resolved && onSettledEvent(resolved);
+    };
+  }, [hovered, onHoveredEvent, onSettledEvent, resolverEvent]);
 
   useEffect(() => {
     return listen(listenerEvent);

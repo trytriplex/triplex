@@ -19,7 +19,6 @@ import { Camera } from "../camera";
 import { CameraAxisHelper } from "../camera/camera-axis-helper";
 import { FitCameraToScene } from "../camera/camera-fit-scene";
 import { CameraGizmo } from "../camera/camera-gizmo";
-import { PostProcessing } from "../post-processing";
 import { SceneElement } from "../scene-element";
 import { useLoadedScene } from "../scene-loader/context";
 import { ThreeFiberSelection } from "../selection-three-fiber";
@@ -127,7 +126,6 @@ export function Canvas({ children, ...props }: CanvasProps) {
           </Suspense>
         </ErrorBoundaryForScene>
       </Camera>
-      {fg("selection_postprocessing") && <PostProcessing />}
     </FiberCanvas>
   );
 }

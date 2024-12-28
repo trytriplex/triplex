@@ -7,12 +7,13 @@
 import { useThree } from "@react-three/fiber";
 import { compose, on, send } from "@triplex/bridge/client";
 import { useEvent } from "@triplex/lib";
+import { fg } from "@triplex/lib/fg";
 import { useSubscriptionEffect } from "@triplex/ws/react";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { Box3, Camera, Raycaster, Vector2, Vector3 } from "three";
 import { useSceneStore } from "../../stores/use-scene-store";
 import { flatten } from "../../util/array";
-import { SELECTION_LAYER_INDEX } from "../../util/layers";
+import { HOVER_LAYER_INDEX, SELECTION_LAYER_INDEX } from "../../util/layers";
 import { resolveElementMeta } from "../../util/meta";
 import { encodeProps, isObjectVisible } from "../../util/three";
 import { CameraPreview } from "../camera-preview";
@@ -25,6 +26,7 @@ import {
   resolveObject3D,
   type ResolvedObject3D,
 } from "./resolver";
+import { SelectionIndicator } from "./selection-indicator";
 import { TransformControls } from "./transform-controls";
 import { type Space, type TransformControlMode } from "./types";
 
@@ -99,9 +101,19 @@ export function ThreeFiberSelection({
           child.layers.disable(SELECTION_LAYER_INDEX),
         );
       },
+      onHovered: (selection) => {
+        selection.object.traverse((child) =>
+          child.layers.enable(HOVER_LAYER_INDEX),
+        );
+      },
       onSelect: (selection) => {
         selection.object.traverse((child) =>
           child.layers.enable(SELECTION_LAYER_INDEX),
+        );
+      },
+      onSettled: (selection) => {
+        selection.object.traverse((child) =>
+          child.layers.disable(HOVER_LAYER_INDEX),
         );
       },
       resolve: (selections) => {
@@ -302,6 +314,8 @@ export function ThreeFiberSelection({
         resolvedObjects[0].object instanceof Camera && (
           <CameraPreview camera={resolvedObjects[0].object} />
         )}
+
+      {fg("selection_postprocessing") && <SelectionIndicator />}
     </SceneObjectContext.Provider>
   );
 }

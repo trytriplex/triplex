@@ -25,8 +25,8 @@ vi.mock("../../../components/tunnel", () => ({
   Tunnel: { In: () => null, Out: () => null },
 }));
 
-vi.mock("../../post-processing", () => ({
-  PostProcessing: () => null,
+vi.mock("../../selection-three-fiber/selection-indicator.tsx", () => ({
+  SelectionIndicator: () => null,
 }));
 
 window.triplex = { env: { ports: {} } };

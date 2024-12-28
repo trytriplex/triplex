@@ -54,6 +54,8 @@ vi.mock("triplex-drei", () => ({
   MapControls: () => createElement("mesh", { name: "__stub_map_controls__" }),
 }));
 
+vi.mock("raf-schd", () => ({ default: (fn: unknown) => fn }));
+
 beforeAll(async () => {
   await initFeatureGates({ environment: "local", userId: "__TEST_USER__" });
 });

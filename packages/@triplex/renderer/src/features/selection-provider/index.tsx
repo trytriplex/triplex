@@ -38,6 +38,7 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
 
   useEffect(() => {
     let origin = [-1, -1];
+    let isMouseDown = false;
 
     return bindAll(document, [
       {
@@ -48,19 +49,30 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
       },
       {
         listener: rafSchd((e: MouseEvent) => {
+          if (isMouseDown) {
+            setHovered(null);
+            return;
+          }
+
           const hitTestResult = listeners.flatMap((listener) => listener(e));
           setHovered(hitTestResult.at(0) ?? null);
         }),
         type: "mousemove",
       },
       {
-        listener: (e) => (origin = [e.offsetX, e.offsetY]),
+        listener: (e) => {
+          isMouseDown = true;
+          origin = [e.offsetX, e.offsetY];
+        },
         type: "mousedown",
       },
       {
         listener: (e) => {
+          isMouseDown = false;
+
           const delta =
             Math.abs(e.offsetX - origin[0]) + Math.abs(e.offsetY - origin[1]);
+
           if (delta > 1) {
             return;
           }

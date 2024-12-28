@@ -9,5 +9,6 @@
   "proseWrap": "never",
   "jsdocSingleLineComment": false,
   "jsdocCapitalizeDescription": false,
-  "jsdocPreferCodeFences": true
+  "jsdocPreferCodeFences": true,
+  "overrides": [{ "files": ["*.frag"], "options": { "parser": "glsl-parser" } }]
 }

@@ -8,7 +8,11 @@ import { createPortal, useFrame, useThree } from "@react-three/fiber";
 import React, { useCallback, useRef, useState } from "react";
 import { type Mesh, type Object3D } from "three";
 import { usePlayState } from "../../stores/use-play-state";
-import { hiddenLayer, SELECTION_LAYER_INDEX } from "../../util/layers";
+import {
+  hiddenLayer,
+  HOVER_LAYER_INDEX,
+  SELECTION_LAYER_INDEX,
+} from "../../util/layers";
 import "./camera-helper";
 
 export type Helper =
@@ -113,6 +117,12 @@ export function Helper({
       helperRef.current.layers.enable(SELECTION_LAYER_INDEX);
     } else {
       helperRef.current.layers.disable(SELECTION_LAYER_INDEX);
+    }
+
+    if (targetObject.layers.isEnabled(HOVER_LAYER_INDEX)) {
+      helperRef.current.layers.enable(HOVER_LAYER_INDEX);
+    } else {
+      helperRef.current.layers.disable(HOVER_LAYER_INDEX);
     }
 
     helperRef.current.update();

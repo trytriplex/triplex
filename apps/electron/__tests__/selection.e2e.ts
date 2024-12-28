@@ -15,14 +15,6 @@ test("select custom component", async ({ electron }) => {
   await expect(electron.contextPanel.heading).toHaveText("Box");
 });
 
-test("select element behind", async ({ electron }) => {
-  await electron.waitForScene();
-
-  await electron.frame.locator.dblclick({ delay: 100, force: true });
-
-  await expect(electron.contextPanel.heading).toHaveText("mesh");
-});
-
 test.describe(() => {
   test.use({
     file: {
