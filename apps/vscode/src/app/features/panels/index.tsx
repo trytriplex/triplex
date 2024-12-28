@@ -119,7 +119,7 @@ export function PanelContainer({
         <div
           className={cn([
             state === "drag" && "opacity-100",
-            "absolute -right-0.5 bottom-0 top-0 z-10 w-1 cursor-col-resize bg-[var(--vscode-sash-hoverBorder)] opacity-0 delay-0 duration-100 hover:opacity-100 hover:transition-opacity hover:delay-200 hover:duration-150",
+            "absolute -right-3.5 bottom-0 top-0 z-10 w-4 cursor-col-resize border-l-4 border-[var(--vscode-sash-hoverBorder)] opacity-0 delay-0 duration-100 hover:opacity-100 hover:transition-opacity hover:delay-200 hover:duration-150",
           ])}
           data-testid="panel-drag-handle"
           ref={ref}

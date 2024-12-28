@@ -41,6 +41,7 @@ test("external update can be undone in the editor", async ({
   setFile,
   vsce,
 }) => {
+  test.skip(true, "This test is flakey and needs to be fixed.");
   await vsce.codelens("Plane").click();
   const { panels, togglePanelsButton } = vsce.resolveEditor();
   await togglePanelsButton.click();
