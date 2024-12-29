@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { send } from "@triplex/bridge/client";
 import { create } from "zustand";
 import { type SelectionState } from "./types";
 
@@ -24,9 +25,10 @@ export interface SelectionStore {
 
 export const useSelectionStore = create<SelectionStore>((set, get) => ({
   clear: () => {
-    const { selections } = get();
+    const { selections, setHovered } = get();
     if (selections.length) {
       set({ selections: [] });
+      setHovered(null);
     }
   },
   hovered: null,
@@ -47,17 +49,21 @@ export const useSelectionStore = create<SelectionStore>((set, get) => ({
   },
   listeners: [],
   select: (element, action) => {
+    const { setHovered } = get();
+
     switch (action) {
       case "replace": {
         const nextSelections = Array.isArray(element) ? element : [element];
-        set({ hovered: null, selections: nextSelections });
+        set({ selections: nextSelections });
+        setHovered(null);
         return;
       }
 
       case "addition": {
         const { selections } = get();
         const nextSelections = selections.concat(element);
-        set({ hovered: null, selections: nextSelections });
+        set({ selections: nextSelections });
+        setHovered(null);
         return;
       }
     }
@@ -76,6 +82,8 @@ export const useSelectionStore = create<SelectionStore>((set, get) => ({
       ) {
         return prevState;
       }
+
+      send("element-hint", element);
 
       return { hovered: element };
     }),

@@ -33,12 +33,18 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
         send("track", { actionId: "element_blur" });
         send("element-blurred", undefined);
       }),
+      on("element-hint", (element) => {
+        setHovered(element);
+      }),
     ]);
-  }, [clearSelection, selectElement]);
+  }, [clearSelection, selectElement, setHovered]);
 
   useEffect(() => {
+    const getMovedDelta = (e: MouseEvent) =>
+      Math.abs(e.clientX - origin[0]) + Math.abs(e.clientY - origin[1]);
+
     let origin = [-1, -1];
-    let isMouseDown = false;
+    let isPotentiallyDragging = false;
 
     return bindAll(document, [
       {
@@ -49,31 +55,34 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
       },
       {
         listener: rafSchd((e: MouseEvent) => {
-          if (isMouseDown) {
-            setHovered(null);
-            return;
+          if (isPotentiallyDragging) {
+            if (getMovedDelta(e) > 1) {
+              // When the mouse has moved too much we get rid of the hovered element.
+              setHovered(null);
+              return;
+            }
           }
 
-          const hitTestResult = listeners.flatMap((listener) => listener(e));
-          setHovered(hitTestResult.at(0) ?? null);
+          const result = listeners.flatMap((listener) => listener(e));
+          const hit = result.at(0) ?? null;
+
+          setHovered(hit);
         }),
         type: "mousemove",
       },
       {
         listener: (e) => {
-          isMouseDown = true;
-          origin = [e.offsetX, e.offsetY];
+          isPotentiallyDragging = true;
+          origin = [e.clientX, e.clientY];
         },
         type: "mousedown",
       },
       {
         listener: (e) => {
-          isMouseDown = false;
+          isPotentiallyDragging = false;
 
-          const delta =
-            Math.abs(e.offsetX - origin[0]) + Math.abs(e.offsetY - origin[1]);
-
-          if (delta > 1) {
+          if (getMovedDelta(e) > 1) {
+            // If the mouse has moved too much we bail out of selecting elements.
             return;
           }
 

@@ -5,12 +5,15 @@
  * file in the root directory of this source tree.
  */
 import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import { compose, on, send } from "@triplex/bridge/host";
 import { cn } from "@triplex/lib";
 import { fg } from "@triplex/lib/fg";
 import { type JsxElementPositions } from "@triplex/server";
+import { bind } from "bind-event-listener";
 import {
   Suspense,
   useDeferredValue,
+  useEffect,
   useId,
   useLayoutEffect,
   useReducer,
@@ -49,6 +52,7 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
   const focusElement = useSceneStore((store) => store.focusElement);
   const ref = useRef<HTMLButtonElement>(null);
   const [isActive, setIsActive] = useState(false);
+  const [isForciblyHovered, setForciblyHovered] = useState(false);
   const [isUserExpanded, toggleExpanded] = useReducer((state) => !state, false);
   const isCustomComponent =
     props.type === "custom" && props.exportName && props.path;
@@ -64,6 +68,35 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
 
   useOnSurfaceStateChange((active) => {
     setIsActive(active);
+  });
+
+  useEffect(() => {
+    if (!ref.current) {
+      return;
+    }
+
+    return compose([
+      on("element-hint", (element) => {
+        const matches =
+          !!element &&
+          element.column === props.column &&
+          element.line === props.line &&
+          element.path === props.parentPath;
+
+        setForciblyHovered(matches);
+      }),
+      bind(ref.current, {
+        listener: () => {
+          send("element-hint", {
+            column: props.column,
+            line: props.line,
+            parentPath: props.parentPath,
+            path: props.parentPath,
+          });
+        },
+        type: "mouseover",
+      }),
+    ]);
   });
 
   useLayoutEffect(() => {
@@ -84,6 +117,9 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
             "outline-selected outline-offset-inset outline-default bg-active-selected text-active-selected z-10 outline",
           isSelected && !isActive && "bg-inactive-selected",
           !isSelected && "hover:bg-list-hovered hover:text-list-hovered",
+          !isSelected &&
+            isForciblyHovered &&
+            "bg-list-hovered text-list-hovered",
         ])}
         style={{ paddingLeft: props.level * 12 }}
       >

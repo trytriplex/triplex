@@ -98,6 +98,12 @@ export interface ClientSendEventData {
     parentPath: string;
     path: string;
   };
+  "element-hint": {
+    column: number;
+    line: number;
+    parentPath: string;
+    path: string;
+  } | null;
   "element-set-prop": {
     column: number;
     line: number;
@@ -132,6 +138,7 @@ export interface ClientSendEventResponse {
   "component-rendered": void;
   "element-blurred": void;
   "element-focused": void;
+  "element-hint": void;
   "element-set-prop": void;
   error: void;
   "extension-point-triggered": void;
@@ -151,6 +158,12 @@ export interface ExtensionPointElement {
 }
 
 export interface HostSendEventData {
+  "element-hint": {
+    column: number;
+    line: number;
+    parentPath: string;
+    path: string;
+  } | null;
   "extension-point-triggered":
     | {
         id: string;
@@ -219,6 +232,7 @@ export interface HostSendEventData {
 }
 
 export interface HostSendEventResponse {
+  "element-hint": void;
   "extension-point-triggered": { handled: boolean };
   keydown: void;
   keyup: void;

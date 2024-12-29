@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
+import { send } from "@triplex/bridge/host";
 import { useLayoutEffect, useReducer, useRef } from "react";
 import { IconButton } from "../../components/button";
 import { useFilter } from "../../stores/filter-elements";
@@ -67,7 +68,7 @@ export function ElementsPanel() {
   const context = useSceneStore((store) => store.context);
 
   return (
-    <ul>
+    <ul onMouseLeave={() => send("element-hint", null)}>
       <SceneElements exportName={context.exportName} path={context.path} />
     </ul>
   );

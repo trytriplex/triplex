@@ -62,8 +62,8 @@ describe("selection provider", () => {
 
     act(() => {
       fireEvent.mouseMove(document);
-      fireEvent.mouseDown(document);
-      fireEvent.mouseMove(document);
+      fireEvent.mouseDown(document, { clientX: 0, clientY: 0 });
+      fireEvent.mouseMove(document, { clientX: 10, clientY: 10 });
     });
 
     expect(result.current[1]).toEqual(null);
@@ -94,7 +94,7 @@ describe("selection provider", () => {
     expect(result.current[1]).toEqual(null);
   });
 
-  it("should prevent hover when dragging", () => {
+  it("should retain hover when moving the mouse a small amount", () => {
     const { result } = renderHook(
       () =>
         useSelectionMarshal<TestResolved>({
@@ -114,6 +114,31 @@ describe("selection provider", () => {
     act(() => {
       fireEvent.mouseDown(document);
       fireEvent.mouseMove(document);
+    });
+
+    expect(result.current[1]).toEqual({ meta: stubMeta, node: 0 });
+  });
+
+  it("should remove hover when moving the mouse a lot", () => {
+    const { result } = renderHook(
+      () =>
+        useSelectionMarshal<TestResolved>({
+          listener: () => {
+            return [stubMeta];
+          },
+          resolve: (selected) => {
+            return selected.map((meta, index) => ({
+              meta,
+              node: index,
+            }));
+          },
+        }),
+      { wrapper: SelectionProvider },
+    );
+
+    act(() => {
+      fireEvent.mouseDown(document, { clientX: 0, clientY: 0 });
+      fireEvent.mouseMove(document, { clientX: 100, clientY: 100 });
     });
 
     expect(result.current[1]).toBe(null);

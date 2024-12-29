@@ -22,7 +22,7 @@ const styles = style({
     boxSizing: "border-box",
     pointerEvents: "none",
     position: "absolute",
-    zIndex: "infinity",
+    zIndex: "calc(infinity)",
   },
   selected: {
     borderWidth: "2px",

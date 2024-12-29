@@ -216,6 +216,7 @@
     "anymatch": "^3.1.3",
     "autoprefixer": "^10.4.16",
     "babel-plugin-react-compiler": "19.0.0-beta-63b359f-20241101",
+    "bind-event-listener": "^3.0.0",
     "electron": "32.1.1",
     "electron-builder": "^25.1.3",
     "get-port": "^7.0.0",

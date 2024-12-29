@@ -292,6 +292,9 @@ importers:
       babel-plugin-react-compiler:
         specifier: 19.0.0-beta-63b359f-20241101
         version: 19.0.0-beta-63b359f-20241101
+      bind-event-listener:
+        specifier: ^3.0.0
+        version: 3.0.0
       electron:
         specifier: 32.1.1
         version: 32.1.1
