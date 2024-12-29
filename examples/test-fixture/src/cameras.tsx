@@ -10,7 +10,7 @@ import Box from "./geometry/box";
 export function Camera() {
   return (
     <>
-      <PerspectiveCamera position={[0, 0, 0.15]} />
+      <PerspectiveCamera name="foo" position={[0, 0, 0.15]} />
       <Box scale={0.1} />
     </>
   );
