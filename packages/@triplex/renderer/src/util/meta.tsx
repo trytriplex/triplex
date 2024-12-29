@@ -34,19 +34,15 @@ export function getTriplexMeta(
 }
 
 export function isElementPresentInFilter(
-  element: { column: number; line: number; name: string; path: string },
+  element: { column: number; line: number; path: string },
   filter: {
-    elements: { column: number; line: number; name: string }[];
+    elements: { column: number; line: number }[];
     path: string;
   },
 ): boolean {
   if (filter.path === element.path) {
     for (const obj of filter.elements) {
-      if (
-        obj.name === element.name &&
-        obj.line === element.line &&
-        obj.column === element.column
-      ) {
+      if (obj.line === element.line && obj.column === element.column) {
         return true;
       }
     }

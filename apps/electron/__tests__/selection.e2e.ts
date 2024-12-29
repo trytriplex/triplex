@@ -19,7 +19,7 @@ test.describe(() => {
   test.use({
     file: {
       exportName: "Camera",
-      path: "src/zcamera.tsx",
+      path: "src/cameras.tsx",
     },
   });
 
