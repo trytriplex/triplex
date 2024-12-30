@@ -131,17 +131,12 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
               // e.g. they always take the same amount of children, no mutations.
               // React.Children.only() use case.
               children
+            ) : hasHelper(Component) ? (
+              <Helper>
+                <primitive attach="__triplex" object={triplexMeta} />
+              </Helper>
             ) : (
-              // For host elements we inject extra metadata for lookups but otherwise
-              // keep things pretty much the same (no Three.js scene mutation).
-              <>
-                {children}
-                {hasHelper(Component) && (
-                  <Helper>
-                    <primitive attach="__triplex" object={triplexMeta} />
-                  </Helper>
-                )}
-              </>
+              children
             )}
           </Component>
         </ParentComponentMetaProvider>
