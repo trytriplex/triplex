@@ -8,8 +8,11 @@ import { EraserIcon } from "@radix-ui/react-icons";
 import { send } from "@triplex/bridge/host";
 import { PropInput } from "@triplex/ux/inputs";
 import { useReducer } from "react";
+import * as Accordion from "../../components/accordion";
 import { IconButton } from "../../components/button";
 import { useLazySubscription } from "../../hooks/ws";
+import { useFilter } from "../../stores/filter-props";
+import { propsByGroup } from "../element-props/group";
 import { renderPropInputs } from "./inputs";
 
 function ProviderProps() {
@@ -19,6 +22,10 @@ function ProviderProps() {
   });
   const props = data.props.filter((prop) => prop.name !== "children");
   const [resetKey, resetForm] = useReducer((val: number) => val + 1, 0);
+  const groupsDef = useLazySubscription("/prop-groups-def");
+  const groupedProps = propsByGroup(props, { groupsDef });
+  const filter = useFilter((state) => state.filter);
+  const setFilter = useFilter((state) => state.set);
 
   return (
     <>
@@ -28,9 +35,12 @@ function ProviderProps() {
         <div className="flex gap-1 p-1.5">
           <input
             className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder h-[26px] w-full rounded-sm border px-[9px] focus:outline-none"
-            onChange={() => {}}
+            onChange={(e) => {
+              setFilter(e.currentTarget.value);
+            }}
             onFocus={(e) => e.stopPropagation()}
             placeholder="Filter props..."
+            value={filter}
           />
           <IconButton
             actionId="contextpanel_provider_reset"
@@ -52,24 +62,44 @@ function ProviderProps() {
       )}
 
       <div className="flex flex-col px-1.5" key={resetKey}>
-        {props.map((prop) => (
-          <PropInput
-            key={prop.name}
-            onChange={(propValue) => {
-              send("request-set-element-prop", {
-                column: -999,
-                line: -999,
-                path: window.triplex.env.config.provider,
-                propName: prop.name,
-                propValue,
-              });
-            }}
-            onConfirm={() => {}}
-            path={window.triplex.env.config.provider}
-            prop={prop}
+        {groupedProps.map((group) => (
+          <Accordion.Root
+            defaultExpanded={group.defaultExpanded}
+            key={group.name}
           >
-            {renderPropInputs}
-          </PropInput>
+            <Accordion.Trigger actionId="scenepanel_element_togglepropgroup">
+              {group.name}
+            </Accordion.Trigger>
+            <Accordion.Content forcedExpanded={!!filter}>
+              {group.props.map((prop) => {
+                if (
+                  !prop.name.toLowerCase().includes(filter?.toLowerCase() || "")
+                ) {
+                  return null;
+                }
+
+                return (
+                  <PropInput
+                    key={prop.name}
+                    onChange={(propValue) => {
+                      send("request-set-element-prop", {
+                        column: -999,
+                        line: -999,
+                        path: window.triplex.env.config.provider,
+                        propName: prop.name,
+                        propValue,
+                      });
+                    }}
+                    onConfirm={() => {}}
+                    path={window.triplex.env.config.provider}
+                    prop={prop}
+                  >
+                    {renderPropInputs}
+                  </PropInput>
+                );
+              })}
+            </Accordion.Content>
+          </Accordion.Root>
         ))}
       </div>
     </>

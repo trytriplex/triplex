@@ -2,10 +2,15 @@ import { useEffect } from "react";
 
 const Provider: React.FC<{
   children: React.ReactNode;
+  /** @group Foo */
   foofoo?: boolean;
+  /** @group Foo */
   barbar?: "foo" | "baz";
+  /** @group Foo */
   batbat?: number;
+  /** @group Foo */
   bazbaz?: string;
+  /** @group Bar */
   bgColor?: string;
 }> = ({
   children,
