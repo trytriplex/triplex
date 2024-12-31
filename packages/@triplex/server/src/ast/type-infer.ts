@@ -25,9 +25,12 @@ import type {
   UnionType,
   Type as UnrolledType,
 } from "../types";
+import { isReactDOMElement } from "./is-react-element";
+import { isReactThreeElement } from "./is-three-element";
 import { getAttributes } from "./jsx";
 import { getExportName } from "./module";
 import { type SourceFileReadOnly } from "./project";
+import { reactDOMPropGrouping, threeFiberPropGrouping } from "./prop-groupings";
 
 export function resolveAttributeValue(attribute: JsxAttribute): {
   start: number;
@@ -158,14 +161,18 @@ export function unrollType(
     const labels = ((type.compilerType as ts.TupleType).target as ts.TupleType)
       .labeledElementDeclarations;
 
-    return {
+    const result = {
       kind: "tuple",
       shape: elements.map((val, index) => ({
         ...unrollType(val, unionLabels),
         label: labels ? labels[index]?.name.getText() : undefined,
         required: labels ? !labels[index]?.questionToken : true,
       })),
-    };
+    } as const;
+
+    if (result.shape.length > 0) {
+      return result;
+    }
   }
 
   if (type.isUnion()) {
@@ -198,10 +205,12 @@ export function unrollType(
       return shape[0];
     }
 
-    return {
-      kind: "union",
-      shape,
-    };
+    if (shape.length !== 0) {
+      return {
+        kind: "union",
+        shape,
+      };
+    }
   }
 
   if (type.isStringLiteral()) {
@@ -440,6 +449,29 @@ export function resolveExpressionValue(
   return { kind: "unhandled", value: expression.getText() };
 }
 
+export function resolveGroupName({
+  elementName,
+  propName,
+  tags,
+}: {
+  elementName: string;
+  propName: string;
+  tags: Record<string, number | string | boolean>;
+}): string {
+  const customGroupName =
+    typeof tags.group === "string" ? tags.group : undefined;
+
+  if (isReactDOMElement(elementName)) {
+    return customGroupName || reactDOMPropGrouping[propName] || "Other";
+  }
+
+  if (isReactThreeElement(elementName)) {
+    return customGroupName || threeFiberPropGrouping[propName] || "Other";
+  }
+
+  return customGroupName || "Other";
+}
+
 export function getJsxElementPropTypes(
   element: JsxSelfClosingElement | JsxElement,
 ) {
@@ -448,9 +480,15 @@ export function getJsxElementPropTypes(
   const jsxDecl = getJsxDeclProps(element);
   const unionValueLabels: Record<string, Record<string, string>> = {};
   const defaultValues: Record<string, ExpressionValue> = {};
+  const elementName = (
+    Node.isJsxSelfClosingElement(element)
+      ? element.getTagNameNode()
+      : element.getOpeningElement().getTagNameNode()
+  ).getText();
 
   if (!jsxDecl) {
     return {
+      elementName,
       props: [],
       transforms: { rotate: false, scale: false, translate: false },
     };
@@ -531,6 +569,7 @@ export function getJsxElementPropTypes(
         ...type,
         column,
         description: description || undefined,
+        group: resolveGroupName({ elementName, propName, tags }),
         line,
         name: propName,
         required: !isOptional,
@@ -558,6 +597,7 @@ export function getJsxElementPropTypes(
       props.push({
         ...type,
         description: description || undefined,
+        group: resolveGroupName({ elementName, propName, tags }),
         name: propName,
         required: !isOptional,
         tags,
@@ -566,7 +606,11 @@ export function getJsxElementPropTypes(
     }
   }
 
-  return { props, transforms: { rotate, scale, translate } };
+  return {
+    elementName,
+    props,
+    transforms: { rotate, scale, translate },
+  };
 }
 
 function getComponentPropsObjectBinding(
@@ -607,7 +651,7 @@ export function getFunctionPropTypes(
     props: propTypes,
     transforms: { rotate: false, scale: false, translate: false },
   };
-  const { declaration } = getExportName(sourceFile, exportName);
+  const { declaration, name } = getExportName(sourceFile, exportName);
   const type = declaration.getType();
   const signatures = type.getCallSignatures();
 
@@ -674,6 +718,7 @@ export function getFunctionPropTypes(
     propTypes.push({
       ...unrollType(propType),
       description: description || undefined,
+      group: resolveGroupName({ elementName: name, propName, tags }),
       name: propName,
       required: !propDeclaration?.hasQuestionToken?.(),
       tags,

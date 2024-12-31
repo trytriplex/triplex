@@ -320,7 +320,7 @@ export const renderPropInputs: RenderInputs = ({
         {prop.prop.name}
       </Label>
       <a
-        className="hover:text-input text-input focus:border-selected bg-input border-input mb-1 flex h-[26px] w-full cursor-pointer items-center rounded-sm border px-[9px] focus:outline-none"
+        className="hover:text-disabled text-disabled focus:border-selected bg-input border-input mb-1 flex h-[26px] w-full cursor-pointer items-center rounded-sm border px-[9px] focus:outline-none"
         href={
           isControlledInCode
             ? createCodeLink(path, prop.prop)

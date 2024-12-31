@@ -8,11 +8,13 @@ import { EraserIcon } from "@radix-ui/react-icons";
 import { send } from "@triplex/bridge/host";
 import { PropInput } from "@triplex/ux/inputs";
 import { useDeferredValue, useReducer } from "react";
+import * as Accordion from "../../components/accordion";
 import { IconButton } from "../../components/button";
 import { useLazySubscription } from "../../hooks/ws";
 import { useFilter } from "../../stores/filter-props";
 import { useSceneStore, type ElementLocation } from "../../stores/scene";
 import { sendVSCE } from "../../util/bridge";
+import { propsByGroup } from "../element-props/group";
 import { renderPropInputs } from "./inputs";
 
 export function SelectionPanel() {
@@ -52,6 +54,9 @@ function SelectionPanelLoadable({
   const filter = useFilter((state) => state.filter);
   const setFilter = useFilter((state) => state.set);
   const isPropsForComponent = "exportName" in selected;
+  const formKey = isPropsForComponent
+    ? `${selected.path}${selected.exportName}`
+    : `${selected.path}${selected.column}${selected.line}`;
   const [resetKey, resetForm] = useReducer((val: number) => val + 1, 0);
   const props = useLazySubscription(
     isPropsForComponent
@@ -59,10 +64,16 @@ function SelectionPanelLoadable({
       : "/scene/:path/object/:line/:column",
     selected,
   );
+  const hasProps = props.props.length > 0;
+  const groupsDef = useLazySubscription("/prop-groups-def");
+  const groupedProps = propsByGroup(props.props, {
+    expandAll: isPropsForComponent,
+    groupsDef,
+  });
 
   return (
     <>
-      {props.props.length > 0 && (
+      {hasProps && (
         <div className="flex gap-1 p-1.5">
           <input
             className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder h-[26px] w-full rounded-sm border px-[9px] focus:outline-none"
@@ -94,52 +105,68 @@ function SelectionPanelLoadable({
         </div>
       )}
 
-      {props.props.length === 0 && isPropsForComponent && (
+      {!hasProps && isPropsForComponent && (
         <LearnToUseCTA exportName={selected.exportName} />
       )}
 
-      {props.props.length === 0 && !isPropsForComponent && <NoPropsCTA />}
+      {!hasProps && !isPropsForComponent && <NoPropsCTA />}
 
-      <div className="flex flex-col px-1.5" key={resetKey}>
-        {props.props.map((prop) => {
-          if (!prop.name.toLowerCase().includes(filter?.toLowerCase() || "")) {
-            return null;
-          }
-
-          const key = isPropsForComponent
-            ? `${selected.path}${prop.name}${selected.exportName}`
-            : `${selected.path}${prop.name}${selected.column}${selected.line}`;
-
-          return (
-            <PropInput
-              key={key}
-              onChange={(propValue) => {
-                send("request-set-element-prop", {
-                  ...(isPropsForComponent
-                    ? { column: -1, line: -1, path: selected.path }
-                    : selected),
-                  propName: prop.name,
-                  propValue,
-                });
-              }}
-              onConfirm={(propValue) => {
-                if (isPropsForComponent) {
-                  // Bail out as this isn't a persistent element.
-                  return;
+      <div className="flex flex-col px-1.5" key={`${resetKey}${formKey}`}>
+        {groupedProps.map((group) => (
+          <Accordion.Root
+            defaultExpanded={group.defaultExpanded}
+            key={group.name}
+          >
+            <Accordion.Trigger actionId="scenepanel_element_togglepropgroup">
+              {group.name}
+            </Accordion.Trigger>
+            <Accordion.Content forcedExpanded={!!filter}>
+              {group.props.map((prop) => {
+                if (
+                  !prop.name.toLowerCase().includes(filter?.toLowerCase() || "")
+                ) {
+                  return null;
                 }
-                sendVSCE("element-set-prop", {
-                  ...selected,
-                  propName: prop.name,
-                  propValue,
-                });
-              }}
-              path={isPropsForComponent ? selected.path : selected.parentPath}
-              prop={prop}
-            >
-              {renderPropInputs}
-            </PropInput>
-          );
-        })}
+
+                const fieldKey = isPropsForComponent
+                  ? `${prop.name}${selected.exportName}`
+                  : `${prop.name}${selected.column}${selected.line}`;
+
+                return (
+                  <PropInput
+                    key={fieldKey}
+                    onChange={(propValue) => {
+                      send("request-set-element-prop", {
+                        ...(isPropsForComponent
+                          ? { column: -1, line: -1, path: selected.path }
+                          : selected),
+                        propName: prop.name,
+                        propValue,
+                      });
+                    }}
+                    onConfirm={(propValue) => {
+                      if (isPropsForComponent) {
+                        // Bail out as this isn't a persistent element.
+                        return;
+                      }
+                      sendVSCE("element-set-prop", {
+                        ...selected,
+                        propName: prop.name,
+                        propValue,
+                      });
+                    }}
+                    path={
+                      isPropsForComponent ? selected.path : selected.parentPath
+                    }
+                    prop={prop}
+                  >
+                    {renderPropInputs}
+                  </PropInput>
+                );
+              })}
+            </Accordion.Content>
+          </Accordion.Root>
+        ))}
       </div>
     </>
   );

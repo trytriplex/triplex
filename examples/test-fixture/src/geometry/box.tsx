@@ -22,6 +22,7 @@ function Box({
    * @min 1
    * @max 2
    * @step 0.1
+   * @group Custom Group
    */
   size?: number | string;
 }) {

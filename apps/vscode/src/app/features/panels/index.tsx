@@ -228,6 +228,7 @@ export function Panels() {
               <div className={selected ? "hidden" : undefined}>
                 <ProviderControlsPanel />
               </div>
+              <div className="h-1.5" />
             </Suspense>
           </ScrollContainer>
         </Suspense>

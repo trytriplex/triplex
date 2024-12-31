@@ -20,6 +20,7 @@ import {
   getJsxElementAtOrThrow,
   getJsxElementParentExportNameOrThrow,
 } from "./ast/jsx";
+import { propGroupsDef } from "./ast/prop-groupings";
 import {
   add,
   commentComponent,
@@ -52,6 +53,7 @@ import { getThumbnailPath } from "./util/thumbnail";
 import { createTWS } from "./util/ws-server";
 
 export * from "./types";
+export { type PropGroupDef } from "./ast/prop-groupings";
 
 export function createServer({
   config,
@@ -444,6 +446,9 @@ export function createServer({
     ),
     tws.route("/folder", async () => {
       return { name: basename(config.cwd) };
+    }),
+    tws.route("/prop-groups-def", async () => {
+      return propGroupsDef;
     }),
     tws.route(
       "/project/state",

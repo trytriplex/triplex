@@ -353,6 +353,7 @@ describe("jsx ast extractor", () => {
         {
           "column": 20,
           "description": "Constructor arguments",
+          "group": "Constructor",
           "kind": "tuple",
           "line": 18,
           "name": "args",
@@ -398,16 +399,8 @@ describe("jsx ast extractor", () => {
           "valueKind": "array",
         },
         {
-          "description": "Optional name for this {@link THREE.BufferGeometry | BufferGeometry} instance.",
-          "kind": "string",
-          "name": "name",
-          "required": false,
-          "tags": {
-            "defaultValue": "\`''\`",
-          },
-        },
-        {
           "description": undefined,
+          "group": "Constructor",
           "kind": "string",
           "name": "attach",
           "required": false,
@@ -415,6 +408,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": undefined,
+          "group": "Appearance",
           "kind": "union",
           "name": "children",
           "required": false,
@@ -434,11 +428,22 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "Used to control the morph target behavior; when set to true, the morph target data is treated as relative offsets, rather than as absolute positions/normals.",
+          "group": "Other",
           "kind": "boolean",
           "name": "morphTargetsRelative",
           "required": false,
           "tags": {
             "defaultValue": "\`false\`",
+          },
+        },
+        {
+          "description": "Optional name for this {@link THREE.BufferGeometry | BufferGeometry} instance.",
+          "group": "Constructor",
+          "kind": "string",
+          "name": "name",
+          "required": false,
+          "tags": {
+            "defaultValue": "\`''\`",
           },
         },
       ]
@@ -456,10 +461,11 @@ describe("jsx ast extractor", () => {
 
     const { props } = getJsxElementProps(sourceFile, sceneObject!);
 
-    expect(props[0]).toMatchInlineSnapshot(`
+    expect(props.find((prop) => prop.name === "args")).toMatchInlineSnapshot(`
       {
         "column": 25,
         "description": "Constructor arguments",
+        "group": "Constructor",
         "kind": "tuple",
         "line": 10,
         "name": "args",
@@ -533,7 +539,52 @@ describe("jsx ast extractor", () => {
     expect(props).toMatchInlineSnapshot(`
       [
         {
+          "description": "Enables alpha hashed transparency, an alternative to {@link .transparent} or {@link .alphaTest}. The material
+      will not be rendered if opacity is lower than a random threshold. Randomization introduces some grain or noise,
+      but approximates alpha blending without the associated problems of sorting. Using TAARenderPass can reduce the
+      resulting noise.",
+          "group": "Appearance",
+          "kind": "boolean",
+          "name": "alphaHash",
+          "required": true,
+          "tags": {},
+        },
+        {
+          "description": "Gets the alpha value to be used when running an alpha test. Default is 0.
+      Sets the alpha value to be used when running an alpha test. Default is 0.",
+          "group": "Appearance",
+          "kind": "number",
+          "name": "alphaTest",
+          "required": false,
+          "tags": {
+            "default": 0,
+          },
+        },
+        {
+          "description": "Enables alpha to coverage. Can only be used with MSAA-enabled rendering contexts (meaning when the renderer was
+      created with *antialias* parameter set to \`true\`). Enabling this will smooth aliasing on clip plane edges and
+      alphaTest-clipped edges.",
+          "group": "Appearance",
+          "kind": "boolean",
+          "name": "alphaToCoverage",
+          "required": false,
+          "tags": {
+            "default": "false",
+          },
+        },
+        {
+          "description": undefined,
+          "group": "Texture",
+          "kind": "number",
+          "name": "aoMapIntensity",
+          "required": false,
+          "tags": {
+            "default": 1,
+          },
+        },
+        {
           "description": "Constructor arguments",
+          "group": "Constructor",
           "kind": "tuple",
           "name": "args",
           "required": false,
@@ -547,143 +598,8 @@ describe("jsx ast extractor", () => {
           "tags": {},
         },
         {
-          "description": "Material name. Default is an empty string.",
-          "kind": "string",
-          "name": "name",
-          "required": false,
-          "tags": {
-            "default": "''",
-          },
-        },
-        {
-          "description": "Defines whether this material is visible. Default is true.",
-          "kind": "boolean",
-          "name": "visible",
-          "required": false,
-          "tags": {
-            "default": true,
-          },
-        },
-        {
-          "column": 29,
           "description": undefined,
-          "kind": "union",
-          "line": 19,
-          "name": "color",
-          "required": false,
-          "shape": [
-            {
-              "kind": "string",
-            },
-            {
-              "kind": "number",
-            },
-            {
-              "kind": "tuple",
-              "shape": [
-                {
-                  "kind": "number",
-                  "label": "r",
-                  "required": true,
-                },
-                {
-                  "kind": "number",
-                  "label": "g",
-                  "required": true,
-                },
-                {
-                  "kind": "number",
-                  "label": "b",
-                  "required": true,
-                },
-              ],
-            },
-          ],
-          "tags": {
-            "default": "new THREE.Color( 0xffffff )",
-          },
-          "value": "pink",
-          "valueKind": "string",
-        },
-        {
-          "description": "Opacity. Default is 1.",
-          "kind": "number",
-          "name": "opacity",
-          "required": false,
-          "tags": {
-            "default": 1,
-          },
-        },
-        {
-          "description": "Defines whether this material is transparent. This has an effect on rendering as transparent objects need special treatment and are rendered after non-transparent objects.
-      When set to true, the extent to which the material is transparent is controlled by setting it's .opacity property.",
-          "kind": "boolean",
-          "name": "transparent",
-          "required": false,
-          "tags": {
-            "default": "false",
-          },
-        },
-        {
-          "description": undefined,
-          "kind": "number",
-          "name": "metalness",
-          "required": false,
-          "tags": {
-            "default": 0,
-          },
-        },
-        {
-          "description": undefined,
-          "kind": "number",
-          "name": "roughness",
-          "required": false,
-          "tags": {
-            "default": 1,
-          },
-        },
-        {
-          "description": "Enables alpha hashed transparency, an alternative to {@link .transparent} or {@link .alphaTest}. The material
-      will not be rendered if opacity is lower than a random threshold. Randomization introduces some grain or noise,
-      but approximates alpha blending without the associated problems of sorting. Using TAARenderPass can reduce the
-      resulting noise.",
-          "kind": "boolean",
-          "name": "alphaHash",
-          "required": true,
-          "tags": {},
-        },
-        {
-          "description": "Gets the alpha value to be used when running an alpha test. Default is 0.
-      Sets the alpha value to be used when running an alpha test. Default is 0.",
-          "kind": "number",
-          "name": "alphaTest",
-          "required": false,
-          "tags": {
-            "default": 0,
-          },
-        },
-        {
-          "description": "Enables alpha to coverage. Can only be used with MSAA-enabled rendering contexts (meaning when the renderer was
-      created with *antialias* parameter set to \`true\`). Enabling this will smooth aliasing on clip plane edges and
-      alphaTest-clipped edges.",
-          "kind": "boolean",
-          "name": "alphaToCoverage",
-          "required": false,
-          "tags": {
-            "default": "false",
-          },
-        },
-        {
-          "description": undefined,
-          "kind": "number",
-          "name": "aoMapIntensity",
-          "required": false,
-          "tags": {
-            "default": 1,
-          },
-        },
-        {
-          "description": undefined,
+          "group": "Constructor",
           "kind": "string",
           "name": "attach",
           "required": false,
@@ -692,6 +608,7 @@ describe("jsx ast extractor", () => {
         {
           "description": "Represents the alpha value of the constant blend color. This property has only an effect when using custom
       blending with {@link ConstantAlphaFactor} or {@link OneMinusConstantAlphaFactor}.",
+          "group": "Blend",
           "kind": "number",
           "name": "blendAlpha",
           "required": false,
@@ -702,6 +619,7 @@ describe("jsx ast extractor", () => {
         {
           "description": "Represent the RGB values of the constant blend color. This property has only an effect when using custom
       blending with {@link ConstantColorFactor} or {@link OneMinusConstantColorFactor}.",
+          "group": "Blend",
           "kind": "union",
           "name": "blendColor",
           "required": false,
@@ -739,6 +657,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "Blending destination. It's one of the blending mode constants defined in Three.js. Default is {@link OneMinusSrcAlphaFactor}.",
+          "group": "Blend",
           "kind": "union",
           "name": "blendDst",
           "required": false,
@@ -820,6 +739,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "The tranparency of the .blendDst. Default is null.",
+          "group": "Blend",
           "kind": "number",
           "name": "blendDstAlpha",
           "required": false,
@@ -829,6 +749,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "Blending equation to use when applying blending. It's one of the constants defined in Three.js. Default is {@link AddEquation}.",
+          "group": "Blend",
           "kind": "union",
           "name": "blendEquation",
           "required": false,
@@ -865,6 +786,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "The tranparency of the .blendEquation. Default is null.",
+          "group": "Blend",
           "kind": "number",
           "name": "blendEquationAlpha",
           "required": false,
@@ -874,6 +796,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "Which blending to use when displaying objects with this material. Default is {@link NormalBlending}.",
+          "group": "Blend",
           "kind": "union",
           "name": "blending",
           "required": false,
@@ -915,6 +838,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "Blending source. It's one of the blending mode constants defined in Three.js. Default is {@link SrcAlphaFactor}.",
+          "group": "Blend",
           "kind": "union",
           "name": "blendSrc",
           "required": false,
@@ -1000,6 +924,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "The tranparency of the .blendSrc. Default is null.",
+          "group": "Blend",
           "kind": "number",
           "name": "blendSrcAlpha",
           "required": false,
@@ -1009,6 +934,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": undefined,
+          "group": "Texture",
           "kind": "number",
           "name": "bumpScale",
           "required": false,
@@ -1018,6 +944,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": undefined,
+          "group": "Appearance",
           "kind": "union",
           "name": "children",
           "required": false,
@@ -1037,6 +964,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "Changes the behavior of clipping planes so that only their intersection is clipped, rather than their union. Default is false.",
+          "group": "Render",
           "kind": "boolean",
           "name": "clipIntersection",
           "required": false,
@@ -1046,6 +974,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "Defines whether to clip shadows according to the clipping planes specified on this material. Default is false.",
+          "group": "Render",
           "kind": "boolean",
           "name": "clipShadows",
           "required": false,
@@ -1054,7 +983,50 @@ describe("jsx ast extractor", () => {
           },
         },
         {
+          "column": 29,
+          "description": undefined,
+          "group": "Appearance",
+          "kind": "union",
+          "line": 19,
+          "name": "color",
+          "required": false,
+          "shape": [
+            {
+              "kind": "string",
+            },
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "tuple",
+              "shape": [
+                {
+                  "kind": "number",
+                  "label": "r",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "g",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "b",
+                  "required": true,
+                },
+              ],
+            },
+          ],
+          "tags": {
+            "default": "new THREE.Color( 0xffffff )",
+          },
+          "value": "pink",
+          "valueKind": "string",
+        },
+        {
           "description": "Whether to render the material's color. This can be used in conjunction with a mesh's .renderOrder property to create invisible objects that occlude other objects. Default is true.",
+          "group": "Render",
           "kind": "boolean",
           "name": "colorWrite",
           "required": false,
@@ -1064,6 +1036,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "Which depth function to use. Default is {@link LessEqualDepth}. See the depth mode constants for all possible values.",
+          "group": "Render",
           "kind": "union",
           "name": "depthFunc",
           "required": false,
@@ -1116,6 +1089,7 @@ describe("jsx ast extractor", () => {
         {
           "description": "Whether to have depth test enabled when rendering this material. When the depth test is disabled, the depth write
       will also be implicitly disabled.",
+          "group": "Render",
           "kind": "boolean",
           "name": "depthTest",
           "required": false,
@@ -1126,6 +1100,7 @@ describe("jsx ast extractor", () => {
         {
           "description": "Whether rendering this material has any effect on the depth buffer. Default is true.
       When drawing 2D overlays it can be useful to disable the depth writing in order to layer several things together without creating z-index artifacts.",
+          "group": "Render",
           "kind": "boolean",
           "name": "depthWrite",
           "required": false,
@@ -1135,6 +1110,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": undefined,
+          "group": "Texture",
           "kind": "number",
           "name": "displacementBias",
           "required": false,
@@ -1144,6 +1120,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": undefined,
+          "group": "Texture",
           "kind": "number",
           "name": "displacementScale",
           "required": false,
@@ -1153,6 +1130,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "Whether to apply dithering to the color to remove the appearance of banding. Default is false.",
+          "group": "Appearance",
           "kind": "boolean",
           "name": "dithering",
           "required": false,
@@ -1162,6 +1140,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": undefined,
+          "group": "Appearance",
           "kind": "union",
           "name": "emissive",
           "required": false,
@@ -1199,6 +1178,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": undefined,
+          "group": "Appearance",
           "kind": "number",
           "name": "emissiveIntensity",
           "required": false,
@@ -1208,6 +1188,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": undefined,
+          "group": "Texture",
           "kind": "number",
           "name": "envMapIntensity",
           "required": false,
@@ -1217,6 +1198,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "Define whether the material is rendered with flat shading. Default is false.",
+          "group": "Appearance",
           "kind": "boolean",
           "name": "flatShading",
           "required": false,
@@ -1226,6 +1208,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "Whether the material is affected by fog. Default is true.",
+          "group": "Appearance",
           "kind": "boolean",
           "name": "fog",
           "required": false,
@@ -1235,6 +1218,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": undefined,
+          "group": "Other",
           "kind": "boolean",
           "name": "forceSinglePass",
           "required": false,
@@ -1244,6 +1228,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": undefined,
+          "group": "Texture",
           "kind": "number",
           "name": "lightMapIntensity",
           "required": false,
@@ -1253,6 +1238,27 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": undefined,
+          "group": "Appearance",
+          "kind": "number",
+          "name": "metalness",
+          "required": false,
+          "tags": {
+            "default": 0,
+          },
+        },
+        {
+          "description": "Material name. Default is an empty string.",
+          "group": "Constructor",
+          "kind": "string",
+          "name": "name",
+          "required": false,
+          "tags": {
+            "default": "''",
+          },
+        },
+        {
+          "description": undefined,
+          "group": "Texture",
           "kind": "union",
           "name": "normalMapType",
           "required": false,
@@ -1273,7 +1279,18 @@ describe("jsx ast extractor", () => {
           },
         },
         {
+          "description": "Opacity. Default is 1.",
+          "group": "Appearance",
+          "kind": "number",
+          "name": "opacity",
+          "required": false,
+          "tags": {
+            "default": 1,
+          },
+        },
+        {
           "description": "Whether to use polygon offset. Default is false. This corresponds to the POLYGON_OFFSET_FILL WebGL feature.",
+          "group": "Other",
           "kind": "boolean",
           "name": "polygonOffset",
           "required": false,
@@ -1283,6 +1300,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "Sets the polygon offset factor. Default is 0.",
+          "group": "Other",
           "kind": "number",
           "name": "polygonOffsetFactor",
           "required": false,
@@ -1292,6 +1310,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "Sets the polygon offset units. Default is 0.",
+          "group": "Other",
           "kind": "number",
           "name": "polygonOffsetUnits",
           "required": false,
@@ -1301,6 +1320,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "Override the renderer's default precision for this material. Can be "highp", "mediump" or "lowp". Defaults is null.",
+          "group": "Other",
           "kind": "union",
           "name": "precision",
           "required": false,
@@ -1324,6 +1344,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "Whether to premultiply the alpha (transparency) value. See WebGL / Materials / Transparency for an example of the difference. Default is false.",
+          "group": "Other",
           "kind": "boolean",
           "name": "premultipliedAlpha",
           "required": false,
@@ -1332,8 +1353,19 @@ describe("jsx ast extractor", () => {
           },
         },
         {
+          "description": undefined,
+          "group": "Appearance",
+          "kind": "number",
+          "name": "roughness",
+          "required": false,
+          "tags": {
+            "default": 1,
+          },
+        },
+        {
           "description": "Defines which of the face sides will cast shadows. Default is *null*.
       If *null*, the value is opposite that of side, above.",
+          "group": "Render",
           "kind": "union",
           "name": "shadowSide",
           "required": false,
@@ -1361,6 +1393,7 @@ describe("jsx ast extractor", () => {
         {
           "description": "Defines which of the face sides will be rendered - front, back or both.
       Default is {@link THREE.FrontSide}. Other options are {@link THREE.BackSide} and {@link THREE.DoubleSide}.",
+          "group": "Render",
           "kind": "union",
           "name": "side",
           "required": false,
@@ -1387,6 +1420,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "Which stencil operation to perform when the comparison function returns false. Default is {@link KeepStencilOp}. See the stencil operation constants for all possible values.",
+          "group": "Stencil",
           "kind": "union",
           "name": "stencilFail",
           "required": false,
@@ -1438,6 +1472,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "The stencil comparison function to use. Default is {@link AlwaysStencilFunc}. See stencil operation constants for all possible values.",
+          "group": "Stencil",
           "kind": "union",
           "name": "stencilFunc",
           "required": false,
@@ -1489,6 +1524,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "The bit mask to use when comparing against the stencil buffer. Default is *0xFF*.",
+          "group": "Stencil",
           "kind": "number",
           "name": "stencilFuncMask",
           "required": false,
@@ -1498,6 +1534,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "The value to use when performing stencil comparisons or stencil operations. Default is *0*.",
+          "group": "Stencil",
           "kind": "number",
           "name": "stencilRef",
           "required": false,
@@ -1507,6 +1544,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "Whether rendering this material has any effect on the stencil buffer. Default is *false*.",
+          "group": "Stencil",
           "kind": "boolean",
           "name": "stencilWrite",
           "required": false,
@@ -1516,6 +1554,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": "The bit mask to use when writing to the stencil buffer. Default is *0xFF*.",
+          "group": "Stencil",
           "kind": "number",
           "name": "stencilWriteMask",
           "required": false,
@@ -1527,6 +1566,7 @@ describe("jsx ast extractor", () => {
           "description": "Which stencil operation to perform when the comparison function returns true but the depth test fails.
       Default is {@link KeepStencilOp}.
       See the stencil operation constants for all possible values.",
+          "group": "Stencil",
           "kind": "union",
           "name": "stencilZFail",
           "required": false,
@@ -1580,6 +1620,7 @@ describe("jsx ast extractor", () => {
           "description": "Which stencil operation to perform when the comparison function returns true and the depth test passes.
       Default is {@link KeepStencilOp}.
       See the stencil operation constants for all possible values.",
+          "group": "Stencil",
           "kind": "union",
           "name": "stencilZPass",
           "required": false,
@@ -1633,6 +1674,7 @@ describe("jsx ast extractor", () => {
           "description": "Defines whether this material is tone mapped according to the renderer's
       {@link WebGLRenderer.toneMapping toneMapping} setting. It is ignored when rendering to a render target or using
       post processing.",
+          "group": "Appearance",
           "kind": "boolean",
           "name": "toneMapped",
           "required": false,
@@ -1641,7 +1683,19 @@ describe("jsx ast extractor", () => {
           },
         },
         {
+          "description": "Defines whether this material is transparent. This has an effect on rendering as transparent objects need special treatment and are rendered after non-transparent objects.
+      When set to true, the extent to which the material is transparent is controlled by setting it's .opacity property.",
+          "group": "Appearance",
+          "kind": "boolean",
+          "name": "transparent",
+          "required": false,
+          "tags": {
+            "default": "false",
+          },
+        },
+        {
           "description": "Defines whether vertex coloring is used. Default is false.",
+          "group": "Appearance",
           "kind": "boolean",
           "name": "vertexColors",
           "required": false,
@@ -1650,7 +1704,18 @@ describe("jsx ast extractor", () => {
           },
         },
         {
+          "description": "Defines whether this material is visible. Default is true.",
+          "group": "Appearance",
+          "kind": "boolean",
+          "name": "visible",
+          "required": false,
+          "tags": {
+            "default": true,
+          },
+        },
+        {
           "description": undefined,
+          "group": "Appearance",
           "kind": "boolean",
           "name": "wireframe",
           "required": false,
@@ -1660,6 +1725,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": undefined,
+          "group": "Other",
           "kind": "string",
           "name": "wireframeLinecap",
           "required": false,
@@ -1669,6 +1735,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": undefined,
+          "group": "Other",
           "kind": "string",
           "name": "wireframeLinejoin",
           "required": false,
@@ -1678,6 +1745,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": undefined,
+          "group": "Other",
           "kind": "number",
           "name": "wireframeLinewidth",
           "required": false,
@@ -1702,44 +1770,29 @@ describe("jsx ast extractor", () => {
 
     expect(props[1]).toMatchInlineSnapshot(`
       {
-        "column": 36,
         "description": undefined,
-        "kind": "union",
-        "line": 25,
-        "name": "scale",
+        "group": "Other",
+        "kind": "tuple",
+        "name": "rotation",
         "required": false,
         "shape": [
           {
-            "kind": "tuple",
-            "shape": [
-              {
-                "kind": "number",
-                "label": "x",
-                "required": true,
-              },
-              {
-                "kind": "number",
-                "label": "y",
-                "required": true,
-              },
-              {
-                "kind": "number",
-                "label": "z",
-                "required": true,
-              },
-            ],
+            "kind": "number",
+            "label": undefined,
+            "required": true,
           },
           {
             "kind": "number",
+            "label": undefined,
+            "required": true,
+          },
+          {
+            "kind": "number",
+            "label": undefined,
+            "required": true,
           },
         ],
         "tags": {},
-        "value": [
-          1,
-          1,
-          1,
-        ],
-        "valueKind": "array",
       }
     `);
   });
@@ -1755,40 +1808,42 @@ describe("jsx ast extractor", () => {
 
     const { props } = getJsxElementProps(sourceFile, sceneObject!);
 
-    expect(props[0]).toMatchInlineSnapshot(`
-      {
-        "column": 15,
-        "description": undefined,
-        "kind": "tuple",
-        "line": 25,
-        "name": "position",
-        "required": false,
-        "shape": [
-          {
-            "kind": "number",
-            "label": undefined,
-            "required": true,
-          },
-          {
-            "kind": "number",
-            "label": undefined,
-            "required": true,
-          },
-          {
-            "kind": "number",
-            "label": undefined,
-            "required": true,
-          },
-        ],
-        "tags": {},
-        "value": [
-          0,
-          0,
-          0,
-        ],
-        "valueKind": "array",
-      }
-    `);
+    expect(props.find((prop) => prop.name === "position"))
+      .toMatchInlineSnapshot(`
+        {
+          "column": 15,
+          "description": undefined,
+          "group": "Other",
+          "kind": "tuple",
+          "line": 25,
+          "name": "position",
+          "required": false,
+          "shape": [
+            {
+              "kind": "number",
+              "label": undefined,
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": undefined,
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": undefined,
+              "required": true,
+            },
+          ],
+          "tags": {},
+          "value": [
+            0,
+            0,
+            0,
+          ],
+          "valueKind": "array",
+        }
+      `);
   });
 
   it("should extract implicit boolean props", () => {
@@ -1805,126 +1860,8 @@ describe("jsx ast extractor", () => {
     expect(props).toMatchInlineSnapshot(`
       [
         {
-          "description": undefined,
-          "kind": "union",
-          "name": "position",
-          "required": false,
-          "shape": [
-            {
-              "kind": "number",
-            },
-            {
-              "kind": "tuple",
-              "shape": [
-                {
-                  "kind": "number",
-                  "label": "x",
-                  "required": true,
-                },
-                {
-                  "kind": "number",
-                  "label": "y",
-                  "required": true,
-                },
-                {
-                  "kind": "number",
-                  "label": "z",
-                  "required": true,
-                },
-              ],
-            },
-          ],
-          "tags": {},
-        },
-        {
-          "description": undefined,
-          "kind": "union",
-          "name": "scale",
-          "required": false,
-          "shape": [
-            {
-              "kind": "number",
-            },
-            {
-              "kind": "tuple",
-              "shape": [
-                {
-                  "kind": "number",
-                  "label": "x",
-                  "required": true,
-                },
-                {
-                  "kind": "number",
-                  "label": "y",
-                  "required": true,
-                },
-                {
-                  "kind": "number",
-                  "label": "z",
-                  "required": true,
-                },
-              ],
-            },
-          ],
-          "tags": {},
-        },
-        {
-          "description": undefined,
-          "kind": "tuple",
-          "name": "rotation",
-          "required": false,
-          "shape": [
-            {
-              "kind": "number",
-              "label": "x",
-              "required": true,
-            },
-            {
-              "kind": "number",
-              "label": "y",
-              "required": true,
-            },
-            {
-              "kind": "number",
-              "label": "z",
-              "required": true,
-            },
-            {
-              "kind": "union",
-              "label": "order",
-              "required": false,
-              "shape": [
-                {
-                  "kind": "string",
-                  "literal": "XYZ",
-                },
-                {
-                  "kind": "string",
-                  "literal": "YXZ",
-                },
-                {
-                  "kind": "string",
-                  "literal": "ZXY",
-                },
-                {
-                  "kind": "string",
-                  "literal": "ZYX",
-                },
-                {
-                  "kind": "string",
-                  "literal": "YZX",
-                },
-                {
-                  "kind": "string",
-                  "literal": "XZY",
-                },
-              ],
-            },
-          ],
-          "tags": {},
-        },
-        {
           "description": "Constructor arguments",
+          "group": "Constructor",
           "kind": "tuple",
           "name": "args",
           "required": false,
@@ -1935,39 +1872,24 @@ describe("jsx ast extractor", () => {
               "required": false,
             },
             {
-              "kind": "union",
+              "kind": "unhandled",
               "label": "material",
               "required": false,
-              "shape": [],
             },
           ],
           "tags": {},
         },
         {
-          "description": "Optional name of the object",
+          "description": undefined,
+          "group": "Constructor",
           "kind": "string",
-          "name": "name",
+          "name": "attach",
           "required": false,
-          "tags": {
-            "defaultValue": "\`""\`",
-            "remarks": "_(doesn't need to be unique)_.",
-          },
-        },
-        {
-          "column": 11,
-          "description": "Object gets rendered if \`true\`.",
-          "kind": "boolean",
-          "line": 10,
-          "name": "visible",
-          "required": false,
-          "tags": {
-            "defaultValue": "\`true\`",
-          },
-          "value": true,
-          "valueKind": "boolean",
+          "tags": {},
         },
         {
           "description": "Whether the object gets rendered into shadow map.",
+          "group": "Appearance",
           "kind": "boolean",
           "name": "castShadow",
           "required": false,
@@ -1976,24 +1898,9 @@ describe("jsx ast extractor", () => {
           },
         },
         {
-          "description": "Whether the material receives shadows.",
-          "kind": "boolean",
-          "name": "receiveShadow",
-          "required": false,
-          "tags": {
-            "defaultValue": "\`false\`",
-          },
-        },
-        {
-          "description": undefined,
-          "kind": "string",
-          "name": "attach",
-          "required": false,
-          "tags": {},
-        },
-        {
           "column": 7,
           "description": undefined,
+          "group": "Appearance",
           "kind": "union",
           "line": 11,
           "name": "children",
@@ -2017,6 +1924,7 @@ describe("jsx ast extractor", () => {
         {
           "description": "When this is set, it checks every frame if the object is in the frustum of the camera before rendering the object.
       If set to \`false\` the object gets rendered every frame even if it is not in the frustum of the camera.",
+          "group": "Render",
           "kind": "boolean",
           "name": "frustumCulled",
           "required": false,
@@ -2026,81 +1934,26 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": undefined,
+          "group": "Render",
           "kind": "number",
           "name": "layers",
           "required": false,
           "tags": {},
         },
         {
-          "description": "An instance of material derived from the {@link THREE.Material | Material} base class or an array of materials, defining the object's appearance.",
-          "kind": "union",
-          "name": "material",
+          "description": "Optional name of the object",
+          "group": "Constructor",
+          "kind": "string",
+          "name": "name",
           "required": false,
-          "shape": [],
           "tags": {
-            "defaultValue": "{@link THREE.MeshBasicMaterial | \`new THREE.MeshBasicMaterial()\`}.",
+            "defaultValue": "\`""\`",
+            "remarks": "_(doesn't need to be unique)_.",
           },
         },
         {
           "description": undefined,
-          "kind": "tuple",
-          "name": "quaternion",
-          "required": false,
-          "shape": [
-            {
-              "kind": "number",
-              "label": "x",
-              "required": true,
-            },
-            {
-              "kind": "number",
-              "label": "y",
-              "required": true,
-            },
-            {
-              "kind": "number",
-              "label": "z",
-              "required": true,
-            },
-            {
-              "kind": "number",
-              "label": "w",
-              "required": true,
-            },
-          ],
-          "tags": {},
-        },
-        {
-          "description": "This value allows the default rendering order of {@link https://en.wikipedia.org/wiki/Scene_graph | scene graph}
-      objects to be overridden although opaque and transparent objects remain sorted independently.",
-          "kind": "number",
-          "name": "renderOrder",
-          "required": false,
-          "tags": {
-            "defaultValue": "\`0\`",
-            "remarks": "When this property is set for an instance of {@link Group | Group}, all descendants objects will be sorted and rendered together.
-      Sorting is from lowest to highest renderOrder.",
-          },
-        },
-      ]
-    `);
-  });
-
-  it("should extract explicit boolean props", () => {
-    const project = _createProject({
-      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
-    });
-    const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/with-comments.tsx"),
-    );
-    const sceneObject = getJsxElementAt(sourceFile, 20, 5);
-
-    const { props } = getJsxElementProps(sourceFile, sceneObject!);
-
-    expect(props).toMatchInlineSnapshot(`
-      [
-        {
-          "description": undefined,
+          "group": "Transform",
           "kind": "union",
           "name": "position",
           "required": false,
@@ -2133,38 +1986,60 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": undefined,
-          "kind": "union",
-          "name": "scale",
+          "group": "Other",
+          "kind": "tuple",
+          "name": "quaternion",
           "required": false,
           "shape": [
             {
               "kind": "number",
+              "label": "x",
+              "required": true,
             },
             {
-              "kind": "tuple",
-              "shape": [
-                {
-                  "kind": "number",
-                  "label": "x",
-                  "required": true,
-                },
-                {
-                  "kind": "number",
-                  "label": "y",
-                  "required": true,
-                },
-                {
-                  "kind": "number",
-                  "label": "z",
-                  "required": true,
-                },
-              ],
+              "kind": "number",
+              "label": "y",
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": "z",
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": "w",
+              "required": true,
             },
           ],
           "tags": {},
         },
         {
+          "description": "Whether the material receives shadows.",
+          "group": "Appearance",
+          "kind": "boolean",
+          "name": "receiveShadow",
+          "required": false,
+          "tags": {
+            "defaultValue": "\`false\`",
+          },
+        },
+        {
+          "description": "This value allows the default rendering order of {@link https://en.wikipedia.org/wiki/Scene_graph | scene graph}
+      objects to be overridden although opaque and transparent objects remain sorted independently.",
+          "group": "Render",
+          "kind": "number",
+          "name": "renderOrder",
+          "required": false,
+          "tags": {
+            "defaultValue": "\`0\`",
+            "remarks": "When this property is set for an instance of {@link Group | Group}, all descendants objects will be sorted and rendered together.
+      Sorting is from lowest to highest renderOrder.",
+          },
+        },
+        {
           "description": undefined,
+          "group": "Transform",
           "kind": "tuple",
           "name": "rotation",
           "required": false,
@@ -2219,7 +2094,72 @@ describe("jsx ast extractor", () => {
           "tags": {},
         },
         {
+          "description": undefined,
+          "group": "Transform",
+          "kind": "union",
+          "name": "scale",
+          "required": false,
+          "shape": [
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "tuple",
+              "shape": [
+                {
+                  "kind": "number",
+                  "label": "x",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "y",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "z",
+                  "required": true,
+                },
+              ],
+            },
+          ],
+          "tags": {},
+        },
+        {
+          "column": 11,
+          "description": "Object gets rendered if \`true\`.",
+          "group": "Appearance",
+          "kind": "boolean",
+          "line": 10,
+          "name": "visible",
+          "required": false,
+          "tags": {
+            "defaultValue": "\`true\`",
+          },
+          "value": true,
+          "valueKind": "boolean",
+        },
+      ]
+    `);
+  });
+
+  it("should extract explicit boolean props", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/with-comments.tsx"),
+    );
+    const sceneObject = getJsxElementAt(sourceFile, 20, 5);
+
+    const { props } = getJsxElementProps(sourceFile, sceneObject!);
+
+    expect(props).toMatchInlineSnapshot(`
+      [
+        {
           "description": "Constructor arguments",
+          "group": "Constructor",
           "kind": "tuple",
           "name": "args",
           "required": false,
@@ -2230,40 +2170,25 @@ describe("jsx ast extractor", () => {
               "required": false,
             },
             {
-              "kind": "union",
+              "kind": "unhandled",
               "label": "material",
               "required": false,
-              "shape": [],
             },
           ],
           "tags": {},
         },
         {
-          "description": "Optional name of the object",
+          "description": undefined,
+          "group": "Constructor",
           "kind": "string",
-          "name": "name",
+          "name": "attach",
           "required": false,
-          "tags": {
-            "defaultValue": "\`""\`",
-            "remarks": "_(doesn't need to be unique)_.",
-          },
-        },
-        {
-          "column": 30,
-          "description": "Object gets rendered if \`true\`.",
-          "kind": "boolean",
-          "line": 20,
-          "name": "visible",
-          "required": false,
-          "tags": {
-            "defaultValue": "\`true\`",
-          },
-          "value": true,
-          "valueKind": "boolean",
+          "tags": {},
         },
         {
           "column": 11,
           "description": "Whether the object gets rendered into shadow map.",
+          "group": "Appearance",
           "kind": "boolean",
           "line": 20,
           "name": "castShadow",
@@ -2275,23 +2200,8 @@ describe("jsx ast extractor", () => {
           "valueKind": "boolean",
         },
         {
-          "description": "Whether the material receives shadows.",
-          "kind": "boolean",
-          "name": "receiveShadow",
-          "required": false,
-          "tags": {
-            "defaultValue": "\`false\`",
-          },
-        },
-        {
           "description": undefined,
-          "kind": "string",
-          "name": "attach",
-          "required": false,
-          "tags": {},
-        },
-        {
-          "description": undefined,
+          "group": "Appearance",
           "kind": "union",
           "name": "children",
           "required": false,
@@ -2312,6 +2222,7 @@ describe("jsx ast extractor", () => {
         {
           "description": "When this is set, it checks every frame if the object is in the frustum of the camera before rendering the object.
       If set to \`false\` the object gets rendered every frame even if it is not in the frustum of the camera.",
+          "group": "Render",
           "kind": "boolean",
           "name": "frustumCulled",
           "required": false,
@@ -2321,23 +2232,59 @@ describe("jsx ast extractor", () => {
         },
         {
           "description": undefined,
+          "group": "Render",
           "kind": "number",
           "name": "layers",
           "required": false,
           "tags": {},
         },
         {
-          "description": "An instance of material derived from the {@link THREE.Material | Material} base class or an array of materials, defining the object's appearance.",
-          "kind": "union",
-          "name": "material",
+          "description": "Optional name of the object",
+          "group": "Constructor",
+          "kind": "string",
+          "name": "name",
           "required": false,
-          "shape": [],
           "tags": {
-            "defaultValue": "{@link THREE.MeshBasicMaterial | \`new THREE.MeshBasicMaterial()\`}.",
+            "defaultValue": "\`""\`",
+            "remarks": "_(doesn't need to be unique)_.",
           },
         },
         {
           "description": undefined,
+          "group": "Transform",
+          "kind": "union",
+          "name": "position",
+          "required": false,
+          "shape": [
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "tuple",
+              "shape": [
+                {
+                  "kind": "number",
+                  "label": "x",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "y",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "z",
+                  "required": true,
+                },
+              ],
+            },
+          ],
+          "tags": {},
+        },
+        {
+          "description": undefined,
+          "group": "Other",
           "kind": "tuple",
           "name": "quaternion",
           "required": false,
@@ -2366,8 +2313,19 @@ describe("jsx ast extractor", () => {
           "tags": {},
         },
         {
+          "description": "Whether the material receives shadows.",
+          "group": "Appearance",
+          "kind": "boolean",
+          "name": "receiveShadow",
+          "required": false,
+          "tags": {
+            "defaultValue": "\`false\`",
+          },
+        },
+        {
           "description": "This value allows the default rendering order of {@link https://en.wikipedia.org/wiki/Scene_graph | scene graph}
       objects to be overridden although opaque and transparent objects remain sorted independently.",
+          "group": "Render",
           "kind": "number",
           "name": "renderOrder",
           "required": false,
@@ -2376,6 +2334,109 @@ describe("jsx ast extractor", () => {
             "remarks": "When this property is set for an instance of {@link Group | Group}, all descendants objects will be sorted and rendered together.
       Sorting is from lowest to highest renderOrder.",
           },
+        },
+        {
+          "description": undefined,
+          "group": "Transform",
+          "kind": "tuple",
+          "name": "rotation",
+          "required": false,
+          "shape": [
+            {
+              "kind": "number",
+              "label": "x",
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": "y",
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": "z",
+              "required": true,
+            },
+            {
+              "kind": "union",
+              "label": "order",
+              "required": false,
+              "shape": [
+                {
+                  "kind": "string",
+                  "literal": "XYZ",
+                },
+                {
+                  "kind": "string",
+                  "literal": "YXZ",
+                },
+                {
+                  "kind": "string",
+                  "literal": "ZXY",
+                },
+                {
+                  "kind": "string",
+                  "literal": "ZYX",
+                },
+                {
+                  "kind": "string",
+                  "literal": "YZX",
+                },
+                {
+                  "kind": "string",
+                  "literal": "XZY",
+                },
+              ],
+            },
+          ],
+          "tags": {},
+        },
+        {
+          "description": undefined,
+          "group": "Transform",
+          "kind": "union",
+          "name": "scale",
+          "required": false,
+          "shape": [
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "tuple",
+              "shape": [
+                {
+                  "kind": "number",
+                  "label": "x",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "y",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "z",
+                  "required": true,
+                },
+              ],
+            },
+          ],
+          "tags": {},
+        },
+        {
+          "column": 30,
+          "description": "Object gets rendered if \`true\`.",
+          "group": "Appearance",
+          "kind": "boolean",
+          "line": 20,
+          "name": "visible",
+          "required": false,
+          "tags": {
+            "defaultValue": "\`true\`",
+          },
+          "value": true,
+          "valueKind": "boolean",
         },
       ]
     `);
@@ -2394,43 +2455,24 @@ describe("jsx ast extractor", () => {
 
     expect(props[5]).toMatchInlineSnapshot(`
       {
-        "column": 22,
-        "description": "Object gets rendered if \`true\`.",
-        "kind": "boolean",
-        "line": 25,
-        "name": "visible",
+        "description": undefined,
+        "group": "Other",
+        "kind": "number",
+        "name": "creaseAngle",
         "required": false,
-        "tags": {
-          "defaultValue": "\`true\`",
-        },
-        "value": undefined,
-        "valueKind": "undefined",
+        "tags": {},
       }
     `);
     expect(props[3]).toMatchInlineSnapshot(`
       {
-        "description": undefined,
-        "kind": "tuple",
-        "name": "args",
+        "description": "Whether the object gets rendered into shadow map.",
+        "group": "Other",
+        "kind": "boolean",
+        "name": "castShadow",
         "required": false,
-        "shape": [
-          {
-            "kind": "number",
-            "label": "width",
-            "required": false,
-          },
-          {
-            "kind": "number",
-            "label": "height",
-            "required": false,
-          },
-          {
-            "kind": "number",
-            "label": "depth",
-            "required": false,
-          },
-        ],
-        "tags": {},
+        "tags": {
+          "defaultValue": "\`false\`",
+        },
       }
     `);
   });
@@ -2451,6 +2493,7 @@ describe("jsx ast extractor", () => {
         {
           "column": 12,
           "description": undefined,
+          "group": "Other",
           "kind": "union",
           "line": 41,
           "name": "color",
@@ -2489,6 +2532,7 @@ describe("jsx ast extractor", () => {
         {
           "column": 20,
           "description": undefined,
+          "group": "Other",
           "kind": "union",
           "line": 42,
           "name": "color",
@@ -2525,8 +2569,101 @@ describe("jsx ast extractor", () => {
     expect(props).toMatchInlineSnapshot(`
       [
         {
+          "description": "Constructor arguments",
+          "group": "Constructor",
+          "kind": "tuple",
+          "name": "args",
+          "required": false,
+          "shape": [
+            {
+              "kind": "unhandled",
+              "label": "geometry",
+              "required": false,
+            },
+            {
+              "kind": "unhandled",
+              "label": "material",
+              "required": false,
+            },
+          ],
+          "tags": {},
+        },
+        {
+          "description": undefined,
+          "group": "Constructor",
+          "kind": "string",
+          "name": "attach",
+          "required": false,
+          "tags": {},
+        },
+        {
+          "description": "Whether the object gets rendered into shadow map.",
+          "group": "Appearance",
+          "kind": "boolean",
+          "name": "castShadow",
+          "required": false,
+          "tags": {
+            "defaultValue": "\`false\`",
+          },
+        },
+        {
+          "column": 7,
+          "description": undefined,
+          "group": "Appearance",
+          "kind": "union",
+          "line": 18,
+          "name": "children",
+          "required": false,
+          "shape": [
+            {
+              "kind": "string",
+            },
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "boolean",
+              "literal": false,
+            },
+          ],
+          "tags": {},
+          "value": "<boxGeometry args={[1, 1, 1]} /><meshStandardMaterial color="pink" />",
+          "valueKind": "unhandled",
+        },
+        {
+          "description": "When this is set, it checks every frame if the object is in the frustum of the camera before rendering the object.
+      If set to \`false\` the object gets rendered every frame even if it is not in the frustum of the camera.",
+          "group": "Render",
+          "kind": "boolean",
+          "name": "frustumCulled",
+          "required": false,
+          "tags": {
+            "defaultValue": "\`true\`",
+          },
+        },
+        {
+          "description": undefined,
+          "group": "Render",
+          "kind": "number",
+          "name": "layers",
+          "required": false,
+          "tags": {},
+        },
+        {
+          "description": "Optional name of the object",
+          "group": "Constructor",
+          "kind": "string",
+          "name": "name",
+          "required": false,
+          "tags": {
+            "defaultValue": "\`""\`",
+            "remarks": "_(doesn't need to be unique)_.",
+          },
+        },
+        {
           "column": 11,
           "description": undefined,
+          "group": "Transform",
           "kind": "union",
           "line": 17,
           "name": "position",
@@ -2561,44 +2698,62 @@ describe("jsx ast extractor", () => {
           "valueKind": "identifier",
         },
         {
-          "column": 51,
           "description": undefined,
-          "kind": "union",
-          "line": 17,
-          "name": "scale",
+          "group": "Other",
+          "kind": "tuple",
+          "name": "quaternion",
           "required": false,
           "shape": [
             {
               "kind": "number",
+              "label": "x",
+              "required": true,
             },
             {
-              "kind": "tuple",
-              "shape": [
-                {
-                  "kind": "number",
-                  "label": "x",
-                  "required": true,
-                },
-                {
-                  "kind": "number",
-                  "label": "y",
-                  "required": true,
-                },
-                {
-                  "kind": "number",
-                  "label": "z",
-                  "required": true,
-                },
-              ],
+              "kind": "number",
+              "label": "y",
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": "z",
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": "w",
+              "required": true,
             },
           ],
           "tags": {},
-          "value": "scale",
-          "valueKind": "identifier",
+        },
+        {
+          "description": "Whether the material receives shadows.",
+          "group": "Appearance",
+          "kind": "boolean",
+          "name": "receiveShadow",
+          "required": false,
+          "tags": {
+            "defaultValue": "\`false\`",
+          },
+        },
+        {
+          "description": "This value allows the default rendering order of {@link https://en.wikipedia.org/wiki/Scene_graph | scene graph}
+      objects to be overridden although opaque and transparent objects remain sorted independently.",
+          "group": "Render",
+          "kind": "number",
+          "name": "renderOrder",
+          "required": false,
+          "tags": {
+            "defaultValue": "\`0\`",
+            "remarks": "When this property is set for an instance of {@link Group | Group}, all descendants objects will be sorted and rendered together.
+      Sorting is from lowest to highest renderOrder.",
+          },
         },
         {
           "column": 31,
           "description": undefined,
+          "group": "Transform",
           "kind": "tuple",
           "line": 17,
           "name": "rotation",
@@ -2656,158 +2811,50 @@ describe("jsx ast extractor", () => {
           "valueKind": "identifier",
         },
         {
-          "description": "Constructor arguments",
-          "kind": "tuple",
-          "name": "args",
+          "column": 51,
+          "description": undefined,
+          "group": "Transform",
+          "kind": "union",
+          "line": 17,
+          "name": "scale",
           "required": false,
           "shape": [
             {
-              "kind": "unhandled",
-              "label": "geometry",
-              "required": false,
+              "kind": "number",
             },
             {
-              "kind": "union",
-              "label": "material",
-              "required": false,
-              "shape": [],
+              "kind": "tuple",
+              "shape": [
+                {
+                  "kind": "number",
+                  "label": "x",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "y",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "z",
+                  "required": true,
+                },
+              ],
             },
           ],
           "tags": {},
-        },
-        {
-          "description": "Optional name of the object",
-          "kind": "string",
-          "name": "name",
-          "required": false,
-          "tags": {
-            "defaultValue": "\`""\`",
-            "remarks": "_(doesn't need to be unique)_.",
-          },
+          "value": "scale",
+          "valueKind": "identifier",
         },
         {
           "description": "Object gets rendered if \`true\`.",
+          "group": "Appearance",
           "kind": "boolean",
           "name": "visible",
           "required": false,
           "tags": {
             "defaultValue": "\`true\`",
-          },
-        },
-        {
-          "description": "Whether the object gets rendered into shadow map.",
-          "kind": "boolean",
-          "name": "castShadow",
-          "required": false,
-          "tags": {
-            "defaultValue": "\`false\`",
-          },
-        },
-        {
-          "description": "Whether the material receives shadows.",
-          "kind": "boolean",
-          "name": "receiveShadow",
-          "required": false,
-          "tags": {
-            "defaultValue": "\`false\`",
-          },
-        },
-        {
-          "description": undefined,
-          "kind": "string",
-          "name": "attach",
-          "required": false,
-          "tags": {},
-        },
-        {
-          "column": 7,
-          "description": undefined,
-          "kind": "union",
-          "line": 18,
-          "name": "children",
-          "required": false,
-          "shape": [
-            {
-              "kind": "string",
-            },
-            {
-              "kind": "number",
-            },
-            {
-              "kind": "boolean",
-              "literal": false,
-            },
-          ],
-          "tags": {},
-          "value": "<boxGeometry args={[1, 1, 1]} /><meshStandardMaterial color="pink" />",
-          "valueKind": "unhandled",
-        },
-        {
-          "description": "When this is set, it checks every frame if the object is in the frustum of the camera before rendering the object.
-      If set to \`false\` the object gets rendered every frame even if it is not in the frustum of the camera.",
-          "kind": "boolean",
-          "name": "frustumCulled",
-          "required": false,
-          "tags": {
-            "defaultValue": "\`true\`",
-          },
-        },
-        {
-          "description": undefined,
-          "kind": "number",
-          "name": "layers",
-          "required": false,
-          "tags": {},
-        },
-        {
-          "description": "An instance of material derived from the {@link THREE.Material | Material} base class or an array of materials, defining the object's appearance.",
-          "kind": "union",
-          "name": "material",
-          "required": false,
-          "shape": [],
-          "tags": {
-            "defaultValue": "{@link THREE.MeshBasicMaterial | \`new THREE.MeshBasicMaterial()\`}.",
-          },
-        },
-        {
-          "description": undefined,
-          "kind": "tuple",
-          "name": "quaternion",
-          "required": false,
-          "shape": [
-            {
-              "kind": "number",
-              "label": "x",
-              "required": true,
-            },
-            {
-              "kind": "number",
-              "label": "y",
-              "required": true,
-            },
-            {
-              "kind": "number",
-              "label": "z",
-              "required": true,
-            },
-            {
-              "kind": "number",
-              "label": "w",
-              "required": true,
-            },
-          ],
-          "tags": {},
-        },
-        {
-          "description": "This value allows the default rendering order of {@link https://en.wikipedia.org/wiki/Scene_graph | scene graph}
-      objects to be overridden although opaque and transparent objects remain sorted independently.",
-          "kind": "number",
-          "name": "renderOrder",
-          "required": false,
-          "tags": {
-            "defaultValue": "\`0\`",
-            "remarks": "When this property is set for an instance of {@link Group | Group}, all descendants objects will be sorted and rendered together.
-      Sorting is from lowest to highest renderOrder.",
           },
         },
       ]
@@ -2833,6 +2880,7 @@ describe("jsx ast extractor", () => {
         {
           "column": 9,
           "description": undefined,
+          "group": "Other",
           "kind": "tuple",
           "line": 26,
           "name": "position",
@@ -2863,7 +2911,41 @@ describe("jsx ast extractor", () => {
           "valueKind": "array",
         },
         {
+          "column": 9,
           "description": undefined,
+          "group": "Other",
+          "kind": "tuple",
+          "line": 27,
+          "name": "rotation",
+          "required": false,
+          "shape": [
+            {
+              "kind": "number",
+              "label": undefined,
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": undefined,
+              "required": true,
+            },
+            {
+              "kind": "number",
+              "label": undefined,
+              "required": true,
+            },
+          ],
+          "tags": {},
+          "value": [
+            1.660031347769923,
+            -0.07873115868670048,
+            -0.7211124466452248,
+          ],
+          "valueKind": "array",
+        },
+        {
+          "description": undefined,
+          "group": "Other",
           "kind": "union",
           "name": "scale",
           "required": false,
@@ -2893,38 +2975,6 @@ describe("jsx ast extractor", () => {
             },
           ],
           "tags": {},
-        },
-        {
-          "column": 9,
-          "description": undefined,
-          "kind": "tuple",
-          "line": 27,
-          "name": "rotation",
-          "required": false,
-          "shape": [
-            {
-              "kind": "number",
-              "label": undefined,
-              "required": true,
-            },
-            {
-              "kind": "number",
-              "label": undefined,
-              "required": true,
-            },
-            {
-              "kind": "number",
-              "label": undefined,
-              "required": true,
-            },
-          ],
-          "tags": {},
-          "value": [
-            1.660031347769923,
-            -0.07873115868670048,
-            -0.7211124466452248,
-          ],
-          "valueKind": "array",
         },
       ]
     `);

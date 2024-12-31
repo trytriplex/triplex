@@ -96,6 +96,7 @@ export type ValueKind =
 export type PropWithValue<TType extends Type> = {
   column: number;
   description: string | undefined;
+  group: string;
   line: number;
   name: string;
   required: boolean;
@@ -107,6 +108,7 @@ export type PropWithValue<TType extends Type> = {
 export type PropWithoutValue<TType extends Type> = {
   defaultValue?: ExpressionValue;
   description: string | undefined;
+  group: string;
   name: string;
   required: boolean;
   tags: Record<string, string | number | boolean>;
@@ -139,6 +141,7 @@ export type ExpressionValue = {
 export type Prop = {
   defaultValue?: ExpressionValue;
   description: string | undefined;
+  group: string;
   name: string;
   required: boolean;
   tags: Record<string, string | number | boolean>;

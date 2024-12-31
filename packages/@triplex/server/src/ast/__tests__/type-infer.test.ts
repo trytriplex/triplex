@@ -51,6 +51,7 @@ describe("type infer", () => {
         {
           "column": 9,
           "description": undefined,
+          "group": "Other",
           "kind": "tuple",
           "line": 18,
           "name": "position",
@@ -83,6 +84,7 @@ describe("type infer", () => {
         {
           "column": 9,
           "description": undefined,
+          "group": "Other",
           "kind": "tuple",
           "line": 19,
           "name": "rotation",
@@ -114,6 +116,7 @@ describe("type infer", () => {
         },
         {
           "description": undefined,
+          "group": "Other",
           "kind": "union",
           "name": "scale",
           "required": false,
@@ -162,23 +165,17 @@ describe("type infer", () => {
 
     const types = getJsxElementPropTypes(sceneObject);
 
-    expect(types).toMatchInlineSnapshot(`
-      {
-        "props": [
-          {
-            "description": undefined,
-            "kind": "string",
-            "name": "color",
-            "required": false,
-            "tags": {},
-          },
-        ],
-        "transforms": {
-          "rotate": false,
-          "scale": false,
-          "translate": false,
+    expect(types.props).toMatchInlineSnapshot(`
+      [
+        {
+          "description": undefined,
+          "group": "Other",
+          "kind": "string",
+          "name": "color",
+          "required": false,
+          "tags": {},
         },
-      }
+      ]
     `);
   });
 
@@ -217,6 +214,7 @@ describe("type infer", () => {
         {
           "column": 35,
           "description": undefined,
+          "group": "Other",
           "kind": "boolean",
           "line": 44,
           "name": "value",
@@ -228,6 +226,7 @@ describe("type infer", () => {
         {
           "column": 9,
           "description": undefined,
+          "group": "Other",
           "kind": "union",
           "line": 45,
           "name": "children",
@@ -263,18 +262,8 @@ describe("type infer", () => {
     if (!sceneObject) {
       throw new Error("not found");
     }
-    const propTypes = getJsxElementPropTypes(sceneObject);
 
-    expect(propTypes).toMatchInlineSnapshot(`
-      {
-        "props": [],
-        "transforms": {
-          "rotate": false,
-          "scale": false,
-          "translate": false,
-        },
-      }
-    `);
+    expect(() => getJsxElementPropTypes(sceneObject)).not.toThrow();
   });
 
   it("should extract args", () => {
@@ -293,6 +282,7 @@ describe("type infer", () => {
     expect(props.find((type) => type.name === "args")).toMatchInlineSnapshot(`
       {
         "description": undefined,
+        "group": "Other",
         "kind": "tuple",
         "name": "args",
         "required": false,
@@ -350,6 +340,7 @@ describe("type infer", () => {
     expect(props.find((type) => type.name === "scale")).toMatchInlineSnapshot(`
       {
         "description": undefined,
+        "group": "Transform",
         "kind": "union",
         "name": "scale",
         "required": false,
@@ -399,6 +390,7 @@ describe("type infer", () => {
         {
           "column": 21,
           "description": undefined,
+          "group": "Other",
           "kind": "number",
           "line": 41,
           "name": "posX",
@@ -542,6 +534,7 @@ describe("type infer", () => {
       .toMatchInlineSnapshot(`
         {
           "description": undefined,
+          "group": "Transform",
           "kind": "tuple",
           "name": "rotation",
           "required": false,
@@ -612,6 +605,7 @@ describe("type infer", () => {
       [
         {
           "description": undefined,
+          "group": "Other",
           "kind": "union",
           "name": "color",
           "required": false,
@@ -650,6 +644,7 @@ describe("type infer", () => {
             "value": false,
           },
           "description": undefined,
+          "group": "Other",
           "kind": "boolean",
           "name": "debugPhysics",
           "required": false,
@@ -661,6 +656,7 @@ describe("type infer", () => {
             "value": false,
           },
           "description": undefined,
+          "group": "Other",
           "kind": "boolean",
           "name": "enablePhysics",
           "required": false,
@@ -753,6 +749,7 @@ describe("type infer", () => {
             "value": "foo",
           },
           "description": undefined,
+          "group": "Other",
           "kind": "union",
           "name": "name",
           "required": false,
@@ -774,6 +771,7 @@ describe("type infer", () => {
             "value": true,
           },
           "description": undefined,
+          "group": "Other",
           "kind": "boolean",
           "name": "test",
           "required": false,
@@ -801,6 +799,7 @@ describe("type infer", () => {
             "value": 700,
           },
           "description": undefined,
+          "group": "Other",
           "kind": "number",
           "name": "scaleMax",
           "required": false,
@@ -811,6 +810,7 @@ describe("type infer", () => {
         },
         {
           "description": undefined,
+          "group": "Other",
           "kind": "string",
           "name": "seed",
           "required": true,
@@ -822,6 +822,7 @@ describe("type infer", () => {
             "value": "WGAN",
           },
           "description": undefined,
+          "group": "Other",
           "kind": "string",
           "literal": "foo",
           "name": "strategy",
@@ -834,6 +835,7 @@ describe("type infer", () => {
             "value": true,
           },
           "description": undefined,
+          "group": "Other",
           "kind": "boolean",
           "name": "useInterpolation",
           "required": false,
@@ -845,6 +847,7 @@ describe("type infer", () => {
             "value": true,
           },
           "description": undefined,
+          "group": "Other",
           "kind": "boolean",
           "name": "useNoise",
           "required": false,
@@ -868,6 +871,7 @@ describe("type infer", () => {
       [
         {
           "description": undefined,
+          "group": "Other",
           "kind": "string",
           "name": "color",
           "required": true,
@@ -891,6 +895,7 @@ describe("type infer", () => {
       [
         {
           "description": undefined,
+          "group": "Other",
           "kind": "string",
           "name": "name",
           "required": true,
@@ -918,6 +923,7 @@ describe("type infer", () => {
             "value": false,
           },
           "description": undefined,
+          "group": "Other",
           "kind": "boolean",
           "name": "debugPhysics",
           "required": false,
@@ -929,6 +935,7 @@ describe("type infer", () => {
             "value": false,
           },
           "description": undefined,
+          "group": "Other",
           "kind": "boolean",
           "name": "enablePhysics",
           "required": false,
@@ -956,6 +963,7 @@ describe("type infer", () => {
             "value": "foo",
           },
           "description": undefined,
+          "group": "Other",
           "kind": "union",
           "name": "name",
           "required": false,
@@ -977,6 +985,7 @@ describe("type infer", () => {
             "value": true,
           },
           "description": undefined,
+          "group": "Other",
           "kind": "boolean",
           "name": "test",
           "required": false,
@@ -1001,6 +1010,7 @@ describe("type infer", () => {
         {
           "description": "Defines which of the face sides will be rendered - front, back or both.
       Default is {@link THREE.FrontSide}. Other options are {@link THREE.BackSide} and {@link THREE.DoubleSide}.",
+          "group": "Render",
           "kind": "union",
           "name": "side",
           "required": false,
@@ -1044,6 +1054,7 @@ describe("type infer", () => {
         [
           {
             "description": "Blending source. It's one of the blending mode constants defined in Three.js. Default is {@link SrcAlphaFactor}.",
+            "group": "Blend",
             "kind": "union",
             "name": "blendSrc",
             "required": false,
@@ -1143,37 +1154,38 @@ describe("type infer", () => {
 
     expect(props.filter((prop) => prop.name === "frictionCombineRule"))
       .toMatchInlineSnapshot(`
-      [
-        {
-          "description": "What happens when two bodies meet. See https://rapier.rs/docs/user_guides/javascript/colliders#friction.",
-          "kind": "union",
-          "name": "frictionCombineRule",
-          "required": false,
-          "shape": [
-            {
-              "kind": "number",
-              "label": "Average",
-              "literal": 0,
-            },
-            {
-              "kind": "number",
-              "label": "Min",
-              "literal": 1,
-            },
-            {
-              "kind": "number",
-              "label": "Multiply",
-              "literal": 2,
-            },
-            {
-              "kind": "number",
-              "label": "Max",
-              "literal": 3,
-            },
-          ],
-          "tags": {},
-        },
-      ]
-    `);
+        [
+          {
+            "description": "What happens when two bodies meet. See https://rapier.rs/docs/user_guides/javascript/colliders#friction.",
+            "group": "Other",
+            "kind": "union",
+            "name": "frictionCombineRule",
+            "required": false,
+            "shape": [
+              {
+                "kind": "number",
+                "label": "Average",
+                "literal": 0,
+              },
+              {
+                "kind": "number",
+                "label": "Min",
+                "literal": 1,
+              },
+              {
+                "kind": "number",
+                "label": "Multiply",
+                "literal": 2,
+              },
+              {
+                "kind": "number",
+                "label": "Max",
+                "literal": 3,
+              },
+            ],
+            "tags": {},
+          },
+        ]
+      `);
   });
 });

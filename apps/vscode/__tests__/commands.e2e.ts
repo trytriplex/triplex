@@ -34,7 +34,7 @@ test("drag to change number input", async ({ vsce }) => {
 
   // Escape should blur the input.
   await expect(input).not.toBeFocused();
-  await expect(input).toHaveValue(/(0.24)|(0.36)/);
+  await expect(input).toHaveValue("0.44");
 });
 
 test("delete element", async ({ vsce }) => {

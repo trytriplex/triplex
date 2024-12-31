@@ -73,6 +73,7 @@ module.exports = {
       "active-selected": "var(--vscode-list-activeSelectionForeground)",
       danger: "var(--vscode-editorError-foreground)",
       default: "var(--vscode-foreground)",
+      disabled: "var(--vscode-disabledForeground)",
       info: "var(--vscode-editorInfo-foreground)",
       input: "var(--vscode-input-foreground)",
       "input-placeholder": "var(--vscode-input-placeholderForeground)",

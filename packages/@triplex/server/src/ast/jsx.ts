@@ -16,8 +16,13 @@ import {
 } from "ts-morph";
 import { normalize } from "upath";
 import type { JsxElementPositions } from "../types";
+import { isReactThreeElement } from "./is-three-element";
 import { getElementFilePath } from "./module";
 import { type SourceFileReadOnly } from "./project";
+import {
+  globalPropsExclusions,
+  threejsPropsExclusions,
+} from "./prop-exclusions";
 import { getFunctionPropTypes, getJsxElementPropTypes } from "./type-infer";
 
 /**
@@ -248,69 +253,6 @@ export function getAttributes(
   return attrs;
 }
 
-const propsSortList: Record<string, number> = [
-  "position",
-  "scale",
-  "rotation",
-  "args",
-  "name",
-  "visible",
-  "castShadow",
-  "receiveShadow",
-  "color",
-  "opacity",
-  "transparent",
-  "metalness",
-  "roughness",
-].reduce((acc, val, index) => Object.assign(acc, { [val]: 1000 - index }), {});
-
-const threejsPropsExclusions: Record<string, true> = {
-  id: true,
-  isAmbientLight: true,
-  isBufferGeometry: true,
-  isDirectionalLight: true,
-  isHemisphereLight: true,
-  isLight: true,
-  isLineBasicMaterial: true,
-  isLineDashedMaterial: true,
-  isMaterial: true,
-  isMesh: true,
-  isMeshBasicMaterial: true,
-  isMeshDepthMaterial: true,
-  isMeshDistanceMaterial: true,
-  isMeshLambertMaterial: true,
-  isMeshMatcapMaterial: true,
-  isMeshNormalMaterial: true,
-  isMeshPhongMaterial: true,
-  isMeshPhysicalMaterial: true,
-  isMeshStandardMaterial: true,
-  isMeshToonMaterial: true,
-  isObject3D: true,
-  isPointLight: true,
-  isPointsMaterial: true,
-  isRawShaderMaterial: true,
-  isRectAreaLight: true,
-  isShaderMaterial: true,
-  isShadowMaterial: true,
-  isSpotLight: true,
-  isSpriteMaterial: true,
-  matrix: true,
-  matrixAutoUpdate: true,
-  matrixWorldAutoUpdate: true,
-  matrixWorldNeedsUpdate: true,
-  needsUpdate: true,
-  steps: true,
-  type: true,
-  up: true,
-  uuid: true,
-  version: true,
-};
-
-const globalPropsExclusions: Record<string, true> = {
-  key: true,
-  ref: true,
-};
-
 export function getJsxElementParentExportNameOrThrow(
   element: JsxSelfClosingElement | JsxElement,
 ): string {
@@ -357,18 +299,11 @@ export function getJsxElementProps(
   _: SourceFileReadOnly,
   element: JsxSelfClosingElement | JsxElement,
 ) {
-  const { props, transforms } = getJsxElementPropTypes(element);
-  const elementPath = (
-    Node.isJsxSelfClosingElement(element)
-      ? element.getTagNameNode()
-      : element.getOpeningElement().getTagNameNode()
-  )
-    .getSymbolOrThrow()
-    .getFullyQualifiedName();
+  const { elementName, props, transforms } = getJsxElementPropTypes(element);
 
   const sortedProps = props
     .filter((prop) => {
-      if (elementPath.includes("node_modules/@react-three")) {
+      if (isReactThreeElement(elementName)) {
         return (
           !threejsPropsExclusions[prop.name] &&
           !globalPropsExclusions[prop.name] &&
@@ -379,17 +314,6 @@ export function getJsxElementProps(
       return !globalPropsExclusions[prop.name] && prop.kind !== "unhandled";
     })
     .sort((propA, propB) => {
-      const aPos = propsSortList[propA.name] ?? -1;
-      const bPos = propsSortList[propB.name] ?? -1;
-
-      if (aPos < bPos) {
-        return 1;
-      }
-
-      if (bPos < aPos) {
-        return -1;
-      }
-
       return propA.name.localeCompare(propB.name);
     });
 
@@ -401,23 +325,7 @@ export function getFunctionProps(
   exportName: string,
 ) {
   const { props, transforms } = getFunctionPropTypes(sourceFile, exportName);
-
-  const sortedProps = props.sort((propA, propB) => {
-    const aPos = propsSortList[propA.name] ?? -1;
-    const bPos = propsSortList[propB.name] ?? -1;
-
-    if (aPos < bPos) {
-      return 1;
-    }
-
-    if (bPos < aPos) {
-      return -1;
-    }
-
-    return propA.name.localeCompare(propB.name);
-  });
-
-  return { props: sortedProps, transforms };
+  return { props, transforms };
 }
 
 export function getJsxElementAt(

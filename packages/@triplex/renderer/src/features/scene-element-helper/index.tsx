@@ -16,21 +16,21 @@ import {
 import "./camera-helper";
 
 export type Helper =
-  | "spotLightHelper"
+  | "cameraHelper"
   | "directionalLightHelper"
-  | "pointLightHelper"
   | "hemisphereLightHelper"
-  | "triplexCameraHelper";
+  | "pointLightHelper"
+  | "spotLightHelper";
 
 export type SupportedElements =
-  | "rectAreaLight"
-  | "pointLight"
   | "ambientLight"
-  | "hemisphereLight"
-  | "spotLight"
   | "directionalLight"
+  | "hemisphereLight"
+  | "orthographicCamera"
   | "perspectiveCamera"
-  | "orthographicCamera";
+  | "pointLight"
+  | "rectAreaLight"
+  | "spotLight";
 
 export type HelperInstance = Object3D & {
   dispose: () => void;
@@ -83,7 +83,7 @@ export const resolveHelper = (
 
     case "PerspectiveCamera":
     case "OrthographicCamera":
-      return { Element: "triplexCameraHelper", args: [] };
+      return { Element: "triplexCameraHelper" as "cameraHelper", args: [] };
 
     default:
       return undefined;
