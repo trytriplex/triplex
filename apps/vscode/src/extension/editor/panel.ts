@@ -32,6 +32,7 @@ export async function initializeWebviewPanel(
   panel.title = `${basename(path)} (${basename(triplexProjectCwd)})`;
 
   panel.webview.options = {
+    enableCommandUris: true,
     enableScripts: true,
   };
 

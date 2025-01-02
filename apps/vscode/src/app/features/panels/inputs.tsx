@@ -34,7 +34,15 @@ const createIssueURL = (prop: DeclaredProp | Prop) =>
 
 const createCodeLink = (path: string, prop: DeclaredProp | Prop) => {
   if ("value" in prop) {
-    return encodeURI(`vscode://file/${path}:${prop.line}:${prop.column}`);
+    const data = {
+      column: prop.column,
+      line: prop.line,
+      path,
+    };
+
+    const encodedArgs = encodeURIComponent(JSON.stringify([data]));
+
+    return encodeURI(`command:triplex.open-file?${encodedArgs}`);
   }
 
   return "";

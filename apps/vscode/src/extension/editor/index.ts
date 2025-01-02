@@ -224,6 +224,19 @@ export class TriplexEditorProvider
           );
         });
       }),
+      vscode.commands.registerCommand("triplex.open-file", async (args) => {
+        const uri = vscode.Uri.file(args.path);
+        const position = new vscode.Position(args.line - 1, args.column - 1);
+
+        const document = await vscode.workspace.openTextDocument(uri);
+        const editor = await vscode.window.showTextDocument(
+          document,
+          vscode.ViewColumn.One,
+        );
+
+        editor.selection = new vscode.Selection(position, position);
+        editor.revealRange(new vscode.Range(position, position));
+      }),
       vscode.commands.registerCommand("triplex.element-duplicate", (args) => {
         resolveActivePanel((panel) => {
           sendVSCE(

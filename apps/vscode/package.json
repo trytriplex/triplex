@@ -71,7 +71,12 @@
       {
         "category": "Triplex",
         "command": "triplex.element-jump-to",
-        "title": "Jump To"
+        "title": "Zoom To Element"
+      },
+      {
+        "category": "Triplex",
+        "command": "triplex.open-file",
+        "title": "Go To Definition"
       },
       {
         "category": "Triplex",
@@ -141,6 +146,10 @@
           "when": "false"
         },
         {
+          "command": "triplex.open-file",
+          "when": "false"
+        },
+        {
           "command": "triplex.set-camera-editor",
           "when": "activeCustomEditorId == 'triplex.editor'"
         },
@@ -174,6 +183,11 @@
         },
         {
           "command": "triplex.element-jump-to",
+          "when": "webviewSection == 'element-actions'",
+          "group": "1_navigation"
+        },
+        {
+          "command": "triplex.open-file",
           "when": "webviewSection == 'element-actions'",
           "group": "1_navigation"
         },
