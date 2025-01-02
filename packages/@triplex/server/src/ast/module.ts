@@ -4,14 +4,23 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { Node, type JsxElement, type JsxSelfClosingElement } from "ts-morph";
+import {
+  Node,
+  type JsxElement,
+  type JsxFragment,
+  type JsxSelfClosingElement,
+} from "ts-morph";
 import { normalize } from "upath";
 import { resolveExportDeclaration } from "./jsx";
 import { type SourceFileReadOnly } from "./project";
 
 export function getElementFilePath(
-  element: JsxSelfClosingElement | JsxElement,
+  element: JsxSelfClosingElement | JsxElement | JsxFragment,
 ): { exportName: string; filePath: string } {
+  if (Node.isJsxFragment(element)) {
+    return { exportName: "", filePath: "" };
+  }
+
   const tagNode = Node.isJsxSelfClosingElement(element)
     ? element.getTagNameNode()
     : element.getOpeningElement().getTagNameNode();

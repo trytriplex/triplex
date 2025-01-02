@@ -168,73 +168,86 @@ describe("jsx ast extractor", () => {
 
     expect(elements).toEqual([
       {
-        children: [],
-        column: 7,
-        exportName: "default",
-        line: 25,
-        name: "Box",
+        children: [
+          {
+            children: [],
+            column: 7,
+            exportName: "default",
+            line: 25,
+            name: "Box",
+            parentPath: fromCwd(
+              "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
+            ),
+            path: fromCwd(
+              "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx",
+            ),
+            type: "custom",
+          },
+          {
+            children: [],
+            column: 7,
+            exportName: "default",
+            line: 31,
+            name: "Cylinder",
+            parentPath: fromCwd(
+              "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
+            ),
+            path: fromCwd(
+              "packages/@triplex/server/src/ast/__tests__/__mocks__/cylinder.tsx",
+            ),
+            type: "custom",
+          },
+          {
+            children: [],
+            column: 7,
+            exportName: "SceneAlt",
+            line: 34,
+            name: "SceneAlt",
+            parentPath: fromCwd(
+              "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
+            ),
+            path: fromCwd(
+              "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
+            ),
+            type: "custom",
+          },
+          {
+            children: [],
+            column: 7,
+            exportName: "SceneWrapped",
+            line: 35,
+            name: "SceneWrapped",
+            parentPath: fromCwd(
+              "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
+            ),
+            path: fromCwd(
+              "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
+            ),
+            type: "custom",
+          },
+          {
+            children: [],
+            column: 7,
+            exportName: "SceneArrow",
+            line: 36,
+            name: "SceneArrow",
+            parentPath: fromCwd(
+              "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
+            ),
+            path: fromCwd(
+              "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
+            ),
+            type: "custom",
+          },
+        ],
+        column: 5,
+        exportName: "",
+        line: 24,
+        name: "Fragment",
         parentPath: fromCwd(
           "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
         ),
-        path: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx",
-        ),
-        type: "custom",
-      },
-      {
-        children: [],
-        column: 7,
-        exportName: "default",
-        line: 31,
-        name: "Cylinder",
-        parentPath: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
-        ),
-        path: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/cylinder.tsx",
-        ),
-        type: "custom",
-      },
-      {
-        children: [],
-        column: 7,
-        exportName: "SceneAlt",
-        line: 34,
-        name: "SceneAlt",
-        parentPath: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
-        ),
-        path: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
-        ),
-        type: "custom",
-      },
-      {
-        children: [],
-        column: 7,
-        exportName: "SceneWrapped",
-        line: 35,
-        name: "SceneWrapped",
-        parentPath: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
-        ),
-        path: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
-        ),
-        type: "custom",
-      },
-      {
-        children: [],
-        column: 7,
-        exportName: "SceneArrow",
-        line: 36,
-        name: "SceneArrow",
-        parentPath: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
-        ),
-        path: fromCwd(
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/scene.tsx",
-        ),
+        path: "",
         type: "custom",
       },
     ]);

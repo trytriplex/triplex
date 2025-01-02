@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { type NodePath } from "@babel/core";
-import type * as t from "@babel/types";
+import * as t from "@babel/types";
 
 export function resolveIdentifierImportSpecifier(
   path: NodePath<t.JSXIdentifier | t.Identifier>,
@@ -100,4 +100,25 @@ export function extractFunctionArgs(
   }
 
   return { destructured, spreadIdentifier };
+}
+
+export function importIfMissing(
+  pass: NodePath<t.Program>,
+  module: string,
+  namedImport: string,
+) {
+  if (
+    pass.scope.hasBinding(namedImport) ||
+    pass.scope.hasGlobal(namedImport) ||
+    pass.scope.hasReference(namedImport)
+  ) {
+    return;
+  }
+
+  pass.node.body.unshift(
+    t.importDeclaration(
+      [t.importSpecifier(t.identifier(namedImport), t.identifier(namedImport))],
+      t.stringLiteral(module),
+    ),
+  );
 }

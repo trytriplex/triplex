@@ -10,6 +10,7 @@ import type { SceneMeta } from "@triplex/bridge/client";
 import { normalize } from "upath";
 import {
   extractFunctionArgs,
+  importIfMissing,
   isChildOfReturnStatement,
   isJSXIdentifierFromNodeModules,
 } from "./util/babel";
@@ -69,6 +70,7 @@ export default function triplexBabelPlugin({
   const exclude = excludeDirs.filter(Boolean);
 
   let shouldSkip = false;
+  let shouldImportFragment = false;
   let currentFunction:
     | {
         firstCustomComponent?: string;
@@ -458,6 +460,60 @@ export default function triplexBabelPlugin({
 
         path.replaceWith(newNode);
       },
+      JSXFragment(path, pass) {
+        if (shouldSkip) {
+          return;
+        }
+
+        if (cache.has(path.node) || !path.node.loc) {
+          return;
+        }
+
+        shouldImportFragment = true;
+        cache.add(path.node);
+
+        const line = path.node.loc.start.line;
+        // Align to tsc where column numbers start from 1
+        const column = path.node.loc.start.column + 1;
+
+        const newNode = t.jsxElement(
+          t.jsxOpeningElement(t.jsxIdentifier(SCENE_OBJECT_COMPONENT_NAME), [
+            t.jsxAttribute(
+              t.jsxIdentifier("__component"),
+              t.jsxExpressionContainer(t.identifier("Fragment")),
+            ),
+            t.jsxAttribute(
+              t.jsxIdentifier("__meta"),
+              t.jsxExpressionContainer(
+                t.objectExpression([
+                  t.objectProperty(
+                    t.stringLiteral("path"),
+                    t.stringLiteral(
+                      pass.filename ? normalize(pass.filename) : "",
+                    ),
+                  ),
+                  t.objectProperty(
+                    t.stringLiteral("name"),
+                    t.stringLiteral("Fragment"),
+                  ),
+                  t.objectProperty(
+                    t.stringLiteral("line"),
+                    t.numericLiteral(line),
+                  ),
+                  t.objectProperty(
+                    t.stringLiteral("column"),
+                    t.numericLiteral(column),
+                  ),
+                ]),
+              ),
+            ),
+          ]),
+          t.jsxClosingElement(t.jsxIdentifier(SCENE_OBJECT_COMPONENT_NAME)),
+          path.node.children,
+        );
+
+        path.replaceWith(newNode);
+      },
       Program: {
         enter(_, state) {
           const normalizedPath = normalize(state.filename || "");
@@ -499,8 +555,6 @@ export default function triplexBabelPlugin({
             });
           }
 
-          shouldSkip = false;
-
           const componentMetaOrder = resolveOrderingFromMap(
             componentMetaDependencyMap,
           );
@@ -539,6 +593,12 @@ export default function triplexBabelPlugin({
               );
             });
 
+          if (shouldImportFragment) {
+            importIfMissing(path, "react", "Fragment");
+          }
+
+          shouldSkip = false;
+          shouldImportFragment = false;
           componentsFoundInPass.clear();
           componentMetaDependencyMap.clear();
         },

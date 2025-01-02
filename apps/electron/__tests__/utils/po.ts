@@ -129,7 +129,7 @@ export class EditorPage {
     await button.click();
     await expect
       .poll(async () => this.page.getByTestId("scene-element").count())
-      .toBe(3);
+      .toBe(4);
   }
 
   waitForElementCount(count: number) {
@@ -216,7 +216,7 @@ export class EditorPage {
         await locator.selectOption("new-component");
         await expect
           .poll(async () => this.page.getByTestId("scene-element").count())
-          .toBe(3);
+          .toBe(4);
       },
     };
 

@@ -24,6 +24,30 @@ const transformSync = (code: string, opts?: TransformOptions) => {
 };
 
 describe("babel plugin", () => {
+  it("should transform jsx fragment shorthands", () => {
+    const result = transformSync(
+      `
+      <></>
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "import { Fragment } from "react";
+      <SceneObject __component={Fragment} __meta={{
+        "path": "",
+        "name": "Fragment",
+        "line": 2,
+        "column": 7
+      }}></SceneObject>;"
+    `);
+  });
+
   it("should ignore a file and not transform anything", () => {
     const result = transformSync(
       `
@@ -341,8 +365,14 @@ describe("babel plugin", () => {
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
-      "export const HelloWorld = () => {
-        return <>
+      "import { Fragment } from "react";
+      export const HelloWorld = () => {
+        return <SceneObject __component={Fragment} __meta={{
+          "path": "",
+          "name": "Fragment",
+          "line": 4,
+          "column": 11
+        }}>
                   <SceneObject visible __component={"mesh"} __meta={{
             "path": "",
             "name": "mesh",
@@ -371,7 +401,7 @@ describe("babel plugin", () => {
             "rotate": false,
             "scale": false
           }}></SceneObject>
-                </>;
+                </SceneObject>;
       };
       HelloWorld.triplexMeta = {
         "lighting": "custom",
@@ -1497,11 +1527,7 @@ describe("babel plugin", () => {
         }
 
         export function Scene() {
-          return (
-            <>
-              <Inbuilt2 />
-            </>
-          );
+          return <Inbuilt2 />;
         }
       `,
       {
@@ -1557,17 +1583,15 @@ describe("babel plugin", () => {
         }}></SceneObject>;
       }
       export function Scene() {
-        return <>
-                    <SceneObject __component={Inbuilt2} __meta={{
-            "path": "",
-            "name": "Inbuilt2",
-            "line": 20,
-            "column": 15,
-            "translate": false,
-            "rotate": false,
-            "scale": false
-          }}></SceneObject>
-                  </>;
+        return <SceneObject __component={Inbuilt2} __meta={{
+          "path": "",
+          "name": "Inbuilt2",
+          "line": 18,
+          "column": 18,
+          "translate": false,
+          "rotate": false,
+          "scale": false
+        }}></SceneObject>;
       }
       Inbuilt.triplexMeta = {
         "lighting": "default",

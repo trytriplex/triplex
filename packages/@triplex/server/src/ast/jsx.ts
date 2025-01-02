@@ -10,6 +10,7 @@ import {
   type JsxAttribute,
   type JsxChild,
   type JsxElement,
+  type JsxFragment,
   type JsxSelfClosingElement,
   type SourceFile,
   type ts,
@@ -55,19 +56,38 @@ export function getAllJsxElements(
   const jsxSelfClosing = nodeToSearch.getDescendantsOfKind(
     SyntaxKind.JsxSelfClosingElement,
   );
+  const jsxFragments = nodeToSearch.getDescendantsOfKind(
+    SyntaxKind.JsxFragment,
+  );
 
-  const elements: (JsxSelfClosingElement | JsxElement)[] = [];
-  elements.push(...jsxSelfClosing, ...jsxElements);
+  const elements: (JsxSelfClosingElement | JsxElement | JsxFragment)[] = [];
+  elements.push(...jsxSelfClosing, ...jsxElements, ...jsxFragments);
 
   return elements;
 }
 
-export function getJsxTag(node: JsxElement | JsxSelfClosingElement) {
+export function getJsxTag(
+  node: JsxElement | JsxSelfClosingElement | JsxFragment,
+): {
+  friendlyName: string;
+  name: string | undefined;
+  tagName: string;
+  type: "custom" | "host";
+} {
+  if (Node.isJsxFragment(node)) {
+    return {
+      friendlyName: "Fragment",
+      name: "Fragment",
+      tagName: "",
+      type: "custom",
+    };
+  }
+
   const { attributes } = getAttributes(node);
-  const name = Node.isJsxElement(node)
+  const tagName = Node.isJsxElement(node)
     ? node.getOpeningElement().getTagNameNode().getText()
     : node.getTagNameNode().getText();
-  const type: "host" | "custom" = /^[a-z]/.exec(name) ? "host" : "custom";
+  const type: "host" | "custom" = /^[a-z]/.exec(tagName) ? "host" : "custom";
 
   if (attributes.name) {
     const nameInitializer = attributes.name.getInitializer();
@@ -76,17 +96,21 @@ export function getJsxTag(node: JsxElement | JsxSelfClosingElement) {
       : nameInitializer;
 
     if (Node.isStringLiteral(initializerValue)) {
+      const name = initializerValue.getLiteralText();
+
       return {
-        name: initializerValue.getLiteralText(),
-        tagName: name,
+        friendlyName: `${name} (${tagName})`,
+        name,
+        tagName,
         type,
       };
     }
   }
 
   return {
+    friendlyName: tagName,
     name: undefined,
-    tagName: name,
+    tagName,
     type,
   };
 }
@@ -170,7 +194,11 @@ export function getJsxElementsPositions(
   );
 
   declaration.forEachDescendant((node) => {
-    if (Node.isJsxElement(node) || Node.isJsxSelfClosingElement(node)) {
+    if (
+      Node.isJsxElement(node) ||
+      Node.isJsxFragment(node) ||
+      Node.isJsxSelfClosingElement(node)
+    ) {
       const { column, line } = sourceFile.getLineAndColumnAtPos(
         node.getStart(),
       );
@@ -184,7 +212,7 @@ export function getJsxElementsPositions(
           column,
           exportName: paths.exportName,
           line,
-          name: tag.name ? `${tag.name} (${tag.tagName})` : tag.tagName,
+          name: tag.friendlyName,
           parentPath,
           path: paths.filePath,
           type: "custom",
@@ -194,13 +222,15 @@ export function getJsxElementsPositions(
           children: [],
           column,
           line,
-          name: tag.name ? `${tag.name} (${tag.tagName})` : tag.tagName,
+          name: tag.friendlyName,
           parentPath,
           type: "host",
         };
       }
 
-      const parentElement = node.getParentIfKind(SyntaxKind.JsxElement);
+      const parentElement =
+        node.getFirstAncestorByKind(SyntaxKind.JsxElement) ||
+        node.getFirstAncestorByKind(SyntaxKind.JsxFragment);
       if (parentElement) {
         const parentPositions = parentPointers.get(parentElement);
         if (!parentPositions) {
@@ -225,8 +255,15 @@ export type AttributesResult = {
 };
 
 export function getAttributes(
-  element: JsxSelfClosingElement | JsxElement,
+  element: JsxSelfClosingElement | JsxElement | JsxFragment,
 ): AttributesResult {
+  if (Node.isJsxFragment(element)) {
+    return {
+      attributes: {},
+      children: element.getJsxChildren(),
+    };
+  }
+
   const attributes = Node.isJsxSelfClosingElement(element)
     ? element.getAttributes()
     : element.getOpeningElement().getAttributes();
@@ -254,7 +291,7 @@ export function getAttributes(
 }
 
 export function getJsxElementParentExportNameOrThrow(
-  element: JsxSelfClosingElement | JsxElement,
+  element: JsxSelfClosingElement | JsxElement | JsxFragment,
 ): string {
   const ancestors = element.getAncestors();
   const maxDepth = ancestors.length - 2;
@@ -297,7 +334,7 @@ export function getJsxElementParentExportNameOrThrow(
 
 export function getJsxElementProps(
   _: SourceFileReadOnly,
-  element: JsxSelfClosingElement | JsxElement,
+  element: JsxSelfClosingElement | JsxElement | JsxFragment,
 ) {
   const { elementName, props, transforms } = getJsxElementPropTypes(element);
 

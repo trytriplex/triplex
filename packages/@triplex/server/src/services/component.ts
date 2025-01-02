@@ -8,6 +8,7 @@ import {
   Node,
   SyntaxKind,
   type JsxElement,
+  type JsxFragment,
   type JsxSelfClosingElement,
   type SourceFile,
   type ts,
@@ -17,6 +18,7 @@ import {
   getAttributes,
   getJsxElementAt,
   getJsxElementAtOrThrow,
+  getJsxTag,
 } from "../ast/jsx";
 import { getExportName } from "../ast/module";
 import { type ComponentRawType, type ComponentTarget } from "../types";
@@ -160,8 +162,9 @@ function addToJsxElement(
     };
   }
 
+  const { tagName } = getJsxTag(element);
   const openingText = element.getText().replace(" />", ">");
-  const closingText = `</${element.getTagNameNode().getText()}>`;
+  const closingText = `</${tagName}>`;
 
   element.replaceWithText(openingText + componentText + closingText);
 
@@ -347,10 +350,14 @@ export function add(
 }
 
 export function upsertProp(
-  jsxElement: JsxElement | JsxSelfClosingElement,
+  jsxElement: JsxElement | JsxSelfClosingElement | JsxFragment,
   propName: string,
   propValue: string,
 ) {
+  if (Node.isJsxFragment(jsxElement)) {
+    return "invalid-fragment";
+  }
+
   const { attributes, children } = getAttributes(jsxElement);
 
   const existingProp = attributes[propName];
@@ -557,7 +564,7 @@ export function move(
       } else {
         sourceElement.replaceWithText("");
         const destinationText = destinationElement.getText();
-        const tagName = destinationElement.getTagNameNode().getText();
+        const { tagName } = getJsxTag(destinationElement);
         destinationElement.replaceWithText(
           destinationText.replace("/>", `>${sourceText}</${tagName}>`),
         );

@@ -17,7 +17,7 @@ test("dragging before an element", async ({ electron }) => {
     targetPosition: { x: 1, y: 1 },
   });
 
-  await expect(electron.scenePanel.allElements.nth(1)).toHaveText(
+  await expect(electron.scenePanel.allElements.nth(2)).toHaveText(
     "user_defined (PerspectiveCamera)",
   );
 });
@@ -41,7 +41,7 @@ test("drag into an element", async ({ electron }) => {
 
   await source.locator.dragTo(destination.locator);
 
-  await expect(electron.scenePanel.allElements.nth(3)).toHaveText(
+  await expect(electron.scenePanel.allElements.nth(4)).toHaveText(
     "ambientLight",
   );
 });

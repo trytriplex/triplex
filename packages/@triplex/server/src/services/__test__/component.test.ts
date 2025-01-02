@@ -592,11 +592,15 @@ describe("component service", () => {
     const sourceFile = project.addSourceFileAtPath(
       join(__dirname, "__mocks__/add-prop.tsx"),
     );
-    expect(getJsxElementsPositions(sourceFile, "default").length).toEqual(4);
+    expect(
+      getJsxElementsPositions(sourceFile, "default")[0].children.length,
+    ).toEqual(4);
 
     commentComponent(sourceFile, 12, 7);
 
-    expect(getJsxElementsPositions(sourceFile, "default").length).toEqual(3);
+    expect(
+      getJsxElementsPositions(sourceFile, "default")[0].children.length,
+    ).toEqual(3);
     expect(getJsxElementAt(sourceFile, 12, 7)).not.toBeDefined();
   });
 

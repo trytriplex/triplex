@@ -5,14 +5,17 @@
  * file in the root directory of this source tree.
  */
 import { MapControls, PerspectiveCamera } from "@react-three/drei";
+import { Fragment } from "react";
 import Box from "./geometry/box";
 
 export function Plane() {
   return (
-    <mesh>
-      <planeGeometry />
-      <meshBasicMaterial color={"#dd8d8d"} visible={true} />
-    </mesh>
+    <Fragment>
+      <mesh>
+        <planeGeometry />
+        <meshBasicMaterial color={"#dd8d8d"} visible={true} />
+      </mesh>
+    </Fragment>
   );
 }
 

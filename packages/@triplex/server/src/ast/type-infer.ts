@@ -10,6 +10,7 @@ import {
   type JsxAttribute,
   type JsxChild,
   type JsxElement,
+  type JsxFragment,
   type JsxSelfClosingElement,
   type JsxText,
   type PropertySignature,
@@ -27,7 +28,7 @@ import type {
 } from "../types";
 import { isReactDOMElement } from "./is-react-element";
 import { isReactThreeElement } from "./is-three-element";
-import { getAttributes } from "./jsx";
+import { getAttributes, getJsxTag } from "./jsx";
 import { getExportName } from "./module";
 import { type SourceFileReadOnly } from "./project";
 import { reactDOMPropGrouping, threeFiberPropGrouping } from "./prop-groupings";
@@ -232,7 +233,13 @@ export function unrollType(
   };
 }
 
-function getJsxDeclProps(element: JsxSelfClosingElement | JsxElement) {
+function getJsxDeclProps(
+  element: JsxSelfClosingElement | JsxElement | JsxFragment,
+) {
+  if (Node.isJsxFragment(element)) {
+    return null;
+  }
+
   const tagName = Node.isJsxSelfClosingElement(element)
     ? element.getTagNameNode()
     : element.getOpeningElement().getTagNameNode();
@@ -473,18 +480,14 @@ export function resolveGroupName({
 }
 
 export function getJsxElementPropTypes(
-  element: JsxSelfClosingElement | JsxElement,
+  element: JsxSelfClosingElement | JsxElement | JsxFragment,
 ) {
   const props: (Prop | DeclaredProp)[] = [];
   const { attributes, children } = getAttributes(element);
   const jsxDecl = getJsxDeclProps(element);
   const unionValueLabels: Record<string, Record<string, string>> = {};
   const defaultValues: Record<string, ExpressionValue> = {};
-  const elementName = (
-    Node.isJsxSelfClosingElement(element)
-      ? element.getTagNameNode()
-      : element.getOpeningElement().getTagNameNode()
-  ).getText();
+  const elementName = getJsxTag(element).tagName;
 
   if (!jsxDecl) {
     return {
