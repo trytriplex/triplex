@@ -228,9 +228,10 @@ export function getJsxElementsPositions(
         };
       }
 
-      const parentElement =
-        node.getFirstAncestorByKind(SyntaxKind.JsxElement) ||
-        node.getFirstAncestorByKind(SyntaxKind.JsxFragment);
+      const parentElement = node.getFirstAncestor(
+        (node) => Node.isJsxElement(node) || Node.isJsxFragment(node),
+      );
+
       if (parentElement) {
         const parentPositions = parentPointers.get(parentElement);
         if (!parentPositions) {
@@ -314,6 +315,7 @@ export function getJsxElementParentExportNameOrThrow(
       const decl = ancestor.getFirstDescendantByKind(
         SyntaxKind.VariableDeclaration,
       );
+
       if (decl) {
         const name = decl.getName();
         const source = element.getSourceFile();

@@ -14,3 +14,13 @@ export default function Nested() {
     </group>
   );
 }
+
+export function ShorthandFragment() {
+  return (
+    <group>
+      <>
+        <mesh />
+      </>
+    </group>
+  );
+}

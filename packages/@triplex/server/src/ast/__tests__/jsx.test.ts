@@ -6,6 +6,7 @@
  */
 import { join } from "upath";
 import { describe, expect, it } from "vitest";
+import { type JsxElementPositions } from "../../types";
 import { fromCwd } from "../../util/path";
 import {
   getJsxElementAt,
@@ -16,6 +17,17 @@ import {
   getJsxTag,
 } from "../jsx";
 import { _createProject } from "../project";
+
+function simplifyJsxPositions(
+  elements: JsxElementPositions[],
+): { name: string }[] {
+  return elements.map((element) => {
+    return {
+      children: simplifyJsxPositions(element.children),
+      name: element.name,
+    };
+  });
+}
 
 describe("jsx ast extractor", () => {
   it("should get owner func decl default export name", () => {
@@ -3128,5 +3140,35 @@ describe("jsx ast extractor", () => {
 
     expect(tag.tagName).toEqual("cylinderGeometry");
     expect(tag.name).toEqual("geo-hi");
+  });
+
+  it("should correctly nest a shorthand fragment", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/nested.tsx"),
+    );
+
+    const elements = getJsxElementsPositions(sourceFile, "ShorthandFragment");
+
+    expect(simplifyJsxPositions(elements)).toMatchInlineSnapshot(`
+      [
+        {
+          "children": [
+            {
+              "children": [
+                {
+                  "children": [],
+                  "name": "mesh",
+                },
+              ],
+              "name": "Fragment",
+            },
+          ],
+          "name": "group",
+        },
+      ]
+    `);
   });
 });

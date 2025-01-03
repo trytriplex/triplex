@@ -90,12 +90,13 @@ function insertJsxElement(
   componentName: string,
   componentProps: Record<string, unknown>,
 ) {
-  const jsxFrag = target.getFirstDescendantByKind(SyntaxKind.JsxFragment);
-  const jsxEle = target.getFirstDescendantByKind(SyntaxKind.JsxElement);
+  const element = target.getFirstDescendant(
+    (node) => Node.isJsxFragment(node) || Node.isJsxElement(node),
+  );
   const componentText = `<${componentName} ${propsToString(componentProps)}/>`;
 
-  if (jsxFrag) {
-    const pos = jsxFrag.getClosingFragment().getStart();
+  if (Node.isJsxFragment(element)) {
+    const pos = element.getClosingFragment().getStart();
     const { column, line } = sourceFile.getLineAndColumnAtPos(pos);
 
     sourceFile.insertText(pos, componentText);
@@ -104,25 +105,25 @@ function insertJsxElement(
       column,
       line,
     };
-  } else if (jsxEle) {
-    const jsxElementName = jsxEle
+  } else if (Node.isJsxElement(element)) {
+    const jsxElementName = element
       .getOpeningElement()
       .getTagNameNode()
       .getText();
 
     if (jsxElementName !== "Fragment") {
-      const pos = jsxEle.getStart();
+      const pos = element.getStart();
       const { column, line } = sourceFile.getLineAndColumnAtPos(pos);
 
       // We need to add another fragment around the existing element.
-      jsxEle.replaceWithText(`<>${componentText}${jsxEle.getText()}</>`);
+      element.replaceWithText(`<>${componentText}${element.getText()}</>`);
 
       return {
         column: 2 + column,
         line,
       };
     } else {
-      const pos = jsxEle.getClosingElement().getStart();
+      const pos = element.getClosingElement().getStart();
       const { column, line } = sourceFile.getLineAndColumnAtPos(pos);
 
       sourceFile.insertText(pos, componentText);
