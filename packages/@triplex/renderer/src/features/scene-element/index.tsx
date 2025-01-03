@@ -17,6 +17,7 @@ import {
   useMemo,
   useRef,
   useState,
+  type ReactNode,
 } from "react";
 import { type Object3D } from "three";
 import { mergeRefs } from "use-callback-ref";
@@ -108,7 +109,7 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
     ) {
       // We don't want this component to affect Triplex when looking through the camera.
       // E.g. user land controls. Get rid of the problem altogether!
-      return <>{props.children}</>;
+      return <>{props.children as ReactNode}</>;
     } else if (forceInsideSceneObjectContext || insideSceneObjectContext) {
       // For specific controls components that we know can be disabled we disable them via
       // props when the editor scene is viewing through the triplex camera.

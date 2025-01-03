@@ -41,7 +41,7 @@
     "@triplex/server": "0.70.1",
     "@types/react": "^18.0.27",
     "@types/tinycolor2": "^1.4.3",
-    "typescript": "^5.6.2"
+    "typescript": "^5.7.2"
   },
   "peerDependencies": {
     "react": "^18.3.1"
