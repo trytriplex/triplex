@@ -150,8 +150,8 @@ export interface TriplexMeta extends EmbeddedMeta {
   props: Record<string, unknown>;
 }
 
-export interface TriplexResolvedMeta extends EmbeddedMeta {
-  props: Record<string, unknown>;
+export interface TaggedMeta {
+  __triplex: TriplexMeta;
 }
 
 export interface RendererElementProps {

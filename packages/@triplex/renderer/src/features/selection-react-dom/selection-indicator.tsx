@@ -28,15 +28,68 @@ const styles = style({
   },
 });
 
+function Outline({
+  boxes,
+  nodes,
+  variant,
+}: {
+  boxes: DOMRect[];
+  nodes: ResolvedNode[];
+  variant: "selected" | "hovered";
+}) {
+  if (
+    boxes.length === 0 ||
+    nodes.length === 0 ||
+    boxes.length !== nodes.length
+  ) {
+    return null;
+  }
+
+  function testId(node: ResolvedNode) {
+    return `${node.meta.name}@${node.meta.line}:${node.meta.column}`;
+  }
+
+  let { bottom, left, right, top } = boxes[0];
+  let meta: string[] = [testId(nodes[0])];
+
+  for (let i = 1; i < boxes.length; i++) {
+    const box = boxes[i];
+
+    top = Math.min(top ?? box.top, box.top);
+    left = Math.min(left ?? box.left, box.left);
+    right = Math.max(right ?? box.right, box.right);
+    bottom = Math.max(bottom ?? box.bottom, box.bottom);
+
+    meta.push(testId(nodes[i]));
+  }
+
+  return (
+    <div
+      data-testid={`${variant}(${meta.join(",")})`}
+      style={style.merge(
+        styles.indicator,
+        variant === "selected" && styles.selected,
+        variant === "hovered" && styles.hovered,
+        {
+          height: bottom - top,
+          left,
+          top,
+          width: right - left,
+        },
+      )}
+    />
+  );
+}
+
 export function SelectionIndicator({
   hovered,
   selected,
 }: {
-  hovered: ResolvedNode | null;
+  hovered: ResolvedNode[];
   selected: ResolvedNode[];
 }) {
   const [selectedRects, setSelectedRects] = useState<DOMRect[]>([]);
-  const [hoveredRect, setHoveredRect] = useState<DOMRect | null>(null);
+  const [hoveredRect, setHoveredRect] = useState<DOMRect[]>([]);
   const [hideIndicators, setHideIndicators] = useState(false);
 
   useEffect(() => {
@@ -73,17 +126,22 @@ export function SelectionIndicator({
     }
 
     if (!hovered) {
-      setHoveredRect(null);
+      setHoveredRect([]);
       return;
     }
 
-    const observer = new ResizeObserver((entry) => {
-      setHoveredRect(entry[0].target.getBoundingClientRect());
+    const observer = new ResizeObserver((entries) => {
+      const boxes = entries.map((entry) =>
+        entry.target.getBoundingClientRect(),
+      );
+      setHoveredRect(boxes);
     });
 
-    if (hovered?.node instanceof Element) {
-      observer.observe(hovered.node);
-    }
+    hovered.forEach((node) => {
+      if (node.node instanceof Element) {
+        observer.observe(node.node);
+      }
+    });
 
     return () => {
       observer.disconnect();
@@ -110,39 +168,8 @@ export function SelectionIndicator({
 
   return (
     <>
-      {hoveredRect && hovered && (
-        <div
-          data-testid={`Hovered(${hovered.meta.name}@${hovered.meta.line}:${hovered.meta.column})`}
-          style={style.merge(styles.indicator, styles.hovered, {
-            height: hoveredRect.height,
-            left: hoveredRect.x,
-            top: hoveredRect.y,
-            width: hoveredRect.width,
-          })}
-        />
-      )}
-
-      {selectedRects.map((box, index) => {
-        const node = selected.at(index);
-        if (!node) {
-          return null;
-        }
-
-        const { meta } = node;
-
-        return (
-          <div
-            data-testid={`Selected(${meta.name}@${meta.line}:${meta.column})`}
-            key={`${box.x}${box.y}${box.width}${box.height}`}
-            style={style.merge(styles.indicator, styles.selected, {
-              height: box.height,
-              left: box.x,
-              top: box.y,
-              width: box.width,
-            })}
-          />
-        );
-      })}
+      <Outline boxes={hoveredRect} nodes={hovered} variant="hovered" />
+      <Outline boxes={selectedRects} nodes={selected} variant="selected" />
     </>
   );
 }

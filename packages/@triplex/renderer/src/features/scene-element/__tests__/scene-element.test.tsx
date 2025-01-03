@@ -408,12 +408,12 @@ describe("scene object component", () => {
   it("should find host scene object using meta", async () => {
     const { scene } = await render(nested());
 
-    const actual = findObject3D(scene.instance, {
+    const [[object]] = findObject3D(scene.instance, {
       column: 22,
       line: 1,
       path: "/foo",
     });
-    const meta = getTriplexMeta(actual);
+    const meta = getTriplexMeta(object);
 
     expect(meta).toMatchObject({ path: "/foo" });
   });
@@ -421,12 +421,12 @@ describe("scene object component", () => {
   it("should find custom component highest scene object using meta", async () => {
     const { scene } = await render(nested());
 
-    const actual = findObject3D(scene.instance, {
+    const [[object]] = findObject3D(scene.instance, {
       column: 10,
       line: 20,
       path: "/bar",
     });
-    const meta = getTriplexMeta(actual);
+    const meta = getTriplexMeta(object);
 
     expect(meta).toMatchObject({
       column: 1,

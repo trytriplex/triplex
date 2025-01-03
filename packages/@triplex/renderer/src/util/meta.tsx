@@ -4,17 +4,14 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import {
-  type TriplexMeta,
-  type TriplexResolvedMeta,
-} from "@triplex/bridge/client";
+import { type TriplexMeta } from "@triplex/bridge/client";
 import { type Object3D } from "three";
 
 export function hasTriplexMeta(obj: Node | Object3D): obj is (
   | Node
   | Object3D
 ) & {
-  __triplex: TriplexMeta & { __r3f: unknown };
+  __triplex: TriplexMeta;
 } {
   if ("__triplex" in obj) {
     return true;
@@ -59,7 +56,7 @@ export function resolveElementMeta(
         path: string;
       }
     | { column: number; line: number; path: string },
-): TriplexResolvedMeta | null {
+): TriplexMeta | null {
   const objMeta = getTriplexMeta(obj);
 
   if (!obj || !objMeta) {

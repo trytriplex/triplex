@@ -8,8 +8,8 @@
 import { type CSSProperties } from "react";
 
 /** Style merge. Merges multiple CSS properties into one. */
-function sm(...styles: CSSProperties[]): CSSProperties {
-  return Object.assign({}, ...styles);
+function sm(...styles: (CSSProperties | boolean)[]): CSSProperties {
+  return Object.assign({}, ...styles.filter(Boolean));
 }
 
 export function style<TStyles extends Record<string, CSSProperties>>(

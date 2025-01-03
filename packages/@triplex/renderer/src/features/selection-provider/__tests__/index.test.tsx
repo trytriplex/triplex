@@ -40,7 +40,7 @@ describe("selection provider", () => {
       fireEvent.mouseMove(document);
     });
 
-    expect(result.current[1]).toEqual({ meta: stubMeta, node: 0 });
+    expect(result.current[1]).toEqual([{ meta: stubMeta, node: 0 }]);
   });
 
   it("should clear resolved hover on next mouse move after mouse down", () => {
@@ -66,7 +66,7 @@ describe("selection provider", () => {
       fireEvent.mouseMove(document, { clientX: 10, clientY: 10 });
     });
 
-    expect(result.current[1]).toEqual(null);
+    expect(result.current[1]).toEqual([]);
   });
 
   it("should clear resolved hover on mouse out", () => {
@@ -91,7 +91,7 @@ describe("selection provider", () => {
       fireEvent.mouseOut(document);
     });
 
-    expect(result.current[1]).toEqual(null);
+    expect(result.current[1]).toEqual([]);
   });
 
   it("should retain hover when moving the mouse a small amount", () => {
@@ -116,7 +116,7 @@ describe("selection provider", () => {
       fireEvent.mouseMove(document);
     });
 
-    expect(result.current[1]).toEqual({ meta: stubMeta, node: 0 });
+    expect(result.current[1]).toEqual([{ meta: stubMeta, node: 0 }]);
   });
 
   it("should remove hover when moving the mouse a lot", () => {
@@ -141,7 +141,7 @@ describe("selection provider", () => {
       fireEvent.mouseMove(document, { clientX: 100, clientY: 100 });
     });
 
-    expect(result.current[1]).toBe(null);
+    expect(result.current[1]).toEqual([]);
   });
 
   it("should select an object", () => {

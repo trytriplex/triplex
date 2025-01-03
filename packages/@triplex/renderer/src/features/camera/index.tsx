@@ -238,7 +238,7 @@ export function Camera({
 
         switch (data.id) {
           case "camera_enter": {
-            const camera = findObject3D(scene, {
+            const [[camera]] = findObject3D(scene, {
               column: data.data.column,
               line: data.data.line,
               path: data.data.parentPath,

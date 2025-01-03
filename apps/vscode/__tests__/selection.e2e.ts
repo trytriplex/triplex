@@ -101,7 +101,7 @@ test.describe("react dom", () => {
     await expect(
       panels.getByRole("button", { name: "div" }),
     ).toHaveAccessibleName(/selected/);
-    await expect(scene.locator.getByTestId("Selected(div@16:5)")).toBeVisible();
+    await expect(scene.locator.getByTestId("selected(div@16:5)")).toBeVisible();
   });
 
   test("selecting a custom component", async ({ vsce }) => {
@@ -115,7 +115,7 @@ test.describe("react dom", () => {
       panels.getByRole("button", { name: "Button" }),
     ).toHaveAccessibleName(/selected/);
     await expect(
-      scene.locator.getByTestId("Selected(button@17:5)"),
+      scene.locator.getByTestId("selected(Button@23:10)"),
     ).toBeVisible();
   });
 
@@ -127,7 +127,7 @@ test.describe("react dom", () => {
     await scene.hover();
 
     await expect(
-      scene.locator.getByTestId("Hovered(button@17:5)"),
+      scene.locator.getByTestId("hovered(Button@23:10)"),
     ).toBeVisible();
   });
 });

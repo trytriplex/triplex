@@ -5,12 +5,12 @@
  * file in the root directory of this source tree.
  */
 
-import { type TriplexResolvedMeta } from "@triplex/bridge/client";
+import { type TriplexMeta } from "@triplex/bridge/client";
 import { type Object3D } from "three";
-import { getTriplexMeta, resolveElementMeta } from "../../util/meta";
+import { getTriplexMeta, hasTriplexMeta } from "../../util/meta";
 
 export interface ResolvedObject3D {
-  meta: TriplexResolvedMeta;
+  meta: TriplexMeta;
   object: Object3D;
   space: "local" | "world";
 }
@@ -49,17 +49,26 @@ export const findTransformedObject3D = (
   return foundExactSceneObject || foundTranslatedSceneObject || sceneObject;
 };
 
+/**
+ * **findObject3d()**
+ *
+ * Traverses the Three.js scene to find all matching objects based on the
+ * filter. Objects can match either by a direct match, or by having a parent
+ * that matches the filter. The meta in each return tuple is the meta from the
+ * matching direct or parent object.
+ */
 export const findObject3D = (
   scene: Object3D,
   filter: { column: number; line: number; path: string },
-): Object3D | null => {
-  let foundSceneObject: Object3D | null = null;
+): [object: Object3D, meta: TriplexMeta][] => {
+  const foundObjects: [Object3D, TriplexMeta][] = [];
 
   scene.traverse((obj) => {
-    const meta = getTriplexMeta(obj);
-    if (!meta || foundSceneObject) {
+    if (!hasTriplexMeta(obj)) {
       return;
     }
+
+    const meta = obj.__triplex;
 
     if (
       meta.path === filter.path &&
@@ -67,7 +76,8 @@ export const findObject3D = (
       meta.line === filter.line
     ) {
       // We found a direct match for a host element — resolve it and return!
-      foundSceneObject = obj;
+      foundObjects.push([obj, meta]);
+      return;
     }
 
     for (const parent of meta.parents) {
@@ -77,12 +87,13 @@ export const findObject3D = (
         parent.column === filter.column &&
         parent.line === filter.line
       ) {
-        foundSceneObject = obj;
+        foundObjects.push([obj, parent]);
+        return;
       }
     }
   });
 
-  return foundSceneObject;
+  return foundObjects;
 };
 
 export const resolveObject3D = (
@@ -93,24 +104,18 @@ export const resolveObject3D = (
     path: string;
     transform: "none" | "translate" | "scale" | "rotate";
   },
-): ResolvedObject3D | null => {
-  const target = findObject3D(scene, filter);
+): ResolvedObject3D[] => {
+  const objects = findObject3D(scene, filter);
 
-  if (target) {
-    const meta = resolveElementMeta(target, filter);
+  return objects.map(([object, meta]) => {
+    const sceneObject = /^[a-z]/.test(meta.name)
+      ? object
+      : findTransformedObject3D(object, filter);
 
-    if (meta) {
-      const sceneObject = /^[a-z]/.test(meta.name)
-        ? target
-        : findTransformedObject3D(target, filter);
-
-      return {
-        meta,
-        object: sceneObject,
-        space: "local",
-      };
-    }
-  }
-
-  return null;
+    return {
+      meta,
+      object: sceneObject,
+      space: "local",
+    };
+  });
 };

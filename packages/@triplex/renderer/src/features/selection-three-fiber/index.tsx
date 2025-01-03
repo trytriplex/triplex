@@ -117,30 +117,28 @@ export function ThreeFiberSelection({
         );
       },
       resolve: (selections) => {
-        return selections
-          .map((selection) => {
-            return resolveObject3D(scene, {
-              column: selection.column,
-              line: selection.line,
-              path: selection.parentPath,
-              transform,
-            });
-          })
-          .filter((selection) => !!selection);
+        return selections.flatMap((selection) => {
+          return resolveObject3D(scene, {
+            column: selection.column,
+            line: selection.line,
+            path: selection.parentPath,
+            transform,
+          });
+        });
       },
     });
   const { controls } = useCamera();
-  const lastSelectedObject = resolvedObjects.at(-1);
-  const lastSelectedObjectProps = useSubscriptionEffect(
+  const resolvedObject = resolvedObjects.at(0);
+  const resolvedObjectProps = useSubscriptionEffect(
     "/scene/:path/object/:line/:column",
     {
-      column: lastSelectedObject?.meta.column,
+      column: resolvedObject?.meta.column,
       disabled:
-        !lastSelectedObject ||
-        (lastSelectedObject?.meta.line === -1 &&
-          lastSelectedObject?.meta.column === -1),
-      line: lastSelectedObject?.meta.line,
-      path: lastSelectedObject?.meta.path,
+        !resolvedObject ||
+        (resolvedObject?.meta.line === -1 &&
+          resolvedObject?.meta.column === -1),
+      line: resolvedObject?.meta.line,
+      path: resolvedObject?.meta.path,
     },
   );
 
@@ -184,44 +182,46 @@ export function ThreeFiberSelection({
   useEffect(() => {
     return compose([
       on("request-open-component", (sceneObject) => {
-        const lastSelectedObject = resolvedObjects.at(-1);
-        if (!sceneObject && !lastSelectedObject) {
+        if (!sceneObject && !resolvedObject) {
           return;
         }
 
         if (
           !sceneObject &&
-          lastSelectedObject &&
-          lastSelectedObject &&
-          lastSelectedObjectProps &&
-          lastSelectedObjectProps.type === "custom" &&
-          lastSelectedObjectProps.path &&
-          lastSelectedObjectProps.exportName
+          resolvedObject &&
+          resolvedObject &&
+          resolvedObjectProps &&
+          resolvedObjectProps.type === "custom" &&
+          resolvedObjectProps.path &&
+          resolvedObjectProps.exportName
         ) {
           switchToComponent({
-            exportName: lastSelectedObjectProps.exportName,
-            path: lastSelectedObjectProps.path,
-            props: encodeProps(lastSelectedObject),
+            exportName: resolvedObjectProps.exportName,
+            path: resolvedObjectProps.path,
+            props: encodeProps(resolvedObject),
           });
         }
 
         send("element-blurred", undefined);
       }),
       on("request-jump-to-element", (sceneObject) => {
-        const targetSceneObject = sceneObject
-          ? findObject3D(scene, sceneObject)
-          : resolvedObjects.at(-1)?.object;
+        const objects = sceneObject
+          ? findObject3D(scene, sceneObject).map((resolved) => resolved[0])
+          : resolvedObjects.map((resolved) => resolved.object);
 
-        if (!targetSceneObject) {
+        if (objects.length === 0) {
           return;
         }
 
         send("track", { actionId: "element_jumpto" });
 
-        const box = new Box3().setFromObject(targetSceneObject);
+        const box = new Box3();
+
+        objects.forEach((object) => box.expandByObject(object));
+
         if (box.min.x === Number.POSITIVE_INFINITY) {
           box.setFromCenterAndSize(
-            targetSceneObject.position,
+            objects[0].position,
             new Vector3(0.5, 0.5, 0.5),
           );
         }
@@ -236,7 +236,8 @@ export function ThreeFiberSelection({
     ]);
   }, [
     controls,
-    lastSelectedObjectProps,
+    resolvedObject,
+    resolvedObjectProps,
     resolvedObjects,
     scene,
     switchToComponent,
@@ -299,21 +300,17 @@ export function ThreeFiberSelection({
 
       {!!resolvedObjects.length && transform !== "none" && (
         <TransformControls
-          enabled={
-            resolvedObjects.length === 1 &&
-            lastSelectedObjectProps?.transforms[transform]
-          }
+          enabled={resolvedObjectProps?.transforms[transform]}
           mode={transform}
-          object={lastSelectedObject?.object}
+          object={resolvedObject?.object}
           onCompleteTransform={onCompleteTransformHandler}
           space={space}
         />
       )}
 
-      {resolvedObjects.length === 1 &&
-        resolvedObjects[0].object instanceof Camera && (
-          <CameraPreview camera={resolvedObjects[0].object} />
-        )}
+      {resolvedObject?.object instanceof Camera && (
+        <CameraPreview camera={resolvedObject?.object} />
+      )}
 
       {fg("selection_postprocessing") && <SelectionIndicator />}
     </SceneObjectContext.Provider>

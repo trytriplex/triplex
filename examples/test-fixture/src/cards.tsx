@@ -5,6 +5,8 @@
  * file in the root directory of this source tree.
  */
 
+import { Fragment } from "react";
+
 function Card({ children }: { children: React.ReactNode }) {
   return (
     <div
@@ -61,10 +63,12 @@ export function CardExample() {
   return (
     <Card>
       <CardHero />
-      <CardTitle>Inner Light</CardTitle>
-      <CardContent>
-        <span>Elderbrook & Bob Moses</span>
-      </CardContent>
+      <Fragment>
+        <CardTitle>Inner Light</CardTitle>
+        <CardContent>
+          <span>Elderbrook & Bob Moses</span>
+        </CardContent>
+      </Fragment>
     </Card>
   );
 }

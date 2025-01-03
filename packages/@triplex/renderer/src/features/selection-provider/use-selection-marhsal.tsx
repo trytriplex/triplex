@@ -40,7 +40,7 @@ export function useSelectionMarshal<
   const listen = useSelectionStore((store) => store.listen);
   const hovered = useSelectionStore((store) => store.hovered);
   const [resolvedSelections, setResolvedSelections] = useState<T[]>([]);
-  const [resolvedHovered, setResolvedHovered] = useState<T | null>(null);
+  const [resolvedHovered, setResolvedHovered] = useState<T[]>([]);
   const [resolveCount, forciblyResolve] = useReducer(incrementReducer, 0);
   const listenerEvent: SelectionListener = useEvent(listener);
   const resolverEvent: Resolver<T> = useEvent(resolve);
@@ -68,16 +68,17 @@ export function useSelectionMarshal<
 
   useEffect(() => {
     if (!hovered) {
-      setResolvedHovered(null);
+      setResolvedHovered([]);
       return;
     }
 
-    const resolved = resolverEvent([hovered]).at(0) ?? null;
+    const resolved = resolverEvent([hovered]);
     setResolvedHovered(resolved);
-    resolved && onHoveredEvent(resolved);
+
+    resolved.forEach((selection) => onHoveredEvent(selection));
 
     return () => {
-      resolved && onSettledEvent(resolved);
+      resolved.forEach((selection) => onSettledEvent(selection));
     };
   }, [hovered, onHoveredEvent, onSettledEvent, resolverEvent]);
 
