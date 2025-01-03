@@ -58,7 +58,7 @@
     "rimraf": "^5.0.7",
     "typescript": "^5.7.2",
     "upath": "^2.0.1",
-    "vitest": "^2.1.1"
+    "vitest": "^2.1.8"
   },
   "packageManager": "pnpm@9.9.0",
   "engines": {
@@ -69,7 +69,8 @@
   },
   "pnpm": {
     "overrides": {
-      "@types/react": "18.3.3"
+      "@types/react": "18.3.3",
+      "vite": "^6.0.7"
     },
     "patchedDependencies": {
       "@vscode/vsce@2.26.0": "patches/@vscode__vsce@2.26.0.patch",
