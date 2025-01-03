@@ -12,7 +12,6 @@ import { getTriplexMeta, hasTriplexMeta } from "../../util/meta";
 export interface ResolvedObject3D {
   meta: TriplexMeta;
   object: Object3D;
-  space: "local" | "world";
 }
 
 export const findTransformedObject3D = (
@@ -115,7 +114,6 @@ export const resolveObject3D = (
     return {
       meta,
       object: sceneObject,
-      space: "local",
     };
   });
 };

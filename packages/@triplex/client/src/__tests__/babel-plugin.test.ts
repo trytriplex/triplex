@@ -54,6 +54,7 @@ describe("babel plugin", () => {
       <group scale={scale} />
     `,
       {
+        filename: "/hello.tsx",
         plugins: [
           plugin({ exclude: ["/hello.tsx"] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -61,27 +62,18 @@ describe("babel plugin", () => {
       },
     );
 
-    expect(result?.code).toMatchInlineSnapshot(`
-      "<SceneObject scale={scale} __component={"group"} __meta={{
-        "path": "",
-        "name": "group",
-        "line": 2,
-        "column": 7,
-        "translate": false,
-        "rotate": false,
-        "scale": true
-      }}></SceneObject>;"
-    `);
+    expect(result?.code).toMatchInlineSnapshot(`"<group scale={scale} />;"`);
   });
 
   it("should continue to apply other babel plugins when ignored", () => {
     const result = transformSync(
       `
-      export function Component() {
+      export function Component({ scale }) {
         return <group scale={scale} />
       }
     `,
       {
+        filename: "/hello.tsx",
         plugins: [
           plugin({ exclude: ["/hello.tsx"] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -91,22 +83,12 @@ describe("babel plugin", () => {
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
-      "export function Component() {
-        return <SceneObject scale={scale} __component={"group"} __meta={{
-          "path": "",
-          "name": "group",
-          "line": 3,
-          "column": 16,
-          "translate": false,
-          "rotate": false,
-          "scale": true
-        }}></SceneObject>;
+      "export function Component({
+        scale
+      }) {
+        return <group scale={scale} />;
       }
       _c = Component;
-      Component.triplexMeta = {
-        "lighting": "default",
-        "root": "react-three-fiber"
-      };
       var _c;
       $RefreshReg$(_c, "Component");"
     `);
@@ -116,14 +98,20 @@ describe("babel plugin", () => {
     const result = transformSync(
       `
       import { RigidBody } from '@react-three/rapier';
-      <RigidBody
-        name="box"
-        type="dynamic"
-        position={position}
-        colliders="cuboid"
-        canSleep={false}
-      >
-      </RigidBody>
+
+      function Component({ position }) {
+        return (
+          <RigidBody
+            name="box"
+            type="dynamic"
+            position={position}
+            colliders="cuboid"
+            canSleep={false}
+          >
+          </RigidBody>
+        );
+      }
+      
     `,
       {
         plugins: [
@@ -135,16 +123,24 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "import { RigidBody } from '@react-three/rapier';
-      <SceneObject name="box" type="dynamic" position={position} colliders="cuboid" canSleep={false} __component={RigidBody} __meta={{
-        "path": "",
-        "name": "RigidBody",
-        "line": 3,
-        "column": 7,
-        "translate": true,
-        "rotate": false,
-        "scale": false
-      }}>
-            </SceneObject>;"
+      function Component({
+        position
+      }) {
+        return <SceneObject name="box" type="dynamic" position={position} colliders="cuboid" canSleep={false} __component={RigidBody} __meta={{
+          "path": "",
+          "name": "RigidBody",
+          "line": 6,
+          "column": 11,
+          "translate": true,
+          "rotate": false,
+          "scale": false
+        }}>
+                </SceneObject>;
+      }
+      Component.triplexMeta = {
+        "lighting": "default",
+        "root": "react-three-fiber"
+      };"
     `);
   });
 
@@ -154,35 +150,30 @@ describe("babel plugin", () => {
       <group />
     `,
       {
+        filename: "is/a/path.tsx",
         plugins: [
-          plugin({ exclude: ["is/a/path"] }),
+          plugin({ exclude: ["is/a/path.tsx"] }),
           require.resolve("@babel/plugin-syntax-jsx"),
         ],
       },
     );
 
-    expect(result?.code).toMatchInlineSnapshot(`
-      "<SceneObject __component={"group"} __meta={{
-        "path": "",
-        "name": "group",
-        "line": 2,
-        "column": 7,
-        "translate": false,
-        "rotate": false,
-        "scale": false
-      }}></SceneObject>;"
-    `);
+    expect(result?.code).toMatchInlineSnapshot(`"<group />;"`);
   });
 
-  it("should transform scene with wrapped groups", () => {
+  it("should transform scene with wrapped groups and ignore transform values that aren't identifiers", () => {
     const result = transformSync(
       `
-      <group scale={scale}>
-        <mesh position={[1,1,1]}>
-          <boxGeometry args={[1,1,1]} />
-          <standardMaterial color="black" />
-        </mesh>
-      </group>
+      function Component ({ scale }) {
+        return (
+          <group scale={scale}>
+            <mesh position={[1,1,1]}>
+              <boxGeometry args={[1,1,1]} />
+              <standardMaterial color="black" />
+            </mesh>
+          </group>
+        );
+      }
     `,
       {
         plugins: [
@@ -193,44 +184,52 @@ describe("babel plugin", () => {
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
-      "<SceneObject scale={scale} __component={"group"} __meta={{
-        "path": "",
-        "name": "group",
-        "line": 2,
-        "column": 7,
-        "translate": false,
-        "rotate": false,
-        "scale": true
-      }}>
-              <SceneObject position={[1, 1, 1]} __component={"mesh"} __meta={{
+      "function Component({
+        scale
+      }) {
+        return <SceneObject scale={scale} __component={"group"} __meta={{
           "path": "",
-          "name": "mesh",
-          "line": 3,
-          "column": 9,
-          "translate": true,
+          "name": "group",
+          "line": 4,
+          "column": 11,
+          "translate": false,
           "rotate": false,
-          "scale": false
+          "scale": true
         }}>
-                <SceneObject args={[1, 1, 1]} __component={"boxGeometry"} __meta={{
+                  <SceneObject position={[1, 1, 1]} __component={"mesh"} __meta={{
             "path": "",
-            "name": "boxGeometry",
-            "line": 4,
-            "column": 11,
-            "translate": false,
-            "rotate": false,
-            "scale": false
-          }}></SceneObject>
-                <SceneObject color="black" __component={"standardMaterial"} __meta={{
-            "path": "",
-            "name": "standardMaterial",
+            "name": "mesh",
             "line": 5,
-            "column": 11,
+            "column": 13,
             "translate": false,
             "rotate": false,
             "scale": false
-          }}></SceneObject>
-              </SceneObject>
-            </SceneObject>;"
+          }}>
+                    <SceneObject args={[1, 1, 1]} __component={"boxGeometry"} __meta={{
+              "path": "",
+              "name": "boxGeometry",
+              "line": 6,
+              "column": 15,
+              "translate": false,
+              "rotate": false,
+              "scale": false
+            }}></SceneObject>
+                    <SceneObject color="black" __component={"standardMaterial"} __meta={{
+              "path": "",
+              "name": "standardMaterial",
+              "line": 7,
+              "column": 15,
+              "translate": false,
+              "rotate": false,
+              "scale": false
+            }}></SceneObject>
+                  </SceneObject>
+                </SceneObject>;
+      }
+      Component.triplexMeta = {
+        "lighting": "default",
+        "root": "react-three-fiber"
+      };"
     `);
   });
 
@@ -300,6 +299,82 @@ describe("babel plugin", () => {
         }}></SceneObject>;
       }
       HelloWorld.triplexMeta = {
+        "lighting": "default",
+        "root": "react-three-fiber"
+      };"
+    `);
+  });
+
+  it("should mark destructured props usage", () => {
+    const result = transformSync(
+      `
+      function Component({ rotate, scale, position }) {
+        return (
+          <mesh rotate={rotate} scale={scale} position={position} />
+        );
+      }
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "function Component({
+        rotate,
+        scale,
+        position
+      }) {
+        return <SceneObject rotate={rotate} scale={scale} position={position} __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 4,
+          "column": 11,
+          "translate": true,
+          "rotate": true,
+          "scale": true
+        }}></SceneObject>;
+      }
+      Component.triplexMeta = {
+        "lighting": "default",
+        "root": "react-three-fiber"
+      };"
+    `);
+  });
+
+  it("should mark non-destructured props usage", () => {
+    const result = transformSync(
+      `
+      function Component(props) {
+        return (
+          <mesh rotate={props.rotate} scale={props.scale} position={props.position} />
+        );
+      }
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "function Component(props) {
+        return <SceneObject rotate={props.rotate} scale={props.scale} position={props.position} __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 4,
+          "column": 11,
+          "translate": true,
+          "rotate": true,
+          "scale": true
+        }}></SceneObject>;
+      }
+      Component.triplexMeta = {
         "lighting": "default",
         "root": "react-three-fiber"
       };"
@@ -703,7 +778,9 @@ describe("babel plugin", () => {
     // position={position} -> userData={{ __triplexTransform: 'translate' }}
     const result = transformSync(
       `
-      <mesh position={position} />
+      function Component({ position }) {
+         return <mesh position={position} />
+      }
     `,
       {
         plugins: [
@@ -714,15 +791,23 @@ describe("babel plugin", () => {
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
-      "<SceneObject position={position} __component={"mesh"} __meta={{
-        "path": "",
-        "name": "mesh",
-        "line": 2,
-        "column": 7,
-        "translate": true,
-        "rotate": false,
-        "scale": false
-      }}></SceneObject>;"
+      "function Component({
+        position
+      }) {
+        return <SceneObject position={position} __component={"mesh"} __meta={{
+          "path": "",
+          "name": "mesh",
+          "line": 3,
+          "column": 17,
+          "translate": true,
+          "rotate": false,
+          "scale": false
+        }}></SceneObject>;
+      }
+      Component.triplexMeta = {
+        "lighting": "default",
+        "root": "react-three-fiber"
+      };"
     `);
   });
 

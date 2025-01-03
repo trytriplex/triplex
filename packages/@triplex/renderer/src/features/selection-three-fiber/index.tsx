@@ -34,7 +34,6 @@ function strip(num: number): number {
   return +Number.parseFloat(Number(num).toPrecision(15));
 }
 
-const V1 = new Vector3();
 // We use this as a default raycaster so it is fired on the default layer (0) instead
 // Of the editor layer (31).
 const raycaster = new Raycaster();
@@ -246,10 +245,7 @@ export function ThreeFiberSelection({
   const onCompleteTransformHandler = useEvent(() => {
     for (const selection of resolvedObjects) {
       if (transform === "translate") {
-        const position =
-          selection.space === "world"
-            ? selection.object.getWorldPosition(V1).toArray()
-            : selection.object.position.toArray();
+        const position = selection.object.position.toArray();
 
         send("element-set-prop", {
           column: selection.meta.column,

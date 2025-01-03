@@ -369,16 +369,35 @@ export default function triplexBabelPlugin({
                 elementType === "host" ||
                 isJSXIdentifierFromNodeModules(path, cwd)
               ) {
-                if (attr.name.name === "position") {
-                  transformsFound.translate = true;
-                }
+                const isIdentifierFromDestructuredProps =
+                  attr.value?.type === "JSXExpressionContainer" &&
+                  attr.value.expression.type === "Identifier" &&
+                  currentFunction?.props.destructured.includes(
+                    attr.value.expression.name,
+                  );
 
-                if (attr.name.name === "rotate") {
-                  transformsFound.rotate = true;
-                }
+                const isPropsMemberExpression =
+                  attr.value?.type === "JSXExpressionContainer" &&
+                  attr.value.expression.type === "MemberExpression" &&
+                  attr.value.expression.object.type === "Identifier" &&
+                  attr.value.expression.object.name ===
+                    currentFunction?.props.spreadIdentifier;
 
-                if (attr.name.name === "scale") {
-                  transformsFound.scale = true;
+                if (
+                  isIdentifierFromDestructuredProps ||
+                  isPropsMemberExpression
+                ) {
+                  if (attr.name.name === "position") {
+                    transformsFound.translate = true;
+                  }
+
+                  if (attr.name.name === "rotate") {
+                    transformsFound.rotate = true;
+                  }
+
+                  if (attr.name.name === "scale") {
+                    transformsFound.scale = true;
+                  }
                 }
               }
             } else {
