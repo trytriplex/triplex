@@ -30,6 +30,7 @@ function createTestHarness() {
 describe("selection store", () => {
   beforeEach(() => {
     useSelectionStore.setState({
+      disabled: false,
       hovered: null,
       listeners: [],
       selections: [],

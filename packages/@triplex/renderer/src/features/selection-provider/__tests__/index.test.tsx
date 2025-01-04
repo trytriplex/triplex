@@ -6,8 +6,10 @@
  */
 // @vitest-environment jsdom
 import { act, fireEvent, renderHook } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { send } from "@triplex/bridge/host";
+import { beforeEach, describe, expect, it, vi } from "vitest";
 import { SelectionProvider } from "..";
+import { useSelectionStore } from "../store";
 import { useSelectionMarshal } from "../use-selection-marhsal";
 
 interface TestResolved {
@@ -19,6 +21,15 @@ const stubMeta = { column: 1, line: 1, parentPath: "/foo", path: "/bar" };
 const stubMeta1 = { column: 2, line: 3, parentPath: "/foo", path: "/bar" };
 
 describe("selection provider", () => {
+  beforeEach(() => {
+    useSelectionStore.setState({
+      disabled: false,
+      hovered: null,
+      listeners: [],
+      selections: [],
+    });
+  });
+
   it("should resolve an object on hover", () => {
     const { result } = renderHook(
       () =>
@@ -94,7 +105,7 @@ describe("selection provider", () => {
     expect(result.current[1]).toEqual([]);
   });
 
-  it("should retain hover when moving the mouse a small amount", () => {
+  it("should retain hover when dragging the mouse a small amount", () => {
     const { result } = renderHook(
       () =>
         useSelectionMarshal<TestResolved>({
@@ -119,7 +130,7 @@ describe("selection provider", () => {
     expect(result.current[1]).toEqual([{ meta: stubMeta, node: 0 }]);
   });
 
-  it("should remove hover when moving the mouse a lot", () => {
+  it("should remove hover when dragging the mouse a lot", () => {
     const { result } = renderHook(
       () =>
         useSelectionMarshal<TestResolved>({
@@ -226,5 +237,99 @@ describe("selection provider", () => {
     });
 
     expect(result.current[0]).toEqual([{ meta: stubMeta1, node: 0 }]);
+  });
+
+  it("should clear resolved selections when moving to play state", async () => {
+    const { result } = renderHook(
+      () =>
+        useSelectionMarshal<TestResolved>({
+          listener: () => {
+            return [stubMeta];
+          },
+          resolve: (selected) => {
+            return selected.map((meta, index) => ({
+              meta,
+              node: index,
+            }));
+          },
+        }),
+      { wrapper: SelectionProvider },
+    );
+    act(() => {
+      fireEvent.mouseDown(document);
+      fireEvent.mouseUp(document);
+      fireEvent.mouseMove(document);
+    });
+
+    await act(async () => {
+      await send("request-state-change", { camera: "default", state: "play" });
+    });
+
+    expect(result.current[0]).toHaveLength(0);
+    expect(result.current[1]).toHaveLength(0);
+  });
+
+  it("should persist selections when coming back to edit state", async () => {
+    const { result } = renderHook(
+      () =>
+        useSelectionMarshal<TestResolved>({
+          listener: () => {
+            return [stubMeta];
+          },
+          resolve: (selected) => {
+            return selected.map((meta, index) => ({
+              meta,
+              node: index,
+            }));
+          },
+        }),
+      { wrapper: SelectionProvider },
+    );
+    act(() => {
+      fireEvent.mouseDown(document);
+      fireEvent.mouseUp(document);
+    });
+    await act(async () => {
+      await send("request-state-change", { camera: "default", state: "play" });
+    });
+
+    await act(async () => {
+      await send("request-state-change", { camera: "default", state: "edit" });
+    });
+
+    expect(result.current[0]).toEqual([{ meta: stubMeta, node: 0 }]);
+  });
+
+  it("should prevent new selections when in play state", async () => {
+    const { result } = renderHook(
+      () =>
+        useSelectionMarshal<TestResolved>({
+          listener: () => {
+            return [stubMeta];
+          },
+          resolve: (selected) => {
+            return selected.map((meta, index) => ({
+              meta,
+              node: index,
+            }));
+          },
+        }),
+      { wrapper: SelectionProvider },
+    );
+    await act(async () => {
+      await send("request-state-change", { camera: "default", state: "play" });
+    });
+    act(() => {
+      fireEvent.mouseDown(document);
+      fireEvent.mouseUp(document);
+      fireEvent.mouseMove(document);
+    });
+
+    await act(async () => {
+      await send("request-state-change", { camera: "default", state: "edit" });
+    });
+
+    expect(result.current[0]).toHaveLength(0);
+    expect(result.current[1]).toHaveLength(0);
   });
 });

@@ -90,9 +90,7 @@ export function ReactDOMSelection({
       >
         {children}
       </div>
-      {playState !== "play" && (
-        <SelectionIndicator hovered={hovered} selected={selected} />
-      )}
+      <SelectionIndicator hovered={hovered} selected={selected} />
     </SceneObjectContext.Provider>
   );
 }

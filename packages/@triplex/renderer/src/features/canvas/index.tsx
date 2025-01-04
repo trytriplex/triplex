@@ -7,7 +7,7 @@
 import { Canvas as FiberCanvas, type CanvasProps } from "@react-three/fiber";
 import { compose, on, send } from "@triplex/bridge/client";
 import { fg } from "@triplex/lib/fg";
-import { Fragment, Suspense, useEffect, useReducer } from "react";
+import { Fragment, Suspense, useLayoutEffect, useReducer } from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
 import { ErrorFallback } from "../../components/error-fallback";
 import { TriplexGrid } from "../../components/grid";
@@ -33,7 +33,13 @@ export function Canvas({ children, ...props }: CanvasProps) {
     0,
   );
 
-  useEffect(() => {
+  /**
+   * We use a layout effect here to ensure the event listeners are added before
+   * other ones e.g. inside
+   * {@link ../selection-provider/use-selection-marshal.tsx} otherwise when
+   * entering edit state the selection outline can be unintentionally removed.
+   */
+  useLayoutEffect(() => {
     /**
      * This means only components that have a canvas (so either
      * react-three-fiber root, or react root with a Canvas component) can be
@@ -42,10 +48,12 @@ export function Canvas({ children, ...props }: CanvasProps) {
      * worlds can be reset without the Canvas being blown away.
      */
     return compose([
-      on("request-refresh-scene", incrementReset),
+      on("request-refresh-scene", () => {
+        incrementReset();
+      }),
       on("request-state-change", ({ state }) => {
         if (state === "edit") {
-          incrementReset();
+          // incrementReset();
         }
       }),
     ]);

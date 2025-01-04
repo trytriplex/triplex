@@ -142,15 +142,6 @@ export function ThreeFiberSelection({
   );
 
   useEffect(() => {
-    return on("request-state-change", ({ state }) => {
-      if (state === "play") {
-        selectionActions.clear();
-        send("element-blurred", undefined);
-      }
-    });
-  }, [selectionActions]);
-
-  useEffect(() => {
     return on("extension-point-triggered", (data) => {
       if (data.scope !== "scene") {
         return;

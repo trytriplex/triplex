@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 
+import { compose, on } from "@triplex/bridge/client";
 import { noop, useEvent } from "@triplex/lib";
 import { useEffect, useMemo, useReducer, useState } from "react";
 import { useSelectionStore, type SelectionListener } from "./store";
@@ -39,6 +40,8 @@ export function useSelectionMarshal<
   const clear = useSelectionStore((store) => store.clear);
   const listen = useSelectionStore((store) => store.listen);
   const hovered = useSelectionStore((store) => store.hovered);
+  const disabled = useSelectionStore((store) => store.disabled);
+  const setDisabled = useSelectionStore((store) => store.setDisabled);
   const [resolvedSelections, setResolvedSelections] = useState<T[]>([]);
   const [resolvedHovered, setResolvedHovered] = useState<T[]>([]);
   const [resolveCount, forciblyResolve] = useReducer(incrementReducer, 0);
@@ -49,7 +52,32 @@ export function useSelectionMarshal<
   const onHoveredEvent: SelectionEvent<T> = useEvent(onHovered);
   const onSettledEvent: SelectionEvent<T> = useEvent(onSettled);
 
+  /**
+   * These events need to be added after the listeners inside
+   * {@link ../canvas/index.tsx} otherwise the selection outline can be
+   * unintentionally removed when entering edit state.
+   */
   useEffect(() => {
+    return compose([
+      on("request-refresh-scene", forciblyResolve),
+      on("request-state-change", ({ state }) => {
+        const shouldDisableSelection = state === "play";
+
+        setDisabled(shouldDisableSelection);
+
+        if (shouldDisableSelection) {
+          setResolvedSelections([]);
+          setResolvedHovered([]);
+        }
+      }),
+    ]);
+  }, [clear, setDisabled]);
+
+  useEffect(() => {
+    if (disabled) {
+      return;
+    }
+
     if (selections.length === 0) {
       setResolvedSelections([]);
       return;
@@ -64,9 +92,20 @@ export function useSelectionMarshal<
     return () => {
       resolved.forEach((selection) => onDeselectEvent(selection));
     };
-  }, [selections, resolveCount, resolverEvent, onSelectEvent, onDeselectEvent]);
+  }, [
+    selections,
+    resolveCount,
+    resolverEvent,
+    onSelectEvent,
+    onDeselectEvent,
+    disabled,
+  ]);
 
   useEffect(() => {
+    if (disabled) {
+      return;
+    }
+
     if (!hovered) {
       setResolvedHovered([]);
       return;
@@ -80,7 +119,7 @@ export function useSelectionMarshal<
     return () => {
       resolved.forEach((selection) => onSettledEvent(selection));
     };
-  }, [hovered, onHoveredEvent, onSettledEvent, resolverEvent]);
+  }, [disabled, hovered, onHoveredEvent, onSettledEvent, resolverEvent]);
 
   useEffect(() => {
     return listen(listenerEvent);

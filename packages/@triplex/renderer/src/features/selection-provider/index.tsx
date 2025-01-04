@@ -17,8 +17,13 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
   const clearSelection = useSelectionStore((store) => store.clear);
   const listeners = useSelectionStore((store) => store.listeners);
   const selections = useSelectionStore((store) => store.selections);
+  const disabled = useSelectionStore((store) => store.disabled);
 
   useEffect(() => {
+    if (disabled) {
+      return;
+    }
+
     return compose([
       on("request-open-component", () => {
         clearSelection();
@@ -37,9 +42,13 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
         setHovered(element);
       }),
     ]);
-  }, [clearSelection, selectElement, setHovered]);
+  }, [clearSelection, disabled, selectElement, setHovered]);
 
   useEffect(() => {
+    if (disabled) {
+      return;
+    }
+
     const getMovedDelta = (e: MouseEvent) =>
       Math.abs(e.clientX - origin[0]) + Math.abs(e.clientY - origin[1]);
 
@@ -133,7 +142,14 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
         type: "mouseup",
       },
     ]);
-  }, [clearSelection, listeners, selectElement, selections, setHovered]);
+  }, [
+    clearSelection,
+    disabled,
+    listeners,
+    selectElement,
+    selections,
+    setHovered,
+  ]);
 
   return children;
 }

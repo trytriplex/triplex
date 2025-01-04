@@ -130,6 +130,22 @@ test.describe("react dom", () => {
       scene.locator.getByTestId("hovered(Button@23:10)"),
     ).toBeVisible();
   });
+
+  test("selection state is retained when exiting play mode", async ({
+    vsce,
+  }) => {
+    await vsce.codelens("ReactRootFromAnotherModule").click();
+    const { locator, scene, togglePanelsButton } = await vsce.resolveEditor();
+    await togglePanelsButton.click();
+
+    await scene.click();
+    await locator.getByRole("button", { exact: true, name: "Play" }).click();
+    await locator.getByRole("button", { exact: true, name: "Stop" }).click();
+
+    await expect(
+      scene.locator.getByTestId("selected(Button@23:10)"),
+    ).toBeVisible();
+  });
 });
 
 test.describe(() => {

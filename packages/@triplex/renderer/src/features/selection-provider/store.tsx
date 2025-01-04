@@ -12,6 +12,7 @@ export type SelectionListener = (e: MouseEvent) => SelectionState[];
 
 export interface SelectionStore {
   clear: () => void;
+  disabled: boolean;
   hovered: SelectionState | null;
   listen: (cb: SelectionListener) => () => void;
   listeners: SelectionListener[];
@@ -20,6 +21,7 @@ export interface SelectionStore {
     action: "replace" | "addition",
   ) => void;
   selections: SelectionState[];
+  setDisabled: (disabled: boolean) => void;
   setHovered: (selection: SelectionState | null) => void;
 }
 
@@ -31,6 +33,7 @@ export const useSelectionStore = create<SelectionStore>((set, get) => ({
       setHovered(null);
     }
   },
+  disabled: false,
   hovered: null,
   listen: (cb) => {
     set((state) => {
@@ -69,6 +72,7 @@ export const useSelectionStore = create<SelectionStore>((set, get) => ({
     }
   },
   selections: [],
+  setDisabled: (disabled) => set({ disabled }),
   setHovered: (element) =>
     set((prevState) => {
       if (

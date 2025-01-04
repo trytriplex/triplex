@@ -100,11 +100,11 @@ test.describe("when an error is thrown on interaction", () => {
 
   test("should show an error notification", async ({ vsce }) => {
     await vsce.codelens("ErrorsDuringInteraction").click();
-    const { locator } = await vsce.resolveEditor();
+    const { devOnlyCameraPanel, locator, scene } = await vsce.resolveEditor();
     await locator.getByRole("button", { exact: true, name: "Play" }).click();
-    await vsce.dismissAllNotifications();
+    await expect(devOnlyCameraPanel).toHaveText(/type: user/);
 
-    await locator.getByTestId("scene").click({ force: true });
+    await scene.click();
 
     await expect(
       vsce.page.getByRole("dialog", {
