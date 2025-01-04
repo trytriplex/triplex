@@ -12,13 +12,20 @@ import {
   type Modules,
   type ProviderComponent,
 } from "@triplex/bridge/client";
-import { Suspense, useEffect } from "react";
+import {
+  startTransition,
+  Suspense,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
 import { ErrorFallback } from "../../components/error-fallback";
 import { LoadingTriangle } from "../../components/loading-triangle";
 import { Tunnel } from "../../components/tunnel";
-import { useSceneStore } from "../../stores/use-scene-store";
 import { SceneLoader } from "../scene-loader";
+import { SwitchToComponentContext } from "./context";
+import { type Component } from "./types";
 
 export function App({
   files,
@@ -29,8 +36,23 @@ export function App({
   provider: ProviderComponent;
   providerPath: string;
 }) {
-  const component = useSceneStore((store) => store.component);
-  const switchToComponent = useSceneStore((store) => store.switchToComponent);
+  const [component, setComponent] = useState<Component>({
+    exportName: "",
+    path: "",
+    props: {},
+  });
+
+  const switchToComponent = useCallback((component: Component) => {
+    startTransition(() => {
+      setComponent(component);
+      send("component-opened", {
+        encodedProps: JSON.stringify(component.props),
+        entered: true,
+        exportName: component.exportName,
+        path: component.path,
+      });
+    });
+  }, []);
 
   useEffect(() => {
     send("set-extension-points", {
@@ -166,31 +188,33 @@ export function App({
   }, [switchToComponent]);
 
   return (
-    <ErrorBoundaryForScene
-      fallbackRender={() => <ErrorFallback />}
-      onError={(err) =>
-        send("error", {
-          message: err.message,
-          source: component.path,
-          stack: err.message,
-          subtitle:
-            "The scene could not be rendered as there was an error parsing its module. Resolve the error and try again.",
-          title: "Module Error",
-        })
-      }
-      resetKeys={[component]}
-    >
-      <Suspense fallback={<LoadingTriangle />}>
-        <SceneLoader
-          exportName={component.exportName}
-          modules={files}
-          path={component.path}
-          provider={provider}
-          providerPath={providerPath}
-          sceneProps={component.props}
-        />
-      </Suspense>
-      <Tunnel.Out />
-    </ErrorBoundaryForScene>
+    <SwitchToComponentContext.Provider value={switchToComponent}>
+      <ErrorBoundaryForScene
+        fallbackRender={() => <ErrorFallback />}
+        onError={(err) =>
+          send("error", {
+            message: err.message,
+            source: component.path,
+            stack: err.message,
+            subtitle:
+              "The scene could not be rendered as there was an error parsing its module. Resolve the error and try again.",
+            title: "Module Error",
+          })
+        }
+        resetKeys={[component]}
+      >
+        <Suspense fallback={<LoadingTriangle />}>
+          <SceneLoader
+            exportName={component.exportName}
+            modules={files}
+            path={component.path}
+            provider={provider}
+            providerPath={providerPath}
+            sceneProps={component.props}
+          />
+        </Suspense>
+        <Tunnel.Out />
+      </ErrorBoundaryForScene>
+    </SwitchToComponentContext.Provider>
   );
 }

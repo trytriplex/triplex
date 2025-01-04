@@ -9,13 +9,19 @@ import { compose, on, send } from "@triplex/bridge/client";
 import { useEvent } from "@triplex/lib";
 import { fg } from "@triplex/lib/fg";
 import { useSubscriptionEffect } from "@triplex/ws/react";
-import { useEffect, useMemo, useState, type ReactNode } from "react";
+import {
+  useContext,
+  useEffect,
+  useMemo,
+  useState,
+  type ReactNode,
+} from "react";
 import { Box3, Camera, Raycaster, Vector2, Vector3 } from "three";
-import { useSceneStore } from "../../stores/use-scene-store";
 import { flatten } from "../../util/array";
 import { HOVER_LAYER_INDEX, SELECTION_LAYER_INDEX } from "../../util/layers";
 import { resolveElementMeta } from "../../util/meta";
 import { encodeProps, isObjectVisible } from "../../util/three";
+import { SwitchToComponentContext } from "../app/context";
 import { CameraPreview } from "../camera-preview";
 import { useCamera } from "../camera/context";
 import { SceneObjectContext } from "../scene-element/context";
@@ -45,7 +51,7 @@ export function ThreeFiberSelection({
   children?: ReactNode;
   filter: { exportName: string; path: string };
 }) {
-  const switchToComponent = useSceneStore((store) => store.switchToComponent);
+  const switchToComponent = useContext(SwitchToComponentContext);
   const [space, setSpace] = useState<Space>("world");
   const [transform, setTransform] = useState<TransformControlMode>("none");
   const scene = useThree((store) => store.scene);

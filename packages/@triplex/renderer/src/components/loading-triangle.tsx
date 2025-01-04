@@ -7,6 +7,7 @@
 export function LoadingTriangle() {
   return (
     <div
+      aria-label="Loading"
       style={{
         alignItems: "center",
         display: "flex",

@@ -10,7 +10,7 @@ import { overrideFg } from "@triplex/lib/fg";
 import { render } from "react-three-test";
 import { type Color } from "three";
 import { describe, expect, it, vi } from "vitest";
-import { SceneLoader } from "../../scene-loader";
+import { SceneLoader } from "../index";
 
 vi.mock("@react-three/fiber", async () => ({
   ...(await vi.importActual<Record<string, unknown>>("@react-three/fiber")),
@@ -40,7 +40,7 @@ function Provider({ children }: { children?: React.ReactNode }) {
   );
 }
 
-describe("scene frame", () => {
+describe("scene loader component", () => {
   it("should apply color to canvas background set in provider", async () => {
     overrideFg("selection_postprocessing", true);
     function Scene() {

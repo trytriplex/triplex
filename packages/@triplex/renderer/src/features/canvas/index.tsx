@@ -25,6 +25,13 @@ import { ThreeFiberSelection } from "../selection-three-fiber";
 import { CaptureShaderErrors } from "./capture-shader-errors";
 import { SceneLights } from "./scene-lights";
 
+/**
+ * **Canvas**
+ *
+ * Internal component that renders scene helpers for Three Fiber. Don't rely on
+ * any explicit props being passed here as this component can be rendered in
+ * userland. Only rely on context or external stores.
+ */
 export function Canvas({ children, ...props }: CanvasProps) {
   const playState = usePlayState();
   const { exportName, path, provider, providerPath, scene } = useLoadedScene();

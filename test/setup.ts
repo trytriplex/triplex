@@ -28,6 +28,19 @@ globalThis.DOMRect = class DOMRect {
   }
 };
 
+if (typeof window !== "undefined") {
+  window.triplex = {
+    // @ts-expect-error
+    env: {
+      ports: {
+        client: 1,
+        server: 2,
+        ws: 3,
+      },
+    },
+  };
+}
+
 const CameraControls = forwardRef((props, ref) => {
   const [instance] = useState(() => ({ mouseButtons: {}, touches: {} }));
 

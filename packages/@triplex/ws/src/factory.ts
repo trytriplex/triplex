@@ -14,7 +14,7 @@ export type RemapWithNumber<TObject> = {
 
 function defer() {
   let resolve!: () => void;
-  let reject!: () => void;
+  let reject!: (error: Error) => void;
 
   const promise = new Promise<void>((res, rej) => {
     resolve = res;
@@ -123,7 +123,7 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
           queryCache.delete(path);
         },
         onError: () => {
-          deferred.reject();
+          deferred.reject(new Error("Error connecting to websocket."));
         },
         onMessage: (data) => {
           valueCache.set(path, data);
