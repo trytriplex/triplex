@@ -42,6 +42,9 @@ test("delete element", async ({ vsce }) => {
   const { panels, togglePanelsButton } = vsce.resolveEditor();
   await togglePanelsButton.click();
   await panels.getByRole("button", { name: "planeGeometry" }).click();
+  await expect(
+    panels.getByRole("button", { name: "planeGeometry" }),
+  ).toHaveAccessibleName(/selected/);
 
   await vsce.page.keyboard.press("Backspace");
 

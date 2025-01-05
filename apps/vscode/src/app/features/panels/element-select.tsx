@@ -8,10 +8,10 @@ import { send } from "@triplex/bridge/host";
 import { useTelemetry } from "@triplex/ux";
 import { Suspense } from "react";
 import { useLazySubscription } from "../../hooks/ws";
-import { useSceneStore } from "../../stores/scene";
+import { useSceneContext } from "../app-root/context";
 
 function ElementOptions() {
-  const context = useSceneStore((store) => store.context);
+  const context = useSceneContext();
   const { exports } = useLazySubscription("/scene/:path/:exportName", context);
 
   return exports.map((exp) => (
@@ -22,7 +22,7 @@ function ElementOptions() {
 }
 
 export function ElementSelect() {
-  const context = useSceneStore((store) => store.context);
+  const context = useSceneContext();
   const telemetry = useTelemetry();
 
   return (

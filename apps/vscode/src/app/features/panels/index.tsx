@@ -12,11 +12,16 @@ import { LayersIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import { cn } from "@triplex/lib";
 import { fg } from "@triplex/lib/fg";
 import { useScreenView, useTelemetry } from "@triplex/ux";
-import { Suspense, useDeferredValue, useEffect, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 import { IconButton } from "../../components/button";
 import { ScrollContainer } from "../../components/scroll-container";
 import { Surface } from "../../components/surface";
-import { useSceneStore } from "../../stores/scene";
+import {
+  useSceneContext,
+  useSceneEvents,
+  useScenePlayState,
+  useSceneSelected,
+} from "../app-root/context";
 import { HasWarningsDot } from "../warnings/warning-has-warnings";
 import { WarningRequiredProps } from "../warnings/warning-required-props";
 import { ElementSelect } from "./element-select";
@@ -102,7 +107,7 @@ export function PanelContainer({
       <Surface
         className={cn([
           "flex flex-col",
-          isExpanded && "flex-shrink-0 border-l border-r",
+          isExpanded && "flex-shrink-0 border-r",
         ])}
         ref={containerRef}
         shape="square"
@@ -130,16 +135,11 @@ export function PanelContainer({
 }
 
 export function Panels() {
-  const [realShown, setShown] = useState<"elements" | undefined>(undefined);
-  const play = useSceneStore((store) => store.playState);
-  const focusElement = useSceneStore((store) => store.focusElement);
-  const blurElement = useSceneStore((store) => store.blurElement);
-  const context = useSceneStore((store) => store.context);
-  const realSelected = useSceneStore((store) => store.selected);
-  // We defer the values so when suspense is triggered we continue to
-  // show the previous state rather than showing nothing.
-  const shown = useDeferredValue(realShown);
-  const selected = useDeferredValue(realSelected);
+  const [shown, setShown] = useState<"elements" | undefined>(undefined);
+  const play = useScenePlayState();
+  const { blurElement, focusElement } = useSceneEvents();
+  const context = useSceneContext();
+  const selected = useSceneSelected();
   const isComponentControlsShown = selected && "exportName" in selected;
   const ref = useRef<HTMLDivElement>(null);
 

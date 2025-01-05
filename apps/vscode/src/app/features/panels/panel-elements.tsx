@@ -9,7 +9,7 @@ import { send } from "@triplex/bridge/host";
 import { useLayoutEffect, useReducer, useRef } from "react";
 import { IconButton } from "../../components/button";
 import { useFilter } from "../../stores/filter-elements";
-import { useSceneStore } from "../../stores/scene";
+import { useSceneContext } from "../app-root/context";
 import { SceneElements } from "./element";
 
 export function FilterElements() {
@@ -65,7 +65,7 @@ export function FilterElements() {
 }
 
 export function ElementsPanel() {
-  const context = useSceneStore((store) => store.context);
+  const context = useSceneContext();
 
   return (
     <ul onMouseLeave={() => send("element-hint", null)}>

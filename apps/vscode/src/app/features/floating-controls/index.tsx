@@ -24,13 +24,13 @@ import { useEffect, useState } from "react";
 import { IconButton } from "../../components/button";
 import { Separator } from "../../components/separator";
 import { Surface } from "../../components/surface";
-import { useSceneStore } from "../../stores/scene";
 import { onVSCE } from "../../util/bridge";
+import { useSceneEvents, useScenePlayState } from "../app-root/context";
 
 export function FloatingControls() {
   const [controls, setControls] = useState<Controls>();
-  const play = useSceneStore((store) => store.playState);
-  const dispatch = useSceneStore((store) => store.setPlayState);
+  const play = useScenePlayState();
+  const { setPlayState: dispatch } = useSceneEvents();
   const telemetry = useTelemetry();
 
   useEffect(() => {

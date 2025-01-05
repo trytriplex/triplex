@@ -7,18 +7,19 @@
 import { EraserIcon } from "@radix-ui/react-icons";
 import { send } from "@triplex/bridge/host";
 import { PropInput } from "@triplex/ux/inputs";
-import { useDeferredValue, useReducer } from "react";
+import { useReducer } from "react";
 import * as Accordion from "../../components/accordion";
 import { IconButton } from "../../components/button";
 import { useLazySubscription } from "../../hooks/ws";
 import { useFilter } from "../../stores/filter-props";
-import { useSceneStore, type ElementLocation } from "../../stores/scene";
 import { sendVSCE } from "../../util/bridge";
+import { useSceneSelected } from "../app-root/context";
+import { type SceneSelected } from "../app-root/types";
 import { propsByGroup } from "../element-props/group";
 import { renderPropInputs } from "./inputs";
 
 export function SelectionPanel() {
-  const selected = useSceneStore((store) => store.selected);
+  const selected = useSceneSelected();
 
   return selected ? <SelectionPanelLoadable selected={selected} /> : null;
 }
@@ -45,12 +46,7 @@ function NoPropsCTA() {
   return <div className="px-4 py-3 italic">This element has no props.</div>;
 }
 
-function SelectionPanelLoadable({
-  selected: inSelected,
-}: {
-  selected: ElementLocation;
-}) {
-  const selected = useDeferredValue(inSelected);
+function SelectionPanelLoadable({ selected }: { selected: SceneSelected }) {
   const filter = useFilter((state) => state.filter);
   const setFilter = useFilter((state) => state.set);
   const isPropsForComponent = "exportName" in selected;

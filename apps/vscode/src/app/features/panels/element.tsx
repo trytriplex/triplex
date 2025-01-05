@@ -12,19 +12,19 @@ import { type JsxElementPositions } from "@triplex/server";
 import { bind } from "bind-event-listener";
 import {
   Suspense,
-  useDeferredValue,
   useEffect,
   useId,
   useLayoutEffect,
   useReducer,
   useRef,
   useState,
+  useTransition,
 } from "react";
 import { Pressable } from "../../components/pressable";
 import { useOnSurfaceStateChange } from "../../components/surface";
 import { useLazySubscription } from "../../hooks/ws";
 import { useFilter } from "../../stores/filter-elements";
-import { useSceneStore } from "../../stores/scene";
+import { useSceneEvents, useSceneSelected } from "../app-root/context";
 import { WarningElementProps } from "../warnings/warning-element-props";
 
 function matchesFilter(
@@ -48,8 +48,8 @@ function matchesFilter(
 
 export function SceneElement(props: JsxElementPositions & { level: number }) {
   const id = useId();
-  const selected = useSceneStore((store) => store.selected);
-  const focusElement = useSceneStore((store) => store.focusElement);
+  const selected = useSceneSelected();
+  const { focusElement } = useSceneEvents();
   const ref = useRef<HTMLButtonElement>(null);
   const [isActive, setIsActive] = useState(false);
   const [isForciblyHovered, setForciblyHovered] = useState(false);
@@ -65,6 +65,7 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
   const filter = useFilter((state) => state.filter);
   const matches = matchesFilter(filter, props);
   const isExpanded = isUserExpanded || !!filter;
+  const [, startTransition] = useTransition();
 
   useOnSurfaceStateChange((active) => {
     setIsActive(active);
@@ -148,11 +149,13 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
           className="outline-offset-inset absolute inset-0"
           labelledBy={id}
           onClick={() => {
-            focusElement({
-              column: props.column,
-              line: props.line,
-              parentPath: props.parentPath,
-              path: props.parentPath,
+            startTransition(() => {
+              focusElement({
+                column: props.column,
+                line: props.line,
+                parentPath: props.parentPath,
+                path: props.parentPath,
+              });
             });
           }}
           ref={ref}
@@ -208,7 +211,7 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
 }
 
 export function SceneElements({
-  exportName: inExportName,
+  exportName,
   level = 1,
   path,
 }: {
@@ -216,7 +219,6 @@ export function SceneElements({
   level?: number;
   path: string;
 }) {
-  const exportName = useDeferredValue(inExportName);
   const elements = useLazySubscription("/scene/:path/:exportName", {
     exportName,
     path,

@@ -19,13 +19,12 @@ import {
 import { useTelemetry, type ActionId } from "@triplex/ux";
 import { useEffect } from "react";
 import { preloadSubscription } from "../../hooks/ws";
-import { useInitSceneSync, useSceneStore } from "../../stores/scene";
 import { forwardClientMessages, onVSCE, sendVSCE } from "../../util/bridge";
+import { useSceneEvents, useSceneSelected } from "../app-root/context";
 
 export function Events() {
-  const initSync = useInitSceneSync();
-  const selected = useSceneStore((store) => store.selected);
-  const syncContext = useSceneStore((store) => store.syncContext);
+  const selected = useSceneSelected();
+  const { syncContext } = useSceneEvents();
   const telemetry = useTelemetry();
 
   useEffect(() => {
@@ -36,7 +35,6 @@ export function Events() {
       forwardClientMessages("element-set-prop"),
       forwardClientMessages("error"),
       forwardKeyboardEvents(),
-      initSync(),
       on("component-opened", (data) => {
         preloadSubscription("/scene/:path/:exportName/props", data);
         syncContext({
@@ -104,7 +102,7 @@ export function Events() {
         telemetry.event(`scene_${data.actionId}` as ActionId);
       }),
     ]);
-  }, [initSync, selected, syncContext, telemetry]);
+  }, [selected, syncContext, telemetry]);
 
   return null;
 }

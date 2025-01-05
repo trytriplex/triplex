@@ -5,11 +5,11 @@
  * file in the root directory of this source tree.
  */
 import { useSubscription } from "../../hooks/ws";
-import { useSceneStore } from "../../stores/scene";
+import { useSceneContext } from "../app-root/context";
 import { WarningPredicate } from "./warning";
 
 export function WarningRequiredProps() {
-  const context = useSceneStore((store) => store.context);
+  const context = useSceneContext();
   const props = useSubscription("/scene/:path/:exportName/props", context);
   const missingRequiredProps = props.props
     .filter((prop) => prop.required && prop.defaultValue === undefined)
