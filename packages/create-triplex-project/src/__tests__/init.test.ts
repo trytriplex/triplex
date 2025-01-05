@@ -110,13 +110,13 @@ describe("init command", () => {
   "private": true,
   "scripts": {},
   "dependencies": {
-    "@react-three/drei": "^9.114.0",
-    "@react-three/fiber": "^8.17.8",
+    "@react-three/drei": "^9.120.5",
+    "@react-three/fiber": "^8.17.10",
     "@types/react": "^18.3.9",
-    "@types/three": "^0.168.0",
+    "@types/three": "^0.171.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "three": "^0.168.0"
+    "three": "^0.172.0"
   }
 }
 `.replaceAll("\n", EOL),
