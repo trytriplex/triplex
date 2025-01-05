@@ -21,20 +21,21 @@ export function ErrorSplash({ error }: { error: Error | { message: string } }) {
 
         <p className="mx-auto max-w-md text-center text-lg">
           We&apos;re looking into it. Re-open Triplex for VS Code and try again,
-          if the problem persists try restarting Visual Studio Code.
+          if the problem persists try restarting Visual Studio Code or raising
+          an issue.
         </p>
 
-        <code className="mx-auto my-2 max-h-32 max-w-2xl overflow-auto bg-white/5 px-4 py-2 text-left">
-          {"stack" in error ? error.stack : error.message}
-        </code>
-
         <div className="mx-auto flex items-center gap-2">
-          <a href="https://discord.gg/nBzRBUEs4b">Contact Support</a>
+          <a href="https://discord.gg/nBzRBUEs4b">Join Discord</a>
           <span className="text-xs">•</span>
           <a href="https://github.com/trytriplex/triplex/issues/new">
-            Report a Bug
+            Raise a Bug
           </a>
         </div>
+
+        <code className="mx-auto my-2 max-h-32 w-full max-w-2xl overflow-auto bg-white/5 px-4 py-2 text-left">
+          {"stack" in error ? error.stack : error.message}
+        </code>
       </div>
     </>
   );

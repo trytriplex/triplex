@@ -49,6 +49,7 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
     string,
     {
       deferred: ReturnType<typeof defer>;
+      lazilyRefetch: boolean;
       subscribe: (onStoreChanged: () => void) => () => void;
     }
   >();
@@ -108,8 +109,16 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
 
   function wsQuery<TValue>(path: string) {
     function load() {
-      if (queryCache.has(path)) {
+      const query = queryCache.get(path);
+      if (query && !query.lazilyRefetch) {
         return;
+      }
+
+      if (query) {
+        queryCache.set(path, {
+          ...query,
+          lazilyRefetch: false,
+        });
       }
 
       const resolvedOpts = typeof opts === "function" ? opts() : opts;
@@ -120,7 +129,17 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
 
       const ws = createRecoverableWebSocket({
         onClose: () => {
-          queryCache.delete(path);
+          const query = queryCache.get(path);
+          if (query) {
+            /**
+             * Once a query has been closed we mark it as needing a refetch if
+             * it's accessed again in the future. This means it can transition
+             * from a standard subscription to a lazy subscription later in its
+             * life.
+             */
+            valueCache.delete(path);
+            queryCache.set(path, { ...query, lazilyRefetch: true });
+          }
         },
         onError: () => {
           deferred.reject(new Error("Error connecting to websocket."));
@@ -149,7 +168,6 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
               // After a period of time if there are no more active connections
               // Close websocket and clear the cache. It'll be loaded fresh from
               // The server next time a component tries to access the data.
-              queryCache.delete(path);
               ws.close();
             }
           }, 9999);
@@ -158,6 +176,7 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
 
       queryCache.set(path, {
         deferred,
+        lazilyRefetch: false,
         subscribe,
       });
     }
@@ -166,6 +185,10 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
       const query = queryCache.get(path);
       if (!query) {
         throw new Error(`invariant: call load() first for ${path}`);
+      }
+
+      if (query.lazilyRefetch) {
+        load();
       }
 
       const value = valueCache.get(path);

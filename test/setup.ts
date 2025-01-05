@@ -6,8 +6,19 @@
  */
 import { cleanup } from "@testing-library/react";
 import { clearFgOverrides, initFeatureGates } from "@triplex/lib/fg";
+import { setupServer } from "msw/node";
 import { createElement, forwardRef, useState } from "react";
-import { afterEach, beforeAll, vi } from "vitest";
+import { afterAll, afterEach, beforeAll, vi } from "vitest";
+import { handlers } from "./__mocks__/wss";
+
+const server = setupServer(...handlers);
+
+beforeAll(() => server.listen());
+afterEach(() => {
+  server.resetHandlers();
+  vi.useRealTimers();
+});
+afterAll(() => server.close());
 
 globalThis.DOMRect = class DOMRect {
   bottom: number = 0;

@@ -260,7 +260,7 @@ export const renderPropInputs: RenderInputs = ({
         >
           {prop.prop.name}
         </Label>
-        <div>
+        <div className="flex flex-col">
           <TupleInput
             defaultValue={resolveDefaultValue(prop.prop, "array")}
             onChange={onChange}

@@ -29,8 +29,6 @@ const setVisibility = (state: "hidden" | "visible") => {
   });
 };
 
-vi.useFakeTimers({ loopLimit: 10 });
-
 const setDocumentFocus = (hasFocus: boolean) => {
   Object.defineProperty(document, "hasFocus", {
     configurable: true,
@@ -40,6 +38,7 @@ const setDocumentFocus = (hasFocus: boolean) => {
 
 describe("camera", () => {
   beforeEach(() => {
+    vi.useFakeTimers({ loopLimit: 10 });
     setDocumentFocus(true);
   });
 

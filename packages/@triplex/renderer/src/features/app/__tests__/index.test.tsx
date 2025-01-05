@@ -7,14 +7,12 @@
 // @vitest-environment jsdom
 import { act, render, screen } from "@testing-library/react";
 import { send } from "@triplex/bridge/host";
-import { describe, expect, it, vi } from "vitest";
+import { describe, expect, it } from "vitest";
 import { App } from "../index";
 
 function Scene() {
   return <div>hello</div>;
 }
-
-vi.mock("@triplex/ws/react");
 
 Scene.triplexMeta = {
   lighting: "default",

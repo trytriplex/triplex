@@ -19,8 +19,6 @@ vi.mock("@react-three/fiber", async () => ({
   },
 }));
 
-vi.mock("@triplex/ws/react");
-
 vi.mock("../../../components/tunnel", () => ({
   Tunnel: { In: () => null, Out: () => null },
 }));
@@ -28,8 +26,6 @@ vi.mock("../../../components/tunnel", () => ({
 vi.mock("../../selection-three-fiber/selection-indicator.tsx", () => ({
   SelectionIndicator: () => null,
 }));
-
-window.triplex = { env: { ports: {} } };
 
 function Provider({ children }: { children?: React.ReactNode }) {
   return (

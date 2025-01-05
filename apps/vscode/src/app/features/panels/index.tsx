@@ -159,7 +159,7 @@ export function Panels() {
         className={cn([
           shown
             ? "relative gap-1 p-1.5"
-            : "bg-overlay border-overlay absolute left-[6px] top-[5px] rounded border p-0.5",
+            : "bg-overlay border-overlay absolute left-[5px] top-[5px] rounded border p-0.5",
           "z-20 flex items-start opacity-90",
         ])}
       >
