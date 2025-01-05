@@ -15,6 +15,8 @@ import { type LoadedSceneContext } from "./types";
  */
 export const SceneContext = createContext<LoadedSceneContext | null>(null);
 
+export const ResetCountContext = createContext(0);
+
 export function useLoadedScene() {
   const value = useContext(SceneContext);
   if (!value) {

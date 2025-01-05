@@ -5,9 +5,9 @@
  * file in the root directory of this source tree.
  */
 import { Canvas as FiberCanvas, type CanvasProps } from "@react-three/fiber";
-import { compose, on, send } from "@triplex/bridge/client";
+import { send } from "@triplex/bridge/client";
 import { fg } from "@triplex/lib/fg";
-import { Fragment, Suspense, useLayoutEffect, useReducer } from "react";
+import { Fragment, Suspense, useContext } from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
 import { ErrorFallback } from "../../components/error-fallback";
 import { TriplexGrid } from "../../components/grid";
@@ -20,7 +20,7 @@ import { CameraAxisHelper } from "../camera/camera-axis-helper";
 import { FitCameraToScene } from "../camera/camera-fit-scene";
 import { CameraGizmo } from "../camera/camera-gizmo";
 import { SceneElement } from "../scene-element";
-import { useLoadedScene } from "../scene-loader/context";
+import { ResetCountContext, useLoadedScene } from "../scene-loader/context";
 import { ThreeFiberSelection } from "../selection-three-fiber";
 import { CaptureShaderErrors } from "./capture-shader-errors";
 import { SceneLights } from "./scene-lights";
@@ -34,37 +34,8 @@ import { SceneLights } from "./scene-lights";
  */
 export function Canvas({ children, ...props }: CanvasProps) {
   const playState = usePlayState();
+  const resetCount = useContext(ResetCountContext);
   const { exportName, path, provider, providerPath, scene } = useLoadedScene();
-  const [resetCount, incrementReset] = useReducer(
-    (count: number) => count + 1,
-    0,
-  );
-
-  /**
-   * We use a layout effect here to ensure the event listeners are added before
-   * other ones e.g. inside
-   * {@link ../selection-provider/use-selection-marshal.tsx} otherwise when
-   * entering edit state the selection outline can be unintentionally removed.
-   */
-  useLayoutEffect(() => {
-    /**
-     * This means only components that have a canvas (so either
-     * react-three-fiber root, or react root with a Canvas component) can be
-     * reset using the scene controls. When we move further into the React DOM
-     * building space we'll need to figure out what to do about this so both
-     * worlds can be reset without the Canvas being blown away.
-     */
-    return compose([
-      on("request-refresh-scene", () => {
-        incrementReset();
-      }),
-      on("request-state-change", ({ state }) => {
-        if (state === "edit") {
-          // incrementReset();
-        }
-      }),
-    ]);
-  }, []);
 
   return (
     <FiberCanvas

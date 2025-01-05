@@ -5,9 +5,17 @@
  * file in the root directory of this source tree.
  */
 
-import { compose, on } from "@triplex/bridge/client";
+import { on } from "@triplex/bridge/client";
 import { noop, useEvent } from "@triplex/lib";
-import { useEffect, useMemo, useReducer, useState } from "react";
+import {
+  useContext,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useReducer,
+  useState,
+} from "react";
+import { ResetCountContext } from "../scene-loader/context";
 import { useSelectionStore, type SelectionListener } from "./store";
 import { type SelectionState } from "./types";
 
@@ -35,6 +43,7 @@ export function useSelectionMarshal<
   onSettled?: SelectionEvent<T>;
   resolve: Resolver<T>;
 }) {
+  const resetCount = useContext(ResetCountContext);
   const selections = useSelectionStore((store) => store.selections);
   const select = useSelectionStore((store) => store.select);
   const clear = useSelectionStore((store) => store.clear);
@@ -52,26 +61,24 @@ export function useSelectionMarshal<
   const onHoveredEvent: SelectionEvent<T> = useEvent(onHovered);
   const onSettledEvent: SelectionEvent<T> = useEvent(onSettled);
 
-  /**
-   * These events need to be added after the listeners inside
-   * {@link ../canvas/index.tsx} otherwise the selection outline can be
-   * unintentionally removed when entering edit state.
-   */
   useEffect(() => {
-    return compose([
-      on("request-refresh-scene", forciblyResolve),
-      on("request-state-change", ({ state }) => {
-        const shouldDisableSelection = state === "play";
+    return on("request-state-change", ({ state }) => {
+      const shouldClearResolvedNodes = state === "play";
 
-        setDisabled(shouldDisableSelection);
+      setDisabled(shouldClearResolvedNodes);
 
-        if (shouldDisableSelection) {
-          setResolvedSelections([]);
-          setResolvedHovered([]);
-        }
-      }),
-    ]);
-  }, [clear, setDisabled]);
+      if (shouldClearResolvedNodes) {
+        setResolvedSelections([]);
+        setResolvedHovered([]);
+      }
+    });
+  }, [setDisabled]);
+
+  useLayoutEffect(() => {
+    if (resetCount > 0) {
+      forciblyResolve();
+    }
+  }, [resetCount]);
 
   useEffect(() => {
     if (disabled) {

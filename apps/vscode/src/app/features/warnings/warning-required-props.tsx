@@ -4,13 +4,13 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useSubscription } from "../../hooks/ws";
+import { useLazySubscription } from "../../hooks/ws";
 import { useSceneContext } from "../app-root/context";
 import { WarningPredicate } from "./warning";
 
 export function WarningRequiredProps() {
   const context = useSceneContext();
-  const props = useSubscription("/scene/:path/:exportName/props", context);
+  const props = useLazySubscription("/scene/:path/:exportName/props", context);
   const missingRequiredProps = props.props
     .filter((prop) => prop.required && prop.defaultValue === undefined)
     .map((prop) => prop.name);

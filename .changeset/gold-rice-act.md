@@ -2,4 +2,4 @@
 "triplex-vsce": patch
 ---
 
-Prop labels are now ellipsified when there isn't enough room.
+Prop labels are now truncated when there isn't enough room.
