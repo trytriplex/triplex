@@ -42,6 +42,9 @@ test("blurring an element", async ({ vsce }) => {
   const editor = vsce.resolveEditor();
   await editor.togglePanelsButton.click();
   await editor.panels.getByRole("button", { name: "ambientLight" }).click();
+  await expect(
+    editor.panels.getByRole("button", { name: "ambientLight" }),
+  ).toHaveAccessibleName(/selected/);
 
   await vsce.page.keyboard.press("Escape");
 
@@ -66,6 +69,9 @@ test("jump to element", async ({ vsce }) => {
   const editor = vsce.resolveEditor();
   await editor.togglePanelsButton.click();
   await editor.panels.getByRole("button", { name: "ambientLight" }).click();
+  await expect(
+    editor.panels.getByRole("button", { name: "ambientLight" }),
+  ).toHaveAccessibleName(/selected/);
 
   await vsce.page.keyboard.press("f");
 
@@ -76,7 +82,10 @@ test("duplicating an element should be selected", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
   const editor = vsce.resolveEditor();
   await editor.togglePanelsButton.click();
-  await editor.panels.getByRole("button", { exact: true, name: "Box" }).click();
+  await editor.panels.getByRole("button", { name: /Box/ }).click();
+  await expect(
+    editor.panels.getByRole("button", { name: /Box/ }),
+  ).toHaveAccessibleName(/selected/);
 
   await vsce.page.keyboard.press("ControlOrMeta+D");
 
