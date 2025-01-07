@@ -11,8 +11,8 @@ float sampleMask(sampler2D mask, float lineWeight) {
   float dy = 1.0 / u_viewportSize.y * lineWeight;
 
   vec2 uvCenter = v_uv;
-  vec2 uvRight = vec2(uvCenter.x + dx, uvCenter.y);
   vec2 uvTop = vec2(uvCenter.x, uvCenter.y - dx);
+  vec2 uvRight = vec2(uvCenter.x + dx, uvCenter.y);
   vec2 uvTopRight = vec2(uvCenter.x + dx, uvCenter.y - dx);
 
   float mCenter = texture2D(mask, uvCenter).a;
@@ -35,7 +35,7 @@ float sampleMask(sampler2D mask, float lineWeight) {
 // Inspired by "Simple GPU Outline Shaders" by Mark Raynsford
 // See: https://io7m.com/documents/outline-glsl
 void main() {
-  float delta = sampleMask(u_selectionMask, u_lineWeight * 2.5);
+  float delta = sampleMask(u_selectionMask, u_lineWeight);
 
   if (delta > 0.0) {
     gl_FragColor = vec4(u_lineColor, 1.0);

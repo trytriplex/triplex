@@ -20,13 +20,11 @@ import vert from "./selection-indicator.vert";
 export function SelectionIndicator() {
   const selectionFBO = useFBO();
   const hoveredFBO = useFBO();
-  const material = useRef<ShaderMaterial>(null!);
-  const [uViewportSize] = useState(
-    () => new Vector2(selectionFBO.width, selectionFBO.height),
-  );
+  const material = useRef<ShaderMaterial>(null);
+  const [uViewportSize] = useState(() => new Vector2());
 
   useFrame((state) => {
-    uViewportSize.set(selectionFBO.height * 2, selectionFBO.width);
+    uViewportSize.set(selectionFBO.width, selectionFBO.height);
 
     const currentLayersMask = state.camera.layers.mask;
     const prevBg = state.scene.background;
@@ -56,8 +54,8 @@ export function SelectionIndicator() {
         transparent
         uniforms={{
           u_hoveredMask: { value: hoveredFBO.texture },
-          u_lineColor: { value: [1.0, 1.0, 0.0] },
-          u_lineWeight: { value: 2.0 },
+          u_lineColor: { value: [59 / 255, 130 / 255, 246 / 255] },
+          u_lineWeight: { value: 1.5 },
           u_selectionMask: { value: selectionFBO.texture },
           u_viewportSize: { value: uViewportSize },
         }}

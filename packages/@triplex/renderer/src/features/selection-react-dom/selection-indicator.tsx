@@ -12,19 +12,14 @@ import { style } from "../../util/style";
 import { type ResolvedNode } from "./resolver";
 
 const styles = style({
-  hovered: {
-    borderWidth: "1px",
-  },
   indicator: {
-    borderColor: "rgb(96 165 250)",
+    borderColor: "rgb(59 130 246)",
     borderStyle: "solid",
+    borderWidth: "1px",
     boxSizing: "border-box",
     pointerEvents: "none",
     position: "absolute",
     zIndex: "calc(infinity)",
-  },
-  selected: {
-    borderWidth: "2px",
   },
 });
 
@@ -37,20 +32,21 @@ function Outline({
   nodes: ResolvedNode[];
   variant: "selected" | "hovered";
 }) {
-  if (
-    boxes.length === 0 ||
-    nodes.length === 0 ||
-    boxes.length !== nodes.length
-  ) {
+  if (boxes.length === 0) {
     return null;
   }
 
-  function testId(node: ResolvedNode) {
-    return `${node.meta.name}@${node.meta.line}:${node.meta.column}`;
+  function testId(node?: ResolvedNode) {
+    const meta = node?.meta;
+    if (!meta) {
+      return "";
+    }
+
+    return `${meta.name}@${meta.line}:${meta.column}`;
   }
 
   let { bottom, left, right, top } = boxes[0];
-  let meta: string[] = [testId(nodes[0])];
+  let meta: string[] = [testId(nodes.at(0))];
 
   for (let i = 1; i < boxes.length; i++) {
     const box = boxes[i];
@@ -60,23 +56,18 @@ function Outline({
     right = Math.max(right ?? box.right, box.right);
     bottom = Math.max(bottom ?? box.bottom, box.bottom);
 
-    meta.push(testId(nodes[i]));
+    meta.push(testId(nodes.at(i)));
   }
 
   return (
     <div
       data-testid={`${variant}(${meta.join(",")})`}
-      style={style.merge(
-        styles.indicator,
-        variant === "selected" && styles.selected,
-        variant === "hovered" && styles.hovered,
-        {
-          height: bottom - top,
-          left,
-          top,
-          width: right - left,
-        },
-      )}
+      style={style.merge(styles.indicator, {
+        height: bottom - top,
+        left,
+        top,
+        width: right - left,
+      })}
     />
   );
 }
@@ -125,8 +116,13 @@ export function SelectionIndicator({
       return;
     }
 
-    if (!hovered) {
-      setHoveredRect([]);
+    if (hovered.length === 0) {
+      /**
+       * We defer clearing the hovered rect by a frame so it can be set at the
+       * same time as the selected rect inside its resize observer. This avoids
+       * a flash of no indicator.
+       */
+      requestAnimationFrame(() => setHoveredRect([]));
       return;
     }
 
