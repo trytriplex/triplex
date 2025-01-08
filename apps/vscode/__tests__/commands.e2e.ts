@@ -9,8 +9,7 @@ import { test } from "./utils/runner";
 
 test("fill number input", async ({ vsce }) => {
   await vsce.codelens("Plane").click();
-  const { panels, togglePanelsButton } = vsce.resolveEditor();
-  await togglePanelsButton.click();
+  const { panels } = vsce.resolveEditor();
   await panels.getByRole("button", { name: "planeGeometry" }).click();
   const input = panels.getByLabel("width", { exact: true });
 
@@ -24,8 +23,7 @@ test("fill number input", async ({ vsce }) => {
 
 test("drag to change number input", async ({ vsce }) => {
   await vsce.codelens("Plane").click();
-  const { panels, togglePanelsButton } = vsce.resolveEditor();
-  await togglePanelsButton.click();
+  const { panels } = vsce.resolveEditor();
   await panels.getByRole("button", { name: "planeGeometry" }).click();
   const input = panels.getByLabel("width", { exact: true });
 
@@ -39,8 +37,7 @@ test("drag to change number input", async ({ vsce }) => {
 
 test("delete element", async ({ vsce }) => {
   await vsce.codelens("Plane").click();
-  const { panels, togglePanelsButton } = vsce.resolveEditor();
-  await togglePanelsButton.click();
+  const { panels } = vsce.resolveEditor();
   await panels.getByRole("button", { name: "planeGeometry" }).click();
   await expect(
     panels.getByRole("button", { name: "planeGeometry" }),
@@ -55,8 +52,7 @@ test("backspacing in an input does not delete the element", async ({
   vsce,
 }) => {
   await vsce.codelens("Plane").click();
-  const { panels, togglePanelsButton } = vsce.resolveEditor();
-  await togglePanelsButton.click();
+  const { panels } = vsce.resolveEditor();
   await panels.getByRole("button", { name: "planeGeometry" }).click();
   const input = panels.getByLabel("width", { exact: true });
   await input.fill("0.5");
@@ -75,8 +71,7 @@ test.describe(() => {
   test("updating children prop", async ({ getFile, vsce }) => {
     await vsce.codelens("ReactRootFromAnotherModule").click();
 
-    const { panels, togglePanelsButton } = vsce.resolveEditor();
-    await togglePanelsButton.click();
+    const { panels } = vsce.resolveEditor();
     await panels.getByRole("button", { name: "Button" }).click();
     const input = panels.getByLabel("children", { exact: true });
 

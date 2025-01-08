@@ -14,9 +14,7 @@ test.describe(() => {
 
   test("host element with a name", async ({ vsce }) => {
     await vsce.codelens("Scene").click();
-    const { panels, togglePanelsButton } = vsce.resolveEditor();
-
-    await togglePanelsButton.click();
+    const { panels } = vsce.resolveEditor();
 
     await expect(panels.getByRole("button", { name: "plane1" })).toBeVisible();
   });
@@ -29,9 +27,7 @@ test.describe(() => {
 
   test("custom element with a name", async ({ vsce }) => {
     await vsce.codelens("Scene").click();
-    const { panels, togglePanelsButton } = vsce.resolveEditor();
-
-    await togglePanelsButton.click();
+    const { panels } = vsce.resolveEditor();
 
     await expect(panels.getByRole("button", { name: "box1" })).toBeVisible();
   });

@@ -23,8 +23,7 @@ test.describe(() => {
 
   test("focusing three element then dom element", async ({ vsce }) => {
     await vsce.codelens("CanvasExample").click();
-    const { panels, togglePanelsButton } = vsce.resolveEditor();
-    await togglePanelsButton.click();
+    const { panels } = vsce.resolveEditor();
 
     await panels.getByRole("button", { exact: true, name: "mesh" }).click();
     await expect(

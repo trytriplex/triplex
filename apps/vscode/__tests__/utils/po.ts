@@ -99,6 +99,9 @@ export class ExtensionPage {
       get panels() {
         return locator.getByTestId("panels");
       },
+      get panelsButton() {
+        return locator.getByRole("button", { name: "View Scene Elements" });
+      },
       get scene() {
         const frameLocator = locator.frameLocator("#scene");
         return {
@@ -112,9 +115,6 @@ export class ExtensionPage {
           },
           locator: frameLocator,
         };
-      },
-      get togglePanelsButton() {
-        return locator.getByRole("button", { name: "View Scene Elements" });
       },
     };
   }

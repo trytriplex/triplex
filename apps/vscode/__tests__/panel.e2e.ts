@@ -10,7 +10,6 @@ import { test } from "./utils/runner";
 test("resizing the scene panel", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
   const editor = vsce.resolveEditor();
-  await editor.togglePanelsButton.click();
   const splitter = editor.locator.getByTestId("panel-drag-handle");
 
   const initialStyle = await editor.panels.getAttribute("style");
@@ -27,9 +26,7 @@ test.describe(() => {
 
   test("component controls updates prop value", async ({ vsce }) => {
     await vsce.codelens("ComponentControlsTest").click();
-    const { componentControlsButtons, panels, scene, togglePanelsButton } =
-      vsce.resolveEditor();
-    await togglePanelsButton.click();
+    const { componentControlsButtons, panels, scene } = vsce.resolveEditor();
     await componentControlsButtons.open.click();
     const input = panels.getByLabel("color", { exact: true });
 

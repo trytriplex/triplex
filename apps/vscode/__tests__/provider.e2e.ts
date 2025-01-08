@@ -9,9 +9,7 @@ import { test } from "./utils/runner";
 
 test("default props set in editor", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
-  const { panels, togglePanelsButton } = vsce.resolveEditor();
-
-  await togglePanelsButton.click();
+  const { panels } = vsce.resolveEditor();
 
   await expect(panels.getByLabel("barbar")).toHaveValue("1");
   await expect(panels.getByLabel("batbat")).toHaveValue("100");
@@ -33,8 +31,7 @@ test("default props set in scene", async ({ vsce }) => {
 
 test("update provider prop", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
-  const { panels, scene, togglePanelsButton } = vsce.resolveEditor();
-  await togglePanelsButton.click();
+  const { panels, scene } = vsce.resolveEditor();
 
   const input = panels.getByLabel("batbat", { exact: true });
   await input.fill("222");
@@ -47,8 +44,7 @@ test("update provider prop", async ({ vsce }) => {
 
 test("reset provider props", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
-  const { panels, scene, togglePanelsButton } = vsce.resolveEditor();
-  await togglePanelsButton.click();
+  const { panels, scene } = vsce.resolveEditor();
   const input = panels.getByLabel("batbat", { exact: true });
   await input.fill("222");
   await input.press("Enter");
@@ -64,14 +60,13 @@ test("provider controls persist changes when panel is closed", async ({
   vsce,
 }) => {
   await vsce.codelens("Scene").click();
-  const { panels, scene, togglePanelsButton } = vsce.resolveEditor();
-  await togglePanelsButton.click();
+  const { panels, panelsButton, scene } = vsce.resolveEditor();
   const input = panels.getByLabel("batbat", { exact: true });
   await input.fill("222");
   await input.press("Enter");
 
-  await togglePanelsButton.click();
-  await togglePanelsButton.click();
+  await panelsButton.click();
+  await panelsButton.click();
 
   const element = scene.locator.getByTestId("provider-props");
   await expect(element).toContainText(`"batbat":222`);
@@ -82,8 +77,7 @@ test("provider controls persist changes when an element is selected", async ({
   vsce,
 }) => {
   await vsce.codelens("Scene").click();
-  const { panels, scene, togglePanelsButton } = vsce.resolveEditor();
-  await togglePanelsButton.click();
+  const { panels, scene } = vsce.resolveEditor();
   const input = panels.getByLabel("batbat", { exact: true });
   await input.fill("222");
   await input.press("Enter");

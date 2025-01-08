@@ -135,7 +135,7 @@ export function PanelContainer({
 }
 
 export function Panels() {
-  const [shown, setShown] = useState<"elements" | undefined>(undefined);
+  const [shown, setShown] = useState<"elements" | undefined>("elements");
   const play = useScenePlayState();
   const { blurElement, focusElement } = useSceneEvents();
   const context = useSceneContext();

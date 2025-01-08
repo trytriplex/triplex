@@ -9,8 +9,7 @@ import { test } from "./utils/runner";
 
 test("updating component from another file", async ({ getFile, vsce }) => {
   await vsce.codelens("Scene").click();
-  const { panels, togglePanelsButton } = vsce.resolveEditor();
-  await togglePanelsButton.click();
+  const { panels } = vsce.resolveEditor();
 
   // Focus the child element that lives in another file.
   await panels.getByRole("button", { name: "Show Children" }).click();
@@ -43,8 +42,7 @@ test("external update can be undone in the editor", async ({
 }) => {
   test.skip(true, "This test is flakey and needs to be fixed.");
   await vsce.codelens("Plane").click();
-  const { panels, togglePanelsButton } = vsce.resolveEditor();
-  await togglePanelsButton.click();
+  const { panels } = vsce.resolveEditor();
   await panels.getByRole("button", { name: "meshBasicMaterial" }).click();
 
   // Perform an external update

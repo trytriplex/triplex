@@ -10,7 +10,6 @@ import { test } from "./utils/runner";
 test("focusing an element", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
   const editor = vsce.resolveEditor();
-  await editor.togglePanelsButton.click();
 
   await editor.panels.getByRole("button", { name: "ambientLight" }).click();
 
@@ -26,10 +25,9 @@ test.describe(() => {
 
   test("focusing a light", async ({ vsce }) => {
     await vsce.codelens("PointLight").click();
-    const { panels, scene, togglePanelsButton } = vsce.resolveEditor();
+    const { panels, scene } = vsce.resolveEditor();
 
     await scene.click();
-    await togglePanelsButton.click();
 
     await expect(
       panels.getByRole("button", { name: "pointLight selected" }),
@@ -40,7 +38,6 @@ test.describe(() => {
 test("blurring an element", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
   const editor = vsce.resolveEditor();
-  await editor.togglePanelsButton.click();
   await editor.panels.getByRole("button", { name: "ambientLight" }).click();
   await expect(
     editor.panels.getByRole("button", { name: "ambientLight" }),
@@ -59,15 +56,12 @@ test("default component switcher to initially opened component", async ({
   await vsce.codelens("Scene").click();
   const editor = vsce.resolveEditor();
 
-  await editor.togglePanelsButton.click();
-
   await expect(editor.panels.getByTestId("ElementSelect")).toHaveValue("Scene");
 });
 
 test("jump to element", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
   const editor = vsce.resolveEditor();
-  await editor.togglePanelsButton.click();
   await editor.panels.getByRole("button", { name: "ambientLight" }).click();
   await expect(
     editor.panels.getByRole("button", { name: "ambientLight" }),
@@ -81,7 +75,6 @@ test("jump to element", async ({ vsce }) => {
 test("duplicating an element should be selected", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
   const editor = vsce.resolveEditor();
-  await editor.togglePanelsButton.click();
   await editor.panels.getByRole("button", { name: /Box/ }).click();
   await expect(
     editor.panels.getByRole("button", { name: /Box/ }),
@@ -102,8 +95,7 @@ test.describe("react dom", () => {
 
   test("selecting a host element", async ({ vsce }) => {
     await vsce.codelens("ReactRoot").click();
-    const { panels, scene, togglePanelsButton } = await vsce.resolveEditor();
-    await togglePanelsButton.click();
+    const { panels, scene } = await vsce.resolveEditor();
 
     await scene.click();
 
@@ -115,8 +107,7 @@ test.describe("react dom", () => {
 
   test("selecting a custom component", async ({ vsce }) => {
     await vsce.codelens("ReactRootFromAnotherModule").click();
-    const { panels, scene, togglePanelsButton } = await vsce.resolveEditor();
-    await togglePanelsButton.click();
+    const { panels, scene } = await vsce.resolveEditor();
 
     await scene.click();
 
@@ -130,8 +121,7 @@ test.describe("react dom", () => {
 
   test("hovering over a component", async ({ vsce }) => {
     await vsce.codelens("ReactRootFromAnotherModule").click();
-    const { scene, togglePanelsButton } = await vsce.resolveEditor();
-    await togglePanelsButton.click();
+    const { scene } = await vsce.resolveEditor();
 
     await scene.hover();
 
@@ -144,8 +134,7 @@ test.describe("react dom", () => {
     vsce,
   }) => {
     await vsce.codelens("ReactRootFromAnotherModule").click();
-    const { locator, scene, togglePanelsButton } = await vsce.resolveEditor();
-    await togglePanelsButton.click();
+    const { locator, scene } = await vsce.resolveEditor();
 
     await scene.click();
     await locator.getByRole("button", { exact: true, name: "Play" }).click();
@@ -166,8 +155,7 @@ test.describe(() => {
     vsce,
   }) => {
     await vsce.codelens("UnknownCustomComponentResolvedHostElements").click();
-    const { panels, scene, togglePanelsButton } = await vsce.resolveEditor();
-    await togglePanelsButton.click();
+    const { panels, scene } = await vsce.resolveEditor();
 
     await scene.click();
 
