@@ -1,5 +1,37 @@
 # @triplex/electron
 
+## 0.70.0
+
+### Minor Changes
+
+- 4e8c285: How components are loaded has been restructured to support opening components with mixed JSX elements from different reconcilers.
+- 4e8c285: Triplex can now open components that have both DOM and Three Fiber JSX elements.
+
+### Patch Changes
+
+- b9b1b62: Upgrade vite and all related dependencies to latest.
+- e4db0c2: Upgrade TypeScript to latest.
+- Updated dependencies [0866bda]
+- Updated dependencies [9b67742]
+- Updated dependencies [3451d52]
+- Updated dependencies [7a75eed]
+- Updated dependencies [b9b1b62]
+- Updated dependencies [04deea9]
+- Updated dependencies [4e8c285]
+- Updated dependencies [4e8c285]
+- Updated dependencies [0866bda]
+- Updated dependencies [fbe725f]
+- Updated dependencies [e4db0c2]
+- Updated dependencies [25daa3d]
+- Updated dependencies [7a75eed]
+- Updated dependencies [4e8c285]
+- Updated dependencies [c896b64]
+- Updated dependencies [7a75eed]
+  - @triplex/server@0.71.0
+  - create-triplex-project@0.70.2
+  - @triplex/client@0.70.0
+  - @triplex/editor@0.69.9
+
 ## 0.69.8
 
 ### Patch Changes

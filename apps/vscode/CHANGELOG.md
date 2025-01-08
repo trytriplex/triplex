@@ -1,5 +1,48 @@
 # @triplex/vscode
 
+## 0.2.0
+
+### Minor Changes
+
+- 4e8c285: How components are loaded has been restructured to support opening components with mixed JSX elements from different reconcilers.
+- 4e8c285: Triplex can now open components that have both DOM and Three Fiber JSX elements.
+
+### Patch Changes
+
+- 3451d52: Upgrade react-compiler to latest.
+- 1a75709: Code controlled props now can jump to their code location without a confirmation prompt.
+- 7a75eed: Host elements such as "mesh" and "div" now have their props logically grouped to remove the laundry list shock.
+- b9b1b62: Upgrade vite and all related dependencies to latest.
+- ef3ecbd: Pass on sigterm/sigint to child processes.
+- 08f7eae: Fix a data loader throwing when exiting play state.
+- a262fa6: Prop labels are now truncated when there isn't enough room.
+- 481eb4c: The editor should appear more stable now when moving between states, such as switching between elements. Instead of immediately showing the loading indicator it will keep hold of the previous UI until the data has arrived.
+- 1a75709: Jump to an elements code location by using the new right click command in the elements panel.
+- 01e8fa9: The panel resizable area has been increased.
+- e4db0c2: Upgrade TypeScript to latest.
+- 7a75eed: Fix tuple prop types from appearing in the selection panel if there are no values defined.
+- 130d4b3: Fix selecting a host element and it resolving to an unexpected parent element.
+- 7a75eed: Union props that have all unsupported args are now shown as a single unsupported input in the selection panel rather than just not rendering anything at all.
+- 8f09ceb: The elements panel is now shown when starting up Triplex for VS Code.
+- 93761c7: Element selection hints are now shown when hovering over elements in the scene, and elements in the element panel.
+- Updated dependencies [0866bda]
+- Updated dependencies [9b67742]
+- Updated dependencies [7a75eed]
+- Updated dependencies [b9b1b62]
+- Updated dependencies [04deea9]
+- Updated dependencies [4e8c285]
+- Updated dependencies [4e8c285]
+- Updated dependencies [0866bda]
+- Updated dependencies [fbe725f]
+- Updated dependencies [e4db0c2]
+- Updated dependencies [25daa3d]
+- Updated dependencies [7a75eed]
+- Updated dependencies [4e8c285]
+- Updated dependencies [c896b64]
+- Updated dependencies [7a75eed]
+  - @triplex/server@0.71.0
+  - @triplex/client@0.70.0
+
 ## 0.1.2
 
 ### Patch Changes

@@ -1,5 +1,23 @@
 # @triplex/editor
 
+## 0.69.9
+
+### Patch Changes
+
+- 9b67742: Upgrade three.js dependencies.
+- 3451d52: Upgrade react-compiler to latest.
+- b9b1b62: Upgrade vite and all related dependencies to latest.
+- e4db0c2: Upgrade TypeScript to latest.
+- Updated dependencies [bcccc4f]
+- Updated dependencies [4e8c285]
+- Updated dependencies [e4db0c2]
+- Updated dependencies [4e8c285]
+- Updated dependencies [93761c7]
+  - @triplex/ws@0.69.4
+  - @triplex/bridge@0.70.0
+  - @triplex/lib@0.69.7
+  - @triplex/ux@0.69.9
+
 ## 0.69.8
 
 ### Patch Changes

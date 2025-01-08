@@ -1,5 +1,35 @@
 # @triplex/renderer
 
+## 0.71.0
+
+### Minor Changes
+
+- 4e8c285: How components are loaded has been restructured to support opening components with mixed JSX elements from different reconcilers.
+- 25daa3d: The `rendererAttributes` config option has been removed. If you were relying on this instead declare a Canvas component from `@react-three/fiber` in your component and set the props as desired.
+- 4e8c285: Triplex can now open components that have both DOM and Three Fiber JSX elements.
+
+### Patch Changes
+
+- 9b67742: Upgrade three.js dependencies.
+- b9b1b62: Upgrade vite and all related dependencies to latest.
+- 2f36ed7: Selecting a fragment now highlights all child elements in the scene.
+- e00d37a: Internal refactor of the selection system.
+- 2f36ed7: Jump to element on fragments now focuses the camera on all of the child elements instead of the first child element.
+- aa3bec6: Selection state is now retained when entering and exiting play state with the play controls.
+- e4db0c2: Upgrade TypeScript to latest.
+- 1f0ef15: The outline for Three Fiber objects has been fixed to be evenly drawn around objects.
+- 4106062: The Three Fiber scene now shows an outline on selectable object3ds when hovering over them.
+- 130d4b3: Fix selecting a host element and it resolving to an unexpected parent element.
+- 93761c7: Element selection hints are now shown when hovering over elements in the scene, and elements in the element panel.
+- Updated dependencies [bcccc4f]
+- Updated dependencies [4e8c285]
+- Updated dependencies [e4db0c2]
+- Updated dependencies [4e8c285]
+- Updated dependencies [93761c7]
+  - @triplex/ws@0.69.4
+  - @triplex/bridge@0.70.0
+  - @triplex/lib@0.69.7
+
 ## 0.70.2
 
 ### Patch Changes

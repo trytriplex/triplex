@@ -1,6 +1,6 @@
 {
   "name": "@triplex/ws",
-  "version": "0.69.3",
+  "version": "0.69.4",
   "private": true,
   "description": "The visual IDE for the web.",
   "author": {
@@ -35,8 +35,8 @@
   "devDependencies": {
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
-    "@triplex/bridge": "0.69.5",
-    "@triplex/server": "0.70.1",
+    "@triplex/bridge": "0.70.0",
+    "@triplex/server": "0.71.0",
     "@types/react": "^18.0.27",
     "typescript": "^5.7.2"
   },

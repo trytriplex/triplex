@@ -1,5 +1,11 @@
 # @triplex/lib
 
+## 0.69.7
+
+### Patch Changes
+
+- e4db0c2: Upgrade TypeScript to latest.
+
 ## 0.69.6
 
 ### Patch Changes

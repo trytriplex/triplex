@@ -1,5 +1,12 @@
 # @triplex/ws-client
 
+## 0.69.4
+
+### Patch Changes
+
+- bcccc4f: Subscriptions are now lazily refetched if they've been cleaned up from not being used.
+- e4db0c2: Upgrade TypeScript to latest.
+
 ## 0.69.3
 
 ### Patch Changes

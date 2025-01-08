@@ -172,16 +172,16 @@ importers:
   apps/electron:
     dependencies:
       '@triplex/client':
-        specifier: 0.69.8
+        specifier: 0.70.0
         version: link:../../packages/@triplex/client
       '@triplex/editor':
-        specifier: 0.69.8
+        specifier: 0.69.9
         version: link:../../packages/@triplex/editor
       '@triplex/server':
-        specifier: 0.70.1
+        specifier: 0.71.0
         version: link:../../packages/@triplex/server
       create-triplex-project:
-        specifier: 0.70.1
+        specifier: 0.70.2
         version: link:../../packages/create-triplex-project
     devDependencies:
       '@sentry/electron':
@@ -239,10 +239,10 @@ importers:
   apps/vscode:
     dependencies:
       '@triplex/client':
-        specifier: 0.69.8
+        specifier: 0.70.0
         version: link:../../packages/@triplex/client
       '@triplex/server':
-        specifier: 0.70.1
+        specifier: 0.71.0
         version: link:../../packages/@triplex/server
     devDependencies:
       '@atlaskit/pragmatic-drag-and-drop':
@@ -258,16 +258,16 @@ importers:
         specifier: ^8.30.0
         version: 8.30.0(react@18.3.1)
       '@triplex/bridge':
-        specifier: 0.69.5
+        specifier: 0.70.0
         version: link:../../packages/@triplex/bridge
       '@triplex/lib':
-        specifier: 0.69.6
+        specifier: 0.69.7
         version: link:../../packages/@triplex/lib
       '@triplex/ux':
-        specifier: 0.69.8
+        specifier: 0.69.9
         version: link:../../packages/@triplex/ux
       '@triplex/ws':
-        specifier: 0.69.3
+        specifier: 0.69.4
         version: link:../../packages/@triplex/ws
       '@types/raf-schd':
         specifier: ^4.0.3
@@ -710,10 +710,10 @@ importers:
         specifier: ^7.24.5
         version: 7.26.3
       '@triplex/bridge':
-        specifier: 0.69.5
+        specifier: 0.70.0
         version: link:../bridge
       '@triplex/renderer':
-        specifier: 0.70.2
+        specifier: 0.71.0
         version: link:../renderer
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -738,10 +738,10 @@ importers:
         specifier: ^1.6.5
         version: 1.6.5(@swc/helpers@0.5.5)
       '@triplex/server':
-        specifier: 0.70.1
+        specifier: 0.71.0
         version: link:../server
       '@triplex/ws':
-        specifier: 0.69.3
+        specifier: 0.69.4
         version: link:../ws
       '@types/babel__core':
         specifier: ^7.20.5
@@ -807,16 +807,16 @@ importers:
         specifier: ^8.30.0
         version: 8.30.0(react@18.3.1)
       '@triplex/bridge':
-        specifier: 0.69.5
+        specifier: 0.70.0
         version: link:../bridge
       '@triplex/lib':
-        specifier: 0.69.6
+        specifier: 0.69.7
         version: link:../lib
       '@triplex/ux':
-        specifier: 0.69.8
+        specifier: 0.69.9
         version: link:../ux
       '@triplex/ws':
-        specifier: 0.69.3
+        specifier: 0.69.4
         version: link:../ws
       react:
         specifier: '>=18.0.0'
@@ -856,7 +856,7 @@ importers:
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@triplex/server':
-        specifier: ^0.70.1
+        specifier: ^0.71.0
         version: link:../server
       '@types/react':
         specifier: 18.3.3
@@ -917,13 +917,13 @@ importers:
   packages/@triplex/renderer:
     dependencies:
       '@triplex/bridge':
-        specifier: 0.69.5
+        specifier: 0.70.0
         version: link:../bridge
       '@triplex/lib':
-        specifier: 0.69.6
+        specifier: 0.69.7
         version: link:../lib
       '@triplex/ws':
-        specifier: 0.69.3
+        specifier: 0.69.4
         version: link:../ws
       bind-event-listener:
         specifier: ^3.0.0
@@ -966,7 +966,7 @@ importers:
         specifier: ^1.6.5
         version: 1.6.5(@swc/helpers@0.5.5)
       '@triplex/server':
-        specifier: 0.70.1
+        specifier: 0.71.0
         version: link:../server
       '@types/react':
         specifier: 18.3.3
@@ -1087,10 +1087,10 @@ importers:
         specifier: ^1.0.5
         version: 1.0.5(@types/react-dom@18.0.10)(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@triplex/bridge':
-        specifier: 0.69.5
+        specifier: 0.70.0
         version: link:../bridge
       '@triplex/lib':
-        specifier: 0.69.6
+        specifier: 0.69.7
         version: link:../lib
       react:
         specifier: ^18.3.1
@@ -1109,7 +1109,7 @@ importers:
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@triplex/server':
-        specifier: 0.70.1
+        specifier: 0.71.0
         version: link:../server
       '@types/react':
         specifier: 18.3.3
@@ -1138,10 +1138,10 @@ importers:
         specifier: ^1.6.5
         version: 1.6.5(@swc/helpers@0.5.5)
       '@triplex/bridge':
-        specifier: 0.69.5
+        specifier: 0.70.0
         version: link:../bridge
       '@triplex/server':
-        specifier: 0.70.1
+        specifier: 0.71.0
         version: link:../server
       '@types/react':
         specifier: 18.3.3
@@ -3571,6 +3571,7 @@ packages:
 
   '@vscode/webview-ui-toolkit@1.4.0':
     resolution: {integrity: sha512-modXVHQkZLsxgmd5yoP3ptRC/G8NBDD+ob+ngPiWNQdlrH6H1xR/qgOBD85bfU3BhOB5sZzFWBwwhp9/SfoHww==}
+    deprecated: This package has been deprecated, https://github.com/microsoft/vscode-webview-ui-toolkit/issues/561
     peerDependencies:
       react: '>=16.9.0'
 
@@ -10378,7 +10379,7 @@ snapshots:
       '@typescript-eslint/eslint-plugin': 7.18.0(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0)(typescript@5.7.2)
       '@typescript-eslint/parser': 7.18.0(eslint@8.51.0)(typescript@5.7.2)
       eslint: 8.51.0
-      eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-plugin-import@2.30.0)(eslint@8.51.0)
+      eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-plugin-import@2.30.0(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0))(eslint@8.51.0)
       eslint-plugin-import: 2.30.0(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-import-resolver-typescript@3.6.3)(eslint@8.51.0)
       eslint-plugin-no-only-tests: 3.3.0
       eslint-plugin-react: 7.35.2(eslint@8.51.0)
@@ -14077,13 +14078,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-plugin-import@2.30.0)(eslint@8.51.0):
+  eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-plugin-import@2.30.0(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0))(eslint@8.51.0):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.0
       enhanced-resolve: 5.17.1
       eslint: 8.51.0
-      eslint-module-utils: 2.9.0(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-plugin-import@2.30.0)(eslint@8.51.0))(eslint@8.51.0)
+      eslint-module-utils: 2.9.0(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-plugin-import@2.30.0(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0))(eslint@8.51.0))(eslint@8.51.0)
       fast-glob: 3.3.2
       get-tsconfig: 4.8.0
       is-bun-module: 1.1.0
@@ -14096,14 +14097,14 @@ snapshots:
       - eslint-import-resolver-webpack
       - supports-color
 
-  eslint-module-utils@2.9.0(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-plugin-import@2.30.0)(eslint@8.51.0))(eslint@8.51.0):
+  eslint-module-utils@2.9.0(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-plugin-import@2.30.0(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0))(eslint@8.51.0))(eslint@8.51.0):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 7.18.0(eslint@8.51.0)(typescript@5.7.2)
       eslint: 8.51.0
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-plugin-import@2.30.0)(eslint@8.51.0)
+      eslint-import-resolver-typescript: 3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-plugin-import@2.30.0(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0))(eslint@8.51.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -14122,7 +14123,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.51.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.9.0(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-plugin-import@2.30.0)(eslint@8.51.0))(eslint@8.51.0)
+      eslint-module-utils: 2.9.0(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.6.3(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint-plugin-import@2.30.0(@typescript-eslint/parser@7.18.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0))(eslint@8.51.0))(eslint@8.51.0)
       hasown: 2.0.2
       is-core-module: 2.15.1
       is-glob: 4.0.3

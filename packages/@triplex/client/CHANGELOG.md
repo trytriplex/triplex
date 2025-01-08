@@ -1,5 +1,38 @@
 # @triplex/client
 
+## 0.70.0
+
+### Minor Changes
+
+- 4e8c285: How components are loaded has been restructured to support opening components with mixed JSX elements from different reconcilers.
+- 25daa3d: The `rendererAttributes` config option has been removed. If you were relying on this instead declare a Canvas component from `@react-three/fiber` in your component and set the props as desired.
+- 4e8c285: Triplex can now open components that have both DOM and Three Fiber JSX elements.
+
+### Patch Changes
+
+- 9b67742: Upgrade three.js dependencies.
+- b9b1b62: Upgrade vite and all related dependencies to latest.
+- 4e8c285: Fixed edge cases where transform props wouldn't be picked up as used inside spread props.
+- fbe725f: Fixed an edge case where nested object3ds were being translated by transform controls in unexpected ways, caused by props being flagged as used when they weren't identifiers.
+- e4db0c2: Upgrade TypeScript to latest.
+- c896b64: Remove experimental react renderer.
+- Updated dependencies [9b67742]
+- Updated dependencies [b9b1b62]
+- Updated dependencies [2f36ed7]
+- Updated dependencies [e00d37a]
+- Updated dependencies [2f36ed7]
+- Updated dependencies [aa3bec6]
+- Updated dependencies [4e8c285]
+- Updated dependencies [e4db0c2]
+- Updated dependencies [25daa3d]
+- Updated dependencies [1f0ef15]
+- Updated dependencies [4106062]
+- Updated dependencies [4e8c285]
+- Updated dependencies [130d4b3]
+- Updated dependencies [93761c7]
+  - @triplex/renderer@0.71.0
+  - @triplex/bridge@0.70.0
+
 ## 0.69.8
 
 ### Patch Changes

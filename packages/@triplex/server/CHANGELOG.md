@@ -1,5 +1,24 @@
 # @triplex/server
 
+## 0.71.0
+
+### Minor Changes
+
+- 25daa3d: The `rendererAttributes` config option has been removed. If you were relying on this instead declare a Canvas component from `@react-three/fiber` in your component and set the props as desired.
+
+### Patch Changes
+
+- 0866bda: The `children` prop can now be edited inside the element panel for all supported types.
+- 9b67742: Upgrade three.js dependencies.
+- 7a75eed: Host elements such as "mesh" and "div" now have their props logically grouped to remove the laundry list shock.
+- b9b1b62: Upgrade vite and all related dependencies to latest.
+- 04deea9: Shorthand jsx fragments are now supported.
+- 0866bda: The `attach` prop for React Three Fiber elements is now visible in the elements panel.
+- e4db0c2: Upgrade TypeScript to latest.
+- 7a75eed: Fix tuple prop types from appearing in the selection panel if there are no values defined.
+- c896b64: Remove experimental react renderer.
+- 7a75eed: Union props that have all unsupported args are now shown as a single unsupported input in the selection panel rather than just not rendering anything at all.
+
 ## 0.70.1
 
 ### Patch Changes

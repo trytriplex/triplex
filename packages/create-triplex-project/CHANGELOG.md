@@ -1,5 +1,12 @@
 # create-triplex-project
 
+## 0.70.2
+
+### Patch Changes
+
+- 9b67742: Upgrade three.js dependencies.
+- e4db0c2: Upgrade TypeScript to latest.
+
 ## 0.70.1
 
 ### Patch Changes

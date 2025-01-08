@@ -1,5 +1,17 @@
 # @triplex/ux
 
+## 0.69.9
+
+### Patch Changes
+
+- e4db0c2: Upgrade TypeScript to latest.
+- Updated dependencies [4e8c285]
+- Updated dependencies [e4db0c2]
+- Updated dependencies [4e8c285]
+- Updated dependencies [93761c7]
+  - @triplex/bridge@0.70.0
+  - @triplex/lib@0.69.7
+
 ## 0.69.8
 
 ### Patch Changes

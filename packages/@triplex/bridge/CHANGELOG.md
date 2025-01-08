@@ -1,5 +1,17 @@
 # @triplex/bridge
 
+## 0.70.0
+
+### Minor Changes
+
+- 4e8c285: How components are loaded has been restructured to support opening components with mixed JSX elements from different reconcilers.
+- 4e8c285: Triplex can now open components that have both DOM and Three Fiber JSX elements.
+
+### Patch Changes
+
+- e4db0c2: Upgrade TypeScript to latest.
+- 93761c7: Element selection hints are now shown when hovering over elements in the scene, and elements in the element panel.
+
 ## 0.69.5
 
 ### Patch Changes
