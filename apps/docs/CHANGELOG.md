@@ -1,5 +1,12 @@
 # @docs/triplex
 
+## 0.2.6
+
+### Patch Changes
+
+- 9b67742: Upgrade three.js dependencies.
+- e4db0c2: Upgrade TypeScript to latest.
+
 ## 0.2.5
 
 ### Patch Changes
