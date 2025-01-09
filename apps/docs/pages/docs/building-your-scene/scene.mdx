@@ -6,11 +6,11 @@ The Scene is responsible for rendering the development environment where you bui
 
 ## Sandbox Isolation
 
-Your components are rendered in an isolated sandbox environment alongside tools such as Transform Controls. This means if your components rely on global state or context there is some work involved to get it rendering.
+Your components are rendered in an isolated sandbox environment alongside visual editing tools like Transform Controls. This means if your components rely on global state or context there may be some work involved to get it rendering without an error.
 
-- Refactor your component to be more self contained
-- Use a [Provider Component](/docs/building-your-scene/project-config#provider-component) to provide the necessary context
-- Declare the environment inside another component and open that instead
+- Refactor your component to be self contained
+- Use a [Global Provider](/docs/building-your-scene/global-provider) to provide the missing React context
+- Declare the required Context / state inside another component and open that one instead
 - Set default props
 
 ## Next Steps

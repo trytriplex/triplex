@@ -8,14 +8,8 @@ The selection system prioritizes components. When you click on a scene object if
 
 ## Selection Cycling
 
-Clicking multiple times on a scene object will cycle through all the elements that are under the cursor. This is useful when you have multiple elements stacked on top of each other.
+Clicking multiple times on a scene object will cycle through all the elements that are under the cursor, even HTML ones! This is useful when you have multiple elements stacked on top of each other.
 
 ## Hidden Scene Objects
 
-To select hidden scene objects such as `group` or elements that are invisible you can use the Scene Panel to select them.
-
-## Interaction Events
-
-Your scene objects have all in-built raycasting events like `onClick`, and `onPointerOver` disabled when in the editor.
-
-To test your scenes interactivity click the <ActionLink icon={PlayIcon} href="/docs/building-your-scene/learn-the-ui/scene#play-scene" name="Play" /> action in the Scene Controls. See [Play Controls](/docs/building-your-scene/scene/play-controls) for more information.
+To select scene objects that don't render anything into the scene such as a `group`, `Fragment`, or invisible objects you can use the Scene Panel to select them.

@@ -1,6 +1,6 @@
 ---
 title: Triplex Standalone
-description: The desktop version of Triplex that's feature rich and easy to get started.
+description: Use Triplex by itself on the operating system of your choice.
 ---
 
 import { DashboardIcon } from "@radix-ui/react-icons";
@@ -38,6 +38,21 @@ For example the following configuration marks all tsx files inside the component
 ```
 
 For more information see [config.json Options > files](/docs/api-reference/config-options/files).
+
+## Common Questions
+
+### How do I edit my source code?
+
+Currently Triplex Standalone doesn't support editing source code directly. You'll need to use your favorite code editor to make changes to your project. Alternatively, you can use the [Triplex for VS Code](/docs/get-started/vscode) right inside Visual Studio Code.
+
+### Why can't I open one of my components?
+
+Only components that are exported can be opened in Triplex. If you're trying to open a component that isn't exported you'll need to export it first.
+
+```diff
+-function Component(): JSX.Element;
++export function Component(): JSX.Element;
+```
 
 ## Next Steps
 

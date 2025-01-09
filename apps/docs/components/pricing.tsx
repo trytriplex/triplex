@@ -34,7 +34,7 @@ function PricingPanel({
           "relative bg-neutral-950 before:absolute before:-inset-2 before:-z-10 before:rounded-2xl before:bg-blue-400 lg:mt-0",
       ])}
     >
-      <h2 className="mt-2 text-center text-3xl font-bold text-neutral-200">
+      <h2 className="mt-6 text-center text-3xl font-bold text-neutral-200">
         {name}
       </h2>
 
@@ -66,7 +66,7 @@ export function Pricing() {
         cta={
           <>
             <Link
-              className="block rounded border border-neutral-800 py-2 text-center font-semibold text-neutral-300"
+              className="block rounded border border-neutral-800 py-2 text-center font-medium text-neutral-300"
               href="https://github.com/sponsors/itsdouges/sponsorships?sponsor=itsdouges&preview=true&frequency=recurring&amount=19"
             >
               Sponsor Development
@@ -79,7 +79,7 @@ export function Pricing() {
             </div>
           </>
         }
-        description="The bare essentials for individuals."
+        description="The essentials for individuals and open source projects."
         name="Free"
         perMonthLabel="per month, forever"
         price={[0]}
@@ -105,7 +105,7 @@ export function Pricing() {
           </li>
           <li>
             <DetailsSummary
-              details="Create support tickets through GitHub."
+              details="Create support tickets through GitHub and Discord."
               summary="Web-based support"
             />
           </li>
@@ -114,7 +114,7 @@ export function Pricing() {
       <PricingPanel
         cta={
           <Link
-            className="block rounded bg-blue-400 py-2 text-center font-bold text-neutral-800"
+            className="block rounded bg-blue-400 py-2 text-center font-medium text-neutral-800"
             href="mailto:support@triplex.dev"
           >
             Contact Us
@@ -150,7 +150,7 @@ function DetailsSummary({
 }) {
   return (
     <details className="group">
-      <summary className="flex cursor-pointer list-none items-center gap-4 font-semibold text-neutral-300">
+      <summary className="flex cursor-pointer list-none items-center gap-4 font-medium text-neutral-300">
         <ChevronRightIcon className="group-open:rotate-90" /> {summary}
       </summary>
       <p className="mt-1 pl-8 text-neutral-300">{details}</p>

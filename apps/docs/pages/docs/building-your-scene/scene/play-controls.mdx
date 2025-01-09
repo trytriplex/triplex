@@ -12,7 +12,10 @@ import {
 
 ## Starting the Scene
 
-Start your scene by clicking the <ActionLink icon={PlayIcon} href="/docs/building-your-scene/learn-the-ui/scene#play-scene" name="Play" /> action in the Scene Controls. The editor will switch to the default camera, turn on raycasting for your scene, enable controls such as map controls if any are rendered in the scene, and hide the editor UI.
+Start your scene by clicking the <ActionLink icon={PlayIcon} href="/docs/building-your-scene/learn-the-ui/scene#play-scene" name="Play" /> action in the Scene Controls.
+
+- For 3D components the editor switches to the default camera and enables any rendered controls such as MapControls.
+- For all components they will now become interactive, and the editor UI will be hidden.
 
 This action is only available in edit and pause states.
 
@@ -30,7 +33,7 @@ This action is only available in play state.
 
 ## Resetting the Scene
 
-To reset the scene back to its default state click the <ActionLink icon={ResetIcon} href="/docs/building-your-scene/learn-the-ui/scene#reset-scene" name="Reset" /> action in the Scene Controls. State is reset by re-mounting your component.
+To reset the scene back to its default state click the <ActionLink icon={ResetIcon} href="/docs/building-your-scene/learn-the-ui/scene#reset-scene" name="Reset" /> action in the Scene Controls.
 
 If you have global state stored outside of React you'll need to reset it yourself. One method to do this is by resetting it [in an effect](https://react.dev/reference/react/useEffect):
 
@@ -45,15 +48,19 @@ useEffect(() => {
 
 This action is available in all states.
 
+### Reloading the Scene
+
+If you need to completely flush the scene state you can reload the scene document by using the reload hotkey: <Kbd>Cmd</Kbd> + <Kbd>Shift</Kbd> + <Kbd>R</Kbd>.
+
 ## Stopping the Scene
 
-Stop running your scene by clicking the <ActionLink icon={StopIcon} href="/docs/building-your-scene/learn-the-ui/scene#stop-scene" name="Stop" /> action in the Scene Controls. This will reset the scene and brings the editor UI back.
+Stop running your scene by clicking the <ActionLink icon={StopIcon} href="/docs/building-your-scene/learn-the-ui/scene#stop-scene" name="Stop" /> action in the Scene Controls. This will reset the scene and bring the editor UI back.
 
 This action is available in play and pause states.
 
 ## Camera Selection
 
-To play your scene through a different camera click the <ActionLink icon={CaretDownIcon} href="/docs/building-your-scene/learn-the-ui/scene#play-options" name="Play Options" /> action next to the Play action. This is useful when needing to debug from a specific viewpoint while the scene is interactive.
+For 3D components, to play your scene through a different camera click the <ActionLink icon={CaretDownIcon} href="/docs/building-your-scene/learn-the-ui/scene#play-options" name="Play Options" /> action next to the Play action. This is useful when needing to debug from a specific viewpoint while the scene is interactive.
 
 To change what the default camera is set the `makeDefault` prop to `true` on any camera component from the [Drei](https://github.com/pmndrs/drei) library.
 
