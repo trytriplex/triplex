@@ -11,9 +11,9 @@ float sampleMask(sampler2D mask, float lineWeight) {
   float dy = 1.0 / u_viewportSize.y * lineWeight;
 
   vec2 uvCenter = v_uv;
-  vec2 uvTop = vec2(uvCenter.x, uvCenter.y - dx);
+  vec2 uvTop = vec2(uvCenter.x, uvCenter.y - dy);
   vec2 uvRight = vec2(uvCenter.x + dx, uvCenter.y);
-  vec2 uvTopRight = vec2(uvCenter.x + dx, uvCenter.y - dx);
+  vec2 uvTopRight = vec2(uvCenter.x + dx, uvCenter.y - dy);
 
   float mCenter = texture2D(mask, uvCenter).a;
   float mTop = texture2D(mask, uvTop).a;
