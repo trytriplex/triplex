@@ -184,12 +184,12 @@ export const components: Components = {
     <table className="mt-5 w-full table-fixed">{children}</table>
   ),
   td: ({ children }) => (
-    <td className="border-t border-neutral-800 p-2 text-neutral-300">
+    <td className="border-b border-neutral-800 p-2 text-neutral-300">
       {children}
     </td>
   ),
   th: ({ children }) => (
-    <th className="py-2.5 text-center font-medium text-neutral-200">
+    <th className="border-b border-neutral-800 py-2.5 text-center font-medium text-neutral-200">
       {children}
     </th>
   ),

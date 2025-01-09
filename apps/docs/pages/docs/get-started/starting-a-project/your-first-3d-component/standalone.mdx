@@ -22,9 +22,9 @@ First we are going to make a new file to build our scene in. With Triplex Standa
 
 1. Find the <ActionLink icon={PlusIcon} href="/docs/building-your-scene/learn-the-ui/other#new-file" name="New File" /> action in the Tab Bar and click it. A new file called untitled.tsx is opened that contains a box.
 
-1. Click on the box in the scene then click & drag to rotate the camera around it.
+1. Click & drag over the scene to rotate the camera around.
 
-1. When focused on the mesh press the <Kbd>F</Kbd> key to focus the camera on it.
+1. Click the box in the scene to focus it. When focused press the <Kbd>F</Kbd> key to zoom the camera to it.
 
 <KnowledgeCallout>
   The built-in Camera Controls let you view your scene from different
@@ -48,8 +48,7 @@ Now let's add some more shapes to fill the scene out.
 
 <KnowledgeCallout>
   The built-in Transform Controls are shown on selected elements. If the element
-  doesn't declare the prop for the transform mode such as `position` for
-  translate the mode will be disabled.
+  doesn't declare the prop for the selected transform mode it will be disabled.
 </KnowledgeCallout>
 
 Before continuing try adding a cylinder mesh in code instead of the UI. Jump to code quickly by clicking the "View source" link in the Scene Panel.
@@ -62,11 +61,11 @@ Now let's add [three-point lighting](https://en.wikipedia.org/wiki/Three-point_l
 
 1. Click the Add Element action in the Scene Panel then search for **Point Light** and click it. A point light will appear in the scene.
 
-1. With the point light selected, go to the Context Area and update the `Name` prop to "Key light".
+1. With the point light selected, go to the Context Area and update its `Name` prop to "Key light".
 
 1. Position the key light in front and to the side of the scene.
 
-1. Duplicate the key light by selecting it and using the <ActionLink icon="⌘ + D" href="/docs/building-your-scene/learn-the-ui/scene-panel#duplicate-element" name="Duplicate Element" /> action. Name the duplicated light "Fill light" and move it to the opposite side of the scene.
+1. Duplicate the key light by selecting it then using the <ActionLink icon="⌘ + D" href="/docs/building-your-scene/learn-the-ui/scene-panel#duplicate-element" name="Duplicate Element" /> action. Name the duplicated light "Fill light" and move it to the opposite side of the scene.
 
 1. Create the last light by adding another point light named "Backlight" then move it to the back of the scene.
 
@@ -81,13 +80,13 @@ Before continuing try adjusting the lights `Intensity` and `Color` props in the 
 
 Now let's add a camera to the scene by updating code.
 
-1. Install [Drei](https://github.com/pmndrs/drei) — a companion library for React Three Fiber.
+1. Install [Drei](https://github.com/pmndrs/drei) — a companion library for Three Fiber.
 
    ```bash filename="Terminal"
    npm i @react-three/drei
    ```
 
-1. Copy the highlighted code into your component then jump back into Triplex Standalone. The camera will appear in the scene.
+1. Copy the highlighted code into your component then jump back into Triplex Standalone. A camera will appear in the scene.
 
    ```tsx filename="new-scene.tsx" {1,7}
    import { PerspectiveCamera } from "@react-three/drei";
@@ -177,11 +176,18 @@ Finally we're going to add some props to your component.
    }
    ```
 
-1. Click the <ActionLink icon={Pencil2Icon} href="/docs/building-your-scene/learn-the-ui/scene-panel#openclose-component-controls" name="Component Controls" /> action in the Scene Panel. The controls shown in the Context Area are the props the component accepts.
+1. Click the <ActionLink icon={Pencil2Icon} href="/docs/building-your-scene/learn-the-ui/scene-panel#openclose-component-controls" name="Component Controls" /> action in the ScenePanel. The controls shown in the Scene Panel are the props the component accepts which can be changed as you build!
 
-1. Toggle the `backlight` prop on and off, and set the `backlightColor` prop to a color you like. Red is always a good choice!
+1. Toggle the `backlight` prop on and off, then set the `backlightColor` prop to a color you like. Red is always a great choice!
 
 <KnowledgeCallout>
-  Component Controls let you change the props the open component receives.
-  Useful when you want to see how your component behaves with different values!
+  Component Controls let you change the props of the open component. Very useful
+  when you want to see how your component behaves with props of different
+  values!
 </KnowledgeCallout>
+
+## Next Steps
+
+Congratulations on building your first 3D component! From here you can learn more about the features of Triplex and [join our community](/docs/community) to build amazing things together.
+
+<PagesList route="/docs/building-your-scene" variant="grid" />

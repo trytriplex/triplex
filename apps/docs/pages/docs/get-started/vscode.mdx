@@ -1,9 +1,9 @@
 ---
 title: Triplex for VS Code
-description: Turn Visual Studio Code into a visual IDE.
+description: Turn Visual Studio Code into your visual IDE.
 ---
 
-Triplex for VS Code turns [Visual Studio Code](https://code.visualstudio.com/) into a visual IDE, bringing the best features of Triplex for you to stay in context while coding.
+Triplex for VS Code turns [Visual Studio Code](https://code.visualstudio.com) and [Cursor](https://www.cursor.com) into a visual IDE, bringing the best features of Triplex for you to stay in context while coding.
 
 ## Installation
 
@@ -19,13 +19,13 @@ The <ActionLink name="Open in Triplex" href="#" /> [CodeLens](https://code.visua
 
 ### Using the Command Palette
 
-While viewing a `tsx` or `jsx` file selecting the <ActionLink name="Triplex: Open File" href="#" /> action in the [Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette) will open the first found component in that file in Triplex.
+While focused in a `tsx` or `jsx` file selecting the <ActionLink name="Triplex: Open File" href="#" /> action through the [Command Palette](https://code.visualstudio.com/docs/getstarted/userinterface#_command-palette) will open the first found component of that file in Triplex.
 
 ### Excluding files
 
-By default all React components can be opened by Triplex. When wanting to scope the files that can be opened you can create a [configuration file](/docs/api-reference/config-options) and populate the `"files"` field.
+By default all React components can be opened by Triplex. When wanting to scope down files that can be opened you can create a [configuration file](/docs/api-reference/config-options) and populate the `"files"` field.
 
-For example the following configuration marks all tsx files inside the components folder can be opened, anything else is excluded.
+For example the following configuration marks all `tsx` files inside the components folder can be opened, everything else is excluded.
 
 ```json filename=".triplex/config.json"
 {
@@ -47,9 +47,18 @@ code --enable-coi
 
 This flag was [introduced on September 2022 (version 1.72)](https://code.visualstudio.com/updates/v1_72#_towards-cross-origin-isolation).
 
+### Why can't I open one of my components?
+
+Only components that are exported can be opened in Triplex. If you're trying to open a component that isn't exported you'll need to export it first.
+
+```diff
+-function Component(): JSX.Element;
++export function Component(): JSX.Element;
+```
+
 ### How do I reload the editor?
 
-If there's a problem and the editor has been put into an invalid state you can reload the editor by accessing the command palette via <Kbd>Shift</Kbd> + <Kbd>Cmd</Kbd> + <Kbd>P</Kbd> and selecting "Developer: Reload Webviews".
+If there's a problem and the editor has been put into an invalid state you can reload the editor by accessing the command palette via <Kbd>Shift</Kbd> + <Kbd>Cmd</Kbd> + <Kbd>P</Kbd> then selecting "Developer: Reload Webviews".
 
 If you think you've found a bug please [raise an issue on GitHub](https://github.com/trytriplex/triplex/issues/new).
 
