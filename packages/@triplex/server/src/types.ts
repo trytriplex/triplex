@@ -93,6 +93,8 @@ export type ValueKind =
   | "undefined"
   | "array";
 
+export type Source = "react" | "three" | "unknown";
+
 export type PropWithValue<TType extends Type> = {
   column: number;
   description: string | undefined;
@@ -137,6 +139,12 @@ export type ExpressionValue = {
   kind: ValueKind;
   value: AttributeValue;
 };
+
+export interface Transforms {
+  rotate: boolean;
+  scale: boolean;
+  translate: boolean;
+}
 
 export type Prop = {
   defaultValue?: ExpressionValue;

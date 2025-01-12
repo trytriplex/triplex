@@ -23,6 +23,8 @@ import type {
   DeclaredProp,
   ExpressionValue,
   Prop,
+  Source,
+  Transforms,
   UnionType,
   Type as UnrolledType,
 } from "../types";
@@ -243,13 +245,19 @@ function getJsxDeclProps(
   const tagName = Node.isJsxSelfClosingElement(element)
     ? element.getTagNameNode()
     : element.getOpeningElement().getTagNameNode();
+  const tagNameText = tagName.getText();
 
-  if (/^[a-z]/.exec(tagName.getText())) {
+  if (/^[a-z]/.exec(tagNameText)) {
     const jsxType = tagName.getSymbolOrThrow().getDeclarations()[0].getType();
+    const isThreeElement = isReactThreeElement(tagNameText) && "three";
+    const isReactElement = isReactDOMElement(tagNameText) && "react";
+
     return {
       declaration: element,
       properties: jsxType.getApparentProperties(),
-    };
+      source:
+        isThreeElement || isReactElement || resolveSource(jsxType) || "unknown",
+    } as const;
   } else {
     const jsxType = tagName.getType();
     const signatures = jsxType.getCallSignatures();
@@ -276,6 +284,7 @@ function getJsxDeclProps(
     }
 
     const declaration = symbol.getDeclarations()[0];
+
     const propsType = element
       .getProject()
       .getTypeChecker()
@@ -286,8 +295,9 @@ function getJsxDeclProps(
     return {
       declaration,
       properties,
+      source: resolveSource(propsType) || "unknown",
       symbolType: props,
-    };
+    } as const;
   }
 }
 
@@ -457,26 +467,50 @@ export function resolveExpressionValue(
 }
 
 export function resolveGroupName({
-  elementName,
   propName,
+  source,
   tags,
 }: {
-  elementName: string;
   propName: string;
+  source: "react" | "three" | "unknown";
   tags: Record<string, number | string | boolean>;
 }): string {
   const customGroupName =
     typeof tags.group === "string" ? tags.group : undefined;
 
-  if (isReactDOMElement(elementName)) {
+  if (source === "react") {
     return customGroupName || reactDOMPropGrouping[propName] || "Other";
   }
 
-  if (isReactThreeElement(elementName)) {
+  if (source === "three") {
     return customGroupName || threeFiberPropGrouping[propName] || "Other";
   }
 
   return customGroupName || "Other";
+}
+
+export function resolveSource(
+  type: Type<ts.Type>,
+): "react" | "three" | undefined {
+  const symbol = type.getSymbol() || type.getAliasSymbol();
+  const filePath = symbol
+    ?.getDeclarations()
+    .at(0)
+    ?.getSourceFile()
+    .getFilePath();
+
+  if (
+    filePath?.includes("@react-three/fiber/") ||
+    filePath?.includes("@types/three/")
+  ) {
+    return "three";
+  }
+
+  if (filePath?.includes("@types/react/")) {
+    return "react";
+  }
+
+  return undefined;
 }
 
 export function getJsxElementPropTypes(
@@ -493,17 +527,24 @@ export function getJsxElementPropTypes(
     return {
       elementName,
       props: [],
+      source: "unknown",
       transforms: { rotate: false, scale: false, translate: false },
     };
   }
 
-  const { declaration, properties, symbolType } = jsxDecl;
+  const { declaration, properties, source, symbolType } = jsxDecl;
+
+  const sources = {
+    react: source === "react",
+    three: source === "three",
+  };
 
   let rotate = false;
   let scale = false;
   let translate = false;
 
   const binding = getComponentPropsObjectBinding(declaration, symbolType);
+
   if (binding) {
     binding.getElements().forEach((element) => {
       const name = element.getPropertyNameNode() || element.getNameNode();
@@ -568,11 +609,18 @@ export function getJsxElementPropTypes(
         sortUnionType(type, value.value);
       }
 
+      const propSource = resolveSource(propType);
+      if (propSource === "react") {
+        sources.react = true;
+      } else if (propSource === "three") {
+        sources.three = true;
+      }
+
       props.push({
         ...type,
         column,
         description: description || undefined,
-        group: resolveGroupName({ elementName, propName, tags }),
+        group: "Other",
         line,
         name: propName,
         required: !isOptional,
@@ -597,10 +645,17 @@ export function getJsxElementPropTypes(
         sortUnionType(type, defaultValue.value);
       }
 
+      const propSource = resolveSource(propType);
+      if (propSource === "react") {
+        sources.react = true;
+      } else if (propSource === "three") {
+        sources.three = true;
+      }
+
       props.push({
         ...type,
         description: description || undefined,
-        group: resolveGroupName({ elementName, propName, tags }),
+        group: "Other",
         name: propName,
         required: !isOptional,
         tags,
@@ -609,9 +664,26 @@ export function getJsxElementPropTypes(
     }
   }
 
+  const reconciledSource =
+    (sources.three && "three") || (sources.react && "react") || "unknown";
+
+  /**
+   * We resolve the group name after the initial loop because we need to get the
+   * data on all props to see where they're sourced from.
+   */
+  const groupedProps = props.map((prop) => ({
+    ...prop,
+    group: resolveGroupName({
+      propName: prop.name,
+      source: reconciledSource,
+      tags: prop.tags,
+    }),
+  }));
+
   return {
     elementName,
-    props,
+    props: groupedProps,
+    source: reconciledSource,
     transforms: { rotate, scale, translate },
   };
 }
@@ -648,15 +720,20 @@ function getComponentPropsObjectBinding(
 export function getFunctionPropTypes(
   sourceFile: SourceFileReadOnly,
   exportName: string,
-) {
+): { props: Prop[]; source: Source; transforms: Transforms } {
   const propTypes: Prop[] = [];
   const empty = {
     props: propTypes,
+    source: "unknown",
     transforms: { rotate: false, scale: false, translate: false },
-  };
-  const { declaration, name } = getExportName(sourceFile, exportName);
+  } as const;
+  const { declaration } = getExportName(sourceFile, exportName);
   const type = declaration.getType();
   const signatures = type.getCallSignatures();
+  const sources = {
+    react: false,
+    three: false,
+  };
 
   if (signatures.length === 0) {
     // No signatures for this call-like node found.
@@ -718,10 +795,17 @@ export function getFunctionPropTypes(
 
     const defaultValue = defaultValues[propName];
 
+    const propSource = resolveSource(propType);
+    if (propSource === "react") {
+      sources.react = true;
+    } else if (propSource === "three") {
+      sources.three = true;
+    }
+
     propTypes.push({
       ...unrollType(propType),
       description: description || undefined,
-      group: resolveGroupName({ elementName: name, propName, tags }),
+      group: "Other",
       name: propName,
       required: !propDeclaration?.hasQuestionToken?.(),
       tags,
@@ -729,5 +813,25 @@ export function getFunctionPropTypes(
     });
   }
 
-  return { props: propTypes, transforms: { rotate, scale, translate } };
+  const reconciledSource =
+    (sources.three && "three") || (sources.react && "react") || "unknown";
+
+  /**
+   * We resolve the group name after the initial loop because we need to get the
+   * data on all props to see where they're sourced from.
+   */
+  const groupedProps = propTypes.map((prop) => ({
+    ...prop,
+    group: resolveGroupName({
+      propName: prop.name,
+      source: reconciledSource,
+      tags: prop.tags,
+    }),
+  }));
+
+  return {
+    props: groupedProps,
+    source: reconciledSource,
+    transforms: { rotate, scale, translate },
+  };
 }

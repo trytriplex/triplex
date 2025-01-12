@@ -50,4 +50,5 @@ export const threejsPropsExclusions: Record<string, true> = {
   up: true,
   uuid: true,
   version: true,
+  zoom0: true,
 };

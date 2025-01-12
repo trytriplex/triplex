@@ -34,3 +34,7 @@ function Box({
 }
 
 export default Box;
+
+export function UseBox() {
+  return <Box />;
+}

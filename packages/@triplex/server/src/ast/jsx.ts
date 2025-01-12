@@ -17,7 +17,6 @@ import {
 } from "ts-morph";
 import { normalize } from "upath";
 import type { JsxElementPositions } from "../types";
-import { isReactThreeElement } from "./is-three-element";
 import { getElementFilePath } from "./module";
 import { type SourceFileReadOnly } from "./project";
 import {
@@ -338,11 +337,11 @@ export function getJsxElementProps(
   _: SourceFileReadOnly,
   element: JsxSelfClosingElement | JsxElement | JsxFragment,
 ) {
-  const { elementName, props, transforms } = getJsxElementPropTypes(element);
+  const { props, source, transforms } = getJsxElementPropTypes(element);
 
   const sortedProps = props
     .filter((prop) => {
-      if (isReactThreeElement(elementName)) {
+      if (source === "three") {
         return (
           !threejsPropsExclusions[prop.name] &&
           !globalPropsExclusions[prop.name] &&

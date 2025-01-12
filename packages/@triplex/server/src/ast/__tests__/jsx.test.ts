@@ -168,6 +168,60 @@ describe("jsx ast extractor", () => {
     ]);
   });
 
+  it("should a group custom component props that is sourced from three.js", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/line-number.tsx"),
+    );
+    const element = getJsxElementAtOrThrow(sourceFile, 39, 10);
+
+    const { props } = getJsxElementProps(sourceFile, element);
+
+    expect(props.every((prop) => prop.group === "Transform")).toBeTruthy();
+  });
+
+  it("should a group custom component props that is sourced from react", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/dom.tsx"),
+    );
+    const element = getJsxElementAtOrThrow(sourceFile, 14, 10);
+
+    const { props } = getJsxElementProps(sourceFile, element);
+
+    expect(props.find((prop) => prop.name === "aria-label"))
+      .toMatchInlineSnapshot(`
+        {
+          "description": "Defines a string value that labels the current element.",
+          "group": "Accessibility",
+          "kind": "string",
+          "name": "aria-label",
+          "required": false,
+          "tags": {
+            "see": true,
+          },
+        }
+      `);
+  });
+
+  it("should not group any props from a custom component if no data was found", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/box.tsx"),
+    );
+    const element = getJsxElementAtOrThrow(sourceFile, 25, 10);
+
+    const { props } = getJsxElementProps(sourceFile, element);
+
+    expect(props.every((prop) => prop.group === "Other")).toBeTruthy();
+  });
+
   it("should return top level components for default export", async () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
@@ -548,6 +602,20 @@ describe("jsx ast extractor", () => {
         "valueKind": "array",
       }
     `);
+  });
+
+  it("should exclude threejs props on custom components", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/type-extraction.tsx"),
+    );
+    const sceneObject = getJsxElementAtOrThrow(sourceFile, 25, 10);
+
+    const { props } = getJsxElementProps(sourceFile, sceneObject);
+
+    expect(props.find((prop) => prop.name === "matrix")).toBeUndefined();
   });
 
   it("should extract string props from a host jsx element", () => {
@@ -2491,7 +2559,7 @@ describe("jsx ast extractor", () => {
     expect(props[3]).toMatchInlineSnapshot(`
       {
         "description": "Whether the object gets rendered into shadow map.",
-        "group": "Other",
+        "group": "Appearance",
         "kind": "boolean",
         "name": "castShadow",
         "required": false,

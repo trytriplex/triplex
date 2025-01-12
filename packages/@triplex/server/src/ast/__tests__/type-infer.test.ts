@@ -214,7 +214,7 @@ describe("type infer", () => {
         {
           "column": 35,
           "description": undefined,
-          "group": "Other",
+          "group": "Form",
           "kind": "boolean",
           "line": 44,
           "name": "value",
@@ -226,7 +226,7 @@ describe("type infer", () => {
         {
           "column": 9,
           "description": undefined,
-          "group": "Other",
+          "group": "Appearance",
           "kind": "union",
           "line": 45,
           "name": "children",
@@ -282,7 +282,7 @@ describe("type infer", () => {
     expect(props.find((type) => type.name === "args")).toMatchInlineSnapshot(`
       {
         "description": undefined,
-        "group": "Other",
+        "group": "Constructor",
         "kind": "tuple",
         "name": "args",
         "required": false,
