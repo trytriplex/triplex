@@ -15,6 +15,7 @@ import { useScreenView, useTelemetry } from "@triplex/ux";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { IconButton } from "../../components/button";
 import { ScrollContainer } from "../../components/scroll-container";
+import { SkeletonList, SkeletonText } from "../../components/skeleton";
 import { Surface } from "../../components/surface";
 import {
   useSceneContext,
@@ -217,19 +218,29 @@ export function Panels() {
       <div
         className={shown ? "flex h-full flex-col overflow-hidden" : "hidden"}
       >
-        <Suspense>
+        <Suspense
+          fallback={
+            <div className="flex flex-col px-4 py-1.5">
+              <SkeletonList>
+                <SkeletonText variant="ui" />
+                <SkeletonText variant="ui" />
+                <SkeletonText variant="ui" />
+                <SkeletonText variant="ui" />
+                <SkeletonText variant="ui" />
+              </SkeletonList>
+            </div>
+          }
+        >
           <ScrollContainer className="h-1/2">
             <ElementsPanel />
             <div className="h-1.5" />
           </ScrollContainer>
           <ScrollContainer className="border-overlay h-1/2 border-t" ref={ref}>
-            <Suspense>
-              {selected && <SelectionPanel />}
-              <div className={selected ? "hidden" : undefined}>
-                <ProviderControlsPanel />
-              </div>
-              <div className="h-1.5" />
-            </Suspense>
+            {selected && <SelectionPanel />}
+            <div className={selected ? "hidden" : undefined}>
+              <ProviderControlsPanel />
+            </div>
+            <div className="h-1.5" />
           </ScrollContainer>
         </Suspense>
       </div>
