@@ -1,5 +1,14 @@
 # @triplex/electron
 
+## 0.70.1
+
+### Patch Changes
+
+- Updated dependencies [8574af1]
+- Updated dependencies [fe8f650]
+  - @triplex/server@0.71.1
+  - @triplex/client@0.70.1
+
 ## 0.70.0
 
 ### Minor Changes

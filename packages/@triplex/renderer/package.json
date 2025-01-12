@@ -1,6 +1,6 @@
 {
   "name": "@triplex/renderer",
-  "version": "0.71.0",
+  "version": "0.71.1",
   "private": true,
   "description": "The visual IDE for the web.",
   "author": {
@@ -37,7 +37,7 @@
     "@react-three/fiber": "^8.17.10",
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
-    "@triplex/server": "0.71.0",
+    "@triplex/server": "0.71.1",
     "@types/react": "^18.0.27",
     "@types/react-dom": "^18.0.10",
     "@types/three": "^0.171.0",

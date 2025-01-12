@@ -1,5 +1,15 @@
 # @triplex/vscode
 
+## 0.2.1
+
+### Patch Changes
+
+- 09eb8a6: Add skeleton state loader for the panel.
+- Updated dependencies [8574af1]
+- Updated dependencies [fe8f650]
+  - @triplex/server@0.71.1
+  - @triplex/client@0.70.1
+
 ## 0.2.0
 
 ### Minor Changes

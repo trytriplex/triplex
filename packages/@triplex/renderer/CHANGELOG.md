@@ -1,5 +1,11 @@
 # @triplex/renderer
 
+## 0.71.1
+
+### Patch Changes
+
+- b9b220a: Fix `dy` not being used in the outline shader.
+
 ## 0.71.0
 
 ### Minor Changes

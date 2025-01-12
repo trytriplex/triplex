@@ -1,5 +1,12 @@
 # @triplex/client
 
+## 0.70.1
+
+### Patch Changes
+
+- Updated dependencies [b9b220a]
+  - @triplex/renderer@0.71.1
+
 ## 0.70.0
 
 ### Minor Changes
