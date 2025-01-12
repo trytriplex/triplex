@@ -639,7 +639,7 @@ describe("jsx ast extractor", () => {
           "group": "Appearance",
           "kind": "boolean",
           "name": "alphaHash",
-          "required": true,
+          "required": false,
           "tags": {},
         },
         {

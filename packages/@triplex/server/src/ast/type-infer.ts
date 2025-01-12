@@ -345,7 +345,7 @@ function extractJSDoc(symbol: SymbolType) {
 function collectUnionLabels(
   propType: Type,
   outLabels: Record<string, Record<string, string>>,
-  propDecl: PropertySignature,
+  propDecl: Node<ts.Node>,
 ): Record<string, string> | undefined {
   let propTypeName = propType.getText();
 
@@ -358,7 +358,9 @@ function collectUnionLabels(
 
       if (!symbol) {
         // Hack to try and resolve the union labels by an alternate means.
-        const typeNode = propDecl.getTypeNode?.();
+        const typeNode = Node.isPropertyDeclaration(propDecl)
+          ? propDecl.getTypeNode?.()
+          : undefined;
         if (Node.isUnionTypeNode(typeNode)) {
           typeNode.getTypeNodes().find((val) => {
             const s = val.getType().getAliasSymbol();
@@ -567,7 +569,16 @@ export function getJsxElementPropTypes(
     const prop = properties[i];
     const declarations = prop.getDeclarations();
     const propName = prop.getName();
-    const propDeclaration = declarations[0] as PropertySignature;
+    const propDeclaration = declarations[0];
+
+    if (
+      Node.isPropertyDeclaration(propDeclaration) &&
+      propDeclaration.isReadonly()
+    ) {
+      // Skip read-only props, if they can't be set they shouldn't be displayed in the UI.
+      continue;
+    }
+
     const propType = prop.getTypeAtLocation(declaration);
     const { description, tags } = extractJSDoc(prop);
     const unionLabels = collectUnionLabels(
@@ -576,10 +587,8 @@ export function getJsxElementPropTypes(
       propDeclaration,
     );
     const defaultValue = defaultValues[propName];
-    const isOptional =
-      !!propDeclaration?.hasQuestionToken?.() ||
-      tags.default !== undefined ||
-      tags.defaultValue !== undefined;
+    const isOptional = prop.isOptional();
+
     const declaredProp =
       propName === "children"
         ? children || attributes[propName]
