@@ -163,4 +163,43 @@ test.describe(() => {
       panels.getByRole("button", { name: "mesh" }),
     ).toHaveAccessibleName(/selected/);
   });
+
+  test("selecting a sprite", async ({ vsce }) => {
+    await vsce.codelens("Sprites").click();
+    const { panels, scene } = await vsce.resolveEditor();
+
+    await scene.click();
+
+    await expect(
+      panels.getByRole("button", { name: "sprite" }),
+    ).toHaveAccessibleName(/selected/);
+  });
+});
+
+test.describe(() => {
+  test.use({
+    filename: "examples/test-fixture/src/meshes.tsx",
+  });
+
+  test("selecting a batched mesh", async ({ vsce }) => {
+    await vsce.codelens("BatchedMeshScene").click();
+    const { panels, scene } = await vsce.resolveEditor();
+
+    await scene.click();
+
+    await expect(
+      panels.getByRole("button", { name: "batchedMesh" }),
+    ).toHaveAccessibleName(/selected/);
+  });
+
+  test("selecting a instanced mesh", async ({ vsce }) => {
+    await vsce.codelens("InstancedMeshScene").click();
+    const { panels, scene } = await vsce.resolveEditor();
+
+    await scene.click();
+
+    await expect(
+      panels.getByRole("button", { name: "Cloud" }),
+    ).toHaveAccessibleName(/selected/);
+  });
 });

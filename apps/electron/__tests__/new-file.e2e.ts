@@ -12,7 +12,7 @@ test("create new file and insert a box", async ({ electron }) => {
   const globalDrawer = await electron.assetsDrawer.open();
   await globalDrawer.openFolder("built-in");
   await globalDrawer.addAsset("Mesh");
-  await electron.waitForElementCount(4);
+  await electron.waitForElementCount(5);
 
   const localDrawer = await electron.assetsDrawer.open("mesh", 2);
   await localDrawer.openFolder("built-in");

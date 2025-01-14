@@ -32,14 +32,13 @@ export function buildSceneSphere(scene: Object3D) {
 }
 
 export function isObjectVisible(obj: Object3D): boolean {
-  const isMesh = "isMesh" in obj;
   const isInteractionPanel = "isInteractionPanel" in obj;
 
   if (isInteractionPanel || obj.name === "forced_visible") {
     return true;
   }
 
-  if (!isMesh || !obj.visible) {
+  if (!obj.visible) {
     return false;
   }
 
