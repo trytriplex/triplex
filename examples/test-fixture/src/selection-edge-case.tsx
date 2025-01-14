@@ -8,14 +8,16 @@ import { type ReactNode } from "react";
 
 export function UnknownCustomComponentResolvedHostElements() {
   return (
-    <>
-      <ContextProvider>
-        <mesh>
-          <boxGeometry />
-        </mesh>
-      </ContextProvider>
-    </>
+    <ContextProvider>
+      <mesh>
+        <boxGeometry />
+      </mesh>
+    </ContextProvider>
   );
+}
+
+export function Sprites() {
+  return <sprite />;
 }
 
 function ContextProvider({ children }: { children: ReactNode }) {
