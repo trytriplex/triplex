@@ -1,5 +1,13 @@
 # @triplex/client
 
+## 0.70.2
+
+### Patch Changes
+
+- 1922407: Using a Canvas component from `@react-three/fiber` along with other custom components are now correctly flagged as a "react" root instead of a "three-fiber" root.
+- Updated dependencies [bc6e2ba]
+  - @triplex/renderer@0.71.2
+
 ## 0.70.1
 
 ### Patch Changes

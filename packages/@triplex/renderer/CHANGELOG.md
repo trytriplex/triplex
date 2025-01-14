@@ -1,5 +1,11 @@
 # @triplex/renderer
 
+## 0.71.2
+
+### Patch Changes
+
+- bc6e2ba: Fix sprite not being selectable.
+
 ## 0.71.1
 
 ### Patch Changes

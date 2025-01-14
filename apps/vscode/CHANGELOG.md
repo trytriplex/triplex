@@ -1,5 +1,13 @@
 # @triplex/vscode
 
+## 0.2.2
+
+### Patch Changes
+
+- bc6e2ba: Fix sprite not being selectable.
+- Updated dependencies [1922407]
+  - @triplex/client@0.70.2
+
 ## 0.2.1
 
 ### Patch Changes

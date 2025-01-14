@@ -1,7 +1,7 @@
 {
   "name": "triplex-vsce",
   "displayName": "Triplex for VS Code [BETA]",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "description": "The visual IDE for the web.",
   "categories": [
@@ -209,7 +209,7 @@
     "onStartupFinished"
   ],
   "dependencies": {
-    "@triplex/client": "0.70.1",
+    "@triplex/client": "0.70.2",
     "@triplex/server": "0.71.1"
   },
   "devDependencies": {

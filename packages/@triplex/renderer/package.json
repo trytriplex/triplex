@@ -1,6 +1,6 @@
 {
   "name": "@triplex/renderer",
-  "version": "0.71.1",
+  "version": "0.71.2",
   "private": true,
   "description": "The visual IDE for the web.",
   "author": {
