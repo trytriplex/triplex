@@ -1718,4 +1718,32 @@ describe("babel plugin", () => {
 
     expect(result?.code).toContain(`"root": "react-three-fiber"`);
   });
+
+  it("should mark a component as react with a canvas and custom components", () => {
+    const result = transformSync(
+      `
+        import { Canvas } from "@react-three/fiber";
+
+        function FiberComponent() {
+          return <mesh />;
+        }
+
+        export function Component() {
+          return (
+            <Canvas>
+              <FiberComponent />
+            </Canvas>
+          );
+        }
+      `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toContain(`"root": "react"`);
+  });
 });
