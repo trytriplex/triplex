@@ -23,7 +23,7 @@ export function Tweet({
 }) {
   return (
     <a
-      className="grid min-w-[340px] max-w-xs shrink-0 gap-2 rounded-lg border border-neutral-800 bg-neutral-950 px-4 pb-3 pt-4 [grid-template-columns:auto_1fr]"
+      className="grid min-w-[340px] max-w-xs shrink-0 gap-2 border border-neutral-600 bg-neutral-950 px-4 pb-3 pt-4 [grid-template-columns:auto_1fr]"
       href={tweetUrl}
       rel="noreferrer"
       target="_blank"
@@ -37,7 +37,7 @@ export function Tweet({
       />
 
       <div className="flex flex-col justify-start">
-        <span className="font-extrabold text-white/90">{name}</span>
+        <span className="font-medium text-white/90">{name}</span>
         <span className="text-base text-white/70">{tag}</span>
       </div>
 

@@ -146,7 +146,7 @@ export function SearchModal({
 
   return (
     <dialog
-      className="m-auto mt-10 w-full rounded-lg border border-neutral-700 bg-neutral-950 p-0 backdrop:bg-black/70 md:mt-32 md:max-w-2xl"
+      className="m-auto mt-10 w-full rounded-lg border border-neutral-600 bg-neutral-950 p-0 backdrop:bg-black/70 md:mt-32 md:max-w-2xl"
       ref={ref}
     >
       <form method="dialog">
@@ -166,7 +166,7 @@ export function SearchModal({
 
       {searchResults.length > 0 && (
         <div
-          className="flex flex-col border-t border-neutral-800 py-1.5"
+          className="flex flex-col border-t border-neutral-600 py-1.5"
           onClick={onSearchResultClickHandler}
         >
           {searchResults.map((res) => (

@@ -61,11 +61,11 @@ function AssetDownload({
       className={cn([
         "flex items-center gap-4 rounded-md p-4",
         variant === "highlight"
-          ? "border-2 border-blue-400"
-          : "border border-neutral-700",
+          ? "border-2 border-white"
+          : "border border-neutral-600",
       ])}
     >
-      <div className="w-9 text-neutral-400">{logo}</div>
+      <div className="w-9 flex-shrink-0 text-neutral-400">{logo}</div>
       <div className="flex flex-col">
         <span className="font-medium text-neutral-200">{title}</span>
         <span className="text-neutral-400">{subtitle}</span>
@@ -112,7 +112,7 @@ function List() {
           <AssetDownload
             action={
               <a
-                className="ml-auto flex-shrink-0 rounded bg-blue-400 px-3 py-1 font-medium text-neutral-900"
+                className="ml-auto flex-shrink-0 rounded bg-white px-4 py-1 font-medium text-neutral-900"
                 href="https://winstall.app/apps/Triplex.Triplex"
                 onClick={(e) => {
                   beginDownload(e, "/docs/overview?dl=winget");
@@ -134,7 +134,7 @@ function List() {
             <AssetDownload
               action={
                 <a
-                  className="ml-auto rounded bg-blue-400 px-3 py-1 font-medium text-neutral-900"
+                  className="ml-auto rounded bg-white px-4 py-1 font-medium text-neutral-900"
                   href={asset.browser_download_url}
                   onClick={(e) => {
                     beginDownload(e, forwardURL);
@@ -179,7 +179,7 @@ export function DownloadList() {
       <AssetDownload
         action={
           <a
-            className="ml-auto flex-shrink-0 rounded bg-blue-400 px-3 py-1 font-medium text-neutral-900"
+            className="ml-auto flex-shrink-0 rounded bg-white px-4 py-1 font-medium text-neutral-900"
             href="https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce"
             onClick={(e) => {
               beginDownload(e, "/docs/overview?dl=vsce");
@@ -191,8 +191,20 @@ export function DownloadList() {
           </a>
         }
         logo={logos.vscode}
-        subtitle="Available on the VS Code marketplace."
-        title="Install for VS Code"
+        subtitle={
+          <>
+            Find on the Visual Studio marketplace. Using Cursor?{" "}
+            <a
+              className="text-blue-400 hover:underline"
+              href="https://www.cursor.com/how-to-install-extension"
+              rel="noreferrer"
+              target="_blank"
+            >
+              Follow the installation guide.
+            </a>
+          </>
+        }
+        title="Install for Visual Studio Code / Cursor"
       />
       <Suspense fallback={fallbackListItems}>
         <List />

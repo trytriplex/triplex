@@ -27,7 +27,7 @@ export default function HeroCanvas() {
         fadeDistance={30}
         fadeStrength={2}
         infiniteGrid
-        sectionColor="#9d4b4b"
+        sectionColor="#fff"
         sectionSize={6}
       />
     </Canvas>

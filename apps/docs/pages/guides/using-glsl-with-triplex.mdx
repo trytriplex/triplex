@@ -1,15 +1,9 @@
 ---
 title: Using GLSL Shaders With Triplex
-description:
-  GLSL shaders are small programs that are ran on the GPU. When imported they
-  have their include statements resolved and are then available as a string for
-  you to forward on to Three.js.
+description: GLSL shaders are small programs that run on the GPU. When imported they have their include statements resolved and are then available as a string for you to forward on to Three.js.
 ---
 
-GLSL shaders are small programs that are ran on the GPU. When importing a GLSL
-file with an extension of `glsl`, `wgsl`, `vert`, `frag`, `vs`, or `fs`, they
-have their include statements resolved and are then available as a string for
-you to forward on to Three.js.
+GLSL shaders are small programs that run on the GPU. When importing a GLSL file with an extension of `glsl`, `wgsl`, `vert`, `frag`, `vs`, or `fs`, they have their include statements resolved and are then available as a string for you to forward on to Three.js.
 
 Import them:
 
@@ -18,8 +12,7 @@ import frag from "./fragment.glsl";
 import vert from "./vertex.glsl";
 ```
 
-And use them as needed, for example here it's used with
-[`three-custom-shader-material`](https://github.com/FarazzShaikh/THREE-CustomShaderMaterial):
+And use them as needed, for example here it's used with [`three-custom-shader-material`](https://github.com/FarazzShaikh/THREE-CustomShaderMaterial):
 
 ```diff
 import CustomShaderMaterial from "three-custom-shader-material";
@@ -65,8 +58,7 @@ export function WaterMaterial({
 
 ## Types
 
-When using TypeScript make sure to have a global type definition declared for
-these files:
+When using TypeScript make sure to have a global type definition declared for these files:
 
 ```ts
 // types/shaders.d.ts
