@@ -6,6 +6,7 @@
  */
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { cn } from "../util/cn";
 import { useBeginDownloadURL } from "../util/download";
 
 interface Asset {
@@ -13,7 +14,11 @@ interface Asset {
   name: string;
 }
 
-export function DownloadButton() {
+export function DownloadButton({
+  variant = "button",
+}: {
+  variant?: "button" | "link";
+}) {
   const [platform, setPlatform] = useState<
     "macOS" | "Windows" | "Linux" | "Unsupported"
   >("macOS");
@@ -67,7 +72,12 @@ export function DownloadButton() {
 
   return (
     <Link
-      className="z-10 cursor-pointer bg-blue-400 px-8 py-4 text-center text-2xl font-medium text-neutral-900"
+      className={cn([
+        variant === "link" &&
+          "text-neutral-300 underline hover:text-neutral-100",
+        variant === "button" &&
+          "cursor-pointer bg-white px-8 py-4 text-center font-mono text-2xl font-medium text-neutral-900",
+      ])}
       href={platform === "Unsupported" ? "/download" : downloadURL}
       onClick={(e) => {
         if (platform !== "Unsupported") {
@@ -77,7 +87,7 @@ export function DownloadButton() {
       target={platform === "Unsupported" ? undefined : "_blank"}
     >
       {platform === "Unsupported"
-        ? "Download Triplex"
+        ? "Download Standalone"
         : `Download for ${platform}`}
     </Link>
   );

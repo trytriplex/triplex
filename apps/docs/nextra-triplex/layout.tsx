@@ -134,7 +134,7 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
       </Header>
 
       {isNavMenuOpen && (
-        <div className="fixed left-0 right-0 top-14 z-40 max-h-[calc(100vh-3.5rem)] overflow-auto border-b border-neutral-900 bg-neutral-950 px-6 py-6 text-white md:hidden">
+        <div className="fixed left-0 right-0 top-14 z-40 max-h-[calc(100vh-3.5rem)] overflow-auto border-b border-neutral-600 bg-neutral-950/50 px-6 py-6 text-white [backdrop-filter:saturate(200%)_blur(5px)] md:hidden">
           {result.topLevelNavbarItems.map((item) => (
             <div className="mb-2" key={item.title}>
               <Link
@@ -147,7 +147,7 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
           ))}
 
           {pageItems.length > 0 ? (
-            <hr className="-mx-2 my-6 border-neutral-900" />
+            <hr className="-mx-2 my-6 border-neutral-600" />
           ) : null}
 
           {pageItems.map((item) => (
@@ -186,7 +186,7 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
       >
         {result.activeThemeContext.layout !== "raw" && (
           <div
-            className="relative -mx-6 flex border-b border-t border-neutral-700 md:mx-0 md:mt-8 md:border"
+            className="relative -mx-6 flex border-b border-t border-neutral-600 md:mx-0 md:mt-8 md:border"
             style={{ "--grid": "100px" }}
           >
             <div className="relative flex basis-2/3 flex-col justify-center gap-2 px-6 py-8 [background:repeating-linear-gradient(transparent,transparent_var(--grid),#292929_var(--grid),#292929_calc(var(--grid)+1px)),repeating-linear-gradient(to_right,transparent,transparent_var(--grid),#292929_var(--grid),#292929_calc(var(--grid)+1px))] md:min-h-[16rem] md:px-14 md:py-14 lg:min-h-[20rem] lg:basis-3/5">
@@ -296,7 +296,7 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
               ("feedback" in result.activeThemeContext &&
                 typeof result.activeThemeContext.feedback === "boolean" &&
                 result.activeThemeContext.feedback)) && (
-              <div className="mt-10 flex flex-col gap-10 border-t border-neutral-800 pt-8 lg:mt-20 lg:pt-12">
+              <div className="mt-10 flex flex-col gap-10 border-t border-neutral-600 pt-8 lg:mt-20 lg:pt-12">
                 {result.activeThemeContext.pagination && (
                   <nav aria-label="pages navigation" className="flex">
                     {previousPage && (
@@ -354,7 +354,7 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                     </Link>
                   </div>
                 ))}
-                <div className="mt-2 border-t border-neutral-800 pt-3">
+                <div className="mt-2 border-t border-neutral-600 pt-3">
                   <a
                     className="text-sm text-neutral-400 hover:text-neutral-200"
                     href={`https://github.com/try-triplex/triplex/tree/main/apps/docs/${pageOpts.filePath}`}

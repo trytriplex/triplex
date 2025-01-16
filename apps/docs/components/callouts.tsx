@@ -8,8 +8,8 @@ import { BookmarkFilledIcon, RocketIcon } from "@radix-ui/react-icons";
 
 export function KnowledgeCallout({ children }: { children: React.ReactNode }) {
   return (
-    <div className="my-10 flex flex-col gap-2.5 bg-blue-950/40 px-6 py-8">
-      <span className="flex items-center gap-4 text-xl font-medium text-blue-400">
+    <div className="my-10 flex flex-col gap-2.5 bg-neutral-900 px-6 py-8">
+      <span className="flex items-center gap-4 text-xl font-medium text-white">
         <BookmarkFilledIcon />
         New Knowledge
       </span>

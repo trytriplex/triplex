@@ -4,16 +4,23 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import Image from "next/image";
 import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="relative col-span-full border-t border-neutral-800 bg-neutral-950">
+    <footer className="relative col-span-full border-t border-neutral-600 bg-neutral-950">
       <div className="mx-auto flex gap-14 px-6 py-10 md:px-8 lg:w-full lg:gap-32 lg:px-20">
         <div className="lg:mr-auto lg:flex-shrink-0">
-          <div className="flex gap-1">
-            <span className="text-sm text-neutral-400">
-              <span className="font-medium text-neutral-200">Triplex</span> —
+          <div className="flex flex-col gap-0.5">
+            <Image
+              alt="Triplex"
+              className="mb-1"
+              height={Math.round(223 / 9)}
+              src="/logos/logo-horizontal.svg"
+              width={Math.round(818 / 9)}
+            />
+            <span className="text-base text-neutral-400">
               Built in Sydney, Australia
             </span>
           </div>
@@ -115,12 +122,12 @@ export function Footer() {
         </div>
         <div className="grid w-full gap-14 sm:justify-end sm:[grid-template-columns:repeat(auto-fit,7rem)] xl:gap-32">
           <ul className="flex flex-col gap-4">
-            <span className="text-sm font-medium text-neutral-200">
+            <span className="text-base font-medium text-neutral-200">
               Product
             </span>
             <li>
               <Link
-                className="text-sm text-neutral-400 hover:text-neutral-200"
+                className="text-base text-neutral-400 hover:text-neutral-200"
                 href="/docs/setup/overview"
               >
                 Setup
@@ -128,7 +135,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                className="text-sm text-neutral-400 hover:text-neutral-200"
+                className="text-base text-neutral-400 hover:text-neutral-200"
                 href="/docs/get-started/user-interface"
               >
                 User Interface
@@ -136,7 +143,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                className="text-sm text-neutral-400 hover:text-neutral-200"
+                className="text-base text-neutral-400 hover:text-neutral-200"
                 href="/docs/get-started/settings"
               >
                 Settings
@@ -144,7 +151,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                className="text-sm text-neutral-400 hover:text-neutral-200"
+                className="text-base text-neutral-400 hover:text-neutral-200"
                 href="https://github.com/trytriplex/triplex/releases"
               >
                 Changelog
@@ -153,12 +160,12 @@ export function Footer() {
           </ul>
 
           <ul className="flex flex-col gap-4">
-            <span className="text-sm font-medium text-neutral-200">
+            <span className="text-base font-medium text-neutral-200">
               Resources
             </span>
             <li>
               <Link
-                className="text-sm text-neutral-400 hover:text-neutral-200"
+                className="text-base text-neutral-400 hover:text-neutral-200"
                 href="https://discord.gg/nBzRBUEs4b"
               >
                 Discord
@@ -166,7 +173,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                className="text-sm text-neutral-400 hover:text-neutral-200"
+                className="text-base text-neutral-400 hover:text-neutral-200"
                 href="https://www.youtube.com/@trytriplex"
               >
                 YouTube
@@ -174,7 +181,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                className="text-sm text-neutral-400 hover:text-neutral-200"
+                className="text-base text-neutral-400 hover:text-neutral-200"
                 href="https://github.com/trytriplex/triplex/issues/new"
               >
                 Raise an Issue
@@ -182,7 +189,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                className="text-sm text-neutral-400 hover:text-neutral-200"
+                className="text-base text-neutral-400 hover:text-neutral-200"
                 href="/docs/faq"
               >
                 FAQ
@@ -191,12 +198,12 @@ export function Footer() {
           </ul>
 
           <ul className="flex flex-col gap-4">
-            <span className="text-sm font-medium text-neutral-200">
+            <span className="text-base font-medium text-neutral-200">
               Developers
             </span>
             <li>
               <Link
-                className="text-sm text-neutral-400 hover:text-neutral-200"
+                className="text-base text-neutral-400 hover:text-neutral-200"
                 href="https://github.com/trytriplex/triplex"
               >
                 GitHub
@@ -204,7 +211,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                className="text-sm text-neutral-400 hover:text-neutral-200"
+                className="text-base text-neutral-400 hover:text-neutral-200"
                 href="https://github.com/sponsors/itsdouges"
               >
                 Sponsor
@@ -212,7 +219,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                className="text-sm text-neutral-400 hover:text-neutral-200"
+                className="text-base text-neutral-400 hover:text-neutral-200"
                 href="https://pmnd.rs/"
               >
                 Poimandres
@@ -220,11 +227,13 @@ export function Footer() {
             </li>
           </ul>
           <ul className="flex flex-col gap-4">
-            <span className="text-sm font-medium text-neutral-200">Legal</span>
+            <span className="text-base font-medium text-neutral-200">
+              Legal
+            </span>
 
             <li>
               <Link
-                className="text-sm text-neutral-400 hover:text-neutral-200"
+                className="text-base text-neutral-400 hover:text-neutral-200"
                 href="/legal/privacy-policy"
               >
                 Privacy Policy

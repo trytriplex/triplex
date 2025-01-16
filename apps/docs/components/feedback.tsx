@@ -39,9 +39,10 @@ function FeedbackButton({
       <label
         aria-label={label}
         className={cn([
-          isSelected && "border-blue-400 bg-blue-950 text-blue-300",
+          "border-neutral-600",
+          isSelected && "bg-neutral-700 text-white",
           !isSelected &&
-            "border-neutral-700 bg-white/5 text-neutral-400 hover:border-neutral-500 hover:bg-white/10 hover:text-neutral-200 peer-focus-visible:border-neutral-500",
+            "bg-white/5 text-neutral-400 hover:bg-white/10 hover:text-neutral-200 peer-focus-visible:border-neutral-600",
           "-my-1 flex h-8 w-8 cursor-default items-center justify-center rounded-full border outline-4 outline-neutral-800 peer-focus-visible:outline",
         ])}
         htmlFor={id}
@@ -81,7 +82,7 @@ export function SendFeedback() {
   return (
     <div className="mx-auto flex justify-center">
       <form
-        className="flex flex-col gap-3 border border-neutral-800 px-6 py-4"
+        className="flex flex-col gap-3 border border-neutral-600 px-6 py-4"
         key={route.pathname}
         onSubmit={onSubmit}
       >
@@ -117,12 +118,12 @@ export function SendFeedback() {
               <div className="-mx-2 flex w-72 flex-col gap-3">
                 <textarea
                   aria-label="Anything you'd like to tell us?"
-                  className="h-20 w-full resize-none border border-neutral-700 bg-transparent p-2 text-sm text-neutral-200 placeholder:text-neutral-500 focus:border-blue-400 focus:outline-none"
+                  className="h-20 w-full resize-none border border-neutral-600 bg-transparent p-2 text-sm text-neutral-200 placeholder:text-neutral-500 focus:border-blue-400 focus:outline-none"
                   name="feedback"
                   placeholder="Anything you'd like to tell us?"
                 />
                 <button
-                  className="rounded bg-blue-400 px-4 py-1 text-neutral-950"
+                  className="rounded bg-white px-4 py-1 font-medium text-neutral-950"
                   type="submit"
                 >
                   Send feedback

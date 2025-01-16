@@ -16,7 +16,7 @@ import { PagesList } from "../components/pages-list";
 export const components: Components = {
   ActionLink,
   Kbd: ({ children }) => (
-    <kbd className="relative rounded border border-neutral-700 bg-white/5 px-1.5 pb-0.5 pt-[3px] font-mono text-sm font-semibold text-neutral-300 after:absolute after:bottom-[-3px] after:left-[-1px] after:right-[-1px] after:top-0 after:rounded-md after:border-b-[3px] after:border-[inherit]">
+    <kbd className="relative rounded border border-neutral-600 bg-white/5 px-1.5 pb-0.5 pt-[3px] font-mono text-sm font-semibold text-neutral-300 after:absolute after:bottom-[-3px] after:left-[-1px] after:right-[-1px] after:top-0 after:rounded-md after:border-b-[3px] after:border-[inherit]">
       {children}
     </kbd>
   ),
@@ -102,13 +102,13 @@ export const components: Components = {
   code: ({ children }) => {
     return typeof children === "string" ? (
       // Inline code
-      <code className="border border-neutral-700 px-1.5 py-0.5 font-mono text-neutral-300">
+      <code className="border border-neutral-600 px-1.5 py-0.5 font-mono text-neutral-300">
         {children}
       </code>
     ) : (
       // Code block powered by shiki
       // See: https://shiki.matsu.io/guide/theme-colors#css-variables-theme
-      <code className="leading-6 [--shiki-color-text:#d4d4d4] [--shiki-token-comment:#16a34a] [--shiki-token-constant:#5eead4] [--shiki-token-function:#5eead4] [--shiki-token-keyword:#60a5fa] [--shiki-token-link:#facc15] [--shiki-token-parameter:#9ca3af] [--shiki-token-punctuation:#2dd4bf] [--shiki-token-string-expression:#fda4af] [--shiki-token-string:#4ade80] [&:has(.highlighted)_:not(.highlighted):not(.line)]:opacity-60 [&_.highlighted>*]:!opacity-100 [&_.highlighted]:bg-white/10 [&_.line.highlighted]:relative [&_.line.highlighted]:float-left [&_.line.highlighted]:-ml-3 [&_.line.highlighted]:w-[calc(100%+24px)] [&_.line.highlighted]:after:absolute [&_.line.highlighted]:after:bottom-0 [&_.line.highlighted]:after:left-[-1px] [&_.line.highlighted]:after:top-0 [&_.line.highlighted]:after:border-l [&_.line.highlighted]:after:border-blue-400">
+      <code className="leading-6 [--shiki-color-text:#d4d4d4] [--shiki-token-comment:#16a34a] [--shiki-token-constant:#5eead4] [--shiki-token-function:#5eead4] [--shiki-token-keyword:#60a5fa] [--shiki-token-link:#facc15] [--shiki-token-parameter:#9ca3af] [--shiki-token-punctuation:#2dd4bf] [--shiki-token-string-expression:#fda4af] [--shiki-token-string:#4ade80] [&:has(.highlighted)_:not(.highlighted):not(.line)]:opacity-60 [&_.highlighted>*]:!opacity-100 [&_.highlighted]:bg-white/10 [&_.line.highlighted]:relative [&_.line.highlighted]:float-left [&_.line.highlighted]:-ml-3 [&_.line.highlighted]:w-[calc(100%+24px)] [&_.line.highlighted]:after:absolute [&_.line.highlighted]:after:bottom-0 [&_.line.highlighted]:after:left-[-1px] [&_.line.highlighted]:after:top-0 [&_.line.highlighted]:after:border-l [&_.line.highlighted]:after:border-white">
         {children}
       </code>
     );
@@ -163,7 +163,7 @@ export const components: Components = {
     return (
       <div className="mt-5">
         {filename && (
-          <div className="flex items-center gap-2.5 border border-b-0 border-neutral-700 bg-white/5 py-2 pl-3">
+          <div className="flex items-center gap-2.5 border border-b-0 border-neutral-600 bg-white/5 py-2 pl-3">
             <span className="rounded border border-neutral-600 p-1">
               {codeIcon.some((code) => filename.endsWith(code)) ? (
                 <CodeIcon className="text-neutral-300" />
@@ -174,7 +174,7 @@ export const components: Components = {
             <span className="text-sm text-neutral-300">{filename}</span>
           </div>
         )}
-        <pre className="whitespace-break-spaces border border-neutral-700 p-3 text-sm text-neutral-300">
+        <pre className="whitespace-break-spaces border border-neutral-600 p-3 text-sm text-neutral-300">
           {children}
         </pre>
       </div>
@@ -184,12 +184,12 @@ export const components: Components = {
     <table className="mt-5 w-full table-fixed">{children}</table>
   ),
   td: ({ children }) => (
-    <td className="border-b border-neutral-800 p-2 text-neutral-300">
+    <td className="border-b border-neutral-600 p-2 text-neutral-300">
       {children}
     </td>
   ),
   th: ({ children }) => (
-    <th className="border-b border-neutral-800 py-2.5 text-center font-medium text-neutral-200">
+    <th className="border-b border-neutral-600 py-2.5 text-center font-medium text-neutral-200">
       {children}
     </th>
   ),

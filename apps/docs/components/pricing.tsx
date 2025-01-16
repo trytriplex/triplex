@@ -29,9 +29,10 @@ function PricingPanel({
   return (
     <li
       className={cn([
-        "flex w-full max-w-sm basis-1/3 flex-col gap-3 rounded-xl border border-neutral-800 p-4 lg:w-auto",
+        "flex w-full max-w-sm basis-1/3 flex-col gap-3 rounded-xl border p-4 lg:w-auto",
+        highlight ? "border-transparent" : "border-neutral-600",
         highlight &&
-          "relative bg-neutral-950 before:absolute before:-inset-2 before:-z-10 before:rounded-2xl before:bg-blue-400 lg:mt-0",
+          "relative bg-neutral-950 outline outline-4 outline-white before:absolute lg:mt-0",
       ])}
     >
       <h2 className="mt-6 text-center text-3xl font-bold text-neutral-200">
@@ -61,12 +62,12 @@ function PricingPanel({
 
 export function Pricing() {
   return (
-    <ul className="mt-16 flex w-full max-w-7xl flex-col items-center justify-center gap-6 px-10 lg:flex-row lg:items-stretch">
+    <ul className="mt-16 flex w-full max-w-7xl flex-col items-center justify-center gap-6 lg:flex-row lg:items-stretch">
       <PricingPanel
         cta={
           <>
             <Link
-              className="block rounded border border-neutral-800 py-2 text-center font-medium text-neutral-300"
+              className="block rounded border border-neutral-600 py-2 text-center font-medium text-neutral-300"
               href="https://github.com/sponsors/itsdouges/sponsorships?sponsor=itsdouges&preview=true&frequency=recurring&amount=19"
             >
               Sponsor Development
@@ -84,17 +85,17 @@ export function Pricing() {
         perMonthLabel="per month, forever"
         price={[0]}
       >
-        <ul className="-mx-4 -mb-4 mt-4 flex flex-col gap-3 border-t border-neutral-800 p-4">
+        <ul className="-mx-4 -mb-4 mt-4 flex flex-col gap-3 border-t border-neutral-600 px-4 py-5">
           <li>
             <DetailsSummary
-              details="Develop with Triplex on your OS of choice."
-              summary="Visual IDE for macOS, Windows, Linux"
+              details="Develop with Triplex on your OS of choice using Triplex Standalone, or with Triplex for VS Code."
+              summary="Visual development environment"
             />
           </li>
           <li>
             <DetailsSummary
               details="Create as many Triplex projects as you want for use in the editor."
-              summary="Unlimited projects"
+              summary="Unlimited open-source projects"
             />
           </li>
           <li>
@@ -114,7 +115,7 @@ export function Pricing() {
       <PricingPanel
         cta={
           <Link
-            className="block rounded bg-blue-400 py-2 text-center font-medium text-neutral-800"
+            className="block rounded bg-white py-2 text-center font-medium text-neutral-800"
             href="mailto:support@triplex.dev"
           >
             Contact Us
@@ -125,7 +126,7 @@ export function Pricing() {
         name="Team"
         perMonthLabel=""
       >
-        <ul className="-mx-4 -mb-4 mt-4 flex flex-col gap-3 border-t border-neutral-800 p-4">
+        <ul className="-mx-4 -mb-4 mt-4 flex flex-col gap-3 border-t border-neutral-600 p-4">
           <li className="flex items-center gap-4 text-neutral-300">
             <ArrowLeftIcon /> Everything in Free, and...
           </li>
@@ -150,7 +151,7 @@ function DetailsSummary({
 }) {
   return (
     <details className="group">
-      <summary className="flex cursor-pointer list-none items-center gap-4 font-medium text-neutral-300">
+      <summary className="flex cursor-pointer list-none items-center gap-4 font-medium text-neutral-200">
         <ChevronRightIcon className="group-open:rotate-90" /> {summary}
       </summary>
       <p className="mt-1 pl-8 text-neutral-300">{details}</p>

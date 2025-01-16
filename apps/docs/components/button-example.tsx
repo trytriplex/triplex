@@ -20,7 +20,7 @@ export function ActionLink({
   return (
     <Link
       className={cn([
-        "group inline-flex gap-1.5 border border-neutral-700 py-0.5",
+        "group inline-flex gap-1.5 border border-neutral-600 py-0.5",
         Icon ? "pl-0.5 pr-1.5" : "px-1.5",
       ])}
       href={href}

@@ -39,11 +39,11 @@ export function SideNavItem({
     <Fragment>
       <Link
         className={cn([
-          level > 1 && !isSelected && "border-l border-neutral-800",
-          level > 1 && isSelected && "border-l border-blue-400",
+          level > 1 && !isSelected && "border-l border-neutral-600",
+          level > 1 && isSelected && "border-l border-white",
           !!children && level > 0 && "pl-1",
           level === 0 && "mt-6 font-medium",
-          isSelected && "text-blue-400",
+          isSelected && "text-white",
           !isSelected && level === 0 && "text-neutral-100",
           !isSelected &&
             level >= 1 &&

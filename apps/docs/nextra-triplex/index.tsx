@@ -27,7 +27,7 @@ export default function Root({
   return (
     <div className="relative grid grid-cols-12">
       <Head>
-        <link href="/favicon.svg" rel="icon" />
+        <link href="/logos/logo-icon.svg" rel="icon" />
         <title>{`${title} • Triplex`}</title>
         <meta content={title} property="og:title" />
         {frontMatter.description && (

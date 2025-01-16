@@ -14,7 +14,9 @@ async function fetchAssets() {
   const imageSrc = fetch(
     new URL("../../public/hero.png", import.meta.url),
   ).then((res) => res.arrayBuffer() as unknown as string);
-  const logoSvg = fetch(new URL("../../public/favicon.svg", import.meta.url))
+  const logoSvg = fetch(
+    new URL("../../public/logos/logo-icon.svg", import.meta.url),
+  )
     .then((res) => res.text() as Promise<string>)
     .then((img) => `data:image/svg+xml;charset=utf-8,` + encodeURI(img));
   const bold = fetch(new URL("./Karla-Bold.ttf", import.meta.url)).then((res) =>
@@ -58,7 +60,7 @@ export default async function (request: Request) {
           width: "100%",
         }}
       >
-        <img src={logoSvg} style={{ height: "10rem", width: "10rem" }} />
+        <img src={logoSvg} style={{ height: "10rem", opacity: 0.9 }} />
         <span
           style={{
             color: "white",

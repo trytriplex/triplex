@@ -15,9 +15,9 @@ export function BigDownloadLink({ variant }: { variant: "outline" | "bold" }) {
   return (
     <Link
       className={cn([
-        variant === "outline" && "border-2 border-blue-400 text-blue-400",
-        variant === "bold" && "bg-blue-400 text-black/90",
-        "flex items-center justify-center px-10 py-6 text-2xl font-bold md:px-16 md:py-8 md:text-4xl",
+        variant === "outline" && "border-2 border-white text-white",
+        variant === "bold" && "bg-white text-black/90",
+        "flex items-center justify-center px-10 py-6 font-mono text-3xl font-medium md:px-16 md:py-8 md:text-5xl",
       ])}
       href="/download"
     >
@@ -41,16 +41,16 @@ function FlashCard({
       className="relative whitespace-nowrap px-12 py-0.5 [text-shadow:none] [transition:transform_cubic-bezier(0.8,0,0,0.8)_0.5s]"
       style={style}
     >
-      <span className="absolute inset-0 scale-90 bg-neutral-950/90" />
+      <span className="absolute inset-0 scale-90 bg-white/5" />
       <span
-        className="absolute inset-0 scale-90 border border-[#9d4b4b] [background:repeating-linear-gradient(transparent,transparent_var(--size),#292929_var(--size),#292929_calc(var(--size)+1px)),repeating-linear-gradient(to_right,transparent,transparent_var(--size),#292929_var(--size),#292929_calc(var(--size)+1px))]"
+        className="absolute inset-0 scale-90 border border-neutral-600 [background:repeating-linear-gradient(transparent,transparent_var(--size),#292929_var(--size),#292929_calc(var(--size)+1px)),repeating-linear-gradient(to_right,transparent,transparent_var(--size),#292929_var(--size),#292929_calc(var(--size)+1px))]"
         style={{
           "--size": "40px",
         }}
       />
       <span
         className={cn([
-          "relative font-mono font-semibold text-red-400",
+          "relative font-mono font-semibold",
           isHidden && "select-none",
         ])}
       >
@@ -130,13 +130,13 @@ export function Hero() {
 
   return (
     <div
-      className="relative -mb-32 flex h-[75lvh] min-h-[400px] items-center"
+      className="relative flex h-[75lvh] min-h-[400px] items-center"
       id="hero-section"
     >
       <div className="w-full px-10 xl:px-28">
         <div className="flex flex-col items-center gap-4 lg:gap-6">
           <Link
-            className="z-10 rounded-full border border-pink-400 px-3 py-0.5 text-center font-mono text-sm text-pink-300 [text-shadow:black_1px_0_20px]"
+            className="z-10 rounded-full border border-neutral-600 bg-white/5 px-3 py-0.5 text-center font-mono text-sm text-neutral-300 [text-shadow:black_1px_0_20px]"
             href="/blog/triplex-for-vscode"
           >
             Triplex for VS Code now available
@@ -158,20 +158,18 @@ export function Hero() {
           </h1>
 
           <div className="z-10 flex flex-col items-center gap-2">
-            <DownloadButton />
+            <a
+              className="z-10 cursor-pointer bg-white px-8 py-4 text-center font-mono text-2xl font-medium text-neutral-900"
+              href="https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce"
+              onClick={(e) => {
+                beginDownload(e, "/docs/get-started?dl=vsce");
+              }}
+            >
+              Install for Visual Studio Code
+            </a>
+
             <span className="text-neutral-300">
-              <a
-                className="underline hover:text-neutral-100"
-                href="https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce"
-                onClick={(e) => {
-                  beginDownload(e, "/docs/get-started?dl=vsce");
-                }}
-                rel="noreferrer"
-                target="_blank"
-              >
-                Install for VS Code
-              </a>
-              , or{" "}
+              <DownloadButton variant="link" />, or for{" "}
               <Link
                 className="underline hover:text-neutral-100"
                 href="/download"
