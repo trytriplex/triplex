@@ -7,6 +7,7 @@
 import { type AppProps } from "next/app";
 import { Karla } from "next/font/google";
 import "../globals.css";
+import "../themes/default.css";
 
 const karla = Karla({
   display: "swap",

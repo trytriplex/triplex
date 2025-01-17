@@ -40,12 +40,13 @@ export function Header({
   }, [showSearch]);
 
   return (
-    <header className="sticky top-0 z-50 col-span-full row-start-1 flex h-14 items-center gap-4 bg-neutral-950/70 px-6 [backdrop-filter:saturate(200%)_blur(5px)] md:gap-6 md:px-8 lg:px-20">
+    <header className="bg-surface sticky top-0 z-50 col-span-full row-start-1 flex h-14 items-center gap-4 px-6 md:gap-6 md:px-8 lg:px-20">
       <Link aria-label="Home" className="flex-shrink-0" href="/">
         <Image
           alt="Home"
           className="mb-1"
           height={Math.round(223 / 9)}
+          priority
           src="/logos/logo-horizontal.svg"
           width={Math.round(818 / 9)}
         />
@@ -53,7 +54,7 @@ export function Header({
 
       <nav className="flex flex-grow items-center gap-0.5 overflow-hidden md:gap-5">
         <button
-          className="relative ml-auto flex h-8 flex-shrink-0 cursor-default items-center rounded px-3 text-sm text-neutral-300 -outline-offset-1 outline-blue-400 hover:bg-white/5 focus-visible:outline focus-visible:outline-1 active:bg-white/10 md:-ml-2.5 md:hidden"
+          className="text-subtle hover:bg-hovered active:bg-pressed outline-link relative ml-auto flex h-8 flex-shrink-0 cursor-default items-center rounded px-3 text-sm -outline-offset-1 focus-visible:outline focus-visible:outline-1 md:-ml-2.5 md:hidden"
           onClick={onShowNav}
           type="submit"
         >
@@ -64,14 +65,14 @@ export function Header({
 
         <div className="flex gap-2 md:w-full md:pl-2">
           <button
-            className="relative ml-auto flex h-8 w-full cursor-default items-center rounded-md border-neutral-600 px-3 text-base text-neutral-300 -outline-offset-1 outline-blue-400 hover:bg-white/5 focus-visible:outline focus-visible:outline-1 active:bg-white/10 md:max-w-xs md:cursor-text md:border md:pl-3 md:pr-1.5"
+            className="text-subtle border-neutral hover:bg-hovered active:bg-pressed outline-link relative ml-auto flex h-8 w-full cursor-default items-center rounded-md px-3 text-base -outline-offset-1 focus-visible:outline focus-visible:outline-1 md:max-w-xs md:cursor-text md:border md:pl-3 md:pr-1.5"
             onClick={showSearch}
             type="button"
           >
             <MagnifyingGlassIcon className="flex-shrink-0 md:mr-2" />
             <span className="hidden md:block">
               Type{" "}
-              <div className="inline-block rounded border border-neutral-600 bg-white/5 px-1 py-0.5 text-xs">
+              <div className="border-neutral bg-neutral inline-block rounded border px-1 py-0.5 text-xs">
                 /
               </div>{" "}
               to search
@@ -79,7 +80,7 @@ export function Header({
           </button>
 
           <Link
-            className="flex items-center rounded-md bg-white px-4 py-1 text-base font-medium text-neutral-900"
+            className="text-inverse bg-brand flex items-center rounded-md px-4 py-1 text-base font-medium"
             href="/download"
           >
             Download
@@ -103,8 +104,8 @@ export function HeaderItem({
     <Link
       className={cn([
         isSelected
-          ? "font-medium text-white"
-          : "font-normal text-neutral-200 hover:text-neutral-100",
+          ? "text-brand font-medium"
+          : "text-subtle hover:text-default font-normal",
         "text-base",
       ])}
       href={href}

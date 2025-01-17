@@ -61,14 +61,14 @@ function AssetDownload({
       className={cn([
         "flex items-center gap-4 rounded-md p-4",
         variant === "highlight"
-          ? "border-2 border-white"
-          : "border border-neutral-600",
+          ? "border-brand border-2"
+          : "border-neutral border",
       ])}
     >
-      <div className="w-9 flex-shrink-0 text-neutral-400">{logo}</div>
+      <div className="text-subtlest w-9 flex-shrink-0">{logo}</div>
       <div className="flex flex-col">
-        <span className="font-medium text-neutral-200">{title}</span>
-        <span className="text-neutral-400">{subtitle}</span>
+        <span className="text-default font-medium">{title}</span>
+        <span className="text-subtlest">{subtitle}</span>
       </div>
       {action}
     </div>
@@ -112,7 +112,7 @@ function List() {
           <AssetDownload
             action={
               <a
-                className="ml-auto flex-shrink-0 rounded bg-white px-4 py-1 font-medium text-neutral-900"
+                className="text-inverse bg-brand ml-auto flex-shrink-0 rounded px-4 py-1 font-medium"
                 href="https://winstall.app/apps/Triplex.Triplex"
                 onClick={(e) => {
                   beginDownload(e, "/docs/overview?dl=winget");
@@ -134,7 +134,7 @@ function List() {
             <AssetDownload
               action={
                 <a
-                  className="ml-auto rounded bg-white px-4 py-1 font-medium text-neutral-900"
+                  className="text-inverse bg-brand ml-auto rounded px-4 py-1 font-medium"
                   href={asset.browser_download_url}
                   onClick={(e) => {
                     beginDownload(e, forwardURL);
@@ -179,7 +179,7 @@ export function DownloadList() {
       <AssetDownload
         action={
           <a
-            className="ml-auto flex-shrink-0 rounded bg-white px-4 py-1 font-medium text-neutral-900"
+            className="text-inverse bg-brand ml-auto flex-shrink-0 rounded px-4 py-1 font-medium"
             href="https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce"
             onClick={(e) => {
               beginDownload(e, "/docs/overview?dl=vsce");
@@ -195,7 +195,7 @@ export function DownloadList() {
           <>
             Find on the Visual Studio marketplace. Using Cursor?{" "}
             <a
-              className="text-blue-400 hover:underline"
+              className="text-link hover:underline"
               href="https://www.cursor.com/how-to-install-extension"
               rel="noreferrer"
               target="_blank"

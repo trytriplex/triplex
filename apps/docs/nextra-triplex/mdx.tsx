@@ -16,7 +16,7 @@ import { PagesList } from "../components/pages-list";
 export const components: Components = {
   ActionLink,
   Kbd: ({ children }) => (
-    <kbd className="relative rounded border border-neutral-600 bg-white/5 px-1.5 pb-0.5 pt-[3px] font-mono text-sm font-semibold text-neutral-300 after:absolute after:bottom-[-3px] after:left-[-1px] after:right-[-1px] after:top-0 after:rounded-md after:border-b-[3px] after:border-[inherit]">
+    <kbd className="text-subtle border-neutral bg-neutral relative rounded border px-1.5 pb-0.5 pt-[3px] font-mono text-sm font-semibold after:absolute after:bottom-[-3px] after:left-[-1px] after:right-[-1px] after:top-0 after:rounded-md after:border-b-[3px] after:border-[inherit]">
       {children}
     </kbd>
   ),
@@ -69,7 +69,7 @@ export const components: Components = {
     const code = applyAction(JSON.stringify(meta, null, 2), targetValue);
 
     return (
-      <pre className="mt-5 whitespace-break-spaces rounded-xl bg-white/5 p-3 text-lg text-neutral-300 md:text-base">
+      <pre className="text-subtle bg-neutral mt-5 whitespace-break-spaces rounded-xl p-3 text-lg md:text-base">
         <code>{code}</code>
       </pre>
     );
@@ -95,20 +95,20 @@ export const components: Components = {
   ),
   YouWillLearnCallout,
   a: ({ children, href }) => (
-    <Link className="text-blue-400 underline" href={href || ""}>
+    <Link className="text-link underline" href={href || ""}>
       {children}
     </Link>
   ),
   code: ({ children }) => {
     return typeof children === "string" ? (
       // Inline code
-      <code className="border border-neutral-600 px-1.5 py-0.5 font-mono text-neutral-300">
+      <code className="text-subtle border-neutral border px-1.5 py-0.5 font-mono">
         {children}
       </code>
     ) : (
       // Code block powered by shiki
       // See: https://shiki.matsu.io/guide/theme-colors#css-variables-theme
-      <code className="leading-6 [--shiki-color-text:#d4d4d4] [--shiki-token-comment:#16a34a] [--shiki-token-constant:#5eead4] [--shiki-token-function:#5eead4] [--shiki-token-keyword:#60a5fa] [--shiki-token-link:#facc15] [--shiki-token-parameter:#9ca3af] [--shiki-token-punctuation:#2dd4bf] [--shiki-token-string-expression:#fda4af] [--shiki-token-string:#4ade80] [&:has(.highlighted)_:not(.highlighted):not(.line)]:opacity-60 [&_.highlighted>*]:!opacity-100 [&_.highlighted]:bg-white/10 [&_.line.highlighted]:relative [&_.line.highlighted]:float-left [&_.line.highlighted]:-ml-3 [&_.line.highlighted]:w-[calc(100%+24px)] [&_.line.highlighted]:after:absolute [&_.line.highlighted]:after:bottom-0 [&_.line.highlighted]:after:left-[-1px] [&_.line.highlighted]:after:top-0 [&_.line.highlighted]:after:border-l [&_.line.highlighted]:after:border-white">
+      <code className="[&_.line.highlighted]:after:border-brand [&_.highlighted]:bg-neutral leading-6 [--shiki-color-text:#d4d4d4] [--shiki-token-comment:#16a34a] [--shiki-token-constant:#5eead4] [--shiki-token-function:#5eead4] [--shiki-token-keyword:#60a5fa] [--shiki-token-link:#facc15] [--shiki-token-parameter:#9ca3af] [--shiki-token-punctuation:#2dd4bf] [--shiki-token-string-expression:#fda4af] [--shiki-token-string:#4ade80] [&:has(.highlighted)_:not(.highlighted):not(.line)]:opacity-60 [&_.highlighted>*]:!opacity-100 [&_.line.highlighted]:relative [&_.line.highlighted]:float-left [&_.line.highlighted]:-ml-3 [&_.line.highlighted]:w-[calc(100%+24px)] [&_.line.highlighted]:after:absolute [&_.line.highlighted]:after:bottom-0 [&_.line.highlighted]:after:left-[-1px] [&_.line.highlighted]:after:top-0 [&_.line.highlighted]:after:border-l">
         {children}
       </code>
     );
@@ -119,7 +119,7 @@ export const components: Components = {
   h2: ({ children, id }) => (
     <div className="mt-14">
       <h2
-        className="inline scroll-m-20 text-3xl font-medium text-neutral-200 target:font-bold target:text-neutral-800 target:[-webkit-text-stroke:3px_yellow] target:[paint-order:stroke_fill]"
+        className="text-default target:text-inverse inline scroll-m-20 text-3xl font-medium target:font-bold target:[-webkit-text-stroke:3px_yellow] target:[paint-order:stroke_fill]"
         id={id}
       >
         {children}
@@ -129,7 +129,7 @@ export const components: Components = {
   h3: ({ children, id }) => (
     <div className="mt-10">
       <h3
-        className="inline scroll-m-20 text-2xl font-medium text-neutral-200 target:font-bold target:text-neutral-800 target:[-webkit-text-stroke:3px_yellow] target:[paint-order:stroke_fill]"
+        className="text-default target:text-inverse inline scroll-m-20 text-2xl font-medium target:font-bold target:[-webkit-text-stroke:3px_yellow] target:[paint-order:stroke_fill]"
         id={id}
       >
         {children}
@@ -139,7 +139,7 @@ export const components: Components = {
   h4: ({ children, id }) => (
     <div className="mt-6">
       <h4
-        className="inline scroll-m-20 text-xl font-medium text-neutral-200 target:font-bold target:text-neutral-800 target:[-webkit-text-stroke:3px_yellow] target:[paint-order:stroke_fill]"
+        className="text-default target:text-inverse inline scroll-m-20 text-xl font-medium target:font-bold target:[-webkit-text-stroke:3px_yellow] target:[paint-order:stroke_fill]"
         id={id}
       >
         {children}
@@ -147,11 +147,11 @@ export const components: Components = {
     </div>
   ),
   li: ({ children }) => (
-    <li className="ml-4 text-xl text-neutral-300 md:text-lg">{children}</li>
+    <li className="text-subtle ml-4 text-xl md:text-lg">{children}</li>
   ),
   ol: ({ children }) => <ol className="mt-5 list-decimal">{children}</ol>,
   p: ({ children }) => (
-    <p className="mt-5 text-xl text-neutral-300 md:text-lg">{children}</p>
+    <p className="text-subtle mt-5 text-xl md:text-lg">{children}</p>
   ),
   pre: ({ children, ...props }) => {
     const codeIcon = ["Terminal", ".tsx", ".jsx"];
@@ -163,18 +163,18 @@ export const components: Components = {
     return (
       <div className="mt-5">
         {filename && (
-          <div className="flex items-center gap-2.5 border border-b-0 border-neutral-600 bg-white/5 py-2 pl-3">
-            <span className="rounded border border-neutral-600 p-1">
+          <div className="border-neutral bg-neutral flex items-center gap-2.5 border border-b-0 py-2 pl-3">
+            <span className="border-neutral rounded border p-1">
               {codeIcon.some((code) => filename.endsWith(code)) ? (
-                <CodeIcon className="text-neutral-300" />
+                <CodeIcon className="text-subtle" />
               ) : (
-                <FileTextIcon className="text-neutral-300" />
+                <FileTextIcon className="text-subtle" />
               )}
             </span>
-            <span className="text-sm text-neutral-300">{filename}</span>
+            <span className="text-subtle text-sm">{filename}</span>
           </div>
         )}
-        <pre className="whitespace-break-spaces border border-neutral-600 p-3 text-sm text-neutral-300">
+        <pre className="text-subtle border-neutral whitespace-break-spaces border p-3 text-sm">
           {children}
         </pre>
       </div>
@@ -184,12 +184,10 @@ export const components: Components = {
     <table className="mt-5 w-full table-fixed">{children}</table>
   ),
   td: ({ children }) => (
-    <td className="border-b border-neutral-600 p-2 text-neutral-300">
-      {children}
-    </td>
+    <td className="text-subtle border-neutral border-b p-2">{children}</td>
   ),
   th: ({ children }) => (
-    <th className="border-b border-neutral-600 py-2.5 text-center font-medium text-neutral-200">
+    <th className="text-default border-neutral border-b py-2.5 text-center font-medium">
       {children}
     </th>
   ),

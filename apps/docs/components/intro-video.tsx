@@ -12,7 +12,7 @@ export function IntroVideo() {
       <div className="relative grid h-[90vh] w-full items-center justify-start md:h-[80vh]">
         <Image
           alt="Screenshot of the Triplex user interface running on macOS"
-          className="object-contain grayscale"
+          className="object-contain"
           fill
           src="/hero.png"
         />

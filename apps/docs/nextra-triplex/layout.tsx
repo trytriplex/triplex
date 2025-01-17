@@ -16,6 +16,7 @@ import { normalizePages } from "nextra/normalize-pages";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import { SendFeedback } from "../components/feedback";
 import { Footer } from "../components/footer";
+import { BgGrid, GridContainer } from "../components/grid";
 import { Header, HeaderItem } from "../components/header";
 import { PagesList } from "../components/pages-list";
 import { useSearchStore } from "../stores/search";
@@ -58,7 +59,7 @@ function renderDocsItem(
   if (link.kind === "Folder") {
     return (
       <Fragment key={url}>
-        <div className="mt-6 py-1.5 text-base font-medium text-neutral-100">
+        <div className="text-default mt-6 py-1.5 text-base font-medium">
           {link.title}
         </div>
         {link.children &&
@@ -134,11 +135,11 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
       </Header>
 
       {isNavMenuOpen && (
-        <div className="fixed left-0 right-0 top-14 z-40 max-h-[calc(100vh-3.5rem)] overflow-auto border-b border-neutral-600 bg-neutral-950/50 px-6 py-6 text-white [backdrop-filter:saturate(200%)_blur(5px)] md:hidden">
+        <div className="text-brand bg-surface border-neutral fixed left-0 right-0 top-14 z-40 max-h-[calc(100vh-3.5rem)] overflow-auto border-b px-6 py-6 md:hidden">
           {result.topLevelNavbarItems.map((item) => (
             <div className="mb-2" key={item.title}>
               <Link
-                className="text-xl text-neutral-300 hover:text-neutral-100"
+                className="hover:text-default text-subtle text-xl"
                 href={item.href || item.firstChildRoute || item.route}
               >
                 {item.title}
@@ -147,13 +148,13 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
           ))}
 
           {pageItems.length > 0 ? (
-            <hr className="-mx-2 my-6 border-neutral-600" />
+            <hr className="border-neutral -mx-2 my-6" />
           ) : null}
 
           {pageItems.map((item) => (
             <div className="mb-2" key={item.title}>
               <Link
-                className="text-xl text-neutral-300 hover:text-neutral-100"
+                className="hover:text-default text-subtle text-xl"
                 href={item.firstChildRoute || item.route}
               >
                 {item.title}
@@ -166,9 +167,9 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
       {result.activeThemeContext.layout === "default" && (
         <nav
           aria-label="page tree"
-          className="col-span-3 hidden w-full pr-10 pt-12 md:block md:pb-10 lg:pb-14"
+          className="col-span-3 hidden w-full pr-10 pt-12 md:block md:pb-10 lg:pb-10"
         >
-          <div className="sticky top-20 flex flex-col items-start pl-6 md:pl-8 lg:pl-20">
+          <div className="sticky top-12 flex flex-col items-start pl-6 md:pl-8 lg:pl-20">
             {result.docsDirectories.map((item) => renderDocsItem(item, route))}
           </div>
         </nav>
@@ -185,27 +186,27 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
         ])}
       >
         {result.activeThemeContext.layout !== "raw" && (
-          <div
-            className="relative -mx-6 flex border-b border-t border-neutral-600 md:mx-0 md:mt-8 md:border"
-            style={{ "--grid": "100px" }}
+          <GridContainer
+            className="border-neutral relative -mx-6 flex border-b border-t md:mx-0 md:mt-8 md:border"
+            size={100}
           >
-            <div className="relative flex basis-2/3 flex-col justify-center gap-2 px-6 py-8 [background:repeating-linear-gradient(transparent,transparent_var(--grid),#292929_var(--grid),#292929_calc(var(--grid)+1px)),repeating-linear-gradient(to_right,transparent,transparent_var(--grid),#292929_var(--grid),#292929_calc(var(--grid)+1px))] md:min-h-[16rem] md:px-14 md:py-14 lg:min-h-[20rem] lg:basis-3/5">
+            <BgGrid
+              className="relative flex basis-2/3 flex-col justify-center gap-2 px-6 py-8 md:min-h-[16rem] md:px-14 md:py-14 lg:min-h-[20rem] lg:basis-3/5"
+              variant="lines"
+            >
               {hasPageAuthorOrDate && (
                 <div className="space-x-1">
                   {frontMatter.date && (
-                    <time
-                      className="text-neutral-400"
-                      dateTime={frontMatter.date}
-                    >
+                    <time className="text-subtlest" dateTime={frontMatter.date}>
                       {friendlyDate(frontMatter.date)}
                     </time>
                   )}
                   {frontMatter.author && frontMatter.date && (
-                    <span className="text-neutral-400"> · </span>
+                    <span className="text-subtlest"> · </span>
                   )}
                   {frontMatter.author && (
                     <a
-                      className="text-neutral-400 underline hover:text-neutral-100"
+                      className="hover:text-default text-subtlest underline"
                       href={
                         frontMatter.author in socials
                           ? socials[frontMatter.author as keyof typeof socials]
@@ -226,24 +227,24 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                     index === 0 ? null : (
                       <Fragment key={path.route}>
                         <Link
-                          className="text-base text-neutral-400 hover:text-neutral-300"
+                          className="hover:text-subtlest text-subtlest text-base"
                           href={path.kind === "MdxPage" ? path.route : ""}
                         >
                           {path.title}
                         </Link>
                         {index !== result.activePath.length - 1 && (
-                          <ChevronRightIcon className="text-neutral-400" />
+                          <ChevronRightIcon className="text-subtlest" />
                         )}
                       </Fragment>
                     ),
                   )}
                 </div>
               )}
-              <h1 className="flex flex-wrap items-center gap-2 text-3xl font-bold text-neutral-200 lg:text-4xl">
+              <h1 className="text-default flex flex-wrap items-center gap-2 text-3xl font-bold lg:text-4xl">
                 {title}
                 {frontMatter.app && (
                   <div
-                    className="inline-block rounded bg-white/10 px-1 py-0.5 text-xs font-normal text-neutral-400"
+                    className="text-subtlest bg-neutral inline-block rounded px-1 py-0.5 text-xs font-normal"
                     title={`Only available in ${frontMatter.app}.`}
                   >
                     {frontMatter.app}
@@ -251,13 +252,16 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                 )}
               </h1>
               {frontMatter.description && (
-                <div className="text-lg text-neutral-400">
+                <div className="text-subtlest text-lg">
                   {frontMatter.description}
                 </div>
               )}
-            </div>
+            </BgGrid>
             <div className="relative basis-1/2 overflow-hidden">
-              <div className="absolute -left-full bottom-0 right-0 top-0 [background:repeating-conic-gradient(#141414_0%_25%,#212121_0%_50%)_left_top/calc(var(--grid)*2+2px)_calc(var(--grid)*2+2px)]" />
+              <BgGrid
+                className="absolute -left-full bottom-0 right-0 top-0"
+                variant="transparent"
+              />
               {frontMatter.image && (
                 <Image
                   alt=""
@@ -267,8 +271,8 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                 />
               )}
             </div>
-            <div className="pointer-events-none absolute inset-0 border-4 border-neutral-950" />
-          </div>
+            <div className="border-surface pointer-events-none absolute inset-0 border-4" />
+          </GridContainer>
         )}
         <div
           className={cn([
@@ -296,34 +300,34 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
               ("feedback" in result.activeThemeContext &&
                 typeof result.activeThemeContext.feedback === "boolean" &&
                 result.activeThemeContext.feedback)) && (
-              <div className="mt-10 flex flex-col gap-10 border-t border-neutral-600 pt-8 lg:mt-20 lg:pt-12">
+              <div className="border-neutral mt-10 flex flex-col gap-10 border-t pt-8 lg:mt-20 lg:pt-12">
                 {result.activeThemeContext.pagination && (
                   <nav aria-label="pages navigation" className="flex">
                     {previousPage && (
                       <div className="flex flex-col">
-                        <span className="-mb-0.5 ml-[15px] pl-2 text-sm text-neutral-400">
+                        <span className="text-subtlest -mb-0.5 ml-[15px] pl-2 text-sm">
                           Previous
                         </span>
                         <Link
-                          className="flex items-center gap-2 text-xl text-neutral-300 hover:text-neutral-100 md:text-lg"
+                          className="hover:text-default text-subtle flex items-center gap-2 text-xl md:text-lg"
                           href={previousPage.route}
                         >
-                          <ArrowLeftIcon className="text-neutral-400" />
+                          <ArrowLeftIcon className="text-subtlest" />
                           {previousPage.title}
                         </Link>
                       </div>
                     )}
                     {nextPage && nextPage.route !== "#" && (
                       <div className="ml-auto flex flex-col">
-                        <span className="-mb-0.5 text-sm text-neutral-400">
+                        <span className="text-subtlest -mb-0.5 text-sm">
                           Next
                         </span>
                         <Link
-                          className="flex items-center gap-2 text-xl text-neutral-300 hover:text-neutral-100 md:text-lg"
+                          className="hover:text-default text-subtle flex items-center gap-2 text-xl md:text-lg"
                           href={nextPage.route}
                         >
                           {nextPage.title}
-                          <ArrowRightIcon className="text-neutral-400" />
+                          <ArrowRightIcon className="text-subtlest" />
                         </Link>
                       </div>
                     )}
@@ -341,22 +345,22 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
               className="col-span-3 hidden justify-self-start pl-10 xl:block"
             >
               <div className="sticky top-20 flex flex-col gap-2">
-                <span className="text-sm font-medium text-neutral-200">
+                <span className="text-subtle text-sm font-medium">
                   On this page
                 </span>
                 {headings.map((h) => (
                   <div key={h.id} style={{ paddingLeft: (h.depth - 2) * 8 }}>
                     <Link
-                      className="text-sm text-neutral-400 hover:text-neutral-200"
+                      className="text-subtlest hover:text-default text-sm"
                       href={`#${h.id}`}
                     >
                       {h.value}
                     </Link>
                   </div>
                 ))}
-                <div className="mt-2 border-t border-neutral-600 pt-3">
+                <div className="border-neutral mt-2 border-t pt-3">
                   <a
-                    className="text-sm text-neutral-400 hover:text-neutral-200"
+                    className="text-subtlest hover:text-subtle text-sm"
                     href={`https://github.com/try-triplex/triplex/tree/main/apps/docs/${pageOpts.filePath}`}
                     rel="noreferrer"
                     target="_blank"

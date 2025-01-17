@@ -146,19 +146,19 @@ export function SearchModal({
 
   return (
     <dialog
-      className="m-auto mt-10 w-full rounded-lg border border-neutral-600 bg-neutral-950 p-0 backdrop:bg-black/70 md:mt-32 md:max-w-2xl"
+      className="border-neutral bg-surface m-auto mt-10 w-full rounded-lg border p-0 md:mt-32 md:max-w-2xl"
       ref={ref}
     >
       <form method="dialog">
         <div className="flex items-center">
           <input
-            className="w-full rounded bg-transparent px-4 py-4 text-lg text-neutral-200 placeholder:text-neutral-400 focus:outline-none md:text-lg"
+            className="text-default placeholder:text-subtlest w-full rounded bg-transparent px-4 py-4 text-lg focus:outline-none md:text-lg"
             onChange={(e) => setFilter(e.target.value)}
             placeholder="Search documentation..."
             type="text"
           />
 
-          <div className="mr-4 rounded border border-neutral-600 bg-white/5 px-1.5 py-0.5 text-xs text-neutral-400 md:block">
+          <div className="text-subtlest border-neutral bg-neutral mr-4 rounded border px-1.5 py-0.5 text-xs md:block">
             ESC
           </div>
         </div>
@@ -166,12 +166,12 @@ export function SearchModal({
 
       {searchResults.length > 0 && (
         <div
-          className="flex flex-col border-t border-neutral-600 py-1.5"
+          className="border-neutral flex flex-col border-t py-1.5"
           onClick={onSearchResultClickHandler}
         >
           {searchResults.map((res) => (
             <Link
-              className="px-4 py-1 text-lg text-neutral-300 hover:bg-white/5 md:text-base"
+              className="text-subtle hover:bg-hovered active:bg-pressed px-4 py-1 text-lg md:text-base"
               href={res.route}
               key={res.id}
               target={res.route.startsWith("http") ? "_blank" : undefined}

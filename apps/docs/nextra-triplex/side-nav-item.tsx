@@ -39,15 +39,13 @@ export function SideNavItem({
     <Fragment>
       <Link
         className={cn([
-          level > 1 && !isSelected && "border-l border-neutral-600",
-          level > 1 && isSelected && "border-l border-white",
+          level > 1 && !isSelected && "border-neutral border-l",
+          level > 1 && isSelected && "border-brand border-l",
           !!children && level > 0 && "pl-1",
-          level === 0 && "mt-6 font-medium",
-          isSelected && "text-white",
-          !isSelected && level === 0 && "text-neutral-100",
-          !isSelected &&
-            level >= 1 &&
-            "text-neutral-300 hover:text-neutral-100",
+          level === 0 && "text-default mt-6 font-medium",
+          isSelected && "text-brand",
+          !isSelected && level === 0 && "text-default",
+          !isSelected && level >= 1 && "text-subtle hover:text-default",
           "flex w-full items-center gap-2 py-1.5 text-base",
         ])}
         href={href}
