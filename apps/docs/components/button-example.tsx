@@ -20,15 +20,15 @@ export function ActionLink({
   return (
     <Link
       className={cn([
-        "group inline-flex gap-1.5 border border-neutral-600 py-0.5",
+        "border-neutral group inline-flex gap-1.5 border py-0.5",
         Icon ? "pl-0.5 pr-1.5" : "px-1.5",
       ])}
       href={href}
     >
       {Icon && (
-        <span className="flex bg-white/10 p-1">
+        <span className="bg-subtle flex p-1">
           {typeof Icon === "string" ? (
-            <span className="flex h-[15px] items-center text-sm text-neutral-300">
+            <span className="text-subtle flex h-[15px] items-center text-sm">
               {Icon}
             </span>
           ) : (
@@ -36,7 +36,7 @@ export function ActionLink({
           )}
         </span>
       )}
-      <span className="flex items-center text-center text-sm text-neutral-300 group-hover:underline">
+      <span className="text-subtle flex items-center text-center text-sm group-hover:underline">
         {name}
       </span>
     </Link>

@@ -42,7 +42,7 @@ export default function Root({
         <meta content={ogImageUrl} property="og:image" />
         <meta content="summary_large_image" name="twitter:card" />
         <meta content={ogImageUrl} name="twitter:image" />
-        <meta content="@_douges" name="twitter:site" />
+        <meta content="@trytriplex" name="twitter:site" />
         <meta content={title} name="twitter:title" />
       </Head>
 

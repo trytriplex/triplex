@@ -4,7 +4,10 @@
 
 @layer base {
   body {
-    @apply bg-neutral-950;
+    @apply bg-surface;
+    color: hotpink;
+    border-color: hotpink;
+    outline-color: hotpink;
   }
 
   summary::-webkit-details-marker {

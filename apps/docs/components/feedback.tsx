@@ -39,11 +39,10 @@ function FeedbackButton({
       <label
         aria-label={label}
         className={cn([
-          "border-neutral-600",
-          isSelected && "bg-neutral-700 text-white",
+          isSelected && "border-currentColor text-selected bg-selected",
           !isSelected &&
-            "bg-white/5 text-neutral-400 hover:bg-white/10 hover:text-neutral-200 peer-focus-visible:border-neutral-600",
-          "-my-1 flex h-8 w-8 cursor-default items-center justify-center rounded-full border outline-4 outline-neutral-800 peer-focus-visible:outline",
+            "text-subtlest hover:text-default hover:bg-hovered active:bg-pressed peer-focus-visible:border-neutral border-neutral",
+          "outline-neutral -my-1 flex h-8 w-8 cursor-default items-center justify-center rounded-full border outline-4 peer-focus-visible:outline",
         ])}
         htmlFor={id}
         title={label}
@@ -82,21 +81,19 @@ export function SendFeedback() {
   return (
     <div className="mx-auto flex justify-center">
       <form
-        className="flex flex-col gap-3 border border-neutral-600 px-6 py-4"
+        className="border-neutral flex flex-col gap-3 border px-6 py-4"
         key={route.pathname}
         onSubmit={onSubmit}
       >
         <input name="pathname" type="hidden" value={route.pathname} />
         <input name="app" type="hidden" value="docs" />
         {feedbackSelected === "complete" && (
-          <div className="text-sm text-neutral-400">
-            Thanks for your feedback!
-          </div>
+          <div className="text-subtlest text-sm">Thanks for your feedback!</div>
         )}
         {feedbackSelected !== "complete" && (
           <>
             <div className="flex items-center justify-center gap-3">
-              <span className="text-sm text-neutral-400">
+              <span className="text-subtle text-sm">
                 Was this page helpful?
               </span>
               <FeedbackButton
@@ -118,12 +115,12 @@ export function SendFeedback() {
               <div className="-mx-2 flex w-72 flex-col gap-3">
                 <textarea
                   aria-label="Anything you'd like to tell us?"
-                  className="h-20 w-full resize-none border border-neutral-600 bg-transparent p-2 text-sm text-neutral-200 placeholder:text-neutral-500 focus:border-blue-400 focus:outline-none"
+                  className="text-subtle placeholder:text-subtlest border-neutral h-20 w-full resize-none border bg-transparent p-2 text-sm focus:border-blue-400 focus:outline-none"
                   name="feedback"
                   placeholder="Anything you'd like to tell us?"
                 />
                 <button
-                  className="rounded bg-white px-4 py-1 font-medium text-neutral-950"
+                  className="text-inverse bg-brand rounded px-4 py-1 text-base font-medium"
                   type="submit"
                 >
                   Send feedback

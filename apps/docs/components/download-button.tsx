@@ -73,10 +73,9 @@ export function DownloadButton({
   return (
     <Link
       className={cn([
-        variant === "link" &&
-          "text-neutral-300 underline hover:text-neutral-100",
+        variant === "link" && "text-subtle hover:text-default underline",
         variant === "button" &&
-          "cursor-pointer bg-white px-8 py-4 text-center font-mono text-2xl font-medium text-neutral-900",
+          "text-inverse bg-brand cursor-pointer px-8 py-4 text-center font-mono text-2xl font-medium",
       ])}
       href={platform === "Unsupported" ? "/download" : downloadURL}
       onClick={(e) => {

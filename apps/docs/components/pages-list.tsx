@@ -41,19 +41,19 @@ export function PagesList({
               className={cn([
                 "group flex flex-col",
                 variant === "grid" &&
-                  "justify-center gap-1 border border-neutral-600 p-6",
+                  "border-neutral justify-center gap-1 border p-6",
               ])}
               href={page.route}
               key={page.route}
             >
               {page.frontMatter?.date && (
-                <time className="text-sm text-neutral-400">
+                <time className="text-subtlest text-sm">
                   {friendlyDate(page.frontMatter.date)}
                 </time>
               )}
               <div
                 className={cn([
-                  "inline-flex flex-wrap items-center gap-1 text-xl text-neutral-200",
+                  "text-default inline-flex flex-wrap items-center gap-1 text-xl",
                   variant === "list" && "font-medium",
                 ])}
               >
@@ -62,7 +62,7 @@ export function PagesList({
                 </span>
                 {page.frontMatter?.app && (
                   <div
-                    className="inline-block rounded bg-white/10 px-1 py-0.5 text-xs font-normal text-neutral-400"
+                    className="text-subtlest bg-neutral inline-block rounded px-1 py-0.5 text-xs font-normal"
                     title={`Only available in ${page.frontMatter.app}.`}
                   >
                     {page.frontMatter.app}
@@ -70,7 +70,7 @@ export function PagesList({
                 )}
               </div>
               {page.frontMatter?.description && (
-                <div className="text-base text-neutral-400">
+                <div className="text-subtlest text-base">
                   {page.frontMatter?.description}
                 </div>
               )}

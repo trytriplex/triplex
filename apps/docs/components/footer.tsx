@@ -9,7 +9,7 @@ import Link from "next/link";
 
 export function Footer() {
   return (
-    <footer className="relative col-span-full border-t border-neutral-600 bg-neutral-950">
+    <footer className="bg-surface border-neutral relative col-span-full border-t">
       <div className="mx-auto flex gap-14 px-6 py-10 md:px-8 lg:w-full lg:gap-32 lg:px-20">
         <div className="lg:mr-auto lg:flex-shrink-0">
           <div className="flex flex-col gap-0.5">
@@ -20,14 +20,14 @@ export function Footer() {
               src="/logos/logo-horizontal.svg"
               width={Math.round(818 / 9)}
             />
-            <span className="text-base text-neutral-400">
+            <span className="text-subtlest text-base">
               Built in Sydney, Australia
             </span>
           </div>
           <div className="mt-4 flex items-center gap-2">
             <a
               aria-label="GitHub"
-              className="-mt-0.5 text-neutral-400 hover:text-neutral-200"
+              className="text-subtle hover:text-default -mt-0.5"
               href="https://github.com/trytriplex/triplex"
               rel="noreferrer"
               target="_blank"
@@ -49,19 +49,19 @@ export function Footer() {
                   ></path>
                 </g>
                 <defs>
-                  <clipPath id="githublogo">
+                  <clipPath>
                     <path
                       d="M0 0h15.86v15.86H0z"
                       fill="transparent"
                       transform="translate(.253906 .0493164)"
-                    ></path>
+                    />
                   </clipPath>
                 </defs>
               </svg>
             </a>
             <a
               aria-label="X (formerly Twitter)"
-              className="text-neutral-400 hover:text-neutral-200"
+              className="text-subtle hover:text-default"
               href="https://twitter.com/trytriplex"
               rel="noreferrer"
               target="_blank"
@@ -84,7 +84,7 @@ export function Footer() {
             </a>
             <a
               aria-label="Bluesky"
-              className="text-neutral-400 hover:text-neutral-200"
+              className="text-subtle hover:text-default"
               href="https://bsky.app/profile/triplex.dev"
               rel="noreferrer"
               target="_blank"
@@ -99,7 +99,7 @@ export function Footer() {
             </a>
             <a
               aria-label="YouTube"
-              className="text-neutral-400 hover:text-neutral-200"
+              className="text-subtle hover:text-default"
               href="https://www.youtube.com/@trytriplex"
               rel="noreferrer"
               target="_blank"
@@ -113,7 +113,7 @@ export function Footer() {
                   />
                   <path
                     d="M11.4253 14.2854L18.8477 10.0004L11.4253 5.71533V14.2854Z"
-                    fill="black"
+                    fill="var(--bg-surface)"
                   />
                 </g>
               </svg>
@@ -122,12 +122,10 @@ export function Footer() {
         </div>
         <div className="grid w-full gap-14 sm:justify-end sm:[grid-template-columns:repeat(auto-fit,7rem)] xl:gap-32">
           <ul className="flex flex-col gap-4">
-            <span className="text-base font-medium text-neutral-200">
-              Product
-            </span>
+            <span className="text-subtle text-base font-medium">Product</span>
             <li>
               <Link
-                className="text-base text-neutral-400 hover:text-neutral-200"
+                className="text-subtlest hover:text-subtle text-base"
                 href="/docs/setup/overview"
               >
                 Setup
@@ -135,7 +133,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                className="text-base text-neutral-400 hover:text-neutral-200"
+                className="text-subtlest hover:text-subtle text-base"
                 href="/docs/get-started/user-interface"
               >
                 User Interface
@@ -143,7 +141,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                className="text-base text-neutral-400 hover:text-neutral-200"
+                className="text-subtlest hover:text-subtle text-base"
                 href="/docs/get-started/settings"
               >
                 Settings
@@ -151,7 +149,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                className="text-base text-neutral-400 hover:text-neutral-200"
+                className="text-subtlest hover:text-subtle text-base"
                 href="https://github.com/trytriplex/triplex/releases"
               >
                 Changelog
@@ -160,12 +158,10 @@ export function Footer() {
           </ul>
 
           <ul className="flex flex-col gap-4">
-            <span className="text-base font-medium text-neutral-200">
-              Resources
-            </span>
+            <span className="text-subtle text-base font-medium">Resources</span>
             <li>
               <Link
-                className="text-base text-neutral-400 hover:text-neutral-200"
+                className="text-subtlest hover:text-subtle text-base"
                 href="https://discord.gg/nBzRBUEs4b"
               >
                 Discord
@@ -173,7 +169,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                className="text-base text-neutral-400 hover:text-neutral-200"
+                className="text-subtlest hover:text-subtle text-base"
                 href="https://www.youtube.com/@trytriplex"
               >
                 YouTube
@@ -181,7 +177,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                className="text-base text-neutral-400 hover:text-neutral-200"
+                className="text-subtlest hover:text-subtle text-base"
                 href="https://github.com/trytriplex/triplex/issues/new"
               >
                 Raise an Issue
@@ -189,7 +185,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                className="text-base text-neutral-400 hover:text-neutral-200"
+                className="text-subtlest hover:text-subtle text-base"
                 href="/docs/faq"
               >
                 FAQ
@@ -198,12 +194,12 @@ export function Footer() {
           </ul>
 
           <ul className="flex flex-col gap-4">
-            <span className="text-base font-medium text-neutral-200">
+            <span className="text-subtle text-base font-medium">
               Developers
             </span>
             <li>
               <Link
-                className="text-base text-neutral-400 hover:text-neutral-200"
+                className="text-subtlest hover:text-subtle text-base"
                 href="https://github.com/trytriplex/triplex"
               >
                 GitHub
@@ -211,7 +207,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                className="text-base text-neutral-400 hover:text-neutral-200"
+                className="text-subtlest hover:text-subtle text-base"
                 href="https://github.com/sponsors/itsdouges"
               >
                 Sponsor
@@ -219,7 +215,7 @@ export function Footer() {
             </li>
             <li>
               <Link
-                className="text-base text-neutral-400 hover:text-neutral-200"
+                className="text-subtlest hover:text-subtle text-base"
                 href="https://pmnd.rs/"
               >
                 Poimandres
@@ -227,13 +223,11 @@ export function Footer() {
             </li>
           </ul>
           <ul className="flex flex-col gap-4">
-            <span className="text-base font-medium text-neutral-200">
-              Legal
-            </span>
+            <span className="text-subtle text-base font-medium">Legal</span>
 
             <li>
               <Link
-                className="text-base text-neutral-400 hover:text-neutral-200"
+                className="text-subtlest hover:text-subtle text-base"
                 href="/legal/privacy-policy"
               >
                 Privacy Policy

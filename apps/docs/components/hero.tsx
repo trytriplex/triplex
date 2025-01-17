@@ -10,13 +10,14 @@ import { cn } from "../util/cn";
 import { useBeginDownloadURL } from "../util/download";
 import { useVisibilityState } from "../util/hooks";
 import { DownloadButton } from "./download-button";
+import { BgGrid } from "./grid";
 
 export function BigDownloadLink({ variant }: { variant: "outline" | "bold" }) {
   return (
     <Link
       className={cn([
-        variant === "outline" && "border-2 border-white text-white",
-        variant === "bold" && "bg-white text-black/90",
+        variant === "outline" && "text-brand border-brand border-2",
+        variant === "bold" && "bg-brand text-inverse",
         "flex items-center justify-center px-10 py-6 font-mono text-3xl font-medium md:px-16 md:py-8 md:text-5xl",
       ])}
       href="/download"
@@ -38,15 +39,14 @@ function FlashCard({
   return (
     <span
       aria-hidden={isHidden}
-      className="relative whitespace-nowrap px-12 py-0.5 [text-shadow:none] [transition:transform_cubic-bezier(0.8,0,0,0.8)_0.5s]"
+      className="relative whitespace-nowrap px-12 py-0.5 [transition:transform_cubic-bezier(0.8,0,0,0.8)_0.5s]"
       style={style}
     >
-      <span className="absolute inset-0 scale-90 bg-white/5" />
-      <span
-        className="absolute inset-0 scale-90 border border-neutral-600 [background:repeating-linear-gradient(transparent,transparent_var(--size),#292929_var(--size),#292929_calc(var(--size)+1px)),repeating-linear-gradient(to_right,transparent,transparent_var(--size),#292929_var(--size),#292929_calc(var(--size)+1px))]"
-        style={{
-          "--size": "40px",
-        }}
+      <span className="bg-neutral absolute inset-0 scale-90" />
+      <BgGrid
+        className="border-neutral absolute inset-0 scale-90 border"
+        size={40}
+        variant="lines"
       />
       <span
         className={cn([
@@ -136,13 +136,13 @@ export function Hero() {
       <div className="w-full px-10 xl:px-28">
         <div className="flex flex-col items-center gap-4 lg:gap-6">
           <Link
-            className="z-10 rounded-full border border-neutral-600 bg-white/5 px-3 py-0.5 text-center font-mono text-sm text-neutral-300 [text-shadow:black_1px_0_20px]"
+            className="text-subtle bg-neutral border-neutral z-10 rounded-full border px-3 py-0.5 text-center font-mono text-sm"
             href="/blog/triplex-for-vscode"
           >
             Triplex for VS Code now available
           </Link>
 
-          <h1 className="max-w-2xl text-center text-6xl font-bold text-neutral-200 [text-shadow:black_1px_0_50px] lg:max-w-3xl lg:text-7xl">
+          <h1 className="text-default max-w-2xl text-center text-6xl font-bold lg:max-w-3xl lg:text-7xl">
             The Visual IDE for the
             <FlashCards
               values={[
@@ -159,7 +159,7 @@ export function Hero() {
 
           <div className="z-10 flex flex-col items-center gap-2">
             <a
-              className="z-10 cursor-pointer bg-white px-8 py-4 text-center font-mono text-2xl font-medium text-neutral-900"
+              className="text-inverse bg-brand z-10 cursor-pointer px-8 py-4 text-center font-mono text-2xl font-medium"
               href="https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce"
               onClick={(e) => {
                 beginDownload(e, "/docs/get-started?dl=vsce");
@@ -168,10 +168,10 @@ export function Hero() {
               Install for Visual Studio Code
             </a>
 
-            <span className="text-neutral-300">
+            <span className="text-subtle">
               <DownloadButton variant="link" />, or for{" "}
               <Link
-                className="underline hover:text-neutral-100"
+                className="hover:text-default text-subtle underline"
                 href="/download"
               >
                 other platforms
