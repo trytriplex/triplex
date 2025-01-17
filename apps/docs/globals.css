@@ -8,6 +8,8 @@
     color: hotpink;
     border-color: hotpink;
     outline-color: hotpink;
+    font-size: 0;
+    font-family: "Times New Roman", Times, serif;
   }
 
   summary::-webkit-details-marker {

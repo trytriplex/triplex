@@ -146,7 +146,7 @@ export function SearchModal({
 
   return (
     <dialog
-      className="border-neutral bg-surface m-auto mt-10 w-full rounded-lg border p-0 md:mt-32 md:max-w-2xl"
+      className="border-neutral bg-surface backdrop:bg-surface m-auto mt-10 w-full rounded-lg border p-0 backdrop:opacity-80 md:mt-32 md:max-w-2xl"
       ref={ref}
     >
       <form method="dialog">

@@ -11,7 +11,7 @@ export function Footer() {
   return (
     <footer className="bg-surface border-neutral relative col-span-full border-t">
       <div className="mx-auto flex gap-14 px-6 py-10 md:px-8 lg:w-full lg:gap-32 lg:px-20">
-        <div className="lg:mr-auto lg:flex-shrink-0">
+        <div className="basis-1/2 sm:basis-auto lg:mr-auto lg:flex-shrink-0">
           <div className="flex flex-col gap-0.5">
             <Image
               alt="Triplex"
@@ -21,10 +21,11 @@ export function Footer() {
               width={Math.round(818 / 9)}
             />
             <span className="text-subtlest text-base">
-              Built in Sydney, Australia
+              <span className="whitespace-nowrap">Built in Sydney</span>,
+              Australia
             </span>
           </div>
-          <div className="mt-4 flex items-center gap-2">
+          <div className="mt-4 flex items-center gap-3">
             <a
               aria-label="GitHub"
               className="text-subtle hover:text-default -mt-0.5"
@@ -120,7 +121,7 @@ export function Footer() {
             </a>
           </div>
         </div>
-        <div className="grid w-full gap-14 sm:justify-end sm:[grid-template-columns:repeat(auto-fit,7rem)] xl:gap-32">
+        <div className="grid basis-1/3 gap-14 sm:basis-full sm:justify-end sm:[grid-template-columns:repeat(auto-fit,7rem)] xl:gap-32">
           <ul className="flex flex-col gap-4">
             <span className="text-subtle text-base font-medium">Product</span>
             <li>

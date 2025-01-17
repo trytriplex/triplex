@@ -49,7 +49,7 @@ export function BgGrid({
         variant === "transparent" &&
           "[background:repeating-conic-gradient(var(--bg-hovered)_0%_25%,var(--bg-pressed)_0%_50%)_left_top/calc(var(--grid)*2+2px)_calc(var(--grid)*2+2px)]",
       ])}
-      style={{ "--grid": size ? `${size}px` : "" }}
+      style={size ? { "--grid": `${size}px` } : undefined}
     >
       {children}
     </div>

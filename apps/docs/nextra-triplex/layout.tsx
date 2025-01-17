@@ -167,7 +167,7 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
       {result.activeThemeContext.layout === "default" && (
         <nav
           aria-label="page tree"
-          className="col-span-3 hidden w-full pr-10 pt-12 md:block md:pb-10 lg:pb-10"
+          className="col-span-3 hidden w-full pr-10 pt-6 md:block md:pb-10 lg:pb-10"
         >
           <div className="sticky top-12 flex flex-col items-start pl-6 md:pl-8 lg:pl-20">
             {result.docsDirectories.map((item) => renderDocsItem(item, route))}
@@ -252,7 +252,7 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                 )}
               </h1>
               {frontMatter.description && (
-                <div className="text-subtlest text-lg">
+                <div className="text-subtle text-lg">
                   {frontMatter.description}
                 </div>
               )}
@@ -344,7 +344,7 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
               aria-label="on this page"
               className="col-span-3 hidden justify-self-start pl-10 xl:block"
             >
-              <div className="sticky top-20 flex flex-col gap-2">
+              <div className="sticky top-20 flex flex-col gap-3">
                 <span className="text-subtle text-sm font-medium">
                   On this page
                 </span>
@@ -358,7 +358,7 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                     </Link>
                   </div>
                 ))}
-                <div className="border-neutral mt-2 border-t pt-3">
+                <div className="border-neutral mt-1 border-t pt-4">
                   <a
                     className="text-subtlest hover:text-subtle text-sm"
                     href={`https://github.com/try-triplex/triplex/tree/main/apps/docs/${pageOpts.filePath}`}

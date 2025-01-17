@@ -1,11 +1,11 @@
 html {
-  --bg-hovered: rgba(0, 0, 0, 0.05);
-  --bg-neutral: rgba(0, 0, 0, 0.05);
-  --bg-pressed: rgba(0, 0, 0, 0.1);
+  --bg-hovered: rgb(0 0 0 / 0.05);
+  --bg-neutral: rgb(0 0 0 / 0.05);
+  --bg-pressed: rgb(0 0 0 / 0.1);
   --bg-selected: rgb(220, 236, 255);
-  --bg-surface: white;
+  --bg-surface: rgb(255 255 255);
   --border: rgb(163 163 163);
-  --brand: black;
+  --brand: rgb(0 0 0);
   --text-link: rgb(59 130 246);
   --text-selected: rgb(59 130 246);
   --text-subtle: rgb(38 38 38);
@@ -15,17 +15,17 @@ html {
 
 @media (prefers-color-scheme: dark) {
   html {
-    --bg-hovered: rgba(255, 255, 255, 0.05);
-    --bg-neutral: rgba(255, 255, 255, 0.1);
-    --bg-pressed: rgba(255, 255, 255, 0.1);
-    --bg-selected: rgba(255, 255, 255, 0.1);
-    --bg-surface: black;
-    --border: rgb(115 115 115);
-    --brand: white;
+    --bg-hovered: rgb(255 255 255 / 0.05);
+    --bg-neutral: rgb(255 255 255 / 0.1);
+    --bg-pressed: rgb(255 255 255 / 0.1);
+    --bg-selected: rgb(255 255 255 / 0.1);
+    --bg-surface: rgb(0 0 0);
+    --border: rgb(63 63 63);
+    --brand: rgb(255 255 255);
     --text-link: rgb(96 165 250);
     --text-selected: rgb(96 165 250);
-    --text-subtle: rgb(229 229 229);
-    --text-subtlest: rgb(163 163 163);
-    --text: rgb(245 245 245);
+    --text-subtle: rgb(192 192 192);
+    --text-subtlest: rgb(144 144 144);
+    --text: rgb(231 231 231);
   }
 }
