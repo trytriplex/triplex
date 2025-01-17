@@ -49,10 +49,7 @@ function FlashCard({
         variant="lines"
       />
       <span
-        className={cn([
-          "relative font-mono font-semibold",
-          isHidden && "select-none",
-        ])}
+        className={cn(["relative font-semibold", isHidden && "select-none"])}
       >
         {value}
       </span>
@@ -135,20 +132,23 @@ export function Hero() {
     >
       <div className="w-full px-10 xl:px-28">
         <div className="flex flex-col items-center gap-4 lg:gap-6">
-          <Link
-            className="text-subtle bg-neutral border-neutral z-10 rounded-full border px-3 py-0.5 text-center font-mono text-sm"
-            href="/blog/triplex-for-vscode"
-          >
-            Triplex for VS Code now available
-          </Link>
+          <div className="text-center">
+            <Link
+              className="text-subtle bg-neutral border-neutral z-10 rounded-full border box-decoration-clone px-3 py-1 text-center font-mono text-sm"
+              href="/blog/triplex-for-vscode"
+            >
+              Triplex for VS Code now available
+            </Link>
+          </div>
 
-          <h1 className="text-default max-w-2xl text-center text-6xl font-bold lg:max-w-3xl lg:text-7xl">
+          <h1 className="text-default font-brand max-w-2xl text-center text-6xl font-medium lg:max-w-4xl lg:text-7xl">
             The Visual IDE for the
             <FlashCards
               values={[
                 "Dynamic",
                 "Virtual",
                 "Gaming",
+                "Quirky",
                 "Shared",
                 "Future",
                 "Spatial",
@@ -168,7 +168,7 @@ export function Hero() {
               Install for Visual Studio Code
             </a>
 
-            <span className="text-subtle">
+            <span className="text-subtle font-default text-center text-base">
               <DownloadButton variant="link" />, or for{" "}
               <Link
                 className="hover:text-default text-subtle underline"

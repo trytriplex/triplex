@@ -32,6 +32,8 @@ module.exports = {
       transparent: "transparent",
     },
     fontFamily: {
+      brand: ["var(--suse)"],
+      default: ["var(--karla)"],
       mono: [
         "ui-monospace",
         "SFMono-Regular",
@@ -41,24 +43,6 @@ module.exports = {
         "Liberation Mono",
         "Courier New",
         "monospace",
-      ],
-      sans: [
-        "ui-sans-serif",
-        "system-ui",
-        "-apple-system",
-        "BlinkMacSystemFont",
-        "Segoe UI",
-        "Roboto",
-        "Noto Sans",
-        "Ubuntu",
-        "Cantarell",
-        "Helvetica Neue",
-        "Arial",
-        "sans-serif",
-        "Apple Color Emoji",
-        "Segoe UI Emoji",
-        "Segoe UI Symbol",
-        "Noto Color Emoji",
       ],
     },
     outlineColor: {

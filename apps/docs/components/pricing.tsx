@@ -65,7 +65,7 @@ export function Pricing() {
         cta={
           <>
             <Link
-              className="text-subtle border-neutral block rounded border py-2 text-center font-medium"
+              className="text-subtle border-neutral block rounded border py-2 text-center text-base font-medium"
               href="https://github.com/sponsors/itsdouges/sponsorships?sponsor=itsdouges&preview=true&frequency=recurring&amount=19"
             >
               Sponsor Development
@@ -113,7 +113,7 @@ export function Pricing() {
       <PricingPanel
         cta={
           <Link
-            className="text-inverse bg-brand block rounded py-2 text-center font-medium"
+            className="text-inverse bg-brand block rounded py-2 text-center text-base font-medium"
             href="mailto:support@triplex.dev"
           >
             Contact Us
@@ -125,7 +125,7 @@ export function Pricing() {
         perMonthLabel=""
       >
         <ul className="border-neutral -mx-4 -mb-4 mt-4 flex flex-col gap-3 border-t p-4">
-          <li className="text-subtle flex items-center gap-4">
+          <li className="text-subtle flex items-center gap-4 text-base">
             <ArrowLeftIcon /> Everything in Free, and...
           </li>
           <li>
@@ -149,10 +149,10 @@ function DetailsSummary({
 }) {
   return (
     <details className="group">
-      <summary className="text-default flex cursor-pointer list-none items-center gap-4 font-medium">
+      <summary className="text-default flex cursor-pointer list-none items-center gap-4 text-base font-medium">
         <ChevronRightIcon className="group-open:rotate-90" /> {summary}
       </summary>
-      <p className="text-subtle mt-1 pl-8">{details}</p>
+      <p className="text-subtle mt-1 pl-8 text-base">{details}</p>
     </details>
   );
 }

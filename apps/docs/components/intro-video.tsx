@@ -14,6 +14,7 @@ export function IntroVideo() {
           alt="Screenshot of the Triplex user interface running on macOS"
           className="object-contain"
           fill
+          priority
           src="/hero.png"
         />
       </div>

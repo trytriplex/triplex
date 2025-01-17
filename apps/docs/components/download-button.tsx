@@ -73,7 +73,8 @@ export function DownloadButton({
   return (
     <Link
       className={cn([
-        variant === "link" && "text-subtle hover:text-default underline",
+        variant === "link" &&
+          "text-subtle font-default hover:text-default text-base underline",
         variant === "button" &&
           "text-inverse bg-brand cursor-pointer px-8 py-4 text-center font-mono text-2xl font-medium",
       ])}

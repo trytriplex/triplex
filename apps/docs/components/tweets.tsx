@@ -23,7 +23,7 @@ export function Tweet({
 }) {
   return (
     <a
-      className="border-neutral bg-surface grid min-w-[340px] max-w-xs shrink-0 gap-2 border px-4 pb-3 pt-4 [grid-template-columns:auto_1fr]"
+      className="border-neutral bg-surface grid min-w-[340px] max-w-xs shrink-0 gap-2 border px-4 pb-3 pt-4 text-base [grid-template-columns:auto_1fr]"
       href={tweetUrl}
       rel="noreferrer"
       target="_blank"

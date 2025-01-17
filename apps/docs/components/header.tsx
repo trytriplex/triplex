@@ -65,7 +65,7 @@ export function Header({
 
         <div className="flex gap-2 md:w-full md:pl-2">
           <button
-            className="text-subtle border-neutral hover:bg-hovered active:bg-pressed outline-link relative ml-auto flex h-8 w-full cursor-default items-center rounded-md px-3 text-base -outline-offset-1 focus-visible:outline focus-visible:outline-1 md:max-w-xs md:cursor-text md:border md:pl-3 md:pr-1.5"
+            className="text-subtle md:bg-neutral border-neutral hover:bg-hovered active:bg-pressed outline-link relative ml-auto flex h-8 w-full cursor-default items-center rounded-md px-3 text-base -outline-offset-1 focus-visible:outline focus-visible:outline-1 md:max-w-xs md:cursor-text md:border md:pl-3 md:pr-1.5"
             onClick={showSearch}
             type="button"
           >
@@ -105,7 +105,7 @@ export function HeaderItem({
       className={cn([
         isSelected
           ? "text-brand font-medium"
-          : "text-subtle hover:text-default font-normal",
+          : "text-subtle hover:text-default",
         "text-base",
       ])}
       href={href}
