@@ -32,10 +32,55 @@ test.describe(() => {
         !!process.env.SMOKE_TEST && process.platform === "linux",
         `Skipped Linux when running smoke tests because it can't open new files and I couldn't fix it time boxed. Let's fix this in the future.`,
       );
-
       await vsce.codelens("SharedArrayBufferTest").click();
 
       await expect(vsce.loadedComponent).toHaveText("SharedArrayBufferTest");
+    },
+  );
+});
+
+test.describe(() => {
+  test.use({
+    filename: "examples/no-config/src/scene.jsx",
+  });
+
+  test(
+    "opening js only no config no tsconfig",
+    { tag: "@vsce_smoke" },
+    async ({ vsce }) => {
+      test.skip(
+        !!process.env.SMOKE_TEST && process.platform === "linux",
+        `Skipped Linux when running smoke tests because it can't open new files and I couldn't fix it time boxed. Let's fix this in the future.`,
+      );
+      await vsce.codelens("JSOnly").click();
+      const { panels } = vsce.resolveEditor();
+
+      await panels.getByRole("button", { name: "ambientLight" }).click();
+
+      await expect(panels.getByLabel("position")).toBeVisible();
+    },
+  );
+});
+
+test.describe(() => {
+  test.use({
+    filename: "examples/js/src/scene.jsx",
+  });
+
+  test(
+    "opening js only no tsconfig",
+    { tag: "@vsce_smoke" },
+    async ({ vsce }) => {
+      test.skip(
+        !!process.env.SMOKE_TEST && process.platform === "linux",
+        `Skipped Linux when running smoke tests because it can't open new files and I couldn't fix it time boxed. Let's fix this in the future.`,
+      );
+      await vsce.codelens("JSOnlyConfig").click();
+      const { panels } = vsce.resolveEditor();
+
+      await panels.getByRole("button", { name: "ambientLight" }).click();
+
+      await expect(panels.getByLabel("position")).toBeVisible();
     },
   );
 });

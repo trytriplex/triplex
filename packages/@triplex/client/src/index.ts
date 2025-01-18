@@ -81,7 +81,15 @@ export async function createServer({
       glsl(),
       // ---------------------------------------------------------------
       scenePlugin(initializationConfig),
-      tsconfigPaths({ projects: [tsConfig] }),
+      tsconfigPaths({
+        /**
+         * JavaScript based projects without a tsconfig.json will throw errors.
+         * Rather than conditionally applying this plugin we just ignore any
+         * errors and continue on. Same same but less code we have to handle!
+         */
+        ignoreConfigErrors: true,
+        projects: [tsConfig],
+      }),
     ],
     publicDir: config.publicDir,
     resolve: {

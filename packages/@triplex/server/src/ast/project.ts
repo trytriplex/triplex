@@ -4,20 +4,18 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { existsSync, writeFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { watch } from "chokidar";
 import {
   getCompilerOptionsFromTsConfig,
   ModuleResolutionKind,
   Project,
-  type ProjectOptions,
   type SourceFile,
 } from "ts-morph";
 import { join } from "upath";
 import { deleteCommentComponents } from "../services/component";
 import { type SourceFileChangedEvent } from "../types";
 import { invalidateThumbnail } from "../util/thumbnail";
-import { baseTsConfig } from "../util/ts";
 
 export type TRIPLEXProject = ReturnType<typeof createProject>;
 export type SourceFileGetters = Extract<
@@ -30,18 +28,18 @@ function normalizeLineEndings(source: string): string {
   return source.replaceAll("\r\n", "\n");
 }
 
-export function _createProject(opts: ProjectOptions & { cwd?: string }) {
-  const tsConfigPath = join(opts.cwd || process.cwd(), "tsconfig.json");
-  const hasTsConfig = existsSync(tsConfigPath);
+export function _createProject({
+  tsConfigFilePath,
+}: {
+  tsConfigFilePath: string;
+}) {
+  const hasTsConfig = existsSync(tsConfigFilePath);
 
-  if (!hasTsConfig) {
-    writeFileSync(tsConfigPath, JSON.stringify(baseTsConfig, null, 2) + "\n");
-  }
-
-  const { options } = getCompilerOptionsFromTsConfig(tsConfigPath);
+  const { options } = hasTsConfig
+    ? getCompilerOptionsFromTsConfig(tsConfigFilePath)
+    : {};
 
   const project = new Project({
-    ...opts,
     compilerOptions: {
       // This ensures that even if a project is misconfigured we can still infer types from JS.
       allowJs: true,
@@ -61,9 +59,10 @@ export function _createProject(opts: ProjectOptions & { cwd?: string }) {
       // This ensures React Three Fiber host elements are present even if they're not in the module graph.
       // We set this as an override but import the types from the options to ensure that we don't remove any
       // user defined types.
-      types: (options.types || []).concat("@react-three/fiber"),
+      types: (options?.types || []).concat("@react-three/fiber"),
     },
     skipAddingFilesFromTsConfig: true,
+    tsConfigFilePath: hasTsConfig ? tsConfigFilePath : undefined,
   });
 
   return project;
