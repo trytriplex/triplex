@@ -4,7 +4,6 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import Image from "next/image";
 import Link from "next/link";
 
 export function Footer() {
@@ -12,12 +11,11 @@ export function Footer() {
     <footer className="bg-surface border-neutral relative col-span-full border-t">
       <div className="mx-auto flex gap-14 px-6 py-10 md:px-8 lg:w-full lg:gap-32 lg:px-20">
         <div className="basis-1/2 sm:basis-auto lg:mr-auto lg:flex-shrink-0">
-          <div className="flex flex-col gap-0.5">
-            <Image
-              alt="Triplex"
-              className="mb-1"
+          <div className="flex flex-col gap-1.5">
+            <object
+              className="pointer-events-none"
+              data="/logos/logo-horizontal.svg"
               height={Math.round(223 / 9)}
-              src="/logos/logo-horizontal.svg"
               width={Math.round(818 / 9)}
             />
             <span className="text-subtlest text-base">
