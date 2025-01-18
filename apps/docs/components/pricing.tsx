@@ -35,7 +35,7 @@ function PricingPanel({
           "outline-brand relative outline outline-4 before:absolute lg:mt-0",
       ])}
     >
-      <h2 className="text-default mt-6 text-center text-3xl font-bold">
+      <h2 className="text-default mt-6 text-center text-3xl font-medium">
         {name}
       </h2>
 

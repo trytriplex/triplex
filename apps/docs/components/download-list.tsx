@@ -27,7 +27,15 @@ function extname(path: string) {
 }
 
 const logos = {
-  apple: <Image alt="macOS" height={40} src="/logos/mac.svg" width={40} />,
+  apple: (
+    <object
+      aria-label="macOS"
+      className="pointer-events-none h-10 w-10"
+      data="/logos/mac.svg"
+      role="img"
+      type="image/svg+xml"
+    />
+  ),
   linux: <Image alt="Linux" height={40} src="/logos/linux.png" width={40} />,
   vscode: (
     <Image
@@ -67,8 +75,8 @@ function AssetDownload({
     >
       <div className="text-subtlest w-9 flex-shrink-0">{logo}</div>
       <div className="flex flex-col">
-        <span className="text-default font-medium">{title}</span>
-        <span className="text-subtlest">{subtitle}</span>
+        <span className="text-default text-base font-medium">{title}</span>
+        <span className="text-subtlest text-base">{subtitle}</span>
       </div>
       {action}
     </div>
@@ -112,7 +120,7 @@ function List() {
           <AssetDownload
             action={
               <a
-                className="text-inverse bg-brand ml-auto flex-shrink-0 rounded px-4 py-1 font-medium"
+                className="text-inverse bg-brand ml-auto flex-shrink-0 rounded px-4 py-1 text-base font-medium"
                 href="https://winstall.app/apps/Triplex.Triplex"
                 onClick={(e) => {
                   beginDownload(e, "/docs/overview?dl=winget");
@@ -134,7 +142,7 @@ function List() {
             <AssetDownload
               action={
                 <a
-                  className="text-inverse bg-brand ml-auto rounded px-4 py-1 font-medium"
+                  className="text-inverse bg-brand ml-auto rounded px-4 py-1 text-base font-medium"
                   href={asset.browser_download_url}
                   onClick={(e) => {
                     beginDownload(e, forwardURL);
@@ -179,7 +187,7 @@ export function DownloadList() {
       <AssetDownload
         action={
           <a
-            className="text-inverse bg-brand ml-auto flex-shrink-0 rounded px-4 py-1 font-medium"
+            className="text-inverse bg-brand ml-auto flex-shrink-0 rounded px-4 py-1 text-base font-medium"
             href="https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce"
             onClick={(e) => {
               beginDownload(e, "/docs/overview?dl=vsce");
@@ -195,12 +203,12 @@ export function DownloadList() {
           <>
             Find on the Visual Studio marketplace. Using Cursor?{" "}
             <a
-              className="text-link hover:underline"
+              className="text-link text-base hover:underline"
               href="https://www.cursor.com/how-to-install-extension"
               rel="noreferrer"
               target="_blank"
             >
-              Follow the installation guide.
+              Follow their installation guide.
             </a>
           </>
         }

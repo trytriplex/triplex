@@ -5,7 +5,6 @@
  * file in the root directory of this source tree.
  */
 import { HamburgerMenuIcon, MagnifyingGlassIcon } from "@radix-ui/react-icons";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, type ReactNode } from "react";
 import { useSearchStore } from "../stores/search";
@@ -42,19 +41,17 @@ export function Header({
   return (
     <header className="bg-surface sticky top-0 z-50 col-span-full row-start-1 flex h-14 items-center gap-4 px-6 md:gap-6 md:px-8 lg:px-20">
       <Link aria-label="Home" className="flex-shrink-0" href="/">
-        <Image
-          alt="Home"
-          className="mb-1"
+        <object
+          className="pointer-events-none mb-1"
+          data="/logos/logo-horizontal.svg"
           height={Math.round(223 / 9)}
-          priority
-          src="/logos/logo-horizontal.svg"
           width={Math.round(818 / 9)}
         />
       </Link>
 
-      <nav className="flex flex-grow items-center gap-0.5 overflow-hidden md:gap-5">
+      <nav className="flex flex-grow items-center gap-0.5 md:gap-5">
         <button
-          className="text-subtle hover:bg-hovered active:bg-pressed outline-link relative ml-auto flex h-8 flex-shrink-0 cursor-default items-center rounded px-3 text-sm -outline-offset-1 focus-visible:outline focus-visible:outline-1 md:-ml-2.5 md:hidden"
+          className="text-subtle hover:bg-hovered active:bg-pressed outline-link relative ml-auto flex h-8 flex-shrink-0 cursor-default items-center rounded px-3 text-sm -outline-offset-1 md:-ml-2.5 md:hidden"
           onClick={onShowNav}
           type="submit"
         >
@@ -65,7 +62,7 @@ export function Header({
 
         <div className="flex gap-2 md:w-full md:pl-2">
           <button
-            className="text-subtle md:bg-neutral border-neutral hover:bg-hovered active:bg-pressed outline-link relative ml-auto flex h-8 w-full cursor-default items-center rounded-md px-3 text-base -outline-offset-1 focus-visible:outline focus-visible:outline-1 md:max-w-xs md:cursor-text md:border md:pl-3 md:pr-1.5"
+            className="text-subtle md:bg-neutral border-neutral hover:bg-hovered active:bg-pressed outline-link relative ml-auto flex h-8 w-full cursor-default items-center rounded-md px-3 text-base -outline-offset-1 md:max-w-xs md:cursor-text md:border md:pl-3 md:pr-1.5"
             onClick={showSearch}
             type="button"
           >
