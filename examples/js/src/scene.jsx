@@ -8,7 +8,7 @@ import Box from "./geometry/box";
 import Cylinder from "./geometry/cylinder";
 import Sphere from "./geometry/sphere";
 
-export default function Scene() {
+export function JSOnlyConfig() {
   return (
     <>
       <Box color="red" />
