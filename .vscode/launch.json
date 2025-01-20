@@ -11,7 +11,8 @@
       "debugWebviews": true,
       "args": [
         "${workspaceFolder}/examples",
-        "${workspaceFolder}/examples/test-fixture/src/scene.tsx",
+        "${workspaceFolder}/examples-private",
+        "${workspaceFolder}/examples-private/test-fixture/src/scene.tsx",
         "--disable-extensions",
         "--new-window",
         "--extensionDevelopmentPath=${workspaceFolder}/apps/vscode",
