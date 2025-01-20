@@ -9,7 +9,7 @@ import { test } from "./utils/runner";
 
 test.describe(() => {
   test.use({
-    filename: "examples/test-fixture/src/scroll-drei.tsx",
+    filename: "examples-private/test-fixture/src/scroll-drei.tsx",
   });
 
   test("scroll controls loads", async ({ vsce }) => {
@@ -21,7 +21,7 @@ test.describe(() => {
 
 test.describe(() => {
   test.use({
-    filename: "examples/test-fixture/src/sab.tsx",
+    filename: "examples-private/test-fixture/src/sab.tsx",
   });
 
   test(
@@ -41,7 +41,7 @@ test.describe(() => {
 
 test.describe(() => {
   test.use({
-    filename: "examples/no-config/src/scene.jsx",
+    filename: "examples-private/no-config/src/scene.jsx",
   });
 
   test(
@@ -64,7 +64,7 @@ test.describe(() => {
 
 test.describe(() => {
   test.use({
-    filename: "examples/js/src/scene.jsx",
+    filename: "examples-private/js/src/scene.jsx",
   });
 
   test(

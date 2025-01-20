@@ -9,7 +9,7 @@ import { test } from "./utils/runner";
 
 test.describe("when an error is thrown on render", () => {
   test.use({
-    filename: "examples/test-fixture/src/throws-error-on-render.tsx",
+    filename: "examples-private/test-fixture/src/throws-error-on-render.tsx",
   });
 
   test("should show an error notification and then recover", async ({
@@ -39,7 +39,8 @@ test.describe("when an error is thrown on render", () => {
 
 test.describe("when an error is thrown on missing module", () => {
   test.use({
-    filename: "examples/test-fixture/src/throws-error-missing-dependency.tsx",
+    filename:
+      "examples-private/test-fixture/src/throws-error-missing-dependency.tsx",
   });
 
   test("should show an error notification and then recover", async ({
@@ -75,7 +76,7 @@ test.describe("when an error is thrown on missing module", () => {
 
 test.describe("when an error is thrown during module initialization", () => {
   test.use({
-    filename: "examples/test-fixture/src/throws-error-module-scope.tsx",
+    filename: "examples-private/test-fixture/src/throws-error-module-scope.tsx",
   });
 
   test("should show an error notification", async ({ vsce }) => {
@@ -95,7 +96,8 @@ test.describe("when an error is thrown during module initialization", () => {
 
 test.describe("when an error is thrown on interaction", () => {
   test.use({
-    filename: "examples/test-fixture/src/throws-error-on-interaction.tsx",
+    filename:
+      "examples-private/test-fixture/src/throws-error-on-interaction.tsx",
   });
 
   test("should show an error notification", async ({ vsce }) => {
@@ -116,7 +118,7 @@ test.describe("when an error is thrown on interaction", () => {
 
 test.describe("when an error is thrown during glsl compilation", () => {
   test.use({
-    filename: "examples/test-fixture/src/throws-error-glsl.tsx",
+    filename: "examples-private/test-fixture/src/throws-error-glsl.tsx",
   });
 
   test("should show a notification for both vertex and fragment failures", async ({
@@ -158,7 +160,8 @@ test.describe("when an error is thrown during glsl compilation", () => {
 
 test.describe("when an error is thrown during glsl compilation (2)", () => {
   test.use({
-    filename: "examples/test-fixture/src/throws-error-glsl-fallback.tsx",
+    filename:
+      "examples-private/test-fixture/src/throws-error-glsl-fallback.tsx",
   });
 
   test("should show a notification for varying failure", async ({ vsce }) => {

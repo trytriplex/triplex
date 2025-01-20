@@ -65,7 +65,7 @@ test("backspacing in an input does not delete the element", async ({
 
 test.describe(() => {
   test.use({
-    filename: "examples/test-fixture/src/component-roots.tsx",
+    filename: "examples-private/test-fixture/src/component-roots.tsx",
   });
 
   test("updating children prop", async ({ getFile, vsce }) => {

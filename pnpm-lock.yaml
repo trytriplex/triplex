@@ -362,6 +362,78 @@ importers:
 
   examples-private/error-renderer: {}
 
+  examples-private/js:
+    dependencies:
+      '@react-three/drei':
+        specifier: ^9.114.0
+        version: 9.114.0(@react-three/fiber@8.17.10(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0))(@types/react@18.3.3)(@types/three@0.171.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0)
+      '@react-three/fiber':
+        specifier: ^8.17.10
+        version: 8.17.10(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0)
+      '@types/react':
+        specifier: 18.3.3
+        version: 18.3.3
+      '@types/three':
+        specifier: ^0.171.0
+        version: 0.171.0
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      three:
+        specifier: ^0.172.0
+        version: 0.172.0
+
+  examples-private/no-config:
+    dependencies:
+      '@react-three/fiber':
+        specifier: ^8.17.10
+        version: 8.17.10(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0)
+      '@types/react':
+        specifier: 18.3.3
+        version: 18.3.3
+      '@types/three':
+        specifier: ^0.171.0
+        version: 0.171.0
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      three:
+        specifier: ^0.172.0
+        version: 0.172.0
+
+  examples-private/test-fixture:
+    dependencies:
+      '@react-three/drei':
+        specifier: ^9.114.0
+        version: 9.114.0(@react-three/fiber@8.17.10(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0))(@types/react@18.3.3)(@types/three@0.171.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0)
+      '@react-three/fiber':
+        specifier: ^8.17.10
+        version: 8.17.10(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0)
+      '@react-three/uikit':
+        specifier: ^0.5.4
+        version: 0.5.4(@react-three/fiber@8.17.10(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0))(@types/react@18.3.3)(react@18.3.1)(three@0.172.0)
+      '@types/react':
+        specifier: 18.3.3
+        version: 18.3.3
+      '@types/three':
+        specifier: ^0.171.0
+        version: 0.171.0
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
+      three:
+        specifier: ^0.172.0
+        version: 0.172.0
+
   examples/caustics:
     dependencies:
       '@react-three/drei':
@@ -436,30 +508,6 @@ importers:
       '@react-three/rapier':
         specifier: ^1.4.0
         version: 1.4.0(@react-three/fiber@8.17.10(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0))(react@18.3.1)(three@0.172.0)
-      '@types/react':
-        specifier: 18.3.3
-        version: 18.3.3
-      '@types/three':
-        specifier: ^0.171.0
-        version: 0.171.0
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-      three:
-        specifier: ^0.172.0
-        version: 0.172.0
-
-  examples/js:
-    dependencies:
-      '@react-three/drei':
-        specifier: ^9.114.0
-        version: 9.114.0(@react-three/fiber@8.17.10(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0))(@types/react@18.3.3)(@types/three@0.171.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0)
-      '@react-three/fiber':
-        specifier: ^8.17.10
-        version: 8.17.10(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0)
       '@types/react':
         specifier: 18.3.3
         version: 18.3.3
@@ -557,27 +605,6 @@ importers:
         specifier: ^0.172.0
         version: 0.172.0
 
-  examples/no-config:
-    dependencies:
-      '@react-three/fiber':
-        specifier: ^8.17.10
-        version: 8.17.10(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0)
-      '@types/react':
-        specifier: 18.3.3
-        version: 18.3.3
-      '@types/three':
-        specifier: ^0.171.0
-        version: 0.171.0
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-      three:
-        specifier: ^0.172.0
-        version: 0.172.0
-
   examples/room:
     dependencies:
       '@react-three/drei':
@@ -628,33 +655,6 @@ importers:
       three-custom-shader-material:
         specifier: ^6.0.10
         version: 6.0.10(@react-three/fiber@8.17.10(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0))(react@18.3.1)(three@0.172.0)
-
-  examples/test-fixture:
-    dependencies:
-      '@react-three/drei':
-        specifier: ^9.114.0
-        version: 9.114.0(@react-three/fiber@8.17.10(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0))(@types/react@18.3.3)(@types/three@0.171.0)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0)
-      '@react-three/fiber':
-        specifier: ^8.17.10
-        version: 8.17.10(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0)
-      '@react-three/uikit':
-        specifier: ^0.5.4
-        version: 0.5.4(@react-three/fiber@8.17.10(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0))(@types/react@18.3.3)(react@18.3.1)(three@0.172.0)
-      '@types/react':
-        specifier: 18.3.3
-        version: 18.3.3
-      '@types/three':
-        specifier: ^0.171.0
-        version: 0.171.0
-      react:
-        specifier: ^18.3.1
-        version: 18.3.1
-      react-dom:
-        specifier: ^18.3.1
-        version: 18.3.1(react@18.3.1)
-      three:
-        specifier: ^0.172.0
-        version: 0.172.0
 
   examples/uikit:
     dependencies:

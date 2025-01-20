@@ -124,7 +124,7 @@ const test = _test.extend<{
 }>({
   electron: async ({ file }, use, testInfo) => {
     const { app, logs, sceneReadyPromise, window } = await launch(
-      file.project || "examples/test-fixture",
+      file.project || "examples-private/test-fixture",
       file,
     );
     const page = new EditorPage(window, sceneReadyPromise, testInfo);
