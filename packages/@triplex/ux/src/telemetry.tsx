@@ -20,7 +20,8 @@ export type ActionContext =
   | "scenepanel"
   | "tabbar"
   | "contextmenu"
-  | "welcome";
+  | "welcome"
+  | "repo";
 
 export type ActionGroup =
   | "assets"
@@ -37,6 +38,7 @@ export type ActionGroup =
   | "logs"
   | "project"
   | "provider"
+  | "loaded"
   | "resize";
 
 export type ActionId = ActionIdSafe | "(UNSAFE_SKIP)";

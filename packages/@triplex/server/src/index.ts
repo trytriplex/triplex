@@ -51,6 +51,7 @@ import {
   type TriplexPorts,
 } from "./types";
 import { checkMissingDependencies } from "./util/deps";
+import { resolveGitRepoVisibility } from "./util/git";
 import { getParam } from "./util/params";
 import { getThumbnailPath } from "./util/thumbnail";
 import { createTWS } from "./util/ws-server";
@@ -491,6 +492,9 @@ export function createServer({
         sourceFile.onDependencyModified(push);
       },
     ),
+    tws.route("/project/repo", async () => {
+      return await resolveGitRepoVisibility(config.cwd);
+    }),
     tws.route(
       { defer: true, path: "/scene/:path/object/:line/:column" },
       (params, { type }) => {
@@ -567,7 +571,7 @@ export function createServer({
 
       return {
         missingDependencies,
-        pkgManager: pkgManager ? pkgManager.name : ("unknown" as const),
+        pkgManager: pkgManager ? pkgManager.name : "npm",
       };
     }),
   ]);

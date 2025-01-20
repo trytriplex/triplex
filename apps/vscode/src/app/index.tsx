@@ -15,6 +15,7 @@ import { AppRoot } from "./features/app-root";
 import { EnsureDependencies } from "./features/onboarding-splash/ensure-dependencies";
 import { preloadSubscription } from "./hooks/ws";
 import "./styles.css";
+import { RepoTelemetry } from "./features/telemetry/repo";
 
 if (
   process.env.NODE_ENV === "production" &&
@@ -48,6 +49,7 @@ async function bootstrap() {
     >
       <RootErrorBoundary>
         <Suspense>
+          <RepoTelemetry />
           <EnsureDependencies>
             <AppRoot />
           </EnsureDependencies>
