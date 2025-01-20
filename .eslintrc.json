@@ -60,6 +60,7 @@
     "playwright/no-standalone-expect": "off",
     "prefer-const": "off",
     "react/no-unknown-property": "off",
+    "react/no-unescaped-entities": ["error", { "forbid": [">", "}"] }],
     "space-before-function-paren": "off",
     "unicorn/consistent-function-scoping": "off",
     "unicorn/prefer-ternary": "off",

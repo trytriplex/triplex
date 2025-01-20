@@ -174,6 +174,15 @@ export class TriplexEditorProvider
               );
           }
         }),
+        on(panel.webview, "terminal", (data) => {
+          const terminal = vscode.window.createTerminal({
+            cwd: triplexProjectCwd,
+            isTransient: true,
+          });
+
+          terminal.show(true);
+          terminal.sendText(data.command);
+        }),
       ];
 
       panel.onDidDispose(() => {

@@ -7,6 +7,8 @@
 import { readFile } from "node:fs/promises";
 import { Application, isHttpError, Router } from "@oakserver/oak";
 import { watch } from "chokidar";
+import { type DetectResult } from "package-manager-detector";
+import { detect } from "package-manager-detector/detect";
 import { basename } from "upath";
 import {
   createProject,
@@ -48,6 +50,7 @@ import {
   type SourceFileChangedEvent,
   type TriplexPorts,
 } from "./types";
+import { checkMissingDependencies } from "./util/deps";
 import { getParam } from "./util/params";
 import { getThumbnailPath } from "./util/thumbnail";
 import { createTWS } from "./util/ws-server";
@@ -545,6 +548,28 @@ export function createServer({
         sourceFile.onDependencyModified(push);
       },
     ),
+    tws.route("/project/dependencies", async () => {
+      const pkgManager: null | DetectResult = await detect({
+        cwd: config.cwd,
+      });
+      const missingDependencies = checkMissingDependencies(
+        [
+          "@react-three/fiber",
+          "@types/react",
+          "@types/react-dom",
+          "@types/three",
+          "react",
+          "react-dom",
+          "three",
+        ],
+        config.cwd,
+      );
+
+      return {
+        missingDependencies,
+        pkgManager: pkgManager ? pkgManager.name : ("unknown" as const),
+      };
+    }),
   ]);
 
   return {

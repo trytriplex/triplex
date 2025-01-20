@@ -84,3 +84,18 @@ test.describe(() => {
     },
   );
 });
+
+test.describe(() => {
+  test.use({
+    filename: "examples-private/missing-deps/src/app.tsx",
+  });
+
+  test("missing dependencies splash screen", async ({ vsce }) => {
+    const { locator } = vsce.resolveEditor();
+    await vsce.codelens("MissingCriticalDeps", { skipWait: true }).click();
+
+    await expect(
+      locator.getByText("Install Missing Dependencies"),
+    ).toBeVisible();
+  });
+});

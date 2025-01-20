@@ -12,6 +12,7 @@ import { createRoot } from "react-dom/client";
 import { version } from "../../package.json";
 import { RootErrorBoundary } from "./components/root-error-boundary";
 import { AppRoot } from "./features/app-root";
+import { EnsureDependencies } from "./features/onboarding-splash/ensure-dependencies";
 import { preloadSubscription } from "./hooks/ws";
 import "./styles.css";
 
@@ -47,7 +48,9 @@ async function bootstrap() {
     >
       <RootErrorBoundary>
         <Suspense>
-          <AppRoot />
+          <EnsureDependencies>
+            <AppRoot />
+          </EnsureDependencies>
         </Suspense>
       </RootErrorBoundary>
     </TelemetryProvider>,
