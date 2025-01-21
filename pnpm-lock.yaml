@@ -172,13 +172,13 @@ importers:
   apps/electron:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.2
+        specifier: 0.70.3
         version: link:../../packages/@triplex/client
       '@triplex/editor':
         specifier: 0.69.9
         version: link:../../packages/@triplex/editor
       '@triplex/server':
-        specifier: 0.71.1
+        specifier: 0.71.2
         version: link:../../packages/@triplex/server
       create-triplex-project:
         specifier: 0.70.2
@@ -239,10 +239,10 @@ importers:
   apps/vscode:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.2
+        specifier: 0.70.3
         version: link:../../packages/@triplex/client
       '@triplex/server':
-        specifier: 0.71.1
+        specifier: 0.71.2
         version: link:../../packages/@triplex/server
     devDependencies:
       '@atlaskit/pragmatic-drag-and-drop':
@@ -747,7 +747,7 @@ importers:
         specifier: ^1.6.5
         version: 1.6.5(@swc/helpers@0.5.5)
       '@triplex/server':
-        specifier: 0.71.1
+        specifier: 0.71.2
         version: link:../server
       '@triplex/ws':
         specifier: 0.69.4
@@ -975,7 +975,7 @@ importers:
         specifier: ^1.6.5
         version: 1.6.5(@swc/helpers@0.5.5)
       '@triplex/server':
-        specifier: 0.71.1
+        specifier: 0.71.2
         version: link:../server
       '@types/react':
         specifier: 18.3.3
@@ -1133,7 +1133,7 @@ importers:
         specifier: ^14.0.0
         version: 14.0.0(react-dom@18.3.1(react@18.3.1))(react@18.3.1)
       '@triplex/server':
-        specifier: 0.71.1
+        specifier: 0.71.2
         version: link:../server
       '@types/react':
         specifier: 18.3.3
@@ -1165,7 +1165,7 @@ importers:
         specifier: 0.70.0
         version: link:../bridge
       '@triplex/server':
-        specifier: 0.71.1
+        specifier: 0.71.2
         version: link:../server
       '@types/react':
         specifier: 18.3.3

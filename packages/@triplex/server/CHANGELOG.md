@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.71.2
+
+### Patch Changes
+
+- 84a2615: JavaScript based projects no-longer have a tsconfig.json generated when starting up in Triplex.
+- 98ee32b: An error screen is now shown when dependencies needed to start the editor scene are missing.
+
 ## 0.71.1
 
 ### Patch Changes

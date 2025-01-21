@@ -38,7 +38,7 @@
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
     "@testing-library/react": "^14.0.0",
-    "@triplex/server": "0.71.1",
+    "@triplex/server": "0.71.2",
     "@types/react": "^18.0.27",
     "@types/tinycolor2": "^1.4.3",
     "typescript": "^5.7.2"

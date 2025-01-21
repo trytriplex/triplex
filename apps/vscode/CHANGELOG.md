@@ -1,5 +1,15 @@
 # @triplex/vscode
 
+## 0.2.3
+
+### Patch Changes
+
+- 98ee32b: An error screen is now shown when dependencies needed to start the editor scene are missing.
+- Updated dependencies [84a2615]
+- Updated dependencies [98ee32b]
+  - @triplex/client@0.70.3
+  - @triplex/server@0.71.2
+
 ## 0.2.2
 
 ### Patch Changes

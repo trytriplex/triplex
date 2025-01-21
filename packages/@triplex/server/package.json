@@ -1,6 +1,6 @@
 {
   "name": "@triplex/server",
-  "version": "0.71.1",
+  "version": "0.71.2",
   "private": true,
   "repository": "https://github.com/trytriplex/triplex-monorepo",
   "author": {

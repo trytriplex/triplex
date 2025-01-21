@@ -1,5 +1,11 @@
 # @triplex/client
 
+## 0.70.3
+
+### Patch Changes
+
+- 84a2615: JavaScript based projects no-longer have a tsconfig.json generated when starting up in Triplex.
+
 ## 0.70.2
 
 ### Patch Changes
