@@ -12,7 +12,6 @@ module.exports = {
     join(__dirname, "./src/app/**/*.tsx"),
     join(__dirname, "../packages/@triplex/ux/**/*.tsx"),
     join(__dirname, "./index.html"),
-    join(__dirname, "./loading.html"),
   ],
   theme: {
     backgroundColor: {

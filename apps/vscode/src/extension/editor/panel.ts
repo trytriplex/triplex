@@ -4,6 +4,8 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { loadingLogo } from "@triplex/lib/loader";
+import { rootHTML } from "@triplex/lib/templates";
 import { basename, join, normalize } from "upath";
 import * as vscode from "vscode";
 import { sendVSCE } from "../util/bridge";
@@ -37,9 +39,10 @@ export async function initializeWebviewPanel(
   };
 
   // Show something as fast as possible before doing anything.
-  panel.webview.html = await vscode.workspace.fs
-    .readFile(vscode.Uri.file(join(context.extensionPath, "loading.html")))
-    .then((res) => res.toString());
+  panel.webview.html = rootHTML({
+    loadingIndicator: loadingLogo({ position: "splash", variant: "idle" }),
+    title: "Loading Triplex...",
+  });
 
   const scopedFileName = normalize(path);
 

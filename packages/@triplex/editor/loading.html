@@ -1,51 +1,59 @@
+<!-- THIS FILE IS GENERATED DO NOT MODIFY -->
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      http-equiv="Content-Security-Policy"
-      content="script-src 'self'; worker-src blob:;"
-    />
-    <title>Loading</title>
-  </head>
-  <body>
-    <style>
-      .loading--center {
-        position: fixed;
-        inset: 0;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Loading Triplex...</title>
+    </head>
+    <body>
+        <div id="root">
+<div style="color:white;align-items:center;display:flex;inset:0px;justify-content:center;pointer-events:none;position:fixed;">
+  <style>
+    @keyframes pulse__t {
+      0% { transform: scale(1) }
+      40% { transform: scale(0.9) }
+      60% { transform: scale(0.9) }
+      100% { transform: scale(1) }
+    }
 
-      .loading--animate-dashes {
-        stroke-dasharray: 25;
-        animation: dash 2s linear infinite;
-      }
+    .pulse__t {
+      transform-origin: center 46%;
+      animation: pulse__t 0.33s ease-in-out;
+    }
 
-      @keyframes dash {
-        to {
-          stroke-dashoffset: 100;
-        }
-      }
-    </style>
-    <div class="loading--center">
-      <svg width="150" height="150" viewBox="0 0 33 33">
-        <defs>
-          <linearGradient id="l-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-            <stop offset="0%" stop-color="rgb(245 245 245)" />
-            <stop offset="100%" stop-color="rgb(163 163 163)" />
-          </linearGradient>
-        </defs>
-        <polygon
-          class="loading--animate-dashes"
-          fill="none"
-          stroke="url(#l-gradient)"
-          stroke-width="1"
-          points="16,1 32,32 1,32"
-        />
-      </svg>
-    </div>
-  </body>
+    @keyframes draw__t {
+      10% { stroke-dashoffset: 533; }
+      33% { stroke-dashoffset: 500; }
+      100% { stroke-dashoffset: 400; }
+    }
+
+    .draw__t {
+      stroke-dasharray: 1000;
+      stroke-dashoffset: 1000;
+      animation: draw__t 10s ease-in-out;
+      animation-fill-mode: forwards;
+    }
+  </style>
+  <svg style="overflow:visible;" width="150" height="150" viewBox="0 0 274.84 312.04" xmlns="http://www.w3.org/2000/svg">
+    <defs>
+      <path id="path__t" d="M245.51 224.02c-16.73-10.02-33.47-20.04-50.2-30.06-13.68 16.69-34.46 27.35-57.72 27.35s-44.44-10.87-58.11-27.84c-17.9 10.62-35.81 21.25-53.71 31.87-.77.71-4.59 4.38-4.82 10.32-.18 4.74 2.03 8.1 2.79 9.15 32.49 20.21 64.98 40.41 97.47 60.62 8.82 8.82 23.11 8.82 31.93 0 32.15-20.15 64.3-40.31 96.45-60.46.6-.49 4.64-3.89 4.65-9.31.01-5.04-3.47-9.76-8.73-11.64ZM270.44 61.37a22.39 22.39 0 0 0-6.21-5.56C230.11 37.23 195.98 18.65 161.86.06c-.9-.09-5.16-.44-8.94 2.55-4.64 3.68-4.63 9.3-4.62 9.97.01 20.1.03 40.19.04 60.29 36.1 5.22 63.85 36.27 63.85 73.82 0 9.62-1.84 18.8-5.15 27.24 14.32 7.63 31.66 16.75 51.24 26.9.39.24 4.83 2.9 9.84.75 5-2.15 6.13-7.17 6.22-7.63.17-40.66.33-81.33.5-121.99-.3-2.15-1.2-6.42-4.39-10.59ZM62.98 146.7c0-37.43 27.57-68.42 63.51-73.78.02-20.11.03-40.22.04-60.33.01-.67.02-6.29-4.62-9.97-3.77-3-8.03-2.65-8.93-2.56C78.85 18.65 44.73 37.23 10.6 55.81c-1.65 1-4.06 2.74-6.21 5.56C1.2 65.55.3 69.81-.01 71.96c.17 40.66.33 81.33.5 121.99.09.46 1.23 5.48 6.22 7.63 5.01 2.15 9.45-.5 9.84-.75a5323.28 5323.28 0 0 0 51.51-27.04 74.298 74.298 0 0 1-5.09-27.09Z" />
+      <circle id="circle__t" cx="137.58" cy="146.01" r="47.45" />
+      <clipPath id="path_clip__t"><use xlink:href="#path__t"/></clipPath>
+      <clipPath id="circle_clip__t"><use xlink:href="#circle__t"/></clipPath>
+    </defs>
+    <g>
+	    
+      
+      
+      
+      <use xlink:href="#path__t" clip-path="url(#path_clip__t)" style="fill:transparent;opacity:0.1;stroke:currentColor;stroke-width:12px;" />
+      <use xlink:href="#circle__t" clip-path="url(#circle_clip__t)" style="fill:transparent;opacity:0.1;stroke:currentColor;stroke-width:12px;" />
+    </g>
+  </svg>
+</div>
+</div>
+        
+        
+    </body>
 </html>

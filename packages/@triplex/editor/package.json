@@ -14,7 +14,8 @@
     "dist"
   ],
   "scripts": {
-    "build": "cross-env VITE_TRIPLEX_ENV=production VITE_CJS_IGNORE_WARNING=true vite build",
+    "build": "pnpm codegen:html && cross-env VITE_TRIPLEX_ENV=production VITE_CJS_IGNORE_WARNING=true vite build",
+    "codegen:html": "node --import=tsx ./scripts/generate-html.ts",
     "typedef": "tsc"
   },
   "dependencies": {
@@ -52,6 +53,7 @@
     "babel-plugin-react-compiler": "19.0.0-beta-55955c9-20241229",
     "tailwindcss": "^3.3.2",
     "three": "^0.172.0",
+    "tsx": "^4.19.2",
     "typescript": "^5.7.2",
     "vite": "^6.0.7"
   },

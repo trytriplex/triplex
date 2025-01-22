@@ -5,6 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { init } from "@sentry/react";
+import { LoadingLogo } from "@triplex/lib/loader";
 import { TelemetryProvider } from "@triplex/ux";
 import { StrictMode, Suspense } from "react";
 import { createRoot } from "react-dom/client";
@@ -13,7 +14,6 @@ import { BrowserRouter } from "react-router-dom";
 import { version } from "../package.json";
 import { EditorFrame } from "./editor";
 import { ErrorSplash } from "./ui/error-splash";
-import { LoadingTriangle } from "./ui/loading-triagle";
 import "./styles.css";
 
 if (process.env.NODE_ENV === "production") {
@@ -35,7 +35,11 @@ createRoot(document.getElementById("root")!).render(
         <ErrorBoundary
           fallbackRender={({ error }) => <ErrorSplash error={error} />}
         >
-          <Suspense fallback={<LoadingTriangle />}>
+          <Suspense
+            fallback={
+              <LoadingLogo color="white" position="splash" variant="fill" />
+            }
+          >
             <EditorFrame />
           </Suspense>
         </ErrorBoundary>

@@ -17,6 +17,16 @@
       "types": "./src/fg.tsx",
       "module": "./src/fg.tsx",
       "default": "./src/fg.tsx"
+    },
+    "./loader": {
+      "types": "./src/loader.tsx",
+      "module": "./src/loader.tsx",
+      "default": "./src/loader.tsx"
+    },
+    "./templates": {
+      "types": "./src/templates.ts",
+      "module": "./src/templates.ts",
+      "default": "./src/templates.ts"
     }
   },
   "files": [
@@ -49,6 +59,16 @@
         "types": "./src/fg.d.ts",
         "module": "./src/fg.js",
         "default": "./src/fg.js"
+      },
+      "./loader": {
+        "types": "./src/loader.d.ts",
+        "module": "./src/loader.js",
+        "default": "./src/loader.js"
+      },
+      "./templates": {
+        "types": "./src/templates.d.ts",
+        "module": "./src/templates.js",
+        "default": "./src/templates.js"
       }
     }
   }

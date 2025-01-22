@@ -7,11 +7,11 @@
 import { Canvas as FiberCanvas, type CanvasProps } from "@react-three/fiber";
 import { send } from "@triplex/bridge/client";
 import { fg } from "@triplex/lib/fg";
+import { LoadingLogo } from "@triplex/lib/loader";
 import { Fragment, Suspense, useContext } from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
 import { ErrorFallback } from "../../components/error-fallback";
 import { TriplexGrid } from "../../components/grid";
-import { LoadingTriangle } from "../../components/loading-triangle";
 import { Tunnel } from "../../components/tunnel";
 import { usePlayState } from "../../stores/use-play-state";
 import { defaultLayer, editorLayer } from "../../util/layers";
@@ -72,7 +72,11 @@ export function Canvas({ children, ...props }: CanvasProps) {
           <Suspense
             fallback={
               <Tunnel.In>
-                <LoadingTriangle />
+                <LoadingLogo
+                  color="rgb(59 130 246)"
+                  position="hint"
+                  variant="stroke"
+                />
               </Tunnel.In>
             }
           >
@@ -93,7 +97,11 @@ export function Canvas({ children, ...props }: CanvasProps) {
                 <Suspense
                   fallback={
                     <Tunnel.In>
-                      <LoadingTriangle />
+                      <LoadingLogo
+                        color="rgb(59 130 246)"
+                        position="hint"
+                        variant="stroke"
+                      />
                     </Tunnel.In>
                   }
                 >

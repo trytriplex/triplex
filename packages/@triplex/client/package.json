@@ -31,6 +31,7 @@
     "@react-three/fiber": "^8.17.10",
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
+    "@triplex/lib": "0.69.7",
     "@triplex/server": "0.71.2",
     "@triplex/ws": "0.69.4",
     "@types/babel__core": "^7.20.5",

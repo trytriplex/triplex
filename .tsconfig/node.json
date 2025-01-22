@@ -3,6 +3,7 @@
   "display": "Node",
   "extends": "./base.json",
   "compilerOptions": {
+    "jsx": "react-jsx",
     "resolveJsonModule": true,
     "lib": ["dom", "dom.iterable", "es2022"],
     "module": "NodeNext",

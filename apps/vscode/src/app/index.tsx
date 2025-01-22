@@ -6,6 +6,7 @@
  */
 import { init } from "@sentry/react";
 import { initFeatureGates } from "@triplex/lib/fg";
+import { LoadingLogo } from "@triplex/lib/loader";
 import { TelemetryProvider } from "@triplex/ux";
 import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
@@ -13,9 +14,9 @@ import { version } from "../../package.json";
 import { RootErrorBoundary } from "./components/root-error-boundary";
 import { AppRoot } from "./features/app-root";
 import { EnsureDependencies } from "./features/onboarding-splash/ensure-dependencies";
+import { RepoTelemetry } from "./features/telemetry/repo";
 import { preloadSubscription } from "./hooks/ws";
 import "./styles.css";
-import { RepoTelemetry } from "./features/telemetry/repo";
 
 if (
   process.env.NODE_ENV === "production" &&
@@ -48,7 +49,7 @@ async function bootstrap() {
       version={version}
     >
       <RootErrorBoundary>
-        <Suspense>
+        <Suspense fallback={<LoadingLogo position="splash" variant="fill" />}>
           <RepoTelemetry />
           <EnsureDependencies>
             <AppRoot />

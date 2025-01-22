@@ -56,13 +56,7 @@ async function main() {
   copyWindowsESBuildHackFix();
   cpSync(nmSrc, nmDest, { recursive: true });
   cpSync(staticSrc, staticDest, { recursive: true });
-  copyToDest(
-    "package.json",
-    "README.md",
-    "loading.html",
-    "LICENSE",
-    "CHANGELOG.md",
-  );
+  copyToDest("package.json", "README.md", "LICENSE", "CHANGELOG.md");
 
   await createVSIX({ cwd: join(process.cwd(), outDir), dependencies: false });
 }

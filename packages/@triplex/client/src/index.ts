@@ -5,6 +5,8 @@
  * file in the root directory of this source tree.
  */
 import { createServer as createHttpServer } from "node:http";
+import { loadingLogo } from "@triplex/lib/loader";
+import { rootHTML } from "@triplex/lib/templates";
 import type {
   ReconciledTriplexConfig,
   RendererManifest,
@@ -18,7 +20,7 @@ import triplexBabelPlugin from "./babel-plugin";
 import { transformNodeModulesJSXPlugin } from "./node-modules-plugin";
 import { remoteModulePlugin } from "./remote-module-plugin";
 import { scenePlugin } from "./scene-plugin";
-import { createHTML, loading, scripts } from "./templates";
+import { scripts } from "./templates";
 
 export async function createServer({
   config,
@@ -126,8 +128,14 @@ export async function createServer({
 
   app.get("/scene.html", async (_, res, next) => {
     try {
-      const template = createHTML(scripts.init(initializationConfig), {
-        initial: loading(),
+      const template = rootHTML({
+        loadingIndicator: loadingLogo({
+          color: "rgb(59 130 246)",
+          position: "hint",
+          variant: "stroke",
+        }),
+        script: scripts.init(initializationConfig),
+        title: "Triplex Scene",
       });
       const html = await vite.transformIndexHtml("scene", template);
 
@@ -146,9 +154,11 @@ export async function createServer({
         return;
       }
 
-      const template = createHTML(
-        scripts.thumbnail(initializationConfig, { exportName, path }),
-      );
+      const template = rootHTML({
+        script: scripts.thumbnail(initializationConfig, { exportName, path }),
+        title: "Triplex Thumbnail",
+      });
+
       const html = await vite.transformIndexHtml(
         `thumbnail_${path}_${exportName}`,
         template,

@@ -12,6 +12,7 @@ import {
   type Modules,
   type ProviderComponent,
 } from "@triplex/bridge/client";
+import { LoadingLogo } from "@triplex/lib/loader";
 import {
   startTransition,
   Suspense,
@@ -21,7 +22,6 @@ import {
 } from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
 import { ErrorFallback } from "../../components/error-fallback";
-import { LoadingTriangle } from "../../components/loading-triangle";
 import { Tunnel } from "../../components/tunnel";
 import { SceneLoader } from "../scene-loader";
 import { SwitchToComponentContext } from "./context";
@@ -203,7 +203,15 @@ export function App({
         }
         resetKeys={[component]}
       >
-        <Suspense fallback={<LoadingTriangle />}>
+        <Suspense
+          fallback={
+            <LoadingLogo
+              color="rgb(59 130 246)"
+              position="hint"
+              variant="stroke"
+            />
+          }
+        >
           <SceneLoader
             exportName={component.exportName}
             modules={files}
