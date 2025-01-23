@@ -8,15 +8,12 @@ import { expect, type TestInfo } from "@playwright/test";
 import { type Page } from "playwright";
 
 export class EditorPage {
-  #sceneReady: Promise<void>;
   #testInfo: TestInfo;
 
   constructor(
     public readonly page: Page,
-    scenePromise: Promise<void>,
     testInfo: TestInfo,
   ) {
-    this.#sceneReady = scenePromise;
     this.#testInfo = testInfo;
   }
 
@@ -117,14 +114,7 @@ export class EditorPage {
     return this.page.screenshot();
   }
 
-  async waitForScene() {
-    // Ensuring the scene is available can be slow. Mark the test as such.
-    this.#testInfo.slow();
-    return this.#sceneReady;
-  }
-
   async newFile() {
-    await this.waitForScene();
     const button = this.page.getByLabel("New file");
     await button.click();
     await expect
@@ -194,12 +184,10 @@ export class EditorPage {
             return methods.elementButton(name, at, rootLocator);
           },
           click: async () => {
-            await this.waitForScene();
             await locator.click({ force: true });
           },
           customAction: (label: string) => locator.getByLabel(label),
           dblclick: async () => {
-            await this.waitForScene();
             await locator.click({ clickCount: 2, delay: 50, force: true });
           },
           deleteButton: locator.getByTestId("delete"),
@@ -211,7 +199,6 @@ export class EditorPage {
       heading: locator.getByTestId("scene-panel-heading"),
       locator,
       newComponent: async () => {
-        await this.waitForScene();
         const locator = this.page.getByTestId("component-select-input");
         await locator.selectOption("new-component");
         await expect

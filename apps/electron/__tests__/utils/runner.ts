@@ -6,11 +6,10 @@
  */
 /* eslint-disable no-console */
 /* eslint-disable no-empty-pattern */
-import { test as _test } from "@playwright/test";
+import { test as _test, expect } from "@playwright/test";
 import { _electron as electron } from "playwright";
 import { join } from "upath";
 import { runUseWithTrace } from "../../../../test/playwright";
-import { defer } from "../../src/util/promise";
 import { EditorPage } from "./po";
 
 function getExecPath() {
@@ -83,20 +82,6 @@ async function launch(
   // NOTE: During the test run we skip the welcome window.
   // Look for "FORCE_EDITOR_TEST_FIXTURE" env var.
   const window = await app.firstWindow();
-  const sceneReadyPromise = defer();
-
-  await window.exposeFunction("sceneReady", () => {
-    sceneReadyPromise.resolve();
-  });
-
-  await window.addInitScript(() => {
-    globalThis.window.addEventListener("message", (e) => {
-      if (e.data.eventName === "component-rendered") {
-        // @ts-expect-error
-        window.sceneReady();
-      }
-    });
-  });
 
   window.on("console", (msg) => {
     logs.push(`[renderer:${msg.type()}] ${msg.text()}`);
@@ -109,7 +94,6 @@ async function launch(
   return {
     app,
     logs,
-    sceneReadyPromise: sceneReadyPromise.promise,
     window,
   };
 }
@@ -123,11 +107,13 @@ const test = _test.extend<{
   file: { exportName: string; path: string; project?: string };
 }>({
   electron: async ({ file }, use, testInfo) => {
-    const { app, logs, sceneReadyPromise, window } = await launch(
+    const { app, logs, window } = await launch(
       file.project || "examples-private/test-fixture",
       file,
     );
-    const page = new EditorPage(window, sceneReadyPromise, testInfo);
+    const page = new EditorPage(window, testInfo);
+
+    await expect(page.loadedComponent).toHaveText(file.exportName);
 
     await runUseWithTrace({ logs, page, testInfo, use });
 

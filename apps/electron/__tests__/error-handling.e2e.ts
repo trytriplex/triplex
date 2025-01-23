@@ -8,7 +8,6 @@ import { expect } from "@playwright/test";
 import { test } from "./utils/runner";
 
 test("render error", async ({ electron }) => {
-  await electron.waitForScene();
   await electron.openFileButton.click();
 
   await electron.fileDrawer.thumbnail("Render Error").click();
@@ -17,7 +16,6 @@ test("render error", async ({ electron }) => {
 });
 
 test("syntax error", async ({ electron }) => {
-  await electron.waitForScene();
   await electron.openFileButton.click();
 
   await electron.fileDrawer.thumbnail("Syntax Error").click();
@@ -34,8 +32,6 @@ test.describe(() => {
   });
 
   test("unsafe ref access should not throw", async ({ electron }) => {
-    await electron.waitForScene();
-
     await expect(electron.errorOverlay.locator).toBeHidden();
   });
 });

@@ -18,7 +18,6 @@ test("opening a new file should focus on new tab", async ({ electron }) => {
 });
 
 test("opening another file", async ({ electron }) => {
-  await electron.waitForScene();
   await electron.openFileButton.click();
 
   await electron.fileDrawer.thumbnail("Box").click();

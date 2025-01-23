@@ -19,8 +19,6 @@ test.describe(() => {
     "shared array buffers load without errors",
     { tag: "@electron_smoke" },
     async ({ electron }) => {
-      await electron.waitForScene();
-
       await expect(electron.loadedComponent).toHaveText(
         "SharedArrayBufferTest",
       );

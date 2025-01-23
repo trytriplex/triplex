@@ -28,7 +28,6 @@ test("provider controls set and clear back to default value", async ({
 });
 
 test("component controls default values", async ({ electron }) => {
-  await electron.waitForScene();
   await electron.propControls.openButton.click();
   const panel = electron.contextPanel;
 
@@ -41,7 +40,6 @@ test("component controls default values", async ({ electron }) => {
 test("component controls set and clear back to default value", async ({
   electron,
 }) => {
-  await electron.waitForScene();
   await electron.propControls.openButton.click();
   const input = electron.contextPanel.input("Variant").locator;
   await input.selectOption("small");
@@ -53,7 +51,6 @@ test("component controls set and clear back to default value", async ({
 });
 
 test("component props default values", async ({ electron }) => {
-  await electron.waitForScene();
   const panel = electron.contextPanel;
   await electron.scenePanel.elementButton("Box").click();
 
@@ -64,7 +61,6 @@ test("component props default values", async ({ electron }) => {
 test("component props set and clear back to default value", async ({
   electron,
 }) => {
-  await electron.waitForScene();
   await electron.scenePanel.elementButton("Box").click();
   const input = electron.contextPanel.input("Color").locator;
   await input.selectOption("green");

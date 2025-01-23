@@ -20,7 +20,6 @@ test("update component position prop", async ({ electron }) => {
 });
 
 test("update child component name prop", async ({ electron }) => {
-  await electron.waitForScene();
   const parent = electron.scenePanel.elementButton("Box");
   await parent.expandButton.click({ force: true });
   const child = parent.childElementButton("boxGeometry");
@@ -38,7 +37,6 @@ test("update child component name prop", async ({ electron }) => {
 test.fixme(
   "insert element to component with no fragment",
   async ({ electron }) => {
-    await electron.waitForScene();
     await electron.openFileButton.click();
     await electron.fileDrawer.thumbnail("No Fragment").click();
 

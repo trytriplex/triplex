@@ -8,8 +8,6 @@ import { expect } from "@playwright/test";
 import { test } from "./utils/runner";
 
 test("select custom component", async ({ electron }) => {
-  await electron.waitForScene();
-
   await electron.frame.click();
 
   await expect(electron.contextPanel.heading).toHaveText("Box");
@@ -24,8 +22,6 @@ test.describe(() => {
   });
 
   test("select camera component", async ({ electron }) => {
-    await electron.waitForScene();
-
     await electron.frame.click();
 
     await expect(electron.contextPanel.heading).toHaveText("PerspectiveCamera");
@@ -44,8 +40,6 @@ test.describe(() => {
     "select host element mesh",
     { tag: "@electron_smoke" },
     async ({ electron }) => {
-      await electron.waitForScene();
-
       await electron.frame.click();
 
       await expect(electron.contextPanel.heading).toHaveText("mesh");
@@ -62,8 +56,6 @@ test.describe(() => {
   });
 
   test("select host element light", async ({ electron }) => {
-    await electron.waitForScene();
-
     await electron.frame.click();
 
     await expect(electron.contextPanel.heading).toHaveText("ambientLight");
@@ -81,8 +73,6 @@ test.describe(() => {
   test("select node module component using automatic runtime", async ({
     electron,
   }) => {
-    await electron.waitForScene();
-
     await electron.frame.click();
 
     await expect(electron.contextPanel.heading).toHaveText("Portal");
@@ -100,8 +90,6 @@ test.describe(() => {
   test("select node module component using classic runtime", async ({
     electron,
   }) => {
-    await electron.waitForScene();
-
     await electron.frame.click();
 
     await expect(electron.contextPanel.heading).toHaveText("Box");
@@ -119,8 +107,6 @@ test.describe(() => {
   test("select component in scene of deeply nested component", async ({
     electron,
   }) => {
-    await electron.waitForScene();
-
     await electron.frame.click();
 
     await expect(electron.contextPanel.heading).toHaveText("Inbuilt2");
@@ -136,8 +122,6 @@ test.describe(() => {
   });
 
   test("select visible mesh behind invisible mesh", async ({ electron }) => {
-    await electron.waitForScene();
-
     await electron.frame.click();
 
     await expect(electron.contextPanel.input("Name").locator).toHaveValue(
@@ -155,8 +139,6 @@ test.describe(() => {
   });
 
   test("select visible mesh behind invisible parent", async ({ electron }) => {
-    await electron.waitForScene();
-
     await electron.frame.click();
 
     await expect(electron.contextPanel.input("Name").locator).toHaveValue(

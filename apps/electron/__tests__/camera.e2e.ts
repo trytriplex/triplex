@@ -15,8 +15,6 @@ test("default to perspective camera", async ({ electron }) => {
 });
 
 test("switch to orthographic camera and back", async ({ electron }) => {
-  await electron.waitForScene();
-
   await electron.controls.button("Switch To Orthographic").click();
 
   await expect(electron.devOnlyCameraPanel).toHaveText(/type: orthographic/);
@@ -33,8 +31,6 @@ test("switch to orthographic camera and back", async ({ electron }) => {
 });
 
 test("switch to play mode and back", async ({ electron }) => {
-  await electron.waitForScene();
-
   await electron.controls.button("Play Scene").click();
 
   await expect(electron.devOnlyCameraPanel).toHaveText(/type: user/);
@@ -51,8 +47,6 @@ test("switch to play mode and back", async ({ electron }) => {
 test("switch to play mode and toggle to editor camera", async ({
   electron,
 }) => {
-  await electron.waitForScene();
-
   await electron.controls.button("Play Scene").click();
 
   await expect(electron.devOnlyCameraPanel).toHaveText(/type: user/);
@@ -70,8 +64,6 @@ test("switch to play mode and toggle to editor camera", async ({
 test("toggle to default camera and switch to play mode", async ({
   electron,
 }) => {
-  await electron.waitForScene();
-
   await electron.controls.button("Play Options").click();
   await electron.page.getByText("Default Camera").click();
 
@@ -91,7 +83,6 @@ test("toggle to default camera and switch to play mode", async ({
 test.skip("unset userland camera to use default camera in play mode", async ({
   electron,
 }) => {
-  await electron.waitForScene();
   const parent = electron.scenePanel.elementButton(
     "user_defined (PerspectiveCamera)",
   );

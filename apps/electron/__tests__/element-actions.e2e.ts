@@ -29,8 +29,6 @@ test("enter camera", async ({ electron }) => {
   const parent = electron.scenePanel.elementButton(
     "user_defined (PerspectiveCamera)",
   );
-  await electron.waitForScene();
-
   await parent.customAction("Enter Camera").click();
 
   await expect(parent.customAction("Exit Camera")).toBeVisible();
@@ -40,8 +38,6 @@ test("enter camera block changing host camera", async ({ electron }) => {
   const parent = electron.scenePanel.elementButton(
     "user_defined (PerspectiveCamera)",
   );
-  await electron.waitForScene();
-
   await parent.customAction("Enter Camera").click();
   await electron.controls.button("Switch To Orthographic").click();
 
@@ -61,7 +57,6 @@ test("focus parent element", async ({ electron }) => {
 
 test("focus child element", async ({ electron }) => {
   const parent = electron.scenePanel.elementButton("Box");
-  await electron.waitForScene();
   await parent.expandButton.click({ force: true });
   const child = parent.childElementButton("hello-world");
 
