@@ -39,12 +39,12 @@ function FlashCard({
   return (
     <span
       aria-hidden={isHidden}
-      className="relative whitespace-nowrap px-12 py-0.5 [transition:transform_cubic-bezier(0.8,0,0,0.8)_0.5s]"
+      className="relative whitespace-nowrap px-12 [transition:transform_cubic-bezier(0.8,0,0,0.8)_0.5s]"
       style={style}
     >
-      <span className="bg-neutral absolute inset-0 scale-90" />
+      <span className="bg-neutral absolute -bottom-1 -top-1 left-0 right-0 scale-90" />
       <BgGrid
-        className="border-neutral absolute inset-0 scale-90 border"
+        className="border-neutral absolute -bottom-1 -top-1 left-0 right-0 scale-90 border"
         size={40}
         variant="lines"
       />
