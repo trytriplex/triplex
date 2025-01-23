@@ -12,10 +12,17 @@ export function IntroVideo() {
       <div className="relative grid h-[90vh] w-full items-center justify-start md:h-[80vh]">
         <Image
           alt="Screenshot of the Triplex user interface running on macOS"
-          className="object-contain"
+          className="hidden object-contain dark:block"
           fill
           priority
-          src="/hero.png"
+          src="/ui/vsce-dark.png"
+        />
+        <Image
+          alt="Screenshot of the Triplex user interface running on macOS"
+          className="block object-contain dark:hidden"
+          fill
+          priority
+          src="/ui/vsce-light.png"
         />
       </div>
     </div>

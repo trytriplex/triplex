@@ -1,9 +1,9 @@
 ---
 title: Triplex for VS Code
-description: Turn Visual Studio Code into your visual IDE.
+description: Turn Visual Studio Code and Cursor into your visual IDE.
 ---
 
-Triplex for VS Code turns [Visual Studio Code](https://code.visualstudio.com) and [Cursor](https://www.cursor.com) into a visual IDE, bringing the best features of Triplex for you to stay in context while coding.
+Triplex for VS Code turns [Visual Studio Code](https://code.visualstudio.com) and [Cursor](https://www.cursor.com) into your visual IDE, bringing the best features of Triplex for you to stay in context while coding.
 
 ## Installation
 
@@ -61,6 +61,17 @@ Only components that are exported can be opened in Triplex. If you're trying to 
 If there's a problem and the editor has been put into an invalid state you can reload the editor by accessing the command palette via <Kbd>Shift</Kbd> + <Kbd>Cmd</Kbd> + <Kbd>P</Kbd> then selecting "Developer: Reload Webviews".
 
 If you think you've found a bug please [raise an issue on GitHub](https://github.com/trytriplex/triplex/issues/new).
+
+### Why is Triplex slow?
+
+You might have GPU acceleration disabled. To fix:
+
+1. Press <Kbd>Cmd</Kbd> + <Kbd>Shift</Kbd> + <Kbd>P</Kbd>
+2. Search for "Preferences: Configure Runtime Arguments"
+3. Add the following line of code:
+   ```json
+   "disable-hardware-acceleration": true
+   ```
 
 ## Next Steps
 
