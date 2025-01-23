@@ -6,11 +6,12 @@
  */
 import { applyStepModifiers, useEvent, useStepModifiers } from "@triplex/lib";
 import { useEffect, useRef, useState } from "react";
-import { MathUtils } from "three";
+import { MathUtils, type Object3D } from "three";
 import {
   TransformControls as TransformControlsImpl,
   type TransformControlsProps,
 } from "triplex-drei";
+import { Tunnel } from "../../components/tunnel";
 import { useCamera } from "../camera/context";
 
 const steps = {
@@ -31,7 +32,7 @@ export function TransformControls({
 }: {
   enabled?: boolean;
   mode: TransformControlsProps["mode"];
-  object: TransformControlsProps["object"];
+  object: Object3D | undefined;
   onCompleteTransform?: () => void;
   space?: TransformControlsProps["space"];
 }) {
@@ -82,18 +83,35 @@ export function TransformControls({
   });
 
   return (
-    <TransformControlsImpl
-      camera={camera || undefined}
-      enabled={enabled}
-      mode={mode}
-      object={object}
-      onMouseDown={onMouseDownHandler}
-      onMouseUp={onMouseUpHandler}
-      ref={controlsRef}
-      rotationSnap={applyStepModifiers(steps.rotate, modifiers)}
-      scaleSnap={applyStepModifiers(steps.scale, modifiers)}
-      space={space}
-      translationSnap={applyStepModifiers(steps.translate, modifiers)}
-    />
+    <>
+      {import.meta.env.VITE_TRIPLEX_ENV === "test" && enabled && (
+        <Tunnel.In>
+          <button
+            onMouseUp={(e) => {
+              e.stopPropagation();
+              object?.position.set(1, 1, 1);
+              onCompleteTransform?.();
+            }}
+            style={{ left: 0, position: "absolute", top: "50%", zIndex: 999 }}
+          >
+            Test Translation
+          </button>
+        </Tunnel.In>
+      )}
+
+      <TransformControlsImpl
+        camera={camera || undefined}
+        enabled={enabled}
+        mode={mode}
+        object={object}
+        onMouseDown={onMouseDownHandler}
+        onMouseUp={onMouseUpHandler}
+        ref={controlsRef}
+        rotationSnap={applyStepModifiers(steps.rotate, modifiers)}
+        scaleSnap={applyStepModifiers(steps.scale, modifiers)}
+        space={space}
+        translationSnap={applyStepModifiers(steps.translate, modifiers)}
+      />
+    </>
   );
 }

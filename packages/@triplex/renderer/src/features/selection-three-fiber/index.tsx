@@ -74,14 +74,19 @@ export function ThreeFiberSelection({
 
         raycaster.setFromCamera(new Vector2(x, y), camera);
 
-        return raycaster
-          .intersectObject(scene)
-          .filter((found) => {
-            return (
-              isObjectVisible(found.object) &&
-              found.object.type !== "TransformControlsPlane"
-            );
-          })
+        const results = raycaster.intersectObject(scene);
+
+        if (
+          results.some(
+            (result) => result.object.type === "TransformControlsPlane",
+          )
+        ) {
+          // Skip raycasting if the transform controls are displayed.
+          return [];
+        }
+
+        return results
+          .filter((found) => isObjectVisible(found.object))
           .map((found) => {
             const meta = resolveElementMeta(found.object, {
               elements,
@@ -240,46 +245,47 @@ export function ThreeFiberSelection({
   ]);
 
   const onCompleteTransformHandler = useEvent(() => {
-    for (const selection of resolvedObjects) {
-      if (transform === "translate") {
-        const position = selection.object.position.toArray();
+    if (!resolvedObject) {
+      return;
+    }
 
-        send("element-set-prop", {
-          column: selection.meta.column,
-          line: selection.meta.line,
-          path: selection.meta.path,
-          propName: "position",
-          propValue: position.map(strip),
-        });
-        send("track", { actionId: "element_transform_translate" });
-      }
+    if (transform === "translate") {
+      const position = resolvedObject.object.position.toArray();
 
-      if (transform === "rotate") {
-        const rotation = selection.object.rotation.toArray();
-        rotation.pop();
+      send("element-set-prop", {
+        column: resolvedObject.meta.column,
+        line: resolvedObject.meta.line,
+        path: resolvedObject.meta.path,
+        propName: "position",
+        propValue: position.map(strip),
+      });
 
-        send("element-set-prop", {
-          column: selection.meta.column,
-          line: selection.meta.line,
-          path: selection.meta.path,
-          propName: "rotation",
-          propValue: rotation,
-        });
-        send("track", { actionId: "element_transform_rotate" });
-      }
+      send("track", { actionId: "element_transform_translate" });
+    } else if (transform === "rotate") {
+      const rotation = resolvedObject.object.rotation.toArray();
+      rotation.pop();
 
-      if (transform === "scale") {
-        const scale = selection.object.scale.toArray();
+      send("element-set-prop", {
+        column: resolvedObject.meta.column,
+        line: resolvedObject.meta.line,
+        path: resolvedObject.meta.path,
+        propName: "rotation",
+        propValue: rotation,
+      });
 
-        send("element-set-prop", {
-          column: selection.meta.column,
-          line: selection.meta.line,
-          path: selection.meta.path,
-          propName: "scale",
-          propValue: scale.map(strip),
-        });
-        send("track", { actionId: "element_transform_scale" });
-      }
+      send("track", { actionId: "element_transform_rotate" });
+    } else if (transform === "scale") {
+      const scale = resolvedObject.object.scale.toArray();
+
+      send("element-set-prop", {
+        column: resolvedObject.meta.column,
+        line: resolvedObject.meta.line,
+        path: resolvedObject.meta.path,
+        propName: "scale",
+        propValue: scale.map(strip),
+      });
+
+      send("track", { actionId: "element_transform_scale" });
     }
   });
 

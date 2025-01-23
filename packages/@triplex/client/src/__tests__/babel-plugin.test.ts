@@ -308,9 +308,9 @@ describe("babel plugin", () => {
   it("should mark destructured props usage", () => {
     const result = transformSync(
       `
-      function Component({ rotate, scale, position }) {
+      function Component({ rotation, scale, position }) {
         return (
-          <mesh rotate={rotate} scale={scale} position={position} />
+          <mesh rotation={rotation} scale={scale} position={position} />
         );
       }
     `,
@@ -324,11 +324,11 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "function Component({
-        rotate,
+        rotation,
         scale,
         position
       }) {
-        return <SceneObject rotate={rotate} scale={scale} position={position} __component={"mesh"} __meta={{
+        return <SceneObject rotation={rotation} scale={scale} position={position} __component={"mesh"} __meta={{
           "path": "",
           "name": "mesh",
           "line": 4,
@@ -350,7 +350,7 @@ describe("babel plugin", () => {
       `
       function Component(props) {
         return (
-          <mesh rotate={props.rotate} scale={props.scale} position={props.position} />
+          <mesh rotation={props.rotation} scale={props.scale} position={props.position} />
         );
       }
     `,
@@ -364,7 +364,7 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "function Component(props) {
-        return <SceneObject rotate={props.rotate} scale={props.scale} position={props.position} __component={"mesh"} __meta={{
+        return <SceneObject rotation={props.rotation} scale={props.scale} position={props.position} __component={"mesh"} __meta={{
           "path": "",
           "name": "mesh",
           "line": 4,
@@ -664,7 +664,7 @@ describe("babel plugin", () => {
             "line": 10,
             "column": 13,
             "translate": true,
-            "rotate": false,
+            "rotate": true,
             "scale": false
           }}>
                     <SceneObject args={[1, 1, 1]} __component={"boxGeometry"} __meta={{

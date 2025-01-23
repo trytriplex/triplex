@@ -396,7 +396,7 @@ export default function triplexBabelPlugin({
                     transformsFound.translate = true;
                   }
 
-                  if (attr.name.name === "rotate") {
+                  if (attr.name.name === "rotation") {
                     transformsFound.rotate = true;
                   }
 
