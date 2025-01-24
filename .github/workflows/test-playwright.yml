@@ -22,13 +22,14 @@ jobs:
 
     env:
       DEBUG: pw:browser*
+      SHARD_TOTAL: 5
 
     strategy:
       fail-fast: false
 
       matrix:
         os: [ubuntu-22.04, windows-latest]
-        shard: [1/5, 2/5, 3/5, 4/5, 5/5]
+        shard: [1, 2, 3, 4, 5]
 
     steps:
       - name: Checkout
@@ -50,26 +51,28 @@ jobs:
 
       - name: Run end-to-end tests
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- pnpm test:e2e --shard ${{ matrix.shard }}
+        run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- pnpm test:e2e --shard ${{ matrix.shard }}/${{ env.SHARD_TOTAL }}
         env:
-          PWTEST_BLOB_REPORT_NAME: ${{ matrix.os }}
+          # This is passed to a config option inside the Playwright config for the blob filename.
+          PWTEST_BLOB_NAME: ${{ matrix.os }}-${{ matrix.shard }}
 
       - name: Run end-to-end tests
         if: ${{ !startsWith(matrix.os, 'ubuntu-') }}
-        run: pnpm test:e2e --shard ${{ matrix.shard }}
+        run: pnpm test:e2e --shard ${{ matrix.shard }}/${{ env.SHARD_TOTAL }}
         env:
-          PWTEST_BLOB_REPORT_NAME: ${{ matrix.os }}
+          # This is passed to a config option inside the Playwright config for the blob filename.
+          PWTEST_BLOB_NAME: ${{ matrix.os }}-${{ matrix.shard }}
 
-      - uses: actions/upload-artifact@v3
-        if: always()
+      - uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
         with:
-          name: blob-report
-          path: blob-report/
+          name: blob-report-${{ matrix.os }}-${{ matrix.shard }}
+          path: blob-report
           retention-days: 1
 
   merge-reports:
     # Merge reports after playwright-tests, even if some shards have failed
-    if: always()
+    if: ${{ !cancelled() }}
 
     needs: playwright
 
@@ -96,17 +99,18 @@ jobs:
         run: pnpm i
 
       - name: Download blob reports from GitHub Actions Artifacts
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
-          name: blob-report
-          path: blob-reports
+          pattern: blob-report-*
+          path: all-blob-reports
+          merge-multiple: true
 
       - name: Merge into HTML Report
-        run: npx playwright merge-reports --reporter html,github --config test/merge.config.ts ./blob-reports
+        run: npx playwright merge-reports --reporter html,github --config test/merge.config.ts ./all-blob-reports
 
       - name: Upload HTML report
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
-          name: html-report
+          name: html-report--attempt-${{ github.run_attempt }}
           path: playwright-report
           retention-days: 14

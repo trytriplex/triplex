@@ -30,7 +30,18 @@ export default defineConfig({
       testDir: "./apps/vscode/__tests__",
     },
   ],
-  reporter: process.env.CI ? "blob" : "html",
+  reporter: process.env.CI
+    ? [
+        [
+          "blob",
+          {
+            fileName: process.env.PWTEST_BLOB_NAME
+              ? `report-${process.env.PWTEST_BLOB_NAME}.zip`
+              : undefined,
+          },
+        ],
+      ]
+    : "html",
   retries: process.env.CI ? 2 : 0,
   snapshotPathTemplate: "{testDir}/__snapshots__/{testFileName}-{arg}{ext}",
   testMatch: /e2e\.ts$/,
