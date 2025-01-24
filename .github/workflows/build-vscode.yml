@@ -40,6 +40,9 @@ jobs:
       - name: Build
         run: pnpm build
 
+      - name: Ensure clean git
+        run: node ./scripts/ensure-clean-git.js
+
       - name: Prepack
         run: pnpm --filter triplex-vsce run prepack
 

@@ -40,6 +40,9 @@ jobs:
       - name: Build targets
         run: pnpm electron:build-targets
 
+      - name: Ensure clean git
+        run: node ./scripts/ensure-clean-git.js
+
   smoke-test:
     needs: build
 
