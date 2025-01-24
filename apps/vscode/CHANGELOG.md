@@ -1,5 +1,14 @@
 # @triplex/vscode
 
+## 0.2.4
+
+### Patch Changes
+
+- 095c729: A new loading indicator has been implemented.
+- Updated dependencies [b2079fd]
+- Updated dependencies [095c729]
+  - @triplex/client@0.70.4
+
 ## 0.2.3
 
 ### Patch Changes

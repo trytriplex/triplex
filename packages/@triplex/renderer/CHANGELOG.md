@@ -1,5 +1,15 @@
 # @triplex/renderer
 
+## 0.71.3
+
+### Patch Changes
+
+- b2079fd: Hover selection indicators are now disabled when transform controls are visible.
+- b2079fd: Fixed regression where transforms were affecting more than one scene object. This primarily affected custom components that had multiple child meshes.
+- 095c729: A new loading indicator has been implemented.
+- Updated dependencies [095c729]
+  - @triplex/lib@0.69.8
+
 ## 0.71.2
 
 ### Patch Changes

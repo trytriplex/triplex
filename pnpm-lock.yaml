@@ -173,10 +173,10 @@ importers:
   apps/electron:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.3
+        specifier: 0.70.4
         version: link:../../packages/@triplex/client
       '@triplex/editor':
-        specifier: 0.69.9
+        specifier: 0.69.10
         version: link:../../packages/@triplex/editor
       '@triplex/server':
         specifier: 0.71.2
@@ -240,7 +240,7 @@ importers:
   apps/vscode:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.3
+        specifier: 0.70.4
         version: link:../../packages/@triplex/client
       '@triplex/server':
         specifier: 0.71.2
@@ -262,10 +262,10 @@ importers:
         specifier: 0.70.0
         version: link:../../packages/@triplex/bridge
       '@triplex/lib':
-        specifier: 0.69.7
+        specifier: 0.69.8
         version: link:../../packages/@triplex/lib
       '@triplex/ux':
-        specifier: 0.69.9
+        specifier: 0.69.10
         version: link:../../packages/@triplex/ux
       '@triplex/ws':
         specifier: 0.69.4
@@ -726,7 +726,7 @@ importers:
         specifier: 0.70.0
         version: link:../bridge
       '@triplex/renderer':
-        specifier: 0.71.2
+        specifier: 0.71.3
         version: link:../renderer
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -751,7 +751,7 @@ importers:
         specifier: ^1.6.5
         version: 1.6.5(@swc/helpers@0.5.5)
       '@triplex/lib':
-        specifier: 0.69.7
+        specifier: 0.69.8
         version: link:../lib
       '@triplex/server':
         specifier: 0.71.2
@@ -826,10 +826,10 @@ importers:
         specifier: 0.70.0
         version: link:../bridge
       '@triplex/lib':
-        specifier: 0.69.7
+        specifier: 0.69.8
         version: link:../lib
       '@triplex/ux':
-        specifier: 0.69.9
+        specifier: 0.69.10
         version: link:../ux
       '@triplex/ws':
         specifier: 0.69.4
@@ -939,7 +939,7 @@ importers:
         specifier: 0.70.0
         version: link:../bridge
       '@triplex/lib':
-        specifier: 0.69.7
+        specifier: 0.69.8
         version: link:../lib
       '@triplex/ws':
         specifier: 0.69.4
@@ -1124,7 +1124,7 @@ importers:
         specifier: 0.70.0
         version: link:../bridge
       '@triplex/lib':
-        specifier: 0.69.7
+        specifier: 0.69.8
         version: link:../lib
       react:
         specifier: ^18.3.1
@@ -6453,6 +6453,7 @@ packages:
 
   lodash.get@4.4.2:
     resolution: {integrity: sha512-z+Uw/vLuy6gQe8cfaFWD7p0wVv8fJl3mbzXh33RS+0oW2wvUqiRXiQ69gLWSLpgB5/6sU+r6BlQR0MBILadqTQ==}
+    deprecated: This package is deprecated. Use the optional chaining (?.) operator instead.
 
   lodash.includes@4.3.0:
     resolution: {integrity: sha512-W3Bx6mdkRTGtlJISOvVD/lbqjTlPPUDTMnlXZFnVwi9NKJ6tiAk6LVdlhZMm17VZisqhKcgzpO5Wz91PCt5b0w==}
@@ -6462,6 +6463,7 @@ packages:
 
   lodash.isequal@4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
+    deprecated: This package is deprecated. Use require('node:util').isDeepStrictEqual instead.
 
   lodash.isinteger@4.0.4:
     resolution: {integrity: sha512-DBwtEWN2caHQ9/imiNeEA5ys1JoRtRfY3d7V9wkqtbycnAmTvRRmbHKDV4a0EYc678/dia0jrte4tjYwVBaZUA==}

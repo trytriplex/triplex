@@ -1,5 +1,11 @@
 # @triplex/lib
 
+## 0.69.8
+
+### Patch Changes
+
+- 095c729: A new loading indicator has been implemented.
+
 ## 0.69.7
 
 ### Patch Changes

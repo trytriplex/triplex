@@ -1,5 +1,14 @@
 # @triplex/editor
 
+## 0.69.10
+
+### Patch Changes
+
+- 095c729: A new loading indicator has been implemented.
+- Updated dependencies [095c729]
+  - @triplex/lib@0.69.8
+  - @triplex/ux@0.69.10
+
 ## 0.69.9
 
 ### Patch Changes

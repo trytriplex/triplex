@@ -1,5 +1,16 @@
 # @triplex/client
 
+## 0.70.4
+
+### Patch Changes
+
+- b2079fd: Fixed a long standing bug where rotation transforms weren't correctly marked where statically used as the code analysis was looking for "rotate" instead of "rotation".
+- 095c729: A new loading indicator has been implemented.
+- Updated dependencies [b2079fd]
+- Updated dependencies [b2079fd]
+- Updated dependencies [095c729]
+  - @triplex/renderer@0.71.3
+
 ## 0.70.3
 
 ### Patch Changes

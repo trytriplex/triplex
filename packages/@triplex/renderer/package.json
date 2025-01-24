@@ -1,6 +1,6 @@
 {
   "name": "@triplex/renderer",
-  "version": "0.71.2",
+  "version": "0.71.3",
   "private": true,
   "description": "The visual IDE for the web.",
   "author": {
@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@triplex/bridge": "0.70.0",
-    "@triplex/lib": "0.69.7",
+    "@triplex/lib": "0.69.8",
     "@triplex/ws": "0.69.4",
     "bind-event-listener": "^3.0.0",
     "debounce": "^2.2.0",
