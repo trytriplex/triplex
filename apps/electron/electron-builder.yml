@@ -18,8 +18,6 @@ mac:
   category: public.app-category.developer-tools
   hardenedRuntime: true
   entitlements: ./build/entitlements.mac.plist
-  notarize:
-    teamId: 76VWKV4Y9P
 
 linux:
   executableName: triplex-electron
