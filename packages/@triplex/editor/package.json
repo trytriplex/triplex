@@ -1,6 +1,6 @@
 {
   "name": "@triplex/editor",
-  "version": "0.69.10",
+  "version": "0.70.5",
   "private": true,
   "description": "The visual IDE for the web.",
   "author": {

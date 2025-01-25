@@ -1,5 +1,7 @@
 # @triplex/editor
 
+## 0.70.5
+
 ## 0.69.10
 
 ### Patch Changes

@@ -1,6 +1,6 @@
 {
   "name": "@triplex/electron",
-  "version": "0.70.4",
+  "version": "0.70.5",
   "private": true,
   "description": "The visual IDE for the web.",
   "repository": "https://github.com/trytriplex/triplex",
@@ -22,8 +22,8 @@
     "typedef": "tsc"
   },
   "dependencies": {
-    "@triplex/client": "0.70.4",
-    "@triplex/editor": "0.69.10",
+    "@triplex/client": "0.70.5",
+    "@triplex/editor": "0.70.5",
     "@triplex/server": "0.71.2",
     "create-triplex-project": "0.70.2"
   },

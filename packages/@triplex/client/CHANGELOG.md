@@ -1,5 +1,11 @@
 # @triplex/client
 
+## 0.70.5
+
+### Patch Changes
+
+- 7977da7: Fix Vite bundler running the scene in production mode breaking HMR.
+
 ## 0.70.4
 
 ### Patch Changes

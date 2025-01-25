@@ -173,10 +173,10 @@ importers:
   apps/electron:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.4
+        specifier: 0.70.5
         version: link:../../packages/@triplex/client
       '@triplex/editor':
-        specifier: 0.69.10
+        specifier: 0.70.5
         version: link:../../packages/@triplex/editor
       '@triplex/server':
         specifier: 0.71.2
@@ -240,7 +240,7 @@ importers:
   apps/vscode:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.4
+        specifier: 0.70.5
         version: link:../../packages/@triplex/client
       '@triplex/server':
         specifier: 0.71.2
