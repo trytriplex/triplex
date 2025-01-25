@@ -1,0 +1,46 @@
+{
+  "extends": ["@nkzw", "plugin:playwright/recommended"],
+  "ignorePatterns": [
+    "dist",
+    "build",
+    "playwright-report",
+    "test-results",
+    "syntax-error.tsx"
+  ],
+  "plugins": ["header"],
+  "rules": {
+    "@nkzw/no-instanceof": "off",
+    "@typescript-eslint/consistent-type-imports": [
+      "error",
+      {
+        "disallowTypeAnnotations": false,
+        "fixStyle": "inline-type-imports"
+      }
+    ],
+    "@typescript-eslint/no-empty-function": "off",
+    "@typescript-eslint/no-explicit-any": "error",
+    "@typescript-eslint/no-inferrable-types": "off",
+    "@typescript-eslint/no-unnecessary-type-constraint": "off",
+    "@typescript-eslint/no-unused-vars": [
+      "error",
+      { "argsIgnorePattern": "^_", "ignoreRestSiblings": true }
+    ],
+    "brace-style": "off",
+    "header/header": ["error", "scripts/header.js"],
+    "import/no-extraneous-dependencies": "off",
+    "import/no-namespace": "off",
+    "import/no-unresolved": "off",
+    "no-extra-parens": "off",
+    "no-inner-declarations": "off",
+    "no-unused-expressions": "off",
+    "playwright/no-focused-test": "off",
+    "playwright/no-force-option": "off",
+    "playwright/no-standalone-expect": "off",
+    "prefer-const": "off",
+    "react/no-unknown-property": "off",
+    "space-before-function-paren": "off",
+    "unicorn/consistent-function-scoping": "off",
+    "unicorn/prefer-ternary": "off",
+    "unicorn/prefer-top-level-await": "off"
+  }
+}

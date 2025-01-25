@@ -44,6 +44,4 @@ jobs:
           ssh-keyscan -H 'github.com' >> ~/.ssh/known_hosts
 
       - name: Run Shipit
-        run:
-          npx monorepo-shipit --committer-name triplex-bot --committer-email
-          124734075+triplex-bot@users.noreply.github.com
+        run: npx monorepo-shipit --committer-name triplex-bot --committer-email 124734075+triplex-bot@users.noreply.github.com
