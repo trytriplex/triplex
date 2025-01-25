@@ -7,6 +7,10 @@
 import { useEffect } from "react";
 import { addDOMTestData } from "./util/add-dom-data";
 
+export function TestHMR() {
+  return <ComponentControlsTest color="blue" />;
+}
+
 export function ComponentControlsTest({
   color = "blue",
 }: {

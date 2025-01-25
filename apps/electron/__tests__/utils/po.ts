@@ -146,6 +146,10 @@ export class EditorPage {
     };
   }
 
+  get scene() {
+    return this.page.frameLocator("#scene");
+  }
+
   get frame() {
     const locator = this.page.getByTestId("frame");
 

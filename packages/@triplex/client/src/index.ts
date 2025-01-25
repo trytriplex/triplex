@@ -55,6 +55,15 @@ export async function createServer({
     userId,
   };
 
+  /**
+   * We need to make sure Vite runs in development mode, even after being built
+   * for production. This overrides NODE_ENV if it was set to production
+   * earlier.
+   */
+  if (process.env.NODE_ENV === "production") {
+    process.env.NODE_ENV = "development";
+  }
+
   const vite = await createViteServer({
     appType: "custom",
     assetsInclude: renderer.manifest.bundler?.assetsInclude,
@@ -62,6 +71,11 @@ export async function createServer({
     configFile: false,
     define: config.define,
     logLevel: "error",
+    /**
+     * We need to make sure Vite runs in development mode to ensure HMR and
+     * related capabilities are turned on.
+     */
+    mode: "development",
     optimizeDeps: {
       esbuildOptions: { plugins: [transformNodeModulesJSXPlugin()] },
     },
