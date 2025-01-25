@@ -5,7 +5,7 @@
     "prettier-plugin-tailwindcss",
     "prettier-plugin-packagejson"
   ],
-  "proseWrap": "always",
+  "proseWrap": "never",
   "jsdocSingleLineComment": false,
   "jsdocCapitalizeDescription": false,
   "jsdocPreferCodeFences": true

@@ -11,7 +11,6 @@
     "build": "yarn clean && yarn workspaces run build",
     "clean": "yarn workspaces run rimraf dist",
     "clean:node_modules": "rimraf node_modules && yarn workspaces run rimraf node_modules",
-    "dev": "node ./scripts/dev.js",
     "lint": "eslint ./ --cache",
     "test": "vitest",
     "typedef": "yarn workspaces run typedef"
