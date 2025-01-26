@@ -21,7 +21,7 @@
   "dependencies": {
     "@triplex/bridge": "0.70.0",
     "@triplex/lib": "0.69.8",
-    "@triplex/websocks": "0.69.4",
+    "@triplex/websocks": "0.0.0",
     "bind-event-listener": "^3.0.0",
     "debounce": "^2.2.0",
     "raf-schd": "^4.0.3",

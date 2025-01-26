@@ -33,7 +33,7 @@
     "@swc/core": "^1.6.5",
     "@triplex/lib": "0.69.8",
     "@triplex/server": "0.71.2",
-    "@triplex/websocks": "0.69.4",
+    "@triplex/websocks": "0.0.0",
     "@types/babel__core": "^7.20.5",
     "@types/express": "^4.17.16",
     "@types/node": "^18.11.18",

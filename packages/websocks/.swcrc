@@ -1,13 +1,8 @@
 {
-  "$schema": "https://json.schemastore.org/swcrc",
-  "minify": true,
+  "$schema": "https://swc.rs/schema.json",
   "sourceMaps": false,
   "jsc": {
-    "minify": {
-      "compress": true,
-      "mangle": true
-    },
-    "target": "es2017",
+    "target": "es2022",
     "parser": {
       "syntax": "typescript"
     },

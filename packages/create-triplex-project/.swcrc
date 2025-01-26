@@ -11,7 +11,7 @@
       "compress": true,
       "mangle": true
     },
-    "target": "es2017",
+    "target": "es2022",
     "parser": {
       "syntax": "typescript"
     }

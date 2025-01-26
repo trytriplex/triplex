@@ -268,7 +268,7 @@ importers:
         specifier: 0.69.10
         version: link:../../packages/@triplex/ux
       '@triplex/websocks':
-        specifier: 0.69.4
+        specifier: 0.0.0
         version: link:../../packages/websocks
       '@types/raf-schd':
         specifier: ^4.0.3
@@ -757,7 +757,7 @@ importers:
         specifier: 0.71.2
         version: link:../server
       '@triplex/websocks':
-        specifier: 0.69.4
+        specifier: 0.0.0
         version: link:../../websocks
       '@types/babel__core':
         specifier: ^7.20.5
@@ -832,7 +832,7 @@ importers:
         specifier: 0.69.10
         version: link:../ux
       '@triplex/websocks':
-        specifier: 0.69.4
+        specifier: 0.0.0
         version: link:../../websocks
       react:
         specifier: '>=18.0.0'
@@ -942,7 +942,7 @@ importers:
         specifier: 0.69.8
         version: link:../lib
       '@triplex/websocks':
-        specifier: 0.69.4
+        specifier: 0.0.0
         version: link:../../websocks
       bind-event-listener:
         specifier: ^3.0.0
@@ -1211,10 +1211,6 @@ importers:
         version: 0.172.0
 
   packages/websocks:
-    dependencies:
-      react:
-        specifier: '>=18.0.0'
-        version: 18.3.1
     optionalDependencies:
       ws:
         specifier: ^8.12.0
@@ -1226,15 +1222,15 @@ importers:
       '@swc/core':
         specifier: ^1.6.5
         version: 1.6.5(@swc/helpers@0.5.5)
-      '@triplex/bridge':
-        specifier: 0.70.0
-        version: link:../@triplex/bridge
-      '@triplex/server':
-        specifier: 0.71.2
-        version: link:../@triplex/server
       '@types/react':
         specifier: 18.3.3
         version: 18.3.3
+      react:
+        specifier: ^18.3.1
+        version: 18.3.1
+      react-dom:
+        specifier: ^18.3.1
+        version: 18.3.1(react@18.3.1)
       typescript:
         specifier: ^5.7.2
         version: 5.7.2
