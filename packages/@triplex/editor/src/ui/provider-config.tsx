@@ -5,13 +5,13 @@
  * file in the root directory of this source tree.
  */
 import { useScreenView } from "@triplex/ux";
-import { useLazySubscription } from "@triplex/ws/react";
 import { Suspense, useMemo } from "react";
 import { ExternalLink } from "../ds/external-link";
 import { SkeletonContainer, SkeletonText } from "../ds/skeleton";
 import { useScene } from "../stores/scene";
 import { useSceneState } from "../stores/scene-state";
 import { IDELink } from "../util/ide";
+import { useLazySubscription } from "../util/ws";
 import { PropField } from "./prop-field";
 import { PropInput, PropTagContext } from "./prop-input";
 

@@ -6,11 +6,11 @@
  */
 import { readFileSync } from "node:fs";
 import { inferExports, resolveProjectCwd } from "@triplex/server";
-import { on as onWS } from "@triplex/ws";
 import { dirname, normalize } from "upath";
 import * as vscode from "vscode";
 import { logger } from "../../util/log/vscode";
 import { on, sendVSCE } from "../util/bridge";
+import { on as onWS } from "../util/ws";
 import { TriplexDocument } from "./document";
 import { initializeWebviewPanel } from "./panel";
 import { type TriplexProjectResolver } from "./project";

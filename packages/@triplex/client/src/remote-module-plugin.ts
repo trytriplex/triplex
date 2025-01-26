@@ -5,9 +5,9 @@
  * file in the root directory of this source tree.
  */
 import { type TriplexPorts } from "@triplex/server";
-import { on } from "@triplex/ws";
 import anymatch from "anymatch";
 import { getCode } from "./api";
+import { on } from "./util/ws";
 
 function match(target: string, normalizedFiles: string[]): boolean {
   for (let i = 0; i < normalizedFiles.length; i++) {

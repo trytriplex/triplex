@@ -8,7 +8,6 @@ import { useThree } from "@react-three/fiber";
 import { compose, on, send } from "@triplex/bridge/client";
 import { useEvent } from "@triplex/lib";
 import { fg } from "@triplex/lib/fg";
-import { useSubscriptionEffect } from "@triplex/ws/react";
 import {
   useContext,
   useEffect,
@@ -21,6 +20,7 @@ import { flatten } from "../../util/array";
 import { HOVER_LAYER_INDEX, SELECTION_LAYER_INDEX } from "../../util/layers";
 import { resolveElementMeta } from "../../util/meta";
 import { encodeProps, isObjectVisible } from "../../util/three";
+import { useSubscriptionEffect } from "../../util/ws";
 import { SwitchToComponentContext } from "../app/context";
 import { CameraPreview } from "../camera-preview";
 import { useCamera } from "../camera/context";

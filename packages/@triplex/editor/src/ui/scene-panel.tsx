@@ -23,7 +23,6 @@ import {
 } from "@radix-ui/react-icons";
 import type { JsxElementPositions } from "@triplex/server";
 import { useScreenView, useTelemetry } from "@triplex/ux";
-import { useLazySubscription } from "@triplex/ws/react";
 import {
   Suspense,
   useEffect,
@@ -50,6 +49,7 @@ import {
   type InstructionType,
 } from "../util/dnd-hitbox";
 import { IDELink } from "../util/ide";
+import { useLazySubscription } from "../util/ws";
 import { ElementActionProvider, RenderActions } from "./ecosystem/elements";
 import { ErrorBoundary } from "./error-boundary";
 import { StringInput } from "./string-input";

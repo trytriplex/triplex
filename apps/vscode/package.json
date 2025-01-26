@@ -221,7 +221,7 @@
     "@triplex/bridge": "0.70.0",
     "@triplex/lib": "0.69.8",
     "@triplex/ux": "0.69.10",
-    "@triplex/ws": "0.69.4",
+    "@triplex/websocks": "0.69.4",
     "@types/raf-schd": "^4.0.3",
     "@types/vscode": "^1.88.0",
     "@vitejs/plugin-react": "^4.3.4",

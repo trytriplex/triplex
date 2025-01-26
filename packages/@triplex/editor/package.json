@@ -29,7 +29,7 @@
     "@triplex/bridge": "0.70.0",
     "@triplex/lib": "0.69.8",
     "@triplex/ux": "0.69.10",
-    "@triplex/ws": "0.69.4",
+    "@triplex/websocks": "0.69.4",
     "react-compiler-runtime": "19.0.0-beta-55955c9-20241229",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^3.1.4",

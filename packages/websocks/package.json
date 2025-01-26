@@ -1,8 +1,8 @@
 {
-  "name": "@triplex/ws",
+  "name": "@triplex/websocks",
   "version": "0.69.4",
   "private": true,
-  "description": "The visual IDE for the web.",
+  "description": "End-to-end typed websocket client and server. ",
   "author": {
     "name": "Triplex",
     "email": "support@triplex.dev",

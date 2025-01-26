@@ -12,11 +12,6 @@ import type {
   ProjectCustomComponent,
   ProjectHostComponent,
 } from "@triplex/server";
-import {
-  preloadSubscription,
-  useLazySubscription,
-  useSubscription,
-} from "@triplex/ws/react";
 import { createContext, Suspense, useContext, useState } from "react";
 import { cn } from "../ds/cn";
 import { Drawer } from "../ds/drawer";
@@ -25,6 +20,11 @@ import { Pressable } from "../ds/pressable";
 import { ScrollContainer } from "../ds/scroll-container";
 import { useAssetsDrawer } from "../stores/assets-drawer";
 import { useEditor } from "../stores/editor";
+import {
+  preloadSubscription,
+  useLazySubscription,
+  useSubscription,
+} from "../util/ws";
 import { StringInput } from "./string-input";
 import { AssetThumbnail } from "./thumbnail";
 

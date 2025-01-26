@@ -5,12 +5,12 @@
  * file in the root directory of this source tree.
  */
 
-import { useSubscriptionEffect } from "@triplex/ws/react";
 import { useEffect, useMemo, useRef } from "react";
 import { usePlayState } from "../../stores/use-play-state";
 import { flatten } from "../../util/array";
 import { blockFocusableChildren } from "../../util/focus";
 import { resolveElementMeta } from "../../util/meta";
+import { useSubscriptionEffect } from "../../util/ws";
 import { SceneObjectContext } from "../scene-element/context";
 import { useSelectionMarshal } from "../selection-provider/use-selection-marhsal";
 import {

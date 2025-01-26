@@ -22,7 +22,7 @@
         "./packages/@triplex/lib/**",
         "./packages/@triplex/renderer/**",
         "./packages/@triplex/ux/**",
-        "./packages/@triplex/ws/**"
+        "./packages/websocks/**"
       ],
       "rules": {
         "react-compiler/react-compiler": "error"
@@ -39,6 +39,7 @@
         "fixStyle": "inline-type-imports"
       }
     ],
+    "@typescript-eslint/no-require-imports": "off",
     "@typescript-eslint/no-empty-function": "off",
     "@typescript-eslint/no-explicit-any": "error",
     "@typescript-eslint/no-inferrable-types": "off",

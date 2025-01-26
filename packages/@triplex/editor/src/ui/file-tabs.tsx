@@ -12,7 +12,6 @@ import {
 } from "@radix-ui/react-icons";
 import { useEvent } from "@triplex/lib";
 import { useTelemetry } from "@triplex/ux";
-import { useLazySubscription } from "@triplex/ws/react";
 import { useEffect, useRef } from "react";
 import { IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
@@ -20,6 +19,7 @@ import { Pressable } from "../ds/pressable";
 import { useEditor } from "../stores/editor";
 import { useOverlayStore } from "../stores/overlay";
 import { useScene } from "../stores/scene";
+import { useLazySubscription } from "../util/ws";
 
 function FallbackTab({
   exportName,

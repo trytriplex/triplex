@@ -4,10 +4,10 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { useLazySubscription } from "@triplex/ws/react";
 import { useEffect, useState } from "react";
 import { cn } from "../ds/cn";
 import { useEditor } from "../stores/editor";
+import { useLazySubscription } from "../util/ws";
 import { EditorMenu } from "./editor-menu";
 
 export function TitleBar() {

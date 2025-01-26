@@ -6,7 +6,6 @@
  */
 import { Cross2Icon, EraserIcon } from "@radix-ui/react-icons";
 import { useScreenView } from "@triplex/ux";
-import { useLazySubscription } from "@triplex/ws/react";
 import { Suspense, useDeferredValue, useLayoutEffect, useState } from "react";
 import { IconButton } from "../ds/button";
 import { ExternalLink } from "../ds/external-link";
@@ -16,6 +15,7 @@ import { useEditor, type FocusedObject } from "../stores/editor";
 import { useScene } from "../stores/scene";
 import { useSceneState } from "../stores/scene-state";
 import { IDELink } from "../util/ide";
+import { useLazySubscription } from "../util/ws";
 import { ErrorBoundary } from "./error-boundary";
 import { PropField } from "./prop-field";
 import { PropInput, PropTagContext } from "./prop-input";

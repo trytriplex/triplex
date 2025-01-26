@@ -4,7 +4,6 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import type { TWSRouteDefinition } from "@triplex/server";
 import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
 import { parseJSON } from "./string";
 
@@ -43,7 +42,9 @@ export function buildPath(
   return path;
 }
 
-export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
+export function createWSHooks<
+  TWSRouteDefinition extends Record<string, { data: unknown; params: unknown }>,
+>(opts: (() => { url: string }) | { url: string }) {
   const valueCache = new Map<string, unknown>();
   const queryCache = new Map<
     string,
@@ -225,7 +226,9 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
     };
   }
 
-  function preloadSubscription<TRoute extends keyof TWSRouteDefinition>(
+  function preloadSubscription<
+    TRoute extends string & keyof TWSRouteDefinition,
+  >(
     ...args: TWSRouteDefinition[TRoute]["params"] extends never
       ? [route: TRoute]
       : [
@@ -238,7 +241,9 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
     query.load();
   }
 
-  function useLazySubscription<TRoute extends keyof TWSRouteDefinition>(
+  function useLazySubscription<
+    TRoute extends string & keyof TWSRouteDefinition,
+  >(
     ...args: TWSRouteDefinition[TRoute]["params"] extends never
       ? [route: TRoute]
       : [
@@ -261,7 +266,7 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
     return data;
   }
 
-  function useSubscription<TRoute extends keyof TWSRouteDefinition>(
+  function useSubscription<TRoute extends string & keyof TWSRouteDefinition>(
     ...args: TWSRouteDefinition[TRoute]["params"] extends never
       ? [route: TRoute]
       : [
@@ -282,7 +287,9 @@ export function createWSHooks(opts: (() => { url: string }) | { url: string }) {
     return data;
   }
 
-  function useSubscriptionEffect<TRoute extends keyof TWSRouteDefinition>(
+  function useSubscriptionEffect<
+    TRoute extends string & keyof TWSRouteDefinition,
+  >(
     ...args: TWSRouteDefinition[TRoute]["params"] extends never
       ? [route: TRoute, params?: { disabled?: boolean }]
       : [

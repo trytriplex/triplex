@@ -9,8 +9,10 @@ import { renderHook, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
 import { createWSHooks } from "../factory";
 
+type StubRoutes = Record<"/folder", { data: { name: string }; params: never }>;
+
 const { preloadSubscription, useLazySubscription, useSubscription } =
-  createWSHooks(() => ({
+  createWSHooks<StubRoutes>(() => ({
     url: "ws://localhost:3",
   }));
 
