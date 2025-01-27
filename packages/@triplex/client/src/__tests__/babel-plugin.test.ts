@@ -1746,4 +1746,62 @@ describe("babel plugin", () => {
 
     expect(result?.code).toContain(`"root": "react"`);
   });
+
+  it("should stub out userland create root calls", () => {
+    const result = transformSync(
+      `
+        import { createRoot } from "react-dom/client";
+
+        createRoot(document.getElementById("root")).render(<div />);
+      `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(
+      `
+      "import { createRoot } from "react-dom/client";
+      ({
+        render: () => {},
+        unmount: () => {}
+      }).render(<SceneObject __component={"div"} __meta={{
+        "path": "",
+        "name": "div",
+        "line": 4,
+        "column": 60,
+        "translate": false,
+        "rotate": false,
+        "scale": false
+      }}></SceneObject>);"
+    `,
+    );
+  });
+
+  it("should skip stubbing out userland create root calls", () => {
+    const result = transformSync(
+      `
+        import { createRoot } from "react-dom/client";
+
+        createRoot(document.getElementById("root")).render(<div />);
+      `,
+      {
+        filename: "foo.tsx",
+        plugins: [
+          plugin({ exclude: ["foo.tsx"] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(
+      `
+      "import { createRoot } from "react-dom/client";
+      createRoot(document.getElementById("root")).render(<div />);"
+    `,
+    );
+  });
 });

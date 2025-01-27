@@ -7,6 +7,22 @@
 import { type NodePath } from "@babel/core";
 import * as t from "@babel/types";
 
+export function isIdentifierFromModule(
+  path: NodePath<t.Identifier>,
+  moduleName: string,
+) {
+  const importSpecifier = resolveIdentifierImportSpecifier(path);
+  if (
+    importSpecifier &&
+    importSpecifier.parentPath.isImportDeclaration() &&
+    importSpecifier.parentPath.node.source.value === moduleName
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
 export function resolveIdentifierImportSpecifier(
   path: NodePath<t.JSXIdentifier | t.Identifier>,
 ) {

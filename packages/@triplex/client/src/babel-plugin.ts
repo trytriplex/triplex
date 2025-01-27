@@ -12,6 +12,7 @@ import {
   extractFunctionArgs,
   importIfMissing,
   isChildOfReturnStatement,
+  isIdentifierFromModule,
   isJSXIdentifierFromNodeModules,
 } from "./util/babel";
 import { isReactDOMElement } from "./util/is-react-element";
@@ -156,9 +157,30 @@ export default function triplexBabelPlugin({
   const plugin: PluginObj = {
     visitor: {
       CallExpression(path) {
-        if (currentFunction) {
-          const callee = path.get("callee");
+        const callee = path.get("callee");
 
+        if (
+          !shouldSkip &&
+          callee.isIdentifier() &&
+          callee.node.name === "createRoot" &&
+          isIdentifierFromModule(callee, "react-dom/client")
+        ) {
+          path.replaceWith(
+            t.objectExpression([
+              t.objectProperty(
+                t.identifier("render"),
+                t.arrowFunctionExpression([], t.blockStatement([])),
+              ),
+              t.objectProperty(
+                t.identifier("unmount"),
+                t.arrowFunctionExpression([], t.blockStatement([])),
+              ),
+            ]),
+          );
+          return;
+        }
+
+        if (currentFunction) {
           if (callee.isIdentifier() && isHookFromThreeFiber(callee)) {
             currentFunction.firstFoundHookSource ??= "react-three-fiber";
           }
