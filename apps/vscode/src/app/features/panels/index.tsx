@@ -11,7 +11,7 @@ import { type DragLocationHistory } from "@atlaskit/pragmatic-drag-and-drop/type
 import { LayersIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import { cn } from "@triplex/lib";
 import { fg } from "@triplex/lib/fg";
-import { useScreenView, useTelemetry } from "@triplex/ux";
+import { SubsequentSuspense, useScreenView, useTelemetry } from "@triplex/ux";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { IconButton } from "../../components/button";
 import { ScrollContainer } from "../../components/scroll-container";
@@ -218,7 +218,7 @@ export function Panels() {
       <div
         className={shown ? "flex h-full flex-col overflow-hidden" : "hidden"}
       >
-        <Suspense
+        <SubsequentSuspense
           fallback={
             <div className="flex flex-col px-4 py-1.5">
               <SkeletonList>
@@ -242,7 +242,7 @@ export function Panels() {
             </div>
             <div className="h-1.5" />
           </ScrollContainer>
-        </Suspense>
+        </SubsequentSuspense>
       </div>
     </PanelContainer>
   );

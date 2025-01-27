@@ -176,7 +176,7 @@ export function resolveExportDeclaration(node: Node<ts.Node>) {
 export function getJsxElementsPositions(
   sourceFile: SourceFileReadOnly,
   exportName: string,
-): JsxElementPositions[] {
+) {
   const elements: JsxElementPositions[] = [];
   const parentPointers = new Map<Node, JsxElementPositions>();
   const parentPath = normalize(sourceFile.getFilePath());
@@ -246,7 +246,7 @@ export function getJsxElementsPositions(
     }
   });
 
-  return elements;
+  return { declaration, elements };
 }
 
 export type AttributesResult = {

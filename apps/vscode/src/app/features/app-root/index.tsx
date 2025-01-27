@@ -8,10 +8,12 @@
 import { cn } from "@triplex/lib";
 import { useScreenView } from "@triplex/ux";
 import { useEffect, useState } from "react";
+import { preloadSubscription } from "../../hooks/ws";
 import { onVSCE } from "../../util/bridge";
 import { FloatingControls } from "../floating-controls";
 import { Panels } from "../panels";
 import { SceneContextProvider } from "./context";
+import { EmptyState } from "./empty-state";
 import { Events } from "./events";
 
 export function AppRoot() {
@@ -31,6 +33,7 @@ export function AppRoot() {
         <Panels />
         <div className="relative h-full w-full">
           <FloatingControls />
+          <EmptyState />
           <iframe
             allow="cross-origin-isolated"
             className={cn([
@@ -46,3 +49,8 @@ export function AppRoot() {
     </SceneContextProvider>
   );
 }
+
+preloadSubscription("/scene/:path/:exportName", {
+  exportName: window.triplex.initialState.exportName,
+  path: window.triplex.initialState.path,
+});

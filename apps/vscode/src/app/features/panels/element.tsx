@@ -20,10 +20,12 @@ import {
   useState,
   useTransition,
 } from "react";
+import { ButtonLink } from "../../components/button";
 import { Pressable } from "../../components/pressable";
 import { useOnSurfaceStateChange } from "../../components/surface";
 import { useLazySubscription } from "../../hooks/ws";
 import { useFilter } from "../../stores/filter-elements";
+import { createCodeLink } from "../../util/commands";
 import { useSceneEvents, useSceneSelected } from "../app-root/context";
 import { WarningElementProps } from "../warnings/warning-element-props";
 
@@ -223,6 +225,24 @@ export function SceneElements({
     exportName,
     path,
   });
+
+  if (elements.sceneObjects.length === 0) {
+    return (
+      <div className="flex flex-col gap-3 px-4 py-2">
+        <span>Get started by adding elements to your component.</span>
+        <ButtonLink
+          actionId="scenepanel_element_createcta"
+          href={createCodeLink(path, {
+            column: elements.column,
+            line: elements.line,
+          })}
+          variant="cta"
+        >
+          Go to Component
+        </ButtonLink>
+      </div>
+    );
+  }
 
   return elements.sceneObjects.map((element) => (
     <SceneElement

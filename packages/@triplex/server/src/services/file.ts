@@ -24,21 +24,27 @@ export function getSceneExport({
   path: string;
   project: TRIPLEXProject;
 }) {
-  const sourceFile = project.getSourceFile(path);
-  const jsxElements = getJsxElementsPositions(sourceFile.read(), exportName);
-  const foundExports = inferExports(sourceFile.read().getText());
+  const sourceFile = project.getSourceFile(path).read();
+  const { declaration, elements } = getJsxElementsPositions(
+    sourceFile,
+    exportName,
+  );
+  const foundExports = inferExports(sourceFile.getText());
   const foundExport = foundExports.find((exp) => exp.exportName === exportName);
+  const pos = sourceFile.getLineAndColumnAtPos(declaration.getStart());
 
   if (!foundExport) {
     throw new Error("invariant: unexpected");
   }
 
   return {
+    column: pos.column,
     exports: foundExports,
+    line: pos.line,
     matchesFilesGlob: matchFile(path, files),
     name: foundExport.name,
     path,
-    sceneObjects: jsxElements,
+    sceneObjects: elements,
   };
 }
 

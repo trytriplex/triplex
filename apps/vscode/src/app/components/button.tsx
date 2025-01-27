@@ -92,7 +92,7 @@ export function Button({
       accelerator={accelerator}
       actionId={actionId}
       className={cn([
-        "border-button relative rounded-sm border px-2.5 py-1 text-[12px] outline-offset-[2px]",
+        "border-button relative rounded-sm border px-2.5 py-1 text-[13px] outline-offset-[2px]",
         variant === "default" && "text-subtle bg-neutral hover:bg-hover",
         variant === "cta" && "text-primary bg-primary hover:bg-primary-hovered",
       ])}
@@ -101,5 +101,37 @@ export function Button({
     >
       {children}
     </Pressable>
+  );
+}
+
+export function ButtonLink({
+  actionId,
+  children,
+  href,
+  variant = "default",
+}: {
+  actionId: ActionId;
+  children: string;
+  href: string;
+  variant?: "default" | "cta";
+}) {
+  const telemetry = useTelemetry();
+  const onClickHandler = useEvent(() => {
+    telemetry.event(actionId);
+  });
+
+  return (
+    <a
+      className={cn([
+        "border-button relative rounded-sm border px-2.5 py-1 text-center text-[13px] outline-offset-[2px] focus:outline-none",
+        variant === "default" && "text-subtle bg-neutral hover:bg-hover",
+        variant === "cta" &&
+          "text-primary bg-primary hover:text-primary hover:bg-primary-hovered",
+      ])}
+      href={href}
+      onClick={onClickHandler}
+    >
+      {children}
+    </a>
   );
 }

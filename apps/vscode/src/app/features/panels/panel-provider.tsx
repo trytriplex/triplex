@@ -10,7 +10,7 @@ import { PropInput } from "@triplex/ux/inputs";
 import { useReducer } from "react";
 import * as Accordion from "../../components/accordion";
 import { IconButton } from "../../components/button";
-import { useLazySubscription } from "../../hooks/ws";
+import { preloadSubscription, useLazySubscription } from "../../hooks/ws";
 import { useFilter } from "../../stores/filter-props";
 import { propsByGroup } from "../element-props/group";
 import { renderPropInputs } from "./inputs";
@@ -147,3 +147,8 @@ export function ProviderControlsPanel() {
 
   return <>{isProviderSetUp ? <ProviderProps /> : <SetUpCTA />}</>;
 }
+
+preloadSubscription("/scene/:path/:exportName/props", {
+  exportName: "default",
+  path: window.triplex.env.config.provider,
+});

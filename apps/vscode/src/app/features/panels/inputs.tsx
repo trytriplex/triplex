@@ -24,6 +24,7 @@ import {
 } from "@triplex/ux/inputs";
 import { IconButton } from "../../components/button";
 import { Label } from "../../components/label";
+import { createCodeLink } from "../../util/commands";
 
 const createIssueURL = (prop: DeclaredProp | Prop) =>
   encodeURI(
@@ -31,22 +32,6 @@ const createIssueURL = (prop: DeclaredProp | Prop) =>
       JSON.stringify(prop, null, 2) +
       "\n```",
   );
-
-const createCodeLink = (path: string, prop: DeclaredProp | Prop) => {
-  if ("value" in prop) {
-    const data = {
-      column: prop.column,
-      line: prop.line,
-      path,
-    };
-
-    const encodedArgs = encodeURIComponent(JSON.stringify([data]));
-
-    return encodeURI(`command:triplex.open-file?${encodedArgs}`);
-  }
-
-  return "";
-};
 
 export const renderPropInputs: RenderInputs = ({
   onChange,
@@ -331,7 +316,9 @@ export const renderPropInputs: RenderInputs = ({
         className="hover:text-disabled text-disabled focus:border-selected bg-input border-input mb-1 flex h-[26px] w-full cursor-pointer items-center rounded-sm border px-[9px] focus:outline-none"
         href={
           isControlledInCode
-            ? createCodeLink(path, prop.prop)
+            ? "value" in prop.prop
+              ? createCodeLink(path, prop.prop)
+              : ""
             : createIssueURL(prop.prop)
         }
         title={

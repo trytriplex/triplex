@@ -35,11 +35,11 @@ module.exports = {
       warning: "var(--vscode-editorWarning-foreground)",
     },
     borderColor: {
-      button: "var(--vscode-button-border)",
-      danger: "var(--vscode-editorError-foreground)",
-      input: "var(--vscode-dropdown-border)",
-      overlay: "var(--vscode-panel-border)",
-      selected: "var(--vscode-focusBorder)",
+      button: "var(--vscode-button-border, transparent)",
+      danger: "var(--vscode-editorError-foreground, transparent)",
+      input: "var(--vscode-dropdown-border, transparent)",
+      overlay: "var(--vscode-panel-border, transparent)",
+      selected: "var(--vscode-focusBorder, transparent)",
       transparent: "transparent",
     },
     boxShadow: {
