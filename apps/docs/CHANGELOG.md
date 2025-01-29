@@ -1,5 +1,11 @@
 # @docs/triplex
 
+## 0.2.7
+
+### Patch Changes
+
+- 9b15541: Fix logo curvature.
+
 ## 0.2.6
 
 ### Patch Changes
