@@ -7,14 +7,12 @@
 import { type TWSRouteDefinition } from "@triplex/server";
 import { createWSHooks } from "@triplex/websocks/factory";
 
-const instance = createWSHooks<TWSRouteDefinition>({
+export const {
+  clearQuery,
+  preloadSubscription,
+  useLazySubscription,
+  useSubscription,
+  useSubscriptionEffect,
+} = createWSHooks<TWSRouteDefinition>({
   url: `ws://localhost:${window.triplex.env.ports.ws}`,
 });
-
-export const preloadSubscription = instance.preloadSubscription;
-
-export const useLazySubscription = instance.useLazySubscription;
-
-export const useSubscription = instance.useSubscription;
-
-export const useSubscriptionEffect = instance.useSubscriptionEffect;

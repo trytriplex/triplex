@@ -12,7 +12,6 @@ import { preloadSubscription } from "../../hooks/ws";
 import { onVSCE } from "../../util/bridge";
 import { FloatingControls } from "../floating-controls";
 import { Panels } from "../panels";
-import { SceneContextProvider } from "./context";
 import { EmptyState } from "./empty-state";
 import { Events } from "./events";
 
@@ -27,26 +26,24 @@ export function AppRoot() {
   }, []);
 
   return (
-    <SceneContextProvider>
-      <div className="fixed inset-0 flex select-none">
-        <Events />
-        <Panels />
-        <div className="relative h-full w-full">
-          <FloatingControls />
-          <EmptyState />
-          <iframe
-            allow="cross-origin-isolated"
-            className={cn([
-              "h-full w-full",
-              blockClicks && "pointer-events-none",
-            ])}
-            data-testid="scene"
-            id="scene"
-            src={`http://localhost:${window.triplex.env.ports.client}/scene.html`}
-          />
-        </div>
+    <div className="fixed inset-0 flex select-none">
+      <Events />
+      <Panels />
+      <div className="relative h-full w-full">
+        <FloatingControls />
+        <EmptyState />
+        <iframe
+          allow="cross-origin-isolated"
+          className={cn([
+            "h-full w-full",
+            blockClicks && "pointer-events-none",
+          ])}
+          data-testid="scene"
+          id="scene"
+          src={`http://localhost:${window.triplex.env.ports.client}/scene.html`}
+        />
       </div>
-    </SceneContextProvider>
+    </div>
   );
 }
 

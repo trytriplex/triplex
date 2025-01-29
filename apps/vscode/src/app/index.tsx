@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import "./styles.css";
 import { init } from "@sentry/react";
 import { initFeatureGates } from "@triplex/lib/fg";
 import { LoadingLogo } from "@triplex/lib/loader";
@@ -13,10 +14,11 @@ import { createRoot } from "react-dom/client";
 import { version } from "../../package.json";
 import { RootErrorBoundary } from "./components/root-error-boundary";
 import { AppRoot } from "./features/app-root";
-import { EnsureDependencies } from "./features/onboarding-splash/ensure-dependencies";
+import { SceneContextProvider } from "./features/app-root/context";
+import { EnsureCodeValidity } from "./features/invariants/ensure-code-validity";
+import { EnsureDependencies } from "./features/invariants/ensure-dependencies";
 import { RepoTelemetry } from "./features/telemetry/repo";
 import { preloadSubscription } from "./hooks/ws";
-import "./styles.css";
 
 if (
   process.env.NODE_ENV === "production" &&
@@ -51,9 +53,13 @@ async function bootstrap() {
       <RootErrorBoundary>
         <Suspense fallback={<LoadingLogo position="splash" variant="fill" />}>
           <RepoTelemetry />
-          <EnsureDependencies>
-            <AppRoot />
-          </EnsureDependencies>
+          <SceneContextProvider>
+            <EnsureDependencies>
+              <EnsureCodeValidity>
+                <AppRoot />
+              </EnsureCodeValidity>
+            </EnsureDependencies>
+          </SceneContextProvider>
         </Suspense>
       </RootErrorBoundary>
     </TelemetryProvider>,

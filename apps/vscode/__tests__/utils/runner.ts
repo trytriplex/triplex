@@ -221,10 +221,10 @@ const test = base.extend<
         .getByPlaceholder("Type the name of a command")
         .fill("> Revert and Close Editor");
       await page.page.keyboard.press("Enter");
-
-      // Cleanup any files created or modified by
-      spawnSync("git checkout examples", { shell: true });
     }
+
+    // Cleanup any files created or modified by the test.
+    spawnSync("git checkout examples examples-private", { shell: true });
   },
   vscode: [
     async ({}, use, workerInfo) => {

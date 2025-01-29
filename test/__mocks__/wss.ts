@@ -11,8 +11,29 @@ const mockWSS = ws.link(wssURL);
 
 export const handlers = [
   mockWSS.addEventListener("connection", ({ client }) => {
-    client.addEventListener("message", () => {
-      client.send(JSON.stringify({ name: "bar" }));
+    let errorCount = 0;
+
+    client.addEventListener("message", (e) => {
+      switch (e.data) {
+        case "/errors":
+          client.send(JSON.stringify({ error: "Websocket server error!" }));
+          break;
+
+        case "/errors-once": {
+          errorCount += 1;
+
+          if (errorCount >= 1) {
+            client.send(JSON.stringify({ name: "bar" }));
+          } else {
+            client.send(JSON.stringify({ error: "Websocket server error!" }));
+          }
+
+          break;
+        }
+
+        default:
+          client.send(JSON.stringify({ name: "bar" }));
+      }
     });
   }),
 ];

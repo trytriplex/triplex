@@ -123,7 +123,7 @@ export function ButtonLink({
   return (
     <a
       className={cn([
-        "border-button relative rounded-sm border px-2.5 py-1 text-center text-[13px] outline-offset-[2px] focus:outline-none",
+        "border-button relative rounded-sm border px-2.5 py-1 text-center text-[13px] leading-[18px] outline-offset-[2px] focus:outline-none",
         variant === "default" && "text-subtle bg-neutral hover:bg-hover",
         variant === "cta" &&
           "text-primary bg-primary hover:text-primary hover:bg-primary-hovered",
@@ -131,7 +131,7 @@ export function ButtonLink({
       href={href}
       onClick={onClickHandler}
     >
-      {children}
+      <span>{children}</span>
     </a>
   );
 }

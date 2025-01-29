@@ -464,6 +464,17 @@ export function createServer({
       },
     ),
     tws.route(
+      { defer: true, path: "/scene/:path/diagnostics" },
+      async ({ path }) => {
+        const sourceFile = project.getSourceFile(path);
+        return sourceFile.syntaxErrors();
+      },
+      async (push, { path }) => {
+        const sourceFile = await project.getSourceFile(path);
+        sourceFile.onModified(push, { includeInvalidChanges: true });
+      },
+    ),
+    tws.route(
       { defer: true, path: "/scene/:path/:exportName" },
       async ({ exportName, path }) => {
         const result = await getSceneExport({

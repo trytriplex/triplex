@@ -12,7 +12,7 @@ export function ErrorSplash({ error }: { error: Error | { message: string } }) {
   return (
     <>
       <div
-        className="fixed inset-0 mx-auto flex max-w-2xl flex-col justify-center gap-4 p-10"
+        className="fixed inset-0 mx-auto flex max-w-2xl select-none flex-col justify-center gap-4 p-10"
         data-testid="ErrorSplash"
       >
         <h1 className="text-heading text-center font-medium">
@@ -26,14 +26,22 @@ export function ErrorSplash({ error }: { error: Error | { message: string } }) {
         </p>
 
         <div className="mx-auto flex items-center gap-2">
-          <a href="https://discord.gg/nBzRBUEs4b">Join Discord</a>
+          <a
+            className="text-link hover:underline"
+            href="https://discord.gg/nBzRBUEs4b"
+          >
+            Join Discord
+          </a>
           <span className="text-xs">•</span>
-          <a href="https://github.com/trytriplex/triplex/issues/new">
-            Raise a Bug
+          <a
+            className="text-link hover:underline"
+            href="https://github.com/trytriplex/triplex/issues/new"
+          >
+            Raise an Issue
           </a>
         </div>
 
-        <code className="mx-auto my-2 max-h-32 w-full max-w-2xl overflow-auto bg-white/5 px-4 py-2 text-left">
+        <code className="mx-auto my-2 max-h-32 w-full max-w-2xl select-text overflow-auto bg-white/5 px-4 py-2 text-left">
           {"stack" in error ? error.stack : error.message}
         </code>
       </div>

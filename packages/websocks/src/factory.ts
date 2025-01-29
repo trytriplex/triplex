@@ -323,7 +323,32 @@ export function createWSHooks<
     return value;
   }
 
+  function clearQuery<TRoute extends string & keyof TWSRouteDefinition>(
+    ...args: TWSRouteDefinition[TRoute]["params"] extends never
+      ? [route: TRoute]
+      : [
+          route: TRoute,
+          params: RemapWithNumber<TWSRouteDefinition[TRoute]["params"]>,
+        ]
+  ): void {
+    const [route, params = {}] = args;
+    const path = buildPath(route, params);
+    const query = queryCache.get(path);
+
+    valueCache.delete(path);
+
+    if (query) {
+      /**
+       * To prevent an invariant being thrown we set the query to lazily refresh
+       * the next time it's accessed, transforming the query to a lazy
+       * subscription.
+       */
+      queryCache.set(path, { ...query, lazilyRefetch: true });
+    }
+  }
+
   return {
+    clearQuery,
     preloadSubscription,
     useLazySubscription,
     useSubscription,

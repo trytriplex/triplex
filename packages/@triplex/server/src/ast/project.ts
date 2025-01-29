@@ -7,6 +7,7 @@
 import { existsSync } from "node:fs";
 import { watch } from "chokidar";
 import {
+  DiagnosticCategory,
   getCompilerOptionsFromTsConfig,
   ModuleResolutionKind,
   Project,
@@ -325,12 +326,33 @@ export function ${componentName}() {
           );
         };
       },
-      onModified: (cb: () => void) => {
-        const wrappedCb = () => setTimeout(cb, 14);
-        sourceFile.onModified(wrappedCb);
+      onModified: (
+        cb: () => void,
+        { includeInvalidChanges }: { includeInvalidChanges?: boolean } = {},
+      ) => {
+        const modifiedHandler = () => {
+          if (!includeInvalidChanges) {
+            const diagnostics = project
+              .getProgram()
+              .getSyntacticDiagnostics(sourceFile)
+              .filter(
+                (diagnostic) =>
+                  diagnostic.getCategory() === DiagnosticCategory.Error,
+              );
+
+            if (diagnostics.length !== 0) {
+              // If there are any syntax errors we skip the callback.
+              return;
+            }
+          }
+
+          setTimeout(cb, 14);
+        };
+
+        sourceFile.onModified(modifiedHandler);
 
         return () => {
-          sourceFile.onModified(wrappedCb, false);
+          sourceFile.onModified(modifiedHandler, false);
         };
       },
       open: (exportName: string, index: number = -1) => {
@@ -447,6 +469,29 @@ export function ${componentName}() {
         if (exportName) {
           invalidateThumbnail({ exportName, path: filePath });
         }
+      },
+      syntaxErrors: () => {
+        const diagnostics = project
+          .getProgram()
+          .getSyntacticDiagnostics(sourceFile)
+          .filter(
+            (diagnostic) =>
+              diagnostic.getCategory() === DiagnosticCategory.Error,
+          );
+
+        return diagnostics.map((error) => {
+          const message = error.getMessageText().toString();
+          const { column, line } = sourceFile.getLineAndColumnAtPos(
+            error.getStart(),
+          );
+
+          return {
+            code: error.getCode(),
+            column,
+            line: line - 1,
+            message,
+          };
+        });
       },
       undo: (id?: number) => {
         const undoStack = sourceFileHistory.get(sourceFile);
