@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.71.3
+
+### Patch Changes
+
+- fe84ca9: Syntax errors are now recoverable.
+
 ## 0.71.2
 
 ### Patch Changes

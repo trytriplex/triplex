@@ -1,5 +1,11 @@
 # @triplex/ws-client
 
+## 0.0.1
+
+### Patch Changes
+
+- fe84ca9: Add `clearQuery` API.
+
 ## 0.69.4
 
 ### Patch Changes

@@ -1,5 +1,19 @@
 # @triplex/vscode
 
+## 0.2.6
+
+### Patch Changes
+
+- 3aa0a3e: Fix unexpected borders being shown across some editor themes.
+- 9b15541: Fix logo curvature.
+- 3aa0a3e: The element panel and scene now shows an empty state when there were no elements found.
+- 3aa0a3e: Testing minimizing the amount of loading states behind a feature gate.
+- fe84ca9: Syntax errors are now recoverable.
+- Updated dependencies [6422c5f]
+- Updated dependencies [fe84ca9]
+  - @triplex/client@0.70.6
+  - @triplex/server@0.71.3
+
 ## 0.2.5
 
 ### Patch Changes

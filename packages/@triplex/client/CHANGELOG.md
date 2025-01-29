@@ -1,5 +1,13 @@
 # @triplex/client
 
+## 0.70.6
+
+### Patch Changes
+
+- 6422c5f: Userland createRoot calls are now stubbed out to prevent undefined behavior when opening.
+- Updated dependencies [fe84ca9]
+  - @triplex/renderer@0.71.4
+
 ## 0.70.5
 
 ### Patch Changes

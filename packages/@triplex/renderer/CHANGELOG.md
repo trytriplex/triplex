@@ -1,5 +1,15 @@
 # @triplex/renderer
 
+## 0.71.4
+
+### Patch Changes
+
+- fe84ca9: Syntax errors are now recoverable.
+- Updated dependencies [9b15541]
+- Updated dependencies [fe84ca9]
+  - @triplex/lib@0.69.9
+  - @triplex/websocks@0.0.1
+
 ## 0.71.3
 
 ### Patch Changes

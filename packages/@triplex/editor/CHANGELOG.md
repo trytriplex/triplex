@@ -1,5 +1,16 @@
 # @triplex/editor
 
+## 0.70.6
+
+### Patch Changes
+
+- 9b15541: Fix logo curvature.
+- Updated dependencies [9b15541]
+- Updated dependencies [fe84ca9]
+  - @triplex/lib@0.69.9
+  - @triplex/ux@0.69.11
+  - @triplex/websocks@0.0.1
+
 ## 0.70.5
 
 ## 0.69.10

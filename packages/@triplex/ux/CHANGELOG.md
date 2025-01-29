@@ -1,5 +1,13 @@
 # @triplex/ux
 
+## 0.69.11
+
+### Patch Changes
+
+- 9b15541: Fix logo curvature.
+- Updated dependencies [9b15541]
+  - @triplex/lib@0.69.9
+
 ## 0.69.10
 
 ### Patch Changes
