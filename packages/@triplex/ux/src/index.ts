@@ -22,3 +22,4 @@ export {
 } from "./telemetry";
 export { SubsequentSuspense } from "./suspense";
 export { TriplexLogo } from "./logo";
+export { Menu, MenuOption, MenuTrigger, MenuSeparator } from "./menu";

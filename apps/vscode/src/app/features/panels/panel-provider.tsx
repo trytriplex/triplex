@@ -57,6 +57,7 @@ function ProviderProps() {
               });
               resetForm();
             }}
+            spacing="spacious"
           />
         </div>
       )}

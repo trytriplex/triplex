@@ -56,7 +56,8 @@ export function App({
 
   useEffect(() => {
     send("set-extension-points", {
-      elements: [
+      area: "elements",
+      controls: [
         {
           buttons: [
             {
@@ -75,7 +76,19 @@ export function App({
           type: "toggle-button",
         },
       ],
-      scene: [
+    });
+
+    send("set-extension-points", {
+      area: "settings",
+      options: [
+        { id: "camera_default", label: "Use Default Camera" },
+        { id: "camera_editor", label: "Use Editor Camera" },
+      ],
+    });
+
+    send("set-extension-points", {
+      area: "scene",
+      controls: [
         {
           buttons: [
             {

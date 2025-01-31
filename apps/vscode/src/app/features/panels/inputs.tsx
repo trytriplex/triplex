@@ -145,7 +145,7 @@ export const renderPropInputs: RenderInputs = ({
               aria-label={prop.prop.label}
               className={cn([
                 !isActive && "invalid:border-danger",
-                "text-input border-input focus:border-selected bg-input placeholder:text-input-placeholder mb-1 h-[26px] w-full cursor-col-resize rounded-sm border px-[9px] [color-scheme:dark] [font-variant-numeric:tabular-nums] focus:cursor-text focus:outline-none",
+                "text-input border-input focus:border-selected bg-input placeholder:text-input-placeholder mb-1 h-[26px] w-full cursor-col-resize rounded-sm border px-[9px] [font-variant-numeric:tabular-nums] [color-scheme:light_dark] focus:cursor-text focus:outline-none",
               ])}
               ref={ref}
               type="number"

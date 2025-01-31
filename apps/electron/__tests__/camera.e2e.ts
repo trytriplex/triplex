@@ -52,8 +52,9 @@ test("switch to play mode and toggle to editor camera", async ({
   await expect(electron.devOnlyCameraPanel).toHaveText(/type: user/);
   await expect(electron.devOnlyCameraPanel).toHaveText(/name: user_defined/);
 
-  await electron.controls.button("Play Options").click();
-  await electron.page.getByText("Editor Camera").click();
+  await electron.controls.locator
+    .getByRole("combobox", { name: "Settings" })
+    .selectOption("Use Editor Camera");
 
   await expect(electron.devOnlyCameraPanel).toHaveText(/type: perspective/);
   await expect(electron.devOnlyCameraPanel).toHaveText(
@@ -61,11 +62,12 @@ test("switch to play mode and toggle to editor camera", async ({
   );
 });
 
-test("toggle to default camera and switch to play mode", async ({
+test("toggle to editor camera and switch to play mode", async ({
   electron,
 }) => {
-  await electron.controls.button("Play Options").click();
-  await electron.page.getByText("Default Camera").click();
+  await electron.controls.locator
+    .getByRole("combobox", { name: "Settings" })
+    .selectOption("Use Editor Camera");
 
   await expect(electron.devOnlyCameraPanel).toHaveText(/type: perspective/);
   await expect(electron.devOnlyCameraPanel).toHaveText(
@@ -74,8 +76,10 @@ test("toggle to default camera and switch to play mode", async ({
 
   await electron.controls.button("Play Scene").click();
 
-  await expect(electron.devOnlyCameraPanel).toHaveText(/type: user/);
-  await expect(electron.devOnlyCameraPanel).toHaveText(/name: user_defined/);
+  await expect(electron.devOnlyCameraPanel).toHaveText(/type: perspective/);
+  await expect(electron.devOnlyCameraPanel).toHaveText(
+    /name: __triplex_camera/,
+  );
 });
 
 // This is currently a bug where the camera isn't unset when removing it as default

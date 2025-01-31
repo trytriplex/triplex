@@ -27,6 +27,7 @@ export type ActionGroup =
   | "assets"
   | "changelog"
   | "component"
+  | "config"
   | "contact"
   | "controls"
   | "docs"

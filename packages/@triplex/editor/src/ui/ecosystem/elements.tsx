@@ -20,7 +20,9 @@ export function ElementActionProvider({
 
   useEffect(() => {
     return on("set-extension-points", (data) => {
-      setActions(data.elements);
+      if (data.area === "elements") {
+        setActions(data.controls);
+      }
     });
   }, []);
 

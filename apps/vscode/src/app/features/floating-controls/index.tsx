@@ -5,20 +5,27 @@
  * file in the root directory of this source tree.
  */
 import {
-  CaretDownIcon,
+  GearIcon,
   PauseIcon,
   PlayIcon,
   ResetIcon,
   StopIcon,
 } from "@radix-ui/react-icons";
-import { on, send, type Controls } from "@triplex/bridge/host";
+import {
+  on,
+  send,
+  type Controls,
+  type MenuControl,
+} from "@triplex/bridge/host";
 import { cn } from "@triplex/lib";
 import {
   ButtonControl,
   ButtonGroupControl,
+  Menu,
+  MenuOption,
+  MenuTrigger,
   ToggleButtonControl,
   useTelemetry,
-  type ActionId,
 } from "@triplex/ux";
 import { useEffect, useState } from "react";
 import { IconButton } from "../../components/button";
@@ -29,13 +36,22 @@ import { useSceneEvents, useScenePlayState } from "../app-root/context";
 
 export function FloatingControls() {
   const [controls, setControls] = useState<Controls>();
+  const [settingsOptions, setSettingsOptions] = useState<
+    MenuControl["options"]
+  >([]);
   const play = useScenePlayState();
   const { setPlayState: dispatch } = useSceneEvents();
   const telemetry = useTelemetry();
 
   useEffect(() => {
     return on("set-extension-points", (data) => {
-      setControls(data.scene);
+      if (data.area === "scene") {
+        setControls(data.controls);
+      }
+
+      if (data.area === "settings") {
+        setSettingsOptions(data.options);
+      }
     });
   }, []);
 
@@ -99,7 +115,7 @@ export function FloatingControls() {
                       >
                         <IconButton
                           accelerator={accelerator}
-                          actionId={("scene_controls_" + id) as ActionId}
+                          actionId={`scene_controls_${id}`}
                           icon={Icon}
                           isSelected={isSelected}
                           label={label}
@@ -121,7 +137,7 @@ export function FloatingControls() {
                     {({ Icon, accelerator, id, label, onClick }) => (
                       <IconButton
                         accelerator={accelerator}
-                        actionId={("scene_controls_" + id) as ActionId}
+                        actionId={`scene_controls_${id}`}
                         icon={Icon}
                         key={label}
                         label={label}
@@ -142,7 +158,7 @@ export function FloatingControls() {
                     {({ Icon, accelerator, id, label, onClick }) => (
                       <IconButton
                         accelerator={accelerator}
-                        actionId={("scene_controls_" + id) as ActionId}
+                        actionId={`scene_controls_${id}`}
                         icon={Icon}
                         key={label}
                         label={label}
@@ -167,7 +183,6 @@ export function FloatingControls() {
           label="Reset"
           onClick={() => send("request-refresh-scene", undefined)}
         />
-        <Separator />
         {play.state !== "edit" && (
           <IconButton
             actionId="scene_frame_stop"
@@ -176,51 +191,65 @@ export function FloatingControls() {
             onClick={() => dispatch("state-edit")}
           />
         )}
-
-        <div className="hover:bg-hover flex">
-          {play.state === "play" && (
-            <IconButton
-              actionId="scene_frame_pause"
-              icon={PauseIcon}
-              label="Pause"
-              onClick={() => dispatch("state-pause")}
-            />
-          )}
-          {play.state !== "play" && (
-            <IconButton
-              actionId="scene_frame_play"
-              icon={PlayIcon}
-              label="Play"
-              onClick={() => dispatch("state-play")}
-            />
-          )}
-
+        {play.state === "play" && (
           <IconButton
-            actionId="scene_frame_playoptions"
-            icon={CaretDownIcon}
-            label={
-              play.camera === "default"
-                ? "Set Play Camera (Default)"
-                : "Set Play Camera (Editor)"
-            }
-            onClick={(e) => {
-              if ("clientX" in e && e.target) {
-                e.target.dispatchEvent(
-                  new MouseEvent("contextmenu", {
-                    bubbles: true,
-                    clientX: e.clientX,
-                    clientY: e.clientY,
-                  }),
-                );
-              }
-            }}
-            spacing="thin"
-            vscodeContext={{
-              path: window.triplex.initialState.path,
-              webviewSection: "play-camera",
-            }}
+            actionId="scene_frame_pause"
+            icon={PauseIcon}
+            label="Pause"
+            onClick={() => dispatch("state-pause")}
           />
-        </div>
+        )}
+        {play.state !== "play" && (
+          <IconButton
+            actionId="scene_frame_play"
+            icon={PlayIcon}
+            label="Play"
+            onClick={() => dispatch("state-play")}
+          />
+        )}
+        <Separator />
+        <Menu
+          onSelect={(value) => {
+            switch (value) {
+              case "camera_default":
+                dispatch("camera-default");
+                break;
+
+              case "camera_editor":
+                dispatch("camera-editor");
+                break;
+
+              default:
+                send("extension-point-triggered", {
+                  id: value,
+                  scope: "scene",
+                });
+                break;
+            }
+          }}
+        >
+          <MenuTrigger className="outline-default outline-selected peer-hover:bg-hover rounded peer-focus-visible:outline">
+            <IconButton
+              actionId={"(UNSAFE_SKIP)"}
+              icon={GearIcon}
+              label="Settings"
+              onClick={() => {}}
+            />
+          </MenuTrigger>
+          {settingsOptions.map((option, index) =>
+            "type" in option ? (
+              <hr key={index} />
+            ) : (
+              <MenuOption
+                actionId={`scene_config_${option.id}`}
+                key={option.id}
+                value={option.id}
+              >
+                {option.label}
+              </MenuOption>
+            ),
+          )}
+        </Menu>
       </Surface>
     </div>
   );

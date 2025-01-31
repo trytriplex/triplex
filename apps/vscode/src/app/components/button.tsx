@@ -7,7 +7,6 @@
 import { type IconProps } from "@radix-ui/react-icons/dist/types";
 import { cn, onKeyDown, useEvent, type Accelerator } from "@triplex/lib";
 import { useTelemetry, type ActionId } from "@triplex/ux";
-import { VSCodeButton } from "@vscode/webview-ui-toolkit/react";
 import { useEffect, type ComponentType } from "react";
 import { Pressable } from "./pressable";
 
@@ -19,7 +18,7 @@ export function IconButton({
   isSelected,
   label,
   onClick,
-  spacing,
+  spacing = "default",
   vscodeContext,
 }: {
   accelerator?: Accelerator;
@@ -47,11 +46,13 @@ export function IconButton({
   }, [accelerator, actionId, telemetry, onClickHandler]);
 
   return (
-    <VSCodeButton
-      appearance="icon"
+    <button
       aria-label={label + (isSelected ? " active" : "")}
       className={cn([
-        "relative",
+        "hover:bg-hover outline-default outline-selected active:bg-pressed text-default relative flex flex-shrink-0 items-center justify-center rounded focus-visible:outline",
+        spacing === "default" && "h-[22px] w-[22px]",
+        spacing === "thin" && "",
+        spacing === "spacious" && "h-[26px] w-[26px]",
         isSelected ? "bg-selected text-selected" : "",
       ])}
       data-vscode-context={
@@ -60,15 +61,9 @@ export function IconButton({
       onClick={onClickHandler}
       title={label + (accelerator ? ` (${accelerator.toUpperCase()})` : "")}
     >
-      <Icon
-        className={cn([
-          spacing === "spacious" && "m-0.5",
-          spacing === "thin" && "-mx-1",
-          "pointer-events-none",
-        ])}
-      />
+      <Icon className="pointer-events-none h-[16px] w-[16px] flex-shrink-0" />
       {children}
-    </VSCodeButton>
+    </button>
   );
 }
 
@@ -76,6 +71,7 @@ export function Button({
   accelerator,
   actionId,
   children,
+  isDisabled,
   onClick,
   variant = "default",
   vscodeContext,
@@ -83,6 +79,7 @@ export function Button({
   accelerator?: Accelerator;
   actionId: ActionId;
   children: string;
+  isDisabled?: boolean;
   onClick: (e: React.MouseEvent | KeyboardEvent) => void;
   variant?: "default" | "cta";
   vscodeContext?: Record<string, unknown>;
@@ -92,10 +89,16 @@ export function Button({
       accelerator={accelerator}
       actionId={actionId}
       className={cn([
-        "border-button relative rounded-sm border px-2.5 py-1 text-[13px] outline-offset-[2px]",
-        variant === "default" && "text-subtle bg-neutral hover:bg-hover",
-        variant === "cta" && "text-primary bg-primary hover:bg-primary-hovered",
+        "border-button outline-default outline-selected outline-offset-button relative rounded-sm border px-2.5 py-1 text-[13px] focus-visible:outline",
+        isDisabled
+          ? "text-disabled bg-neutral cursor-not-allowed"
+          : [
+              variant === "default" && "text-subtle bg-neutral hover:bg-hover",
+              variant === "cta" &&
+                "text-primary bg-primary hover:bg-primary-hovered",
+            ],
       ])}
+      isDisabled={isDisabled}
       onClick={onClick}
       vscodeContext={vscodeContext}
     >
@@ -123,7 +126,7 @@ export function ButtonLink({
   return (
     <a
       className={cn([
-        "border-button relative rounded-sm border px-2.5 py-1 text-center text-[13px] leading-[18px] outline-offset-[2px] focus:outline-none",
+        "border-button outline-default outline-selected outline-offset-button relative rounded-sm border px-2.5 py-1 text-center text-[13px] leading-[18px] focus:outline-none focus-visible:outline",
         variant === "default" && "text-subtle bg-neutral hover:bg-hover",
         variant === "cta" &&
           "text-primary bg-primary hover:text-primary hover:bg-primary-hovered",

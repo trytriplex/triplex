@@ -6,19 +6,24 @@
  */
 
 import {
-  CaretDownIcon,
+  GearIcon,
   PauseIcon,
   PlayIcon,
   ResetIcon,
   SizeIcon,
   StopIcon,
 } from "@radix-ui/react-icons";
-import { on, type Controls } from "@triplex/bridge/host";
+import {
+  on,
+  send,
+  type Controls,
+  type MenuControl,
+} from "@triplex/bridge/host";
+import { Menu, MenuOption, MenuTrigger } from "@triplex/ux";
 import { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Button as DSButton, IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
-import { Menu, MenuRadioGroup, MenuRadioItem } from "../ds/menu";
 import { Separator } from "../ds/separator";
 import { useCanvasStage } from "../stores/canvas-stage";
 import { useScene } from "../stores/scene";
@@ -29,8 +34,8 @@ export function ControlsMenu() {
   const playState = useScene((store) => store.playState);
   const setPlayState = useScene((store) => store.setPlayState);
   const setPlayCamera = useScene((store) => store.setPlayCamera);
-  const playCamera = useScene((store) => store.playCamera);
   const [controls, setControls] = useState<Controls>();
+  const [settings, setSettings] = useState<MenuControl["options"]>([]);
   const zoom = useCanvasStage((store) => store.canvasZoom);
   const frame = useCanvasStage((store) => store.frame);
   const resetZoom = useCanvasStage((store) => store.resetZoom);
@@ -40,7 +45,11 @@ export function ControlsMenu() {
 
   useEffect(() => {
     return on("set-extension-points", (data) => {
-      setControls(data.scene);
+      if (data.area === "scene") {
+        setControls(data.controls);
+      } else if (data.area === "settings") {
+        setSettings(data.options);
+      }
     });
   }, []);
 
@@ -132,14 +141,13 @@ export function ControlsMenu() {
         )}
       </div>
 
-      <div className="flex rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1 text-neutral-400">
+      <div className="flex rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1 text-sm text-neutral-400">
         <IconButton
           actionId="scene_frame_reset"
           icon={ResetIcon}
           label="Reset Scene"
           onClick={refresh}
         />
-        <Separator />
         {playState !== "edit" && (
           <IconButton
             actionId="scene_frame_stop"
@@ -148,7 +156,6 @@ export function ControlsMenu() {
             onClick={() => setPlayState("edit")}
           />
         )}
-
         {playState === "play" && (
           <IconButton
             actionId="scene_frame_pause"
@@ -157,7 +164,6 @@ export function ControlsMenu() {
             onClick={() => setPlayState("pause")}
           />
         )}
-
         {playState !== "play" && (
           <IconButton
             actionId="scene_frame_play"
@@ -166,28 +172,48 @@ export function ControlsMenu() {
             onClick={() => setPlayState("play")}
           />
         )}
-
+        <Separator />
         <Menu
-          trigger={
-            <IconButton
-              actionId="scene_frame_playoptions"
-              icon={CaretDownIcon}
-              label="Play Options"
-              size="flush"
-            />
-          }
+          onSelect={(value) => {
+            switch (value) {
+              case "camera_default":
+                setPlayCamera("default");
+                break;
+
+              case "camera_editor":
+                setPlayCamera("editor");
+                break;
+
+              default:
+                send("extension-point-triggered", {
+                  id: value,
+                  scope: "scene",
+                });
+                break;
+            }
+          }}
         >
-          <MenuRadioGroup onChange={setPlayCamera} value={playCamera}>
-            <MenuRadioItem actionId="scene_frame_camera_editor" value="editor">
-              Editor Camera
-            </MenuRadioItem>
-            <MenuRadioItem
-              actionId="scene_frame_camera_default"
-              value="default"
-            >
-              Default Camera
-            </MenuRadioItem>
-          </MenuRadioGroup>
+          <MenuTrigger className="rounded outline-1 outline-offset-1 outline-blue-400 peer-hover:bg-white/5 peer-focus-visible:outline">
+            <IconButton
+              actionId={"(UNSAFE_SKIP)"}
+              icon={GearIcon}
+              label="Settings"
+              onClick={() => {}}
+            />
+          </MenuTrigger>
+          {settings.map((option, index) =>
+            "type" in option ? (
+              <hr key={index} />
+            ) : (
+              <MenuOption
+                actionId={`scene_config_${option.id}`}
+                key={option.id}
+                value={option.id}
+              >
+                {option.label}
+              </MenuOption>
+            ),
+          )}
         </Menu>
       </div>
     </div>

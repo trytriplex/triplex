@@ -18,18 +18,20 @@ import type {
   HostSendEventData,
   HostSendEventName,
   HostSendEventResponse,
+  MenuControl,
   SeparatorControl,
   ToggleButtonControl,
 } from "./types";
 
 export {
   Actions,
-  Controls,
   ButtonControl,
   ButtonGroupControl,
-  SeparatorControl,
-  ExtensionPointElement,
   ClientSendEventData,
+  Controls,
+  ExtensionPointElement,
+  MenuControl,
+  SeparatorControl,
   ToggleButtonControl,
 };
 

@@ -23,9 +23,10 @@ module.exports = {
       "list-hovered": "var(--vscode-list-hoverBackground)",
       neutral: "var(--vscode-button-secondaryBackground)",
       "neutral-hovered": "var(--vscode-button-secondaryHoverBackground)",
-      overlay: "var(--panel-view-background)",
+      overlay: "var(--vscode-panel-background)",
       "overlay-top": "var(--vscode-notifications-background)",
       "overlay-top-hovered": "var(--vscode-list-hoverBackground)",
+      pressed: "var(--vscode-toolbar-activeBackground)",
       primary: "var(--vscode-button-background)",
       "primary-hovered": "var(--vscode-button-hoverBackground)",
       scrollbar: "var(--vscode-scrollbarSlider-background)",
@@ -59,14 +60,14 @@ module.exports = {
       semibold: 600,
     },
     outlineColor: {
-      selected: "var(--focus-border)",
+      selected: "var(--vscode-focusBorder)",
     },
     outlineOffset: {
-      button: "var(--button-icon-outline-offset)",
+      button: "2px",
       inset: "-1px",
     },
     outlineWidth: {
-      default: "calc(var(--border-width) * 1px)",
+      default: "1px",
     },
     textColor: {
       "active-selected": "var(--vscode-list-activeSelectionForeground)",

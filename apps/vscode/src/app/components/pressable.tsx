@@ -14,6 +14,7 @@ interface PressableProps {
   children?: React.ReactNode;
   className?: string;
   describedBy?: string;
+  isDisabled?: boolean;
   labelledBy?: string;
   onClick: (e: React.MouseEvent | KeyboardEvent) => void;
   style?: CSSProperties;
@@ -29,6 +30,7 @@ export const Pressable = forwardRef<HTMLButtonElement, PressableProps>(
       children,
       className,
       describedBy,
+      isDisabled,
       labelledBy,
       onClick,
       style,
@@ -62,6 +64,7 @@ export const Pressable = forwardRef<HTMLButtonElement, PressableProps>(
         data-vscode-context={
           vscodeContext ? JSON.stringify(vscodeContext) : undefined
         }
+        disabled={isDisabled}
         onClick={onClickHandler}
         ref={ref}
         style={style}

@@ -38,6 +38,20 @@ export interface ButtonGroupControl {
   type: "button-group";
 }
 
+export interface MenuControl {
+  groupId: string;
+  icon?: Icon;
+  label: string;
+  options: (
+    | {
+        id: string;
+        label: string;
+      }
+    | { type: "separator" }
+  )[];
+  type: "menu";
+}
+
 export interface ToggleButtonControl {
   accelerator?: string;
   buttons: [
@@ -126,10 +140,16 @@ export interface ClientSendEventData {
   keydown: KeyboardEventObject;
   keyup: KeyboardEventObject;
   ready: undefined;
-  "set-extension-points": {
-    elements: Actions;
-    scene: Controls;
-  };
+  "set-extension-points":
+    | {
+        area: "elements";
+        controls: Actions;
+      }
+    | {
+        area: "scene";
+        controls: Controls;
+      }
+    | { area: "settings"; options: MenuControl["options"] };
   track: { actionId: string };
 }
 

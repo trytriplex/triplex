@@ -39,7 +39,12 @@ const icons = {
   exit: ExitIcon,
   grid: GridIcon,
   "grid-perspective": () => (
-    <div style={{ transform: "perspective(30px) rotateX(45deg)" }}>
+    <div
+      style={{
+        transform: "perspective(30px) rotateX(45deg)",
+        width: 16,
+      }}
+    >
       <GridIcon />
     </div>
   ),

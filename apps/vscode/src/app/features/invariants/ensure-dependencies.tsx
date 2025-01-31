@@ -6,8 +6,8 @@
  */
 
 import { useScreenView } from "@triplex/ux";
-import { VSCodeButton } from "@vscode/webview-ui-toolkit/react";
 import { useState, type ReactNode } from "react";
+import { Button } from "../../components/button";
 import { preloadSubscription, useSubscription } from "../../hooks/ws";
 import { sendVSCE } from "../../util/bridge";
 import { ErrorIllustration } from "./error-illustration";
@@ -33,15 +33,17 @@ export function EnsureDependencies({ children }: { children: ReactNode }) {
           Triplex for VS Code couldn't open as required dependencies are
           missing. Once installed please close and re-open the editor.
         </span>
-        <VSCodeButton
-          disabled={installing}
+        <Button
+          actionId="errorsplash_project_installdeps"
+          isDisabled={installing}
           onClick={() => {
             setInstalling(true);
             sendVSCE("terminal", { command });
           }}
+          variant="cta"
         >
           Install Missing Dependencies
-        </VSCodeButton>
+        </Button>
         <div className="flex flex-col gap-1">
           <span>Alternatively install yourself through your terminal:</span>
           <code
