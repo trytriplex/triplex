@@ -19,8 +19,14 @@ import {
   type Controls,
   type MenuControl,
 } from "@triplex/bridge/host";
-import { Menu, MenuOption, MenuTrigger } from "@triplex/ux";
-import { useEffect, useState } from "react";
+import {
+  groupOptionsByGroup,
+  Menu,
+  MenuOption,
+  MenuOptionGroup,
+  MenuTrigger,
+} from "@triplex/ux";
+import { Fragment, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { Button as DSButton, IconButton } from "../ds/button";
 import { cn } from "../ds/cn";
@@ -201,19 +207,31 @@ export function ControlsMenu() {
               onClick={() => {}}
             />
           </MenuTrigger>
-          {settings.map((option, index) =>
-            "type" in option ? (
-              <hr key={index} />
-            ) : (
-              <MenuOption
-                actionId={`scene_config_${option.id}`}
-                key={option.id}
-                value={option.id}
-              >
-                {option.label}
-              </MenuOption>
-            ),
-          )}
+          {groupOptionsByGroup(settings).map(([groupName, options], index) => {
+            const optionsJsx = options.map((option) =>
+              "type" in option ? (
+                <hr key={index} />
+              ) : (
+                <MenuOption
+                  actionId={`scene_config_${option.id}`}
+                  key={option.id}
+                  value={option.id}
+                >
+                  {option.label}
+                </MenuOption>
+              ),
+            );
+
+            if (groupName) {
+              return (
+                <MenuOptionGroup key={groupName} label={groupName}>
+                  {optionsJsx}
+                </MenuOptionGroup>
+              );
+            } else {
+              return <Fragment key={index}>{optionsJsx}</Fragment>;
+            }
+          })}
         </Menu>
       </div>
     </div>

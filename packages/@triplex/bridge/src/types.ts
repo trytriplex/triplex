@@ -44,6 +44,7 @@ export interface MenuControl {
   label: string;
   options: (
     | {
+        group?: string;
         id: string;
         label: string;
       }

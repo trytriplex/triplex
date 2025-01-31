@@ -4,6 +4,7 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
+import { type MenuControl } from "@triplex/bridge/host";
 import {
   createContext,
   useContext,
@@ -102,6 +103,34 @@ export function MenuOption({
   );
 }
 
+export function MenuOptionGroup({
+  children,
+  label,
+}: {
+  children: ReactNode;
+  label: string;
+}) {
+  return <optgroup label={label}>{children}</optgroup>;
+}
+
 export function MenuSeparator() {
   return <hr />;
+}
+
+export function groupOptionsByGroup(options: MenuControl["options"]) {
+  const groups: [string, MenuControl["options"]][] = [];
+  let currentGroupName: string | undefined;
+
+  for (const option of options) {
+    const nextGroupName = "group" in option ? option.group ?? "" : "";
+    if (currentGroupName !== nextGroupName) {
+      currentGroupName = nextGroupName;
+      groups.push([nextGroupName, [option]]);
+    } else {
+      const currentGroup = groups.at(-1)!;
+      currentGroup[1].push(option);
+    }
+  }
+
+  return groups;
 }

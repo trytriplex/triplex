@@ -81,8 +81,16 @@ export function App({
     send("set-extension-points", {
       area: "settings",
       options: [
-        { id: "camera_default", label: "Use Default Camera" },
-        { id: "camera_editor", label: "Use Editor Camera" },
+        {
+          group: "Play Camera",
+          id: "camera_default",
+          label: "Use Default Camera",
+        },
+        {
+          group: "Play Camera",
+          id: "camera_editor",
+          label: "Use Editor Camera",
+        },
       ],
     });
 

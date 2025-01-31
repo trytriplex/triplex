@@ -21,13 +21,15 @@ import { cn } from "@triplex/lib";
 import {
   ButtonControl,
   ButtonGroupControl,
+  groupOptionsByGroup,
   Menu,
   MenuOption,
+  MenuOptionGroup,
   MenuTrigger,
   ToggleButtonControl,
   useTelemetry,
 } from "@triplex/ux";
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { IconButton } from "../../components/button";
 import { Separator } from "../../components/separator";
 import { Surface } from "../../components/surface";
@@ -236,18 +238,32 @@ export function FloatingControls() {
               onClick={() => {}}
             />
           </MenuTrigger>
-          {settingsOptions.map((option, index) =>
-            "type" in option ? (
-              <hr key={index} />
-            ) : (
-              <MenuOption
-                actionId={`scene_config_${option.id}`}
-                key={option.id}
-                value={option.id}
-              >
-                {option.label}
-              </MenuOption>
-            ),
+          {groupOptionsByGroup(settingsOptions).map(
+            ([groupName, options], index) => {
+              const optionsJsx = options.map((option) =>
+                "type" in option ? (
+                  <hr key={index} />
+                ) : (
+                  <MenuOption
+                    actionId={`scene_config_${option.id}`}
+                    key={option.id}
+                    value={option.id}
+                  >
+                    {option.label}
+                  </MenuOption>
+                ),
+              );
+
+              if (groupName) {
+                return (
+                  <MenuOptionGroup key={groupName} label={groupName}>
+                    {optionsJsx}
+                  </MenuOptionGroup>
+                );
+              } else {
+                return <Fragment key={index}>{optionsJsx}</Fragment>;
+              }
+            },
           )}
         </Menu>
       </Surface>
