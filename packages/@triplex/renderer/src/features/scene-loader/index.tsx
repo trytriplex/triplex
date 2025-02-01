@@ -12,6 +12,7 @@ import {
 } from "@triplex/bridge/client";
 import { useEffect, useMemo, useReducer } from "react";
 import { Canvas } from "../canvas";
+import { SceneControls } from "../scene-controls";
 import { SceneRenderer } from "../scene-renderer";
 import { SelectionProvider } from "../selection-provider";
 import { ReactDOMSelection } from "../selection-react-dom";
@@ -101,6 +102,7 @@ export function SceneLoader({
               />
             </Canvas>
           )}
+          <SceneControls />
         </SceneContext.Provider>
       </ResetCountContext.Provider>
     </SelectionProvider>

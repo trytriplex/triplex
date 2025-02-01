@@ -26,6 +26,7 @@ export function Menu({
   const id = useId();
   const ref = useRef<HTMLSelectElement>(null!);
   const telemetry = useTelemetry();
+  const options = children.slice(1).filter(Boolean);
 
   return (
     <div
@@ -59,7 +60,11 @@ export function Menu({
       >
         <hr />
         <option hidden value="" />
-        {children.slice(1)}
+        {options.length > 0 ? (
+          options
+        ) : (
+          <option disabled>No available options</option>
+        )}
       </select>
       <MenuIdContext.Provider value={id}>{children[0]}</MenuIdContext.Provider>
     </div>
@@ -118,6 +123,10 @@ export function MenuSeparator() {
 }
 
 export function groupOptionsByGroup(options: MenuControl["options"]) {
+  if (options.length === 0) {
+    return undefined;
+  }
+
   const groups: [string, MenuControl["options"]][] = [];
   let currentGroupName: string | undefined;
 

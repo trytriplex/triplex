@@ -63,3 +63,22 @@ test("lights turned on", async ({ vsce }) => {
     panel.scene.locator.getByTestId("scene-lights-on"),
   ).toBeVisible();
 });
+
+test.describe(() => {
+  test.use({
+    filename: "examples-private/test-fixture/src/react-roots.tsx",
+  });
+
+  test("remove three fiber controls when switching to a no canvas component", async ({
+    vsce,
+  }) => {
+    await vsce.codelens("CanvasExample").click();
+    const { locator, panels } = vsce.resolveEditor();
+
+    await panels.getByLabel("Switch component").selectOption("Button");
+
+    await expect(
+      locator.getByRole("button", { name: "Turn On Default Lights" }),
+    ).toBeHidden();
+  });
+});

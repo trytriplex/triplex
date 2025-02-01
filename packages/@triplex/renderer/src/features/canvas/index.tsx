@@ -8,7 +8,7 @@ import { Canvas as FiberCanvas, type CanvasProps } from "@react-three/fiber";
 import { send } from "@triplex/bridge/client";
 import { fg } from "@triplex/lib/fg";
 import { LoadingLogo } from "@triplex/lib/loader";
-import { Fragment, Suspense, useContext } from "react";
+import { Fragment, Suspense, useContext, useLayoutEffect } from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
 import { ErrorFallback } from "../../components/error-fallback";
 import { TriplexGrid } from "../../components/grid";
@@ -24,6 +24,7 @@ import { ResetCountContext, useLoadedScene } from "../scene-loader/context";
 import { ThreeFiberSelection } from "../selection-three-fiber";
 import { CaptureShaderErrors } from "./capture-shader-errors";
 import { SceneLights } from "./scene-lights";
+import { useCanvasMounted } from "./store";
 
 /**
  * **Canvas**
@@ -36,6 +37,15 @@ export function Canvas({ children, ...props }: CanvasProps) {
   const playState = usePlayState();
   const resetCount = useContext(ResetCountContext);
   const { exportName, path, provider, providerPath, scene } = useLoadedScene();
+  const setMounted = useCanvasMounted((state) => state.setMounted);
+
+  useLayoutEffect(() => {
+    setMounted(true);
+
+    return () => {
+      setMounted(false);
+    };
+  }, [setMounted]);
 
   return (
     <FiberCanvas

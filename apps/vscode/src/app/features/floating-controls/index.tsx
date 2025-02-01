@@ -238,7 +238,7 @@ export function FloatingControls() {
               onClick={() => {}}
             />
           </MenuTrigger>
-          {groupOptionsByGroup(settingsOptions).map(
+          {groupOptionsByGroup(settingsOptions)?.map(
             ([groupName, options], index) => {
               const optionsJsx = options.map((option) =>
                 "type" in option ? (

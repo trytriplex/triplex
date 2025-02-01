@@ -207,7 +207,7 @@ export function ControlsMenu() {
               onClick={() => {}}
             />
           </MenuTrigger>
-          {groupOptionsByGroup(settings).map(([groupName, options], index) => {
+          {groupOptionsByGroup(settings)?.map(([groupName, options], index) => {
             const optionsJsx = options.map((option) =>
               "type" in option ? (
                 <hr key={index} />
