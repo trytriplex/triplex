@@ -1,0 +1,15 @@
+{
+  "$schema": "https://swc.rs/schema.json",
+  "sourceMaps": false,
+  "jsc": {
+    "target": "es2022",
+    "parser": {
+      "syntax": "typescript"
+    },
+    "transform": {
+      "react": {
+        "runtime": "automatic"
+      }
+    }
+  }
+}

@@ -5,6 +5,6 @@
  * file in the root directory of this source tree.
  */
 import { type TWSEventDefinition } from "@triplex/server";
-import { createEvents } from "@triplex/websocks";
+import { createWSEvents } from "@triplex/websocks-client/events";
 
-export const { on } = createEvents<TWSEventDefinition>();
+export const { on } = createWSEvents<TWSEventDefinition>();

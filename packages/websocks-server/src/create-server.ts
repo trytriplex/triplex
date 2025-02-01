@@ -6,61 +6,15 @@
  */
 import { createServer } from "node:http";
 import { match } from "node-match-path";
-import { type WebSocket, type WebSocketServer as WSS } from "ws";
-import { stringifyJSON } from "./string";
-
-const { WebSocketServer } = require("ws") as { WebSocketServer: typeof WSS };
-
-export type UnionToIntersection<U> = (
-  U extends unknown ? (k: U) => void : never
-) extends (k: infer I) => void
-  ? I
-  : never;
-
-interface RouteOpts {
-  defer?: boolean;
-}
-
-type ValidateShape<T, Shape> = T extends Shape
-  ? Exclude<keyof T, keyof Shape> extends never
-    ? T
-    : never
-  : never;
-
-type ExtractParams<TRoute extends string> =
-  TRoute extends `${infer TStart}/${infer TEnd}`
-    ? ExtractParams<TStart> & ExtractParams<TEnd>
-    : TRoute extends `:${infer TParam}`
-      ? { [P in TParam]: string }
-      : // eslint-disable-next-line @typescript-eslint/ban-types
-        {};
-
-export type RouteParams<TRoute extends string> =
-  ValidateShape<
-    ExtractParams<TRoute>,
-    // eslint-disable-next-line @typescript-eslint/ban-types
-    {}
-  > extends never
-    ? ExtractParams<TRoute>
-    : never;
-
-function decodeParams(params?: Record<string, string> | null) {
-  if (!params) {
-    return {};
-  }
-
-  const newParams = { ...params };
-
-  for (const key in newParams) {
-    newParams[key] = decodeURIComponent(newParams[key]);
-  }
-
-  return newParams;
-}
-
-interface AliveWebSocket extends WebSocket {
-  isAlive: boolean;
-}
+import { WebSocketServer, type WebSocket } from "ws";
+import { decodeParams, stringifyJSON } from "./string";
+import {
+  type AliveWebSocket,
+  type RouteHandler,
+  type RouteOpts,
+  type RouteParams,
+  type UnionToIntersection,
+} from "./types";
 
 function collectTypes<TRoutes extends Array<Record<string, unknown>>>(
   _: TRoutes,
@@ -70,13 +24,11 @@ function collectTypes<TRoutes extends Array<Record<string, unknown>>>(
   return {} as UnionToIntersection<TRoutes[number]>;
 }
 
-export function createTWS() {
+export function createWSServer() {
   const server = createServer();
-  const wss = new WebSocketServer<AliveWebSocket>({ server });
-  const routeHandlers: ((
-    path: string,
-  ) => ((ws: WebSocket) => Promise<void>) | false)[] = [];
   const eventHandlers: Record<string, (ws: WebSocket) => void> = {};
+  const wss = new WebSocketServer<AliveWebSocket>({ server });
+  const routeHandlers: RouteHandler[] = [];
 
   function ping() {
     wss.clients.forEach((ws) => {

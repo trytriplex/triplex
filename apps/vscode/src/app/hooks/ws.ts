@@ -5,7 +5,7 @@
  * file in the root directory of this source tree.
  */
 import { type TWSRouteDefinition } from "@triplex/server";
-import { createWSHooks } from "@triplex/websocks/factory";
+import { createWSHooks } from "@triplex/websocks-client/react";
 
 export const {
   clearQuery,

@@ -8,7 +8,7 @@
 import { render } from "@testing-library/react";
 import { ErrorBoundary } from "react-error-boundary";
 import { describe, expect, it } from "vitest";
-import { createWSHooks } from "../factory";
+import { createWSHooks } from "../react";
 
 type StubRoutes = Record<
   "/folder" | "/errors" | "/errors-once",

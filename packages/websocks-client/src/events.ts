@@ -6,7 +6,7 @@
  */
 import { parseJSON } from "./string";
 
-export function createEvents<
+export function createWSEvents<
   TWSEventDefinition extends Record<string, { data: unknown }>,
 >() {
   function on<TEventName extends string & keyof TWSEventDefinition>(

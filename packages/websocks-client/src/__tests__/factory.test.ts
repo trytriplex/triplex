@@ -7,7 +7,7 @@
 // @vitest-environment jsdom
 import { renderHook, waitFor } from "@testing-library/react";
 import { describe, expect, it, vi } from "vitest";
-import { createWSHooks } from "../factory";
+import { createWSHooks } from "../react";
 
 type StubRoutes = Record<"/folder", { data: { name: string }; params: never }>;
 

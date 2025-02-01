@@ -6,6 +6,7 @@
  */
 import { readFile } from "node:fs/promises";
 import { Application, isHttpError, Router } from "@oakserver/oak";
+import { createWSServer } from "@triplex/websocks-server";
 import { watch } from "chokidar";
 import { type DetectResult } from "package-manager-detector";
 import { detect } from "package-manager-detector/detect";
@@ -54,7 +55,6 @@ import { checkMissingDependencies } from "./util/deps";
 import { resolveGitRepoVisibility } from "./util/git";
 import { getParam } from "./util/params";
 import { getThumbnailPath } from "./util/thumbnail";
-import { createTWS } from "./util/ws-server";
 
 export * from "./types";
 export { type PropGroupDef } from "./ast/prop-groupings";
@@ -76,7 +76,7 @@ export function createServer({
     cwd: config.cwd,
     templates: renderer.manifest.templates,
   });
-  const tws = createTWS();
+  const tws = createWSServer();
 
   app.use(async (ctx, next) => {
     try {

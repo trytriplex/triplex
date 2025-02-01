@@ -1,5 +1,5 @@
 {
-  "name": "@triplex/websocks",
+  "name": "@triplex/websocks-client",
   "version": "0.0.1",
   "description": "An end-to-end typed websocket API router and React client.",
   "author": {
@@ -8,20 +8,15 @@
     "url": "https://x.com/trytriplex"
   },
   "exports": {
-    ".": {
-      "types": "./src/index.ts",
-      "module": "./src/index.ts",
-      "default": "./src/index.ts"
+    "./events": {
+      "types": "./src/events.ts",
+      "module": "./src/events.ts",
+      "default": "./src/events.ts"
     },
     "./react": {
       "types": "./src/react.ts",
       "module": "./src/react.ts",
       "default": "./src/react.ts"
-    },
-    "./factory": {
-      "types": "./src/factory.ts",
-      "module": "./src/factory.ts",
-      "default": "./src/factory.ts"
     }
   },
   "files": [
@@ -48,20 +43,15 @@
   },
   "publishConfig": {
     "exports": {
-      ".": {
-        "types": "./dist/index.d.ts",
-        "module": "./dist/index.js",
-        "default": "./dist/index.js"
+      "./events": {
+        "types": "./dist/events.d.ts",
+        "module": "./dist/events.js",
+        "default": "./dist/events.js"
       },
       "./react": {
         "types": "./dist/react.d.ts",
         "module": "./dist/react.js",
         "default": "./dist/react.js"
-      },
-      "./factory": {
-        "types": "./dist/factory.d.ts",
-        "module": "./dist/factory.js",
-        "default": "./dist/factory.js"
       }
     }
   }

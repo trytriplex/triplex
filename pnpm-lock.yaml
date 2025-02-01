@@ -267,9 +267,9 @@ importers:
       '@triplex/ux':
         specifier: 0.69.11
         version: link:../../packages/@triplex/ux
-      '@triplex/websocks':
+      '@triplex/websocks-client':
         specifier: 0.0.1
-        version: link:../../packages/websocks
+        version: link:../../packages/websocks-client
       '@types/raf-schd':
         specifier: ^4.0.3
         version: 4.0.3
@@ -753,9 +753,9 @@ importers:
       '@triplex/server':
         specifier: 0.71.3
         version: link:../server
-      '@triplex/websocks':
+      '@triplex/websocks-client':
         specifier: 0.0.1
-        version: link:../../websocks
+        version: link:../../websocks-client
       '@types/babel__core':
         specifier: ^7.20.5
         version: 7.20.5
@@ -828,9 +828,9 @@ importers:
       '@triplex/ux':
         specifier: 0.69.11
         version: link:../ux
-      '@triplex/websocks':
+      '@triplex/websocks-client':
         specifier: 0.0.1
-        version: link:../../websocks
+        version: link:../../websocks-client
       react:
         specifier: '>=18.0.0'
         version: 18.3.1
@@ -938,9 +938,9 @@ importers:
       '@triplex/lib':
         specifier: 0.69.9
         version: link:../lib
-      '@triplex/websocks':
+      '@triplex/websocks-client':
         specifier: 0.0.1
-        version: link:../../websocks
+        version: link:../../websocks-client
       bind-event-listener:
         specifier: ^3.0.0
         version: 3.0.0
@@ -1054,6 +1054,9 @@ importers:
       '@react-three/rapier':
         specifier: ^1.4.0
         version: 1.4.0(@react-three/fiber@8.17.10(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0))(react@18.3.1)(three@0.172.0)
+      '@triplex/websocks-server':
+        specifier: 0.0.0
+        version: link:../../websocks-server
       '@types/glob-parent':
         specifier: ^5.1.1
         version: 5.1.1
@@ -1207,7 +1210,7 @@ importers:
         specifier: '>=0.153.0'
         version: 0.172.0
 
-  packages/websocks:
+  packages/websocks-client:
     optionalDependencies:
       ws:
         specifier: ^8.12.0
@@ -1231,6 +1234,25 @@ importers:
       react-error-boundary:
         specifier: ^3.1.4
         version: 3.1.4(react@18.3.1)
+      typescript:
+        specifier: ^5.7.2
+        version: 5.7.2
+
+  packages/websocks-server:
+    dependencies:
+      node-match-path:
+        specifier: ^0.6.3
+        version: 0.6.3
+      ws:
+        specifier: ^8.12.0
+        version: 8.12.0
+    devDependencies:
+      '@swc/cli':
+        specifier: ^0.1.59
+        version: 0.1.59(@swc/core@1.6.5(@swc/helpers@0.5.5))(chokidar@3.5.3)
+      '@swc/core':
+        specifier: ^1.6.5
+        version: 1.6.5(@swc/helpers@0.5.5)
       typescript:
         specifier: ^5.7.2
         version: 5.7.2
