@@ -33,22 +33,12 @@ export class TriplexEditorProvider
   implements vscode.CustomEditorProvider<TriplexDocument>
 {
   private static readonly viewType = "triplex.editor";
-  private static _next: undefined | { exportName: string };
   private static readonly panelCache = new Map<string, vscode.WebviewPanel>();
   private static readonly projectCache = new Map<
     string,
     TriplexProjectResolver
   >();
   private constructor(private readonly _context: vscode.ExtensionContext) {}
-
-  get next() {
-    const next = TriplexEditorProvider._next;
-    return next;
-  }
-
-  static set next(value: TriplexEditorProvider["next"]) {
-    this._next = value;
-  }
 
   backupCustomDocument(
     document: TriplexDocument,
@@ -102,8 +92,9 @@ export class TriplexEditorProvider
       return;
     }
 
-    const panelContext = this.next;
-    if (!panelContext) {
+    const query = new URLSearchParams(document.uri.query);
+    const exportName = query.get("exportName");
+    if (!exportName) {
       // Missing initial data.
       return;
     }
@@ -111,7 +102,7 @@ export class TriplexEditorProvider
     // We deliberately don't await the initialization so vscode can show the Triplex loading screen immediately.
     initializeWebviewPanel(panel, {
       context: this._context,
-      exportName: panelContext.exportName,
+      exportName,
       panelCache: TriplexEditorProvider.panelCache,
       path: scopedFileName,
       projectCache: TriplexEditorProvider.projectCache,
@@ -326,11 +317,6 @@ export class TriplexEditorProvider
             });
             existingPanel.reveal();
           } else {
-            // We set this here as we need to pass the data onto the webview resolver but
-            // it only gets access to the uri path — if we add the export name as a query
-            // it is considered a unique file name so opens another editor which isn't correct.
-            this.next = { exportName: nextExportName };
-
             vscode.commands.executeCommand(
               "vscode.openWith",
               // We set an extra to the file path to have vscode consider it a unique file.
@@ -338,7 +324,9 @@ export class TriplexEditorProvider
               // editor rather than shared with the default editor.
               // NOTE: Breadcrumbs get messed up when supplying the query.
               // See: https://github.com/microsoft/vscode/issues/213633
-              vscode.Uri.file(scopedFileName).with({ query: "triplex" }),
+              vscode.Uri.file(scopedFileName).with({
+                query: `triplex&exportName=${nextExportName}`,
+              }),
               TriplexEditorProvider.viewType,
               vscode.ViewColumn.Beside,
             );
