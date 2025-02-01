@@ -12,8 +12,7 @@ module.exports = {
   getPathMappings() {
     return new Map([
       [".tsconfig", ".tsconfig"],
-      ["packages/websocks", "packages/websocks"],
-      ["packages/websocks", "packages/websocks-client"],
+      ["packages/websocks-client", "packages/websocks-client"],
       ["packages/websocks-server", "packages/websocks-server"],
       ["scripts", "scripts"],
       ["oss-roots/websocks/", ""],
