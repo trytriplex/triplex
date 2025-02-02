@@ -76,17 +76,12 @@ export function ThreeFiberSelection({
 
         const results = raycaster.intersectObject(scene);
 
-        if (
-          results.some(
-            (result) => result.object.type === "TransformControlsPlane",
-          )
-        ) {
-          // Skip raycasting if the transform controls are displayed.
-          return [];
-        }
-
         return results
-          .filter((found) => isObjectVisible(found.object))
+          .filter(
+            (found) =>
+              isObjectVisible(found.object) &&
+              found.object.type !== "TransformControlsPlane",
+          )
           .map((found) => {
             const meta = resolveElementMeta(found.object, {
               elements,
