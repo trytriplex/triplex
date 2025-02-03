@@ -1,5 +1,15 @@
 # @triplex/renderer
 
+## 0.71.5
+
+### Patch Changes
+
+- 62ae87f: Add settings extension point.
+- 9a211ee: Revert disabling selecting when transform is enabled as it's annoying.
+- 95156aa: Scene controld and options will now be contextually shown depending if there is a Three Fiber canvas mounted to the scene.
+- Updated dependencies [1ba6783]
+  - @triplex/websocks-client@0.0.2
+
 ## 0.71.4
 
 ### Patch Changes

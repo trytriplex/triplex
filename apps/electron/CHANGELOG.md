@@ -1,5 +1,14 @@
 # @triplex/electron
 
+## 0.70.7
+
+### Patch Changes
+
+- 62ae87f: The camera settings menu in the floating scene controls panel have been moved into a new scene settings menu. Find it in the same spot with the "cog" icon.
+- Updated dependencies [95156aa]
+  - @triplex/editor@0.70.7
+  - @triplex/client@0.70.7
+
 ## 0.70.6
 
 ### Patch Changes

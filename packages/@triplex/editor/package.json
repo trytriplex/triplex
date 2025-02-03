@@ -1,6 +1,6 @@
 {
   "name": "@triplex/editor",
-  "version": "0.70.6",
+  "version": "0.70.7",
   "private": true,
   "description": "The visual IDE for the web.",
   "author": {
@@ -29,7 +29,7 @@
     "@triplex/bridge": "0.70.0",
     "@triplex/lib": "0.69.9",
     "@triplex/ux": "0.69.11",
-    "@triplex/websocks-client": "0.0.1",
+    "@triplex/websocks-client": "0.0.2",
     "react-compiler-runtime": "19.0.0-beta-55955c9-20241229",
     "react-dom": "^18.2.0",
     "react-error-boundary": "^3.1.4",

@@ -1,5 +1,13 @@
 # @triplex/editor
 
+## 0.70.7
+
+### Patch Changes
+
+- 95156aa: Scene controld and options will now be contextually shown depending if there is a Three Fiber canvas mounted to the scene.
+- Updated dependencies [1ba6783]
+  - @triplex/websocks-client@0.0.2
+
 ## 0.70.6
 
 ### Patch Changes

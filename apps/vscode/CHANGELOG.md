@@ -1,5 +1,15 @@
 # @triplex/vscode
 
+## 0.2.7
+
+### Patch Changes
+
+- 62ae87f: Add settings extension point.
+- 7657a55: Re-opening the editor now works when re-opening/loading VS Code, as well as re-opening through the command palette.
+- 95156aa: Scene controld and options will now be contextually shown depending if there is a Three Fiber canvas mounted to the scene.
+- 62ae87f: The camera settings menu in the floating scene controls panel have been moved into a new scene settings menu. Find it in the same spot with the "cog" icon.
+  - @triplex/client@0.70.7
+
 ## 0.2.6
 
 ### Patch Changes

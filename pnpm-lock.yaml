@@ -173,10 +173,10 @@ importers:
   apps/electron:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.6
+        specifier: 0.70.7
         version: link:../../packages/@triplex/client
       '@triplex/editor':
-        specifier: 0.70.6
+        specifier: 0.70.7
         version: link:../../packages/@triplex/editor
       '@triplex/server':
         specifier: 0.71.3
@@ -240,7 +240,7 @@ importers:
   apps/vscode:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.6
+        specifier: 0.70.7
         version: link:../../packages/@triplex/client
       '@triplex/server':
         specifier: 0.71.3
@@ -268,7 +268,7 @@ importers:
         specifier: 0.69.11
         version: link:../../packages/@triplex/ux
       '@triplex/websocks-client':
-        specifier: 0.0.1
+        specifier: 0.0.2
         version: link:../../packages/websocks-client
       '@types/raf-schd':
         specifier: ^4.0.3
@@ -723,7 +723,7 @@ importers:
         specifier: 0.70.0
         version: link:../bridge
       '@triplex/renderer':
-        specifier: 0.71.4
+        specifier: 0.71.5
         version: link:../renderer
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -754,7 +754,7 @@ importers:
         specifier: 0.71.3
         version: link:../server
       '@triplex/websocks-client':
-        specifier: 0.0.1
+        specifier: 0.0.2
         version: link:../../websocks-client
       '@types/babel__core':
         specifier: ^7.20.5
@@ -829,7 +829,7 @@ importers:
         specifier: 0.69.11
         version: link:../ux
       '@triplex/websocks-client':
-        specifier: 0.0.1
+        specifier: 0.0.2
         version: link:../../websocks-client
       react:
         specifier: '>=18.0.0'
@@ -939,7 +939,7 @@ importers:
         specifier: 0.69.9
         version: link:../lib
       '@triplex/websocks-client':
-        specifier: 0.0.1
+        specifier: 0.0.2
         version: link:../../websocks-client
       bind-event-listener:
         specifier: ^3.0.0
@@ -1055,7 +1055,7 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0(@react-three/fiber@8.17.10(@types/react@18.3.3)(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(three@0.172.0))(react@18.3.1)(three@0.172.0)
       '@triplex/websocks-server':
-        specifier: 0.0.0
+        specifier: 0.0.1
         version: link:../../websocks-server
       '@types/glob-parent':
         specifier: ^5.1.1
