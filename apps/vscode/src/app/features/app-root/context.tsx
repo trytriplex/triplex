@@ -8,6 +8,7 @@
 import { compose, on, send } from "@triplex/bridge/host";
 import {
   createContext,
+  startTransition,
   useContext,
   useEffect,
   useReducer,
@@ -111,8 +112,12 @@ export function SceneContextProvider({
 
   useEffect(() => {
     return compose([
-      on("element-blurred", syncSelected),
-      on("element-focused", syncSelected),
+      on("element-blurred", (data) => {
+        startTransition(() => syncSelected(data));
+      }),
+      on("element-focused", (data) => {
+        startTransition(() => syncSelected(data));
+      }),
       on("ready", () => {
         send("request-open-component", {
           encodedProps: "",

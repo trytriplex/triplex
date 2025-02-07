@@ -17,7 +17,7 @@ import {
   onKeyDown,
 } from "@triplex/lib";
 import { useTelemetry, type ActionId } from "@triplex/ux";
-import { useEffect } from "react";
+import { startTransition, useEffect } from "react";
 import { preloadSubscription } from "../../hooks/ws";
 import { forwardClientMessages, onVSCE, sendVSCE } from "../../util/bridge";
 import { useSceneEvents, useSceneSelected } from "../app-root/context";
@@ -37,9 +37,12 @@ export function Events() {
       forwardKeyboardEvents(),
       on("component-opened", (data) => {
         preloadSubscription("/scene/:path/:exportName/props", data);
-        syncContext({
-          exportName: data.exportName,
-          path: data.path,
+
+        startTransition(() => {
+          syncContext({
+            exportName: data.exportName,
+            path: data.path,
+          });
         });
       }),
       onVSCE("vscode:request-open-component", (data) => {

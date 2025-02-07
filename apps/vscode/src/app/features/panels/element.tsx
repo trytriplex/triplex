@@ -18,7 +18,6 @@ import {
   useReducer,
   useRef,
   useState,
-  useTransition,
 } from "react";
 import { ButtonLink } from "../../components/button";
 import { Pressable } from "../../components/pressable";
@@ -67,7 +66,6 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
   const filter = useFilter((state) => state.filter);
   const matches = matchesFilter(filter, props);
   const isExpanded = isUserExpanded || !!filter;
-  const [, startTransition] = useTransition();
 
   useOnSurfaceStateChange((active) => {
     setIsActive(active);
@@ -151,13 +149,11 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
           className="outline-offset-inset absolute inset-0"
           labelledBy={id}
           onClick={() => {
-            startTransition(() => {
-              focusElement({
-                column: props.column,
-                line: props.line,
-                parentPath: props.parentPath,
-                path: props.parentPath,
-              });
+            focusElement({
+              column: props.column,
+              line: props.line,
+              parentPath: props.parentPath,
+              path: props.parentPath,
             });
           }}
           ref={ref}
