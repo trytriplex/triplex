@@ -22,16 +22,22 @@ jobs:
       - name: Checkout
         uses: actions/checkout@master
 
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v2
+
       - name: Setup node
         uses: actions/setup-node@v4
         with:
           node-version-file: "package.json"
 
+      - name: Setup pnpm config
+        run: pnpm config set store-dir $PNPM_CACHE_FOLDER
+
       - name: Install dependencies
-        run: yarn install
+        run: pnpm i
 
       - name: Test packages
-        run: yarn test
+        run: pnpm test
 
       - name: Lint packages
-        run: yarn lint
+        run: pnpm lint
