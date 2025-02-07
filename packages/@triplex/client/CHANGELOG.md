@@ -1,5 +1,14 @@
 # @triplex/client
 
+## 0.70.8
+
+### Patch Changes
+
+- a5d2390: React 19 / Three Fiber 9 are now supported.
+- Updated dependencies [a5d2390]
+  - @triplex/renderer@0.71.6
+  - @triplex/bridge@0.70.1
+
 ## 0.70.7
 
 ### Patch Changes

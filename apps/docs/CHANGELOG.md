@@ -1,5 +1,11 @@
 # @docs/triplex
 
+## 0.2.8
+
+### Patch Changes
+
+- a5d2390: React 19 / Three Fiber 9 are now supported.
+
 ## 0.2.7
 
 ### Patch Changes

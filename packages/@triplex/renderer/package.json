@@ -1,6 +1,6 @@
 {
   "name": "@triplex/renderer",
-  "version": "0.71.5",
+  "version": "0.71.6",
   "private": true,
   "description": "The visual IDE for the web.",
   "author": {
@@ -19,9 +19,9 @@
     "typedef": "tsc"
   },
   "dependencies": {
-    "@triplex/bridge": "0.70.0",
-    "@triplex/lib": "0.69.9",
-    "@triplex/websocks-client": "0.0.2",
+    "@triplex/bridge": "0.70.1",
+    "@triplex/lib": "0.69.10",
+    "@triplex/websocks-client": "0.0.3",
     "bind-event-listener": "^3.0.0",
     "debounce": "^2.2.0",
     "raf-schd": "^4.0.3",
@@ -37,7 +37,7 @@
     "@react-three/fiber": "^9.0.0-rc.6",
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
-    "@triplex/server": "0.71.3",
+    "@triplex/server": "0.71.4",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@types/three": "^0.171.0",

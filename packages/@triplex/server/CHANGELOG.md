@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.71.4
+
+### Patch Changes
+
+- a5d2390: Fixed literal union type labels not being resolved for some scenarios.
+- a5d2390: React 19 / Three Fiber 9 are now supported.
+
 ## 0.71.3
 
 ### Patch Changes

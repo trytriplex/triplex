@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.70.1
+
+### Patch Changes
+
+- a5d2390: React 19 / Three Fiber 9 are now supported.
+
 ## 0.70.0
 
 ### Minor Changes

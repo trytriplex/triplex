@@ -1,5 +1,15 @@
 # @triplex/ux
 
+## 0.69.12
+
+### Patch Changes
+
+- 85054ef: String and number inputs now show their type as a placeholder even when a label is defined. For example previously it would show as "label", now it shows as "label (number)" / "label (string)" where appropriate.
+- a5d2390: React 19 / Three Fiber 9 are now supported.
+- Updated dependencies [a5d2390]
+  - @triplex/bridge@0.70.1
+  - @triplex/lib@0.69.10
+
 ## 0.69.11
 
 ### Patch Changes

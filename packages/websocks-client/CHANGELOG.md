@@ -1,5 +1,11 @@
 # @triplex/websocks-client
 
+## 0.0.3
+
+### Patch Changes
+
+- a5d2390: React 19 / Three Fiber 9 are now supported.
+
 ## 0.0.2
 
 ### Patch Changes

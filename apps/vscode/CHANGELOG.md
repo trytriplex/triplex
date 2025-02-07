@@ -1,5 +1,15 @@
 # @triplex/vscode
 
+## 0.2.8
+
+### Patch Changes
+
+- a5d2390: React 19 / Three Fiber 9 are now supported.
+- Updated dependencies [a5d2390]
+- Updated dependencies [a5d2390]
+  - @triplex/server@0.71.4
+  - @triplex/client@0.70.8
+
 ## 0.2.7
 
 ### Patch Changes
