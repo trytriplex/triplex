@@ -16,6 +16,7 @@ module.exports = {
       [".vscode", ".vscode"],
       ["apps/docs", "apps/docs"],
       ["examples", "examples"],
+      ["packages/renderer", "packages/renderer"],
       ["packages/create-triplex-project", "packages/create-triplex-project"],
       ["packages/react-three-test", "packages/react-three-test"],
       ["oss-roots/triplex/", ""],
