@@ -6,6 +6,7 @@
     "build": "pnpm clean && pnpm -r run build",
     "clean": "pnpm -r exec rimraf dist",
     "clean:node_modules": "rimraf node_modules && pnpm -r exec rimraf node_modules",
+    "dev:docs": "pnpm --filter @docs/triplex dev",
     "lint": "eslint ./ --cache",
     "test": "vitest",
     "typedef": "pnpm -r run typedef"
