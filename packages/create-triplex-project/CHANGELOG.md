@@ -1,5 +1,11 @@
 # create-triplex-project
 
+## 0.70.3
+
+### Patch Changes
+
+- a5d2390: React 19 / Three Fiber 9 are now supported.
+
 ## 0.70.2
 
 ### Patch Changes
