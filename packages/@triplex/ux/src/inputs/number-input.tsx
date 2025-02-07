@@ -351,7 +351,7 @@ export function NumberInput({
       onPointerDown: onPointerDownHandler,
       onPointerMove: onPointerMoveHandler,
       onPointerUp: onPointerUpHandler,
-      placeholder: label || "number",
+      placeholder: label ? `${label} (number)` : "number",
       ref,
       required,
       // We conditionally apply this as the step attribute brings along validation

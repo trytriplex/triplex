@@ -94,7 +94,7 @@ export function StringInput({
       onBlur: onConfirmHandler,
       onChange: onChangeHandler,
       onKeyDown: onKeyDownHandler,
-      placeholder: label || "string",
+      placeholder: label ? `${label} (string)` : "string",
       ref,
       required,
     },
