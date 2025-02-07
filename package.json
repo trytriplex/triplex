@@ -2,18 +2,13 @@
   "name": "triplex",
   "version": "0.0.0",
   "private": true,
-  "workspaces": [
-    "apps/docs",
-    "examples/*",
-    "packages/*"
-  ],
   "scripts": {
-    "build": "yarn clean && yarn workspaces run build",
-    "clean": "yarn workspaces run rimraf dist",
-    "clean:node_modules": "rimraf node_modules && yarn workspaces run rimraf node_modules",
+    "build": "pnpm clean && pnpm -r run build",
+    "clean": "pnpm -r exec rimraf dist",
+    "clean:node_modules": "rimraf node_modules && pnpm -r exec rimraf node_modules",
     "lint": "eslint ./ --cache",
     "test": "vitest",
-    "typedef": "yarn workspaces run typedef"
+    "typedef": "pnpm -r run typedef"
   },
   "resolutions": {
     "@types/three": "^0.168.0",
@@ -33,12 +28,12 @@
     "prettier-plugin-jsdoc": "^0.4.2",
     "prettier-plugin-packagejson": "^2.4.3",
     "prettier-plugin-tailwindcss": "^0.2.2",
-    "react-three-test": "*",
+    "react-three-test": "workspace:*",
     "rimraf": "^5.0.7",
     "typescript": "^5.6.2",
     "vitest": "^3.0.4"
   },
-  "packageManager": "yarn@1.22.19",
+  "packageManager": "pnpm@9.9.0",
   "engines": {
     "node": ">=20.14.0"
   },
