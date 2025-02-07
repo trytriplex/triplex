@@ -4,7 +4,6 @@ import {
   type Object3D,
   type Vector3Tuple,
 } from "three";
-import { Primitive } from "../util/primitive";
 
 export function Path({
   position,
@@ -43,7 +42,7 @@ export function Floor({
 
   return (
     <group position={position} rotation={rotation} scale={scale}>
-      <Primitive object={material} roughness={1} />
+      <primitive object={material} roughness={1} />
       <Clone castShadow object={node.scene} receiveShadow />
     </group>
   );
