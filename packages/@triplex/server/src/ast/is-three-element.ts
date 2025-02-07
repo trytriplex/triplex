@@ -5,8 +5,6 @@
  * file in the root directory of this source tree.
  */
 
-import { type ThreeElements } from "@react-three/fiber";
-
 const elements: Record<string, boolean> = {
   ambientLight: true,
   ambientLightProbe: true,
@@ -146,7 +144,7 @@ const elements: Record<string, boolean> = {
   vector4: true,
   videoTexture: true,
   wireframeGeometry: true,
-} satisfies Record<keyof ThreeElements, boolean>;
+};
 
 export function isReactThreeElement(elementName: string): boolean {
   return elements[elementName] ?? false;

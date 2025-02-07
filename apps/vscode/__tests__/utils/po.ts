@@ -35,6 +35,14 @@ export class ExtensionPage {
         await locator.click();
         await this.dismissAllNotifications();
         if (!skipWait) {
+          if (process.env.REACT_VERSION_INVARIANT) {
+            const locator = this.resolveEditor().scene.locator.locator("html");
+            await expect(locator).toHaveAttribute(
+              "data-react",
+              new RegExp(`^${process.env.REACT_VERSION_INVARIANT}`),
+            );
+          }
+
           await expect(this.loadedComponent).toHaveText(componentName);
         }
       },

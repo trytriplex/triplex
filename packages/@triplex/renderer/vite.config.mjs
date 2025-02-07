@@ -6,7 +6,6 @@
  */
 import { defineConfig } from "vite";
 import glsl from "vite-plugin-glsl";
-import pkg from "./package.json";
 
 export default defineConfig({
   build: {
@@ -18,7 +17,16 @@ export default defineConfig({
     minify: true,
     outDir: "dist",
     rollupOptions: {
-      external: Object.keys(pkg.peerDependencies),
+      external: [
+        "@react-three/fiber",
+        "react-dom",
+        "react-dom/client",
+        "react",
+        "react/compiler-runtime",
+        "react/jsx-dev-runtime",
+        "react/jsx-runtime",
+        "three",
+      ],
     },
   },
   plugins: [glsl()],

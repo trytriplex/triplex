@@ -12,7 +12,7 @@ import type {
   ProjectCustomComponent,
   ProjectHostComponent,
 } from "@triplex/server";
-import { createContext, Suspense, useContext, useState } from "react";
+import { createContext, Suspense, useContext, useState, type JSX } from "react";
 import { cn } from "../ds/cn";
 import { Drawer } from "../ds/drawer";
 import { ExternalLink } from "../ds/external-link";

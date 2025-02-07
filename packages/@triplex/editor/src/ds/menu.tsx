@@ -14,7 +14,7 @@ import {
 } from "@radix-ui/react-dropdown-menu";
 import { DotFilledIcon } from "@radix-ui/react-icons";
 import { useTelemetry, type ActionId } from "@triplex/ux";
-import React, { createContext, useContext } from "react";
+import React, { createContext, useContext, type JSX } from "react";
 import { cn } from "./cn";
 import { PrimitiveProvider } from "./pressable";
 

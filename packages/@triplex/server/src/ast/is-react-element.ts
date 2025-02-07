@@ -4,17 +4,19 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { type ReactDOM } from "react";
+import { type ThreeElements } from "@react-three/fiber";
+import { type JSX } from "react";
 
 const elements: Record<string, boolean> = {
   a: true,
   abbr: true,
   address: true,
   animate: true,
+  animateMotion: true,
+  animateTransform: true,
   area: true,
   article: true,
   aside: true,
-  audio: true,
   b: true,
   base: true,
   bdi: true,
@@ -103,7 +105,6 @@ const elements: Record<string, boolean> = {
   label: true,
   legend: true,
   li: true,
-  line: true,
   linearGradient: true,
   link: true,
   main: true,
@@ -116,7 +117,9 @@ const elements: Record<string, boolean> = {
   meta: true,
   metadata: true,
   meter: true,
+  mpath: true,
   nav: true,
+  noindex: true,
   noscript: true,
   object: true,
   ol: true,
@@ -125,7 +128,6 @@ const elements: Record<string, boolean> = {
   output: true,
   p: true,
   param: true,
-  path: true,
   pattern: true,
   picture: true,
   polygon: true,
@@ -144,9 +146,9 @@ const elements: Record<string, boolean> = {
   search: true,
   section: true,
   select: true,
+  set: true,
   slot: true,
   small: true,
-  source: true,
   span: true,
   stop: true,
   strong: true,
@@ -180,7 +182,10 @@ const elements: Record<string, boolean> = {
   view: true,
   wbr: true,
   webview: true,
-} satisfies Record<keyof ReactDOM, boolean>;
+} satisfies Omit<
+  Record<keyof JSX.IntrinsicElements, boolean>,
+  keyof ThreeElements
+>;
 
 export function isReactDOMElement(elementName: string): boolean {
   return elements[elementName] ?? false;

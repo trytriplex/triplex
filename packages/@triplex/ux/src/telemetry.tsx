@@ -249,7 +249,7 @@ export function TelemetryProvider({
   userId: string;
   version: string;
 }) {
-  const analytics = useRef<Analytics4>();
+  const analytics = useRef<Analytics4>(undefined);
 
   useEffect(() => {
     if (analytics.current) {

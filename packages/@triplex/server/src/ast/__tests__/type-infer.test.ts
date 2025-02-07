@@ -339,7 +339,7 @@ describe("type infer", () => {
 
     expect(props.find((type) => type.name === "scale")).toMatchInlineSnapshot(`
       {
-        "description": undefined,
+        "description": "The object's local scale.",
         "group": "Transform",
         "kind": "union",
         "name": "scale",
@@ -369,7 +369,9 @@ describe("type infer", () => {
             ],
           },
         ],
-        "tags": {},
+        "tags": {
+          "defaultValue": "\`new THREE.Vector3( 1, 1, 1 )\`",
+        },
       }
     `);
   });
@@ -533,60 +535,70 @@ describe("type infer", () => {
     expect(props.find((type) => type.name === "rotation"))
       .toMatchInlineSnapshot(`
         {
-          "description": undefined,
+          "description": "Object's local rotation ({@link https://en.wikipedia.org/wiki/Euler_angles | Euler angles}), in radians.",
           "group": "Transform",
-          "kind": "tuple",
+          "kind": "union",
           "name": "rotation",
           "required": false,
           "shape": [
             {
               "kind": "number",
-              "label": "x",
-              "required": true,
             },
             {
-              "kind": "number",
-              "label": "y",
-              "required": true,
-            },
-            {
-              "kind": "number",
-              "label": "z",
-              "required": true,
-            },
-            {
-              "kind": "union",
-              "label": "order",
-              "required": false,
+              "kind": "tuple",
               "shape": [
                 {
-                  "kind": "string",
-                  "literal": "XYZ",
+                  "kind": "number",
+                  "label": "x",
+                  "required": true,
                 },
                 {
-                  "kind": "string",
-                  "literal": "YXZ",
+                  "kind": "number",
+                  "label": "y",
+                  "required": true,
                 },
                 {
-                  "kind": "string",
-                  "literal": "ZXY",
+                  "kind": "number",
+                  "label": "z",
+                  "required": true,
                 },
                 {
-                  "kind": "string",
-                  "literal": "ZYX",
-                },
-                {
-                  "kind": "string",
-                  "literal": "YZX",
-                },
-                {
-                  "kind": "string",
-                  "literal": "XZY",
+                  "kind": "union",
+                  "label": "order",
+                  "required": false,
+                  "shape": [
+                    {
+                      "kind": "string",
+                      "literal": "XYZ",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "YXZ",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "ZXY",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "ZYX",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "YZX",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "XZY",
+                    },
+                  ],
                 },
               ],
             },
           ],
-          "tags": {},
+          "tags": {
+            "defaultValue": "\`new THREE.Euler()\` - that is \`(0, 0, 0, Euler.DEFAULT_ORDER)\`.",
+          },
         }
       `);
   });
@@ -1111,6 +1123,11 @@ describe("type infer", () => {
               },
               {
                 "kind": "number",
+                "label": "SrcAlphaSaturateFactor",
+                "literal": 210,
+              },
+              {
+                "kind": "number",
                 "label": "ConstantColorFactor",
                 "literal": 211,
               },
@@ -1128,10 +1145,6 @@ describe("type infer", () => {
                 "kind": "number",
                 "label": "OneMinusConstantAlphaFactor",
                 "literal": 214,
-              },
-              {
-                "kind": "number",
-                "literal": 210,
               },
             ],
             "tags": {

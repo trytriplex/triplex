@@ -42,7 +42,7 @@ export function Stage({ children }: { children: React.ReactNode }) {
   const setFrame = useCanvasStage((store) => store.setFrame);
   const zoom = useCanvasStage((store) => store.canvasZoom);
   const setCanvasZoom = useCanvasStage((store) => store.setCanvasZoom);
-  const canvasZoomRef = useRef<number>();
+  const canvasZoomRef = useRef<number>(undefined);
   const resetZoomCounter = useCanvasStage((store) => store.resetZoomCounter);
   const increaseZoom = useCanvasStage((store) => store.increaseZoom);
   const decreaseZoom = useCanvasStage((store) => store.decreaseZoom);

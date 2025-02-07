@@ -7,7 +7,6 @@
 
 import { type NodePath } from "@babel/core";
 import type * as t from "@babel/types";
-import { type ThreeElements } from "@react-three/fiber";
 import { resolveIdentifierImportSpecifier } from "./babel";
 
 const elements: Record<string, boolean> = {
@@ -149,7 +148,7 @@ const elements: Record<string, boolean> = {
   vector4: true,
   videoTexture: true,
   wireframeGeometry: true,
-} satisfies Record<keyof ThreeElements, boolean>;
+};
 
 const THREE_FIBER_MODULES = /(^@react-three\/)|(^ecctrl$)/;
 

@@ -6,6 +6,7 @@
  */
 // @vitest-environment jsdom
 import { act, render } from "@testing-library/react";
+import { type JSX } from "react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { useSelectionStore, type SelectionStore } from "../store";
 

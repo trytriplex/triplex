@@ -28,7 +28,7 @@ import {
   type ToggleButtonControl,
 } from "@triplex/bridge/host";
 import { type Accelerator } from "@triplex/lib";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type JSX } from "react";
 import { LocalSpaceIcon, WorldSpaceIcon } from "./icons";
 
 const icons = {

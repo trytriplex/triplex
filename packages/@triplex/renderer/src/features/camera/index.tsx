@@ -101,7 +101,7 @@ export function Camera({
   const set = useThree((state) => state.set);
   const camera = useThree((state) => state.camera);
   const gl = useThree((state) => state.gl);
-  const prevTriplexCamera = useRef<"perspective" | "orthographic">();
+  const prevTriplexCamera = useRef<"perspective" | "orthographic">(undefined);
   const orthCameraRef = useRef<OrthographicCamera>(null!);
   const perspCameraRef = useRef<PerspectiveCamera>(null!);
   const [controlsInstance, setControlsInstance] =

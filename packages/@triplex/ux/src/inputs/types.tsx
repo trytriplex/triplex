@@ -16,7 +16,7 @@ import {
   type UnionLiteralType,
   type UnionType,
 } from "@triplex/server";
-import { type FormEventHandler, type RefObject } from "react";
+import { type FormEventHandler, type JSX, type RefObject } from "react";
 
 type InputTypes =
   | {
@@ -59,7 +59,7 @@ export interface RenderInput<
     props: {
       id: string;
       onChange: FormEventHandler<TElement>;
-      ref: RefObject<TElement>;
+      ref: RefObject<TElement | null>;
       required?: boolean;
     } & Props,
     actions: Actions,

@@ -121,7 +121,7 @@ export function NumberInput({
     isDisabled: !isPointerLock && !isFocused,
   });
   const isDragging = useRef(false);
-  const activePointerCaptureId = useRef<number | undefined>();
+  const activePointerCaptureId = useRef<number | undefined>(undefined);
   const ref = useRef<HTMLInputElement>(null!);
   const step = applyStepModifiers(toNumber(tags.step, 0.02), modifiers);
   const max = toNumber(tags.max, Number.POSITIVE_INFINITY);

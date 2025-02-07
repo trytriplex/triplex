@@ -7,7 +7,7 @@
 import { useThree, type ThreeEvent } from "@react-three/fiber";
 import { send } from "@triplex/bridge/client";
 import { type default as CameraControls } from "camera-controls";
-import { useMemo, useState } from "react";
+import { useMemo, useState, type JSX } from "react";
 import {
   CanvasTexture,
   Spherical,

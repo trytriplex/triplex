@@ -32,6 +32,7 @@ export default {
           [
             "babel-plugin-react-compiler",
             {
+              // When we don't support React 18 anymore this can be bumped to 19.
               target: "18",
             },
           ],

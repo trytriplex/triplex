@@ -25,6 +25,7 @@ import { ErrorFallback } from "../../components/error-fallback";
 import { Tunnel } from "../../components/tunnel";
 import { SceneLoader } from "../scene-loader";
 import { SwitchToComponentContext } from "./context";
+import { DebugAttributes } from "./debug";
 import { type Component } from "./types";
 
 export function App({
@@ -134,6 +135,7 @@ export function App({
           />
         </Suspense>
         <Tunnel.Out />
+        <DebugAttributes />
       </ErrorBoundaryForScene>
     </SwitchToComponentContext.Provider>
   );

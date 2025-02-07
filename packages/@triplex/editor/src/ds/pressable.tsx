@@ -12,6 +12,7 @@ import {
   forwardRef,
   useContext,
   useEffect,
+  type JSX,
   type KeyboardEventHandler,
   type MouseEventHandler,
 } from "react";

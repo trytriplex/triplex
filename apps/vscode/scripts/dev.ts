@@ -42,6 +42,7 @@ export async function createDevServer() {
               // Runs the project with a different cwd, but I'm not 100% sure.
               require.resolve("babel-plugin-react-compiler"),
               {
+                // When we don't support React 18 anymore this can be bumped to 19.
                 target: "18",
               },
             ],

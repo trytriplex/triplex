@@ -62,6 +62,10 @@ export function _createProject({
       // user defined types.
       types: (options?.types || []).concat("@react-three/fiber"),
     },
+    defaultCompilerOptions: {
+      // This is needed to keep JavaScript based projects working.
+      lib: ["lib.es2022.d.ts"],
+    },
     skipAddingFilesFromTsConfig: true,
     tsConfigFilePath: hasTsConfig ? tsConfigFilePath : undefined,
   });

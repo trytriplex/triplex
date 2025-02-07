@@ -248,7 +248,7 @@ function getJsxDeclProps(
   const tagNameText = tagName.getText();
 
   if (/^[a-z]/.exec(tagNameText)) {
-    const jsxType = tagName.getSymbolOrThrow().getDeclarations()[0].getType();
+    const jsxType = tagName.getSymbolOrThrow().getTypeAtLocation(tagName);
     const isThreeElement = isReactThreeElement(tagNameText) && "three";
     const isReactElement = isReactDOMElement(tagNameText) && "react";
 
@@ -345,60 +345,76 @@ function extractJSDoc(symbol: SymbolType) {
 function collectUnionLabels(
   propType: Type,
   outLabels: Record<string, Record<string, string>>,
-  propDecl: Node<ts.Node>,
+  propDecl: Node<ts.Node> | undefined,
 ): Record<string, string> | undefined {
-  let propTypeName = propType.getText();
+  if (!propDecl) {
+    return undefined;
+  }
 
-  if (propType.isUnion()) {
-    // Collect union labels for use later.
-    if (outLabels[propTypeName]) {
-      // We've already collected the labels for this union type. Skip!
-    } else {
-      let symbol = propType.getSymbol() || propType.getAliasSymbol();
+  const propTypeAtLocation = propDecl.getSymbol()?.getTypeAtLocation(propDecl);
+  const propTypeName = propTypeAtLocation?.getText();
 
-      if (!symbol) {
-        // Hack to try and resolve the union labels by an alternate means.
-        const typeNode = Node.isPropertyDeclaration(propDecl)
-          ? propDecl.getTypeNode?.()
-          : undefined;
-        if (Node.isUnionTypeNode(typeNode)) {
-          typeNode.getTypeNodes().find((val) => {
-            const s = val.getType().getAliasSymbol();
-            if (s) {
-              symbol = s;
-            }
-          });
+  if (!propTypeAtLocation || !propTypeName) {
+    return undefined;
+  }
+
+  if (!propType.isUnion()) {
+    return outLabels[propTypeName];
+  }
+
+  // Collect union labels for use later.
+  if (outLabels[propTypeName]) {
+    // We've already collected the labels for this union type. Skip!
+    return outLabels[propTypeName];
+  }
+
+  outLabels[propTypeName] = {};
+
+  let typeDeclarations = (
+    propTypeAtLocation.getSymbol() || propTypeAtLocation.getAliasSymbol()
+  )?.getDeclarations();
+
+  if (!typeDeclarations) {
+    // We need to resolve each symbol individually.
+    const typeNode = Node.isPropertyDeclaration(propDecl)
+      ? propDecl.getTypeNode?.()
+      : undefined;
+
+    if (Node.isUnionTypeNode(typeNode)) {
+      typeDeclarations = typeNode
+        .getTypeNodes()
+        .flatMap((val) => {
+          return (
+            val.getType().getSymbol() || val.getType().getAliasSymbol()
+          )?.getDeclarations();
+        })
+        .filter((decl) => !!decl);
+    }
+  }
+
+  typeDeclarations?.forEach((declaration) => {
+    declaration.forEachDescendant((node) => {
+      if (Node.isTypeQuery(node) && node.getType().isLiteral()) {
+        const label = node.getExprName().getText();
+        const typeValue = node.getType().getText();
+
+        if (!outLabels[propTypeName][typeValue]) {
+          outLabels[propTypeName][typeValue] = label;
         }
       }
 
-      outLabels[propTypeName] = {};
+      if (Node.isEnumMember(node)) {
+        const label = node.getName();
+        const typeValue = `${propTypeName}.${label}`;
 
-      symbol
-        ?.getDeclarations()[0]
-        .forEachDescendantAsArray()
-        .forEach((node) => {
-          if (Node.isTypeQuery(node) && node.getType().isLiteral()) {
-            const label = node.getExprName().getText();
-            const typeValue = node.getType().getText();
-
-            if (!outLabels[propTypeName][typeValue]) {
-              outLabels[propTypeName][typeValue] = label;
-            }
+        if (typeValue) {
+          if (!outLabels[propTypeName][typeValue]) {
+            outLabels[propTypeName][typeValue] = label;
           }
-
-          if (Node.isEnumMember(node)) {
-            const label = node.getName();
-            const typeValue = `${propTypeName}.${label}`;
-
-            if (typeValue) {
-              if (!outLabels[propTypeName][typeValue]) {
-                outLabels[propTypeName][typeValue] = label;
-              }
-            }
-          }
-        });
-    }
-  }
+        }
+      }
+    });
+  });
 
   return outLabels[propTypeName];
 }
@@ -495,11 +511,9 @@ export function resolveSource(
   type: Type<ts.Type>,
 ): "react" | "three" | undefined {
   const symbol = type.getSymbol() || type.getAliasSymbol();
-  const filePath = symbol
-    ?.getDeclarations()
-    .at(0)
-    ?.getSourceFile()
-    .getFilePath();
+  const filePath =
+    symbol?.getDeclarations().at(0)?.getSourceFile().getFilePath() ||
+    type.getText();
 
   if (
     filePath?.includes("@react-three/fiber/") ||
@@ -569,16 +583,7 @@ export function getJsxElementPropTypes(
     const prop = properties[i];
     const declarations = prop.getDeclarations();
     const propName = prop.getName();
-    const propDeclaration = declarations[0];
-
-    if (
-      Node.isPropertyDeclaration(propDeclaration) &&
-      propDeclaration.isReadonly()
-    ) {
-      // Skip read-only props, if they can't be set they shouldn't be displayed in the UI.
-      continue;
-    }
-
+    const propDeclaration = declarations.at(0);
     const propType = prop.getTypeAtLocation(declaration);
     const { description, tags } = extractJSDoc(prop);
     const unionLabels = collectUnionLabels(

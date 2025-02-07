@@ -431,7 +431,7 @@ describe("jsx ast extractor", () => {
       [
         {
           "column": 20,
-          "description": "Constructor arguments",
+          "description": undefined,
           "group": "Constructor",
           "kind": "tuple",
           "line": 18,
@@ -525,6 +525,14 @@ describe("jsx ast extractor", () => {
             "defaultValue": "\`''\`",
           },
         },
+        {
+          "description": undefined,
+          "group": "Appearance",
+          "kind": "boolean",
+          "name": "visible",
+          "required": false,
+          "tags": {},
+        },
       ]
     `);
   });
@@ -543,7 +551,7 @@ describe("jsx ast extractor", () => {
     expect(props.find((prop) => prop.name === "args")).toMatchInlineSnapshot(`
       {
         "column": 25,
-        "description": "Constructor arguments",
+        "description": undefined,
         "group": "Constructor",
         "kind": "tuple",
         "line": 10,
@@ -676,7 +684,7 @@ describe("jsx ast extractor", () => {
           },
         },
         {
-          "description": "Constructor arguments",
+          "description": undefined,
           "group": "Constructor",
           "kind": "tuple",
           "name": "args",
@@ -684,8 +692,8 @@ describe("jsx ast extractor", () => {
           "shape": [
             {
               "kind": "unhandled",
-              "label": undefined,
-              "required": true,
+              "label": "parameters",
+              "required": false,
             },
           ],
           "tags": {},
@@ -740,6 +748,24 @@ describe("jsx ast extractor", () => {
                   "kind": "number",
                   "label": "b",
                   "required": true,
+                },
+              ],
+            },
+            {
+              "kind": "tuple",
+              "shape": [
+                {
+                  "kind": "union",
+                  "label": "color",
+                  "required": true,
+                  "shape": [
+                    {
+                      "kind": "string",
+                    },
+                    {
+                      "kind": "number",
+                    },
+                  ],
                 },
               ],
             },
@@ -901,13 +927,13 @@ describe("jsx ast extractor", () => {
             },
             {
               "kind": "number",
-              "label": "NormalBlending",
-              "literal": 1,
+              "label": "SubtractiveBlending",
+              "literal": 3,
             },
             {
               "kind": "number",
-              "label": "SubtractiveBlending",
-              "literal": 3,
+              "label": "NormalBlending",
+              "literal": 1,
             },
             {
               "kind": "number",
@@ -988,6 +1014,11 @@ describe("jsx ast extractor", () => {
             },
             {
               "kind": "number",
+              "label": "SrcAlphaSaturateFactor",
+              "literal": 210,
+            },
+            {
+              "kind": "number",
               "label": "ConstantColorFactor",
               "literal": 211,
             },
@@ -1005,10 +1036,6 @@ describe("jsx ast extractor", () => {
               "kind": "number",
               "label": "OneMinusConstantAlphaFactor",
               "literal": 214,
-            },
-            {
-              "kind": "number",
-              "literal": 210,
             },
           ],
           "tags": {
@@ -1110,6 +1137,24 @@ describe("jsx ast extractor", () => {
                 },
               ],
             },
+            {
+              "kind": "tuple",
+              "shape": [
+                {
+                  "kind": "union",
+                  "label": "color",
+                  "required": true,
+                  "shape": [
+                    {
+                      "kind": "string",
+                    },
+                    {
+                      "kind": "number",
+                    },
+                  ],
+                },
+              ],
+            },
           ],
           "tags": {
             "default": "new THREE.Color( 0xffffff )",
@@ -1141,13 +1186,13 @@ describe("jsx ast extractor", () => {
             },
             {
               "kind": "number",
-              "label": "AlwaysDepth",
-              "literal": 1,
+              "label": "LessEqualDepth",
+              "literal": 3,
             },
             {
               "kind": "number",
-              "label": "LessEqualDepth",
-              "literal": 3,
+              "label": "AlwaysDepth",
+              "literal": 1,
             },
             {
               "kind": "number",
@@ -1264,6 +1309,24 @@ describe("jsx ast extractor", () => {
                 },
               ],
             },
+            {
+              "kind": "tuple",
+              "shape": [
+                {
+                  "kind": "union",
+                  "label": "color",
+                  "required": true,
+                  "shape": [
+                    {
+                      "kind": "string",
+                    },
+                    {
+                      "kind": "number",
+                    },
+                  ],
+                },
+              ],
+            },
           ],
           "tags": {
             "default": "new THREE.Color( 0x000000 )",
@@ -1288,6 +1351,70 @@ describe("jsx ast extractor", () => {
           "tags": {
             "default": 1,
           },
+        },
+        {
+          "description": "The rotation of the environment map in radians. Default is \`(0,0,0)\`.",
+          "group": "Other",
+          "kind": "union",
+          "name": "envMapRotation",
+          "required": false,
+          "shape": [
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "tuple",
+              "shape": [
+                {
+                  "kind": "number",
+                  "label": "x",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "y",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "z",
+                  "required": true,
+                },
+                {
+                  "kind": "union",
+                  "label": "order",
+                  "required": false,
+                  "shape": [
+                    {
+                      "kind": "string",
+                      "literal": "XYZ",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "YXZ",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "ZXY",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "ZYX",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "YZX",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "XZY",
+                    },
+                  ],
+                },
+              ],
+            },
+          ],
+          "tags": {},
         },
         {
           "description": "Define whether the material is rendered with flat shading. Default is false.",
@@ -1369,6 +1496,36 @@ describe("jsx ast extractor", () => {
           ],
           "tags": {
             "default": "THREE.TangentSpaceNormalMap",
+          },
+        },
+        {
+          "description": undefined,
+          "group": "Other",
+          "kind": "union",
+          "name": "normalScale",
+          "required": false,
+          "shape": [
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "tuple",
+              "shape": [
+                {
+                  "kind": "number",
+                  "label": "x",
+                  "required": true,
+                },
+                {
+                  "kind": "number",
+                  "label": "y",
+                  "required": true,
+                },
+              ],
+            },
+          ],
+          "tags": {
+            "default": "new THREE.Vector2( 1, 1 )",
           },
         },
         {
@@ -1797,14 +1954,12 @@ describe("jsx ast extractor", () => {
           },
         },
         {
-          "description": "Defines whether this material is visible. Default is true.",
+          "description": undefined,
           "group": "Appearance",
           "kind": "boolean",
           "name": "visible",
           "required": false,
-          "tags": {
-            "default": true,
-          },
+          "tags": {},
         },
         {
           "description": undefined,
@@ -1953,7 +2108,7 @@ describe("jsx ast extractor", () => {
     expect(props).toMatchInlineSnapshot(`
       [
         {
-          "description": "Constructor arguments",
+          "description": undefined,
           "group": "Constructor",
           "kind": "tuple",
           "name": "args",
@@ -2026,12 +2181,31 @@ describe("jsx ast extractor", () => {
           },
         },
         {
-          "description": undefined,
+          "description": "The layer membership of the object.",
           "group": "Render",
-          "kind": "number",
+          "kind": "union",
           "name": "layers",
           "required": false,
-          "tags": {},
+          "shape": [
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "tuple",
+              "shape": [
+                {
+                  "kind": "number",
+                  "label": "layer",
+                  "required": true,
+                },
+              ],
+            },
+          ],
+          "tags": {
+            "defaultValue": "\`new THREE.Layers()\`",
+            "remarks": "The object is only visible if it has at least one layer in common with the {@link THREE.Object3DCamera | Camera} in use.
+      This property can also be used to filter out unwanted objects in ray-intersection tests when using {@link THREE.Raycaster | Raycaster}.",
+          },
         },
         {
           "description": "Optional name of the object",
@@ -2045,7 +2219,7 @@ describe("jsx ast extractor", () => {
           },
         },
         {
-          "description": undefined,
+          "description": "Object's local position.",
           "group": "Transform",
           "kind": "union",
           "name": "position",
@@ -2075,10 +2249,12 @@ describe("jsx ast extractor", () => {
               ],
             },
           ],
-          "tags": {},
+          "tags": {
+            "defaultValue": "\`new THREE.Vector3()\` - that is \`(0, 0, 0)\`.",
+          },
         },
         {
-          "description": undefined,
+          "description": "Object's local rotation as a {@link THREE.Quaternion | Quaternion}.",
           "group": "Other",
           "kind": "tuple",
           "name": "quaternion",
@@ -2105,7 +2281,9 @@ describe("jsx ast extractor", () => {
               "required": true,
             },
           ],
-          "tags": {},
+          "tags": {
+            "defaultValue": "\`new THREE.Quaternion()\` - that is \`(0,  0, 0, 1)\`.",
+          },
         },
         {
           "description": "Whether the material receives shadows.",
@@ -2131,63 +2309,73 @@ describe("jsx ast extractor", () => {
           },
         },
         {
-          "description": undefined,
+          "description": "Object's local rotation ({@link https://en.wikipedia.org/wiki/Euler_angles | Euler angles}), in radians.",
           "group": "Transform",
-          "kind": "tuple",
+          "kind": "union",
           "name": "rotation",
           "required": false,
           "shape": [
             {
               "kind": "number",
-              "label": "x",
-              "required": true,
             },
             {
-              "kind": "number",
-              "label": "y",
-              "required": true,
-            },
-            {
-              "kind": "number",
-              "label": "z",
-              "required": true,
-            },
-            {
-              "kind": "union",
-              "label": "order",
-              "required": false,
+              "kind": "tuple",
               "shape": [
                 {
-                  "kind": "string",
-                  "literal": "XYZ",
+                  "kind": "number",
+                  "label": "x",
+                  "required": true,
                 },
                 {
-                  "kind": "string",
-                  "literal": "YXZ",
+                  "kind": "number",
+                  "label": "y",
+                  "required": true,
                 },
                 {
-                  "kind": "string",
-                  "literal": "ZXY",
+                  "kind": "number",
+                  "label": "z",
+                  "required": true,
                 },
                 {
-                  "kind": "string",
-                  "literal": "ZYX",
-                },
-                {
-                  "kind": "string",
-                  "literal": "YZX",
-                },
-                {
-                  "kind": "string",
-                  "literal": "XZY",
+                  "kind": "union",
+                  "label": "order",
+                  "required": false,
+                  "shape": [
+                    {
+                      "kind": "string",
+                      "literal": "XYZ",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "YXZ",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "ZXY",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "ZYX",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "YZX",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "XZY",
+                    },
+                  ],
                 },
               ],
             },
           ],
-          "tags": {},
+          "tags": {
+            "defaultValue": "\`new THREE.Euler()\` - that is \`(0, 0, 0, Euler.DEFAULT_ORDER)\`.",
+          },
         },
         {
-          "description": undefined,
+          "description": "The object's local scale.",
           "group": "Transform",
           "kind": "union",
           "name": "scale",
@@ -2217,19 +2405,19 @@ describe("jsx ast extractor", () => {
               ],
             },
           ],
-          "tags": {},
+          "tags": {
+            "defaultValue": "\`new THREE.Vector3( 1, 1, 1 )\`",
+          },
         },
         {
           "column": 11,
-          "description": "Object gets rendered if \`true\`.",
+          "description": undefined,
           "group": "Appearance",
           "kind": "boolean",
           "line": 10,
           "name": "visible",
           "required": false,
-          "tags": {
-            "defaultValue": "\`true\`",
-          },
+          "tags": {},
           "value": true,
           "valueKind": "boolean",
         },
@@ -2251,7 +2439,7 @@ describe("jsx ast extractor", () => {
     expect(props).toMatchInlineSnapshot(`
       [
         {
-          "description": "Constructor arguments",
+          "description": undefined,
           "group": "Constructor",
           "kind": "tuple",
           "name": "args",
@@ -2324,12 +2512,31 @@ describe("jsx ast extractor", () => {
           },
         },
         {
-          "description": undefined,
+          "description": "The layer membership of the object.",
           "group": "Render",
-          "kind": "number",
+          "kind": "union",
           "name": "layers",
           "required": false,
-          "tags": {},
+          "shape": [
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "tuple",
+              "shape": [
+                {
+                  "kind": "number",
+                  "label": "layer",
+                  "required": true,
+                },
+              ],
+            },
+          ],
+          "tags": {
+            "defaultValue": "\`new THREE.Layers()\`",
+            "remarks": "The object is only visible if it has at least one layer in common with the {@link THREE.Object3DCamera | Camera} in use.
+      This property can also be used to filter out unwanted objects in ray-intersection tests when using {@link THREE.Raycaster | Raycaster}.",
+          },
         },
         {
           "description": "Optional name of the object",
@@ -2343,7 +2550,7 @@ describe("jsx ast extractor", () => {
           },
         },
         {
-          "description": undefined,
+          "description": "Object's local position.",
           "group": "Transform",
           "kind": "union",
           "name": "position",
@@ -2373,10 +2580,12 @@ describe("jsx ast extractor", () => {
               ],
             },
           ],
-          "tags": {},
+          "tags": {
+            "defaultValue": "\`new THREE.Vector3()\` - that is \`(0, 0, 0)\`.",
+          },
         },
         {
-          "description": undefined,
+          "description": "Object's local rotation as a {@link THREE.Quaternion | Quaternion}.",
           "group": "Other",
           "kind": "tuple",
           "name": "quaternion",
@@ -2403,7 +2612,9 @@ describe("jsx ast extractor", () => {
               "required": true,
             },
           ],
-          "tags": {},
+          "tags": {
+            "defaultValue": "\`new THREE.Quaternion()\` - that is \`(0,  0, 0, 1)\`.",
+          },
         },
         {
           "description": "Whether the material receives shadows.",
@@ -2429,63 +2640,73 @@ describe("jsx ast extractor", () => {
           },
         },
         {
-          "description": undefined,
+          "description": "Object's local rotation ({@link https://en.wikipedia.org/wiki/Euler_angles | Euler angles}), in radians.",
           "group": "Transform",
-          "kind": "tuple",
+          "kind": "union",
           "name": "rotation",
           "required": false,
           "shape": [
             {
               "kind": "number",
-              "label": "x",
-              "required": true,
             },
             {
-              "kind": "number",
-              "label": "y",
-              "required": true,
-            },
-            {
-              "kind": "number",
-              "label": "z",
-              "required": true,
-            },
-            {
-              "kind": "union",
-              "label": "order",
-              "required": false,
+              "kind": "tuple",
               "shape": [
                 {
-                  "kind": "string",
-                  "literal": "XYZ",
+                  "kind": "number",
+                  "label": "x",
+                  "required": true,
                 },
                 {
-                  "kind": "string",
-                  "literal": "YXZ",
+                  "kind": "number",
+                  "label": "y",
+                  "required": true,
                 },
                 {
-                  "kind": "string",
-                  "literal": "ZXY",
+                  "kind": "number",
+                  "label": "z",
+                  "required": true,
                 },
                 {
-                  "kind": "string",
-                  "literal": "ZYX",
-                },
-                {
-                  "kind": "string",
-                  "literal": "YZX",
-                },
-                {
-                  "kind": "string",
-                  "literal": "XZY",
+                  "kind": "union",
+                  "label": "order",
+                  "required": false,
+                  "shape": [
+                    {
+                      "kind": "string",
+                      "literal": "XYZ",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "YXZ",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "ZXY",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "ZYX",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "YZX",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "XZY",
+                    },
+                  ],
                 },
               ],
             },
           ],
-          "tags": {},
+          "tags": {
+            "defaultValue": "\`new THREE.Euler()\` - that is \`(0, 0, 0, Euler.DEFAULT_ORDER)\`.",
+          },
         },
         {
-          "description": undefined,
+          "description": "The object's local scale.",
           "group": "Transform",
           "kind": "union",
           "name": "scale",
@@ -2515,19 +2736,19 @@ describe("jsx ast extractor", () => {
               ],
             },
           ],
-          "tags": {},
+          "tags": {
+            "defaultValue": "\`new THREE.Vector3( 1, 1, 1 )\`",
+          },
         },
         {
           "column": 30,
-          "description": "Object gets rendered if \`true\`.",
+          "description": undefined,
           "group": "Appearance",
           "kind": "boolean",
           "line": 20,
           "name": "visible",
           "required": false,
-          "tags": {
-            "defaultValue": "\`true\`",
-          },
+          "tags": {},
           "value": true,
           "valueKind": "boolean",
         },
@@ -2546,7 +2767,8 @@ describe("jsx ast extractor", () => {
 
     const { props } = getJsxElementProps(sourceFile, sceneObject!);
 
-    expect(props[5]).toMatchInlineSnapshot(`
+    expect(props.find((prop) => prop.name === "creaseAngle"))
+      .toMatchInlineSnapshot(`
       {
         "description": undefined,
         "group": "Other",
@@ -2556,7 +2778,8 @@ describe("jsx ast extractor", () => {
         "tags": {},
       }
     `);
-    expect(props[3]).toMatchInlineSnapshot(`
+    expect(props.find((prop) => prop.name === "castShadow"))
+      .toMatchInlineSnapshot(`
       {
         "description": "Whether the object gets rendered into shadow map.",
         "group": "Appearance",
@@ -2662,7 +2885,7 @@ describe("jsx ast extractor", () => {
     expect(props).toMatchInlineSnapshot(`
       [
         {
-          "description": "Constructor arguments",
+          "description": undefined,
           "group": "Constructor",
           "kind": "tuple",
           "name": "args",
@@ -2735,12 +2958,31 @@ describe("jsx ast extractor", () => {
           },
         },
         {
-          "description": undefined,
+          "description": "The layer membership of the object.",
           "group": "Render",
-          "kind": "number",
+          "kind": "union",
           "name": "layers",
           "required": false,
-          "tags": {},
+          "shape": [
+            {
+              "kind": "number",
+            },
+            {
+              "kind": "tuple",
+              "shape": [
+                {
+                  "kind": "number",
+                  "label": "layer",
+                  "required": true,
+                },
+              ],
+            },
+          ],
+          "tags": {
+            "defaultValue": "\`new THREE.Layers()\`",
+            "remarks": "The object is only visible if it has at least one layer in common with the {@link THREE.Object3DCamera | Camera} in use.
+      This property can also be used to filter out unwanted objects in ray-intersection tests when using {@link THREE.Raycaster | Raycaster}.",
+          },
         },
         {
           "description": "Optional name of the object",
@@ -2755,7 +2997,7 @@ describe("jsx ast extractor", () => {
         },
         {
           "column": 11,
-          "description": undefined,
+          "description": "Object's local position.",
           "group": "Transform",
           "kind": "union",
           "line": 17,
@@ -2786,12 +3028,14 @@ describe("jsx ast extractor", () => {
               ],
             },
           ],
-          "tags": {},
+          "tags": {
+            "defaultValue": "\`new THREE.Vector3()\` - that is \`(0, 0, 0)\`.",
+          },
           "value": "position",
           "valueKind": "identifier",
         },
         {
-          "description": undefined,
+          "description": "Object's local rotation as a {@link THREE.Quaternion | Quaternion}.",
           "group": "Other",
           "kind": "tuple",
           "name": "quaternion",
@@ -2818,7 +3062,9 @@ describe("jsx ast extractor", () => {
               "required": true,
             },
           ],
-          "tags": {},
+          "tags": {
+            "defaultValue": "\`new THREE.Quaternion()\` - that is \`(0,  0, 0, 1)\`.",
+          },
         },
         {
           "description": "Whether the material receives shadows.",
@@ -2845,67 +3091,77 @@ describe("jsx ast extractor", () => {
         },
         {
           "column": 31,
-          "description": undefined,
+          "description": "Object's local rotation ({@link https://en.wikipedia.org/wiki/Euler_angles | Euler angles}), in radians.",
           "group": "Transform",
-          "kind": "tuple",
+          "kind": "union",
           "line": 17,
           "name": "rotation",
           "required": false,
           "shape": [
             {
               "kind": "number",
-              "label": "x",
-              "required": true,
             },
             {
-              "kind": "number",
-              "label": "y",
-              "required": true,
-            },
-            {
-              "kind": "number",
-              "label": "z",
-              "required": true,
-            },
-            {
-              "kind": "union",
-              "label": "order",
-              "required": false,
+              "kind": "tuple",
               "shape": [
                 {
-                  "kind": "string",
-                  "literal": "XYZ",
+                  "kind": "number",
+                  "label": "x",
+                  "required": true,
                 },
                 {
-                  "kind": "string",
-                  "literal": "YXZ",
+                  "kind": "number",
+                  "label": "y",
+                  "required": true,
                 },
                 {
-                  "kind": "string",
-                  "literal": "ZXY",
+                  "kind": "number",
+                  "label": "z",
+                  "required": true,
                 },
                 {
-                  "kind": "string",
-                  "literal": "ZYX",
-                },
-                {
-                  "kind": "string",
-                  "literal": "YZX",
-                },
-                {
-                  "kind": "string",
-                  "literal": "XZY",
+                  "kind": "union",
+                  "label": "order",
+                  "required": false,
+                  "shape": [
+                    {
+                      "kind": "string",
+                      "literal": "XYZ",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "YXZ",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "ZXY",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "ZYX",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "YZX",
+                    },
+                    {
+                      "kind": "string",
+                      "literal": "XZY",
+                    },
+                  ],
                 },
               ],
             },
           ],
-          "tags": {},
+          "tags": {
+            "defaultValue": "\`new THREE.Euler()\` - that is \`(0, 0, 0, Euler.DEFAULT_ORDER)\`.",
+          },
           "value": "rotation",
           "valueKind": "identifier",
         },
         {
           "column": 51,
-          "description": undefined,
+          "description": "The object's local scale.",
           "group": "Transform",
           "kind": "union",
           "line": 17,
@@ -2936,19 +3192,19 @@ describe("jsx ast extractor", () => {
               ],
             },
           ],
-          "tags": {},
+          "tags": {
+            "defaultValue": "\`new THREE.Vector3( 1, 1, 1 )\`",
+          },
           "value": "scale",
           "valueKind": "identifier",
         },
         {
-          "description": "Object gets rendered if \`true\`.",
+          "description": undefined,
           "group": "Appearance",
           "kind": "boolean",
           "name": "visible",
           "required": false,
-          "tags": {
-            "defaultValue": "\`true\`",
-          },
+          "tags": {},
         },
       ]
     `);
