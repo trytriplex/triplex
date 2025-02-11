@@ -179,6 +179,9 @@ export interface ExtensionPointElement {
 }
 
 export interface HostSendEventData {
+  "element-focused-props": {
+    props: string[];
+  };
   "element-hint": {
     column: number;
     line: number;
@@ -253,6 +256,7 @@ export interface HostSendEventData {
 }
 
 export interface HostSendEventResponse {
+  "element-focused-props": void;
   "element-hint": void;
   "extension-point-triggered": { handled: boolean };
   keydown: void;

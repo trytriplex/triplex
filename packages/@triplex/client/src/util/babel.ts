@@ -4,8 +4,9 @@
  * This source code is licensed under the GPL-3.0 license found in the LICENSE
  * file in the root directory of this source tree.
  */
-import { type NodePath } from "@babel/core";
+import { type NodePath, type PluginPass } from "@babel/core";
 import * as t from "@babel/types";
+import { dirname, extname, resolve } from "upath";
 
 export function isIdentifierFromModule(
   path: NodePath<t.Identifier>,
@@ -137,4 +138,115 @@ export function importIfMissing(
       t.stringLiteral(module),
     ),
   );
+}
+
+export function resolveIdentifierExportName(
+  path: NodePath<t.Node>,
+  identifierName: string,
+) {
+  const foundExport = path.scope
+    .getBinding(identifierName)
+    ?.referencePaths.map((path) => {
+      if (
+        path.parentPath?.isExportDeclaration() ||
+        path.parentPath?.isExportDefaultDeclaration() ||
+        path.parentPath?.isExportSpecifier() ||
+        path.parentPath?.isExportDefaultSpecifier()
+      ) {
+        return path.parentPath;
+      }
+
+      return path;
+    })
+    .find(
+      (path) =>
+        path.isExportDefaultDeclaration() ||
+        path.isExportDeclaration() ||
+        path.isExportSpecifier() ||
+        path.isExportDefaultSpecifier(),
+    );
+
+  if (!foundExport) {
+    return "";
+  }
+
+  if (
+    foundExport.isExportDefaultDeclaration() ||
+    foundExport.isExportDefaultSpecifier()
+  ) {
+    return "default";
+  } else if (
+    foundExport.isExportDeclaration() ||
+    foundExport.isExportSpecifier()
+  ) {
+    return identifierName;
+  }
+
+  return "";
+}
+
+export function resolvePath(root: string | undefined, path: string) {
+  if (path.startsWith(".")) {
+    // Relative path
+    return resolve(dirname(root || "/"), path) + extname(root || "");
+  } else if (path.startsWith("/")) {
+    // Absolute path
+    return path;
+  }
+
+  /**
+   * Any custom paths that could start with e.g. ~ aren't supported right now as
+   * they rely on tsconfig-paths and we're aren't resolving the pats through it
+   * atm. This means not being able to "enter" those components via double
+   * clicking on the element in the tree. If we get feedback saying this is a
+   * problem we can add support for it later.
+   */
+  return "";
+}
+
+export function resolveIdentifierOrigin(
+  pass: PluginPass,
+  path: NodePath<t.Node>,
+  identifierName: string,
+) {
+  const exportName = resolveIdentifierExportName(path, identifierName);
+
+  if (exportName) {
+    // We found a local component
+    return {
+      exportName,
+      path: pass.filename || "",
+    };
+  }
+
+  // Look for local imports
+  const binding = path.scope.getBinding(identifierName);
+  if (
+    binding?.path.isImportSpecifier() &&
+    binding.path.node.imported.type === "Identifier" &&
+    binding.path.parentPath.isImportDeclaration()
+  ) {
+    return {
+      exportName: binding.path.node.imported.name,
+      path: resolvePath(
+        pass.filename,
+        binding.path.parentPath.node.source.value,
+      ),
+    };
+  }
+
+  if (
+    binding?.path.isImportDefaultSpecifier() &&
+    binding.path.parentPath.isImportDeclaration()
+  ) {
+    return {
+      exportName: "default",
+      path: resolvePath(
+        pass.filename,
+        binding.path.parentPath.node.source.value,
+      ),
+    };
+  }
+
+  return undefined;
 }

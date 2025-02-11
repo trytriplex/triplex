@@ -5,8 +5,15 @@
  * file in the root directory of this source tree.
  */
 import { Cross2Icon, EraserIcon } from "@radix-ui/react-icons";
+import { send } from "@triplex/bridge/host";
 import { useScreenView } from "@triplex/ux";
-import { Suspense, useDeferredValue, useLayoutEffect, useState } from "react";
+import {
+  Suspense,
+  useDeferredValue,
+  useEffect,
+  useLayoutEffect,
+  useState,
+} from "react";
 import { IconButton } from "../ds/button";
 import { ExternalLink } from "../ds/external-link";
 import { ScrollContainer } from "../ds/scroll-container";
@@ -41,6 +48,16 @@ function SelectedSceneObjectPanel({
     line: target.line,
     path: target.parentPath,
   });
+
+  useEffect(() => {
+    send("element-focused-props", {
+      props: data.props.map((props) => props.name),
+    });
+
+    return () => {
+      send("element-focused-props", { props: [] });
+    };
+  }, [data.props]);
 
   useLayoutEffect(() => {
     // Sometimes we lose track of the line/col of the currently selected object.

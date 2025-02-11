@@ -138,8 +138,11 @@ export type ThumbnailFunction = (
 
 export interface EmbeddedMeta {
   column: number;
+  exportName?: string;
   line: number;
   name: string;
+  originExportName?: string;
+  originPath?: string;
   path: string;
   rotate?: boolean;
   scale?: boolean;

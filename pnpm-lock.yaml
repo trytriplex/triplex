@@ -943,9 +943,6 @@ importers:
       '@triplex/lib':
         specifier: 0.69.10
         version: link:../lib
-      '@triplex/websocks-client':
-        specifier: 0.0.3
-        version: link:../../websocks-client
       bind-event-listener:
         specifier: ^3.0.0
         version: 3.0.0
@@ -986,9 +983,6 @@ importers:
       '@swc/core':
         specifier: ^1.6.5
         version: 1.6.5(@swc/helpers@0.5.5)
-      '@triplex/server':
-        specifier: 0.71.4
-        version: link:../server
       '@types/react':
         specifier: ^19.0.8
         version: 19.0.8

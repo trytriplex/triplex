@@ -5,12 +5,10 @@
  * file in the root directory of this source tree.
  */
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useRef } from "react";
 import { usePlayState } from "../../stores/use-play-state";
-import { flatten } from "../../util/array";
 import { blockFocusableChildren } from "../../util/focus";
 import { resolveElementMeta } from "../../util/meta";
-import { useSubscriptionEffect } from "../../util/ws";
 import { SceneObjectContext } from "../scene-element/context";
 import { useSelectionMarshal } from "../selection-provider/use-selection-marhsal";
 import {
@@ -29,23 +27,11 @@ export function ReactDOMSelection({
 }) {
   const playState = usePlayState();
   const ref = useRef<HTMLDivElement>(null!);
-  const sceneData = useSubscriptionEffect("/scene/:path/:exportName", {
-    disabled: !filter.exportName || !filter.path,
-    exportName: filter.exportName,
-    path: filter.path,
-  });
-  const elements = useMemo(
-    () => flatten(sceneData?.sceneObjects || []),
-    [sceneData],
-  );
   const [selected, hovered] = useSelectionMarshal<ResolvedNode>({
     listener: (e) => {
       return resolveElementsFromPoint(ref.current, e)
         .map((element) => {
-          const meta = resolveElementMeta(element, {
-            elements,
-            path: filter.path,
-          });
+          const meta = resolveElementMeta(element, filter);
 
           if (meta) {
             return {

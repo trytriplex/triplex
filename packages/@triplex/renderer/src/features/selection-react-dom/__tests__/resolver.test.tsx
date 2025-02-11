@@ -18,15 +18,33 @@ describe("DOM resolver", () => {
       <SceneObjectContext.Provider value>
         <SceneElement
           __component="main"
-          __meta={{ column: 4, line: 1, name: "main", path: "/baz" }}
+          __meta={{
+            column: 4,
+            exportName: "",
+            line: 1,
+            name: "main",
+            path: "/baz",
+          }}
         >
           <SceneElement
             __component="div"
-            __meta={{ column: 4, line: 2, name: "div", path: "/foo" }}
+            __meta={{
+              column: 4,
+              exportName: "",
+              line: 2,
+              name: "div",
+              path: "/foo",
+            }}
           />
           <SceneElement
             __component="span"
-            __meta={{ column: 4, line: 3, name: "span", path: "/foo" }}
+            __meta={{
+              column: 4,
+              exportName: "",
+              line: 3,
+              name: "span",
+              path: "/foo",
+            }}
           />
         </SceneElement>
       </SceneObjectContext.Provider>,
@@ -41,6 +59,7 @@ describe("DOM resolver", () => {
         {
           "meta": {
             "column": 4,
+            "exportName": "",
             "line": 1,
             "name": "main",
             "parents": [],
@@ -52,6 +71,7 @@ describe("DOM resolver", () => {
                   __meta={
                     {
                       "column": 4,
+                      "exportName": "",
                       "line": 2,
                       "name": "div",
                       "path": "/foo",
@@ -63,6 +83,7 @@ describe("DOM resolver", () => {
                   __meta={
                     {
                       "column": 4,
+                      "exportName": "",
                       "line": 3,
                       "name": "span",
                       "path": "/foo",
@@ -86,15 +107,33 @@ describe("DOM resolver", () => {
       <SceneObjectContext.Provider value>
         <SceneElement
           __component={Fragment}
-          __meta={{ column: 4, line: 1, name: "Fragment", path: "/baz" }}
+          __meta={{
+            column: 4,
+            exportName: "",
+            line: 1,
+            name: "Fragment",
+            path: "/baz",
+          }}
         >
           <SceneElement
             __component="div"
-            __meta={{ column: 4, line: 2, name: "div", path: "/foo" }}
+            __meta={{
+              column: 4,
+              exportName: "",
+              line: 2,
+              name: "div",
+              path: "/foo",
+            }}
           />
           <SceneElement
             __component="span"
-            __meta={{ column: 4, line: 3, name: "span", path: "/foo" }}
+            __meta={{
+              column: 4,
+              exportName: "",
+              line: 3,
+              name: "span",
+              path: "/foo",
+            }}
           />
         </SceneElement>
       </SceneObjectContext.Provider>,
@@ -109,6 +148,7 @@ describe("DOM resolver", () => {
         {
           "meta": {
             "column": 4,
+            "exportName": "",
             "line": 1,
             "name": "Fragment",
             "parents": [],
@@ -120,6 +160,7 @@ describe("DOM resolver", () => {
                   __meta={
                     {
                       "column": 4,
+                      "exportName": "",
                       "line": 2,
                       "name": "div",
                       "path": "/foo",
@@ -131,6 +172,7 @@ describe("DOM resolver", () => {
                   __meta={
                     {
                       "column": 4,
+                      "exportName": "",
                       "line": 3,
                       "name": "span",
                       "path": "/foo",
@@ -145,6 +187,7 @@ describe("DOM resolver", () => {
         {
           "meta": {
             "column": 4,
+            "exportName": "",
             "line": 1,
             "name": "Fragment",
             "parents": [],
@@ -156,6 +199,7 @@ describe("DOM resolver", () => {
                   __meta={
                     {
                       "column": 4,
+                      "exportName": "",
                       "line": 2,
                       "name": "div",
                       "path": "/foo",
@@ -167,6 +211,7 @@ describe("DOM resolver", () => {
                   __meta={
                     {
                       "column": 4,
+                      "exportName": "",
                       "line": 3,
                       "name": "span",
                       "path": "/foo",

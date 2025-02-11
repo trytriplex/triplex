@@ -18,7 +18,7 @@ const transformSync = (code: string) => {
 
   return {
     ...result,
-    code: result.code?.replace(/[A-Z]:\\\\/g, "/"),
+    code: result.code?.replace(/[A-Z]:\//g, "/"),
   };
 };
 
@@ -28,7 +28,9 @@ describe("transform transpiled jsx", () => {
       document.createElement("div");
     `);
 
-    expect(actual?.code).toMatchInlineSnapshot(`"document.createElement("div");"`);
+    expect(actual?.code).toMatchInlineSnapshot(
+      `"document.createElement("div");"`,
+    );
   });
 
   it("should skip document.createElement 2 arg", () => {

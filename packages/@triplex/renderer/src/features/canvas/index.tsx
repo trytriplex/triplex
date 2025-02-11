@@ -94,6 +94,7 @@ export function Canvas({ children, ...props }: CanvasProps) {
               __component={provider}
               __meta={{
                 column: -999,
+                exportName: "default",
                 line: -999,
                 name: "Provider",
                 path: providerPath,

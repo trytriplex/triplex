@@ -67,6 +67,7 @@ export function SceneRenderer({
         __component={SceneComponent}
         __meta={{
           column: -1,
+          exportName: "(ignore)",
           line: -1,
           name: exportName,
           path,

@@ -19,7 +19,7 @@ const transformSync = (code: string, opts?: TransformOptions) => {
 
   return {
     ...result,
-    code: result.code?.replace(/[A-Z]:\\\\/g, "/"),
+    code: result.code?.replace(/[A-Z]:/g, "").replaceAll("\\\\", "/"),
   };
 };
 
@@ -127,6 +127,9 @@ describe("babel plugin", () => {
         position
       }) {
         return <SceneObject name="box" type="dynamic" position={position} colliders="cuboid" canSleep={false} __component={RigidBody} __meta={{
+          "originExportName": "RigidBody",
+          "originPath": "",
+          "exportName": "",
           "path": "",
           "name": "RigidBody",
           "line": 6,
@@ -188,6 +191,9 @@ describe("babel plugin", () => {
         scale
       }) {
         return <SceneObject scale={scale} __component={"group"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "",
           "path": "",
           "name": "group",
           "line": 4,
@@ -197,6 +203,9 @@ describe("babel plugin", () => {
           "scale": true
         }}>
                   <SceneObject position={[1, 1, 1]} __component={"mesh"} __meta={{
+            "originExportName": "",
+            "originPath": "",
+            "exportName": "",
             "path": "",
             "name": "mesh",
             "line": 5,
@@ -206,6 +215,9 @@ describe("babel plugin", () => {
             "scale": false
           }}>
                     <SceneObject args={[1, 1, 1]} __component={"boxGeometry"} __meta={{
+              "originExportName": "",
+              "originPath": "",
+              "exportName": "",
               "path": "",
               "name": "boxGeometry",
               "line": 6,
@@ -215,6 +227,9 @@ describe("babel plugin", () => {
               "scale": false
             }}></SceneObject>
                     <SceneObject color="black" __component={"standardMaterial"} __meta={{
+              "originExportName": "",
+              "originPath": "",
+              "exportName": "",
               "path": "",
               "name": "standardMaterial",
               "line": 7,
@@ -253,6 +268,9 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "export function HelloWorld() {
         return <SceneObject __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "HelloWorld",
           "path": "",
           "name": "mesh",
           "line": 4,
@@ -289,6 +307,9 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "export function HelloWorld() {
         return <SceneObject __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "HelloWorld",
           "path": "",
           "name": "mesh",
           "line": 4,
@@ -329,6 +350,9 @@ describe("babel plugin", () => {
         position
       }) {
         return <SceneObject rotation={rotation} scale={scale} position={position} __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "",
           "path": "",
           "name": "mesh",
           "line": 4,
@@ -365,6 +389,9 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "function Component(props) {
         return <SceneObject rotation={props.rotation} scale={props.scale} position={props.position} __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "",
           "path": "",
           "name": "mesh",
           "line": 4,
@@ -401,6 +428,9 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "export const HelloWorld = () => {
         return <SceneObject __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "HelloWorld",
           "path": "",
           "name": "mesh",
           "line": 4,
@@ -449,6 +479,9 @@ describe("babel plugin", () => {
           "column": 11
         }}>
                   <SceneObject visible __component={"mesh"} __meta={{
+            "originExportName": "",
+            "originPath": "",
+            "exportName": "HelloWorld",
             "path": "",
             "name": "mesh",
             "line": 5,
@@ -458,6 +491,9 @@ describe("babel plugin", () => {
             "scale": false
           }}>
                     <SceneObject __component={"boxGeometry"} __meta={{
+              "originExportName": "",
+              "originPath": "",
+              "exportName": "HelloWorld",
               "path": "",
               "name": "boxGeometry",
               "line": 6,
@@ -468,6 +504,9 @@ describe("babel plugin", () => {
             }}></SceneObject>
                   </SceneObject>
                   <SceneObject __component={"spotLight"} __meta={{
+            "originExportName": "",
+            "originPath": "",
+            "exportName": "HelloWorld",
             "path": "",
             "name": "spotLight",
             "line": 8,
@@ -513,6 +552,9 @@ describe("babel plugin", () => {
       function HelloWorld() {
         const onClick = () => {};
         return <SceneObject __component={"group"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "",
           "path": "",
           "name": "group",
           "line": 9,
@@ -551,6 +593,9 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "const HelloWorld = () => {
         return <SceneObject __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "default",
           "path": "",
           "name": "mesh",
           "line": 4,
@@ -561,6 +606,45 @@ describe("babel plugin", () => {
         }}></SceneObject>;
       };
       export default HelloWorld;
+      HelloWorld.triplexMeta = {
+        "lighting": "default",
+        "root": "react-three-fiber"
+      };"
+    `);
+  });
+
+  it("should set export name for default exported function decl", () => {
+    const result = transformSync(
+      `
+      export default function HelloWorld() {
+        return (
+          <mesh />
+        );
+      }
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "export default function HelloWorld() {
+        return <SceneObject __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "default",
+          "path": "",
+          "name": "mesh",
+          "line": 4,
+          "column": 11,
+          "translate": false,
+          "rotate": false,
+          "scale": false
+        }}></SceneObject>;
+      }
       HelloWorld.triplexMeta = {
         "lighting": "default",
         "root": "react-three-fiber"
@@ -588,6 +672,9 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "export const HelloWorld = forwardRef(ref => {
         return <SceneObject ref={ref} __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "HelloWorld",
           "path": "",
           "name": "mesh",
           "line": 4,
@@ -648,6 +735,9 @@ describe("babel plugin", () => {
       }) {
         const ok = {};
         return <SceneObject visible scale={scale} __component={"group"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "default",
           "path": "",
           "name": "group",
           "line": 9,
@@ -659,6 +749,9 @@ describe("babel plugin", () => {
                   <SceneObject {...ok} userData={{
             hello: true
           }} onClick={() => {}} visible={true} position={position} rotation={rotation} __component={"mesh"} __meta={{
+            "originExportName": "",
+            "originPath": "",
+            "exportName": "default",
             "path": "",
             "name": "mesh",
             "line": 10,
@@ -668,6 +761,9 @@ describe("babel plugin", () => {
             "scale": false
           }}>
                     <SceneObject args={[1, 1, 1]} __component={"boxGeometry"} __meta={{
+              "originExportName": "",
+              "originPath": "",
+              "exportName": "default",
               "path": "",
               "name": "boxGeometry",
               "line": 18,
@@ -677,6 +773,9 @@ describe("babel plugin", () => {
               "scale": false
             }}></SceneObject>
                     <SceneObject color="#00ff00" __component={"meshStandardMaterial"} __meta={{
+              "originExportName": "",
+              "originPath": "",
+              "exportName": "default",
               "path": "",
               "name": "meshStandardMaterial",
               "line": 19,
@@ -711,6 +810,9 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "<SceneObject __component={CustomComponent} __meta={{
+        "originExportName": "",
+        "originPath": "",
+        "exportName": "",
         "path": "",
         "name": "CustomComponent",
         "line": 2,
@@ -737,6 +839,9 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "<SceneObject key="existing" __component={CustomComponent} __meta={{
+        "originExportName": "",
+        "originPath": "",
+        "exportName": "",
         "path": "",
         "name": "CustomComponent",
         "line": 2,
@@ -763,6 +868,9 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "<SceneObject key={10} __component={CustomComponent} __meta={{
+        "originExportName": "",
+        "originPath": "",
+        "exportName": "",
         "path": "",
         "name": "CustomComponent",
         "line": 2,
@@ -778,7 +886,7 @@ describe("babel plugin", () => {
     // position={position} -> userData={{ __triplexTransform: 'translate' }}
     const result = transformSync(
       `
-      function Component({ position }) {
+      export function Component({ position }) {
          return <mesh position={position} />
       }
     `,
@@ -791,10 +899,13 @@ describe("babel plugin", () => {
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
-      "function Component({
+      "export function Component({
         position
       }) {
         return <SceneObject position={position} __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "Component",
           "path": "",
           "name": "mesh",
           "line": 3,
@@ -829,6 +940,9 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "function Component(props) {
         return <SceneObject {...props} __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "",
           "path": "",
           "name": "mesh",
           "line": 3,
@@ -863,6 +977,9 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "const Component = forwardRef(props => {
         return <SceneObject {...props} __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "",
           "path": "",
           "name": "mesh",
           "line": 3,
@@ -900,6 +1017,9 @@ describe("babel plugin", () => {
         ...props
       }) {
         return <SceneObject {...props} __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "",
           "path": "",
           "name": "mesh",
           "line": 3,
@@ -937,6 +1057,9 @@ describe("babel plugin", () => {
         ...props
       }) => {
         return <SceneObject {...props} __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "",
           "path": "",
           "name": "mesh",
           "line": 3,
@@ -956,7 +1079,7 @@ describe("babel plugin", () => {
   it("should skip nested arrow functions", () => {
     const result = transformSync(
       `
-      const Component = forwardRef(({ name, ...props }) => {
+      export const Component = forwardRef(({ name, ...props }) => {
         const shouldSkipThisNode = ({ ...ok }) => {};
         return <mesh {...props} />
       });
@@ -970,7 +1093,7 @@ describe("babel plugin", () => {
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
-      "const Component = forwardRef(({
+      "export const Component = forwardRef(({
         name,
         ...props
       }) => {
@@ -978,6 +1101,9 @@ describe("babel plugin", () => {
           ...ok
         }) => {};
         return <SceneObject {...props} __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "Component",
           "path": "",
           "name": "mesh",
           "line": 4,
@@ -1000,6 +1126,8 @@ describe("babel plugin", () => {
       function Component({ name, position, rotation, scale, ...props }) {
         return <mesh {...props} />
       }
+
+      export { Component };
     `,
       {
         plugins: [
@@ -1018,6 +1146,9 @@ describe("babel plugin", () => {
         ...props
       }) {
         return <SceneObject {...props} __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "Component",
           "path": "",
           "name": "mesh",
           "line": 3,
@@ -1027,6 +1158,7 @@ describe("babel plugin", () => {
           "scale": false
         }}></SceneObject>;
       }
+      export { Component };
       Component.triplexMeta = {
         "lighting": "default",
         "root": "react-three-fiber"
@@ -1037,7 +1169,7 @@ describe("babel plugin", () => {
   it('should bail out if the spread props does not include "position", "rotation" or "scale" as an arrow function', () => {
     const result = transformSync(
       `
-      const Component = forwardRef(({ name, position, rotation, scale, ...props }) => {
+      export const Component = forwardRef(({ name, position, rotation, scale, ...props }) => {
         return <mesh {...props} />
       });
     `,
@@ -1050,7 +1182,7 @@ describe("babel plugin", () => {
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
-      "const Component = forwardRef(({
+      "export const Component = forwardRef(({
         name,
         position,
         rotation,
@@ -1058,6 +1190,9 @@ describe("babel plugin", () => {
         ...props
       }) => {
         return <SceneObject {...props} __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "Component",
           "path": "",
           "name": "mesh",
           "line": 3,
@@ -1080,6 +1215,8 @@ describe("babel plugin", () => {
       const Component = forwardRef(function Hello(props) {
         return <mesh {...props} />
       });
+
+      export { Component };
     `,
       {
         plugins: [
@@ -1092,6 +1229,9 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "const Component = forwardRef(function Hello(props) {
         return <SceneObject {...props} __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "Component",
           "path": "",
           "name": "mesh",
           "line": 3,
@@ -1101,6 +1241,7 @@ describe("babel plugin", () => {
           "scale": true
         }}></SceneObject>;
       });
+      export { Component };
       Component.triplexMeta = {
         "lighting": "default",
         "root": "react-three-fiber"
@@ -1111,7 +1252,7 @@ describe("babel plugin", () => {
   it("should should skip nested function expressions", () => {
     const result = transformSync(
       `
-      const Component = forwardRef(function Hello(props) {
+      export const Component = forwardRef(function Hello(props) {
         test(function anotherOne(another) {})
         return <mesh {...props} />
       });
@@ -1125,9 +1266,12 @@ describe("babel plugin", () => {
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
-      "const Component = forwardRef(function Hello(props) {
+      "export const Component = forwardRef(function Hello(props) {
         test(function anotherOne(another) {});
         return <SceneObject {...props} __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "Component",
           "path": "",
           "name": "mesh",
           "line": 4,
@@ -1558,6 +1702,9 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "export function Component() {
         return <SceneObject __component={ContextProvider} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "Component",
           "path": "",
           "name": "ContextProvider",
           "line": 4,
@@ -1567,6 +1714,9 @@ describe("babel plugin", () => {
           "scale": false
         }}>
                     <SceneObject __component={"mesh"} __meta={{
+            "originExportName": "",
+            "originPath": "",
+            "exportName": "Component",
             "path": "",
             "name": "mesh",
             "line": 5,
@@ -1616,6 +1766,7 @@ describe("babel plugin", () => {
         }
       `,
       {
+        filename: "/foo.tsx",
         plugins: [
           plugin({ exclude: [] }),
           require.resolve("@babel/plugin-syntax-jsx"),
@@ -1626,7 +1777,10 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "export function Inbuilt() {
         return <SceneObject __component={"mesh"} __meta={{
-          "path": "",
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "Inbuilt",
+          "path": "/foo.tsx",
           "name": "mesh",
           "line": 4,
           "column": 13,
@@ -1635,7 +1789,10 @@ describe("babel plugin", () => {
           "scale": false
         }}>
                     <SceneObject __component={"boxGeometry"} __meta={{
-            "path": "",
+            "originExportName": "",
+            "originPath": "",
+            "exportName": "Inbuilt",
+            "path": "/foo.tsx",
             "name": "boxGeometry",
             "line": 5,
             "column": 15,
@@ -1647,7 +1804,10 @@ describe("babel plugin", () => {
       }
       export function Inbuilt1() {
         return <SceneObject __component={Inbuilt} __meta={{
-          "path": "",
+          "originExportName": "Inbuilt",
+          "originPath": "/foo.tsx",
+          "exportName": "Inbuilt1",
+          "path": "/foo.tsx",
           "name": "Inbuilt",
           "line": 10,
           "column": 18,
@@ -1658,7 +1818,10 @@ describe("babel plugin", () => {
       }
       export function Inbuilt2() {
         return <SceneObject __component={Inbuilt1} __meta={{
-          "path": "",
+          "originExportName": "Inbuilt1",
+          "originPath": "/foo.tsx",
+          "exportName": "Inbuilt2",
+          "path": "/foo.tsx",
           "name": "Inbuilt1",
           "line": 14,
           "column": 18,
@@ -1669,7 +1832,10 @@ describe("babel plugin", () => {
       }
       export function Scene() {
         return <SceneObject __component={Inbuilt2} __meta={{
-          "path": "",
+          "originExportName": "Inbuilt2",
+          "originPath": "/foo.tsx",
+          "exportName": "Scene",
+          "path": "/foo.tsx",
           "name": "Inbuilt2",
           "line": 18,
           "column": 18,
@@ -1769,6 +1935,9 @@ describe("babel plugin", () => {
         render: () => {},
         unmount: () => {}
       }).render(<SceneObject __component={"div"} __meta={{
+        "originExportName": "",
+        "originPath": "",
+        "exportName": "",
         "path": "",
         "name": "div",
         "line": 4,
@@ -1779,6 +1948,109 @@ describe("babel plugin", () => {
       }}></SceneObject>);"
     `,
     );
+  });
+
+  it("should declare origins", () => {
+    const result = transformSync(
+      `
+        import DefaultImportedComponent from "./default";
+        import { ImportedComponent } from "../component";
+
+        export function LocalComponent() {
+          return <mesh />;
+        }
+
+        export function Component() {
+          return (
+            <>
+              <DefaultImportedComponent />
+              <LocalComponent />
+              <ImportedComponent />
+            </>
+          );
+        }
+      `,
+      {
+        filename: "/foo/bar/baz.tsx",
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "import { Fragment } from "react";
+      import DefaultImportedComponent from "./default";
+      import { ImportedComponent } from "../component";
+      export function LocalComponent() {
+        return <SceneObject __component={"mesh"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "LocalComponent",
+          "path": "/foo/bar/baz.tsx",
+          "name": "mesh",
+          "line": 6,
+          "column": 18,
+          "translate": false,
+          "rotate": false,
+          "scale": false
+        }}></SceneObject>;
+      }
+      export function Component() {
+        return <SceneObject __component={Fragment} __meta={{
+          "path": "/foo/bar/baz.tsx",
+          "name": "Fragment",
+          "line": 11,
+          "column": 13
+        }}>
+                    <SceneObject __component={DefaultImportedComponent} __meta={{
+            "originExportName": "default",
+            "originPath": "/foo/bar/default.tsx",
+            "exportName": "Component",
+            "path": "/foo/bar/baz.tsx",
+            "name": "DefaultImportedComponent",
+            "line": 12,
+            "column": 15,
+            "translate": false,
+            "rotate": false,
+            "scale": false
+          }}></SceneObject>
+                    <SceneObject __component={LocalComponent} __meta={{
+            "originExportName": "LocalComponent",
+            "originPath": "/foo/bar/baz.tsx",
+            "exportName": "Component",
+            "path": "/foo/bar/baz.tsx",
+            "name": "LocalComponent",
+            "line": 13,
+            "column": 15,
+            "translate": false,
+            "rotate": false,
+            "scale": false
+          }}></SceneObject>
+                    <SceneObject __component={ImportedComponent} __meta={{
+            "originExportName": "ImportedComponent",
+            "originPath": "/foo/component.tsx",
+            "exportName": "Component",
+            "path": "/foo/bar/baz.tsx",
+            "name": "ImportedComponent",
+            "line": 14,
+            "column": 15,
+            "translate": false,
+            "rotate": false,
+            "scale": false
+          }}></SceneObject>
+                  </SceneObject>;
+      }
+      LocalComponent.triplexMeta = {
+        "lighting": "default",
+        "root": "react-three-fiber"
+      };
+      Component.triplexMeta = {
+        "lighting": "default",
+        "root": ImportedComponent.triplexMeta.root
+      };"
+    `);
   });
 
   it("should skip stubbing out userland create root calls", () => {

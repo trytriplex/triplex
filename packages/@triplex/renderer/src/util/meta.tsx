@@ -30,29 +30,11 @@ export function getTriplexMeta(
   return undefined;
 }
 
-export function isElementPresentInFilter(
-  element: { column: number; line: number; path: string },
-  filter: {
-    elements: { column: number; line: number }[];
-    path: string;
-  },
-): boolean {
-  if (filter.path === element.path) {
-    for (const obj of filter.elements) {
-      if (obj.line === element.line && obj.column === element.column) {
-        return true;
-      }
-    }
-  }
-
-  return false;
-}
-
 export function resolveElementMeta(
   obj: Node | Object3D | undefined,
   filter:
     | {
-        elements: { column: number; line: number; name: string }[];
+        exportName: string;
         path: string;
       }
     | { column: number; line: number; path: string },
@@ -68,7 +50,8 @@ export function resolveElementMeta(
       ? filter.column === objMeta.column &&
         filter.line === objMeta.line &&
         objMeta.path === filter.path
-      : isElementPresentInFilter(objMeta, filter);
+      : filter.exportName === objMeta.exportName &&
+        objMeta.path === filter.path;
 
   if (doesObjMatchFilter) {
     // We short circuit and immediately return the objects meta if it matches the filter.
@@ -87,7 +70,8 @@ export function resolveElementMeta(
             ? filter.column === parent.column &&
               filter.line === parent.line &&
               parent.path === filter.path
-            : isElementPresentInFilter(parent, filter);
+            : filter.exportName === parent.exportName &&
+              filter.path === parent.path;
 
         if (doesParentMatchFilter) {
           return parent;

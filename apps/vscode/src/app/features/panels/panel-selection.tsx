@@ -7,7 +7,7 @@
 import { EraserIcon } from "@radix-ui/react-icons";
 import { send } from "@triplex/bridge/host";
 import { PropInput } from "@triplex/ux/inputs";
-import { useReducer } from "react";
+import { useEffect, useReducer } from "react";
 import * as Accordion from "../../components/accordion";
 import { IconButton } from "../../components/button";
 import { useLazySubscription } from "../../hooks/ws";
@@ -66,6 +66,20 @@ function SelectionPanelLoadable({ selected }: { selected: SceneSelected }) {
     expandAll: isPropsForComponent,
     groupsDef,
   });
+
+  useEffect(() => {
+    if (isPropsForComponent) {
+      return;
+    }
+
+    send("element-focused-props", {
+      props: props.props.map((props) => props.name),
+    });
+
+    return () => {
+      send("element-focused-props", { props: [] });
+    };
+  }, [isPropsForComponent, props.props]);
 
   return (
     <>

@@ -8,19 +8,11 @@ import { useThree } from "@react-three/fiber";
 import { compose, on, send } from "@triplex/bridge/client";
 import { useEvent } from "@triplex/lib";
 import { fg } from "@triplex/lib/fg";
-import {
-  useContext,
-  useEffect,
-  useMemo,
-  useState,
-  type ReactNode,
-} from "react";
+import { useContext, useEffect, useState, type ReactNode } from "react";
 import { Box3, Camera, Raycaster, Vector2, Vector3 } from "three";
-import { flatten } from "../../util/array";
 import { HOVER_LAYER_INDEX, SELECTION_LAYER_INDEX } from "../../util/layers";
 import { resolveElementMeta } from "../../util/meta";
 import { encodeProps, isObjectVisible } from "../../util/three";
-import { useSubscriptionEffect } from "../../util/ws";
 import { SwitchToComponentContext } from "../app/context";
 import { CameraPreview } from "../camera-preview";
 import { useCamera } from "../camera/context";
@@ -57,15 +49,11 @@ export function ThreeFiberSelection({
   const scene = useThree((store) => store.scene);
   const camera = useThree((store) => store.camera);
   const canvasSize = useThree((store) => store.size);
-  const sceneData = useSubscriptionEffect("/scene/:path/:exportName", {
-    disabled: !filter.exportName || !filter.path,
-    exportName: filter.exportName,
-    path: filter.path,
+  const [transforms, setTransforms] = useState({
+    rotate: false,
+    scale: false,
+    translate: false,
   });
-  const elements = useMemo(
-    () => flatten(sceneData?.sceneObjects || []),
-    [sceneData],
-  );
   const [resolvedObjects, , selectionActions] =
     useSelectionMarshal<ResolvedObject3D>({
       listener: (e) => {
@@ -83,10 +71,7 @@ export function ThreeFiberSelection({
               found.object.type !== "TransformControlsPlane",
           )
           .map((found) => {
-            const meta = resolveElementMeta(found.object, {
-              elements,
-              path: filter.path,
-            });
+            const meta = resolveElementMeta(found.object, filter);
 
             if (meta) {
               return {
@@ -134,18 +119,6 @@ export function ThreeFiberSelection({
     });
   const { controls } = useCamera();
   const resolvedObject = resolvedObjects.at(0);
-  const resolvedObjectProps = useSubscriptionEffect(
-    "/scene/:path/object/:line/:column",
-    {
-      column: resolvedObject?.meta.column,
-      disabled:
-        !resolvedObject ||
-        (resolvedObject?.meta.line === -1 &&
-          resolvedObject?.meta.column === -1),
-      line: resolvedObject?.meta.line,
-      path: resolvedObject?.meta.path,
-    },
-  );
 
   useEffect(() => {
     return on("extension-point-triggered", (data) => {
@@ -177,6 +150,15 @@ export function ThreeFiberSelection({
 
   useEffect(() => {
     return compose([
+      on("element-focused-props", ({ props }) => {
+        // When an element is selected the host will send all available prop names for it.
+        // We use this list to determine which transform controls are available.
+        setTransforms({
+          rotate: props.includes("rotation"),
+          scale: props.includes("scale"),
+          translate: props.includes("position"),
+        });
+      }),
       on("request-open-component", (sceneObject) => {
         if (!sceneObject && !resolvedObject) {
           return;
@@ -185,20 +167,17 @@ export function ThreeFiberSelection({
         if (
           !sceneObject &&
           resolvedObject &&
-          resolvedObject &&
-          resolvedObjectProps &&
-          resolvedObjectProps.type === "custom" &&
-          resolvedObjectProps.path &&
-          resolvedObjectProps.exportName
+          resolvedObject.meta.originExportName &&
+          resolvedObject.meta.originPath
         ) {
           switchToComponent({
-            exportName: resolvedObjectProps.exportName,
-            path: resolvedObjectProps.path,
+            exportName: resolvedObject.meta.originExportName,
+            path: resolvedObject.meta.originPath,
             props: encodeProps(resolvedObject),
           });
-        }
 
-        send("element-blurred", undefined);
+          send("element-blurred", undefined);
+        }
       }),
       on("request-jump-to-element", (sceneObject) => {
         const objects = sceneObject
@@ -230,14 +209,7 @@ export function ThreeFiberSelection({
         });
       }),
     ]);
-  }, [
-    controls,
-    resolvedObject,
-    resolvedObjectProps,
-    resolvedObjects,
-    scene,
-    switchToComponent,
-  ]);
+  }, [controls, resolvedObject, resolvedObjects, scene, switchToComponent]);
 
   const onCompleteTransformHandler = useEvent(() => {
     if (!resolvedObject) {
@@ -292,9 +264,13 @@ export function ThreeFiberSelection({
         {children}
       </SceneObjectEventsContext.Provider>
 
-      {!!resolvedObjects.length && transform !== "none" && (
+      {!!resolvedObject && transform !== "none" && (
         <TransformControls
-          enabled={resolvedObjectProps?.transforms[transform]}
+          enabled={
+            /^[a-z]/.test(resolvedObject.meta.name)
+              ? true
+              : transforms[transform]
+          }
           mode={transform}
           object={resolvedObject?.object}
           onCompleteTransform={onCompleteTransformHandler}

@@ -14,6 +14,7 @@ function Component({ children }: { children: React.ReactNode }) {
       __component="group"
       __meta={{
         column: 1,
+        exportName: "Component",
         line: 1,
         name: "group",
         path: "/foo",
@@ -26,6 +27,7 @@ function Component({ children }: { children: React.ReactNode }) {
         __component="mesh"
         __meta={{
           column: 22,
+          exportName: "Component",
           line: 1,
           name: "mesh",
           path: "/foo",
@@ -46,6 +48,7 @@ export const nested = () => (
       __component={Fragment}
       __meta={{
         column: 1,
+        exportName: "Nested",
         line: 1,
         name: "ComponentA",
         path: "/bar",
@@ -58,6 +61,7 @@ export const nested = () => (
         __component={Component}
         __meta={{
           column: 10,
+          exportName: "Nested",
           line: 20,
           name: "ComponentB",
           path: "/bar",

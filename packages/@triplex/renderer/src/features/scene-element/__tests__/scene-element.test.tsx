@@ -26,6 +26,7 @@ describe("scene object component", () => {
             __component={(props: unknown) => <mesh userData={{ props }} />}
             __meta={{
               column: 1,
+              exportName: "Component",
               line: 1,
               name: "ScrollControls",
               path: "",
@@ -51,6 +52,7 @@ describe("scene object component", () => {
             __component={(props: unknown) => <mesh userData={{ props }} />}
             __meta={{
               column: 1,
+              exportName: "Component",
               line: 1,
               name: "ScrollControls",
               path: "",
@@ -75,6 +77,7 @@ describe("scene object component", () => {
           __component="mesh"
           __meta={{
             column: 1,
+            exportName: "Component",
             line: 1,
             name: "mesh",
             path: "",
@@ -106,6 +109,7 @@ describe("scene object component", () => {
           __component="mesh"
           __meta={{
             column: 1,
+            exportName: "Component",
             line: 1,
             name: "mesh",
             path: "",
@@ -132,6 +136,7 @@ describe("scene object component", () => {
           __component="group"
           __meta={{
             column: 1,
+            exportName: "Component",
             line: 1,
             name: "group-1",
             path: "",
@@ -145,6 +150,7 @@ describe("scene object component", () => {
             __component="group"
             __meta={{
               column: 1,
+              exportName: "Component",
               line: 2,
               name: "group-2",
               path: "",
@@ -158,6 +164,7 @@ describe("scene object component", () => {
             __component="group"
             __meta={{
               column: 1,
+              exportName: "Component",
               line: 3,
               name: "group-3",
               path: "",
@@ -184,6 +191,7 @@ describe("scene object component", () => {
           __component="mesh"
           __meta={{
             column: 1,
+            exportName: "Component",
             line: 1,
             name: "mesh",
             path: "/bar",
@@ -202,6 +210,7 @@ describe("scene object component", () => {
           __component={Component}
           __meta={{
             column: 1,
+            exportName: "Component",
             line: 1,
             name: "Component",
             path: "/foo",
@@ -215,7 +224,7 @@ describe("scene object component", () => {
 
     expect(
       resolveElementMeta(ref.current!, {
-        elements: [{ column: 1, line: 1, name: "Component" }],
+        exportName: "Component",
         path: "/foo",
       }),
     ).toMatchObject({
@@ -235,6 +244,7 @@ describe("scene object component", () => {
             __component="directionalLight"
             __meta={{
               column: 10,
+              exportName: "Component",
               line: 99,
               name: "directionalLight",
               path: "",
@@ -247,6 +257,7 @@ describe("scene object component", () => {
               __component="orthographicCamera"
               __meta={{
                 column: 10,
+                exportName: "Component",
                 line: 100,
                 name: "orthographicCamera",
                 path: "",
@@ -274,6 +285,7 @@ describe("scene object component", () => {
           __component="mesh"
           __meta={{
             column: 1,
+            exportName: "Component",
             line: 1,
             name: "mesh",
             path: "/foo",
@@ -293,6 +305,7 @@ describe("scene object component", () => {
           __component={Fragment}
           __meta={{
             column: 1,
+            exportName: "ComponentA",
             line: 1,
             name: "ComponentA",
             path: "/bar",
@@ -305,6 +318,7 @@ describe("scene object component", () => {
             __component={Component}
             __meta={{
               column: 1,
+              exportName: "ComponentB",
               line: 2,
               name: "ComponentB",
               path: "/foo",
@@ -318,7 +332,7 @@ describe("scene object component", () => {
     );
 
     const actual = resolveElementMeta(ref.current!, {
-      elements: [{ column: 1, line: 2, name: "ComponentB" }],
+      exportName: "ComponentB",
       path: "/foo",
     });
 
@@ -337,6 +351,7 @@ describe("scene object component", () => {
           __component="group"
           __meta={{
             column: 1,
+            exportName: "Component",
             line: 1,
             name: "group",
             path: "/foo",
@@ -349,6 +364,7 @@ describe("scene object component", () => {
             __component="mesh"
             __meta={{
               column: 1,
+              exportName: "Component",
               line: 1,
               name: "mesh",
               path: "/foo",
@@ -369,6 +385,7 @@ describe("scene object component", () => {
           __component={Fragment}
           __meta={{
             column: 1,
+            exportName: "Comp1",
             line: 1,
             name: "ComponentA",
             path: "/bar",
@@ -381,9 +398,10 @@ describe("scene object component", () => {
             __component={Component}
             __meta={{
               column: 1,
+              exportName: "Comp1",
               line: 2,
               name: "ComponentB",
-              path: "/foo",
+              path: "/bar",
               rotate: false,
               scale: false,
               translate: false,
@@ -394,8 +412,8 @@ describe("scene object component", () => {
     );
 
     const actual = resolveElementMeta(ref.current!, {
-      elements: [{ column: 1, line: 2, name: "ComponentB" }],
-      path: "/foo",
+      exportName: "Comp1",
+      path: "/bar",
     });
 
     expect(actual).toMatchObject({
@@ -443,6 +461,7 @@ describe("scene object component", () => {
           __component={MapControls}
           __meta={{
             column: 1,
+            exportName: "Component",
             line: 1,
             name: "MapControls",
             path: "",
@@ -464,6 +483,7 @@ describe("scene object component", () => {
           __component={MapControls}
           __meta={{
             column: 1,
+            exportName: "Component",
             line: 1,
             name: "MapControls",
             path: "",

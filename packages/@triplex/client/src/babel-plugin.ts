@@ -14,6 +14,8 @@ import {
   isChildOfReturnStatement,
   isIdentifierFromModule,
   isJSXIdentifierFromNodeModules,
+  resolveIdentifierExportName,
+  resolveIdentifierOrigin,
 } from "./util/babel";
 import { isReactDOMElement } from "./util/is-react-element";
 import {
@@ -75,6 +77,7 @@ export default function triplexBabelPlugin({
   let currentFunction:
     | {
         canvasComponent?: boolean;
+        exportName: string;
         firstFoundCustomComponentName?: string;
         firstFoundHookSource?: "react-three-fiber";
         firstFoundHostElementSource?: "react" | "react-three-fiber";
@@ -319,6 +322,7 @@ export default function triplexBabelPlugin({
             extractFunctionArgs(propsArg);
 
           currentFunction = {
+            exportName: resolveIdentifierExportName(path, path.node.id.name),
             name: path.node.id.name,
             props: { destructured, spreadIdentifier },
             returnsJSX: false,
@@ -451,6 +455,8 @@ export default function triplexBabelPlugin({
           },
         );
 
+        const elementOrigin = resolveIdentifierOrigin(pass, path, elementName);
+
         const newNode = t.jsxElement(
           t.jsxOpeningElement(t.jsxIdentifier(SCENE_OBJECT_COMPONENT_NAME), [
             ...attributes,
@@ -466,6 +472,18 @@ export default function triplexBabelPlugin({
               t.jsxIdentifier("__meta"),
               t.jsxExpressionContainer(
                 t.objectExpression([
+                  t.objectProperty(
+                    t.stringLiteral("originExportName"),
+                    t.stringLiteral(elementOrigin?.exportName || ""),
+                  ),
+                  t.objectProperty(
+                    t.stringLiteral("originPath"),
+                    t.stringLiteral(elementOrigin?.path || ""),
+                  ),
+                  t.objectProperty(
+                    t.stringLiteral("exportName"),
+                    t.stringLiteral(currentFunction?.exportName || ""),
+                  ),
                   t.objectProperty(
                     t.stringLiteral("path"),
                     t.stringLiteral(
@@ -682,6 +700,7 @@ export default function triplexBabelPlugin({
 
           if (isFunction) {
             currentFunction = {
+              exportName: resolveIdentifierExportName(path, path.node.id.name),
               name: path.node.id.name,
               props: { destructured, spreadIdentifier },
               returnsJSX: false,
