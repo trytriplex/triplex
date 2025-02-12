@@ -2,7 +2,7 @@
 
 Thank you for considering a contribution to Triplex! Pull requests, issues and comments are welcome. This is an open core repository meaning only a subset of the Triplex code is available. Currently only the scene renderer and related packages are open source. We will explore open sourcing more code in the future.
 
-If you're looking for an issue to work on have a look at the "[**Contribution ready**](https://github.com/trytriplex/triplex/labels/Contribution%20ready)" labelled issues or reach out on the [Discord Community](https://discord.gg/nBzRBUEs4b).
+If you're looking for an issue to work on have a look for the "[Contribution ready](https://github.com/trytriplex/triplex/labels/Contribution%20ready)" labelled issues or reach out on the [Discord Community](https://discord.gg/nBzRBUEs4b).
 
 ## Set Up
 
