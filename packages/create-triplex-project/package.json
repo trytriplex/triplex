@@ -1,7 +1,7 @@
 {
   "name": "create-triplex-project",
   "version": "0.70.3",
-  "description": "The visual IDE for the web.",
+  "description": "The visual development environment for the web.",
   "keywords": [
     "r3f",
     "react-three-fiber",
@@ -9,7 +9,7 @@
     "three.js",
     "three"
   ],
-  "license": "GPL-3.0",
+  "license": "MIT",
   "author": {
     "name": "Triplex",
     "email": "support@triplex.dev",
