@@ -1261,6 +1261,9 @@ importers:
       '@swc/core':
         specifier: ^1.6.5
         version: 1.6.5(@swc/helpers@0.5.5)
+      '@types/ws':
+        specifier: 8.5.4
+        version: 8.5.4
       typescript:
         specifier: ^5.7.2
         version: 5.7.2

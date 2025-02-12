@@ -1,5 +1,5 @@
 {
-  "extends": ["@nkzw", "plugin:playwright/recommended"],
+  "extends": ["@nkzw"],
   "ignorePatterns": [
     "dist",
     "build",
@@ -7,7 +7,15 @@
     "test-results",
     "syntax-error.tsx"
   ],
-  "plugins": ["header"],
+  "overrides": [
+    {
+      "files": ["./packages/websocks-client/**"],
+      "rules": {
+        "react-compiler/react-compiler": "error"
+      }
+    }
+  ],
+  "plugins": ["react-compiler", "header"],
   "rules": {
     "@nkzw/no-instanceof": "off",
     "@typescript-eslint/consistent-type-imports": [
@@ -39,6 +47,7 @@
     "playwright/no-standalone-expect": "off",
     "prefer-const": "off",
     "react/no-unknown-property": "off",
+    "react/no-unescaped-entities": ["error", { "forbid": [">", "}"] }],
     "space-before-function-paren": "off",
     "unicorn/consistent-function-scoping": "off",
     "unicorn/prefer-ternary": "off",
