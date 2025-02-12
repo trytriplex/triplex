@@ -13,7 +13,7 @@ import Image from "next/image";
 import Link from "next/link";
 import type { NextraThemeLayoutProps } from "nextra";
 import { normalizePages } from "nextra/normalize-pages";
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, useEffect, useMemo, useState, type JSX } from "react";
 import { SendFeedback } from "../components/feedback";
 import { Footer } from "../components/footer";
 import { BgGrid, GridContainer } from "../components/grid";

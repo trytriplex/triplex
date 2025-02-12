@@ -6,6 +6,7 @@
  */
 import { type IconProps } from "@radix-ui/react-icons/dist/types";
 import Link from "next/link";
+import { type JSX } from "react";
 import { cn } from "../util/cn";
 
 export function ActionLink({
