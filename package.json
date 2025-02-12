@@ -24,6 +24,7 @@
     "@ianvs/prettier-plugin-sort-imports": "^4.1.0",
     "@nkzw/eslint-config": "^1.17.0",
     "@swc/core": "^1.6.5",
+    "@testing-library/react": "^14.0.0",
     "eslint": "^8.51.0",
     "eslint-plugin-header": "^3.1.1",
     "eslint-plugin-playwright": "^1.6.2",
