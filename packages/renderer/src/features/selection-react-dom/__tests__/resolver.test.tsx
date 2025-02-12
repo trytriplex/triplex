@@ -1,0 +1,229 @@
+/**
+ * Copyright (c) 2022—present Michael Dougall. All rights reserved.
+ *
+ * This repository utilizes multiple licenses across different directories. To
+ * see this files license find the nearest LICENSE file up the source tree.
+ */
+// @vitest-environment jsdom
+import { render } from "@testing-library/react";
+import { Fragment } from "react/jsx-runtime";
+import { describe, expect, it } from "vitest";
+import { SceneElement } from "../../scene-element";
+import { SceneObjectContext } from "../../scene-element/context";
+import { resolveDOMNodes } from "../resolver";
+
+describe("DOM resolver", () => {
+  it("should resolve single main parent node", () => {
+    render(
+      <SceneObjectContext.Provider value>
+        <SceneElement
+          __component="main"
+          __meta={{
+            column: 4,
+            exportName: "",
+            line: 1,
+            name: "main",
+            path: "/baz",
+          }}
+        >
+          <SceneElement
+            __component="div"
+            __meta={{
+              column: 4,
+              exportName: "",
+              line: 2,
+              name: "div",
+              path: "/foo",
+            }}
+          />
+          <SceneElement
+            __component="span"
+            __meta={{
+              column: 4,
+              exportName: "",
+              line: 3,
+              name: "span",
+              path: "/foo",
+            }}
+          />
+        </SceneElement>
+      </SceneObjectContext.Provider>,
+    );
+
+    const actual = resolveDOMNodes([
+      { column: 4, line: 1, parentPath: "/baz", path: "/baz" },
+    ]);
+
+    expect(actual).toMatchInlineSnapshot(`
+      [
+        {
+          "meta": {
+            "column": 4,
+            "exportName": "",
+            "line": 1,
+            "name": "main",
+            "parents": [],
+            "path": "/baz",
+            "props": {
+              "children": [
+                <SceneElement
+                  __component="div"
+                  __meta={
+                    {
+                      "column": 4,
+                      "exportName": "",
+                      "line": 2,
+                      "name": "div",
+                      "path": "/foo",
+                    }
+                  }
+                />,
+                <SceneElement
+                  __component="span"
+                  __meta={
+                    {
+                      "column": 4,
+                      "exportName": "",
+                      "line": 3,
+                      "name": "span",
+                      "path": "/foo",
+                    }
+                  }
+                />,
+              ],
+            },
+          },
+          "node": <main>
+            <div />
+            <span />
+          </main>,
+        },
+      ]
+    `);
+  });
+
+  it("should resolve sibling nodes inside a fragment node", () => {
+    render(
+      <SceneObjectContext.Provider value>
+        <SceneElement
+          __component={Fragment}
+          __meta={{
+            column: 4,
+            exportName: "",
+            line: 1,
+            name: "Fragment",
+            path: "/baz",
+          }}
+        >
+          <SceneElement
+            __component="div"
+            __meta={{
+              column: 4,
+              exportName: "",
+              line: 2,
+              name: "div",
+              path: "/foo",
+            }}
+          />
+          <SceneElement
+            __component="span"
+            __meta={{
+              column: 4,
+              exportName: "",
+              line: 3,
+              name: "span",
+              path: "/foo",
+            }}
+          />
+        </SceneElement>
+      </SceneObjectContext.Provider>,
+    );
+
+    const actual = resolveDOMNodes([
+      { column: 4, line: 1, parentPath: "/baz", path: "/baz" },
+    ]);
+
+    expect(actual).toMatchInlineSnapshot(`
+      [
+        {
+          "meta": {
+            "column": 4,
+            "exportName": "",
+            "line": 1,
+            "name": "Fragment",
+            "parents": [],
+            "path": "/baz",
+            "props": {
+              "children": [
+                <SceneElement
+                  __component="div"
+                  __meta={
+                    {
+                      "column": 4,
+                      "exportName": "",
+                      "line": 2,
+                      "name": "div",
+                      "path": "/foo",
+                    }
+                  }
+                />,
+                <SceneElement
+                  __component="span"
+                  __meta={
+                    {
+                      "column": 4,
+                      "exportName": "",
+                      "line": 3,
+                      "name": "span",
+                      "path": "/foo",
+                    }
+                  }
+                />,
+              ],
+            },
+          },
+          "node": <div />,
+        },
+        {
+          "meta": {
+            "column": 4,
+            "exportName": "",
+            "line": 1,
+            "name": "Fragment",
+            "parents": [],
+            "path": "/baz",
+            "props": {
+              "children": [
+                <SceneElement
+                  __component="div"
+                  __meta={
+                    {
+                      "column": 4,
+                      "exportName": "",
+                      "line": 2,
+                      "name": "div",
+                      "path": "/foo",
+                    }
+                  }
+                />,
+                <SceneElement
+                  __component="span"
+                  __meta={
+                    {
+                      "column": 4,
+                      "exportName": "",
+                      "line": 3,
+                      "name": "span",
+                      "path": "/foo",
+                    }
+                  }
+                />,
+              ],
+            },
+          },
+          "node": <span />,
+        },
+      ]
+    `);
+  });
+});

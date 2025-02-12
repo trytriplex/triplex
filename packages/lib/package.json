@@ -1,0 +1,76 @@
+{
+  "name": "@triplex/lib",
+  "version": "0.69.10",
+  "private": true,
+  "license": "SEE LICENSE IN LICENSE",
+  "author": {
+    "name": "Triplex",
+    "email": "support@triplex.dev",
+    "url": "https://x.com/trytriplex"
+  },
+  "exports": {
+    ".": {
+      "types": "./src/index.ts",
+      "module": "./src/index.ts",
+      "default": "./src/index.ts"
+    },
+    "./fg": {
+      "types": "./src/fg.tsx",
+      "module": "./src/fg.tsx",
+      "default": "./src/fg.tsx"
+    },
+    "./loader": {
+      "types": "./src/loader.tsx",
+      "module": "./src/loader.tsx",
+      "default": "./src/loader.tsx"
+    },
+    "./templates": {
+      "types": "./src/templates.ts",
+      "module": "./src/templates.ts",
+      "default": "./src/templates.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "swc ./src -d ./dist",
+    "typedef": "tsc"
+  },
+  "dependencies": {
+    "statsig-js": "^5.1.0"
+  },
+  "devDependencies": {
+    "@swc/cli": "^0.1.59",
+    "@swc/core": "^1.6.5",
+    "@types/react": "^19.0.8",
+    "typescript": "^5.7.2"
+  },
+  "peerDependencies": {
+    "react": ">=18.0.0"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "module": "./dist/index.js",
+        "default": "./dist/index.js"
+      },
+      "./fg": {
+        "types": "./src/fg.d.ts",
+        "module": "./src/fg.js",
+        "default": "./src/fg.js"
+      },
+      "./loader": {
+        "types": "./src/loader.d.ts",
+        "module": "./src/loader.js",
+        "default": "./src/loader.js"
+      },
+      "./templates": {
+        "types": "./src/templates.d.ts",
+        "module": "./src/templates.js",
+        "default": "./src/templates.js"
+      }
+    }
+  }
+}

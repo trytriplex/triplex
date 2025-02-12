@@ -1,0 +1,50 @@
+{
+  "name": "@triplex/bridge",
+  "version": "0.70.1",
+  "private": true,
+  "description": "The visual development environment for the web.",
+  "license": "SEE LICENSE IN LICENSE",
+  "author": {
+    "name": "Triplex",
+    "email": "support@triplex.dev",
+    "url": "https://x.com/trytriplex"
+  },
+  "exports": {
+    "./host": {
+      "default": "./src/host.ts",
+      "types": "./src/host.ts"
+    },
+    "./client": {
+      "default": "./src/client.ts",
+      "types": "./src/client.ts"
+    },
+    "./types/renderer": {
+      "types": "./renderer.d.ts"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "swc ./src -d ./dist",
+    "typedef": "tsc"
+  },
+  "devDependencies": {
+    "@swc/cli": "^0.1.59",
+    "@swc/core": "^1.6.5",
+    "@testing-library/dom": "^10.4.0",
+    "typescript": "^5.7.2"
+  },
+  "publishConfig": {
+    "exports": {
+      "./host": {
+        "default": "./dist/host.js",
+        "types": "./dist/host.d.ts"
+      },
+      "./client": {
+        "default": "./dist/client.js",
+        "types": "./dist/client.d.ts"
+      }
+    }
+  }
+}

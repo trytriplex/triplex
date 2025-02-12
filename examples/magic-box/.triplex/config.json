@@ -1,5 +1,6 @@
 {
   "$schema": "https://triplex.dev/config.schema.json",
   "components": ["../src/components/*.tsx"],
-  "files": ["../src/**/*.tsx", "../packages/**/*.tsx"]
+  "files": ["../src/**/*.tsx", "../packages/**/*.tsx"],
+  "renderer": "../../../packages/renderer/src/index.tsx"
 }

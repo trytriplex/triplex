@@ -1,0 +1,110 @@
+# @triplex/lib
+
+## 0.69.10
+
+### Patch Changes
+
+- a5d2390: React 19 / Three Fiber 9 are now supported.
+
+## 0.69.9
+
+### Patch Changes
+
+- 9b15541: Fix logo curvature.
+
+## 0.69.8
+
+### Patch Changes
+
+- 095c729: A new loading indicator has been implemented.
+
+## 0.69.7
+
+### Patch Changes
+
+- e4db0c2: Upgrade TypeScript to latest.
+
+## 0.69.6
+
+### Patch Changes
+
+- 7493473: Add refresh for the scene via CommandOrCtrl+R.
+- 7493473: Add hard reload for the scene via CommandOrCtrl+Shift+R.
+
+## 0.69.5
+
+### Patch Changes
+
+- d0cddb1: Number inputs now correctly round to the nearest step value.
+
+## 0.69.4
+
+### Patch Changes
+
+- 652c1cc: Update package json meta.
+
+## 0.69.3
+
+### Patch Changes
+
+- 6dca038: Test bump.
+
+## 0.69.2
+
+## 0.69.1
+
+### Patch Changes
+
+- 50c28c96: Upgrade tsc.
+
+## 0.69.0
+
+## 0.68.8
+
+## 0.68.7
+
+## 0.68.6
+
+## 0.68.5
+
+## 0.68.4
+
+## 0.68.3
+
+### Patch Changes
+
+- 1c9c343a: Fix input propagation hook from blocking backspace, escape, and enter keys.
+
+## 0.68.2
+
+## 0.68.1
+
+### Patch Changes
+
+- a5df6744: Block input keydown event propagation to prevent unmodified keybindings from being fired.
+
+## 0.68.0
+
+### Patch Changes
+
+- 5b6671c2: Bootstrap statsig.
+
+## 0.67.9
+
+## 0.67.8
+
+## 0.67.7
+
+## 0.67.6
+
+## 0.67.5
+
+### Patch Changes
+
+- a1121431: Vsce element controls.
+
+## 0.67.4
+
+### Patch Changes
+
+- cba1c8db: Internal pkg refactor.

@@ -1,0 +1,61 @@
+{
+  "name": "@triplex/renderer",
+  "version": "0.71.6",
+  "private": true,
+  "description": "The visual development environment for the web.",
+  "license": "SEE LICENSE IN LICENSE",
+  "author": {
+    "name": "Triplex",
+    "email": "support@triplex.dev",
+    "url": "https://x.com/trytriplex"
+  },
+  "main": "./src/index.tsx",
+  "module": "./src/index.tsx",
+  "types": "./src/index.tsx",
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "cross-env VITE_CJS_IGNORE_WARNING=true vite build",
+    "typedef": "tsc"
+  },
+  "dependencies": {
+    "@triplex/bridge": "0.70.1",
+    "@triplex/lib": "0.69.10",
+    "bind-event-listener": "^3.0.0",
+    "debounce": "^2.2.0",
+    "raf-schd": "^4.0.3",
+    "react-error-boundary": "^3.1.4",
+    "suspend-react": "^0.1.3",
+    "tinycolor2": "^1.6.0",
+    "triplex-drei": "npm:@react-three/drei@^10.0.0-rc.1",
+    "tunnel-rat": "^0.1.2",
+    "use-callback-ref": "^1.3.1",
+    "zustand": "^4.3.2"
+  },
+  "devDependencies": {
+    "@react-three/fiber": "^9.0.0-rc.6",
+    "@swc/cli": "^0.1.59",
+    "@swc/core": "^1.6.5",
+    "@types/react": "^19.0.8",
+    "@types/react-dom": "^19.0.3",
+    "@types/three": "^0.171.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "^0.172.0",
+    "typescript": "^5.7.2",
+    "vite": "^6.0.7",
+    "vite-plugin-glsl": "^1.3.1"
+  },
+  "peerDependencies": {
+    "@react-three/fiber": ">=8.0.0",
+    "react": ">=18.0.0",
+    "react-dom": ">=18.0.0",
+    "three": ">=0.153.0"
+  },
+  "publishConfig": {
+    "main": "./dist/index.mjs",
+    "module": "./dist/index.mjs",
+    "types": "./dist/index.d.ts"
+  }
+}
