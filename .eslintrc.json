@@ -17,11 +17,11 @@
     {
       "files": [
         "./apps/vscode/**",
-        "./packages/@triplex/bridge/**",
         "./packages/@triplex/editor/**",
-        "./packages/@triplex/lib/**",
-        "./packages/@triplex/renderer/**",
         "./packages/@triplex/ux/**",
+        "./packages/bridge/**",
+        "./packages/lib/**",
+        "./packages/renderer/**",
         "./packages/websocks/**"
       ],
       "rules": {

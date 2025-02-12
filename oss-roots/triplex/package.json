@@ -30,6 +30,7 @@
     "eslint-plugin-react-compiler": "19.0.0-beta-63b359f-20241101",
     "jsdom": "^21.1.0",
     "prettier": "^2.8.3",
+    "prettier-plugin-glsl": "^0.2.0",
     "prettier-plugin-jsdoc": "^0.4.2",
     "prettier-plugin-packagejson": "^2.4.3",
     "prettier-plugin-tailwindcss": "^0.2.2",

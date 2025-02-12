@@ -17,12 +17,12 @@
     {
       "files": [
         "./apps/vscode/**",
-        "./packages/@triplex/bridge/**",
         "./packages/@triplex/editor/**",
-        "./packages/@triplex/lib/**",
-        "./packages/@triplex/renderer/**",
         "./packages/@triplex/ux/**",
-        "./packages/@triplex/ws/**"
+        "./packages/bridge/**",
+        "./packages/lib/**",
+        "./packages/renderer/**",
+        "./packages/websocks/**"
       ],
       "rules": {
         "react-compiler/react-compiler": "error"
@@ -61,6 +61,7 @@
     "playwright/no-standalone-expect": "off",
     "prefer-const": "off",
     "react/no-unknown-property": "off",
+    "react/no-unescaped-entities": ["error", { "forbid": [">", "}"] }],
     "space-before-function-paren": "off",
     "unicorn/consistent-function-scoping": "off",
     "unicorn/prefer-ternary": "off",

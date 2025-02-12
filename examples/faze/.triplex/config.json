@@ -10,5 +10,6 @@
     "../src/materials/**/*.tsx",
     "../src/meshes/*.tsx"
   ],
-  "assetsDir": "mesh"
+  "assetsDir": "mesh",
+  "renderer": "../../../packages/renderer/src/index.tsx"
 }

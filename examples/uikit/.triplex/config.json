@@ -1,0 +1,3 @@
+{
+  "renderer": "../../../packages/renderer/src/index.tsx"
+}
