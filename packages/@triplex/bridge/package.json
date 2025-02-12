@@ -2,7 +2,8 @@
   "name": "@triplex/bridge",
   "version": "0.70.1",
   "private": true,
-  "description": "The visual IDE for the web.",
+  "description": "The visual development environment for the web.",
+  "license": "SEE LICENSE IN LICENSE",
   "author": {
     "name": "Triplex",
     "email": "support@triplex.dev",

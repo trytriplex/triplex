@@ -2,7 +2,7 @@
   "name": "@triplex/editor",
   "version": "0.70.8",
   "private": true,
-  "description": "The visual IDE for the web.",
+  "description": "The visual development environment for the web.",
   "author": {
     "name": "Triplex",
     "email": "support@triplex.dev",

@@ -1,8 +1,8 @@
 /**
- * Copyright (c) Michael Dougall. All rights reserved.
+ * Copyright (c) 2022—present Michael Dougall. All rights reserved.
  *
- * This source code is licensed under the GPL-3.0 license found in the LICENSE
- * file in the root directory of this source tree.
+ * This repository utilizes multiple licenses across different directories. To
+ * see this files license find the nearest LICENSE file up the source tree.
  */
 export function Separator() {
   return <div className="border-r-overlay -my-0.5 mx-0.5 border-r" />;

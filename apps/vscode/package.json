@@ -3,7 +3,7 @@
   "displayName": "Triplex for VS Code [BETA]",
   "version": "0.2.8",
   "private": true,
-  "description": "The visual IDE for the web.",
+  "description": "The visual development environment for the web.",
   "categories": [
     "Visualization",
     "Other"

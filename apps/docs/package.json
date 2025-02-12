@@ -2,8 +2,8 @@
   "name": "@docs/triplex",
   "version": "0.2.8",
   "private": true,
-  "description": "The visual IDE for the web.",
-  "license": "GPL-3.0",
+  "description": "The visual development environment for the web.",
+  "license": "MIT",
   "scripts": {
     "build": "next build",
     "build:sitemap": "ts-node ./scripts/generate-sitemap.ts",
