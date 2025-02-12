@@ -4,8 +4,10 @@
     "prettier-plugin-jsdoc",
     "prettier-plugin-packagejson"
   ],
-  "proseWrap": "never",
-  "jsdocSingleLineComment": false,
   "jsdocCapitalizeDescription": false,
-  "jsdocPreferCodeFences": true
+  "jsdocPreferCodeFences": true,
+  "jsdocSingleLineComment": false,
+  "proseWrap": "never",
+  "trailingComma": "all",
+  "overrides": [{ "files": ["*.frag"], "options": { "parser": "glsl-parser" } }]
 }

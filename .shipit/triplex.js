@@ -1,4 +1,5 @@
 const { stripGithubLinksFilter } = require("./filters/github");
+const { getGitSource } = require("./lib/source");
 
 module.exports = {
   customShipitFilter(changeset) {
@@ -32,7 +33,7 @@ module.exports = {
   },
   getBranchConfig() {
     return {
-      source: "origin/main",
+      source: getGitSource(),
       destination: "main",
     };
   },

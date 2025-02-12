@@ -30,7 +30,7 @@ export function useRefs<T>(): React.MutableRefObject<T>[] {
       return {
         done: false,
         // eslint-disable-next-line react-hooks/rules-of-hooks
-        value: useRef<T>(),
+        value: useRef<T>(undefined),
       };
     },
     [Symbol.iterator]: iterator,

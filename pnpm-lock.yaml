@@ -118,7 +118,7 @@ importers:
         version: 1.3.0(react@19.0.0)
       '@react-three/drei':
         specifier: ^10.0.0-rc.1
-        version: 10.0.0-rc.1(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+        version: 10.0.0-rc.2(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
       '@react-three/fiber':
         specifier: ^9.0.0-rc.6
         version: 9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
@@ -375,7 +375,7 @@ importers:
     dependencies:
       '@react-three/drei':
         specifier: ^10.0.0-rc.1
-        version: 10.0.0-rc.1(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+        version: 10.0.0-rc.2(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
       '@react-three/fiber':
         specifier: ^9.0.0-rc.6
         version: 9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
@@ -429,7 +429,7 @@ importers:
     dependencies:
       '@react-three/drei':
         specifier: ^10.0.0-rc.1
-        version: 10.0.0-rc.1(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+        version: 10.0.0-rc.2(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
       '@react-three/fiber':
         specifier: ^9.0.0-rc.6
         version: 9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
@@ -456,7 +456,7 @@ importers:
     dependencies:
       '@react-three/drei':
         specifier: ^10.0.0-rc.1
-        version: 10.0.0-rc.1(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+        version: 10.0.0-rc.2(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
       '@react-three/fiber':
         specifier: ^9.0.0-rc.6
         version: 9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
@@ -480,7 +480,7 @@ importers:
     dependencies:
       '@react-three/drei':
         specifier: ^10.0.0-rc.1
-        version: 10.0.0-rc.1(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+        version: 10.0.0-rc.2(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
       '@react-three/fiber':
         specifier: ^9.0.0-rc.6
         version: 9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
@@ -519,7 +519,7 @@ importers:
     dependencies:
       '@react-three/drei':
         specifier: ^10.0.0-rc.1
-        version: 10.0.0-rc.1(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+        version: 10.0.0-rc.2(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
       '@react-three/fiber':
         specifier: ^9.0.0-rc.6
         version: 9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
@@ -549,7 +549,7 @@ importers:
         version: 0.1.14(@types/three@0.171.0)(three@0.172.0)
       '@react-three/drei':
         specifier: ^10.0.0-rc.1
-        version: 10.0.0-rc.1(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+        version: 10.0.0-rc.2(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
       '@react-three/fiber':
         specifier: ^9.0.0-rc.6
         version: 9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
@@ -576,7 +576,7 @@ importers:
     dependencies:
       '@react-three/drei':
         specifier: ^10.0.0-rc.1
-        version: 10.0.0-rc.1(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+        version: 10.0.0-rc.2(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
       '@react-three/fiber':
         specifier: ^9.0.0-rc.6
         version: 9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
@@ -603,7 +603,7 @@ importers:
     dependencies:
       '@react-three/drei':
         specifier: ^10.0.0-rc.1
-        version: 10.0.0-rc.1(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+        version: 10.0.0-rc.2(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
       '@react-three/fiber':
         specifier: ^9.0.0-rc.6
         version: 9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
@@ -627,7 +627,7 @@ importers:
     dependencies:
       '@react-three/drei':
         specifier: ^10.0.0-rc.1
-        version: 10.0.0-rc.1(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+        version: 10.0.0-rc.2(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
       '@react-three/fiber':
         specifier: ^9.0.0-rc.6
         version: 9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
@@ -678,7 +678,7 @@ importers:
     dependencies:
       '@react-three/drei':
         specifier: ^10.0.0-rc.1
-        version: 10.0.0-rc.1(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+        version: 10.0.0-rc.2(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
       '@react-three/fiber':
         specifier: ^9.0.0-rc.6
         version: 9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
@@ -875,7 +875,7 @@ importers:
         version: 0.171.0
       '@types/tinycolor2':
         specifier: ^1.4.3
-        version: 1.4.3
+        version: 1.4.6
       '@vitejs/plugin-react':
         specifier: ^4.3.4
         version: 4.3.4(vite@6.0.7(@types/node@20.16.5)(jiti@1.21.6)(tsx@4.19.2)(yaml@2.5.1))
@@ -936,7 +936,7 @@ importers:
     devDependencies:
       '@react-three/drei':
         specifier: ^10.0.0-rc.1
-        version: 10.0.0-rc.1(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+        version: 10.0.0-rc.2(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
       '@react-three/fiber':
         specifier: ^9.0.0-rc.6
         version: 9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
@@ -1039,7 +1039,7 @@ importers:
         version: 19.0.8
       '@types/tinycolor2':
         specifier: ^1.4.3
-        version: 1.4.3
+        version: 1.4.6
       typescript:
         specifier: ^5.7.2
         version: 5.7.2
@@ -1163,8 +1163,8 @@ importers:
         specifier: ^1.6.0
         version: 1.6.0
       triplex-drei:
-        specifier: npm:@react-three/drei@^10.0.0-rc.1
-        version: '@react-three/drei@10.0.0-rc.1(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)'
+        specifier: npm:@react-three/drei@^10.0.0-rc.2
+        version: '@react-three/drei@10.0.0-rc.2(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)'
       tunnel-rat:
         specifier: ^0.1.2
         version: 0.1.2(@types/react@19.0.8)(react@19.0.0)
@@ -1184,6 +1184,9 @@ importers:
       '@swc/core':
         specifier: ^1.6.5
         version: 1.6.5(@swc/helpers@0.5.5)
+      '@types/raf-schd':
+        specifier: ^4.0.3
+        version: 4.0.3
       '@types/react':
         specifier: ^19.0.8
         version: 19.0.8
@@ -1193,6 +1196,9 @@ importers:
       '@types/three':
         specifier: ^0.171.0
         version: 0.171.0
+      '@types/tinycolor2':
+        specifier: ^1.4.6
+        version: 1.4.6
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -2764,8 +2770,8 @@ packages:
   '@radix-ui/rect@1.0.1':
     resolution: {integrity: sha512-fyrgCaedtvMg9NK3en0pnOYJdtfwxUcNolezkNPUsoX57X8oQk+NkqcvzHXD2uKNij6GXmWU9NDru2IWjrO4BQ==}
 
-  '@react-three/drei@10.0.0-rc.1':
-    resolution: {integrity: sha512-SzwqNlx93n11FrnNx5HP3SdC7BQHWvQTQ3qMnB1viz6yOANvTtiO75k1/MBvmMKg/GxTn1SvI8+yj18wTpqtYA==}
+  '@react-three/drei@10.0.0-rc.2':
+    resolution: {integrity: sha512-fsyaH/UaO/1kvpVTXds0lioqhY8qdFJbith46jRUi/wuKMfBWnOio3LlaUpEfd7uDWnb8clh7gQjBefBB50coA==}
     peerDependencies:
       '@react-three/fiber': ^9.0.0-rc.6
       react: ^19.0.0
@@ -3397,8 +3403,8 @@ packages:
   '@types/three@0.171.0':
     resolution: {integrity: sha512-oLuT1SAsT+CUg/wxUTFHo0K3NtJLnx9sJhZWQJp/0uXqFpzSk1hRHmvWvpaAWSfvx2db0lVKZ5/wV0I0isD2mQ==}
 
-  '@types/tinycolor2@1.4.3':
-    resolution: {integrity: sha512-Kf1w9NE5HEgGxCRyIcRXR/ZYtDv0V8FVPtYHwLxl0O+maGX0erE77pQlD0gpP+/KByMZ87mOA79SjifhSB3PjQ==}
+  '@types/tinycolor2@1.4.6':
+    resolution: {integrity: sha512-iEN8J0BoMnsWBqjVbWH/c0G0Hh7O21lpR2/+PrvAVgWdzL7eexIFm4JN/Wn10PTcmNdtS6U67r499mlWMXOxNw==}
 
   '@types/tough-cookie@4.0.5':
     resolution: {integrity: sha512-/Ad8+nIOV7Rl++6f1BdKxFSMgmoqEoYbHRpPcx3JEfv8VRsQe9Z4mCXeJBzxs7mbHY/XOZZuXlRNfhpVPbs6ZA==}
@@ -11226,7 +11232,7 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.26.7
 
-  '@react-three/drei@10.0.0-rc.1(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)':
+  '@react-three/drei@10.0.0-rc.2(@react-three/fiber@9.0.0-rc.6(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)':
     dependencies:
       '@babel/runtime': 7.26.7
       '@mediapipe/tasks-vision': 0.10.17
@@ -11973,7 +11979,7 @@ snapshots:
       fflate: 0.8.2
       meshoptimizer: 0.18.1
 
-  '@types/tinycolor2@1.4.3': {}
+  '@types/tinycolor2@1.4.6': {}
 
   '@types/tough-cookie@4.0.5': {}
 

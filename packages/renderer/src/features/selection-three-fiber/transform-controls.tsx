@@ -100,8 +100,6 @@ export function TransformControls({
       )}
 
       <TransformControlsImpl
-        // @ts-expect-error — Awaiting a fix from pmndrs.
-        args={undefined}
         camera={camera || undefined}
         enabled={enabled}
         mode={mode}
