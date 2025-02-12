@@ -12,10 +12,10 @@ module.exports = {
   getPathMappings() {
     return new Map([
       [".tsconfig", ".tsconfig"],
+      ["oss-roots/websocks/", ""],
       ["packages/websocks-client", "packages/websocks-client"],
       ["packages/websocks-server", "packages/websocks-server"],
       ["scripts", "scripts"],
-      ["oss-roots/websocks/", ""],
     ]);
   },
   getStrippedFiles() {

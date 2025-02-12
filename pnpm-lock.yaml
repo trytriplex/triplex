@@ -15,6 +15,9 @@ overrides:
   vite: ^6.0.7
 
 patchedDependencies:
+  '@adeira/monorepo-shipit':
+    hash: aa7auefsq2ai6zbrhudaf5oymy
+    path: patches/@adeira__monorepo-shipit.patch
   '@vscode/vsce@2.26.0':
     hash: huvjfoblogcm7d5dqcfnn2zmzu
     path: patches/@vscode__vsce@2.26.0.patch
@@ -28,7 +31,7 @@ importers:
     dependencies:
       '@adeira/monorepo-shipit':
         specifier: ^0.4.0
-        version: 0.4.0(@babel/core@7.26.0)
+        version: 0.4.0(patch_hash=aa7auefsq2ai6zbrhudaf5oymy)(@babel/core@7.26.0)
       '@changesets/cli':
         specifier: ^2.27.8
         version: 2.27.8
@@ -9383,7 +9386,7 @@ snapshots:
     dependencies:
       '@babel/runtime': 7.26.7
 
-  '@adeira/monorepo-shipit@0.4.0(@babel/core@7.26.0)':
+  '@adeira/monorepo-shipit@0.4.0(patch_hash=aa7auefsq2ai6zbrhudaf5oymy)(@babel/core@7.26.0)':
     dependencies:
       '@adeira/js': 2.1.1
       '@adeira/monorepo-utils': 0.12.0(@babel/core@7.26.0)

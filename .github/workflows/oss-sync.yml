@@ -1,6 +1,7 @@
 name: OSS
 
 on:
+  pull_request:
   push:
     branches:
       - main
@@ -10,7 +11,7 @@ env:
   PNPM_CACHE_FOLDER: .pnpm-store
 
 jobs:
-  push:
+  sync:
     timeout-minutes: 20
 
     runs-on: ubuntu-latest
@@ -36,12 +37,12 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - name: Prepare Shipit
+      - name: Prepare SSH
         run: |
           mkdir -p ~/.ssh
           echo "${{ secrets.SSH_SHIPIT_PRIVATE_KEY }}" | tr -d '\r' > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
           ssh-keyscan -H 'github.com' >> ~/.ssh/known_hosts
 
-      - name: Run Shipit
-        run: npx monorepo-shipit --committer-name triplex-bot --committer-email 124734075+triplex-bot@users.noreply.github.com
+      - name: Sync
+        run: npx monorepo-shipit --committer-name triplex-bot --committer-email 124734075+triplex-bot@users.noreply.github.com ${{ !!github.head_ref && '--dry-run' || '' }}

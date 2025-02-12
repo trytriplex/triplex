@@ -13,7 +13,6 @@ module.exports = {
     return new Map([
       [".changeset", ".changeset"],
       [".tsconfig", ".tsconfig"],
-      [".vscode", ".vscode"],
       ["apps/docs", "apps/docs"],
       ["examples", "examples"],
       ["oss-roots/triplex/", ""],
