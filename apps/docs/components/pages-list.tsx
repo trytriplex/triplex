@@ -51,12 +51,7 @@ export function PagesList({
                   {friendlyDate(page.frontMatter.date)}
                 </time>
               )}
-              <div
-                className={cn([
-                  "text-default inline-flex flex-wrap items-center gap-1 text-xl",
-                  variant === "list" && "font-medium",
-                ])}
-              >
+              <div className="text-default inline-flex flex-wrap items-center gap-1 text-xl font-medium">
                 <span className="group-hover:underline">
                   {page.frontMatter?.title || page.meta?.title || page.name}
                 </span>

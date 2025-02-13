@@ -1,5 +1,0 @@
-{
-  "$schema": "https://triplex.dev/config.schema.json",
-  "files": ["../components/three/**/*.tsx"],
-  "components": ["../components/three/**/*.tsx"]
-}

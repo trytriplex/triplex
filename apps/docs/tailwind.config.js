@@ -26,8 +26,10 @@ module.exports = {
     borderColor: {
       brand: "var(--brand)",
       currentColor: "currentColor",
+      focus: "var(--text-selected)",
       link: "var(--text-link)",
       neutral: "var(--border)",
+      selected: "var(--text-selected)",
       surface: "var(--bg-surface)",
       transparent: "transparent",
     },
@@ -48,8 +50,10 @@ module.exports = {
     outlineColor: {
       brand: "var(--brand)",
       currentColor: "currentColor",
+      focus: "var(--text-selected)",
       link: "var(--text-link)",
       neutral: "var(--bg-neutral)",
+      selected: "var(--text-selected)",
       surface: "var(--bg-surface)",
       transparent: "transparent",
     },
