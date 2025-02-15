@@ -1,13 +1,10 @@
 ---
 title: How To Fix Mesh Shadows After Using a Vertex Shader
-description:
-  Displacing vertices with a GLSL vertex shader can make for fantastic results
-  but it's very easy to leave out a crucial step to ensure shadows remain
-  correct.
+description: Displacing vertices with a GLSL vertex shader can make for fantastic results but it's very easy to leave out a crucial step to ensure shadows remain correct.
+category: Shaders
 ---
 
-If you forget to define a custom depth and distance material on a mesh after
-applying a vertex shader its shadow won't look correct.
+If you forget to define a custom depth and distance material on a mesh after applying a vertex shader its shadow won't look correct.
 
 <iframe
   className="my-10 h-96 w-full overflow-hidden focus:outline-none"
@@ -17,22 +14,13 @@ applying a vertex shader its shadow won't look correct.
 
 ## Tools needed for the fix
 
-- The same
-  [GLSL vertex shader](https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_on_the_web/GLSL_Shaders#vertex_shaders)
-  used previously
-- The
-  [THREE-CustomShaderMaterial](https://github.com/FarazzShaikh/THREE-CustomShaderMaterial)
-  library for Three.js which heavily reduces boilerplate code
-- Custom [depth](https://threejs.org/docs/#api/en/materials/MeshDepthMaterial)
-  and
-  [distance](https://threejs.org/docs/#api/en/materials/MeshDistanceMaterial)
-  materials
+- The same [GLSL vertex shader](https://developer.mozilla.org/en-US/docs/Games/Techniques/3D_on_the_web/GLSL_Shaders#vertex_shaders) used previously
+- The [THREE-CustomShaderMaterial](https://github.com/FarazzShaikh/THREE-CustomShaderMaterial) library for Three.js which heavily reduces boilerplate code
+- Custom [depth](https://threejs.org/docs/#api/en/materials/MeshDepthMaterial) and [distance](https://threejs.org/docs/#api/en/materials/MeshDistanceMaterial) materials
 
 ## Applying the missing materials
 
-Depth and distance materials are used to create shadow maps for spot lights and
-point lights respectively. The fix is a matter of adding custom ones to the mesh
-using the same vertex shader used previously.
+Depth and distance materials are used to create shadow maps for spot lights and point lights respectively. The fix is a matter of adding custom ones to the mesh using the same vertex shader used previously.
 
 ```diff
 <mesh position={[0, 0.2, 3]} castShadow receiveShadow>

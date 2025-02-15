@@ -14,7 +14,7 @@ import {
 
 export function LandingMadeWithTriplex() {
   return (
-    <div className="flex flex-col gap-3">
+    <div className="flex flex-col gap-6 md:gap-3">
       <h2 className="text-default">
         <svg viewBox="0 0 153 20">
           <text className="font-brand fill-current text-xl" x="-1" y="16">

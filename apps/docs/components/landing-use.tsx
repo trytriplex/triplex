@@ -5,14 +5,13 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 
-import { LandingLink } from "./landing-button";
+import { LandingButton, LandingLink } from "./landing-button";
 import {
   LandingCard,
   LandingCardBody,
   LandingCardHeading,
   LandingCardIcon,
 } from "./landing-card";
-import { PillButton } from "./pill-button";
 import { Tab, Tabs, TabsList, TabsRoot } from "./tabs";
 
 export function LandingUseTriplexAnywhere() {
@@ -27,10 +26,14 @@ export function LandingUseTriplexAnywhere() {
           <div className="flex justify-center gap-3">
             <Tabs>
               <Tab>
-                {(props) => <PillButton {...props}>Web Apps</PillButton>}
+                {(props) => <LandingButton {...props}>Web Apps</LandingButton>}
               </Tab>
-              <Tab>{(props) => <PillButton {...props}>Games</PillButton>}</Tab>
-              <Tab>{(props) => <PillButton {...props}>WebXR</PillButton>}</Tab>
+              <Tab>
+                {(props) => <LandingButton {...props}>Games</LandingButton>}
+              </Tab>
+              <Tab>
+                {(props) => <LandingButton {...props}>WebXR</LandingButton>}
+              </Tab>
             </Tabs>
           </div>
 
@@ -54,7 +57,7 @@ export function LandingUseTriplexAnywhere() {
                 </LandingLink>
                 <LandingLink
                   href="/docs/building-your-scene"
-                  variant="inverse-subtle"
+                  variant="inverse-border"
                 >
                   See Docs
                 </LandingLink>
@@ -79,7 +82,7 @@ export function LandingUseTriplexAnywhere() {
                 </LandingLink>
                 <LandingLink
                   href="/docs/building-your-scene"
-                  variant="inverse-subtle"
+                  variant="inverse-border"
                 >
                   See Docs
                 </LandingLink>
@@ -104,7 +107,7 @@ export function LandingUseTriplexAnywhere() {
                 </LandingLink>
                 <LandingLink
                   href="/docs/building-your-scene"
-                  variant="inverse-subtle"
+                  variant="inverse-border"
                 >
                   See Docs
                 </LandingLink>
