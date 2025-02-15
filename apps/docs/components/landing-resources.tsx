@@ -6,15 +6,16 @@
  */
 
 import { LandingLink, LandingPresentationalButton } from "./landing-button";
+import { LandingCardHeading, LandingCardLink } from "./landing-card";
 
 export function LandingResource() {
   return (
-    <div className="bg-surface border-neutral group relative flex flex-col gap-20 rounded-2xl border p-6 md:col-start-1 md:row-start-1 md:row-end-3 md:p-10">
-      <div className="flex items-center justify-between">
-        <h3 className="font-default text-default text-3xl font-medium">
-          Topic Name
-        </h3>
-        <LandingPresentationalButton variant="inverse" />
+    <LandingCardLink href="/resources" size="large">
+      <div className="mb-16 flex items-center justify-between self-stretch">
+        <LandingCardHeading>Topic Name</LandingCardHeading>
+        <div className="-my-3">
+          <LandingPresentationalButton variant="inverse" />
+        </div>
       </div>
       <div className="flex items-end gap-10">
         <div className="text-subtlest w-2/5 text-sm">Category</div>
@@ -24,7 +25,7 @@ export function LandingResource() {
           nec. Accumsan mauris tellus dui vitae.
         </div>
       </div>
-    </div>
+    </LandingCardLink>
   );
 }
 
@@ -36,7 +37,7 @@ export function LandingResources() {
           Resources
         </h2>
         <LandingLink href="/resources" variant="subtle">
-          See Docs
+          See More
         </LandingLink>
       </div>
       <div className="flex flex-col gap-6">

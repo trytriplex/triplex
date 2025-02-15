@@ -4,6 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import Link from "next/link";
 import { createContext, useContext, type ReactNode } from "react";
 import { cn } from "../util/cn";
 
@@ -11,14 +12,85 @@ const CardContext = createContext<{
   alignContentBlock: CardAlign;
   alignContentInline: CardAlign;
   size: CardSize;
+  variant: CardVariant;
 }>({
   alignContentBlock: "start",
   alignContentInline: "start",
   size: "default",
+  variant: "default",
 });
 
+export type CardVariant = "inverse" | "default";
 export type CardAlign = "start" | "center" | "end";
 export type CardSize = "default" | "large" | "xlarge";
+
+export function LandingCardButton({
+  alignContentBlock = "start",
+  alignContentInline = "start",
+  children,
+  className,
+  onClick,
+  size = "default",
+  variant = "default",
+}: {
+  alignContentBlock?: CardAlign;
+  alignContentInline?: CardAlign;
+  children: ReactNode;
+  className?: string;
+  onClick?: () => void;
+  size?: CardSize;
+  variant?: CardVariant;
+}) {
+  return (
+    <button
+      className="appearance-none text-left"
+      onClick={onClick}
+      type="button"
+    >
+      <LandingCard
+        alignContentBlock={alignContentBlock}
+        alignContentInline={alignContentInline}
+        className={className}
+        size={size}
+        variant={variant}
+      >
+        {children}
+      </LandingCard>
+    </button>
+  );
+}
+
+export function LandingCardLink({
+  alignContentBlock = "start",
+  alignContentInline = "start",
+  children,
+  className,
+  href,
+  size = "default",
+  variant = "default",
+}: {
+  alignContentBlock?: CardAlign;
+  alignContentInline?: CardAlign;
+  children: ReactNode;
+  className?: string;
+  href: string;
+  size?: CardSize;
+  variant?: CardVariant;
+}) {
+  return (
+    <Link className={className} href={href} type="button">
+      <LandingCard
+        alignContentBlock={alignContentBlock}
+        alignContentInline={alignContentInline}
+        className="h-full"
+        size={size}
+        variant={variant}
+      >
+        {children}
+      </LandingCard>
+    </Link>
+  );
+}
 
 export function LandingCard({
   alignContentBlock = "start",
@@ -26,16 +98,18 @@ export function LandingCard({
   children,
   className,
   size = "default",
+  variant = "default",
 }: {
   alignContentBlock?: CardAlign;
   alignContentInline?: CardAlign;
   children: ReactNode;
   className?: string;
   size?: CardSize;
+  variant?: CardVariant;
 }) {
   return (
     <CardContext.Provider
-      value={{ alignContentBlock, alignContentInline, size }}
+      value={{ alignContentBlock, alignContentInline, size, variant }}
     >
       <div
         className={cn([
@@ -49,7 +123,9 @@ export function LandingCard({
           size === "xlarge" && "gap-8",
           size === "large" && "gap-6",
           size === "default" && "gap-6",
-          "bg-inverse group flex flex-col rounded-3xl p-6 md:p-10",
+          variant === "default" && "bg-surface border-neutral border",
+          variant === "inverse" && "bg-inverse",
+          "group flex flex-col rounded-3xl p-6 md:p-10",
         ])}
       >
         {children}
@@ -65,18 +141,19 @@ export function LandingCardHeading({
   children: string;
   decoration?: string;
 }) {
-  const { size } = useContext(CardContext);
+  const { size, variant } = useContext(CardContext);
 
   return (
-    <div
-      className={cn([
-        size === "default" && "mt-14",
-        size === "large" && "mt-14",
-        "flex flex-col",
-      ])}
-    >
+    <div className="flex flex-col">
       {decoration && (
-        <span aria-hidden className="text-inverse-subtle text-sm">
+        <span
+          aria-hidden
+          className={cn([
+            variant === "default" && "text-subtle",
+            variant === "inverse" && "text-inverse-subtle",
+            "text-sm",
+          ])}
+        >
           {decoration}
         </span>
       )}
@@ -85,7 +162,9 @@ export function LandingCardHeading({
           size === "default" && "text-2xl",
           size === "large" && "text-4xl",
           size === "xlarge" && "text-5xl",
-          "font-default text-inverse font-medium",
+          variant === "default" && "text-default",
+          variant === "inverse" && "text-inverse",
+          "font-default font-medium",
         ])}
       >
         {children}
@@ -95,7 +174,7 @@ export function LandingCardHeading({
 }
 
 export function LandingCardBody({ children }: { children: string }) {
-  const { alignContentInline, size } = useContext(CardContext);
+  const { alignContentInline, size, variant } = useContext(CardContext);
 
   return (
     <div
@@ -104,7 +183,8 @@ export function LandingCardBody({ children }: { children: string }) {
         size !== "xlarge" && "line-clamp-5",
         size === "default" && "text-base",
         size !== "default" && "text-lg",
-        "text-inverse-subtle",
+        variant === "default" && "text-subtle",
+        variant === "inverse" && "text-inverse-subtle",
       ])}
     >
       {children}
@@ -113,8 +193,16 @@ export function LandingCardBody({ children }: { children: string }) {
 }
 
 export function LandingCardIcon() {
+  const { variant } = useContext(CardContext);
+
   return (
-    <div className="text-inverse-subtle flex h-12">
+    <div
+      className={cn([
+        variant === "default" && "text-subtle",
+        variant === "inverse" && "text-inverse-subtle",
+        "flex h-12",
+      ])}
+    >
       <svg viewBox="0 0 24 24">
         <g fill="none" fill-rule="evenodd" stroke="none" stroke-width="1">
           <g fill="currentColor" fillRule="nonzero">

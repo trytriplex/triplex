@@ -10,16 +10,20 @@ import { cn } from "../util/cn";
 export function PillButton({
   children,
   isSelected,
+  onClick,
 }: {
   children: string;
   isSelected?: boolean;
+  onClick?: () => void;
 }) {
   return (
     <button
       className={cn([
-        isSelected && "outline-brand outline outline-2 -outline-offset-1",
-        "border-neutral font-default text-default cursor-pointer rounded-full border px-4 py-1 text-lg font-medium",
+        isSelected && "border-brand text-default",
+        !isSelected && "border-neutral text-subtle",
+        "font-default cursor-pointer rounded-full border px-4 py-1 text-lg",
       ])}
+      onClick={onClick}
       type="button"
     >
       {children}

@@ -1,6 +1,6 @@
 html {
   --bg-hovered: rgb(0 0 0 / 0.05);
-  --bg-inverse: rgb(0 0 0);
+  --bg-inverse: rgb(0 0 0 / 0.9);
   --bg-neutral: rgb(0 0 0 / 0.05);
   --bg-pressed: rgb(0 0 0 / 0.1);
   --bg-selected: rgb(220, 236, 255);
@@ -19,7 +19,7 @@ html {
 @media (prefers-color-scheme: dark) {
   html {
     --bg-hovered: rgb(255 255 255 / 0.05);
-    --bg-inverse: rgb(239 239 239);
+    --bg-inverse: rgb(255 255 255 / 0.9);
     --bg-neutral: rgb(255 255 255 / 0.1);
     --bg-pressed: rgb(255 255 255 / 0.1);
     --bg-selected: rgb(255 255 255 / 0.1);
