@@ -7,9 +7,9 @@
 
 import { LandingPresentationalButton } from "./landing-button";
 import {
-  LandingCard,
   LandingCardBody,
   LandingCardHeading,
+  LandingCardLink,
 } from "./landing-card";
 
 export function LandingMadeWithTriplex() {
@@ -23,10 +23,12 @@ export function LandingMadeWithTriplex() {
         </svg>
       </h2>
       <div className="grid gap-6 md:min-h-[80vh]">
-        <LandingCard
+        <LandingCardLink
           alignContentBlock="end"
           className="md:col-start-1 md:row-start-1 md:row-end-3"
+          href="/"
           size="large"
+          variant="inverse"
         >
           <LandingCardHeading>Project Name</LandingCardHeading>
           <LandingCardBody>
@@ -34,13 +36,15 @@ export function LandingMadeWithTriplex() {
             mattis sapien. Amet varius in morbi tristique. Ultricies vestibulum
             quisque auctor est.
           </LandingCardBody>
-          <LandingPresentationalButton size="lg" variant="default" />
-        </LandingCard>
+          <LandingPresentationalButton size="lg" variant="inverse" />
+        </LandingCardLink>
 
-        <LandingCard
+        <LandingCardLink
           alignContentBlock="end"
           className="md:col-start-2 md:row-start-1"
+          href="/"
           size="default"
+          variant="inverse"
         >
           <LandingCardHeading>Project Name</LandingCardHeading>
           <LandingCardBody>
@@ -48,13 +52,15 @@ export function LandingMadeWithTriplex() {
             mattis sapien. Amet varius in morbi tristique. Ultricies vestibulum
             quisque auctor est.
           </LandingCardBody>
-          <LandingPresentationalButton variant="default" />
-        </LandingCard>
+          <LandingPresentationalButton variant="inverse" />
+        </LandingCardLink>
 
-        <LandingCard
+        <LandingCardLink
           alignContentBlock="end"
           className="md:col-start-2 md:row-start-2"
+          href="/"
           size="default"
+          variant="inverse"
         >
           <LandingCardHeading>Project Name</LandingCardHeading>
           <LandingCardBody>
@@ -62,8 +68,8 @@ export function LandingMadeWithTriplex() {
             mattis sapien. Amet varius in morbi tristique. Ultricies vestibulum
             quisque auctor est.
           </LandingCardBody>
-          <LandingPresentationalButton variant="default" />
-        </LandingCard>
+          <LandingPresentationalButton variant="inverse" />
+        </LandingCardLink>
       </div>
     </div>
   );

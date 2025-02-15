@@ -13,6 +13,7 @@ import {
   LandingCardIcon,
 } from "./landing-card";
 import { PillButton } from "./pill-button";
+import { Tab, Tabs, TabsList, TabsRoot } from "./tabs";
 
 export function LandingUseTriplexAnywhere() {
   return (
@@ -22,32 +23,95 @@ export function LandingUseTriplexAnywhere() {
           Use Triplex on any project
         </h2>
 
-        <div className="flex justify-center gap-2">
-          <PillButton isSelected>Web Apps</PillButton>
-          <PillButton>Games</PillButton>
-          <PillButton>WebXR</PillButton>
-        </div>
-
-        <LandingCard alignContentInline="center" size="xlarge">
-          <LandingCardIcon />
-          <LandingCardHeading>Web Apps</LandingCardHeading>
-          <LandingCardBody>
-            Lorem ipsum dolor sit amet consectetur. Mi magna quis proin et dis
-            sollicitudin faucibus magna id. Lacus neque tristique quam faucibus.
-            Praesent nunc in ullamcorper elementum fringilla et massa aenean.
-          </LandingCardBody>
-          <div className="flex gap-3">
-            <LandingLink href="/download" variant="inverse">
-              Download
-            </LandingLink>
-            <LandingLink
-              href="/docs/building-your-scene"
-              variant="inverse-subtle"
-            >
-              See Docs
-            </LandingLink>
+        <TabsRoot>
+          <div className="flex justify-center gap-3">
+            <Tabs>
+              <Tab>
+                {(props) => <PillButton {...props}>Web Apps</PillButton>}
+              </Tab>
+              <Tab>{(props) => <PillButton {...props}>Games</PillButton>}</Tab>
+              <Tab>{(props) => <PillButton {...props}>WebXR</PillButton>}</Tab>
+            </Tabs>
           </div>
-        </LandingCard>
+
+          <TabsList>
+            <LandingCard
+              alignContentInline="center"
+              size="xlarge"
+              variant="inverse"
+            >
+              <LandingCardIcon />
+              <LandingCardHeading>Web Apps</LandingCardHeading>
+              <LandingCardBody>
+                Lorem ipsum dolor sit amet consectetur. Mi magna quis proin et
+                dis sollicitudin faucibus magna id. Lacus neque tristique quam
+                faucibus. Praesent nunc in ullamcorper elementum fringilla et
+                massa aenean.
+              </LandingCardBody>
+              <div className="flex gap-3">
+                <LandingLink href="/download" variant="inverse">
+                  Download
+                </LandingLink>
+                <LandingLink
+                  href="/docs/building-your-scene"
+                  variant="inverse-subtle"
+                >
+                  See Docs
+                </LandingLink>
+              </div>
+            </LandingCard>
+            <LandingCard
+              alignContentInline="center"
+              size="xlarge"
+              variant="inverse"
+            >
+              <LandingCardIcon />
+              <LandingCardHeading>Games</LandingCardHeading>
+              <LandingCardBody>
+                Lorem ipsum dolor sit amet consectetur. Mi magna quis proin et
+                dis sollicitudin faucibus magna id. Lacus neque tristique quam
+                faucibus. Praesent nunc in ullamcorper elementum fringilla et
+                massa aenean.
+              </LandingCardBody>
+              <div className="flex gap-3">
+                <LandingLink href="/download" variant="inverse">
+                  Download
+                </LandingLink>
+                <LandingLink
+                  href="/docs/building-your-scene"
+                  variant="inverse-subtle"
+                >
+                  See Docs
+                </LandingLink>
+              </div>
+            </LandingCard>
+            <LandingCard
+              alignContentInline="center"
+              size="xlarge"
+              variant="inverse"
+            >
+              <LandingCardIcon />
+              <LandingCardHeading>WebXR</LandingCardHeading>
+              <LandingCardBody>
+                Lorem ipsum dolor sit amet consectetur. Mi magna quis proin et
+                dis sollicitudin faucibus magna id. Lacus neque tristique quam
+                faucibus. Praesent nunc in ullamcorper elementum fringilla et
+                massa aenean.
+              </LandingCardBody>
+              <div className="flex gap-3">
+                <LandingLink href="/download" variant="inverse">
+                  Download
+                </LandingLink>
+                <LandingLink
+                  href="/docs/building-your-scene"
+                  variant="inverse-subtle"
+                >
+                  See Docs
+                </LandingLink>
+              </div>
+            </LandingCard>
+          </TabsList>
+        </TabsRoot>
       </div>
       <div className="bg-surface border-neutral aspect-video h-full border"></div>
     </div>

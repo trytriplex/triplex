@@ -21,7 +21,7 @@ export function LandingHero() {
         <div className="bg-neutral relative -mx-8 h-60 md:mx-0 md:h-80 md:rounded-[62px] lg:h-96"></div>
         <div className="bg-surface border-neutral absolute -top-12 left-[10%] right-[10%] mx-auto aspect-video max-w-sm border md:-top-20 md:left-auto md:w-1/2 md:min-w-[430px] md:max-w-none lg:-top-40 lg:w-2/5">
           <div className="absolute -top-20 left-0 right-0 hidden flex-col items-center gap-2 xl:flex">
-            <div className="text-default font-mono text-base font-medium">
+            <div className="text-default select-none font-mono text-base font-medium">
               See how it works
             </div>
             <div className="border-neutral h-8 border-r" />
@@ -32,7 +32,7 @@ export function LandingHero() {
 
       <div className="mt-8 flex flex-col items-stretch justify-center gap-2 md:-mt-8 md:items-center">
         <a
-          className="bg-brand text-inverse font-default flex cursor-pointer items-center justify-center px-8 py-4 text-center text-xl font-medium md:text-2xl"
+          className="bg-brand text-inverse font-default relative flex cursor-pointer items-center justify-center px-8 py-4 text-center text-xl font-medium md:text-2xl"
           href="https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce"
           onClick={(e) => {
             beginDownload(e, "/docs/get-started?dl=vsce");
@@ -40,10 +40,13 @@ export function LandingHero() {
         >
           Install for Visual Studio Code / Cursor
         </a>
-        <div className="text-default items-center self-center text-base">
-          <DownloadButton variant="link" />, or{" "}
-          <Link className="cursor-pointer hover:underline" href="/download">
-            for other platforms
+        <div className="text-subtle items-center self-center text-base">
+          <DownloadButton variant="link" />, or for{" "}
+          <Link
+            className="hover:text-default cursor-pointer underline"
+            href="/download"
+          >
+            other platforms
           </Link>
           .
         </div>
