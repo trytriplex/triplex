@@ -125,7 +125,7 @@ export function Footer() {
             <li>
               <Link
                 className="text-subtlest hover:text-subtle text-base"
-                href="/docs/setup/overview"
+                href="/docs/get-started"
               >
                 Setup
               </Link>

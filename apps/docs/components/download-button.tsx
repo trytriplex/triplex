@@ -81,7 +81,7 @@ export function DownloadButton({
       href={platform === "Unsupported" ? "/download" : downloadURL}
       onClick={(e) => {
         if (platform !== "Unsupported") {
-          beginDownload(e, `/docs/overview?dl=${platform.toLowerCase()}`);
+          beginDownload(e, `/docs/get-started?dl=${platform.toLowerCase()}`);
         }
       }}
       target={platform === "Unsupported" ? undefined : "_blank"}

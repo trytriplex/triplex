@@ -107,13 +107,13 @@ function List() {
 
         if (asset.name.includes("AppImage")) {
           logo = logos.linux;
-          forwardURL = "/docs/overview?dl=linux";
+          forwardURL = "/docs/get-started?dl=linux";
         } else if (asset.name.includes("dmg")) {
           logo = logos.apple;
-          forwardURL = "/docs/overview?dl=macos";
+          forwardURL = "/docs/get-started?dl=macos";
         } else if (asset.name.includes("exe")) {
           logo = logos.windows;
-          forwardURL = "/docs/overview?dl=windows";
+          forwardURL = "/docs/get-started?dl=windows";
         }
 
         const winget = asset.name.includes("exe") && (
@@ -123,7 +123,7 @@ function List() {
                 className="text-inverse bg-brand ml-auto flex-shrink-0 rounded px-4 py-1 text-base font-medium"
                 href="https://winstall.app/apps/Triplex.Triplex"
                 onClick={(e) => {
-                  beginDownload(e, "/docs/overview?dl=winget");
+                  beginDownload(e, "/docs/get-started?dl=winget");
                 }}
                 rel="noreferrer"
                 target="_blank"
@@ -190,7 +190,7 @@ export function DownloadList() {
             className="text-inverse bg-brand ml-auto flex-shrink-0 rounded px-4 py-1 text-base font-medium"
             href="https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce"
             onClick={(e) => {
-              beginDownload(e, "/docs/overview?dl=vsce");
+              beginDownload(e, "/docs/get-started?dl=vsce");
             }}
             rel="noreferrer"
             target="_blank"

@@ -5,15 +5,24 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 
+import Link from "next/link";
 import { cn } from "../util/cn";
 
-export function LandingButton({ size = "base" }: { size?: "base" | "lg" }) {
+export function LandingPresentationalButton({
+  size = "base",
+  variant,
+}: {
+  size?: "base" | "lg";
+  variant: "default" | "inverse";
+}) {
   return (
     <div
       className={cn([
         size === "base" && "h-12 w-12",
         size === "lg" && "h-12 w-12 md:h-14 md:w-14",
-        "bg-inverse text-inverse flex items-center justify-center rounded-full p-4",
+        variant === "inverse" && "bg-inverse text-inverse",
+        variant === "default" && "bg-surface text-default",
+        "flex items-center justify-center rounded-full p-4 transition-transform group-hover:translate-x-1",
       ])}
     >
       <svg
@@ -32,5 +41,31 @@ export function LandingButton({ size = "base" }: { size?: "base" | "lg" }) {
         />
       </svg>
     </div>
+  );
+}
+
+export function LandingLink({
+  children,
+  href,
+  variant,
+}: {
+  children: string;
+  href: string;
+  variant: "inverse" | "inverse-subtle" | "subtle";
+}) {
+  return (
+    <Link
+      className={cn([
+        "font-default flex cursor-pointer items-center px-6 py-2 text-lg font-medium",
+        variant === "inverse" && "bg-surface text-default",
+        variant === "inverse-subtle" &&
+          "border-surface text-inverse border-2 bg-transparent",
+        variant === "subtle" &&
+          "border-brand text-subtle border-2 bg-transparent",
+      ])}
+      href={href}
+    >
+      {children}
+    </Link>
   );
 }
