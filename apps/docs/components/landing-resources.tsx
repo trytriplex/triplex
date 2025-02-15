@@ -35,7 +35,7 @@ export function LandingResources() {
         <h2 className="font-brand text-brand max-w-4xl text-5xl font-medium md:text-6xl lg:text-7xl">
           Resources
         </h2>
-        <LandingLink href="/guides" variant="subtle">
+        <LandingLink href="/resources" variant="subtle">
           See Docs
         </LandingLink>
       </div>
