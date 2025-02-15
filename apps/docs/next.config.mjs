@@ -1,8 +1,8 @@
 /**
- * Copyright (c) Michael Dougall. All rights reserved.
+ * Copyright (c) 2022—present Michael Dougall. All rights reserved.
  *
- * This source code is licensed under the GPL-3.0 license found in the LICENSE
- * file in the root directory of this source tree.
+ * This repository utilizes multiple licenses across different directories. To
+ * see this files license find the nearest LICENSE file up the source tree.
  */
 import nextra from "nextra";
 
@@ -20,17 +20,17 @@ export default withNextra({
       source: "/docs",
     },
     {
-      destination: "/guides/use-leva-with-triplex",
+      destination: "/resources/use-leva-with-triplex",
       permanent: false,
       source: "/docs/guides/leva-controls",
     },
     {
-      destination: "/guides/edit-components-using-component-controls",
+      destination: "/resources/edit-components-using-component-controls",
       permanent: false,
       source: "/docs/guides/component-controls",
     },
     {
-      destination: "/guides/using-glsl-with-triplex",
+      destination: "/resources/using-glsl-with-triplex",
       permanent: false,
       source: "/docs/guides/glsl-support",
     },

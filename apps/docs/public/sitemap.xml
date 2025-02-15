@@ -18,40 +18,40 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://triplex.dev/legal/privacy-policy</loc>
-    <lastmod>2023-11-01</lastmod>
+    <loc>https://triplex.dev/resources/edit-components-using-component-controls</loc>
+    <lastmod>2025-02-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://triplex.dev/guides/edit-components-using-component-controls</loc>
-    <lastmod>2024-10-19</lastmod>
+    <loc>https://triplex.dev/resources/fix-shadows-vertex-shader-threejs</loc>
+    <lastmod>2025-02-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://triplex.dev/guides/fix-shadows-vertex-shader-threejs</loc>
-    <lastmod>2024-10-19</lastmod>
+    <loc>https://triplex.dev/resources/</loc>
+    <lastmod>2025-02-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://triplex.dev/guides/</loc>
-    <lastmod>2024-10-24</lastmod>
+    <loc>https://triplex.dev/resources/use-leva-with-triplex</loc>
+    <lastmod>2025-02-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://triplex.dev/guides/use-leva-with-triplex</loc>
-    <lastmod>2024-10-19</lastmod>
+    <loc>https://triplex.dev/resources/using-glsl-with-triplex</loc>
+    <lastmod>2025-02-15</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://triplex.dev/guides/using-glsl-with-triplex</loc>
-    <lastmod>2025-01-16</lastmod>
+    <loc>https://triplex.dev/legal/privacy-policy</loc>
+    <lastmod>2023-11-01</lastmod>
     <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
+    <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/api-reference</loc>
