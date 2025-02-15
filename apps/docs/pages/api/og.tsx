@@ -34,7 +34,7 @@ async function fetchAssets() {
 
 function parseTitle(paramTitle: string | null) {
   const title = paramTitle || "Triplex IDE";
-  const slicedTitle = title.slice(0, 30);
+  const slicedTitle = title.slice(0, 40);
 
   if (title !== slicedTitle) {
     return slicedTitle + "...";
@@ -47,9 +47,9 @@ export default async function (request: Request) {
   const [imageSrc, logoSvg, workmark, font] = await fetchAssets();
   const { searchParams } = new URL(request.url);
   const title = parseTitle(searchParams.get("title"));
-  const borderColor = "#a3a3a3";
-  const textColor = "#000";
-  const surfaceColor = "#fff";
+  const borderColor = "rgb(163, 163, 163)";
+  const textColor = "rgb(23, 23, 23)";
+  const surfaceColor = "rgb(255, 255, 255)";
 
   return new ImageResponse(
     (
@@ -90,8 +90,8 @@ export default async function (request: Request) {
             lineHeight: 1,
             marginBottom: "auto",
             marginTop: "auto",
-            paddingLeft: "12rem",
-            paddingRight: "12rem",
+            paddingLeft: "2rem",
+            paddingRight: "2rem",
             textAlign: "center",
           }}
         >

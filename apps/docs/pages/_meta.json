@@ -23,13 +23,13 @@
   "docs": {
     "title": "Docs"
   },
-  "guides": {
-    "title": "Guides",
-    "href": "/guides"
-  },
   "blog": {
     "title": "Blog",
     "href": "/blog"
+  },
+  "guides": {
+    "title": "Resources",
+    "href": "/guides"
   },
   "pricing": {
     "title": "Pricing",

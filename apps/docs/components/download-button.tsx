@@ -76,7 +76,7 @@ export function DownloadButton({
         variant === "link" &&
           "text-subtle font-default hover:text-default text-base underline",
         variant === "button" &&
-          "text-inverse bg-brand cursor-pointer px-8 py-4 text-center font-mono text-2xl font-medium",
+          "text-inverse bg-brand font-default cursor-pointer px-8 py-4 text-center text-2xl font-medium",
       ])}
       href={platform === "Unsupported" ? "/download" : downloadURL}
       onClick={(e) => {
