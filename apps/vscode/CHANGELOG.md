@@ -1,5 +1,13 @@
 # @triplex/vscode
 
+## 0.2.9
+
+### Patch Changes
+
+- 78e0864: Update the package icon.
+- Updated dependencies [37eb94d]
+  - @triplex/client@0.70.9
+
 ## 0.2.8
 
 ### Patch Changes

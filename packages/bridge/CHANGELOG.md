@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.70.2
+
+### Patch Changes
+
+- 37eb94d: Add exportName to element meta.
+
 ## 0.70.1
 
 ### Patch Changes

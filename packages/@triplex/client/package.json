@@ -1,6 +1,6 @@
 {
   "name": "@triplex/client",
-  "version": "0.70.8",
+  "version": "0.70.9",
   "private": true,
   "repository": "https://github.com/trytriplex/triplex-monorepo",
   "author": {
@@ -20,8 +20,8 @@
   "dependencies": {
     "@babel/core": "^7.24.5",
     "@babel/types": "^7.24.5",
-    "@triplex/bridge": "0.70.1",
-    "@triplex/renderer": "0.71.6",
+    "@triplex/bridge": "0.70.2",
+    "@triplex/renderer": "0.71.7",
     "@vitejs/plugin-react": "^4.3.4",
     "express": "^4.19.2",
     "vite": "^6.0.7"

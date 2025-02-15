@@ -1,6 +1,6 @@
 {
   "name": "@triplex/renderer",
-  "version": "0.71.6",
+  "version": "0.71.7",
   "private": true,
   "description": "The visual development environment for the web.",
   "license": "SEE LICENSE IN LICENSE",
@@ -20,7 +20,7 @@
     "typedef": "tsc"
   },
   "dependencies": {
-    "@triplex/bridge": "0.70.1",
+    "@triplex/bridge": "0.70.2",
     "@triplex/lib": "0.69.10",
     "bind-event-listener": "^3.0.0",
     "debounce": "^2.2.0",

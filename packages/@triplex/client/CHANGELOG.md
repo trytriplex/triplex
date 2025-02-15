@@ -1,5 +1,15 @@
 # @triplex/client
 
+## 0.70.9
+
+### Patch Changes
+
+- 37eb94d: Add exportName to element meta.
+- Updated dependencies [37eb94d]
+- Updated dependencies [37eb94d]
+  - @triplex/renderer@0.71.7
+  - @triplex/bridge@0.70.2
+
 ## 0.70.8
 
 ### Patch Changes

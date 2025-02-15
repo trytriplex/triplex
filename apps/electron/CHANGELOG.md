@@ -1,5 +1,14 @@
 # @triplex/electron
 
+## 0.70.9
+
+### Patch Changes
+
+- 78e0864: Update the package icon.
+- Updated dependencies [37eb94d]
+  - @triplex/client@0.70.9
+  - @triplex/editor@0.70.9
+
 ## 0.70.8
 
 ### Patch Changes

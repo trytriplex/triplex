@@ -1,5 +1,13 @@
 # @triplex/renderer
 
+## 0.71.7
+
+### Patch Changes
+
+- 37eb94d: Remove rpc call usage in the renderer with static values from element meta.
+- Updated dependencies [37eb94d]
+  - @triplex/bridge@0.70.2
+
 ## 0.71.6
 
 ### Patch Changes
