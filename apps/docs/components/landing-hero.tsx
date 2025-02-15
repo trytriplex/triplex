@@ -4,7 +4,13 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import Link from "next/link";
+import { useBeginDownloadURL } from "../util/download";
+import { DownloadButton } from "./download-button";
+
 export function LandingHero() {
+  const beginDownload = useBeginDownloadURL();
+
   return (
     <div>
       <h1 className="font-brand text-brand max-w-2xl text-6xl font-medium sm:text-7xl lg:max-w-4xl lg:text-8xl">
@@ -25,17 +31,20 @@ export function LandingHero() {
       </div>
 
       <div className="mt-8 flex flex-col items-stretch justify-center gap-2 md:-mt-8 md:items-center">
-        <div className="bg-brand text-inverse font-default flex cursor-pointer items-center justify-center px-8 py-4 text-center text-xl font-medium md:text-2xl">
+        <a
+          className="bg-brand text-inverse font-default flex cursor-pointer items-center justify-center px-8 py-4 text-center text-xl font-medium md:text-2xl"
+          href="https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce"
+          onClick={(e) => {
+            beginDownload(e, "/docs/get-started?dl=vsce");
+          }}
+        >
           Install for Visual Studio Code / Cursor
-        </div>
+        </a>
         <div className="text-default items-center self-center text-base">
-          <span className="cursor-pointer hover:underline">
-            Download for macOS
-          </span>
-          , or{" "}
-          <span className="cursor-pointer hover:underline">
+          <DownloadButton variant="link" />, or{" "}
+          <Link className="cursor-pointer hover:underline" href="/download">
             for other platforms
-          </span>
+          </Link>
           .
         </div>
       </div>
