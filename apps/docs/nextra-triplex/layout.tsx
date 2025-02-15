@@ -178,7 +178,8 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
       <main
         className={cn([
           "relative",
-          result.activeThemeContext.layout === "raw" && "col-span-full",
+          result.activeThemeContext.layout === "raw" &&
+            "col-span-full mx-auto max-w-screen-2xl px-8 lg:px-20",
           result.activeThemeContext.layout === "default" &&
             "col-span-full px-6 md:col-span-9 md:pl-0 md:pr-8 lg:pr-20",
           result.activeThemeContext.layout === "full" &&
