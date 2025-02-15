@@ -1,15 +1,10 @@
 ---
 title: Replacing Leva With Component Props
-description:
-  Leva is a popular library to wire up controls to your components. With Triplex
-  you can remove your glue code and instead use component props.
+description: Leva is a popular library to wire up controls to your components. With Triplex you can remove your glue code and instead use component props.
+category: Components
 ---
 
-[Leva](https://github.com/pmndrs/leva) is a hooks-based GUI for React that is
-used to display controls during development. When developing inside Triplex
-you're able to get a similar experience as Leva with the added benefit of
-keeping your components portable by using component props instead of custom
-code.
+[Leva](https://github.com/pmndrs/leva) is a hooks-based GUI for React that is used to display controls during development. When developing inside Triplex you're able to get a similar experience as Leva with the added benefit of keeping your components portable by using component props instead of custom code.
 
 Take a standard Leva config inside a component:
 
@@ -37,13 +32,11 @@ export function Component({
 }: Props);
 ```
 
-Which are then able to have their values be changed in its
-[Component Controls](/docs/guides/component-controls).
+Which are then able to have their values be changed in its [Component Controls](/docs/guides/component-controls).
 
 ## Constraints
 
-Similar to Leva, props can have values be constrained by using JSDoc tags. Take
-a Leva config that sets constraints on the `scale` value.
+Similar to Leva, props can have values be constrained by using JSDoc tags. Take a Leva config that sets constraints on the `scale` value.
 
 ```tsx
 useControls({
@@ -69,13 +62,11 @@ interface Props {
 }
 ```
 
-For an exhaustive list of tags see
-[Declaring Props](/docs/get-started/declaring-props#tags).
+For an exhaustive list of tags see [Declaring Props](/docs/get-started/declaring-props#tags).
 
 ## Complex props
 
-Complex props such as tuples are also supported. Take a Leva config that
-declares a number tuple;
+Complex props such as tuples are also supported. Take a Leva config that declares a number tuple;
 
 ```tsx
 useControls({
@@ -91,5 +82,4 @@ interface Props {
 }
 ```
 
-For an exhaustive list of types that are supported see
-[Declaring Props](/docs/get-started/declaring-props).
+For an exhaustive list of types that are supported see [Declaring Props](/docs/get-started/declaring-props).

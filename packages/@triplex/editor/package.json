@@ -2,7 +2,7 @@
   "name": "@triplex/editor",
   "version": "0.70.9",
   "private": true,
-  "description": "The visual development environment for the web.",
+  "description": "The visual development environment for React / Three Fiber.",
   "author": {
     "name": "Triplex",
     "email": "support@triplex.dev",

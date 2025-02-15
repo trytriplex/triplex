@@ -2,7 +2,7 @@
   "name": "@triplex/renderer",
   "version": "0.71.7",
   "private": true,
-  "description": "The visual development environment for the web.",
+  "description": "The visual development environment for React / Three Fiber.",
   "license": "SEE LICENSE IN LICENSE",
   "author": {
     "name": "Triplex",

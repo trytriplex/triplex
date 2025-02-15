@@ -3,7 +3,7 @@
   "displayName": "Triplex for VS Code [BETA]",
   "version": "0.2.9",
   "private": true,
-  "description": "The visual development environment for the web.",
+  "description": "The visual development environment for React / Three Fiber.",
   "categories": [
     "Visualization",
     "Other"

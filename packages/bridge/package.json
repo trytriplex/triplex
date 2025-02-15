@@ -2,7 +2,7 @@
   "name": "@triplex/bridge",
   "version": "0.70.2",
   "private": true,
-  "description": "The visual development environment for the web.",
+  "description": "The visual development environment for React / Three Fiber.",
   "license": "SEE LICENSE IN LICENSE",
   "author": {
     "name": "Triplex",
