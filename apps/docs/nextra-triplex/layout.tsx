@@ -241,7 +241,7 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                   )}
                 </div>
               )}
-              <h1 className="text-default font-brand flex flex-wrap items-center gap-2 text-3xl font-bold lg:text-4xl">
+              <h1 className="text-default font-brand flex flex-wrap items-center gap-2 text-3xl font-semibold lg:text-4xl">
                 {title}
                 {frontMatter.app && (
                   <div

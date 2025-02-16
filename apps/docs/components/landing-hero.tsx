@@ -7,6 +7,7 @@
 import Link from "next/link";
 import { useBeginDownloadURL } from "../util/download";
 import { DownloadButton } from "./download-button";
+import { LandingVideo } from "./landing-video";
 
 export function LandingHero() {
   const beginDownload = useBeginDownloadURL();
@@ -26,7 +27,7 @@ export function LandingHero() {
             </div>
             <div className="border-neutral h-8 border-r" />
           </div>
-          <div className="hover:bg-hovered active:bg-pressed absolute inset-0 cursor-pointer" />
+          <LandingVideo />
         </div>
       </div>
 

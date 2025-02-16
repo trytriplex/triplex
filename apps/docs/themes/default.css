@@ -1,6 +1,6 @@
 html {
   --bg-hovered: rgb(0 0 0 / 0.05);
-  --bg-inverse: rgb(17 17 17);
+  --bg-inverse: rgb(0 0 0 / 0.9);
   --bg-neutral: rgb(0 0 0 / 0.05);
   --bg-pressed: rgb(0 0 0 / 0.1);
   --bg-selected: rgb(220, 236, 255);
@@ -8,7 +8,7 @@ html {
   --border: rgb(163 163 163);
   --brand: rgb(0 0 0);
   --text-inverse-subtle: rgb(230 230 230);
-  --text-inverse: rgb(255 255 255);
+  --text-inverse: rgb(255 255 255 / 0.95);
   --text-link: rgb(59 130 246);
   --text-selected: rgb(59 130 246);
   --text-subtle: rgb(38 38 38);
