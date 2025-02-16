@@ -13,9 +13,7 @@ jobs:
   release:
     timeout-minutes: 20
 
-    # macos@14 or higher flakes at a high percentage when running notorize.
-    # See: https://github.com/electron/notarize/issues/219
-    runs-on: macos-13
+    runs-on: macos-latest
 
     steps:
       - name: Checkout
