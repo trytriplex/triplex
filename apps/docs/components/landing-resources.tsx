@@ -26,7 +26,7 @@ export function LandingResource({ slug }: { slug: string }) {
         </div>
       </div>
       <div className="flex flex-col-reverse items-start gap-3 lg:flex-row lg:gap-10">
-        <div className="text-subtle w-3/12 flex-shrink-0 overflow-hidden text-ellipsis whitespace-nowrap text-base font-medium lg:w-2/12">
+        <div className="text-subtle flex-shrink-0 overflow-hidden text-ellipsis whitespace-nowrap text-base font-medium md:w-3/12 lg:w-2/12">
           {"frontMatter" in page ? page.frontMatter?.category : ""}
         </div>
         <div className="text-subtle text-base">

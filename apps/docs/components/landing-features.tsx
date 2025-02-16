@@ -20,77 +20,80 @@ export function LandingFeatures() {
       </h2>
 
       <TabsRoot>
-        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-4 lg:flex-row">
-          <Tabs>
-            <Tab>
-              {({ isSelected, onClick }) => (
-                <LandingCardButton
-                  onClick={onClick}
-                  variant={isSelected ? "default" : "inverse"}
-                >
-                  <LandingCardIcon />
-                  <LandingCardHeading decoration="01.">
-                    Feature Name
-                  </LandingCardHeading>
-                  <LandingCardBody>
-                    Lorem ipsum dolor sit amet consectetur. Augue nibh felis
-                    velit nisl mattis sapien. Amet varius in morbi tristique.
-                  </LandingCardBody>
-                </LandingCardButton>
-              )}
-            </Tab>
-            <Tab>
-              {({ isSelected, onClick }) => (
-                <LandingCardButton
-                  onClick={onClick}
-                  variant={isSelected ? "default" : "inverse"}
-                >
-                  <LandingCardIcon />
-                  <LandingCardHeading decoration="02.">
-                    Feature Name
-                  </LandingCardHeading>
-                  <LandingCardBody>
-                    Lorem ipsum dolor sit amet consectetur. Augue nibh felis
-                    velit nisl mattis sapien. Amet varius in morbi tristique.
-                  </LandingCardBody>
-                </LandingCardButton>
-              )}
-            </Tab>
-            <Tab>
-              {({ isSelected, onClick }) => (
-                <LandingCardButton
-                  onClick={onClick}
-                  variant={isSelected ? "default" : "inverse"}
-                >
-                  <LandingCardIcon />
-                  <LandingCardHeading decoration="03.">
-                    Feature Name
-                  </LandingCardHeading>
-                  <LandingCardBody>
-                    Lorem ipsum dolor sit amet consectetur. Augue nibh felis
-                    velit nisl mattis sapien. Amet varius in morbi tristique.
-                  </LandingCardBody>
-                </LandingCardButton>
-              )}
-            </Tab>
-            <Tab>
-              {({ isSelected, onClick }) => (
-                <LandingCardButton
-                  onClick={onClick}
-                  variant={isSelected ? "default" : "inverse"}
-                >
-                  <LandingCardIcon />
-                  <LandingCardHeading decoration="04.">
-                    Feature Name
-                  </LandingCardHeading>
-                  <LandingCardBody>
-                    Lorem ipsum dolor sit amet consectetur. Augue nibh felis
-                    velit nisl mattis sapien. Amet varius in morbi tristique.
-                  </LandingCardBody>
-                </LandingCardButton>
-              )}
-            </Tab>
-          </Tabs>
+        <div className="-mx-8 overflow-auto pl-8 [scrollbar-width:none] lg:-mx-20 lg:pl-20 [&::-webkit-scrollbar]:hidden">
+          <div className="flex min-w-[80rem] gap-6">
+            <Tabs>
+              <Tab>
+                {({ isSelected, onClick }) => (
+                  <LandingCardButton
+                    onClick={onClick}
+                    variant={isSelected ? "default" : "inverse"}
+                  >
+                    <LandingCardIcon />
+                    <LandingCardHeading decoration="01.">
+                      Feature Name
+                    </LandingCardHeading>
+                    <LandingCardBody>
+                      Lorem ipsum dolor sit amet consectetur. Augue nibh felis
+                      velit nisl mattis sapien. Amet varius in morbi tristique.
+                    </LandingCardBody>
+                  </LandingCardButton>
+                )}
+              </Tab>
+              <Tab>
+                {({ isSelected, onClick }) => (
+                  <LandingCardButton
+                    onClick={onClick}
+                    variant={isSelected ? "default" : "inverse"}
+                  >
+                    <LandingCardIcon />
+                    <LandingCardHeading decoration="02.">
+                      Feature Name
+                    </LandingCardHeading>
+                    <LandingCardBody>
+                      Lorem ipsum dolor sit amet consectetur. Augue nibh felis
+                      velit nisl mattis sapien. Amet varius in morbi tristique.
+                    </LandingCardBody>
+                  </LandingCardButton>
+                )}
+              </Tab>
+              <Tab>
+                {({ isSelected, onClick }) => (
+                  <LandingCardButton
+                    onClick={onClick}
+                    variant={isSelected ? "default" : "inverse"}
+                  >
+                    <LandingCardIcon />
+                    <LandingCardHeading decoration="03.">
+                      Feature Name
+                    </LandingCardHeading>
+                    <LandingCardBody>
+                      Lorem ipsum dolor sit amet consectetur. Augue nibh felis
+                      velit nisl mattis sapien. Amet varius in morbi tristique.
+                    </LandingCardBody>
+                  </LandingCardButton>
+                )}
+              </Tab>
+              <Tab>
+                {({ isSelected, onClick }) => (
+                  <LandingCardButton
+                    onClick={onClick}
+                    variant={isSelected ? "default" : "inverse"}
+                  >
+                    <LandingCardIcon />
+                    <LandingCardHeading decoration="04.">
+                      Feature Name
+                    </LandingCardHeading>
+                    <LandingCardBody>
+                      Lorem ipsum dolor sit amet consectetur. Augue nibh felis
+                      velit nisl mattis sapien. Amet varius in morbi tristique.
+                    </LandingCardBody>
+                  </LandingCardButton>
+                )}
+              </Tab>
+            </Tabs>
+            <div className="w-2 flex-shrink-0 lg:w-14" />
+          </div>
         </div>
         <div className="bg-surface border-neutral flex aspect-video items-center justify-center border">
           <TabsList>

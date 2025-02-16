@@ -45,7 +45,7 @@ export function LandingVideo() {
   if (isExpanded) {
     return (
       <dialog
-        className="border-neutral bg-surface backdrop:bg-surface m-auto aspect-video w-11/12 border backdrop:opacity-80 md:max-w-5xl"
+        className="border-neutral bg-surface backdrop:bg-surface m-auto aspect-video h-auto w-11/12 border backdrop:opacity-80 focus-visible:outline-none md:max-w-5xl"
         ref={ref}
       >
         <div className="absolute inset-0"></div>
