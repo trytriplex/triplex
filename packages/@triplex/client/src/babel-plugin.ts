@@ -370,7 +370,8 @@ export default function triplexBabelPlugin({
                   "react-three-fiber";
               } else if (
                 !isJSXIdentifierFromNodeModules(path, cwd) &&
-                elementName !== currentFunction.name
+                elementName !== currentFunction.name &&
+                !!pass.file.scope.getBinding(elementName)
               ) {
                 currentFunction.firstFoundCustomComponentName = elementName;
               }
@@ -630,7 +631,7 @@ export default function triplexBabelPlugin({
                 componentMetaOrder.indexOf(nameB)
               );
             })
-            .map(([componentName, meta]) => {
+            .forEach(([componentName, meta]) => {
               path.pushContainer(
                 "body",
                 t.expressionStatement(

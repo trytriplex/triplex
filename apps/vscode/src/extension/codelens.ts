@@ -44,6 +44,7 @@ export class TriplexCodelensProvider implements vscode.CodeLensProvider {
     const text = doc.getText();
     const regex = new RegExp(this.regex);
     const foundExports = inferExports(text);
+    const matchedExports: string[] = [];
 
     let matchRegExp: RegExpExecArray | null;
 
@@ -53,8 +54,13 @@ export class TriplexCodelensProvider implements vscode.CodeLensProvider {
         (exp) => exp.name === componentName,
       );
 
-      if (!foundExport) {
+      if (
         // This match isn't exported so we skip over it.
+        !foundExport ||
+        // This export has already been initialized so we skip it.
+        // Doubling up looks hilariously broken!
+        matchedExports.some((exp) => exp === foundExport.name)
+      ) {
         continue;
       }
 
@@ -67,6 +73,8 @@ export class TriplexCodelensProvider implements vscode.CodeLensProvider {
       );
 
       if (range) {
+        matchedExports.push(foundExport.name);
+
         codeLenses.push(
           new vscode.CodeLens(range, {
             arguments: [

@@ -2076,4 +2076,52 @@ describe("babel plugin", () => {
     `,
     );
   });
+
+  it("should skip components that are local to the module scope", () => {
+    const result = transformSync(
+      `
+        export function Component() {
+          const { MyComponent } = useComponents();
+
+          return (
+            <>
+              <MyComponent />
+            </>
+          );
+        }
+      `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toContain(`"root": "react"`);
+  });
+
+  it("should assume three fiber root", () => {
+    const result = transformSync(
+      `
+        export function Component() {
+          const { Object3dHelper } = useComponents();
+
+          return (
+            <>
+              <Object3dHelper />
+            </>
+          );
+        }
+      `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toContain(`"root": "react-three-fiber"`);
+  });
 });

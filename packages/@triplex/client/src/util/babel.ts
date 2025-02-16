@@ -124,11 +124,7 @@ export function importIfMissing(
   module: string,
   namedImport: string,
 ) {
-  if (
-    pass.scope.hasBinding(namedImport) ||
-    pass.scope.hasGlobal(namedImport) ||
-    pass.scope.hasReference(namedImport)
-  ) {
+  if (pass.scope.hasBinding(namedImport)) {
     return;
   }
 

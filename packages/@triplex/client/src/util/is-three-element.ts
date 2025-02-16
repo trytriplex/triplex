@@ -151,6 +151,7 @@ const elements: Record<string, boolean> = {
 };
 
 const THREE_FIBER_MODULES = /(^@react-three\/)|(^ecctrl$)/;
+const PROBABLY_THREE_FIBER = ["object3d"];
 
 export function isReactThreeElement(elementName: string): boolean {
   return elements[elementName] ?? false;
@@ -180,6 +181,16 @@ export function isComponentFromThreeFiber(path: NodePath<t.JSXElement>) {
   const identifierPath = path.get("openingElement").get("name");
   if (!identifierPath.isJSXIdentifier()) {
     return false;
+  }
+
+  const elementName = identifierPath.node.name;
+
+  if (
+    PROBABLY_THREE_FIBER.some((name) =>
+      elementName.toLowerCase().includes(name),
+    )
+  ) {
+    return true;
   }
 
   const importSpecifierPath = resolveIdentifierImportSpecifier(identifierPath);
