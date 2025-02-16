@@ -1,5 +1,15 @@
 # @triplex/vscode
 
+## 0.2.10
+
+### Patch Changes
+
+- edba305: Fix edge case where component CodeLens actions could appear twice or more for the same component export.
+- Updated dependencies [edba305]
+- Updated dependencies [edba305]
+- Updated dependencies [edba305]
+  - @triplex/client@0.70.10
+
 ## 0.2.9
 
 ### Patch Changes

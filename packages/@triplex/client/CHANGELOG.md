@@ -1,5 +1,13 @@
 # @triplex/client
 
+## 0.70.10
+
+### Patch Changes
+
+- edba305: Fix root analysis using locally defined components sourced from inside components, which are now ignored. This is because the component isn't in the module scope and can't be statically used prior to the component rendering.
+- edba305: Fix edgecase where the Fragment named import wouldn't be imported when using shorthand fragments.
+- edba305: Add edge case support for assuming a react-three-fiber root if a custom component was found that starts with "object3d".
+
 ## 0.70.9
 
 ### Patch Changes

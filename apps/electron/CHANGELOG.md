@@ -1,5 +1,15 @@
 # @triplex/electron
 
+## 0.70.10
+
+### Patch Changes
+
+- Updated dependencies [edba305]
+- Updated dependencies [edba305]
+- Updated dependencies [edba305]
+  - @triplex/client@0.70.10
+  - @triplex/editor@0.70.10
+
 ## 0.70.9
 
 ### Patch Changes
