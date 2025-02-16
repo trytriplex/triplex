@@ -18,15 +18,15 @@ export function LandingResource({ slug }: { slug: string }) {
   }
 
   return (
-    <LandingCardLink href={page.route} size="large">
-      <div className="mb-16 flex items-start justify-between gap-20 self-stretch">
+    <LandingCardLink href={page.route} size="default">
+      <div className="flex items-start justify-between gap-20 self-stretch lg:mb-8">
         <LandingCardHeading>{page.meta?.title || page.name}</LandingCardHeading>
-        <div className="-my-1">
+        <div className="-my-1.5">
           <LandingPresentationalButton variant="inverse-hint" />
         </div>
       </div>
-      <div className="flex items-end gap-10">
-        <div className="text-subtle w-1/5 flex-shrink-0 text-base">
+      <div className="flex flex-col-reverse items-start gap-3 lg:flex-row lg:gap-10">
+        <div className="text-subtle w-3/12 flex-shrink-0 overflow-hidden text-ellipsis whitespace-nowrap text-base font-medium lg:w-2/12">
           {"frontMatter" in page ? page.frontMatter?.category : ""}
         </div>
         <div className="text-subtle text-base">

@@ -164,7 +164,7 @@ export function LandingCardHeading({
           size === "xlarge" && "text-5xl",
           variant === "default" && "text-default",
           variant === "inverse" && "text-inverse",
-          "font-default font-medium",
+          "font-default line-clamp-3 font-medium",
         ])}
       >
         {children}
@@ -200,7 +200,7 @@ export function LandingCardIcon() {
       className={cn([
         variant === "default" && "text-subtle",
         variant === "inverse" && "text-inverse-subtle",
-        "flex h-12",
+        "flex h-12 w-12",
       ])}
     >
       <svg viewBox="0 0 24 24">

@@ -22,9 +22,9 @@ export function LandingPresentationalButton({
         size === "lg" && "h-12 w-12 md:h-14 md:w-14",
         variant === "inverse" && "bg-inverse text-inverse",
         variant === "inverse-hint" &&
-          "border-neutral text-default group-hover:bg-inverse group-hover:text-inverse border",
+          "border-neutral text-default group-hover:bg-inverse group-hover:text-inverse border group-hover:border-transparent",
         variant === "default" && "bg-surface text-default",
-        "flex items-center justify-center rounded-full p-4 transition-transform group-hover:translate-x-1",
+        "flex flex-shrink-0 items-center justify-center rounded-full p-4 transition-transform group-hover:translate-x-1",
       ])}
     >
       <svg
