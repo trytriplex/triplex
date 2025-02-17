@@ -43,14 +43,14 @@ export function LandingCardButton({
 }) {
   return (
     <button
-      className="appearance-none text-left"
+      className={cn([className, "appearance-none text-left"])}
       onClick={onClick}
       type="button"
     >
       <LandingCard
         alignContentBlock={alignContentBlock}
         alignContentInline={alignContentInline}
-        className={className}
+        className="h-full"
         size={size}
         variant={variant}
       >
@@ -123,7 +123,8 @@ export function LandingCard({
           size === "xlarge" && "gap-8",
           size === "large" && "gap-6",
           size === "default" && "gap-6",
-          variant === "default" && "bg-surface border-neutral border",
+          variant === "default" &&
+            "bg-surface outline-neutral outline outline-1 -outline-offset-1",
           variant === "inverse" && "bg-inverse",
           "group flex flex-col rounded-3xl px-6 pb-6 pt-8 md:p-10",
         ])}
@@ -137,9 +138,11 @@ export function LandingCard({
 export function LandingCardHeading({
   children,
   decoration,
+  lineClamp,
 }: {
   children: string;
   decoration?: string;
+  lineClamp?: number;
 }) {
   const { size, variant } = useContext(CardContext);
 
@@ -164,8 +167,9 @@ export function LandingCardHeading({
           size === "xlarge" && "text-5xl",
           variant === "default" && "text-default",
           variant === "inverse" && "text-inverse",
-          "font-default line-clamp-3 font-medium",
+          "font-default font-medium",
         ])}
+        style={{ lineClamp }}
       >
         {children}
       </h3>
@@ -173,19 +177,25 @@ export function LandingCardHeading({
   );
 }
 
-export function LandingCardBody({ children }: { children: string }) {
+export function LandingCardBody({
+  children,
+  lineClamp,
+}: {
+  children: string;
+  lineClamp?: number;
+}) {
   const { alignContentInline, size, variant } = useContext(CardContext);
 
   return (
     <div
       className={cn([
         alignContentInline === "center" && "text-center",
-        size !== "xlarge" && "line-clamp-5",
         size === "default" && "text-base",
         size !== "default" && "text-base lg:text-lg",
         variant === "default" && "text-subtle",
         variant === "inverse" && "text-inverse-subtle",
       ])}
+      style={{ lineClamp }}
     >
       {children}
     </div>

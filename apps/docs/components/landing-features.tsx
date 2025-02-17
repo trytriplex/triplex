@@ -21,7 +21,7 @@ export function LandingFeatures() {
 
       <TabsRoot>
         <div className="-mx-8 overflow-auto pl-8 [scrollbar-width:none] lg:-mx-20 lg:pl-20 [&::-webkit-scrollbar]:hidden">
-          <div className="flex min-w-[80rem] gap-6">
+          <div className="grid min-w-[80rem] gap-6 [grid-template-columns:1fr_1fr_1fr_1fr_auto]">
             <Tabs>
               <Tab>
                 {({ isSelected, onClick }) => (
@@ -31,11 +31,12 @@ export function LandingFeatures() {
                   >
                     <LandingCardIcon />
                     <LandingCardHeading decoration="01.">
-                      Feature Name
+                      Build With Visual Controls
                     </LandingCardHeading>
                     <LandingCardBody>
-                      Lorem ipsum dolor sit amet consectetur. Augue nibh felis
-                      velit nisl mattis sapien. Amet varius in morbi tristique.
+                      From finding and selecting JSX elements through to
+                      transforming 3D objects with transform controls, do it
+                      visually when it's more productive.
                     </LandingCardBody>
                   </LandingCardButton>
                 )}
@@ -48,11 +49,12 @@ export function LandingFeatures() {
                   >
                     <LandingCardIcon />
                     <LandingCardHeading decoration="02.">
-                      Feature Name
+                      Controls Defined By Components
                     </LandingCardHeading>
                     <LandingCardBody>
-                      Lorem ipsum dolor sit amet consectetur. Augue nibh felis
-                      velit nisl mattis sapien. Amet varius in morbi tristique.
+                      Editor controls are defined by the props declared on your
+                      components. When your component props change the controls
+                      automatically get updated.
                     </LandingCardBody>
                   </LandingCardButton>
                 )}
@@ -65,11 +67,12 @@ export function LandingFeatures() {
                   >
                     <LandingCardIcon />
                     <LandingCardHeading decoration="03.">
-                      Feature Name
+                      Your Code Stays With You
                     </LandingCardHeading>
                     <LandingCardBody>
-                      Lorem ipsum dolor sit amet consectetur. Augue nibh felis
-                      velit nisl mattis sapien. Amet varius in morbi tristique.
+                      Forget about import and export. When building visually
+                      then saving your code gets updated. When building in your
+                      code editor then saving Triplex gets updated.
                     </LandingCardBody>
                   </LandingCardButton>
                 )}
@@ -82,11 +85,12 @@ export function LandingFeatures() {
                   >
                     <LandingCardIcon />
                     <LandingCardHeading decoration="04.">
-                      Feature Name
+                      Build Components In Isolation
                     </LandingCardHeading>
                     <LandingCardBody>
-                      Lorem ipsum dolor sit amet consectetur. Augue nibh felis
-                      velit nisl mattis sapien. Amet varius in morbi tristique.
+                      From small components like a button or card through to
+                      large ones like a full page or app, open any component and
+                      work on it in isolation.
                     </LandingCardBody>
                   </LandingCardButton>
                 )}

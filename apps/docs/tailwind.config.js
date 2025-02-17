@@ -55,7 +55,7 @@ module.exports = {
       focus: "var(--text-selected)",
       inverse: "var(--bg-inverse)",
       link: "var(--text-link)",
-      neutral: "var(--bg-neutral)",
+      neutral: "var(--border)",
       selected: "var(--text-selected)",
       surface: "var(--bg-surface)",
       transparent: "transparent",
