@@ -15,14 +15,18 @@ import {
 export function LandingMadeWithTriplex() {
   return (
     <div className="flex flex-col gap-6 md:gap-3">
-      <h2 className="text-default">
-        <svg viewBox="0 0 153 20">
-          <text className="font-brand fill-current text-xl" x="-1" y="16">
+      <h2 aria-label="Made with Triplex" className="text-default">
+        <svg viewBox="0 0 155 20">
+          <text
+            className="font-brand fill-current text-xl font-medium"
+            x="-1"
+            y="16"
+          >
             Made with Triplex
           </text>
         </svg>
       </h2>
-      <div className="grid gap-6 md:min-h-[80vh]">
+      <div className="grid gap-6 md:min-h-[80vh] md:grid-cols-2">
         <LandingCardLink
           alignContentBlock="end"
           className="md:col-start-1 md:row-start-1 md:row-end-3"
@@ -30,31 +34,28 @@ export function LandingMadeWithTriplex() {
           size="large"
           variant="inverse"
         >
-          <LandingCardHeading>Project Name</LandingCardHeading>
+          <LandingCardHeading>The Children Are Doomed</LandingCardHeading>
           <LandingCardBody>
-            Lorem ipsum dolor sit amet consectetur. Augue nibh felis velit nisl
-            mattis sapien. Amet varius in morbi tristique. Ultricies vestibulum
-            quisque auctor est.
+            An innovative platformer that challenges the player to navigate
+            through a series of increasingly difficult levels, with optional
+            co-op play.
           </LandingCardBody>
           <LandingPresentationalButton size="lg" variant="inverse" />
         </LandingCardLink>
-
         <LandingCardLink
           alignContentBlock="end"
           className="md:col-start-2 md:row-start-1"
-          href="/"
+          href="https://www.hypermod.io"
           size="default"
           variant="inverse"
         >
-          <LandingCardHeading>Project Name</LandingCardHeading>
+          <LandingCardHeading>Hypermod</LandingCardHeading>
           <LandingCardBody>
-            Lorem ipsum dolor sit amet consectetur. Augue nibh felis velit nisl
-            mattis sapien. Amet varius in morbi tristique. Ultricies vestibulum
-            quisque auctor est.
+            Impactful & effortless code migrations. Orchestrate large-scale code
+            migrations across multiple repositories and technologies.
           </LandingCardBody>
           <LandingPresentationalButton variant="inverse" />
         </LandingCardLink>
-
         <LandingCardLink
           alignContentBlock="end"
           className="md:col-start-2 md:row-start-2"
@@ -62,11 +63,10 @@ export function LandingMadeWithTriplex() {
           size="default"
           variant="inverse"
         >
-          <LandingCardHeading>Project Name</LandingCardHeading>
+          <LandingCardHeading>Untitled AR Fishing Game</LandingCardHeading>
           <LandingCardBody>
-            Lorem ipsum dolor sit amet consectetur. Augue nibh felis velit nisl
-            mattis sapien. Amet varius in morbi tristique. Ultricies vestibulum
-            quisque auctor est.
+            Pull up the pond and get fishing in this augmented reality game that
+            brings the outdoors to you. Catch fish, earn rewards, and more.
           </LandingCardBody>
           <LandingPresentationalButton variant="inverse" />
         </LandingCardLink>

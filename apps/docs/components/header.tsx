@@ -42,7 +42,7 @@ export function Header({
     <header className="bg-surface sticky top-0 z-50 col-span-full row-start-1 flex h-14 items-center gap-4 px-6 md:gap-6 md:px-8 lg:px-20">
       <Link aria-label="Home" className="flex-shrink-0" href="/">
         <object
-          className="pointer-events-none mb-1"
+          className="pointer-events-none"
           data="/logos/logo-horizontal.svg"
           height={Math.round(223 / 9)}
           width={Math.round(818 / 9)}
@@ -103,7 +103,7 @@ export function HeaderItem({
         isSelected
           ? "text-brand font-medium"
           : "text-subtle hover:text-default",
-        "text-base",
+        "mt-1 text-base",
       ])}
       href={href}
     >
