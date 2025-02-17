@@ -59,9 +59,9 @@ export function TabsList({ children }: { children: ReactNode }) {
 
   return Children.map(children, (child, index) => {
     if (index === shownIndex) {
-      return child;
+      return <div className="contents">{child}</div>;
     }
 
-    return null;
+    return <div className="hidden">{child}</div>;
   });
 }
