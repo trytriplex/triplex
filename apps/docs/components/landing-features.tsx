@@ -47,7 +47,7 @@ export function LandingFeatures() {
                   >
                     <LandingCardIcon />
                     <LandingCardHeading decoration="01.">
-                      Build With Visual Controls
+                      Integrated Visual Controls
                     </LandingCardHeading>
                     <LandingCardBody>
                       From finding and selecting JSX elements through to
@@ -65,12 +65,12 @@ export function LandingFeatures() {
                   >
                     <LandingCardIcon />
                     <LandingCardHeading decoration="02.">
-                      Controls Defined By Components
+                      Props Driven Input Controls
                     </LandingCardHeading>
                     <LandingCardBody>
-                      Editor controls are defined by the props declared on your
-                      components. When your component props change the controls
-                      automatically get updated.
+                      Input controls are generated from props declared on your
+                      components. When your component props change the input
+                      controls are updated automatically.
                     </LandingCardBody>
                   </LandingCardButton>
                 )}
@@ -83,12 +83,12 @@ export function LandingFeatures() {
                   >
                     <LandingCardIcon />
                     <LandingCardHeading decoration="03.">
-                      Your Code Stays With You
+                      Always Production Ready
                     </LandingCardHeading>
                     <LandingCardBody>
-                      Forget about import and export. When building visually
-                      then saving your code gets updated. When building in your
-                      code editor then saving Triplex gets updated.
+                      Forget about import and export. When building in Triplex
+                      using visual and input controls and saving your code gets
+                      updated, ready for your next deployment.
                     </LandingCardBody>
                   </LandingCardButton>
                 )}
