@@ -120,13 +120,13 @@ export function LandingCard({
           alignContentBlock === "center" && "justify-center",
           alignContentBlock === "start" && "justify-start",
           alignContentBlock === "end" && "justify-end",
-          size === "xlarge" && "gap-8",
-          size === "large" && "gap-6",
-          size === "default" && "gap-6",
+          size === "xlarge" && "gap-8 md:p-10",
+          size === "large" && "gap-6 md:p-8",
+          size === "default" && "gap-6 md:p-8",
           variant === "default" &&
             "bg-surface outline-neutral outline outline-1 -outline-offset-1",
           variant === "inverse" && "bg-inverse",
-          "group flex flex-col rounded-3xl px-6 pb-6 pt-8 md:p-10",
+          "group flex flex-col rounded-3xl px-6 pb-6 pt-8",
         ])}
       >
         {children}
