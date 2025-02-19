@@ -20,6 +20,22 @@ export function LandingFeatures() {
       </h2>
 
       <TabsRoot>
+        <div className="bg-surface border-neutral flex aspect-video items-center justify-center border">
+          <TabsList>
+            <div className="text-subtlest select-none font-mono text-3xl font-medium">
+              (FEATURE_ONE_VIDEO)
+            </div>
+            <div className="text-subtlest select-none font-mono text-3xl font-medium">
+              (FEATURE_TWO_VIDEO)
+            </div>
+            <div className="text-subtlest select-none font-mono text-3xl font-medium">
+              (FEATURE_THREE_VIDEO)
+            </div>
+            <div className="text-subtlest select-none font-mono text-3xl font-medium">
+              (FEATURE_FOUR_VIDEO)
+            </div>
+          </TabsList>
+        </div>
         <div className="-mx-8 overflow-auto pl-8 [scrollbar-width:none] lg:-mx-20 lg:pl-20 [&::-webkit-scrollbar]:hidden">
           <div className="grid min-w-[80rem] gap-6 [grid-template-columns:1fr_1fr_1fr_1fr_auto]">
             <Tabs>
@@ -98,22 +114,6 @@ export function LandingFeatures() {
             </Tabs>
             <div className="w-2 flex-shrink-0 lg:w-14" />
           </div>
-        </div>
-        <div className="bg-surface border-neutral flex aspect-video items-center justify-center border">
-          <TabsList>
-            <div className="text-subtlest select-none font-mono text-3xl font-medium">
-              (FEATURE_ONE_VIDEO)
-            </div>
-            <div className="text-subtlest select-none font-mono text-3xl font-medium">
-              (FEATURE_TWO_VIDEO)
-            </div>
-            <div className="text-subtlest select-none font-mono text-3xl font-medium">
-              (FEATURE_THREE_VIDEO)
-            </div>
-            <div className="text-subtlest select-none font-mono text-3xl font-medium">
-              (FEATURE_FOUR_VIDEO)
-            </div>
-          </TabsList>
         </div>
       </TabsRoot>
     </div>
