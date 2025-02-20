@@ -14,8 +14,8 @@ export interface SelectionStore {
   clear: () => void;
   disabled: boolean;
   hovered: SelectionState | null;
-  listen: (cb: SelectionListener) => () => void;
-  listeners: SelectionListener[];
+  listen: (cb: SelectionListener, priority: number) => () => void;
+  listeners: { cb: SelectionListener; priority: number }[];
   select: (
     selection: SelectionState | SelectionState[],
     action: "replace" | "addition",
@@ -35,17 +35,21 @@ export const useSelectionStore = create<SelectionStore>((set, get) => ({
   },
   disabled: false,
   hovered: null,
-  listen: (cb) => {
+  listen: (cb, priority) => {
     set((state) => {
+      const nextListeners = state.listeners
+        .concat({ cb, priority })
+        .sort((a, b) => a.priority - b.priority);
+
       return {
-        listeners: state.listeners.concat(cb),
+        listeners: nextListeners,
       };
     });
 
     return () => {
       set((state) => {
         return {
-          listeners: state.listeners.filter((listener) => listener !== cb),
+          listeners: state.listeners.filter((listener) => listener.cb !== cb),
         };
       });
     };

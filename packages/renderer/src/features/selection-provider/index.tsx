@@ -72,7 +72,7 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
             }
           }
 
-          const result = listeners.flatMap((listener) => listener(e));
+          const result = listeners.flatMap((listener) => listener.cb(e));
           const hit = result.at(0) ?? null;
 
           setHovered(hit);
@@ -100,7 +100,7 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
               ? // If there have been 2 or more consecutive clicks we change the selection mode to cycle.
                 "cycle"
               : "default";
-          const hitTestResult = listeners.flatMap((listener) => listener(e));
+          const hitTestResult = listeners.flatMap((listener) => listener.cb(e));
 
           if (selectionMode === "default") {
             if (hitTestResult.length) {

@@ -1,0 +1,5 @@
+{
+  "$schema": "https://triplex.dev/config.schema.json",
+  "provider": "./provider.tsx",
+  "renderer": "../../../packages/renderer/src/index.tsx"
+}

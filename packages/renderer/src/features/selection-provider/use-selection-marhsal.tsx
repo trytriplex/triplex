@@ -34,6 +34,7 @@ export function useSelectionMarshal<
   onHovered = noop,
   onSelect = noop,
   onSettled = noop,
+  priority = 0,
   resolve,
 }: {
   listener: SelectionListener;
@@ -41,6 +42,7 @@ export function useSelectionMarshal<
   onHovered?: SelectionEvent<T>;
   onSelect?: SelectionEvent<T>;
   onSettled?: SelectionEvent<T>;
+  priority?: number;
   resolve: Resolver<T>;
 }) {
   const resetCount = useContext(ResetCountContext);
@@ -129,8 +131,8 @@ export function useSelectionMarshal<
   }, [disabled, hovered, onHoveredEvent, onSettledEvent, resolverEvent]);
 
   useEffect(() => {
-    return listen(listenerEvent);
-  }, [listen, listenerEvent]);
+    return listen(listenerEvent, priority);
+  }, [listen, listenerEvent, priority]);
 
   const resolveIfMissing = useEvent(
     (path: string, line: number, column: number) => {

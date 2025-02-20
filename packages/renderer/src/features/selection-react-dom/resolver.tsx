@@ -81,30 +81,16 @@ export function resolveDOMNodes(selections: SelectionState[]): ResolvedNode[] {
   return nodes;
 }
 
-export function hasParentSkippedHitTest(element: Element | null) {
-  if (!element) {
-    return false;
-  }
-
-  if (element.hasAttribute("data-skip-hit-test")) {
-    return true;
-  }
-
-  return hasParentSkippedHitTest(element.parentElement);
-}
-
 export function resolveElementsFromPoint(
-  root: HTMLElement,
   points: { clientX: number; clientY: number },
+  { root }: { root: HTMLElement },
 ) {
   const previousPointerEvents = root.style.pointerEvents;
   // Enable pointer events so the browser can perform hit detection.
   root.style.pointerEvents = "all";
   const elements = document
     .elementsFromPoint(points.clientX, points.clientY)
-    .filter(
-      (element) => root.contains(element) && !hasParentSkippedHitTest(element),
-    );
+    .filter((element) => root.contains(element));
   // Revert to the original pointer events value.
   root.style.pointerEvents = previousPointerEvents;
 

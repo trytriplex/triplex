@@ -6,8 +6,9 @@
  */
 
 import { type TriplexMeta } from "@triplex/bridge/client";
-import { type Object3D } from "three";
+import { Raycaster, Vector2, type Camera, type Object3D } from "three";
 import { getTriplexMeta, hasTriplexMeta } from "../../util/meta";
+import { isObjectVisible } from "../../util/three";
 
 export interface ResolvedObject3D {
   meta: TriplexMeta;
@@ -84,7 +85,8 @@ export const findObject3D = (
       if (
         parent.path === filter.path &&
         parent.column === filter.column &&
-        parent.line === filter.line
+        parent.line === filter.line &&
+        parent.originExportName !== "Canvas"
       ) {
         foundObjects.push([obj, parent]);
         return;
@@ -117,3 +119,27 @@ export const resolveObject3D = (
     };
   });
 };
+
+// We use this as a default raycaster so it is fired on the default layer (0) instead
+// Of the editor layer (31).
+const raycaster = new Raycaster();
+const vector = new Vector2();
+
+export function resolveObjectsFromPoint(
+  point: { x: number; y: number },
+  opts: {
+    camera: Camera;
+    scene: Object3D;
+  },
+) {
+  vector.set(point.x, point.y);
+  raycaster.setFromCamera(vector, opts.camera);
+
+  const results = raycaster.intersectObject(opts.scene);
+
+  return results.filter(
+    (found) =>
+      isObjectVisible(found.object) &&
+      found.object.type !== "TransformControlsPlane",
+  );
+}

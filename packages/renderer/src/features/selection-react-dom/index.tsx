@@ -29,7 +29,10 @@ export function ReactDOMSelection({
   const ref = useRef<HTMLDivElement>(null!);
   const [selected, hovered] = useSelectionMarshal<ResolvedNode>({
     listener: (e) => {
-      return resolveElementsFromPoint(ref.current, e)
+      return resolveElementsFromPoint(
+        { clientX: e.clientX, clientY: e.clientY },
+        { root: ref.current },
+      )
         .map((element) => {
           const meta = resolveElementMeta(element, filter);
 
@@ -46,6 +49,7 @@ export function ReactDOMSelection({
         })
         .filter((element) => !!element);
     },
+    priority: 1,
     resolve: (selections) => resolveDOMNodes(selections),
   });
 
