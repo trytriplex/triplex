@@ -9,10 +9,10 @@ import { compose, on, send } from "@triplex/bridge/client";
 import { useEvent } from "@triplex/lib";
 import { fg } from "@triplex/lib/fg";
 import { useContext, useEffect, useState, type ReactNode } from "react";
-import { Box3, Camera, Raycaster, Vector2, Vector3 } from "three";
+import { Box3, Camera, Vector3 } from "three";
 import { HOVER_LAYER_INDEX, SELECTION_LAYER_INDEX } from "../../util/layers";
 import { resolveElementMeta } from "../../util/meta";
-import { encodeProps, isObjectVisible } from "../../util/three";
+import { encodeProps } from "../../util/three";
 import { SwitchToComponentContext } from "../app/context";
 import { CameraPreview } from "../camera-preview";
 import { useCamera } from "../camera/context";
@@ -22,6 +22,7 @@ import { useSelectionMarshal } from "../selection-provider/use-selection-marhsal
 import {
   findObject3D,
   resolveObject3D,
+  resolveObjectsFromPoint,
   type ResolvedObject3D,
 } from "./resolver";
 import { SelectionIndicator } from "./selection-indicator";
@@ -31,10 +32,6 @@ import { type Space, type TransformControlMode } from "./types";
 function strip(num: number): number {
   return +Number.parseFloat(Number(num).toPrecision(15));
 }
-
-// We use this as a default raycaster so it is fired on the default layer (0) instead
-// Of the editor layer (31).
-const raycaster = new Raycaster();
 
 export function ThreeFiberSelection({
   children,
@@ -60,16 +57,7 @@ export function ThreeFiberSelection({
         const x = (e.offsetX / canvasSize.width) * 2 - 1;
         const y = -(e.offsetY / canvasSize.height) * 2 + 1;
 
-        raycaster.setFromCamera(new Vector2(x, y), camera);
-
-        const results = raycaster.intersectObject(scene);
-
-        return results
-          .filter(
-            (found) =>
-              isObjectVisible(found.object) &&
-              found.object.type !== "TransformControlsPlane",
-          )
+        return resolveObjectsFromPoint({ x, y }, { camera, scene })
           .map((found) => {
             const meta = resolveElementMeta(found.object, filter);
 
@@ -106,6 +94,7 @@ export function ThreeFiberSelection({
           child.layers.disable(HOVER_LAYER_INDEX),
         );
       },
+      priority: 0,
       resolve: (selections) => {
         return selections.flatMap((selection) => {
           return resolveObject3D(scene, {

@@ -45,11 +45,11 @@ describe("selection store", () => {
     render(<Component />);
 
     act(() => {
-      store.current.listen(cb1);
-      store.current.listen(cb2);
+      store.current.listen(cb1, 0);
+      store.current.listen(cb2, 0);
     });
 
-    store.current.listeners.forEach((cb) => cb({} as MouseEvent));
+    store.current.listeners.forEach(({ cb }) => cb({} as MouseEvent));
 
     expect(cb1).toHaveBeenCalled();
     expect(cb2).toHaveBeenCalled();
@@ -62,11 +62,11 @@ describe("selection store", () => {
     render(<Component />);
 
     act(() => {
-      store.current.listen(cb1)();
-      store.current.listen(cb2)();
+      store.current.listen(cb1, 0)();
+      store.current.listen(cb2, 0)();
     });
 
-    store.current.listeners.forEach((cb) => cb({} as MouseEvent));
+    store.current.listeners.forEach(({ cb }) => cb({} as MouseEvent));
 
     expect(cb1).not.toHaveBeenCalled();
     expect(cb2).not.toHaveBeenCalled();
@@ -202,5 +202,22 @@ describe("selection store", () => {
     });
 
     expect(renders.current).toEqual(2);
+  });
+
+  it("should order listeners by priority", () => {
+    const cb1 = vi.fn();
+    const cb2 = vi.fn();
+    const { Component, store } = createTestHarness();
+    render(<Component />);
+
+    act(() => {
+      store.current.listen(cb1, 10);
+      store.current.listen(cb2, 0);
+    });
+
+    expect(store.current.listeners).toEqual([
+      { cb: cb2, priority: 0 },
+      { cb: cb1, priority: 10 },
+    ]);
   });
 });

@@ -50,9 +50,7 @@ export function Canvas({ children, ...props }: CanvasProps) {
   return (
     <FiberCanvas
       shadows
-      style={{ inset: 0, position: "absolute" }}
       {...props}
-      data-skip-hit-test
       raycaster={{
         ...props.raycaster,
         layers:

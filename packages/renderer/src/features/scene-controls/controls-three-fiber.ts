@@ -9,12 +9,12 @@ import { type Controls, type MenuControl } from "@triplex/bridge/host";
 
 export const settings: MenuControl["options"] = [
   {
-    group: "Play Camera",
+    group: "Canvas Camera",
     id: "camera_default",
     label: "Use Default Camera",
   },
   {
-    group: "Play Camera",
+    group: "Canvas Camera",
     id: "camera_editor",
     label: "Use Editor Camera",
   },
