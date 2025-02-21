@@ -1,5 +1,15 @@
 # @triplex/renderer
 
+## 0.71.8
+
+### Patch Changes
+
+- fb2bad8: The selection system now harmoniously works between reconcilers, exactly as you'd expect.
+- 9a611b0: Fix React 19 warnings for using inert prop with strings.
+- 9a611b0: Fix React 19 warnings for accessing refs on Fragments.
+- fb2bad8: Canvas components no longer take up the entire space when rendered in userland but instead applying the default behaviour.
+- 9a611b0: Fix scene panel flashing between hovered -> idle -> selected state when selecting a object through the scene.
+
 ## 0.71.7
 
 ### Patch Changes

@@ -1,5 +1,12 @@
 # @triplex/vscode
 
+## 0.2.11
+
+### Patch Changes
+
+- 9a611b0: Fix scene panel flashing between hovered -> idle -> selected state when selecting a object through the scene.
+  - @triplex/client@0.70.11
+
 ## 0.2.10
 
 ### Patch Changes

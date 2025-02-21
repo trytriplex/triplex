@@ -1,5 +1,16 @@
 # @triplex/client
 
+## 0.70.11
+
+### Patch Changes
+
+- Updated dependencies [fb2bad8]
+- Updated dependencies [9a611b0]
+- Updated dependencies [9a611b0]
+- Updated dependencies [fb2bad8]
+- Updated dependencies [9a611b0]
+  - @triplex/renderer@0.71.8
+
 ## 0.70.10
 
 ### Patch Changes
