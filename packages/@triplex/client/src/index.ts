@@ -14,7 +14,6 @@ import type {
 } from "@triplex/server";
 import react from "@vitejs/plugin-react";
 import express from "express";
-import { join } from "upath";
 import { version } from "../package.json";
 import triplexBabelPlugin from "./babel-plugin";
 import { transformNodeModulesJSXPlugin } from "./node-modules-plugin";
@@ -39,7 +38,6 @@ export async function createServer({
   };
   userId: string;
 }) {
-  const tsConfig = join(config.cwd, "tsconfig.json");
   const app = express();
   const httpServer = createHttpServer(app);
   const { createServer: createViteServer } = await import("vite");
@@ -97,15 +95,7 @@ export async function createServer({
       glsl(),
       // ---------------------------------------------------------------
       scenePlugin(initializationConfig),
-      tsconfigPaths({
-        /**
-         * JavaScript based projects without a tsconfig.json will throw errors.
-         * Rather than conditionally applying this plugin we just ignore any
-         * errors and continue on. Same same but less code we have to handle!
-         */
-        ignoreConfigErrors: true,
-        projects: [tsConfig],
-      }),
+      tsconfigPaths({ root: config.cwd }),
     ],
     publicDir: config.publicDir,
     resolve: {

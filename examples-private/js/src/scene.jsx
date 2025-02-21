@@ -4,9 +4,9 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import Sphere from "@/geometry/sphere";
 import Box from "./geometry/box";
 import Cylinder from "./geometry/cylinder";
-import Sphere from "./geometry/sphere";
 
 export function JSOnlyConfig() {
   return (
