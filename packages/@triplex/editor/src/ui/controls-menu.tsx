@@ -75,8 +75,7 @@ export function ControlsMenu() {
           playState === "play" && "hidden",
           "flex rounded-lg border border-neutral-800 bg-neutral-900/[97%] p-1 text-neutral-400",
         ])}
-        // @ts-expect-error — updating React types will make this go away
-        inert={playState === "play" ? "true" : undefined}
+        inert={playState === "play"}
       >
         <ErrorBoundary fallbackRender={() => null} resetKeys={[controls]}>
           {controls.map((control, index) => {

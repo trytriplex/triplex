@@ -12,6 +12,7 @@ import {
 } from "@triplex/bridge/client";
 import {
   forwardRef,
+  Fragment,
   useContext,
   useEffect,
   useMemo,
@@ -123,7 +124,9 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
         <ParentComponentMetaProvider type={type} value={triplexMeta}>
           <Component
             key={key}
-            ref={type === "host" ? mergedRefs : ref}
+            {...(Component === Fragment
+              ? {}
+              : { ref: type === "host" ? mergedRefs : ref })}
             {...reconciledProps}
             {...(shouldDisable ? { enabled: false } : undefined)}
           >
@@ -145,7 +148,7 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
     }
 
     return (
-      <Component ref={ref} {...props}>
+      <Component {...(Component === Fragment ? {} : { ref })} {...props}>
         {children}
       </Component>
     );

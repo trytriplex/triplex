@@ -81,8 +81,7 @@ export const Surface = forwardRef<
             bg === "editor" && "bg-editor",
           ])}
           data-testid={testId}
-          // @ts-expect-error — updating React types will make this go away
-          inert={isHidden ? "true" : undefined}
+          inert={isHidden}
           onBlur={() => listeners.current.forEach((cb) => cb(false))}
           onFocus={() => listeners.current.forEach((cb) => cb(true))}
           ref={ref}

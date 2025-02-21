@@ -34,12 +34,7 @@ export function EnsureCodeValidity({ children }: { children: ReactNode }) {
 
   return (
     <>
-      <div
-        // @ts-expect-error — Will be fixed in a future version of @types/react
-        inert={codeHasSyntaxErrors ? "true" : undefined}
-      >
-        {shouldShowChildren && children}
-      </div>
+      <div inert={codeHasSyntaxErrors}>{shouldShowChildren && children}</div>
       {codeHasSyntaxErrors && (
         <InvalidCodeSplash diagnostics={diagnostics} path={context.path} />
       )}

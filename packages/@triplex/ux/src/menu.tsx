@@ -83,8 +83,7 @@ export function MenuTrigger({
     <label
       className={className}
       htmlFor={id}
-      // @ts-expect-error — Should be fixed with react@19 types.
-      inert="true"
+      inert={true}
       style={{ display: "flex" }}
     >
       {children}
