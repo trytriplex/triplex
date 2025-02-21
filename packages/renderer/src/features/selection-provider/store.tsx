@@ -56,21 +56,17 @@ export const useSelectionStore = create<SelectionStore>((set, get) => ({
   },
   listeners: [],
   select: (element, action) => {
-    const { setHovered } = get();
-
     switch (action) {
       case "replace": {
         const nextSelections = Array.isArray(element) ? element : [element];
-        set({ selections: nextSelections });
-        setHovered(null);
+        set({ hovered: null, selections: nextSelections });
         return;
       }
 
       case "addition": {
         const { selections } = get();
         const nextSelections = selections.concat(element);
-        set({ selections: nextSelections });
-        setHovered(null);
+        set({ hovered: null, selections: nextSelections });
         return;
       }
     }
