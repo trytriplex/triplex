@@ -1,5 +1,11 @@
 # @triplex/client
 
+## 0.70.12
+
+### Patch Changes
+
+- 6f01882: Fix jsconfig paths not being respected by the scene environment.
+
 ## 0.70.11
 
 ### Patch Changes
