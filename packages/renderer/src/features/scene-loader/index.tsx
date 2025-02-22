@@ -11,6 +11,7 @@ import {
   type ProviderComponent,
 } from "@triplex/bridge/client";
 import { useEffect, useMemo, useReducer } from "react";
+import { DefaultCameraContext } from "../camera-new/context";
 import { Canvas } from "../canvas";
 import { SceneControls } from "../scene-controls";
 import { SceneRenderer } from "../scene-renderer";
@@ -83,14 +84,16 @@ export function SceneLoader({
       <ResetCountContext.Provider value={resetCount}>
         <SceneContext.Provider value={sceneContext}>
           {scene.meta.root === "react" && (
-            <ReactDOMSelection filter={{ exportName, path }}>
-              <SceneRenderer
-                component={scene.component}
-                exportName={exportName}
-                path={path}
-                props={sceneProps}
-              />
-            </ReactDOMSelection>
+            <DefaultCameraContext.Provider value="default">
+              <ReactDOMSelection filter={{ exportName, path }}>
+                <SceneRenderer
+                  component={scene.component}
+                  exportName={exportName}
+                  path={path}
+                  props={sceneProps}
+                />
+              </ReactDOMSelection>
+            </DefaultCameraContext.Provider>
           )}
           {scene.meta.root === "react-three-fiber" && (
             <Canvas>
