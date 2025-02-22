@@ -1123,11 +1123,6 @@ describe("type infer", () => {
               },
               {
                 "kind": "number",
-                "label": "SrcAlphaSaturateFactor",
-                "literal": 210,
-              },
-              {
-                "kind": "number",
                 "label": "ConstantColorFactor",
                 "literal": 211,
               },
@@ -1145,6 +1140,11 @@ describe("type infer", () => {
                 "kind": "number",
                 "label": "OneMinusConstantAlphaFactor",
                 "literal": 214,
+              },
+              {
+                "kind": "number",
+                "label": "SrcAlphaSaturateFactor",
+                "literal": 210,
               },
             ],
             "tags": {

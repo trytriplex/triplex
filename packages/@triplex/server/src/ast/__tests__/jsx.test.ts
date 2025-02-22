@@ -525,14 +525,6 @@ describe("jsx ast extractor", () => {
             "defaultValue": "\`''\`",
           },
         },
-        {
-          "description": undefined,
-          "group": "Appearance",
-          "kind": "boolean",
-          "name": "visible",
-          "required": false,
-          "tags": {},
-        },
       ]
     `);
   });
@@ -1014,11 +1006,6 @@ describe("jsx ast extractor", () => {
             },
             {
               "kind": "number",
-              "label": "SrcAlphaSaturateFactor",
-              "literal": 210,
-            },
-            {
-              "kind": "number",
               "label": "ConstantColorFactor",
               "literal": 211,
             },
@@ -1036,6 +1023,11 @@ describe("jsx ast extractor", () => {
               "kind": "number",
               "label": "OneMinusConstantAlphaFactor",
               "literal": 214,
+            },
+            {
+              "kind": "number",
+              "label": "SrcAlphaSaturateFactor",
+              "literal": 210,
             },
           ],
           "tags": {
@@ -1954,12 +1946,14 @@ describe("jsx ast extractor", () => {
           },
         },
         {
-          "description": undefined,
+          "description": "Defines whether this material is visible. Default is true.",
           "group": "Appearance",
           "kind": "boolean",
           "name": "visible",
           "required": false,
-          "tags": {},
+          "tags": {
+            "default": true,
+          },
         },
         {
           "description": undefined,
@@ -2411,13 +2405,15 @@ describe("jsx ast extractor", () => {
         },
         {
           "column": 11,
-          "description": undefined,
+          "description": "Object gets rendered if \`true\`.",
           "group": "Appearance",
           "kind": "boolean",
           "line": 10,
           "name": "visible",
           "required": false,
-          "tags": {},
+          "tags": {
+            "defaultValue": "\`true\`",
+          },
           "value": true,
           "valueKind": "boolean",
         },
@@ -2742,13 +2738,15 @@ describe("jsx ast extractor", () => {
         },
         {
           "column": 30,
-          "description": undefined,
+          "description": "Object gets rendered if \`true\`.",
           "group": "Appearance",
           "kind": "boolean",
           "line": 20,
           "name": "visible",
           "required": false,
-          "tags": {},
+          "tags": {
+            "defaultValue": "\`true\`",
+          },
           "value": true,
           "valueKind": "boolean",
         },
@@ -3199,12 +3197,14 @@ describe("jsx ast extractor", () => {
           "valueKind": "identifier",
         },
         {
-          "description": undefined,
+          "description": "Object gets rendered if \`true\`.",
           "group": "Appearance",
           "kind": "boolean",
           "name": "visible",
           "required": false,
-          "tags": {},
+          "tags": {
+            "defaultValue": "\`true\`",
+          },
         },
       ]
     `);

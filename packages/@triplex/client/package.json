@@ -28,7 +28,7 @@
   },
   "devDependencies": {
     "@babel/plugin-syntax-jsx": "^7.24.1",
-    "@react-three/fiber": "^9.0.0-rc.6",
+    "@react-three/fiber": "^9.0.4",
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
     "@triplex/lib": "0.69.10",

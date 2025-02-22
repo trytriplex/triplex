@@ -70,8 +70,6 @@
   },
   "pnpm": {
     "overrides": {
-      "@react-three/drei": "^10.0.0-rc.1",
-      "@react-three/fiber": "^9.0.0-rc.6",
       "@types/react": "^19.0.8",
       "@types/react-dom": "^19.0.3",
       "esbuild": "^0.24.2",
@@ -80,9 +78,9 @@
       "vite": "^6.0.7"
     },
     "patchedDependencies": {
+      "@adeira/monorepo-shipit": "patches/@adeira__monorepo-shipit.patch",
       "@vscode/vsce@2.26.0": "patches/@vscode__vsce@2.26.0.patch",
-      "react-refresh": "patches/react-refresh.patch",
-      "@adeira/monorepo-shipit": "patches/@adeira__monorepo-shipit.patch"
+      "react-refresh": "patches/react-refresh.patch"
     }
   }
 }
