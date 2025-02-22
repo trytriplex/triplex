@@ -16,8 +16,8 @@
     "typedef": "yarn workspaces run typedef"
   },
   "resolutions": {
-    "@react-three/drei": "^10.0.0-rc.1",
-    "@react-three/fiber": "^9.0.0-rc.6",
+    "@react-three/drei": "^10.0.0",
+    "@react-three/fiber": "^9.0.4",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "esbuild": "^0.24.2",
