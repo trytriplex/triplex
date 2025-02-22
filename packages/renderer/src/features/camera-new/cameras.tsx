@@ -7,6 +7,7 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { on } from "@triplex/bridge/client";
 import {
+  useContext,
   useEffect,
   useLayoutEffect,
   useMemo,
@@ -17,8 +18,12 @@ import {
 } from "react";
 import { type OrthographicCamera, type PerspectiveCamera } from "three";
 import { usePlayState } from "../../stores/use-play-state";
-import { EDITOR_LAYER_INDEX } from "../../util/layers";
-import { ActiveCameraContext, type ActiveCameraContextValue } from "./context";
+import { EDITOR_LAYER_INDEX, HIDDEN_LAYER_INDEX } from "../../util/layers";
+import {
+  ActiveCameraContext,
+  DefaultCameraContext,
+  type ActiveCameraContextValue,
+} from "./context";
 import { fitCamerasToViewport } from "./fit-cameras-to-viewport";
 import { type CanvasCamera, type EditorCameraType } from "./types";
 
@@ -39,6 +44,7 @@ type ModeActions =
     };
 
 export function Cameras({ children }: { children: ReactNode }) {
+  const defaultEditorCamera = useContext(DefaultCameraContext);
   const [activeCamera, setActiveCamera] = useState<
     PerspectiveCamera | OrthographicCamera | null
   >(null);
@@ -63,7 +69,7 @@ export function Cameras({ children }: { children: ReactNode }) {
 
       return state;
     },
-    { edit: "default", editor: "perspective", play: "default" },
+    { edit: defaultEditorCamera, editor: "perspective", play: "default" },
   );
   const activeState = playState === "edit" ? state.edit : state.play;
 
@@ -118,9 +124,11 @@ export function Cameras({ children }: { children: ReactNode }) {
       case "edit":
       case "pause":
         activeCamera.layers.enable(EDITOR_LAYER_INDEX);
+        activeCamera.layers.enable(HIDDEN_LAYER_INDEX);
         break;
       case "play":
         activeCamera.layers.disable(EDITOR_LAYER_INDEX);
+        activeCamera.layers.disable(HIDDEN_LAYER_INDEX);
         break;
     }
   }, [activeCamera, playState]);

@@ -19,3 +19,5 @@ export const ActiveCameraContext =
   createContext<ActiveCameraContextValue>(null);
 
 export const CameraControlsContext = createContext<CameraControls | null>(null);
+
+export const DefaultCameraContext = createContext<CanvasCamera>("editor");
