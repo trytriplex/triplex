@@ -27,12 +27,13 @@ import {
 import { CameraControls } from "triplex-drei";
 import { Tunnel } from "../../components/tunnel";
 import { allLayers } from "../../util/layers";
-import { findObject3D } from "../selection-three-fiber/resolver";
 import {
-  CameraContext,
-  type CameraContextType,
-  type CameraType,
-} from "./context";
+  ActiveCameraContext,
+  CameraControlsContext,
+  type ActiveCameraContextValue,
+} from "../camera-new/context";
+import { type CameraType } from "../camera-new/types";
+import { findObject3D } from "../selection-three-fiber/resolver";
 
 const TRIPLEX_CAMERA_NAME = "__triplex_camera";
 const DEFAULT_CAMERA = "perspective";
@@ -326,13 +327,15 @@ export function Camera({
     }
   }, 1);
 
-  const context: CameraContextType = useMemo(
-    () => ({
-      camera: activeCamera,
-      controls: controlsInstance,
-      isTriplexCamera: !!isTriplexCamera,
-    }),
-    [activeCamera, controlsInstance, isTriplexCamera],
+  const context: ActiveCameraContextValue = useMemo(
+    () =>
+      activeCamera
+        ? {
+            camera: activeCamera,
+            type: isTriplexCamera ? "editor" : "default",
+          }
+        : null,
+    [activeCamera, isTriplexCamera],
   );
 
   const setControlsInstanceFromRef = useCallback((ref: CCIMPL | null) => {
@@ -340,65 +343,67 @@ export function Camera({
   }, []);
 
   return (
-    <CameraContext.Provider value={context}>
-      {children}
-      <perspectiveCamera
-        far={100_000}
-        layers={allLayers}
-        // Opt out from r3f auto update updating the frustum.
-        // @ts-expect-error
-        manual
-        name={TRIPLEX_CAMERA_NAME}
-        near={0.01}
-        position={DEFAULT_POSITION}
-        ref={perspCameraRef}
-      />
-      <orthographicCamera
-        far={100_000}
-        layers={allLayers}
-        // Opt out from r3f auto update updating the frustum.
-        // @ts-expect-error
-        manual
-        name={TRIPLEX_CAMERA_NAME}
-        near={-100}
-        position={DEFAULT_POSITION}
-        ref={orthCameraRef}
-        zoom={100}
-      />
-      {isTriplexCamera && (
-        <CameraControls
-          // We don't want user land cameras to be able to be affected by these controls
-          // So we explicitly set the camera instead of relying on "default camera" behaviour.
-          camera={activeCamera}
-          ref={setControlsInstanceFromRef}
+    <ActiveCameraContext.Provider value={context}>
+      <CameraControlsContext.Provider value={controlsInstance}>
+        {children}
+        <perspectiveCamera
+          far={100_000}
+          layers={allLayers}
+          // Opt out from r3f auto update updating the frustum.
+          // @ts-expect-error
+          manual
+          name={TRIPLEX_CAMERA_NAME}
+          near={0.01}
+          position={DEFAULT_POSITION}
+          ref={perspCameraRef}
         />
-      )}
+        <orthographicCamera
+          far={100_000}
+          layers={allLayers}
+          // Opt out from r3f auto update updating the frustum.
+          // @ts-expect-error
+          manual
+          name={TRIPLEX_CAMERA_NAME}
+          near={-100}
+          position={DEFAULT_POSITION}
+          ref={orthCameraRef}
+          zoom={100}
+        />
+        {isTriplexCamera && (
+          <CameraControls
+            // We don't want user land cameras to be able to be affected by these controls
+            // So we explicitly set the camera instead of relying on "default camera" behaviour.
+            camera={activeCamera}
+            ref={setControlsInstanceFromRef}
+          />
+        )}
 
-      {import.meta.env.VITE_TRIPLEX_ENV === "test" && (
-        <Tunnel.In>
-          <pre
-            data-testid="camera-panel"
-            style={{
-              backgroundColor: "white",
-              bottom: 4,
-              left: 4,
-              margin: 0,
-              opacity: 0.5,
-              padding: 4,
-              pointerEvents: "none",
-              position: "absolute",
-            }}
-          >
-            {`name: ${activeCamera?.name || "(empty)"}
+        {import.meta.env.VITE_TRIPLEX_ENV === "test" && (
+          <Tunnel.In>
+            <pre
+              data-testid="camera-panel"
+              style={{
+                backgroundColor: "white",
+                bottom: 4,
+                left: 4,
+                margin: 0,
+                opacity: 0.5,
+                padding: 4,
+                pointerEvents: "none",
+                position: "absolute",
+              }}
+            >
+              {`name: ${activeCamera?.name || "(empty)"}
 type: ${type}
 pos: `}
-            {controlsInstance && (
-              <PullCameraPosition controls={controlsInstance} />
-            )}
-          </pre>
-        </Tunnel.In>
-      )}
-    </CameraContext.Provider>
+              {controlsInstance && (
+                <PullCameraPosition controls={controlsInstance} />
+              )}
+            </pre>
+          </Tunnel.In>
+        )}
+      </CameraControlsContext.Provider>
+    </ActiveCameraContext.Provider>
   );
 }
 

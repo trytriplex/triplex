@@ -6,7 +6,7 @@
  */
 import { Canvas as FiberCanvas, type CanvasProps } from "@react-three/fiber";
 import { send } from "@triplex/bridge/client";
-import { fg } from "@triplex/lib/fg";
+import { fg, fgComponent } from "@triplex/lib/fg";
 import { LoadingLogo } from "@triplex/lib/loader";
 import { Fragment, Suspense, useContext, useLayoutEffect } from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
@@ -15,16 +15,22 @@ import { TriplexGrid } from "../../components/grid";
 import { Tunnel } from "../../components/tunnel";
 import { usePlayState } from "../../stores/use-play-state";
 import { defaultLayer, editorLayer } from "../../util/layers";
-import { Camera } from "../camera";
-import { CameraAxisHelper } from "../camera/camera-axis-helper";
-import { FitCameraToScene } from "../camera/camera-fit-scene";
-import { CameraGizmo } from "../camera/camera-gizmo";
+import { Camera as CameraOld } from "../camera";
+import { CameraAxisHelper } from "../camera-helpers/camera-axis-helper";
+import { FitCameraToScene } from "../camera-helpers/camera-fit-scene";
+import { CameraGizmo } from "../camera-helpers/camera-gizmo";
+import { Camera as CameraNew } from "../camera-new";
 import { SceneElement } from "../scene-element";
 import { ResetCountContext, useLoadedScene } from "../scene-loader/context";
 import { ThreeFiberSelection } from "../selection-three-fiber";
 import { CaptureShaderErrors } from "./capture-shader-errors";
 import { SceneLights } from "./scene-lights";
 import { useCanvasMounted } from "./store";
+
+const Camera = fgComponent("camera_reconciler_refactor", {
+  off: CameraOld,
+  on: CameraNew,
+});
 
 /**
  * **Canvas**

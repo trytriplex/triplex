@@ -188,14 +188,12 @@ export function ControlsMenu() {
               case "camera_editor":
                 setPlayCamera("editor");
                 break;
-
-              default:
-                send("extension-point-triggered", {
-                  id: value,
-                  scope: "scene",
-                });
-                break;
             }
+
+            send("extension-point-triggered", {
+              id: value,
+              scope: "scene",
+            });
           }}
         >
           <MenuTrigger className="rounded outline-1 outline-offset-1 outline-blue-400 peer-hover:bg-white/5 peer-focus-visible:outline">

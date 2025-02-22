@@ -128,10 +128,14 @@ const vector = new Vector2();
 export function resolveObjectsFromPoint(
   point: { x: number; y: number },
   opts: {
-    camera: Camera;
+    camera: Camera | null | undefined;
     scene: Object3D;
   },
 ) {
+  if (!opts.camera) {
+    return [];
+  }
+
   vector.set(point.x, point.y);
   raycaster.setFromCamera(vector, opts.camera);
 

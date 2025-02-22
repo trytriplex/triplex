@@ -220,14 +220,12 @@ export function FloatingControls() {
               case "camera_editor":
                 dispatch("camera-editor");
                 break;
-
-              default:
-                send("extension-point-triggered", {
-                  id: value,
-                  scope: "scene",
-                });
-                break;
             }
+
+            send("extension-point-triggered", {
+              id: value,
+              scope: "scene",
+            });
           }}
         >
           <MenuTrigger className="outline-default outline-selected peer-hover:bg-hover rounded peer-focus-visible:outline">

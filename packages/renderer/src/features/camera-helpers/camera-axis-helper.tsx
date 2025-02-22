@@ -6,12 +6,16 @@
  */
 import { useThree } from "@react-three/fiber";
 import { send } from "@triplex/bridge/client";
+import { useContext } from "react";
 import { Spherical, Vector3, type Object3D } from "three";
 import { GizmoHelper, type CameraControls } from "triplex-drei";
 import { editorLayer } from "../../util/layers";
 import { buildSceneSphere } from "../../util/three";
+import {
+  ActiveCameraContext,
+  CameraControlsContext,
+} from "../camera-new/context";
 import { AxisHelper } from "./axis-helper";
-import { useCamera } from "./context";
 
 const tweenCamera = (
   controls: CameraControls,
@@ -31,10 +35,11 @@ const tweenCamera = (
 };
 
 export function CameraAxisHelper() {
-  const { controls, isTriplexCamera } = useCamera();
+  const camera = useContext(ActiveCameraContext);
+  const controls = useContext(CameraControlsContext);
   const scene = useThree((store) => store.scene);
 
-  if (!isTriplexCamera) {
+  if (!camera || camera.type === "default") {
     return null;
   }
 

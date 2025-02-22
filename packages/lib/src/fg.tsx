@@ -60,3 +60,14 @@ export function overrideFg(key: string, value: boolean) {
 export function clearFgOverrides() {
   Statsig.removeGateOverride();
 }
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export function fgComponent<TComponent extends (props: any) => any>(
+  key: string,
+  { off: OffComponent, on: OnComponent }: { off: TComponent; on: TComponent },
+): TComponent {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return function FGComponent(props: any) {
+    return fg(key) ? <OnComponent {...props} /> : <OffComponent {...props} />;
+  } as TComponent;
+}
