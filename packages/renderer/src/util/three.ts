@@ -21,7 +21,11 @@ export function buildSceneSphere(scene: Object3D) {
     const localBox = new Box3().setFromObject(child);
     const length = localBox.max.lengthSq();
 
-    if (length === Number.POSITIVE_INFINITY || length > 1_000_000) {
+    if (
+      child.name === "forced_visible" ||
+      length === Number.POSITIVE_INFINITY ||
+      length > 1_000_000
+    ) {
       return;
     }
 
