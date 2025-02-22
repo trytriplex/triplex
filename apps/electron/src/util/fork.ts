@@ -45,6 +45,7 @@ export function fork<TData extends Record<string, unknown>>(
         TRIPLEX_DATA: JSON.stringify(data),
         TRIPLEX_ENV: "development",
         VITE_CJS_IGNORE_WARNING: "true",
+        VITE_FG_OVERRIDES: process.env.VITE_FG_OVERRIDES,
         VITE_TRIPLEX_ENV: process.env.VITE_TRIPLEX_ENV,
       },
       // Pass through inspect if the parent has it enabled.

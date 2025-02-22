@@ -93,7 +93,13 @@ const launchElectronWithRetry = async (
   }
 };
 
-async function launch({ workerInfo }: { workerInfo: WorkerInfo }) {
+async function launch({
+  fg,
+  workerInfo,
+}: {
+  fg: Record<string, boolean>;
+  workerInfo: WorkerInfo;
+}) {
   const isSmokeTest =
     process.env.SMOKE_TEST &&
     (Array.isArray(workerInfo.config.grep)
@@ -134,6 +140,7 @@ async function launch({ workerInfo }: { workerInfo: WorkerInfo }) {
     env: {
       ...process.env,
       FG_ENVIRONMENT_OVERRIDE: "local",
+      VITE_FG_OVERRIDES: JSON.stringify(fg),
       VITE_TRIPLEX_ENV: "test",
     },
     executablePath,
@@ -174,6 +181,7 @@ const test = base.extend<
     vsce: ExtensionPage;
   },
   {
+    fg: Record<string, boolean>;
     vscode: {
       app: ElectronApplication;
       logs: string[];
@@ -181,6 +189,7 @@ const test = base.extend<
     };
   }
 >({
+  fg: [{}, { option: true, scope: "worker" }],
   filename: ["examples-private/test-fixture/src/scene.tsx", { option: true }],
   getFile: async ({ filename }, use) => {
     await use((path) =>
@@ -227,8 +236,8 @@ const test = base.extend<
     spawnSync("git checkout examples examples-private", { shell: true });
   },
   vscode: [
-    async ({}, use, workerInfo) => {
-      const vscode = await launch({ workerInfo });
+    async ({ fg }, use, workerInfo) => {
+      const vscode = await launch({ fg, workerInfo });
       await use(vscode);
       await vscode.app.close();
     },

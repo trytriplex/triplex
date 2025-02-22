@@ -152,6 +152,7 @@ export function Cameras({ children }: { children: ReactNode }) {
         // Opt out from r3f auto update updating the frustum.
         // @ts-expect-error
         manual
+        name="triplex_perspective"
         near={0.01}
         position={[0, 0, 1]}
         ref={perspectiveRef}
@@ -161,6 +162,7 @@ export function Cameras({ children }: { children: ReactNode }) {
         // Opt out from r3f auto update updating the frustum.
         // @ts-expect-error
         manual
+        name="triplex_orthographic"
         near={-100}
         position={[0, 0, 1]}
         ref={orthographicRef}
