@@ -5,13 +5,13 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { useThree } from "@react-three/fiber";
-import { useLayoutEffect } from "react";
+import { useContext, useLayoutEffect } from "react";
 import { Spherical, Vector3 } from "three";
 import { buildSceneSphere } from "../../util/three";
-import { useCamera } from "./context";
+import { CameraControlsContext } from "../camera-new/context";
 
 export function FitCameraToScene({ resetKeys }: { resetKeys?: string[] }) {
-  const { controls } = useCamera();
+  const controls = useContext(CameraControlsContext);
   const scene = useThree((store) => store.scene);
   const resetKey = resetKeys?.join("");
 

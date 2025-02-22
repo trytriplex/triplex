@@ -5,14 +5,17 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { applyStepModifiers, useEvent, useStepModifiers } from "@triplex/lib";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { MathUtils, type Object3D } from "three";
 import {
   TransformControls as TransformControlsImpl,
   type TransformControlsProps,
 } from "triplex-drei";
 import { Tunnel } from "../../components/tunnel";
-import { useCamera } from "../camera/context";
+import {
+  ActiveCameraContext,
+  CameraControlsContext,
+} from "../camera-new/context";
 
 const steps = {
   rotate: {
@@ -38,7 +41,8 @@ export function TransformControls({
 }) {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const controlsRef = useRef<any>(null);
-  const { camera, controls } = useCamera();
+  const controls = useContext(CameraControlsContext);
+  const camera = useContext(ActiveCameraContext);
   const modifiers = useStepModifiers({ isDisabled: !enabled });
   const [isDragging, setIsDragging] = useState(false);
 
@@ -100,7 +104,7 @@ export function TransformControls({
       )}
 
       <TransformControlsImpl
-        camera={camera || undefined}
+        camera={camera?.camera || undefined}
         enabled={enabled}
         mode={mode}
         object={object}

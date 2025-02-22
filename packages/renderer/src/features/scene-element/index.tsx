@@ -22,7 +22,7 @@ import {
 } from "react";
 import { type Object3D } from "three";
 import { mergeRefs } from "use-callback-ref";
-import { useCamera } from "../camera/context";
+import { ActiveCameraContext } from "../camera-new/context";
 import { hasHelper, Helper } from "../scene-element-helper";
 import { buildElementKey } from "./build-element-key";
 import {
@@ -53,7 +53,7 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
     const insideSceneObjectContext = useContext(SceneObjectContext);
     // eslint-disable-next-line react-compiler/react-compiler
     const mergedRefs = useMemo(() => mergeRefs([ref, hostRef]), [ref]);
-    const { isTriplexCamera } = useCamera();
+    const camera = useContext(ActiveCameraContext);
     const triplexMeta: TriplexMeta = useMemo(
       () => ({
         ...__meta,
@@ -104,7 +104,7 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
       // from source code. To keep things snappy however we delete it optimistically.
       return null;
     } else if (
-      isTriplexCamera &&
+      camera?.type === "editor" &&
       !disabledWhenTriplexCamera.some((r) => r.test(__meta.name)) &&
       passThroughWhenTriplexCamera.some((r) => r.test(__meta.name))
     ) {
@@ -116,7 +116,7 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
       // props when the editor scene is viewing through the triplex camera.
       const shouldDisable =
         type === "custom" &&
-        isTriplexCamera &&
+        camera?.type === "editor" &&
         disabledWhenTriplexCamera.some((r) => r.test(__meta.name));
       const key = buildElementKey(Component, props);
 

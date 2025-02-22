@@ -7,7 +7,7 @@
 import { useThree, type ThreeEvent } from "@react-three/fiber";
 import { send } from "@triplex/bridge/client";
 import { type default as CameraControls } from "camera-controls";
-import { useMemo, useState, type JSX } from "react";
+import { useContext, useMemo, useState, type JSX } from "react";
 import {
   CanvasTexture,
   Spherical,
@@ -18,7 +18,10 @@ import {
 import { GizmoHelper } from "triplex-drei";
 import { editorLayer } from "../../util/layers";
 import { buildSceneSphere } from "../../util/three";
-import { useCamera } from "./context";
+import {
+  ActiveCameraContext,
+  CameraControlsContext,
+} from "../camera-new/context";
 
 const tweenCamera = (
   controls: CameraControls,
@@ -229,10 +232,11 @@ function GizmoViewcube(props: GenericProps) {
 }
 
 export function CameraGizmo() {
-  const { controls, isTriplexCamera } = useCamera();
+  const camera = useContext(ActiveCameraContext);
+  const controls = useContext(CameraControlsContext);
   const scene = useThree((store) => store.scene);
 
-  if (!isTriplexCamera) {
+  if (camera?.type === "default") {
     return null;
   }
 

@@ -9,10 +9,11 @@ import {
   default as CCIMPL,
   type default as CameraControlsImpl,
 } from "camera-controls";
+import { useContext } from "react";
 import { render } from "react-three-test";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { Camera } from "../";
-import { useCamera } from "../context";
+import { CameraControlsContext } from "../../camera-new/context";
 
 const defaultModifiers = {
   left: CCIMPL.ACTION.ROTATE,
@@ -45,7 +46,7 @@ describe("camera", () => {
   it("should default to rest modifiers", async () => {
     let controlsRef: CameraControlsImpl | null = null;
     function HoistControls() {
-      const { controls } = useCamera();
+      const controls = useContext(CameraControlsContext);
       // eslint-disable-next-line react-compiler/react-compiler
       controlsRef = controls;
       return null;
@@ -66,7 +67,7 @@ describe("camera", () => {
   it("should unmount controls when userland", async () => {
     let controlsRef: CameraControlsImpl | null = null;
     function HoistControls() {
-      const { controls } = useCamera();
+      const controls = useContext(CameraControlsContext);
       // eslint-disable-next-line react-compiler/react-compiler
       controlsRef = controls;
       return null;
@@ -84,7 +85,7 @@ describe("camera", () => {
   it("should should apply truck modifier when pressing shift", async () => {
     let controlsRef: CameraControlsImpl | null = null;
     function HoistControls() {
-      const { controls } = useCamera();
+      const controls = useContext(CameraControlsContext);
       // eslint-disable-next-line react-compiler/react-compiler
       controlsRef = controls;
       return null;
@@ -109,7 +110,7 @@ describe("camera", () => {
   it("should reset modifiers when releasing shift", async () => {
     let controlsRef: CameraControlsImpl | null = null;
     function HoistControls() {
-      const { controls } = useCamera();
+      const controls = useContext(CameraControlsContext);
       // eslint-disable-next-line react-compiler/react-compiler
       controlsRef = controls;
       return null;
@@ -136,7 +137,7 @@ describe("camera", () => {
   it("should reset modifiers when document frame loses focus", async () => {
     let controlsRef: CameraControlsImpl | null = null;
     function HoistControls() {
-      const { controls } = useCamera();
+      const controls = useContext(CameraControlsContext);
       // eslint-disable-next-line react-compiler/react-compiler
       controlsRef = controls;
       return null;

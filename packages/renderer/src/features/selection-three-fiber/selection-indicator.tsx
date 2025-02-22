@@ -5,7 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { useFrame } from "@react-three/fiber";
-import { useRef, useState } from "react";
+import { useContext, useRef, useState } from "react";
 import { Vector2, type ShaderMaterial } from "three";
 import { useFBO } from "triplex-drei";
 import { hash } from "../../util/hash";
@@ -14,6 +14,7 @@ import {
   HOVER_LAYER_INDEX,
   SELECTION_LAYER_INDEX,
 } from "../../util/layers";
+import { ActiveCameraContext } from "../camera-new/context";
 import frag from "./selection-indicator.frag";
 import vert from "./selection-indicator.vert";
 
@@ -22,24 +23,32 @@ export function SelectionIndicator() {
   const hoveredFBO = useFBO();
   const material = useRef<ShaderMaterial>(null);
   const [uViewportSize] = useState(() => new Vector2());
+  const activeCamera = useContext(ActiveCameraContext);
 
   useFrame((state) => {
+    if (!activeCamera) {
+      return;
+    }
+
+    const { camera } = activeCamera;
+
     uViewportSize.set(selectionFBO.width, selectionFBO.height);
 
-    const currentLayersMask = state.camera.layers.mask;
+    const currentLayersMask = camera.layers.mask;
     const prevBg = state.scene.background;
     state.scene.background = null;
 
     state.gl.setRenderTarget(selectionFBO);
-    state.camera.layers.set(SELECTION_LAYER_INDEX);
-    state.gl.render(state.scene, state.camera);
+    camera.layers.set(SELECTION_LAYER_INDEX);
+    state.gl.render(state.scene, camera);
 
     state.gl.setRenderTarget(hoveredFBO);
-    state.camera.layers.set(HOVER_LAYER_INDEX);
-    state.gl.render(state.scene, state.camera);
+    camera.layers.set(HOVER_LAYER_INDEX);
+    state.gl.render(state.scene, camera);
 
     state.gl.setRenderTarget(null);
-    state.camera.layers.mask = currentLayersMask;
+    // eslint-disable-next-line react-compiler/react-compiler
+    camera.layers.mask = currentLayersMask;
     state.scene.background = prevBg;
   });
 

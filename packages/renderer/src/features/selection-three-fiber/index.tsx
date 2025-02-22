@@ -14,8 +14,11 @@ import { HOVER_LAYER_INDEX, SELECTION_LAYER_INDEX } from "../../util/layers";
 import { resolveElementMeta } from "../../util/meta";
 import { encodeProps } from "../../util/three";
 import { SwitchToComponentContext } from "../app/context";
+import {
+  ActiveCameraContext,
+  CameraControlsContext,
+} from "../camera-new/context";
 import { CameraPreview } from "../camera-preview";
-import { useCamera } from "../camera/context";
 import { SceneObjectContext } from "../scene-element/context";
 import { SceneObjectEventsContext } from "../scene-element/use-scene-element-events";
 import { useSelectionMarshal } from "../selection-provider/use-selection-marhsal";
@@ -44,7 +47,7 @@ export function ThreeFiberSelection({
   const [space, setSpace] = useState<Space>("world");
   const [transform, setTransform] = useState<TransformControlMode>("none");
   const scene = useThree((store) => store.scene);
-  const camera = useThree((store) => store.camera);
+  const camera = useContext(ActiveCameraContext);
   const canvasSize = useThree((store) => store.size);
   const [transforms, setTransforms] = useState({
     rotate: false,
@@ -57,7 +60,10 @@ export function ThreeFiberSelection({
         const x = (e.offsetX / canvasSize.width) * 2 - 1;
         const y = -(e.offsetY / canvasSize.height) * 2 + 1;
 
-        return resolveObjectsFromPoint({ x, y }, { camera, scene })
+        return resolveObjectsFromPoint(
+          { x, y },
+          { camera: camera?.camera, scene },
+        )
           .map((found) => {
             const meta = resolveElementMeta(found.object, filter);
 
@@ -106,7 +112,7 @@ export function ThreeFiberSelection({
         });
       },
     });
-  const { controls } = useCamera();
+  const controls = useContext(CameraControlsContext);
   const resolvedObject = resolvedObjects.at(0);
 
   useEffect(() => {
