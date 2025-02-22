@@ -1,5 +1,11 @@
 # @docs/triplex
 
+## 0.2.9
+
+### Patch Changes
+
+- 0137088: Upgrade to latest React Three Fiber dependencies.
+
 ## 0.2.8
 
 ### Patch Changes

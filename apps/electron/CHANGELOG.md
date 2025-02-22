@@ -1,5 +1,18 @@
 # @triplex/electron
 
+## 0.70.13
+
+### Patch Changes
+
+- 711322a: Testing a new camera system under a feature gate. This gives you more control over what Canvas camera to view through, while also changing the default behavior for React DOM components to view through the default camera instead of the editor camera when initially opening.
+- Updated dependencies [0137088]
+- Updated dependencies [711322a]
+- Updated dependencies [b4f482a]
+  - create-triplex-project@0.70.4
+  - @triplex/client@0.70.13
+  - @triplex/server@0.71.5
+  - @triplex/editor@0.70.13
+
 ## 0.70.12
 
 ### Patch Changes

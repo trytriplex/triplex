@@ -1,5 +1,11 @@
 # create-triplex-project
 
+## 0.70.4
+
+### Patch Changes
+
+- 0137088: Upgrade to latest React Three Fiber dependencies.
+
 ## 0.70.3
 
 ### Patch Changes

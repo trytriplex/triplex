@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.71.5
+
+### Patch Changes
+
+- 0137088: Upgrade to latest React Three Fiber dependencies.
+
 ## 0.71.4
 
 ### Patch Changes

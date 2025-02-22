@@ -1,5 +1,15 @@
 # @triplex/renderer
 
+## 0.71.9
+
+### Patch Changes
+
+- 0137088: Upgrade to latest React Three Fiber dependencies.
+- 3ad4196: Remove object helper affecting camera fit scene behavior.
+- 711322a: Testing a new camera system under a feature gate. This gives you more control over what Canvas camera to view through, while also changing the default behavior for React DOM components to view through the default camera instead of the editor camera when initially opening.
+- Updated dependencies [711322a]
+  - @triplex/lib@0.69.11
+
 ## 0.71.8
 
 ### Patch Changes

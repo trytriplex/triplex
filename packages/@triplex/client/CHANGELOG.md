@@ -1,5 +1,17 @@
 # @triplex/client
 
+## 0.70.13
+
+### Patch Changes
+
+- 0137088: Upgrade to latest React Three Fiber dependencies.
+- 711322a: Testing a new camera system under a feature gate. This gives you more control over what Canvas camera to view through, while also changing the default behavior for React DOM components to view through the default camera instead of the editor camera when initially opening.
+- b4f482a: Fix scene resolving to bundled renderer instead of local renderer when running local renderers.
+- Updated dependencies [0137088]
+- Updated dependencies [3ad4196]
+- Updated dependencies [711322a]
+  - @triplex/renderer@0.71.9
+
 ## 0.70.12
 
 ### Patch Changes

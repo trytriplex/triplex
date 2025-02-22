@@ -1,5 +1,12 @@
 # @triplex/ux
 
+## 0.69.14
+
+### Patch Changes
+
+- Updated dependencies [711322a]
+  - @triplex/lib@0.69.11
+
 ## 0.69.13
 
 ### Patch Changes
