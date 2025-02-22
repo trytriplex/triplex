@@ -6,16 +6,25 @@
  */
 import { useThree } from "@react-three/fiber";
 import { send } from "@triplex/bridge/client";
+import { fgComponent } from "@triplex/lib/fg";
 import { useContext } from "react";
 import { Spherical, Vector3, type Object3D } from "three";
-import { GizmoHelper, type CameraControls } from "triplex-drei";
-import { editorLayer } from "../../util/layers";
+import {
+  GizmoHelper as GizmoHelperOld,
+  type CameraControls,
+} from "triplex-drei";
 import { buildSceneSphere } from "../../util/three";
 import {
   ActiveCameraContext,
   CameraControlsContext,
 } from "../camera-new/context";
 import { AxisHelper } from "./axis-helper";
+import { GizmoHelper as GizmoHelperNew } from "./gizmo-helper";
+
+const GizmoHelper = fgComponent("camera_reconciler_refactor", {
+  off: GizmoHelperOld,
+  on: GizmoHelperNew,
+});
 
 const tweenCamera = (
   controls: CameraControls,
@@ -44,12 +53,7 @@ export function CameraAxisHelper() {
   }
 
   return (
-    <GizmoHelper
-      alignment="bottom-center"
-      layers={editorLayer}
-      margin={[60, 60]}
-      renderPriority={2}
-    >
+    <GizmoHelper alignment="bottom-center" margin={[60, 60]} renderPriority={2}>
       <AxisHelper
         onClick={(e) => {
           if (!controls) {
