@@ -9,6 +9,9 @@ import Statsig from "statsig-js";
 
 let initialized = false;
 
+/** Overrides set for test environments. This can't be set for production builds. */
+const fgOverrides = JSON.parse(import.meta.env.VITE_FG_OVERRIDES || "{}");
+
 export async function initFeatureGates({
   environment = process.env.NODE_ENV === "production"
     ? "production"
@@ -50,6 +53,10 @@ export async function initFeatureGates({
 }
 
 export function fg(key: string): boolean {
+  if (fgOverrides[key] !== undefined) {
+    return !!fgOverrides[key];
+  }
+
   return Statsig.checkGate(key);
 }
 

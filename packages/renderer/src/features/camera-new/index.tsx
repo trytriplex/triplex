@@ -7,11 +7,15 @@
 import { type ReactNode } from "react";
 import { CameraControls } from "./camera-controls";
 import { Cameras } from "./cameras";
+import { CameraDebugPanel } from "./debug";
 
 export function Camera({ children }: { children?: ReactNode }) {
   return (
     <Cameras>
-      <CameraControls>{children}</CameraControls>
+      <CameraControls>
+        {children}
+        {import.meta.env.VITE_TRIPLEX_ENV === "test" && <CameraDebugPanel />}
+      </CameraControls>
     </Cameras>
   );
 }
