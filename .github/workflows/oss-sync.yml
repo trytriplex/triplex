@@ -24,7 +24,10 @@ jobs:
           fetch-depth: 0
 
       - name: Rebase from origin
-        run: git pull origin main --rebase
+        run: |
+          git config user.name "triplex-bot"
+          git config user.email "<>"
+          git pull origin main --rebase
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
