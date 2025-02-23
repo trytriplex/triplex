@@ -290,9 +290,10 @@ export function ThreeFiberSelection({
         />
       )}
 
-      {resolvedObject?.object instanceof Camera && (
-        <CameraPreview camera={resolvedObject?.object} />
-      )}
+      {camera?.type === "editor" &&
+        resolvedObject?.object instanceof Camera && (
+          <CameraPreview camera={resolvedObject?.object} />
+        )}
 
       {fg("selection_postprocessing") && <SelectionIndicator />}
     </SceneObjectContext.Provider>
