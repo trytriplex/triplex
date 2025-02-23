@@ -4,16 +4,72 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import { GodRays } from "@paper-design/shaders-react";
+import { PerspectiveCamera } from "@react-three/drei";
 import { Canvas } from "@react-three/fiber";
-import { Avatar } from "./avatar";
+import { Avatar } from "./components/avatar";
+import { Comment } from "./components/comment";
+import { File } from "./components/file";
+import { InputBox } from "./components/input-box";
 
 export function App() {
   return (
-    <div className="p-10">
-      <Canvas>
-        <Avatar />
-      </Canvas>
-      <div className="text-lg font-medium">GitPlex Copilot</div>
-    </div>
+    <>
+      <GodRays
+        blending={0.24}
+        color1={"#685ad6"}
+        color2={"#51f5cc"}
+        color3={"#d033db"}
+        colorBack={"#070118"}
+        offsetX={-0.1}
+        offsetY={-0.14}
+        speed={0.8}
+        spotty={10.68}
+        style={{
+          height: "100%",
+          inset: 0,
+          position: "absolute",
+          width: "100%",
+        }}
+      />
+      <div className="relative mx-auto max-w-lg px-10 py-24">
+        <div className="rounded-2xl border border-slate-700 bg-[#13132b]/90">
+          <div className="flex gap-1.5 px-3 py-2 opacity-50">
+            <div className="h-3 w-3 rounded-full bg-slate-700"></div>
+            <div className="h-3 w-3 rounded-full bg-slate-700"></div>
+            <div className="h-3 w-3 rounded-full bg-slate-700"></div>
+          </div>
+          <div className="absolute right-0 top-0 h-44 w-44">
+            <Canvas>
+              <Avatar />
+              <PerspectiveCamera makeDefault position={[0, 0, 2.26]} />
+            </Canvas>
+          </div>
+          <div
+            className={
+              "flex flex-col items-start gap-3 border-t border-slate-700 px-4 py-2"
+            }
+          >
+            <Comment name="douges" text="Why doesn't this converge?">
+              <File name="harmonic-convergence.tsx@1-33" />
+            </Comment>
+            <Comment
+              name={"GitPlex Copilot"}
+              text={
+                "Sure, I can help with that. The issue seems to be with the order of the trees in the forest and the shaders used in the render method. The expenses model uses quads for textures, not triangles. Let's fix that."
+              }
+            />
+          </div>
+          <div className="px-4 pb-4">
+            <InputBox>
+              <File name="harmonic-convergence.tsx — Current file" />
+            </InputBox>
+          </div>
+          <div className="flex gap-1.5 border-t border-slate-700 px-3 py-2 opacity-50">
+            <div className="h-3 w-3"></div>
+          </div>
+        </div>
+      </div>
+    </>
   );
 }
