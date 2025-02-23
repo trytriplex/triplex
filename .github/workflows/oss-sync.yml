@@ -23,6 +23,9 @@ jobs:
           # Shipit requires all history.
           fetch-depth: 0
 
+      - name: Rebase from origin
+        run: git pull origin main --rebase
+
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
 
