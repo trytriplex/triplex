@@ -7,6 +7,7 @@
     "typedef": "echo \"Not implemented\""
   },
   "dependencies": {
+    "@paper-design/shaders-react": "^0.0.21",
     "@react-three/drei": "^10.0.0",
     "@react-three/fiber": "^9.0.4",
     "@types/react": "^19.0.8",
