@@ -16,6 +16,12 @@ import {
   type UnionToIntersection,
 } from "./types";
 
+/**
+ * **collectTypes()**
+ *
+ * Collects the types of all routes or events passed to it. This result of this
+ * function can be used on the client for end-to-end type safety.
+ */
 function collectTypes<TRoutes extends Array<Record<string, unknown>>>(
   _: TRoutes,
 ): UnionToIntersection<TRoutes[number]> {
@@ -24,6 +30,48 @@ function collectTypes<TRoutes extends Array<Record<string, unknown>>>(
   return {} as UnionToIntersection<TRoutes[number]>;
 }
 
+/**
+ * **createWSServer()**
+ *
+ * Creates a typed websocket server.
+ *
+ * ```ts
+ * // 1. Create the websocks server
+ * import { createWSServer } from "@triplex/websocks-server";
+ *
+ * const wss = createWSServer();
+ *
+ * // 2. Define routes
+ * const routes = wss.collectTypes([
+ *   wss.route(
+ *     "/rng/:max",
+ *     ({ max }) => Math.round(Math.random() * Number(max)),
+ *     (push) => {
+ *       setInterval(() => {
+ *         // Every 1s push a new value to the client.
+ *         push();
+ *       }, 1000);
+ *     },
+ *   ),
+ * ]);
+ *
+ * // 3. Define events
+ * const events = wss.collectTypes([
+ *   tws.event<"ping", { timestamp: number }>("ping", (send) => {
+ *     setInterval(() => {
+ *       send({ timestamp: Date.now() });
+ *     }, 1000);
+ *   }),
+ * ]);
+ *
+ * // 4. Start listening
+ * wss.listen(3000);
+ *
+ * // 5. Export types to use with the client
+ * export type Routes = typeof routes;
+ * export type Events = typeof events;
+ * ```
+ */
 export function createWSServer() {
   const server = createServer();
   const eventHandlers: Record<string, (ws: WebSocket) => void> = {};
@@ -69,6 +117,11 @@ export function createWSServer() {
     });
   });
 
+  /**
+   * **route()**
+   *
+   * Declare a route to be passed to `collectTypes()`.
+   */
   function route<
     TData,
     TRoute extends `/${string}`,
@@ -152,7 +205,12 @@ export function createWSServer() {
     return {} as any;
   }
 
-  function createEvent<TRoute extends string, TData>(
+  /**
+   * **event()**
+   *
+   * Declares an event to be passed to `collectTypes()`.
+   */
+  function event<TRoute extends string, TData>(
     eventName: TRoute,
     init: (sendEvent: (data: TData) => void) => Promise<void> | void,
   ): Record<TRoute, { data: TData }> {
@@ -177,12 +235,22 @@ export function createWSServer() {
   }
 
   return {
+    /**
+     * **close()**
+     *
+     * Stops the server and closes all connections.
+     */
     close() {
       wss.close();
       server.close();
     },
     collectTypes,
-    createEvent,
+    event,
+    /**
+     * **listen()**
+     *
+     * Listens on the specified port.
+     */
     listen(port: number) {
       server.listen(port);
     },

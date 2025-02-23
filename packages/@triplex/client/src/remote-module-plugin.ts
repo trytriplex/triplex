@@ -4,10 +4,10 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { type TriplexPorts } from "@triplex/server";
+import { type TriplexPorts, type TWSEventDefinition } from "@triplex/server";
+import { createWSEvents } from "@triplex/websocks-client/events";
 import anymatch from "anymatch";
 import { getCode } from "./api";
-import { on } from "./util/ws";
 
 function match(target: string, normalizedFiles: string[]): boolean {
   for (let i = 0; i < normalizedFiles.length; i++) {
@@ -44,20 +44,20 @@ export function remoteModulePlugin({
   files: string[];
   ports: TriplexPorts;
 }) {
+  const { on } = createWSEvents<TWSEventDefinition>({
+    url: `ws://127.0.0.1:${ports.ws}`,
+  });
+
   return {
     // We need to update to ESM to fix this.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     configureServer(server: any) {
-      on(
-        "fs-change",
-        async (e) => {
-          const mod = await server.moduleGraph.getModuleById(e.path);
-          if (mod) {
-            server.reloadModule(mod);
-          }
-        },
-        ports.ws,
-      );
+      on("fs-change", async (e) => {
+        const mod = await server.moduleGraph.getModuleById(e.path);
+        if (mod) {
+          server.reloadModule(mod);
+        }
+      });
     },
     enforce: "pre",
     async load(id: string) {

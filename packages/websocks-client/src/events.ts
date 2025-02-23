@@ -6,17 +6,37 @@
  */
 import { parseJSON } from "./string";
 
+/**
+ * **createWSEvents()**
+ *
+ * Returns typed event listener to be used with an instantiated websocks server.
+ * Options can be either passed in immediately or passed in as a callback to be
+ * called just-in-time when needed.
+ *
+ * ```ts
+ * import { type Events } from "./server";
+ *
+ * createWSEvents<Routes>({ url: "ws://localhost:3000" });
+ * const { on } = createWSEvents<Routes>(() => ({
+ *   url: "ws://localhost:3000",
+ * }));
+ *
+ * on("my-event", (data) => {
+ *   console.log(data);
+ * });
+ * ```
+ */
 export function createWSEvents<
   TWSEventDefinition extends Record<string, { data: unknown }>,
->() {
+>(opts: (() => { url: string }) | { url: string }) {
   function on<TEventName extends string & keyof TWSEventDefinition>(
     eventName: TEventName,
     callback: (data: TWSEventDefinition[TEventName]["data"]) => void,
-    port: number,
   ) {
     const WS: typeof WebSocket =
       typeof WebSocket === "undefined" ? require("ws") : WebSocket;
-    const ws = new WS(`ws://127.0.0.1:${port}`);
+    const url = typeof opts === "function" ? opts().url : opts.url;
+    const ws = new WS(url);
 
     ws.addEventListener("open", () => {
       ws.send(eventName);

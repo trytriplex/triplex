@@ -5,12 +5,16 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { readFileSync } from "node:fs";
-import { inferExports, resolveProjectCwd } from "@triplex/server";
+import {
+  inferExports,
+  resolveProjectCwd,
+  type TWSEventDefinition,
+} from "@triplex/server";
+import { createWSEvents } from "@triplex/websocks-client/events";
 import { dirname, normalize } from "upath";
 import * as vscode from "vscode";
 import { logger } from "../../util/log/vscode";
 import { on, sendVSCE } from "../util/bridge";
-import { on as onWS } from "../util/ws";
 import { TriplexDocument } from "./document";
 import { initializeWebviewPanel } from "./panel";
 import { type TriplexProjectResolver } from "./project";
@@ -110,20 +114,20 @@ export class TriplexEditorProvider
     }).then((ports) => {
       document.setContext(ports.server);
 
+      const { on: onWS } = createWSEvents<TWSEventDefinition>({
+        url: `ws://127.0.0.1:${ports.ws}`,
+      });
+
       const disposables = [
-        onWS(
-          "fs-external-change",
-          (data) => {
-            if (data.path !== scopedFileName) {
-              // We're only interested in changes that were made to this document.
-              return;
-            }
-            document.undoableAction("Sync from filesystem", () => data, {
-              skipDirtyCheck: true,
-            });
-          },
-          ports.ws,
-        ),
+        onWS("fs-external-change", (data) => {
+          if (data.path !== scopedFileName) {
+            // We're only interested in changes that were made to this document.
+            return;
+          }
+          document.undoableAction("Sync from filesystem", () => data, {
+            skipDirtyCheck: true,
+          });
+        }),
         on(panel.webview, "element-set-prop", (prop) => {
           document.upsertProp(prop);
         }),

@@ -4,7 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { useCallback, useEffect, useState, useSyncExternalStore } from "react";
+import { useCallback, useSyncExternalStore } from "react";
 import { parseJSON } from "./string";
 
 export type RemapWithNumber<TObject> = {
@@ -27,6 +27,11 @@ function defer() {
   };
 }
 
+/**
+ * **buildPath()**
+ *
+ * Builds a websocks path given a route and params.
+ */
 export function buildPath(
   route: string,
   params: Record<string, string | number | boolean | undefined>,
@@ -42,6 +47,28 @@ export function buildPath(
   return path;
 }
 
+/**
+ * **createWSHooks()**
+ *
+ * Returns typed React hooks to be used with an instantiated websocks server.
+ * Options can be either passed in immediately or passed in as a callback to be
+ * called just-in-time when needed.
+ *
+ * ```ts
+ * import { type Routes } from "./server";
+ *
+ * createWSHooks<Routes>({ url: "ws://localhost:3000" });
+ * const { preloadSubscription, useSubscription } = createWSHooks<Routes>(
+ *   () => ({ url: "ws://localhost:3000" }),
+ * );
+ *
+ * preloadSubscription("/my-route");
+ *
+ * function Component() {
+ *   return useSubscription("/my-route");
+ * }
+ * ```
+ */
 export function createWSHooks<
   TWSRouteDefinition extends Record<string, { data: unknown; params: unknown }>,
 >(opts: (() => { url: string }) | { url: string }) {
@@ -226,6 +253,12 @@ export function createWSHooks<
     };
   }
 
+  /**
+   * **preloadSubscription()**
+   *
+   * Preloads a subscription. This should be called as early as possible in your
+   * application.
+   */
   function preloadSubscription<
     TRoute extends string & keyof TWSRouteDefinition,
   >(
@@ -241,6 +274,15 @@ export function createWSHooks<
     query.load();
   }
 
+  /**
+   * **useLazySubscription()**
+   *
+   * Lazily subscribes to a route. This hook does not need to be preloaded and
+   * so is at risk of causing data loading waterfalls.
+   *
+   * Prefer preloading as early as possible and using `useSubscription()`
+   * instead.
+   */
   function useLazySubscription<
     TRoute extends string & keyof TWSRouteDefinition,
   >(
@@ -266,6 +308,13 @@ export function createWSHooks<
     return data;
   }
 
+  /**
+   * **useSubscription()**
+   *
+   * Returns the value of a preloaded subscription. You must call
+   * `preloadSubscription()` prior to calling this hook otherwise an error will
+   * be thrown.
+   */
   function useSubscription<TRoute extends string & keyof TWSRouteDefinition>(
     ...args: TWSRouteDefinition[TRoute]["params"] extends never
       ? [route: TRoute]
@@ -287,42 +336,13 @@ export function createWSHooks<
     return data;
   }
 
-  function useSubscriptionEffect<
-    TRoute extends string & keyof TWSRouteDefinition,
-  >(
-    ...args: TWSRouteDefinition[TRoute]["params"] extends never
-      ? [route: TRoute, params?: { disabled?: boolean }]
-      : [
-          route: TRoute,
-          params: RemapWithNumber<TWSRouteDefinition[TRoute]["params"]> & {
-            disabled?: boolean;
-          },
-        ]
-  ): TWSRouteDefinition[TRoute]["data"] | null {
-    const [route, params = {}] = args;
-    const [value, setValue] = useState<
-      TWSRouteDefinition[TRoute]["data"] | null
-    >(null);
-    const path = buildPath(route, params);
-
-    useEffect(() => {
-      if (params.disabled) {
-        setValue(null);
-        return;
-      }
-
-      const query = wsQuery<TWSRouteDefinition[TRoute]["data"] | null>(path);
-      query.load();
-      setValue(query.read(false));
-
-      return query.subscribe(() => {
-        setValue(query.read(false));
-      });
-    }, [params.disabled, path]);
-
-    return value;
-  }
-
+  /**
+   * **clearQuery()**
+   *
+   * Clears a path from the query cache. When accessing the path again it will
+   * be lazily fetched from the server, meaning it doesn't need to be
+   * preloaded.
+   */
   function clearQuery<TRoute extends string & keyof TWSRouteDefinition>(
     ...args: TWSRouteDefinition[TRoute]["params"] extends never
       ? [route: TRoute]
@@ -352,6 +372,5 @@ export function createWSHooks<
     preloadSubscription,
     useLazySubscription,
     useSubscription,
-    useSubscriptionEffect,
   };
 }

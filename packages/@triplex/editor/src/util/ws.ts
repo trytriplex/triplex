@@ -12,7 +12,6 @@ export const {
   preloadSubscription,
   useLazySubscription,
   useSubscription,
-  useSubscriptionEffect,
 } = createWSHooks<TWSRouteDefinition>({
   url: `ws://localhost:${window.triplex.env.ports.ws}`,
 });

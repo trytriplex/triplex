@@ -346,15 +346,12 @@ export function createServer({
   app.use(router.allowedMethods());
 
   const wsEventsDef = tws.collectTypes([
-    tws.createEvent<"fs-change", SourceFileChangedEvent>(
-      "fs-change",
-      (sendEvent) => {
-        project.onSourceFileChange((e) => {
-          sendEvent(e);
-        });
-      },
-    ),
-    tws.createEvent<
+    tws.event<"fs-change", SourceFileChangedEvent>("fs-change", (sendEvent) => {
+      project.onSourceFileChange((e) => {
+        sendEvent(e);
+      });
+    }),
+    tws.event<
       "fs-external-change",
       { path: string; redoID: number; undoID: number }
     >("fs-external-change", (sendEvent) => {
