@@ -1,5 +1,14 @@
 # @triplex/renderer
 
+## 0.71.10
+
+### Patch Changes
+
+- 99daee6: The scene now remains interactive even when the editor panel is not active inside Visual Studio Code.
+- e32739a: Fix React DOM outline selections missing scroll offset.
+- 99daee6: Fixed camera previews to only show through the editor camera.
+- eda7e0c: Fix three fiber selections selecting unexpected objects when hovered outside of the canvas.
+
 ## 0.71.9
 
 ### Patch Changes
