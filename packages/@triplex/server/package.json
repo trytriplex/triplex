@@ -34,7 +34,7 @@
     "@react-three/drei": "^10.0.0",
     "@react-three/fiber": "^9.0.4",
     "@react-three/rapier": "^1.4.0",
-    "@triplex/websocks-server": "0.0.1",
+    "@triplex/websocks-server": "0.0.2",
     "@types/glob-parent": "^5.1.1",
     "@types/hosted-git-info": "^3.0.5",
     "@types/node": "^18.11.18",

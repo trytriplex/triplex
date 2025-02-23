@@ -1,5 +1,11 @@
 # @triplex/websocks-client
 
+## 0.0.4
+
+### Patch Changes
+
+- 27f5a72: Align `createWSEvents` API to `createWSHooks` API.
+
 ## 0.0.3
 
 ### Patch Changes

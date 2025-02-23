@@ -1,6 +1,6 @@
 {
   "name": "@triplex/renderer",
-  "version": "0.71.9",
+  "version": "0.71.10",
   "private": true,
   "description": "The visual development environment for React / Three Fiber.",
   "license": "SEE LICENSE IN LICENSE",

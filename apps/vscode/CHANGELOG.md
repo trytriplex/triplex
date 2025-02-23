@@ -1,5 +1,12 @@
 # @triplex/vscode
 
+## 0.2.14
+
+### Patch Changes
+
+- 99daee6: The scene now remains interactive even when the editor panel is not active inside Visual Studio Code.
+  - @triplex/client@0.70.14
+
 ## 0.2.13
 
 ### Patch Changes
