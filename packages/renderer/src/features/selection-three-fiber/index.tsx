@@ -48,7 +48,7 @@ export function ThreeFiberSelection({
   const [transform, setTransform] = useState<TransformControlMode>("none");
   const scene = useThree((store) => store.scene);
   const camera = useContext(ActiveCameraContext);
-  const canvasSize = useThree((store) => store.size);
+  const gl = useThree((store) => store.gl);
   const [transforms, setTransforms] = useState({
     rotate: false,
     scale: false,
@@ -57,8 +57,25 @@ export function ThreeFiberSelection({
   const [resolvedObjects, , selectionActions] =
     useSelectionMarshal<ResolvedObject3D>({
       listener: (e) => {
-        const x = (e.offsetX / canvasSize.width) * 2 - 1;
-        const y = -(e.offsetY / canvasSize.height) * 2 + 1;
+        const canvasSize = gl.domElement.getBoundingClientRect();
+
+        const isPointerInsideCanvas =
+          e.clientX >= canvasSize.left &&
+          e.clientX <= canvasSize.left + canvasSize.width &&
+          e.clientY >= canvasSize.top &&
+          e.clientY <= canvasSize.top + canvasSize.height;
+
+        if (!isPointerInsideCanvas) {
+          return [];
+        }
+
+        // Scope the pointer position to coordinates relative to the canvas
+        const canvasClientX = e.clientX - canvasSize.left;
+        const canvasClientY = e.clientY - canvasSize.top;
+
+        // Convert the pointer position to a normalized coordinate system
+        const x = (canvasClientX / canvasSize.width) * 2 - 1;
+        const y = -(canvasClientY / canvasSize.height) * 2 + 1;
 
         return resolveObjectsFromPoint(
           { x, y },
