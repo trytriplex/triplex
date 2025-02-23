@@ -7,7 +7,7 @@
 
 import { bind } from "bind-event-listener";
 import debounce from "debounce";
-import { useEffect, useState } from "react";
+import { memo, useEffect, useState } from "react";
 import { style } from "../../util/style";
 import { type ResolvedNode } from "./resolver";
 
@@ -23,54 +23,58 @@ const styles = style({
   },
 });
 
-function Outline({
-  boxes,
-  nodes,
-  variant,
-}: {
-  boxes: DOMRect[];
-  nodes: ResolvedNode[];
-  variant: "selected" | "hovered";
-}) {
-  if (boxes.length === 0) {
-    return null;
-  }
-
-  function testId(node?: ResolvedNode) {
-    const meta = node?.meta;
-    if (!meta) {
-      return "";
+const Outline = memo(
+  ({
+    boxes,
+    nodes,
+    variant,
+  }: {
+    boxes: DOMRect[];
+    nodes: ResolvedNode[];
+    variant: "selected" | "hovered";
+  }) => {
+    if (boxes.length === 0) {
+      return null;
     }
 
-    return `${meta.name}@${meta.line}:${meta.column}`;
-  }
+    function testId(node?: ResolvedNode) {
+      const meta = node?.meta;
+      if (!meta) {
+        return "";
+      }
 
-  let { bottom, left, right, top } = boxes[0];
-  let meta: string[] = [testId(nodes.at(0))];
+      return `${meta.name}@${meta.line}:${meta.column}`;
+    }
 
-  for (let i = 1; i < boxes.length; i++) {
-    const box = boxes[i];
+    let { bottom, left, right, top } = boxes[0];
+    let meta: string[] = [testId(nodes.at(0))];
 
-    top = Math.min(top ?? box.top, box.top);
-    left = Math.min(left ?? box.left, box.left);
-    right = Math.max(right ?? box.right, box.right);
-    bottom = Math.max(bottom ?? box.bottom, box.bottom);
+    for (let i = 1; i < boxes.length; i++) {
+      const box = boxes[i];
 
-    meta.push(testId(nodes.at(i)));
-  }
+      top = Math.min(top ?? box.top, box.top);
+      left = Math.min(left ?? box.left, box.left);
+      right = Math.max(right ?? box.right, box.right);
+      bottom = Math.max(bottom ?? box.bottom, box.bottom);
 
-  return (
-    <div
-      data-testid={`${variant}(${meta.join(",")})`}
-      style={style.merge(styles.indicator, {
-        height: bottom - top,
-        left,
-        top,
-        width: right - left,
-      })}
-    />
-  );
-}
+      meta.push(testId(nodes.at(i)));
+    }
+
+    return (
+      <div
+        data-testid={`${variant}(${meta.join(",")})`}
+        style={style.merge(styles.indicator, {
+          height: bottom - top,
+          left: window.scrollX + left,
+          top: window.scrollY + top,
+          width: right - left,
+        })}
+      />
+    );
+  },
+);
+
+Outline.displayName = "Outline";
 
 export function SelectionIndicator({
   hovered,
