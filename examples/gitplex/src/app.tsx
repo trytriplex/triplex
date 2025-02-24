@@ -28,11 +28,11 @@ export function App() {
         style={{
           height: "100%",
           inset: 0,
-          position: "absolute",
+          position: "fixed",
           width: "100%",
         }}
       />
-      <div className="relative mx-auto max-w-lg px-10 py-24">
+      <div className="relative mx-auto min-w-[30rem] max-w-lg px-10 py-24">
         <div className="rounded-2xl border border-slate-700 bg-[#13132b]/90">
           <div className="flex gap-1.5 px-3 py-2 opacity-50">
             <div className="h-3 w-3 rounded-full bg-slate-700"></div>
@@ -47,16 +47,21 @@ export function App() {
           </div>
           <div
             className={
-              "flex flex-col items-start gap-3 border-t border-slate-700 px-4 py-2"
+              "flex flex-col gap-3 border-t border-slate-700 px-4 py-2"
             }
           >
-            <Comment name="douges" text="Why doesn't this converge?">
+            <Comment
+              name="douges"
+              src="https://avatars.githubusercontent.com/u/6801309?s=40&v=4"
+              text="Why doesn't this converge?"
+            >
               <File name="harmonic-convergence.tsx@1-33" />
             </Comment>
             <Comment
               name={"GitPlex Copilot"}
+              src="https://avatars.githubusercontent.com/u/124734075?s=60&v=4"
               text={
-                "Sure, I can help with that. The issue seems to be with the order of the trees in the forest and the shaders used in the render method. The expenses model uses quads for textures, not triangles. Let's fix that."
+                "Sure, I can help with that. The issue seems to be with the ordering of the trees and the shader logic used in the render method. The tree models use screen space coordinates but expect world space. Let's fix that."
               }
             />
           </div>
