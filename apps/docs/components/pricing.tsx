@@ -47,6 +47,9 @@ function PricingPanel({
         <p className="mt-6 flex items-center justify-center text-center font-medium">
           <span className="text-subtle text-2xl">$</span>
           <span className="text-default text-5xl">{price[0]}</span>
+          {price[0] && (
+            <span className="text-subtle self-end text-sm">USD</span>
+          )}
         </p>
       )}
 
@@ -72,7 +75,10 @@ export function Pricing() {
             </Link>
 
             <div className="mt-3 text-center">
-              <Link className="text-subtle text-base" href="/download">
+              <Link
+                className="text-subtle text-base font-medium"
+                href="/download"
+              >
                 Download Now
               </Link>
             </div>
@@ -92,8 +98,14 @@ export function Pricing() {
           </li>
           <li>
             <DetailsSummary
-              details="Create as many Triplex projects as you want for use in the editor."
+              details="Work on as many open-source projects as you want, with as many collaborators as you want."
               summary="Unlimited open-source projects"
+            />
+          </li>
+          <li>
+            <DetailsSummary
+              details="When working by yourself, work in as many private projects as you want at no charge."
+              summary="Unlimited private projects"
             />
           </li>
           <li>
@@ -116,13 +128,14 @@ export function Pricing() {
             className="text-inverse bg-brand block rounded py-2 text-center text-base font-medium"
             href="mailto:support@triplex.dev"
           >
-            Contact Us
+            Buy Now
           </Link>
         }
-        description="Paid plans available soon. Contact us for expression of interest."
+        description="Collaborate with teammates and friends over unlimited projects."
         highlight
-        name="Team"
-        perMonthLabel=""
+        name="Teams"
+        perMonthLabel="per month"
+        price={[19]}
       >
         <ul className="border-neutral -mx-4 -mb-4 mt-4 flex flex-col gap-3 border-t p-4">
           <li className="text-subtle flex items-center gap-4 text-base">
@@ -130,8 +143,14 @@ export function Pricing() {
           </li>
           <li>
             <DetailsSummary
-              details="Available features are still being developed. Have a burning feature you'd pay for? Contact us and let us know."
-              summary="We're currently cooking the features"
+              details="Create support tickets and get priority support to resolve it as soon as possible."
+              summary="Priority support"
+            />
+          </li>
+          <li>
+            <DetailsSummary
+              details="Influence the direction of Triplex by requesting features that are important to you."
+              summary="Priority feature requests"
             />
           </li>
         </ul>
