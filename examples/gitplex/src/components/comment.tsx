@@ -9,16 +9,20 @@ import { type ReactNode } from "react";
 export function Comment({
   children,
   name,
+  src,
   text,
 }: {
   children?: ReactNode;
   name: string;
+  src?: string;
   text: string;
 }) {
   return (
     <div className="flex flex-col gap-2.5 py-2">
       <div className="flex items-center gap-2">
-        <div className="h-6 w-6 flex-shrink-0 rounded-full border border-slate-700 bg-slate-800"></div>
+        <div className="h-6 w-6 flex-shrink-0 overflow-hidden rounded-full border border-slate-700 bg-slate-800">
+          {src && <img alt="" className="h-full w-full" src={src} />}
+        </div>
         <div className="text-sm font-medium text-slate-200">{name}</div>
       </div>
       <div className="text-sm text-slate-300">{text}</div>
