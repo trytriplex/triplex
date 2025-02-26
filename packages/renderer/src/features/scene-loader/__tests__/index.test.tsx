@@ -5,6 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 // @vitest-environment jsdom
+import { waitFor } from "@testing-library/react";
 import { send } from "@triplex/bridge/host";
 import { overrideFg } from "@triplex/lib/fg";
 import { createElement, forwardRef, useState } from "react";
@@ -83,9 +84,11 @@ describe("scene loader component", () => {
       />,
     );
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const color: Color = (getInstance() as any).background;
-    expect(color.getHexString()).toEqual("87ceeb");
+    await waitFor(() => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const color: Color = (getInstance() as any).background;
+      expect(color.getHexString()).toEqual("87ceeb");
+    });
   });
 
   it("should apply color to canvas background set in local component", async () => {
@@ -119,8 +122,10 @@ describe("scene loader component", () => {
       ),
     );
 
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const color: Color = (getInstance() as any).background;
-    expect(color.getHexString()).toEqual("ffffff");
+    await waitFor(() => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const color: Color = (getInstance() as any).background;
+      expect(color.getHexString()).toEqual("ffffff");
+    });
   });
 });

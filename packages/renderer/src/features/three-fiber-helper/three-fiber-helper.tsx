@@ -14,56 +14,17 @@ import {
   SELECTION_LAYER_INDEX,
 } from "../../util/layers";
 import "./camera-helper";
-
-export type Helper =
-  | "cameraHelper"
-  | "directionalLightHelper"
-  | "hemisphereLightHelper"
-  | "pointLightHelper"
-  | "spotLightHelper";
-
-export type SupportedElements =
-  | "ambientLight"
-  | "directionalLight"
-  | "hemisphereLight"
-  | "orthographicCamera"
-  | "perspectiveCamera"
-  | "pointLight"
-  | "rectAreaLight"
-  | "spotLight";
+import { type ThreeHelper } from "./types";
 
 export type HelperInstance = Object3D & {
   dispose: () => void;
   update: () => void;
 };
 
-export const hasHelper = (
-  elementName: unknown,
-): elementName is SupportedElements => {
-  if (typeof elementName !== "string") {
-    return false;
-  }
-
-  switch (elementName) {
-    case "rectAreaLight":
-    case "pointLight":
-    case "ambientLight":
-    case "hemisphereLight":
-    case "spotLight":
-    case "directionalLight":
-    case "perspectiveCamera":
-    case "orthographicCamera":
-      return true;
-
-    default:
-      return false;
-  }
-};
-
 export const resolveHelper = (
   elementName: string,
   size: number,
-): { Element: Helper; args: unknown[] } | undefined => {
+): { Element: ThreeHelper; args: unknown[] } | undefined => {
   switch (elementName) {
     // Rect area lights helper has been removed from core. For now we just use a standard
     // point light helper - we can investigate adding it at a later date.
@@ -90,7 +51,7 @@ export const resolveHelper = (
   }
 };
 
-export function Helper({
+export function ThreeFiberHelper({
   children,
   size = 0.1,
 }: {

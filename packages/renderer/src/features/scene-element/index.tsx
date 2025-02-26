@@ -13,6 +13,7 @@ import {
 import {
   forwardRef,
   Fragment,
+  Suspense,
   useContext,
   useEffect,
   useMemo,
@@ -20,10 +21,9 @@ import {
   useState,
   type ReactNode,
 } from "react";
-import { type Object3D } from "three";
 import { mergeRefs } from "use-callback-ref";
 import { ActiveCameraContext } from "../camera-new/context";
-import { hasHelper, Helper } from "../scene-element-helper";
+import { hasThreeFiberHelper, ThreeFiberHelper } from "../three-fiber-helper";
 import { buildElementKey } from "./build-element-key";
 import {
   ParentComponentMetaContext,
@@ -49,7 +49,7 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
     const { onSceneObjectCommitted } = useSceneObjectEvents();
     const parentMeta = useContext(ParentComponentMetaContext);
     const type = typeof Component === "string" ? "host" : "custom";
-    const hostRef = useRef<Object3D>(null);
+    const hostRef = useRef(null);
     const insideSceneObjectContext = useContext(SceneObjectContext);
     // eslint-disable-next-line react-compiler/react-compiler
     const mergedRefs = useMemo(() => mergeRefs([ref, hostRef]), [ref]);
@@ -135,10 +135,12 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
               // e.g. they always take the same amount of children, no mutations.
               // React.Children.only() use case.
               children
-            ) : hasHelper(Component) ? (
-              <Helper>
-                <primitive attach="__triplex" object={triplexMeta} />
-              </Helper>
+            ) : hasThreeFiberHelper(Component) ? (
+              <Suspense>
+                <ThreeFiberHelper>
+                  <primitive attach="__triplex" object={triplexMeta} />
+                </ThreeFiberHelper>
+              </Suspense>
             ) : (
               children
             )}

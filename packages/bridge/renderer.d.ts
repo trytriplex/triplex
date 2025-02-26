@@ -9,5 +9,8 @@ declare interface Window {
     env: {
       ports: Record<string, number>;
     };
+    preload: {
+      reactThreeFiber: boolean;
+    };
   };
 }
