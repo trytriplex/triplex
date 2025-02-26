@@ -566,12 +566,9 @@ export function createServer({
       });
       const missingDependencies = checkMissingDependencies(
         [
-          "@react-three/fiber",
           "@types/react",
-          "@types/three",
           "react",
           "react-dom",
-          "three",
         ],
         config.cwd,
       );

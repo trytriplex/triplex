@@ -7,10 +7,14 @@
 
 import { lazy } from "../../util/react-lazy";
 
-export const Canvas = lazy(() =>
-  import("./canvas").then((module) => ({ default: module.Canvas })),
+export { hasThreeFiberHelper } from "./has-three-fiber-helper";
+
+export const ThreeFiberHelper = lazy(() =>
+  import("./three-fiber-helper").then((module) => ({
+    default: module.ThreeFiberHelper,
+  })),
 );
 
 if (window.triplex.preload.reactThreeFiber) {
-  Canvas.preload();
+  ThreeFiberHelper.preload();
 }

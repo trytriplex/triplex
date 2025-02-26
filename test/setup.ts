@@ -59,6 +59,7 @@ if (typeof window !== "undefined") {
         ws: 3,
       },
     },
+    preload: { reactThreeFiber: false },
   };
 }
 

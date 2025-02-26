@@ -5,12 +5,6 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 
-import { lazy } from "../../util/react-lazy";
-
-export const Canvas = lazy(() =>
-  import("./canvas").then((module) => ({ default: module.Canvas })),
-);
-
-if (window.triplex.preload.reactThreeFiber) {
-  Canvas.preload();
+export function ReactOnly() {
+  return <div>foo</div>;
 }

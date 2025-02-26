@@ -4,12 +4,12 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { Canvas } from "@react-three/fiber";
 import {
   type ProviderComponent,
   type SceneComponent,
 } from "@triplex/bridge/client";
 import { Suspense, useEffect } from "react";
+import { Canvas } from "../canvas";
 import { SceneRenderer } from "../scene-renderer";
 
 function Ready() {

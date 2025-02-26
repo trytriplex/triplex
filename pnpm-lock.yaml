@@ -478,6 +478,18 @@ importers:
         specifier: ^0.172.0
         version: 0.172.0
 
+  examples-private/react-only:
+    dependencies:
+      '@types/react':
+        specifier: ^19.0.8
+        version: 19.0.8
+      react:
+        specifier: ^19.0.0
+        version: 19.0.0
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.0.0(react@19.0.0)
+
   examples-private/test-fixture:
     dependencies:
       '@react-three/drei':
@@ -862,6 +874,9 @@ importers:
       react:
         specifier: ^19.0.0
         version: 19.0.0
+      resolve-package-path:
+        specifier: ^4.0.3
+        version: 4.0.3
       three:
         specifier: ^0.172.0
         version: 0.172.0

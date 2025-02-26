@@ -4,6 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import resolvePackagePath from "resolve-package-path";
 import { type InitializationConfig } from "./types";
 
 const suffix = "ta.hot";
@@ -82,6 +83,12 @@ export const scripts = {
     async function initialize() {
       window.triplex = JSON.parse(\`${JSON.stringify({
         env: { ports: template.ports },
+        preload: {
+          reactThreeFiber: !!resolvePackagePath(
+            "@react-three/fiber",
+            template.config.cwd,
+          ),
+        },
       })}\`);
 
       // Forward keydown events to the parent window to prevent the client iframe

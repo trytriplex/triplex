@@ -61,7 +61,7 @@ export function _createProject({
       // This ensures React Three Fiber host elements are present even if they're not in the module graph.
       // We set this as an override but import the types from the options to ensure that we don't remove any
       // user defined types.
-      types: (options?.types || []).concat("@react-three/fiber"),
+      types: (options?.types || []).concat(["@react-three/fiber", "react"]),
     },
     defaultCompilerOptions: {
       // This is needed to keep JavaScript based projects working.

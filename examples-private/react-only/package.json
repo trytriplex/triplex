@@ -1,0 +1,14 @@
+{
+  "name": "@example/react-only",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "echo \"Not implemented\"",
+    "typedef": "echo \"Not implemented\""
+  },
+  "dependencies": {
+    "@types/react": "^19.0.8",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
+  }
+}
