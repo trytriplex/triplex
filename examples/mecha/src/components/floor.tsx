@@ -85,7 +85,7 @@ export function MechPlate({
       />
       <group
         name={"mech-plate"}
-        position={[0, 3.9, -10.88]}
+        position={[0, 6.74, -10.88]}
         rotation={[1.308_996_938_995_747_2, 0, 0]}
       >
         <Floor

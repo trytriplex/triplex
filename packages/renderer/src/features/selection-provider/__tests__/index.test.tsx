@@ -8,9 +8,11 @@
 import { act, fireEvent, renderHook } from "@testing-library/react";
 import { send } from "@triplex/bridge/host";
 import { beforeEach, describe, expect, it, vi } from "vitest";
-import { SelectionProvider } from "..";
+import { SelectionProvider } from "../index";
 import { useSelectionStore } from "../store";
 import { useSelectionMarshal } from "../use-selection-marhsal";
+
+vi.mock("raf-schd", () => ({ default: (fn: unknown) => fn }));
 
 interface TestResolved {
   meta: { column: number; line: number; parentPath: string; path: string };
