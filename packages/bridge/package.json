@@ -33,6 +33,8 @@
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
     "@testing-library/dom": "^10.4.0",
+    "@types/react": "^19.0.8",
+    "react": "^19.0.0",
     "typescript": "^5.7.2"
   },
   "publishConfig": {

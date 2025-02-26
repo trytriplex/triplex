@@ -4,8 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { expect } from "@playwright/test";
-import { type Page } from "playwright";
+import { expect, type Page } from "@playwright/test";
 
 export class ExtensionPage {
   constructor(

@@ -45,8 +45,9 @@ export function Scene() {
       <MechPlate number={2} />
       <MechPlate position={[-11.72, 0, 0]} />
       <MechPlate number={3} position={[11.82, 0, 0]} />
-      <Mech variant={"mech_blue"} />
-      <Mech position={[11.8, 0, 0]} variant={"mech_green"} />
+      <Mech position={[7.79, 0, 11.31]} variant={"mech_blue"} />
+      <Mech position={[-8.07, 0, 16.68]} variant={"mech_blue"} />
+      <Mech position={[11.8, 0, 0]} variant={"mech_red"} />
       <Mech position={[-11.78, 0, 0]} variant={"mech_red"} />
       <Floor position={[3.94, 0.04, 8.6]} variant={"floor_target_line"} />
       <Floor position={[0, 0, 8.42]} variant={"floor_line"} />

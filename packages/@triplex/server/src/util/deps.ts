@@ -10,11 +10,6 @@ export function checkMissingDependencies(
   modules: string[],
   cwd: string,
 ): string[] {
-  if (process.env.NODE_ENV !== "production" && cwd.includes("missing-deps")) {
-    // THIS IS FOR TESTING ONLY AND SHOULD NOT APPEAR IN PRODUCTION BUILDS!
-    return ["@react-three/fiber", "three", "react-dom", "react"];
-  }
-
   const missing: string[] = [];
 
   for (const name of modules) {

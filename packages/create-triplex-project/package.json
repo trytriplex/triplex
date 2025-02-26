@@ -37,9 +37,13 @@
     "upath": "^2.0.1"
   },
   "devDependencies": {
+    "@react-three/drei": "^10.0.0",
+    "@react-three/fiber": "^9.0.4",
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
     "@types/node": "^18.11.18",
+    "@types/three": "^0.171.0",
+    "three": "^0.172.0",
     "ts-node": "^10.9.1",
     "typescript": "^5.7.2"
   },

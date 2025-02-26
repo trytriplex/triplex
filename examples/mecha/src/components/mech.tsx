@@ -15,7 +15,7 @@ export function Mech({
 }: {
   position?: Vector3Tuple;
   rotation?: Vector3Tuple;
-  variant?: "mech_blue" | "mech_green" | "mech_red";
+  variant?: "mech_blue" | "mech_green" | "mech_red" | "foo";
 }) {
   const { nodes } = useGLTF("assets/mecha.glb");
 

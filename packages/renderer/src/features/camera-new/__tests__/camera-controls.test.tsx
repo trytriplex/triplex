@@ -6,11 +6,36 @@
  */
 // @vitest-environment jsdom
 import { default as CameraControlsInstance } from "camera-controls";
-import { useContext } from "react";
+import { createElement, forwardRef, useContext, useState } from "react";
 import { render } from "react-three-test";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { CameraControlsContext, DefaultCameraContext } from "../context";
 import { Camera } from "../index";
+
+vi.mock("triplex-drei", () => ({
+  // eslint-disable-next-line react/display-name
+  CameraControls: forwardRef((props, ref) => {
+    const [instance] = useState(() => ({ mouseButtons: {}, touches: {} }));
+
+    // eslint-disable-next-line react-compiler/react-compiler
+    return createElement("group", {
+      ...props,
+      name: "__stub_camera_controls__",
+      ref: () => {
+        if (typeof ref === "object" && ref && !ref.current) {
+          ref.current = instance;
+        } else if (typeof ref === "function") {
+          ref(instance);
+        }
+      },
+    });
+  }),
+  GizmoHelper: () => createElement("group", { name: "__stub_gizmo_helper__" }),
+  GizmoViewcube: () =>
+    createElement("mesh", { name: "__stub_gizmo_viewcube__" }),
+  Grid: () => null,
+  MapControls: () => createElement("mesh", { name: "__stub_map_controls__" }),
+}));
 
 const defaultModifiers = {
   left: CameraControlsInstance.ACTION.ROTATE,

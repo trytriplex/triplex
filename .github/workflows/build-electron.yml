@@ -35,7 +35,7 @@ jobs:
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER
 
       - name: Install dependencies
-        run: pnpm i
+        run: pnpm i --public-hoist-pattern=*
 
       - name: Build targets
         run: pnpm electron:build-targets
@@ -76,7 +76,7 @@ jobs:
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER
 
       - name: Install dependencies
-        run: pnpm i
+        run: pnpm i --public-hoist-pattern=* --node-linker=hoisted
 
       - name: Build target
         run: pnpm electron:build

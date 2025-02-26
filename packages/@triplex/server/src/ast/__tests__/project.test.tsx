@@ -16,7 +16,7 @@ describe("project ast", () => {
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
-      join(__dirname, "__mocks__", "box.tsx")
+      join(__dirname, "__mocks__", "box.tsx"),
     );
 
     await sourceFile.edit(() => {});
@@ -31,7 +31,7 @@ describe("project ast", () => {
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
-      join(__dirname, "__mocks__", "box.tsx")
+      join(__dirname, "__mocks__", "box.tsx"),
     );
 
     await sourceFile.edit((source) => {
@@ -58,7 +58,7 @@ describe("project ast", () => {
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
-      join(__dirname, "__mocks__", "box.tsx")
+      join(__dirname, "__mocks__", "box.tsx"),
     );
 
     sourceFile.open("default");
@@ -70,10 +70,7 @@ describe("project ast", () => {
       {
         exportName: "default",
         fileName: "box.tsx",
-        filePath: join(
-          process.cwd(),
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
-        ),
+        filePath: join(process.cwd(), "/src/ast/__tests__/__mocks__/box.tsx"),
         isDirty: true,
         isNew: false,
       },
@@ -87,7 +84,7 @@ describe("project ast", () => {
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
-      join(__dirname, "__mocks__", "box.tsx")
+      join(__dirname, "__mocks__", "box.tsx"),
     );
     sourceFile.open("default");
     await sourceFile.edit(() => {});
@@ -98,10 +95,7 @@ describe("project ast", () => {
       {
         exportName: "default",
         fileName: "box.tsx",
-        filePath: join(
-          process.cwd(),
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
-        ),
+        filePath: join(process.cwd(), "src/ast/__tests__/__mocks__/box.tsx"),
         isDirty: false,
         isNew: false,
       },
@@ -117,7 +111,7 @@ describe("project ast", () => {
     project.createSourceFile("Untitled").open("Untitled");
     project.createSourceFile("Untitled").open("Untitled");
     const sourceFile = project.getSourceFile(
-      join(__dirname, "__mocks__", "box.tsx")
+      join(__dirname, "__mocks__", "box.tsx"),
     );
 
     sourceFile.open("default", 0);
@@ -126,10 +120,7 @@ describe("project ast", () => {
       {
         exportName: "default",
         fileName: "box.tsx",
-        filePath: join(
-          process.cwd(),
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
-        ),
+        filePath: join(process.cwd(), "/src/ast/__tests__/__mocks__/box.tsx"),
         isDirty: false,
         isNew: false,
       },
@@ -157,7 +148,7 @@ describe("project ast", () => {
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
-      join(__dirname, "__mocks__", "box.tsx")
+      join(__dirname, "__mocks__", "box.tsx"),
     );
 
     sourceFile.open("default", 10);
@@ -166,10 +157,7 @@ describe("project ast", () => {
       {
         exportName: "default",
         fileName: "box.tsx",
-        filePath: join(
-          process.cwd(),
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
-        ),
+        filePath: join(process.cwd(), "/src/ast/__tests__/__mocks__/box.tsx"),
         isDirty: false,
         isNew: false,
       },
@@ -183,7 +171,7 @@ describe("project ast", () => {
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
-      join(__dirname, "__mocks__", "box.tsx")
+      join(__dirname, "__mocks__", "box.tsx"),
     );
     project.createSourceFile("Untitled").open("Untitled");
     sourceFile.open("default");
@@ -203,10 +191,7 @@ describe("project ast", () => {
       {
         exportName: "default",
         fileName: "box.tsx",
-        filePath: join(
-          process.cwd(),
-          "packages/@triplex/server/src/ast/__tests__/__mocks__/box.tsx"
-        ),
+        filePath: join(process.cwd(), "/src/ast/__tests__/__mocks__/box.tsx"),
         isDirty: false,
         isNew: false,
       },
@@ -220,7 +205,7 @@ describe("project ast", () => {
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
-      join(__dirname, "__mocks__", "box.tsx")
+      join(__dirname, "__mocks__", "box.tsx"),
     );
     const cb = vitest.fn();
     project.onStateChange(cb);
@@ -239,7 +224,7 @@ describe("project ast", () => {
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
-      join(__dirname, "__mocks__", "box.tsx")
+      join(__dirname, "__mocks__", "box.tsx"),
     );
     const cb = vitest.fn();
     const cleanup = project.onStateChange(cb);
@@ -475,7 +460,7 @@ describe("project ast", () => {
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
-      join(__dirname, "__mocks__", "box.tsx")
+      join(__dirname, "__mocks__", "box.tsx"),
     );
     await sourceFile.edit((source) => {
       source.addFunction({
@@ -495,7 +480,7 @@ describe("project ast", () => {
       tsConfigFilePath: join(__dirname, "__mocks__", "tsconfig.json"),
     });
     const sourceFile = project.getSourceFile(
-      join(__dirname, "__mocks__", "box.tsx")
+      join(__dirname, "__mocks__", "box.tsx"),
     );
     await sourceFile.edit((source) => {
       source.addFunction({

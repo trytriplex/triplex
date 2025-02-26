@@ -10,11 +10,14 @@ import { createRoot } from "react-dom/client";
 
 export function App() {
   return (
-    <Canvas>
-      <mesh>
-        <boxGeometry />
-      </mesh>
-    </Canvas>
+    <>
+      <Canvas>
+        <mesh>
+          <boxGeometry />
+        </mesh>
+      </Canvas>
+      <div>hello</div>
+    </>
   );
 }
 

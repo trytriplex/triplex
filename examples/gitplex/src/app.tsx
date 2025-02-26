@@ -42,7 +42,7 @@ export function App() {
           <div className="absolute right-0 top-0 h-44 w-44">
             <Canvas>
               <Avatar />
-              <PerspectiveCamera makeDefault position={[0, 0, 2.26]} />
+              <PerspectiveCamera makeDefault position={[0, 0, 2.16]} />
             </Canvas>
           </div>
           <div
@@ -60,9 +60,7 @@ export function App() {
             <Comment
               name={"GitPlex Copilot"}
               src="https://avatars.githubusercontent.com/u/124734075?s=60&v=4"
-              text={
-                "Sure, I can help with that. The issue seems to be with the ordering of the trees and the shader logic used in the render method. The tree models use screen space coordinates but expect world space. Let's fix that."
-              }
+              text={"Hello wold I'm typing weeee"}
             />
           </div>
           <div className="px-4 pb-4">

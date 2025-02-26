@@ -7,17 +7,27 @@
 import { cleanup } from "@testing-library/react";
 import { clearFgOverrides, initFeatureGates } from "@triplex/lib/fg";
 import { setupServer } from "msw/node";
-import { createElement, forwardRef, useState } from "react";
+import { dirname } from "upath";
 import { afterAll, afterEach, beforeAll, vi } from "vitest";
 import { handlers } from "./__mocks__/wss";
+import { findNearestPackageJSON } from "./package";
 
 const server = setupServer(...handlers);
 
+beforeAll(({ file }) => {
+  const found = findNearestPackageJSON(dirname(file.filepath));
+  if (found) {
+    process.chdir(found);
+  }
+});
+
 beforeAll(() => server.listen());
+
 afterEach(() => {
   server.resetHandlers();
   vi.useRealTimers();
 });
+
 afterAll(() => server.close());
 
 globalThis.DOMRect = class DOMRect {
@@ -51,34 +61,6 @@ if (typeof window !== "undefined") {
     },
   };
 }
-
-const CameraControls = forwardRef((props, ref) => {
-  const [instance] = useState(() => ({ mouseButtons: {}, touches: {} }));
-
-  return createElement("group", {
-    ...props,
-    name: "__stub_camera_controls__",
-    ref: () => {
-      if (typeof ref === "object" && ref && !ref.current) {
-        ref.current = instance;
-      } else if (typeof ref === "function") {
-        ref(instance);
-      }
-    },
-  });
-});
-CameraControls.displayName = "CameraControls";
-
-vi.mock("triplex-drei", () => ({
-  CameraControls,
-  GizmoHelper: () => createElement("group", { name: "__stub_gizmo_helper__" }),
-  GizmoViewcube: () =>
-    createElement("mesh", { name: "__stub_gizmo_viewcube__" }),
-  Grid: () => null,
-  MapControls: () => createElement("mesh", { name: "__stub_map_controls__" }),
-}));
-
-vi.mock("raf-schd", () => ({ default: (fn: unknown) => fn }));
 
 beforeAll(async () => {
   await initFeatureGates({ environment: "local", userId: "__TEST_USER__" });

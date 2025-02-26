@@ -17,6 +17,7 @@ import { join } from "upath";
 import { deleteCommentComponents } from "../services/component";
 import { type SourceFileChangedEvent } from "../types";
 import { invalidateThumbnail } from "../util/thumbnail";
+import "@ts-morph/common";
 
 export type TRIPLEXProject = ReturnType<typeof createProject>;
 export type SourceFileGetters = Extract<

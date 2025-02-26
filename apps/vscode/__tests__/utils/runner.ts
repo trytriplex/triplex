@@ -9,6 +9,7 @@ import { readFileSync } from "node:fs";
 import { writeFile } from "node:fs/promises";
 import {
   test as base,
+  _electron as electron,
   type Electron,
   type ElectronApplication,
   type Page,
@@ -16,7 +17,6 @@ import {
 } from "@playwright/test";
 import { resolveCliArgsFromVSCodeExecutablePath } from "@vscode/test-electron";
 import pkg from "package.json";
-import { _electron as electron } from "playwright";
 import { basename, join } from "upath";
 import { resolveExecPath, runUseWithTrace } from "../../../../test/playwright";
 import { ExtensionPage } from "./po";

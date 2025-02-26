@@ -6,8 +6,7 @@
  */
 /* eslint-disable no-console */
 /* eslint-disable no-empty-pattern */
-import { test as _test, expect } from "@playwright/test";
-import { _electron as electron } from "playwright";
+import { test as _test, _electron as electron, expect } from "@playwright/test";
 import { join } from "upath";
 import { runUseWithTrace } from "../../../../test/playwright";
 import { EditorPage } from "./po";

@@ -35,7 +35,7 @@ jobs:
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER
 
       - name: Install dependencies (force)
-        run: pnpm i --force
+        run: pnpm i --force --public-hoist-pattern=* --node-linker=hoisted
 
       - name: Build
         run: pnpm build

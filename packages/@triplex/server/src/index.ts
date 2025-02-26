@@ -568,7 +568,6 @@ export function createServer({
         [
           "@react-three/fiber",
           "@types/react",
-          "@types/react-dom",
           "@types/three",
           "react",
           "react-dom",
