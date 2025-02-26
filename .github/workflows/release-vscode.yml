@@ -44,7 +44,7 @@ jobs:
         if: steps.check.outcome == 'success'
 
       - name: Install dependencies (force)
-        run: pnpm i --force
+        run: pnpm i --force --public-hoist-pattern=* --node-linker=hoisted
         if: steps.check.outcome == 'success'
 
       - name: Build

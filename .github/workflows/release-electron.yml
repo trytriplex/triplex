@@ -44,7 +44,7 @@ jobs:
         if: steps.check.outcome == 'success'
 
       - name: Install dependencies
-        run: pnpm i
+        run: pnpm i --public-hoist-pattern=* --node-linker=hoisted
         if: steps.check.outcome == 'success'
 
       - name: Release targets
