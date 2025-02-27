@@ -5,6 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 
+import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 import { useScreenView } from "@triplex/ux";
 import { useState, type ReactNode } from "react";
 import { Button } from "../../components/button";
@@ -48,6 +49,7 @@ export function EnsureDependencies({ children }: { children: ReactNode }) {
           <span>Alternatively install yourself through your terminal:</span>
           <code
             className="hover:bg-neutral-hovered text-subtle bg-neutral cursor-pointer"
+            data-testid="DepsToInstall"
             onClick={(e) => {
               const text =
                 e.target instanceof HTMLElement ? e.target.innerText : "";
@@ -57,6 +59,14 @@ export function EnsureDependencies({ children }: { children: ReactNode }) {
           >
             {command}
           </code>
+        </div>
+        <hr className="border-input my-2 w-full border-t" />
+        <div>
+          <ExclamationTriangleIcon className="text-warning inline" /> Ensure
+          dependencies match. For example <code>@react-three/fiber@9</code>{" "}
+          expects
+          {"  "}
+          <code>react@19</code> and <code>@types/react@19</code>.
         </div>
       </div>
     );

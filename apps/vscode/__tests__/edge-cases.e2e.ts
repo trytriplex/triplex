@@ -94,8 +94,8 @@ test.describe(() => {
     const { locator } = vsce.resolveEditor();
     await vsce.codelens("MissingCriticalDeps", { skipWait: true }).click();
 
-    await expect(
-      locator.getByText("Install Missing Dependencies"),
-    ).toBeVisible();
+    await expect(locator.getByTestId("DepsToInstall")).toHaveText(
+      "pnpm i @react-three/fiber react react-dom three",
+    );
   });
 });

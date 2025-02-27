@@ -6,17 +6,34 @@
  */
 import resolvePkgPath from "resolve-package-path";
 
-export function checkMissingDependencies(
-  modules: string[],
-  cwd: string,
-): string[] {
-  const missing: string[] = [];
+const coreReactModules = ["@types/react", "react", "react-dom"];
 
-  for (const name of modules) {
+const optionalThreeFiberModules = [
+  "@react-three/fiber",
+  "@types/three",
+  "three",
+];
+
+export function checkMissingDependencies(cwd: string): string[] {
+  const missingCore: string[] = [];
+  const missingOptional: string[] = [];
+
+  for (const name of coreReactModules) {
     if (!resolvePkgPath(name, cwd)) {
-      missing.push(name);
+      missingCore.push(name);
     }
   }
 
-  return missing;
+  for (const name of optionalThreeFiberModules) {
+    if (!resolvePkgPath(name, cwd)) {
+      missingOptional.push(name);
+    }
+  }
+
+  if (missingOptional.length === optionalThreeFiberModules.length) {
+    // All optional dependencies are missing so we ignore them and continue on.
+    return missingCore.sort();
+  } else {
+    return missingCore.concat(missingOptional).sort();
+  }
 }

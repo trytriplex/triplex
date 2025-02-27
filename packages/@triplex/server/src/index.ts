@@ -564,14 +564,7 @@ export function createServer({
       const pkgManager: null | DetectResult = await detect({
         cwd: config.cwd,
       });
-      const missingDependencies = checkMissingDependencies(
-        [
-          "@types/react",
-          "react",
-          "react-dom",
-        ],
-        config.cwd,
-      );
+      const missingDependencies = checkMissingDependencies(config.cwd);
 
       return {
         missingDependencies,
