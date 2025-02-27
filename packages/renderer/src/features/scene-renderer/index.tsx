@@ -5,11 +5,12 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { send, type SceneComponent } from "@triplex/bridge/client";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
 import { ErrorFallback } from "../../components/error-fallback";
 import { Tunnel } from "../../components/tunnel";
 import { SceneElement } from "../scene-element";
+import { ResetCountContext } from "../scene-loader/context";
 
 /** This is used for e2e testing both the dev and prod smoke test build. */
 function LoadedNotifierForTesting({ exportName }: { exportName: string }) {
@@ -48,6 +49,8 @@ export function SceneRenderer({
   path: string;
   props: Record<string, unknown>;
 }) {
+  const resetCount = useContext(ResetCountContext);
+
   return (
     <ErrorBoundaryForScene
       fallbackRender={() => <ErrorFallback />}
@@ -73,6 +76,7 @@ export function SceneRenderer({
           path,
         }}
         forceInsideSceneObjectContext
+        key={resetCount}
         {...props}
       />
       <LoadedNotifierForTesting exportName={exportName} />

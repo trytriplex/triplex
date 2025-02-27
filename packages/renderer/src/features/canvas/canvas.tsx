@@ -8,7 +8,7 @@ import { Canvas as FiberCanvas, type CanvasProps } from "@react-three/fiber";
 import { send } from "@triplex/bridge/client";
 import { fg, fgComponent } from "@triplex/lib/fg";
 import { LoadingLogo } from "@triplex/lib/loader";
-import { Fragment, Suspense, useContext, useLayoutEffect } from "react";
+import { Suspense, useLayoutEffect } from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
 import { ErrorFallback } from "../../components/error-fallback";
 import { TriplexGrid } from "../../components/grid";
@@ -21,7 +21,7 @@ import { FitCameraToScene } from "../camera-helpers/camera-fit-scene";
 import { CameraGizmo } from "../camera-helpers/camera-gizmo";
 import { Camera as CameraNew } from "../camera-new";
 import { SceneElement } from "../scene-element";
-import { ResetCountContext, useLoadedScene } from "../scene-loader/context";
+import { useLoadedScene } from "../scene-loader/context";
 import { ThreeFiberSelection } from "../selection-three-fiber";
 import { CaptureShaderErrors } from "./capture-shader-errors";
 import { SceneLights } from "./scene-lights";
@@ -41,7 +41,6 @@ const Camera = fgComponent("camera_reconciler_refactor", {
  */
 export function Canvas({ children, ...props }: CanvasProps) {
   const playState = usePlayState();
-  const resetCount = useContext(ResetCountContext);
   const { exportName, path, provider, providerPath, scene } = useLoadedScene();
   const setMounted = useCanvasMounted((state) => state.setMounted);
 
@@ -120,7 +119,7 @@ export function Canvas({ children, ...props }: CanvasProps) {
                     </Tunnel.In>
                   }
                 >
-                  <Fragment key={resetCount}>{children}</Fragment>
+                  {children}
                   <FitCameraToScene resetKeys={[path, exportName]} />
                   <SceneLights />
                   <TriplexGrid />
