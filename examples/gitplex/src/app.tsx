@@ -60,7 +60,9 @@ export function App() {
             <Comment
               name={"GitPlex Copilot"}
               src="https://avatars.githubusercontent.com/u/124734075?s=60&v=4"
-              text={"Hello wold I'm typing weeee"}
+              text={
+                "Sure, I can help with that. The issue seems to be with the ordering of the trees and the shader logic used in the render method. The tree models use screen space coordinates but expect world space. Let's fix that."
+              }
             />
           </div>
           <div className="px-4 pb-4">
