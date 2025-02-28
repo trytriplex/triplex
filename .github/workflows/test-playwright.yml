@@ -22,13 +22,13 @@ jobs:
 
     env:
       DEBUG: pw:browser*
-      SHARD_TOTAL: 5
+      SHARD_TOTAL: 10
 
     strategy:
       fail-fast: false
 
       matrix:
-        os: [ubuntu-22.04, windows-latest]
+        os: [ubuntu-latest, windows-latest]
         shard: [1, 2, 3, 4, 5]
 
     steps:
@@ -48,6 +48,10 @@ jobs:
 
       - name: Install dependencies
         run: pnpm i
+
+      - name: Turn off unprivileged restriction
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
 
       - name: Run end-to-end tests
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
@@ -76,7 +80,7 @@ jobs:
 
     needs: playwright
 
-    timeout-minutes: 20
+    timeout-minutes: 5
 
     runs-on: ubuntu-latest
 

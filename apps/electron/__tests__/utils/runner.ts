@@ -116,7 +116,6 @@ const test = _test.extend<{
 
     await runUseWithTrace({ logs, page, testInfo, use });
 
-    app.process().kill();
     await app.close();
   },
   file: [

@@ -35,7 +35,7 @@ jobs:
         run: pnpm config set store-dir $PNPM_CACHE_FOLDER
 
       - name: Install dependencies
-        run: pnpm i --public-hoist-pattern=*
+        run: pnpm i --public-hoist-pattern=* --node-linker=hoisted
 
       - name: Build targets
         run: pnpm electron:build-targets
@@ -58,7 +58,7 @@ jobs:
       fail-fast: false
 
       matrix:
-        os: [ubuntu-22.04, windows-latest]
+        os: [ubuntu-latest, windows-latest]
 
     steps:
       - name: Checkout
@@ -80,6 +80,10 @@ jobs:
 
       - name: Build target
         run: pnpm electron:build
+
+      - name: Turn off unprivileged restriction
+        if: ${{ startsWith(matrix.os, 'ubuntu-') }}
+        run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0
 
       - name: Run smoke tests
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}

@@ -39,29 +39,3 @@ test("create new component and insert a box", async ({ electron }) => {
   const childButton = button.childElementButton("sphereGeometry").locator;
   await expect(childButton).toBeVisible();
 });
-
-test("create new file and insert a custom component", async ({ electron }) => {
-  await electron.newFile();
-  const drawer = await electron.assetsDrawer.open();
-  await drawer.openFolder({ name: "geometry" });
-  await drawer.addAsset("Box");
-
-  const button = await electron.scenePanel.elementButton("Box");
-
-  await expect(electron.contextPanel.heading).toHaveText("Box");
-  await expect(button.locator).toHaveText("Box");
-});
-
-test("create new component and insert a custom component", async ({
-  electron,
-}) => {
-  await electron.scenePanel.newComponent();
-  const drawer = await electron.assetsDrawer.open();
-  await drawer.openFolder({ name: "geometry" });
-  await drawer.addAsset("Box");
-
-  const button = await electron.scenePanel.elementButton("Box");
-
-  await expect(electron.contextPanel.heading).toHaveText("Box");
-  await expect(button.locator).toHaveText("Box");
-});

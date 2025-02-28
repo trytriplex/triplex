@@ -35,18 +35,7 @@ export function AssetThumbnail({
         onPress={onClick}
         pressActionId={actionId}
       >
-        {asset.type === "custom" ? (
-          <img
-            className="h-full w-full rounded-[inherit] object-cover"
-            data-testid={`Thumbnail(${asset.name})`}
-            loading="lazy"
-            src={`http://localhost:${
-              window.triplex.env.ports.server
-            }/thumbnail/${encodeURIComponent(asset.path)}/${asset.exportName}`}
-          />
-        ) : (
-          <div className="absolute inset-0 ml-[50%] mt-[50%] h-12 w-12 translate-x-[-50%] translate-y-[-50%] rotate-45 border border-neutral-400" />
-        )}
+        <div className="absolute inset-0 ml-[50%] mt-[50%] h-12 w-12 translate-x-[-50%] translate-y-[-50%] rotate-45 border border-neutral-400" />
 
         <Interactive />
 

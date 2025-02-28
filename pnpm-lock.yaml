@@ -40,8 +40,8 @@ importers:
         specifier: ^1.17.0
         version: 1.17.0(eslint@8.51.0)(typescript@5.7.2)
       '@playwright/test':
-        specifier: ^1.44.1
-        version: 1.44.1
+        specifier: ^1.50.1
+        version: 1.50.1
       '@swc/core':
         specifier: ^1.6.5
         version: 1.6.5(@swc/helpers@0.5.5)
@@ -70,8 +70,8 @@ importers:
         specifier: ^3.1.1
         version: 3.1.1(eslint@8.51.0)
       eslint-plugin-playwright:
-        specifier: ^1.6.2
-        version: 1.6.2(eslint@8.51.0)
+        specifier: ^2.2.0
+        version: 2.2.0(eslint@8.51.0)
       eslint-plugin-react-compiler:
         specifier: 19.0.0-beta-27714ef-20250124
         version: 19.0.0-beta-27714ef-20250124(eslint@8.51.0)
@@ -158,10 +158,10 @@ importers:
         version: 0.6.0(@types/three@0.171.0)(three@0.172.0)
       next:
         specifier: ^14.2.13
-        version: 14.2.13(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.44.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 14.2.13(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       nextra:
         specifier: ^2.13.4
-        version: 2.13.4(next@14.2.13(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.44.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+        version: 2.13.4(next@14.2.13(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       postcss:
         specifier: ^8.4.32
         version: 8.4.49
@@ -228,8 +228,8 @@ importers:
         specifier: 19.0.0-beta-27714ef-20250124
         version: 19.0.0-beta-27714ef-20250124
       electron:
-        specifier: 32.1.1
-        version: 32.1.1
+        specifier: 34.3.0
+        version: 34.3.0
       electron-builder:
         specifier: ^25.1.3
         version: 25.1.3(electron-builder-squirrel-windows@25.0.5(dmg-builder@25.1.3))
@@ -334,8 +334,8 @@ importers:
         specifier: ^3.0.0
         version: 3.0.0
       electron:
-        specifier: 32.1.1
-        version: 32.1.1
+        specifier: 34.3.0
+        version: 34.3.0
       electron-builder:
         specifier: ^25.1.3
         version: 25.1.3(electron-builder-squirrel-windows@25.0.5(dmg-builder@25.1.3))
@@ -2591,9 +2591,9 @@ packages:
     resolution: {integrity: sha512-cq8o4cWH0ibXh9VGi5P20Tu9XF/0fFXl9EUinr9QfTM7a7p0oTA4iJRCQWppXR1Pg8dSM0UCItCkPwsk9qWWYA==}
     engines: {node: ^12.20.0 || ^14.18.0 || >=16.0.0}
 
-  '@playwright/test@1.44.1':
-    resolution: {integrity: sha512-1hZ4TNvD5z9VuhNJ/walIjvMVvYkZKf71axoF/uiAqpntQJXpG64dlXhoDXE3OczPuTuvjf/M5KWFg5VAVUS3Q==}
-    engines: {node: '>=16'}
+  '@playwright/test@1.50.1':
+    resolution: {integrity: sha512-Jii3aBg+CEDpgnuDxEp/h7BimHcUTDlpEtce89xEumlJ5ef2hqepZ+PWp1DDpYC/VO9fmWVI1IlEaoI5fK9FXQ==}
+    engines: {node: '>=18'}
     hasBin: true
 
   '@pmndrs/uikit@0.5.4':
@@ -5033,8 +5033,8 @@ packages:
   electron-updater@6.1.4:
     resolution: {integrity: sha512-yYAJc6RQjjV4WtInZVn+ZcLyXRhbVXoomKEfUUwDqIk5s2wxzLhWaor7lrNgxODyODhipjg4SVPMhJHi5EnsCA==}
 
-  electron@32.1.1:
-    resolution: {integrity: sha512-NlWvG6kXOJbZbELmzP3oV7u50I3NHYbCeh+AkUQ9vGyP7b74cFMx9HdTzejODeztW1jhr3SjIBbUZzZ45zflfQ==}
+  electron@34.3.0:
+    resolution: {integrity: sha512-I238qRnYTAsuwJ/rS7HGaFNY4NNKAcjX8nlj7mnNmj1TK3z4HvNoD1r7Zud81DYDFx8AITuLd76EPrEnnfF9Bg==}
     engines: {node: '>= 12.20.55'}
     hasBin: true
 
@@ -5217,15 +5217,11 @@ packages:
     resolution: {integrity: sha512-brcKcxGnISN2CcVhXJ/kEQlNa0MEfGRtwKtWA16SkqXHKitaKIMrfemJKLKX1YqDU5C/5JY3PvZXd5jEW04e0Q==}
     engines: {node: '>=5.0.0'}
 
-  eslint-plugin-playwright@1.6.2:
-    resolution: {integrity: sha512-mraN4Em3b5jLt01q7qWPyLg0Q5v3KAWfJSlEWwldyUXoa7DSPrBR4k6B6LROLqipsG8ndkwWMdjl1Ffdh15tag==}
+  eslint-plugin-playwright@2.2.0:
+    resolution: {integrity: sha512-qSQpAw7RcSzE3zPp8FMGkthaCWovHZ/BsXtpmnGax9vQLIovlh1bsZHEa2+j2lv9DWhnyeLM/qZmp7ffQZfQvg==}
     engines: {node: '>=16.6.0'}
     peerDependencies:
       eslint: '>=8.40.0'
-      eslint-plugin-jest: '>=25'
-    peerDependenciesMeta:
-      eslint-plugin-jest:
-        optional: true
 
   eslint-plugin-react-compiler@19.0.0-beta-27714ef-20250124:
     resolution: {integrity: sha512-8/NaV8E+eQ+BiKGeWg5wIizuKwEXLo+n/lgiyTLmJnZj8eoFW3G7NGJf3Nke4ji3Rndy34LK5Qi5TF6BPiZlSQ==}
@@ -7628,14 +7624,14 @@ packages:
     resolution: {integrity: sha512-nDywThFk1i4BQK4twPQ6TA4RT8bDY96yeuCVBWL3ePARCiEKDRSrNGbFIgUJpLp+XeIR65v8ra7WuJOFUBtkMA==}
     engines: {node: '>=8'}
 
-  playwright-core@1.44.1:
-    resolution: {integrity: sha512-wh0JWtYTrhv1+OSsLPgFzGzt67Y7BE/ZS3jEqgGBlp2ppp1ZDj8c+9IARNW4dwf1poq5MgHreEM2KV/GuR4cFA==}
-    engines: {node: '>=16'}
+  playwright-core@1.50.1:
+    resolution: {integrity: sha512-ra9fsNWayuYumt+NiM069M6OkcRb1FZSK8bgi66AtpFoWkg2+y0bJSNmkFrWhMbEBbVKC/EruAHH3g0zmtwGmQ==}
+    engines: {node: '>=18'}
     hasBin: true
 
-  playwright@1.44.1:
-    resolution: {integrity: sha512-qr/0UJ5CFAtloI3avF95Y0L1xQo6r3LQArLIg/z/PoGJ6xa+EwzrwO5lpNr/09STxdHuUoP2mvuELJS+hLdtgg==}
-    engines: {node: '>=16'}
+  playwright@1.50.1:
+    resolution: {integrity: sha512-G8rwsOQJ63XG6BbKj2w5rHeavFjy5zynBA9zsJMMtBoe/Uf757oG12NXz6e6OirF7RCrTVAKFXbLmn1RbL7Qaw==}
+    engines: {node: '>=18'}
     hasBin: true
 
   plist@3.1.0:
@@ -11041,9 +11037,9 @@ snapshots:
 
   '@pkgr/core@0.1.1': {}
 
-  '@playwright/test@1.44.1':
+  '@playwright/test@1.50.1':
     dependencies:
-      playwright: 1.44.1
+      playwright: 1.50.1
 
   '@pmndrs/uikit@0.5.4(three@0.172.0)':
     dependencies:
@@ -14008,7 +14004,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  electron@32.1.1:
+  electron@34.3.0:
     dependencies:
       '@electron/get': 2.0.3
       '@types/node': 20.16.5
@@ -14289,7 +14285,7 @@ snapshots:
 
   eslint-plugin-no-only-tests@3.3.0: {}
 
-  eslint-plugin-playwright@1.6.2(eslint@8.51.0):
+  eslint-plugin-playwright@2.2.0(eslint@8.51.0):
     dependencies:
       eslint: 8.51.0
       globals: 13.24.0
@@ -16839,7 +16835,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  next@14.2.13(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.44.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  next@14.2.13(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       '@next/env': 14.2.13
       '@swc/helpers': 0.5.5
@@ -16861,12 +16857,12 @@ snapshots:
       '@next/swc-win32-ia32-msvc': 14.2.13
       '@next/swc-win32-x64-msvc': 14.2.13
       '@opentelemetry/api': 1.9.0
-      '@playwright/test': 1.44.1
+      '@playwright/test': 1.50.1
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
 
-  nextra@2.13.4(next@14.2.13(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.44.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
+  nextra@2.13.4(next@14.2.13(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0))(react-dom@19.0.0(react@19.0.0))(react@19.0.0):
     dependencies:
       '@headlessui/react': 1.7.19(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@mdx-js/mdx': 2.3.0
@@ -16880,7 +16876,7 @@ snapshots:
       gray-matter: 4.0.3
       katex: 0.16.11
       lodash.get: 4.4.2
-      next: 14.2.13(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.44.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
+      next: 14.2.13(@babel/core@7.26.0)(@opentelemetry/api@1.9.0)(@playwright/test@1.50.1)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       next-mdx-remote: 4.4.1(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       p-limit: 3.1.0
       react: 19.0.0
@@ -17336,11 +17332,11 @@ snapshots:
     dependencies:
       find-up: 3.0.0
 
-  playwright-core@1.44.1: {}
+  playwright-core@1.50.1: {}
 
-  playwright@1.44.1:
+  playwright@1.50.1:
     dependencies:
-      playwright-core: 1.44.1
+      playwright-core: 1.50.1
     optionalDependencies:
       fsevents: 2.3.2
 

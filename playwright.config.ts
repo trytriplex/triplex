@@ -14,6 +14,7 @@ export default defineConfig({
   },
   fullyParallel: false,
   globalSetup: "./test/playwright-setup",
+  maxFailures: process.env.CI ? 5 : undefined,
   projects: [
     {
       expect: {
