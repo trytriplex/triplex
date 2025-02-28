@@ -1,6 +1,6 @@
 {
   "name": "@triplex/editor",
-  "version": "0.70.14",
+  "version": "0.70.15",
   "private": true,
   "description": "The visual development environment for React / Three Fiber.",
   "author": {
@@ -26,9 +26,9 @@
     "@radix-ui/react-menubar": "^1.0.4",
     "@radix-ui/react-scroll-area": "^1.0.5",
     "@sentry/react": "^8.30.0",
-    "@triplex/bridge": "0.70.2",
+    "@triplex/bridge": "0.70.3",
     "@triplex/lib": "0.69.11",
-    "@triplex/ux": "0.69.14",
+    "@triplex/ux": "0.69.15",
     "@triplex/websocks-client": "0.0.4",
     "react-compiler-runtime": "19.0.0-beta-27714ef-20250124",
     "react-dom": "^19.0.0",
@@ -43,7 +43,7 @@
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
     "@testing-library/react": "^14.0.0",
-    "@triplex/server": "^0.71.5",
+    "@triplex/server": "^0.71.6",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@types/three": "^0.171.0",

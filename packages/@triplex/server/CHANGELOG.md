@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.71.6
+
+### Patch Changes
+
+- 088c699: Loading a React component that doesn't have React imported in the module graph now open as expected.
+- 088c699: React Three Fiber dependencies are no longer needed to be installed when loading a project that doesn't use them.
+
 ## 0.71.5
 
 ### Patch Changes

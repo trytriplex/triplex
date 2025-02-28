@@ -1,5 +1,17 @@
 # @triplex/electron
 
+## 0.70.15
+
+### Patch Changes
+
+- dfa0f39: Screenshots have been disabled in editor and will be re-enabled at a later date.
+- dfa0f39: Upgrade electron.
+- Updated dependencies [088c699]
+- Updated dependencies [088c699]
+  - @triplex/server@0.71.6
+  - @triplex/client@0.70.15
+  - @triplex/editor@0.70.15
+
 ## 0.70.14
 
 ### Patch Changes

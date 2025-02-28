@@ -1,5 +1,15 @@
 # @triplex/vscode
 
+## 0.2.15
+
+### Patch Changes
+
+- 088c699: React Three Fiber dependencies are no longer needed to be installed when loading a project that doesn't use them.
+- Updated dependencies [088c699]
+- Updated dependencies [088c699]
+  - @triplex/server@0.71.6
+  - @triplex/client@0.70.15
+
 ## 0.2.14
 
 ### Patch Changes
