@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.70.3
+
+### Patch Changes
+
+- 088c699: React Three Fiber dependencies are no longer needed to be installed when loading a project that doesn't use them.
+
 ## 0.70.2
 
 ### Patch Changes

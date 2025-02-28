@@ -1,5 +1,15 @@
 # @triplex/renderer
 
+## 0.71.11
+
+### Patch Changes
+
+- dfa0f39: Screenshots have been disabled in editor and will be re-enabled at a later date.
+- 09cb447: Fix React DOM components not being able to be reset when pressing the reset button or entering edit state.
+- 088c699: React Three Fiber dependencies are no longer needed to be installed when loading a project that doesn't use them.
+- Updated dependencies [088c699]
+  - @triplex/bridge@0.70.3
+
 ## 0.71.10
 
 ### Patch Changes
