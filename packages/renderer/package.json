@@ -56,14 +56,6 @@
     "react-dom": ">=18.0.0",
     "three": ">=0.153.0"
   },
-  "peerDependenciesMeta": {
-    "@react-three/fiber": {
-      "optional": true
-    },
-    "three": {
-      "optional": true
-    }
-  },
   "publishConfig": {
     "main": "./dist/index.mjs",
     "module": "./dist/index.mjs",
