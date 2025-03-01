@@ -14,8 +14,8 @@ export function LandingHero() {
 
   return (
     <div>
-      <h1 className="font-brand text-brand max-w-2xl text-6xl font-medium sm:text-7xl lg:max-w-4xl lg:text-8xl">
-        Visual development environment for React
+      <h1 className="font-brand text-brand max-w-2xl text-6xl font-medium sm:text-7xl lg:max-w-3xl lg:text-8xl">
+        Your visual workspace for React.
       </h1>
 
       <div className="relative mt-20 md:mt-28">
