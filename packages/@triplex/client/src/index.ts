@@ -14,6 +14,7 @@ import type {
 } from "@triplex/server";
 import react from "@vitejs/plugin-react";
 import express from "express";
+import resolvePackagePath from "resolve-package-path";
 import { version } from "../package.json";
 import triplexBabelPlugin from "./babel-plugin";
 import { transformNodeModulesJSXPlugin } from "./node-modules-plugin";
@@ -50,6 +51,9 @@ export async function createServer({
     fileGlobs: config.files.map((f) => `'${f.replace(config.cwd, "")}'`),
     pkgName: "triplex:renderer",
     ports,
+    preload: {
+      reactThreeFiber: !!resolvePackagePath("@react-three/fiber", config.cwd),
+    },
     userId,
   };
 
@@ -76,6 +80,16 @@ export async function createServer({
     mode: "development",
     optimizeDeps: {
       esbuildOptions: { plugins: [transformNodeModulesJSXPlugin()] },
+      /**
+       * If React Three Fiber is not found in the project we need to stub it out
+       * in the dependency graph AND exclude it from pre-bundling so Vite
+       * doesn't throw an exception during pre-bundling.
+       *
+       * {@link ./scene-plugin.ts}
+       */
+      exclude: initializationConfig.preload.reactThreeFiber
+        ? []
+        : ["@react-three/fiber", "three"],
     },
     plugins: [
       remoteModulePlugin({ cwd: config.cwd, files: config.files, ports }),

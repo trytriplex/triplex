@@ -12,6 +12,10 @@ test.describe(() => {
     filename: "examples-private/test-fixture/src/controls.tsx",
   });
 
+  /**
+   * THIS IS A VERY IMPORTANT TEST DO NOT SKIP OR DELETE. IT PROVES TRIPLEX IS
+   * WORKING FOR ITS CORE DEV LOOP.
+   */
   test(
     "hmr is flushed when changing component props",
     { tag: "@vsce_smoke" },

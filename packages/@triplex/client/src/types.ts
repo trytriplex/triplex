@@ -15,5 +15,8 @@ export interface InitializationConfig {
   fileGlobs: string[];
   pkgName: string;
   ports: TriplexPorts;
+  preload: {
+    reactThreeFiber: boolean;
+  };
   userId: string;
 }

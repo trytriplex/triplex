@@ -12,9 +12,17 @@ test.describe(() => {
     filename: "examples-private/react-only/src/app.tsx",
   });
 
-  test("resizing the scene panel", async ({ vsce }) => {
-    await vsce.codelens("ReactOnly").click();
+  test(
+    "opening a react-dom only project",
+    { tag: "@vsce_smoke" },
+    async ({ vsce }) => {
+      test.skip(
+        !!process.env.SMOKE_TEST && process.platform === "linux",
+        `Skipped Linux when running smoke tests because it can't open new files and I couldn't fix it time boxed. Let's fix this in the future.`,
+      );
+      await vsce.codelens("ReactOnly").click();
 
-    await expect(vsce.loadedComponent).toHaveText("ReactOnly");
-  });
+      await expect(vsce.loadedComponent).toHaveText("ReactOnly");
+    },
+  );
 });

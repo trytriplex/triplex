@@ -7,6 +7,7 @@
 import { scripts } from "./templates";
 import { type InitializationConfig } from "./types";
 
+const emptyModuleId = "triplex:empty.js";
 const emptyProviderId = "triplex:empty-provider.jsx";
 const globalProviderId = "triplex:global-provider.jsx";
 const bootstrapModuleId = "triplex:bootstrap.tsx";
@@ -26,6 +27,9 @@ export function scenePlugin(template: InitializationConfig) {
         case emptyProviderId:
           return scripts.defaultProvider;
 
+        case emptyModuleId:
+          return "";
+
         case globalProviderId:
           return scripts.globalProviderModule(template);
       }
@@ -38,9 +42,23 @@ export function scenePlugin(template: InitializationConfig) {
           return "\0" + hmrImportId;
 
         case bootstrapModuleId:
+        case emptyModuleId:
         case emptyProviderId:
         case globalProviderId:
           return id;
+
+        case "@react-three/fiber":
+        case "three":
+          /**
+           * If React Three Fiber is not found in the project we need to stub it
+           * out in the dependency graph AND exclude it from pre-bundling so
+           * Vite doesn't throw an exception during pre-bundling.
+           *
+           * {@link ./index.ts}
+           */
+          if (!template.preload.reactThreeFiber) {
+            return emptyModuleId;
+          }
       }
     },
     transform(code: string, id: string) {
