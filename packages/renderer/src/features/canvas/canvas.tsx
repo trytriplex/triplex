@@ -41,7 +41,7 @@ const Camera = fgComponent("camera_reconciler_refactor", {
  */
 export function Canvas({ children, ...props }: CanvasProps) {
   const playState = usePlayState();
-  const { exportName, path, provider, providerPath, scene } = useLoadedScene();
+  const { exportName, path, providerPath, providers, scene } = useLoadedScene();
   const setMounted = useCanvasMounted((state) => state.setMounted);
 
   useLayoutEffect(() => {
@@ -80,7 +80,7 @@ export function Canvas({ children, ...props }: CanvasProps) {
               title: "Could not render scene",
             })
           }
-          resetKeys={[scene, provider]}
+          resetKeys={[scene, providers]}
         >
           <Suspense
             fallback={
@@ -94,7 +94,7 @@ export function Canvas({ children, ...props }: CanvasProps) {
             }
           >
             <SceneElement
-              __component={provider}
+              __component={providers.CanvasProvider}
               __meta={{
                 column: -999,
                 exportName: "default",

@@ -8,7 +8,7 @@ import {
   compose,
   on,
   type Modules,
-  type ProviderComponent,
+  type ProviderModule,
 } from "@triplex/bridge/client";
 import { useEffect, useMemo, useReducer } from "react";
 import { DefaultCameraContext } from "../camera-new/context";
@@ -25,15 +25,15 @@ export function SceneLoader({
   exportName,
   modules,
   path,
-  provider,
   providerPath,
+  providers,
   sceneProps,
 }: {
   exportName: string;
   modules: Modules;
   path: string;
-  provider: ProviderComponent;
   providerPath: string;
+  providers: ProviderModule;
   sceneProps: Record<string, unknown>;
 }) {
   const [resetCount, incrementReset] = useReducer(
@@ -54,12 +54,12 @@ export function SceneLoader({
             exportName,
             meta: scene.meta,
             path,
-            provider,
             providerPath,
+            providers,
             scene: scene.component,
           }
         : null,
-    [exportName, path, provider, providerPath, scene],
+    [exportName, path, providerPath, providers, scene],
   );
 
   useEffect(() => {
@@ -88,26 +88,30 @@ export function SceneLoader({
       <ResetCountContext.Provider value={resetCount}>
         <SceneContext.Provider value={sceneContext}>
           {scene.meta.root === "react" && (
-            <DefaultCameraContext.Provider value="default">
-              <ReactDOMSelection filter={{ exportName, path }}>
+            <providers.GlobalProvider>
+              <DefaultCameraContext.Provider value="default">
+                <ReactDOMSelection filter={{ exportName, path }}>
+                  <SceneRenderer
+                    component={scene.component}
+                    exportName={exportName}
+                    path={path}
+                    props={sceneProps}
+                  />
+                </ReactDOMSelection>
+              </DefaultCameraContext.Provider>
+            </providers.GlobalProvider>
+          )}
+          {scene.meta.root === "react-three-fiber" && (
+            <providers.GlobalProvider>
+              <Canvas>
                 <SceneRenderer
                   component={scene.component}
                   exportName={exportName}
                   path={path}
                   props={sceneProps}
                 />
-              </ReactDOMSelection>
-            </DefaultCameraContext.Provider>
-          )}
-          {scene.meta.root === "react-three-fiber" && (
-            <Canvas>
-              <SceneRenderer
-                component={scene.component}
-                exportName={exportName}
-                path={path}
-                props={sceneProps}
-              />
-            </Canvas>
+              </Canvas>
+            </providers.GlobalProvider>
           )}
           <SceneControls />
         </SceneContext.Provider>

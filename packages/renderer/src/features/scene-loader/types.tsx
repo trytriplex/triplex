@@ -6,7 +6,7 @@
  */
 
 import {
-  type ProviderComponent,
+  type ProviderModule,
   type SceneComponent,
   type SceneMeta,
 } from "@triplex/bridge/client";
@@ -20,7 +20,7 @@ export interface LoadedSceneContext {
   exportName: string;
   meta: SceneMeta;
   path: string;
-  provider: ProviderComponent;
   providerPath: string;
+  providers: ProviderModule;
   scene: SceneComponent;
 }

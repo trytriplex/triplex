@@ -118,6 +118,11 @@ export type ProviderComponent = (props: {
   children?: React.ReactNode;
 }) => JSX.Element;
 
+export interface ProviderModule {
+  CanvasProvider: ProviderComponent;
+  GlobalProvider: ProviderComponent;
+}
+
 export type UnknownComponent = (props: Record<string, unknown>) => JSX.Element;
 
 export type Config = { provider: string };
@@ -128,13 +133,13 @@ export type BootstrapFunction = (
   config: Config;
   fgEnvironmentOverride: "local" | "development" | "staging" | "production";
   files: Modules;
-  provider: ProviderComponent;
+  providers: ProviderModule;
   userId: string;
 }) => void;
 
 export type ThumbnailFunction = (
   container: HTMLElement,
-) => (opts: { component: SceneComponent; provider: ProviderComponent }) => void;
+) => (opts: { component: SceneComponent; providers: ProviderModule }) => void;
 
 export interface EmbeddedMeta {
   column: number;
