@@ -6,6 +6,7 @@
  */
 // @vitest-environment jsdom
 import { act, render, screen } from "@testing-library/react";
+import { type ProviderModule } from "@triplex/bridge/client";
 import { send } from "@triplex/bridge/host";
 import { describe, expect, it } from "vitest";
 import { App } from "../index";
@@ -19,9 +20,14 @@ Scene.triplexMeta = {
   root: "react",
 } as const;
 
-function Provider({ children }: { children?: React.ReactNode }) {
-  return <>{children}</>;
-}
+const providers: ProviderModule = {
+  CanvasProvider({ children }: { children?: React.ReactNode }) {
+    return <>{children}</>;
+  },
+  GlobalProvider: ({ children }: { children?: React.ReactNode }) => (
+    <>{children}</>
+  ),
+};
 
 describe("renderer app", () => {
   it("should start a transition when switching components to prevent state loss", async () => {
@@ -31,8 +37,8 @@ describe("renderer app", () => {
           "/bar": () => Promise.resolve({ Scene }),
           "/foo": () => new Promise(() => {}),
         }}
-        provider={Provider}
         providerPath=""
+        providers={providers}
       />,
     );
     await send("request-open-component", {

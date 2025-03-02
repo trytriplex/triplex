@@ -114,7 +114,9 @@ export class ExtensionPage {
         return {
           async click() {
             await that.dismissAllNotifications();
-            return locator.getByTestId("scene").click({ force: true });
+            return locator
+              .getByTestId("scene")
+              .click({ force: true, noWaitAfter: true });
           },
           async hover() {
             await that.dismissAllNotifications();

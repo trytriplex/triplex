@@ -22,7 +22,7 @@ export const scripts = {
 
     export async function bootstrap() {
       try {
-        const { default: Provider } = await import("triplex:global-provider.jsx");
+        const providers = await import("triplex:global-provider.jsx");
         const { bootstrap: resolveRender } = await import("${template.pkgName}");
         const render = resolveRender(document.getElementById("root"));
 
@@ -31,7 +31,7 @@ export const scripts = {
             config,
             fgEnvironmentOverride: ${template.fgEnvironmentOverride ? `"${template.fgEnvironmentOverride}"` : "undefined"},
             files,
-            provider: Provider,
+            providers,
             userId: "${template.userId}",
           });
         };
@@ -54,17 +54,18 @@ export const scripts = {
       }
     }
   `,
-  defaultProvider: `export default function Fragment({children}){return children;}`,
+  defaultProvider: `
+    export function CanvasProvider({ children }) {
+      return children;
+    }
+
+    export function GlobalProvider({ children }) {
+      return children;
+    }
+  `,
   // Hides vite-ignored dynamic import so that Vite can skip analysis if no other
   // dynamic import is present (https://github.com/vitejs/vite/pull/12732)
   dynamicImportHMR: `export const __hmr_import = (url) => import(/* @vite-ignore */ url);`,
-  globalProviderModule: (template: InitializationConfig) => `
-    import UserProvidedProvider from "${template.config.provider}";
-
-    export default function GlobalProvider(props) {
-      return <UserProvidedProvider {...props} />;
-    }
-  `,
   init: (template: InitializationConfig) => `
     import { forwardKeyboardEvents, on, send } from "@triplex/bridge/client";
     import { bootstrap } from "triplex:bootstrap.tsx";
@@ -200,15 +201,30 @@ export const scripts = {
       });
     }
   `,
+
   invalidateHMRHeader: `import { __hmr_import } from "triplex:hmr-import";`,
+  providers: (template: InitializationConfig) => `
+    import * as Providers from "${template.config.provider}";
+    import { Fragment } from "react";
+
+    export function CanvasProvider(props) {
+      const Component = Providers.CanvasProvider || Providers.default || Fragment;
+      return <Component {...props} />;
+    }
+
+    export function GlobalProvider(props) {
+      const Component = Providers.GlobalProvider || Fragment;
+      return <Component {...props} />;
+    }
+  `,
   thumbnail: (
     template: InitializationConfig,
     { exportName, path }: { exportName: string; path: string },
   ) =>
     [
       `import { thumbnail } from "${template.pkgName}";`,
-      `import provider from "${template.config.provider}";`,
+      `import * as providers from "${template.config.provider}";`,
       `import {${exportName} as component} from "${path}";`,
-      `thumbnail(document.getElementById('root'))({ component, provider });`,
+      `thumbnail(document.getElementById('root'))({ component, providers });`,
     ].join(""),
 };

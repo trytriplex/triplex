@@ -7,11 +7,12 @@
 import { scripts } from "./templates";
 import { type InitializationConfig } from "./types";
 
+const bootstrapModuleId = "triplex:bootstrap.tsx";
 const emptyModuleId = "triplex:empty.js";
 const emptyProviderId = "triplex:empty-provider.jsx";
-const globalProviderId = "triplex:global-provider.jsx";
-const bootstrapModuleId = "triplex:bootstrap.tsx";
+const emptyProvidersModuleId = "triplex:empty-provider.jsx";
 const hmrImportId = "triplex:hmr-import";
+const providersModuleId = "triplex:global-provider.jsx";
 
 export function scenePlugin(template: InitializationConfig) {
   return {
@@ -24,14 +25,14 @@ export function scenePlugin(template: InitializationConfig) {
         case bootstrapModuleId:
           return scripts.bootstrap(template);
 
-        case emptyProviderId:
+        case emptyProvidersModuleId:
           return scripts.defaultProvider;
 
         case emptyModuleId:
           return "";
 
-        case globalProviderId:
-          return scripts.globalProviderModule(template);
+        case providersModuleId:
+          return scripts.providers(template);
       }
     },
     name: "triplex:scene-plugin",
@@ -44,7 +45,8 @@ export function scenePlugin(template: InitializationConfig) {
         case bootstrapModuleId:
         case emptyModuleId:
         case emptyProviderId:
-        case globalProviderId:
+        case emptyProvidersModuleId:
+        case providersModuleId:
           return id;
 
         case "@react-three/fiber":

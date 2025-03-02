@@ -31,8 +31,8 @@ export const bootstrap: BootstrapFunction = (container) => {
     root.render(
       <App
         files={opts.files}
-        provider={opts.provider}
         providerPath={opts.config.provider}
+        providers={opts.providers}
       />,
     );
   };
@@ -41,7 +41,9 @@ export const bootstrap: BootstrapFunction = (container) => {
 export const thumbnail: ThumbnailFunction = (container) => {
   const root = createRoot(container);
 
-  return ({ component, provider }) => {
-    root.render(<SceneScreenshot component={component} provider={provider} />);
+  return ({ component, providers }) => {
+    root.render(
+      <SceneScreenshot component={component} providers={providers} />,
+    );
   };
 };

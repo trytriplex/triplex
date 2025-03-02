@@ -5,7 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import {
-  type ProviderComponent,
+  type ProviderModule,
   type SceneComponent,
 } from "@triplex/bridge/client";
 import { Suspense, useEffect } from "react";
@@ -23,35 +23,35 @@ function Ready() {
 
 export function SceneScreenshot({
   component,
-  provider: Provider,
+  providers,
 }: {
   component: SceneComponent;
-  provider: ProviderComponent;
+  providers: ProviderModule;
 }) {
   return (
     <Suspense>
       <Ready />
       {component.triplexMeta.root === "react" && (
-        <Provider>
+        <providers.GlobalProvider>
           <SceneRenderer
             component={component}
             exportName="default"
             path=""
             props={{}}
           />
-        </Provider>
+        </providers.GlobalProvider>
       )}
       {component.triplexMeta.root === "react-three-fiber" && (
-        <Canvas shadows style={{ inset: 0, position: "absolute" }}>
-          <Provider>
+        <providers.GlobalProvider>
+          <Canvas shadows style={{ inset: 0, position: "absolute" }}>
             <SceneRenderer
               component={component}
               exportName="default"
               path=""
               props={{}}
             />
-          </Provider>
-        </Canvas>
+          </Canvas>
+        </providers.GlobalProvider>
       )}
     </Suspense>
   );

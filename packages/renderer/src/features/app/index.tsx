@@ -10,7 +10,7 @@ import {
   on,
   send,
   type Modules,
-  type ProviderComponent,
+  type ProviderModule,
 } from "@triplex/bridge/client";
 import { LoadingLogo } from "@triplex/lib/loader";
 import {
@@ -30,12 +30,12 @@ import { type Component } from "./types";
 
 export function App({
   files,
-  provider,
   providerPath,
+  providers,
 }: {
   files: Modules;
-  provider: ProviderComponent;
   providerPath: string;
+  providers: ProviderModule;
 }) {
   const [component, setComponent] = useState<Component>({
     exportName: "",
@@ -129,8 +129,8 @@ export function App({
             exportName={component.exportName}
             modules={files}
             path={component.path}
-            provider={provider}
             providerPath={providerPath}
+            providers={providers}
             sceneProps={component.props}
           />
         </Suspense>

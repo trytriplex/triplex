@@ -6,6 +6,7 @@
  */
 // @vitest-environment jsdom
 import { waitFor } from "@testing-library/react";
+import { type ProviderModule } from "@triplex/bridge/client";
 import { send } from "@triplex/bridge/host";
 import { overrideFg } from "@triplex/lib/fg";
 import { createElement, forwardRef, useState } from "react";
@@ -54,14 +55,28 @@ vi.mock("../../selection-three-fiber/selection-indicator.tsx", () => ({
   SelectionIndicator: () => null,
 }));
 
-function Provider({ children }: { children?: React.ReactNode }) {
-  return (
-    <>
-      <color args={["#87ceeb"]} attach="background" />
-      {children}
-    </>
-  );
-}
+const providers: ProviderModule = {
+  CanvasProvider({ children }: { children?: React.ReactNode }) {
+    return (
+      <>
+        <color args={["#87ceeb"]} attach="background" />
+        {children}
+      </>
+    );
+  },
+  GlobalProvider: ({ children }: { children?: React.ReactNode }) => (
+    <>{children}</>
+  ),
+};
+
+const emptyProviders: ProviderModule = {
+  CanvasProvider({ children }: { children?: React.ReactNode }) {
+    return <>{children}</>;
+  },
+  GlobalProvider: ({ children }: { children?: React.ReactNode }) => (
+    <>{children}</>
+  ),
+};
 
 describe("scene loader component", () => {
   it("should apply color to canvas background set in provider", async () => {
@@ -78,8 +93,8 @@ describe("scene loader component", () => {
         exportName="Scene"
         modules={{ "/foo": () => Promise.resolve({ Scene }) }}
         path="/foo"
-        provider={Provider}
         providerPath=""
+        providers={providers}
         sceneProps={{}}
       />,
     );
@@ -104,8 +119,8 @@ describe("scene loader component", () => {
         exportName="Scene"
         modules={{ "/foo": () => Promise.resolve({ Scene }) }}
         path="/foo"
-        provider={({ children }) => <>{children}</>}
         providerPath=""
+        providers={emptyProviders}
         sceneProps={{}}
       />,
     );
