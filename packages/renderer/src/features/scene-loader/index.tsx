@@ -63,14 +63,18 @@ export function SceneLoader({
   );
 
   useEffect(() => {
+    let previousState: "play" | "pause" | "edit" = "edit";
+
     return compose([
       on("request-refresh-scene", () => {
         incrementReset();
       }),
       on("request-state-change", ({ state }) => {
-        if (state === "edit") {
+        if (state === "edit" && previousState !== "edit") {
           incrementReset();
         }
+
+        previousState = state;
       }),
     ]);
   }, []);
