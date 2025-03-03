@@ -5,47 +5,9 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { useCallback, useSyncExternalStore } from "react";
+import { buildPath, defer } from "./lib";
 import { parseJSON } from "./string";
-
-export type RemapWithNumber<TObject> = {
-  [P in keyof TObject]: string | number | undefined;
-};
-
-function defer() {
-  let resolve!: () => void;
-  let reject!: (error: Error) => void;
-
-  const promise = new Promise<void>((res, rej) => {
-    resolve = res;
-    reject = rej;
-  });
-
-  return {
-    promise,
-    reject,
-    resolve,
-  };
-}
-
-/**
- * **buildPath()**
- *
- * Builds a websocks path given a route and params.
- */
-export function buildPath(
-  route: string,
-  params: Record<string, string | number | boolean | undefined>,
-): string {
-  let path = route;
-
-  for (const param in params) {
-    const rawValue = params[param];
-    const value = rawValue === undefined ? "" : encodeURIComponent(rawValue);
-    path = path.replace(`:${param}`, value);
-  }
-
-  return path;
-}
+import { type RemapWithNumber } from "./types";
 
 /**
  * **createWSHooks()**
@@ -374,3 +336,5 @@ export function createWSHooks<
     useSubscription,
   };
 }
+
+export { type RemapWithNumber, buildPath };

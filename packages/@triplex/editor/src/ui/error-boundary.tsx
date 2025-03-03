@@ -60,6 +60,7 @@ export function ErrorBoundary({
             <div className="flex items-center gap-2">
               <ExternalLink
                 actionId="errorboundary_contact_issue"
+                size="xs"
                 to="https://github.com/trytriplex/triplex/issues/new"
               >
                 Report a bug
@@ -67,6 +68,7 @@ export function ErrorBoundary({
               <span className="text-xs text-neutral-400">•</span>
               <ExternalLink
                 actionId="errorboundary_logs_open"
+                size="xs"
                 to="triplex:view-logs"
               >
                 View logs

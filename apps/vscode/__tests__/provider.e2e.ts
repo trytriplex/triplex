@@ -29,31 +29,54 @@ test("default props set in scene", async ({ vsce }) => {
   await expect(element).toContainText(`"bgColor":"#ccc"`);
 });
 
-test("update provider prop", async ({ vsce }) => {
+test("set and reset canvas provider props", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
   const { panels, scene } = vsce.resolveEditor();
-
   const input = panels.getByLabel("batbat", { exact: true });
   await input.fill("222");
   await input.press("Enter");
 
+  // Double check the value was set in the editor and scene
   const element = scene.locator.getByTestId("provider-props");
   await expect(element).toContainText(`"batbat":222`);
   await expect(panels.getByLabel("batbat")).toHaveValue("222");
-});
 
-test("reset provider props", async ({ vsce }) => {
-  await vsce.codelens("Scene").click();
-  const { panels, scene } = vsce.resolveEditor();
-  const input = panels.getByLabel("batbat", { exact: true });
-  await input.fill("222");
-  await input.press("Enter");
+  // Reset all provider props
+  await panels
+    .getByRole("button", { name: "Reset All Provider Props" })
+    .click();
 
-  await panels.getByRole("button", { name: "Reset Provider Props" }).click();
-
-  const element = scene.locator.getByTestId("provider-props");
+  // Double check the value was cleared in the editor and scene
   await expect(element).toContainText(`"batbat":100`);
   await expect(panels.getByLabel("batbat")).toHaveValue("100");
+});
+
+test("set and reset global provider props", async ({ vsce }) => {
+  await vsce.codelens("Scene").click();
+  const { panels, scene } = vsce.resolveEditor();
+  const input = panels.getByLabel("theme");
+  // Assert the initial default values
+  await expect(input).toHaveValue("0");
+  await input.selectOption("gitplex");
+
+  // Double check the value was set in the editor and scene
+  await expect(scene.locator.locator("html")).toHaveAttribute(
+    "data-test-theme",
+    "gitplex",
+  );
+  await expect(input).toHaveValue("1");
+
+  // Reset all provider props
+  await panels
+    .getByRole("button", { name: "Reset All Provider Props" })
+    .click();
+
+  // Double check the value was cleared in the editor and scene
+  await expect(input).toHaveValue("0");
+  await expect(scene.locator.locator("html")).toHaveAttribute(
+    "data-test-theme",
+    "triplex",
+  );
 });
 
 test("provider controls persist changes when panel is closed", async ({

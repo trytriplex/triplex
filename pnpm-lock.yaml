@@ -1025,9 +1025,6 @@ importers:
       glob-parent:
         specifier: ^6.0.2
         version: 6.0.2
-      node-match-path:
-        specifier: ^0.6.3
-        version: 0.6.3
       picomatch:
         specifier: ^2.3.1
         version: 2.3.1
@@ -1386,9 +1383,9 @@ importers:
 
   packages/websocks-server:
     dependencies:
-      node-match-path:
-        specifier: ^0.6.3
-        version: 0.6.3
+      path-to-regexp:
+        specifier: ^8.2.0
+        version: 8.2.0
       ws:
         specifier: ^8.12.0
         version: 8.12.0
@@ -7230,9 +7227,6 @@ packages:
   node-html-parser@6.1.13:
     resolution: {integrity: sha512-qIsTMOY4C/dAa5Q5vsobRpOOvPfC4pB61UVW2uSwZNUp0QU/jCekTal1vMmbO0DgdHeLUJpv/ARmDqErVxA3Sg==}
 
-  node-match-path@0.6.3:
-    resolution: {integrity: sha512-fB1reOHKLRZCJMAka28hIxCwQLxGmd7WewOCBDYKpyA1KXi68A7vaGgdZAPhY2E6SXoYt3KqYCCvXLJ+O0Fu/Q==}
-
   node-releases@2.0.18:
     resolution: {integrity: sha512-d9VeXT4SJ7ZeOqGX6R5EM022wpL+eWPooLI+5UpWn2jCT1aosUQEhQP214x33Wkwx3JQMvIm+tIoVOdodFS40g==}
 
@@ -7546,6 +7540,10 @@ packages:
 
   path-to-regexp@6.3.0:
     resolution: {integrity: sha512-Yhpw4T9C6hPpgPeA28us07OJeqZ5EzQTkbfwuhsUg0c237RomFoETJgmp2sa3F/41gfLE6G5cqcYwznmeEeOlQ==}
+
+  path-to-regexp@8.2.0:
+    resolution: {integrity: sha512-TdrF7fW9Rphjq4RjrW0Kp2AW0Ahwu9sRGTkS6bvDi0SCwZlEZYmcfDbEsTz8RVk0EHIS/Vd1bv3JhG+1xZuAyQ==}
+    engines: {node: '>=16'}
 
   path-type@4.0.0:
     resolution: {integrity: sha512-gDKb8aZMDeD/tZWs9P6+q0J9Mwkdl6xMV8TjnGP3qJVJ06bdMgkbBlLU8IdfOsIsFz2BW1rNVT3XuNEl8zPAvw==}
@@ -16945,8 +16943,6 @@ snapshots:
       css-select: 5.1.0
       he: 1.2.0
 
-  node-match-path@0.6.3: {}
-
   node-releases@2.0.18: {}
 
   non-layered-tidy-tree-layout@2.0.2: {}
@@ -17276,6 +17272,8 @@ snapshots:
   path-to-regexp@0.1.7: {}
 
   path-to-regexp@6.3.0: {}
+
+  path-to-regexp@8.2.0: {}
 
   path-type@4.0.0: {}
 

@@ -5,7 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { createServer } from "node:http";
-import { match } from "node-match-path";
+import { match } from "path-to-regexp";
 import { WebSocketServer, type WebSocket } from "ws";
 import { decodeParams, stringifyJSON } from "./string";
 import {
@@ -140,9 +140,10 @@ export function createWSServer() {
     const handler = (path: string) => {
       const route = typeof opts === "string" ? opts : opts.path;
       const config: RouteOpts = typeof opts === "string" ? {} : opts;
-      const matches = match(route, path);
+      const fn = match<TRouteParams>(route);
+      const matches = fn(path);
 
-      if (matches.matches) {
+      if (matches) {
         return async (ws: WebSocket) => {
           const params: TRouteParams = decodeParams(
             matches.params,

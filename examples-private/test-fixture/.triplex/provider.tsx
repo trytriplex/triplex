@@ -1,6 +1,6 @@
-import { useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 
-const Provider: React.FC<{
+export const CanvasProvider: React.FC<{
   children: React.ReactNode;
   /** @group Foo */
   foofoo?: boolean;
@@ -46,4 +46,16 @@ const Provider: React.FC<{
   );
 };
 
-export default Provider;
+export function GlobalProvider({
+  children,
+  theme = "triplex",
+}: {
+  children: ReactNode;
+  theme: "triplex" | "gitplex";
+}) {
+  useEffect(() => {
+    document.documentElement.setAttribute("data-test-theme", theme);
+  }, [theme]);
+
+  return <>{children}</>;
+}

@@ -31,15 +31,16 @@ export type ValidateShape<T, Shape> = T extends Shape
   : never;
 
 export type ExtractParams<TRoute extends string> =
-  TRoute extends `${infer TStart}/${infer TEnd}`
-    ? ExtractParams<TStart> & ExtractParams<TEnd>
-    : TRoute extends `:${infer TParam}`
-    ? { [P in TParam]: string }
-    : object;
+  TRoute extends `${infer TStart}{/:${infer TOptionalParam}}${infer TEnd}`
+    ? { [P in TOptionalParam]?: string } & ExtractParams<`${TStart}${TEnd}`>
+    : TRoute extends `${infer TStart}/${infer TEnd}`
+      ? ExtractParams<TStart> & ExtractParams<TEnd>
+      : TRoute extends `:${infer TParam}`
+        ? { [P in TParam]: string }
+        : // eslint-disable-next-line @typescript-eslint/ban-types
+          {};
 
-export type RouteParams<TRoute extends string> = ValidateShape<
-  ExtractParams<TRoute>,
-  object
-> extends never
-  ? ExtractParams<TRoute>
-  : never;
+export type RouteParams<TRoute extends string> =
+  ValidateShape<ExtractParams<TRoute>, object> extends never
+    ? ExtractParams<TRoute>
+    : never;

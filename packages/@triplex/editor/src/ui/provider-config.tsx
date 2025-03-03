@@ -11,19 +11,25 @@ import { SkeletonContainer, SkeletonText } from "../ds/skeleton";
 import { useScene } from "../stores/scene";
 import { useSceneState } from "../stores/scene-state";
 import { IDELink } from "../util/ide";
-import { useLazySubscription } from "../util/ws";
+import { preloadSubscription, useSubscription } from "../util/ws";
 import { PropField } from "./prop-field";
 import { PropInput, PropTagContext } from "./prop-input";
 
 function Inputs() {
-  const data = useLazySubscription("/scene/:path/:exportName/props", {
-    exportName: "default",
-    path: window.triplex.env.config.provider,
-  });
+  // TODO: Global provider props aren't available in Triplex Standalone currently.
+  const [canvasProvider, deprecatedCanvasProvider] = useSubscription(
+    "/scene/:path/:exportName{/:exportName1}{/:exportName2}/props",
+    {
+      exportName: "CanvasProvider",
+      exportName1: "default",
+      path: window.triplex.env.config.provider,
+    },
+  );
   const { setPropValue } = useScene();
   const storeKey = "__provider__";
   const setValues = useSceneState((state) => state.set);
   const values = useSceneState((state) => state.get(storeKey));
+  const data = canvasProvider || deprecatedCanvasProvider || { props: [] };
   const props = data.props.filter((prop) => prop.name !== "children");
   const defaultValues: Record<string, unknown> = useMemo(
     () =>
@@ -174,3 +180,12 @@ export function ProviderConfig() {
     </>
   );
 }
+
+preloadSubscription(
+  "/scene/:path/:exportName{/:exportName1}{/:exportName2}/props",
+  {
+    exportName: "CanvasProvider",
+    exportName1: "default",
+    path: window.triplex.env.config.provider,
+  },
+);

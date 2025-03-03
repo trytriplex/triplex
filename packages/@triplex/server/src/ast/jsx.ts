@@ -358,12 +358,28 @@ export function getJsxElementProps(
   return { props: sortedProps, transforms };
 }
 
-export function getFunctionProps(
+export function getFunctionPropsOrThrow(
   sourceFile: SourceFileReadOnly,
   exportName: string,
 ) {
   const { props, transforms } = getFunctionPropTypes(sourceFile, exportName);
   return { props, transforms };
+}
+
+export function getFunctionProps(
+  sourceFile: SourceFileReadOnly,
+  exportName?: string,
+) {
+  if (!exportName) {
+    return undefined;
+  }
+
+  try {
+    const { props, transforms } = getFunctionPropTypes(sourceFile, exportName);
+    return { props, transforms };
+  } catch {
+    return undefined;
+  }
 }
 
 export function getJsxElementAt(

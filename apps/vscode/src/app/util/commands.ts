@@ -6,7 +6,7 @@
  */
 export function createCodeLink(
   path: string,
-  { column, line }: { column: number; line: number },
+  { column, line }: { column: number; line: number } = { column: 1, line: 1 },
 ) {
   const data = {
     column,

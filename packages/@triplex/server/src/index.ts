@@ -20,6 +20,7 @@ import {
 } from "./ast";
 import {
   getFunctionProps,
+  getFunctionPropsOrThrow,
   getJsxElementAtOrThrow,
   getJsxElementParentExportNameOrThrow,
 } from "./ast/jsx";
@@ -491,8 +492,28 @@ export function createServer({
       { defer: true, path: "/scene/:path/:exportName/props" },
       async ({ exportName, path }) => {
         const sourceFile = await project.getSourceFile(path);
-        const props = getFunctionProps(sourceFile.read(), exportName);
+        const props = getFunctionPropsOrThrow(sourceFile.read(), exportName);
         return props;
+      },
+      async (push, { path }) => {
+        const sourceFile = await project.getSourceFile(path);
+        sourceFile.onModified(push);
+        sourceFile.onDependencyModified(push);
+      },
+    ),
+    tws.route(
+      {
+        defer: true,
+        path: "/scene/:path/:exportName{/:exportName1}{/:exportName2}/props",
+      },
+      async ({ exportName, exportName1, exportName2, path }) => {
+        const sourceFile = project.getSourceFile(path).read();
+
+        return [
+          getFunctionProps(sourceFile, exportName),
+          getFunctionProps(sourceFile, exportName1),
+          getFunctionProps(sourceFile, exportName2),
+        ] as const;
       },
       async (push, { path }) => {
         const sourceFile = await project.getSourceFile(path);
