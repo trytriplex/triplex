@@ -388,21 +388,6 @@ importers:
         specifier: ^4.3.2
         version: 4.5.5(@types/react@19.0.8)(react@19.0.0)
 
-  examples-private/custom-renderer:
-    dependencies:
-      '@triplex/bridge':
-        specifier: workspace:*
-        version: link:../../packages/bridge
-      '@types/react':
-        specifier: ^19.0.8
-        version: 19.0.8
-      react:
-        specifier: ^19.0.0
-        version: 19.0.0
-      react-dom:
-        specifier: ^19.0.0
-        version: 19.0.0(react@19.0.0)
-
   examples-private/error-renderer:
     dependencies:
       '@react-three/fiber':
