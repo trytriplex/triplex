@@ -9,8 +9,8 @@ import { compose, on, type RendererElementProps } from "@triplex/bridge/client";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 function useForceRender() {
-  const [, setState] = useState(false);
-  return useCallback(() => setState((prev) => !prev), []);
+  const [, setState] = useState(0);
+  return useCallback(() => setState((prev) => prev + 1), []);
 }
 
 export function useTemporaryProps(

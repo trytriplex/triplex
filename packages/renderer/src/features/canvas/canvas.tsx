@@ -97,9 +97,9 @@ export function Canvas({ children, ...props }: CanvasProps) {
               __component={providers.CanvasProvider}
               __meta={{
                 column: -999,
-                exportName: "default",
+                exportName: "CanvasProvider",
                 line: -999,
-                name: "Provider",
+                name: "CanvasProvider",
                 path: providerPath,
                 rotate: false,
                 scale: false,

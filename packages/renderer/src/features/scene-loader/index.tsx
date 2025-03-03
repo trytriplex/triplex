@@ -14,6 +14,7 @@ import { useEffect, useMemo, useReducer } from "react";
 import { DefaultCameraContext } from "../camera-new/context";
 import { Canvas } from "../canvas";
 import { SceneControls } from "../scene-controls";
+import { SceneElement } from "../scene-element";
 import { SceneRenderer } from "../scene-renderer";
 import { SelectionProvider } from "../selection-provider";
 import { ReactDOMSelection } from "../selection-react-dom";
@@ -87,8 +88,21 @@ export function SceneLoader({
     <SelectionProvider>
       <ResetCountContext.Provider value={resetCount}>
         <SceneContext.Provider value={sceneContext}>
-          {scene.meta.root === "react" && (
-            <providers.GlobalProvider>
+          <SceneElement
+            __component={providers.GlobalProvider}
+            __meta={{
+              column: -888,
+              exportName: "GlobalProvider",
+              line: -888,
+              name: "GlobalProvider",
+              path: providerPath,
+              rotate: false,
+              scale: false,
+              translate: false,
+            }}
+            forceInsideSceneObjectContext
+          >
+            {scene.meta.root === "react" && (
               <DefaultCameraContext.Provider value="default">
                 <ReactDOMSelection filter={{ exportName, path }}>
                   <SceneRenderer
@@ -99,10 +113,8 @@ export function SceneLoader({
                   />
                 </ReactDOMSelection>
               </DefaultCameraContext.Provider>
-            </providers.GlobalProvider>
-          )}
-          {scene.meta.root === "react-three-fiber" && (
-            <providers.GlobalProvider>
+            )}
+            {scene.meta.root === "react-three-fiber" && (
               <Canvas>
                 <SceneRenderer
                   component={scene.component}
@@ -111,9 +123,9 @@ export function SceneLoader({
                   props={sceneProps}
                 />
               </Canvas>
-            </providers.GlobalProvider>
-          )}
-          <SceneControls />
+            )}
+            <SceneControls />
+          </SceneElement>
         </SceneContext.Provider>
       </ResetCountContext.Provider>
     </SelectionProvider>
