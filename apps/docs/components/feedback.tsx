@@ -7,7 +7,7 @@
 import { CheckCircledIcon, CrossCircledIcon } from "@radix-ui/react-icons";
 import { type IconProps } from "@radix-ui/react-icons/dist/types";
 import { useRouter } from "next/router";
-import { useEffect, useId, useState, type FormEvent } from "react";
+import { useEffect, useId, useState } from "react";
 import { cn } from "../util/cn";
 
 function FeedbackButton({
@@ -65,25 +65,25 @@ export function SendFeedback() {
     };
   }, [route.pathname]);
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function onSubmit(formData: FormData) {
     setFeedbackSelected("complete");
 
-    const formData = new FormData(event.currentTarget);
+    const query = new URLSearchParams(
+      formData as unknown as Record<string, string>,
+    ).toString();
 
-    await fetch("/api/feedback", {
-      body: JSON.stringify(Object.fromEntries(formData)),
+    await fetch("/api/feedback?" + query, {
       headers: { "Content-Type": "application/json" },
-      method: "POST",
+      method: "GET",
     });
   }
 
   return (
     <div className="mx-auto flex justify-center">
       <form
+        action={onSubmit}
         className="border-neutral flex flex-col gap-3 border px-6 py-4"
         key={route.pathname}
-        onSubmit={onSubmit}
       >
         <input name="pathname" type="hidden" value={route.pathname} />
         <input name="app" type="hidden" value="docs" />

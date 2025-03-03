@@ -15,6 +15,7 @@ import {
   string,
   union,
 } from "valibot";
+import { cors } from "../../util/middleware";
 import { BASE_URL } from "../../util/url";
 
 const appNames = {
@@ -26,15 +27,17 @@ const appNames = {
 const schema = object({
   app: union([literal("standalone"), literal("vsce"), literal("docs")]),
   feedback: optional(string([minLength(0), maxLength(1024)])),
-  pathname: string([minLength(1), maxLength(96)]),
-  sentiment: union([literal("positive"), literal("negative")]),
+  pathname: optional(string([minLength(1), maxLength(96)])),
+  sentiment: optional(union([literal("positive"), literal("negative")])),
 });
 
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse,
 ) {
-  const { app, feedback, pathname, sentiment } = parse(schema, req.body);
+  await cors(req, res);
+
+  const { app, feedback, pathname, sentiment } = parse(schema, req.query);
 
   if (typeof process.env.DISCORD_WEBHOOK_URL !== "string") {
     res
@@ -49,7 +52,10 @@ export default async function handler(
         embeds: [
           {
             fields: [
-              { name: "Page", value: `${BASE_URL}${pathname}` },
+              {
+                name: "Page",
+                value: pathname ? `${BASE_URL}${pathname}` : "(empty)",
+              },
               { name: "Feedback", value: feedback || "(empty)" },
               { name: "Sentiment", value: sentiment || "(empty)" },
             ],
