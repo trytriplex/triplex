@@ -37,7 +37,7 @@ export type ExtractParams<TRoute extends string> =
       ? ExtractParams<TStart> & ExtractParams<TEnd>
       : TRoute extends `:${infer TParam}`
         ? { [P in TParam]: string }
-        : // eslint-disable-next-line @typescript-eslint/ban-types
+        : // eslint-disable-next-line @typescript-eslint/no-empty-object-type
           {};
 
 export type RouteParams<TRoute extends string> =

@@ -36,7 +36,7 @@
     "@adeira/monorepo-shipit": "^0.4.0",
     "@changesets/cli": "^2.27.8",
     "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
-    "@nkzw/eslint-config": "^1.17.0",
+    "@nkzw/eslint-config": "^1.19.0",
     "@playwright/test": "^1.50.1",
     "@swc/core": "^1.6.5",
     "@testing-library/react": "^14.0.0",

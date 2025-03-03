@@ -192,11 +192,13 @@ const test = base.extend<
   fg: [{}, { option: true, scope: "worker" }],
   filename: ["examples-private/test-fixture/src/scene.tsx", { option: true }],
   getFile: async ({ filename }, use) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     await use((path) =>
       readFileSync(join(process.cwd(), path ?? filename), "utf8"),
     );
   },
   setFile: async ({ filename, getFile }, use) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     await use(async (cb) => {
       await new Promise((resolve) => setTimeout(resolve, 200));
       await writeFile(join(process.cwd(), filename), cb(getFile()));

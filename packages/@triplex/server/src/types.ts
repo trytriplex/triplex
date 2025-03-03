@@ -354,6 +354,7 @@ export interface ProjectSettings {
 }
 
 /** Settings for the editor that are persisted to the file system. */
+// eslint-disable-next-line @typescript-eslint/no-empty-object-type
 export interface EditorSettings {}
 
 /** Exposed ports used for Triplex. */

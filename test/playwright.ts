@@ -45,6 +45,7 @@ export async function runUseWithTrace<TPage extends { page: Page }>({
     });
   }
 
+  // eslint-disable-next-line react-hooks/rules-of-hooks
   await use(page);
 
   await testInfo.attach("logs", {
