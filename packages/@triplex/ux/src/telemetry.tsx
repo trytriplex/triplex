@@ -9,19 +9,20 @@ import { createContext, useContext, useEffect, useMemo, useRef } from "react";
 
 export type ActionContext =
   | "assetsdrawer"
+  | "contextmenu"
   | "contextpanel"
-  | "projectdrawer"
-  | "rootmenu"
-  | "scene"
-  | "notification"
-  | "errorsplash"
+  | "dialog"
   | "errorboundary"
   | "errorflag"
+  | "errorsplash"
+  | "notification"
+  | "projectdrawer"
+  | "repo"
+  | "rootmenu"
+  | "scene"
   | "scenepanel"
   | "tabbar"
-  | "contextmenu"
-  | "welcome"
-  | "repo";
+  | "welcome";
 
 export type ActionGroup =
   | "assets"
@@ -35,11 +36,12 @@ export type ActionGroup =
   | "error"
   | "file"
   | "frame"
+  | "help"
   | "input"
+  | "loaded"
   | "logs"
   | "project"
   | "provider"
-  | "loaded"
   | "resize";
 
 export type ActionId = ActionIdSafe | "(UNSAFE_SKIP)";

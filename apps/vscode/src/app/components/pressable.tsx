@@ -16,9 +16,10 @@ interface PressableProps {
   describedBy?: string;
   isDisabled?: boolean;
   labelledBy?: string;
-  onClick: (e: React.MouseEvent | KeyboardEvent) => void;
+  onClick?: (e: React.MouseEvent | KeyboardEvent) => void;
   style?: CSSProperties;
   title?: string;
+  type?: "button" | "submit";
   vscodeContext?: Record<string, unknown>;
 }
 
@@ -35,14 +36,17 @@ export const Pressable = forwardRef<HTMLButtonElement, PressableProps>(
       onClick,
       style,
       title,
+      type = "button",
       vscodeContext,
     },
     ref,
   ) => {
     const telemetry = useTelemetry();
     const onClickHandler = useEvent((e: React.MouseEvent | KeyboardEvent) => {
-      telemetry.event(actionId);
-      onClick(e);
+      if (onClick) {
+        telemetry.event(actionId);
+        onClick(e);
+      }
     });
 
     useEffect(() => {
@@ -69,6 +73,7 @@ export const Pressable = forwardRef<HTMLButtonElement, PressableProps>(
         ref={ref}
         style={style}
         title={title}
+        type={type}
       >
         {children}
       </button>

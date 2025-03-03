@@ -73,6 +73,7 @@ export function Button({
   children,
   isDisabled,
   onClick,
+  type,
   variant = "default",
   vscodeContext,
 }: {
@@ -80,7 +81,8 @@ export function Button({
   actionId: ActionId;
   children: string;
   isDisabled?: boolean;
-  onClick: (e: React.MouseEvent | KeyboardEvent) => void;
+  onClick?: (e: React.MouseEvent | KeyboardEvent) => void;
+  type?: "button" | "submit";
   variant?: "default" | "cta";
   vscodeContext?: Record<string, unknown>;
 }) {
@@ -100,6 +102,7 @@ export function Button({
       ])}
       isDisabled={isDisabled}
       onClick={onClick}
+      type={type}
       vscodeContext={vscodeContext}
     >
       {children}

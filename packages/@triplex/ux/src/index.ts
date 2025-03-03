@@ -30,3 +30,4 @@ export {
   MenuOptionGroup,
   groupOptionsByGroup,
 } from "./menu";
+export { Dialog } from "./dialog";

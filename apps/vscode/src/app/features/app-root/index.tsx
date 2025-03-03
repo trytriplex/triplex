@@ -9,6 +9,7 @@ import { useScreenView } from "@triplex/ux";
 import { preloadSubscription } from "../../hooks/ws";
 import { FloatingControls } from "../floating-controls";
 import { Panels } from "../panels";
+import { Dialogs } from "./dialogs";
 import { EmptyState } from "./empty-state";
 import { Events } from "./events";
 
@@ -19,6 +20,7 @@ export function AppRoot() {
     <div className="fixed inset-0 flex select-none">
       <Events />
       <Panels />
+      <Dialogs />
       <div className="relative h-full w-full">
         <FloatingControls />
         <EmptyState />

@@ -8,6 +8,7 @@ import {
   GearIcon,
   PauseIcon,
   PlayIcon,
+  QuestionMarkCircledIcon,
   ResetIcon,
   StopIcon,
 } from "@radix-ui/react-icons";
@@ -33,6 +34,7 @@ import { Fragment, useEffect, useState } from "react";
 import { IconButton } from "../../components/button";
 import { Separator } from "../../components/separator";
 import { Surface } from "../../components/surface";
+import { useDialogs } from "../../stores/dialogs";
 import { onVSCE } from "../../util/bridge";
 import { useSceneEvents, useScenePlayState } from "../app-root/context";
 
@@ -44,6 +46,7 @@ export function FloatingControls() {
   const play = useScenePlayState();
   const { setPlayState: dispatch } = useSceneEvents();
   const telemetry = useTelemetry();
+  const showDialog = useDialogs((store) => store.set);
 
   useEffect(() => {
     return on("set-extension-points", (data) => {
@@ -236,6 +239,7 @@ export function FloatingControls() {
               onClick={() => {}}
             />
           </MenuTrigger>
+
           {groupOptionsByGroup(settingsOptions)?.map(
             ([groupName, options], index) => {
               const optionsJsx = options.map((option) =>
@@ -264,6 +268,13 @@ export function FloatingControls() {
             },
           )}
         </Menu>
+        <Separator />
+        <IconButton
+          actionId="scene_controls_help"
+          icon={QuestionMarkCircledIcon}
+          label="Help"
+          onClick={() => showDialog("help")}
+        />
       </Surface>
     </div>
   );
