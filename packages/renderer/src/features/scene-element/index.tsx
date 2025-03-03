@@ -5,8 +5,6 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import {
-  compose,
-  on,
   type RendererElementProps,
   type TriplexMeta,
 } from "@triplex/bridge/client";
@@ -18,7 +16,6 @@ import {
   useEffect,
   useMemo,
   useRef,
-  useState,
   type ReactNode,
 } from "react";
 import { mergeRefs } from "use-callback-ref";
@@ -45,7 +42,6 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
     ref,
   ) => {
     const { children, ...reconciledProps } = useTemporaryProps(__meta, props);
-    const [isDeleted, setIsDeleted] = useState(false);
     const { onSceneObjectCommitted } = useSceneObjectEvents();
     const parentMeta = useContext(ParentComponentMetaContext);
     const type = typeof Component === "string" ? "host" : "custom";
@@ -64,29 +60,6 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
     );
 
     useEffect(() => {
-      return compose([
-        on("request-delete-element", (data) => {
-          if (
-            data.column === __meta.column &&
-            data.line === __meta.line &&
-            data.path === __meta.path
-          ) {
-            setIsDeleted(true);
-          }
-        }),
-        on("request-restore-element", (data) => {
-          if (
-            data.column === __meta.column &&
-            data.line === __meta.line &&
-            data.parentPath === __meta.path
-          ) {
-            setIsDeleted(false);
-          }
-        }),
-      ]);
-    }, [__meta.column, __meta.line, __meta.path]);
-
-    useEffect(() => {
       onSceneObjectCommitted(__meta.path, __meta.line, __meta.column);
     }, [__meta.column, __meta.line, __meta.path, onSceneObjectCommitted]);
 
@@ -99,11 +72,7 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
       mergedRefs.current.__triplex = triplexMeta;
     }, [__meta, mergedRefs, parentMeta, props, triplexMeta, type]);
 
-    if (isDeleted) {
-      // This component will eventually unmount when deleted as its removed
-      // from source code. To keep things snappy however we delete it optimistically.
-      return null;
-    } else if (
+    if (
       camera?.type === "editor" &&
       !disabledWhenTriplexCamera.some((r) => r.test(__meta.name)) &&
       passThroughWhenTriplexCamera.some((r) => r.test(__meta.name))
