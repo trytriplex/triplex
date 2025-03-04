@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.71.7
+
+### Patch Changes
+
+- b6ef6c2: The default global provider has been deprecated and replaced with two named exports: CanvasProvider which is a 1:1 replacement, and GlobalProvider, which is placed at the root of the component tree.
+- 863de7b: GlobalProvider and CanvasProvider exports from the declared provider module now show up in the provider panel.
+
 ## 0.71.6
 
 ### Patch Changes

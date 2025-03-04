@@ -1,5 +1,12 @@
 # @triplex/websocks-server
 
+## 0.0.3
+
+### Patch Changes
+
+- 863de7b: Support for optional params. E.g. the path "/scene/:path/:exportName{/:exportName1}{/:exportName2}/props" will have `path` and `exportName` as required params, and `exportName1` and `exportName2` as optional params.
+- 863de7b: GlobalProvider and CanvasProvider exports from the declared provider module now show up in the provider panel.
+
 ## 0.0.2
 
 ### Patch Changes

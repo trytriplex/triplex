@@ -1,5 +1,17 @@
 # @triplex/vscode
 
+## 0.2.16
+
+### Patch Changes
+
+- 01a2e6d: A feedback dialog is now available in the scene floating controls.
+- b6ef6c2: The default global provider has been deprecated and replaced with two named exports: CanvasProvider which is a 1:1 replacement, and GlobalProvider, which is placed at the root of the component tree.
+- 863de7b: GlobalProvider and CanvasProvider exports from the declared provider module now show up in the provider panel.
+- Updated dependencies [b6ef6c2]
+- Updated dependencies [863de7b]
+  - @triplex/client@0.70.16
+  - @triplex/server@0.71.7
+
 ## 0.2.15
 
 ### Patch Changes

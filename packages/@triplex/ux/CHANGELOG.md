@@ -1,5 +1,13 @@
 # @triplex/ux
 
+## 0.69.16
+
+### Patch Changes
+
+- 01a2e6d: A feedback dialog is now available in the scene floating controls.
+- Updated dependencies [b6ef6c2]
+  - @triplex/bridge@0.70.4
+
 ## 0.69.15
 
 ### Patch Changes

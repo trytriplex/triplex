@@ -1,5 +1,16 @@
 # @triplex/client
 
+## 0.70.16
+
+### Patch Changes
+
+- b6ef6c2: The default global provider has been deprecated and replaced with two named exports: CanvasProvider which is a 1:1 replacement, and GlobalProvider, which is placed at the root of the component tree.
+- Updated dependencies [a0c62f8]
+- Updated dependencies [b6ef6c2]
+- Updated dependencies [4db2055]
+  - @triplex/renderer@0.71.12
+  - @triplex/bridge@0.70.4
+
 ## 0.70.15
 
 ### Patch Changes

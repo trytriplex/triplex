@@ -1,5 +1,16 @@
 # @triplex/electron
 
+## 0.70.16
+
+### Patch Changes
+
+- 863de7b: GlobalProvider and CanvasProvider exports from the declared provider module now show up in the provider panel.
+- Updated dependencies [b6ef6c2]
+- Updated dependencies [863de7b]
+  - @triplex/client@0.70.16
+  - @triplex/server@0.71.7
+  - @triplex/editor@0.70.16
+
 ## 0.70.15
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.70.4
+
+### Patch Changes
+
+- b6ef6c2: The default global provider has been deprecated and replaced with two named exports: CanvasProvider which is a 1:1 replacement, and GlobalProvider, which is placed at the root of the component tree.
+
 ## 0.70.3
 
 ### Patch Changes

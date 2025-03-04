@@ -1,5 +1,17 @@
 # @triplex/editor
 
+## 0.70.16
+
+### Patch Changes
+
+- Updated dependencies [01a2e6d]
+- Updated dependencies [b6ef6c2]
+- Updated dependencies [863de7b]
+- Updated dependencies [863de7b]
+  - @triplex/ux@0.69.16
+  - @triplex/bridge@0.70.4
+  - @triplex/websocks-client@0.0.5
+
 ## 0.70.15
 
 ### Patch Changes
