@@ -24,4 +24,4 @@ jobs:
               owner: context.repo.owner,
               repo: context.repo.repo,
               body: "Available actions:\n\n`/playwright` — Runs all Playwright tests."
-            })
+            });

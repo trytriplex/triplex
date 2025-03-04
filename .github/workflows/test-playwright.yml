@@ -7,7 +7,7 @@ on:
 
 jobs:
   playwright:
-    if: github.event.issue.pull_request && contains(github.event.comment.body, '/playwright')
+    if: github.event.issue.pull_request && github.event.issue.state == 'open' && contains(github.event.comment.body, '/playwright')
 
     timeout-minutes: 30
 
@@ -29,16 +29,10 @@ jobs:
         shard: [1, 2, 3, 4, 5]
 
     steps:
-      - name: Resolve branch
-        id: get_branch
-        run: |
-          PR=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }})
-          echo "::set-output name=branch::$(echo $PR | jq -r '.head.ref')"
-
       - name: Checkout
         uses: actions/checkout@master
         with:
-          ref: ${{ steps.get_branch.outputs.branch }}
+          ref: refs/pull/${{ github.event.issue.number }}/head
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -81,7 +75,7 @@ jobs:
 
   merge-reports:
     # Merge reports after playwright-tests, even if some shards have failed
-    if: ${{ !cancelled() }}
+    if: ${{ !cancelled() && needs.playwright.result != 'skipped' }}
 
     needs: playwright
 
@@ -90,14 +84,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Resolve branch
-        id: get_branch
-        run: |
-          PR=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }})
-          echo "::set-output name=branch::$(echo $PR | jq -r '.head.ref')"
-
       - name: Checkout
         uses: actions/checkout@master
+        with:
+          ref: refs/pull/${{ github.event.issue.number }}/head
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
