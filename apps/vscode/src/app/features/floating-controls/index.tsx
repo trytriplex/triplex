@@ -77,7 +77,7 @@ export function FloatingControls() {
 
   return (
     <div
-      className="pointer-events-none absolute left-0 right-0 top-1.5 flex justify-center gap-1"
+      className="pointer-events-none absolute left-0 right-0 top-1.5 flex flex-wrap justify-center gap-1"
       data-vscode-context={JSON.stringify({
         preventDefaultContextMenuItems: true,
       })}

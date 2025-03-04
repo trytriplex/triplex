@@ -27,7 +27,7 @@ export default defineConfig({
       expect: {
         timeout: 60_000,
       },
-      name: "vscode",
+      name: "vsce",
       testDir: "./apps/vscode/__tests__",
     },
   ],
