@@ -1,5 +1,15 @@
 # @triplex/renderer
 
+## 0.71.12
+
+### Patch Changes
+
+- a0c62f8: Fix delete element bleeding deleted state onto unexpecting sibling elements.
+- b6ef6c2: The default global provider has been deprecated and replaced with two named exports: CanvasProvider which is a 1:1 replacement, and GlobalProvider, which is placed at the root of the component tree.
+- 4db2055: Fix state changes clearing the camera unexpectedly.
+- Updated dependencies [b6ef6c2]
+  - @triplex/bridge@0.70.4
+
 ## 0.71.11
 
 ### Patch Changes
