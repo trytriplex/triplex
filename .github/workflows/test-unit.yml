@@ -5,9 +5,6 @@ on:
     paths:
       - apps/**
       - packages/**
-      - pnpm-lock.yaml
-      - package.json
-      - .github/workflows/**
 
 env:
   CI: true

@@ -1,0 +1,27 @@
+name: Commander
+
+on:
+  pull_request:
+    types:
+      - opened
+
+permissions:
+  pull-requests: write
+
+jobs:
+  comment:
+    timeout-minutes: 5
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Comment available actions
+        uses: actions/github-script@v7
+        with:
+          script: |
+            github.rest.issues.createComment({
+              issue_number: context.issue.number,
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              body: "Available actions:\n\n`/playwright` — Runs all Playwright tests."
+            })

@@ -1,28 +1,25 @@
 name: Test
 
 on:
-  pull_request:
-    paths:
-      - apps/electron/**
-      - apps/vscode/**
-      - packages/**
-      - pnpm-lock.yaml
-      - package.json
-      - .github/workflows/**
+  issue_comment:
+    types:
+      - created
 
 jobs:
   playwright:
+    if: github.event.issue.pull_request && contains(github.event.comment.body, '/playwright')
+
     timeout-minutes: 30
 
     runs-on: ${{ matrix.os }}
 
     concurrency:
-      group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.ref }}-${{ matrix.os }}-${{ matrix.shard }}
+      group: ${{ github.workflow }}-${{ github.ref }}-${{ matrix.os }}-${{ matrix.shard }}
       cancel-in-progress: true
 
     env:
       DEBUG: pw:browser*
-      SHARD_TOTAL: 10
+      SHARD_TOTAL: 5
 
     strategy:
       fail-fast: false
@@ -32,8 +29,16 @@ jobs:
         shard: [1, 2, 3, 4, 5]
 
     steps:
+      - name: Resolve branch
+        id: get_branch
+        run: |
+          PR=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }})
+          echo "::set-output name=branch::$(echo $PR | jq -r '.head.ref')"
+
       - name: Checkout
         uses: actions/checkout@master
+        with:
+          ref: ${{ steps.get_branch.outputs.branch }}
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -85,6 +90,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Resolve branch
+        id: get_branch
+        run: |
+          PR=$(curl -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" ${{ github.event.issue.pull_request.url }})
+          echo "::set-output name=branch::$(echo $PR | jq -r '.head.ref')"
+
       - name: Checkout
         uses: actions/checkout@master
 

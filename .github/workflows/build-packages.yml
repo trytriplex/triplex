@@ -4,9 +4,6 @@ on:
   pull_request:
     paths:
       - packages/**
-      - pnpm-lock.yaml
-      - package.json
-      - .github/workflows/**
 
 env:
   CI: true
