@@ -26,6 +26,7 @@ export type ActionContext =
 
 export type ActionGroup =
   | "assets"
+  | "auth"
   | "changelog"
   | "component"
   | "config"

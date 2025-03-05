@@ -44,7 +44,7 @@ export function Feedback() {
         <input name="app" type="hidden" value="vsce" />
         <textarea
           aria-label="Anything you'd like to tell us?"
-          className="text-subtle placeholder:text-subtlest invalid:border-danger border-input bg-input focus:border-selected h-20 w-full resize-none rounded-sm border p-2 text-sm focus:outline-none"
+          className="text-subtle placeholder:text-subtlest border-input bg-input focus:border-selected h-20 w-full resize-none rounded-sm border p-2 text-sm focus:outline-none"
           maxLength={1024}
           name="feedback"
           placeholder="Anything you'd like to tell us?"

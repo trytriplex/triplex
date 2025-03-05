@@ -17,6 +17,7 @@ import { IconButton } from "../../components/button";
 import { ScrollContainer } from "../../components/scroll-container";
 import { SkeletonList, SkeletonText } from "../../components/skeleton";
 import { Surface } from "../../components/surface";
+import { UserMenu } from "../../features/user-menu";
 import {
   useSceneContext,
   useSceneEvents,
@@ -180,37 +181,40 @@ export function Panels() {
         />
         <div className={shown ? "contents" : "hidden"}>
           <ElementSelect />
-          <IconButton
-            actionId="scenepanel_component_controls"
-            icon={Pencil2Icon}
-            isSelected={isComponentControlsShown}
-            label={
-              isComponentControlsShown
-                ? "Close Component Controls"
-                : "Open Component Controls"
-            }
-            onClick={() => {
-              if (isComponentControlsShown) {
-                blurElement();
-              } else {
-                focusElement({
-                  column: -1,
-                  exportName: context.exportName,
-                  line: -1,
-                  parentPath: "",
-                  path: context.path,
-                });
+          <div className="flex">
+            <IconButton
+              actionId="scenepanel_component_controls"
+              icon={Pencil2Icon}
+              isSelected={isComponentControlsShown}
+              label={
+                isComponentControlsShown
+                  ? "Close Component Controls"
+                  : "Open Component Controls"
               }
-            }}
-            spacing="spacious"
-          >
-            {fg("required_props_indicator") && (
-              <Suspense>
-                <WarningRequiredProps />
-              </Suspense>
-            )}
-          </IconButton>
-          <FilterElements />
+              onClick={() => {
+                if (isComponentControlsShown) {
+                  blurElement();
+                } else {
+                  focusElement({
+                    column: -1,
+                    exportName: context.exportName,
+                    line: -1,
+                    parentPath: "",
+                    path: context.path,
+                  });
+                }
+              }}
+              spacing="spacious"
+            >
+              {fg("required_props_indicator") && (
+                <Suspense>
+                  <WarningRequiredProps />
+                </Suspense>
+              )}
+            </IconButton>
+            <FilterElements />
+            {fg("private_auth_gate") && <UserMenu />}
+          </div>
         </div>
         {!shown && <HasWarningsDot />}
       </div>

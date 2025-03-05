@@ -38,7 +38,7 @@ export function FilterElements() {
   }
 
   return (
-    <div className="bg-editor absolute inset-0 p-1.5">
+    <div className="bg-editor absolute inset-0 z-10 p-1.5">
       <input
         aria-label="Filter elements"
         className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder h-[26px] w-full rounded-sm border px-[9px] focus:outline-none"

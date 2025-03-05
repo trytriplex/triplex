@@ -6,18 +6,19 @@
  */
 import "./styles.css";
 import { init } from "@sentry/react";
-import { initFeatureGates } from "@triplex/lib/fg";
+import { fgComponent, initFeatureGates } from "@triplex/lib/fg";
 import { LoadingLogo } from "@triplex/lib/loader";
 import { TelemetryProvider } from "@triplex/ux";
-import { Suspense } from "react";
+import { Fragment, Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { version } from "../../package.json";
 import { RootErrorBoundary } from "./components/root-error-boundary";
 import { AppRoot } from "./features/app-root";
 import { SceneContextProvider } from "./features/app-root/context";
+import { AuthenticationProvider as GatedAuthenticationProvider } from "./features/authentication/provider";
+import { EnsureAuthenticated } from "./features/invariants/ensure-authenticated";
 import { EnsureCodeValidity } from "./features/invariants/ensure-code-validity";
 import { EnsureDependencies } from "./features/invariants/ensure-dependencies";
-import { RepoTelemetry } from "./features/telemetry/repo";
 import { preloadSubscription } from "./hooks/ws";
 
 if (
@@ -28,6 +29,11 @@ if (
     dsn: "https://cae61a2a840cbbe7f17e240c99ad0346@o4507990276177920.ingest.us.sentry.io/4507990321725440",
   });
 }
+
+const AuthenticationProvider = fgComponent("private_auth_gate", {
+  off: Fragment,
+  on: GatedAuthenticationProvider,
+});
 
 preloadSubscription(
   "/scene/:path/:exportName/props",
@@ -52,14 +58,17 @@ async function bootstrap() {
     >
       <RootErrorBoundary>
         <Suspense fallback={<LoadingLogo position="splash" variant="fill" />}>
-          <RepoTelemetry />
-          <SceneContextProvider>
-            <EnsureDependencies>
-              <EnsureCodeValidity>
-                <AppRoot />
-              </EnsureCodeValidity>
-            </EnsureDependencies>
-          </SceneContextProvider>
+          <AuthenticationProvider>
+            <EnsureAuthenticated>
+              <SceneContextProvider>
+                <EnsureDependencies>
+                  <EnsureCodeValidity>
+                    <AppRoot />
+                  </EnsureCodeValidity>
+                </EnsureDependencies>
+              </SceneContextProvider>
+            </EnsureAuthenticated>
+          </AuthenticationProvider>
         </Suspense>
       </RootErrorBoundary>
     </TelemetryProvider>,
