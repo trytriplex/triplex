@@ -5,6 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 /// <reference types="vite/client" />
+import { type ReactNode } from "react";
 import Statsig from "statsig-js";
 
 let initialized = false;
@@ -68,13 +69,20 @@ export function clearFgOverrides() {
   Statsig.removeGateOverride();
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function fgComponent<TComponent extends (props: any) => any>(
+export function fgComponent<
+  TProps extends object,
+  TComponent extends (props: TProps) => ReactNode,
+>(
   key: string,
-  { off: OffComponent, on: OnComponent }: { off: TComponent; on: TComponent },
+  {
+    off: OffComponent,
+    on: OnComponent,
+  }: {
+    off: (props: TProps) => ReactNode;
+    on: (props: TProps) => ReactNode;
+  },
 ): TComponent {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  return function FGComponent(props: any) {
+  return function GatedComponent(props: TProps) {
     return fg(key) ? <OnComponent {...props} /> : <OffComponent {...props} />;
   } as TComponent;
 }
