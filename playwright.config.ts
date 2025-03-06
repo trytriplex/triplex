@@ -49,7 +49,7 @@ export default defineConfig({
   timeout: 120_000,
   use: {
     trace: {
-      mode: "on-first-retry",
+      mode: "off",
     },
   },
   workers: 1,
