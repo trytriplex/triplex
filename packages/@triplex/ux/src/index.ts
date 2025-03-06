@@ -20,7 +20,6 @@ export {
   useTelemetry,
   useScreenView,
 } from "./telemetry";
-export { SubsequentSuspense } from "./suspense";
 export { TriplexLogo } from "./logo";
 export {
   Menu,
