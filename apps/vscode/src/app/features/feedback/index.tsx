@@ -6,12 +6,15 @@
  */
 
 import { Dialog, useScreenView, useTelemetry } from "@triplex/ux";
+import { use } from "react";
 import { Button } from "../../components/button";
 import { useDialogs } from "../../stores/dialogs";
+import { AuthenticationContext } from "../authentication/context";
 
 export function Feedback() {
   const hideSelf = useDialogs((store) => () => store.set(undefined));
   const telemetry = useTelemetry();
+  const session = use(AuthenticationContext);
 
   useScreenView("help", "Dialog");
 
@@ -40,19 +43,29 @@ export function Feedback() {
       onDismiss={hideSelf}
     >
       <form action={onSubmit} className="flex flex-col gap-2.5 p-2.5">
-        <span className="select-none">Send Feedback</span>
+        <span className="text-heading select-none font-medium">
+          Leave Feedback
+        </span>
         <input name="app" type="hidden" value="vsce" />
+        {session?.user.email && (
+          <input name="user" type="hidden" value={session.user.email} />
+        )}
         <textarea
-          aria-label="Anything you'd like to tell us?"
+          aria-label="Your feedback"
           className="text-subtle placeholder:text-subtlest border-input bg-input focus:border-selected h-20 w-full resize-none rounded-sm border p-2 text-sm focus:outline-none"
           maxLength={1024}
           name="feedback"
-          placeholder="Anything you'd like to tell us?"
+          placeholder="Your feedback"
           required
         />
-        <Button actionId="(UNSAFE_SKIP)" type="submit" variant="cta">
-          Send Feedback
-        </Button>
+        <div className="flex flex-col gap-1.5">
+          <Button actionId="(UNSAFE_SKIP)" type="submit" variant="cta">
+            Submit
+          </Button>
+          <Button actionId="dialog_help_cancel" onClick={hideSelf}>
+            Cancel
+          </Button>
+        </div>
         <div className="select-none text-left">
           Want to request a feature, report a bug, or talk to someone?{" "}
           <a
