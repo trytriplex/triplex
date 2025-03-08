@@ -29,6 +29,7 @@ const schema = object({
   feedback: optional(string([minLength(0), maxLength(1024)])),
   pathname: optional(string([minLength(1), maxLength(96)])),
   sentiment: optional(union([literal("positive"), literal("negative")])),
+  user: optional(string([minLength(1), maxLength(96)])),
 });
 
 export default async function handler(
@@ -37,7 +38,7 @@ export default async function handler(
 ) {
   await cors(req, res);
 
-  const { app, feedback, pathname, sentiment } = parse(schema, req.query);
+  const { app, feedback, pathname, sentiment, user } = parse(schema, req.query);
 
   if (typeof process.env.DISCORD_WEBHOOK_URL !== "string") {
     res
@@ -58,6 +59,7 @@ export default async function handler(
               },
               { name: "Feedback", value: feedback || "(empty)" },
               { name: "Sentiment", value: sentiment || "(empty)" },
+              { name: "User", value: user || "(unknown)" },
             ],
             title: `Feedback for ${appNames[app]}`,
           },
