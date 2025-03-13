@@ -1,5 +1,13 @@
 # @triplex/vscode
 
+## 0.2.17
+
+### Patch Changes
+
+- cd6a38e: Users now need to authenticate when working against private repositories.
+- 4753a86: Floating controls now wrap when there isn't enough space.
+- 5d8a227: Feedback dialog improvements.
+
 ## 0.2.16
 
 ### Patch Changes
