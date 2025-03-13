@@ -29,7 +29,7 @@ function PricingPanel({
   return (
     <li
       className={cn([
-        "flex w-full max-w-sm basis-1/3 flex-col gap-3 rounded-xl border p-4 lg:w-auto",
+        "flex w-full max-w-sm flex-col gap-3 rounded-xl border p-4",
         highlight ? "border-transparent" : "border-neutral",
         highlight &&
           "outline-brand relative outline outline-4 before:absolute lg:mt-0",
@@ -131,7 +131,7 @@ export function Pricing() {
             Buy Now
           </Link>
         }
-        description="Collaborate with teammates and friends over unlimited projects."
+        description="Collaborate with your team across unlimited projects."
         highlight
         name="Teams"
         perMonthLabel="per month"
@@ -149,8 +149,8 @@ export function Pricing() {
           </li>
           <li>
             <DetailsSummary
-              details="Influence the direction of Triplex by requesting features that are important to you."
-              summary="Priority feature requests"
+              details="Influence the direction of Triplex by using and giving feedback on early features that are important to you."
+              summary="Early access to new features"
             />
           </li>
         </ul>

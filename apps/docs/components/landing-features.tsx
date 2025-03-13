@@ -5,12 +5,19 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import {
+  BlocksIcon,
+  FileSlidersIcon,
+  RocketIcon,
+  SlidersVerticalIcon,
+} from "./icons";
+import {
   LandingCardBody,
   LandingCardButton,
   LandingCardHeading,
   LandingCardIcon,
 } from "./landing-card";
 import { Tab, Tabs, TabsList, TabsRoot } from "./tabs";
+import { InlineVideo } from "./video";
 
 export function LandingFeatures() {
   return (
@@ -20,20 +27,32 @@ export function LandingFeatures() {
       </h2>
 
       <TabsRoot>
-        <div className="bg-surface border-neutral flex aspect-video items-center justify-center border">
+        <div className="bg-surface relative -mx-8 flex h-[70vh] items-center justify-center md:aspect-video md:h-auto">
           <TabsList>
-            <div className="text-subtlest select-none font-mono text-3xl font-medium">
-              (FEATURE_ONE_VIDEO)
-            </div>
-            <div className="text-subtlest select-none font-mono text-3xl font-medium">
-              (FEATURE_TWO_VIDEO)
-            </div>
-            <div className="text-subtlest select-none font-mono text-3xl font-medium">
-              (FEATURE_THREE_VIDEO)
-            </div>
-            <div className="text-subtlest select-none font-mono text-3xl font-medium">
-              (FEATURE_FOUR_VIDEO)
-            </div>
+            <InlineVideo
+              src={{
+                dark: "/videos/vsce-controls-dark.mp4",
+                light: "/videos/vsce-controls-light.mp4",
+              }}
+            />
+            <InlineVideo
+              src={{
+                dark: "/videos/vsce-inputs-dark.mp4",
+                light: "/videos/vsce-inputs-light.mp4",
+              }}
+            />
+            <InlineVideo
+              src={{
+                dark: "/videos/vsce-save-dark.mp4",
+                light: "/videos/vsce-save-light.mp4",
+              }}
+            />
+            <InlineVideo
+              src={{
+                dark: "/videos/vsce-isolation-dark.mp4",
+                light: "/videos/vsce-isolation-light.mp4",
+              }}
+            />
           </TabsList>
         </div>
         <div className="-mx-8 overflow-auto pl-8 [scrollbar-width:none] lg:-mx-20 lg:pl-20 [&::-webkit-scrollbar]:hidden">
@@ -45,7 +64,7 @@ export function LandingFeatures() {
                     onClick={onClick}
                     variant={isSelected ? "default" : "inverse"}
                   >
-                    <LandingCardIcon />
+                    <LandingCardIcon icon={SlidersVerticalIcon} />
                     <LandingCardHeading decoration="01.">
                       Integrated Visual Controls
                     </LandingCardHeading>
@@ -63,7 +82,7 @@ export function LandingFeatures() {
                     onClick={onClick}
                     variant={isSelected ? "default" : "inverse"}
                   >
-                    <LandingCardIcon />
+                    <LandingCardIcon icon={FileSlidersIcon} />
                     <LandingCardHeading decoration="02.">
                       Props Driven Input Controls
                     </LandingCardHeading>
@@ -81,14 +100,14 @@ export function LandingFeatures() {
                     onClick={onClick}
                     variant={isSelected ? "default" : "inverse"}
                   >
-                    <LandingCardIcon />
+                    <LandingCardIcon icon={RocketIcon} />
                     <LandingCardHeading decoration="03.">
-                      Always Production Ready
+                      Production Ready, Always
                     </LandingCardHeading>
                     <LandingCardBody>
-                      Forget about import and export. When building in Triplex
-                      using visual and input controls and saving your code gets
-                      updated, ready for your next deployment.
+                      Forget about import and export, building in Triplex uses
+                      your actual code. Making changes then saving saves back to
+                      it — ready for the next deployment.
                     </LandingCardBody>
                   </LandingCardButton>
                 )}
@@ -99,13 +118,13 @@ export function LandingFeatures() {
                     onClick={onClick}
                     variant={isSelected ? "default" : "inverse"}
                   >
-                    <LandingCardIcon />
+                    <LandingCardIcon icon={BlocksIcon} />
                     <LandingCardHeading decoration="04.">
-                      Build Components In Isolation
+                      Build Components in Isolation
                     </LandingCardHeading>
                     <LandingCardBody>
                       From small components like a button or card through to
-                      large ones like a full page or app, open any component and
+                      full production app sized ones, open any component and
                       work on it in isolation.
                     </LandingCardBody>
                   </LandingCardButton>

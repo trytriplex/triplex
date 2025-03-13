@@ -39,14 +39,16 @@ export function LandingResource({ slug }: { slug: string }) {
 
 export function LandingResources() {
   return (
-    <div className="flex flex-col gap-12 lg:flex-row lg:gap-24">
-      <div className="flex flex-col items-start gap-10">
+    <div className="flex flex-col items-start gap-12 lg:flex-row lg:gap-24">
+      <div className="contents flex-col items-start gap-10 lg:flex">
         <h2 className="font-brand text-brand max-w-4xl text-5xl font-medium md:text-6xl lg:text-7xl">
           Resources
         </h2>
-        <LandingLink href="/resources" variant="border">
-          See More
-        </LandingLink>
+        <div className="order-last lg:order-none">
+          <LandingLink href="/resources" variant="border">
+            See More
+          </LandingLink>
+        </div>
       </div>
       <div className="flex flex-col gap-6">
         <LandingResource slug="edit-components-using-component-controls" />
