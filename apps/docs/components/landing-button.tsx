@@ -84,9 +84,9 @@ export function LandingButton({
   return (
     <button
       className={cn([
-        isSelected && "border-brand text-default",
-        !isSelected && "border-neutral text-subtle",
-        "font-default cursor-pointer rounded-full border bg-transparent px-4 py-1 text-lg",
+        isSelected && "border-brand bg-inverse text-inverse",
+        !isSelected && "border-neutral text-subtle bg-transparent",
+        "font-default cursor-pointer rounded-full border px-4 py-1 text-lg",
       ])}
       onClick={onClick}
       type="button"

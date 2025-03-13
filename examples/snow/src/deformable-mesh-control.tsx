@@ -28,7 +28,7 @@ export function DeformableMeshControl({
   radius = 0.1,
   raycastYOffset = 2,
 }: {
-  meshRef: React.RefObject<Mesh>;
+  meshRef: React.RefObject<Mesh | null>;
   onIntersect?: (
     ...args:
       | [undefined]

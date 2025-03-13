@@ -5,7 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 
-import { type ReactNode } from "react";
+import { type ReactNode, type RefObject } from "react";
 import { cn } from "../util/cn";
 
 export function GridContainer({
@@ -32,11 +32,13 @@ export function GridContainer({
 export function BgGrid({
   children,
   className,
+  ref,
   size,
   variant,
 }: {
   children?: ReactNode;
   className?: string;
+  ref?: RefObject<HTMLDivElement | null>;
   size?: number;
   variant: "transparent" | "lines";
 }) {
@@ -49,6 +51,7 @@ export function BgGrid({
         variant === "transparent" &&
           "[background:repeating-conic-gradient(var(--bg-hovered)_0%_25%,var(--bg-pressed)_0%_50%)_left_top/calc(var(--grid)*2+2px)_calc(var(--grid)*2+2px)]",
       ])}
+      ref={ref}
       style={size ? { "--grid": `${size}px` } : undefined}
     >
       {children}

@@ -141,6 +141,9 @@ importers:
       '@types/flexsearch':
         specifier: ^0.7.6
         version: 0.7.6
+      '@types/raf-schd':
+        specifier: ^4.0.3
+        version: 4.0.3
       '@types/react':
         specifier: ^19.0.8
         version: 19.0.8
@@ -153,6 +156,9 @@ importers:
       autoprefixer:
         specifier: ^10.4.14
         version: 10.4.16(postcss@8.4.49)
+      bind-event-listener:
+        specifier: ^3.0.0
+        version: 3.0.0
       cors:
         specifier: ^2.8.5
         version: 2.8.5
@@ -171,6 +177,9 @@ importers:
       postcss:
         specifier: ^8.4.32
         version: 8.4.49
+      raf-schd:
+        specifier: ^4.0.3
+        version: 4.0.3
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -750,6 +759,9 @@ importers:
 
   examples/snow:
     dependencies:
+      '@react-three/drei':
+        specifier: ^10.0.0
+        version: 10.0.0(@react-three/fiber@9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
       '@react-three/fiber':
         specifier: ^9.0.4
         version: 9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)

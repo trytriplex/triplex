@@ -6,6 +6,7 @@
  */
 
 import { useLayoutEffect, useRef, useState } from "react";
+import { InlineVideo } from "./video";
 
 export function LandingVideo() {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -54,9 +55,19 @@ export function LandingVideo() {
   }
 
   return (
-    <div
-      className="hover:bg-hovered active:bg-pressed absolute inset-0 cursor-pointer"
+    <button
+      className="absolute inset-0 cursor-pointer"
       onClick={() => setIsExpanded(true)}
-    />
+      type="button"
+    >
+      <span className="sr-only">Watch the video on how Triplex works</span>
+      <InlineVideo
+        src={{
+          dark: "/videos/hero-preview-dark.mp4",
+          light: "/videos/hero-preview-light.mp4",
+        }}
+      />
+      <div className="hover:bg-hovered active:bg-pressed absolute inset-0 rounded-xl" />
+    </button>
   );
 }

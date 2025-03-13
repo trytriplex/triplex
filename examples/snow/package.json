@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@react-three/fiber": "^9.0.4",
+    "@react-three/drei": "^10.0.0",
     "@types/react": "^19.0.8",
     "@types/three": "^0.171.0",
     "react": "^19.0.0",
