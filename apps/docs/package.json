@@ -2,7 +2,7 @@
   "name": "@docs/triplex",
   "version": "0.2.9",
   "private": true,
-  "description": "The visual development environment for React / Three Fiber.",
+  "description": "The visual workspace for React / Three Fiber.",
   "license": "MIT",
   "scripts": {
     "build": "next build",

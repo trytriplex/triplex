@@ -1,0 +1,27 @@
+---
+description: Visual controls let you update props using controls in the scene rather than in code or input controls.
+---
+
+import { AngleIcon, CursorArrowIcon } from "@radix-ui/react-icons";
+
+## Transform Controls
+
+Transform controls appear on 3D elements that are selected which can be used for moving, rotating, and scaling. They are enabled for elements that declare the prop for the given transform mode, otherwise it's disabled.
+
+- **position** — Enables translate mode for the element
+- **rotation** — Enables rotate mode for the element
+- **scale** — Enables scale mode for the element
+
+### Transform modes
+
+The floating scene controls contain transform mode actions, clicking them sets the mode. For example clicking the <ActionLink icon={AngleIcon} href="/docs/building-your-scene/learn-the-ui/scene#rotate" name="Rotate" /> action enables rotation.
+
+Each mode has a corresponding hotkey you can use instead of clicking the action.
+
+- Translate — <Kbd>T</Kbd>
+- Rotate — <Kbd>R</Kbd>
+- Scale — <Kbd>S</Kbd>
+
+### Turn off transform controls
+
+Turn off by clicking the <ActionLink icon={CursorArrowIcon} href="/docs/building-your-scene/learn-the-ui/scene#select" name="Select" /> action in the Scene Controls.

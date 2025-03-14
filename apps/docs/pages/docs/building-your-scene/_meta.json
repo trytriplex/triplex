@@ -1,7 +1,6 @@
 {
-  "components": "",
-  "scene": "",
-  "global-provider": "",
+  "scene": "Scene",
+  "providers": "",
   "console-logs": "",
   "ui-glossary": "Learn the UI"
 }

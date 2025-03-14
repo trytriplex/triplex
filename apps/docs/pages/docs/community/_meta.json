@@ -1,3 +1,8 @@
 {
-  "faq": "FAQ"
+  "faq": {
+    "title": "FAQ",
+    "theme": {
+      "pagination": false
+    }
+  }
 }

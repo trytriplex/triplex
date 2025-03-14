@@ -1,8 +1,8 @@
 ---
-description: The Global Provider is used to configure the environment of your project.
+description: Provider components let you set up the environment of your project.
 ---
 
-Your components are opened in an isolated sandbox — so they might not have the necessary environment to be rendered. Using the Global Provider you can configure the environment needed by your components.
+Components are rendered by themselves so they might be missing things to render correctly. Using provider components lets you configure the environment needed by your components.
 
 <KnowledgeCallout>
   Provider components are a common way for configuring your environment in
@@ -10,19 +10,34 @@ Your components are opened in an isolated sandbox — so they might not have the
   Context](https://react.dev/learn/passing-data-deeply-with-context).
 </KnowledgeCallout>
 
-## Adding the Global Provider
+## Provider Set Up
+
+There is some set up required before creating a provider component.
 
 1. If you haven't already create the config file from the root of your project.
 
    ```bash filename="Terminal"
    npx make-dir-cli .triplex
    npx touch .triplex/config.json
+   npx touch .triplex/provider.tsx
    ```
 
-1. Create a provider component, place it anywhere you'd like. Here we create it in the `.triplex` folder.
+1. Update your config to use the created provider module. You'll need to restart Triplex after making this change.
+
+   ```json filename=".triplex/config.json"
+   {
+     "provider": "./provider.tsx"
+   }
+   ```
+
+## Global Provider
+
+The Global Provider is rendered at the root of the component tree. This is useful for setting up global styles, themes, and data.
+
+1. Create a provider component.
 
    ```tsx filename=".triplex/provider.tsx"
-   export default function Provider({
+   export function GlobalProvider({
      children,
    }: {
      children?: React.ReactNode;
@@ -31,11 +46,33 @@ Your components are opened in an isolated sandbox — so they might not have the
    }
    ```
 
-1. Update your config to use the provider. Make sure to restart Triplex after making this change.
+1. Configure the environment as needed. Here we set up a global theme using a CSS file and data attributes.
 
-   ```json filename=".triplex/config.json"
-   {
-     "provider": "./provider.tsx"
+   ```tsx filename=".triplex/provider.tsx"
+   import "./styles.css";
+
+   export function GlobalProvider({
+     children,
+   }: {
+     children?: React.ReactNode;
+   }) {
+     return <div data-theme="dark">{children}</div>;
+   }
+   ```
+
+## Canvas Provider
+
+The Canvas Provider is rendered inside Canvas components, either the implicit one when opening a 3D component, or the explicit ones when opening a 2D component.
+
+1. Create a provider component.
+
+   ```tsx filename=".triplex/provider.tsx"
+   export function CanvasProvider({
+     children,
+   }: {
+     children?: React.ReactNode;
+   }) {
+     return children;
    }
    ```
 
@@ -44,7 +81,7 @@ Your components are opened in an isolated sandbox — so they might not have the
    ```tsx filename=".triplex/provider.tsx" {1,8}
    import { Physics } from "@react-three/rapier";
 
-   export default function Provider({
+   export function CanvasProvider({
      children,
    }: {
      children?: React.ReactNode;
@@ -57,7 +94,7 @@ Your components are opened in an isolated sandbox — so they might not have the
 
 ## Provider Controls
 
-Props declared on the provider component are available as controls in the Scene Panel. This enables dynamic configuration of your environment at runtime.
+Props declared on provider components are available as input controls in the scene panel. This allows you to change your environment on the fly.
 
 Taking the Rapier example above having physics be usable is great but having them run all the time... isn't. Especially when you're wanting to edit or inspect your scene!
 
@@ -66,7 +103,7 @@ To fix this we can disable the simulation using props.
 1. Declare a boolean prop on the component.
 
    ```tsx filename=".triplex/provider.tsx" {3,5}
-   export default function Provider({
+   export function CanvasProvider({
      children,
      physicsEnabled = false,
    }: {
@@ -80,7 +117,7 @@ To fix this we can disable the simulation using props.
 2. Pass the prop to the Physics component.
 
    ```tsx filename=".triplex/provider.tsx" /paused={!physicsEnabled}/
-   export default function Provider({
+   export function CanvasProvider({
      children,
      physicsEnabled = false,
    }: {
@@ -91,6 +128,6 @@ To fix this we can disable the simulation using props.
    }
    ```
 
-3. The prop now appears in the Scene Panel and can be toggled on and off.
+3. The prop now appears in the scene panel and can be toggled on and off.
 
 For an exhaustive list of supported props see [API Reference > Props](/docs/api-reference/props).

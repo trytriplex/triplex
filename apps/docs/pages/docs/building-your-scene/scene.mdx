@@ -1,16 +1,12 @@
 ---
-description: Learn what features are in the Scene and how to use them.
+description: The scene is where you build and interact with your components.
 ---
 
-The Scene is responsible for rendering the development environment where you build and interact with your components.
-
-## Sandbox Isolation
-
-Your components are rendered in an isolated sandbox environment alongside visual editing tools like Transform Controls. This means if your components rely on global state or context there may be some work involved to get it rendering without an error.
+Components are rendered by themselves alongside visual controls. This means if your components rely on global state or context there may be some work involved to get it rendering without an error.
 
 - Refactor your component to be self contained
-- Use a [Global Provider](/docs/building-your-scene/global-provider) to provide the missing React context
-- Declare the required Context / state inside another component and open that one instead
+- Use a [provider component](/docs/building-your-scene/providers) to provide the missing React context
+- Declare the required context or state in another component and open that instead
 - Set default props
 
 ## Next Steps

@@ -1,5 +1,5 @@
 ---
-description: Play Controls let you interact with your scene.
+description: Play controls let you interact with your scene.
 ---
 
 import {
@@ -10,7 +10,7 @@ import {
   StopIcon,
 } from "@radix-ui/react-icons";
 
-## Starting the Scene
+## Interact With the Scene
 
 Start your scene by clicking the <ActionLink icon={PlayIcon} href="/docs/building-your-scene/learn-the-ui/scene#play-scene" name="Play" /> action in the Scene Controls.
 
@@ -20,18 +20,18 @@ Start your scene by clicking the <ActionLink icon={PlayIcon} href="/docs/buildin
 This action is only available in edit and pause states.
 
 <KnowledgeCallout>
-  Play Controls don't currently control the frame loop, meaning it's always
-  running even in edit mode. If you'd like to see this implemented please
-  [comment on GitHub](https://github.com/trytriplex/triplex/issues/215).
+  Play Controls don't control the frame loop, meaning it's always running even
+  in edit mode. Think this should change? [Comment on
+  GitHub](https://github.com/trytriplex/triplex/issues/215).
 </KnowledgeCallout>
 
-## Pausing the Scene
+## Pause the Scene
 
 Pause your scene by clicking the <ActionLink icon={PauseIcon} href="/docs/building-your-scene/learn-the-ui/scene#pause-scene" name="Pause" /> action in the Scene Controls. This will pause your scene in its current state and bring up the editor UI for you to make any adjustments or inspect the scene.
 
 This action is only available in play state.
 
-## Resetting the Scene
+## Reset the Scene
 
 To reset the scene back to its default state click the <ActionLink icon={ResetIcon} href="/docs/building-your-scene/learn-the-ui/scene#reset-scene" name="Reset" /> action in the Scene Controls.
 
@@ -48,11 +48,11 @@ useEffect(() => {
 
 This action is available in all states.
 
-### Reloading the Scene
+### Reload the Scene
 
 If you need to completely flush the scene state you can reload the scene document by using the reload hotkey: <Kbd>Cmd</Kbd> + <Kbd>Shift</Kbd> + <Kbd>R</Kbd>.
 
-## Stopping the Scene
+## Stop Interacting with The Scene
 
 Stop running your scene by clicking the <ActionLink icon={StopIcon} href="/docs/building-your-scene/learn-the-ui/scene#stop-scene" name="Stop" /> action in the Scene Controls. This will reset the scene and bring the editor UI back.
 
@@ -60,7 +60,9 @@ This action is available in play and pause states.
 
 ## Camera Selection
 
-For 3D components, to play your scene through a different camera click the <ActionLink icon={CaretDownIcon} href="/docs/building-your-scene/learn-the-ui/scene#play-options" name="Play Options" /> action next to the Play action. This is useful when needing to debug from a specific viewpoint while the scene is interactive.
+Only available in 3D components.
+
+To play your scene through a different camera click the <ActionLink icon={CaretDownIcon} href="/docs/building-your-scene/learn-the-ui/scene#play-options" name="Play Options" /> action next to the Play action. This is useful when needing to debug from a specific viewpoint while the scene is interactive.
 
 To change what the default camera is set the `makeDefault` prop to `true` on any camera component from the [Drei](https://github.com/pmndrs/drei) library.
 

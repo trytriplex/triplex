@@ -7,6 +7,16 @@ html {
   --bg-surface: rgb(255 255 255);
   --border: rgb(163 163 163);
   --brand: rgb(0 0 0);
+  --shiki-color-text: var(--text);
+  --shiki-token-comment: rgb(251 44 54);
+  --shiki-token-constant: rgb(0 201 81);
+  --shiki-token-function: rgb(43 127 255);
+  --shiki-token-keyword: rgb(0 201 81);
+  --shiki-token-link: rgb(43 127 255);
+  --shiki-token-parameter: rgb(0 201 81);
+  --shiki-token-punctuation: rgb(43 127 255);
+  --shiki-token-string-expression: rgb(251 44 54);
+  --shiki-token-string: rgb(251 44 54);
   --text-inverse-subtle: rgb(230 230 230);
   --text-inverse: rgb(255 255 255 / 0.95);
   --text-link: rgb(59 130 246);

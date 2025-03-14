@@ -4,19 +4,16 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import { type MdxFile } from "nextra";
 import { getPagesUnderRoute } from "nextra/context";
 import { LandingLink, LandingPresentationalButton } from "./landing-button";
 import { LandingCardHeading, LandingCardLink } from "./landing-card";
 
-export function LandingResource({ slug }: { slug: string }) {
-  const page = getPagesUnderRoute("/resources").find(
-    (page) => page.name === slug,
-  );
-
-  if (!page) {
-    throw new Error(`invariant: page /resources/${slug} does not exist.`);
-  }
-
+export function LandingResource({
+  page,
+}: {
+  page: MdxFile & { meta?: Record<string, string> };
+}) {
   return (
     <LandingCardLink href={page.route} size="default">
       <div className="flex items-start justify-between gap-20 self-stretch lg:mb-8">
@@ -38,6 +35,14 @@ export function LandingResource({ slug }: { slug: string }) {
 }
 
 export function LandingResources() {
+  const resources = getPagesUnderRoute("/resources")
+    .filter(
+      (page): page is MdxFile =>
+        page.kind === "MdxPage" && page.route !== "/resources",
+    )
+    .sort((pageA, pageB) => pageB.frontMatter?.order - pageA.frontMatter?.order)
+    .slice(0, 3);
+
   return (
     <div className="flex flex-col items-start gap-12 lg:flex-row lg:gap-24">
       <div className="contents flex-col items-start gap-10 lg:flex">
@@ -51,9 +56,9 @@ export function LandingResources() {
         </div>
       </div>
       <div className="flex flex-col gap-6">
-        <LandingResource slug="edit-components-using-component-controls" />
-        <LandingResource slug="fix-shadows-vertex-shader-threejs" />
-        <LandingResource slug="use-leva-with-triplex" />
+        {resources.map((page) => (
+          <LandingResource key={page.route} page={page} />
+        ))}
       </div>
     </div>
   );
