@@ -1,14 +1,14 @@
 ---
-description: Learn how to change the props your component is given during development.
+description: Component controls let you change the props that are given to your component.
 ---
 
 import { EraserIcon, Pencil2Icon } from "@radix-ui/react-icons";
 
-Seeing how your component behaves when given different props is a key part of building with Triplex. With Component Controls the props of the open component can be changed at any time by clicking the <ActionLink icon={Pencil2Icon} href="/docs/building-your-scene/learn-the-ui/scene-panel#openclose-component-controls" name="Component Controls" /> action in the Scene Panel.
+Seeing how your component behaves when given different props is a key part of building with Triplex. Change the props of your component at any time by clicking the <ActionLink icon={Pencil2Icon} href="/docs/building-your-scene/learn-the-ui/scene-panel#openclose-component-controls" name="Component Controls" /> action in the scene panel.
 
 ## Making Changes
 
-With Component Controls open you can change the value of props through the UI. The behavior is the same as [Editing Props](/docs/building-your-scene/components/editing-props) with one difference — changes are only temporary for the current session.
+With the controls open you can change the value of props through the UI. The behavior is the same as [Input Controls](/docs/building-your-scene/scene/input-controls) with one difference — changes are only temporary for the current session.
 
 For more advanced and specific scenarios we recommend creating example components with props needed.
 
@@ -27,6 +27,6 @@ export function Component({ x = 10 }: { x: number });
 
 ## Alternative to Leva
 
-Writing code with [Leva](https://github.com/pmndrs/leva) is a common way to have your component be configurable during development. With Component Controls you're able to decide if you want to maintain that code or not.
+Writing code with [Leva](https://github.com/pmndrs/leva) is a common way to have your component be configurable during development. With component controls you're able to decide if you want to maintain that code or not.
 
 See the [Replacing Leva With Component Props](http://localhost:3000/guides/use-leva-with-triplex) guide for how to use Triplex like Leva.

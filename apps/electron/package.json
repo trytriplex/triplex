@@ -2,7 +2,7 @@
   "name": "@triplex/electron",
   "version": "0.70.16",
   "private": true,
-  "description": "The visual development environment for React / Three Fiber.",
+  "description": "The visual workspace for React / Three Fiber.",
   "repository": "https://github.com/trytriplex/triplex",
   "license": "SEE LICENSE IN LICENSE",
   "author": {

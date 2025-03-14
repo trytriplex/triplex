@@ -1,0 +1,86 @@
+---
+description: The scene panel lets you inspect your component, its elements, and props.
+---
+
+import { CaretDownIcon, CaretRightIcon } from "@radix-ui/react-icons";
+
+When opening a component in Triplex its elements are displayed in the scene panel. These elements can have their props inspected and edited through [UI controls](/docs/building-your-scene/scene/input-controls) and [visually in the Scene](/docs/building-your-scene/scene/visual-controls).
+
+<KnowledgeCallout>
+  If you find elements of the same name being hard to differentiate setting a
+  `name` prop on them will be reflected in the scene panel.
+</KnowledgeCallout>
+
+## Element Actions
+
+Each element has available actions you can perform on it:
+
+- Delete — <Kbd>Backspace</Kbd>
+- Duplicate — <Kbd>Cmd</Kbd> + <Kbd>D</Kbd>
+- Zoom To Element — <Kbd>F</Kbd>
+- Go To Declaration
+
+In Triplex for VS Code you can find these actions in the right-click menu on an element.
+
+## Selecting Elements
+
+The selection system prioritizes named components, when clicking on a scene object if it belongs to a component that component will be selected, otherwise the host element will.
+
+### Selection Cycling
+
+Clicking multiple times on a scene object will cycle through all the elements that are under the cursor, even HTML ones! This is useful when you have multiple elements stacked on top of each other and you want to select one underneath.
+
+### Hidden Scene Objects
+
+To select scene objects that don't render anything such as a `group`, `Fragment`, or invisible objects, you can use the scene panel to select them.
+
+## Inspecting Custom Components
+
+Clicking on the <ActionLink name="View Child Elements" href="/docs/building-your-scene/learn-the-ui/scene-panel#showhide-child-elements" icon={CaretRightIcon} /> action on a custom component will reveal its internally rendered elements. You're able to inspect and edit them just as you can elements owned by the open component.
+
+<KnowledgeCallout>
+  Custom components that are sourced from node modules can also be edited and
+  inspected.
+</KnowledgeCallout>
+
+## Switching Between Components
+
+You can switch between the components declared in a file by using the <ActionLink name="Component Switcher" icon={CaretDownIcon} href="/docs/building-your-scene/learn-the-ui/scene-panel#component-switcher" /> at the top of the scene panel.
+
+<KnowledgeCallout>
+  Switching components will not lose any changes you've made as Triplex keeps
+  all the changes you've made until you save or close the file.
+</KnowledgeCallout>
+
+## Naming Elements
+
+Elements that appear in the scene panel can be given a name by setting the `name` prop. This name will be reflected in the scene panel and can be used to identify elements that are hard to differentiate.
+
+For example given the following code:
+
+```tsx
+export function Scene() {
+  return (
+    <>
+      <mesh name="box1">
+        <boxGeometry />
+      </mesh>
+      <mesh name="box2">
+        <boxGeometry />
+      </mesh>
+    </>
+  );
+}
+```
+
+The elements will be rendered in the scene panel as "box1 (mesh)" and "box2 (mesh)".
+
+<KnowledgeCallout>
+  Both host elements and custom components can be named, however the value
+  passed to the name prop must be a static string literal for it to be reflected
+  in the scene panel.
+</KnowledgeCallout>
+
+## Next Steps
+
+For an exhaustive list of features in the scene panel see [Learn the UI > Scene Panel](/docs/building-your-scene/learn-the-ui/scene-panel), otherwise continue to learn about [Editing Props](/docs/building-your-scene/components/editing-props).

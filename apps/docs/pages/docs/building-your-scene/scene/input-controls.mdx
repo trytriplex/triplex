@@ -1,16 +1,14 @@
 ---
-description: Learn how your component props can be edited through the UI.
+description: Input controls let you update props through the UI.
 ---
 
 import { ExclamationTriangleIcon, SwitchIcon } from "@radix-ui/react-icons";
 
-Your component props can be inspected and edited thanks to [TypeScript](https://www.typescriptlang.org/), even if your project isn't directly using it.
-
-When an element is selected its props are displayed in the Context Area.
+Component props can be inspected and edited through the UI. When an element is selected its props are displayed in the context area.
 
 ## Making Changes
 
-For a given prop find it in the Context Area and change its value. When blurring away from the input the change will be applied and ready to save.
+Find props in the context area and change its value. When moving away from the input your changes will are applied and ready to save.
 
 Once you've made all the changes you want make sure to save it back to source using the <ActionLink icon="⌘ + S" href="/docs/building-your-scene/learn-the-ui/other#save" name="Save" /> action.
 
@@ -18,7 +16,7 @@ Props with an _italic label_ means that they have a description available. Hover
 
 {/* prettier-ignore */}
 <KnowledgeCallout>
-To give your own component props a description add a multi-line comment above it.
+Give your own props a description by adding a multi-line comment above it.
 
 ```tsx {2}
 interface Props {
@@ -35,7 +33,7 @@ For props that can be given different values use the <ActionLink name="Switch Pr
 
 {/* prettier-ignore */}
 <KnowledgeCallout>
-Union type props can be given different values through the UI. The following example declares a prop that can be given a number, string, or boolean.
+Props that take different values can still be edited through the UI. The following example declares a prop that can be given a number, string, or boolean.
 
 ```tsx /value: number | string | boolean/
 export function Component({}: { value: number | string | boolean });
@@ -45,9 +43,9 @@ export function Component({}: { value: number | string | boolean });
 
 ## Default Props
 
-Default props are respected by the editor controls. If a prop has no value set the default value will be used.
+Default props work with input controls. If a prop has no value set its default value is used.
 
-Given the following component declaration when the component is rendered with no props the `isVisible` prop will appear checked in the UI.
+Take the following component, when the it's rendered with no passed props the `isVisible` prop will appear checked in the UI.
 
 ```tsx /isVisible = true/
 export function Component({ isVisible = true }: { isVisible: boolean });

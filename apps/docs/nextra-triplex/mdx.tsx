@@ -102,13 +102,13 @@ export const components: Components = {
   code: ({ children }) => {
     return typeof children === "string" ? (
       // Inline code
-      <code className="text-subtle border-neutral border px-1.5 py-0.5 font-mono">
+      <code className="text-subtle border-neutral border px-1.5 py-0.5 font-mono text-lg md:text-base">
         {children}
       </code>
     ) : (
       // Code block powered by shiki
       // See: https://shiki.matsu.io/guide/theme-colors#css-variables-theme
-      <code className="[&_.line.highlighted]:after:border-brand [&_.highlighted]:bg-neutral leading-6 [--shiki-color-text:#d4d4d4] [--shiki-token-comment:#16a34a] [--shiki-token-constant:#5eead4] [--shiki-token-function:#5eead4] [--shiki-token-keyword:#60a5fa] [--shiki-token-link:#facc15] [--shiki-token-parameter:#9ca3af] [--shiki-token-punctuation:#2dd4bf] [--shiki-token-string-expression:#fda4af] [--shiki-token-string:#4ade80] [&:has(.highlighted)_:not(.highlighted):not(.line)]:opacity-60 [&_.highlighted>*]:!opacity-100 [&_.line.highlighted]:relative [&_.line.highlighted]:float-left [&_.line.highlighted]:-ml-3 [&_.line.highlighted]:w-[calc(100%+24px)] [&_.line.highlighted]:after:absolute [&_.line.highlighted]:after:bottom-0 [&_.line.highlighted]:after:left-[-1px] [&_.line.highlighted]:after:top-0 [&_.line.highlighted]:after:border-l">
+      <code className="[&_.line.highlighted]:after:border-brand [&_.highlighted]:bg-neutral leading-6 [&:has(.highlighted)_:not(.highlighted):not(.line)]:opacity-60 [&_.highlighted>*]:!opacity-100 [&_.line.highlighted]:relative [&_.line.highlighted]:float-left [&_.line.highlighted]:-ml-3 [&_.line.highlighted]:w-[calc(100%+24px)] [&_.line.highlighted]:pl-3 [&_.line.highlighted]:after:absolute [&_.line.highlighted]:after:bottom-0 [&_.line.highlighted]:after:left-[-1px] [&_.line.highlighted]:after:top-0 [&_.line.highlighted]:after:border-l">
         {children}
       </code>
     );
@@ -119,7 +119,7 @@ export const components: Components = {
   h2: ({ children, id }) => (
     <div className="mt-14">
       <h2
-        className="text-default target:text-inverse inline scroll-m-20 text-3xl font-medium target:font-bold target:[-webkit-text-stroke:3px_yellow] target:[paint-order:stroke_fill]"
+        className="text-default target:text-inverse inline scroll-m-20 text-3xl font-medium target:font-bold target:[-webkit-text-stroke:3px_yellow] target:[paint-order:stroke_fill] [&>code]:text-[length:inherit]"
         id={id}
       >
         {children}
@@ -184,10 +184,12 @@ export const components: Components = {
     <table className="mt-5 w-full table-fixed">{children}</table>
   ),
   td: ({ children }) => (
-    <td className="text-subtle border-neutral border-b p-2">{children}</td>
+    <td className="text-subtle border-neutral border-b p-2 text-base">
+      {children}
+    </td>
   ),
   th: ({ children }) => (
-    <th className="text-default border-neutral border-b py-2.5 text-center font-medium">
+    <th className="text-default border-neutral border-b py-2.5 text-center text-base font-medium">
       {children}
     </th>
   ),

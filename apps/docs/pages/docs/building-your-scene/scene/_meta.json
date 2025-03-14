@@ -1,7 +1,7 @@
 {
-  "selecting-elements": "",
-  "transform-controls": "",
+  "scene-panel": "",
+  "visual-controls": "",
+  "input-controls": "",
   "play-controls": "",
-  "scene-helpers": "",
-  "frame-controls": ""
+  "scene-helpers": ""
 }

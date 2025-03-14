@@ -3,17 +3,15 @@ title: Pre-Existing Project
 description: Keep building your existing project with Triplex.
 ---
 
-Your pre-existing React project can be used with Triplex without needing upfront configuration, however to have a complete experience some set up is needed if you're not using [TypeScript](https://www.typescriptlang.org/).
-
-## Install Types
-
-Component props are inferred by TypeScript and displayed in the [Scene Panel](/docs/building-your-scene/learn-the-ui/scene-panel) as controls. Installing these types enables host elements such as `mesh` and `group` to have their props available as controls.
-
-```bash
-npm install @types/react @types/three
-```
+Your pre-existing projects can be used with Triplex without doing anything, if you're missing some required dependencies Triplex will let you know!
 
 ## Common Questions
+
+### Why aren't my styles showing up?
+
+Some components expect there to be global styles available, such as when using Tailwind or when using a global stylesheet for themes.
+
+If this is you follow [How To Set Up Global Styles](/resources/how-to-set-up-tailwind) to get them showing up.
 
 ### Are module aliases supported?
 
@@ -43,7 +41,7 @@ To fix this you could:
 - Declare the required Context / state inside another component and open that one instead
 - Set default props
 
-### Why do my component props not show up in the Scene Panel?
+### Why do my component props not show up in the scene panel?
 
 If your project doesn't use TypeScript there is less type information available to populate the editor. You can get some inference for your components by declaring default props.
 
@@ -59,6 +57,12 @@ export function Component({ color = "red", x = 0, visible = true }) {
 
 We recommend building with TypeScript for the best experience.
 
-### Why is a tsconfig.json file created when opening a component?
+### Why is my component not able to be opened in Triplex?
 
-The Scene Panel is populated by your component props sourced by the TypeScript compiler which needs this file.
+For components to be opened in Triplex they must be exported from the file.
+
+```tsx {2}
+export function Component() {
+  return <mesh />;
+}
+```

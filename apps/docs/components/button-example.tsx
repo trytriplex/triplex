@@ -27,7 +27,7 @@ export function ActionLink({
       href={href}
     >
       {Icon && (
-        <span className="bg-subtle flex p-1">
+        <span className="bg-neutral flex p-1">
           {typeof Icon === "string" ? (
             <span className="text-subtle flex h-[15px] items-center text-sm">
               {Icon}
@@ -37,7 +37,7 @@ export function ActionLink({
           )}
         </span>
       )}
-      <span className="text-subtle flex items-center text-center text-sm group-hover:underline">
+      <span className="text-subtle flex items-center text-center text-sm font-medium group-hover:underline">
         {name}
       </span>
     </Link>
