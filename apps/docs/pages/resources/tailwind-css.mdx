@@ -4,3 +4,41 @@ category: Styling
 description: Your components might expect global styles to be available to render correctly. Here's how to set up Tailwind CSS in your Triplex project.
 order: 3
 ---
+
+You can use the [Tailwind PostCSS](https://tailwindcss.com/docs/installation/using-postcss) set up with Triplex.
+
+1. Install Tailwind CSS.
+
+   ```bash filename="Terminal"
+   npm install tailwindcss @tailwindcss/postcss postcss
+   ```
+
+1. Add Tailwind to your PostCSS configuration.
+
+   ```js filename="postcss.config.mjs"
+   export default {
+     plugins: {
+       "@tailwindcss/postcss": {},
+     },
+   };
+   ```
+
+1. Import Tailwind in your CSS file.
+
+   ```css filename="styles.css"
+   @import "tailwindcss";
+   ```
+
+1. Import the CSS file in your provider module.
+
+   ```tsx filename=".triplex/provider.tsx"
+   import "./styles.css";
+   ```
+
+1. Add the provider to your Triplex config. You'll need to restart Triplex after making this change.
+
+   ```json filename=".triplex/config.json"
+   {
+     "provider": "./provider.tsx"
+   }
+   ```

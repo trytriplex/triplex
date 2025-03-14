@@ -21,7 +21,14 @@ export function PagesList({
   const pages = [nativeRoute, route]
     .filter((str): str is string => !!str)
     .flatMap((route) => getPagesUnderRoute(route))
-    .filter((page) => page.route !== route && page.route !== nativeRoute);
+    .filter((page) => page.route !== route && page.route !== nativeRoute)
+    .sort((pageA, pageB) => {
+      if (pageA.kind === "MdxPage" && pageB.kind === "MdxPage") {
+        return pageB.frontMatter?.order - pageA.frontMatter?.order;
+      }
+
+      return 0;
+    });
 
   if (pages.length === 0) {
     return null;

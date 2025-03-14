@@ -128,7 +128,7 @@ export function Pricing() {
             className="text-inverse bg-brand block rounded py-2 text-center text-base font-medium"
             href="mailto:support@triplex.dev"
           >
-            Buy Now
+            Free in Beta
           </Link>
         }
         description="Collaborate with your team across unlimited projects."
