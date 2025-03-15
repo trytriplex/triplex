@@ -19,7 +19,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/resources/fix-shadows-vertex-shader-threejs</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -37,7 +37,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/resources/use-leva-with-triplex</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -67,13 +67,13 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/community</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -103,7 +103,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/standalone</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -115,19 +115,19 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/vscode</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/starting-a-project/create-from-template</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/starting-a-project/pre-existing-project</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -145,13 +145,13 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/starting-a-project/your-first-3d-component/standalone</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/starting-a-project/your-first-3d-component/vscode</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -199,25 +199,25 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/ui-glossary</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/scene/component-controls</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/scene/input-controls</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/scene/play-controls</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -229,13 +229,13 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/scene/scene-panel</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/scene/visual-controls</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -247,7 +247,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/scene/scene-helpers/lights</loc>
-    <lastmod>2025-01-09</lastmod>
+    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -283,7 +283,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/api-reference/props</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

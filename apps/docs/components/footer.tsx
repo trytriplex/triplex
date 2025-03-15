@@ -133,15 +133,15 @@ export function Footer() {
             <li>
               <Link
                 className="text-subtlest hover:text-subtle text-base"
-                href="/docs/get-started/user-interface"
+                href="/docs/building-your-scene/ui-glossary"
               >
-                User Interface
+                Learn the UI
               </Link>
             </li>
             <li>
               <Link
                 className="text-subtlest hover:text-subtle text-base"
-                href="/docs/get-started/settings"
+                href="/docs/api-reference/config-options"
               >
                 Settings
               </Link>
@@ -185,7 +185,7 @@ export function Footer() {
             <li>
               <Link
                 className="text-subtlest hover:text-subtle text-base"
-                href="/docs/faq"
+                href="/docs/community/faq"
               >
                 FAQ
               </Link>

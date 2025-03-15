@@ -6,6 +6,7 @@
   "license": "MIT",
   "scripts": {
     "build": "next build",
+    "build:action-links": "ts-node ./scripts/generate-action-links.ts",
     "build:sitemap": "ts-node ./scripts/generate-sitemap.ts",
     "dev": "next",
     "typedef": "tsc"

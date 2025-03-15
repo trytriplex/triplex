@@ -72,7 +72,7 @@ export function SendFeedback() {
       formData as unknown as Record<string, string>,
     ).toString();
 
-    await fetch("/api/feedback?" + query, {
+    fetch("/api/feedback?" + query, {
       headers: { "Content-Type": "application/json" },
       method: "GET",
     });

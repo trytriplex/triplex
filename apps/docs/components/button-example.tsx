@@ -14,7 +14,7 @@ export function ActionLink({
   icon: Icon,
   name,
 }: {
-  href: string;
+  href?: string;
   icon?: ((props: IconProps) => JSX.Element) | string;
   name: string;
 }) {
@@ -24,7 +24,7 @@ export function ActionLink({
         "border-neutral group inline-flex gap-1.5 border py-0.5",
         Icon ? "pl-0.5 pr-1.5" : "px-1.5",
       ])}
-      href={href}
+      href={href ?? `/docs/building-your-scene/ui-glossary/#${name}`}
     >
       {Icon && (
         <span className="bg-neutral flex p-1">
