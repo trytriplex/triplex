@@ -9,7 +9,6 @@ import { Fragment, Suspense } from "react";
 import { suspend } from "suspend-react";
 import { cn } from "../util/cn";
 import { useBeginDownloadURL } from "../util/download";
-import { DownloadButton } from "./download-button";
 
 interface Release {
   assets: {
@@ -67,14 +66,14 @@ function AssetDownload({
   return (
     <div
       className={cn([
-        "flex items-center gap-4 rounded-md p-4",
+        "flex flex-col items-start gap-4 rounded-md p-4 md:flex-row md:items-center",
         variant === "highlight"
           ? "border-brand border-2"
           : "border-neutral border",
       ])}
     >
       <div className="text-subtlest w-9 flex-shrink-0">{logo}</div>
-      <div className="flex flex-col">
+      <div className="mr-auto flex flex-col">
         <span className="text-default text-base font-medium">{title}</span>
         <span className="text-subtlest text-base">{subtitle}</span>
       </div>
@@ -120,7 +119,7 @@ function List() {
           <AssetDownload
             action={
               <a
-                className="text-inverse bg-brand ml-auto flex-shrink-0 rounded px-4 py-1 text-base font-medium"
+                className="text-inverse bg-brand flex-shrink-0 rounded px-4 py-1 text-base font-medium"
                 href="https://winstall.app/apps/Triplex.Triplex"
                 onClick={(e) => {
                   beginDownload(e, "/docs/get-started?dl=winget");
@@ -142,7 +141,7 @@ function List() {
             <AssetDownload
               action={
                 <a
-                  className="text-inverse bg-brand ml-auto rounded px-4 py-1 text-base font-medium"
+                  className="text-inverse bg-brand rounded px-4 py-1 text-base font-medium"
                   href={asset.browser_download_url}
                   onClick={(e) => {
                     beginDownload(e, forwardURL);
@@ -180,14 +179,11 @@ const fallbackListItems = Array(6)
 export function DownloadList() {
   const beginDownload = useBeginDownloadURL();
   return (
-    <div className="mx-auto mt-10 flex w-full max-w-xl flex-col gap-6">
-      <div className="mb-6 flex justify-center">
-        <DownloadButton />
-      </div>
+    <div className="mx-auto mt-16 flex w-full max-w-xl flex-col gap-6 pb-20">
       <AssetDownload
         action={
           <a
-            className="text-inverse bg-brand ml-auto flex-shrink-0 rounded px-4 py-1 text-base font-medium"
+            className="text-inverse bg-brand flex-shrink-0 rounded px-4 py-1 text-base font-medium"
             href="https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce"
             onClick={(e) => {
               beginDownload(e, "/docs/get-started?dl=vsce");
