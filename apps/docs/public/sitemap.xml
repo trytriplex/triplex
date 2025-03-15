@@ -156,18 +156,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://triplex.dev/docs/get-started/starting-a-project/create-from-template/landing-page</loc>
-    <lastmod>2025-03-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://triplex.dev/docs/get-started/starting-a-project/create-from-template/point-and-click</loc>
-    <lastmod>2025-03-14</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://triplex.dev/docs/get-started/standalone/linux</loc>
     <lastmod>2024-10-27</lastmod>
     <changefreq>monthly</changefreq>

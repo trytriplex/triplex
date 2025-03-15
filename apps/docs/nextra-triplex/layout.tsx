@@ -264,12 +264,27 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                 variant="transparent"
               />
               {frontMatter.image && (
-                <Image
-                  alt=""
-                  className="rounded-none object-cover py-1 pr-1"
-                  fill
-                  src={frontMatter.image}
-                />
+                <div
+                  className={cn([
+                    "absolute inset-0 overflow-hidden",
+                    frontMatter.imageLayout === "cover" && "pl-6 pt-6",
+                    frontMatter.imageLayout !== "cover" && "p-6",
+                  ])}
+                >
+                  <Image
+                    alt=""
+                    className={cn([
+                      frontMatter.imageLayout === "cover" &&
+                        "h-[600px] object-cover",
+                      frontMatter.imageLayout !== "cover" &&
+                        "h-full object-contain",
+                      "w-full rounded-none object-left",
+                    ])}
+                    height={800}
+                    src={frontMatter.image}
+                    width={800}
+                  />
+                </div>
               )}
             </div>
             <div className="border-surface pointer-events-none absolute inset-0 border-4" />

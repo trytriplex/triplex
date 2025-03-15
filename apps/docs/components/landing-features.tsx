@@ -27,7 +27,7 @@ export function LandingFeatures() {
       </h2>
 
       <TabsRoot>
-        <div className="bg-surface relative -mx-8 flex h-[70vh] items-center justify-center md:aspect-video md:h-auto">
+        <div className="bg-surface relative -mx-8 flex h-[70vh] items-center justify-center md:mx-0 md:aspect-video md:h-auto">
           <TabsList>
             <InlineVideo
               src={{
