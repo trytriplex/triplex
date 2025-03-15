@@ -5,6 +5,7 @@ title: Using Triplex for VS Code
 import {
   CaretDownIcon,
   DashboardIcon,
+  GearIcon,
   MoveIcon,
   Pencil2Icon,
   PlayIcon,
@@ -12,9 +13,10 @@ import {
   SunIcon,
   TransformIcon,
 } from "@radix-ui/react-icons";
+import Image from "next/image";
 import { WorldSpaceIcon } from "../../../../../components/icons";
 
-Let's create your first component with Triplex! No experience is needed to follow along however it's assumed you have a project set up after following [Starting a Project](/docs/get-started/starting-a-project).
+Let's create your first component with Triplex! No experience is needed to follow along however it's assumed you have a project set up after following a page under [Starting a Project](/docs/get-started/starting-a-project).
 
 ## Creating a New File
 
@@ -26,15 +28,23 @@ First we are going to make a new file to build our scene in. With Visual Studio 
 
    ```tsx filename="src/new-scene.tsx"
    export function Scene() {
-     return <></>;
+     return null;
    }
    ```
 
 1. Click the <ActionLink name="Open in Triplex" href="#" /> CodeLens action above the Scene component. Nothing will appear in the scene yet.
 
+   <Image
+     className="mt-5 w-full"
+     loading="lazy"
+     src="/tutorials/vsce-3d/1.png"
+     width={700}
+     height={610}
+   />
+
 1. Copy the highlighted code into your component. A box will appear in the scene.
 
-   ```tsx filename="src/new-scene.tsx" {4-7}
+   ```tsx filename="src/new-scene.tsx" {3-8}
    export function Scene() {
      return (
        <>
@@ -50,6 +60,14 @@ First we are going to make a new file to build our scene in. With Visual Studio 
 1. Click & drag over the scene to rotate the camera around.
 
 1. Click the box in the scene to focus it. When focused press the <Kbd>F</Kbd> key to zoom the camera to it.
+
+   <Image
+     className="mt-5 w-full"
+     src="/tutorials/vsce-3d/2.png"
+     width={700}
+     height={610}
+     loading="lazy"
+   />
 
 <KnowledgeCallout>
   The built-in Camera Controls let you view your scene from different
@@ -94,6 +112,14 @@ Now let's add some more shapes to fill the scene out.
 
 1. Click the sphere in the scene, then click the <ActionLink icon={MoveIcon} href="/docs/building-your-scene/learn-the-ui/scene#translate" name="Translate" /> action in the Scene Controls, then finally move the sphere off the box.
 
+   <Image
+     className="mt-5 w-full"
+     src="/tutorials/vsce-3d/3.png"
+     width={700}
+     height={610}
+     loading="lazy"
+   />
+
 <KnowledgeCallout>
   The built-in Transform Controls are shown on selected elements. If the element
   doesn't declare the prop for the selected transform mode it will be disabled.
@@ -124,9 +150,25 @@ Now let's add [three-point lighting](https://en.wikipedia.org/wiki/Three-point_l
 
 1. Position the key light in front and to the side of the scene.
 
+   <Image
+     src="/tutorials/vsce-3d/4.png"
+     width={700}
+     className="mt-5 w-full"
+     height={610}
+     loading="lazy"
+   />
+
 1. Duplicate the key light by selecting it then using the <ActionLink icon="⌘ + D" href="/docs/building-your-scene/learn-the-ui/scene-panel#duplicate-element" name="Duplicate Element" /> action. Name the duplicated light "Fill light" and move it to the opposite side of the scene.
 
-1. Create the last light by adding another point light named "Backlight" then move it to the back of the scene.
+1. Create the last light by adding another point light named "Back light" then move it to the back of the scene.
+
+   <Image
+     className="mt-5 w-full"
+     src="/tutorials/vsce-3d/5.png"
+     width={700}
+     height={610}
+     loading="lazy"
+   />
 
 <KnowledgeCallout>
   The built-in Scene Helpers are shown for select objects such as lights and
@@ -150,7 +192,7 @@ Now let's add a camera to the scene.
    ```tsx filename="new-scene.tsx" {1,7}
    import { PerspectiveCamera } from "@react-three/drei";
 
-   export function Untitled() {
+   export function Scene() {
      return (
        <>
          ...
@@ -162,13 +204,29 @@ Now let's add a camera to the scene.
 
 1. Position and rotate the camera at an angle in-front of the scene. We're operating on vibes here so do what feels good!
 
-1. Click the <ActionLink icon={WorldSpaceIcon} href="/docs/building-your-scene/learn-the-ui/scene#set-worldlocal-transform" name="Set Local Transform" /> action in the Scene Controls. Transforms now operate in local space, when translating the camera it will move in the direction it's facing. Click again to move back to global space.
+   <Image
+     className="mt-5 w-full"
+     src="/tutorials/vsce-3d/6.png"
+     width={700}
+     height={610}
+     loading="lazy"
+   />
+
+1. Click the <ActionLink icon={WorldSpaceIcon} href="/docs/building-your-scene/learn-the-ui/scene#set-worldlocal-transform" name="Set Local Transform" /> action in the Scene Controls. Transforms now operate in local space, for example when translating the camera it will move in the direction it's facing. Click again to move back to global space.
 
 1. On the camera set the `makeDefault` prop to be checked. When playing your scene this camera will now be used.
 
 1. Click the <ActionLink icon={PlayIcon} href="/docs/building-your-scene/learn-the-ui/scene#play-scene" name="Play" /> action in the Scene Controls to run the scene through your camera.
 
-1. Click the <ActionLink icon={CaretDownIcon} href="/docs/building-your-scene/learn-the-ui/scene#play-options" name="Play Options" /> action next to the Play action to switch to other cameras.
+   <Image
+     className="mt-5 w-full"
+     src="/tutorials/vsce-3d/7.png"
+     width={700}
+     height={610}
+     loading="lazy"
+   />
+
+1. Click the <ActionLink icon={GearIcon} href="/docs/building-your-scene/learn-the-ui/scene#play-options" name="Settings" /> action next to the Play action to switch to other cameras.
 
 <KnowledgeCallout>
   Play Controls let you run and interact with your scene. When pressing the stop
@@ -184,7 +242,7 @@ Finally we're going to add some props to your component.
 1. Add two props to your component, the `backlight` prop should be a boolean that defaults to `true` and the `backlightColor` prop should be a string.
 
    ```tsx filename="new-scene.tsx" {2,3,5,6}
-   export function Untitled({
+   export function Scene({
      backlight = true,
      backlightColor,
    }: {
@@ -198,7 +256,7 @@ Finally we're going to add some props to your component.
 1. Conditionally render the backlight element using the `backlight` prop.
 
    ```tsx filename="new-scene.tsx" {11}
-   export function Untitled({
+   export function Scene({
      backlight = true,
      backlightColor,
    }: {
@@ -208,7 +266,7 @@ Finally we're going to add some props to your component.
      return (
        <>
          ...
-         {backlight && <pointLight name="Backlight" />}
+         {backlight && <pointLight name="Back light" />}
        </>
      );
    }
@@ -217,7 +275,7 @@ Finally we're going to add some props to your component.
 1. Pass the `backlightColor` prop to the backlight point light.
 
    ```tsx filename="new-scene.tsx" {/color={backlightColor}/}
-   export function Untitled({
+   export function Scene({
      backlight = true,
      backlightColor,
    }: {
@@ -227,13 +285,21 @@ Finally we're going to add some props to your component.
      return (
        <>
          ...
-         {backlight && <pointLight color={backlightColor} name="Backlight" />}
+         {backlight && <pointLight color={backlightColor} name="Back light" />}
        </>
      );
    }
    ```
 
 1. Click the <ActionLink icon={Pencil2Icon} href="/docs/building-your-scene/learn-the-ui/scene-panel#openclose-component-controls" name="Component Controls" /> action in the ScenePanel. The controls shown in the scene panel are the props the component accepts which can be changed as you build!
+
+   <Image
+     className="mt-5 w-full"
+     src="/tutorials/vsce-3d/8.png"
+     width={700}
+     height={610}
+     loading="lazy"
+   />
 
 1. Toggle the `backlight` prop on and off, then set the `backlightColor` prop to a color you like. Red is always a great choice!
 
