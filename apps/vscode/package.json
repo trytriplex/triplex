@@ -3,7 +3,7 @@
   "displayName": "Triplex for VS Code [BETA]",
   "version": "0.2.17",
   "private": true,
-  "description": "The visual workspace for React / Three Fiber.",
+  "description": "Your visual workspace for React / Three Fiber.",
   "categories": [
     "Visualization",
     "Other"
