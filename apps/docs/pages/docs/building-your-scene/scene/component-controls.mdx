@@ -4,7 +4,7 @@ description: Component controls let you change the props that are given to your 
 
 import { EraserIcon, Pencil2Icon } from "@radix-ui/react-icons";
 
-Seeing how your component behaves when given different props is a key part of building with Triplex. Change the props of your component at any time by clicking the <ActionLink icon={Pencil2Icon} href="/docs/building-your-scene/learn-the-ui/scene-panel#openclose-component-controls" name="Component Controls" /> action in the scene panel.
+Seeing how your component behaves when given different props is a key part of building with Triplex. Change the props of your component at any time by clicking the <ActionLink icon={Pencil2Icon} name="Component Controls" /> action in the scene panel.
 
 ## Making Changes
 
@@ -14,7 +14,7 @@ For more advanced and specific scenarios we recommend creating example component
 
 ## Resetting Changes
 
-To reset props back to their default values click the <ActionLink icon={EraserIcon} href="/docs/building-your-scene/learn-the-ui/context-area#reset-props" name="Reset Props" /> action.
+To reset props back to their default values click the <ActionLink icon={EraserIcon} name="Reset Props" /> action.
 
 <KnowledgeCallout>
   Props that have [default values](https://react.dev/learn/passing-props-to-a-component#specifying-a-default-value-for-a-prop) set through destructured args are respected by Component Controls, including when resetting props back to their default values.
@@ -29,4 +29,4 @@ export function Component({ x = 10 }: { x: number });
 
 Writing code with [Leva](https://github.com/pmndrs/leva) is a common way to have your component be configurable during development. With component controls you're able to decide if you want to maintain that code or not.
 
-See the [Replacing Leva With Component Props](http://localhost:3000/guides/use-leva-with-triplex) guide for how to use Triplex like Leva.
+See the [Replacing Leva With Component Props](/resources/use-leva-with-triplex) guide for how to use Triplex like Leva.

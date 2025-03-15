@@ -10,7 +10,7 @@ Component props can be inspected and edited through the UI. When an element is s
 
 Find props in the context area and change its value. When moving away from the input your changes will are applied and ready to save.
 
-Once you've made all the changes you want make sure to save it back to source using the <ActionLink icon="⌘ + S" href="/docs/building-your-scene/learn-the-ui/other#save" name="Save" /> action.
+Once you've made all the changes you want make sure to save it back to source using the <ActionLink icon="⌘ + S" name="Save" /> action.
 
 Props with an _italic label_ means that they have a description available. Hover over the label to see the description.
 
@@ -29,7 +29,7 @@ interface Props {
 
 ## Cycle Through Prop Types
 
-For props that can be given different values use the <ActionLink name="Switch Prop Type" icon={SwitchIcon} href="#cycle-through-prop-types" /> action to cycle through them.
+For props that can be given different values use the <ActionLink name="Switch Prop Type" icon={SwitchIcon} /> action to cycle through them.
 
 {/* prettier-ignore */}
 <KnowledgeCallout>
@@ -53,12 +53,12 @@ export function Component({ isVisible = true }: { isVisible: boolean });
 
 ## Code-Controlled Props
 
-Props that have dynamic values are considered controlled by code and can't be edited through the UI. You'll see the <ActionLink name="Controlled By Code" icon={ExclamationTriangleIcon} href="/docs/building-your-scene/learn-the-ui/other#controlled-by-code" /> action next to it, interacting with the control jumps you to its code declaration.
+Props that have dynamic values are considered controlled by code and can't be edited through the UI. You'll see the <ActionLink name="Controlled By Code" icon={ExclamationTriangleIcon} /> action next to it, interacting with the control jumps you to its code declaration.
 
 ## Unsupported Props
 
-Some props just can't be edited through the UI yet. You'll see the <ActionLink name="Unsupported Prop" icon={ExclamationTriangleIcon} href="/docs/building-your-scene/learn-the-ui/other#unsupported-prop" /> action next to it, interacting with it opens GitHub for you to create an issue to gauge community interest for adding support.
+Some props just can't be edited through the UI yet. You'll see the <ActionLink name="Unsupported Prop" icon={ExclamationTriangleIcon} /> action next to it, interacting with it opens GitHub for you to create an issue to gauge community interest for adding support.
 
 ## Next Steps
 
-For an exhaustive list of supported props see [API Reference > Props](/docs/api-reference/props), otherwise continue to learn about [Component Controls](/docs/building-your-scene/components/component-controls).
+For an exhaustive list of supported props see [API Reference > Props](/docs/api-reference/props), otherwise continue to learn about [Play Controls](/docs/building-your-scene/scene/play-controls).

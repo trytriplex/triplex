@@ -21,7 +21,7 @@ Let's create your first component with Triplex! No experience is needed to follo
 
 First we are going to make a new file to build our scene in. With Triplex Standalone open:
 
-1. Find the <ActionLink icon={PlusIcon} href="/docs/building-your-scene/learn-the-ui/other#new-file" name="New File" /> action in the Tab Bar and click it. A new file called untitled.tsx is opened that contains a box.
+1. Find the <ActionLink icon={PlusIcon} name="New File" /> action in the Tab Bar and click it. A new file called untitled.tsx is opened that contains a box.
 
 1. Click & drag over the scene to rotate the camera around.
 
@@ -33,19 +33,19 @@ First we are going to make a new file to build our scene in. With Triplex Standa
   then dragging.
 </KnowledgeCallout>
 
-Before continuing let's save the file to the file system using the <ActionLink icon="⌘ + S" href="/docs/building-your-scene/learn-the-ui/other#save" name="Save" /> action, name it anything you want.
+Before continuing let's save the file to the file system using the <ActionLink icon="⌘ + S" name="Save" /> action, name it anything you want.
 
 ## Adding More Shapes
 
 Now let's add some more shapes to fill the scene out.
 
-1. Click the <ActionLink icon={PlusIcon} href="/docs/building-your-scene/learn-the-ui/scene-panel#add-element" name="Add Element" /> action in the scene panel. The Assets Panel will open. Search for **Mesh** and click it. Nothing will appear in the scene yet.
+1. Click the <ActionLink icon={PlusIcon} name="Add Element" /> action in the scene panel. The Assets Panel will open. Search for **Mesh** and click it. Nothing will appear in the scene yet.
 
-1. Hover over the added mesh and click the <ActionLink icon={PlusIcon} href="/docs/building-your-scene/learn-the-ui/scene-panel#add-child-element" name="Add Child Element" /> action then search for **Sphere Geometry** and click it. A sphere will appear in the scene.
+1. Hover over the added mesh and click the <ActionLink icon={PlusIcon} name="Add Child Element" /> action then search for **Sphere Geometry** and click it. A sphere will appear in the scene.
 
 1. Hover over the mesh and click the Add Child Element action again then search for **Mesh Standard Material** and click it. The sphere is now shaded.
 
-1. Click the sphere in the scene, then click the <ActionLink icon={MoveIcon} href="/docs/building-your-scene/learn-the-ui/scene#translate" name="Translate" /> action in the Scene Controls, then finally move the sphere off the box.
+1. Click the sphere in the scene, then click the <ActionLink icon={MoveIcon} name="Translate" /> action in the Scene Controls, then finally move the sphere off the box.
 
 <KnowledgeCallout>
   The built-in Transform Controls are shown on selected elements. If the element
@@ -58,7 +58,7 @@ Before continuing try adding a cylinder mesh in code instead of the UI. Jump to 
 
 Now let's add [three-point lighting](https://en.wikipedia.org/wiki/Three-point_lighting) to the scene.
 
-1. When no lights are present in the scene default lights are turned on. Click the <ActionLink icon={SunIcon} href="/docs/building-your-scene/learn-the-ui/scene#turn-onoff-default-lights" name="Turn Off Default Lights" /> action in the Scene Controls to turn them off. Click it again to turn it back on.
+1. When no lights are present in the scene default lights are turned on. Click the <ActionLink icon={SunIcon} name="Turn Off Default Lights" /> action in the Scene Controls to turn them off. Click it again to turn it back on.
 
 1. Click the Add Element action in the scene panel then search for **Point Light** and click it. A point light will appear in the scene.
 
@@ -66,7 +66,7 @@ Now let's add [three-point lighting](https://en.wikipedia.org/wiki/Three-point_l
 
 1. Position the key light in front and to the side of the scene.
 
-1. Duplicate the key light by selecting it then using the <ActionLink icon="⌘ + D" href="/docs/building-your-scene/learn-the-ui/scene-panel#duplicate-element" name="Duplicate Element" /> action. Name the duplicated light "Fill light" and move it to the opposite side of the scene.
+1. Duplicate the key light by selecting it then using the <ActionLink icon="⌘ + D" name="Duplicate Element" /> action. Name the duplicated light "Fill light" and move it to the opposite side of the scene.
 
 1. Create the last light by adding another point light named "Backlight" then move it to the back of the scene.
 
@@ -104,13 +104,13 @@ Now let's add a camera to the scene by updating code.
 
 1. Position and rotate the camera at an angle in-front of the scene. We're operating on vibes here so do what feels good!
 
-1. Click the <ActionLink icon={WorldSpaceIcon} href="/docs/building-your-scene/learn-the-ui/scene#set-worldlocal-transform" name="Set Local Transform" /> action in the Scene Controls. Transforms now operate in local space, when translating the camera it will move in the direction it's facing. Click again to move back to global space.
+1. Click the <ActionLink icon={WorldSpaceIcon} name="Set Local Transform" /> action in the Scene Controls. Transforms now operate in local space, when translating the camera it will move in the direction it's facing. Click again to move back to global space.
 
 1. On the camera set the `Make Default` prop to be checked. When playing your scene this camera will now be used.
 
-1. Click the <ActionLink icon={PlayIcon} href="/docs/building-your-scene/learn-the-ui/scene#play-scene" name="Play" /> action in the Scene Controls to run the scene through your camera.
+1. Click the <ActionLink icon={PlayIcon} name="Play" /> action in the Scene Controls to run the scene through your camera.
 
-1. Click the <ActionLink icon={GearIcon} href="/docs/building-your-scene/learn-the-ui/scene#play-options" name="Settings" /> action next to the Play action to switch to other cameras.
+1. Click the <ActionLink icon={GearIcon} name="Settings" /> action next to the Play action to switch to other cameras.
 
 <KnowledgeCallout>
   Play Controls let you run and interact with your scene. When pressing the stop
@@ -177,7 +177,7 @@ Finally we're going to add some props to your component.
    }
    ```
 
-1. Click the <ActionLink icon={Pencil2Icon} href="/docs/building-your-scene/learn-the-ui/scene-panel#openclose-component-controls" name="Component Controls" /> action in the ScenePanel. The controls shown in the scene panel are the props the component accepts which can be changed as you build!
+1. Click the <ActionLink icon={Pencil2Icon} name="Component Controls" /> action in the ScenePanel. The controls shown in the scene panel are the props the component accepts which can be changed as you build!
 
 1. Toggle the `backlight` prop on and off, then set the `backlightColor` prop to a color you like. Red is always a great choice!
 

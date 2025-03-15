@@ -11,7 +11,7 @@ Your pre-existing projects can be used with Triplex without doing anything, if y
 
 Some components expect there to be global styles available, such as when using Tailwind or when using a global stylesheet for themes.
 
-If this is you follow [How To Set Up Global Styles](/resources/how-to-set-up-tailwind) to get them showing up.
+Follow [How to Set Up Tailwind CSS](/resources/tailwind-css) to get them showing up.
 
 ### Are module aliases supported?
 
@@ -37,7 +37,7 @@ Triplex renders components in a isolated sandbox taking control of rendering you
 To fix this you could:
 
 - Refactor your component to be self contained
-- Use a [Global Provider](/docs/building-your-scene/global-provider) to provide the missing React context
+- Use a [Global Provider](/docs/building-your-scene/providers) to provide the missing React context
 - Declare the required Context / state inside another component and open that one instead
 - Set default props
 

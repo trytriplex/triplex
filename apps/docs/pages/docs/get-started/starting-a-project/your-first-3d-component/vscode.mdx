@@ -32,7 +32,7 @@ First we are going to make a new file to build our scene in. With Visual Studio 
    }
    ```
 
-1. Click the <ActionLink name="Open in Triplex" href="#" /> CodeLens action above the Scene component. Nothing will appear in the scene yet.
+1. Click the <ActionLink name="Open in Triplex" /> CodeLens action above the Scene component. Nothing will appear in the scene yet.
 
    <Image
      className="mt-5 w-full"
@@ -110,7 +110,7 @@ Now let's add some more shapes to fill the scene out.
    }
    ```
 
-1. Click the sphere in the scene, then click the <ActionLink icon={MoveIcon} href="/docs/building-your-scene/learn-the-ui/scene#translate" name="Translate" /> action in the Scene Controls, then finally move the sphere off the box.
+1. Click the sphere in the scene, then click the <ActionLink icon={MoveIcon} name="Translate" /> action in the Scene Controls, then finally move the sphere off the box.
 
    <Image
      className="mt-5 w-full"
@@ -125,13 +125,13 @@ Now let's add some more shapes to fill the scene out.
   doesn't declare the prop for the selected transform mode it will be disabled.
 </KnowledgeCallout>
 
-Before continuing try adding a cylinder mesh yourself. Make sure to save changes using the <ActionLink icon="⌘ + S" href="/docs/building-your-scene/learn-the-ui/other#save" name="Save" /> action!
+Before continuing try adding a cylinder mesh yourself. Make sure to save changes using the <ActionLink icon="⌘ + S" name="Save" /> action!
 
 ## Adding Lights
 
 Now let's add [three-point lighting](https://en.wikipedia.org/wiki/Three-point_lighting) to the scene.
 
-1. When no lights are present in the scene default lights are turned on. Click the <ActionLink icon={SunIcon} href="/docs/building-your-scene/learn-the-ui/scene#turn-onoff-default-lights" name="Turn Off Default Lights" /> action in the Scene Controls to turn them off. Click it again to turn it back on.
+1. When no lights are present in the scene default lights are turned on. Click the <ActionLink icon={SunIcon} name="Turn Off Default Lights" /> action in the Scene Controls to turn them off. Click it again to turn it back on.
 
 1. Copy the highlighted code into your component. A point light will appear in the scene.
 
@@ -158,7 +158,7 @@ Now let's add [three-point lighting](https://en.wikipedia.org/wiki/Three-point_l
      loading="lazy"
    />
 
-1. Duplicate the key light by selecting it then using the <ActionLink icon="⌘ + D" href="/docs/building-your-scene/learn-the-ui/scene-panel#duplicate-element" name="Duplicate Element" /> action. Name the duplicated light "Fill light" and move it to the opposite side of the scene.
+1. Duplicate the key light by selecting it then using the <ActionLink icon="⌘ + D" name="Duplicate Element" /> action. Name the duplicated light "Fill light" and move it to the opposite side of the scene.
 
 1. Create the last light by adding another point light named "Back light" then move it to the back of the scene.
 
@@ -212,11 +212,11 @@ Now let's add a camera to the scene.
      loading="lazy"
    />
 
-1. Click the <ActionLink icon={WorldSpaceIcon} href="/docs/building-your-scene/learn-the-ui/scene#set-worldlocal-transform" name="Set Local Transform" /> action in the Scene Controls. Transforms now operate in local space, for example when translating the camera it will move in the direction it's facing. Click again to move back to global space.
+1. Click the <ActionLink icon={WorldSpaceIcon} name="Set Local Transform" /> action in the Scene Controls. Transforms now operate in local space, for example when translating the camera it will move in the direction it's facing. Click again to move back to global space.
 
 1. On the camera set the `makeDefault` prop to be checked. When playing your scene this camera will now be used.
 
-1. Click the <ActionLink icon={PlayIcon} href="/docs/building-your-scene/learn-the-ui/scene#play-scene" name="Play" /> action in the Scene Controls to run the scene through your camera.
+1. Click the <ActionLink icon={PlayIcon} name="Play" /> action in the Scene Controls to run the scene through your camera.
 
    <Image
      className="mt-5 w-full"
@@ -226,7 +226,7 @@ Now let's add a camera to the scene.
      loading="lazy"
    />
 
-1. Click the <ActionLink icon={GearIcon} href="/docs/building-your-scene/learn-the-ui/scene#play-options" name="Settings" /> action next to the Play action to switch to other cameras.
+1. Click the <ActionLink icon={GearIcon} name="Settings" /> action next to the Play action to switch to other cameras.
 
 <KnowledgeCallout>
   Play Controls let you run and interact with your scene. When pressing the stop
@@ -291,7 +291,7 @@ Finally we're going to add some props to your component.
    }
    ```
 
-1. Click the <ActionLink icon={Pencil2Icon} href="/docs/building-your-scene/learn-the-ui/scene-panel#openclose-component-controls" name="Component Controls" /> action in the ScenePanel. The controls shown in the scene panel are the props the component accepts which can be changed as you build!
+1. Click the <ActionLink icon={Pencil2Icon} name="Component Controls" /> action in the ScenePanel. The controls shown in the scene panel are the props the component accepts which can be changed as you build!
 
    <Image
      className="mt-5 w-full"
