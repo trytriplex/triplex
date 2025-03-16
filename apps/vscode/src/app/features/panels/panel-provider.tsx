@@ -199,7 +199,7 @@ function LearnToUseCTA() {
       </span>
       <a
         className="text-link focus-visible:outline-selected focus:outline-[transparent]"
-        href="https://triplex.dev/docs/guides/provider-controls"
+        href="https://triplex.dev/docs/building-your-scene/providers"
       >
         Learn how to use this feature.
       </a>
@@ -215,7 +215,7 @@ function SetUpCTA() {
       <div>
         <a
           className="text-link focus-visible:outline-selected focus:outline-[transparent]"
-          href="https://triplex.dev/docs/guides/provider-controls"
+          href="https://triplex.dev/docs/building-your-scene/providers"
         >
           Learn how to set one up.
         </a>

@@ -209,7 +209,7 @@ function ComponentSandboxPanel({
         <ExternalLink
           actionId="contextpanel_docs_componentcontrols"
           size="xs"
-          to="https://triplex.dev/docs/guides/component-controls"
+          to="https://triplex.dev/docs/building-your-scene/scene/component-controls"
           variant="subtle"
         >
           Learn more
@@ -261,7 +261,7 @@ function ComponentSandboxPanel({
             <ExternalLink
               actionId="contextpanel_docs_componentcontrols"
               size="xs"
-              to="https://triplex.dev/docs/guides/component-controls"
+              to="https://triplex.dev/docs/building-your-scene/scene/component-controls"
             >
               Learn how to use this feature.
             </ExternalLink>

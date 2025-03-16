@@ -4,4 +4,4 @@ Triplex for VS Code is in development and released as **BETA**, there will be bu
 
 By default all React components can be opened by Triplex. When wanting to scope it down you can create a `.triplex/config.json` file and populate the `"files"` field.
 
-Learn more in the [project settings documentation](https://triplex.dev/docs/get-started/settings).
+Learn more in the [project settings documentation](https://triplex.dev/docs/api-reference/config-options).

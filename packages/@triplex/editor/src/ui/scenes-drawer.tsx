@@ -44,7 +44,7 @@ function Scenes({ filter = "" }: { filter?: string }) {
           No files were found that can be opened. Your config might be invalid.{" "}
           <ExternalLink
             actionId="projectdrawer_docs_settings"
-            to="https://triplex.dev/docs/get-started/settings#files"
+            to="https://triplex.dev/docs/api-reference/config-options/files"
           >
             Learn more
           </ExternalLink>

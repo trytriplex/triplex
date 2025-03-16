@@ -24,7 +24,7 @@
     "url": "https://github.com/trytriplex/triplex"
   },
   "license": "SEE LICENSE IN LICENSE",
-  "qna": "https://triplex.dev/docs/faq",
+  "qna": "https://triplex.dev/docs/community/faq",
   "publisher": "trytriplex",
   "main": "./hook-extension.js",
   "files": [

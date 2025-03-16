@@ -107,7 +107,7 @@ function WelcomeScreen() {
             actionId="welcome_docs_overview"
             icon={ReaderIcon}
             onClick={() =>
-              window.triplex.openLink("https://triplex.dev/docs/overview")
+              window.triplex.openLink("https://triplex.dev/docs/get-started")
             }
             size="tight"
           >

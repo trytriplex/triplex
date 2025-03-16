@@ -34,7 +34,7 @@ function LearnToUseCTA({ exportName }: { exportName: string }) {
       </span>
       <a
         className="text-link focus-visible:outline-selected focus:outline-[transparent]"
-        href="https://triplex.dev/docs/guides/component-controls"
+        href="https://triplex.dev/docs/building-your-scene/scene/component-controls"
       >
         Learn how to use this feature.
       </a>

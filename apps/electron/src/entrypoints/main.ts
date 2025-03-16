@@ -528,7 +528,9 @@ async function main() {
         }
 
         case 2: {
-          shell.openExternal("https://triplex.dev/docs/setup/manual-setup");
+          shell.openExternal(
+            "https://triplex.dev/docs/get-started/starting-a-project/starting-from-scratch",
+          );
           return;
         }
 

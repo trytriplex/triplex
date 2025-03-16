@@ -326,7 +326,7 @@ export function EditorMenu() {
           submenu: [
             {
               click: () =>
-                window.triplex.openLink("https://triplex.dev/docs/overview"),
+                window.triplex.openLink("https://triplex.dev/docs/get-started"),
               id: "rootmenu_docs_overview",
               label: "Documentation",
               role: "help",

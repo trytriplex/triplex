@@ -58,7 +58,7 @@ function Inputs() {
           <ExternalLink
             actionId="contextpanel_docs_providercontrols_noprops"
             size="xs"
-            to="https://triplex.dev/docs/guides/provider-controls"
+            to="https://triplex.dev/docs/building-your-scene/providers"
           >
             Learn how to use this feature.
           </ExternalLink>
@@ -139,7 +139,7 @@ export function ProviderConfig() {
         <ExternalLink
           actionId="contextpanel_docs_providercontrols_learnmore"
           size="xs"
-          to="https://triplex.dev/docs/guides/provider-controls"
+          to="https://triplex.dev/docs/building-your-scene/providers"
           variant="subtle"
         >
           Learn more
@@ -171,7 +171,7 @@ export function ProviderConfig() {
           <ExternalLink
             actionId="contextpanel_docs_providercontrols_setup"
             size="xs"
-            to="https://triplex.dev/docs/guides/provider-controls"
+            to="https://triplex.dev/docs/building-your-scene/providers"
           >
             Learn how to set one up.
           </ExternalLink>
