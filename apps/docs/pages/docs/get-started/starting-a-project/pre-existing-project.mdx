@@ -57,12 +57,11 @@ export function Component({ color = "red", x = 0, visible = true }) {
 
 We recommend building with TypeScript for the best experience.
 
-### Why is my component not able to be opened in Triplex?
+### Why can't I open one of my components?
 
-For components to be opened in Triplex they must be exported from the file.
+Only components that are exported can be opened in Triplex. If you're trying to open a component that isn't exported you'll need to export it first.
 
-```tsx {2}
-export function Component() {
-  return <mesh />;
-}
+```diff
+-function Component() {
++export function Component() {
 ```

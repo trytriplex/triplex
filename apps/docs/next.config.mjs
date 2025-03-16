@@ -20,7 +20,7 @@ export default withNextra({
       source: "/docs",
     },
     {
-      destination: "/resources/use-leva-with-triplex",
+      destination: "/resources/replacing-leva-with-props",
       permanent: false,
       source: "/docs/guides/leva-controls",
     },

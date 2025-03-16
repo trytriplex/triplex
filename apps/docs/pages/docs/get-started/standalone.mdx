@@ -30,11 +30,11 @@ Find the <ActionLink icon={DashboardIcon} name="Open Component" /> action at the
 
 By default all React components can be opened by Triplex. When wanting to scope the files that can be opened you can create a [configuration file](/docs/api-reference/config-options) and populate the `"files"` field.
 
-For example the following configuration marks all tsx files inside the components folder can be opened, anything else is excluded.
+For example the following configuration marks all jsx files inside the components folder can be opened, anything else is excluded.
 
 ```json filename=".triplex/config.json"
 {
-  "files": ["../src/components/**/*.tsx"]
+  "files": ["../src/components/**/*.jsx"]
 }
 ```
 
@@ -51,8 +51,8 @@ Currently Triplex Standalone doesn't support editing source code directly. You'l
 Only components that are exported can be opened in Triplex. If you're trying to open a component that isn't exported you'll need to export it first.
 
 ```diff
--function Component(): JSX.Element;
-+export function Component(): JSX.Element;
+-function Component() {
++export function Component() {
 ```
 
 ### Why is there is a difference between Triplex for VS Code and Triplex Standalone?
