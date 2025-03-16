@@ -4,7 +4,7 @@
 
 ## Get Started
 
-Visit https://triplex.dev/docs/overview to get started with Triplex.
+Visit https://triplex.dev/docs/get-started to get started with Triplex.
 
 ## Contributions
 
