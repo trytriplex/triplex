@@ -138,7 +138,7 @@ export function LandingCard({
 export function LandingCardHeading({
   children,
   decoration,
-  lineClamp,
+  lineClamp = 99,
 }: {
   children: string;
   decoration?: string;
@@ -164,12 +164,14 @@ export function LandingCardHeading({
         className={cn([
           size === "default" && "text-2xl",
           size === "large" && "text-2xl lg:text-4xl",
-          size === "xlarge" && "text-5xl",
+          size === "xlarge" && "text-center text-5xl",
           variant === "default" && "text-default",
           variant === "inverse" && "text-inverse",
-          "font-default font-medium",
+          "font-default line-clamp-6 overflow-hidden font-medium",
         ])}
-        style={{ lineClamp }}
+        style={{
+          WebkitLineClamp: lineClamp,
+        }}
       >
         {children}
       </h3>

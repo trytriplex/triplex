@@ -76,7 +76,7 @@ export function LandingHero() {
         >
           Install for Visual Studio Code / Cursor
         </a>
-        <div className="text-subtle items-center self-center text-base">
+        <div className="text-subtle items-center self-center px-8 text-center text-base">
           <DownloadButton variant="link" />, or for{" "}
           <Link
             className="hover:text-default cursor-pointer underline"

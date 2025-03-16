@@ -22,7 +22,7 @@ export function LandingPresentationalButton({
         size === "lg" && "h-12 w-12 md:h-14 md:w-14",
         variant === "inverse" && "bg-inverse text-inverse",
         variant === "inverse-hint" &&
-          "border-neutral text-default group-hover:bg-inverse group-hover:text-inverse border group-hover:border-transparent",
+          "border-neutral bg-surface text-default group-hover:bg-inverse group-hover:text-inverse border group-hover:border-transparent",
         variant === "default" && "bg-surface text-default",
         "flex flex-shrink-0 items-center justify-center rounded-full p-4 transition-transform group-hover:translate-x-1",
       ])}
@@ -58,7 +58,7 @@ export function LandingLink({
   return (
     <Link
       className={cn([
-        "font-default flex cursor-pointer items-center px-6 py-2 text-lg font-medium",
+        "font-default flex cursor-pointer items-center px-6 py-2 text-center text-lg font-medium",
         variant === "inverse" && "bg-surface text-default",
         variant === "inverse-border" &&
           "border-surface text-inverse-subtle border bg-transparent",

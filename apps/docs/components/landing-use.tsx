@@ -21,25 +21,27 @@ export function LandingUseTriplexAnywhere() {
     <div className="grid md:gap-6 md:overflow-hidden lg:-mr-20 lg:grid-cols-2 lg:gap-16 xl:gap-32">
       <TabsRoot>
         <div className="-mx-8 flex flex-col gap-6 md:mx-0 md:gap-10 lg:py-20">
-          <h2 className="font-brand text-brand text-center text-5xl font-medium md:text-6xl lg:text-7xl">
-            Use Triplex on any project
-          </h2>
+          <div className="flex flex-col gap-6 px-8 lg:contents">
+            <h2 className="font-brand text-brand text-center text-5xl font-medium md:text-6xl lg:text-7xl">
+              Use Triplex on any project
+            </h2>
 
-          <div className="flex flex-wrap justify-center gap-3">
-            <Tabs>
-              <Tab>
-                {(props) => <LandingButton {...props}>Learn</LandingButton>}
-              </Tab>
-              <Tab>
-                {(props) => <LandingButton {...props}>Apps</LandingButton>}
-              </Tab>
-              <Tab>
-                {(props) => <LandingButton {...props}>Games</LandingButton>}
-              </Tab>
-              <Tab>
-                {(props) => <LandingButton {...props}>WebXR</LandingButton>}
-              </Tab>
-            </Tabs>
+            <div className="flex flex-wrap justify-center gap-3">
+              <Tabs>
+                <Tab>
+                  {(props) => <LandingButton {...props}>Learn</LandingButton>}
+                </Tab>
+                <Tab>
+                  {(props) => <LandingButton {...props}>Apps</LandingButton>}
+                </Tab>
+                <Tab>
+                  {(props) => <LandingButton {...props}>Games</LandingButton>}
+                </Tab>
+                <Tab>
+                  {(props) => <LandingButton {...props}>WebXR</LandingButton>}
+                </Tab>
+              </Tabs>
+            </div>
           </div>
 
           <TabsList>
