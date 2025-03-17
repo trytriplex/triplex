@@ -5,8 +5,14 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import Link from "next/link";
+import { type MdxFile } from "nextra";
+import { getPagesUnderRoute } from "nextra/context";
 
 export function Footer() {
+  const productPages = getPagesUnderRoute("/product").filter(
+    (page): page is MdxFile => page.kind === "MdxPage",
+  );
+
   return (
     <footer className="bg-surface border-neutral relative col-span-full border-t">
       <div className="mx-auto flex gap-14 px-6 py-10 md:px-8 lg:w-full lg:gap-32 lg:px-20">
@@ -119,7 +125,7 @@ export function Footer() {
             </a>
           </div>
         </div>
-        <div className="grid basis-1/3 gap-14 sm:basis-full sm:justify-end sm:[grid-template-columns:repeat(auto-fit,7rem)] xl:gap-32">
+        <div className="grid basis-1/3 gap-14 sm:basis-full sm:justify-end sm:[grid-template-columns:repeat(auto-fit,10rem)] xl:gap-24">
           <ul className="flex flex-col gap-4">
             <span className="text-subtle text-base font-medium">Product</span>
             <li>
@@ -127,23 +133,7 @@ export function Footer() {
                 className="text-subtlest hover:text-subtle text-base"
                 href="/docs/get-started"
               >
-                Setup
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-subtlest hover:text-subtle text-base"
-                href="/docs/building-your-scene/ui-glossary"
-              >
-                Learn the UI
-              </Link>
-            </li>
-            <li>
-              <Link
-                className="text-subtlest hover:text-subtle text-base"
-                href="/docs/api-reference/config-options"
-              >
-                Settings
+                Get Started
               </Link>
             </li>
             <li>
@@ -154,6 +144,16 @@ export function Footer() {
                 Changelog
               </Link>
             </li>
+            {productPages.map((page) => (
+              <li key={page.name}>
+                <Link
+                  className="text-subtlest hover:text-subtle text-base"
+                  href={page.route}
+                >
+                  {page.frontMatter?.name || page.name}
+                </Link>
+              </li>
+            ))}
           </ul>
 
           <ul className="flex flex-col gap-4">

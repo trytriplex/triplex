@@ -66,5 +66,8 @@
   },
   "legal": {
     "type": "hidden"
+  },
+  "product": {
+    "type": "hidden"
   }
 }
