@@ -1,0 +1,37 @@
+---
+name: Storybook Alternative
+description: Developing components in isolation has proven to be a productive scalable way to build UIs. Here's how Storybook compares with Triplex.
+image: /ui/vsce-app-dark.png
+imageLayout: cover
+---
+
+Triplex for VS Code is a viable Storybook alternative enabling you to stay in context developing your React components right next to where you write your code.
+
+Instead of installing and running a CLI application Triplex for VS Code is a VS Code extension. This means you don't have your dependency tree bloated with dependencies needed to run it. If you're working in a large organization you know what I'm talking about when I say dependency upgrade hell.
+
+## Opening Components
+
+When opening a component in Triplex for VS Code it's opened in isolation, just like Storybook. The difference is only that components module and its dependencies are loaded, meaning it's super fast to open.
+
+Pressing the <ActionLink name="Open in Triplex" /> CodeLens action opens the component in Triplex. For more information see the [Triplex for VS Code docs](/docs/get-started/vscode).
+
+## Feature Comparison
+
+|  | Triplex for VS Code | Storybook |
+| --- | --- | --- |
+| [Controls from props](/docs/building-your-scene/scene/component-controls) | ✅ | ❌ |
+| [Visual controls](/docs/building-your-scene/scene/visual-controls) | ✅ | ❌ |
+| Managed dependencies | ✅ | ❌ |
+| Save changes back to code | ✅ | ❌ |
+| React Three Fiber support | ✅ | ❌ |
+| Plugins | 🚧 | ✅ |
+| [Controls from args](https://storybook.js.org/docs/essentials/controls) | ❌ | ✅ |
+| Component testing | ❌ | ✅ |
+| Visual testing | ❌ | ✅ |
+| Documentation | ❌ | ✅ |
+
+## Get Started
+
+1. Visit the [Visual Studio Code marketplace](https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce)
+2. Press the "Install" button
+3. Make sure "Auto Update" is checked

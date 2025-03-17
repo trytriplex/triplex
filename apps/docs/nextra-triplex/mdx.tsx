@@ -189,7 +189,7 @@ export const components: Components = {
     </td>
   ),
   th: ({ children }) => (
-    <th className="text-default border-neutral border-b py-2.5 text-center text-base font-medium">
+    <th className="text-default border-neutral border-b py-2.5 text-left text-base font-medium">
       {children}
     </th>
   ),

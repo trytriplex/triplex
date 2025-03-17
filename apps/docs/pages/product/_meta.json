@@ -1,0 +1,8 @@
+{
+  "*": {
+    "theme": {
+      "layout": "full",
+      "pagination": false
+    }
+  }
+}

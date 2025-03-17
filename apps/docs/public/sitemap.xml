@@ -48,6 +48,12 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://triplex.dev/product/storybook-alternative</loc>
+    <lastmod>2025-03-17</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://triplex.dev/legal/privacy-policy</loc>
     <lastmod>2023-11-01</lastmod>
     <changefreq>monthly</changefreq>
@@ -115,7 +121,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/vscode</loc>
-    <lastmod>2025-03-16</lastmod>
+    <lastmod>2025-03-17</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -139,7 +145,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/starting-a-project/your-first-3d-component</loc>
-    <lastmod>2025-03-15</lastmod>
+    <lastmod>2025-03-16</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
