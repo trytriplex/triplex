@@ -1,5 +1,11 @@
 # @triplex/editor
 
+## 0.70.17
+
+### Patch Changes
+
+- ebf6a03: Links now point to their new locations on the new site.
+
 ## 0.70.16
 
 ### Patch Changes

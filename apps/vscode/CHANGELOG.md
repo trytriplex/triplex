@@ -1,5 +1,12 @@
 # @triplex/vscode
 
+## 0.2.18
+
+### Patch Changes
+
+- 66ad72d: Basic and halloween templates have been removed.
+- ebf6a03: Links now point to their new locations on the new site.
+
 ## 0.2.17
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @triplex/electron
 
+## 0.70.17
+
+### Patch Changes
+
+- 66ad72d: Basic and halloween templates have been removed.
+- ebf6a03: Links now point to their new locations on the new site.
+- Updated dependencies [66ad72d]
+- Updated dependencies [ebf6a03]
+  - create-triplex-project@0.70.5
+  - @triplex/editor@0.70.17
+
 ## 0.70.16
 
 ### Patch Changes

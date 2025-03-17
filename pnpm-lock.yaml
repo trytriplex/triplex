@@ -218,13 +218,13 @@ importers:
         specifier: 0.70.16
         version: link:../../packages/@triplex/client
       '@triplex/editor':
-        specifier: 0.70.16
+        specifier: 0.70.17
         version: link:../../packages/@triplex/editor
       '@triplex/server':
         specifier: 0.71.7
         version: link:../../packages/@triplex/server
       create-triplex-project:
-        specifier: 0.70.4
+        specifier: 0.70.5
         version: link:../../packages/create-triplex-project
     devDependencies:
       '@sentry/electron':
