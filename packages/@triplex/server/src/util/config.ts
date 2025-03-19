@@ -107,7 +107,10 @@ function _resolveProjectCwd(
     }
   }
 
-  if (dir.includes("package.json") && !__fallbackPkgJsonPath) {
+  const isNodeOrDenoProject =
+    dir.includes("package.json") || dir.includes("deno.json");
+
+  if (isNodeOrDenoProject && !__fallbackPkgJsonPath) {
     // Keep track of the first found package.json just in case as a fallback cwd.
     return _resolveProjectCwd(next, startPath);
   }
