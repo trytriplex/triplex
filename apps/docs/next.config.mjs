@@ -20,6 +20,11 @@ export default withNextra({
       source: "/docs",
     },
     {
+      destination: "/docs/get-started",
+      permanent: false,
+      source: "/docs/overview",
+    },
+    {
       destination: "/resources/replacing-leva-with-props",
       permanent: false,
       source: "/docs/guides/leva-controls",
