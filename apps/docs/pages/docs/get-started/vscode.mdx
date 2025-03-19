@@ -4,7 +4,7 @@ description: Turn Visual Studio Code, Cursor, Windsurf, and forks into your visu
 image: /ui/vsce-app-dark.png
 ---
 
-Triplex for VS Code turns [Visual Studio Code](https://code.visualstudio.com), [Cursor](https://www.cursor.com) and more into your visual workspace, bringing the best features of Triplex for you to stay in context while coding.
+Triplex for VS Code turns [Visual Studio Code](https://code.visualstudio.com), [Cursor](https://www.cursor.com), [Windsurf](https://codeium.com/windsurf), and other forks into your visual workspace, bringing the best features of Triplex for you to stay in context while coding.
 
 ## Installation
 
@@ -56,6 +56,17 @@ Only components that are exported can be opened in Triplex. If you're trying to 
 -function Component() {
 +export function Component() {
 ```
+
+### Why do I get an error opening one of my components?
+
+Components are rendered by themselves alongside visual controls. This means if your components rely on global state or context there may be some work involved to get it rendering without an error.
+
+To resolve you could:
+
+- Refactor your component to be self contained
+- Use a [provider component](https://triplex.dev/docs/building-your-scene/providers#global-provider) to provide the missing React context
+- Declare the required context or state in another component and open that instead
+- Set default props
 
 ### How do I reload the editor?
 
