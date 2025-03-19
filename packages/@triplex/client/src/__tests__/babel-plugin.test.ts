@@ -1404,7 +1404,7 @@ describe("babel plugin", () => {
       },
     );
 
-    expect(result?.code).toContain('"root": Bar.triplexMeta.root');
+    expect(result?.code).toContain('"root": Bar?.triplexMeta?.root');
   });
 
   it("should forward found root from first found local component", () => {
@@ -1428,7 +1428,7 @@ describe("babel plugin", () => {
       },
     );
 
-    expect(result?.code).toContain('"root": Bar.triplexMeta.root');
+    expect(result?.code).toContain('"root": Bar?.triplexMeta?.root');
   });
 
   it("should set triplex meta even with no jsx elements", () => {
@@ -1637,7 +1637,7 @@ describe("babel plugin", () => {
       },
     );
 
-    expect(result?.code).toContain(`"root": Dialog.triplexMeta.root`);
+    expect(result?.code).toContain(`"root": Dialog?.triplexMeta?.root`);
   });
 
   it("should handle default exports for fallback node_modules component", () => {
@@ -1738,7 +1738,7 @@ describe("babel plugin", () => {
       };
       Component.triplexMeta = {
         "lighting": "default",
-        "root": ContextProvider.triplexMeta.root || "react-three-fiber"
+        "root": ContextProvider?.triplexMeta?.root || "react-three-fiber"
       };"
     `);
   });
@@ -1850,15 +1850,15 @@ describe("babel plugin", () => {
       };
       Inbuilt1.triplexMeta = {
         "lighting": "default",
-        "root": Inbuilt.triplexMeta.root
+        "root": Inbuilt?.triplexMeta?.root
       };
       Inbuilt2.triplexMeta = {
         "lighting": "default",
-        "root": Inbuilt1.triplexMeta.root
+        "root": Inbuilt1?.triplexMeta?.root
       };
       Scene.triplexMeta = {
         "lighting": "default",
-        "root": Inbuilt2.triplexMeta.root
+        "root": Inbuilt2?.triplexMeta?.root
       };"
     `);
   });
@@ -2048,7 +2048,7 @@ describe("babel plugin", () => {
       };
       Component.triplexMeta = {
         "lighting": "default",
-        "root": ImportedComponent.triplexMeta.root
+        "root": ImportedComponent?.triplexMeta?.root
       };"
     `);
   });

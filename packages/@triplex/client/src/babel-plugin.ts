@@ -123,24 +123,32 @@ export default function triplexBabelPlugin({
       ) {
         meta.root = t.logicalExpression(
           "||",
-          t.memberExpression(
-            t.memberExpression(
+          t.optionalMemberExpression(
+            t.optionalMemberExpression(
               t.identifier(currentFunction.firstFoundCustomComponentName),
               t.identifier("triplexMeta"),
+              false,
+              true,
             ),
             t.identifier("root"),
+            false,
+            true,
           ),
           t.stringLiteral(currentFunction.firstFoundHostElementSource),
         );
       } else if (currentFunction.firstFoundHostElementSource) {
         meta.root = currentFunction.firstFoundHostElementSource;
       } else if (currentFunction.firstFoundCustomComponentName) {
-        meta.root = t.memberExpression(
-          t.memberExpression(
+        meta.root = t.optionalMemberExpression(
+          t.optionalMemberExpression(
             t.identifier(currentFunction.firstFoundCustomComponentName),
             t.identifier("triplexMeta"),
+            false,
+            true,
           ),
           t.identifier("root"),
+          false,
+          true,
         );
       } else if (currentFunction.returnsJSX) {
         meta.root = "react";
