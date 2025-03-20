@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.71.8
+
+### Patch Changes
+
+- eca2202: Deno projects that exclusively use deno.json instead of package.json can now be opened inside Triplex.
+
 ## 0.71.7
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @triplex/client
 
+## 0.70.17
+
+### Patch Changes
+
+- 4dbf621: Fix root analysis edge case where it would throw a "can't access root of undefined" error.
+
 ## 0.70.16
 
 ### Patch Changes

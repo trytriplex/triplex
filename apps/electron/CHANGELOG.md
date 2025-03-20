@@ -1,5 +1,16 @@
 # @triplex/electron
 
+## 0.70.18
+
+### Patch Changes
+
+- eca2202: Deno projects that exclusively use deno.json instead of package.json can now be opened inside Triplex.
+- Updated dependencies [eca2202]
+- Updated dependencies [4dbf621]
+  - @triplex/server@0.71.8
+  - @triplex/client@0.70.17
+  - @triplex/editor@0.70.18
+
 ## 0.70.17
 
 ### Patch Changes

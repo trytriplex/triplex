@@ -1,7 +1,7 @@
 {
   "name": "triplex-vsce",
   "displayName": "Triplex for VS Code [BETA]",
-  "version": "0.2.18",
+  "version": "0.2.19",
   "private": true,
   "description": "Your visual workspace for React / Three Fiber.",
   "categories": [
@@ -210,8 +210,8 @@
     "onStartupFinished"
   ],
   "dependencies": {
-    "@triplex/client": "0.70.16",
-    "@triplex/server": "0.71.7"
+    "@triplex/client": "0.70.17",
+    "@triplex/server": "0.71.8"
   },
   "devDependencies": {
     "@atlaskit/pragmatic-drag-and-drop": "^1.2.3",
