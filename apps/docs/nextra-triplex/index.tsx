@@ -53,15 +53,6 @@ export default function Root({
         <meta content={ogImageUrl} name="twitter:image" />
         <meta content="@trytriplex" name="twitter:site" />
         <meta content={title} name="twitter:title" />
-        <Script
-          dangerouslySetInnerHTML={{
-            __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-5M74J509GN');`,
-          }}
-        />
-        <Script
-          async
-          src="https://www.googletagmanager.com/gtag/js?id=G-5M74J509GN"
-        />
       </Head>
 
       <Layout
@@ -71,6 +62,16 @@ export default function Root({
       >
         <MDXProvider components={components}>{children}</MDXProvider>
       </Layout>
+
+      <Script
+        dangerouslySetInnerHTML={{
+          __html: `window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-5M74J509GN');`,
+        }}
+      />
+      <Script
+        async
+        src="https://www.googletagmanager.com/gtag/js?id=G-5M74J509GN"
+      />
     </div>
   );
 }
