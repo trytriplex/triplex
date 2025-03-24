@@ -7,6 +7,7 @@
 
 import Head from "next/head";
 import Script from "next/script";
+// @ts-ignore
 import type { NextraThemeLayoutProps } from "nextra";
 import { MDXProvider } from "nextra/mdx";
 import { karla, suse } from "../themes/fonts";
