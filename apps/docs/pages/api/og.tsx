@@ -34,7 +34,7 @@ async function fetchAssets() {
 
 function parseTitle(paramTitle: string | null) {
   const title = paramTitle || "Triplex IDE";
-  const slicedTitle = title.slice(0, 40);
+  const slicedTitle = title.slice(0, 56);
 
   if (title !== slicedTitle) {
     return slicedTitle + "...";
@@ -72,10 +72,10 @@ export default async function (request: Request) {
             borderRadius: "3333px",
             display: "flex",
             height: "4.5rem",
-            left: "2rem",
+            left: "3rem",
             padding: "0.85rem 2rem 0.75rem",
             position: "absolute",
-            top: "2rem",
+            top: "3rem",
           }}
         >
           <img src={workmark} style={{ height: "100%" }} />
@@ -100,7 +100,7 @@ export default async function (request: Request) {
         <div
           style={{
             display: "flex",
-            height: "28%",
+            height: "18%",
             marginTop: "2rem",
             paddingLeft: "4rem",
             paddingRight: "4rem",

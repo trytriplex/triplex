@@ -5,6 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 
+import { LoadingLogo } from "@triplex/lib/loader";
 import { useLayoutEffect, useRef, useState } from "react";
 import { InlineVideo } from "./video";
 
@@ -46,10 +47,19 @@ export function LandingVideo() {
   if (isExpanded) {
     return (
       <dialog
-        className="border-neutral bg-surface backdrop:bg-surface m-auto aspect-video h-auto w-11/12 border backdrop:opacity-80 focus-visible:outline-none md:max-w-5xl"
+        className="border-neutral text-default bg-surface backdrop:bg-surface m-auto box-content aspect-video h-auto w-11/12 border backdrop:opacity-80 focus-visible:outline-none md:max-w-5xl"
         ref={ref}
       >
-        <div className="absolute inset-0"></div>
+        <LoadingLogo position="splash" variant="stroke" />
+        <iframe
+          allow="autoplay; encrypted-media; picture-in-picture; web-share"
+          allowFullScreen
+          className="relative z-10 h-full w-full"
+          frameBorder="0"
+          referrerPolicy="strict-origin-when-cross-origin"
+          src="https://www.youtube.com/embed/XEvvJ5Siff8?si=Gnb2XDKIZQXtN4Zq&cc_load_policy=1&cc_lang_pref=en"
+          width="100%"
+        />
       </dialog>
     );
   }

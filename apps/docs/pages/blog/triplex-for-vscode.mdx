@@ -1,0 +1,166 @@
+---
+author: Michael Dougall
+title: Supercharging the "Visual" in Visual Studio Code
+date: 2025-03-25 GMT+1100
+description: After almost a year of development Triplex for VS Code is now available in public beta with exciting features coming later this year.
+image: /ui/vsce-release.png
+imageLayout: cover
+---
+
+Triplex for VS Code is now in public beta! Thank you to everyone who has used it, provided feedback, and raised issues up until now! It wouldn't have been the same without you. In a rush? Install it from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce).
+
+Continue reading to learn more about the journey to get here, some open source announcements, and what's next.
+
+## The Initial Release
+
+Triplex was originally released as a standalone app promising to eliminate the friction of developing in 3D and lowering the barrier of entry for coders and non-coders alike. Positioning objects, lights, and cameras was never easier thanks to its visual controls and code-sync features. Before you'd jump in-and-out of your code editor and browser to see if the changes to your React component were correct, instead with Triplex you'd just make the change visually or with input controls then save straight back to code.
+
+But there was a problem.
+
+### Where Is Everyone?
+
+While there was a lot of excitement around Triplex the reality is coders just don't want to use another tool on-top of their code editor and browser. There was a possible future where Triplex could integrate a code editor into the standalone app but that's a lot of work while still not getting to the root of the problem, coders like their own code editors!
+
+So there was a decision to be made: do I double down on Triplex Standalone and focus on non-coders, or do something else for coders? I'm just one guy and I don't have infinite time or resources, so narrowing down on a target audience needed to happen. I've made the bet on coders. The underlying tech is code, and they'll be the ones who would bring it to their teams if they find it useful. That's not to say I'm alienating non-coders, just that there's a focus on coders for now.
+
+So instead of trying to convince coders to move from what they're used to we augment their existing workflow.
+
+## Introducing Triplex for VS Code
+
+Triplex for VS Code turns [Visual Studio Code](https://code.visualstudio.com), [Cursor](https://cursor.com), [Windsurf](https://codeium.com/windsurf), and all other VS Code forks into your visual workspace. Keep using your favorite features like GitHub Copilot and IntelliSense while having the power of Triplex at your fingertips.
+
+Any React component can now be opened in Triplex with a single click where it's loaded and ready to be inspected, manipulated, and saved back to code. No more jumping between tools to see if your changes are correct.
+
+Install it from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce).
+
+## The Road To Release
+
+Throughout the year I've been constantly reminded that nothing is ever easy. There were a load of challenges to overcome and that's not even talking about the complexities of creating and working on a VS Code extension!
+
+Let's talk about some.
+
+### Moving Beyond React Three Fiber
+
+The big one. Triplex was originally made for React Three Fiber, so the second you bring in something that expects a React DOM environment it blew up.
+
+Take this component that renders its own Canvas:
+
+```jsx
+import { Canvas } from "@react-three/fiber";
+
+export default function App() {
+  return (
+    <Canvas>
+      <mesh>
+        <boxGeometry />
+      </mesh>
+    </Canvas>
+  );
+}
+```
+
+...It wouldn't work! This was a common source of confusion when working with Triplex and the reality was folks would run into this, assume the tool was broken, and then jump out.
+
+I'm pumped to announce that Triplex can now open any React component, 2D or 3D. This is a big ecosystem win and a huge step forward in making Triplex more accessible.
+
+Want to learn more about how this was achieved? I spoke about it recently, watch it below (it's a bit technical, sorry!).
+
+<iframe
+  width="100%"
+  className="mt-7 aspect-video"
+  src="https://www.youtube.com/embed/nkq-gNMSDLs?si=A5bRBW6Kxv0d_z5G"
+  frameBorder="0"
+  allow="autoplay; encrypted-media; picture-in-picture; web-share"
+  referrerPolicy="strict-origin-when-cross-origin"
+  allowFullScreen
+/>
+
+Watch out for further blog posts that dive into how the React DOM and React Three Fiber reconcilers work together in Triplex. I'm especially proud of the selection system.
+
+### Removing User Friction
+
+Intentional or not the early Triplex put up a few barriers that would either stop you from working on a component or not work well with other tools. Things like:
+
+- Needing to add a Triplex config to get started
+- A `tsconfig.json` file being generated for JavaScript projects, breaking Next.js builds
+- If you were missing dependencies you'd get into an unhelpful, cryptic error state
+- If you had a syntax error Triplex would go into an unrecoverable state
+
+These and more have all been resolved. The shortest path for opening a component in Triplex for VS Code now is: install the extension, find a component, and open it.
+
+It's a good day to be a React component!
+
+## Open Sourcing Websocks
+
+On the road to release I open sourced [Websocks](https://github.com/trytriplex/websocks), an end-to-end typed websocket server for Node.js with clients for React and events, powering all of the data you see through the Triplex UI.
+
+Here's the smallest usage example:
+
+```tsx filename="server.ts"
+// 1. Create the websocks server
+import { createWSServer } from "@triplex/websocks-server";
+
+const wss = createWSServer();
+
+// 2. Define routes
+const routes = wss.collectTypes([
+  wss.route(
+    "/rng/:max",
+    ({ max }) => Math.round(Math.random() * Number(max)),
+    (push) => {
+      setInterval(() => {
+        // Every 1s push a new value to the client.
+        push();
+      }, 1000);
+    },
+  ),
+]);
+
+// 3. Export types to use with the client
+export type Routes = typeof routes;
+```
+
+```tsx filename="client.tsx"
+// 1. Import the server types
+import { createWSHooks } from "@triplex/websocks-client/react";
+import { type Routes } from "./server";
+
+// 2. Declare the clients
+const { useLazySubscription } = createWSHooks<Routes>({
+  url: "ws://localhost:3000",
+});
+
+// 3. Subscribe to data
+function Component() {
+  const value = useLazySubscription("/rng/:max", { max: 100 });
+  return <div>{value}</div>;
+}
+```
+
+It has been a game changer for doing sweeping refactors across the Triplex codebase with confidence. I hope you find it useful in your projects too!
+
+## Open Sourcing the Core
+
+Continuing our open source story I'm excited to announce that the core Triplex renderer is now open source and available in the [Triplex repository](https://github.com/trytriplex/triplex). It's responsible for the scene and visual controls you use in both Triplex for VS Code and Triplex Standalone!
+
+Some areas of interest are:
+
+- [The selection system](https://github.com/trytriplex/triplex/blob/main/packages/renderer/src/features/selection-provider/use-selection-marhsal.tsx)
+- [The component loaders](https://github.com/trytriplex/triplex/blob/main/packages/renderer/src/features/scene-loader/index.tsx); and
+- [The scene element component](https://github.com/trytriplex/triplex/blob/main/packages/renderer/src/features/scene-element/index.tsx)
+
+Share the love! Star the repositories and think about contributing a bug fix or new feature. You can find issues that can be picked up labelled with [ready for contribution](https://github.com/trytriplex/triplex/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Contribution%20ready%22) and I can chat with you on [Discord](https://discord.gg/nBzRBUEs4b) to help get you started.
+
+It takes a village, and I'd love for you to be part of it.
+
+## What's Next
+
+This is just the beginning. [Install the extension](https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce), [join the community](https://discord.gg/nBzRBUEs4b), and let's build! If you've found bugs or want to suggest a feature you can [raise an issue on GitHub](https://github.com/trytriplex/triplex/issues).
+
+In the coming months we'll be focusing on three primary areas:
+
+1. Exploring AI
+1. Ecosystem Plugins; and
+1. Team Collaboration
+
+Have thoughts or opinions for any of the above? [Let us know on Discord](https://discord.gg/nBzRBUEs4b). Thanks again to everyone that has been part of the journey so far, I can't wait to see where we go next!

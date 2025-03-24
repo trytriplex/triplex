@@ -101,8 +101,6 @@ export function DeformableMesh({
 
   return (
     <>
-      <DeformableMeshControl meshRef={ref} onIntersect={onIntersect} />
-
       <mesh
         castShadow
         name="target"
@@ -154,6 +152,11 @@ export function DeformableMesh({
         shadow-bias={-0.0001}
         shadow-mapSize-height={2096}
         shadow-mapSize-width={2096}
+      />
+      <DeformableMeshControl
+        meshRef={ref}
+        onIntersect={onIntersect}
+        position={[0, 0, 0]}
       />
       <ambientLight intensity={0.5} position={[0, 1.14, 0]} />
     </>
