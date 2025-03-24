@@ -114,7 +114,11 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
 
     return false;
   });
-  const hasPageAuthorOrDate = frontMatter.date || frontMatter.author;
+  const hasPageAuthorOrDate = !!frontMatter.date || !!frontMatter.author;
+  const authorSocials =
+    frontMatter.author in socials
+      ? socials[frontMatter.author as keyof typeof socials]
+      : undefined;
 
   useEffect(() => {
     setNavOpen(false);
@@ -196,29 +200,35 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
               variant="lines"
             >
               {hasPageAuthorOrDate && (
-                <div className="space-x-1">
-                  {frontMatter.date && (
-                    <time className="text-subtlest" dateTime={frontMatter.date}>
-                      {friendlyDate(frontMatter.date)}
-                    </time>
-                  )}
-                  {frontMatter.author && frontMatter.date && (
-                    <span className="text-subtlest"> · </span>
-                  )}
-                  {frontMatter.author && (
+                <div className="flex flex-wrap items-center gap-x-2">
+                  {authorSocials && (
                     <a
-                      className="hover:text-default text-subtlest underline"
-                      href={
-                        frontMatter.author in socials
-                          ? socials[frontMatter.author as keyof typeof socials]
-                              .url
-                          : "#"
-                      }
+                      className="hover:text-default text-subtlest flex items-center gap-0.5 text-base underline"
+                      href={authorSocials.url || "#"}
                       rel="noreferrer"
                       target="_blank"
                     >
+                      <Image
+                        alt=""
+                        className="bg-neutral border-neutral mr-1 h-6 w-6 rounded-full border"
+                        height={20}
+                        src={authorSocials.avatar}
+                        width={20}
+                      />
                       {frontMatter.author}
                     </a>
+                  )}
+                  {frontMatter.author && frontMatter.date && (
+                    <span className="text-subtlest text-base"> · </span>
+                  )}
+                  {frontMatter.date && (
+                    <time
+                      className="text-subtlest text-base"
+                      dateTime={frontMatter.date}
+                      title={frontMatter.date}
+                    >
+                      {friendlyDate(frontMatter.date)}
+                    </time>
                   )}
                 </div>
               )}
@@ -241,7 +251,7 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                   )}
                 </div>
               )}
-              <h1 className="text-default font-brand flex flex-wrap items-center gap-2 text-3xl font-semibold lg:text-4xl">
+              <h1 className="text-default font-brand flex flex-wrap items-center gap-2 text-3xl font-medium lg:text-4xl lg:font-semibold">
                 {title}
                 {frontMatter.app && (
                   <div

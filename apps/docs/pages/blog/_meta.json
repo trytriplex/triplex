@@ -2,7 +2,8 @@
   "*": {
     "theme": {
       "layout": "full",
-      "pagination": false
+      "pagination": false,
+      "feedback": true
     }
   },
   "triplex-for-vscode": "",

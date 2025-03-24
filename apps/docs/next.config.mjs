@@ -60,6 +60,7 @@ export default withNextra({
       source: "/docs/faq",
     },
   ],
+  transpilePackages: ["@triplex/lib"],
   typescript: {
     ignoreBuildErrors: true,
   },

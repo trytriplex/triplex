@@ -36,6 +36,15 @@ html {
     --bg-surface: rgb(17 17 17);
     --border: rgb(63 63 63);
     --brand: rgb(255 255 255);
+    --shiki-token-comment: rgb(255 100 103);
+    --shiki-token-constant: rgb(5 223 114);
+    --shiki-token-function: rgb(81 162 255);
+    --shiki-token-keyword: rgb(5 223 114);
+    --shiki-token-link: rgb(81 162 255);
+    --shiki-token-parameter: rgb(5 223 114);
+    --shiki-token-punctuation: rgb(81 162 255);
+    --shiki-token-string-expression: rgb(255 100 103);
+    --shiki-token-string: rgb(255 100 103);
     --text-inverse-subtle: rgb(17 17 17);
     --text-inverse: rgb(17 17 17);
     --text-link: rgb(96 165 250);
