@@ -11,6 +11,7 @@ import {
 } from "@radix-ui/react-icons";
 import Image from "next/image";
 import Link from "next/link";
+// @ts-ignore
 import type { NextraThemeLayoutProps } from "nextra";
 import { normalizePages } from "nextra/normalize-pages";
 import { Fragment, useEffect, useMemo, useState, type JSX } from "react";
@@ -374,16 +375,18 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                 <span className="text-subtle text-sm font-medium">
                   On this page
                 </span>
-                {headings.map((h) => (
-                  <div key={h.id} style={{ paddingLeft: (h.depth - 2) * 8 }}>
-                    <Link
-                      className="text-subtlest hover:text-default text-sm"
-                      href={`#${h.id}`}
-                    >
-                      {h.value}
-                    </Link>
-                  </div>
-                ))}
+                {headings.map(
+                  (h: { depth: number; id: string; value: string }) => (
+                    <div key={h.id} style={{ paddingLeft: (h.depth - 2) * 8 }}>
+                      <Link
+                        className="text-subtlest hover:text-default text-sm"
+                        href={`#${h.id}`}
+                      >
+                        {h.value}
+                      </Link>
+                    </div>
+                  ),
+                )}
                 <div className="border-neutral mt-1 border-t pt-4">
                   <a
                     className="text-subtlest hover:text-subtle text-sm"
