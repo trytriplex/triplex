@@ -5,6 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import Link from "next/link";
+// @ts-ignore
 import { type MdxFile } from "nextra";
 import { getPagesUnderRoute } from "nextra/context";
 
