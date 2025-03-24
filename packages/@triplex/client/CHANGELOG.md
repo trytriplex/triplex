@@ -1,5 +1,11 @@
 # @triplex/client
 
+## 0.70.18
+
+### Patch Changes
+
+- 8fce951: Fix component meta being generated for components outside of module scope.
+
 ## 0.70.17
 
 ### Patch Changes

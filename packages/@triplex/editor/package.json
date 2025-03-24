@@ -1,6 +1,6 @@
 {
   "name": "@triplex/editor",
-  "version": "0.70.18",
+  "version": "0.70.19",
   "private": true,
   "description": "Your visual workspace for React / Three Fiber.",
   "author": {
