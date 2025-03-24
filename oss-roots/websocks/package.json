@@ -33,11 +33,12 @@
     "typescript": "^5.7.2",
     "vitest": "^3.0.4"
   },
-  "packageManager": "yarn@1.22.19",
+  "packageManager": "yarn@1.22.22",
   "engines": {
     "node": ">=20.14.0"
   },
   "volta": {
-    "node": "20.14.0"
+    "node": "20.14.0",
+    "yarn": "1.22.22"
   }
 }

@@ -2124,4 +2124,47 @@ describe("babel plugin", () => {
 
     expect(result?.code).toContain(`"root": "react-three-fiber"`);
   });
+
+  it("should skip transforming components created in hocs", () => {
+    const result = transformSync(
+      `
+        export function lazy() {
+          const Component = forwardRef(function LazyWithPreload(props, ref) {
+            return null;
+          });
+
+          return Component;
+        }
+
+        export const lazy1 = () => {
+          const Component = forwardRef(function LazyWithPreload(props, ref) {
+            return null;
+          });
+
+          return Component;
+        }
+      `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "export function lazy() {
+        const Component = forwardRef(function LazyWithPreload(props, ref) {
+          return null;
+        });
+        return Component;
+      }
+      export const lazy1 = () => {
+        const Component = forwardRef(function LazyWithPreload(props, ref) {
+          return null;
+        });
+        return Component;
+      };"
+    `);
+  });
 });

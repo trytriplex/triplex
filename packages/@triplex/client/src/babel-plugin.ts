@@ -11,6 +11,7 @@ import { normalize } from "upath";
 import {
   extractFunctionArgs,
   importIfMissing,
+  isChildOf,
   isChildOfReturnStatement,
   isIdentifierFromModule,
   isJSXIdentifierFromNodeModules,
@@ -320,7 +321,13 @@ export default function triplexBabelPlugin({
           if (
             shouldSkip ||
             !path.node.id ||
-            !/^[A-Z]/.exec(path.node.id.name)
+            !/^[A-Z]/.exec(path.node.id.name) ||
+            isChildOf(
+              path,
+              (parent) =>
+                parent.isFunctionDeclaration() ||
+                parent.isArrowFunctionExpression(),
+            )
           ) {
             return;
           }
@@ -681,7 +688,13 @@ export default function triplexBabelPlugin({
           if (
             shouldSkip ||
             path.node.id.type !== "Identifier" ||
-            !/^[A-Z]/.exec(path.node.id.name)
+            !/^[A-Z]/.exec(path.node.id.name) ||
+            isChildOf(
+              path,
+              (parent) =>
+                parent.isFunctionDeclaration() ||
+                parent.isArrowFunctionExpression(),
+            )
           ) {
             return;
           }

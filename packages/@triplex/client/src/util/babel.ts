@@ -71,6 +71,17 @@ export function isJSXIdentifierFromNodeModules(
   return false;
 }
 
+export function isChildOf(
+  path: NodePath<t.Node>,
+  predicate: (parent: NodePath<t.Node>) => boolean,
+): boolean {
+  if (path.findParent((parent) => predicate(parent))) {
+    return true;
+  }
+
+  return false;
+}
+
 export function isChildOfReturnStatement(
   path: NodePath<t.JSXElement>,
 ): boolean {
