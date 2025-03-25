@@ -109,7 +109,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/standalone</loc>
-    <lastmod>2025-03-20</lastmod>
+    <lastmod>2025-03-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -121,7 +121,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/vscode</loc>
-    <lastmod>2025-03-23</lastmod>
+    <lastmod>2025-03-24</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -349,7 +349,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/blog/triplex-for-vscode</loc>
-    <lastmod>2025-03-22</lastmod>
+    <lastmod>2025-03-25</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
