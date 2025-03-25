@@ -4,7 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { join } from "upath";
+import { join } from "@triplex/lib/path";
 import { describe, expect, it } from "vitest";
 import { getJsxElementAt, getJsxElementAtOrThrow } from "../jsx";
 import { getElementFilePath, getExportName } from "../module";
@@ -16,7 +16,7 @@ describe("module", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/n_modules.tsx")
+      join(__dirname, "__mocks__/n_modules.tsx"),
     );
     const sceneObject = getJsxElementAtOrThrow(sourceFile, 19, 5);
 
@@ -33,7 +33,7 @@ describe("module", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/fc.tsx")
+      join(__dirname, "__mocks__/fc.tsx"),
     );
     const sceneObject = getJsxElementAtOrThrow(sourceFile, 9, 10);
 
@@ -50,7 +50,7 @@ describe("module", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/scene.tsx")
+      join(__dirname, "__mocks__/scene.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 25, 7);
     if (!sceneObject) {
@@ -70,7 +70,7 @@ describe("module", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/meta.tsx")
+      join(__dirname, "__mocks__/meta.tsx"),
     );
     const sceneObject = getJsxElementAtOrThrow(sourceFile, 50, 10);
 
@@ -87,7 +87,7 @@ describe("module", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/cylinder.tsx")
+      join(__dirname, "__mocks__/cylinder.tsx"),
     );
 
     const { name } = getExportName(sourceFile, "default");
@@ -100,7 +100,7 @@ describe("module", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/shadowed-type.tsx")
+      join(__dirname, "__mocks__/shadowed-type.tsx"),
     );
 
     const { name } = getExportName(sourceFile, "default");
@@ -113,7 +113,7 @@ describe("module", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/shadowed-interface.tsx")
+      join(__dirname, "__mocks__/shadowed-interface.tsx"),
     );
 
     const { name } = getExportName(sourceFile, "default");
@@ -126,7 +126,7 @@ describe("module", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/shadowed-type-import-specifier.tsx")
+      join(__dirname, "__mocks__/shadowed-type-import-specifier.tsx"),
     );
 
     const { name } = getExportName(sourceFile, "default");
@@ -139,7 +139,7 @@ describe("module", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/shadowed-type-import.tsx")
+      join(__dirname, "__mocks__/shadowed-type-import.tsx"),
     );
 
     const { name } = getExportName(sourceFile, "default");
@@ -152,7 +152,7 @@ describe("module", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/scene.tsx")
+      join(__dirname, "__mocks__/scene.tsx"),
     );
 
     const actual = getExportName(sourceFile, "default");
@@ -165,7 +165,7 @@ describe("module", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/scene.tsx")
+      join(__dirname, "__mocks__/scene.tsx"),
     );
 
     const actual = getExportName(sourceFile, "SceneAlt");
@@ -178,7 +178,7 @@ describe("module", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/scene.tsx")
+      join(__dirname, "__mocks__/scene.tsx"),
     );
 
     const actual = getExportName(sourceFile, "SceneArrow");
@@ -191,7 +191,7 @@ describe("module", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/import-named.tsx")
+      join(__dirname, "__mocks__/import-named.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 17, 7);
     if (!sceneObject) {
@@ -211,7 +211,7 @@ describe("module", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/import-named.tsx")
+      join(__dirname, "__mocks__/import-named.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 24, 7);
     if (!sceneObject) {
@@ -231,7 +231,7 @@ describe("module", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/import-named.tsx")
+      join(__dirname, "__mocks__/import-named.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 25, 7);
     if (!sceneObject) {
@@ -251,7 +251,7 @@ describe("module", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/import-named.tsx")
+      join(__dirname, "__mocks__/import-named.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 26, 7);
     if (!sceneObject) {
@@ -271,7 +271,7 @@ describe("module", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/scene.tsx")
+      join(__dirname, "__mocks__/scene.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 36, 7);
     if (!sceneObject) {
@@ -291,7 +291,7 @@ describe("module", () => {
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
     const sourceFile = project.addSourceFileAtPath(
-      join(__dirname, "__mocks__/scene.tsx")
+      join(__dirname, "__mocks__/scene.tsx"),
     );
     const sceneObject = getJsxElementAt(sourceFile, 35, 7);
     if (!sceneObject) {

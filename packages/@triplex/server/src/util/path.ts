@@ -4,8 +4,8 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import { join } from "@triplex/lib/path";
 import anymatch from "anymatch";
-import { join } from "upath";
 
 export function fromCwd(path: string): string {
   return join(process.cwd(), path);

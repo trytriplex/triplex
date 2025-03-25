@@ -7,6 +7,7 @@
 import { randomUUID } from "node:crypto";
 import process from "node:process";
 import { init } from "@sentry/electron/main";
+import { join } from "@triplex/lib/path";
 import { getConfig, getRendererMeta, resolveProjectCwd } from "@triplex/server";
 import {
   app,
@@ -20,7 +21,6 @@ import {
   type OpenDialogOptions,
 } from "electron";
 import { autoUpdater } from "electron-updater";
-import { join } from "upath";
 import { createProject, showCreateDialog } from "../util/create";
 import { ensureDepsInstall } from "../util/deps";
 import { getInitialComponent } from "../util/files";

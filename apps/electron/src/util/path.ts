@@ -5,7 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { readdir } from "node:fs/promises";
-import { join, resolve } from "upath";
+import { join, resolve } from "@triplex/lib/path";
 
 export async function findParentFile(
   dirpath: string,

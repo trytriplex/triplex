@@ -5,10 +5,10 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { readFile } from "node:fs/promises";
+import { extname, normalize } from "@triplex/lib/path";
 import anymatch from "anymatch";
 import parent from "glob-parent";
 import readdirp from "readdirp";
-import { extname, normalize } from "upath";
 import { getJsxElementsPositions, type TRIPLEXProject } from "../ast";
 import { inferExports } from "../util/module";
 import { matchFile } from "../util/path";

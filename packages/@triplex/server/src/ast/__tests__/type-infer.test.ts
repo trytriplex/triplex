@@ -4,7 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { join } from "upath";
+import { join } from "@triplex/lib/path";
 import { describe, expect, it } from "vitest";
 import { getJsxElementAt, getJsxElementAtOrThrow } from "../jsx";
 import { _createProject } from "../project";

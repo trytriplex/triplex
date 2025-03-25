@@ -6,11 +6,11 @@
  */
 import { readFile } from "node:fs/promises";
 import { Application, isHttpError, Router } from "@oakserver/oak";
+import { basename } from "@triplex/lib/path";
 import { createWSServer } from "@triplex/websocks-server";
 import { watch } from "chokidar";
 import { type DetectResult } from "package-manager-detector";
 import { detect } from "package-manager-detector/detect";
-import { basename } from "upath";
 import {
   createProject,
   getElementFilePath,

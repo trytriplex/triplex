@@ -5,10 +5,10 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { readdir, readFile } from "node:fs/promises";
+import { basename, dirname, extname, join, normalize } from "@triplex/lib/path";
 import anymatch from "anymatch";
 import parent from "glob-parent";
 import readdirp from "readdirp";
-import { basename, dirname, extname, join, normalize } from "upath";
 import {
   type Folder,
   type ProjectAsset,
@@ -98,7 +98,7 @@ export async function folderComponents(globs: string[], folder: string) {
           name: exp.name,
           path: normalize(entry.fullPath),
           type: "custom",
-        })
+        }),
       );
     }
   }

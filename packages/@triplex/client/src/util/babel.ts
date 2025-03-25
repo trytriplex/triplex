@@ -6,7 +6,7 @@
  */
 import { type NodePath, type PluginPass } from "@babel/core";
 import * as t from "@babel/types";
-import { dirname, extname, resolve } from "upath";
+import { dirname, extname, normalize, resolve } from "@triplex/lib/path";
 
 export function isIdentifierFromModule(
   path: NodePath<t.Identifier>,
@@ -217,12 +217,13 @@ export function resolveIdentifierOrigin(
   identifierName: string,
 ) {
   const exportName = resolveIdentifierExportName(path, identifierName);
+  const filename = normalize(pass.filename || "");
 
   if (exportName) {
     // We found a local component
     return {
       exportName,
-      path: pass.filename || "",
+      path: filename,
     };
   }
 
@@ -235,10 +236,7 @@ export function resolveIdentifierOrigin(
   ) {
     return {
       exportName: binding.path.node.imported.name,
-      path: resolvePath(
-        pass.filename,
-        binding.path.parentPath.node.source.value,
-      ),
+      path: resolvePath(filename, binding.path.parentPath.node.source.value),
     };
   }
 
@@ -248,10 +246,7 @@ export function resolveIdentifierOrigin(
   ) {
     return {
       exportName: "default",
-      path: resolvePath(
-        pass.filename,
-        binding.path.parentPath.node.source.value,
-      ),
+      path: resolvePath(filename, binding.path.parentPath.node.source.value),
     };
   }
 

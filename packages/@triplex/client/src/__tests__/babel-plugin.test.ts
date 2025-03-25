@@ -19,7 +19,7 @@ const transformSync = (code: string, opts?: TransformOptions) => {
 
   return {
     ...result,
-    code: result.code?.replace(/[A-Z]:/g, "").replaceAll("\\\\", "/"),
+    code: result.code?.replace(/[A-z]:\//g, "/"),
   };
 };
 

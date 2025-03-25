@@ -5,13 +5,13 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { readFileSync } from "node:fs";
+import { dirname, normalize } from "@triplex/lib/path";
 import {
   inferExports,
   resolveProjectCwd,
   type TWSEventDefinition,
 } from "@triplex/server";
 import { createWSEvents } from "@triplex/websocks-client/events";
-import { dirname, normalize } from "upath";
 import * as vscode from "vscode";
 import { logger } from "../../util/log/vscode";
 import { on, sendVSCE } from "../util/bridge";

@@ -5,7 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { builtinModules } from "node:module";
-import { resolve } from "upath";
+import { resolve } from "node:path";
 import { defineConfig } from "vite";
 import pkg from "./package.json";
 

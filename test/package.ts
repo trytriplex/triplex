@@ -5,7 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { readdirSync } from "node:fs";
-import { resolve } from "upath";
+import { resolve } from "@triplex/lib/path";
 
 function _resolveProjectCwd(
   startPath: string,

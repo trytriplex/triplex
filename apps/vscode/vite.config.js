@@ -5,8 +5,8 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { builtinModules } from "node:module";
+import { resolve } from "node:path";
 import react from "@vitejs/plugin-react";
-import { resolve } from "upath";
 import { defineConfig } from "vite";
 import pkg from "./package.json";
 

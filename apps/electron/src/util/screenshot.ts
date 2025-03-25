@@ -7,8 +7,8 @@
 import { createHash } from "node:crypto";
 import { existsSync } from "node:fs";
 import { mkdir, rm, writeFile } from "node:fs/promises";
+import { dirname, join } from "@triplex/lib/path";
 import { app } from "electron";
-import { dirname, join } from "upath";
 import { createWindowBrowserPool } from "./browser-pool";
 
 const appDataDir = app.getPath("userData");

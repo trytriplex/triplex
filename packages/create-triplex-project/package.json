@@ -33,8 +33,7 @@
     "commander": "^10.0.0",
     "enquirer": "^2.3.6",
     "open": "^8.4.0",
-    "ora": "^6.1.2",
-    "upath": "^2.0.1"
+    "ora": "^6.1.2"
   },
   "devDependencies": {
     "@react-three/drei": "^10.0.0",

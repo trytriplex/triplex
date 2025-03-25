@@ -5,8 +5,8 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { loadingLogo } from "@triplex/lib/loader";
+import { basename, join, normalize } from "@triplex/lib/path";
 import { rootHTML } from "@triplex/lib/templates";
-import { basename, join, normalize } from "upath";
 import * as vscode from "vscode";
 import { sendVSCE } from "../util/bridge";
 import { getPort } from "../util/port";

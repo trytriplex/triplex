@@ -5,7 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { readdir, readFile } from "node:fs/promises";
-import { join } from "upath";
+import { join } from "node:path";
 import { describe, expect, it, vi } from "vitest";
 import { init } from "../init";
 

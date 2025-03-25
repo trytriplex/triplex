@@ -15,9 +15,9 @@ import {
   type Page,
   type WorkerInfo,
 } from "@playwright/test";
+import { basename, join } from "@triplex/lib/path";
 import { resolveCliArgsFromVSCodeExecutablePath } from "@vscode/test-electron";
 import pkg from "package.json";
-import { basename, join } from "upath";
 import { resolveExecPath, runUseWithTrace } from "../../../../test/playwright";
 import { ExtensionPage } from "./po";
 

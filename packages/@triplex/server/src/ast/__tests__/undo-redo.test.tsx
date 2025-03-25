@@ -4,8 +4,8 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import { join } from "@triplex/lib/path";
 import { watch } from "chokidar";
-import { join } from "upath";
 import { describe, expect, it, vi } from "vitest";
 import { createProject } from "../project";
 

@@ -5,8 +5,8 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { type Page, type TestInfo } from "@playwright/test";
+import { join } from "@triplex/lib/path";
 import { downloadAndUnzipVSCode } from "@vscode/test-electron/out/download";
-import { join } from "upath";
 
 export async function resolveExecPath() {
   try {

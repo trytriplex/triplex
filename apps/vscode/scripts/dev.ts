@@ -4,8 +4,8 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import { join } from "@triplex/lib/path";
 import react from "@vitejs/plugin-react";
-import { join } from "upath";
 
 export async function createDevServer() {
   const { createServer: createViteServer } = await import("vite");

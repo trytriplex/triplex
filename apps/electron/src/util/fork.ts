@@ -5,8 +5,8 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { fork as forkChild } from "node:child_process";
+import { join } from "@triplex/lib/path";
 import { app } from "electron";
-import { join } from "upath";
 import { logger } from "../util/log";
 
 const log = logger("fork");

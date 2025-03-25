@@ -5,7 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { fork as forkChild } from "node:child_process";
-import { join } from "upath";
+import { join } from "@triplex/lib/path";
 import { logFromFork, logger } from "../../util/log/vscode";
 
 const log = logger("fork_parent");

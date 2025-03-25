@@ -6,8 +6,8 @@
  */
 import { cleanup } from "@testing-library/react";
 import { clearFgOverrides, initFeatureGates } from "@triplex/lib/fg";
+import { dirname } from "@triplex/lib/path";
 import { setupServer } from "msw/node";
-import { dirname } from "upath";
 import { afterAll, afterEach, beforeAll, vi } from "vitest";
 import { handlers } from "./__mocks__/wss";
 import { findNearestPackageJSON } from "./package";

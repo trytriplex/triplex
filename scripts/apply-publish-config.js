@@ -5,7 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 const { readFile, writeFile } = require("node:fs/promises");
-const { join } = require("upath");
+const { join } = require("node:path");
 
 async function main() {
   const filename = join(process.cwd(), "package.json");

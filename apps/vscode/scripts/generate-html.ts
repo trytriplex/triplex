@@ -5,9 +5,9 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { writeFile } from "node:fs/promises";
+import { join } from "node:path";
 import { loadingLogo } from "@triplex/lib/loader";
 import { rootHTML } from "@triplex/lib/templates";
-import { join } from "upath";
 
 async function generate() {
   await writeFile(

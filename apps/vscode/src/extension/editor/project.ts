@@ -5,8 +5,8 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 
+import { join } from "@triplex/lib/path";
 import { getConfig, getRendererMeta } from "@triplex/server";
-import { join } from "upath";
 import * as vscode from "vscode";
 import { type Args } from "../../project";
 import { fork } from "../util/fork";

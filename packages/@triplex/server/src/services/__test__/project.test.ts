@@ -4,7 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { join } from "upath";
+import { join } from "@triplex/lib/path";
 import { describe, expect, it } from "vitest";
 import { folderAssets, folderComponents, foundFolders } from "../project";
 
@@ -31,7 +31,7 @@ describe("project", () => {
                       "components",
                       "materials",
                       "water",
-                      "concrete"
+                      "concrete",
                     ),
                   },
                 ],
@@ -42,7 +42,7 @@ describe("project", () => {
                   "__mocks__",
                   "components",
                   "materials",
-                  "water"
+                  "water",
                 ),
               },
             ],
@@ -67,7 +67,7 @@ describe("project", () => {
   it("should return a folders components", async () => {
     const actual = await folderComponents(
       [join(__dirname, "/__mocks__/components/**/*.tsx")],
-      join(__dirname, "/__mocks__/components/objects")
+      join(__dirname, "/__mocks__/components/objects"),
     );
 
     expect(actual).toEqual([
@@ -80,7 +80,7 @@ describe("project", () => {
           "__mocks__",
           "components",
           "objects",
-          "default.tsx"
+          "default.tsx",
         ),
         type: "custom",
       },
@@ -104,7 +104,7 @@ describe("project", () => {
   it("should return a folders assets", async () => {
     const actual = await folderAssets(
       [join(__dirname, "/__mocks__/components/**/*.tsx")],
-      join(__dirname, "/__mocks__/components/objects")
+      join(__dirname, "/__mocks__/components/objects"),
     );
 
     expect(actual).toEqual([
@@ -116,7 +116,7 @@ describe("project", () => {
           "__mocks__",
           "components",
           "objects",
-          "default.tsx"
+          "default.tsx",
         ),
         type: "asset",
       },

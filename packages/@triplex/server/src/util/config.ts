@@ -5,7 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { readdirSync, readFileSync } from "node:fs";
-import { join, normalize, resolve } from "upath";
+import { join, normalize, resolve } from "@triplex/lib/path";
 import { array, object, optional, parse, string } from "valibot";
 import {
   type ReconciledTriplexConfig,

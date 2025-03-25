@@ -5,11 +5,11 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { readFile } from "node:fs/promises";
+import { join, normalize } from "@triplex/lib/path";
 import { inferExports } from "@triplex/server";
 import anymatch from "anymatch";
 import parent from "glob-parent";
 import readdirp from "readdirp";
-import { join, normalize } from "upath";
 
 export async function getFirstFoundFile({ files }: { files: string[] }) {
   const roots = files.map((glob) => parent(glob));

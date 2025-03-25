@@ -5,8 +5,8 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { rmSync } from "node:fs";
+import { join } from "@triplex/lib/path";
 import { SyntaxKind } from "ts-morph";
-import { join } from "upath";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   getJsxElementAt,

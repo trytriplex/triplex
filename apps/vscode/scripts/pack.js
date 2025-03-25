@@ -5,7 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 const { Arch, Platform, build } = require("electron-builder");
-const { join } = require("upath");
+const { join } = require("node:path");
 const { copyFileSync, cpSync } = require("node:fs");
 const { createVSIX } = require("@vscode/vsce");
 

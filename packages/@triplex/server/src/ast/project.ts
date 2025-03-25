@@ -5,6 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { existsSync } from "node:fs";
+import { join } from "@triplex/lib/path";
 import { watch } from "chokidar";
 import {
   DiagnosticCategory,
@@ -13,7 +14,6 @@ import {
   Project,
   type SourceFile,
 } from "ts-morph";
-import { join } from "upath";
 import { deleteCommentComponents } from "../services/component";
 import { type SourceFileChangedEvent } from "../types";
 import { invalidateThumbnail } from "../util/thumbnail";

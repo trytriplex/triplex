@@ -4,6 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import { basename, extname, relative } from "@triplex/lib/path";
 import {
   Node,
   SyntaxKind,
@@ -13,7 +14,6 @@ import {
   type SourceFile,
   type ts,
 } from "ts-morph";
-import { basename, extname, relative } from "upath";
 import {
   getAttributes,
   getJsxElementAt,
@@ -36,7 +36,7 @@ function extractPath(dirPath: string, targetPath: string) {
   const isSrc =
     targetPath.startsWith(".") ||
     targetPath.startsWith("/") ||
-    targetPath.match(/^[A-Z]:\//);
+    targetPath.match(/^[A-z]:\//);
 
   if (isSrc) {
     const targetFilename = `${basename(targetPath).replace(

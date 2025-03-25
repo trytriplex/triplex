@@ -4,9 +4,9 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import { dirname, normalize } from "@triplex/lib/path";
 import { getConfig, inferExports, resolveProjectCwd } from "@triplex/server";
 import anymatch from "anymatch";
-import { dirname } from "upath";
 import * as vscode from "vscode";
 
 export class TriplexCodelensProvider implements vscode.CodeLensProvider {
@@ -28,7 +28,9 @@ export class TriplexCodelensProvider implements vscode.CodeLensProvider {
     doc: vscode.TextDocument,
     _token: vscode.CancellationToken,
   ): vscode.ProviderResult<vscode.CodeLens[]> {
-    const cwd = resolveProjectCwd(dirname(doc.fileName));
+    const filename = normalize(doc.fileName);
+    const cwd = resolveProjectCwd(dirname(filename));
+
     if (!cwd) {
       return null;
     }
@@ -36,7 +38,7 @@ export class TriplexCodelensProvider implements vscode.CodeLensProvider {
     const config = getConfig(cwd);
     const matchFiles = anymatch(config.files);
 
-    if (!matchFiles(doc.fileName)) {
+    if (!matchFiles(filename)) {
       return null;
     }
 
@@ -77,9 +79,7 @@ export class TriplexCodelensProvider implements vscode.CodeLensProvider {
 
         codeLenses.push(
           new vscode.CodeLens(range, {
-            arguments: [
-              { exportName: foundExport.exportName, path: doc.fileName },
-            ],
+            arguments: [{ exportName: foundExport.exportName, path: filename }],
             command: "triplex.start",
             title: "Open in Triplex",
             tooltip: `Will open the ${foundExport.name} component in Triplex`,

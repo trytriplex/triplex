@@ -7,7 +7,7 @@
 import type { NodePath, PluginObj } from "@babel/core";
 import * as t from "@babel/types";
 import type { SceneMeta } from "@triplex/bridge/client";
-import { normalize } from "upath";
+import { normalize } from "@triplex/lib/path";
 import {
   extractFunctionArgs,
   importIfMissing,

@@ -4,13 +4,13 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import { normalize } from "@triplex/lib/path";
 import {
   Node,
   type JsxElement,
   type JsxFragment,
   type JsxSelfClosingElement,
 } from "ts-morph";
-import { normalize } from "upath";
 import { resolveExportDeclaration } from "./jsx";
 import { type SourceFileReadOnly } from "./project";
 

@@ -4,7 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-const { join } = require("upath");
+const { join } = require("node:path");
 
 /** @type {import("tailwindcss").Config} */
 module.exports = {

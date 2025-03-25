@@ -12,14 +12,7 @@ const transformSync = (code: string) => {
   const result = babelTransformSync(code, {
     plugins: [plugin({ exclude: [] })],
   });
-  if (!result) {
-    return null;
-  }
-
-  return {
-    ...result,
-    code: result.code?.replace(/[A-Z]:\//g, "/"),
-  };
+  return result;
 };
 
 describe("transform transpiled jsx", () => {
