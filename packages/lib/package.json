@@ -24,6 +24,11 @@
       "module": "./src/loader.tsx",
       "default": "./src/loader.tsx"
     },
+    "./path": {
+      "types": "./src/path.ts",
+      "module": "./src/path.ts",
+      "default": "./src/path.ts"
+    },
     "./templates": {
       "types": "./src/templates.ts",
       "module": "./src/templates.ts",
@@ -66,6 +71,11 @@
         "types": "./src/loader.d.ts",
         "module": "./src/loader.js",
         "default": "./src/loader.js"
+      },
+      "./path": {
+        "types": "./src/path.d.ts",
+        "module": "./src/path.js",
+        "default": "./src/path.js"
       },
       "./templates": {
         "types": "./src/templates.d.ts",
