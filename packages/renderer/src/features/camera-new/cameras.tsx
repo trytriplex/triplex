@@ -4,7 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { useFrame, useThree } from "@react-three/fiber";
+import { useThree } from "@react-three/fiber";
 import { on } from "@triplex/bridge/client";
 import {
   useContext,
@@ -133,11 +133,22 @@ export function Cameras({ children }: { children: ReactNode }) {
     }
   }, [activeCamera, playState]);
 
-  useFrame(({ gl, scene }) => {
-    if (activeCamera) {
-      gl.render(scene, activeCamera);
-    }
-  }, 1);
+  useEffect(() => {
+    if (!gl || !activeCamera) return;
+
+    const originalRender = gl.render;
+    let isMounted = true;
+    gl.render = function (scene, camera, ...args) {
+      if (isMounted && activeState === "editor" && activeCamera) {
+        return originalRender.call(this, scene, activeCamera, ...args);
+      }
+      return originalRender.call(this, scene, camera, ...args);
+    };
+    return () => {
+      isMounted = false;
+      gl.render = originalRender;
+    };
+  }, [gl, activeCamera, activeState]);
 
   const context: ActiveCameraContextValue = useMemo(
     () => (activeCamera ? { camera: activeCamera, type: activeState } : null),
