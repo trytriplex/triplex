@@ -1,5 +1,14 @@
 # @triplex/editor
 
+## 0.70.21
+
+### Patch Changes
+
+- c06f199: All paths now have their drive casing normalized.
+- Updated dependencies [c06f199]
+  - @triplex/lib@0.69.12
+  - @triplex/ux@0.69.17
+
 ## 0.70.20
 
 ## 0.70.19

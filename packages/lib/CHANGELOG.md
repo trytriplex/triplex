@@ -1,5 +1,11 @@
 # @triplex/lib
 
+## 0.69.12
+
+### Patch Changes
+
+- c06f199: All paths now have their drive casing normalized.
+
 ## 0.69.11
 
 ### Patch Changes

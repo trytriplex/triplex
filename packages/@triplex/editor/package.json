@@ -1,6 +1,6 @@
 {
   "name": "@triplex/editor",
-  "version": "0.70.20",
+  "version": "0.70.21",
   "private": true,
   "description": "Your visual workspace for React / Three Fiber.",
   "author": {
@@ -27,8 +27,8 @@
     "@radix-ui/react-scroll-area": "^1.0.5",
     "@sentry/react": "^8.30.0",
     "@triplex/bridge": "0.70.4",
-    "@triplex/lib": "0.69.11",
-    "@triplex/ux": "0.69.16",
+    "@triplex/lib": "0.69.12",
+    "@triplex/ux": "0.69.17",
     "@triplex/websocks-client": "0.0.5",
     "react-compiler-runtime": "19.0.0-beta-27714ef-20250124",
     "react-dom": "^19.0.0",
@@ -42,7 +42,7 @@
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
     "@testing-library/react": "^14.0.0",
-    "@triplex/server": "^0.71.8",
+    "@triplex/server": "^0.71.9",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
     "@types/three": "^0.171.0",

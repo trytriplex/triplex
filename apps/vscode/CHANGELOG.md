@@ -1,5 +1,14 @@
 # @triplex/vscode
 
+## 0.2.22
+
+### Patch Changes
+
+- c06f199: All paths now have their drive casing normalized.
+- Updated dependencies [c06f199]
+  - @triplex/client@0.70.20
+  - @triplex/server@0.71.9
+
 ## 0.2.21
 
 ### Patch Changes

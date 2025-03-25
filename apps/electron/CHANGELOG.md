@@ -1,5 +1,16 @@
 # @triplex/electron
 
+## 0.70.21
+
+### Patch Changes
+
+- c06f199: All paths now have their drive casing normalized.
+- Updated dependencies [c06f199]
+  - create-triplex-project@0.70.6
+  - @triplex/client@0.70.20
+  - @triplex/editor@0.70.21
+  - @triplex/server@0.71.9
+
 ## 0.70.20
 
 ### Patch Changes

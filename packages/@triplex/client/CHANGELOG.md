@@ -1,5 +1,12 @@
 # @triplex/client
 
+## 0.70.20
+
+### Patch Changes
+
+- c06f199: All paths now have their drive casing normalized.
+  - @triplex/renderer@0.71.13
+
 ## 0.70.19
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.71.9
+
+### Patch Changes
+
+- c06f199: All paths now have their drive casing normalized.
+
 ## 0.71.8
 
 ### Patch Changes
