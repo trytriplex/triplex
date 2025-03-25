@@ -597,7 +597,13 @@ export default function triplexBabelPlugin({
       Program: {
         enter(_, state) {
           const normalizedPath = normalize(state.filename || "");
-          if (exclude.some((file) => normalizedPath.includes(file))) {
+          const exclusions = exclude.map((dir) =>
+            dir.replace(/(^[A-z]:\/)/, ""),
+          );
+
+          if (
+            exclusions.some((exclusion) => normalizedPath.includes(exclusion))
+          ) {
             shouldSkip = true;
           }
         },
