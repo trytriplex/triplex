@@ -35,7 +35,7 @@ export function UserMenu() {
           spacing="spacious"
         />
       </MenuTrigger>
-      {session && (
+      {session?.user && (
         <MenuOption actionId="scenepanel_auth_signout" value="sign_out">
           Sign Out
         </MenuOption>

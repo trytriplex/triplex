@@ -22,9 +22,11 @@ export function EnsureAuthenticated({ children }: { children: ReactNode }) {
   }, [repo.visibility, telemetry]);
 
   if (fg("private_auth_gate")) {
-    return (
-      <>{repo.visibility === "private" && !session ? <SignIn /> : children}</>
-    );
+    if (repo.visibility === "private" && !session?.user) {
+      return <SignIn />;
+    }
+
+    return children;
   }
 
   return children;
