@@ -1,5 +1,11 @@
 # @triplex/client
 
+## 0.70.19
+
+### Patch Changes
+
+- f6b8df6: Fix code transform exclusions not applying on Windows.
+
 ## 0.70.18
 
 ### Patch Changes

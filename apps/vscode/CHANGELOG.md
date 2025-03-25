@@ -1,5 +1,13 @@
 # @triplex/vscode
 
+## 0.2.21
+
+### Patch Changes
+
+- 0ad829b: Fix user auth gate check.
+- Updated dependencies [f6b8df6]
+  - @triplex/client@0.70.19
+
 ## 0.2.20
 
 ### Patch Changes

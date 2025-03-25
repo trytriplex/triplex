@@ -218,10 +218,10 @@ importers:
   apps/electron:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.18
+        specifier: 0.70.19
         version: link:../../packages/@triplex/client
       '@triplex/editor':
-        specifier: 0.70.19
+        specifier: 0.70.20
         version: link:../../packages/@triplex/editor
       '@triplex/server':
         specifier: 0.71.8
@@ -291,7 +291,7 @@ importers:
   apps/vscode:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.18
+        specifier: 0.70.19
         version: link:../../packages/@triplex/client
       '@triplex/server':
         specifier: 0.71.8
