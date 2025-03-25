@@ -1,5 +1,11 @@
 # create-triplex-project
 
+## 0.70.6
+
+### Patch Changes
+
+- c06f199: All paths now have their drive casing normalized.
+
 ## 0.70.5
 
 ### Patch Changes
