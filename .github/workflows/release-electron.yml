@@ -44,10 +44,19 @@ jobs:
         if: steps.check.outcome == 'success'
 
       - name: Install dependencies
-        run: pnpm i --public-hoist-pattern=* --node-linker=hoisted
+        run: pnpm i --public-hoist-pattern=* --node-linker=hoisted --force
         if: steps.check.outcome == 'success'
 
-      - name: Release targets
+      - name: Build packages
+        run: pnpm build
+
+      - name: Ensure clean git
+        run: node ./scripts/ensure-clean-git.js
+
+      - name: Drop folders
+        run: pnpm clean:drop-folders
+
+      - name: Build and release targets
         run: pnpm ci:release-electron
         if: steps.check.outcome == 'success'
         env:

@@ -38,6 +38,3 @@ jobs:
 
       - name: Ensure clean git
         run: node ./scripts/ensure-clean-git.js
-
-      - name: Type check
-        run: pnpm typedef

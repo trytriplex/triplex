@@ -6,8 +6,8 @@
  */
 /* eslint-disable no-console */
 /* eslint-disable no-empty-pattern */
+import { join } from "node:path";
 import { test as _test, _electron as electron, expect } from "@playwright/test";
-import { join } from "@triplex/lib/path";
 import { runUseWithTrace } from "../../../../test/playwright";
 import { EditorPage } from "./po";
 

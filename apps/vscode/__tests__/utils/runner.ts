@@ -7,6 +7,7 @@
 import { spawnSync } from "node:child_process";
 import { readFileSync } from "node:fs";
 import { writeFile } from "node:fs/promises";
+import { basename, join } from "node:path";
 import {
   test as base,
   _electron as electron,
@@ -15,7 +16,6 @@ import {
   type Page,
   type WorkerInfo,
 } from "@playwright/test";
-import { basename, join } from "@triplex/lib/path";
 import { resolveCliArgsFromVSCodeExecutablePath } from "@vscode/test-electron";
 import pkg from "package.json";
 import { resolveExecPath, runUseWithTrace } from "../../../../test/playwright";

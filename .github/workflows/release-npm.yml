@@ -48,7 +48,7 @@ jobs:
           createGithubReleases: false
           commit: "chore: update package versions"
           title: "Release packages"
-          publish: pnpm ci:publish
+          publish: pnpm build && node ./scripts/ensure-clean-git.js && pnpm clean:drop-folders && pnpm ci:publish
           version: pnpm ci:version
         env:
           GITHUB_TOKEN: ${{ secrets.BOT_TOKEN }}

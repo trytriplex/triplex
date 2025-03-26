@@ -40,6 +40,9 @@ jobs:
       - name: Ensure clean git
         run: node ./scripts/ensure-clean-git.js
 
+      - name: Drop folders
+        run: pnpm clean:drop-folders
+
       - name: Prepack
         run: pnpm --filter triplex-vsce run prepack
 

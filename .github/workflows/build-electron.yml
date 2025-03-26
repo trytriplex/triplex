@@ -34,11 +34,17 @@ jobs:
       - name: Install dependencies
         run: pnpm i --public-hoist-pattern=* --node-linker=hoisted
 
-      - name: Build targets
-        run: pnpm electron:build-targets
+      - name: Build packages
+        run: pnpm build
 
       - name: Ensure clean git
         run: node ./scripts/ensure-clean-git.js
+
+      - name: Drop folders
+        run: pnpm clean:drop-folders
+
+      - name: Build targets
+        run: pnpm electron:build-targets
 
   smoke-test:
     needs: build
@@ -74,6 +80,15 @@ jobs:
 
       - name: Install dependencies
         run: pnpm i --public-hoist-pattern=* --node-linker=hoisted
+
+      - name: Build packages
+        run: pnpm build
+
+      - name: Ensure clean git
+        run: node ./scripts/ensure-clean-git.js
+
+      - name: Drop folders
+        run: pnpm clean:drop-folders
 
       - name: Build target
         run: pnpm electron:build

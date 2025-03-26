@@ -47,8 +47,16 @@ jobs:
         run: pnpm i --force --public-hoist-pattern=* --node-linker=hoisted
         if: steps.check.outcome == 'success'
 
-      - name: Build
+      - name: Build packages
         run: pnpm build
+        if: steps.check.outcome == 'success'
+
+      - name: Ensure clean git
+        run: node ./scripts/ensure-clean-git.js
+        if: steps.check.outcome == 'success'
+
+      - name: Drop folders
+        run: pnpm clean:drop-folders
         if: steps.check.outcome == 'success'
 
       - name: Prepack

@@ -33,3 +33,6 @@ jobs:
 
       - name: Lint packages
         run: pnpm lint
+
+      - name: Type check
+        run: pnpm typedef
