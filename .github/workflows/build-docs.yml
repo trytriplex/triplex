@@ -1,28 +1,26 @@
-name: Test
+name: Docs
 
 on:
   pull_request:
     paths:
-      - apps/**
       - packages/**
+      - apps/docs/**
 
 env:
   CI: true
   PNPM_CACHE_FOLDER: .pnpm-store
 
 jobs:
-  unit:
+  build:
     timeout-minutes: 5
 
-    runs-on: ${{ matrix.os }}
-
-    strategy:
-      matrix:
-        os: [ubuntu-latest, windows-latest]
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout
         uses: actions/checkout@master
+        with:
+          fetch-depth: 0
 
       - name: Setup pnpm
         uses: pnpm/action-setup@v2
@@ -38,5 +36,11 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - name: Unit tests
-        run: pnpm test
+      - name: Build
+        run: pnpm --filter @docs/triplex ci:build
+
+      - name: Typecheck
+        run: pnpm --filter @docs/triplex typedef
+
+      - name: Ensure clean git
+        run: node ./scripts/ensure-clean-git.js

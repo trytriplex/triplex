@@ -8,6 +8,7 @@
     "build": "next build",
     "build:action-links": "ts-node ./scripts/generate-action-links.ts",
     "build:sitemap": "ts-node ./scripts/generate-sitemap.ts",
+    "ci:build": "next build && pnpm build:action-links && pnpm build:sitemap",
     "dev": "next",
     "typedef": "tsc"
   },

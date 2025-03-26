@@ -12,7 +12,7 @@ env:
 
 jobs:
   build:
-    timeout-minutes: 20
+    timeout-minutes: 5
 
     runs-on: macos-latest
 
@@ -36,6 +36,9 @@ jobs:
 
       - name: Build packages
         run: pnpm build
+
+      - name: Typecheck
+        run: pnpm --filter @triplex/electron typedef
 
       - name: Ensure clean git
         run: node ./scripts/ensure-clean-git.js

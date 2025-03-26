@@ -12,7 +12,7 @@ env:
 
 jobs:
   sync:
-    timeout-minutes: 20
+    timeout-minutes: 5
 
     runs-on: ubuntu-latest
 

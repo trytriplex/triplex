@@ -49,12 +49,15 @@ jobs:
 
       - name: Build packages
         run: pnpm build
+        if: steps.check.outcome == 'success'
 
       - name: Ensure clean git
         run: node ./scripts/ensure-clean-git.js
+        if: steps.check.outcome == 'success'
 
       - name: Drop folders
         run: pnpm clean:drop-folders
+        if: steps.check.outcome == 'success'
 
       - name: Build and release targets
         run: pnpm ci:release-electron
