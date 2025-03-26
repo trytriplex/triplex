@@ -6,5 +6,6 @@
   "baseBranch": "main",
   "updateInternalDependencies": "patch",
   "ignore": ["@example/*"],
-  "fixed": [["@triplex/electron", "@triplex/editor"]]
+  // @x-oss-enable: "fixed": []
+  "fixed": [["@triplex/electron", "@triplex/editor"]] // @x-oss-disable
 }
