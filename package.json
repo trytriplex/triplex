@@ -12,7 +12,7 @@
   ],
   "scripts": {
     "build": "pnpm clean && pnpm --filter @triplex/* --filter create-triplex-project --filter triplex-vsce build",
-    "ci:publish": "pnpm publish --recursive --access=public && changeset tag",
+    "ci:publish": "pnpm build && node ./scripts/ensure-clean-git.js && pnpm clean:drop-folders && pnpm publish --recursive --access=public && changeset tag",
     "ci:release-electron": "pnpm --filter @triplex/electron release",
     "ci:version": "changeset version && pnpm install --lockfile-only",
     "clean": "pnpm -r exec rimraf dist out targets playwright-report test-results",
