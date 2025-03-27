@@ -1,5 +1,16 @@
 # @triplex/electron
 
+## 0.70.22
+
+### Patch Changes
+
+- 2301fd1: Drop unwanted files when publishing.
+- Updated dependencies [2301fd1]
+  - @triplex/client@0.70.21
+  - @triplex/editor@0.70.22
+  - @triplex/server@0.71.10
+  - create-triplex-project@0.70.7
+
 ## 0.70.21
 
 ### Patch Changes

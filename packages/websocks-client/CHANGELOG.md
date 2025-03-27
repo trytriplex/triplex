@@ -1,5 +1,11 @@
 # @triplex/websocks-client
 
+## 0.0.6
+
+### Patch Changes
+
+- 2301fd1: Drop unwanted files when publishing.
+
 ## 0.0.5
 
 ### Patch Changes

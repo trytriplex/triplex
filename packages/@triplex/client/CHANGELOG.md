@@ -1,5 +1,14 @@
 # @triplex/client
 
+## 0.70.21
+
+### Patch Changes
+
+- 2301fd1: Drop unwanted files when publishing.
+- Updated dependencies [2301fd1]
+  - @triplex/bridge@0.70.5
+  - @triplex/renderer@0.71.14
+
 ## 0.70.20
 
 ### Patch Changes

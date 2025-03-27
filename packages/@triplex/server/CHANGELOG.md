@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.71.10
+
+### Patch Changes
+
+- 2301fd1: Drop unwanted files when publishing.
+
 ## 0.71.9
 
 ### Patch Changes

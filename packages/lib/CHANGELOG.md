@@ -1,5 +1,11 @@
 # @triplex/lib
 
+## 0.69.13
+
+### Patch Changes
+
+- 2301fd1: Drop unwanted files when publishing.
+
 ## 0.69.12
 
 ### Patch Changes

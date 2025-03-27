@@ -1,5 +1,13 @@
 # @docs/triplex
 
+## 0.2.11
+
+### Patch Changes
+
+- 2301fd1: Drop unwanted files when publishing.
+- Updated dependencies [2301fd1]
+  - @triplex/lib@0.69.13
+
 ## 0.2.10
 
 ### Patch Changes

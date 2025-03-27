@@ -1,5 +1,14 @@
 # @triplex/ux
 
+## 0.69.18
+
+### Patch Changes
+
+- 2301fd1: Drop unwanted files when publishing.
+- Updated dependencies [2301fd1]
+  - @triplex/bridge@0.70.5
+  - @triplex/lib@0.69.13
+
 ## 0.69.17
 
 ### Patch Changes

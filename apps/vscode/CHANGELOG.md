@@ -1,5 +1,14 @@
 # @triplex/vscode
 
+## 0.2.23
+
+### Patch Changes
+
+- 2301fd1: Drop unwanted files when publishing.
+- Updated dependencies [2301fd1]
+  - @triplex/client@0.70.21
+  - @triplex/server@0.71.10
+
 ## 0.2.22
 
 ### Patch Changes

@@ -133,7 +133,7 @@ importers:
         specifier: ^9.0.4
         version: 9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
       '@triplex/lib':
-        specifier: 0.69.12
+        specifier: 0.69.13
         version: link:../../packages/lib
       '@types/cors':
         specifier: ^2.8.17
@@ -215,16 +215,16 @@ importers:
   apps/electron:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.20
+        specifier: 0.70.21
         version: link:../../packages/@triplex/client
       '@triplex/editor':
-        specifier: 0.70.21
+        specifier: 0.70.22
         version: link:../../packages/@triplex/editor
       '@triplex/server':
-        specifier: 0.71.9
+        specifier: 0.71.10
         version: link:../../packages/@triplex/server
       create-triplex-project:
-        specifier: 0.70.6
+        specifier: 0.70.7
         version: link:../../packages/create-triplex-project
     devDependencies:
       '@sentry/electron':
@@ -234,7 +234,7 @@ importers:
         specifier: ^8.30.0
         version: 8.30.0
       '@triplex/lib':
-        specifier: 0.69.12
+        specifier: 0.69.13
         version: link:../../packages/lib
       '@types/glob-parent':
         specifier: ^5.1.1
@@ -288,10 +288,10 @@ importers:
   apps/vscode:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.20
+        specifier: 0.70.21
         version: link:../../packages/@triplex/client
       '@triplex/server':
-        specifier: 0.71.9
+        specifier: 0.71.10
         version: link:../../packages/@triplex/server
     devDependencies:
       '@atlaskit/pragmatic-drag-and-drop':
@@ -313,16 +313,16 @@ importers:
         specifier: ^2.49.1
         version: 2.49.1
       '@triplex/bridge':
-        specifier: 0.70.4
+        specifier: 0.70.5
         version: link:../../packages/bridge
       '@triplex/lib':
-        specifier: 0.69.12
+        specifier: 0.69.13
         version: link:../../packages/lib
       '@triplex/ux':
-        specifier: 0.69.17
+        specifier: 0.69.18
         version: link:../../packages/@triplex/ux
       '@triplex/websocks-client':
-        specifier: 0.0.5
+        specifier: 0.0.6
         version: link:../../packages/websocks-client
       '@types/raf-schd':
         specifier: ^4.0.3
@@ -622,7 +622,7 @@ importers:
         specifier: ^9.0.4
         version: 9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
       '@triplex/lib':
-        specifier: 0.69.12
+        specifier: 0.69.13
         version: link:../../packages/lib
       '@types/react':
         specifier: ^19.0.8
@@ -820,10 +820,10 @@ importers:
         specifier: ^7.24.5
         version: 7.26.3
       '@triplex/bridge':
-        specifier: 0.70.4
+        specifier: 0.70.5
         version: link:../../bridge
       '@triplex/renderer':
-        specifier: 0.71.13
+        specifier: 0.71.14
         version: link:../../renderer
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -848,13 +848,13 @@ importers:
         specifier: ^1.6.5
         version: 1.6.5(@swc/helpers@0.5.5)
       '@triplex/lib':
-        specifier: 0.69.12
+        specifier: 0.69.13
         version: link:../../lib
       '@triplex/server':
-        specifier: 0.71.9
+        specifier: 0.71.10
         version: link:../server
       '@triplex/websocks-client':
-        specifier: 0.0.5
+        specifier: 0.0.6
         version: link:../../websocks-client
       '@types/babel__core':
         specifier: ^7.20.5
@@ -926,16 +926,16 @@ importers:
         specifier: ^8.30.0
         version: 8.30.0(react@19.0.0)
       '@triplex/bridge':
-        specifier: 0.70.4
+        specifier: 0.70.5
         version: link:../../bridge
       '@triplex/lib':
-        specifier: 0.69.12
+        specifier: 0.69.13
         version: link:../../lib
       '@triplex/ux':
-        specifier: 0.69.17
+        specifier: 0.69.18
         version: link:../ux
       '@triplex/websocks-client':
-        specifier: 0.0.5
+        specifier: 0.0.6
         version: link:../../websocks-client
       react:
         specifier: ^19.0.0
@@ -972,7 +972,7 @@ importers:
         specifier: ^14.0.0
         version: 14.0.0(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@triplex/server':
-        specifier: ^0.71.9
+        specifier: ^0.71.10
         version: link:../server
       '@types/react':
         specifier: ^19.0.8
@@ -1051,10 +1051,10 @@ importers:
         specifier: ^1.4.0
         version: 1.4.0(@react-three/fiber@9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(react@19.0.0)(three@0.172.0)
       '@triplex/lib':
-        specifier: 0.69.12
+        specifier: 0.69.13
         version: link:../../lib
       '@triplex/websocks-server':
-        specifier: 0.0.3
+        specifier: 0.0.4
         version: link:../../websocks-server
       '@types/glob-parent':
         specifier: ^5.1.1
@@ -1117,10 +1117,10 @@ importers:
         specifier: ^1.0.5
         version: 1.0.5(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@triplex/bridge':
-        specifier: 0.70.4
+        specifier: 0.70.5
         version: link:../../bridge
       '@triplex/lib':
-        specifier: 0.69.12
+        specifier: 0.69.13
         version: link:../../lib
       react:
         specifier: ^19.0.0
@@ -1139,7 +1139,7 @@ importers:
         specifier: ^14.0.0
         version: 14.0.0(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@triplex/server':
-        specifier: 0.71.9
+        specifier: 0.71.10
         version: link:../server
       '@types/react':
         specifier: ^19.0.8
@@ -1268,10 +1268,10 @@ importers:
   packages/renderer:
     dependencies:
       '@triplex/bridge':
-        specifier: 0.70.4
+        specifier: 0.70.5
         version: link:../bridge
       '@triplex/lib':
-        specifier: 0.69.12
+        specifier: 0.69.13
         version: link:../lib
       bind-event-listener:
         specifier: ^3.0.0
@@ -10614,7 +10614,7 @@ snapshots:
       '@typescript-eslint/eslint-plugin': 8.25.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0)(typescript@5.7.2)
       '@typescript-eslint/parser': 8.25.0(eslint@8.51.0)(typescript@5.7.2)
       eslint: 8.51.0
-      eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.31.0)(eslint@8.51.0)
+      eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0))(eslint@8.51.0)
       eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint-import-resolver-typescript@3.8.3)(eslint@8.51.0)
       eslint-plugin-no-only-tests: 3.3.0
       eslint-plugin-react: 7.37.4(eslint@8.51.0)
@@ -14334,7 +14334,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0)(eslint@8.51.0):
+  eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0))(eslint@8.51.0):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.0
@@ -14349,14 +14349,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0)(eslint@8.51.0))(eslint@8.51.0):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0))(eslint@8.51.0))(eslint@8.51.0):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.25.0(eslint@8.51.0)(typescript@5.7.2)
       eslint: 8.51.0
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.31.0)(eslint@8.51.0)
+      eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0))(eslint@8.51.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -14375,7 +14375,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.51.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0)(eslint@8.51.0))(eslint@8.51.0)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0))(eslint@8.51.0))(eslint@8.51.0)
       hasown: 2.0.2
       is-core-module: 2.15.1
       is-glob: 4.0.3

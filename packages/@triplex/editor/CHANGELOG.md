@@ -1,5 +1,16 @@
 # @triplex/editor
 
+## 0.70.22
+
+### Patch Changes
+
+- 2301fd1: Drop unwanted files when publishing.
+- Updated dependencies [2301fd1]
+  - @triplex/ux@0.69.18
+  - @triplex/bridge@0.70.5
+  - @triplex/lib@0.69.13
+  - @triplex/websocks-client@0.0.6
+
 ## 0.70.21
 
 ### Patch Changes
