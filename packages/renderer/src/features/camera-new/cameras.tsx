@@ -6,6 +6,7 @@
  */
 import { useFrame, useThree } from "@react-three/fiber";
 import { on } from "@triplex/bridge/client";
+import { fg } from "@triplex/lib/fg";
 import {
   useContext,
   useEffect,
@@ -134,25 +135,43 @@ export function Cameras({ children }: { children: ReactNode }) {
   }, [activeCamera, playState]);
 
   useEffect(() => {
-    if (!gl || !activeCamera) return;
+    if (!gl || !activeCamera || !fg("camera_pp_fix")) {
+      return;
+    }
 
     const originalRender = gl.render;
 
+    /**
+     * This hijacks the existing GL render function to forcibly switch what
+     * camera is being used. This enables postprocessing to do its thing without
+     * Triplex having to do more work to support it.
+     */
     gl.render = function (scene, camera, ...args) {
       if (activeState === "editor" && activeCamera) {
         return originalRender.call(this, scene, activeCamera, ...args);
       }
+
       return originalRender.call(this, scene, camera, ...args);
     };
+
     return () => {
       gl.render = originalRender;
     };
   }, [gl, activeCamera, activeState]);
 
-  useFrame(({ gl }) => {
-    gl.autoClear = activeState === "editor";
+  useFrame(({ gl, scene }) => {
+    if (fg("camera_pp_fix")) {
+      /**
+       * This is complementary to the render hijack above, ensuring the custom
+       * selection outline postprocessing continues to work.
+       */
+      gl.autoClear = activeState === "editor";
+    } else {
+      if (activeCamera) {
+        gl.render(scene, activeCamera);
+      }
+    }
   }, 1);
-
 
   const context: ActiveCameraContextValue = useMemo(
     () => (activeCamera ? { camera: activeCamera, type: activeState } : null),
