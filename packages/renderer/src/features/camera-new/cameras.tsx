@@ -147,7 +147,8 @@ export function Cameras({ children }: { children: ReactNode }) {
      * Triplex having to do more work to support it.
      */
     gl.render = function (scene, camera, ...args) {
-      if (activeState === "editor" && activeCamera) {
+      // only patch defaultCamera calls to preserve triplex ui correctly
+      if (activeState === "editor" && camera === defaultCamera) {
         return originalRender.call(this, scene, activeCamera, ...args);
       }
 
@@ -157,21 +158,24 @@ export function Cameras({ children }: { children: ReactNode }) {
     return () => {
       gl.render = originalRender;
     };
-  }, [gl, activeCamera, activeState]);
+  }, [gl, activeCamera, activeState, defaultCamera]);
 
   useFrame(({ gl, scene }) => {
     if (fg("camera_pp_fix")) {
-      /**
-       * This is complementary to the render hijack above, ensuring the custom
-       * selection outline postprocessing continues to work.
-       */
-      gl.autoClear = activeState === "editor";
+      if (activeCamera) {
+        /**
+         * This is complementary to the render hijack above,
+         * postprocessing effects can disable clear which causes selection outlines to hang
+         */
+        gl.autoClear = true
+        gl.render(scene, activeCamera); //render call needed for normal components
+      }
     } else {
       if (activeCamera) {
         gl.render(scene, activeCamera);
       }
     }
-  }, 1);
+  }, 0.5);
 
   const context: ActiveCameraContextValue = useMemo(
     () => (activeCamera ? { camera: activeCamera, type: activeState } : null),
