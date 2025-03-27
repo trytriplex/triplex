@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.70.5
+
+### Patch Changes
+
+- 2301fd1: Drop unwanted files when publishing.
+
 ## 0.70.4
 
 ### Patch Changes

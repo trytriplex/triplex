@@ -1,5 +1,11 @@
 # create-triplex-project
 
+## 0.70.7
+
+### Patch Changes
+
+- 2301fd1: Drop unwanted files when publishing.
+
 ## 0.70.6
 
 ### Patch Changes
