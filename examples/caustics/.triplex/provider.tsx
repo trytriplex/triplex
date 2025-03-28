@@ -1,5 +1,3 @@
-import { ReactNode } from "react";
-import "@react-three/postprocessing";
 import {
   Bloom,
   DepthOfField,
@@ -7,6 +5,7 @@ import {
   Noise,
   Vignette,
 } from "@react-three/postprocessing";
+import { ReactNode } from "react";
 
 export function CanvasProvider({
   children,

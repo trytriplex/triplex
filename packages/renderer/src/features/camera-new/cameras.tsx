@@ -160,22 +160,28 @@ export function Cameras({ children }: { children: ReactNode }) {
     };
   }, [gl, activeCamera, activeState, defaultCamera]);
 
-  useFrame(({ gl, scene }) => {
-    if (fg("camera_pp_fix")) {
-      if (activeCamera) {
-        /**
-         * This is complementary to the render hijack above,
-         * postprocessing effects can disable clear which causes selection outlines to hang
-         */
-        gl.autoClear = true
-        gl.render(scene, activeCamera); //render call needed for normal components
+  useFrame(
+    ({ gl, scene }) => {
+      if (fg("camera_pp_fix")) {
+        if (activeCamera) {
+          /**
+           * This is complementary to the render hijack above, postprocessing
+           * effects can disable clear which causes selection outlines to hang.
+           */
+          gl.autoClear = true;
+          // gl.render call needed components without pp
+          gl.render(scene, activeCamera);
+        }
+      } else {
+        if (activeCamera) {
+          gl.render(scene, activeCamera);
+        }
       }
-    } else {
-      if (activeCamera) {
-        gl.render(scene, activeCamera);
-      }
-    }
-  }, 0.5);
+    },
+    // We use 0.5 here so it's ran before postprocessing.
+    // See: https://github.com/pmndrs/react-postprocessing/blob/master/src/EffectComposer.tsx#L63
+    fg("camera_pp_fix") ? 0.5 : 1,
+  );
 
   const context: ActiveCameraContextValue = useMemo(
     () => (activeCamera ? { camera: activeCamera, type: activeState } : null),
