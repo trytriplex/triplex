@@ -1,5 +1,12 @@
 # @triplex/vscode
 
+## 0.2.24
+
+### Patch Changes
+
+- f61dd89: Testing a fix for running postprocessing, it will be gradually rolled out.
+  - @triplex/client@0.70.22
+
 ## 0.2.23
 
 ### Patch Changes

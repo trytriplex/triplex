@@ -1,5 +1,13 @@
 # @triplex/electron
 
+## 0.70.23
+
+### Patch Changes
+
+- f61dd89: Testing a fix for running postprocessing, it will be gradually rolled out.
+  - @triplex/client@0.70.22
+  - @triplex/editor@0.70.23
+
 ## 0.70.22
 
 ### Patch Changes

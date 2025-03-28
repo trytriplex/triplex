@@ -1,5 +1,11 @@
 # @triplex/renderer
 
+## 0.71.15
+
+### Patch Changes
+
+- f61dd89: Testing a fix for running postprocessing, it will be gradually rolled out.
+
 ## 0.71.14
 
 ### Patch Changes
