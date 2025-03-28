@@ -528,6 +528,9 @@ importers:
       '@react-three/fiber':
         specifier: ^9.0.4
         version: 9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+      '@react-three/postprocessing':
+        specifier: ^3.0.4
+        version: 3.0.4(@react-three/fiber@9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/three@0.171.0)(react@19.0.0)(three@0.172.0)
       '@types/react':
         specifier: ^19.0.8
         version: 19.0.8
@@ -2942,6 +2945,13 @@ packages:
         optional: true
       react-native:
         optional: true
+
+  '@react-three/postprocessing@3.0.4':
+    resolution: {integrity: sha512-e4+F5xtudDYvhxx3y0NtWXpZbwvQ0x1zdOXWTbXMK6fFLVDd4qucN90YaaStanZGS4Bd5siQm0lGL/5ogf8iDQ==}
+    peerDependencies:
+      '@react-three/fiber': ^9.0.0
+      react: ^19.0.0
+      three: '>= 0.156.0'
 
   '@react-three/rapier@1.4.0':
     resolution: {integrity: sha512-mQryvEx9mW6u0bHo3KDc7G6gURjKSOA1I+W9EVNDJmI8hC+HoS9WyDzc8QnXyMYmvUAMEqOQImECNXAtoLacHw==}
@@ -7169,6 +7179,12 @@ packages:
   mz@2.7.0:
     resolution: {integrity: sha512-z81GNO7nnYMEhrGh9LeymoE4+Yr0Wn5McHIZMK5cfQCl+NDX08sCZgUc9/6MHni9IWuFLm1Z3HTCXu2z9fN62Q==}
 
+  n8ao@1.9.4:
+    resolution: {integrity: sha512-gbpAorQecZn2oGK/rheHxPTNwOxVsEC6216+Jr9tXHUk9L5VCE2q/uxsSrQpfNkZDoCmQHf7oSg3SYFWCAt0wg==}
+    peerDependencies:
+      postprocessing: '>=6.30.0'
+      three: '>=0.137'
+
   nanoid@3.3.8:
     resolution: {integrity: sha512-WNLf5Sd8oZxOm+TzppcYk8gVOgP+l58xNy58D0nbUnOxOWRWvlcCV4kUF7ltmI6PsrLl/BgKEyS4mqsGChFN0w==}
     engines: {node: ^10 || ^12 || ^13.7 || ^14 || >=15.0.1}
@@ -7741,6 +7757,11 @@ packages:
   postgres-interval@1.2.0:
     resolution: {integrity: sha512-9ZhXKM/rw350N1ovuWHbGxnGh/SNJ4cnxHiM0rxE4VN41wsg8P8zWn9hv/buK00RP4WvlOyr/RBDiptyxVbkZQ==}
     engines: {node: '>=0.10.0'}
+
+  postprocessing@6.37.1:
+    resolution: {integrity: sha512-fZszlSB8j+PaxtS8g4qMxdj+ifzvoCPnbHSOjclTlr4mbhd6/huQqOViM6lhhPIrW2fiZc+IRcnReoKYvyMwNg==}
+    peerDependencies:
+      three: '>= 0.157.0 < 0.175.0'
 
   potpack@1.0.2:
     resolution: {integrity: sha512-choctRBIV9EMT9WGAZHn3V7t0Z2pMQyl0EZE6pFc/6ml3ssw7Dlf/oAOvFwjm1HVsqfQN8GfeFyJ+d8tRzqueQ==}
@@ -10614,7 +10635,7 @@ snapshots:
       '@typescript-eslint/eslint-plugin': 8.25.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0)(typescript@5.7.2)
       '@typescript-eslint/parser': 8.25.0(eslint@8.51.0)(typescript@5.7.2)
       eslint: 8.51.0
-      eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0))(eslint@8.51.0)
+      eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.31.0)(eslint@8.51.0)
       eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint-import-resolver-typescript@3.8.3)(eslint@8.51.0)
       eslint-plugin-no-only-tests: 3.3.0
       eslint-plugin-react: 7.37.4(eslint@8.51.0)
@@ -11500,6 +11521,17 @@ snapshots:
     transitivePeerDependencies:
       - '@types/react'
       - immer
+
+  '@react-three/postprocessing@3.0.4(@react-three/fiber@9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/three@0.171.0)(react@19.0.0)(three@0.172.0)':
+    dependencies:
+      '@react-three/fiber': 9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+      maath: 0.6.0(@types/three@0.171.0)(three@0.172.0)
+      n8ao: 1.9.4(postprocessing@6.37.1(three@0.172.0))(three@0.172.0)
+      postprocessing: 6.37.1(three@0.172.0)
+      react: 19.0.0
+      three: 0.172.0
+    transitivePeerDependencies:
+      - '@types/three'
 
   '@react-three/rapier@1.4.0(@react-three/fiber@9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(react@19.0.0)(three@0.172.0)':
     dependencies:
@@ -14334,7 +14366,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0))(eslint@8.51.0):
+  eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0)(eslint@8.51.0):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.0
@@ -14349,14 +14381,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0))(eslint@8.51.0))(eslint@8.51.0):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0)(eslint@8.51.0))(eslint@8.51.0):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.25.0(eslint@8.51.0)(typescript@5.7.2)
       eslint: 8.51.0
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0))(eslint@8.51.0)
+      eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.31.0)(eslint@8.51.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -14375,7 +14407,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.51.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint@8.51.0))(eslint@8.51.0))(eslint@8.51.0)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.7.2))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0)(eslint@8.51.0))(eslint@8.51.0)
       hasown: 2.0.2
       is-core-module: 2.15.1
       is-glob: 4.0.3
@@ -16932,6 +16964,11 @@ snapshots:
       object-assign: 4.1.1
       thenify-all: 1.6.0
 
+  n8ao@1.9.4(postprocessing@6.37.1(three@0.172.0))(three@0.172.0):
+    dependencies:
+      postprocessing: 6.37.1(three@0.172.0)
+      three: 0.172.0
+
   nanoid@3.3.8: {}
 
   napi-build-utils@1.0.2:
@@ -17538,6 +17575,10 @@ snapshots:
   postgres-interval@1.2.0:
     dependencies:
       xtend: 4.0.2
+
+  postprocessing@6.37.1(three@0.172.0):
+    dependencies:
+      three: 0.172.0
 
   potpack@1.0.2: {}
 

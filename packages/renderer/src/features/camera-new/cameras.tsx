@@ -6,6 +6,7 @@
  */
 import { useFrame, useThree } from "@react-three/fiber";
 import { on } from "@triplex/bridge/client";
+import { fg } from "@triplex/lib/fg";
 import {
   useContext,
   useEffect,
@@ -133,11 +134,54 @@ export function Cameras({ children }: { children: ReactNode }) {
     }
   }, [activeCamera, playState]);
 
-  useFrame(({ gl, scene }) => {
-    if (activeCamera) {
-      gl.render(scene, activeCamera);
+  useEffect(() => {
+    if (!gl || !activeCamera || !fg("camera_pp_fix")) {
+      return;
     }
-  }, 1);
+
+    const originalRender = gl.render;
+
+    /**
+     * This hijacks the existing GL render function to forcibly switch what
+     * camera is being used. This enables postprocessing to do its thing without
+     * Triplex having to do more work to support it.
+     */
+    gl.render = function (scene, camera, ...args) {
+      // only patch defaultCamera calls to preserve triplex ui correctly
+      if (activeState === "editor" && camera === defaultCamera) {
+        return originalRender.call(this, scene, activeCamera, ...args);
+      }
+
+      return originalRender.call(this, scene, camera, ...args);
+    };
+
+    return () => {
+      gl.render = originalRender;
+    };
+  }, [gl, activeCamera, activeState, defaultCamera]);
+
+  useFrame(
+    ({ gl, scene }) => {
+      if (fg("camera_pp_fix")) {
+        if (activeCamera) {
+          /**
+           * This is complementary to the render hijack above, postprocessing
+           * effects can disable clear which causes selection outlines to hang.
+           */
+          gl.autoClear = true;
+          // gl.render call needed components without pp
+          gl.render(scene, activeCamera);
+        }
+      } else {
+        if (activeCamera) {
+          gl.render(scene, activeCamera);
+        }
+      }
+    },
+    // We use 0.5 here so it's ran before postprocessing.
+    // See: https://github.com/pmndrs/react-postprocessing/blob/master/src/EffectComposer.tsx#L63
+    fg("camera_pp_fix") ? 0.5 : 1,
+  );
 
   const context: ActiveCameraContextValue = useMemo(
     () => (activeCamera ? { camera: activeCamera, type: activeState } : null),
