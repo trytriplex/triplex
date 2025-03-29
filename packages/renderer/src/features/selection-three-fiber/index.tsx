@@ -12,7 +12,7 @@ import { useContext, useEffect, useState, type ReactNode } from "react";
 import { Box3, Camera, Vector3 } from "three";
 import { HOVER_LAYER_INDEX, SELECTION_LAYER_INDEX } from "../../util/layers";
 import { resolveElementMeta } from "../../util/meta";
-import { encodeProps } from "../../util/three";
+import { encodeProps, strip } from "../../util/three";
 import { SwitchToComponentContext } from "../app/context";
 import {
   ActiveCameraContext,
@@ -30,11 +30,11 @@ import {
 } from "./resolver";
 import { SelectionIndicator } from "./selection-indicator";
 import { TransformControls } from "./transform-controls";
+import {
+  TransformControls as TransformControlsImmutable,
+  type TransformEvent,
+} from "./transform-controls-immutable";
 import { type Space, type TransformControlMode } from "./types";
-
-function strip(num: number): number {
-  return +Number.parseFloat(Number(num).toPrecision(15));
-}
 
 export function ThreeFiberSelection({
   children,
@@ -223,6 +223,73 @@ export function ThreeFiberSelection({
     ]);
   }, [controls, resolvedObject, resolvedObjects, scene, switchToComponent]);
 
+  const onConfirmTransformHandler = useEvent((e: TransformEvent) => {
+    if (!resolvedObject) {
+      return;
+    }
+
+    if (e.mode === "translate") {
+      send("element-set-prop", {
+        column: resolvedObject.meta.column,
+        line: resolvedObject.meta.line,
+        path: resolvedObject.meta.path,
+        propName: "position",
+        propValue: e.value,
+      });
+      send("track", { actionId: "element_transform_translate" });
+    } else if (e.mode === "rotate") {
+      send("element-set-prop", {
+        column: resolvedObject.meta.column,
+        line: resolvedObject.meta.line,
+        path: resolvedObject.meta.path,
+        propName: "rotation",
+        propValue: e.value,
+      });
+      send("track", { actionId: "element_transform_rotate" });
+    } else if (e.mode === "scale") {
+      send("element-set-prop", {
+        column: resolvedObject.meta.column,
+        line: resolvedObject.meta.line,
+        path: resolvedObject.meta.path,
+        propName: "scale",
+        propValue: e.value,
+      });
+      send("track", { actionId: "element_transform_scale" });
+    }
+  });
+
+  const onChangeTransformHandler = useEvent((e: TransformEvent) => {
+    if (!resolvedObject) {
+      return;
+    }
+
+    if (e.mode === "translate") {
+      send("element-preview-prop", {
+        column: resolvedObject.meta.column,
+        line: resolvedObject.meta.line,
+        path: resolvedObject.meta.path,
+        propName: "position",
+        propValue: e.value,
+      });
+    } else if (e.mode === "rotate") {
+      send("element-preview-prop", {
+        column: resolvedObject.meta.column,
+        line: resolvedObject.meta.line,
+        path: resolvedObject.meta.path,
+        propName: "rotation",
+        propValue: e.value,
+      });
+    } else if (e.mode === "scale") {
+      send("element-preview-prop", {
+        column: resolvedObject.meta.column,
+        line: resolvedObject.meta.line,
+        path: resolvedObject.meta.path,
+        propName: "scale",
+        propValue: e.value,
+      });
+    }
+  });
+
   const onCompleteTransformHandler = useEvent(() => {
     if (!resolvedObject) {
       return;
@@ -276,19 +343,38 @@ export function ThreeFiberSelection({
         {children}
       </SceneObjectEventsContext.Provider>
 
-      {!!resolvedObject && transform !== "none" && (
-        <TransformControls
-          enabled={
-            /^[a-z]/.test(resolvedObject.meta.name)
-              ? true
-              : transforms[transform]
-          }
-          mode={transform}
-          object={resolvedObject?.object}
-          onCompleteTransform={onCompleteTransformHandler}
-          space={space}
-        />
-      )}
+      {!!resolvedObject &&
+        transform !== "none" &&
+        fg("immutable_transform_controls") && (
+          <TransformControlsImmutable
+            enabled={
+              /^[a-z]/.test(resolvedObject.meta.name)
+                ? true
+                : transforms[transform]
+            }
+            mode={transform}
+            object={resolvedObject.object}
+            onChange={onChangeTransformHandler}
+            onConfirm={onConfirmTransformHandler}
+            space={space}
+          />
+        )}
+
+      {!!resolvedObject &&
+        transform !== "none" &&
+        !fg("immutable_transform_controls") && (
+          <TransformControls
+            enabled={
+              /^[a-z]/.test(resolvedObject.meta.name)
+                ? true
+                : transforms[transform]
+            }
+            mode={transform}
+            object={resolvedObject?.object}
+            onCompleteTransform={onCompleteTransformHandler}
+            space={space}
+          />
+        )}
 
       {camera?.type === "editor" &&
         resolvedObject?.object instanceof Camera && (
