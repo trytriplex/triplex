@@ -206,11 +206,9 @@ export function Panels() {
               }}
               spacing="spacious"
             >
-              {fg("required_props_indicator") && (
-                <Suspense>
-                  <WarningRequiredProps />
-                </Suspense>
-              )}
+              <Suspense>
+                <WarningRequiredProps />
+              </Suspense>
             </IconButton>
             <FilterElements />
             {fg("private_auth_gate") && <UserMenu />}
