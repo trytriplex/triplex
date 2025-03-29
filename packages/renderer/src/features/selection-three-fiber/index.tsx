@@ -381,7 +381,10 @@ export function ThreeFiberSelection({
           <CameraPreview camera={resolvedObject?.object} />
         )}
 
-      {fg("selection_postprocessing") && <SelectionIndicator />}
+      {import.meta.env.VITE_TRIPLEX_ENV !== "test" && (
+        // Disable the selection post processing in CI tests as they don't have GPUs.
+        <SelectionIndicator />
+      )}
     </SceneObjectContext.Provider>
   );
 }

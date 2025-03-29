@@ -8,7 +8,6 @@
 import { waitFor } from "@testing-library/react";
 import { type ProviderModule } from "@triplex/bridge/client";
 import { send } from "@triplex/bridge/host";
-import { overrideFg } from "@triplex/lib/fg";
 import { createElement, forwardRef, useState } from "react";
 import { render } from "react-three-test";
 import { type Color } from "three";
@@ -80,7 +79,6 @@ const emptyProviders: ProviderModule = {
 
 describe("scene loader component", () => {
   it("should apply color to canvas background set in provider", async () => {
-    overrideFg("selection_postprocessing", true);
     function Scene() {
       return <mesh />;
     }
