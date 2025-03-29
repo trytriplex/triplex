@@ -6,7 +6,7 @@
  */
 import { Canvas as FiberCanvas, type CanvasProps } from "@react-three/fiber";
 import { send } from "@triplex/bridge/client";
-import { fg, fgComponent } from "@triplex/lib/fg";
+import { fgComponent } from "@triplex/lib/fg";
 import { LoadingLogo } from "@triplex/lib/loader";
 import { Suspense, useLayoutEffect } from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
@@ -18,7 +18,6 @@ import { defaultLayer, editorLayer } from "../../util/layers";
 import { Camera as CameraOld } from "../camera";
 import { CameraAxisHelper } from "../camera-helpers/camera-axis-helper";
 import { FitCameraToScene } from "../camera-helpers/camera-fit-scene";
-import { CameraGizmo } from "../camera-helpers/camera-gizmo";
 import { Camera as CameraNew } from "../camera-new";
 import { SceneElement } from "../scene-element";
 import { useLoadedScene } from "../scene-loader/context";
@@ -123,11 +122,7 @@ export function Canvas({ children, ...props }: CanvasProps) {
                   <FitCameraToScene resetKeys={[path, exportName]} />
                   <SceneLights />
                   <TriplexGrid />
-                  {fg("camera_axis_helper") ? (
-                    <CameraAxisHelper />
-                  ) : (
-                    <CameraGizmo />
-                  )}
+                  <CameraAxisHelper />
                 </Suspense>
               </ThreeFiberSelection>
             </SceneElement>
