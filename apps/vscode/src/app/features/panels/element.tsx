@@ -7,7 +7,6 @@
 import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { compose, on, send } from "@triplex/bridge/host";
 import { cn } from "@triplex/lib";
-import { fg } from "@triplex/lib/fg";
 import { type JsxElementPositions } from "@triplex/server";
 import { bind } from "bind-event-listener";
 import {
@@ -26,7 +25,6 @@ import { useLazySubscription } from "../../hooks/ws";
 import { useFilter } from "../../stores/filter-elements";
 import { createCodeLink } from "../../util/commands";
 import { useSceneEvents, useSceneSelected } from "../app-root/context";
-import { WarningElementProps } from "../warnings/warning-element-props";
 
 function matchesFilter(
   filter: string | undefined,
@@ -173,16 +171,6 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
           {props.name}
           {isSelected && <span className="sr-only">selected</span>}
         </span>
-        {fg("element_props_indicator") && (
-          <Suspense>
-            <WarningElementProps
-              column={props.column}
-              line={props.line}
-              name={props.name}
-              path={props.parentPath}
-            />
-          </Suspense>
-        )}
       </div>
       {(props.children.length > 0 || isCustomComponent) && (
         <ul>
