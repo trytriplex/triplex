@@ -4,7 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { compose, on } from "@triplex/bridge/host";
+import { compose, on, send } from "@triplex/bridge/host";
 import { useTelemetry, type ActionId } from "@triplex/ux";
 import { useEffect, useState } from "react";
 import { cn } from "./ds/cn";
@@ -143,6 +143,9 @@ function BridgeReceiveEvents() {
           propName: data.propName,
           propValue: data.propValue,
         });
+      }),
+      on("element-preview-prop", (data) => {
+        send("request-set-element-prop", data);
       }),
       on("element-focused", (data) => {
         editor.focus(data);

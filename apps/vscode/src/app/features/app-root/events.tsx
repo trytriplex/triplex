@@ -35,6 +35,9 @@ export function Events() {
       forwardClientMessages("element-set-prop"),
       forwardClientMessages("error"),
       forwardKeyboardEvents(),
+      on("element-preview-prop", (data) => {
+        send("request-set-element-prop", data);
+      }),
       on("component-opened", (data) => {
         preloadSubscription("/scene/:path/:exportName/props", data);
 

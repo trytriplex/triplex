@@ -119,6 +119,13 @@ export interface ClientSendEventData {
     parentPath: string;
     path: string;
   } | null;
+  "element-preview-prop": {
+    column: number;
+    line: number;
+    path: string;
+    propName: string;
+    propValue: unknown;
+  };
   "element-set-prop": {
     column: number;
     line: number;
@@ -160,6 +167,7 @@ export interface ClientSendEventResponse {
   "element-blurred": void;
   "element-focused": void;
   "element-hint": void;
+  "element-preview-prop": void;
   "element-set-prop": void;
   error: void;
   "extension-point-triggered": void;
