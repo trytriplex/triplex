@@ -547,6 +547,30 @@ importers:
         specifier: ^0.172.0
         version: 0.172.0
 
+  examples/edge-cases:
+    dependencies:
+      '@react-three/drei':
+        specifier: ^10.0.0
+        version: 10.0.0(@react-three/fiber@9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+      '@react-three/fiber':
+        specifier: ^9.0.4
+        version: 9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+      '@types/react':
+        specifier: ^19.0.8
+        version: 19.0.8
+      '@types/three':
+        specifier: ^0.171.0
+        version: 0.171.0
+      react:
+        specifier: ^19.0.0
+        version: 19.0.0
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.0.0(react@19.0.0)
+      three:
+        specifier: ^0.172.0
+        version: 0.172.0
+
   examples/faze:
     dependencies:
       '@react-three/drei':

@@ -247,4 +247,12 @@ const test = base.extend<
   ],
 });
 
+export function overrideFg(key: string, value: boolean) {
+  test.use({
+    fg: {
+      [key]: value,
+    },
+  });
+}
+
 export { test };

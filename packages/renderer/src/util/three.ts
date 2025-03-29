@@ -88,3 +88,7 @@ export function encodeProps(selected: ResolvedObject3D) {
 
   return props;
 }
+
+export function strip(num: number): number {
+  return +Number.parseFloat(Number(num).toPrecision(15));
+}
