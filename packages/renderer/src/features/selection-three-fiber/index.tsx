@@ -29,12 +29,8 @@ import {
   type ResolvedObject3D,
 } from "./resolver";
 import { SelectionIndicator } from "./selection-indicator";
-import { TransformControls } from "./transform-controls";
+import { TransformControls, type TransformEvent } from "./transform-controls";
 import { type Space, type TransformControlMode } from "./types";
-
-function strip(num: number): number {
-  return +Number.parseFloat(Number(num).toPrecision(15));
-}
 
 export function ThreeFiberSelection({
   children,
@@ -223,48 +219,67 @@ export function ThreeFiberSelection({
     ]);
   }, [controls, resolvedObject, resolvedObjects, scene, switchToComponent]);
 
-  const onCompleteTransformHandler = useEvent(() => {
+  const onConfirmTransformHandler = useEvent((e: TransformEvent) => {
     if (!resolvedObject) {
       return;
     }
 
-    if (transform === "translate") {
-      const position = resolvedObject.object.position.toArray();
-
+    if (e.mode === "translate") {
       send("element-set-prop", {
         column: resolvedObject.meta.column,
         line: resolvedObject.meta.line,
         path: resolvedObject.meta.path,
         propName: "position",
-        propValue: position.map(strip),
+        propValue: e.value,
       });
-
-      send("track", { actionId: "element_transform_translate" });
-    } else if (transform === "rotate") {
-      const rotation = resolvedObject.object.rotation.toArray();
-      rotation.pop();
-
+    } else if (e.mode === "rotate") {
       send("element-set-prop", {
         column: resolvedObject.meta.column,
         line: resolvedObject.meta.line,
         path: resolvedObject.meta.path,
         propName: "rotation",
-        propValue: rotation,
+        propValue: e.value,
       });
-
-      send("track", { actionId: "element_transform_rotate" });
-    } else if (transform === "scale") {
-      const scale = resolvedObject.object.scale.toArray();
-
+    } else if (e.mode === "scale") {
       send("element-set-prop", {
         column: resolvedObject.meta.column,
         line: resolvedObject.meta.line,
         path: resolvedObject.meta.path,
         propName: "scale",
-        propValue: scale.map(strip),
+        propValue: e.value,
       });
+    }
+  });
 
-      send("track", { actionId: "element_transform_scale" });
+  const onChangeTransformHandler = useEvent((e: TransformEvent) => {
+    if (!resolvedObject) {
+      return;
+    }
+
+    if (e.mode === "translate") {
+      send("element-preview-prop", {
+        column: resolvedObject.meta.column,
+        line: resolvedObject.meta.line,
+        path: resolvedObject.meta.path,
+        propName: "position",
+        propValue: e.value,
+      });
+    } else if (e.mode === "rotate") {
+      send("element-preview-prop", {
+        column: resolvedObject.meta.column,
+        line: resolvedObject.meta.line,
+        path: resolvedObject.meta.path,
+        propName: "rotation",
+        propValue: e.value,
+      });
+    } else if (e.mode === "scale") {
+      send("element-preview-prop", {
+        column: resolvedObject.meta.column,
+        line: resolvedObject.meta.line,
+        path: resolvedObject.meta.path,
+        propName: "scale",
+        propValue: e.value,
+      });
     }
   });
 
@@ -284,8 +299,9 @@ export function ThreeFiberSelection({
               : transforms[transform]
           }
           mode={transform}
-          object={resolvedObject?.object}
-          onCompleteTransform={onCompleteTransformHandler}
+          object={resolvedObject.object}
+          onChange={onChangeTransformHandler}
+          onConfirm={onConfirmTransformHandler}
           space={space}
         />
       )}
