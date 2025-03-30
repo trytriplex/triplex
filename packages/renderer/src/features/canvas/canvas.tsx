@@ -6,7 +6,6 @@
  */
 import { Canvas as FiberCanvas, type CanvasProps } from "@react-three/fiber";
 import { send } from "@triplex/bridge/client";
-import { fgComponent } from "@triplex/lib/fg";
 import { LoadingLogo } from "@triplex/lib/loader";
 import { Suspense, useLayoutEffect } from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
@@ -15,21 +14,15 @@ import { TriplexGrid } from "../../components/grid";
 import { Tunnel } from "../../components/tunnel";
 import { usePlayState } from "../../stores/use-play-state";
 import { defaultLayer, editorLayer } from "../../util/layers";
-import { Camera as CameraOld } from "../camera";
 import { CameraAxisHelper } from "../camera-helpers/camera-axis-helper";
 import { FitCameraToScene } from "../camera-helpers/camera-fit-scene";
-import { Camera as CameraNew } from "../camera-new";
+import { Camera } from "../camera-new";
 import { SceneElement } from "../scene-element";
 import { useLoadedScene } from "../scene-loader/context";
 import { ThreeFiberSelection } from "../selection-three-fiber";
 import { CaptureShaderErrors } from "./capture-shader-errors";
 import { SceneLights } from "./scene-lights";
 import { useCanvasMounted } from "./store";
-
-const Camera = fgComponent("camera_reconciler_refactor", {
-  off: CameraOld,
-  on: CameraNew,
-});
 
 /**
  * **Canvas**
