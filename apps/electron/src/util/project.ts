@@ -5,6 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { createServer as createFrontend } from "@triplex/client";
+import { type FGEnvironment } from "@triplex/lib/types";
 import {
   createServer as createBackend,
   type ReconciledRenderer,
@@ -20,7 +21,7 @@ export async function startProject({
   userId,
 }: {
   config: ReconciledTriplexConfig;
-  fgEnvironmentOverride: "production" | "staging" | "development" | "local";
+  fgEnvironmentOverride: FGEnvironment;
   ports: TriplexPorts;
   renderer: ReconciledRenderer;
   userId: string;

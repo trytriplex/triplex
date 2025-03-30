@@ -35,6 +35,10 @@ export default defineConfig({
     ssr: true,
     target: "node18",
   },
+  define: {
+    "process.env.NODE_ENV": '"production"',
+  },
+  mode: "production",
   ssr: {
     external: externalConfig,
     noExternal: true,

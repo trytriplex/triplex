@@ -7,6 +7,7 @@
 import { createServer as createHttpServer } from "node:http";
 import { loadingLogo } from "@triplex/lib/loader";
 import { rootHTML } from "@triplex/lib/templates";
+import { type FGEnvironment } from "@triplex/lib/types";
 import type {
   ReconciledTriplexConfig,
   RendererManifest,
@@ -30,7 +31,7 @@ export async function createServer({
   userId,
 }: {
   config: ReconciledTriplexConfig;
-  fgEnvironmentOverride: "production" | "staging" | "development" | "local";
+  fgEnvironmentOverride: FGEnvironment;
   ports: TriplexPorts;
   renderer: {
     manifest: RendererManifest;

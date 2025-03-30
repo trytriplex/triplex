@@ -5,6 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { init } from "@sentry/node";
+import { type FGEnvironment } from "@triplex/lib/types";
 import {
   type ReconciledRenderer,
   type ReconciledTriplexConfig,
@@ -31,7 +32,7 @@ async function main() {
 
     const data: {
       config: ReconciledTriplexConfig;
-      fgEnvironmentOverride: "production" | "staging" | "development" | "local";
+      fgEnvironmentOverride: FGEnvironment;
       ports: TriplexPorts;
       renderer: ReconciledRenderer;
       userId: string;

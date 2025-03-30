@@ -7,6 +7,7 @@
 import { loadingLogo } from "@triplex/lib/loader";
 import { basename, join, normalize } from "@triplex/lib/path";
 import { rootHTML } from "@triplex/lib/templates";
+import { type FGEnvironment } from "@triplex/lib/types";
 import * as vscode from "vscode";
 import { sendVSCE } from "../util/bridge";
 import { getPort } from "../util/port";
@@ -17,6 +18,7 @@ export async function initializeWebviewPanel(
   {
     context,
     exportName,
+    fgEnvironmentOverride,
     panelCache,
     path,
     projectCache,
@@ -24,6 +26,7 @@ export async function initializeWebviewPanel(
   }: {
     context: vscode.ExtensionContext;
     exportName: string;
+    fgEnvironmentOverride: FGEnvironment;
     panelCache: Map<string, vscode.WebviewPanel>;
     path: string;
     projectCache: Map<string, TriplexProjectResolver>;
@@ -62,6 +65,7 @@ export async function initializeWebviewPanel(
     triplexProjectCwd,
     projectCache,
     context,
+    fgEnvironmentOverride,
   );
 
   panel.onDidDispose(() => {
@@ -73,7 +77,7 @@ export async function initializeWebviewPanel(
       window.triplex = JSON.parse(\`${JSON.stringify({
         env: {
           config: project.args.config,
-          fgEnvironmentOverride: process.env.FG_ENVIRONMENT_OVERRIDE,
+          fgEnvironmentOverride,
           ports: project.args.ports,
         },
         initialState: {

@@ -22,6 +22,7 @@ export default defineConfig(({ mode }) => {
     return {
       build: {
         emptyOutDir: false,
+        minify: true,
         outDir: "out/dist",
         rollupOptions: {
           external: externalConfig,

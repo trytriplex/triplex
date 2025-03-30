@@ -60,7 +60,7 @@ async function launch(
     cwd: process.env.SMOKE_TEST ? "/" : join(__dirname, "../.."),
     env: {
       ...process.env,
-      FG_ENVIRONMENT_OVERRIDE: "local",
+      ...(process.env.SMOKE_TEST ? {} : { FG_ENVIRONMENT_OVERRIDE: "local" }),
       FORCE_EDITOR_TEST_FIXTURE: join(process.cwd(), textFixturePath),
       FORCE_EXPORT_NAME: opts.exportName,
       FORCE_PATH: opts.path,

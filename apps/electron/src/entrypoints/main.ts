@@ -5,9 +5,9 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { randomUUID } from "node:crypto";
-import process from "node:process";
 import { init } from "@sentry/electron/main";
 import { join } from "@triplex/lib/path";
+import { type FGEnvironment } from "@triplex/lib/types";
 import { getConfig, getRendererMeta, resolveProjectCwd } from "@triplex/server";
 import {
   app,
@@ -385,17 +385,17 @@ async function main() {
     log.info("forking");
 
     try {
+      const fgEnvironmentOverride: FGEnvironment =
+        (process.env.FG_ENVIRONMENT_OVERRIDE as FGEnvironment) ||
+        (process.env.NODE_ENV === "production" ? "production" : "development");
+
       const p = await fork<Parameters<typeof startProject>[0]>(
         join(__dirname, "./project.ts"),
         {
           cwd,
           data: {
             config,
-            fgEnvironmentOverride: process.env.FG_ENVIRONMENT_OVERRIDE as
-              | "production"
-              | "staging"
-              | "development"
-              | "local",
+            fgEnvironmentOverride,
             ports,
             renderer,
             userId: USER_ID,

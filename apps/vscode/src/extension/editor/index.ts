@@ -6,6 +6,7 @@
  */
 import { readFileSync } from "node:fs";
 import { dirname, normalize } from "@triplex/lib/path";
+import { type FGEnvironment } from "@triplex/lib/types";
 import {
   inferExports,
   resolveProjectCwd,
@@ -42,7 +43,10 @@ export class TriplexEditorProvider
     string,
     TriplexProjectResolver
   >();
-  private constructor(private readonly _context: vscode.ExtensionContext) {}
+  private constructor(
+    private readonly _context: vscode.ExtensionContext,
+    private readonly _fgEnvironmentOverride: FGEnvironment,
+  ) {}
 
   backupCustomDocument(
     document: TriplexDocument,
@@ -107,6 +111,7 @@ export class TriplexEditorProvider
     initializeWebviewPanel(panel, {
       context: this._context,
       exportName,
+      fgEnvironmentOverride: this._fgEnvironmentOverride,
       panelCache: TriplexEditorProvider.panelCache,
       path: scopedFileName,
       projectCache: TriplexEditorProvider.projectCache,
@@ -201,7 +206,10 @@ export class TriplexEditorProvider
     return document.saveAs(destination, cancellation);
   }
 
-  public static register(context: vscode.ExtensionContext): vscode.Disposable {
+  public static register(
+    context: vscode.ExtensionContext,
+    { fgEnvironmentOverride }: { fgEnvironmentOverride: FGEnvironment },
+  ): vscode.Disposable {
     const resolveActivePanel = (cb: (p: vscode.WebviewPanel) => void) => {
       const panel = Array.from(this.panelCache.values()).find(
         (panel) => panel.active,
@@ -339,7 +347,7 @@ export class TriplexEditorProvider
       ),
       vscode.window.registerCustomEditorProvider(
         TriplexEditorProvider.viewType,
-        new TriplexEditorProvider(context),
+        new TriplexEditorProvider(context, fgEnvironmentOverride),
         {
           supportsMultipleEditorsPerDocument: false,
           webviewOptions: {

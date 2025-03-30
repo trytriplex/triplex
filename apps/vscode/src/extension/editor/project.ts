@@ -6,6 +6,7 @@
  */
 
 import { join } from "@triplex/lib/path";
+import { type FGEnvironment } from "@triplex/lib/types";
 import { getConfig, getRendererMeta } from "@triplex/server";
 import * as vscode from "vscode";
 import { type Args } from "../../project";
@@ -26,6 +27,7 @@ export async function resolveProject(
   cwd: string,
   projectCache: Map<string, TriplexProjectResolver>,
   context: vscode.ExtensionContext,
+  fgEnvironmentOverride: FGEnvironment,
 ): Promise<TriplexProject> {
   const cachedProjectResolver = projectCache.get(cwd);
   if (cachedProjectResolver) {
@@ -52,11 +54,7 @@ export async function resolveProject(
     const args: Args = {
       config,
       cwd,
-      fgEnvironmentOverride: process.env.FG_ENVIRONMENT_OVERRIDE as
-        | "production"
-        | "staging"
-        | "development"
-        | "local",
+      fgEnvironmentOverride,
       isTelemetryEnabled: vscode.env.isTelemetryEnabled,
       ports,
       renderer,

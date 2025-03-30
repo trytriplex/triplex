@@ -4,6 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+type FGEnvironment = import("@triplex/lib/fg").FGEnvironment;
 type ReconciledTriplexConfig =
   import("@triplex/server").ReconciledTriplexConfig;
 type TriplexPorts = import("@triplex/server").TriplexPorts;
@@ -12,7 +13,7 @@ declare interface Window {
   triplex: {
     env: {
       config: ReconciledTriplexConfig;
-      fgEnvironmentOverride: "production" | "staging" | "development" | "local";
+      fgEnvironmentOverride: FGEnvironment;
       ports: TriplexPorts;
     };
     initialState: {

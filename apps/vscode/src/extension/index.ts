@@ -5,6 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 
+import { type FGEnvironment } from "@triplex/lib/types";
 import * as vscode from "vscode";
 import { version } from "../../package.json";
 import * as output from "../util/log/vscode";
@@ -14,15 +15,19 @@ import { TriplexEditorProvider } from "./editor";
 const log = output.logger("main");
 
 export function activate(context: vscode.ExtensionContext) {
+  const fgEnvironmentOverride: FGEnvironment =
+    (process.env.FG_ENVIRONMENT_OVERRIDE as FGEnvironment) ||
+    (process.env.NODE_ENV === "production" ? "production" : "development");
+
   context.subscriptions.push(
     TriplexCodelensProvider.register(),
-    TriplexEditorProvider.register(context),
+    TriplexEditorProvider.register(context, { fgEnvironmentOverride }),
     output,
   );
 
   log.info(`Triplex for VS Code v${version} activated.`);
-  log.debug(`User ID: ${vscode.env.machineId}.`);
-  log.debug(`FG Env: ${process.env.FG_ENVIRONMENT_OVERRIDE || "production"}.`);
+  log.info(`User ID: ${vscode.env.machineId}.`);
+  log.info(`FG Env: ${fgEnvironmentOverride}.`);
 }
 
 export function deactivate() {}

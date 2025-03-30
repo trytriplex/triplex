@@ -139,7 +139,7 @@ async function launch({
     ],
     env: {
       ...process.env,
-      FG_ENVIRONMENT_OVERRIDE: "local",
+      ...(process.env.SMOKE_TEST ? {} : { FG_ENVIRONMENT_OVERRIDE: "local" }),
       VITE_FG_OVERRIDES: JSON.stringify(fg),
       VITE_TRIPLEX_ENV: "test",
     },

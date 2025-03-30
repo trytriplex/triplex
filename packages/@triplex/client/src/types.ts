@@ -4,6 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import { type FGEnvironment } from "@triplex/lib/types";
 import {
   type ReconciledTriplexConfig,
   type TriplexPorts,
@@ -11,7 +12,7 @@ import {
 
 export interface InitializationConfig {
   config: ReconciledTriplexConfig;
-  fgEnvironmentOverride: "production" | "staging" | "development" | "local";
+  fgEnvironmentOverride: FGEnvironment;
   fileGlobs: string[];
   pkgName: string;
   ports: TriplexPorts;

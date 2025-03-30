@@ -6,6 +6,7 @@
  */
 import { init } from "@sentry/node";
 import { createServer as createClientServer } from "@triplex/client";
+import { type FGEnvironment } from "@triplex/lib/types";
 import {
   createServer,
   type ReconciledRenderer,
@@ -19,7 +20,7 @@ const log = logger("fork_process");
 export type Args = {
   config: ReconciledTriplexConfig;
   cwd: string;
-  fgEnvironmentOverride: "production" | "staging" | "development" | "local";
+  fgEnvironmentOverride: FGEnvironment;
   isTelemetryEnabled: boolean;
   ports: TriplexPorts;
   renderer: ReconciledRenderer;
