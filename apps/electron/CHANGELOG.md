@@ -1,5 +1,14 @@
 # @triplex/electron
 
+## 0.70.24
+
+### Patch Changes
+
+- cfd4a6f: Add element preview prop event.
+- Updated dependencies [cfd4a6f]
+  - @triplex/editor@0.70.24
+  - @triplex/client@0.70.23
+
 ## 0.70.23
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @triplex/editor
 
+## 0.70.24
+
+### Patch Changes
+
+- cfd4a6f: Add element preview prop event.
+- Updated dependencies [cfd4a6f]
+  - @triplex/bridge@0.70.6
+  - @triplex/ux@0.69.19
+
 ## 0.70.23
 
 ## 0.70.22

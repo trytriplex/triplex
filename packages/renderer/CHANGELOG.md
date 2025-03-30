@@ -1,5 +1,16 @@
 # @triplex/renderer
 
+## 0.71.16
+
+### Patch Changes
+
+- 4e148d7: Cleanup selection_postprocessing feature gate.
+- 3338a50: Update transform controls to not mutate the Three.js scene. This will be slowly tested and rolled out.
+- b3a0420: Cleanup camera_reconciler_refactor feature gate.
+- 83d2a62: Cleanup camera_axis_helper feature gate.
+- Updated dependencies [cfd4a6f]
+  - @triplex/bridge@0.70.6
+
 ## 0.71.15
 
 ### Patch Changes

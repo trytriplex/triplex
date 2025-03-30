@@ -215,10 +215,10 @@ importers:
   apps/electron:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.22
+        specifier: 0.70.23
         version: link:../../packages/@triplex/client
       '@triplex/editor':
-        specifier: 0.70.23
+        specifier: 0.70.24
         version: link:../../packages/@triplex/editor
       '@triplex/server':
         specifier: 0.71.10
@@ -288,7 +288,7 @@ importers:
   apps/vscode:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.22
+        specifier: 0.70.23
         version: link:../../packages/@triplex/client
       '@triplex/server':
         specifier: 0.71.10
@@ -313,13 +313,13 @@ importers:
         specifier: ^2.49.1
         version: 2.49.1
       '@triplex/bridge':
-        specifier: 0.70.5
+        specifier: 0.70.6
         version: link:../../packages/bridge
       '@triplex/lib':
         specifier: 0.69.13
         version: link:../../packages/lib
       '@triplex/ux':
-        specifier: 0.69.18
+        specifier: 0.69.19
         version: link:../../packages/@triplex/ux
       '@triplex/websocks-client':
         specifier: 0.0.6
@@ -847,10 +847,10 @@ importers:
         specifier: ^7.24.5
         version: 7.26.3
       '@triplex/bridge':
-        specifier: 0.70.5
+        specifier: 0.70.6
         version: link:../../bridge
       '@triplex/renderer':
-        specifier: 0.71.15
+        specifier: 0.71.16
         version: link:../../renderer
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -953,13 +953,13 @@ importers:
         specifier: ^8.30.0
         version: 8.30.0(react@19.0.0)
       '@triplex/bridge':
-        specifier: 0.70.5
+        specifier: 0.70.6
         version: link:../../bridge
       '@triplex/lib':
         specifier: 0.69.13
         version: link:../../lib
       '@triplex/ux':
-        specifier: 0.69.18
+        specifier: 0.69.19
         version: link:../ux
       '@triplex/websocks-client':
         specifier: 0.0.6
@@ -1144,7 +1144,7 @@ importers:
         specifier: ^1.0.5
         version: 1.0.5(@types/react-dom@19.0.3(@types/react@19.0.8))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)
       '@triplex/bridge':
-        specifier: 0.70.5
+        specifier: 0.70.6
         version: link:../../bridge
       '@triplex/lib':
         specifier: 0.69.13
@@ -1295,7 +1295,7 @@ importers:
   packages/renderer:
     dependencies:
       '@triplex/bridge':
-        specifier: 0.70.5
+        specifier: 0.70.6
         version: link:../bridge
       '@triplex/lib':
         specifier: 0.69.13

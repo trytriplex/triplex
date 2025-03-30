@@ -1,5 +1,16 @@
 # @triplex/vscode
 
+## 0.2.25
+
+### Patch Changes
+
+- cfd4a6f: Add element preview prop event.
+- 4d2cdbc: Cleanup element_props_indicator feature gate.
+- 90710ab: Cleanup required_props_indicator feature gate.
+- b3a0420: Cleanup camera_reconciler_refactor feature gate.
+- 6e5eb02: Cleanup private_auth_gate feature gate.
+  - @triplex/client@0.70.23
+
 ## 0.2.24
 
 ### Patch Changes

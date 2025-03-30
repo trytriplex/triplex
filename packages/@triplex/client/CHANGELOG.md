@@ -1,5 +1,17 @@
 # @triplex/client
 
+## 0.70.23
+
+### Patch Changes
+
+- Updated dependencies [cfd4a6f]
+- Updated dependencies [4e148d7]
+- Updated dependencies [3338a50]
+- Updated dependencies [b3a0420]
+- Updated dependencies [83d2a62]
+  - @triplex/bridge@0.70.6
+  - @triplex/renderer@0.71.16
+
 ## 0.70.22
 
 ### Patch Changes
