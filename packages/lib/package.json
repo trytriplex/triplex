@@ -33,6 +33,11 @@
       "types": "./src/templates.ts",
       "module": "./src/templates.ts",
       "default": "./src/templates.ts"
+    },
+    "./types": {
+      "types": "./src/types.ts",
+      "module": "./src/types.ts",
+      "default": "./src/types.ts"
     }
   },
   "files": [
@@ -81,6 +86,11 @@
         "types": "./src/templates.d.ts",
         "module": "./src/templates.js",
         "default": "./src/templates.js"
+      },
+      "./types": {
+        "types": "./src/types.d.ts",
+        "module": "./src/types.js",
+        "default": "./src/types.js"
       }
     }
   }

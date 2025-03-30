@@ -7,6 +7,7 @@
 /// <reference types="vite/client" />
 import { type ReactNode } from "react";
 import Statsig from "statsig-js";
+import { type FGEnvironment } from "./types";
 
 let initialized = false;
 
@@ -14,12 +15,10 @@ let initialized = false;
 const fgOverrides = JSON.parse(import.meta.env.VITE_FG_OVERRIDES || "{}");
 
 export async function initFeatureGates({
-  environment = process.env.NODE_ENV === "production"
-    ? "production"
-    : "development",
+  environment,
   userId,
 }: {
-  environment?: "production" | "staging" | "development" | "local";
+  environment: FGEnvironment;
   userId: string;
 }) {
   if (!userId) {

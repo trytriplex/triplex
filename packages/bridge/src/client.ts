@@ -4,6 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import { type FGEnvironment } from "@triplex/lib/types";
 import { type JSX } from "react";
 import { compose } from "./compose";
 import { createKeyboardEventForwarder } from "./keyboard";
@@ -131,7 +132,7 @@ export type BootstrapFunction = (
   container: HTMLElement,
 ) => (opts: {
   config: Config;
-  fgEnvironmentOverride: "local" | "development" | "staging" | "production";
+  fgEnvironmentOverride: FGEnvironment;
   files: Modules;
   providers: ProviderModule;
   userId: string;
