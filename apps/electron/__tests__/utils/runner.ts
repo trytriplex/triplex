@@ -54,6 +54,8 @@ async function launch(
     args: [
       process.env.SMOKE_TEST ? "" : join(__dirname, "../..", "hook-main.js"),
       process.env.CI ? "--headless" : "",
+      "--enable-unsafe-swiftshader",
+      "--disable-gpu-sandbox",
     ],
     cwd: process.env.SMOKE_TEST ? "/" : join(__dirname, "../.."),
     env: {

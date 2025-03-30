@@ -7,10 +7,6 @@
 import { expect } from "@playwright/test";
 import { test } from "./utils/runner";
 
-test.use({
-  fg: { camera_reconciler_refactor: true },
-});
-
 test.describe(() => {
   test.use({
     filename: "examples-private/test-fixture/src/react-roots.tsx",

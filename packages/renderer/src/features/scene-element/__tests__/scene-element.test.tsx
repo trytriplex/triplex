@@ -8,11 +8,13 @@
 import { send } from "@triplex/bridge/host";
 import { createElement, forwardRef, Fragment, useState } from "react";
 import { render } from "react-three-test";
+import { PerspectiveCamera } from "three";
 import { MapControls } from "triplex-drei";
 import { describe, expect, it, vi } from "vitest";
 import { SceneElement } from "../";
 import { getTriplexMeta, resolveElementMeta } from "../../../util/meta";
-import { Camera } from "../../camera";
+import { Camera } from "../../camera-new";
+import { ActiveCameraContext } from "../../camera-new/context";
 import { findObject3D } from "../../selection-three-fiber/resolver";
 import { SceneObjectContext } from "../context";
 import { nested } from "./__stubs__/scene-objects";
@@ -72,7 +74,9 @@ describe("scene object component", () => {
   it("should enable scroll controls when viewing through userland camera", async () => {
     const { toTree } = await render(
       <SceneObjectContext.Provider value={true}>
-        <Camera defaultCamera="user">
+        <ActiveCameraContext
+          value={{ camera: new PerspectiveCamera(), type: "default" }}
+        >
           <SceneElement
             __component={(props: unknown) => <mesh userData={{ props }} />}
             __meta={{
@@ -86,7 +90,7 @@ describe("scene object component", () => {
               translate: false,
             }}
           />
-        </Camera>
+        </ActiveCameraContext>
       </SceneObjectContext.Provider>,
     );
 

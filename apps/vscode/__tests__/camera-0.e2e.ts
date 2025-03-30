@@ -7,10 +7,6 @@
 import { expect } from "@playwright/test";
 import { test } from "./utils/runner";
 
-test.use({
-  fg: { camera_reconciler_refactor: true },
-});
-
 test("play mode defaults to default camera", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
   const panel = vsce.resolveEditor();

@@ -36,7 +36,10 @@ vi.mock("triplex-drei", () => ({
   GizmoViewcube: () =>
     createElement("mesh", { name: "__stub_gizmo_viewcube__" }),
   Grid: () => null,
+  Hud: () => createElement("group", { name: "__stub_hud__" }),
   MapControls: () => createElement("mesh", { name: "__stub_map_controls__" }),
+  OrthographicCamera: () =>
+    createElement("group", { name: "__stub_orth_camera__" }),
 }));
 
 vi.mock("@react-three/fiber", async () => ({
@@ -106,7 +109,7 @@ describe("scene loader component", () => {
 
   it("should apply color to canvas background set in local component", async () => {
     function Scene() {
-      return <color args={["#ffffff"]} attach="background" />;
+      return <color args={["#cccccc"]} attach="background" />;
     }
     Scene.triplexMeta = {
       lighting: "default",
@@ -123,22 +126,18 @@ describe("scene loader component", () => {
       />,
     );
 
-    await act(() =>
-      send(
-        "request-open-component",
-        {
-          encodedProps: "",
-          exportName: "Scene",
-          path: "/foo",
-        },
-        true,
-      ),
-    );
+    await act(() => {
+      send("request-open-component", {
+        encodedProps: "",
+        exportName: "Scene",
+        path: "/foo",
+      });
+    });
 
     await waitFor(() => {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       const color: Color = (getInstance() as any).background;
-      expect(color.getHexString()).toEqual("ffffff");
+      expect(color.getHexString()).toEqual("cccccc");
     });
   });
 });

@@ -104,7 +104,7 @@ test.describe("when an error is thrown on interaction", () => {
     await vsce.codelens("ErrorsDuringInteraction").click();
     const { devOnlyCameraPanel, locator, scene } = await vsce.resolveEditor();
     await locator.getByRole("button", { exact: true, name: "Play" }).click();
-    await expect(devOnlyCameraPanel).toHaveText(/type: user/);
+    await expect(devOnlyCameraPanel).toHaveText(/name: default/);
 
     await scene.click();
 
