@@ -10,7 +10,6 @@ import { preventUnhandled } from "@atlaskit/pragmatic-drag-and-drop/prevent-unha
 import { type DragLocationHistory } from "@atlaskit/pragmatic-drag-and-drop/types";
 import { LayersIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import { cn } from "@triplex/lib";
-import { fg } from "@triplex/lib/fg";
 import { useScreenView, useTelemetry } from "@triplex/ux";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { IconButton } from "../../components/button";
@@ -211,7 +210,7 @@ export function Panels() {
               </Suspense>
             </IconButton>
             <FilterElements />
-            {fg("private_auth_gate") && <UserMenu />}
+            <UserMenu />
           </div>
         </div>
         {!shown && <HasWarningsDot />}

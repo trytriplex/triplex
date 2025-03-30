@@ -9,6 +9,7 @@ on:
 env:
   CI: true
   PNPM_CACHE_FOLDER: .pnpm-store
+  VITE_TRIPLEX_ENV: test
 
 jobs:
   build:
