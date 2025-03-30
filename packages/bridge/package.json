@@ -1,6 +1,6 @@
 {
   "name": "@triplex/bridge",
-  "version": "0.70.5",
+  "version": "0.70.6",
   "private": true,
   "description": "Your visual workspace for React / Three Fiber.",
   "license": "SEE LICENSE IN LICENSE",

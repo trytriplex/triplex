@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.70.6
+
+### Patch Changes
+
+- cfd4a6f: Add element preview prop event.
+
 ## 0.70.5
 
 ### Patch Changes
