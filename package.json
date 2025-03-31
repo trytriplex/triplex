@@ -83,7 +83,8 @@
     "patchedDependencies": {
       "@adeira/monorepo-shipit": "patches/@adeira__monorepo-shipit.patch",
       "@vscode/vsce@2.26.0": "patches/@vscode__vsce@2.26.0.patch",
-      "react-refresh": "patches/react-refresh.patch"
+      "react-refresh": "patches/react-refresh.patch",
+      "@httptoolkit/httpolyglot": "patches/@httptoolkit__httpolyglot.patch"
     }
   }
 }

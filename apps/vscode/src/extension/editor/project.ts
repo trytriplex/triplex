@@ -41,7 +41,6 @@ export async function resolveProject(
     const config = getConfig(cwd);
     const ports = {
       client: await getPort(),
-      clientHttps: await getPort(),
       server: await getPort(),
       ws: await getPort(),
     };

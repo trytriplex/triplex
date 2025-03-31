@@ -10,7 +10,7 @@ import { useDialogs } from "../../stores/dialogs";
 
 export function OpenInXR() {
   const hideSelf = useDialogs((store) => () => store.set(undefined));
-  const externalURL = `https://localhost:${window.triplex.env.ports.clientHttps}/webxr`;
+  const externalURL = `https://localhost:${window.triplex.env.ports.client}/webxr`;
 
   useScreenView("open_in_xr", "Dialog");
 

@@ -1,0 +1,34 @@
+diff --git a/dist/index.js b/dist/index.js
+index 3ec7f51d294b9ef2a37b77dc0fe08d6043f79253..6c36d04726ad329ddb1bb64cbefe172d894d0806 100644
+--- a/dist/index.js
++++ b/dist/index.js
+@@ -10,7 +10,6 @@ function onError(err) { }
+ const TLS_HANDSHAKE_BYTE = 0x16; // SSLv3+ or TLS handshake
+ const HTTP2_PREFACE = 'PRI * HTTP/2.0\r\n\r\nSM\r\n\r\n';
+ const HTTP2_PREFACE_BUFFER = Buffer.from(HTTP2_PREFACE);
+-const NODE_MAJOR_VERSION = parseInt(process.version.slice(1).split('.')[0], 10);
+ class Server extends net.Server {
+     constructor(configOrServerOrListener, listener) {
+         // We just act as a plain TCP server, accepting and examing
+@@ -122,17 +121,10 @@ class Server extends net.Server {
+             if (data.slice(0, HTTP2_PREFACE_BUFFER.length).equals(HTTP2_PREFACE_BUFFER)) {
+                 // We have a full match for the preface - it's definitely HTTP/2.
+                 // For HTTP/2 we hit issues when passing non-socket streams (like H2 streams for proxying H2-over-H2).
+-                if (NODE_MAJOR_VERSION <= 12) {
+-                    // For Node 12 and older, we need a (later deprecated) stream wrapper:
+-                    const StreamWrapper = require('_stream_wrap');
+-                    socket = new StreamWrapper(socket);
+-                }
+-                else {
+-                    // For newer node, we can fix this with a quick patch here:
+-                    const socketWithInternals = socket;
+-                    if (socketWithInternals._handle) {
+-                        socketWithInternals._handle.isStreamBase = false;
+-                    }
++                // For newer node, we can fix this with a quick patch here:
++                const socketWithInternals = socket;
++                if (socketWithInternals._handle) {
++                    socketWithInternals._handle.isStreamBase = false;
+                 }
+                 h2Server.emit('connection', socket);
+                 return;

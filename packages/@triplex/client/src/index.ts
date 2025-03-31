@@ -4,8 +4,8 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { createServer as createHttpServer } from "node:http";
-import { createServer as createHttpsServer } from "node:https";
+import { type Server } from "node:http";
+import { createServer as createWebServer } from "@httptoolkit/httpolyglot";
 import { loadingLogo } from "@triplex/lib/loader";
 import { rootHTML } from "@triplex/lib/templates";
 import { type FGEnvironment } from "@triplex/lib/types";
@@ -44,11 +44,7 @@ export async function createServer({
 }) {
   const sslCert = await getCertificate("node_modules/.triplex/basic-ssl");
   const app = express();
-  const selfSignedHttpsServer = createHttpsServer(
-    { cert: sslCert, key: sslCert },
-    app,
-  );
-  const httpServer = createHttpServer(app);
+  const webServer = createWebServer({ cert: sslCert, key: sslCert }, app);
   const { createServer: createViteServer } = await import("vite");
   const { default: glsl } = await import("vite-plugin-glsl");
   const { default: tsconfigPaths } = await import("vite-tsconfig-paths");
@@ -133,7 +129,7 @@ export async function createServer({
       hmr: {
         overlay: false,
         path: "/__hmr_client__",
-        server: httpServer,
+        server: webServer as unknown as Server,
       },
       middlewareMode: true,
     },
@@ -218,12 +214,11 @@ export async function createServer({
 
   return {
     listen: async (ports: TriplexPorts) => {
-      const http = await httpServer.listen(ports.client);
-      const https = await selfSignedHttpsServer.listen(ports.clientHttps);
+      const server = await webServer.listen(ports.client);
 
       async function close() {
         try {
-          await Promise.all([http.close(), https.close(), vite.close()]);
+          await Promise.all([server.close(), vite.close()]);
         } finally {
           process.exit(0);
         }

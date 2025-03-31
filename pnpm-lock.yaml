@@ -16,6 +16,9 @@ patchedDependencies:
   '@adeira/monorepo-shipit':
     hash: aa7auefsq2ai6zbrhudaf5oymy
     path: patches/@adeira__monorepo-shipit.patch
+  '@httptoolkit/httpolyglot':
+    hash: gw4veovnu4v2cgonbxny3hogne
+    path: patches/@httptoolkit__httpolyglot.patch
   '@vscode/vsce@2.26.0':
     hash: huvjfoblogcm7d5dqcfnn2zmzu
     path: patches/@vscode__vsce@2.26.0.patch
@@ -865,6 +868,9 @@ importers:
       '@babel/plugin-syntax-jsx':
         specifier: ^7.24.1
         version: 7.24.1(@babel/core@7.26.0)
+      '@httptoolkit/httpolyglot':
+        specifier: ^2.2.2
+        version: 2.2.2(patch_hash=gw4veovnu4v2cgonbxny3hogne)
       '@react-three/fiber':
         specifier: ^9.0.4
         version: 9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
@@ -1990,6 +1996,10 @@ packages:
     resolution: {integrity: sha512-fkHcIxHFjNimT9+DuUax92MWpIKxZDMGsAVAM5AK4sE5GEMDVbiSq+ayKWMMYuLPqQn05ZJ01/D27CS7lA624g==}
     peerDependencies:
       react: ^19.0.0
+
+  '@httptoolkit/httpolyglot@2.2.2':
+    resolution: {integrity: sha512-Mm75bidN/jrUsuhBjHAMoQbmR52zQYi8xr/+0mQYGW+dQelg+sdJR/kGRKKZGeAoPgp/1rrZWJqdohZP0xm18g==}
+    engines: {node: '>=12.0.0'}
 
   '@humanwhocodes/config-array@0.11.14':
     resolution: {integrity: sha512-3T8LkOmg45BV5FICb15QQMsyUSWrQ8AygVfC7ZG32zOalnqrilm018ZVCw0eapXux8FtA33q8PSRSstjee3jSg==}
@@ -10389,6 +10399,10 @@ snapshots:
   '@hmans/use-version@0.0.2(react@19.0.0)':
     dependencies:
       react: 19.0.0
+
+  '@httptoolkit/httpolyglot@2.2.2(patch_hash=gw4veovnu4v2cgonbxny3hogne)':
+    dependencies:
+      '@types/node': 18.11.18
 
   '@humanwhocodes/config-array@0.11.14':
     dependencies:
