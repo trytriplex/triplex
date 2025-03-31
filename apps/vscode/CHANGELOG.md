@@ -1,5 +1,11 @@
 # @triplex/vscode
 
+## 0.2.26
+
+### Patch Changes
+
+- 526ff1b: Fix feature gate environment not being set to production.
+
 ## 0.2.25
 
 ### Patch Changes

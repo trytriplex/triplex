@@ -1,5 +1,12 @@
 # @triplex/electron
 
+## 0.70.25
+
+### Patch Changes
+
+- 526ff1b: Fix feature gate environment not being set to production.
+  - @triplex/editor@0.70.25
+
 ## 0.70.24
 
 ### Patch Changes

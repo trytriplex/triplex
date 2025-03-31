@@ -1,7 +1,7 @@
 {
   "name": "triplex-vsce",
   "displayName": "Triplex for VS Code [BETA]",
-  "version": "0.2.25",
+  "version": "0.2.26",
   "private": true,
   "description": "Your visual workspace for React / Three Fiber.",
   "categories": [

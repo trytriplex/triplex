@@ -218,7 +218,7 @@ importers:
         specifier: 0.70.23
         version: link:../../packages/@triplex/client
       '@triplex/editor':
-        specifier: 0.70.24
+        specifier: 0.70.25
         version: link:../../packages/@triplex/editor
       '@triplex/server':
         specifier: 0.71.10
