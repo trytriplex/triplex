@@ -360,6 +360,7 @@ export interface EditorSettings {}
 /** Exposed ports used for Triplex. */
 export interface TriplexPorts {
   client: number;
+  clientHttps: number;
   server: number;
   ws: number;
 }

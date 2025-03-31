@@ -49,7 +49,7 @@ async function main() {
 
   log.debug("start client");
   const client = await createClientServer(data);
-  cleanupFunctions.push(await client.listen(data.ports.client));
+  cleanupFunctions.push(await client.listen(data.ports));
 
   log.debug("ready");
   process.send?.({

@@ -80,7 +80,7 @@ export function SceneFrame() {
             "h-full w-full flex-shrink-0 border-none",
           ])}
           id="scene"
-          src={`http://localhost:${window.triplex.env.ports.client}/scene.html`}
+          src={`http://localhost:${window.triplex.env.ports.client}/scene`}
         />
       </Stage>
 

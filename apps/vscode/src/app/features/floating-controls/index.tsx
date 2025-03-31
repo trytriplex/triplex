@@ -5,6 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import {
+  ExternalLinkIcon,
   GearIcon,
   PauseIcon,
   PlayIcon,
@@ -19,6 +20,7 @@ import {
   type MenuControl,
 } from "@triplex/bridge/host";
 import { cn } from "@triplex/lib";
+import { fg } from "@triplex/lib/fg";
 import {
   ButtonControl,
   ButtonGroupControl,
@@ -212,7 +214,6 @@ export function FloatingControls() {
             onClick={() => dispatch("state-play")}
           />
         )}
-        <Separator />
         <Menu
           onSelect={(value) => {
             switch (value) {
@@ -269,6 +270,14 @@ export function FloatingControls() {
           )}
         </Menu>
         <Separator />
+        {fg("xr_editing") && (
+          <IconButton
+            actionId="scene_frame_reset"
+            icon={ExternalLinkIcon}
+            label="Open in XR"
+            onClick={() => showDialog("open_in_xr")}
+          />
+        )}
         <IconButton
           actionId="scene_controls_help"
           icon={QuestionMarkCircledIcon}

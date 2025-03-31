@@ -4,7 +4,6 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-
 import { useScreenView } from "@triplex/ux";
 import { preloadSubscription } from "../../hooks/ws";
 import { FloatingControls } from "../floating-controls";
@@ -29,7 +28,7 @@ export function AppRoot() {
           className="h-full w-full"
           data-testid="scene"
           id="scene"
-          src={`http://localhost:${window.triplex.env.ports.client}/scene.html`}
+          src={`http://localhost:${window.triplex.env.ports.client}/scene`}
         />
       </div>
     </div>

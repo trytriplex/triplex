@@ -5,6 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { createServer as createHttpServer } from "node:http";
+import { createServer as createHttpsServer } from "node:https";
 import { loadingLogo } from "@triplex/lib/loader";
 import { rootHTML } from "@triplex/lib/templates";
 import { type FGEnvironment } from "@triplex/lib/types";
@@ -22,6 +23,7 @@ import { transformNodeModulesJSXPlugin } from "./node-modules-plugin";
 import { remoteModulePlugin } from "./remote-module-plugin";
 import { scenePlugin } from "./scene-plugin";
 import { scripts } from "./templates";
+import { getCertificate } from "./util/cert-https";
 
 export async function createServer({
   config,
@@ -40,7 +42,12 @@ export async function createServer({
   };
   userId: string;
 }) {
+  const sslCert = await getCertificate("node_modules/.triplex/basic-ssl");
   const app = express();
+  const selfSignedHttpsServer = createHttpsServer(
+    { cert: sslCert, key: sslCert },
+    app,
+  );
   const httpServer = createHttpServer(app);
   const { createServer: createViteServer } = await import("vite");
   const { default: glsl } = await import("vite-plugin-glsl");
@@ -145,7 +152,7 @@ export async function createServer({
 
   app.use(vite.middlewares);
 
-  app.get("/scene.html", async (_, res, next) => {
+  app.get("/scene", async (_, res, next) => {
     try {
       const template = rootHTML({
         loadingIndicator: loadingLogo({
@@ -165,7 +172,26 @@ export async function createServer({
     }
   });
 
-  app.get("/__thumbnail", async (req, res, next) => {
+  app.get("/webxr", async (_, res, next) => {
+    try {
+      const template = rootHTML({
+        loadingIndicator: loadingLogo({
+          color: "black",
+          position: "splash",
+          variant: "stroke",
+        }),
+        title: "Triplex XR",
+      });
+      const html = await vite.transformIndexHtml("xr", template);
+
+      res.status(200).set({ "Content-Type": "text/html" }).end(html);
+    } catch (error) {
+      vite.ssrFixStacktrace(error as Error);
+      next(error);
+    }
+  });
+
+  app.get("/screenshot", async (req, res, next) => {
     try {
       const { exportName, path } = req.query;
       if (typeof exportName !== "string" || typeof path !== "string") {
@@ -191,17 +217,17 @@ export async function createServer({
   });
 
   return {
-    listen: async (port: number) => {
-      const server = await httpServer.listen(port);
+    listen: async (ports: TriplexPorts) => {
+      const http = await httpServer.listen(ports.client);
+      const https = await selfSignedHttpsServer.listen(ports.clientHttps);
 
-      const close = async () => {
+      async function close() {
         try {
-          await server.close();
-          await vite.close();
+          await Promise.all([http.close(), https.close(), vite.close()]);
         } finally {
           process.exit(0);
         }
-      };
+      }
 
       process.once("SIGINT", close);
       process.once("SIGTERM", close);

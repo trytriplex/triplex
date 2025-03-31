@@ -50,7 +50,7 @@ export function AssetThumbnail({
                   window.triplex.openLink(
                     `http://localhost:${
                       window.triplex.env.ports.client
-                    }/__thumbnail?path=${encodeURIComponent(
+                    }/screenshot?path=${encodeURIComponent(
                       asset.path,
                     )}&exportName=${asset.exportName}`,
                   )

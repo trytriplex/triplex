@@ -13,7 +13,7 @@ describe("virtual plugin", () => {
     const plugin = remoteModulePlugin({
       cwd: __dirname,
       files: [join(__dirname, "fixtures/*")],
-      ports: { client: 3333, server: 3333, ws: 3333 },
+      ports: { client: 3333, clientHttps: 2222, server: 3333, ws: 3333 },
     });
 
     const actual = await plugin.load?.(join(__dirname, "outside"));
@@ -28,7 +28,7 @@ describe("virtual plugin", () => {
       },
       cwd: __dirname,
       files: [join(__dirname, "fixtures/*")],
-      ports: { client: 3333, server: 3333, ws: 3333 },
+      ports: { client: 3333, clientHttps: 2222, server: 3333, ws: 3333 },
     });
 
     const actual = await plugin.load?.(

@@ -6,7 +6,7 @@
  */
 import { create } from "zustand";
 
-type Dialogs = "help";
+type Dialogs = "help" | "open_in_xr";
 
 export const useDialogs = create<{
   set: (dialog: Dialogs | undefined) => void;

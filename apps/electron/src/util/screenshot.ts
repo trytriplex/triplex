@@ -58,7 +58,7 @@ export async function screenshotComponent({
   const thumbnailWindow = await getWindowBrowser();
 
   thumbnailWindow.loadURL(
-    `http://localhost:${port}/__thumbnail?path=${encodeURIComponent(
+    `http://localhost:${port}/screenshot?path=${encodeURIComponent(
       path,
     )}&exportName=${exportName}`,
   );

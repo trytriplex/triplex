@@ -38,7 +38,7 @@ export async function startProject({
     renderer,
     userId,
   });
-  const closeFrontend = await frontend.listen(ports.client);
+  const closeFrontend = await frontend.listen(ports);
 
   return {
     close: async () => {
