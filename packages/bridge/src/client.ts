@@ -134,6 +134,7 @@ export type BootstrapFunction = (
   config: Config;
   fgEnvironmentOverride: FGEnvironment;
   files: Modules;
+  isWebXR: boolean;
   providers: ProviderModule;
   userId: string;
 }) => void;
