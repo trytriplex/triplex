@@ -148,7 +148,7 @@ export async function createServer({
 
   app.use(vite.middlewares);
 
-  app.get("/scene", async (_, res, next) => {
+  app.get("/scene", async (req, res, next) => {
     try {
       const template = rootHTML({
         loadingIndicator: loadingLogo({
@@ -159,7 +159,7 @@ export async function createServer({
         script: scripts.init(initializationConfig),
         title: "Triplex Scene",
       });
-      const html = await vite.transformIndexHtml("scene", template);
+      const html = await vite.transformIndexHtml(req.url, template);
 
       res.status(200).set({ "Content-Type": "text/html" }).end(html);
     } catch (error) {
@@ -168,7 +168,7 @@ export async function createServer({
     }
   });
 
-  app.get("/webxr", async (_, res, next) => {
+  app.get("/webxr", async (req, res, next) => {
     try {
       const template = rootHTML({
         loadingIndicator: loadingLogo({
@@ -176,9 +176,10 @@ export async function createServer({
           position: "splash",
           variant: "stroke",
         }),
-        title: "Triplex XR",
+        script: scripts.initWebXR(initializationConfig),
+        title: "Triplex WebXR",
       });
-      const html = await vite.transformIndexHtml("xr", template);
+      const html = await vite.transformIndexHtml(req.url, template);
 
       res.status(200).set({ "Content-Type": "text/html" }).end(html);
     } catch (error) {
@@ -200,10 +201,7 @@ export async function createServer({
         title: "Triplex Thumbnail",
       });
 
-      const html = await vite.transformIndexHtml(
-        `thumbnail_${path}_${exportName}`,
-        template,
-      );
+      const html = await vite.transformIndexHtml(req.url, template);
 
       res.status(200).set({ "Content-Type": "text/html" }).end(html);
     } catch (error) {
@@ -214,7 +212,7 @@ export async function createServer({
 
   return {
     listen: async (ports: TriplexPorts) => {
-      const server = await webServer.listen(ports.client);
+      const server = await webServer.listen(ports.client, "0.0.0.0");
 
       async function close() {
         try {

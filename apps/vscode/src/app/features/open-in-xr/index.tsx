@@ -6,11 +6,13 @@
  */
 
 import { Dialog, useScreenView } from "@triplex/ux";
+import { ButtonLink } from "../../components/button";
 import { useDialogs } from "../../stores/dialogs";
 
 export function OpenInXR() {
   const hideSelf = useDialogs((store) => () => store.set(undefined));
-  const externalURL = `https://localhost:${window.triplex.env.ports.client}/webxr`;
+  const externalURL = `https://${window.triplex.env.externalIP}:${window.triplex.env.ports.client}/webxr`;
+  const openInMetaQuestURL = `https://www.oculus.com/open_url/?url=${encodeURIComponent(externalURL)}`;
 
   useScreenView("open_in_xr", "Dialog");
 
@@ -27,16 +29,17 @@ export function OpenInXR() {
           Run and edit your project in WebXR by visiting the following URL on
           your headset or browser.
         </p>
-        <div>
-          <a
-            className="text-link underline focus:outline-none"
-            href={externalURL}
-            onClick={hideSelf}
-            rel="noreferrer"
-            target="_blank"
+        <div className="flex-start flex flex-col gap-1.5">
+          <ButtonLink
+            actionId="dialog_webxr_metaquest"
+            href={openInMetaQuestURL}
+            variant="cta"
           >
-            {externalURL}
-          </a>
+            Send Link To Meta Quest
+          </ButtonLink>
+          <ButtonLink actionId="dialog_webxr_browser" href={externalURL}>
+            Open in Browser
+          </ButtonLink>
         </div>
       </div>
     </Dialog>

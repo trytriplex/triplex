@@ -43,7 +43,8 @@ export type ActionGroup =
   | "logs"
   | "project"
   | "provider"
-  | "resize";
+  | "resize"
+  | "webxr";
 
 export type ActionId = ActionIdSafe | "(UNSAFE_SKIP)";
 

@@ -4,24 +4,8 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-type FGEnvironment = import("@triplex/lib/fg").FGEnvironment;
-type ReconciledTriplexConfig =
-  import("@triplex/server").ReconciledTriplexConfig;
-type TriplexPorts = import("@triplex/server").TriplexPorts;
+type TriplexObject = import("./types").TriplexObject;
 
 declare interface Window {
-  triplex: {
-    env: {
-      config: ReconciledTriplexConfig;
-      fgEnvironmentOverride: FGEnvironment;
-      ports: TriplexPorts;
-    };
-    initialState: {
-      exportName: string;
-      path: string;
-    };
-    isTelemetryEnabled: boolean;
-    sessionId: string;
-    userId: string;
-  };
+  triplex: TriplexObject;
 }

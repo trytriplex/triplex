@@ -40,9 +40,9 @@ export async function resolveProject(
   const projectResolver = new Promise<TriplexProject>(async (resolve) => {
     const config = getConfig(cwd);
     const ports = {
-      client: await getPort(),
-      server: await getPort(),
-      ws: await getPort(),
+      client: await getPort(3050, 3150),
+      server: await getPort(3151, 3250),
+      ws: await getPort(3251, 3350),
     };
 
     const renderer = await getRendererMeta({

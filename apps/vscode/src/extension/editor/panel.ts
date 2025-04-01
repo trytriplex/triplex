@@ -5,10 +5,12 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { loadingLogo } from "@triplex/lib/loader";
+import { getLocalIP } from "@triplex/lib/node";
 import { basename, join, normalize } from "@triplex/lib/path";
 import { rootHTML } from "@triplex/lib/templates";
 import { type FGEnvironment } from "@triplex/lib/types";
 import * as vscode from "vscode";
+import { type TriplexObject } from "../../app/types";
 import { sendVSCE } from "../util/bridge";
 import { getPort } from "../util/port";
 import { resolveProject, type TriplexProjectResolver } from "./project";
@@ -72,22 +74,25 @@ export async function initializeWebviewPanel(
     project.dispose();
   });
 
+  const data: TriplexObject = {
+    env: {
+      config: project.args.config,
+      externalIP: getLocalIP(),
+      fgEnvironmentOverride,
+      ports: project.args.ports,
+    },
+    initialState: {
+      exportName,
+      path: scopedFileName,
+    },
+    isTelemetryEnabled: vscode.env.isTelemetryEnabled,
+    sessionId: vscode.env.sessionId,
+    userId: vscode.env.machineId,
+  };
+
   let panelHTML = `
     <script>
-      window.triplex = JSON.parse(\`${JSON.stringify({
-        env: {
-          config: project.args.config,
-          fgEnvironmentOverride,
-          ports: project.args.ports,
-        },
-        initialState: {
-          exportName,
-          path: scopedFileName,
-        },
-        isTelemetryEnabled: vscode.env.isTelemetryEnabled,
-        sessionId: vscode.env.sessionId,
-        userId: vscode.env.machineId,
-      })}\`);
+      window.triplex = JSON.parse(\`${JSON.stringify(data)}\`);
     </script>
   `;
 

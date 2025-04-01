@@ -31,6 +31,7 @@ export const scripts = {
             config,
             fgEnvironmentOverride: ${template.fgEnvironmentOverride ? `"${template.fgEnvironmentOverride}"` : "undefined"},
             files,
+            isWebXR: false,
             providers,
             userId: "${template.userId}",
           });
@@ -52,6 +53,23 @@ export const scripts = {
         // Re-throw the error so any other code stops executing.
         throw e;
       }
+    }
+
+    export async function bootstrapWebXR() {
+      const providers = await import("triplex:global-provider.jsx");
+      const { bootstrapWebXR: resolveRender } = await import("${template.pkgName}");
+      const render = resolveRender(document.getElementById("root"));
+
+      return async ({ config, files }) => {
+        await render({
+          config,
+          fgEnvironmentOverride: ${template.fgEnvironmentOverride ? `"${template.fgEnvironmentOverride}"` : "undefined"},
+          files,
+          isWebXR: true,
+          providers,
+          userId: "${template.userId}",
+        });
+      };
     }
   `,
   defaultProvider: `
@@ -131,7 +149,7 @@ export const scripts = {
       // Grab hold of the resolved render function and keep it available across HMR updates.
       // We do this so we don't throw away the state of the renderer.
       // One caveat is the bootstrap function can't be HMRd during development.
-      return await bootstrap();
+      return bootstrap();
     }
 
     if (${import_meta_hot}) {
@@ -187,6 +205,66 @@ export const scripts = {
       });
     }
   `,
+  initWebXR: (template: InitializationConfig) => `
+    import { send } from "@triplex/bridge/client";
+    import { bootstrapWebXR } from "triplex:bootstrap.tsx";
+
+    export const files = import.meta.glob([${template.fileGlobs}]);
+    export const config = ${JSON.stringify(template.config)};
+
+    async function initialize() {
+      window.triplex = JSON.parse(\`${JSON.stringify({
+        env: { ports: template.ports },
+        preload: template.preload,
+      })}\`);
+
+      // This is patched into the react-refresh runtime so we can be notified
+      // on completion of a fast refresh. We need this as relying on the HMR
+      // events alone come with incorrect timing as they're not guaranteed to
+      // be fired after the refresh is complete.
+      window.notifyRefreshComplete = () => {
+        send("self:request-reset-error-boundary", undefined);
+      };
+
+      // Grab hold of the resolved render function and keep it available across HMR updates.
+      // We do this so we don't throw away the state of the renderer.
+      // One caveat is the bootstrap function can't be HMRd during development.
+      return bootstrapWebXR();
+    }
+
+    // Notify error boundaries after a HMR event has completed. This has to be
+    // orchestrated after React Fast Refresh otherwise we can rapidly trigger error
+    // boundaries which is janky and unexpected by users.
+    // NOTE: This is kept at the top module scope so it's reset every time a HMR event is fired.
+    ${import_meta_hot}.on("vite:afterUpdate", (e) => {
+      // We defer this to have a higher chance that a fast refresh has completed.
+      // See: https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/src/refreshUtils.js#L17
+      setTimeout(() => {
+        send("self:request-reset-error-boundary", undefined);
+      }, 96);
+
+      const paths = e.updates.map((update) => update.path);
+      paths.forEach((path) => {
+        send("self:request-reset-file", { path });
+      });
+    });
+
+    if (!${import_meta_hot}.data.initialized) {
+      // We only want to do a side-effect initialization once. Afterwards we rely
+      // on accepting the new module through HMR to then re-bootstrap the renderer.
+      ${import_meta_hot}.data.initialized = true;
+      initialize().then((render) => {
+        ${import_meta_hot}.data.render = render;
+        ${import_meta_hot}.data.render({ config, files });
+      });
+    }
+
+    ${import_meta_hot}.accept((mod) => {
+      if (mod) {
+        ${import_meta_hot}.data.render({ config: mod.config, files: mod.files });
+      }
+    });
+  `,
   // If the exports change, or if triplex meta changes, invalidate HMR
   // and force parents up the chain to refresh flushing changes through the editor
   // when the provider has changed - we want to flush it through the whole app!
@@ -201,7 +279,6 @@ export const scripts = {
       });
     }
   `,
-
   invalidateHMRHeader: `import { __hmr_import } from "triplex:hmr-import";`,
   providers: (template: InitializationConfig) => `
     import * as Providers from "${template.config.provider}";

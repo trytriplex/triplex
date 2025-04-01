@@ -597,8 +597,12 @@ export function createServer({
   return {
     listen: async (ports: TriplexPorts) => {
       const controller = new AbortController();
-      app.listen({ port: ports.server, signal: controller.signal });
-      tws.listen(ports.ws);
+      app.listen({
+        hostname: "0.0.0.0",
+        port: ports.server,
+        signal: controller.signal,
+      });
+      tws.listen(ports.ws, "0.0.0.0");
 
       const close = () => {
         try {

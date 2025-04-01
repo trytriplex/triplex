@@ -270,14 +270,6 @@ export function FloatingControls() {
           )}
         </Menu>
         <Separator />
-        {fg("xr_editing") && (
-          <IconButton
-            actionId="scene_frame_reset"
-            icon={ExternalLinkIcon}
-            label="Open in XR"
-            onClick={() => showDialog("open_in_xr")}
-          />
-        )}
         <IconButton
           actionId="scene_controls_help"
           icon={QuestionMarkCircledIcon}
@@ -285,6 +277,16 @@ export function FloatingControls() {
           onClick={() => showDialog("help")}
         />
       </Surface>
+      {fg("xr_editing") && (
+        <Surface bg="overlay" className="border p-0.5" direction="horizontal">
+          <IconButton
+            actionId="scene_frame_reset"
+            icon={ExternalLinkIcon}
+            label="Open in WebXR"
+            onClick={() => showDialog("open_in_xr")}
+          />
+        </Surface>
+      )}
     </div>
   );
 }

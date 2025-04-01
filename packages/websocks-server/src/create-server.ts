@@ -252,8 +252,8 @@ export function createWSServer() {
      *
      * Listens on the specified port.
      */
-    listen(port: number) {
-      server.listen(port);
+    listen(port: number, hostname?: string) {
+      server.listen(port, hostname);
     },
     route,
   };

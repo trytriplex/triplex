@@ -38,6 +38,19 @@ export const bootstrap: BootstrapFunction = (container) => {
   };
 };
 
+export const bootstrapWebXR: BootstrapFunction = (container) => {
+  const root = createRoot(container);
+
+  return async (opts) => {
+    await initFeatureGates({
+      environment: opts.fgEnvironmentOverride,
+      userId: opts.userId,
+    });
+
+    root.render(<div>WebXR goes brrr</div>);
+  };
+};
+
 export const thumbnail: ThumbnailFunction = (container) => {
   const root = createRoot(container);
 
