@@ -48,7 +48,15 @@ async function main() {
   cleanupFunctions.push(await server.listen(data.ports));
 
   log.debug("start client");
-  const client = await createClientServer(data);
+  const client = await createClientServer({
+    ...data,
+    onSyncEvent: (e) => {
+      process.send?.({
+        data: e.data,
+        eventName: `sync:${e.name}`,
+      });
+    },
+  });
   cleanupFunctions.push(await client.listen(data.ports));
 
   log.debug("ready");

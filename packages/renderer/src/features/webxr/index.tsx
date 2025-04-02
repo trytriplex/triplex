@@ -4,14 +4,9 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-declare interface Window {
-  triplex: {
-    env: {
-      mode: "webxr" | "default";
-      ports: Record<string, number>;
-    };
-    preload: {
-      reactThreeFiber: boolean;
-    };
-  };
-}
+
+import { lazy } from "../../util/react-lazy";
+
+export const WebXRApp = lazy(() =>
+  import("./webxr").then((module) => ({ default: module.WebXRApp })),
+);

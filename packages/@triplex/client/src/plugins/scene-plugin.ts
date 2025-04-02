@@ -4,8 +4,8 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { scripts } from "./templates";
-import { type InitializationConfig } from "./types";
+import { scripts } from "../templates";
+import { type InitializationConfig } from "../types";
 
 const bootstrapModuleId = "triplex:bootstrap.tsx";
 const emptyModuleId = "triplex:empty.js";

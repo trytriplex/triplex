@@ -18,6 +18,10 @@ export interface TriplexProject {
   active: number;
   args: Args;
   dispose: () => void;
+  on: (
+    eventName: string,
+    callback: (data: Record<string, unknown>) => void,
+  ) => () => void;
   ports: { client: number; server: number; ws: number };
 }
 
@@ -82,6 +86,7 @@ export async function resolveProject(
           p.kill();
         }
       },
+      on: p.on,
       ports,
     };
 

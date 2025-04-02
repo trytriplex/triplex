@@ -17,14 +17,14 @@ import {
   isJSXIdentifierFromNodeModules,
   resolveIdentifierExportName,
   resolveIdentifierOrigin,
-} from "./util/babel";
-import { isReactDOMElement } from "./util/is-react-element";
+} from "../util/babel";
+import { isReactDOMElement } from "../util/is-react-element";
 import {
   isCanvasFromThreeFiber,
   isComponentFromThreeFiber,
   isHookFromThreeFiber,
   isReactThreeElement,
-} from "./util/is-three-element";
+} from "../util/is-three-element";
 
 const AUTOMATIC_JSX_RUNTIME = ["jsx", "jsxs", "_jsx", "_jsxs"];
 const SCENE_OBJECT_COMPONENT_NAME = "SceneObject";

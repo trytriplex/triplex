@@ -31,7 +31,6 @@ export const scripts = {
             config,
             fgEnvironmentOverride: ${template.fgEnvironmentOverride ? `"${template.fgEnvironmentOverride}"` : "undefined"},
             files,
-            isWebXR: false,
             providers,
             userId: "${template.userId}",
           });
@@ -65,7 +64,6 @@ export const scripts = {
           config,
           fgEnvironmentOverride: ${template.fgEnvironmentOverride ? `"${template.fgEnvironmentOverride}"` : "undefined"},
           files,
-          isWebXR: true,
           providers,
           userId: "${template.userId}",
         });
@@ -100,7 +98,7 @@ export const scripts = {
 
     async function initialize() {
       window.triplex = JSON.parse(\`${JSON.stringify({
-        env: { ports: template.ports },
+        env: { mode: "default", ports: template.ports },
         preload: template.preload,
       })}\`);
 
@@ -214,7 +212,7 @@ export const scripts = {
 
     async function initialize() {
       window.triplex = JSON.parse(\`${JSON.stringify({
-        env: { ports: template.ports },
+        env: { mode: "webxr", ports: template.ports },
         preload: template.preload,
       })}\`);
 

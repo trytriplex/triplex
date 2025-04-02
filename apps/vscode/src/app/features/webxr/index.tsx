@@ -8,10 +8,12 @@
 import { Dialog, useScreenView } from "@triplex/ux";
 import { ButtonLink } from "../../components/button";
 import { useDialogs } from "../../stores/dialogs";
+import { useSceneContext } from "../app-root/context";
 
-export function OpenInXR() {
+export function OpenInWebXR() {
   const hideSelf = useDialogs((store) => () => store.set(undefined));
-  const externalURL = `https://${window.triplex.env.externalIP}:${window.triplex.env.ports.client}/webxr`;
+  const { exportName, path } = useSceneContext();
+  const externalURL = `https://${window.triplex.env.externalIP}:${window.triplex.env.ports.client}/webxr?exportName=${encodeURIComponent(exportName)}&path=${encodeURIComponent(path)}`;
   const openInMetaQuestURL = `https://www.oculus.com/open_url/?url=${encodeURIComponent(externalURL)}`;
 
   useScreenView("open_in_xr", "Dialog");

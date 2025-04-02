@@ -47,7 +47,7 @@ export function SceneRenderer({
   component: SceneComponent;
   exportName: string;
   path: string;
-  props: Record<string, unknown>;
+  props?: Record<string, unknown>;
 }) {
   const resetCount = useContext(ResetCountContext);
 

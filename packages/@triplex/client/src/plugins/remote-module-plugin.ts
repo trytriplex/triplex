@@ -7,7 +7,7 @@
 import { type TriplexPorts, type TWSEventDefinition } from "@triplex/server";
 import { createWSEvents } from "@triplex/websocks-client/events";
 import anymatch from "anymatch";
-import { getCode } from "./api";
+import { getCode } from "../util/api";
 
 function match(target: string, normalizedFiles: string[]): boolean {
   for (let i = 0; i < normalizedFiles.length; i++) {

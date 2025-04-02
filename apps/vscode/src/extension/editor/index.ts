@@ -116,14 +116,20 @@ export class TriplexEditorProvider
       path: scopedFileName,
       projectCache: TriplexEditorProvider.projectCache,
       triplexProjectCwd,
-    }).then((ports) => {
-      document.setContext(ports.server);
+    }).then((initialized) => {
+      document.setContext(initialized.ports.server);
 
       const { on: onWS } = createWSEvents<TWSEventDefinition>({
-        url: `ws://127.0.0.1:${ports.ws}`,
+        url: `ws://127.0.0.1:${initialized.ports.ws}`,
       });
 
       const disposables = [
+        // TODO: This will bleed across all panels resulting in unexpected behavior.
+        // Before going into production we'll want to fix this.
+        initialized.on("sync:element-set-prop", (e) => {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          document.upsertProp(e as any);
+        }),
         onWS("fs-external-change", (data) => {
           if (data.path !== scopedFileName) {
             // We're only interested in changes that were made to this document.

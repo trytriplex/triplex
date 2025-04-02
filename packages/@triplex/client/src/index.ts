@@ -18,22 +18,25 @@ import react from "@vitejs/plugin-react";
 import express from "express";
 import resolvePackagePath from "resolve-package-path";
 import { version } from "../package.json";
-import triplexBabelPlugin from "./babel-plugin";
-import { transformNodeModulesJSXPlugin } from "./node-modules-plugin";
-import { remoteModulePlugin } from "./remote-module-plugin";
-import { scenePlugin } from "./scene-plugin";
+import triplexBabelPlugin from "./plugins/babel-plugin";
+import { transformNodeModulesJSXPlugin } from "./plugins/node-modules-plugin";
+import { remoteModulePlugin } from "./plugins/remote-module-plugin";
+import { scenePlugin } from "./plugins/scene-plugin";
+import { syncPlugin, type OnSyncEvent } from "./plugins/sync-plugin";
 import { scripts } from "./templates";
 import { getCertificate } from "./util/cert-https";
 
 export async function createServer({
   config,
   fgEnvironmentOverride,
+  onSyncEvent,
   ports,
   renderer,
   userId,
 }: {
   config: ReconciledTriplexConfig;
   fgEnvironmentOverride: FGEnvironment;
+  onSyncEvent?: OnSyncEvent;
   ports: TriplexPorts;
   renderer: {
     manifest: RendererManifest;
@@ -96,6 +99,7 @@ export async function createServer({
         : ["@react-three/fiber", "three"],
     },
     plugins: [
+      syncPlugin({ onSyncEvent }),
       remoteModulePlugin({ cwd: config.cwd, files: config.files, ports }),
       // ---------------------------------------------------------------
       // TODO: Vite plugins should be loaded from a renderer's manifest
@@ -174,7 +178,7 @@ export async function createServer({
         loadingIndicator: loadingLogo({
           color: "black",
           position: "splash",
-          variant: "stroke",
+          variant: "idle",
         }),
         script: scripts.initWebXR(initializationConfig),
         title: "Triplex WebXR",

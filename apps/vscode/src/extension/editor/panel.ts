@@ -134,5 +134,5 @@ export async function initializeWebviewPanel(
 
   panel.webview.html = panelHTML;
 
-  return project.ports;
+  return { on: project.on, panel, ports: project.ports };
 }

@@ -21,7 +21,10 @@ export function fork<TData extends Record<string, unknown>>(
 ): Promise<{
   data?: Record<string, unknown>;
   kill(): void;
-  on(eventName: string, data: (data: Record<string, unknown>) => void): void;
+  on(
+    eventName: string,
+    data: (data: Record<string, unknown>) => void,
+  ): () => void;
   send(eventName: string, data: Record<string, unknown>): void;
 }> {
   const messageCallbacks: Record<
@@ -117,6 +120,9 @@ export function fork<TData extends Record<string, unknown>>(
             callback: (data: Record<string, unknown>) => void,
           ) {
             messageCallbacks[eventName] = callback;
+            return () => {
+              delete messageCallbacks[eventName];
+            };
           },
           send(eventName: string, data: Record<string, unknown>) {
             fork.send({
