@@ -10,10 +10,13 @@ import {
   type ThumbnailFunction,
 } from "@triplex/bridge/client";
 import { initFeatureGates } from "@triplex/lib/fg";
+import { LoadingLogo } from "@triplex/lib/loader";
+import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
 import { App } from "./features/app";
 import { SceneElement } from "./features/scene-element";
 import { SceneScreenshot } from "./features/scene-screenshot";
+import { WebXRApp } from "./features/webxr";
 
 init({ RendererElement: SceneElement });
 
@@ -39,6 +42,8 @@ export const bootstrap: BootstrapFunction = (container) => {
 };
 
 export const bootstrapWebXR: BootstrapFunction = (container) => {
+  WebXRApp.preload();
+
   const root = createRoot(container);
 
   return async (opts) => {
@@ -47,7 +52,25 @@ export const bootstrapWebXR: BootstrapFunction = (container) => {
       userId: opts.userId,
     });
 
-    root.render(<div>WebXR goes brrr</div>);
+    const params = new URLSearchParams(window.location.search);
+    const exportName = params.get("exportName") || "";
+    const path = params.get("path") || "";
+
+    root.render(
+      <Suspense
+        fallback={
+          <LoadingLogo color="black" position="splash" variant="stroke" />
+        }
+      >
+        <WebXRApp
+          exportName={exportName}
+          files={opts.files}
+          path={path}
+          providerPath={opts.config.provider}
+          providers={opts.providers}
+        />
+      </Suspense>,
+    );
   };
 };
 

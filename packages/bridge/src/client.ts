@@ -72,7 +72,12 @@ export function send<TEvent extends ClientSendEventName>(
   data: ClientSendEventData[TEvent],
   awaitResponse = false,
 ): Promise<ClientSendEventResponse[TEvent]> {
-  if (eventName.startsWith("self:")) {
+  // @ts-ignore — hacks sorry.
+  if (window.triplex.env.mode === "webxr") {
+    // @ts-ignore — hacks sorry.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    import.meta.hot?.send(`triplex:${eventName}`, data as any);
+  } else if (eventName.startsWith("self:")) {
     window.postMessage({ data, eventName }, "*");
   } else {
     window.parent.postMessage({ data, eventName }, "*");
@@ -100,6 +105,8 @@ function respond<TEvent extends keyof HostSendEventResponse>(
 }
 
 export { compose } from "./compose";
+
+export { ClientSendEventData, ClientSendEventName };
 
 export interface SceneComponent {
   (props: unknown): JSX.Element;
@@ -134,7 +141,6 @@ export type BootstrapFunction = (
   config: Config;
   fgEnvironmentOverride: FGEnvironment;
   files: Modules;
-  isWebXR: boolean;
   providers: ProviderModule;
   userId: string;
 }) => void;

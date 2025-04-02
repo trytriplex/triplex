@@ -35,7 +35,7 @@ export function SceneLoader({
   path: string;
   providerPath: string;
   providers: ProviderModule;
-  sceneProps: Record<string, unknown>;
+  sceneProps?: Record<string, unknown>;
 }) {
   const [resetCount, incrementReset] = useReducer(
     (count: number) => count + 1,
