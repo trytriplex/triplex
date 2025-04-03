@@ -7,14 +7,16 @@
 import { XR, type XRStore } from "@react-three/xr";
 import { type Modules, type ProviderModule } from "@triplex/bridge/client";
 import { useMemo } from "react";
+import { DefaultCameraContext } from "../camera-new/context";
 import { Canvas } from "../canvas";
 import { SceneControls } from "../scene-controls";
 import { SceneElement } from "../scene-element";
+import { SceneContext } from "../scene-loader/context";
+import { type LoadedSceneContext } from "../scene-loader/types";
+import { useSceneLoader } from "../scene-loader/use-scene-loader";
 import { SceneRenderer } from "../scene-renderer";
 import { SelectionProvider } from "../selection-provider";
-import { SceneContext } from "./context";
-import { type LoadedSceneContext } from "./types";
-import { useSceneLoader } from "./use-scene-loader";
+import { WebXRLocomotion } from "./webxr-locomotion";
 
 export function WebXRSceneLoader({
   exportName,
@@ -79,16 +81,19 @@ export function WebXRSceneLoader({
           }}
           forceInsideSceneObjectContext
         >
-          <Canvas>
-            <XR store={store}>
-              <SceneRenderer
-                component={scene.component}
-                exportName={exportName}
-                path={path}
-                props={sceneProps}
-              />
-            </XR>
-          </Canvas>
+          <DefaultCameraContext.Provider value="default">
+            <Canvas>
+              <XR store={store}>
+                <SceneRenderer
+                  component={scene.component}
+                  exportName={exportName}
+                  path={path}
+                  props={sceneProps}
+                />
+                <WebXRLocomotion />
+              </XR>
+            </Canvas>
+          </DefaultCameraContext.Provider>
           <SceneControls />
         </SceneElement>
       </SceneContext.Provider>
