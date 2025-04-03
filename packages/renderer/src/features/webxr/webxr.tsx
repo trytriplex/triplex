@@ -11,7 +11,7 @@ import { LoadingLogo } from "@triplex/lib/loader";
 import { Suspense, useState } from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
 import { ErrorFallback } from "../../components/error-fallback";
-import { WebXRSceneLoader } from "../scene-loader/webxr-scene-loader";
+import { WebXRSceneLoader } from "./webxr-scene-loader";
 
 export function WebXRApp({
   exportName,
