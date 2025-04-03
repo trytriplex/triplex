@@ -14,17 +14,20 @@ import { sendVSCE } from "../../util/bridge";
 import { ErrorIllustration } from "./error-illustration";
 
 export function EnsureDependencies({ children }: { children: ReactNode }) {
-  const project = useSubscription("/project/dependencies");
+  const {
+    missingDependencies: { required: requiredMissingDependencies },
+    pkgManager,
+  } = useSubscription("/project/dependencies");
   const [installing, setInstalling] = useState(false);
 
   useScreenView(
     "missing_dependencies",
     "Screen",
-    !!project.missingDependencies.length,
+    !!requiredMissingDependencies.length,
   );
 
-  if (project.missingDependencies.length) {
-    const command = `${project.pkgManager} i ${project.missingDependencies.join(" ")}`;
+  if (requiredMissingDependencies.length) {
+    const command = `${pkgManager} i ${requiredMissingDependencies.join(" ")}`;
 
     return (
       <div className="fixed inset-0 mx-auto flex max-w-md select-none flex-col items-center justify-center gap-4 p-4 text-center">

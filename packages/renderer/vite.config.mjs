@@ -19,6 +19,7 @@ export default defineConfig({
     rollupOptions: {
       external: [
         "@react-three/fiber",
+        "@react-three/xr",
         "react-dom",
         "react-dom/client",
         "react",

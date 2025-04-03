@@ -7,16 +7,13 @@
 import resolvePkgPath from "resolve-package-path";
 
 const coreReactModules = ["@types/react", "react", "react-dom"];
+const threeFiberModules = ["@react-three/fiber", "@types/three", "three"];
+const optionalThreeFiberModules = ["@react-three/xr"];
 
-const optionalThreeFiberModules = [
-  "@react-three/fiber",
-  "@types/three",
-  "three",
-];
-
-export function checkMissingDependencies(cwd: string): string[] {
+export function checkMissingDependencies(cwd: string) {
   const missingCore: string[] = [];
-  const missingOptional: string[] = [];
+  const missingThreeFiberDependencies: string[] = [];
+  const missingOptionalThreeFiberDependencies: string[] = [];
 
   for (const name of coreReactModules) {
     if (!resolvePkgPath(name, cwd)) {
@@ -24,16 +21,30 @@ export function checkMissingDependencies(cwd: string): string[] {
     }
   }
 
-  for (const name of optionalThreeFiberModules) {
+  for (const name of threeFiberModules) {
     if (!resolvePkgPath(name, cwd)) {
-      missingOptional.push(name);
+      missingThreeFiberDependencies.push(name);
     }
   }
 
-  if (missingOptional.length === optionalThreeFiberModules.length) {
+  for (const name of optionalThreeFiberModules) {
+    if (!resolvePkgPath(name, cwd)) {
+      missingOptionalThreeFiberDependencies.push(name);
+    }
+  }
+
+  if (missingThreeFiberDependencies.length === threeFiberModules.length) {
     // All optional dependencies are missing so we ignore them and continue on.
-    return missingCore.sort();
+    return {
+      category: "react",
+      optional: [],
+      required: missingCore.sort(),
+    } as const;
   } else {
-    return missingCore.concat(missingOptional).sort();
+    return {
+      category: "react-three-fiber",
+      optional: missingOptionalThreeFiberDependencies,
+      required: missingCore.concat(missingThreeFiberDependencies).sort(),
+    } as const;
   }
 }

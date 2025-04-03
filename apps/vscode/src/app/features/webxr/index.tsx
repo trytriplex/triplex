@@ -5,44 +5,34 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 
-import { Dialog, useScreenView } from "@triplex/ux";
-import { ButtonLink } from "../../components/button";
+import { Dialog } from "@triplex/ux";
+import { useSubscription } from "../../hooks/ws";
 import { useDialogs } from "../../stores/dialogs";
-import { useSceneContext } from "../app-root/context";
+import { WebXRNeedsSetup } from "./webxr-needs-setup";
+import { WebXROpenDevice } from "./webxr-open-device";
 
 export function OpenInWebXR() {
   const hideSelf = useDialogs((store) => () => store.set(undefined));
-  const { exportName, path } = useSceneContext();
-  const externalURL = `https://${window.triplex.env.externalIP}:${window.triplex.env.ports.client}/webxr?exportName=${encodeURIComponent(exportName)}&path=${encodeURIComponent(path)}`;
-  const openInMetaQuestURL = `https://www.oculus.com/open_url/?url=${encodeURIComponent(externalURL)}`;
-
-  useScreenView("open_in_xr", "Dialog");
+  const dependencies = useSubscription("/project/dependencies");
+  const needsXR =
+    dependencies.missingDependencies.category === "react" ||
+    dependencies.missingDependencies.optional.includes("@react-three/xr");
 
   return (
     <Dialog
-      className="backdrop:bg-overlay border-overlay bg-overlay-top text-default w-full max-w-xs rounded border backdrop:opacity-80"
+      className="backdrop:bg-overlay border-overlay bg-overlay-top text-default w-full max-w-sm rounded border backdrop:opacity-80"
       onDismiss={hideSelf}
     >
-      <div className="flex flex-col gap-2.5 p-2.5">
+      <div
+        className="flex flex-col gap-2.5 p-2.5"
+        data-testid={
+          needsXR ? "webxr-dialog-needs-setup" : "webxr-dialog-open-device"
+        }
+      >
         <span className="text-heading select-none font-medium">
-          Open in WebXR
+          Open Component in WebXR
         </span>
-        <p className="select-none">
-          Run and edit your project in WebXR by visiting the following URL on
-          your headset or browser.
-        </p>
-        <div className="flex-start flex flex-col gap-1.5">
-          <ButtonLink
-            actionId="dialog_webxr_metaquest"
-            href={openInMetaQuestURL}
-            variant="cta"
-          >
-            Send Link To Meta Quest
-          </ButtonLink>
-          <ButtonLink actionId="dialog_webxr_browser" href={externalURL}>
-            Open in Browser
-          </ButtonLink>
-        </div>
+        {needsXR ? <WebXRNeedsSetup /> : <WebXROpenDevice />}
       </div>
     </Dialog>
   );

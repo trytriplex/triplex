@@ -6,6 +6,7 @@
  */
 import { scripts } from "../templates";
 import { type InitializationConfig } from "../types";
+import { createStubModuleTester } from "../util/modules";
 
 const bootstrapModuleId = "triplex:bootstrap.tsx";
 const emptyModuleId = "triplex:empty.js";
@@ -15,6 +16,8 @@ const hmrImportId = "triplex:hmr-import";
 const providersModuleId = "triplex:global-provider.jsx";
 
 export function scenePlugin(template: InitializationConfig) {
+  const shouldStubModule = createStubModuleTester(template);
+
   return {
     enforce: "pre",
     async load(id: string) {
@@ -48,19 +51,17 @@ export function scenePlugin(template: InitializationConfig) {
         case emptyProvidersModuleId:
         case providersModuleId:
           return id;
+      }
 
-        case "@react-three/fiber":
-        case "three":
-          /**
-           * If React Three Fiber is not found in the project we need to stub it
-           * out in the dependency graph AND exclude it from pre-bundling so
-           * Vite doesn't throw an exception during pre-bundling.
-           *
-           * {@link ./index.ts}
-           */
-          if (!template.preload.reactThreeFiber) {
-            return emptyModuleId;
-          }
+      if (shouldStubModule(id)) {
+        /**
+         * If an optional dependency is not found in the project we need to stub
+         * it out in the dependency graph AND exclude it from pre-bundling so
+         * Vite doesn't throw an exception during pre-bundling.
+         *
+         * {@link ./index.ts}
+         */
+        return emptyModuleId;
       }
     },
     transform(code: string, id: string) {

@@ -130,7 +130,8 @@ export function ButtonLink({
     <a
       className={cn([
         "border-button outline-default outline-selected outline-offset-button relative rounded-sm border px-2.5 py-1 text-center text-[13px] leading-[18px] focus:outline-none focus-visible:outline",
-        variant === "default" && "text-subtle bg-neutral hover:bg-hover",
+        variant === "default" &&
+          "text-subtle bg-neutral hover:text-subtle hover:bg-hover active:bg-pressed",
         variant === "cta" &&
           "text-primary bg-primary hover:text-primary hover:bg-primary-hovered",
       ])}

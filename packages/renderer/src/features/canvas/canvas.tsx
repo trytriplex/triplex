@@ -114,8 +114,10 @@ export function Canvas({ children, ...props }: CanvasProps) {
                   {children}
                   <FitCameraToScene resetKeys={[path, exportName]} />
                   <SceneLights />
-                  <TriplexGrid />
-                  <CameraAxisHelper />
+                  {window.triplex.env.mode === "default" && <TriplexGrid />}
+                  {window.triplex.env.mode === "default" && (
+                    <CameraAxisHelper />
+                  )}
                 </Suspense>
               </ThreeFiberSelection>
             </SceneElement>

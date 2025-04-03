@@ -67,7 +67,7 @@
   },
   "bundler": {
     "assetsInclude": ["**/*.(gltf|glb)"],
-    "dedupe": ["@react-three/fiber", "three"]
+    "dedupe": ["@react-three/fiber", "@react-three/xr", "three"]
   },
   "stage": {
     "defaultFrame": "expanded"

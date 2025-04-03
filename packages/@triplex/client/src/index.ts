@@ -24,7 +24,9 @@ import { remoteModulePlugin } from "./plugins/remote-module-plugin";
 import { scenePlugin } from "./plugins/scene-plugin";
 import { syncPlugin, type OnSyncEvent } from "./plugins/sync-plugin";
 import { scripts } from "./templates";
+import { type InitializationConfig } from "./types";
 import { getCertificate } from "./util/cert-https";
+import { depsToSkipOptimizing, optionalDeps } from "./util/modules";
 
 export async function createServer({
   config,
@@ -52,7 +54,7 @@ export async function createServer({
   const { default: glsl } = await import("vite-plugin-glsl");
   const { default: tsconfigPaths } = await import("vite-tsconfig-paths");
 
-  const initializationConfig = {
+  const initializationConfig: InitializationConfig = {
     config,
     fgEnvironmentOverride,
     fileGlobs: config.files.map((f) => `'${f.replace(config.cwd, "")}'`),
@@ -88,15 +90,13 @@ export async function createServer({
     optimizeDeps: {
       esbuildOptions: { plugins: [transformNodeModulesJSXPlugin()] },
       /**
-       * If React Three Fiber is not found in the project we need to stub it out
-       * in the dependency graph AND exclude it from pre-bundling so Vite
+       * If an optional dependency is not found in the project we need to stub
+       * it out in the dependency graph AND exclude it from pre-bundling so Vite
        * doesn't throw an exception during pre-bundling.
        *
        * {@link ./scene-plugin.ts}
        */
-      exclude: initializationConfig.preload.reactThreeFiber
-        ? []
-        : ["@react-three/fiber", "three"],
+      exclude: depsToSkipOptimizing(initializationConfig),
     },
     plugins: [
       syncPlugin({ onSyncEvent }),
@@ -126,7 +126,12 @@ export async function createServer({
         "triplex:canvas": renderer.path,
         "triplex:renderer": renderer.path,
       },
-      dedupe: renderer.manifest.bundler?.dedupe,
+      /**
+       * These dependencies need to be deduped so they get picked up from
+       * userland node_modules rather than @triplex package node_modules as they
+       * won't be found when built for production.
+       */
+      dedupe: (renderer.manifest.bundler?.dedupe || []).concat(optionalDeps),
     },
     root: config.cwd,
     server: {
