@@ -38,7 +38,7 @@ export function LandingHero() {
   return (
     <div>
       <h1 className="font-brand text-brand max-w-2xl text-6xl font-medium sm:text-7xl lg:max-w-3xl lg:text-8xl">
-        Build 2D and 3D web apps without coding.
+        Build the 2D and 3D web without coding.
       </h1>
       <div className="relative mt-20 md:mt-28">
         <div className="bg-neutral group relative -mx-8 h-60 overflow-hidden md:mx-0 md:h-80 md:rounded-[62px] lg:h-96">
