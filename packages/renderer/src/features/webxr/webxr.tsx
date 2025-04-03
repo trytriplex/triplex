@@ -5,13 +5,13 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 
+import { createXRStore } from "@react-three/xr";
 import { type Modules, type ProviderModule } from "@triplex/bridge/client";
 import { LoadingLogo } from "@triplex/lib/loader";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
 import { ErrorFallback } from "../../components/error-fallback";
 import { WebXRSceneLoader } from "../scene-loader/webxr-scene-loader";
-import { WebXRContext } from "./context";
 
 export function WebXRApp({
   exportName,
@@ -26,23 +26,42 @@ export function WebXRApp({
   providerPath: string;
   providers: ProviderModule;
 }) {
+  const [store] = useState(() => createXRStore());
+
   return (
-    <WebXRContext.Provider value>
-      <ErrorBoundaryForScene fallbackRender={() => <ErrorFallback />}>
-        <Suspense
-          fallback={
-            <LoadingLogo color="black" position="splash" variant="fill" />
-          }
+    <ErrorBoundaryForScene fallbackRender={() => <ErrorFallback />}>
+      <Suspense
+        fallback={
+          <LoadingLogo color="black" position="splash" variant="fill" />
+        }
+      >
+        <div
+          style={{
+            alignItems: "center",
+            display: "flex",
+            gap: "8px",
+            inset: 0,
+            justifyContent: "center",
+            position: "fixed",
+            zIndex: 3,
+          }}
         >
-          <WebXRSceneLoader
-            exportName={exportName}
-            modules={files}
-            path={path}
-            providerPath={providerPath}
-            providers={providers}
-          />
-        </Suspense>
-      </ErrorBoundaryForScene>
-    </WebXRContext.Provider>
+          <button onClick={() => store.enterAR()} style={{ padding: 20 }}>
+            Enter AR
+          </button>
+          <button onClick={() => store.enterVR()} style={{ padding: 20 }}>
+            Enter VR
+          </button>
+        </div>
+        <WebXRSceneLoader
+          exportName={exportName}
+          modules={files}
+          path={path}
+          providerPath={providerPath}
+          providers={providers}
+          store={store}
+        />
+      </Suspense>
+    </ErrorBoundaryForScene>
   );
 }

@@ -4,6 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import { XR, type XRStore } from "@react-three/xr";
 import { type Modules, type ProviderModule } from "@triplex/bridge/client";
 import { useMemo } from "react";
 import { Canvas } from "../canvas";
@@ -22,6 +23,7 @@ export function WebXRSceneLoader({
   providerPath,
   providers,
   sceneProps,
+  store,
 }: {
   exportName: string;
   modules: Modules;
@@ -29,6 +31,7 @@ export function WebXRSceneLoader({
   providerPath: string;
   providers: ProviderModule;
   sceneProps?: Record<string, unknown>;
+  store: XRStore;
 }) {
   const scene = useSceneLoader({
     exportName,
@@ -77,12 +80,14 @@ export function WebXRSceneLoader({
           forceInsideSceneObjectContext
         >
           <Canvas>
-            <SceneRenderer
-              component={scene.component}
-              exportName={exportName}
-              path={path}
-              props={sceneProps}
-            />
+            <XR store={store}>
+              <SceneRenderer
+                component={scene.component}
+                exportName={exportName}
+                path={path}
+                props={sceneProps}
+              />
+            </XR>
           </Canvas>
           <SceneControls />
         </SceneElement>

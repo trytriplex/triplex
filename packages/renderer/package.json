@@ -35,6 +35,7 @@
   },
   "devDependencies": {
     "@react-three/fiber": "^9.0.4",
+    "@react-three/xr": "^6.6.12",
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
     "@types/raf-schd": "^4.0.3",

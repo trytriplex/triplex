@@ -376,15 +376,17 @@ export function ThreeFiberSelection({
           />
         )}
 
-      {camera?.type === "editor" &&
+      {window.triplex.env.mode === "default" &&
+        camera?.type === "editor" &&
         resolvedObject?.object instanceof Camera && (
           <CameraPreview camera={resolvedObject?.object} />
         )}
 
-      {import.meta.env.VITE_TRIPLEX_ENV !== "test" && (
-        // Disable the selection post processing in CI tests as they don't have GPUs.
-        <SelectionIndicator />
-      )}
+      {import.meta.env.VITE_TRIPLEX_ENV !== "test" &&
+        window.triplex.env.mode === "default" && (
+          // Disable the selection post processing in CI tests as they don't have GPUs.
+          <SelectionIndicator />
+        )}
     </SceneObjectContext.Provider>
   );
 }
