@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.71.11
+
+### Patch Changes
+
+- a480636: Testing webxr capabilities.
+
 ## 0.71.10
 
 ### Patch Changes

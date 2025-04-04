@@ -1,5 +1,14 @@
 # @triplex/client
 
+## 0.70.24
+
+### Patch Changes
+
+- b97cd77: IPs are now capped to 3000 range.
+- a480636: Testing webxr capabilities.
+- Updated dependencies [b97cd77]
+  - @triplex/renderer@0.71.17
+
 ## 0.70.23
 
 ### Patch Changes

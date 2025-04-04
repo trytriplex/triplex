@@ -1,5 +1,11 @@
 # @triplex/renderer
 
+## 0.71.17
+
+### Patch Changes
+
+- b97cd77: IPs are now capped to 3000 range.
+
 ## 0.71.16
 
 ### Patch Changes

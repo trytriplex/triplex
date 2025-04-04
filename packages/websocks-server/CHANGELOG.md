@@ -1,5 +1,11 @@
 # @triplex/websocks-server
 
+## 0.0.5
+
+### Patch Changes
+
+- b97cd77: .listen() now takes a second arg for hostname.
+
 ## 0.0.4
 
 ### Patch Changes

@@ -1,5 +1,16 @@
 # @triplex/vscode
 
+## 0.2.27
+
+### Patch Changes
+
+- b97cd77: IPs are now capped to 3000 range.
+- a480636: Testing webxr capabilities.
+- Updated dependencies [b97cd77]
+- Updated dependencies [a480636]
+  - @triplex/client@0.70.24
+  - @triplex/server@0.71.11
+
 ## 0.2.26
 
 ### Patch Changes
