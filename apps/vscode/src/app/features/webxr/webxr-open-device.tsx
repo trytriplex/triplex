@@ -12,8 +12,10 @@ import { useSceneContext } from "../app-root/context";
 
 export function WebXROpenDevice() {
   const { exportName, path } = useSceneContext();
-  const externalURL = `https://${window.triplex.env.externalIP}:${window.triplex.env.ports.client}/webxr?exportName=${encodeURIComponent(exportName)}&path=${encodeURIComponent(path)}`;
-  const openInMetaQuestURL = `https://www.oculus.com/open_url/?url=${encodeURIComponent(externalURL)}`;
+  const params = `?exportName=${encodeURIComponent(exportName)}&path=${encodeURIComponent(path)}`;
+  const localhostURL = `https://localhost:${window.triplex.env.ports.client}/webxr${params}`;
+  const hostnameURL = `https://${window.triplex.env.externalIP}:${window.triplex.env.ports.client}/webxr${params}}`;
+  const openInMetaQuestURL = `https://www.oculus.com/open_url/?url=${encodeURIComponent(hostnameURL)}`;
 
   useScreenView("webxr_open_device", "Dialog");
 
@@ -38,8 +40,19 @@ export function WebXROpenDevice() {
         >
           Send to Meta Quest
         </ButtonLink>
-        <ButtonLink actionId="dialog_webxr_browser" href={externalURL}>
-          Open in Browser
+        <ButtonLink actionId="dialog_webxr_emulator" href={localhostURL}>
+          Open in Browser Emulator
+        </ButtonLink>
+        <ButtonLink
+          actionId="dialog_webxr_copy"
+          href={hostnameURL}
+          onClick={(e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            navigator.clipboard.writeText(hostnameURL);
+          }}
+        >
+          Copy WebXR Link
         </ButtonLink>
       </div>
       <p className="select-none">

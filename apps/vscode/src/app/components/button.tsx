@@ -7,7 +7,7 @@
 import { type IconProps } from "@radix-ui/react-icons/dist/types";
 import { cn, onKeyDown, useEvent, type Accelerator } from "@triplex/lib";
 import { useTelemetry, type ActionId } from "@triplex/ux";
-import { useEffect, type ComponentType } from "react";
+import { useEffect, type ComponentType, type MouseEventHandler } from "react";
 import { Pressable } from "./pressable";
 
 export function IconButton({
@@ -114,16 +114,19 @@ export function ButtonLink({
   actionId,
   children,
   href,
+  onClick,
   variant = "default",
 }: {
   actionId: ActionId;
   children: string;
   href: string;
+  onClick?: MouseEventHandler<HTMLAnchorElement>;
   variant?: "default" | "cta";
 }) {
   const telemetry = useTelemetry();
-  const onClickHandler = useEvent(() => {
+  const onClickHandler: MouseEventHandler<HTMLAnchorElement> = useEvent((e) => {
     telemetry.event(actionId);
+    onClick?.(e);
   });
 
   return (

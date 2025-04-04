@@ -29,6 +29,7 @@ import {
   type ResolvedObject3D,
 } from "./resolver";
 import { SelectionIndicator } from "./selection-indicator";
+import { SelectionIndicatorLines } from "./selection-indicator-lines";
 import { TransformControls } from "./transform-controls";
 import {
   TransformControls as TransformControlsImmutable,
@@ -54,7 +55,7 @@ export function ThreeFiberSelection({
     scale: false,
     translate: false,
   });
-  const [resolvedObjects, , selectionActions] =
+  const [selections, hovered, selectionActions] =
     useSelectionMarshal<ResolvedObject3D>({
       listener: (e) => {
         const canvasSize = gl.domElement.getBoundingClientRect();
@@ -130,7 +131,7 @@ export function ThreeFiberSelection({
       },
     });
   const controls = useContext(CameraControlsContext);
-  const resolvedObject = resolvedObjects.at(0);
+  const resolvedObject = selections.at(0);
 
   useEffect(() => {
     return on("extension-point-triggered", (data) => {
@@ -194,7 +195,7 @@ export function ThreeFiberSelection({
       on("request-jump-to-element", (sceneObject) => {
         const objects = sceneObject
           ? findObject3D(scene, sceneObject).map((resolved) => resolved[0])
-          : resolvedObjects.map((resolved) => resolved.object);
+          : selections.map((resolved) => resolved.object);
 
         if (objects.length === 0) {
           return;
@@ -221,7 +222,7 @@ export function ThreeFiberSelection({
         });
       }),
     ]);
-  }, [controls, resolvedObject, resolvedObjects, scene, switchToComponent]);
+  }, [controls, resolvedObject, selections, scene, switchToComponent]);
 
   const onConfirmTransformHandler = useEvent((e: TransformEvent) => {
     if (!resolvedObject) {
@@ -387,6 +388,10 @@ export function ThreeFiberSelection({
           // Disable the selection post processing in CI tests as they don't have GPUs.
           <SelectionIndicator />
         )}
+
+      {window.triplex.env.mode === "webxr" && (
+        <SelectionIndicatorLines hovered={hovered} selections={selections} />
+      )}
     </SceneObjectContext.Provider>
   );
 }

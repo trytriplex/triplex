@@ -15,8 +15,8 @@ import { SceneContext } from "../scene-loader/context";
 import { type LoadedSceneContext } from "../scene-loader/types";
 import { useSceneLoader } from "../scene-loader/use-scene-loader";
 import { SceneRenderer } from "../scene-renderer";
-import { SelectionProvider } from "../selection-provider";
 import { WebXRLocomotion } from "./webxr-locomotion";
+import { WebXRSelectionProvider } from "./webxr-selection-provider";
 
 export function WebXRSceneLoader({
   exportName,
@@ -65,25 +65,25 @@ export function WebXRSceneLoader({
   }
 
   return (
-    <SelectionProvider>
-      <SceneContext.Provider value={sceneContext}>
-        <SceneElement
-          __component={providers.GlobalProvider}
-          __meta={{
-            column: -888,
-            exportName: "GlobalProvider",
-            line: -888,
-            name: "GlobalProvider",
-            path: providerPath,
-            rotate: false,
-            scale: false,
-            translate: false,
-          }}
-          forceInsideSceneObjectContext
-        >
-          <DefaultCameraContext.Provider value="default">
-            <Canvas>
-              <XR store={store}>
+    <SceneContext.Provider value={sceneContext}>
+      <SceneElement
+        __component={providers.GlobalProvider}
+        __meta={{
+          column: -888,
+          exportName: "GlobalProvider",
+          line: -888,
+          name: "GlobalProvider",
+          path: providerPath,
+          rotate: false,
+          scale: false,
+          translate: false,
+        }}
+        forceInsideSceneObjectContext
+      >
+        <DefaultCameraContext.Provider value="default">
+          <Canvas>
+            <XR store={store}>
+              <WebXRSelectionProvider>
                 <SceneRenderer
                   component={scene.component}
                   exportName={exportName}
@@ -91,12 +91,12 @@ export function WebXRSceneLoader({
                   props={sceneProps}
                 />
                 <WebXRLocomotion />
-              </XR>
-            </Canvas>
-          </DefaultCameraContext.Provider>
-          <SceneControls />
-        </SceneElement>
-      </SceneContext.Provider>
-    </SelectionProvider>
+              </WebXRSelectionProvider>
+            </XR>
+          </Canvas>
+        </DefaultCameraContext.Provider>
+        <SceneControls />
+      </SceneElement>
+    </SceneContext.Provider>
   );
 }
