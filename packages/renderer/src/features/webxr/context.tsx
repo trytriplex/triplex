@@ -6,5 +6,10 @@
  */
 
 import { createContext } from "react";
+import { type Vector3 } from "three";
 
 export const WebXRContext = createContext(false);
+
+export const WebXRGetOriginContext = createContext<(() => Vector3) | undefined>(
+  undefined,
+);

@@ -26,6 +26,7 @@ import {
   findObject3D,
   resolveObject3D,
   resolveObjectsFromPoint,
+  resolveObjectsFromXRPose,
   type ResolvedObject3D,
 } from "./resolver";
 import { SelectionIndicator } from "./selection-indicator";
@@ -58,6 +59,30 @@ export function ThreeFiberSelection({
   const [selections, hovered, selectionActions] =
     useSelectionMarshal<ResolvedObject3D>({
       listener: (e) => {
+        if ("getOrigin" in e) {
+          const inputSourcePose = e.frame.getPose(
+            e.inputSource.targetRaySpace,
+            e.originReferenceSpace,
+          );
+
+          return resolveObjectsFromXRPose(inputSourcePose, { scene, xr: e })
+            .map((found) => {
+              const meta = resolveElementMeta(found.object, filter);
+
+              if (meta) {
+                return {
+                  column: meta.column,
+                  line: meta.line,
+                  parentPath: filter.path,
+                  path: meta.path,
+                };
+              }
+
+              return undefined;
+            })
+            .filter((found) => !!found);
+        }
+
         const canvasSize = gl.domElement.getBoundingClientRect();
 
         const isPointerInsideCanvas =

@@ -5,10 +5,18 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { send } from "@triplex/bridge/client";
+import { type Vector3 } from "three";
 import { create } from "zustand";
 import { type SelectionState } from "./types";
 
-export type SelectionListener = (e: MouseEvent) => SelectionState[];
+export interface XREvent {
+  frame: XRFrame;
+  getOrigin: () => Vector3;
+  inputSource: XRInputSource;
+  originReferenceSpace: XRReferenceSpace;
+}
+
+export type SelectionListener = (e: MouseEvent | XREvent) => SelectionState[];
 
 export interface SelectionStore {
   clear: () => void;

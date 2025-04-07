@@ -6,7 +6,14 @@
  */
 
 import { type TriplexMeta } from "@triplex/bridge/client";
-import { Raycaster, Vector2, type Camera, type Object3D } from "three";
+import {
+  Matrix4,
+  Raycaster,
+  Vector2,
+  Vector3,
+  type Camera,
+  type Object3D,
+} from "three";
 import { getTriplexMeta, hasTriplexMeta } from "../../util/meta";
 import { isObjectVisible } from "../../util/three";
 
@@ -138,6 +145,43 @@ export function resolveObjectsFromPoint(
 
   vector.set(point.x, point.y);
   raycaster.setFromCamera(vector, opts.camera);
+
+  const results = raycaster.intersectObject(opts.scene);
+
+  return results.filter(
+    (found) =>
+      isObjectVisible(found.object) &&
+      found.object.type !== "TransformControlsPlane",
+  );
+}
+
+export function resolveObjectsFromXRPose(
+  inputSourcePose: XRPose | undefined,
+  opts: {
+    scene: Object3D;
+    xr?: {
+      getOrigin: () => Vector3;
+    };
+  },
+) {
+  const xr = opts.xr;
+  if (!xr || !inputSourcePose) {
+    return [];
+  }
+
+  const inputSourceWorldMatrix = new Matrix4().fromArray(
+    inputSourcePose.transform.matrix,
+  );
+
+  const inputSourceOrigin = new Vector3()
+    .setFromMatrixPosition(inputSourceWorldMatrix)
+    .add(xr.getOrigin());
+
+  const inputSourceDirection = new Vector3(0, 0, -1)
+    .applyMatrix4(new Matrix4().extractRotation(inputSourceWorldMatrix))
+    .normalize();
+
+  raycaster.set(inputSourceOrigin, inputSourceDirection);
 
   const results = raycaster.intersectObject(opts.scene);
 

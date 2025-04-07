@@ -5,13 +5,23 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { useXRControllerLocomotion, XROrigin } from "@react-three/xr";
-import { useRef } from "react";
+import { useEvent } from "@triplex/lib";
+import { useRef, type ReactNode } from "react";
 import { type Group } from "three";
+import { WebXRGetOriginContext } from "./context";
 
-export function WebXRLocomotion() {
-  const ref = useRef<Group>(null);
+export function WebXRLocomotion({ children }: { children: ReactNode }) {
+  const ref = useRef<Group>(null!);
+  const getOrigin = useEvent(() => {
+    return ref.current.position;
+  });
 
   useXRControllerLocomotion(ref);
 
-  return <XROrigin position={[0, 0, 10]} ref={ref} />;
+  return (
+    <WebXRGetOriginContext value={getOrigin}>
+      <XROrigin position={[0, 0, 5]} ref={ref} />
+      {children}
+    </WebXRGetOriginContext>
+  );
 }
