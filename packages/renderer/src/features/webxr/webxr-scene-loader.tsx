@@ -83,15 +83,16 @@ export function WebXRSceneLoader({
         <DefaultCameraContext.Provider value="default">
           <Canvas>
             <XR store={store}>
-              <WebXRSelectionProvider>
-                <SceneRenderer
-                  component={scene.component}
-                  exportName={exportName}
-                  path={path}
-                  props={sceneProps}
-                />
-                <WebXRLocomotion />
-              </WebXRSelectionProvider>
+              <WebXRLocomotion>
+                <WebXRSelectionProvider>
+                  <SceneRenderer
+                    component={scene.component}
+                    exportName={exportName}
+                    path={path}
+                    props={sceneProps}
+                  />
+                </WebXRSelectionProvider>
+              </WebXRLocomotion>
             </XR>
           </Canvas>
         </DefaultCameraContext.Provider>
