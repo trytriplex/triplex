@@ -4,7 +4,8 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-
+/** @jsxImportSource @emotion/react */
+import { css } from "@emotion/react";
 import { createXRStore } from "@react-three/xr";
 import { type Modules, type ProviderModule } from "@triplex/bridge/client";
 import { LoadingLogo } from "@triplex/lib/loader";
@@ -12,6 +13,33 @@ import { Suspense, useState } from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
 import { ErrorFallback } from "../../components/error-fallback";
 import { WebXRSceneLoader } from "./webxr-scene-loader";
+
+const containerStyles = css({
+  alignItems: "center",
+  backgroundColor: "rgb(from var(--x-bg-surface) r g b / 0.5)",
+  display: "flex",
+  inset: 0,
+  justifyContent: "space-around",
+  position: "fixed",
+  zIndex: 3,
+});
+
+const enterXRStyles = css({
+  ":hover": {
+    transform: "scale(1.1)",
+  },
+  backgroundColor: "var(--x-bg-surface)",
+  borderColor: "var(--x-border)",
+  borderRadius: 9999,
+  borderStyle: "solid",
+  borderWidth: "2px",
+  color: "var(--x-text)",
+  fontSize: "2rem",
+  fontWeight: "500",
+  paddingBlock: "2rem",
+  paddingInline: "3rem",
+  transition: "transform 100ms",
+});
 
 export function WebXRApp({
   exportName,
@@ -32,24 +60,14 @@ export function WebXRApp({
     <ErrorBoundaryForScene fallbackRender={() => <ErrorFallback />}>
       <Suspense
         fallback={
-          <LoadingLogo color="black" position="splash" variant="fill" />
+          <LoadingLogo color="currentColor" position="splash" variant="fill" />
         }
       >
-        <div
-          style={{
-            alignItems: "center",
-            display: "flex",
-            gap: "8px",
-            inset: 0,
-            justifyContent: "center",
-            position: "fixed",
-            zIndex: 3,
-          }}
-        >
-          <button onClick={() => store.enterAR()} style={{ padding: 20 }}>
+        <div css={containerStyles}>
+          <button css={enterXRStyles} onClick={() => store.enterAR()}>
             Enter AR
           </button>
-          <button onClick={() => store.enterVR()} style={{ padding: 20 }}>
+          <button css={enterXRStyles} onClick={() => store.enterVR()}>
             Enter VR
           </button>
         </div>

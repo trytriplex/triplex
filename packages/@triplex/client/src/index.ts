@@ -180,12 +180,19 @@ export async function createServer({
   app.get("/webxr", async (req, res, next) => {
     try {
       const template = rootHTML({
+        css: `
+          body {
+            background-color: var(--x-bg-surface);
+            color: var(--x-text);
+          }
+        `,
         loadingIndicator: loadingLogo({
-          color: "black",
+          color: "currentColor",
           position: "splash",
           variant: "idle",
         }),
         script: scripts.initWebXR(initializationConfig),
+        themes: ["base"],
         title: "Triplex WebXR",
       });
       const html = await vite.transformIndexHtml(req.url, template);

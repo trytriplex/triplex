@@ -5,8 +5,9 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { type AppProps } from "next/app";
+import "@triplex/lib/themes/base.css";
+import "@triplex/lib/themes/code.css";
 import "../globals.css";
-import "../themes/default.css";
 
 export default function App({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />;

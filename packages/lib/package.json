@@ -39,6 +39,7 @@
       "module": "./src/templates.ts",
       "default": "./src/templates.ts"
     },
+    "./themes/*.css": "./themes/*.css",
     "./types": {
       "types": "./src/types.ts",
       "module": "./src/types.ts",
@@ -97,6 +98,7 @@
         "module": "./src/templates.js",
         "default": "./src/templates.js"
       },
+      "./themes/*.css": "./themes/*.css",
       "./types": {
         "types": "./src/types.d.ts",
         "module": "./src/types.js",
