@@ -119,7 +119,7 @@ export function Footer() {
                   />
                   <path
                     d="M11.4253 14.2854L18.8477 10.0004L11.4253 5.71533V14.2854Z"
-                    fill="var(--bg-surface)"
+                    fill="var(--bg-x-surface)"
                   />
                 </g>
               </svg>
