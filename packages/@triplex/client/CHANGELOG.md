@@ -1,5 +1,15 @@
 # @triplex/client
 
+## 0.70.25
+
+### Patch Changes
+
+- 302081f: Forward errors to VS Code output for WebXR sessions.
+- Updated dependencies [f97183e]
+- Updated dependencies [b11acae]
+- Updated dependencies [b11acae]
+  - @triplex/renderer@0.71.18
+
 ## 0.70.24
 
 ### Patch Changes

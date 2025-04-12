@@ -1,5 +1,15 @@
 # @triplex/vscode
 
+## 0.2.28
+
+### Patch Changes
+
+- 302081f: Forward errors to VS Code output for WebXR sessions.
+- 302081f: Fix WebXR hostname link having an extra bracket "}" in it.
+- f97183e: Add hover/selection indicators to WebXR exploration.
+- Updated dependencies [302081f]
+  - @triplex/client@0.70.25
+
 ## 0.2.27
 
 ### Patch Changes
