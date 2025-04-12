@@ -1,5 +1,13 @@
 # @triplex/renderer
 
+## 0.71.18
+
+### Patch Changes
+
+- f97183e: Add hover/selection indicators to WebXR exploration.
+- b11acae: Add haptic feedback to WebXR interactions.
+- b11acae: Add pointer cursor to Triplex WebXR.
+
 ## 0.71.17
 
 ### Patch Changes
