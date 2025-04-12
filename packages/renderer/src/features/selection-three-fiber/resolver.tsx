@@ -7,12 +7,11 @@
 
 import { type TriplexMeta } from "@triplex/bridge/client";
 import {
-  Matrix4,
   Raycaster,
   Vector2,
-  Vector3,
   type Camera,
   type Object3D,
+  type Vector3,
 } from "three";
 import { getTriplexMeta, hasTriplexMeta } from "../../util/meta";
 import { isObjectVisible } from "../../util/three";
@@ -155,33 +154,13 @@ export function resolveObjectsFromPoint(
   );
 }
 
-export function resolveObjectsFromXRPose(
-  inputSourcePose: XRPose | undefined,
+export function resolveObjectsFromOrientation(
+  e: { direction: Vector3; origin: Vector3 },
   opts: {
     scene: Object3D;
-    xr?: {
-      getOrigin: () => Vector3;
-    };
   },
 ) {
-  const xr = opts.xr;
-  if (!xr || !inputSourcePose) {
-    return [];
-  }
-
-  const inputSourceWorldMatrix = new Matrix4().fromArray(
-    inputSourcePose.transform.matrix,
-  );
-
-  const inputSourceOrigin = new Vector3()
-    .setFromMatrixPosition(inputSourceWorldMatrix)
-    .add(xr.getOrigin());
-
-  const inputSourceDirection = new Vector3(0, 0, -1)
-    .applyMatrix4(new Matrix4().extractRotation(inputSourceWorldMatrix))
-    .normalize();
-
-  raycaster.set(inputSourceOrigin, inputSourceDirection);
+  raycaster.set(e.origin, e.direction);
 
   const results = raycaster.intersectObject(opts.scene);
 

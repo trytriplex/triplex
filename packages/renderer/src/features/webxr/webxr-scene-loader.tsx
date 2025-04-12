@@ -15,7 +15,6 @@ import { type LoadedSceneContext } from "../scene-loader/types";
 import { useSceneLoader } from "../scene-loader/use-scene-loader";
 import { SceneRenderer } from "../scene-renderer";
 import { WebXRLocomotion } from "./webxr-locomotion";
-import { WebXRSelectionProvider } from "./webxr-selection-provider";
 
 export function WebXRSceneLoader({
   exportName,
@@ -82,16 +81,13 @@ export function WebXRSceneLoader({
         <DefaultCameraContext.Provider value="default">
           <Canvas>
             <XR store={store}>
-              <WebXRLocomotion>
-                <WebXRSelectionProvider>
-                  <SceneRenderer
-                    component={scene.component}
-                    exportName={exportName}
-                    path={path}
-                    props={sceneProps}
-                  />
-                </WebXRSelectionProvider>
-              </WebXRLocomotion>
+              <WebXRLocomotion />
+              <SceneRenderer
+                component={scene.component}
+                exportName={exportName}
+                path={path}
+                props={sceneProps}
+              />
             </XR>
           </Canvas>
         </DefaultCameraContext.Provider>
