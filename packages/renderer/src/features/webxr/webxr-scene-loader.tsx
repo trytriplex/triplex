@@ -9,7 +9,6 @@ import { type Modules, type ProviderModule } from "@triplex/bridge/client";
 import { useMemo } from "react";
 import { DefaultCameraContext } from "../camera-new/context";
 import { Canvas } from "../canvas";
-import { SceneControls } from "../scene-controls";
 import { SceneElement } from "../scene-element";
 import { SceneContext } from "../scene-loader/context";
 import { type LoadedSceneContext } from "../scene-loader/types";
@@ -96,7 +95,6 @@ export function WebXRSceneLoader({
             </XR>
           </Canvas>
         </DefaultCameraContext.Provider>
-        <SceneControls />
       </SceneElement>
     </SceneContext.Provider>
   );
