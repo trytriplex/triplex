@@ -25,8 +25,8 @@ import { useSelectionMarshal } from "../selection-provider/use-selection-marhsal
 import {
   findObject3D,
   resolveObject3D,
+  resolveObjectsFromOrientation,
   resolveObjectsFromPoint,
-  resolveObjectsFromXRPose,
   type ResolvedObject3D,
 } from "./resolver";
 import { SelectionIndicator } from "./selection-indicator";
@@ -59,13 +59,11 @@ export function ThreeFiberSelection({
   const [selections, hovered, selectionActions] =
     useSelectionMarshal<ResolvedObject3D>({
       listener: (e) => {
-        if ("getOrigin" in e) {
-          const inputSourcePose = e.frame.getPose(
-            e.inputSource.targetRaySpace,
-            e.originReferenceSpace,
-          );
-
-          return resolveObjectsFromXRPose(inputSourcePose, { scene, xr: e })
+        if ("inputSourceOrigin" in e) {
+          return resolveObjectsFromOrientation(
+            { direction: e.inputSourceDirection, origin: e.inputSourceOrigin },
+            { scene },
+          )
             .map((found) => {
               const meta = resolveElementMeta(found.object, filter);
 
@@ -75,6 +73,7 @@ export function ThreeFiberSelection({
                   line: meta.line,
                   parentPath: filter.path,
                   path: meta.path,
+                  point: found.point,
                 };
               }
 

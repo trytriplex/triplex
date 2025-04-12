@@ -9,14 +9,14 @@ import { type Vector3 } from "three";
 import { create } from "zustand";
 import { type SelectionState } from "./types";
 
-export interface XREvent {
-  frame: XRFrame;
-  getOrigin: () => Vector3;
-  inputSource: XRInputSource;
-  originReferenceSpace: XRReferenceSpace;
+export interface XRInputSourceEvent {
+  inputSourceDirection: Vector3;
+  inputSourceOrigin: Vector3;
 }
 
-export type SelectionListener = (e: MouseEvent | XREvent) => SelectionState[];
+export type SelectionListener = (
+  e: MouseEvent | XRInputSourceEvent,
+) => SelectionState[];
 
 export interface SelectionStore {
   clear: () => void;

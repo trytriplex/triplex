@@ -29,7 +29,7 @@ export function ReactDOMSelection({
   const ref = useRef<HTMLDivElement>(null!);
   const [selected, hovered] = useSelectionMarshal<ResolvedNode>({
     listener: (e) => {
-      if ("getOrigin" in e) {
+      if ("inputSourceOrigin" in e) {
         // React DOM is not supported in WebXR.
         return [];
       }

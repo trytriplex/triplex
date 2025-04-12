@@ -12,6 +12,7 @@ import { LoadingLogo } from "@triplex/lib/loader";
 import { Suspense, useState } from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
 import { ErrorFallback } from "../../components/error-fallback";
+import { WebXRController } from "./webxr-controller";
 import { WebXRSceneLoader } from "./webxr-scene-loader";
 
 const containerStyles = css({
@@ -54,7 +55,16 @@ export function WebXRApp({
   providerPath: string;
   providers: ProviderModule;
 }) {
-  const [store] = useState(() => createXRStore());
+  const [store] = useState(() =>
+    createXRStore({
+      controller: {
+        left: { rayPointer: false },
+        right: WebXRController,
+      },
+      gaze: false,
+      hand: false,
+    }),
+  );
 
   return (
     <ErrorBoundaryForScene fallbackRender={() => <ErrorFallback />}>
