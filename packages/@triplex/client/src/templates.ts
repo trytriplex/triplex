@@ -224,10 +224,60 @@ export const scripts = {
         send("self:request-reset-error-boundary", undefined);
       };
 
+      window.addEventListener("error", (e) => {
+       if (
+          ((error) =>
+          error.stack && error.stack.indexOf("invokeGuardedCallbackDev") >= 0)(
+          new Error()
+        )) {
+          // Ignore errors that will be processed a React error boundary.
+          // See: https://github.com/facebook/react/issues/10474
+          return true;
+        }
+
+        ${import_meta_hot}.send("triplex:error", {
+          col: e.colno,
+          line: e.lineno,
+          message: e.error.message,
+          source: e.filename,
+          stack: e.error.stack,
+          subtitle: "An error was thrown which may affect how your scene behaves. Resolve the error and try again.",
+          title: "Unhandled Error",
+        });
+      });
+
+      ${import_meta_hot}.on("vite:error", (e) => {
+        ${import_meta_hot}.send("triplex:error", {
+          col: e.err.loc?.column,
+          line: e.err.loc?.line,
+          message: e.err.message,
+          source: e.err.id,
+          stack: e.err.stack,
+          subtitle: "The scene could not be rendered as there was an error parsing its module. Resolve the error and try again.",
+          title: "Module Error",
+        });
+      });
+
       // Grab hold of the resolved render function and keep it available across HMR updates.
       // We do this so we don't throw away the state of the renderer.
       // One caveat is the bootstrap function can't be HMRd during development.
-      return bootstrapWebXR();
+      try {
+        return bootstrapWebXR();
+      } catch (e) {
+        ${import_meta_hot}.send("triplex:error", {
+          col: e.loc?.column,
+          id: "renderer_bootstrap_failure",
+          line: e.loc?.line,
+          message: e.message,
+          source: e.id,
+          stack: e.stack,
+          subtitle: "An error prevented Triplex for starting, check the editor for how to proceed.",
+          title: "Triplex Could Not Start",
+          type: "unrecoverable",
+        });
+
+        throw e;
+      }
     }
 
     // Notify error boundaries after a HMR event has completed. This has to be

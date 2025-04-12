@@ -21,6 +21,7 @@ import { initializeWebviewPanel } from "./panel";
 import { type TriplexProjectResolver } from "./project";
 
 const log = logger("scene");
+const logWebXR = logger("webxr");
 
 function getFallbackExportName(filepath: string): string {
   const code = readFileSync(filepath, "utf8");
@@ -129,6 +130,9 @@ export class TriplexEditorProvider
         initialized.on("sync:element-set-prop", (e) => {
           // eslint-disable-next-line @typescript-eslint/no-explicit-any
           document.upsertProp(e as any);
+        }),
+        initialized.on("sync:error", (e) => {
+          logWebXR.error(e.message + "\n" + e.stack);
         }),
         onWS("fs-external-change", (data) => {
           if (data.path !== scopedFileName) {

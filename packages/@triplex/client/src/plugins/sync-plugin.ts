@@ -23,9 +23,15 @@ export function syncPlugin({
   return {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     configureServer(server: any) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      server.ws.on("triplex:element-set-prop", (data: any) => {
-        onSyncEvent({ data, name: "element-set-prop" });
+      server.ws.on(
+        "triplex:element-set-prop",
+        (data: ClientSendEventData["element-set-prop"]) => {
+          onSyncEvent({ data, name: "element-set-prop" });
+        },
+      );
+
+      server.ws.on("triplex:error", (data: ClientSendEventData["error"]) => {
+        onSyncEvent({ data, name: "error" });
       });
     },
     name: "triplex:sync-plugin",

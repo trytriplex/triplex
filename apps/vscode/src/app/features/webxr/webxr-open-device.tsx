@@ -14,7 +14,7 @@ export function WebXROpenDevice() {
   const { exportName, path } = useSceneContext();
   const params = `?exportName=${encodeURIComponent(exportName)}&path=${encodeURIComponent(path)}`;
   const localhostURL = `https://localhost:${window.triplex.env.ports.client}/webxr${params}`;
-  const hostnameURL = `https://${window.triplex.env.externalIP}:${window.triplex.env.ports.client}/webxr${params}}`;
+  const hostnameURL = `https://${window.triplex.env.externalIP}:${window.triplex.env.ports.client}/webxr${params}`;
   const openInMetaQuestURL = `https://www.oculus.com/open_url/?url=${encodeURIComponent(hostnameURL)}`;
 
   useScreenView("webxr_open_device", "Dialog");
