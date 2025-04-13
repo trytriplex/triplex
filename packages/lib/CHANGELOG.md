@@ -1,5 +1,11 @@
 # @triplex/lib
 
+## 0.69.14
+
+### Patch Changes
+
+- abf48b9: Move themes into JS module graph.
+
 ## 0.69.13
 
 ### Patch Changes

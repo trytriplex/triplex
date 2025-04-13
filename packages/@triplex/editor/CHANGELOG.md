@@ -1,5 +1,13 @@
 # @triplex/editor
 
+## 0.70.28
+
+### Patch Changes
+
+- Updated dependencies [abf48b9]
+  - @triplex/lib@0.69.14
+  - @triplex/ux@0.69.20
+
 ## 0.70.27
 
 ## 0.70.26
