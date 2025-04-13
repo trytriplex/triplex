@@ -44,6 +44,9 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
+      - name: Install Playwright browsers
+        run: npx playwright install chromium
+
       - name: Turn off unprivileged restriction
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
         run: sudo sysctl -w kernel.apparmor_restrict_unprivileged_userns=0

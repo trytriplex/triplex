@@ -32,3 +32,26 @@ test.describe(() => {
     await expect(locator.getByTestId("webxr-dialog-needs-setup")).toBeVisible();
   });
 });
+
+test.describe(() => {
+  test.use({
+    contextOptions: { ignoreHTTPSErrors: true },
+  });
+
+  // TODO: Add smoke test once this is live
+  test("webxr scene loads", async ({ page, vsce }) => {
+    await vsce.codelens("Plane").click();
+    const { locator } = vsce.resolveEditor();
+    await locator.getByRole("button", { name: "Open in WebXR" }).click();
+
+    const href = await locator
+      .getByRole("link", { name: "Open in Browser Emulator" })
+      .getAttribute("href");
+
+    // eslint-disable-next-line playwright/prefer-web-first-assertions
+    expect(href).toBeTruthy();
+    await page.goto(href!);
+
+    await expect(page.getByTestId("provider-props")).toBeAttached();
+  });
+});
