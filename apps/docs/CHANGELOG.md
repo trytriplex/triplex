@@ -1,5 +1,12 @@
 # @docs/triplex
 
+## 0.2.12
+
+### Patch Changes
+
+- Updated dependencies [abf48b9]
+  - @triplex/lib@0.69.14
+
 ## 0.2.11
 
 ### Patch Changes
