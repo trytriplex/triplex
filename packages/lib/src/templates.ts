@@ -4,10 +4,15 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
+import base from "../themes/base";
+import code from "../themes/code";
 
 export type Themes = "base" | "code";
+
+const themeStyles = {
+  base,
+  code,
+} satisfies Record<Themes, string>;
 
 export function rootHTML({
   css = "",
@@ -24,9 +29,7 @@ export function rootHTML({
   themes?: Themes[];
   title: string;
 }) {
-  const resolvedThemes = themes.map((theme) =>
-    readFileSync(join(__dirname, `../themes/${theme}.css`), "utf8"),
-  );
+  const resolvedThemes = themes.map((theme) => themeStyles[theme]);
 
   return `<!-- THIS FILE IS GENERATED DO NOT MODIFY -->
 <!doctype html>

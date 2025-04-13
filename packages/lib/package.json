@@ -47,7 +47,8 @@
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "themes"
   ],
   "scripts": {
     "build": "swc ./src -d ./dist",
