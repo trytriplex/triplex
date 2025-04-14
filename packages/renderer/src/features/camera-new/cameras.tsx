@@ -134,29 +134,28 @@ export function Cameras({ children }: { children: ReactNode }) {
     }
   }, [activeCamera, playState]);
 
-  useEffect(() => {
-    if (!gl || !activeCamera || !fg("camera_pp_fix")) {
+  useLayoutEffect(() => {
+    if (!activeCamera || activeState !== "editor" || !fg("camera_pp_fix")) {
       return;
     }
 
-    const originalRender = gl.render;
+    const render = gl.render;
 
-    /**
-     * This hijacks the existing GL render function to forcibly switch what
-     * camera is being used. This enables postprocessing to do its thing without
-     * Triplex having to do more work to support it.
-     */
-    gl.render = function (scene, camera, ...args) {
-      // only patch defaultCamera calls to preserve triplex ui correctly
-      if (activeState === "editor" && camera === defaultCamera) {
-        return originalRender.call(this, scene, activeCamera, ...args);
+    gl.render = function renderOverride(scene, camera, ...args) {
+      if (camera === defaultCamera && args.at(0) !== "triplex_ignore") {
+        // This forces anyone calling gl.render (like postprocessing) to be forced to
+        // render through the active camera instead of the default react-three camera
+        // when the "editor" camera is active.
+        return render.call(this, scene, activeCamera, ...args);
       }
 
-      return originalRender.call(this, scene, camera, ...args);
+      // Fallback to the original function with no changes if the passed in camera isn't default
+      // or we've explicitly ignored it by passing "triplex_ignore" as done in {@link ../camera-preview/index.tsx}.
+      return render.call(this, scene, camera, ...args);
     };
 
     return () => {
-      gl.render = originalRender;
+      gl.render = render;
     };
   }, [gl, activeCamera, activeState, defaultCamera]);
 
@@ -164,12 +163,9 @@ export function Cameras({ children }: { children: ReactNode }) {
     ({ gl, scene }) => {
       if (fg("camera_pp_fix")) {
         if (activeCamera) {
-          /**
-           * This is complementary to the render hijack above, postprocessing
-           * effects can disable clear which causes selection outlines to hang.
-           */
+          // Postprocessing sets this to false which breaks the outline selection
+          // indicators as they don't get unset. This turns it back on and gets it working again.
           gl.autoClear = true;
-          // gl.render call needed components without pp
           gl.render(scene, activeCamera);
         }
       } else {
@@ -178,9 +174,14 @@ export function Cameras({ children }: { children: ReactNode }) {
         }
       }
     },
-    // We use 0.5 here so it's ran before postprocessing.
-    // See: https://github.com/pmndrs/react-postprocessing/blob/master/src/EffectComposer.tsx#L63
-    fg("camera_pp_fix") ? 0.5 : 1,
+    fg("camera_pp_fix")
+      ? activeState === "editor"
+        ? // When the "editor" camera is active we use 0.5 so the callback runs before postprocessing.
+          // See: https://github.com/pmndrs/react-postprocessing/blob/master/src/EffectComposer.tsx#L63
+          0.5
+        : // When the "default" camera is active we release rendering back to defaults.
+          undefined
+      : 1,
   );
 
   const context: ActiveCameraContextValue = useMemo(
