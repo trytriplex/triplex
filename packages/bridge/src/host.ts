@@ -79,14 +79,23 @@ export function on<TEvent extends ClientSendEventName>(
 }
 
 function getMessageWindow() {
-  const iframe = document.getElementsByTagName("iframe")[0];
-  const messageWindow =
-    process.env.NODE_ENV === "test"
-      ? // In a test environment there won't be an iframe so we just return the window
-        window
-      : iframe.contentWindow;
+  if (process.env.NODE_ENV === "test") {
+    // The iframe doesn't exist in a test environment so we return the top level window.
+    return window;
+  }
 
-  return messageWindow;
+  // @ts-ignore — :-)
+  if (window.triplex.env.mode === "webxr") {
+    // When in WebXR the scene is the top level document instead of in an iframe.
+    return window;
+  }
+
+  const sceneIframe = document.getElementsByTagName("iframe")[0];
+  if (!sceneIframe) {
+    throw new Error("invariant: scene iframe could not be found");
+  }
+
+  return sceneIframe.contentWindow;
 }
 
 export function send<TEvent extends HostSendEventName>(

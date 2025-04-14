@@ -9,9 +9,10 @@ import { css } from "@emotion/react";
 import { createXRStore } from "@react-three/xr";
 import { type Modules, type ProviderModule } from "@triplex/bridge/client";
 import { LoadingLogo } from "@triplex/lib/loader";
-import { Suspense, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
 import { ErrorFallback } from "../../components/error-fallback";
+import { initializeWebXRBridge } from "./webxr-bridge";
 import { WebXRController } from "./webxr-controller";
 import { WebXRSceneLoader } from "./webxr-scene-loader";
 
@@ -65,6 +66,10 @@ export function WebXRApp({
       hand: false,
     }),
   );
+
+  useEffect(() => {
+    return initializeWebXRBridge();
+  }, []);
 
   return (
     <ErrorBoundaryForScene fallbackRender={() => <ErrorFallback />}>

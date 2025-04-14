@@ -30,6 +30,7 @@
     "suspend-react": "^0.1.3",
     "tinycolor2": "^1.6.0",
     "triplex-drei": "npm:@react-three/drei@^10.0.0",
+    "triplex-handle": "npm:@react-three/handle@^6.6.12",
     "tunnel-rat": "^0.1.2",
     "use-callback-ref": "^1.3.1",
     "zustand": "^4.3.2"
