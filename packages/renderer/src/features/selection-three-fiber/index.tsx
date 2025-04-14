@@ -32,12 +32,12 @@ import {
 } from "./resolver";
 import { SelectionIndicator } from "./selection-indicator";
 import { SelectionIndicatorLines } from "./selection-indicator-lines";
+import { useActionsStore } from "./store";
 import { TransformControls } from "./transform-controls";
 import {
   TransformControls as TransformControlsImmutable,
   type TransformEvent,
 } from "./transform-controls-immutable";
-import { type Space, type TransformControlMode } from "./types";
 
 export function ThreeFiberSelection({
   children,
@@ -47,8 +47,10 @@ export function ThreeFiberSelection({
   filter: { exportName: string; path: string };
 }) {
   const switchToComponent = useContext(SwitchToComponentContext);
-  const [space, setSpace] = useState<Space>("world");
-  const [transform, setTransform] = useState<TransformControlMode>("none");
+  const setSpace = useActionsStore((store) => store.setSpace);
+  const setTransform = useActionsStore((store) => store.setTransform);
+  const transform = useActionsStore((store) => store.transform);
+  const space = useActionsStore((store) => store.space);
   const scene = useThree((store) => store.scene);
   const camera = useContext(ActiveCameraContext);
   const gl = useThree((store) => store.gl);
@@ -184,7 +186,7 @@ export function ThreeFiberSelection({
         }
       }
     });
-  }, []);
+  }, [setSpace, setTransform]);
 
   useEffect(() => {
     return compose([
