@@ -404,7 +404,7 @@ export function ThreeFiberSelection({
       {window.triplex.env.mode === "default" &&
         camera?.type === "editor" &&
         resolvedObject?.object instanceof Camera && (
-          <CameraPreview camera={resolvedObject?.object} />
+          <CameraPreview camera={resolvedObject.object} />
         )}
 
       {import.meta.env.VITE_TRIPLEX_ENV !== "test" &&

@@ -19,7 +19,13 @@ export function CameraPreview({ camera }: { camera: Camera }) {
 
   useFrame((state) => {
     state.gl.setRenderTarget(renderTarget);
-    state.gl.render(state.scene, camera);
+    state.gl.render(
+      state.scene,
+      camera,
+      // @ts-expect-error — This is crammed in as an extra argument so we can check it
+      // in {@link ../camera-new/cameras.tsx} and ensure we don't override the camera.
+      "triplex_ignore",
+    );
     state.gl.setRenderTarget(null);
   });
 
