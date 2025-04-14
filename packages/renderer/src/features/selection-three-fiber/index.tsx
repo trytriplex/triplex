@@ -22,6 +22,7 @@ import { CameraPreview } from "../camera-preview";
 import { SceneObjectContext } from "../scene-element/context";
 import { SceneObjectEventsContext } from "../scene-element/use-scene-element-events";
 import { useSelectionMarshal } from "../selection-provider/use-selection-marhsal";
+import { WebXRTransformHandles } from "../webxr/webxr-transform-handles";
 import {
   findObject3D,
   resolveObject3D,
@@ -288,30 +289,20 @@ export function ThreeFiberSelection({
       return;
     }
 
+    const update = (propName: string) => ({
+      column: resolvedObject.meta.column,
+      line: resolvedObject.meta.line,
+      path: resolvedObject.meta.path,
+      propName,
+      propValue: e.value,
+    });
+
     if (e.mode === "translate") {
-      send("element-preview-prop", {
-        column: resolvedObject.meta.column,
-        line: resolvedObject.meta.line,
-        path: resolvedObject.meta.path,
-        propName: "position",
-        propValue: e.value,
-      });
+      send("element-preview-prop", update("position"));
     } else if (e.mode === "rotate") {
-      send("element-preview-prop", {
-        column: resolvedObject.meta.column,
-        line: resolvedObject.meta.line,
-        path: resolvedObject.meta.path,
-        propName: "rotation",
-        propValue: e.value,
-      });
+      send("element-preview-prop", update("rotation"));
     } else if (e.mode === "scale") {
-      send("element-preview-prop", {
-        column: resolvedObject.meta.column,
-        line: resolvedObject.meta.line,
-        path: resolvedObject.meta.path,
-        propName: "scale",
-        propValue: e.value,
-      });
+      send("element-preview-prop", update("scale"));
     }
   });
 
@@ -370,6 +361,7 @@ export function ThreeFiberSelection({
 
       {!!resolvedObject &&
         transform !== "none" &&
+        window.triplex.env.mode === "default" &&
         fg("immutable_transform_controls") && (
           <TransformControlsImmutable
             enabled={
@@ -387,6 +379,7 @@ export function ThreeFiberSelection({
 
       {!!resolvedObject &&
         transform !== "none" &&
+        window.triplex.env.mode === "default" &&
         !fg("immutable_transform_controls") && (
           <TransformControls
             enabled={
@@ -395,8 +388,25 @@ export function ThreeFiberSelection({
                 : transforms[transform]
             }
             mode={transform}
-            object={resolvedObject?.object}
+            object={resolvedObject.object}
             onCompleteTransform={onCompleteTransformHandler}
+            space={space}
+          />
+        )}
+
+      {window.triplex.env.mode === "webxr" &&
+        !!resolvedObject &&
+        transform !== "none" && (
+          <WebXRTransformHandles
+            enabled={
+              /^[a-z]/.test(resolvedObject.meta.name)
+                ? true
+                : transforms[transform]
+            }
+            mode={transform}
+            object={resolvedObject.object}
+            onChange={onChangeTransformHandler}
+            onConfirm={onConfirmTransformHandler}
             space={space}
           />
         )}

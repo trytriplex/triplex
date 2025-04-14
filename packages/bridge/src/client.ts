@@ -77,6 +77,7 @@ export function send<TEvent extends ClientSendEventName>(
     // @ts-ignore — hacks sorry.
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     import.meta.hot?.send(`triplex:${eventName}`, data as any);
+    window.postMessage({ data, eventName }, "*");
   } else if (eventName.startsWith("self:")) {
     window.postMessage({ data, eventName }, "*");
   } else {
