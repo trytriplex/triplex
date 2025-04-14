@@ -10,6 +10,7 @@ import {
   PointerRayModel,
   usePointerXRInputSourceEvents,
   useRayPointer,
+  useXRControllerButtonEvent,
   useXRInputSourceEvent,
   useXRInputSourceStateContext,
   XRControllerModel,
@@ -19,6 +20,7 @@ import { useEvent } from "@triplex/lib";
 import { useRef } from "react";
 import { Vector3, type Object3D } from "three";
 import { useSelectionStore } from "../selection-provider/store";
+import { useActionsStore } from "../selection-three-fiber/store";
 import { WebXRCursorPoint } from "./webxr-cursor-point";
 
 const originVector = new Vector3();
@@ -34,6 +36,8 @@ export function WebXRController() {
   const selectElement = useSelectionStore((store) => store.select);
   const setHovered = useSelectionStore((store) => store.setHovered);
   const rayMaxLength = 1;
+  const cycleTransform = useActionsStore((store) => store.cycleTransform);
+  const cycleSpace = useActionsStore((store) => store.cycleSpace);
 
   const getInputSourceOrientation = useEvent(() => {
     if (!controller.object || !ref.current) {
@@ -49,6 +53,18 @@ export function WebXRController() {
       inputSourceDirection,
       inputSourceOrigin,
     };
+  });
+
+  useXRControllerButtonEvent(controller, "a-button", (e) => {
+    if (e === "pressed") {
+      cycleTransform();
+    }
+  });
+
+  useXRControllerButtonEvent(controller, "b-button", (e) => {
+    if (e === "pressed") {
+      cycleSpace();
+    }
   });
 
   usePointerXRInputSourceEvents(
