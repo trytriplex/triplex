@@ -24,6 +24,8 @@ export interface SelectionStore {
   hovered: SelectionState | null;
   listen: (cb: SelectionListener, priority: number) => () => void;
   listeners: { cb: SelectionListener; priority: number }[];
+  lock: () => void;
+  release: () => void;
   select: (
     selection: SelectionState | SelectionState[],
     action: "replace" | "addition",
@@ -31,11 +33,17 @@ export interface SelectionStore {
   selections: SelectionState[];
   setDisabled: (disabled: boolean) => void;
   setHovered: (selection: SelectionState | null) => void;
+  state: "locked" | "idle";
 }
 
 export const useSelectionStore = create<SelectionStore>((set, get) => ({
   clear: () => {
-    const { selections, setHovered } = get();
+    const { selections, setHovered, state } = get();
+
+    if (state === "locked") {
+      return;
+    }
+
     if (selections.length) {
       set({ selections: [] });
       setHovered(null);
@@ -63,7 +71,19 @@ export const useSelectionStore = create<SelectionStore>((set, get) => ({
     };
   },
   listeners: [],
+  lock: () => {
+    set({ state: "locked" });
+  },
+  release: () => {
+    set({ state: "idle" });
+  },
   select: (element, action) => {
+    const { state } = get();
+
+    if (state === "locked") {
+      return;
+    }
+
     switch (action) {
       case "replace": {
         const nextSelections = Array.isArray(element) ? element : [element];
@@ -81,7 +101,13 @@ export const useSelectionStore = create<SelectionStore>((set, get) => ({
   },
   selections: [],
   setDisabled: (disabled) => set({ disabled }),
-  setHovered: (element) =>
+  setHovered: (element) => {
+    const { state } = get();
+
+    if (state === "locked") {
+      return;
+    }
+
     set((prevState) => {
       if (
         element === prevState.hovered ||
@@ -98,5 +124,7 @@ export const useSelectionStore = create<SelectionStore>((set, get) => ({
       send("element-hint", element);
 
       return { hovered: element };
-    }),
+    });
+  },
+  state: "idle",
 }));

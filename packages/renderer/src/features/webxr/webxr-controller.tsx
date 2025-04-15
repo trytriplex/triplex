@@ -76,7 +76,7 @@ export function WebXRController() {
 
   useXRInputSourceEvent(
     controller.inputSource,
-    "select",
+    "selectend",
     () => {
       const orientation = getInputSourceOrientation();
       if (!orientation) {
