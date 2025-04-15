@@ -13,6 +13,7 @@ import {
   type TransformHandlesProperties,
 } from "triplex-handle";
 import { strip } from "../../util/three";
+import { useSelectionStore } from "../selection-provider/store";
 
 export type TransformMode = "rotate" | "scale" | "translate";
 
@@ -60,11 +61,14 @@ export function WebXRTransformHandles({
   space?: "local" | "world";
 }) {
   const ref = useRef<Group>(null);
+  const setSelectionLock = useSelectionStore((store) => store.lock);
+  const releaseSelectionLock = useSelectionStore((store) => store.release);
 
   const applyHandler = useEvent<
     NonNullable<TransformHandlesProperties["apply"]>
   >((state) => {
     if (state.first) {
+      setSelectionLock();
       onTransformStart?.();
     }
 
@@ -80,6 +84,16 @@ export function WebXRTransformHandles({
       });
 
       onTransformEnd?.();
+
+      requestAnimationFrame(() => {
+        /**
+         * This is an easy way to ensure that any changes to the selection state
+         * are skipped until the transform has settled. This is because we're
+         * not using the inbuilt XR event system resulting in our custom events
+         * firing at the same time as we release the transform handles.
+         */
+        releaseSelectionLock();
+      });
     }
   });
 
