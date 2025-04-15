@@ -164,9 +164,5 @@ export function resolveObjectsFromOrientation(
 
   const results = raycaster.intersectObject(opts.scene);
 
-  return results.filter(
-    (found) =>
-      isObjectVisible(found.object) &&
-      found.object.type !== "TransformControlsPlane",
-  );
+  return results.filter((found) => isObjectVisible(found.object));
 }

@@ -6,13 +6,14 @@
  */
 import { createPortal, useFrame } from "@react-three/fiber";
 import { useEvent } from "@triplex/lib";
-import { Fragment, useLayoutEffect, useRef } from "react";
+import { useLayoutEffect, useRef } from "react";
 import { type Group, type Object3D, type Vector3Tuple } from "three";
 import {
   TransformHandles,
   type TransformHandlesProperties,
 } from "triplex-handle";
 import { strip } from "../../util/three";
+import { SceneObjectContext } from "../scene-element/context";
 import { useSelectionStore } from "../selection-provider/store";
 
 export type TransformMode = "rotate" | "scale" | "translate";
@@ -124,7 +125,7 @@ export function WebXRTransformHandles({
   }
 
   return (
-    <Fragment key={object.id}>
+    <SceneObjectContext.Provider key={object.id} value={false}>
       {createPortal(
         <TransformHandles
           apply={applyHandler}
@@ -143,6 +144,6 @@ export function WebXRTransformHandles({
          */
         object.parent,
       )}
-    </Fragment>
+    </SceneObjectContext.Provider>
   );
 }
