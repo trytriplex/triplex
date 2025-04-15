@@ -1256,7 +1256,7 @@
   resolved "https://registry.yarnpkg.com/@pkgr/core/-/core-0.1.2.tgz#1cf95080bb7072fafaa3cb13b442fab4695c3893"
   integrity sha512-fdDH1LSGfZdTH2sxdpVMw31BanV28K/Gry0cVFxaNP77neJSkd82mM8ErPNYs9e+0O7SdHBLTDzDgwUuy18RnQ==
 
-"@pmndrs/handle@^6.5.5":
+"@pmndrs/handle@^6.5.5", "@pmndrs/handle@~6.6.13":
   version "6.6.13"
   resolved "https://registry.yarnpkg.com/@pmndrs/handle/-/handle-6.6.13.tgz#77d452a0319e08bb3b913b3bb44d068cb7250579"
   integrity sha512-5XkP9j8Et+C00ljq/aHbWbZFSHefMYJAi2V3xe3mCF9CnGxbAPie7OJmQ39ofUTht8B6dr6TD79XLcwgjdPpqg==
@@ -9054,6 +9054,15 @@ trim-repeated@^2.0.0:
     use-sync-external-store "^1.4.0"
     utility-types "^3.11.0"
     zustand "^5.0.1"
+
+"triplex-handle@npm:@react-three/handle@^6.6.12":
+  version "6.6.13"
+  resolved "https://registry.yarnpkg.com/@react-three/handle/-/handle-6.6.13.tgz#b688025c1d9f50054eeb103171c0c71cf4af0983"
+  integrity sha512-mTpihevZYZIWXcNmuwv4ZqvU9tT2qqmwOUAaDBUJpzjvAM2rjclqKtEq5cHOJSpNsjCZjlaEplGUw7oahkV4yg==
+  dependencies:
+    "@pmndrs/handle" "~6.6.13"
+    "@pmndrs/pointer-events" "~6.6.13"
+    zustand "^4.5.2"
 
 troika-three-text@^0.52.0:
   version "0.52.3"
