@@ -17,6 +17,7 @@ export const WebXRCursorPoint = forwardRef<Object3D>((_, ref) => {
   const scene = useThree((store) => store.scene);
   const controller = useXRInputSourceStateContext("controller");
   const hovered = useSelectionStore((store) => store.hovered);
+  const state = useSelectionStore((store) => store.state);
   const selections = useSelectionStore((store) => store.selections);
 
   useEffect(() => {
@@ -40,6 +41,7 @@ export const WebXRCursorPoint = forwardRef<Object3D>((_, ref) => {
         transparent
         uniforms={{ size: { value: 100 } }}
         vertexShader={vert}
+        visible={state === "idle"}
       />
     </mesh>,
     scene,
