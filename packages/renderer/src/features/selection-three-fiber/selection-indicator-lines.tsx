@@ -5,23 +5,21 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 
-import { memo, useMemo } from "react";
+import { useFrame } from "@react-three/fiber";
+import { memo, useState } from "react";
 import { Box3 } from "three";
 import { type ResolvedObject3D } from "./resolver";
 
 const Outline = memo(({ objects }: { objects: ResolvedObject3D[] }) => {
-  const boundingBox = useMemo(() => {
-    const box = new Box3();
-    for (const object of objects) {
-      const localBox = new Box3().setFromObject(object.object);
-      box.union(localBox);
-    }
-    return box;
-  }, [objects]);
+  const [boundingBox] = useState(() => new Box3());
 
-  if (objects.length === 0) {
-    return null;
-  }
+  useFrame(() => {
+    boundingBox.makeEmpty();
+
+    for (const object of objects) {
+      boundingBox.expandByObject(object.object);
+    }
+  });
 
   return <box3Helper args={[boundingBox, "rgb(59,130,246)"]} />;
 });
@@ -37,8 +35,8 @@ export function SelectionIndicatorLines({
 }) {
   return (
     <>
-      <Outline objects={hovered} />
-      <Outline objects={selections} />
+      {hovered.length > 0 && <Outline objects={hovered} />}
+      {selections.length > 0 && <Outline objects={selections} />}
     </>
   );
 }
