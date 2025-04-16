@@ -1,5 +1,16 @@
 # @triplex/renderer
 
+## 0.71.20
+
+### Patch Changes
+
+- 733b63a: Add selection lock when transforming in WebXR.
+- ffc7076: Triplex now releases control of rendering back to default behavior when the "default" camera is active in the editor.
+- 88738b8: Add button events to cycle through space / transform modes in WebXR.
+- acc5fbf: Add WebXR transform handles when an object is selected.
+- ffc7076: Fix regression to camera previews caused by feature gate camera_pp_fix.
+- 1853b4c: Fix selection outline in WebXR not updating during transforms.
+
 ## 0.71.19
 
 ### Patch Changes
