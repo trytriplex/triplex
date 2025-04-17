@@ -38,4 +38,14 @@ describe("module", () => {
 
     expect(actual).toEqual([{ exportName: "default", name: "HelloWorld" }]);
   });
+
+  it("should infer implicit component", () => {
+    const actual = inferExports(`
+      export default memo(function HelloWorld() {
+        return <div />;
+      });
+  `);
+
+    expect(actual).toEqual([{ exportName: "default", name: "HelloWorld" }]);
+  });
 });

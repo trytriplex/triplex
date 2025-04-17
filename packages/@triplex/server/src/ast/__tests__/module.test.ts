@@ -305,4 +305,17 @@ describe("module", () => {
       filePath: join(__dirname, "__mocks__/scene.tsx"),
     });
   });
+
+  it("should get the export name of a implicit component", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/implicit.tsx"),
+    );
+
+    const { name } = getExportName(sourceFile, "default");
+
+    expect(name).toEqual("Component");
+  });
 });

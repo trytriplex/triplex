@@ -107,7 +107,10 @@ export function getExportName(
     }
 
     const declaration = resolveExportDeclaration(declarations[0]);
-    if (Node.isFunctionDeclaration(declaration)) {
+    if (
+      Node.isFunctionDeclaration(declaration) ||
+      Node.isFunctionExpression(declaration)
+    ) {
       return { declaration, name: declaration.getNameOrThrow() };
     }
 

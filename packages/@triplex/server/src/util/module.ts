@@ -8,7 +8,7 @@
 /** Infers ESM component exports from a given JS/TS file. */
 export function inferExports(file: string) {
   const namedExports = file.matchAll(/export (function|const|let) ([A-Z]\w+)/g);
-  const defaultExport = /export default \w*? ?\(?([A-Z]\w+)/.exec(file);
+  const defaultExport = /export default .*? ?\(?([A-Z]\w+)/.exec(file);
   const foundExports: { exportName: string; name: string }[] = [];
 
   for (const match of namedExports) {

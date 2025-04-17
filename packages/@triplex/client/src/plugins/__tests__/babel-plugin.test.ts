@@ -2167,4 +2167,42 @@ describe("babel plugin", () => {
       };"
     `);
   });
+
+  it("should hoist implicit component so it can be assigned meta", () => {
+    const result = transformSync(
+      `
+        export default memo(function Component() {
+          return <div />;
+        });
+      `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "const T_Hoisted = memo(function Component() {
+        return <SceneObject __component={"div"} __meta={{
+          "originExportName": "",
+          "originPath": "",
+          "exportName": "",
+          "path": "",
+          "name": "div",
+          "line": 3,
+          "column": 18,
+          "translate": false,
+          "rotate": false,
+          "scale": false
+        }}></SceneObject>;
+      });
+      export default T_Hoisted;
+      T_Hoisted.triplexMeta = {
+        "lighting": "default",
+        "root": "react"
+      };"
+    `);
+  });
 });

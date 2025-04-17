@@ -316,6 +316,23 @@ export default function triplexBabelPlugin({
           path.replaceWith(newNode);
         }
       },
+      ExportDefaultDeclaration(path) {
+        if (path.node.declaration.type === "CallExpression") {
+          // We've found a possible implicit function.
+          // Move this to a variable so it can be assigned metadata.
+          const variableName = "T" + path.scope.generateUid("Hoisted");
+
+          const variableDeclaration = t.variableDeclaration("const", [
+            t.variableDeclarator(
+              t.identifier(variableName),
+              path.node.declaration,
+            ),
+          ]);
+
+          path.insertBefore(variableDeclaration);
+          path.set("declaration", t.identifier(variableName));
+        }
+      },
       FunctionDeclaration: {
         enter(path) {
           if (
