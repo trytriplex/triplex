@@ -6,6 +6,7 @@
  */
 import { init } from "@sentry/node";
 import { createServer as createClientServer } from "@triplex/client";
+import { createForkLogger } from "@triplex/lib/log";
 import { type FGEnvironment } from "@triplex/lib/types";
 import {
   createServer,
@@ -13,9 +14,8 @@ import {
   type ReconciledTriplexConfig,
   type TriplexPorts,
 } from "@triplex/server";
-import { logger } from "../util/log/fork";
 
-const log = logger("fork_process");
+const log = createForkLogger("fork_process");
 
 export type Args = {
   config: ReconciledTriplexConfig;

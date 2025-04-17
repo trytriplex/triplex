@@ -259,6 +259,14 @@ export interface SecretTriplexConfig {
 
 export interface TriplexConfig {
   /**
+   * Relative path to a custom vite config. Use to define custom bundler
+   * configuration that otherwise can't be handled by default values.
+   *
+   * This is inherently unsafe and its usage can cause upgrading pain when new
+   * versions of Triplex are released. Use with caution.
+   */
+  UNSAFE_viteConfig?: string;
+  /**
    * Folder inside the {@link publicDir} folder where Triplex maintains static
    * assets such as GLTF and GLB files. Files inside this directory are made
    * available to be added to the open component as a `<primitive>` element.

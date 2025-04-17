@@ -22,6 +22,7 @@ const DEFAULT_PUBLIC_DIR = "../public";
 const DEFAULT_ASSETS_DIR = "assets";
 
 const schema = object({
+  UNSAFE_viteConfig: optional(string()),
   assetsDir: optional(string()),
   components: optional(array(string())),
   define: optional(object({})),
@@ -76,7 +77,13 @@ export function getConfig(_cwd: string): ReconciledTriplexConfig {
       ? join(cwd, ".triplex", config.renderer)
       : config.renderer || DEFAULT_RENDERER;
 
+  const UNSAFE_viteConfig: string =
+    config.UNSAFE_viteConfig && config.UNSAFE_viteConfig.startsWith(".")
+      ? join(cwd, ".triplex", config.UNSAFE_viteConfig)
+      : config.UNSAFE_viteConfig || "";
+
   return {
+    UNSAFE_viteConfig,
     assetsDir,
     components,
     cwd,

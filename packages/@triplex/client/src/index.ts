@@ -7,6 +7,7 @@
 import { type Server } from "node:http";
 import { createServer as createWebServer } from "@httptoolkit/httpolyglot";
 import { loadingLogo } from "@triplex/lib/loader";
+import { createForkLogger } from "@triplex/lib/log";
 import { rootHTML } from "@triplex/lib/templates";
 import { type FGEnvironment } from "@triplex/lib/types";
 import type {
@@ -27,6 +28,8 @@ import { scripts } from "./templates";
 import { type InitializationConfig } from "./types";
 import { getCertificate } from "./util/cert-https";
 import { depsToSkipOptimizing, optionalDeps } from "./util/modules";
+
+const log = createForkLogger("client");
 
 export async function createServer({
   config,
@@ -50,7 +53,11 @@ export async function createServer({
   const sslCert = await getCertificate("node_modules/.triplex/basic-ssl");
   const app = express();
   const webServer = createWebServer({ cert: sslCert, key: sslCert }, app);
-  const { createServer: createViteServer } = await import("vite");
+  const {
+    createServer: createViteServer,
+    loadConfigFromFile,
+    mergeConfig,
+  } = await import("vite");
   const { default: glsl } = await import("vite-plugin-glsl");
   const { default: tsconfigPaths } = await import("vite-tsconfig-paths");
 
@@ -66,6 +73,17 @@ export async function createServer({
     userId,
   };
 
+  if (config.UNSAFE_viteConfig) {
+    log.debug(`Loading custom vite config from "${config.UNSAFE_viteConfig}"`);
+  }
+
+  const unsafeUserViteConfig = config.UNSAFE_viteConfig
+    ? await loadConfigFromFile(
+        { command: "serve", mode: "development" },
+        config.UNSAFE_viteConfig,
+      ).then((result) => result?.config || {})
+    : {};
+
   /**
    * We need to make sure Vite runs in development mode, even after being built
    * for production. This overrides NODE_ENV if it was set to production
@@ -75,74 +93,76 @@ export async function createServer({
     process.env.NODE_ENV = "development";
   }
 
-  const vite = await createViteServer({
-    appType: "custom",
-    assetsInclude: renderer.manifest.bundler?.assetsInclude,
-    cacheDir: `node_modules/.triplex-${version}`,
-    configFile: false,
-    define: config.define,
-    logLevel: "error",
-    /**
-     * We need to make sure Vite runs in development mode to ensure HMR and
-     * related capabilities are turned on.
-     */
-    mode: "development",
-    optimizeDeps: {
-      esbuildOptions: { plugins: [transformNodeModulesJSXPlugin()] },
+  const vite = await createViteServer(
+    mergeConfig(unsafeUserViteConfig, {
+      appType: "custom",
+      assetsInclude: renderer.manifest.bundler?.assetsInclude,
+      cacheDir: `node_modules/.triplex-${version}`,
+      configFile: false,
+      define: config.define,
+      logLevel: "error",
       /**
-       * If an optional dependency is not found in the project we need to stub
-       * it out in the dependency graph AND exclude it from pre-bundling so Vite
-       * doesn't throw an exception during pre-bundling.
-       *
-       * {@link ./scene-plugin.ts}
+       * We need to make sure Vite runs in development mode to ensure HMR and
+       * related capabilities are turned on.
        */
-      exclude: depsToSkipOptimizing(initializationConfig),
-    },
-    plugins: [
-      syncPlugin({ onSyncEvent }),
-      remoteModulePlugin({ cwd: config.cwd, files: config.files, ports }),
-      // ---------------------------------------------------------------
-      // TODO: Vite plugins should be loaded from a renderer's manifest
-      // instead of hardcoded. We'll cross this bridge to resolve later.
-      react({
-        babel: {
-          plugins: [
-            triplexBabelPlugin({
-              cwd: config.cwd,
-              exclude: [config.provider, renderer.root, "triplex:"],
-            }),
-          ],
+      mode: "development",
+      optimizeDeps: {
+        esbuildOptions: { plugins: [transformNodeModulesJSXPlugin()] },
+        /**
+         * If an optional dependency is not found in the project we need to stub
+         * it out in the dependency graph AND exclude it from pre-bundling so
+         * Vite doesn't throw an exception during pre-bundling.
+         *
+         * {@link ./scene-plugin.ts}
+         */
+        exclude: depsToSkipOptimizing(initializationConfig),
+      },
+      plugins: [
+        syncPlugin({ onSyncEvent }),
+        remoteModulePlugin({ cwd: config.cwd, files: config.files, ports }),
+        // ---------------------------------------------------------------
+        // TODO: Vite plugins should be loaded from a renderer's manifest
+        // instead of hardcoded. We'll cross this bridge to resolve later.
+        react({
+          babel: {
+            plugins: [
+              triplexBabelPlugin({
+                cwd: config.cwd,
+                exclude: [config.provider, renderer.root, "triplex:"],
+              }),
+            ],
+          },
+        }),
+        glsl(),
+        // ---------------------------------------------------------------
+        scenePlugin(initializationConfig),
+        tsconfigPaths({ root: config.cwd }),
+      ],
+      publicDir: config.publicDir,
+      resolve: {
+        alias: {
+          "@triplex/bridge/client": require.resolve("@triplex/bridge/client"),
+          "triplex:canvas": renderer.path,
+          "triplex:renderer": renderer.path,
         },
-      }),
-      glsl(),
-      // ---------------------------------------------------------------
-      scenePlugin(initializationConfig),
-      tsconfigPaths({ root: config.cwd }),
-    ],
-    publicDir: config.publicDir,
-    resolve: {
-      alias: {
-        "@triplex/bridge/client": require.resolve("@triplex/bridge/client"),
-        "triplex:canvas": renderer.path,
-        "triplex:renderer": renderer.path,
+        /**
+         * These dependencies need to be deduped so they get picked up from
+         * userland node_modules rather than @triplex package node_modules as
+         * they won't be found when built for production.
+         */
+        dedupe: (renderer.manifest.bundler?.dedupe || []).concat(optionalDeps),
       },
-      /**
-       * These dependencies need to be deduped so they get picked up from
-       * userland node_modules rather than @triplex package node_modules as they
-       * won't be found when built for production.
-       */
-      dedupe: (renderer.manifest.bundler?.dedupe || []).concat(optionalDeps),
-    },
-    root: config.cwd,
-    server: {
-      hmr: {
-        overlay: false,
-        path: "/__hmr_client__",
-        server: webServer as unknown as Server,
+      root: config.cwd,
+      server: {
+        hmr: {
+          overlay: false,
+          path: "/__hmr_client__",
+          server: webServer as unknown as Server,
+        },
+        middlewareMode: true,
       },
-      middlewareMode: true,
-    },
-  });
+    }),
+  );
 
   app.use((_, res, next) => {
     res.set({

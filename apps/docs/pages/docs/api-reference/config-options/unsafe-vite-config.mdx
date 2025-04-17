@@ -1,0 +1,25 @@
+---
+title: UNSAFE_viteConfig
+description: Define custom bundler configuration that otherwise can't be handled by default behavior.
+---
+
+Occasionally projects need custom behavior to run using custom plugins, code transformations, or other bundler-specific features. Use with caution, this is inherently unsafe and its usage can cause upgrade pain when new versions of Triplex are released.
+
+## Usage
+
+Pass a relative path to your Vite config. Your config and the internal config will be merged together, with the internal one taking priority.
+
+```json filename=".triplex/config.json"
+{
+  "UNSAFE_viteConfig": "./vite.config.js"
+}
+```
+
+```js filename="vite.config.js"
+import { defineConfig } from "vite";
+import { customPlugin } from "./my-plugins";
+
+export default defineConfig({
+  plugins: [customPlugin()],
+});
+```

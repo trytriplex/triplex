@@ -1,4 +1,5 @@
 {
   "$schema": "https://triplex.dev/config.schema.json",
-  "renderer": "../../../packages/renderer/src/index.tsx"
+  "renderer": "../../../packages/renderer/src/index.tsx",
+  "UNSAFE_viteConfig": "./vite.config.js"
 }
