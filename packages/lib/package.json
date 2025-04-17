@@ -24,6 +24,11 @@
       "module": "./src/loader.tsx",
       "default": "./src/loader.tsx"
     },
+    "./log": {
+      "types": "./src/log.ts",
+      "module": "./src/log.ts",
+      "default": "./src/log.ts"
+    },
     "./node": {
       "types": "./src/node.ts",
       "module": "./src/node.ts",
@@ -83,6 +88,11 @@
         "types": "./src/loader.d.ts",
         "module": "./src/loader.js",
         "default": "./src/loader.js"
+      },
+      "./log": {
+        "types": "./src/log.d.ts",
+        "module": "./src/log.js",
+        "default": "./src/log.js"
       },
       "./node": {
         "types": "./src/node.d.ts",

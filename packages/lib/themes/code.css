@@ -1,26 +1,26 @@
 html {
-  --x-shiki-color-text: var(--x-text);
-  --x-shiki-token-comment: rgb(251 44 54);
-  --x-shiki-token-constant: rgb(0 201 81);
-  --x-shiki-token-function: rgb(43 127 255);
-  --x-shiki-token-keyword: rgb(0 201 81);
-  --x-shiki-token-link: rgb(43 127 255);
-  --x-shiki-token-parameter: rgb(0 201 81);
-  --x-shiki-token-punctuation: rgb(43 127 255);
-  --x-shiki-token-string-expression: rgb(251 44 54);
-  --x-shiki-token-string: rgb(251 44 54);
+  --shiki-color-text: var(--x-text);
+  --shiki-token-comment: rgb(251 44 54);
+  --shiki-token-constant: rgb(0 201 81);
+  --shiki-token-function: rgb(43 127 255);
+  --shiki-token-keyword: rgb(0 201 81);
+  --shiki-token-link: rgb(43 127 255);
+  --shiki-token-parameter: rgb(0 201 81);
+  --shiki-token-punctuation: rgb(43 127 255);
+  --shiki-token-string-expression: rgb(251 44 54);
+  --shiki-token-string: rgb(251 44 54);
 }
 
 @media (prefers-color-scheme: dark) {
   html {
-    --x-shiki-token-comment: rgb(255 100 103);
-    --x-shiki-token-constant: rgb(5 223 114);
-    --x-shiki-token-function: rgb(81 162 255);
-    --x-shiki-token-keyword: rgb(5 223 114);
-    --x-shiki-token-link: rgb(81 162 255);
-    --x-shiki-token-parameter: rgb(5 223 114);
-    --x-shiki-token-punctuation: rgb(81 162 255);
-    --x-shiki-token-string-expression: rgb(255 100 103);
-    --x-shiki-token-string: rgb(255 100 103);
+    --shiki-token-comment: rgb(255 100 103);
+    --shiki-token-constant: rgb(5 223 114);
+    --shiki-token-function: rgb(81 162 255);
+    --shiki-token-keyword: rgb(5 223 114);
+    --shiki-token-link: rgb(81 162 255);
+    --shiki-token-parameter: rgb(5 223 114);
+    --shiki-token-punctuation: rgb(81 162 255);
+    --shiki-token-string-expression: rgb(255 100 103);
+    --shiki-token-string: rgb(255 100 103);
   }
 }

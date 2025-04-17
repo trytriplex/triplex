@@ -4,5 +4,6 @@
   "components": "",
   "public-dir": "",
   "assets-dir": "",
-  "define": ""
+  "define": "",
+  "unsafe-vite-config": "UNSAFE_viteConfig"
 }
