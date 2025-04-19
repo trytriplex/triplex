@@ -1,5 +1,15 @@
 # @triplex/vscode
 
+## 0.2.31
+
+### Patch Changes
+
+- 839e91e: A new config option "UNSAFE_viteConfig" is now available. Use it to declare custom bundler behavior that otherwise can't be handled by default behavior. See the docs here: https://triplex.dev/docs/api-reference/config-options/unsafe-vite-config.
+- Updated dependencies [839e91e]
+- Updated dependencies [42b03ff]
+  - @triplex/client@0.70.28
+  - @triplex/server@0.71.12
+
 ## 0.2.30
 
 ### Patch Changes

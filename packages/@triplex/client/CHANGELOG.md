@@ -1,5 +1,13 @@
 # @triplex/client
 
+## 0.70.28
+
+### Patch Changes
+
+- 839e91e: A new config option "UNSAFE_viteConfig" is now available. Use it to declare custom bundler behavior that otherwise can't be handled by default behavior. See the docs here: https://triplex.dev/docs/api-reference/config-options/unsafe-vite-config.
+- 42b03ff: Inline default exported components can now be opened in Triplex.
+  - @triplex/renderer@0.71.21
+
 ## 0.70.27
 
 ### Patch Changes
