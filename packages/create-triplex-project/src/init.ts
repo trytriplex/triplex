@@ -42,7 +42,7 @@ export async function init({
     rename?: string,
   ) {
     if (replace) {
-      let file = await fs.readFile(join(templateDir, name), "utf8");
+      let file = await fs.readFile(join(templateDir, template, name), "utf8");
 
       Object.entries(replace).forEach(([key, value]) => {
         file = file.replace(key, value);
@@ -50,7 +50,10 @@ export async function init({
 
       await fs.writeFile(join(cwd, rename || name), file);
     } else {
-      await fs.copyFile(join(templateDir, name), join(cwd, rename || name));
+      await fs.copyFile(
+        join(templateDir, template, name),
+        join(cwd, rename || name),
+      );
     }
   }
 
@@ -90,14 +93,11 @@ export async function init({
   }
 
   const spinner = ora("Copying files...").start();
+  const templateFiles = join(templateDir, template);
 
-  await fs.cp(join(templateDir, template), cwd, {
-    recursive: true,
-  });
-  await copyTemplateFileToDest("gitignore", undefined, ".gitignore");
+  await fs.cp(templateFiles, cwd, { recursive: true });
   await copyTemplateFileToDest("package.json", { "{app_name}": name });
   await copyTemplateFileToDest("README.md", { "{app_name}": name });
-  await copyTemplateFileToDest("tsconfig.json");
 
   spinner.text = "Installing dependencies...";
 
