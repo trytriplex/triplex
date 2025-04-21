@@ -33,7 +33,7 @@ describe("init command", () => {
         cwd,
         name: "fresh-local",
         pkgManager: "npm",
-        template: "halloween",
+        template: "empty",
       });
 
       expect(open).toEqual({
@@ -61,19 +61,11 @@ describe("init command", () => {
         cwd,
         name: "fresh-local",
         pkgManager: "npm",
-        template: "halloween",
+        template: "empty",
       });
 
-      expect(stubFs.copyFile).toHaveBeenCalledWith(
-        join(templateDir, "gitignore"),
-        join(cwd, "fresh-local", ".gitignore"),
-      );
-      expect(stubFs.copyFile).toHaveBeenCalledWith(
-        join(templateDir, "tsconfig.json"),
-        join(cwd, "fresh-local", "tsconfig.json"),
-      );
       expect(stubFs.cp).toHaveBeenCalledWith(
-        join(templateDir, "halloween"),
+        join(templateDir, "empty"),
         join(cwd, "fresh-local"),
         { recursive: true },
       );
@@ -98,7 +90,7 @@ describe("init command", () => {
         cwd,
         name: "fresh-local",
         pkgManager: "npm",
-        template: "halloween",
+        template: "empty",
       });
 
       expect(stubFs.writeFile).toHaveBeenCalledWith(
