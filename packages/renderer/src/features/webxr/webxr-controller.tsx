@@ -16,8 +16,9 @@ import {
   XRControllerModel,
   XRSpace,
 } from "@react-three/xr";
+import { send } from "@triplex/bridge/client";
 import { useEvent } from "@triplex/lib";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import { Vector3, type Object3D } from "three";
 import { useSelectionStore } from "../selection-provider/store";
 import { useActionsStore } from "../selection-three-fiber/store";
@@ -34,6 +35,7 @@ export function WebXRController() {
   const listeners = useSelectionStore((store) => store.listeners);
   const clearSelection = useSelectionStore((store) => store.clear);
   const selectElement = useSelectionStore((store) => store.select);
+  const selections = useSelectionStore((store) => store.selections);
   const setHovered = useSelectionStore((store) => store.setHovered);
   const rayMaxLength = 1;
   const cycleTransform = useActionsStore((store) => store.cycleTransform);
@@ -120,6 +122,17 @@ export function WebXRController() {
       pointRef.current.position.add(delta);
     }
   });
+
+  useEffect(() => {
+    const selection = selections.at(0);
+    if (selection) {
+      send("element-focused", selection);
+    }
+
+    return () => {
+      send("element-blurred", undefined);
+    };
+  }, [selections]);
 
   return (
     <>

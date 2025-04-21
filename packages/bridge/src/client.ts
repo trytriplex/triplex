@@ -43,6 +43,13 @@ export function on<TEvent extends HostSendEventName>(
     | HostSendEventResponse[TEvent]
     | Promise<HostSendEventResponse[TEvent]>,
 ) {
+  // @ts-ignore — hacks sorry.
+  if (window.triplex.env.mode === "webxr") {
+    // @ts-ignore — hacks sorry.
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    import.meta.hot?.on(`triplex:${eventName}`, callback);
+  }
+
   const cb = async (e: MessageEvent) => {
     if (typeof e.data === "object" && e.data.eventName === eventName) {
       const value = await callback(e.data.data);
@@ -64,6 +71,12 @@ export function on<TEvent extends HostSendEventName>(
 
   return () => {
     window.removeEventListener("message", cb, false);
+
+    // @ts-ignore — hacks sorry.
+    if (window.triplex.env.mode === "webxr") {
+      // @ts-ignore — hacks sorry.
+      import.meta.hot?.off(`triplex:${eventName}`, callback);
+    }
   };
 }
 
