@@ -9,6 +9,8 @@ import {
   type ClientSendEventName,
 } from "@triplex/bridge/client";
 import { noop } from "@triplex/lib";
+import { type TriplexPorts } from "@triplex/server";
+import { props } from "../util/api";
 
 export type OnSyncEvent = <TEvent extends ClientSendEventName>(e: {
   data: ClientSendEventData[TEvent];
@@ -17,8 +19,10 @@ export type OnSyncEvent = <TEvent extends ClientSendEventName>(e: {
 
 export function syncPlugin({
   onSyncEvent = noop,
+  ports,
 }: {
   onSyncEvent?: OnSyncEvent;
+  ports: TriplexPorts;
 }) {
   return {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -33,6 +37,27 @@ export function syncPlugin({
       server.ws.on("triplex:error", (data: ClientSendEventData["error"]) => {
         onSyncEvent({ data, name: "error" });
       });
+
+      server.ws.on(
+        "triplex:element-focused",
+        async (data: ClientSendEventData["element-focused"]) => {
+          const result = await props(
+            data.path,
+            data.line,
+            data.column,
+            ports.server,
+          );
+
+          server.ws.send("triplex:element-focused-props", result);
+        },
+      );
+
+      server.ws.on(
+        "triplex:element-blurred",
+        (_: ClientSendEventData["element-blurred"]) => {
+          server.ws.send("triplex:element-focused-props", { props: [] });
+        },
+      );
     },
     name: "triplex:sync-plugin",
   } as const;

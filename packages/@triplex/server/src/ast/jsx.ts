@@ -13,7 +13,6 @@ import {
   type JsxElement,
   type JsxFragment,
   type JsxSelfClosingElement,
-  type SourceFile,
   type ts,
 } from "ts-morph";
 import type { JsxElementPositions } from "../types";
@@ -400,7 +399,7 @@ export function getJsxElementAt(
 }
 
 export function getJsxElementAtOrThrow(
-  sourceFile: SourceFile,
+  sourceFile: SourceFileReadOnly,
   line: number,
   column: number,
 ) {

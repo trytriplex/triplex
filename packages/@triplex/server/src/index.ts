@@ -140,6 +140,18 @@ export function createServer({
     context.response.body = { message: "success", ...ids };
   });
 
+  router.get("/scene/:path/object/:line/:column", async (context) => {
+    const line = Number(context.params.line);
+    const column = Number(context.params.column);
+    const path = context.params.path;
+    const sourceFile = project.getSourceFile(path);
+    const sceneObject = getJsxElementAtOrThrow(sourceFile.read(), line, column);
+    const { props } = getJsxElementProps(sourceFile.read(), sceneObject);
+    const propNames = props.map((prop) => prop.name);
+
+    context.response.body = { props: propNames };
+  });
+
   /** Update or add a prop to a jsx element. */
   router.get("/scene/object/:line/:column/prop", async (context) => {
     const path = getParam(context, "path");

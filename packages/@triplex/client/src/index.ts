@@ -118,7 +118,7 @@ export async function createServer({
         exclude: depsToSkipOptimizing(initializationConfig),
       },
       plugins: [
-        syncPlugin({ onSyncEvent }),
+        syncPlugin({ onSyncEvent, ports }),
         remoteModulePlugin({ cwd: config.cwd, files: config.files, ports }),
         // ---------------------------------------------------------------
         // TODO: Vite plugins should be loaded from a renderer's manifest
