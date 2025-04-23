@@ -1,5 +1,11 @@
 # create-triplex-project
 
+## 0.70.8
+
+### Patch Changes
+
+- 8b8dee7: Templates now don't share any common files.
+
 ## 0.70.7
 
 ### Patch Changes

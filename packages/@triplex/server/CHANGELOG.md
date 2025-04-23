@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.71.13
+
+### Patch Changes
+
+- 3fd23e3: Add support for custom component transforms in WebXR.
+
 ## 0.71.12
 
 ### Patch Changes

@@ -1,5 +1,14 @@
 # @triplex/client
 
+## 0.70.29
+
+### Patch Changes
+
+- 3fd23e3: Add support for custom component transforms in WebXR.
+- Updated dependencies [3fd23e3]
+  - @triplex/renderer@0.71.22
+  - @triplex/bridge@0.70.7
+
 ## 0.70.28
 
 ### Patch Changes
