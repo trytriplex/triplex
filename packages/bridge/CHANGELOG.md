@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.70.7
+
+### Patch Changes
+
+- 3fd23e3: Add support for custom component transforms in WebXR.
+
 ## 0.70.6
 
 ### Patch Changes
