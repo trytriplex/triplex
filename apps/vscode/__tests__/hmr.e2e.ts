@@ -36,4 +36,22 @@ test.describe(() => {
       await expect(element).toContainText(`"color":"green"`);
     },
   );
+
+  test("hmr is flushed when changing externals", async ({
+    setExternalFile,
+    vsce,
+  }) => {
+    await vsce.codelens("TestHMRExternal").click();
+    const { scene } = vsce.resolveEditor();
+
+    await setExternalFile(
+      "examples-private/test-fixture/src/util/external.tsx",
+      (contents) => {
+        return contents.replace("blue", "red");
+      },
+    );
+
+    const element = scene.locator.getByTestId("component-props");
+    await expect(element).toContainText(`"color":"red"`);
+  });
 });

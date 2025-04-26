@@ -71,13 +71,16 @@ export function scenePlugin(template: InitializationConfig) {
       }
 
       const [filepath] = id.split("?");
-      if (!filepath.endsWith(".tsx")) {
-        // Skip non-tsx files.
-        return;
+      if (
+        (filepath.endsWith(".tsx") || filepath.endsWith(".jsx")) &&
+        code.includes("triplexMeta")
+      ) {
+        // This forces modules with JSX to invalidate themselves if their exports change.
+        return scripts.invalidateHMRHeader + code + scripts.invalidateHMRFooter;
       }
 
-      // This forces modules with JSX to invalidate themselves if their exports change.
-      return scripts.invalidateHMRHeader + code + scripts.invalidateHMRFooter;
+      // Skip files that don't declare any React components.
+      return;
     },
   } as const;
 }

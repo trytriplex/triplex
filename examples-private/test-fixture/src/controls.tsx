@@ -6,9 +6,14 @@
  */
 import { useEffect } from "react";
 import { addDOMTestData } from "./util/add-dom-data";
+import { color } from "./util/external";
 
 export function TestHMR() {
   return <ComponentControlsTest color="blue" />;
+}
+
+export function TestHMRExternal() {
+  return <ComponentControlsTest color={color()} />;
 }
 
 export function ComponentControlsTest({

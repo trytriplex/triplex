@@ -177,6 +177,10 @@ const test = base.extend<
   {
     filename: string;
     getFile: (path?: string) => string;
+    setExternalFile: (
+      filename: string,
+      cb: (contents: string) => string,
+    ) => Promise<void>;
     setFile: (cb: (contents: string) => string) => Promise<void>;
     vsce: ExtensionPage;
   },
@@ -196,6 +200,13 @@ const test = base.extend<
     await use((path) =>
       readFileSync(join(process.cwd(), path ?? filename), "utf8"),
     );
+  },
+  setExternalFile: async ({ getFile }, use) => {
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    await use(async (filename, cb) => {
+      await new Promise((resolve) => setTimeout(resolve, 200));
+      await writeFile(join(process.cwd(), filename), cb(getFile(filename)));
+    });
   },
   setFile: async ({ filename, getFile }, use) => {
     // eslint-disable-next-line react-hooks/rules-of-hooks

@@ -2205,4 +2205,22 @@ describe("babel plugin", () => {
       };"
     `);
   });
+
+  it("should only add meta to react components", () => {
+    const result = transformSync(
+      `
+        export const MyTrait = trait();
+      `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(
+      `"export const MyTrait = trait();"`,
+    );
+  });
 });
