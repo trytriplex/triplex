@@ -1250,9 +1250,24 @@ importers:
       '@types/node':
         specifier: ^18.11.18
         version: 18.11.18
+      '@types/react-dom':
+        specifier: ^19.0.3
+        version: 19.0.3(@types/react@19.0.8)
       '@types/three':
         specifier: ^0.171.0
         version: 0.171.0
+      '@vitejs/plugin-react':
+        specifier: ^4.3.4
+        version: 4.3.4(vite@6.0.7(@types/node@18.11.18)(jiti@1.21.6)(tsx@4.19.2)(yaml@2.5.1))
+      koota:
+        specifier: ^0.4.0
+        version: 0.4.0(@types/react@19.0.8)(react@19.0.0)
+      react:
+        specifier: ^19.0.0
+        version: 19.0.0
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.0.0(react@19.0.0)
       three:
         specifier: ^0.172.0
         version: 0.172.0
@@ -1262,6 +1277,9 @@ importers:
       typescript:
         specifier: ^5.7.2
         version: 5.7.2
+      vite:
+        specifier: ^6.0.7
+        version: 6.0.7(@types/node@18.11.18)(jiti@1.21.6)(tsx@4.19.2)(yaml@2.5.1)
 
   packages/lib:
     dependencies:
@@ -6723,6 +6741,17 @@ packages:
   kleur@4.1.5:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
     engines: {node: '>=6'}
+
+  koota@0.4.0:
+    resolution: {integrity: sha512-BGwO00OwOrjeQG1dyjs+Kdk8m07SApooSga7tU1c5Wl/kcO496XyFikYMr60EPyDxXToI8HR7j5uz2sPMccBSQ==}
+    peerDependencies:
+      '@types/react': ^19.0.8
+      react: ^19.0.0
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      react:
+        optional: true
 
   ktx-parse@0.4.5:
     resolution: {integrity: sha512-MK3FOody4TXbFf8Yqv7EBbySw7aPvEcPX++Ipt6Sox+/YMFvR5xaTyhfNSk1AEmMy+RYIw81ctN4IMxCB8OAlg==}
@@ -16398,6 +16427,11 @@ snapshots:
   kleur@3.0.3: {}
 
   kleur@4.1.5: {}
+
+  koota@0.4.0(@types/react@19.0.8)(react@19.0.0):
+    optionalDependencies:
+      '@types/react': 19.0.8
+      react: 19.0.0
 
   ktx-parse@0.4.5: {}
 

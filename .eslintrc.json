@@ -22,7 +22,8 @@
         "./packages/bridge/**",
         "./packages/lib/**",
         "./packages/renderer/**",
-        "./packages/websocks/**"
+        "./packages/websocks/**",
+        "./packages/create-triplex-project/**"
       ],
       "rules": {
         "react-compiler/react-compiler": "error"
