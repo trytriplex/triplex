@@ -1,0 +1,5 @@
+{
+  "$schema": "https://triplex.dev/config.schema.json",
+  "files": ["../src/levels/*.tsx", "../src/app.tsx"],
+  "provider": "./providers.tsx"
+}

@@ -1,0 +1,22 @@
+{
+  "name": "{app_name}",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.0.6",
+    "@react-three/fiber": "^9.1.2",
+    "@types/react": "^19.1.2",
+    "@types/react-dom": "^19.1.2",
+    "@types/three": "^0.175.0",
+    "@vitejs/plugin-react": "^4.4.1",
+    "koota": "^0.4.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
+    "three": "^0.175.0",
+    "vite": "^6.0.7"
+  }
+}

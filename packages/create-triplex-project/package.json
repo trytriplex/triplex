@@ -26,7 +26,7 @@
   ],
   "scripts": {
     "build": "swc ./src -d ./dist",
-    "typedef": "tsc && tsc --project ./templates/tsconfig.json"
+    "typedef": "tsc && tsc --project ./templates/empty/tsconfig.json && tsc --project ./templates/point-and-click/tsconfig.json"
   },
   "dependencies": {
     "@commander-js/extra-typings": "^10.0.2",
@@ -41,10 +41,16 @@
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
     "@types/node": "^18.11.18",
+    "@types/react-dom": "^19.1.2",
     "@types/three": "^0.171.0",
+    "@vitejs/plugin-react": "^4.3.4",
+    "koota": "^0.4.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
     "three": "^0.172.0",
     "ts-node": "^10.9.1",
-    "typescript": "^5.7.2"
+    "typescript": "^5.7.2",
+    "vite": "^6.0.7"
   },
   "publishConfig": {
     "bin": {
