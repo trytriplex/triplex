@@ -13,6 +13,20 @@ import { prompt as prompt_dont_use_directly } from "enquirer";
 const exec_dont_use_directly = promisify(execCb);
 const templateDir = join(__dirname, "../templates");
 
+const templateEntrypoints: Record<
+  string,
+  { entrypoint: string; exportName: string } | undefined
+> = {
+  empty: {
+    entrypoint: "src/scene.tsx",
+    exportName: "Scene",
+  },
+  "point-and-click": {
+    entrypoint: "src/levels/debug.tsx",
+    exportName: "DebugLevel",
+  },
+};
+
 export async function init({
   __exec: exec = exec_dont_use_directly,
   __fs: fs = fs_dont_use_directly,
@@ -115,11 +129,17 @@ export async function init({
   Install Triplex for VS Code: https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce
 `);
 
+  const templateEntrypoint = templateEntrypoints[template];
+
   return {
     dir: cwd,
     open: {
-      exportName: "default",
-      filepath: join(cwd, "src", "scene.tsx"),
+      exportName: templateEntrypoint
+        ? templateEntrypoint.exportName
+        : "default",
+      filepath: templateEntrypoint
+        ? join(cwd, templateEntrypoint.entrypoint)
+        : cwd,
     },
   };
 }

@@ -172,9 +172,9 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
       {result.activeThemeContext.layout === "default" && (
         <nav
           aria-label="page tree"
-          className="col-span-3 hidden w-full pr-10 pt-6 md:block md:pb-10 lg:pb-10"
+          className="col-span-3 hidden w-full pr-10 md:block md:pb-10 lg:pb-10"
         >
-          <div className="sticky top-12 flex flex-col items-start pl-6 md:pl-8 lg:pl-20">
+          <div className="sticky top-14 flex flex-col items-start pl-6 md:pl-8 lg:pl-20">
             {result.docsDirectories.map((item) => renderDocsItem(item, route))}
           </div>
         </nav>
@@ -286,10 +286,10 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                     alt=""
                     className={cn([
                       frontMatter.imageLayout === "cover" &&
-                        "h-[600px] object-cover",
+                        "h-[600px] object-cover object-left",
                       frontMatter.imageLayout !== "cover" &&
                         "h-full object-contain",
-                      "w-full rounded-none object-left",
+                      "w-full rounded-none",
                     ])}
                     height={800}
                     src={frontMatter.image}
@@ -332,7 +332,7 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                   <nav aria-label="pages navigation" className="flex">
                     {previousPage && (
                       <div className="flex flex-col">
-                        <span className="text-subtlest -mb-0.5 ml-[15px] pl-2 text-sm">
+                        <span className="text-subtlest -mb-0.5 ml-[15px] pl-2 text-sm font-medium">
                           Previous
                         </span>
                         <Link
@@ -346,7 +346,7 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                     )}
                     {nextPage && nextPage.route !== "#" && (
                       <div className="ml-auto flex flex-col">
-                        <span className="text-subtlest -mb-0.5 text-sm">
+                        <span className="text-subtlest -mb-0.5 text-sm font-medium">
                           Next
                         </span>
                         <Link

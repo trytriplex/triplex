@@ -5,8 +5,15 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { useEffect, useRef } from "react";
+import { cn } from "../util/cn";
 
-export function InlineVideo({ src }: { src: { dark: string; light: string } }) {
+export function InlineVideo({
+  className,
+  src,
+}: {
+  className?: string;
+  src: { dark: string; light: string };
+}) {
   const refs = useRef<HTMLVideoElement[]>([]);
 
   useEffect(() => {
@@ -38,7 +45,7 @@ export function InlineVideo({ src }: { src: { dark: string; light: string } }) {
   }, []);
 
   return (
-    <>
+    <div className={cn([className, "absolute inset-0"])}>
       <video
         autoPlay
         className="border-neutral bg-neutral pointer-events-none absolute inset-0 h-full w-full border object-cover object-left opacity-100 md:rounded-xl dark:opacity-0"
@@ -73,6 +80,6 @@ export function InlineVideo({ src }: { src: { dark: string; light: string } }) {
         src={src.dark}
         tabIndex={-1}
       />
-    </>
+    </div>
   );
 }

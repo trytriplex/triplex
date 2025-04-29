@@ -26,6 +26,7 @@ const DEFAULT_PROJECT_NAME = "my-triplex-project";
 const DEFAULT_PKG_MANAGER = "npm";
 const DEFAULT_TEMPLATE = templates.includes("basic") ? "basic" : templates[0];
 const DEFAULT_CWD = process.cwd();
+const packageManagers = ["npm", "pnpm", "yarn"];
 
 async function main() {
   program
@@ -44,14 +45,21 @@ async function main() {
       DEFAULT_PKG_MANAGER,
     )
     .option("--cwd <cwd>", "directory to install to", DEFAULT_CWD)
+    .option(
+      "--yes",
+      "use passed in args otherwise default values for all options",
+    )
     .action(async (args) => {
       try {
         let packageManager = args.pkgManager;
         let projectName = args.name;
         let templateName = args.template;
         let cwd = args.cwd;
-        const mode: "non-interactive" | "interactive" =
-          process.argv.length > 2 ? "non-interactive" : "interactive";
+        let yes = args.yes;
+
+        const mode: "non-interactive" | "interactive" = yes
+          ? "non-interactive"
+          : "interactive";
 
         if (mode === "non-interactive") {
           // Validate inputs.
@@ -67,21 +75,25 @@ async function main() {
             template: string;
           }>([
             {
-              initial: DEFAULT_PROJECT_NAME,
+              initial: projectName,
               message: "What should we call your project?",
               name: "name",
               required: true,
               type: "text",
             },
             {
-              choices: templates,
+              choices:
+                templateName !== DEFAULT_TEMPLATE ? [templateName] : templates,
               message: "What template would you like to use?",
               name: "template",
               required: true,
               type: "select",
             },
             {
-              choices: ["npm", "pnpm", "yarn"],
+              choices:
+                packageManager !== DEFAULT_PKG_MANAGER
+                  ? [packageManager]
+                  : packageManagers,
               message: "What package manager do you use?",
               name: "pkgManager",
               required: true,

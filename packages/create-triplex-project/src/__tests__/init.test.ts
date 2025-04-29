@@ -37,7 +37,7 @@ describe("init command", () => {
       });
 
       expect(open).toEqual({
-        exportName: "default",
+        exportName: "Scene",
         filepath: join(cwd, "fresh-local", "src/scene.tsx"),
       });
     });
