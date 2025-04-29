@@ -147,7 +147,7 @@ export function LandingCardHeading({
   const { size, variant } = useContext(CardContext);
 
   return (
-    <div className="flex flex-col">
+    <div className="relative flex flex-col">
       {decoration && (
         <span
           aria-hidden
@@ -191,6 +191,7 @@ export function LandingCardBody({
   return (
     <div
       className={cn([
+        "relative",
         alignContentInline === "center" && "text-center",
         size === "default" && "text-base",
         size !== "default" && "text-base lg:text-lg",
@@ -218,7 +219,7 @@ export function LandingCardIcon({
         variant === "inverse" && "text-inverse-subtle",
         size === "xlarge" && "h-14 w-14",
         size !== "xlarge" && "h-10 w-10",
-        "flex",
+        "relative flex",
       ])}
     >
       <Icon />

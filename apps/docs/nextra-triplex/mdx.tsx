@@ -119,7 +119,7 @@ export const components: Components = {
   h2: ({ children, id }) => (
     <div className="mt-14">
       <h2
-        className="text-default target:text-inverse inline scroll-m-20 text-3xl font-medium target:font-bold target:[-webkit-text-stroke:3px_yellow] target:[paint-order:stroke_fill] [&>code]:text-[length:inherit]"
+        className="text-default inline scroll-m-20 text-3xl font-medium [&>code]:text-[length:inherit]"
         id={id}
       >
         {children}
@@ -129,7 +129,7 @@ export const components: Components = {
   h3: ({ children, id }) => (
     <div className="mt-10">
       <h3
-        className="text-default target:text-inverse inline scroll-m-20 text-2xl font-medium target:font-bold target:[-webkit-text-stroke:3px_yellow] target:[paint-order:stroke_fill]"
+        className="text-default inline scroll-m-20 text-2xl font-medium"
         id={id}
       >
         {children}
@@ -139,7 +139,7 @@ export const components: Components = {
   h4: ({ children, id }) => (
     <div className="mt-6">
       <h4
-        className="text-default target:text-inverse inline scroll-m-20 text-xl font-medium target:font-bold target:[-webkit-text-stroke:3px_yellow] target:[paint-order:stroke_fill]"
+        className="text-default inline scroll-m-20 text-xl font-medium"
         id={id}
       >
         {children}
@@ -193,5 +193,7 @@ export const components: Components = {
       {children}
     </th>
   ),
-  ul: ({ children }) => <ul className="mt-5 list-disc">{children}</ul>,
+  ul: ({ children }) => (
+    <ul className="mt-5 list-disc first-of-type:mt-0">{children}</ul>
+  ),
 };

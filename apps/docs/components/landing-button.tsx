@@ -24,7 +24,7 @@ export function LandingPresentationalButton({
         variant === "inverse-hint" &&
           "border-neutral bg-surface text-default group-hover:bg-inverse group-hover:text-inverse border group-hover:border-transparent",
         variant === "default" && "bg-surface text-default",
-        "flex flex-shrink-0 items-center justify-center rounded-full p-4 transition-transform group-hover:translate-x-1",
+        "relative flex flex-shrink-0 items-center justify-center rounded-full p-4 transition-transform group-hover:translate-x-1",
       ])}
     >
       <svg

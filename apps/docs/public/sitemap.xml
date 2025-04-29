@@ -7,7 +7,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/</loc>
-    <lastmod>2025-04-03</lastmod>
+    <lastmod>2025-04-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>1</priority>
   </url>
@@ -127,7 +127,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/starting-a-project/create-from-template</loc>
-    <lastmod>2025-03-15</lastmod>
+    <lastmod>2025-04-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -158,6 +158,12 @@
   <url>
     <loc>https://triplex.dev/docs/get-started/starting-a-project/your-first-3d-component/vscode</loc>
     <lastmod>2025-03-15</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://triplex.dev/docs/get-started/starting-a-project/create-from-template/point-and-click</loc>
+    <lastmod>2025-04-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -343,7 +349,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/api-reference/cli/create-triplex-project</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-04-29</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

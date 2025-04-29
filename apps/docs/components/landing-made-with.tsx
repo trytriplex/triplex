@@ -4,69 +4,87 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-
+import { getPagesUnderRoute } from "nextra/context";
 import { LandingPresentationalButton } from "./landing-button";
 import {
   LandingCardBody,
   LandingCardHeading,
   LandingCardLink,
 } from "./landing-card";
+import { InlineVideo } from "./video";
 
 export function LandingMadeWithTriplex() {
+  const heroTemplate = getPagesUnderRoute(
+    "/docs/get-started/starting-a-project/create-from-template",
+  )
+    .filter((page) => page.kind === "MdxPage")
+    .find((page) => page.name === "point-and-click");
+
+  if (!heroTemplate) {
+    throw new Error("invariant: template not found");
+  }
+
   return (
     <div className="flex flex-col gap-6 md:gap-3">
-      <h2 aria-label="Made with Triplex" className="text-default">
-        <svg viewBox="0 0 155 20">
+      <h2 aria-label="Build with Triplex" className="text-default">
+        <svg viewBox="0 0 153 20">
           <text
             className="font-brand fill-current text-xl font-medium"
             x="-1"
             y="16"
           >
-            Made with Triplex
+            Build with Triplex
           </text>
         </svg>
       </h2>
       <div className="grid gap-6 md:min-h-[80vh] md:grid-cols-2">
         <LandingCardLink
           alignContentBlock="end"
-          className="md:col-start-1 md:row-start-1 md:row-end-3"
-          href="/"
+          className="relative overflow-hidden md:col-start-1 md:row-start-1 md:row-end-3"
+          href={heroTemplate.route}
           size="large"
           variant="inverse"
         >
-          <LandingCardHeading>The Children Are Doomed</LandingCardHeading>
+          <InlineVideo
+            className="opacity-70 group-hover:opacity-80"
+            src={{
+              dark: "/videos/template-point-and-click-dark.mp4",
+              light: "/videos/template-point-and-click-light.mp4",
+            }}
+          />
+          <LandingCardHeading>
+            {heroTemplate.frontMatter?.title}
+          </LandingCardHeading>
           <LandingCardBody>
-            An innovative platformer that challenges the player to navigate
-            through a series of increasingly difficult levels, with optional
-            co-op play.
+            {heroTemplate.frontMatter?.description}
           </LandingCardBody>
           <LandingPresentationalButton size="lg" variant="inverse" />
         </LandingCardLink>
         <LandingCardLink
           alignContentBlock="end"
           className="md:col-start-2 md:row-start-1"
-          href="https://www.hypermod.io"
+          href="/docs/community"
           size="default"
           variant="inverse"
         >
-          <LandingCardHeading>Hypermod</LandingCardHeading>
+          <LandingCardHeading>Join The Community</LandingCardHeading>
           <LandingCardBody>
-            Impactful & effortless code migrations. Orchestrate large-scale code
-            migrations across multiple repositories and technologies.
+            We have a community of hundreds building with Triplex. Join us on
+            Discord and see other Community portals for ways to get involved.
           </LandingCardBody>
           <LandingPresentationalButton variant="inverse" />
         </LandingCardLink>
         <LandingCardLink
           alignContentBlock="end"
           className="md:col-start-2 md:row-start-2"
-          href="/"
+          href="/docs/get-started/starting-a-project/create-from-template"
           size="default"
           variant="inverse"
         >
-          <LandingCardHeading>Untitled AR Fishing Game</LandingCardHeading>
+          <LandingCardHeading>More Templates</LandingCardHeading>
           <LandingCardBody>
-            Pull up the pond and get fishing in this augmented reality game that
-            brings the outdoors to you. Catch fish, earn rewards, and more.
+            Creating a new project from a template is the fastest way to start
+            building your next app with Triplex.
           </LandingCardBody>
           <LandingPresentationalButton variant="inverse" />
         </LandingCardLink>

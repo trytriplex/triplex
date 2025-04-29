@@ -47,11 +47,11 @@ export function KootaSystems({
       velocityTowardsTarget(world, delta);
     }
 
-    meshFromPosition(world, delta);
-
     if (positionFromVelocitySystem) {
       positionFromVelocity(world, delta);
     }
+
+    meshFromPosition(world, delta);
 
     if (cameraFollowFocusedSystem) {
       cameraFollowFocused(world, delta);
