@@ -126,7 +126,7 @@ export function LandingCard({
           variant === "default" &&
             "bg-surface outline-neutral outline outline-1 -outline-offset-1",
           variant === "inverse" && "bg-inverse",
-          "group flex flex-col px-6 pb-6 pt-8",
+          "group relative flex flex-col px-6 pb-6 pt-8",
         ])}
       >
         {children}

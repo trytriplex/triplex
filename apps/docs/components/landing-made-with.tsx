@@ -40,18 +40,20 @@ export function LandingMadeWithTriplex() {
       <div className="grid gap-6 md:min-h-[80vh] md:grid-cols-2">
         <LandingCardLink
           alignContentBlock="end"
-          className="relative overflow-hidden md:col-start-1 md:row-start-1 md:row-end-3"
+          className="overflow-hidden md:col-start-1 md:row-start-1 md:row-end-3"
           href={heroTemplate.route}
           size="large"
           variant="inverse"
         >
           <InlineVideo
-            className="opacity-70 group-hover:opacity-80"
+            className="z-1 scale-110 opacity-80 group-hover:opacity-70"
             src={{
               dark: "/videos/template-point-and-click-dark.mp4",
               light: "/videos/template-point-and-click-light.mp4",
             }}
           />
+          <div />
+          <div className="absolute inset-0 rounded-[inherit] bg-gradient-to-b from-transparent from-0% via-[var(--x-bg-inverse)] via-45% to-transparent to-100% opacity-30 md:via-70%" />
           <LandingCardHeading>
             {heroTemplate.frontMatter?.title}
           </LandingCardHeading>
@@ -67,6 +69,7 @@ export function LandingMadeWithTriplex() {
           size="default"
           variant="inverse"
         >
+          <div />
           <LandingCardHeading>Join The Community</LandingCardHeading>
           <LandingCardBody>
             We have a community of hundreds building with Triplex. Join us on
@@ -81,6 +84,7 @@ export function LandingMadeWithTriplex() {
           size="default"
           variant="inverse"
         >
+          <div />
           <LandingCardHeading>More Templates</LandingCardHeading>
           <LandingCardBody>
             Creating a new project from a template is the fastest way to start
