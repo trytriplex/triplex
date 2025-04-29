@@ -1,5 +1,20 @@
 # @triplex/electron
 
+## 0.70.32
+
+### Patch Changes
+
+- ba7ff1f: Upgrade react-compiler to rc.1
+- Updated dependencies [ba7ff1f]
+- Updated dependencies [f420d2e]
+- Updated dependencies [25dfbec]
+- Updated dependencies [25dfbec]
+- Updated dependencies [f2d1de5]
+- Updated dependencies [25dfbec]
+  - @triplex/editor@0.70.32
+  - @triplex/client@0.70.30
+  - create-triplex-project@0.70.9
+
 ## 0.70.31
 
 ### Patch Changes

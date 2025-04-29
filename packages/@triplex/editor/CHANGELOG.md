@@ -1,5 +1,11 @@
 # @triplex/editor
 
+## 0.70.32
+
+### Patch Changes
+
+- ba7ff1f: Upgrade react-compiler to rc.1
+
 ## 0.70.31
 
 ### Patch Changes

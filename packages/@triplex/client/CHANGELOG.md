@@ -1,5 +1,11 @@
 # @triplex/client
 
+## 0.70.30
+
+### Patch Changes
+
+- f420d2e: Fix modules that have no React components being flagged as HMR boundaries breaking updates being flushed to owning components.
+
 ## 0.70.29
 
 ### Patch Changes

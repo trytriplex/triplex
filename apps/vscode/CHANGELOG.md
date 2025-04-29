@@ -1,5 +1,13 @@
 # @triplex/vscode
 
+## 0.2.33
+
+### Patch Changes
+
+- ba7ff1f: Upgrade react-compiler to rc.1
+- Updated dependencies [f420d2e]
+  - @triplex/client@0.70.30
+
 ## 0.2.32
 
 ### Patch Changes

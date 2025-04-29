@@ -1,5 +1,14 @@
 # create-triplex-project
 
+## 0.70.9
+
+### Patch Changes
+
+- 25dfbec: Add `--yes` arg. Use to skip prompts.
+- 25dfbec: Add template entrypoints to open on successful template bootstrap.
+- f2d1de5: Add point and click starter template.
+- 25dfbec: Remove implicit non-interactive mode.
+
 ## 0.70.8
 
 ### Patch Changes
