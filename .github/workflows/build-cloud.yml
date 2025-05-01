@@ -1,9 +1,10 @@
-name: Packages
+name: Cloud
 
 on:
   pull_request:
     paths:
       - packages/**
+      - apps/cloud/**
 
 env:
   CI: true
@@ -13,7 +14,7 @@ jobs:
   build:
     timeout-minutes: 5
 
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
 
     steps:
       - name: Checkout
@@ -33,11 +34,11 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - name: Build packages
-        run: pnpm --filter @triplex/* build
+      - name: Build cloud
+        run: pnpm --filter @triplex/cloud build
 
       - name: Typecheck
-        run: pnpm --filter @triplex/* --filter !@triplex/electron --filter !@triplex/cloud --filter create-triplex-project typedef
+        run: pnpm --filter @triplex/cloud typedef
 
       - name: Ensure clean git
         run: node ./scripts/ensure-clean-git.js

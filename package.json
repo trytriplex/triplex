@@ -19,6 +19,7 @@
     "clean:drop-folders": "pnpm --filter @triplex/* --filter create-triplex-project --filter triplex-vsce -r exec rimraf --glob src/** dist/**/__tests__ dist/**/__test__ --impl=move-remove",
     "clean:node_modules": "pnpm -r exec rimraf node_modules && rimraf node_modules",
     "dev": "pnpm --filter @triplex/electron dev",
+    "dev:cloud": "pnpm --filter @triplex/cloud dev",
     "dev:docs": "pnpm --filter @docs/triplex dev",
     "electron:build": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false pnpm --filter @triplex/electron build-target",
     "electron:build-targets": "cross-env CSC_IDENTITY_AUTO_DISCOVERY=false pnpm --filter @triplex/electron build-targets",
