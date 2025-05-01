@@ -46,3 +46,5 @@ export function defer() {
     resolve,
   };
 }
+
+export function noop() {}

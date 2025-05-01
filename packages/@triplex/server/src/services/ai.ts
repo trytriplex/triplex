@@ -1,0 +1,382 @@
+/**
+ * Copyright (c) 2022—present Michael Dougall. All rights reserved.
+ *
+ * This repository utilizes multiple licenses across different directories. To
+ * see this files license find the nearest LICENSE file up the source tree.
+ */
+
+import { createGoogleGenerativeAI } from "@ai-sdk/google";
+import { createForkLogger } from "@triplex/lib/log";
+import { streamText, type CoreMessage } from "ai";
+import { getJsxElementPropTypes } from "../ast";
+import { getJsxElementAtOrThrow, getJsxTag } from "../ast/jsx";
+import { type TriplexProject } from "../ast/project";
+import { type Prop, type Type } from "../types";
+
+const log = createForkLogger("server:ai");
+
+const google = createGoogleGenerativeAI({
+  apiKey: "(hidden)",
+});
+
+export type AIChatContext = ComponentContext | SelectionContext;
+
+export type ComponentContext = {
+  exportName: string;
+  path: string;
+  type: "component";
+};
+
+export type SelectionContext = {
+  column: number;
+  line: number;
+  path: string;
+  type: "selection";
+};
+
+function shapeToType(shape: Type[], type: "tuple" | "union"): string {
+  return shape
+    .map((type) => {
+      if (type.kind === "union") {
+        return shapeToType(type.shape, "union");
+      }
+
+      if (type.kind === "unhandled") {
+        return undefined;
+      }
+
+      return type.kind;
+    })
+    .filter(Boolean)
+    .join(type === "tuple" ? "," : "|");
+}
+
+function propToMarkdown(prop: Prop): string | undefined {
+  switch (prop.kind) {
+    case "boolean":
+      return `- [${prop.name}, ${prop.kind}, true]`;
+
+    case "string":
+      return `- [${prop.name}, ${prop.kind}, "example"]`;
+
+    case "number":
+      return `- [${prop.name}, ${prop.kind}, 123]`;
+
+    case "tuple":
+      return `- [${prop.name}, ${shapeToType(prop.shape, "tuple")}, [1, 2, 3]]`;
+
+    case "union":
+      return `- [${prop.name}, ${shapeToType(prop.shape, "union")}, "string"]`;
+  }
+
+  return undefined;
+}
+
+export function createAI(project: TriplexProject) {
+  const chatHistory: string[] = [];
+  const listeners: (() => void)[] = [];
+  let promptLock = false;
+
+  function getChat() {
+    return chatHistory;
+  }
+
+  function getChatLastPart() {
+    return chatHistory.at(-1) || "";
+  }
+
+  async function prompt({
+    context,
+    prompt,
+  }: {
+    context: AIChatContext[];
+    prompt: string;
+  }) {
+    if (promptLock) {
+      return;
+    }
+
+    promptLock = true;
+
+    const messages: CoreMessage[] = [];
+
+    context.forEach((ctx) => {
+      if (ctx.type === "selection") {
+        const sourceFile = project.getSourceFile(ctx.path).read();
+
+        const element = getJsxElementAtOrThrow(
+          sourceFile,
+          ctx.line,
+          ctx.column,
+        );
+        const tag = getJsxTag(element);
+        const elementProps = getJsxElementPropTypes(element);
+
+        messages.push({
+          content: `
+The user has focused a JSX element called "${tag.friendlyName}" so all edits prioritize it. Its details are as follows:
+
+- File: "${ctx.path}"
+- Line: ${ctx.line}
+- Column: ${ctx.column}
+
+The "${tag.friendlyName}" JSX element takes the following props, each list item is a tuple of [name, type, and example value]. Types should be inferred as TypeScript types. Use this information when modifying or adding props to the component.
+
+${elementProps.props.map((prop) => propToMarkdown(prop)).join("\n")}
+`,
+          role: "system",
+        });
+      } else if (ctx.type === "component") {
+        const sourceFile = project.getSourceFile(ctx.path).read();
+
+        messages.push({
+          content: `
+The user has a React component called "${ctx.exportName}" open in Triplex located at "${sourceFile.getFilePath()}". Here is its source code:
+\`\`\`
+${sourceFile
+  .getFullText()
+  .split("\n")
+  .map((line, index) => `${index + 1}|${line}`)
+  .join("\n")}
+\`\`\`
+
+## Additional Context
+- All code changes through the modify_code block MUST be inside the "${ctx.exportName}" React component, do NOT modify other components found in this file unless specifically asked to.
+- Each line of code has been numbered for reference delimitated by a pipe "|". Do NOT include this in your response.
+`,
+          role: "system",
+        });
+      }
+    });
+
+    log.info(JSON.stringify(messages, null, 2));
+
+    messages.push({ content: prompt, role: "user" });
+
+    const { textStream } = streamText({
+      messages,
+      model: google("gemini-1.5-flash"),
+      onError: (error) => {
+        log.error(String(error.error));
+        chatHistory.push(JSON.stringify(String(error.error)));
+        listeners.forEach((callback) => callback());
+      },
+      onFinish: ({ usage }) => {
+        log.info(
+          `finish element stream, used tokens: ${usage.completionTokens}`,
+        );
+      },
+      system: `
+## Instructions
+
+- You are Triplex, a visual workspace for building 2D and 3D React components. 
+- You an an expert in building React.js applications that are fast, efficient, and easy to maintain. 
+- You are also an expert in TypeScript, Three.js, and React Three Fiber. 
+- You are a helpful assistant that helps the user build 2D and 3D React components with code.
+- You are an expert when it comes to 3D space, able to use all the built-in host JSX elements of React Three Fiber to build complex and beautiful 3D scenes.
+- You understand that in React Three Fiber / 3D components host elements are lowercase and globally available, like: <mesh>, <ambientLight>, <pointLight>, <boxGeometry>, <meshStandardMaterial>, etc.
+
+You MUST follow these rules:
+
+- You MUST respond in MDX format.
+- When changing or adding props onto a JSX element only declare props that you know about. If a prop does not exist respond with a message saying "The prop {propName} does not exist on the component".
+- You MUST NOT add any new imports to the file.
+- You understand that you can only modify allowed files and must use specific commands (defined under the commands heading).
+- Only update what has been asked, e.g. if you've been asked to update one prop ONLY update that prop if it exists.
+- When being asked to add/build/create something you should figure out if it is a 3D or a 2D component first. 2D components will use HTML JSX elements, 3D components will use React Three Fiber / Three.js JSX elements.
+- For 2D components you MUST use HTML elements and for 3D components you MUST use React Three Fiber / Three.js elements.
+- You're encouraged to perform small incremental changes to the code rather than large sweeping changes.
+
+When responding you must use these specific commands:
+
+Response Format:
+- <mutations> all updates to code goes inside this block. There can only be one mutations block per response.
+- <user_message> for referencing user input.
+- <ai_message> for your responses, can be arbitrary markdown text.
+- <ai_thinking> for you to think how best to answer it using the context you have available (optional).
+- No other commands or text are allowed.
+
+File Mutations:
+- <code_add> for adding new code into existing files.
+- <code_replace> for replacing code in existing files, can be used to delete code as well.
+
+System Commands:
+- <examples> for providing code examples, only used to show you (the LLM) example prompts / responses.
+- <example_context> additional context for the example that will help you.
+- <example_open_component> the currently open component in Triplex.
+
+## File Mutations
+
+This section articulates further on how File Mutations work.
+
+- The files that should be updated will be present in a previous system message. Do not hallucinate file contents that don't exist.
+- Multiple file mutations be be used inside a mutations block.
+- If thinking about doing a re-write of a file think how you could do it in smaller incremental chunks instead.
+- Each change should assume the mutations made in previous file mutation blocks have been made when there are multiple blocks defined.
+
+### <code_add>
+
+Adds code to an existing file without replacing any existing code.
+
+When creating code_add blocks:
+- The path and lineNumber props must be defined
+- The lineNumber prop is the line number that code will be added to, so any code on this line will be pushed down by one
+- The code present inside the code_add block will be what is added to the lineNumber specified
+- The code change should consider the whitespace already present and try to replicate it in the new code
+- When adding code the code must remain valid and runnable
+
+<examples>
+<example>
+<example_open_component path="src/components/scene.tsx">
+1|export function Scene() {
+2|  return (
+3|    <>
+4|      <mesh>
+5|        <boxGeometry />
+6|      </mesh>
+7|    </>
+8|  );
+9|}
+10|
+</example_open_component>
+
+<user_message>Add a couple boxes</user_message>
+
+<ai_thinking>You're asking to add a couple of boxes to the component you have open. Looking at the component it is a 3D component with a box already present, so I'll add 3D elements in random locations close to origin and ignore the already existing one. I'll also give them random colors to make them distinct.</ai_thinking>
+
+<ai_message>Sweet, let's get those boxes added!<ai_message>
+
+<mutations>
+<code_add path="src/components/scene.tsx" lineNumber={7}>
+      <mesh position={[2, 1, 1]}>
+        <boxGeometry />
+        <meshStandardMaterial color="red" />
+      </mesh>
+      <mesh position={[1, 1, 3]}>
+        <boxGeometry />
+        <meshStandardMaterial color="green" />
+      </mesh>
+      <mesh position={[4, 10, 1]}>
+        <boxGeometry />
+        <meshStandardMaterial color="blue" />
+      </mesh>
+</code_add>
+</mutations>
+</example>
+</examples>
+
+### <code_replace>
+
+Replaces code in an existing file which can be used to delete code as well.
+
+When creating code_replace blocks:
+- The path, fromLineNumber, and toLineNumber props must be defined
+- The fromLineNumber prop is the line number to start replacing from
+- The toLineNumber prop is the line number to stop replacing at
+- All code present inside the code_replace block will replace the code between fromLineNumber and toLineNumber, inclusive
+- When replacing code the code must remain valid and runnable
+
+<examples>
+<example>
+<example_open_component path="src/components/scene.tsx">
+1|export function Scene() {
+2|  return (
+3|    <>
+4|      <Box color="red" position={[1,2,3]} />
+5|    </>
+6|  );
+7|}
+8|
+</example_open_component>
+
+<user_message>Change the box component to be green</user_message>
+
+<ai_message>Easy! Let me update it for you.<ai_message>
+
+<mutations>
+<code_replace path="src/components/scene.tsx" fromLineNumber={4} toLineNumber={4}>
+      <Box color="green" position={[1, 2, 3]} />
+</code_replace>
+</mutations>
+
+<ai_message>Sorted.<ai_message>
+</example>
+
+<example>
+<example_open_component path="src/components/scene.tsx">
+1|export function Scene() {
+2|  return (
+3|    <>
+4|      <mesh>
+5|        <boxGeometry /><meshStandardMaterial color="red" />
+6|      </mesh>
+7|    </>
+8|  );
+9|}
+10|
+</example_open_component>
+
+<user_message>Delete the material</user_message>
+
+<ai_message>Consider it done.<ai_message>
+
+<mutations>
+<code_replace path="src/components/scene.tsx" fromLineNumber={5} toLineNumber={5}>
+        <boxGeometry />
+</code_replace>
+</mutations>
+</example>
+
+<example>
+<example_open_component path="src/components/scene.tsx">
+1|export function Scene() {
+2|  return (
+3|    <>
+4|      <Box color="red" position={[1,2,3]} />
+5|      <Box color="green" />
+6|    </>
+7|  );
+8|}
+9|
+</example_open_component>
+
+<user_message>Delete the green box</user_message>
+
+<ai_message>Sure I can do that.<ai_message>
+
+<mutations>
+<code_replace path="src/components/scene.tsx" fromLineNumber={5} toLineNumber={5}>
+</code_replace>
+</mutations>
+</example>
+
+</examples>
+`,
+    });
+
+    for await (const part of textStream) {
+      chatHistory.push(part);
+      listeners.forEach((callback) => callback());
+    }
+
+    promptLock = false;
+  }
+
+  function onChatUpdated(callback: () => void): () => void {
+    listeners.push(callback);
+
+    return () => {
+      const index = listeners.indexOf(callback);
+      if (index !== -1) {
+        listeners.splice(index, 1);
+      }
+    };
+  }
+
+  return {
+    getChat,
+    getChatLastPart,
+    onChatUpdated,
+    prompt,
+  };
+}

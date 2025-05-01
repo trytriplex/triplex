@@ -7,6 +7,7 @@
 import {
   ExternalLinkIcon,
   GearIcon,
+  MagicWandIcon,
   PauseIcon,
   PlayIcon,
   QuestionMarkCircledIcon,
@@ -49,6 +50,8 @@ export function FloatingControls() {
   const { setPlayState: dispatch } = useSceneEvents();
   const telemetry = useTelemetry();
   const showDialog = useDialogs((store) => store.set);
+  const toggleDialog = useDialogs((store) => store.toggle);
+  const dialogShown = useDialogs((store) => store.shown);
 
   useEffect(() => {
     return on("set-extension-points", (data) => {
@@ -84,6 +87,17 @@ export function FloatingControls() {
         preventDefaultContextMenuItems: true,
       })}
     >
+      {fg("ai_chat") && (
+        <Surface bg="overlay" className="border p-0.5" direction="horizontal">
+          <IconButton
+            actionId="scene_frame_ai"
+            icon={MagicWandIcon}
+            isSelected={dialogShown === "ai_chat"}
+            label="Edit With AI"
+            onClick={() => toggleDialog("ai_chat")}
+          />
+        </Surface>
+      )}
       {controls.length > 0 && (
         <Surface
           bg="overlay"

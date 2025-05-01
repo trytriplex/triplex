@@ -9,6 +9,7 @@ import { createWSHooks } from "@triplex/websocks-client/react";
 
 export const {
   clearQuery,
+  experimental_useLazySubscriptionStream,
   preloadSubscription,
   useLazySubscription,
   useSubscription,

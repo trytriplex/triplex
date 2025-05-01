@@ -4,10 +4,11 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { useCallback, useSyncExternalStore } from "react";
-import { buildPath, defer } from "./lib";
+import { useCallback, useEffect, useSyncExternalStore } from "react";
+import { buildPath, defer, noop } from "./lib";
 import { parseJSON } from "./string";
 import { type RemapWithNumber } from "./types";
+import useEvent from "./use-event";
 
 /**
  * **createWSHooks()**
@@ -35,6 +36,7 @@ export function createWSHooks<
   TWSRouteDefinition extends Record<string, { data: unknown; params: unknown }>,
 >(opts: (() => { url: string }) | { url: string }) {
   const valueCache = new Map<string, unknown>();
+  const experimental_streamCache = new Map<string, Array<unknown>>();
   const queryCache = new Map<
     string,
     {
@@ -128,6 +130,7 @@ export function createWSHooks<
              * life.
              */
             valueCache.delete(path);
+            experimental_streamCache.delete(path);
             queryCache.set(path, { ...query, lazilyRefetch: true });
           }
         },
@@ -135,6 +138,10 @@ export function createWSHooks<
           deferred.reject(new Error("Error connecting to websocket."));
         },
         onMessage: (data) => {
+          const streamValue = experimental_streamCache.get(path) || [];
+          streamValue.push(data);
+          experimental_streamCache.set(path, streamValue);
+
           valueCache.set(path, data);
           subscriptions.forEach((cb) => cb());
           deferred.resolve();
@@ -171,7 +178,10 @@ export function createWSHooks<
       });
     }
 
-    function read(suspend = true) {
+    function read({
+      stream,
+      suspend = true,
+    }: { stream?: "all" | "last"; suspend?: boolean } = {}) {
       const query = queryCache.get(path);
       if (!query) {
         throw new Error(`invariant: call load() first for ${path}`);
@@ -181,7 +191,10 @@ export function createWSHooks<
         load();
       }
 
-      const value = valueCache.get(path);
+      const value = stream
+        ? experimental_streamCache.get(path)
+        : valueCache.get(path);
+
       if (!value) {
         if (suspend) {
           throw query.deferred.promise;
@@ -194,6 +207,12 @@ export function createWSHooks<
         throw new Error(
           `Error reading "${decodeURIComponent(path)}" - [${value.error}]`,
         );
+      }
+
+      if (stream === "all" && Array.isArray(value)) {
+        return value;
+      } else if (stream === "last" && Array.isArray(value)) {
+        return value.at(-1);
       }
 
       return value as TValue;
@@ -329,8 +348,54 @@ export function createWSHooks<
     }
   }
 
+  /** @experimental */
+  function useLazySubscriptionStream<
+    TRoute extends string & keyof TWSRouteDefinition,
+  >(
+    ...args: TWSRouteDefinition[TRoute]["params"] extends never
+      ? [
+          route: TRoute,
+          callback: (
+            data: TWSRouteDefinition[TRoute]["data"],
+            type: "chunk" | "all",
+          ) => void,
+        ]
+      : [
+          route: TRoute,
+          params: RemapWithNumber<TWSRouteDefinition[TRoute]["params"]>,
+          callback: (
+            data: TWSRouteDefinition[TRoute]["data"],
+            type: "chunk" | "all",
+          ) => void,
+        ]
+  ) {
+    const [route, paramsOrCallback, maybeCallback = noop] = args;
+    const params =
+      typeof paramsOrCallback === "function" ? {} : paramsOrCallback;
+    const callback =
+      typeof paramsOrCallback === "function" ? paramsOrCallback : maybeCallback;
+    const callbackEvent = useEvent(callback);
+    const query = wsQuery<TWSRouteDefinition[TRoute]["data"]>(
+      buildPath(route, params),
+    );
+
+    query.load();
+
+    useEffect(() => {
+      const latestValue = query.read({ stream: "all", suspend: false });
+      if (latestValue?.length > 0) {
+        callbackEvent(latestValue, "all");
+      }
+
+      return query.subscribe(() => {
+        callbackEvent(query.read({ stream: "last" }), "chunk");
+      });
+    }, [callbackEvent, query]);
+  }
+
   return {
     clearQuery,
+    experimental_useLazySubscriptionStream: useLazySubscriptionStream,
     preloadSubscription,
     useLazySubscription,
     useSubscription,

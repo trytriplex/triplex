@@ -25,6 +25,7 @@ import {
   getJsxElementParentExportNameOrThrow,
 } from "./ast/jsx";
 import { propGroupsDef } from "./ast/prop-groupings";
+import { createAI } from "./services/ai";
 import {
   add,
   commentComponent,
@@ -78,6 +79,7 @@ export function createServer({
     templates: renderer.manifest.templates,
   });
   const tws = createWSServer();
+  const ai = createAI(project);
 
   app.use(async (ctx, next) => {
     try {
@@ -94,6 +96,16 @@ export function createServer({
 
   app.use((ctx, next) => {
     ctx.response.headers.set("Access-Control-Allow-Origin", "*");
+    ctx.response.headers.set("Access-Control-Allow-Credentials", "true");
+    ctx.response.headers.set(
+      "Access-Control-Allow-Methods",
+      "GET,HEAD,OPTIONS,POST,PUT",
+    );
+    ctx.response.headers.set(
+      "Access-Control-Allow-Headers",
+      "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Content-Type, Access-Control-Request-Method, Access-Control-Request-Headers",
+    );
+
     return next();
   });
 
@@ -138,6 +150,17 @@ export function createServer({
     });
 
     context.response.body = { message: "success", ...ids };
+  });
+
+  router.post("/ai/prompt", async (context) => {
+    const body = await context.request.body({ type: "json" }).value;
+
+    await ai.prompt({
+      context: body.context,
+      prompt: body.prompt,
+    });
+
+    context.response.body = { message: "success" };
   });
 
   router.get("/scene/:path/object/:line/:column", async (context) => {
@@ -604,6 +627,19 @@ export function createServer({
         pkgManager: pkgManager ? pkgManager.name : "npm",
       };
     }),
+    tws.route(
+      "/ai/chat",
+      async (_, { type }) => {
+        if (type === "pull") {
+          return ai.getChat();
+        }
+
+        return ai.getChatLastPart();
+      },
+      (push) => {
+        ai.onChatUpdated(push);
+      },
+    ),
   ]);
 
   return {
@@ -638,6 +674,7 @@ export function createServer({
 export { getConfig, resolveProjectCwd } from "./util/config";
 export { inferExports } from "./util/module";
 export { getRendererMeta } from "./util/renderer";
+export { type AIChatContext } from "./services/ai";
 
 export type TWSRouteDefinition = ReturnType<
   typeof createServer

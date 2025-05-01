@@ -623,3 +623,5 @@ export function ${componentName}() {
     saveAll,
   };
 }
+
+export type TriplexProject = ReturnType<typeof createProject>;
