@@ -129,7 +129,7 @@ export function WebXRTransformHandles({
       {createPortal(
         <TransformHandles
           apply={applyHandler}
-          enabled={enabled}
+          disabled={!enabled}
           mode={mode}
           ref={ref}
           size={0.5}

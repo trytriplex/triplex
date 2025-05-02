@@ -1362,8 +1362,8 @@ importers:
         specifier: npm:@react-three/drei@^10.0.0
         version: '@react-three/drei@10.0.0(@react-three/fiber@9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)'
       triplex-handle:
-        specifier: npm:@react-three/handle@^6.6.14
-        version: '@react-three/handle@6.6.14(@react-three/fiber@9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(react@19.0.0)(three@0.172.0)'
+        specifier: npm:@react-three/handle@^6.6.16
+        version: '@react-three/handle@6.6.16(@react-three/fiber@9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(react@19.0.0)(three@0.172.0)'
       tunnel-rat:
         specifier: ^0.1.2
         version: 0.1.2(@types/react@19.0.8)(react@19.0.0)
@@ -2913,8 +2913,14 @@ packages:
   '@pmndrs/handle@6.6.14':
     resolution: {integrity: sha512-G9pz4Ubpctyzvqq4Vra0PKDSJS8KC5/jizu22LiEMM7krXHwHgFJF5yzNjaOMDGKk7/h4IzB/7CQfPpxmqCKsg==}
 
+  '@pmndrs/handle@6.6.16':
+    resolution: {integrity: sha512-+//YQ9Hw3emvgAM3WuWEtbdPE6T4m1RBdfDIblPNb2iDGGPdnQXlVVfQL3DKeRjw3SDpVnitLN+cDAiaQb4HcQ==}
+
   '@pmndrs/pointer-events@6.6.14':
     resolution: {integrity: sha512-DRn5QJIwUMkdH0L59NwMxY6PFd6vmyjkz2RVryM5vQ5OJVveYG2ErQjFeLZnCD7oavlKnzB+7ZpHakRMocGdBw==}
+
+  '@pmndrs/pointer-events@6.6.16':
+    resolution: {integrity: sha512-RhID/DVWGWguqcOyQk87EeRA4vNMS/9b9CqCRVpr4J10GfqW3iCCIwPpQkIqEDczxlUABgtZMmGHnoAbPHr3rQ==}
 
   '@pmndrs/uikit@0.5.4':
     resolution: {integrity: sha512-kTjMxCbLMuKFRlT2LRND5elcXaXtghwiy41D79Gy9rt7q2uWUjdWSvE3u/8hzHK2B/zEnkoLda61B5S1/hojRg==}
@@ -3275,8 +3281,8 @@ packages:
       react-native:
         optional: true
 
-  '@react-three/handle@6.6.14':
-    resolution: {integrity: sha512-mLza0f016bv2YMT4P3V0ezXwyt7pq/T0E1qka72v/NSXOAOr+cnMie3BqkAjLn4EkY+5eNicK0Ha+JtxguFekQ==}
+  '@react-three/handle@6.6.16':
+    resolution: {integrity: sha512-lgDdI7hA48U3F5NhgGbH7KcKKx9lvALh1vtrI6Fmokv09LUaWflccivxykxKivKwVguAwRJnQ9dRX+KCh9YFZg==}
     peerDependencies:
       '@react-three/fiber': '>=8'
       react: ^19.0.0
@@ -11870,7 +11876,18 @@ snapshots:
       - immer
       - react
 
+  '@pmndrs/handle@6.6.16(@types/react@19.0.8)(react@19.0.0)':
+    dependencies:
+      '@pmndrs/pointer-events': 6.6.16
+      zustand: 4.5.5(@types/react@19.0.8)(react@19.0.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - immer
+      - react
+
   '@pmndrs/pointer-events@6.6.14': {}
+
+  '@pmndrs/pointer-events@6.6.16': {}
 
   '@pmndrs/uikit@0.5.4(three@0.172.0)':
     dependencies:
@@ -12296,10 +12313,10 @@ snapshots:
       - '@types/react'
       - immer
 
-  '@react-three/handle@6.6.14(@react-three/fiber@9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(react@19.0.0)(three@0.172.0)':
+  '@react-three/handle@6.6.16(@react-three/fiber@9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(react@19.0.0)(three@0.172.0)':
     dependencies:
-      '@pmndrs/handle': 6.6.14(@types/react@19.0.8)(react@19.0.0)
-      '@pmndrs/pointer-events': 6.6.14
+      '@pmndrs/handle': 6.6.16(@types/react@19.0.8)(react@19.0.0)
+      '@pmndrs/pointer-events': 6.6.16
       '@react-three/fiber': 9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
       react: 19.0.0
       three: 0.172.0
