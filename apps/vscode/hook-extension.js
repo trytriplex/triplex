@@ -10,4 +10,8 @@ process.env.VITE_CJS_IGNORE_WARNING = true;
 process.env.TRIPLEX_ENV = "development";
 process.env.VITE_TRIPLEX_ENV = process.env.VITE_TRIPLEX_ENV || "development";
 
+const { start } = require("../cloud/scripts/start.ts");
+
 module.exports = require("./src/extension/index.ts");
+
+module.exports.subscriptions.push(start());

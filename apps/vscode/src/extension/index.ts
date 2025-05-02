@@ -14,6 +14,8 @@ import { TriplexEditorProvider } from "./editor";
 
 const log = output.logger("main");
 
+export const subscriptions: vscode.Disposable[] = [];
+
 export function activate(context: vscode.ExtensionContext) {
   const fgEnvironmentOverride: FGEnvironment =
     (process.env.FG_ENVIRONMENT_OVERRIDE as FGEnvironment) ||
@@ -30,4 +32,6 @@ export function activate(context: vscode.ExtensionContext) {
   log.info(`FG Env: ${fgEnvironmentOverride}.`);
 }
 
-export function deactivate() {}
+export function deactivate() {
+  return Promise.all(subscriptions.map((s) => s.dispose()));
+}

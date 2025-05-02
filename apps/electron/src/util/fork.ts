@@ -43,6 +43,8 @@ export function fork<TData extends Record<string, unknown>>(
         NODE_ENV: "development",
         NODE_OPTIONS: `-r ${join(process.cwd(), "hook-fork.js")}`,
         NODE_PATH: process.cwd(),
+        TRIPLEX_CLOUD_URL:
+          process.env.TRIPLEX_CLOUD_URL || "http://localhost:3010",
         TRIPLEX_DATA: JSON.stringify(data),
         TRIPLEX_ENV: "development",
         VITE_CJS_IGNORE_WARNING: "true",
@@ -65,6 +67,8 @@ export function fork<TData extends Record<string, unknown>>(
         FG_ENVIRONMENT_OVERRIDE: process.env.FG_ENVIRONMENT_OVERRIDE,
         NODE_ENV: "production",
         NODE_PATH: process.cwd(),
+        TRIPLEX_CLOUD_URL:
+          process.env.TRIPLEX_CLOUD_URL || "https://app.triplex.dev",
         TRIPLEX_DATA: JSON.stringify(data),
         TRIPLEX_ENV: "production",
         VITE_CJS_IGNORE_WARNING: "true",

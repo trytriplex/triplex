@@ -62,8 +62,9 @@ export class XMLStreamParser {
               if (this.currentTag && text) {
                 this.currentTag.text = (this.currentTag.text || "") + text;
               }
+              this.currentCharBuffer.length = 0;
             }
-            this.currentCharBuffer.length = 0;
+            this.currentCharBuffer.push(char);
             this.state = "TAG_OPEN";
           } else if (char === "`") {
             // Start of inline code
@@ -282,9 +283,11 @@ export class XMLStreamParser {
     }
   }
 
+  // Get the current parsed structure, computing effective text without modifying state
   getStructure(): Node {
+    // Compute effective text for the current tag without modifying it
+    let effectiveTag = this.currentTag;
     if (this.currentTag && this.currentCharBuffer.length > 0) {
-      // Flush partial text, discarding trailing newline unless in CODE_BLOCK, CODE_TAG, or INLINE_CODE
       let text = this.currentCharBuffer.join("");
       if (
         this.state !== "CODE_BLOCK" &&
@@ -294,9 +297,38 @@ export class XMLStreamParser {
       ) {
         text = text.slice(0, -1);
       }
-      this.currentTag.text = (this.currentTag.text || "") + text;
+      // Create a copy of the current tag with updated text
+      effectiveTag = {
+        ...this.currentTag,
+        text: (this.currentTag.text || "") + text,
+      };
     }
-    return this.root;
+    // Return the root, replacing currentTag with effectiveTag in its hierarchy
+    const replaceTagInChildren = (
+      children: Node[],
+      target: Node,
+      replacement: Node,
+    ): Node[] => {
+      return children.map((child) => {
+        if (child === target) {
+          return replacement;
+        }
+        return {
+          ...child,
+          children: replaceTagInChildren(child.children, target, replacement),
+        };
+      });
+    };
+    return {
+      ...this.root,
+      children: effectiveTag
+        ? replaceTagInChildren(
+            this.root.children,
+            this.currentTag!,
+            effectiveTag,
+          )
+        : this.root.children,
+    };
   }
 
   // Process a complete string (for testing)
