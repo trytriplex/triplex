@@ -6,7 +6,9 @@
  */
 import { type ChatRenderableProps } from "./types";
 
-export function CodeAdd({ children }: ChatRenderableProps) {
+export function CodeAdd({
+  children,
+}: ChatRenderableProps<{ lineNumber: number; path: string }>) {
   return (
     <pre className="border-input bg-editor overflow-auto border">
       <code>{children}</code>

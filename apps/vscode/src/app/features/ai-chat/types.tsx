@@ -10,4 +10,4 @@ import { type ReactNode } from "react";
 export type ChatRenderableProps<TProps extends object = object> = {
   children?: ReactNode;
   isResolved: boolean;
-} & TProps;
+} & Partial<TProps>;

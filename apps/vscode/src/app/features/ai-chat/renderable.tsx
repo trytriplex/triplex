@@ -19,7 +19,7 @@ import { AIThinking } from "./ai-thinking";
 import { CodeAdd } from "./code-add";
 import { CodeReplace } from "./code-replace";
 import { Mutations } from "./mutations";
-import { XMLStreamParser, type Node } from "./parser";
+import { StreamingXMLParser, type Node } from "./parser";
 import { UserMessage } from "./user-message";
 
 export function renderRenderable(node: Node, index: number): ReactNode {
@@ -77,7 +77,7 @@ export function renderRenderable(node: Node, index: number): ReactNode {
 }
 
 export function useRenderableChatStream(ref: RefObject<HTMLElement | null>) {
-  const [parser] = useState(() => new XMLStreamParser());
+  const [parser] = useState(() => new StreamingXMLParser());
   const [structure, setStructure] = useState<Node[]>([]);
   const [shouldScroll, setShouldScroll] = useState(true);
 
@@ -85,7 +85,7 @@ export function useRenderableChatStream(ref: RefObject<HTMLElement | null>) {
     if (type === "chunk") {
       const actualData = typeof data === "string" ? data : data.join("");
       parser.processChunk(actualData);
-      setStructure(parser.getStructure().children.concat([]));
+      setStructure(parser.toStructure());
     }
   });
 

@@ -8,6 +8,8 @@ import { type ChatRenderableProps } from "./types";
 
 export function Mutations({ children }: ChatRenderableProps) {
   return (
-    <div className="border-input bg-neutral rounded border p-1">{children}</div>
+    <div className="border-input bg-neutral rounded border p-0.5">
+      {children}
+    </div>
   );
 }

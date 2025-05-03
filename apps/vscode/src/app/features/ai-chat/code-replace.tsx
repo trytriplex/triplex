@@ -7,10 +7,16 @@
 
 import { type ChatRenderableProps } from "./types";
 
-export function CodeReplace({ children }: ChatRenderableProps) {
+export function CodeReplace({
+  children,
+}: ChatRenderableProps<{
+  fromLineNumber: number;
+  path: string;
+  toLineNumber: number;
+}>) {
   return (
-    <pre className="border-input bg-editor overflow-auto border">
-      <code>{children}</code>
+    <pre className="border-input bg-editor overflow-auto border px-2 py-1">
+      <code className="bg-editor text-subtle">{children}</code>
     </pre>
   );
 }

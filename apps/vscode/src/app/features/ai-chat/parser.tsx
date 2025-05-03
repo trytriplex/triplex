@@ -4,344 +4,292 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+
 export interface Node {
-  attributes: Record<string, string | boolean | number>;
+  attributes: Record<string, string | number | boolean>;
   children: Node[];
   isResolved: boolean;
   name: string;
   text: string;
+  type: "code" | "text";
 }
 
-// Define possible parser states
-export type ParserState =
-  | "TEXT"
-  | "TAG_OPEN"
-  | "TAG_NAME"
-  | "ATTRIB_NAME"
-  | "ATTRIB_VALUE"
-  | "TAG_CLOSE"
-  | "CODE_BLOCK"
-  | "CODE_TAG"
-  | "INLINE_CODE";
+export interface NodeValue {
+  name: string;
+  type: "string" | "number";
+  value: string | number;
+}
 
-export class XMLStreamParser {
-  private state: ParserState;
-  private currentCharBuffer: string[];
-  private currentTag: Node | null;
-  private tagStack: Node[];
-  private root: Node;
-  private currentAttribName: string;
-  private currentAttribValue: string;
-  private isClosingTag: boolean;
-  private codeLookahead: string;
+export class StreamingXMLParser {
+  private nodes: Node[] = [];
+  private nodeStack: Node[] = [];
+  private textBuffer: string[] = [];
+  private nextCharacter: string = "";
 
-  constructor() {
-    this.state = "TEXT";
-    this.currentCharBuffer = [];
-    this.currentTag = null;
-    this.tagStack = [];
-    this.root = {
-      attributes: {},
-      children: [],
-      isResolved: true,
-      name: "root",
-      text: "",
-    };
-    this.currentAttribName = "";
-    this.currentAttribValue = "";
-    this.isClosingTag = false;
-    this.codeLookahead = "";
+  private state:
+    | "COLLECT_TEXT"
+    | "COLLECT_CODE"
+    | "COLLECT_TAG_NAME"
+    | "CHECK_CLOSING_TAG"
+    | "CHECK_SELF_CLOSING_TAG"
+    | "COLLECT_TAG_ATTRIBUTE_NAME"
+    | "COLLECT_TAG_ATTRIBUTE_VALUE" = "COLLECT_TEXT";
+
+  private currentNode: Node | undefined = undefined;
+  private currentAttribute: NodeValue | undefined = undefined;
+
+  private flushAttribute(): void {
+    if (this.currentAttribute) {
+      const value = this.textBuffer.join("");
+
+      if (this.currentAttribute.type === "string") {
+        this.currentAttribute.value = value;
+      } else if (this.currentAttribute.type === "number") {
+        this.currentAttribute.value = Number(value);
+      }
+    }
+
+    if (this.currentNode && this.currentAttribute) {
+      this.currentNode.attributes[this.currentAttribute.name] =
+        this.currentAttribute.value;
+      this.currentAttribute = undefined;
+    }
+
+    this.textBuffer.length = 0;
   }
 
-  // Process a chunk of one or more characters from the stream
+  private flushCurrentNode(): void {
+    if (this.currentNode) {
+      this.currentNode.isResolved = true;
+      this.nodeStack.pop();
+      this.currentNode = this.nodeStack.at(-1);
+      this.textBuffer.length = 0;
+    }
+  }
+
+  /**
+   * Processes the buffer. Returns true if the buffer was processed, false if
+   * the buffer is empty.
+   */
+  private process(): void {
+    const char = this.nextCharacter;
+    if (!char) {
+      return;
+    }
+
+    switch (this.state) {
+      case "COLLECT_TEXT": {
+        if (this.currentNode?.type === "code") {
+          // Correct state for a code node.
+          this.state = "COLLECT_CODE";
+          this.process();
+        } else if (char === "<") {
+          this.state = "COLLECT_TAG_NAME";
+        } else if (char === "`") {
+          // We've found the start of a code block. Assume the rest of the text is code.
+          this.state = "COLLECT_CODE";
+          this.process();
+        } else if (this.currentNode) {
+          // Accumulate text onto the current node.
+          this.currentNode.text += char;
+        } else {
+          // Accumulate text onto the text buffer.
+          this.textBuffer.push(char);
+        }
+
+        break;
+      }
+
+      case "COLLECT_CODE": {
+        if (!this.currentNode) {
+          throw new Error("invariant: expected currentNode to be defined");
+        }
+
+        if (char === "<") {
+          // We've found a closing tag so start pushing to the text buffer.
+          // This doesn't get flushed to the node until we either confirm this isn't
+          // the actual closing tag, or we confirm it is.
+          this.textBuffer.push(char);
+        } else if (this.textBuffer.length > 0) {
+          this.textBuffer.push(char);
+
+          const possibleClosingTagName = this.textBuffer.join("");
+          const actualClosingTagName = `</${this.currentNode.name}>`;
+
+          if (actualClosingTagName === possibleClosingTagName) {
+            this.flushCurrentNode();
+            this.state = "COLLECT_TEXT";
+          } else if (
+            possibleClosingTagName.length > actualClosingTagName.length
+          ) {
+            this.currentNode.text += possibleClosingTagName;
+            this.textBuffer.length = 0;
+          }
+        } else {
+          // Accumulate non-closing tag text onto the current node.
+          this.currentNode.text += char;
+        }
+
+        break;
+      }
+
+      case "COLLECT_TAG_NAME": {
+        if (char === "/") {
+          // Found the start of a self closing tag, perform a state transition.
+          this.state = "CHECK_SELF_CLOSING_TAG";
+          this.textBuffer.length = 0;
+        } else if (char === " " || char === ">") {
+          // We've reached the end of the tag name.
+          const tagName = this.textBuffer.join("");
+          this.textBuffer.length = 0;
+
+          this.currentNode = {
+            attributes: {},
+            children: [],
+            isResolved: false,
+            name: tagName,
+            text: "",
+            type: tagName.startsWith("code_") ? "code" : "text",
+          };
+
+          if (this.nodeStack.length > 0) {
+            // We're inside a node, so add the current node to the last element.
+            this.nodeStack.at(-1)!.children.push(this.currentNode);
+          } else {
+            // We're at the root level, so add the current node to the nodes array.
+            this.nodes.push(this.currentNode);
+          }
+
+          // Add to the stack as we're now inside this node
+          this.nodeStack.push(this.currentNode);
+
+          if (char === " ") {
+            // The tag continues with attributes
+            this.state = "COLLECT_TAG_ATTRIBUTE_NAME";
+          } else if (char === ">") {
+            // Go back to collecting text.
+            this.state = "COLLECT_TEXT";
+          }
+        } else {
+          // Keep collecting the tag name.
+          this.textBuffer.push(char);
+        }
+
+        break;
+      }
+
+      case "CHECK_CLOSING_TAG": {
+        if (!this.currentNode) {
+          throw new Error("invariant: expected currentNode to be defined");
+        }
+
+        if (char === ">") {
+          const tagName = this.textBuffer.join("");
+
+          if (tagName !== this.currentNode.name) {
+            throw new Error(
+              `invariant: tag name mismatch <${this.currentNode.name}>...</${tagName}>`,
+            );
+          }
+
+          this.flushCurrentNode();
+          this.state = "COLLECT_TEXT";
+        } else {
+          this.textBuffer.push(char);
+        }
+
+        break;
+      }
+
+      case "CHECK_SELF_CLOSING_TAG": {
+        if (char !== ">") {
+          // This isn't a self-closing tag.
+          this.state = "CHECK_CLOSING_TAG";
+          this.process();
+        } else if (!this.currentNode) {
+          throw new Error("invariant: expected currentNode to be defined");
+        } else {
+          // We've found the end of a self-closing tag.
+          this.flushCurrentNode();
+          this.state = "COLLECT_TEXT";
+        }
+
+        break;
+      }
+
+      case "COLLECT_TAG_ATTRIBUTE_NAME": {
+        if (char === "=") {
+          // We've found the end of an attribute name.
+          this.currentAttribute = {
+            name: this.textBuffer.join(""),
+            type: "string",
+            value: "",
+          };
+          this.textBuffer.length = 0;
+          this.state = "COLLECT_TAG_ATTRIBUTE_VALUE";
+        } else if (char === " " || char === ">" || char === "/") {
+          // We've gotten to the end of an attribute name that isn't assign a value.
+          // Skip creating the intermediate attribute object and immediately assign.
+          if (this.textBuffer.length > 0) {
+            if (this.currentNode) {
+              const attributeName = this.textBuffer.join("");
+              this.currentNode.attributes[attributeName] = true;
+              this.textBuffer.length = 0;
+            }
+          }
+
+          if (char === ">") {
+            this.state = "COLLECT_TEXT";
+          } else if (char === "/") {
+            this.state = "CHECK_SELF_CLOSING_TAG";
+          }
+        } else if (char === "<") {
+          // We've found a new tag.
+          this.state = "COLLECT_TAG_NAME";
+        } else {
+          // Keep collecting the attribute name.
+          this.textBuffer.push(char);
+        }
+
+        break;
+      }
+
+      case "COLLECT_TAG_ATTRIBUTE_VALUE": {
+        if (char === '"' || char === "'" || char === "{" || char === "}") {
+          if (char === "{" && this.textBuffer.length === 0) {
+            // We're at the start of an attribute value that should be a number.
+            this.currentAttribute!.type = "number";
+          } else if (this.textBuffer.length > 0) {
+            // End of attribute value
+            this.flushAttribute();
+            this.state = "COLLECT_TAG_ATTRIBUTE_NAME";
+          }
+        } else {
+          // Keep collecting the attribute value.
+          this.textBuffer.push(char);
+        }
+
+        break;
+      }
+    }
+  }
+
   processChunk(chunk: string): void {
     for (const char of chunk) {
-      switch (this.state) {
-        case "TEXT":
-          if (char === "<") {
-            // Start of a tag
-            if (this.currentCharBuffer.length > 0) {
-              // Save accumulated text, discarding trailing newline
-              let text = this.currentCharBuffer.join("");
-              if (text.endsWith("\n")) {
-                text = text.slice(0, -1);
-              }
-              if (this.currentTag && text) {
-                this.currentTag.text = (this.currentTag.text || "") + text;
-              }
-              this.currentCharBuffer.length = 0;
-            }
-            this.currentCharBuffer.push(char);
-            this.state = "TAG_OPEN";
-          } else if (char === "`") {
-            // Start of inline code
-            this.currentCharBuffer.push(char);
-            this.state = "INLINE_CODE";
-          } else {
-            // Check for start of Markdown code block (\n```)
-            this.currentCharBuffer.push(char);
-            this.codeLookahead += char;
-            if (this.codeLookahead.endsWith("\n```")) {
-              // Start code block, include ``` in text
-              this.codeLookahead = "";
-              this.state = "CODE_BLOCK";
-            } else if (this.codeLookahead.length > 3) {
-              this.codeLookahead = this.codeLookahead.slice(-3);
-            }
-          }
-          break;
-
-        case "INLINE_CODE":
-          this.currentCharBuffer.push(char);
-          if (char === "`") {
-            // End of inline code
-            if (this.currentTag) {
-              const text = this.currentCharBuffer.join("");
-              this.currentTag.text = (this.currentTag.text || "") + text;
-            }
-            this.currentCharBuffer.length = 0;
-            this.state = "TEXT";
-          }
-          break;
-
-        case "CODE_BLOCK":
-          this.currentCharBuffer.push(char);
-          this.codeLookahead += char;
-          if (this.codeLookahead.endsWith("\n```")) {
-            // End code block, include ``` in text
-            this.codeLookahead = "";
-            if (this.currentTag) {
-              const text = this.currentCharBuffer.join("");
-              this.currentTag.text = (this.currentTag.text || "") + text;
-            }
-            this.currentCharBuffer.length = 0;
-            this.state = "TEXT";
-          } else if (this.codeLookahead.length > 3) {
-            this.codeLookahead = this.codeLookahead.slice(-3);
-          }
-          break;
-
-        case "CODE_TAG": {
-          this.currentCharBuffer.push(char);
-          this.codeLookahead += char;
-          const closingTag = `</${this.currentTag!.name}>`;
-          if (this.codeLookahead.endsWith(closingTag)) {
-            // End code tag, commit text and parse closing tag
-            let text = this.currentCharBuffer.join("");
-            if (text.endsWith("\n")) {
-              text = text.slice(0, -1);
-            }
-            if (this.currentTag && text) {
-              this.currentTag.text =
-                (this.currentTag.text || "") +
-                text.slice(0, -closingTag.length);
-            }
-            this.currentCharBuffer.length = 0;
-            this.codeLookahead = "";
-            // Process closing tag
-            if (this.tagStack.length > 0) {
-              this.tagStack.pop();
-              this.currentTag =
-                this.tagStack.length > 0 ? this.tagStack.at(-1)! : null;
-            }
-            this.state = "TEXT";
-          } else if (this.codeLookahead.length > closingTag.length) {
-            this.codeLookahead = this.codeLookahead.slice(-closingTag.length);
-          }
-          break;
-        }
-
-        case "TAG_OPEN":
-          if (char === "/") {
-            this.isClosingTag = true;
-            this.currentTag!.isResolved = true;
-            this.currentCharBuffer.length = 0;
-          } else {
-            this.currentCharBuffer.length = 0;
-            this.currentCharBuffer.push(char);
-            this.state = "TAG_NAME";
-          }
-          break;
-
-        case "TAG_NAME":
-          if (char === " " || char === ">") {
-            // End of tag name
-            const tagName = this.currentCharBuffer.join("");
-            if (this.isClosingTag) {
-              // Closing tag
-              if (this.tagStack.length > 0) {
-                const closingTag = this.tagStack.pop()!;
-                if (closingTag.name !== tagName) {
-                  throw new Error(
-                    `Mismatched closing tag: expected </${closingTag.name}>, got </${tagName}>`,
-                  );
-                }
-                this.currentTag =
-                  this.tagStack.length > 0 ? this.tagStack.at(-1)! : null;
-              }
-              this.isClosingTag = false;
-              this.currentCharBuffer.length = 0;
-              this.state = char === ">" ? "TEXT" : "TAG_CLOSE";
-            } else {
-              // Opening tag
-              const newTag: Node = {
-                attributes: {},
-                children: [],
-                isResolved: false,
-                name: tagName,
-                text: "",
-              };
-              if (!this.currentTag) {
-                this.root.children.push(newTag);
-              } else {
-                this.currentTag.children.push(newTag);
-              }
-              this.tagStack.push(newTag);
-              this.currentTag = newTag;
-              this.currentCharBuffer.length = 0;
-              this.state =
-                char === ">"
-                  ? tagName === "code_add" || tagName === "code_replace"
-                    ? "CODE_TAG"
-                    : "TEXT"
-                  : "ATTRIB_NAME";
-            }
-          } else {
-            this.currentCharBuffer.push(char);
-          }
-          break;
-
-        case "ATTRIB_NAME":
-          if (char === "=") {
-            this.currentAttribName = this.currentCharBuffer.join("");
-            this.currentCharBuffer.length = 0;
-            this.state = "ATTRIB_VALUE";
-          } else if (char === ">" || char === " ") {
-            // Handle attributes without values
-            if (this.currentCharBuffer.length > 0) {
-              this.currentTag!.attributes[this.currentCharBuffer.join("")] =
-                true;
-              this.currentCharBuffer.length = 0;
-            }
-            this.state =
-              char === ">"
-                ? this.currentTag!.name === "code_add" ||
-                  this.currentTag!.name === "code_replace"
-                  ? "CODE_TAG"
-                  : "TEXT"
-                : "ATTRIB_NAME";
-          } else {
-            this.currentCharBuffer.push(char);
-          }
-          break;
-
-        case "ATTRIB_VALUE":
-          if (
-            (char === '"' || char === "{") &&
-            this.currentCharBuffer.length === 0
-          ) {
-            // Start of quoted or numeric value
-            this.currentCharBuffer.length = 0;
-            this.currentAttribValue = char; // Track delimiter
-          } else if (
-            (char === '"' && this.currentAttribValue === '"') ||
-            (char === "}" &&
-              this.currentAttribValue === "{" &&
-              this.currentCharBuffer.length > 0)
-          ) {
-            // End of value
-            const value = this.currentCharBuffer.join("");
-            if (this.currentAttribValue === "{") {
-              // Try parsing as number
-              const num = Number.parseFloat(value);
-              this.currentTag!.attributes[this.currentAttribName] =
-                Number.isNaN(num) ? value : num;
-            } else {
-              // String value
-              this.currentTag!.attributes[this.currentAttribName] = value;
-            }
-            this.currentCharBuffer.length = 0;
-            this.currentAttribName = "";
-            this.currentAttribValue = "";
-            this.state = "ATTRIB_NAME";
-          } else {
-            this.currentCharBuffer.push(char);
-          }
-          break;
-
-        case "TAG_CLOSE":
-          if (char === ">") {
-            this.state =
-              this.currentTag!.name === "code_add" ||
-              this.currentTag!.name === "code_replace"
-                ? "CODE_TAG"
-                : "TEXT";
-            this.currentCharBuffer.length = 0;
-          } else if (char === "/") {
-            // Self-closing tag
-            if (this.tagStack.length > 0) {
-              this.currentTag = this.tagStack.pop()!;
-              this.currentTag =
-                this.tagStack.length > 0 ? this.tagStack.at(-1)! : null;
-            }
-            this.state = "TEXT";
-            this.currentCharBuffer.length = 0;
-          }
-          break;
-      }
+      this.nextCharacter = char;
+      this.process();
     }
+
+    this.nextCharacter = "";
   }
 
-  // Get the current parsed structure, computing effective text without modifying state
-  getStructure(): Node {
-    // Compute effective text for the current tag without modifying it
-    let effectiveTag = this.currentTag;
-    if (this.currentTag && this.currentCharBuffer.length > 0) {
-      let text = this.currentCharBuffer.join("");
-      if (
-        this.state !== "CODE_BLOCK" &&
-        this.state !== "CODE_TAG" &&
-        this.state !== "INLINE_CODE" &&
-        text.endsWith("\n")
-      ) {
-        text = text.slice(0, -1);
-      }
-      // Create a copy of the current tag with updated text
-      effectiveTag = {
-        ...this.currentTag,
-        text: (this.currentTag.text || "") + text,
-      };
-    }
-    // Return the root, replacing currentTag with effectiveTag in its hierarchy
-    const replaceTagInChildren = (
-      children: Node[],
-      target: Node,
-      replacement: Node,
-    ): Node[] => {
-      return children.map((child) => {
-        if (child === target) {
-          return replacement;
-        }
-        return {
-          ...child,
-          children: replaceTagInChildren(child.children, target, replacement),
-        };
-      });
-    };
-    return {
-      ...this.root,
-      children: effectiveTag
-        ? replaceTagInChildren(
-            this.root.children,
-            this.currentTag!,
-            effectiveTag,
-          )
-        : this.root.children,
-    };
-  }
-
-  // Process a complete string (for testing)
-  parseString(str: string): void {
+  parseString(str: string): Node[] {
+    this.nodes = [];
     this.processChunk(str);
+    return structuredClone(this.nodes);
+  }
+
+  toStructure(): Node[] {
+    return structuredClone(this.nodes);
   }
 }
