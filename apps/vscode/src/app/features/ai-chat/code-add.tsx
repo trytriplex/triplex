@@ -11,7 +11,7 @@ export function CodeAdd({
 }: ChatRenderableProps<{ lineNumber: number; path: string }>) {
   return (
     <pre className="border-input bg-editor overflow-auto border">
-      <code>{children}</code>
+      <code className="bg-editor text-subtle">{children}</code>
     </pre>
   );
 }

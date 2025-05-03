@@ -158,6 +158,59 @@ describe("StreamingXMLParser", () => {
     `);
   });
 
+  it("should parse when starting on a new line", () => {
+    const parser = new StreamingXMLParser();
+
+    parser.processChunk(`
+<ai_response>
+  <mutations>
+    <code_add lineNumber={1}>
+      console.log();
+    </code_add>
+  </mutations> 
+</ai_response>
+`);
+
+    expect(parser.toStructure()).toMatchInlineSnapshot(`
+      [
+        {
+          "attributes": {},
+          "children": [
+            {
+              "attributes": {},
+              "children": [
+                {
+                  "attributes": {
+                    "lineNumber": 1,
+                  },
+                  "children": [],
+                  "isResolved": true,
+                  "name": "code_add",
+                  "text": "
+            console.log();
+          ",
+                  "type": "code",
+                },
+              ],
+              "isResolved": true,
+              "name": "mutations",
+              "text": "
+          
+        ",
+              "type": "text",
+            },
+          ],
+          "isResolved": true,
+          "name": "ai_response",
+          "text": "
+         
+      ",
+          "type": "text",
+        },
+      ]
+    `);
+  });
+
   it("should ignore partial attributes", () => {
     const parser = new StreamingXMLParser();
 
@@ -387,6 +440,102 @@ describe("StreamingXMLParser", () => {
           "isResolved": true,
           "name": "ai_response",
           "text": "",
+          "type": "text",
+        },
+      ]
+    `);
+  });
+
+  it("should handle more streaming chunks", () => {
+    const parser = new StreamingXMLParser();
+
+    parser.processChunk("<user_message>add some boxes</user_message>");
+    parser.processChunk("<");
+    parser.processChunk("ai_response><ai_message>Sure, I can add some");
+    parser.processChunk(
+      " boxes to your scene.  I'll add three boxes with different colors and",
+    );
+    parser.processChunk(
+      ' positions within the Plane component.</ai_message><mutations><code_add path="/Users/douges/projects/triplex-mon',
+    );
+    parser.processChunk(`orepo/examples-private/test-fixture/src/scene.tsx" lineNumber={17}>
+        <mesh position={[-2,`);
+    parser.processChunk(` 0, 0]}>
+          <boxGeometry />
+          <meshStandardMaterial color="red" />
+        </mesh>
+        <mesh position={[0, 2, 0]}>
+          <boxGeometry />`);
+    parser.processChunk(`
+          <meshStandardMaterial color="green" />
+        </mesh>
+        <mesh position={[2, 0, 2]}>
+          <boxGeometry />
+          <meshStandardMaterial color="blue" />`);
+    parser.processChunk(`        </mesh>
+</code_add>
+</mutations>
+</ai_response>`);
+
+    expect(parser.toStructure()).toMatchInlineSnapshot(`
+      [
+        {
+          "attributes": {},
+          "children": [],
+          "isResolved": true,
+          "name": "user_message",
+          "text": "add some boxes",
+          "type": "text",
+        },
+        {
+          "attributes": {},
+          "children": [
+            {
+              "attributes": {},
+              "children": [],
+              "isResolved": true,
+              "name": "ai_message",
+              "text": "Sure, I can add some boxes to your scene.  I'll add three boxes with different colors and positions within the Plane component.",
+              "type": "text",
+            },
+            {
+              "attributes": {},
+              "children": [
+                {
+                  "attributes": {
+                    "lineNumber": 17,
+                    "path": "/Users/douges/projects/triplex-monorepo/examples-private/test-fixture/src/scene.tsx",
+                  },
+                  "children": [],
+                  "isResolved": true,
+                  "name": "code_add",
+                  "text": "
+              <mesh position={[-2, 0, 0]}>
+                <boxGeometry />
+                <meshStandardMaterial color="red" />
+              </mesh>
+              <mesh position={[0, 2, 0]}>
+                <boxGeometry />
+                <meshStandardMaterial color="green" />
+              </mesh>
+              <mesh position={[2, 0, 2]}>
+                <boxGeometry />
+                <meshStandardMaterial color="blue" />        </mesh>
+      ",
+                  "type": "code",
+                },
+              ],
+              "isResolved": true,
+              "name": "mutations",
+              "text": "
+      ",
+              "type": "text",
+            },
+          ],
+          "isResolved": true,
+          "name": "ai_response",
+          "text": "
+      ",
           "type": "text",
         },
       ]

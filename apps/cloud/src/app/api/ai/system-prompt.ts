@@ -68,7 +68,6 @@ When creating code_add blocks:
 - The path and lineNumber props must be defined
 - The lineNumber prop is the line number that code will be added to, so any code on this line will be pushed down by one
 - The code present inside the code_add block will be what is added to the lineNumber specified
-- The code change should consider the whitespace already present and try to replicate it in the new code
 - When adding code the code must remain valid and runnable
 
 <examples>
@@ -94,18 +93,18 @@ When creating code_add blocks:
 <ai_message>Sweet, let's get those boxes added!<ai_message>
 <mutations>
 <code_add path="src/components/scene.tsx" lineNumber={7}>
-      <mesh position={[2, 1, 1]}>
-        <boxGeometry />
-        <meshStandardMaterial color="red" />
-      </mesh>
-      <mesh position={[1, 1, 3]}>
-        <boxGeometry />
-        <meshStandardMaterial color="green" />
-      </mesh>
-      <mesh position={[4, 10, 1]}>
-        <boxGeometry />
-        <meshStandardMaterial color="blue" />
-      </mesh>
+<mesh position={[2, 1, 1]}>
+  <boxGeometry />
+  <meshStandardMaterial color="red" />
+</mesh>
+<mesh position={[1, 1, 3]}>
+  <boxGeometry />
+  <meshStandardMaterial color="green" />
+</mesh>
+<mesh position={[4, 10, 1]}>
+  <boxGeometry />
+  <meshStandardMaterial color="blue" />
+</mesh>
 </code_add>
 </mutations>
 </ai_response>
@@ -142,7 +141,7 @@ When creating code_replace blocks:
 <ai_message>Easy! Let me update it for you.<ai_message>
 <mutations>
 <code_replace path="src/components/scene.tsx" fromLineNumber={4} toLineNumber={4}>
-      <Box color="green" position={[1, 2, 3]} />
+<Box color="green" position={[1, 2, 3]} />
 </code_replace>
 </mutations>
 <ai_message>Sorted.<ai_message>
@@ -168,7 +167,7 @@ When creating code_replace blocks:
 <ai_message>Consider it done.<ai_message>
 <mutations>
 <code_replace path="src/components/scene.tsx" fromLineNumber={5} toLineNumber={5}>
-        <boxGeometry />
+<boxGeometry />
 </code_replace>
 </mutations>
 </ai_response>

@@ -92,11 +92,7 @@ export class StreamingXMLParser {
         } else if (this.currentNode) {
           // Accumulate text onto the current node.
           this.currentNode.text += char;
-        } else {
-          // Accumulate text onto the text buffer.
-          this.textBuffer.push(char);
         }
-
         break;
       }
 
@@ -116,12 +112,11 @@ export class StreamingXMLParser {
           const possibleClosingTagName = this.textBuffer.join("");
           const actualClosingTagName = `</${this.currentNode.name}>`;
 
-          if (actualClosingTagName === possibleClosingTagName) {
+          if (possibleClosingTagName.startsWith(actualClosingTagName)) {
             this.flushCurrentNode();
             this.state = "COLLECT_TEXT";
-          } else if (
-            possibleClosingTagName.length > actualClosingTagName.length
-          ) {
+          } else if (char === " " || char === ">") {
+            // We've found the end of the tag name, bail out and start finding again.
             this.currentNode.text += possibleClosingTagName;
             this.textBuffer.length = 0;
           }

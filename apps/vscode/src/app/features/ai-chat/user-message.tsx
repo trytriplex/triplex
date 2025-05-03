@@ -11,7 +11,7 @@ export function UserMessage({ children }: ChatRenderableProps) {
   return (
     <div className="flex gap-2">
       <div className="border-input -mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center self-start rounded-full border p-1">
-        <PersonIcon />
+        <PersonIcon className="flex-shrink-0" />
       </div>
       <div className="flex min-w-0 flex-col gap-2">{children}</div>
     </div>
