@@ -4,9 +4,17 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { useState, type ReactNode } from "react";
+import { bind } from "bind-event-listener";
+import {
+  useEffect,
+  useLayoutEffect,
+  useState,
+  type ReactNode,
+  type RefObject,
+} from "react";
 import { experimental_useLazySubscriptionStream as useLazySubscriptionStream } from "../../hooks/ws";
 import { AIMessage } from "./ai-message";
+import { AIResponse } from "./ai-response";
 import { AIThinking } from "./ai-thinking";
 import { CodeAdd } from "./code-add";
 import { CodeReplace } from "./code-replace";
@@ -16,34 +24,62 @@ import { UserMessage } from "./user-message";
 
 export function renderRenderable(node: Node, index: number): ReactNode {
   switch (node.name) {
+    case "ai_response":
+      return (
+        <AIResponse isResolved={node.isResolved} key={index}>
+          {node.children.map(renderRenderable)}
+        </AIResponse>
+      );
+
     case "ai_thinking":
-      return <AIThinking key={index}>{node.text}</AIThinking>;
+      return (
+        <AIThinking isResolved={node.isResolved} key={index}>
+          {node.text}
+        </AIThinking>
+      );
 
     case "ai_message":
-      return <AIMessage key={index}>{node.text}</AIMessage>;
+      return (
+        <AIMessage isResolved={node.isResolved} key={index}>
+          {node.text}
+        </AIMessage>
+      );
 
     case "code_add":
-      return <CodeAdd key={index}>{node.text}</CodeAdd>;
+      return (
+        <CodeAdd isResolved={node.isResolved} key={index}>
+          {node.text}
+        </CodeAdd>
+      );
 
     case "code_replace":
-      return <CodeReplace key={index}>{node.text}</CodeReplace>;
+      return (
+        <CodeReplace isResolved={node.isResolved} key={index}>
+          {node.text}
+        </CodeReplace>
+      );
 
     case "mutations":
       return (
-        <Mutations key={index}>
+        <Mutations isResolved={node.isResolved} key={index}>
           {node.text}
           {node.children.map(renderRenderable)}
         </Mutations>
       );
 
     case "user_message":
-      return <UserMessage key={index}>{node.text}</UserMessage>;
+      return (
+        <UserMessage isResolved={node.isResolved} key={index}>
+          {node.text}
+        </UserMessage>
+      );
   }
 }
 
-export function useRenderableChatStream() {
+export function useRenderableChatStream(ref: RefObject<HTMLElement | null>) {
   const [parser] = useState(() => new XMLStreamParser());
   const [structure, setStructure] = useState<Node[]>([]);
+  const [shouldScroll, setShouldScroll] = useState(true);
 
   useLazySubscriptionStream("/ai/chat", (data, type) => {
     if (type === "chunk") {
@@ -52,6 +88,30 @@ export function useRenderableChatStream() {
       setStructure(parser.getStructure().children.concat([]));
     }
   });
+
+  useLayoutEffect(() => {
+    if (ref.current && shouldScroll) {
+      ref.current.scrollTo(0, 99_999);
+    }
+  }, [ref, shouldScroll, structure]);
+
+  useEffect(() => {
+    const element = ref.current;
+    if (!element) {
+      return;
+    }
+
+    return bind(element, {
+      listener() {
+        const scrollOffset = element.scrollHeight - element.clientHeight;
+        const isAtBottom =
+          Math.floor(scrollOffset) === Math.floor(element.scrollTop);
+
+        setShouldScroll(isAtBottom);
+      },
+      type: "scroll",
+    });
+  }, [ref, structure]);
 
   return structure;
 }

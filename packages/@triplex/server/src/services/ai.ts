@@ -68,16 +68,16 @@ function propToMarkdown(prop: Prop): string | undefined {
 }
 
 export function createAI(project: TriplexProject) {
-  const chatHistory: string[] = [];
+  const chatResponseParts: string[] = [];
   const listeners: (() => void)[] = [];
   let promptLock = false;
 
   function getChat() {
-    return chatHistory;
+    return chatResponseParts;
   }
 
   function getChatLastPart() {
-    return chatHistory.at(-1) || "";
+    return chatResponseParts.at(-1) || "";
   }
 
   async function prompt(options: { context: AIChatContext[]; prompt: string }) {
@@ -86,6 +86,9 @@ export function createAI(project: TriplexProject) {
     }
 
     promptLock = true;
+
+    chatResponseParts.push(`<user_message>${options.prompt}</user_message>`);
+    listeners.forEach((callback) => callback());
 
     const context = options.context.map((ctx) => {
       if (ctx.type === "selection") {
@@ -148,7 +151,7 @@ ${sourceFile
 
     for await (const part of response.body as unknown as AsyncIterable<Uint8Array>) {
       const text = decoder.decode(part);
-      chatHistory.push(text);
+      chatResponseParts.push(text);
       listeners.forEach((callback) => callback());
     }
 

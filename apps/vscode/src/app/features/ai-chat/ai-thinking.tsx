@@ -4,13 +4,8 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { type ReactNode } from "react";
+import { type ChatRenderableProps } from "./types";
 
-export function AIThinking({ children }: { children?: ReactNode }) {
-  return (
-    <div>
-      thinking...
-      {children}
-    </div>
-  );
+export function AIThinking({ children }: ChatRenderableProps) {
+  return <div className="opacity-80">{children}</div>;
 }

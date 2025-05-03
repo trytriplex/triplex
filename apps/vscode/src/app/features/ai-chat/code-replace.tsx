@@ -4,13 +4,13 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { type ReactNode } from "react";
 
-export function CodeReplace({ children }: { children?: ReactNode }) {
+import { type ChatRenderableProps } from "./types";
+
+export function CodeReplace({ children }: ChatRenderableProps) {
   return (
-    <div>
-      CodeReplace...
-      {children}
-    </div>
+    <pre className="border-input bg-editor overflow-auto border">
+      <code>{children}</code>
+    </pre>
   );
 }

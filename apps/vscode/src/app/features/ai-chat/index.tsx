@@ -5,18 +5,19 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { type AIChatContext } from "@triplex/server";
-import { Suspense } from "react";
+import { Suspense, useRef } from "react";
 import { Button } from "../../components/button";
 import { ScrollContainer } from "../../components/scroll-container";
 import { useSceneContext, useSceneSelected } from "../app-root/context";
 import { renderRenderable, useRenderableChatStream } from "./renderable";
 
 function AIChatLog() {
-  const renderables = useRenderableChatStream();
+  const ref = useRef<HTMLDivElement>(null);
+  const renderables = useRenderableChatStream(ref);
 
   return (
-    <ScrollContainer>
-      <div className="flex flex-col px-2.5 pt-2">
+    <ScrollContainer ref={ref}>
+      <div className="flex flex-col gap-6 px-2 py-3">
         {renderables.map(renderRenderable)}
       </div>
     </ScrollContainer>

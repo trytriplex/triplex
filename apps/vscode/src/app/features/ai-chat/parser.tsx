@@ -7,6 +7,7 @@
 export interface Node {
   attributes: Record<string, string | boolean | number>;
   children: Node[];
+  isResolved: boolean;
   name: string;
   text: string;
 }
@@ -39,7 +40,13 @@ export class XMLStreamParser {
     this.currentCharBuffer = [];
     this.currentTag = null;
     this.tagStack = [];
-    this.root = { attributes: {}, children: [], name: "root", text: "" };
+    this.root = {
+      attributes: {},
+      children: [],
+      isResolved: true,
+      name: "root",
+      text: "",
+    };
     this.currentAttribName = "";
     this.currentAttribValue = "";
     this.isClosingTag = false;
@@ -147,6 +154,7 @@ export class XMLStreamParser {
         case "TAG_OPEN":
           if (char === "/") {
             this.isClosingTag = true;
+            this.currentTag!.isResolved = true;
             this.currentCharBuffer.length = 0;
           } else {
             this.currentCharBuffer.length = 0;
@@ -179,6 +187,7 @@ export class XMLStreamParser {
               const newTag: Node = {
                 attributes: {},
                 children: [],
+                isResolved: false,
                 name: tagName,
                 text: "",
               };
