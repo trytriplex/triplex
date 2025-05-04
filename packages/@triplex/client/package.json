@@ -1,6 +1,6 @@
 {
   "name": "@triplex/client",
-  "version": "0.70.30",
+  "version": "0.70.31",
   "private": true,
   "repository": "https://github.com/trytriplex/triplex-monorepo",
   "author": {
@@ -21,7 +21,7 @@
     "@babel/core": "^7.24.5",
     "@babel/types": "^7.24.5",
     "@triplex/bridge": "0.70.7",
-    "@triplex/renderer": "0.71.22",
+    "@triplex/renderer": "0.71.23",
     "@vitejs/plugin-react": "^4.3.4",
     "express": "^4.19.2",
     "vite": "^6.0.7"
@@ -34,7 +34,7 @@
     "@swc/core": "^1.6.5",
     "@triplex/lib": "0.69.15",
     "@triplex/server": "0.71.13",
-    "@triplex/websocks-client": "0.0.6",
+    "@triplex/websocks-client": "0.0.7",
     "@types/babel__core": "^7.20.5",
     "@types/express": "^4.17.16",
     "@types/node": "^18.11.18",

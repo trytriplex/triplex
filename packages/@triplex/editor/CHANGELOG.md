@@ -1,5 +1,12 @@
 # @triplex/editor
 
+## 0.70.33
+
+### Patch Changes
+
+- Updated dependencies [d5681d8]
+  - @triplex/websocks-client@0.0.7
+
 ## 0.70.32
 
 ### Patch Changes

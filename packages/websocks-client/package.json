@@ -1,6 +1,6 @@
 {
   "name": "@triplex/websocks-client",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "An end-to-end typed websocket API router and React client.",
   "author": {
     "name": "Triplex",

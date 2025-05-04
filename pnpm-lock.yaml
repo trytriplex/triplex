@@ -258,10 +258,10 @@ importers:
   apps/electron:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.30
+        specifier: 0.70.31
         version: link:../../packages/@triplex/client
       '@triplex/editor':
-        specifier: 0.70.32
+        specifier: 0.70.33
         version: link:../../packages/@triplex/editor
       '@triplex/server':
         specifier: 0.71.13
@@ -331,7 +331,7 @@ importers:
   apps/vscode:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.30
+        specifier: 0.70.31
         version: link:../../packages/@triplex/client
       '@triplex/server':
         specifier: 0.71.13
@@ -365,7 +365,7 @@ importers:
         specifier: 0.69.22
         version: link:../../packages/@triplex/ux
       '@triplex/websocks-client':
-        specifier: 0.0.6
+        specifier: 0.0.7
         version: link:../../packages/websocks-client
       '@types/raf-schd':
         specifier: ^4.0.3
@@ -860,7 +860,7 @@ importers:
         specifier: 0.70.7
         version: link:../../bridge
       '@triplex/renderer':
-        specifier: 0.71.22
+        specifier: 0.71.23
         version: link:../../renderer
       '@vitejs/plugin-react':
         specifier: ^4.3.4
@@ -894,7 +894,7 @@ importers:
         specifier: 0.71.13
         version: link:../server
       '@triplex/websocks-client':
-        specifier: 0.0.6
+        specifier: 0.0.7
         version: link:../../websocks-client
       '@types/babel__core':
         specifier: ^7.20.5
@@ -978,7 +978,7 @@ importers:
         specifier: 0.69.22
         version: link:../ux
       '@triplex/websocks-client':
-        specifier: 0.0.6
+        specifier: 0.0.7
         version: link:../../websocks-client
       react:
         specifier: ^19.0.0

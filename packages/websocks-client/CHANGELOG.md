@@ -1,5 +1,11 @@
 # @triplex/websocks-client
 
+## 0.0.7
+
+### Patch Changes
+
+- d5681d8: Add experimental_useLazySubscriptionStream.
+
 ## 0.0.6
 
 ### Patch Changes
