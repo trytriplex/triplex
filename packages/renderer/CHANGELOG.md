@@ -1,5 +1,11 @@
 # @triplex/renderer
 
+## 0.71.23
+
+### Patch Changes
+
+- 482f25b: Replace custom camera helper with the original one.
+
 ## 0.71.22
 
 ### Patch Changes
