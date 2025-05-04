@@ -14,6 +14,7 @@ import {
   SELECTION_LAYER_INDEX,
 } from "../../util/layers";
 import "./camera-helper";
+import { fg } from "@triplex/lib/fg";
 import { type ThreeHelper } from "./types";
 
 export type HelperInstance = Object3D & {
@@ -44,7 +45,12 @@ export const resolveHelper = (
 
     case "PerspectiveCamera":
     case "OrthographicCamera":
-      return { Element: "triplexCameraHelper" as "cameraHelper", args: [] };
+      return {
+        Element: fg("camera_helper_original")
+          ? "cameraHelper"
+          : ("triplexCameraHelper" as "cameraHelper"),
+        args: [],
+      };
 
     default:
       return undefined;
