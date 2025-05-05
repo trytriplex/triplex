@@ -4,10 +4,21 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+const indentation: unique symbol = Symbol("indentation");
 
 export interface Node {
   attributes: Record<string, string | number | boolean>;
   children: Node[];
+  [indentation]: {
+    baseline: {
+      state: "resolving" | "resolved" | "ready";
+      value: number;
+    };
+    buffer: {
+      state: "resolving" | "ready";
+      value: number;
+    };
+  };
   isResolved: boolean;
   name: string;
   text: string;
@@ -59,12 +70,96 @@ export class StreamingXMLParser {
   }
 
   private flushCurrentNode(): void {
-    if (this.currentNode) {
-      this.currentNode.isResolved = true;
-      this.nodeStack.pop();
-      this.currentNode = this.nodeStack.at(-1);
-      this.textBuffer.length = 0;
+    if (!this.currentNode) {
+      throw new Error("invariant: expected currentNode to be defined");
     }
+
+    if (this.currentNode.text.at(-1) === "\n") {
+      this.currentNode.text = this.currentNode.text.slice(0, -1);
+    }
+
+    this.currentNode.isResolved = true;
+    this.nodeStack.pop();
+    this.currentNode = this.nodeStack.at(-1);
+    this.textBuffer.length = 0;
+  }
+
+  private skipLeadingNewline(): boolean {
+    if (this.currentNode?.text === "" && this.nextCharacter === "\n") {
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
+   * Returns true if the character should continue to be processed. Will prepend
+   * indentation to the current node text when needed.
+   */
+  private checkAndApplyIndentation(): boolean {
+    if (!this.currentNode) {
+      throw new Error("invariant: expected currentNode to be defined");
+    }
+
+    const char = this.nextCharacter;
+
+    if (
+      char === "\n" &&
+      this.currentNode[indentation].baseline.state === "ready"
+    ) {
+      // We've found a new line so we need to start checking for indentation baseline.
+      this.currentNode[indentation].baseline.state = "resolving";
+    } else if (
+      this.currentNode[indentation].baseline.state === "resolving" &&
+      char === " "
+    ) {
+      // Continue resolving the indentation baseline when we find a space.
+      this.currentNode[indentation].baseline.value += 1;
+      return false;
+    } else if (
+      this.currentNode[indentation].baseline.state === "resolving" &&
+      char !== " "
+    ) {
+      // We've found a non-space character so move to the next state.
+      this.currentNode[indentation].baseline.state = "resolved";
+      // Fall through to accumulate text.
+    } else if (
+      this.currentNode[indentation].baseline.state === "resolved" &&
+      this.currentNode[indentation].buffer.state === "resolving" &&
+      char === " "
+    ) {
+      this.currentNode[indentation].buffer.value += 1;
+      // Skip accumulating the text, we'll do that when we've collected all the indentation.
+      return false;
+    } else if (
+      this.currentNode[indentation].baseline.state === "resolved" &&
+      this.currentNode[indentation].buffer.state === "resolving" &&
+      char !== " "
+    ) {
+      // We've collected all the indentation, now we remove the baseline from it and add it to the node text.
+      const value = Math.max(
+        0,
+        this.currentNode[indentation].buffer.value -
+          this.currentNode[indentation].baseline.value,
+      );
+      this.currentNode.text += " ".repeat(value);
+
+      this.currentNode[indentation].buffer.state = "ready";
+      this.currentNode[indentation].buffer.value = 0;
+      // Fall through to accumulate text.
+    }
+
+    if (
+      this.currentNode[indentation].baseline.state === "resolved" &&
+      char === "\n"
+    ) {
+      // We've found another new line, start accumulating the indentation buffer.
+      this.currentNode[indentation].buffer.state = "resolving";
+      this.currentNode[indentation].buffer.value = 0;
+      // Fall through to accumulate text.
+    }
+
+    return true;
   }
 
   /**
@@ -79,6 +174,8 @@ export class StreamingXMLParser {
 
     switch (this.state) {
       case "COLLECT_TEXT": {
+        const skipAccumulatingText = this.skipLeadingNewline();
+
         if (this.currentNode?.type === "code") {
           // Correct state for a code node.
           this.state = "COLLECT_CODE";
@@ -90,8 +187,10 @@ export class StreamingXMLParser {
           this.state = "COLLECT_CODE";
           this.process();
         } else if (this.currentNode) {
-          // Accumulate text onto the current node.
-          this.currentNode.text += char;
+          if (this.checkAndApplyIndentation() && !skipAccumulatingText) {
+            // Accumulate non-closing tag text onto the current node.
+            this.currentNode.text += char;
+          }
         }
         break;
       }
@@ -101,13 +200,18 @@ export class StreamingXMLParser {
           throw new Error("invariant: expected currentNode to be defined");
         }
 
+        let skipAccumulatingText = this.skipLeadingNewline();
+
         if (char === "<") {
           // We've found a closing tag so start pushing to the text buffer.
           // This doesn't get flushed to the node until we either confirm this isn't
           // the actual closing tag, or we confirm it is.
           this.textBuffer.push(char);
+          skipAccumulatingText = true;
         } else if (this.textBuffer.length > 0) {
+          // The text buffer is non-empty so we begin checking for a matching closing tag.
           this.textBuffer.push(char);
+          skipAccumulatingText = true;
 
           const possibleClosingTagName = this.textBuffer.join("");
           const actualClosingTagName = `</${this.currentNode.name}>`;
@@ -115,12 +219,15 @@ export class StreamingXMLParser {
           if (possibleClosingTagName.startsWith(actualClosingTagName)) {
             this.flushCurrentNode();
             this.state = "COLLECT_TEXT";
+            break;
           } else if (char === " " || char === ">") {
-            // We've found the end of the tag name, bail out and start finding again.
+            // We've found the end of the tag name but it doesn't match. Bail out and start finding again.
             this.currentNode.text += possibleClosingTagName;
             this.textBuffer.length = 0;
           }
-        } else {
+        }
+
+        if (this.checkAndApplyIndentation() && !skipAccumulatingText) {
           // Accumulate non-closing tag text onto the current node.
           this.currentNode.text += char;
         }
@@ -141,6 +248,10 @@ export class StreamingXMLParser {
           this.currentNode = {
             attributes: {},
             children: [],
+            [indentation]: {
+              baseline: { state: "ready", value: 0 },
+              buffer: { state: "ready", value: 0 },
+            },
             isResolved: false,
             name: tagName,
             text: "",

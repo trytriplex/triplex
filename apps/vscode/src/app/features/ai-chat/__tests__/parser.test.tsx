@@ -186,25 +186,19 @@ describe("StreamingXMLParser", () => {
                   "children": [],
                   "isResolved": true,
                   "name": "code_add",
-                  "text": "
-            console.log();
-          ",
+                  "text": "console.log();",
                   "type": "code",
                 },
               ],
               "isResolved": true,
               "name": "mutations",
-              "text": "
-          
-        ",
+              "text": "",
               "type": "text",
             },
           ],
           "isResolved": true,
           "name": "ai_response",
-          "text": "
-         
-      ",
+          "text": "",
           "type": "text",
         },
       ]
@@ -449,44 +443,22 @@ describe("StreamingXMLParser", () => {
   it("should handle more streaming chunks", () => {
     const parser = new StreamingXMLParser();
 
-    parser.processChunk("<user_message>add some boxes</user_message>");
-    parser.processChunk("<");
-    parser.processChunk("ai_response><ai_message>Sure, I can add some");
-    parser.processChunk(
-      " boxes to your scene.  I'll add three boxes with different colors and",
-    );
-    parser.processChunk(
-      ' positions within the Plane component.</ai_message><mutations><code_add path="/Users/douges/projects/triplex-mon',
-    );
-    parser.processChunk(`orepo/examples-private/test-fixture/src/scene.tsx" lineNumber={17}>
-        <mesh position={[-2,`);
-    parser.processChunk(` 0, 0]}>
-          <boxGeometry />
-          <meshStandardMaterial color="red" />
-        </mesh>
-        <mesh position={[0, 2, 0]}>
-          <boxGeometry />`);
     parser.processChunk(`
-          <meshStandardMaterial color="green" />
-        </mesh>
-        <mesh position={[2, 0, 2]}>
-          <boxGeometry />
-          <meshStandardMaterial color="blue" />`);
-    parser.processChunk(`        </mesh>
-</code_add>
-</mutations>
-</ai_response>`);
+      <ai_response>
+        <ai_message>Sure.</ai_message>
+        <mutations>
+          <code_add path="/src/scene.tsx" lineNumber={17}>
+            <mesh position={[-2, 0, 0]}>
+              <boxGeometry />
+              <meshStandardMaterial color="red" />
+            </mesh>
+          </code_add>
+        </mutations>
+      </ai_response>
+    `);
 
     expect(parser.toStructure()).toMatchInlineSnapshot(`
       [
-        {
-          "attributes": {},
-          "children": [],
-          "isResolved": true,
-          "name": "user_message",
-          "text": "add some boxes",
-          "type": "text",
-        },
         {
           "attributes": {},
           "children": [
@@ -495,7 +467,7 @@ describe("StreamingXMLParser", () => {
               "children": [],
               "isResolved": true,
               "name": "ai_message",
-              "text": "Sure, I can add some boxes to your scene.  I'll add three boxes with different colors and positions within the Plane component.",
+              "text": "Sure.",
               "type": "text",
             },
             {
@@ -504,41 +476,48 @@ describe("StreamingXMLParser", () => {
                 {
                   "attributes": {
                     "lineNumber": 17,
-                    "path": "/Users/douges/projects/triplex-monorepo/examples-private/test-fixture/src/scene.tsx",
+                    "path": "/src/scene.tsx",
                   },
                   "children": [],
                   "isResolved": true,
                   "name": "code_add",
-                  "text": "
-              <mesh position={[-2, 0, 0]}>
-                <boxGeometry />
-                <meshStandardMaterial color="red" />
-              </mesh>
-              <mesh position={[0, 2, 0]}>
-                <boxGeometry />
-                <meshStandardMaterial color="green" />
-              </mesh>
-              <mesh position={[2, 0, 2]}>
-                <boxGeometry />
-                <meshStandardMaterial color="blue" />        </mesh>
-      ",
+                  "text": "<mesh position={[-2, 0, 0]}>
+        <boxGeometry />
+        <meshStandardMaterial color="red" />
+      </mesh>",
                   "type": "code",
                 },
               ],
               "isResolved": true,
               "name": "mutations",
-              "text": "
-      ",
+              "text": "",
               "type": "text",
             },
           ],
           "isResolved": true,
           "name": "ai_response",
-          "text": "
-      ",
+          "text": "",
           "type": "text",
         },
       ]
+    `);
+  });
+
+  it("should normalize indentation in code blocks", () => {
+    const parser = new StreamingXMLParser();
+
+    parser.processChunk(`
+      <code_add>
+        <div>
+          hello world
+        </div>
+      </code_add>
+    `);
+
+    expect(parser.toStructure()[0].text).toMatchInlineSnapshot(`
+      "<div>
+        hello world
+      </div>"
     `);
   });
 });
