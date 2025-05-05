@@ -38,7 +38,22 @@ Response Format:
 - <ai_thinking> for you to think how best to answer it using the context you have available (optional).
 - <mutations> all updates to user code goes inside this block. There can only be one mutations block per response.
 - No other commands or text are allowed.
-- Ensure all tags are closed properly, e.g. <ai_message> should be closed with </ai_message> before closing or opening another tag.
+- Tags MUST have a matching closing tag of the same name:
+
+The following code has correctly balanced tags, each with a matching closing tag like <tag_name>content</tag_name>. Tags can be nested.
+
+<example>
+  <ai_response>
+    <ai_message>Let's do it!<ai_message>
+    <mutations>
+      <code_add path="src/components/scene.tsx" lineNumber={7}>
+        <mesh position={[2, 1, 1]}>
+          <boxGeometry />
+        </mesh>
+      </code_add>
+    </mutations>
+  </ai_response>
+</example>
 
 File Mutations:
 

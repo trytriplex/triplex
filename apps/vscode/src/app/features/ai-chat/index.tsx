@@ -113,9 +113,9 @@ export function AIChat() {
               <Lozenge title={`File "${path.split("/").at(-1)}" in context`}>
                 {path.split("/").at(-1)}
               </Lozenge>
-              <Lozenge
-                title={`${exportName} component in context`}
-              >{`<${exportName} />`}</Lozenge>
+              <Lozenge title={`${exportName} export in context`}>
+                {exportName} export
+              </Lozenge>
               {selected && (
                 <Lozenge title="Current selection in context">
                   Selection

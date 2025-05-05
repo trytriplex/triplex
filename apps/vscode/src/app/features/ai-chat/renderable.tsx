@@ -26,42 +26,62 @@ export function renderRenderable(node: Node, index: number): ReactNode {
   switch (node.name) {
     case "ai_response":
       return (
-        <AIResponse isResolved={node.isResolved} key={index}>
+        <AIResponse
+          {...node.attributes}
+          isResolved={node.isResolved}
+          key={index}
+        >
           {node.children.map(renderRenderable)}
         </AIResponse>
       );
 
     case "ai_thinking":
       return (
-        <AIThinking isResolved={node.isResolved} key={index}>
+        <AIThinking
+          {...node.attributes}
+          isResolved={node.isResolved}
+          key={index}
+        >
           {node.text}
         </AIThinking>
       );
 
     case "ai_message":
       return (
-        <AIMessage isResolved={node.isResolved} key={index}>
+        <AIMessage
+          {...node.attributes}
+          isResolved={node.isResolved}
+          key={index}
+        >
           {node.text}
         </AIMessage>
       );
 
     case "code_add":
       return (
-        <CodeAdd isResolved={node.isResolved} key={index}>
+        <CodeAdd {...node.attributes} isResolved={node.isResolved} key={index}>
           {node.text}
         </CodeAdd>
       );
 
     case "code_replace":
       return (
-        <CodeReplace isResolved={node.isResolved} key={index}>
+        <CodeReplace
+          {...node.attributes}
+          isResolved={node.isResolved}
+          key={index}
+        >
           {node.text}
         </CodeReplace>
       );
 
     case "mutations":
       return (
-        <Mutations isResolved={node.isResolved} key={index}>
+        <Mutations
+          {...node.attributes}
+          isResolved={node.isResolved}
+          key={index}
+        >
           {node.text}
           {node.children.map(renderRenderable)}
         </Mutations>
@@ -69,7 +89,11 @@ export function renderRenderable(node: Node, index: number): ReactNode {
 
     case "user_message":
       return (
-        <UserMessage isResolved={node.isResolved} key={index}>
+        <UserMessage
+          {...node.attributes}
+          isResolved={node.isResolved}
+          key={index}
+        >
           {node.text}
         </UserMessage>
       );

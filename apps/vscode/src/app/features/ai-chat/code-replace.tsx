@@ -15,8 +15,8 @@ export function CodeReplace({
   toLineNumber: number;
 }>) {
   return (
-    <div className="border-input bg-neutral rounded border p-0.5">
-      <span className="text-subtlest px-1 font-medium">Update</span>
+    <div className="border-input bg-neutral rounded border px-0.5 pb-0.5">
+      <span className="text-subtlest px-1 text-[11px]">Update code</span>
       <pre className="border-input bg-editor overflow-auto rounded-sm border px-2 py-1">
         <code className="bg-editor text-subtle">{children}</code>
       </pre>

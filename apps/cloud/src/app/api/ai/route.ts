@@ -32,6 +32,7 @@ export async function POST(request: Request): Promise<Response> {
     messages,
     model: google("gemini-1.5-flash"),
     system: systemPrompt,
+    temperature: 0.2,
   });
 
   return result.toTextStreamResponse({
