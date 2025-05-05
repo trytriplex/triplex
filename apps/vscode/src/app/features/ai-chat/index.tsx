@@ -4,10 +4,15 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import { Cross2Icon, PaperPlaneIcon } from "@radix-ui/react-icons";
 import { type AIChatContext } from "@triplex/server";
-import { Suspense, useRef } from "react";
-import { Button } from "../../components/button";
+import { TriplexLogo } from "@triplex/ux";
+import { Suspense, useRef, useState } from "react";
+import { IconButton } from "../../components/button";
+import { InlineErrorBoundary } from "../../components/inline-error-boundary";
+import { Lozenge } from "../../components/lozenge";
 import { ScrollContainer } from "../../components/scroll-container";
+import { Surface } from "../../components/surface";
 import { useSceneContext, useSceneSelected } from "../app-root/context";
 import { renderRenderable, useRenderableChatStream } from "./renderable";
 
@@ -17,7 +22,18 @@ function AIChatLog() {
 
   return (
     <ScrollContainer ref={ref}>
-      <div className="flex flex-col gap-6 px-2 py-3">
+      <div className="flex flex-col gap-6 py-3 pl-2 pr-2.5">
+        {renderables.length === 0 && (
+          <>
+            <div className="h-4" />
+            <TriplexLogo className="h-14" />
+            <p className="text-subtlest px-3 text-center">
+              Use Triplex AI to ask questions and update code. Mistakes are
+              possible, review its output carefully.
+            </p>
+          </>
+        )}
+
         {renderables.map(renderRenderable)}
       </div>
     </ScrollContainer>
@@ -27,6 +43,7 @@ function AIChatLog() {
 export function AIChat() {
   const { exportName, path } = useSceneContext();
   const selected = useSceneSelected();
+  const [visible, setVisible] = useState(false);
 
   async function handleSubmit(data: FormData) {
     const prompt = data.get("prompt")?.toString() ?? "";
@@ -58,23 +75,73 @@ export function AIChat() {
     }
   }
 
-  return (
-    <div className="border-overlay flex w-48 flex-shrink-0 flex-col gap-2 border-r">
-      <Suspense>
-        <AIChatLog />
-      </Suspense>
-
-      <form action={handleSubmit} className="mt-auto px-2.5 pb-2">
-        <textarea
-          autoFocus
-          className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder w-full resize-none rounded-sm border px-[9px] py-1.5 focus:outline-none"
-          name="prompt"
-          placeholder="Ask Triplex"
+  if (!visible) {
+    return (
+      <Surface
+        bg="overlay"
+        className="absolute right-2 top-1.5 z-10 border p-0.5"
+      >
+        <IconButton
+          actionId="(UNSAFE_SKIP)"
+          icon={TriplexLogo}
+          label="Ask Triplex AI"
+          onClick={() => setVisible(true)}
         />
-        <Button actionId="(UNSAFE_SKIP)" type="submit" variant="cta">
-          Ask
-        </Button>
-      </form>
+      </Surface>
+    );
+  }
+
+  return (
+    <div className="border-overlay relative flex w-56 flex-shrink-0 flex-col border-l">
+      <div className="flex justify-end px-2 pb-1">
+        <IconButton
+          actionId="(UNSAFE_SKIP)"
+          icon={Cross2Icon}
+          label="Close Triplex AI"
+          onClick={() => setVisible(false)}
+        />
+      </div>
+
+      <InlineErrorBoundary>
+        <Suspense>
+          <AIChatLog />
+        </Suspense>
+
+        <form action={handleSubmit} className="mt-auto p-2">
+          <div className="focus-within:border-selected border-input text-input bg-input focus:border-selected flex flex-col rounded border focus-within:border">
+            <div className="flex flex-wrap gap-1 p-1.5">
+              <Lozenge title={`File "${path.split("/").at(-1)}" in context`}>
+                {path.split("/").at(-1)}
+              </Lozenge>
+              <Lozenge
+                title={`${exportName} component in context`}
+              >{`<${exportName} />`}</Lozenge>
+              {selected && (
+                <Lozenge title="Current selection in context">
+                  Selection
+                </Lozenge>
+              )}
+            </div>
+            <div className="flex">
+              <textarea
+                autoFocus
+                className="placeholder:text-input-placeholder bg-input w-full resize-none rounded-md px-2 py-0.5 focus:outline-none"
+                name="prompt"
+                placeholder="Ask Triplex"
+              />
+              <div className="flex items-end p-1.5">
+                <IconButton
+                  actionId="(UNSAFE_SKIP)"
+                  icon={PaperPlaneIcon}
+                  label="Ask Triplex (Shift+Enter)"
+                  onClick={() => {}}
+                  type="submit"
+                />
+              </div>
+            </div>
+          </div>
+        </form>
+      </InlineErrorBoundary>
     </div>
   );
 }

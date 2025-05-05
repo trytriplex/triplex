@@ -18,9 +18,11 @@
     "valibot": "^0.25.0"
   },
   "devDependencies": {
+    "@types/kill-port": "^2.0.3",
     "@types/node": "^18.11.18",
     "@types/react": "^19.0.8",
     "@types/react-dom": "^19.0.3",
+    "kill-port": "^2.0.1",
     "tree-kill": "^1.2.2",
     "typescript": "^5.7.2"
   }

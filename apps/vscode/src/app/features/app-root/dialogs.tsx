@@ -7,7 +7,6 @@
 
 import { fg } from "@triplex/lib/fg";
 import { useDialogs } from "../../stores/dialogs";
-import { AIChat } from "../ai-chat";
 import { Feedback } from "../feedback";
 import { OpenInWebXR } from "../webxr";
 
@@ -20,10 +19,6 @@ export function Dialogs() {
 
   if (shownDialog === "open_in_xr" && fg("xr_editing")) {
     return <OpenInWebXR />;
-  }
-
-  if (shownDialog === "ai_chat" && fg("ai_chat")) {
-    return <AIChat />;
   }
 
   return null;

@@ -27,6 +27,7 @@ You MUST follow these rules:
 - For 2D components you MUST use HTML elements and for 3D components you MUST use React Three Fiber / Three.js elements.
 - You're encouraged to perform small incremental changes to the code rather than large sweeping changes.
 - Prefer simple static code rather than complex dynamic loops / arrays when adding JSX elements.
+- Any JSX elements should use the actual bracket syntax, e.g. <mesh> instead of &lt;mesh&gt;
 
 When responding you must use these specific commands:
 
@@ -122,6 +123,7 @@ When creating code_replace blocks:
 - The toLineNumber prop is the line number to stop replacing at
 - All code present inside the code_replace block will replace the code between fromLineNumber and toLineNumber, inclusive
 - When replacing code the code must remain valid and runnable
+- Do NOT replace lines of code that already exist, just leave it out of the code_replace block
 
 <examples>
 <example>

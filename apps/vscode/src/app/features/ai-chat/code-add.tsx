@@ -10,8 +10,11 @@ export function CodeAdd({
   children,
 }: ChatRenderableProps<{ lineNumber: number; path: string }>) {
   return (
-    <pre className="border-input bg-editor overflow-auto border">
-      <code className="bg-editor text-subtle">{children}</code>
-    </pre>
+    <div className="border-input bg-neutral rounded border p-0.5">
+      <span className="text-subtlest px-1 font-medium">Update</span>
+      <pre className="border-input bg-editor overflow-auto rounded-sm border px-2 py-1">
+        <code className="bg-editor text-subtle">{children}</code>
+      </pre>
+    </div>
   );
 }

@@ -148,6 +148,9 @@ importers:
         specifier: ^0.25.0
         version: 0.25.0
     devDependencies:
+      '@types/kill-port':
+        specifier: ^2.0.3
+        version: 2.0.3
       '@types/node':
         specifier: ^18.11.18
         version: 18.11.18
@@ -157,6 +160,9 @@ importers:
       '@types/react-dom':
         specifier: ^19.0.3
         version: 19.0.3(@types/react@19.0.8)
+      kill-port:
+        specifier: ^2.0.1
+        version: 2.0.1
       tree-kill:
         specifier: ^1.2.2
         version: 1.2.2
@@ -2910,14 +2916,8 @@ packages:
     engines: {node: '>=18'}
     hasBin: true
 
-  '@pmndrs/handle@6.6.14':
-    resolution: {integrity: sha512-G9pz4Ubpctyzvqq4Vra0PKDSJS8KC5/jizu22LiEMM7krXHwHgFJF5yzNjaOMDGKk7/h4IzB/7CQfPpxmqCKsg==}
-
   '@pmndrs/handle@6.6.16':
     resolution: {integrity: sha512-+//YQ9Hw3emvgAM3WuWEtbdPE6T4m1RBdfDIblPNb2iDGGPdnQXlVVfQL3DKeRjw3SDpVnitLN+cDAiaQb4HcQ==}
-
-  '@pmndrs/pointer-events@6.6.14':
-    resolution: {integrity: sha512-DRn5QJIwUMkdH0L59NwMxY6PFd6vmyjkz2RVryM5vQ5OJVveYG2ErQjFeLZnCD7oavlKnzB+7ZpHakRMocGdBw==}
 
   '@pmndrs/pointer-events@6.6.16':
     resolution: {integrity: sha512-RhID/DVWGWguqcOyQk87EeRA4vNMS/9b9CqCRVpr4J10GfqW3iCCIwPpQkIqEDczxlUABgtZMmGHnoAbPHr3rQ==}
@@ -3833,6 +3833,9 @@ packages:
 
   '@types/keyv@3.1.4':
     resolution: {integrity: sha512-BQ5aZNSCpj7D6K2ksrRCTmKRLEpnPvWDiLPfoGyhZ++8YtiK9d/3DBKPJgry359X/P1PfruyYwvnvwFjuEiEIg==}
+
+  '@types/kill-port@2.0.3':
+    resolution: {integrity: sha512-ZHs59e5FBjDLQLOxM48+814LSyNf5sgpi0odtJ0FH6xrIAZXb4yksYG+4mZCbidX3fBOfHytAKAVMgkWvv/Piw==}
 
   '@types/mdast@3.0.15':
     resolution: {integrity: sha512-LnwD+mUEfxWMa1QpDraczIn6k0Ee3SMicuYSSzS6ZYl2gKS09EClnJYGd8Du6rfc5r/GZEk5o1mRb8TaTj03sQ==}
@@ -6141,6 +6144,9 @@ packages:
     resolution: {integrity: sha512-w9UMqWwJxHNOvoNzSJ2oPF5wvYcvP7jUvYzhp67yEhTi17ZDBBC1z9pTdGuzjD+EFIqLSYRweZjqfiPzQ06Ebg==}
     engines: {node: '>= 0.4'}
 
+  get-them-args@1.3.2:
+    resolution: {integrity: sha512-LRn8Jlk+DwZE4GTlDbT3Hikd1wSHgLMme/+7ddlqKd7ldwR6LjJgTVWzBnR01wnYGe4KgrXjg287RaI22UHmAw==}
+
   get-tsconfig@4.10.0:
     resolution: {integrity: sha512-kGzZ3LWWQcGIAmg6iWvXn0ei6WDtV26wzHRMwDSzmAbcXrTEXxHy6IehI6/4eT6VRKyMP1eF1VqwrVUmE/LR7A==}
 
@@ -6933,6 +6939,10 @@ packages:
 
   khroma@2.1.0:
     resolution: {integrity: sha512-Ls993zuzfayK269Svk9hzpeGUKob/sIgZzyHYdjQoAdQetRKpOLj+k/QQQ/6Qi0Yz65mlROrfd+Ev+1+7dz9Kw==}
+
+  kill-port@2.0.1:
+    resolution: {integrity: sha512-e0SVOV5jFo0mx8r7bS29maVWp17qGqLBZ5ricNSajON6//kmb7qqqNnml4twNE8Dtj97UQD+gNFOaipS/q1zzQ==}
+    hasBin: true
 
   kind-of@6.0.3:
     resolution: {integrity: sha512-dcS1ul+9tmeD95T+x28/ehLgd9mENa3LsvDTtzm3vyBEO7RPptvAD+t44WVXaUjTBRcrpFeFlC8WCruUR456hw==}
@@ -8842,6 +8852,9 @@ packages:
   shell-env@3.0.1:
     resolution: {integrity: sha512-b09fpMipAQ9ObwvIeKoQFLDXcEcCpYUUZanlad4OYQscw2I49C/u97OPQg9jWYo36bRDn62fbe07oWYqovIvKA==}
     engines: {node: '>=8'}
+
+  shell-exec@1.0.2:
+    resolution: {integrity: sha512-jyVd+kU2X+mWKMmGhx4fpWbPsjvD53k9ivqetutVW/BQ+WIZoDoP4d8vUMGezV6saZsiNoW2f9GIhg9Dondohg==}
 
   shiki@0.14.7:
     resolution: {integrity: sha512-dNPAPrxSc87ua2sKJ3H5dQ/6ZaY8RNnaAqK+t0eG7p0Soi2ydiqbGOTaZCqaYvA/uZYfS1LJnemt3Q+mSfcPCg==}
@@ -11147,8 +11160,8 @@ snapshots:
       '@fortawesome/fontawesome-svg-core': 6.6.0
       '@fortawesome/free-solid-svg-icons': 6.6.0
       '@fortawesome/react-fontawesome': 0.2.2(@fortawesome/fontawesome-svg-core@6.6.0)(react@19.0.0)
-      '@pmndrs/handle': 6.6.14(@types/react@19.0.8)(react@19.0.0)
-      '@pmndrs/pointer-events': 6.6.14
+      '@pmndrs/handle': 6.6.16(@types/react@19.0.8)(react@19.0.0)
+      '@pmndrs/pointer-events': 6.6.16
       iwer: 2.0.1
       react: 19.0.0
       react-dom: 19.0.0(react@19.0.0)
@@ -11867,15 +11880,6 @@ snapshots:
     dependencies:
       playwright: 1.50.1
 
-  '@pmndrs/handle@6.6.14(@types/react@19.0.8)(react@19.0.0)':
-    dependencies:
-      '@pmndrs/pointer-events': 6.6.14
-      zustand: 4.5.5(@types/react@19.0.8)(react@19.0.0)
-    transitivePeerDependencies:
-      - '@types/react'
-      - immer
-      - react
-
   '@pmndrs/handle@6.6.16(@types/react@19.0.8)(react@19.0.0)':
     dependencies:
       '@pmndrs/pointer-events': 6.6.16
@@ -11884,8 +11888,6 @@ snapshots:
       - '@types/react'
       - immer
       - react
-
-  '@pmndrs/pointer-events@6.6.14': {}
 
   '@pmndrs/pointer-events@6.6.16': {}
 
@@ -11904,7 +11906,7 @@ snapshots:
     dependencies:
       '@iwer/devui': 1.1.1(@types/react@19.0.8)(iwer@2.0.1)
       '@iwer/sem': 0.2.5(iwer@2.0.1)
-      '@pmndrs/pointer-events': 6.6.14
+      '@pmndrs/pointer-events': 6.6.16
       iwer: 2.0.1
       meshline: 3.3.1(three@0.172.0)
       three: 0.172.0
@@ -12372,7 +12374,7 @@ snapshots:
 
   '@react-three/xr@6.6.12(@react-three/fiber@9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)':
     dependencies:
-      '@pmndrs/pointer-events': 6.6.14
+      '@pmndrs/pointer-events': 6.6.16
       '@pmndrs/xr': 6.6.12(@types/react@19.0.8)(react@19.0.0)(three@0.172.0)
       '@react-three/fiber': 9.0.4(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
       react: 19.0.0
@@ -12989,6 +12991,11 @@ snapshots:
   '@types/keyv@3.1.4':
     dependencies:
       '@types/node': 18.11.18
+
+  '@types/kill-port@2.0.3':
+    dependencies:
+      '@types/node': 18.11.18
+      shell-exec: 1.0.2
 
   '@types/mdast@3.0.15':
     dependencies:
@@ -15926,6 +15933,8 @@ snapshots:
       es-errors: 1.3.0
       get-intrinsic: 1.2.7
 
+  get-them-args@1.3.2: {}
+
   get-tsconfig@4.10.0:
     dependencies:
       resolve-pkg-maps: 1.0.0
@@ -16834,6 +16843,11 @@ snapshots:
       json-buffer: 3.0.1
 
   khroma@2.1.0: {}
+
+  kill-port@2.0.1:
+    dependencies:
+      get-them-args: 1.3.2
+      shell-exec: 1.0.2
 
   kind-of@6.0.3: {}
 
@@ -19212,6 +19226,8 @@ snapshots:
       default-shell: 1.0.1
       execa: 1.0.0
       strip-ansi: 5.2.0
+
+  shell-exec@1.0.2: {}
 
   shiki@0.14.7:
     dependencies:

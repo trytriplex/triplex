@@ -83,9 +83,15 @@ export function useRenderableChatStream(ref: RefObject<HTMLElement | null>) {
 
   useLazySubscriptionStream("/ai/chat", (data, type) => {
     if (type === "chunk") {
-      const actualData = typeof data === "string" ? data : data.join("");
-      parser.processChunk(actualData);
+      const chunk = typeof data === "string" ? data : data.join("");
+      parser.processChunk(chunk);
       setStructure(parser.toStructure());
+    }
+
+    if (type === "all") {
+      const string = typeof data === "string" ? data : data.join("");
+      const structure = parser.parseString(string);
+      setStructure(structure);
     }
   });
 
@@ -96,16 +102,15 @@ export function useRenderableChatStream(ref: RefObject<HTMLElement | null>) {
   }, [ref, shouldScroll, structure]);
 
   useEffect(() => {
-    const element = ref.current;
-    if (!element) {
+    const el = ref.current;
+    if (!el) {
       return;
     }
 
-    return bind(element, {
+    return bind(el, {
       listener() {
-        const scrollOffset = element.scrollHeight - element.clientHeight;
         const isAtBottom =
-          Math.floor(scrollOffset) === Math.floor(element.scrollTop);
+          el.scrollHeight - el.clientHeight === Math.round(el.scrollTop);
 
         setShouldScroll(isAtBottom);
       },

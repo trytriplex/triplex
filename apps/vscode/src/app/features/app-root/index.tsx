@@ -4,8 +4,10 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import { fg } from "@triplex/lib/fg";
 import { useScreenView } from "@triplex/ux";
 import { preloadSubscription } from "../../hooks/ws";
+import { AIChat } from "../ai-chat";
 import { FloatingControls } from "../floating-controls";
 import { Panels } from "../panels";
 import { Dialogs } from "./dialogs";
@@ -31,6 +33,7 @@ export function AppRoot() {
           src={`http://localhost:${window.triplex.env.ports.client}/scene`}
         />
       </div>
+      {fg("ai_chat") && <AIChat />}
     </div>
   );
 }

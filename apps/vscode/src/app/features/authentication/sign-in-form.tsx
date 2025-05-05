@@ -129,7 +129,7 @@ export function SignInForm({
           className="flex w-full max-w-xs flex-col items-start gap-2"
           ref={formRef}
         >
-          <TriplexLogo className="text-default mb-2 h-[56px]" />
+          <TriplexLogo className="text-default mb-2 h-14" />
           <div className="text-heading select-none font-medium">
             Triplex for VS Code
           </div>
