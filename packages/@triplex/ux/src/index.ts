@@ -9,7 +9,7 @@ export {
   ButtonGroupControl,
   ToggleButtonControl,
 } from "./controls";
-export { LocalSpaceIcon, WorldSpaceIcon } from "./icons";
+export { LocalSpaceIcon, WorldSpaceIcon, VRGogglesIcon } from "./icons";
 export {
   type ActionId,
   type ActionIdSafe,

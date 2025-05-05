@@ -5,7 +5,6 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import {
-  ExternalLinkIcon,
   GearIcon,
   PauseIcon,
   PlayIcon,
@@ -31,6 +30,7 @@ import {
   MenuTrigger,
   ToggleButtonControl,
   useTelemetry,
+  VRGogglesIcon,
 } from "@triplex/ux";
 import { Fragment, useEffect, useState } from "react";
 import { IconButton } from "../../components/button";
@@ -281,7 +281,7 @@ export function FloatingControls() {
         <Surface bg="overlay" className="border p-0.5" direction="horizontal">
           <IconButton
             actionId="scene_frame_reset"
-            icon={ExternalLinkIcon}
+            icon={VRGogglesIcon}
             label="Open in WebXR"
             onClick={() => showDialog("open_in_xr")}
           />
