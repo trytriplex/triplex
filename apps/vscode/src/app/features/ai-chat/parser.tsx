@@ -31,11 +31,17 @@ export interface NodeValue {
   value: string | number;
 }
 
+export interface StreamBuffer {
+  state: "ready" | "buffering";
+  value: string;
+}
+
 export class StreamingXMLParser {
   private nodes: Node[] = [];
   private nodeStack: Node[] = [];
   private textBuffer: string[] = [];
   private nextCharacter: string = "";
+  private streamBuffer: StreamBuffer = { state: "ready", value: "" };
 
   private state:
     | "COLLECT_TEXT"
@@ -182,6 +188,9 @@ export class StreamingXMLParser {
           this.process();
         } else if (char === "<") {
           this.state = "COLLECT_TAG_NAME";
+        } else if (!this.currentNode) {
+          // Sometimes LLMs return random markup around response tags we've asked it to return,
+          // so we make the assumption it's safe to drop all markup around them. YOLO!
         } else if (char === "`") {
           // We've found the start of a code block. Assume the rest of the text is code.
           this.state = "COLLECT_CODE";
@@ -192,6 +201,7 @@ export class StreamingXMLParser {
             this.currentNode.text += char;
           }
         }
+
         break;
       }
 
@@ -213,16 +223,21 @@ export class StreamingXMLParser {
           this.textBuffer.push(char);
           skipAccumulatingText = true;
 
-          const possibleClosingTagName = this.textBuffer.join("");
-          const actualClosingTagName = `</${this.currentNode.name}>`;
+          const candidateClosingTag = this.textBuffer.join("");
+          // This handles both valid and malformed closing tags. Sometimes LLMs will spit
+          // out closing tags that are missing the closing slash.
+          const closingTags = [
+            `</${this.currentNode.name}>`,
+            `<${this.currentNode.name}>`,
+          ];
 
-          if (possibleClosingTagName.startsWith(actualClosingTagName)) {
+          if (closingTags.some((tag) => candidateClosingTag.startsWith(tag))) {
             this.flushCurrentNode();
             this.state = "COLLECT_TEXT";
             break;
           } else if (char === " " || char === ">") {
             // We've found the end of the tag name but it doesn't match. Bail out and start finding again.
-            this.currentNode.text += possibleClosingTagName;
+            this.currentNode.text += candidateClosingTag;
             this.textBuffer.length = 0;
           }
         }
@@ -241,9 +256,17 @@ export class StreamingXMLParser {
           this.state = "CHECK_SELF_CLOSING_TAG";
           this.textBuffer.length = 0;
         } else if (char === " " || char === ">") {
-          // We've reached the end of the tag name.
           const tagName = this.textBuffer.join("");
           this.textBuffer.length = 0;
+
+          // We've reached the end of the tag name.
+          // First double check that this isn't a malformed closing tag (missing "/").
+          if (char === ">" && this.currentNode?.name === tagName) {
+            // We've found a malformed closing tag.
+            this.flushCurrentNode();
+            this.state = "COLLECT_TEXT";
+            break;
+          }
 
           this.currentNode = {
             attributes: {},
@@ -380,13 +403,68 @@ export class StreamingXMLParser {
     }
   }
 
-  processChunk(chunk: string): void {
+  /**
+   * Sometimes LLMs return escaped characters in the text, breaking
+   * expectations. This normalizes the streamed chunks returned ensuring that
+   * the text remains valid.
+   */
+  private normalizeChunk(chunk: string): string {
+    const normalizations = [
+      ["&amp;", "&"],
+      ["&apos;", "'"],
+      ["&gt;", ">"],
+      ["&lt;", "<"],
+      ["&quot;", '"'],
+    ];
+
+    let returnValue = "";
+
     for (const char of chunk) {
+      if (this.streamBuffer.state === "ready" && char !== "&") {
+        // Accumulate the immediate return value. No need to buffer right now.
+        returnValue += char;
+      }
+
+      if (this.streamBuffer.state === "ready" && char === "&") {
+        // Begin buffering the stream until we find a semicolon or the size is greater than 5.
+        this.streamBuffer.state = "buffering";
+      }
+
+      if (this.streamBuffer.state === "buffering") {
+        this.streamBuffer.value += char;
+      }
+
+      if (
+        this.streamBuffer.state === "buffering" &&
+        (char === ";" || this.streamBuffer.value.length > 5)
+      ) {
+        // We've found the end of the buffer, so process it.
+        for (const [search, replacement] of normalizations) {
+          if (this.streamBuffer.value.startsWith(search)) {
+            this.streamBuffer.value = this.streamBuffer.value.replace(
+              search,
+              replacement,
+            );
+
+            break;
+          }
+        }
+
+        // Reset the stream buffer state.
+        this.streamBuffer.state = "ready";
+        returnValue += this.streamBuffer.value;
+        this.streamBuffer.value = "";
+      }
+    }
+
+    return returnValue;
+  }
+
+  processChunk(chunk: string): void {
+    for (const char of this.normalizeChunk(chunk)) {
       this.nextCharacter = char;
       this.process();
     }
-
-    this.nextCharacter = "";
   }
 
   parseString(str: string): Node[] {

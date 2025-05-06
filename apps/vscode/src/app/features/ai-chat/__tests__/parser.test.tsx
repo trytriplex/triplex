@@ -520,4 +520,109 @@ describe("StreamingXMLParser", () => {
       </div>"
     `);
   });
+
+  it("should replace &lt; / &gt; with < > in responses", () => {
+    const parser = new StreamingXMLParser();
+
+    parser.processChunk(`
+      <code_add>
+        <div>
+          hello world
+        &lt;/div&gt;
+      </code_add>
+    `);
+
+    expect(parser.toStructure()).toMatchInlineSnapshot(`
+      [
+        {
+          "attributes": {},
+          "children": [],
+          "isResolved": true,
+          "name": "code_add",
+          "text": "<div>
+        hello world
+      </div>",
+          "type": "code",
+        },
+      ]
+    `);
+  });
+
+  it("should massage invalid closing tags", () => {
+    const parser = new StreamingXMLParser();
+
+    parser.processChunk(`
+      <ai_response>
+        <code_add>
+          <div>
+            hello world
+          </div>
+        <code_add>
+      <ai_response>
+    `);
+
+    expect(parser.toStructure()).toMatchInlineSnapshot(`
+      [
+        {
+          "attributes": {},
+          "children": [
+            {
+              "attributes": {},
+              "children": [],
+              "isResolved": true,
+              "name": "code_add",
+              "text": "<div>
+        hello world
+      </div>",
+              "type": "code",
+            },
+          ],
+          "isResolved": true,
+          "name": "ai_response",
+          "text": "",
+          "type": "text",
+        },
+      ]
+    `);
+  });
+
+  it("should omit any content in root that are not tags", () => {
+    const parser = new StreamingXMLParser();
+
+    parser.processChunk(`
+      \`\`\`xml
+      <ai_response>
+        <code_add>
+          <div>
+            hello world
+          </div>
+        <code_add>
+      <ai_response>
+      \`\`\`
+    `);
+
+    expect(parser.toStructure()).toMatchInlineSnapshot(`
+      [
+        {
+          "attributes": {},
+          "children": [
+            {
+              "attributes": {},
+              "children": [],
+              "isResolved": true,
+              "name": "code_add",
+              "text": "<div>
+        hello world
+      </div>",
+              "type": "code",
+            },
+          ],
+          "isResolved": true,
+          "name": "ai_response",
+          "text": "",
+          "type": "text",
+        },
+      ]
+    `);
+  });
 });
