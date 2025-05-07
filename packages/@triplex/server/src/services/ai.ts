@@ -127,7 +127,7 @@ ${sourceFile
 \`\`\`
 
 ## Additional Context
-- All code changes through the modify_code block MUST be inside the "${ctx.exportName}" React component, do NOT modify other components found in this file unless specifically asked to.
+- By default all code changes through the code_add and code_replace blocks MUST be inside the "${ctx.exportName}" React component, do NOT modify other components found in this file unless specifically asked to.
 - Each line of code has been numbered for reference delimitated by a pipe "|". Do NOT include this in your response.
 `;
       } else {

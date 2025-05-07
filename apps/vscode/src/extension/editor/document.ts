@@ -24,6 +24,7 @@ export class TriplexDocument implements vscode.CustomDocument {
   private _context: { ports: { server: number } } = { ports: { server: -1 } };
   private _modifiedPaths: Record<string, true> = {};
   private _skipNextSave = false;
+  private _appliedCodeMutations: string[] = [];
 
   onDidChange = this._onDidChange.event;
 
@@ -151,6 +152,58 @@ export class TriplexDocument implements vscode.CustomDocument {
       const response: {
         column: number;
         line: number;
+        redoID: number;
+        undoID: number;
+      } = await result.json();
+
+      return { ...response, path: data.path };
+    });
+  }
+
+  async updateCode(
+    data:
+      | {
+          code: string;
+          fromLineNumber: number;
+          id: string;
+          path: string;
+          toLineNumber: number;
+          type: "replace";
+        }
+      | {
+          code: string;
+          id: string;
+          lineNumber: number;
+          path: string;
+          type: "add";
+        },
+  ) {
+    if (this._appliedCodeMutations.includes(data.id)) {
+      // Skip the code mutation it's already been applied.
+      return;
+    }
+
+    return this.undoableAction("Update code", async () => {
+      this._appliedCodeMutations.push(data.id);
+
+      const result =
+        data.type === "replace"
+          ? await fetch(
+              `http://localhost:${this._context.ports.server}/scene/${encodeURIComponent(data.path)}/${data.fromLineNumber}/${data.toLineNumber}/replace`,
+              {
+                body: JSON.stringify({ code: data.code }),
+                method: "POST",
+              },
+            )
+          : await fetch(
+              `http://localhost:${this._context.ports.server}/scene/${encodeURIComponent(data.path)}/${data.lineNumber}/add`,
+              {
+                body: JSON.stringify({ code: data.code }),
+                method: "POST",
+              },
+            );
+
+      const response: {
         redoID: number;
         undoID: number;
       } = await result.json();

@@ -57,6 +57,22 @@ export interface FromVSCodeEvent {
 }
 
 export interface ToVSCodeEvent extends ClientSendEventData {
+  "code-update":
+    | {
+        code: string;
+        fromLineNumber: number;
+        id: string;
+        path: string;
+        toLineNumber: number;
+        type: "replace";
+      }
+    | {
+        code: string;
+        id: string;
+        lineNumber: number;
+        path: string;
+        type: "add";
+      };
   "element-delete": {
     column: number;
     line: number;

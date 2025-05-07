@@ -175,6 +175,36 @@ function addToJsxElement(
   };
 }
 
+export function replaceCode(
+  sourceFile: SourceFile,
+  {
+    code,
+    lineFrom,
+    lineTo,
+  }: { code: string; lineFrom: number; lineTo: number },
+) {
+  const fromPos = sourceFile.compilerNode.getPositionOfLineAndCharacter(
+    lineFrom - 1,
+    0,
+  );
+  const toPos = sourceFile.compilerNode.getPositionOfLineAndCharacter(
+    lineTo,
+    0,
+  );
+  sourceFile.replaceText([fromPos, toPos], code);
+}
+
+export function insertCode(
+  sourceFile: SourceFile,
+  { code, line }: { code: string; line: number },
+) {
+  const pos = sourceFile.compilerNode.getPositionOfLineAndCharacter(
+    line - 1,
+    0,
+  );
+  sourceFile.insertText(pos, code);
+}
+
 export function includesComponent(sourceFile: SourceFile, exportName: string) {
   const foundExports = inferExports(sourceFile.getText());
 

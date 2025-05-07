@@ -14,5 +14,6 @@ export {
   useStepModifiers,
 } from "./use-step-modifiers";
 export { draggableNumberInputContextMenuFix } from "./contextmenu";
+export { hash } from "./hash";
 
 export const noop = () => {};

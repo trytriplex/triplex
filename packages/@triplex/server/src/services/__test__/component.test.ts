@@ -21,8 +21,10 @@ import {
   commentComponent,
   deleteCommentComponents,
   duplicate,
+  insertCode,
   move,
   rename,
+  replaceCode,
   uncommentComponent,
   upsertProp,
 } from "../component";
@@ -1298,5 +1300,80 @@ describe("component service", () => {
           );
         }"
       `);
+  });
+
+  it("should delete code", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/replace-code.tsx"),
+    );
+
+    replaceCode(sourceFile, { code: "", lineFrom: 10, lineTo: 12 });
+
+    expect(sourceFile.getText()).toMatchInlineSnapshot(`
+      "export function Test() {
+        return (
+          <>
+          </>
+        );
+      }
+      "
+    `);
+  });
+
+  it("should replace code", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/replace-code.tsx"),
+    );
+
+    replaceCode(sourceFile, {
+      code: "<circleGeometry />",
+      lineFrom: 11,
+      lineTo: 11,
+    });
+
+    expect(sourceFile.getText()).toMatchInlineSnapshot(`
+      "export function Test() {
+        return (
+          <>
+            <mesh>
+      <circleGeometry />      </mesh>
+          </>
+        );
+      }
+      "
+    `);
+  });
+
+  it("should add code", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/replace-code.tsx"),
+    );
+
+    insertCode(sourceFile, {
+      code: "<group />",
+      line: 13,
+    });
+
+    expect(sourceFile.getText()).toMatchInlineSnapshot(`
+      "export function Test() {
+        return (
+          <>
+            <mesh>
+              <boxGeometry />
+            </mesh>
+      <group />    </>
+        );
+      }
+      "
+    `);
   });
 });

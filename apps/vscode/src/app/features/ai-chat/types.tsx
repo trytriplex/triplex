@@ -5,9 +5,14 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 
-import { type ReactNode } from "react";
+import { type JSX } from "react";
+
+export type ChatRenderableChildren =
+  | JSX.Element
+  | string
+  | ChatRenderableChildren[];
 
 export type ChatRenderableProps<TProps extends object = object> = {
-  children?: ReactNode;
+  children?: ChatRenderableChildren;
   isResolved: boolean;
 } & Partial<TProps>;

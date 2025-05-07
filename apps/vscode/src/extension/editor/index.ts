@@ -143,6 +143,9 @@ export class TriplexEditorProvider
             skipDirtyCheck: true,
           });
         }),
+        on(panel.webview, "code-update", (prop) => {
+          document.updateCode(prop);
+        }),
         on(panel.webview, "element-set-prop", (prop) => {
           document.upsertProp(prop);
         }),

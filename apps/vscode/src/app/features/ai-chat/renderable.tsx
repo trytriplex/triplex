@@ -5,13 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { bind } from "bind-event-listener";
-import {
-  useEffect,
-  useLayoutEffect,
-  useState,
-  type ReactNode,
-  type RefObject,
-} from "react";
+import { useEffect, useLayoutEffect, useState, type RefObject } from "react";
 import { experimental_useLazySubscriptionStream as useLazySubscriptionStream } from "../../hooks/ws";
 import { AIMessage } from "./ai-message";
 import { AIResponse } from "./ai-response";
@@ -20,9 +14,13 @@ import { CodeAdd } from "./code-add";
 import { CodeReplace } from "./code-replace";
 import { Mutations } from "./mutations";
 import { StreamingXMLParser, type Node } from "./parser";
+import { type ChatRenderableChildren } from "./types";
 import { UserMessage } from "./user-message";
 
-export function renderRenderable(node: Node, index: number): ReactNode {
+export function renderRenderable(
+  node: Node,
+  index: number,
+): ChatRenderableChildren {
   switch (node.name) {
     case "ai_response":
       return (
@@ -98,6 +96,8 @@ export function renderRenderable(node: Node, index: number): ReactNode {
         </UserMessage>
       );
   }
+
+  throw new Error("invariant: unhandled");
 }
 
 export function useRenderableChatStream(ref: RefObject<HTMLElement | null>) {

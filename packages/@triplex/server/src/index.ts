@@ -6,6 +6,7 @@
  */
 import { readFile } from "node:fs/promises";
 import { Application, isHttpError, Router } from "@oakserver/oak";
+import { createForkLogger } from "@triplex/lib/log";
 import { basename } from "@triplex/lib/path";
 import { createWSServer } from "@triplex/websocks-server";
 import { watch } from "chokidar";
@@ -31,8 +32,10 @@ import {
   commentComponent,
   create,
   duplicate,
+  insertCode,
   move,
   rename,
+  replaceCode,
   uncommentComponent,
   upsertProp,
 } from "./services/component";
@@ -60,6 +63,8 @@ import { getThumbnailPath } from "./util/thumbnail";
 
 export * from "./types";
 export { type PropGroupDef } from "./ast/prop-groupings";
+
+const log = createForkLogger("triplex:server");
 
 export function createServer({
   config,
@@ -107,6 +112,16 @@ export function createServer({
     );
 
     return next();
+  });
+
+  app.use(async (_, next) => {
+    try {
+      await next();
+    } catch (error) {
+      const err = error as Error;
+      log.error(err.message);
+      throw error;
+    }
   });
 
   router.get("/healthcheck", (context) => {
@@ -161,6 +176,33 @@ export function createServer({
     });
 
     context.response.body = { message: "success" };
+  });
+
+  router.post("/scene/:path/:line/add", async (context) => {
+    const { code } = await context.request.body({ type: "json" }).value;
+    const line = Number(context.params.line);
+    const path = context.params.path;
+    const sourceFile = project.getSourceFile(path);
+
+    const [ids] = await sourceFile.edit((sourceFile) => {
+      insertCode(sourceFile, { code, line });
+    });
+
+    context.response.body = { ...ids, message: "success" };
+  });
+
+  router.post("/scene/:path/:lineFrom/:lineTo/replace", async (context) => {
+    const { code } = await context.request.body({ type: "json" }).value;
+    const lineFrom = Number(context.params.lineFrom);
+    const lineTo = Number(context.params.lineTo);
+    const path = context.params.path;
+    const sourceFile = project.getSourceFile(path);
+
+    const [ids] = await sourceFile.edit((sourceFile) => {
+      replaceCode(sourceFile, { code, lineFrom, lineTo });
+    });
+
+    context.response.body = { ...ids, message: "success" };
   });
 
   router.get("/scene/:path/object/:line/:column", async (context) => {
