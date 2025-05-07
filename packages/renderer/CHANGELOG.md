@@ -1,5 +1,11 @@
 # @triplex/renderer
 
+## 0.71.24
+
+### Patch Changes
+
+- 6bfbbf2: Guard transform controls to only render if there is an available object.
+
 ## 0.71.23
 
 ### Patch Changes
