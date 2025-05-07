@@ -47,7 +47,8 @@
       {
         "category": "Triplex",
         "command": "triplex.start",
-        "title": "Open File"
+        "title": "Open File in Triplex",
+        "icon": "./static/logo.svg"
       },
       {
         "category": "Triplex",
@@ -168,6 +169,13 @@
         },
         {
           "command": "triplex.start",
+          "when": "(resourceExtname === .jsx || resourceExtname === .tsx) && activeCustomEditorId != 'triplex.editor'"
+        }
+      ],
+      "editor/title": [
+        {
+          "command": "triplex.start",
+          "group": "navigation",
           "when": "(resourceExtname === .jsx || resourceExtname === .tsx) && activeCustomEditorId != 'triplex.editor'"
         }
       ],
