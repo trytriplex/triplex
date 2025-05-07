@@ -44,6 +44,7 @@ export function AIChat() {
   const { exportName, path } = useSceneContext();
   const selected = useSceneSelected();
   const [visible, setVisible] = useState(false);
+  const ref = useRef<HTMLFormElement>(null);
 
   async function handleSubmit(data: FormData) {
     const prompt = data.get("prompt")?.toString() ?? "";
@@ -107,7 +108,7 @@ export function AIChat() {
           <AIChatLog />
         </Suspense>
 
-        <form action={handleSubmit} className="mt-auto p-2">
+        <form action={handleSubmit} className="mt-auto p-2" ref={ref}>
           <div className="focus-within:border-selected border-input text-input bg-input focus:border-selected flex flex-col rounded border focus-within:border">
             <div className="flex flex-wrap gap-1 p-1.5">
               <Lozenge title={`File "${path.split("/").at(-1)}" in context`}>
@@ -127,13 +128,19 @@ export function AIChat() {
                 autoFocus
                 className="placeholder:text-input-placeholder bg-input w-full resize-none rounded-md px-2 py-0.5 focus:outline-none"
                 name="prompt"
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" && !e.shiftKey) {
+                    e.preventDefault();
+                    ref.current?.requestSubmit();
+                  }
+                }}
                 placeholder="Ask Triplex"
               />
               <div className="flex items-end p-1.5">
                 <IconButton
                   actionId="(UNSAFE_SKIP)"
                   icon={PaperPlaneIcon}
-                  label="Ask Triplex (Shift+Enter)"
+                  label="Ask Triplex (Enter)"
                   onClick={() => {}}
                   type="submit"
                 />
