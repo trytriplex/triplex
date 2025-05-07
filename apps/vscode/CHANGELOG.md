@@ -1,5 +1,13 @@
 # @triplex/vscode
 
+## 0.2.35
+
+### Patch Changes
+
+- 646da01: New editor action "Open File in Triplex" available on JSX/TSX files.
+- 7ef27d7: The "Open in WebXR" action now uses a VR headset icon.
+  - @triplex/client@0.70.32
+
 ## 0.2.34
 
 ### Patch Changes
