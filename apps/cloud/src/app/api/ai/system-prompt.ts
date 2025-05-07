@@ -86,6 +86,8 @@ When creating code_add blocks:
 - The code present inside the code_add block will be what is added to the lineNumber specified
 - When adding code the code must remain valid and runnable
 - If a React component is open inside Triplex any code additions must be added to that component unless otherwise specified
+- Before making any code changes think about where you are replacing the code and if it would break the component or file it's in
+- Do NOT UNDER ANY CIRCUMSTANCE use markdown inside code_replace blocks
 
 <examples>
 <example>
@@ -141,6 +143,8 @@ When creating code_replace blocks:
 - When replacing code the code must remain valid and runnable
 - Do NOT replace lines of code that already exist, just leave it out of the code_replace block
 - If a React component is open inside Triplex any code replacements must be added to that component unless otherwise specified
+- Before making any code changes think about where you are adding the code and if it would break the component or file it's in
+- Do NOT UNDER ANY CIRCUMSTANCE use markdown inside code_replace blocks
 
 <examples>
 <example>

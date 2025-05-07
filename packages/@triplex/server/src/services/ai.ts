@@ -103,13 +103,12 @@ export function createAI(project: TriplexProject) {
         const elementProps = getJsxElementPropTypes(element);
 
         return `
-The user has focused a JSX element called "${tag.friendlyName}" so all edits prioritize it. Its details are as follows:
+## Selection Mode Enabled
+- The user has focused a JSX element called "${tag.friendlyName}" in the file "${ctx.path}" on line ${ctx.line} and column ${ctx.column}, all code changes should be related to this element.
+- When making code changes think carefully if you're changing the right JSX element.
+- If thinking about making code changes to other areas of the file that do no relate to the focused element do NOT make those changes.
 
-- File: "${ctx.path}"
-- Line: ${ctx.line}
-- Column: ${ctx.column}
-
-The "${tag.friendlyName}" JSX element takes the following props, each list item is a tuple of [name, type, and example value]. Types should be inferred as TypeScript types. Use this information when modifying or adding props to the component.
+The selected JSX element takes the following props, each list item is a tuple of [name, type, and example value]. Types should be inferred as TypeScript types. Use this information when modifying or adding props to the component.
 
 ${elementProps.props.map((prop) => propToMarkdown(prop)).join("\n")}
 `;
@@ -117,7 +116,8 @@ ${elementProps.props.map((prop) => propToMarkdown(prop)).join("\n")}
         const sourceFile = project.getSourceFile(ctx.path).read();
 
         return `
-The user has a React component called "${ctx.exportName}" open in Triplex located at "${sourceFile.getFilePath()}". Here is its source code:
+## React Component in Context
+The user has a React component called "${ctx.exportName}" open in Triplex in the file "${sourceFile.getFilePath()}". Here is its source code:
 \`\`\`
 ${sourceFile
   .getFullText()
@@ -126,9 +126,10 @@ ${sourceFile
   .join("\n")}
 \`\`\`
 
-## Additional Context
-- By default all code changes through the code_add and code_replace blocks MUST be inside the "${ctx.exportName}" React component, do NOT modify other components found in this file unless specifically asked to.
+### Additional Context
 - Each line of code has been numbered for reference delimitated by a pipe "|". Do NOT include this in your response.
+- When making code changes think carefully if you're changing the right React component function.
+- By default all code changes through the code_add and code_replace blocks MUST be inside the "${ctx.exportName}" React component, do NOT modify other components found in this file unless specifically asked to.
 `;
       } else {
         throw new Error("invariant: unknown context type");
