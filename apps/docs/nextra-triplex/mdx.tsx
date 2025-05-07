@@ -193,7 +193,5 @@ export const components: Components = {
       {children}
     </th>
   ),
-  ul: ({ children }) => (
-    <ul className="mt-5 list-disc first-of-type:mt-0">{children}</ul>
-  ),
+  ul: ({ children }) => <ul className="mt-5 list-disc">{children}</ul>,
 };
