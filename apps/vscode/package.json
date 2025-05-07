@@ -48,7 +48,10 @@
         "category": "Triplex",
         "command": "triplex.start",
         "title": "Open File in Triplex",
-        "icon": "./static/logo.svg"
+        "icon": {
+          "light": "./static/logo-dark.svg",
+          "dark": "./static/logo-light.svg"
+        }
       },
       {
         "category": "Triplex",
