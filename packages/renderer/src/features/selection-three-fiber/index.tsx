@@ -361,7 +361,7 @@ export function ThreeFiberSelection({
         {children}
       </SceneObjectEventsContext.Provider>
 
-      {!!resolvedObject &&
+      {!!resolvedObject?.object &&
         transform !== "none" &&
         window.triplex.env.mode === "default" &&
         fg("immutable_transform_controls") && (
