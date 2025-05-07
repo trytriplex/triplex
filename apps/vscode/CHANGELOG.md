@@ -1,5 +1,11 @@
 # @triplex/vscode
 
+## 0.2.36
+
+### Patch Changes
+
+- 66dcad2: Fix editor activity icon in dark mode being incorrect on Windows.
+
 ## 0.2.35
 
 ### Patch Changes
