@@ -8,6 +8,7 @@ import { useEvent } from "@triplex/lib";
 import { createContext, useContext, useEffect, useMemo, useRef } from "react";
 
 export type ActionContext =
+  | "aichat"
   | "assetsdrawer"
   | "contextmenu"
   | "contextpanel"

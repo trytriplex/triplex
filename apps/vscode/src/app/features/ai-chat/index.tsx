@@ -6,11 +6,12 @@
  */
 import { Cross2Icon, PaperPlaneIcon } from "@radix-ui/react-icons";
 import { type AIChatContext } from "@triplex/server";
-import { TriplexLogo } from "@triplex/ux";
+import { TriplexLogo, useScreenView, useTelemetry } from "@triplex/ux";
 import { Suspense, useRef, useState } from "react";
 import { IconButton } from "../../components/button";
 import { InlineErrorBoundary } from "../../components/inline-error-boundary";
 import { Lozenge } from "../../components/lozenge";
+import { ResizableSurface } from "../../components/resizable-surface";
 import { ScrollContainer } from "../../components/scroll-container";
 import { Surface } from "../../components/surface";
 import { useSceneContext, useSceneSelected } from "../app-root/context";
@@ -45,6 +46,9 @@ export function AIChat() {
   const selected = useSceneSelected();
   const [visible, setVisible] = useState(false);
   const ref = useRef<HTMLFormElement>(null);
+  const telemetry = useTelemetry();
+
+  useScreenView("ai_chat", "Panel", visible);
 
   async function handleSubmit(data: FormData) {
     const prompt = data.get("prompt")?.toString() ?? "";
@@ -93,10 +97,17 @@ export function AIChat() {
   }
 
   return (
-    <div className="border-overlay relative flex w-56 flex-shrink-0 flex-col border-l">
+    <ResizableSurface
+      actionId={{
+        resizeEnd: "aichat_resize_end",
+        resizeStart: "aichat_resize_start",
+      }}
+      className="border-l"
+      splitterPosition="start"
+    >
       <div className="flex justify-end px-2 pb-1">
         <IconButton
-          actionId="(UNSAFE_SKIP)"
+          actionId="aichat_frame_close"
           icon={Cross2Icon}
           label="Close Triplex AI"
           onClick={() => setVisible(false)}
@@ -132,13 +143,14 @@ export function AIChat() {
                   if (e.key === "Enter" && !e.shiftKey) {
                     e.preventDefault();
                     ref.current?.requestSubmit();
+                    telemetry.event("aichat_input_enter");
                   }
                 }}
                 placeholder="Ask Triplex"
               />
               <div className="flex items-end p-1.5">
                 <IconButton
-                  actionId="(UNSAFE_SKIP)"
+                  actionId="aichat_input_send"
                   icon={PaperPlaneIcon}
                   label="Ask Triplex (Enter)"
                   onClick={() => {}}
@@ -149,6 +161,6 @@ export function AIChat() {
           </div>
         </form>
       </InlineErrorBoundary>
-    </div>
+    </ResizableSurface>
   );
 }
