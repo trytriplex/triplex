@@ -6,7 +6,6 @@
  */
 import { useFrame, useThree } from "@react-three/fiber";
 import { on } from "@triplex/bridge/client";
-import { fg } from "@triplex/lib/fg";
 import {
   useContext,
   useEffect,
@@ -135,7 +134,7 @@ export function Cameras({ children }: { children: ReactNode }) {
   }, [activeCamera, playState]);
 
   useLayoutEffect(() => {
-    if (!activeCamera || activeState !== "editor" || !fg("camera_pp_fix")) {
+    if (!activeCamera || activeState !== "editor") {
       return;
     }
 
@@ -161,27 +160,19 @@ export function Cameras({ children }: { children: ReactNode }) {
 
   useFrame(
     ({ gl, scene }) => {
-      if (fg("camera_pp_fix")) {
-        if (activeCamera) {
-          // Postprocessing sets this to false which breaks the outline selection
-          // indicators as they don't get unset. This turns it back on and gets it working again.
-          gl.autoClear = true;
-          gl.render(scene, activeCamera);
-        }
-      } else {
-        if (activeCamera) {
-          gl.render(scene, activeCamera);
-        }
+      if (activeCamera) {
+        // Postprocessing sets this to false which breaks the outline selection
+        // indicators as they don't get unset. This turns it back on and gets it working again.
+        gl.autoClear = true;
+        gl.render(scene, activeCamera);
       }
     },
-    fg("camera_pp_fix")
-      ? activeState === "editor"
-        ? // When the "editor" camera is active we use 0.5 so the callback runs before postprocessing.
-          // See: https://github.com/pmndrs/react-postprocessing/blob/master/src/EffectComposer.tsx#L63
-          0.5
-        : // When the "default" camera is active we release rendering back to defaults.
-          undefined
-      : 1,
+    activeState === "editor"
+      ? // When the "editor" camera is active we use 0.5 so the callback runs before postprocessing.
+        // See: https://github.com/pmndrs/react-postprocessing/blob/master/src/EffectComposer.tsx#L63
+        0.5
+      : // When the "default" camera is active we release rendering back to defaults.
+        undefined,
   );
 
   const context: ActiveCameraContextValue = useMemo(
