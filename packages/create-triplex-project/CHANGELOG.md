@@ -1,5 +1,13 @@
 # create-triplex-project
 
+## 0.70.10
+
+### Patch Changes
+
+- 78bf74e: Fix .gitignore not being prefixed with a dot.
+- 78bf74e: Add GitHub pages deployments to templates.
+- 78bf74e: Add typecheck to templates.
+
 ## 0.70.9
 
 ### Patch Changes
