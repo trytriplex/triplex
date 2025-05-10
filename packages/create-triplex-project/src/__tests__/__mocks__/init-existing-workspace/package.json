@@ -1,6 +1,0 @@
-{
-  "name": "app",
-  "dependencies": {
-    "already-exists": "^1.1.1"
-  }
-}
