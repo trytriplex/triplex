@@ -9,6 +9,8 @@ import * as nodePath from "node:path";
 function toUnix(p: string): string {
   p = p.replaceAll("\\", "/");
   p = p.replaceAll(/(?<!^)\/+/g, "/"); // replace doubles except beginning for UNC path
+  p = p.replace(/^\/[A-z]:\//, (match) => match.slice(1)); // Remove leading slashes on Windows where drives are present
+
   if (p.match(/^[A-z]:\//)) {
     // Normalize drive casing to uppercase so it's consistent with Vite.
     p = p[0].toUpperCase() + p.slice(1);
