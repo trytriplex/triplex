@@ -7,6 +7,6 @@ export default defineConfig({
    * to infer your repository name, falling back to the app name chosen when
    * generating your project.
    */
-  base: "/" + (process.env.GITHUB_REPOSITORY?.split("/").pop() || "{app_name}"),
+  base: "/" + process.env.GITHUB_REPOSITORY?.split("/").pop() || "{app_name}",
   plugins: [react()],
 });

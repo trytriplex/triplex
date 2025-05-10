@@ -9,6 +9,7 @@ import fs_dont_use_directly from "node:fs/promises";
 import { join } from "node:path";
 import { promisify } from "node:util";
 import { prompt as prompt_dont_use_directly } from "enquirer";
+import { copyFilesToDestination } from "./copy";
 
 const exec_dont_use_directly = promisify(execCb);
 const templateDir = join(__dirname, "../templates");
@@ -50,27 +51,6 @@ export async function init({
   pkgManager: string;
   template: string;
 }) {
-  async function copyTemplateFileToDest(
-    name: string,
-    replace?: Record<string, string>,
-    rename?: string,
-  ) {
-    if (replace) {
-      let file = await fs.readFile(join(templateDir, template, name), "utf8");
-
-      Object.entries(replace).forEach(([key, value]) => {
-        file = file.replace(key, value);
-      });
-
-      await fs.writeFile(join(cwd, rename || name), file);
-    } else {
-      await fs.copyFile(
-        join(templateDir, template, name),
-        join(cwd, rename || name),
-      );
-    }
-  }
-
   const { default: ora } = await import("ora");
 
   let cwd = __cwd;
@@ -109,9 +89,22 @@ export async function init({
   const spinner = ora("Copying files...").start();
   const templateFiles = join(templateDir, template);
 
-  await fs.cp(templateFiles, cwd, { recursive: true });
-  await copyTemplateFileToDest("package.json", { "{app_name}": name });
-  await copyTemplateFileToDest("README.md", { "{app_name}": name });
+  await copyFilesToDestination({
+    __fs: fs,
+    destinationFolder: cwd,
+    sourceFolder: templateFiles,
+    transform: (input) => {
+      const contents = input.contents.replaceAll("{app_name}", name);
+      const rename: Record<string, string> = {
+        gitignore: ".gitignore",
+      };
+
+      return {
+        contents,
+        filename: rename[input.filename] ?? input.filename,
+      };
+    },
+  });
 
   spinner.text = "Installing dependencies...";
 
