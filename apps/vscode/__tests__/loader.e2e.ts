@@ -17,6 +17,16 @@ test(
   },
 );
 
+test(
+  "opening with triplex button",
+  { tag: "@vsce_smoke" },
+  async ({ vsce }) => {
+    await vsce.openFileButton.click();
+
+    await expect(vsce.loadedComponent).toHaveText("Plane");
+  },
+);
+
 test("reopening a file after closing", async ({ vsce }) => {
   await vsce.codelens("Scene").click();
 

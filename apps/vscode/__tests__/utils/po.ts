@@ -13,6 +13,10 @@ export class ExtensionPage {
     public readonly project: string,
   ) {}
 
+  get openFileButton() {
+    return this.page.getByLabel("Open File in Triplex");
+  }
+
   codelens(
     componentName: string,
     {
