@@ -1,9 +1,3 @@
-/**
- * Copyright (c) 2022—present Michael Dougall. All rights reserved.
- *
- * This repository utilizes multiple licenses across different directories. To
- * see this files license find the nearest LICENSE file up the source tree.
- */
 import type { PresetsType } from "@react-three/drei/helpers/environment-assets";
 import { Physics } from "@react-three/rapier";
 import { createContext, useContext, type ReactNode } from "react";
