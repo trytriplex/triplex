@@ -4,10 +4,7 @@
 
 Triplex is your visual workspace for building [React](https://react.dev/) / [Three Fiber](https://r3f.docs.pmnd.rs/) components. Build 2D and 3D components without coding using its visual and input controls. Jump down to code when you need.
 
-<a href="https://www.youtube.com/watch?v=XEvvJ5Siff8">
-  <img width="500" src="./hero-preview-dark.gif#gh-dark-mode-only" />
-  <img width="500" src="./hero-preview-light.gif#gh-light-mode-only" />
-</a>
+[<img alt="" height="300" src="https://github.com/trytriplex/triplex/blob/main/hero-preview.gif" />](https://www.youtube.com/watch?v=XEvvJ5Siff8)
 
 ## Get Started
 
