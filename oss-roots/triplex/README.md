@@ -1,10 +1,21 @@
-# Triplex
+<img aria-label="Triplex" src="https://github.com/trytriplex/triplex/raw/refs/heads/main/apps/docs/public/logos/logo-horizontal.svg" height="70" />
 
-[![Discord](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fdiscord.com%2Fapi%2Finvites%2FnBzRBUEs4b%3Fwith_counts%3Dtrue&query=%24.approximate_member_count&style=flat&colorA=000000&colorB=000000&label=discord&logo=&logoColor=000000)](https://discord.gg/nBzRBUEs4b) [![Downloads](https://img.shields.io/github/downloads/trytriplex/triplex/total?style=flat&colorA=000000&colorB=000000&label=downloads&logo=&logoColor=000000)](https://triplex.dev/download) [![Version](https://img.shields.io/github/v/release/trytriplex/triplex?style=flat&colorA=000000&colorB=000000&label=latest&logo=&logoColor=000000)](https://github.com/trytriplex/triplex/releases) [![GitHub Sponsors](https://img.shields.io/github/sponsors/itsdouges?style=flat&colorA=000000&colorB=000000&label=sponsor&logo=&logoColor=000000)](https://github.com/sponsors/itsdouges)
+[![Discord](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fdiscord.com%2Fapi%2Finvites%2FnBzRBUEs4b%3Fwith_counts%3Dtrue&query=%24.approximate_member_count&style=flat&colorA=000000&colorB=000000&label=discord&logo=&logoColor=000000)](https://discord.gg/nBzRBUEs4b) [![Downloads](https://img.shields.io/github/downloads/trytriplex/triplex/total?style=flat&colorA=000000&colorB=000000&label=downloads&logo=&logoColor=000000)](https://triplex.dev/download) [![Version](https://img.shields.io/github/v/release/trytriplex/triplex?style=flat&colorA=000000&colorB=000000&label=latest&logo=&logoColor=000000)](https://github.com/trytriplex/triplex/releases)
+
+Triplex is your visual workspace for building [React](https://react.dev/) / [Three Fiber](https://r3f.docs.pmnd.rs/) components. Build 2D and 3D components without coding using its visual and input controls. Jump down to code when you need.
+
+<a href="https://www.youtube.com/watch?v=XEvvJ5Siff8">
+  <img width="500" src="./hero-preview-dark.gif#gh-dark-mode-only" />
+  <img width="500" src="./hero-preview-light.gif#gh-light-mode-only" />
+</a>
 
 ## Get Started
 
-Visit https://triplex.dev/docs/get-started to get started with Triplex.
+1. Install [Triplex for VS Code](https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce) or [Triplex Standalone](https://triplex.dev/download).
+1. Create a project using a [starter template](https://triplex.dev/docs/get-started/starting-a-project/create-from-template) or [open your existing one](https://triplex.dev/docs/get-started/starting-a-project/pre-existing-project).
+1. Open a component and build!
+
+Visit https://triplex.dev/docs/building-your-scene to learn more.
 
 ## Contributions
 
