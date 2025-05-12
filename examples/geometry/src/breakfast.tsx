@@ -1,10 +1,4 @@
 /**
- * Copyright (c) 2022—present Michael Dougall. All rights reserved.
- *
- * This repository utilizes multiple licenses across different directories. To
- * see this files license find the nearest LICENSE file up the source tree.
- */
-/**
  * This work is based on "Breakfast"
  * (https://sketchfab.com/3d-models/breakfast-6fdfdbb8c1b44fadbec33d6eb05c14db)
  * by James Neil (https://sketchfab.com/jamesn) licensed under CC-BY-4.0
