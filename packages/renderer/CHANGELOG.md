@@ -1,5 +1,12 @@
 # @triplex/renderer
 
+## 0.71.25
+
+### Patch Changes
+
+- 5bb5654: Cleanup camera_pp_fix feature gate.
+- d3b7090: Cleanup camera_helper_original feature gate.
+
 ## 0.71.24
 
 ### Patch Changes

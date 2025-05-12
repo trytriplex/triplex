@@ -1,5 +1,14 @@
 # @triplex/vscode
 
+## 0.2.37
+
+### Patch Changes
+
+- 2ba732c: Fix "Open File in Triplex" editor button not working on Windows.
+- b30f3df: Add resizable panel to ai chat.
+- Updated dependencies [3f92cd3]
+  - @triplex/client@0.70.33
+
 ## 0.2.36
 
 ### Patch Changes

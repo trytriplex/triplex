@@ -1,5 +1,11 @@
 # @triplex/ux
 
+## 0.69.23
+
+### Patch Changes
+
+- b30f3df: Add resizable panel to ai chat.
+
 ## 0.69.22
 
 ### Patch Changes

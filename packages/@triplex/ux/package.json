@@ -1,6 +1,6 @@
 {
   "name": "@triplex/ux",
-  "version": "0.69.22",
+  "version": "0.69.23",
   "private": true,
   "description": "Common UI agnostic components for Triplex user experiences.",
   "author": {

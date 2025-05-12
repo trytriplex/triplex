@@ -1,5 +1,14 @@
 # @triplex/client
 
+## 0.70.33
+
+### Patch Changes
+
+- 3f92cd3: Fix react-router route components not working with Triplex.
+- Updated dependencies [5bb5654]
+- Updated dependencies [d3b7090]
+  - @triplex/renderer@0.71.25
+
 ## 0.70.32
 
 ### Patch Changes

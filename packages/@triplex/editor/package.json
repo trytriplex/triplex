@@ -1,6 +1,6 @@
 {
   "name": "@triplex/editor",
-  "version": "0.70.35",
+  "version": "0.70.36",
   "private": true,
   "description": "Your visual workspace for React / Three Fiber.",
   "author": {
@@ -28,7 +28,7 @@
     "@sentry/react": "^8.30.0",
     "@triplex/bridge": "0.70.7",
     "@triplex/lib": "0.69.15",
-    "@triplex/ux": "0.69.22",
+    "@triplex/ux": "0.69.23",
     "@triplex/websocks-client": "0.0.7",
     "react-compiler-runtime": "19.1.0-rc.1",
     "react-dom": "^19.0.0",
