@@ -14,6 +14,7 @@ import {
   isChildOf,
   isChildOfReturnStatement,
   isIdentifierFromModule,
+  isIgnoredJSXElement,
   isJSXIdentifierFromNodeModules,
   resolveIdentifierExportName,
   resolveIdentifierOrigin,
@@ -374,7 +375,8 @@ export default function triplexBabelPlugin({
         if (
           cache.has(path.node) ||
           path.node.openingElement.name.type !== "JSXIdentifier" ||
-          !path.node.loc
+          !path.node.loc ||
+          isIgnoredJSXElement(path)
         ) {
           return;
         }

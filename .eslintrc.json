@@ -9,7 +9,7 @@
   ],
   "overrides": [
     {
-      "files": ["**/create-triplex-project/templates/**"],
+      "files": ["**/create-triplex-project/templates/**", "examples/**"],
       "rules": {
         "header/header": "off"
       }

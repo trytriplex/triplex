@@ -8,6 +8,40 @@ import { type NodePath, type PluginPass } from "@babel/core";
 import * as t from "@babel/types";
 import { dirname, extname, normalize, resolve } from "@triplex/lib/path";
 
+/** These JSX elements are ignored as they can't be composed */
+const ignoredJSXElements: Record<string, string> = {
+  Route: "react-router",
+  Routes: "react-router",
+};
+
+export function isIgnoredJSXElement(path: NodePath<t.JSXElement>) {
+  const identifier = path.get("openingElement").get("name");
+  if (!identifier.isJSXIdentifier()) {
+    return false;
+  }
+
+  const isPossiblyIgnoredElement = ignoredJSXElements[identifier.node.name];
+  if (!isPossiblyIgnoredElement) {
+    return false;
+  }
+
+  const importSpecifierPath = resolveIdentifierImportSpecifier(identifier);
+  if (
+    !importSpecifierPath ||
+    !importSpecifierPath.parentPath.isImportDeclaration()
+  ) {
+    return false;
+  }
+
+  const modulePath = importSpecifierPath.parentPath.node.source.value;
+  const isIgnoredElement = isPossiblyIgnoredElement === modulePath;
+  if (isIgnoredElement) {
+    return true;
+  }
+
+  return false;
+}
+
 export function isIdentifierFromModule(
   path: NodePath<t.Identifier>,
   moduleName: string,
