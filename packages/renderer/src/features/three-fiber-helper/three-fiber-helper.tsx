@@ -5,7 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { createPortal, useFrame, useThree } from "@react-three/fiber";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useRef, useState, type JSX } from "react";
 import { type Mesh, type Object3D } from "three";
 import { usePlayState } from "../../stores/use-play-state";
 import {
@@ -13,7 +13,8 @@ import {
   HOVER_LAYER_INDEX,
   SELECTION_LAYER_INDEX,
 } from "../../util/layers";
-import { type ThreeHelper } from "./types";
+import { type SupportedElements, type ThreeHelper } from "./types";
+import { XROriginHelper } from "./xr-origin-helper";
 
 export type HelperInstance = Object3D & {
   dispose: () => void;
@@ -21,48 +22,62 @@ export type HelperInstance = Object3D & {
 };
 
 export const resolveHelper = (
-  elementName: string,
+  elementName: SupportedElements,
   size: number,
-): { Element: ThreeHelper; args: unknown[] } | undefined => {
+):
+  | { Element: ThreeHelper; args: unknown[]; type: "inbuilt" }
+  | { jsx: JSX.Element; type: "custom" } => {
   switch (elementName) {
     // Rect area lights helper has been removed from core. For now we just use a standard
     // point light helper - we can investigate adding it at a later date.
-    case "RectAreaLight":
-    case "PointLight":
-    case "AmbientLight":
-      return { Element: "pointLightHelper", args: [size] };
+    case "rectAreaLight":
+    case "pointLight":
+    case "ambientLight":
+      return { Element: "pointLightHelper", args: [size], type: "inbuilt" };
 
-    case "HemisphereLight":
-      return { Element: "hemisphereLightHelper", args: [size] };
+    case "hemisphereLight":
+      return {
+        Element: "hemisphereLightHelper",
+        args: [size],
+        type: "inbuilt",
+      };
 
-    case "SpotLight":
-      return { Element: "spotLightHelper", args: [] };
+    case "spotLight":
+      return { Element: "spotLightHelper", args: [], type: "inbuilt" };
 
-    case "DirectionalLight":
-      return { Element: "directionalLightHelper", args: [] };
+    case "directionalLight":
+      return { Element: "directionalLightHelper", args: [], type: "inbuilt" };
 
-    case "PerspectiveCamera":
-    case "OrthographicCamera":
-      return { Element: "cameraHelper", args: [] };
+    case "perspectiveCamera":
+    case "orthographicCamera":
+      return { Element: "cameraHelper", args: [], type: "inbuilt" };
+
+    case "XROrigin":
+      return {
+        jsx: <XROriginHelper color="rgb(255,255,0)" />,
+        type: "custom",
+      };
 
     default:
-      return undefined;
+      throw new Error("invariant: unexpected helper type");
   }
 };
 
 export function ThreeFiberHelper({
   children,
+  helper,
   size = 0.1,
 }: {
   children?: React.ReactNode;
+  helper: SupportedElements;
   size?: number;
 }) {
   const [targetObject, setTargetObject] = useState<Object3D | null>(null);
   const helperRef = useRef<HelperInstance>(null);
-  const iconBillboardRef = useRef<Mesh>(null!);
+  const interactiveRef = useRef<Mesh>(null!);
   const scene = useThree((three) => three.scene);
   const state = usePlayState();
-  const helper = targetObject && resolveHelper(targetObject.type, size);
+  const resolvedHelper = resolveHelper(helper, size);
 
   const captureParentSceneObject = useCallback((ref: Object3D | null) => {
     setTargetObject(ref ? ref.parent : null);
@@ -74,42 +89,70 @@ export function ThreeFiberHelper({
     }
 
     if (targetObject.layers.isEnabled(SELECTION_LAYER_INDEX)) {
-      helperRef.current.layers.enable(SELECTION_LAYER_INDEX);
+      helperRef.current.traverse((child) =>
+        child.layers.enable(SELECTION_LAYER_INDEX),
+      );
     } else {
-      helperRef.current.layers.disable(SELECTION_LAYER_INDEX);
+      helperRef.current.traverse((child) =>
+        child.layers.disable(SELECTION_LAYER_INDEX),
+      );
     }
 
     if (targetObject.layers.isEnabled(HOVER_LAYER_INDEX)) {
-      helperRef.current.layers.enable(HOVER_LAYER_INDEX);
+      helperRef.current.traverse((child) =>
+        child.layers.enable(HOVER_LAYER_INDEX),
+      );
     } else {
-      helperRef.current.layers.disable(HOVER_LAYER_INDEX);
+      helperRef.current.traverse((child) =>
+        child.layers.disable(HOVER_LAYER_INDEX),
+      );
     }
 
-    helperRef.current.update();
-    iconBillboardRef.current.position.copy(targetObject.position);
+    if (resolvedHelper.type === "inbuilt") {
+      helperRef.current.update();
+    }
+
+    if (resolvedHelper.type === "custom") {
+      helperRef.current.position.copy(targetObject.position);
+      helperRef.current.rotation.copy(targetObject.rotation);
+      helperRef.current.scale.copy(targetObject.scale);
+    }
+
+    interactiveRef.current.position.copy(targetObject.position);
   });
 
   return (
     <>
       <group ref={captureParentSceneObject} />
-      {helper &&
+      {targetObject &&
         createPortal(
           <>
-            <mesh name="forced_visible" ref={iconBillboardRef} visible={false}>
+            <mesh name="forced_visible" ref={interactiveRef} visible={false}>
               <boxGeometry args={[size * 2, size * 2, size * 2]} />
               {children}
             </mesh>
-            <helper.Element
-              // @ts-expect-error - Hacking, sorry!
-              args={[targetObject, ...helper.args]}
-              // Hide this from both the default and the editor raycasters. Helper element
-              // bounding boxes aren't generally just what they look visually in the scene
-              // so we exclude them altogether and use a hidden box for selection instead.
-              layers={hiddenLayer}
-              // eslint-disable-next-line @typescript-eslint/no-explicit-any
-              ref={helperRef as any}
-              visible={state !== "play"}
-            />
+            {resolvedHelper.type === "inbuilt" && (
+              <resolvedHelper.Element
+                // @ts-expect-error - Hacking, sorry!
+                args={[targetObject, ...resolvedHelper.args]}
+                // Hide this from both the default and the editor raycasters. Helper element
+                // bounding boxes aren't generally just what they look visually in the scene
+                // so we exclude them altogether and use a hidden box for selection instead.
+                layers={hiddenLayer}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                ref={helperRef as any}
+                visible={state !== "play"}
+              />
+            )}
+            {resolvedHelper.type === "custom" && (
+              <group
+                layers={hiddenLayer}
+                ref={helperRef}
+                visible={state !== "play"}
+              >
+                {resolvedHelper.jsx}
+              </group>
+            )}
           </>,
           scene,
         )}

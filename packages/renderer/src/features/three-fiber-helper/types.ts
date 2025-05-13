@@ -20,4 +20,5 @@ export type SupportedElements =
   | "perspectiveCamera"
   | "pointLight"
   | "rectAreaLight"
-  | "spotLight";
+  | "spotLight"
+  | "XROrigin";
