@@ -5,16 +5,20 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 
+import { type TriplexMeta } from "@triplex/bridge/client";
 import { type SupportedElements } from "./types";
 
 export const hasThreeFiberHelper = (
-  elementName: unknown,
-): elementName is SupportedElements => {
-  if (typeof elementName !== "string") {
-    return false;
+  meta: TriplexMeta,
+): SupportedElements | false => {
+  if (
+    meta.name === "group" &&
+    meta.parents.at(0)?.originExportName === "XROrigin"
+  ) {
+    return "XROrigin";
   }
 
-  switch (elementName) {
+  switch (meta.name) {
     case "rectAreaLight":
     case "pointLight":
     case "ambientLight":
@@ -23,7 +27,7 @@ export const hasThreeFiberHelper = (
     case "directionalLight":
     case "perspectiveCamera":
     case "orthographicCamera":
-      return true;
+      return meta.name;
 
     default:
       return false;

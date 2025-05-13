@@ -1,0 +1,19 @@
+{
+  "name": "@example/xr-bowling",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "echo \"Not implemented\"",
+    "typedef": "echo \"Not implemented\""
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.0.0",
+    "@react-three/fiber": "^9.0.4",
+    "@react-three/xr": "^6.6.12",
+    "@types/react": "^19.0.8",
+    "@types/three": "^0.171.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "^0.172.0"
+  }
+}

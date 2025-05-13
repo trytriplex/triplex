@@ -88,6 +88,7 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
         camera?.type === "editor" &&
         disabledWhenTriplexCamera.some((r) => r.test(__meta.name));
       const key = buildElementKey(Component, props);
+      const threeFiberHelper = hasThreeFiberHelper(triplexMeta);
 
       return (
         <ParentComponentMetaProvider type={type} value={triplexMeta}>
@@ -99,14 +100,9 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
             {...reconciledProps}
             {...(shouldDisable ? { enabled: false } : undefined)}
           >
-            {type === "custom" ? (
-              // This keeps any preconditions for custom components valid
-              // e.g. they always take the same amount of children, no mutations.
-              // React.Children.only() use case.
-              children
-            ) : hasThreeFiberHelper(Component) ? (
+            {threeFiberHelper ? (
               <Suspense>
-                <ThreeFiberHelper>
+                <ThreeFiberHelper helper={threeFiberHelper}>
                   <primitive attach="__triplex" object={triplexMeta} />
                 </ThreeFiberHelper>
               </Suspense>
