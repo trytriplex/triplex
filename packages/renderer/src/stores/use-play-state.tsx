@@ -5,10 +5,24 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { on } from "@triplex/bridge/client";
-import { useEffect, useState } from "react";
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  type ReactNode,
+} from "react";
+
+const PlayStateContext = createContext("edit");
+
+export type PlayState = "edit" | "play" | "pause";
 
 export function usePlayState() {
-  const [playState, setPlayState] = useState<"edit" | "play" | "pause">("edit");
+  return useContext(PlayStateContext);
+}
+
+export function PlayStateProvider({ children }: { children: ReactNode }) {
+  const [playState, setPlayState] = useState<PlayState>("edit");
 
   useEffect(() => {
     return on("request-state-change", ({ state }) => {
@@ -16,5 +30,9 @@ export function usePlayState() {
     });
   }, []);
 
-  return playState;
+  return (
+    <PlayStateContext.Provider value={playState}>
+      {children}
+    </PlayStateContext.Provider>
+  );
 }
