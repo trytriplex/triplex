@@ -3,13 +3,35 @@ title: Pricing
 ---
 
 import { Pricing } from "../components/pricing";
+import { PricingQuestionAnswer } from "../components/pricing-qa";
 
-<div className="flex items-center px-3 pt-16 pb-20 flex-col">
+<div className="flex px-3 pt-16 pb-20 flex-col">
 
 <h1 className="text-default font-brand mt-4 text-center text-5xl font-medium">
   <span>Plans for individuals and teams.</span>
 </h1>
 
 <Pricing />
+
+<div className="mx-auto mt-10 flex w-full max-w-2xl flex-col gap-8">
+  ## Common Questions
+
+  <PricingQuestionAnswer
+    answer="When signing up for a year you get a 20% discount!"
+    question="Is there an annual discount?"
+  />
+  <PricingQuestionAnswer
+    answer="Yes, you can cancel at any time and you will continue having the subscription until the billing cycle ends."
+    question="Can I cancel at any time?"
+  />
+  <PricingQuestionAnswer
+    answer="When working together in a private repository each active team member needs a subscription."
+    question="Does each team member need a subscription?"
+  />
+  <PricingQuestionAnswer
+    answer="You can email me at douges@triplex.dev or reach out on Discord."
+    question="Where can I ask a question?"
+  />
+</div>
 
 </div>

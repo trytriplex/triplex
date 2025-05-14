@@ -30,7 +30,7 @@ function PricingPanel({
   perYearLabel?: string;
   period: "monthly" | "yearly";
 }) {
-  const yearlyPrice = Math.floor(basePrice * 10.5);
+  const yearlyPrice = Math.ceil((basePrice * 10) / 12);
   const monthlyPrice = basePrice;
 
   return (
@@ -55,7 +55,7 @@ function PricingPanel({
           <>
             <span className="text-subtlest text-2xl line-through">$</span>
             <span className="text-subtlest text-5xl line-through">
-              {monthlyPrice * 12}
+              {monthlyPrice}
             </span>
             <span className="w-2" />
           </>
@@ -79,11 +79,11 @@ function PricingPanel({
 }
 
 export function Pricing() {
-  const [period, setPeriod] = useState<"monthly" | "yearly">("yearly");
+  const [period, setPeriod] = useState<"monthly" | "yearly">("monthly");
 
   return (
     <>
-      <div className="mt-12 flex">
+      <div className="mx-auto mt-12 flex">
         <button
           className={cn([
             period === "monthly" && "bg-inverse text-inverse border-inverse",
@@ -98,11 +98,16 @@ export function Pricing() {
           className={cn([
             period === "yearly" && "bg-inverse text-inverse border-inverse",
             period !== "yearly" && "hover:bg-hovered active:bg-pressed",
-            "text-default rounded-r-full border-2 py-2.5 pl-4 pr-6 text-base font-medium leading-none",
+            "text-default relative rounded-r-full border-2 py-2.5 pl-4 pr-6 text-base font-medium leading-none",
           ])}
           onClick={() => setPeriod("yearly")}
         >
-          Yearly
+          Annually
+          <span className="bg-surface absolute -right-8 -top-4 flex rounded-full">
+            <span className="bg-selected border-selected text-selected whitespace-nowrap rounded-full border px-2 py-1 text-sm font-medium leading-none">
+              -20%
+            </span>
+          </span>
         </button>
       </div>
 
@@ -174,7 +179,7 @@ export function Pricing() {
               href={
                 period === "monthly"
                   ? "https://buy.stripe.com/cN2dTfbSr1s37xCdQR"
-                  : "https://buy.stripe.com/28o9CZ5u38UvdW0bIK"
+                  : "https://buy.stripe.com/5kA8yV5u36Mnf04dQT"
               }
             >
               Subscribe
@@ -184,7 +189,7 @@ export function Pricing() {
           highlight
           name="Teams"
           perMonthLabel="per month"
-          perYearLabel="per year, billed annually"
+          perYearLabel={"per year, billed annually"}
           period={period}
         >
           <ul className="border-neutral -mx-4 -mb-4 mt-4 flex flex-col gap-3 border-t p-4">
@@ -212,7 +217,7 @@ export function Pricing() {
             <li>
               <DetailsSummary
                 details="Create support tickets and get priority support to resolve it as soon as possible."
-                summary="Priority support"
+                summary="Priority support / onboarding"
               />
             </li>
             <li>
@@ -238,7 +243,8 @@ function DetailsSummary({
   return (
     <details className="group">
       <summary className="text-default flex cursor-pointer list-none items-center gap-4 text-base font-medium">
-        <ChevronRightIcon className="group-open:rotate-90" /> {summary}
+        <ChevronRightIcon className="text-subtle group-open:rotate-90" />{" "}
+        {summary}
       </summary>
       <p className="text-subtle mt-1 pl-8 text-base">{details}</p>
     </details>
