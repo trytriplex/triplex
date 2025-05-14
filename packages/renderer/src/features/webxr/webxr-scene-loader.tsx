@@ -7,6 +7,7 @@
 import { XR, type XRStore } from "@react-three/xr";
 import { type Modules, type ProviderModule } from "@triplex/bridge/client";
 import { useMemo } from "react";
+import { usePlayState } from "../../stores/use-play-state";
 import { DefaultCameraContext } from "../camera-new/context";
 import { Canvas } from "../canvas";
 import { SceneElement } from "../scene-element";
@@ -38,6 +39,7 @@ export function WebXRSceneLoader({
     modules,
     path,
   });
+  const playState = usePlayState();
 
   const sceneContext: LoadedSceneContext | null = useMemo(
     () =>
@@ -81,7 +83,7 @@ export function WebXRSceneLoader({
         <DefaultCameraContext.Provider value="default">
           <Canvas>
             <XR store={store}>
-              <WebXRLocomotion />
+              {playState !== "edit" && <WebXRLocomotion />}
               <SceneRenderer
                 component={scene.component}
                 exportName={exportName}

@@ -23,6 +23,7 @@ import {
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
 import { ErrorFallback } from "../../components/error-fallback";
 import { Tunnel } from "../../components/tunnel";
+import { PlayStateProvider } from "../../stores/use-play-state";
 import { SceneLoader } from "../scene-loader";
 import { SwitchToComponentContext } from "./context";
 import { DebugAttributes } from "./debug";
@@ -102,41 +103,43 @@ export function App({
 
   return (
     <SwitchToComponentContext.Provider value={switchToComponent}>
-      <ErrorBoundaryForScene
-        fallbackRender={() => <ErrorFallback />}
-        onError={(err) =>
-          send("error", {
-            message: err.message,
-            source: component.path,
-            stack: err.message,
-            subtitle:
-              "The scene could not be rendered as there was an error parsing its module. Resolve the error and try again.",
-            title: "Module Error",
-          })
-        }
-        resetKeys={[component]}
-      >
-        <Suspense
-          fallback={
-            <LoadingLogo
-              color="rgb(59 130 246)"
-              position="hint"
-              variant="stroke"
-            />
+      <PlayStateProvider>
+        <ErrorBoundaryForScene
+          fallbackRender={() => <ErrorFallback />}
+          onError={(err) =>
+            send("error", {
+              message: err.message,
+              source: component.path,
+              stack: err.message,
+              subtitle:
+                "The scene could not be rendered as there was an error parsing its module. Resolve the error and try again.",
+              title: "Module Error",
+            })
           }
+          resetKeys={[component]}
         >
-          <SceneLoader
-            exportName={component.exportName}
-            modules={files}
-            path={component.path}
-            providerPath={providerPath}
-            providers={providers}
-            sceneProps={component.props}
-          />
-        </Suspense>
-        <Tunnel.Out />
-        <DebugAttributes />
-      </ErrorBoundaryForScene>
+          <Suspense
+            fallback={
+              <LoadingLogo
+                color="rgb(59 130 246)"
+                position="hint"
+                variant="stroke"
+              />
+            }
+          >
+            <SceneLoader
+              exportName={component.exportName}
+              modules={files}
+              path={component.path}
+              providerPath={providerPath}
+              providers={providers}
+              sceneProps={component.props}
+            />
+          </Suspense>
+          <Tunnel.Out />
+          <DebugAttributes />
+        </ErrorBoundaryForScene>
+      </PlayStateProvider>
     </SwitchToComponentContext.Provider>
   );
 }

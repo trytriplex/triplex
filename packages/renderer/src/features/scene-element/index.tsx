@@ -19,6 +19,7 @@ import {
   type ReactNode,
 } from "react";
 import { mergeRefs } from "use-callback-ref";
+import { usePlayState } from "../../stores/use-play-state";
 import { ActiveCameraContext } from "../camera-new/context";
 import { hasThreeFiberHelper, ThreeFiberHelper } from "../three-fiber-helper";
 import { buildElementKey } from "./build-element-key";
@@ -33,7 +34,11 @@ import { useTemporaryProps } from "./use-temporary-props";
 const disabledWhenTriplexCamera = [
   /^PresentationControls$/,
   /^ScrollControls$/,
+  /^XROrigin$/,
 ];
+
+const disabledWhenEditState = [/^XROrigin$/];
+
 const passThroughWhenTriplexCamera = [/^Ecctrl$/, /Controls$/];
 
 export const SceneElement = forwardRef<unknown, RendererElementProps>(
@@ -50,6 +55,7 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
     // eslint-disable-next-line react-compiler/react-compiler
     const mergedRefs = useMemo(() => mergeRefs([ref, hostRef]), [ref]);
     const camera = useContext(ActiveCameraContext);
+    const playState = usePlayState();
     const triplexMeta: TriplexMeta = useMemo(
       () => ({
         ...__meta,
@@ -83,10 +89,17 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
     } else if (forceInsideSceneObjectContext || insideSceneObjectContext) {
       // For specific controls components that we know can be disabled we disable them via
       // props when the editor scene is viewing through the triplex camera.
-      const shouldDisable =
+      const shouldDisableWhenThroughEditorCamera =
         type === "custom" &&
         camera?.type === "editor" &&
         disabledWhenTriplexCamera.some((r) => r.test(__meta.name));
+      const shouldDisableWhenEditState =
+        type === "custom" &&
+        playState === "edit" &&
+        disabledWhenEditState.some((r) => r.test(__meta.name));
+      const shouldDisable =
+        shouldDisableWhenThroughEditorCamera || shouldDisableWhenEditState;
+
       const key = buildElementKey(Component, props);
       const threeFiberHelper = hasThreeFiberHelper(triplexMeta);
 
@@ -98,7 +111,9 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
               ? {}
               : { ref: type === "host" ? mergedRefs : ref })}
             {...reconciledProps}
-            {...(shouldDisable ? { enabled: false } : undefined)}
+            {...(shouldDisable
+              ? { disabled: true, enabled: false }
+              : undefined)}
           >
             {threeFiberHelper ? (
               <Suspense>

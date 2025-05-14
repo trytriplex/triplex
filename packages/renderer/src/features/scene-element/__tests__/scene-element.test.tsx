@@ -12,6 +12,7 @@ import { PerspectiveCamera } from "three";
 import { MapControls } from "triplex-drei";
 import { describe, expect, it, vi } from "vitest";
 import { SceneElement } from "../";
+import { PlayStateProvider } from "../../../stores/use-play-state";
 import { getTriplexMeta, resolveElementMeta } from "../../../util/meta";
 import { Camera } from "../../camera-new";
 import { ActiveCameraContext } from "../../camera-new/context";
@@ -507,21 +508,23 @@ describe("scene object component", () => {
 
   it("should render userland controls when triplex camera is not active", async () => {
     const { act, tree } = await render(
-      <Camera>
-        <SceneElement
-          __component={MapControls}
-          __meta={{
-            column: 1,
-            exportName: "Component",
-            line: 1,
-            name: "MapControls",
-            path: "",
-            rotate: false,
-            scale: false,
-            translate: false,
-          }}
-        />
-      </Camera>,
+      <PlayStateProvider>
+        <Camera>
+          <SceneElement
+            __component={MapControls}
+            __meta={{
+              column: 1,
+              exportName: "Component",
+              line: 1,
+              name: "MapControls",
+              path: "",
+              rotate: false,
+              scale: false,
+              translate: false,
+            }}
+          />
+        </Camera>
+      </PlayStateProvider>,
     );
 
     await act(() => {
@@ -533,5 +536,71 @@ describe("scene object component", () => {
     });
 
     expect(tree.getByName("__stub_map_controls__")).toBeDefined();
+  });
+
+  it("should disable XROrigin in edit/pause states", async () => {
+    const { tree } = await render(
+      <PlayStateProvider>
+        <Camera>
+          <SceneElement
+            __component={(props: object) => (
+              <mesh name="xr_origin" {...props} />
+            )}
+            __meta={{
+              column: -1,
+              exportName: "XROrigin",
+              line: -1,
+              name: "XROrigin",
+              path: "",
+              rotate: false,
+              scale: false,
+              translate: false,
+            }}
+            forceInsideSceneObjectContext
+          />
+        </Camera>
+      </PlayStateProvider>,
+    );
+    const XROrigin = tree.getByName("xr_origin")!;
+
+    expect(XROrigin.props).toHaveProperty("enabled", false);
+    expect(XROrigin.props).toHaveProperty("disabled", true);
+  });
+
+  it("should disable XROrigin in play state", async () => {
+    const { act, tree } = await render(
+      <PlayStateProvider>
+        <Camera>
+          <SceneElement
+            __component={(props: object) => (
+              <mesh name="xr_origin" {...props} />
+            )}
+            __meta={{
+              column: -1,
+              exportName: "XROrigin",
+              line: -1,
+              name: "XROrigin",
+              path: "",
+              rotate: false,
+              scale: false,
+              translate: false,
+            }}
+            forceInsideSceneObjectContext
+          />
+        </Camera>
+      </PlayStateProvider>,
+    );
+    const XROrigin = tree.getByName("xr_origin")!;
+
+    await act(() => {
+      return send(
+        "request-state-change",
+        { camera: "default", state: "play" },
+        true,
+      );
+    });
+
+    expect(XROrigin.props).toHaveProperty("enabled", undefined);
+    expect(XROrigin.props).toHaveProperty("disabled", undefined);
   });
 });
