@@ -7,9 +7,9 @@
     "typedef": "echo \"Not implemented\""
   },
   "dependencies": {
-    "@react-three/drei": "^10.0.0",
-    "@react-three/fiber": "^9.0.4",
-    "@react-three/rapier": "^1.4.0",
+    "@react-three/drei": "^10.0.7",
+    "@react-three/fiber": "^9.1.2",
+    "@react-three/rapier": "^2.1.0",
     "@types/react": "^19.0.8",
     "@types/three": "^0.171.0",
     "react": "^19.0.0",

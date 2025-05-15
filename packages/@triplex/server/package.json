@@ -30,9 +30,9 @@
     "ws": "^8.12.0"
   },
   "devDependencies": {
-    "@react-three/drei": "^10.0.0",
-    "@react-three/fiber": "^9.0.4",
-    "@react-three/rapier": "^1.4.0",
+    "@react-three/drei": "^10.0.7",
+    "@react-three/fiber": "^9.1.2",
+    "@react-three/rapier": "^2.1.0",
     "@triplex/lib": "0.69.15",
     "@triplex/websocks-server": "0.0.5",
     "@types/glob-parent": "^5.1.1",

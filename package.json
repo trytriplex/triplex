@@ -16,7 +16,7 @@
     "ci:release-electron": "pnpm --filter @triplex/electron release",
     "ci:version": "changeset version && pnpm install --lockfile-only",
     "clean": "pnpm -r exec rimraf dist out targets playwright-report test-results",
-    "clean:drop-folders": "pnpm --filter @triplex/* --filter create-triplex-project --filter triplex-vsce -r exec rimraf --glob src/** dist/**/__tests__ dist/**/__test__ --impl=move-remove",
+    "clean:drop-folders": "pnpm --filter @triplex/* --filter create-triplex-project --filter triplex-vsce -r exec rimraf --glob src/** dist/**/__tests__ dist/**/__test__ --impl=move-remove --max-retries=100",
     "clean:node_modules": "pnpm -r exec rimraf node_modules && rimraf node_modules",
     "dev": "pnpm --filter @triplex/electron dev",
     "dev:cloud": "pnpm --filter @triplex/cloud dev",
