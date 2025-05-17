@@ -52,6 +52,8 @@ export async function createDevServer() {
     ],
     root: join(__dirname, "../"),
     server: {
+      allowedHosts: true,
+      cors: true,
       headers: {
         "Cross-Origin-Embedder-Policy": "require-corp",
         "Cross-Origin-Opener-Policy": "same-origin",

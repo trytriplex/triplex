@@ -47,14 +47,14 @@
     "@types/react-dom": "^19.0.3",
     "@types/three": "^0.171.0",
     "@types/tinycolor2": "^1.4.3",
-    "@vitejs/plugin-react": "^4.3.4",
+    "@vitejs/plugin-react": "^4.4.1",
     "autoprefixer": "^10.4.16",
     "babel-plugin-react-compiler": "19.1.0-rc.1",
     "tailwindcss": "^3.3.2",
     "three": "^0.172.0",
     "tsx": "^4.19.2",
     "typescript": "^5.7.2",
-    "vite": "^6.0.7"
+    "vite": "^6.3.5"
   },
   "peerDependencies": {
     "@react-three/fiber": ">=8.0.0",

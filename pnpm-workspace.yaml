@@ -1,3 +1,4 @@
+ignorePatchFailures: false
 packages:
   - "apps/*"
   - "examples/*"
