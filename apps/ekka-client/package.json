@@ -1,0 +1,28 @@
+{
+  "name": "@ekka/client",
+  "version": "0.1.0",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "typedef": "tsc"
+  },
+  "dependencies": {
+    "@react-three/drei": "^10.0.7",
+    "@react-three/fiber": "^9.1.2",
+    "@react-three/handle": "^6.6.16",
+    "@react-three/xr": "^6.6.16",
+    "bind-event-listener": "^3.0.0",
+    "koota": "^0.4.1",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "three": "^0.172.0",
+    "typescript": "^5.7.2"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.8",
+    "@types/three": "^0.171.0",
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.32",
+    "tailwindcss": "^3.2.4"
+  }
+}

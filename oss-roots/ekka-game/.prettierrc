@@ -1,0 +1,15 @@
+{
+  "plugins": [
+    "@ianvs/prettier-plugin-sort-imports",
+    "prettier-plugin-glsl",
+    "prettier-plugin-jsdoc",
+    "prettier-plugin-packagejson",
+    "prettier-plugin-tailwindcss"
+  ],
+  "jsdocCapitalizeDescription": false,
+  "jsdocPreferCodeFences": true,
+  "jsdocSingleLineComment": false,
+  "proseWrap": "never",
+  "trailingComma": "all",
+  "overrides": [{ "files": ["*.frag"], "options": { "parser": "glsl-parser" } }]
+}

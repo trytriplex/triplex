@@ -9,7 +9,11 @@
   ],
   "overrides": [
     {
-      "files": ["**/create-triplex-project/templates/**", "examples/**"],
+      "files": [
+        "**/create-triplex-project/templates/**",
+        "examples/**",
+        "apps/ekka-client/**"
+      ],
       "rules": {
         "header/header": "off"
       }

@@ -261,6 +261,55 @@ importers:
         specifier: ^3.6.0
         version: 3.6.0
 
+  apps/ekka-client:
+    dependencies:
+      '@react-three/drei':
+        specifier: ^10.0.7
+        version: 10.0.7(@react-three/fiber@9.1.2(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+      '@react-three/fiber':
+        specifier: ^9.1.2
+        version: 9.1.2(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+      '@react-three/handle':
+        specifier: ^6.6.16
+        version: 6.6.16(@react-three/fiber@9.1.2(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(react@19.0.0)(three@0.172.0)
+      '@react-three/xr':
+        specifier: ^6.6.16
+        version: 6.6.16(@react-three/fiber@9.1.2(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)
+      bind-event-listener:
+        specifier: ^3.0.0
+        version: 3.0.0
+      koota:
+        specifier: ^0.4.1
+        version: 0.4.1(@types/react@19.0.8)(react@19.0.0)
+      react:
+        specifier: ^19.0.0
+        version: 19.0.0
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.0.0(react@19.0.0)
+      three:
+        specifier: ^0.172.0
+        version: 0.172.0
+      typescript:
+        specifier: ^5.7.2
+        version: 5.7.2
+    devDependencies:
+      '@types/react':
+        specifier: ^19.0.8
+        version: 19.0.8
+      '@types/three':
+        specifier: ^0.171.0
+        version: 0.171.0
+      autoprefixer:
+        specifier: ^10.4.14
+        version: 10.4.16(postcss@8.5.3)
+      postcss:
+        specifier: ^8.4.32
+        version: 8.5.3
+      tailwindcss:
+        specifier: ^3.2.4
+        version: 3.3.2(ts-node@10.9.1(@swc/core@1.6.5(@swc/helpers@0.5.15))(@types/node@20.16.5)(typescript@5.7.2))
+
   apps/electron:
     dependencies:
       '@triplex/client':
@@ -1314,7 +1363,7 @@ importers:
         version: 4.4.1(vite@6.3.5(@types/node@18.11.18)(jiti@1.21.6)(tsx@4.19.2)(yaml@2.5.1))
       koota:
         specifier: ^0.4.0
-        version: 0.4.0(@types/react@19.0.8)(react@19.0.0)
+        version: 0.4.1(@types/react@19.0.8)(react@19.0.0)
       react:
         specifier: ^19.0.0
         version: 19.0.0
@@ -7018,8 +7067,8 @@ packages:
     resolution: {integrity: sha512-o+NO+8WrRiQEE4/7nwRJhN1HWpVmJm511pBHUxPLtp0BUISzlBplORYSmTclCnJvQq2tKu/sgl3xVpkc7ZWuQQ==}
     engines: {node: '>=6'}
 
-  koota@0.4.0:
-    resolution: {integrity: sha512-BGwO00OwOrjeQG1dyjs+Kdk8m07SApooSga7tU1c5Wl/kcO496XyFikYMr60EPyDxXToI8HR7j5uz2sPMccBSQ==}
+  koota@0.4.1:
+    resolution: {integrity: sha512-cdhuK04tvh0KLsRnPoloX7+UPs1hQ9BVNGeK4N6zlYP0mcj5tZV4L21TEBT5KZ3NXzujxvY9jl+JiAfdhIESJw==}
     peerDependencies:
       '@types/react': ^19.0.8
       react: ^19.0.0
@@ -16912,7 +16961,7 @@ snapshots:
 
   kleur@4.1.5: {}
 
-  koota@0.4.0(@types/react@19.0.8)(react@19.0.0):
+  koota@0.4.1(@types/react@19.0.8)(react@19.0.0):
     optionalDependencies:
       '@types/react': 19.0.8
       react: 19.0.0
