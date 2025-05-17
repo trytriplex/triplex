@@ -3,7 +3,7 @@
 - Upgrade all `@react-three` dependencies:
 
   ```bash
-  pnpm upgrade -r @react-three/drei@latest @react-three/fiber@latest @react-three/xr@latest @react-three/uikit@latest @react-three/postprocessing@latest @react-three/rapier@latest @react-three/test-renderer@latest @react-three/handle@latest koota@latest
+  pnpm upgrade -r @react-three/drei@latest @react-three/fiber@latest @react-three/xr@latest @react-three/uikit@latest @react-three/postprocessing@latest @react-three/rapier@latest @react-three/test-renderer@latest @react-three/handle@latest koota@latest @pmndrs/xr@latest
   pnpm dedupe
   ```
 

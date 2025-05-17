@@ -1,4 +1,4 @@
-import { ReactNode } from "react";
+import { type ReactNode } from "react";
 import { KootaSystems, RootProviders } from "../src/providers";
 
 export function GlobalProvider({ children }: { children: ReactNode }) {

@@ -263,6 +263,9 @@ importers:
 
   apps/ekka-client:
     dependencies:
+      '@pmndrs/xr':
+        specifier: ^6.6.16
+        version: 6.6.16(@types/react@19.0.8)(react@19.0.0)(three@0.172.0)
       '@react-three/drei':
         specifier: ^10.0.7
         version: 10.0.7(@react-three/fiber@9.1.2(@types/react@19.0.8)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0))(@types/react@19.0.8)(@types/three@0.171.0)(react-dom@19.0.0(react@19.0.0))(react@19.0.0)(three@0.172.0)

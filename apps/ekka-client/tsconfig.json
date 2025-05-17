@@ -13,7 +13,8 @@
     "noEmit": true,
     "incremental": true,
     "module": "esnext",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "types": ["@react-three/fiber"]
   },
   "include": [".", ".triplex"],
   "exclude": ["node_modules"]
