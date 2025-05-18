@@ -11,11 +11,11 @@
     "@react-three/drei": "^10.0.7",
     "@react-three/fiber": "^9.1.2",
     "@triplex/lib": "0.69.15",
-    "@types/react": "^19.0.8",
+    "@types/react": "^19.1.4",
     "@types/three": "^0.171.0",
     "bind-event-listener": "3.0.0",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "tailwindcss": "^3.2.4",
     "three": "^0.172.0"
   }
