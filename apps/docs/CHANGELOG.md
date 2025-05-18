@@ -1,5 +1,15 @@
 # @docs/triplex
 
+## 0.2.14
+
+### Patch Changes
+
+- ae60a8f: Upgrade typescript.
+- Updated dependencies [8c82aca]
+- Updated dependencies [ae60a8f]
+- Updated dependencies [8c82aca]
+  - @triplex/lib@0.69.16
+
 ## 0.2.13
 
 ### Patch Changes

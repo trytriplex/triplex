@@ -1,5 +1,13 @@
 # @triplex/lib
 
+## 0.69.16
+
+### Patch Changes
+
+- 8c82aca: Upgrade react-three dependencies.
+- ae60a8f: Upgrade typescript.
+- 8c82aca: Upgrade vite dependencies.
+
 ## 0.69.15
 
 ### Patch Changes

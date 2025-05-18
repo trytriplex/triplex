@@ -1,5 +1,11 @@
 # @triplex/websocks-client
 
+## 0.0.8
+
+### Patch Changes
+
+- ae60a8f: Upgrade typescript.
+
 ## 0.0.7
 
 ### Patch Changes

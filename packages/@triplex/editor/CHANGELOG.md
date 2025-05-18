@@ -1,5 +1,20 @@
 # @triplex/editor
 
+## 0.70.37
+
+### Patch Changes
+
+- 8c82aca: Upgrade react-three dependencies.
+- ae60a8f: Upgrade typescript.
+- 8c82aca: Upgrade vite dependencies.
+- Updated dependencies [8c82aca]
+- Updated dependencies [ae60a8f]
+- Updated dependencies [8c82aca]
+  - @triplex/bridge@0.70.8
+  - @triplex/lib@0.69.16
+  - @triplex/websocks-client@0.0.8
+  - @triplex/ux@0.69.24
+
 ## 0.70.36
 
 ### Patch Changes

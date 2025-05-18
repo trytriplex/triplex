@@ -1,5 +1,20 @@
 # @triplex/client
 
+## 0.70.34
+
+### Patch Changes
+
+- 8c82aca: Upgrade react-three dependencies.
+- ae60a8f: Upgrade typescript.
+- 8c82aca: Upgrade vite dependencies.
+- Updated dependencies [8c82aca]
+- Updated dependencies [3a45b69]
+- Updated dependencies [ae60a8f]
+- Updated dependencies [e6f7288]
+- Updated dependencies [8c82aca]
+  - @triplex/renderer@0.71.26
+  - @triplex/bridge@0.70.8
+
 ## 0.70.33
 
 ### Patch Changes

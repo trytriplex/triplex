@@ -1,5 +1,16 @@
 # @triplex/ux
 
+## 0.69.24
+
+### Patch Changes
+
+- ae60a8f: Upgrade typescript.
+- Updated dependencies [8c82aca]
+- Updated dependencies [ae60a8f]
+- Updated dependencies [8c82aca]
+  - @triplex/bridge@0.70.8
+  - @triplex/lib@0.69.16
+
 ## 0.69.23
 
 ### Patch Changes

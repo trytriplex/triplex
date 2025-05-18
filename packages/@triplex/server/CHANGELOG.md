@@ -1,5 +1,13 @@
 # @triplex/server
 
+## 0.71.14
+
+### Patch Changes
+
+- 8c82aca: Upgrade react-three dependencies.
+- ae60a8f: Upgrade typescript.
+- 8c82aca: Upgrade vite dependencies.
+
 ## 0.71.13
 
 ### Patch Changes

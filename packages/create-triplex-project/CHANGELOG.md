@@ -1,5 +1,13 @@
 # create-triplex-project
 
+## 0.70.11
+
+### Patch Changes
+
+- 8c82aca: Upgrade react-three dependencies.
+- ae60a8f: Upgrade typescript.
+- 8c82aca: Upgrade vite dependencies.
+
 ## 0.70.10
 
 ### Patch Changes

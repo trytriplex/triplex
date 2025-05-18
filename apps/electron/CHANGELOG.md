@@ -1,5 +1,20 @@
 # @triplex/electron
 
+## 0.70.37
+
+### Patch Changes
+
+- 8c82aca: Upgrade react-three dependencies.
+- ae60a8f: Upgrade typescript.
+- 8c82aca: Upgrade vite dependencies.
+- Updated dependencies [8c82aca]
+- Updated dependencies [ae60a8f]
+- Updated dependencies [8c82aca]
+  - create-triplex-project@0.70.11
+  - @triplex/client@0.70.34
+  - @triplex/editor@0.70.37
+  - @triplex/server@0.71.14
+
 ## 0.70.36
 
 ### Patch Changes

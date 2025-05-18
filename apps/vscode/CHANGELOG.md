@@ -1,5 +1,18 @@
 # @triplex/vscode
 
+## 0.2.38
+
+### Patch Changes
+
+- 8c82aca: Upgrade react-three dependencies.
+- ae60a8f: Upgrade typescript.
+- 8c82aca: Upgrade vite dependencies.
+- Updated dependencies [8c82aca]
+- Updated dependencies [ae60a8f]
+- Updated dependencies [8c82aca]
+  - @triplex/client@0.70.34
+  - @triplex/server@0.71.14
+
 ## 0.2.37
 
 ### Patch Changes
