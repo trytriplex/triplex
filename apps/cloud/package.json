@@ -13,15 +13,15 @@
     "@triplex/lib": "0.69.15",
     "ai": "^4.3.12",
     "next": "15.3.1",
-    "react": "^19.0.0",
-    "react-dom": "^19.0.0",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0",
     "valibot": "^0.25.0"
   },
   "devDependencies": {
     "@types/kill-port": "^2.0.3",
     "@types/node": "^18.11.18",
-    "@types/react": "^19.0.8",
-    "@types/react-dom": "^19.0.3",
+    "@types/react": "^19.1.4",
+    "@types/react-dom": "^19.1.5",
     "kill-port": "^2.0.1",
     "tree-kill": "^1.2.2",
     "typescript": "^5.7.2"

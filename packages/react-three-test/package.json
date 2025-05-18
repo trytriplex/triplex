@@ -13,8 +13,8 @@
     "@testing-library/dom": "^10.4.0"
   },
   "devDependencies": {
-    "@types/react": "^19.0.8",
-    "react": "^19.0.0"
+    "@types/react": "^19.1.4",
+    "react": "^19.1.0"
   },
   "peerDependencies": {
     "@react-three/fiber": ">=8.0.0",
