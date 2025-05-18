@@ -45,7 +45,7 @@
     "readdirp": "^3.6.0",
     "shell-env": "^3.0.1",
     "ts-node": "^10.9.1",
-    "typescript": "^5.7.2",
+    "typescript": "^5.8.3",
     "vite": "^6.3.5"
   },
   "productName": "Triplex"

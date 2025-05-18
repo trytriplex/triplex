@@ -53,7 +53,7 @@
     "tailwindcss": "^3.3.2",
     "three": "^0.172.0",
     "tsx": "^4.19.2",
-    "typescript": "^5.7.2",
+    "typescript": "^5.8.3",
     "vite": "^6.3.5"
   },
   "peerDependencies": {
