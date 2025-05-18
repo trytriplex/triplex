@@ -1,6 +1,6 @@
 {
   "name": "@docs/triplex",
-  "version": "0.2.13",
+  "version": "0.2.14",
   "private": true,
   "description": "Your visual workspace for React / Three Fiber.",
   "license": "MIT",
@@ -16,7 +16,7 @@
     "@radix-ui/react-icons": "^1.3.0",
     "@react-three/drei": "^10.0.7",
     "@react-three/fiber": "^9.1.2",
-    "@triplex/lib": "0.69.15",
+    "@triplex/lib": "0.69.16",
     "@types/cors": "^2.8.17",
     "@types/flexsearch": "^0.7.6",
     "@types/raf-schd": "^4.0.3",

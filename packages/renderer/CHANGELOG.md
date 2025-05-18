@@ -1,5 +1,20 @@
 # @triplex/renderer
 
+## 0.71.26
+
+### Patch Changes
+
+- 8c82aca: Upgrade react-three dependencies.
+- 3a45b69: Add an XROrigin helper.
+- ae60a8f: Upgrade typescript.
+- e6f7288: The XROrigin component is now disabled when in edit state or looking through the editor camera.
+- 8c82aca: Upgrade vite dependencies.
+- Updated dependencies [8c82aca]
+- Updated dependencies [ae60a8f]
+- Updated dependencies [8c82aca]
+  - @triplex/bridge@0.70.8
+  - @triplex/lib@0.69.16
+
 ## 0.71.25
 
 ### Patch Changes
