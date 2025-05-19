@@ -99,6 +99,10 @@ export type Actions = ((
 ) & { filter: string })[];
 
 export interface ClientSendEventData {
+  "api-debug": {
+    channel: string;
+    data: string | number | object;
+  };
   "component-opened": {
     encodedProps: string;
     entered?: boolean;
@@ -162,6 +166,7 @@ export interface ClientSendEventData {
 }
 
 export interface ClientSendEventResponse {
+  "api-debug": void;
   "component-opened": void;
   "component-rendered": void;
   "element-blurred": void;
