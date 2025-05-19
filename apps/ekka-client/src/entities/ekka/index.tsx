@@ -2,7 +2,8 @@ import { useWorld } from "koota/react";
 import { useEffect, useRef } from "react";
 import { type Object3D } from "three";
 import { Mesh, Position } from "../shared/traits";
-import { Ekka } from "./traits";
+import { EkkaEyeEntity } from "./eye";
+import { Ekka, State, TimeSinceLastStateChange } from "./traits";
 
 export function EkkaEntity({
   position = [0, 0, 0],
@@ -14,7 +15,13 @@ export function EkkaEntity({
   const [x, y, z] = position;
 
   useEffect(() => {
-    const entity = world.spawn(Mesh(ref.current!), Ekka, Position({ x, y, z }));
+    const entity = world.spawn(
+      Ekka,
+      Mesh(ref.current!),
+      Position({ x, y, z }),
+      State,
+      TimeSinceLastStateChange,
+    );
 
     return () => {
       entity.destroy();
@@ -24,8 +31,10 @@ export function EkkaEntity({
   return (
     <group ref={ref}>
       <mesh position={[0, 1.5, 0]}>
-        <boxGeometry args={[1.24, 3]} />
+        <boxGeometry args={[0.8, 3, 0.8]} />
+        <meshStandardMaterial />
       </mesh>
+      <EkkaEyeEntity position={[0, 2.72, 0]} />
     </group>
   );
 }

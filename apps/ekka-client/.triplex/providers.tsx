@@ -4,16 +4,31 @@ import { createWorld } from "koota";
 import { WorldProvider } from "koota/react";
 import { useState } from "react";
 import {
+  ekkaEyeFocus,
+  incrementTimer,
+  redLightGreenLight,
+} from "../src/entities/ekka/systems";
+import {
   applyVelocity,
   syncTransformsToMesh,
 } from "../src/entities/shared/systems";
-import { XRLocomotion } from "../src/entities/xr-player/systems";
+import { locomotionXR } from "../src/entities/xr-player/systems";
+import { capitalize } from "../src/lib/string";
 import "../src/styles.css";
 
-const systems = [XRLocomotion, applyVelocity, syncTransformsToMesh];
+const systems = [
+  incrementTimer,
+  redLightGreenLight,
+  ekkaEyeFocus,
+  locomotionXR,
+  applyVelocity,
+  syncTransformsToMesh,
+];
 
 type DebugECSSystems = {
-  [P in (typeof systems)[number]["systemName"]]?: boolean;
+  [P in (typeof systems)[number]["systemName"] as P extends string
+    ? `pause${Capitalize<P>}`
+    : never]?: boolean;
 };
 
 export function CanvasProvider({
@@ -25,7 +40,10 @@ export function CanvasProvider({
 
   useFrame((state, delta) => {
     systems.forEach((system) => {
-      if (!debugECSSystems[system.systemName]) {
+      const propName = system.systemName
+        ? (`pause${capitalize(system.systemName)}` as const)
+        : undefined;
+      if (!propName || !debugECSSystems[propName]) {
         system(world, delta, state, store);
       }
     });

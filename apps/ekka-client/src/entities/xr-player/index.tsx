@@ -3,7 +3,7 @@ import { type Entity } from "koota";
 import { useWorld } from "koota/react";
 import { useEffect, useRef } from "react";
 import { type Group } from "three";
-import { Mesh, Position, Rotation, Velocity } from "../shared/traits";
+import { Mesh, Player, Position, Rotation, Velocity } from "../shared/traits";
 import { XRPlayer } from "./traits";
 
 export function XRPlayerEntity({
@@ -22,6 +22,7 @@ export function XRPlayerEntity({
       Position({ x, y, z }),
       Rotation,
       XRPlayer,
+      Player,
       Velocity,
     );
 
