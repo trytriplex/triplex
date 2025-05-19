@@ -12,6 +12,7 @@ import { LoadingLogo } from "@triplex/lib/loader";
 import { Suspense, useEffect, useState } from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
 import { ErrorFallback } from "../../components/error-fallback";
+import { PlayStateProvider } from "../../stores/use-play-state";
 import { initializeWebXRBridge } from "./webxr-bridge";
 import { WebXRController } from "./webxr-controller";
 import { WebXRSceneLoader } from "./webxr-scene-loader";
@@ -86,14 +87,16 @@ export function WebXRApp({
             Enter VR
           </button>
         </div>
-        <WebXRSceneLoader
-          exportName={exportName}
-          modules={files}
-          path={path}
-          providerPath={providerPath}
-          providers={providers}
-          store={store}
-        />
+        <PlayStateProvider>
+          <WebXRSceneLoader
+            exportName={exportName}
+            modules={files}
+            path={path}
+            providerPath={providerPath}
+            providers={providers}
+            store={store}
+          />
+        </PlayStateProvider>
       </Suspense>
     </ErrorBoundaryForScene>
   );

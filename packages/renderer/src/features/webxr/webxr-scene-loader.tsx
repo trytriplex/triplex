@@ -4,7 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { XR, type XRStore } from "@react-three/xr";
+import { type XRStore } from "@react-three/xr";
 import { type Modules, type ProviderModule } from "@triplex/bridge/client";
 import { useMemo } from "react";
 import { usePlayState } from "../../stores/use-play-state";
@@ -16,6 +16,7 @@ import { type LoadedSceneContext } from "../scene-loader/types";
 import { useSceneLoader } from "../scene-loader/use-scene-loader";
 import { SceneRenderer } from "../scene-renderer";
 import { WebXRLocomotion } from "./webxr-locomotion";
+import { WebXRProvider } from "./webxr-provider";
 
 export function WebXRSceneLoader({
   exportName,
@@ -82,15 +83,15 @@ export function WebXRSceneLoader({
       >
         <DefaultCameraContext.Provider value="default">
           <Canvas>
-            <XR store={store}>
-              {playState !== "edit" && <WebXRLocomotion />}
+            <WebXRProvider store={store}>
+              {playState === "edit" && <WebXRLocomotion />}
               <SceneRenderer
                 component={scene.component}
                 exportName={exportName}
                 path={path}
                 props={sceneProps}
               />
-            </XR>
+            </WebXRProvider>
           </Canvas>
         </DefaultCameraContext.Provider>
       </SceneElement>

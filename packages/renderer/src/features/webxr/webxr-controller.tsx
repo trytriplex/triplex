@@ -17,9 +17,11 @@ import {
   XRSpace,
 } from "@react-three/xr";
 import { send } from "@triplex/bridge/client";
+import { send as sendAsHost } from "@triplex/bridge/host";
 import { useEvent } from "@triplex/lib";
 import { useEffect, useRef } from "react";
 import { Vector3, type Object3D } from "three";
+import { usePlayState, type PlayState } from "../../stores/use-play-state";
 import { useSelectionStore } from "../selection-provider/store";
 import { useActionsStore } from "../selection-three-fiber/store";
 import { WebXRCursorPoint } from "./webxr-cursor-point";
@@ -37,9 +39,10 @@ export function WebXRController() {
   const selectElement = useSelectionStore((store) => store.select);
   const selections = useSelectionStore((store) => store.selections);
   const setHovered = useSelectionStore((store) => store.setHovered);
-  const rayMaxLength = 1;
   const cycleTransform = useActionsStore((store) => store.cycleTransform);
   const cycleSpace = useActionsStore((store) => store.cycleSpace);
+  const playState = usePlayState();
+  const rayMaxLength = 1;
 
   const getInputSourceOrientation = useEvent(() => {
     if (!controller.object || !ref.current) {
@@ -66,6 +69,24 @@ export function WebXRController() {
   useXRControllerButtonEvent(controller, "b-button", (e) => {
     if (e === "pressed") {
       cycleSpace();
+    }
+  });
+
+  useXRControllerButtonEvent(controller, "xr-standard-squeeze", (e) => {
+    // TODO: Move to a UI component.
+    if (e === "pressed") {
+      let nextState: PlayState;
+
+      if (playState === "play") {
+        nextState = "pause";
+      } else {
+        nextState = "play";
+      }
+
+      sendAsHost("request-state-change", {
+        camera: "default",
+        state: nextState,
+      });
     }
   });
 
