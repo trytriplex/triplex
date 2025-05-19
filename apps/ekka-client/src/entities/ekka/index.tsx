@@ -3,7 +3,12 @@ import { useEffect, useRef } from "react";
 import { type Object3D } from "three";
 import { Mesh, Position } from "../shared/traits";
 import { EkkaEyeEntity } from "./eye";
-import { Ekka, State, TimeSinceLastStateChange } from "./traits";
+import {
+  DamageModifier,
+  IsEkka,
+  State,
+  TimeSinceLastStateChange,
+} from "./traits";
 
 export function EkkaEntity({
   position = [0, 0, 0],
@@ -16,7 +21,8 @@ export function EkkaEntity({
 
   useEffect(() => {
     const entity = world.spawn(
-      Ekka,
+      DamageModifier,
+      IsEkka,
       Mesh(ref.current!),
       Position({ x, y, z }),
       State,

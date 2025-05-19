@@ -4,9 +4,12 @@ import { createWorld } from "koota";
 import { WorldProvider } from "koota/react";
 import { useState } from "react";
 import {
-  ekkaEyeFocus,
-  incrementTimer,
-  redLightGreenLight,
+  applyDamageToPlayers,
+  collectDamageIfPlayersMoved,
+  focusEkkaEyeTowardsPlayer,
+  incrementStateChangeTimer,
+  tryChangeEkkaState,
+  tryRemovePlayerInvulnerability,
 } from "../src/entities/ekka/systems";
 import {
   applyVelocity,
@@ -17,12 +20,15 @@ import { capitalize } from "../src/lib/string";
 import "../src/styles.css";
 
 const systems = [
-  incrementTimer,
-  redLightGreenLight,
-  ekkaEyeFocus,
+  applyDamageToPlayers,
+  incrementStateChangeTimer,
+  tryChangeEkkaState,
+  focusEkkaEyeTowardsPlayer,
   locomotionXR,
   applyVelocity,
   syncTransformsToMesh,
+  collectDamageIfPlayersMoved,
+  tryRemovePlayerInvulnerability,
 ];
 
 type DebugECSSystems = {

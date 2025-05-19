@@ -1,3 +1,3 @@
 import { trait } from "koota";
 
-export const Land = trait();
+export const IsLand = trait();

@@ -1,12 +1,12 @@
 import { createXRControllerLocomotionUpdate } from "@pmndrs/xr";
 import { createSystem } from "../shared/systems";
 import { Rotation, Velocity } from "../shared/traits";
-import { XRPlayer } from "./traits";
+import { IsXRPlayer } from "./traits";
 
 const update = createXRControllerLocomotionUpdate();
 
 export const locomotionXR = createSystem((world, delta, state, store) => {
-  const entity = world.queryFirst(XRPlayer, Velocity, Rotation);
+  const entity = world.queryFirst(IsXRPlayer, Velocity, Rotation);
   if (!entity || !store) {
     return;
   }

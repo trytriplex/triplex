@@ -3,8 +3,8 @@ import { type Entity } from "koota";
 import { useWorld } from "koota/react";
 import { useEffect, useRef } from "react";
 import { type Group } from "three";
-import { Mesh, Player, Position, Rotation, Velocity } from "../shared/traits";
-import { XRPlayer } from "./traits";
+import { Mesh, Position, Rotation, Velocity } from "../shared/traits";
+import { Health, IsPlayer, IsXRPlayer } from "./traits";
 
 export function XRPlayerEntity({
   position = [0, 0, 0],
@@ -18,11 +18,12 @@ export function XRPlayerEntity({
 
   useEffect(() => {
     const spawned = world.spawn(
+      Health,
+      IsPlayer,
+      IsXRPlayer,
       Mesh(ref.current!),
       Position({ x, y, z }),
       Rotation,
-      XRPlayer,
-      Player,
       Velocity,
     );
 
