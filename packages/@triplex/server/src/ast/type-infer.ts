@@ -13,7 +13,6 @@ import {
   type JsxFragment,
   type JsxSelfClosingElement,
   type JsxText,
-  type PropertySignature,
   type Symbol as SymbolType,
   type ts,
   type Type,
@@ -793,8 +792,6 @@ export function getFunctionPropTypes(
 
   for (let i = 0; i < properties.length; i++) {
     const prop = properties[i];
-    const declarations = prop.getDeclarations();
-    const propDeclaration = declarations[0] as PropertySignature;
     const propName = prop.getName();
     const propType = prop.getTypeAtLocation(declaration);
     const { description, tags } = extractJSDoc(prop);
@@ -821,7 +818,7 @@ export function getFunctionPropTypes(
       description: description || undefined,
       group: "Other",
       name: propName,
-      required: !propDeclaration?.hasQuestionToken?.(),
+      required: !prop.isOptional(),
       tags,
       ...(defaultValue ? { defaultValue } : undefined),
     });
