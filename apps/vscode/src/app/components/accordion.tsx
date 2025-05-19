@@ -40,7 +40,7 @@ export function Trigger({
   children,
 }: {
   actionId: ActionIdSafe;
-  children: string;
+  children: string | ((props: { isExpanded: boolean }) => string);
 }) {
   const isExpanded = useContext(ExpandedContext);
   const toggle = useContext(ToggleContext);
@@ -52,22 +52,24 @@ export function Trigger({
       onClick={toggle}
     >
       {isExpanded ? <ChevronDownIcon /> : <ChevronRightIcon />}
-      {children}
+      {typeof children === "function" ? children({ isExpanded }) : children}
     </Pressable>
   );
 }
 
 export function Content({
   children,
+  className,
   forcedExpanded,
 }: {
   children: React.ReactNode;
+  className?: string;
   forcedExpanded?: boolean;
 }) {
   const isExpanded = useContext(ExpandedContext);
 
   return (
-    <div className="-mt-1.5 px-1">
+    <div className={className ? undefined : "-mt-1.5 px-1"}>
       {(isExpanded || forcedExpanded) && children}
     </div>
   );

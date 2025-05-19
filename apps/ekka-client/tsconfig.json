@@ -14,8 +14,8 @@
     "incremental": true,
     "module": "esnext",
     "resolveJsonModule": true,
-    "types": ["@react-three/fiber"]
+    "types": ["@react-three/fiber", "@triplex/api/types"]
   },
-  "include": [".", ".triplex"],
+  "include": [".", ".triplex/*"],
   "exclude": ["node_modules"]
 }

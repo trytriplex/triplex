@@ -19,6 +19,7 @@ module.exports = {
       ["oss-roots/triplex/", ""],
       ["packages/bridge", "packages/bridge"],
       ["packages/create-triplex-project", "packages/create-triplex-project"],
+      ["packages/api", "packages/api"],
       ["packages/lib", "packages/lib"],
       ["packages/react-three-test", "packages/react-three-test"],
       ["packages/renderer", "packages/renderer"],

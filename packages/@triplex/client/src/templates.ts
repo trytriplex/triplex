@@ -98,9 +98,36 @@ export const scripts = {
 
     async function initialize() {
       window.triplex = JSON.parse(\`${JSON.stringify({
+        api: {},
         env: { mode: "default", ports: template.ports },
         preload: template.preload,
       })}\`);
+
+      const lastMessageTime = {};
+
+      window.triplex.api.debug = (channel, data) => {
+        if (!channel) {
+          // Ignore invalid messages.
+          return;
+        }
+
+        if (lastMessageTime[channel] && Date.now() - lastMessageTime[channel] < 1000) {
+          // Only send messages that are 1 second apart preventing the editor from updating too quickly.
+          return;
+        } else {
+          // Send the message!
+          lastMessageTime[channel] = Date.now();
+
+          // Remove non-serializable data from the object via JSON calls.
+          try {
+            const serializedData = JSON.parse(JSON.stringify(data));
+            send("api-debug", { channel, data: serializedData });
+          } catch (e) {
+            console.warn(\`Triplex: Failed to send debug data to channel "\${channel}". Unserializable values are ignored.\`);
+          }
+        }
+
+      };
 
       // Forward keydown events to the parent window to prevent the client iframe
       // from swallowing events and the parent document being none-the-wiser.
@@ -212,9 +239,11 @@ export const scripts = {
 
     async function initialize() {
       window.triplex = JSON.parse(\`${JSON.stringify({
+        api: {},
         env: { mode: "webxr", ports: template.ports },
         preload: template.preload,
       })}\`);
+      window.triplex.api.debug = () => {};
 
       // This is patched into the react-refresh runtime so we can be notified
       // on completion of a fast refresh. We need this as relying on the HMR

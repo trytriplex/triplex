@@ -6,6 +6,7 @@
  */
 import { LayersIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import { cn } from "@triplex/lib";
+import { fg } from "@triplex/lib/fg";
 import { useScreenView } from "@triplex/ux";
 import { Suspense, useEffect, useRef, useState } from "react";
 import { IconButton } from "../../components/button";
@@ -21,6 +22,7 @@ import {
 } from "../app-root/context";
 import { HasWarningsDot } from "../warnings/warning-has-warnings";
 import { WarningRequiredProps } from "../warnings/warning-required-props";
+import { DebugPanel } from "./debug-panel";
 import { ElementSelect } from "./element-select";
 import { ElementsPanel, FilterElements } from "./panel-elements";
 import { ProviderControlsPanel } from "./panel-provider";
@@ -142,6 +144,7 @@ export function Panels() {
             </div>
             <div className="h-1.5" />
           </ScrollContainer>
+          {fg("debug_api") && <DebugPanel />}
         </Suspense>
       </div>
     </ResizableSurface>

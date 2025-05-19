@@ -33,6 +33,7 @@ export type ActionGroup =
   | "config"
   | "contact"
   | "controls"
+  | "debug"
   | "docs"
   | "element"
   | "error"

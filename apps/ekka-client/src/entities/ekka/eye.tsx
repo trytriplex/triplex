@@ -2,7 +2,7 @@ import { useQueryFirst, useTrait, useWorld } from "koota/react";
 import { useEffect, useRef } from "react";
 import { type Object3D, type Vector3Tuple } from "three";
 import { Mesh, Position, Rotation, Scale } from "../shared/traits";
-import { Ekka, EkkaEye, State } from "./traits";
+import { IsEkka, IsEkkaEye, State } from "./traits";
 
 export function EkkaEyeEntity({
   position = [0, 0, 0],
@@ -11,7 +11,7 @@ export function EkkaEyeEntity({
 }) {
   const world = useWorld();
   const ref = useRef<Object3D>(null);
-  const ekkaEntity = useQueryFirst(Ekka);
+  const ekkaEntity = useQueryFirst(IsEkka);
   const ekkaState = useTrait(ekkaEntity, State);
   const [x, y, z] = position;
   const eyeColor = ekkaState
@@ -22,7 +22,7 @@ export function EkkaEyeEntity({
 
   useEffect(() => {
     const entity = world.spawn(
-      EkkaEye,
+      IsEkkaEye,
       Mesh(ref.current!),
       Position({ x, y, z }),
       Rotation,

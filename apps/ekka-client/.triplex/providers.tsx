@@ -16,6 +16,7 @@ import {
   syncTransformsToMesh,
 } from "../src/entities/shared/systems";
 import { locomotionXR } from "../src/entities/xr-player/systems";
+import { serialize } from "../src/lib/koota-debug";
 import { capitalize } from "../src/lib/string";
 import "../src/styles.css";
 
@@ -53,6 +54,12 @@ export function CanvasProvider({
         system(world, delta, state, store);
       }
     });
+
+    const serialized = serialize(world);
+
+    window.triplex?.api.debug("ecs: players", serialized.players);
+    window.triplex?.api.debug("ecs: ekkas", serialized.ekkas);
+    window.triplex?.api.debug("ecs: ekka eyes", serialized.ekkaEyes);
   });
 
   return (

@@ -12,6 +12,7 @@
     "@react-three/fiber": "^9.1.2",
     "@react-three/handle": "^6.6.17",
     "@react-three/xr": "^6.6.17",
+    "@triplex/api": "workspace:*",
     "bind-event-listener": "^3.0.0",
     "koota": "^0.4.1",
     "react": "^19.1.0",

@@ -278,6 +278,9 @@ importers:
       '@react-three/xr':
         specifier: ^6.6.17
         version: 6.6.17(@react-three/fiber@9.1.2(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
+      '@triplex/api':
+        specifier: workspace:*
+        version: link:../../packages/api
       bind-event-listener:
         specifier: ^3.0.0
         version: 3.0.0
@@ -608,6 +611,9 @@ importers:
       '@react-three/xr':
         specifier: ^6.6.17
         version: 6.6.17(@react-three/fiber@9.1.2(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
+      '@triplex/api':
+        specifier: workspace:*
+        version: link:../../packages/api
       '@types/react':
         specifier: ^19.0.8
         version: 19.1.4
@@ -1294,6 +1300,12 @@ importers:
       '@types/tinycolor2':
         specifier: ^1.4.3
         version: 1.4.6
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
+
+  packages/api:
+    devDependencies:
       typescript:
         specifier: ^5.8.3
         version: 5.8.3

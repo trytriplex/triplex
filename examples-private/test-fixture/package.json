@@ -9,6 +9,7 @@
   "dependencies": {
     "@react-three/drei": "^10.0.7",
     "@react-three/fiber": "^9.1.2",
+    "@triplex/api": "workspace:*",
     "@react-three/uikit": "^0.8.19",
     "@react-three/xr": "^6.6.17",
     "@types/react": "^19.1.4",

@@ -5,10 +5,16 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { Root, Scrollbar, Thumb, Viewport } from "@radix-ui/react-scroll-area";
-import { cn } from "@triplex/lib";
+import { cn, useEvent } from "@triplex/lib";
 import { bind } from "bind-event-listener";
 import rafSchd from "raf-schd";
-import { forwardRef, useLayoutEffect, useRef, useState } from "react";
+import {
+  forwardRef,
+  useEffect,
+  useLayoutEffect,
+  useRef,
+  useState,
+} from "react";
 import { useMergeRefs } from "use-callback-ref";
 
 export const ScrollContainer = forwardRef<
@@ -21,6 +27,41 @@ export const ScrollContainer = forwardRef<
   const [overflow, setOverflow] = useState({ bottom: false, top: false });
   const scrollContainer = useRef<HTMLDivElement>(null);
   const ref = useMergeRefs([fref, scrollContainer]);
+  const updateOverflow = useEvent(() => {
+    const el = scrollContainer.current;
+    if (!el) {
+      return;
+    }
+
+    setOverflow((prev) => {
+      const showTopOverflow = el.scrollTop > 0;
+      const showBottomOverflow =
+        Math.round(el.scrollTop) < el.scrollHeight - el.clientHeight;
+
+      if (showTopOverflow !== prev.top || showBottomOverflow !== prev.bottom) {
+        return { bottom: showBottomOverflow, top: showTopOverflow };
+      }
+
+      return prev;
+    });
+  });
+
+  useEffect(() => {
+    const el = scrollContainer.current;
+    if (!el) {
+      return;
+    }
+
+    const observer = new ResizeObserver(() => {
+      updateOverflow();
+    });
+
+    observer.observe(el);
+
+    return () => {
+      observer.disconnect();
+    };
+  }, [updateOverflow]);
 
   useLayoutEffect(() => {
     const el = scrollContainer.current;
@@ -28,30 +69,13 @@ export const ScrollContainer = forwardRef<
       return;
     }
 
-    const testScroll = () => {
-      setOverflow((prev) => {
-        const showTopOverflow = el.scrollTop > 0;
-        const showBottomOverflow =
-          Math.round(el.scrollTop) < el.scrollHeight - el.clientHeight;
-
-        if (
-          showTopOverflow !== prev.top ||
-          showBottomOverflow !== prev.bottom
-        ) {
-          return { bottom: showBottomOverflow, top: showTopOverflow };
-        }
-
-        return prev;
-      });
-    };
-
-    testScroll();
+    updateOverflow();
 
     return bind(el, {
-      listener: rafSchd(testScroll),
+      listener: rafSchd(updateOverflow),
       type: "scroll",
     });
-  }, []);
+  }, [updateOverflow]);
 
   return (
     <Root className={cn(["min-w-0 flex-shrink overflow-hidden", className])}>

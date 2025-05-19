@@ -13,7 +13,6 @@
         "${workspaceFolder}/examples",
         "${workspaceFolder}/examples-private",
         "${workspaceFolder}/examples-private/test-fixture/src/scene.tsx",
-        "--disable-extensions",
         "--new-window",
         "--extensionDevelopmentPath=${workspaceFolder}/apps/vscode",
         "--enable-coi"

@@ -16,7 +16,8 @@
     "resolveJsonModule": true,
     "skipLibCheck": true,
     "strict": true,
+    "types": ["@react-three/fiber", "@triplex/api/types"]
   },
-  "include": [".", ".triplex/*.tsx"],
+  "include": [".", ".triplex"],
   "exclude": ["node_modules"]
 }
