@@ -133,11 +133,15 @@ export function Panels() {
             </div>
           }
         >
-          <ScrollContainer className="h-1/2">
+          <ScrollContainer className="h-1/2" overflowIndicators="top">
             <ElementsPanel />
             <div className="h-1.5" />
           </ScrollContainer>
-          <ScrollContainer className="border-overlay h-1/2 border-t" ref={ref}>
+          <ScrollContainer
+            className="border-overlay h-1/2 border-t"
+            overflowIndicators="top"
+            ref={ref}
+          >
             {selected && <SelectionPanel />}
             <div className={selected ? "hidden" : undefined}>
               <ProviderControlsPanel />

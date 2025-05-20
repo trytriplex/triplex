@@ -12,24 +12,32 @@ import killp from "kill-port";
 import treekill from "tree-kill";
 
 export async function start() {
-  console.log(`[@triplex/cloud]: starting...`);
+  const cwd = join(__dirname, "../../cloud");
+  const port = 3010;
+
+  console.log(`[@triplex/cloud]: cwd set to ${cwd}`);
+  console.log(`[@triplex/cloud]: starting on port ${port}...`);
 
   try {
-    await killp(3010);
+    await killp(port);
   } catch (error) {
     const e = error as Error;
     if (e.message !== "No process running on port") {
       console.log(
-        "[@triplex/cloud]: could not kill process running on port 3010",
+        `[@triplex/cloud]: could not kill process running on port ${port}`,
       );
       console.log(`[@triplex/cloud]: ${e.message}`);
       return;
     }
   }
 
-  const p = spawn("npx", ["next", "dev", "--turbopack", "--port", "3010"], {
+  const p = spawn("pnpm", ["run", "dev", `--port="${port}"`], {
     cwd: join(__dirname, "../../cloud"),
-    env: process.env,
+    env: {
+      ...process.env,
+      PATH: `${process.env.PATH}:/opt/homebrew/bin`,
+    },
+    shell: true,
   });
 
   p.on("error", (err) => {

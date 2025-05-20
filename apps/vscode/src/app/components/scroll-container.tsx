@@ -22,11 +22,17 @@ export const ScrollContainer = forwardRef<
   {
     children: React.ReactNode;
     className?: string;
+    overflowIndicators?: boolean | "top" | "bottom";
   }
->(({ children, className }, fref) => {
+>(({ children, className, overflowIndicators = true }, fref) => {
   const [overflow, setOverflow] = useState({ bottom: false, top: false });
   const scrollContainer = useRef<HTMLDivElement>(null);
   const ref = useMergeRefs([fref, scrollContainer]);
+  const topOverflowEnabled =
+    overflowIndicators === true || overflowIndicators === "top";
+  const bottomOverflowEnabled =
+    overflowIndicators === true || overflowIndicators === "bottom";
+
   const updateOverflow = useEvent(() => {
     const el = scrollContainer.current;
     if (!el) {
@@ -34,8 +40,9 @@ export const ScrollContainer = forwardRef<
     }
 
     setOverflow((prev) => {
-      const showTopOverflow = el.scrollTop > 0;
+      const showTopOverflow = topOverflowEnabled && el.scrollTop > 0;
       const showBottomOverflow =
+        bottomOverflowEnabled &&
         Math.round(el.scrollTop) < el.scrollHeight - el.clientHeight;
 
       if (showTopOverflow !== prev.top || showBottomOverflow !== prev.bottom) {

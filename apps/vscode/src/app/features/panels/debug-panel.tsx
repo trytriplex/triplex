@@ -52,7 +52,10 @@ export function DebugPanel() {
   }, []);
 
   return (
-    <ScrollContainer className="border-overlay max-h-[33%] flex-shrink-0 border-t">
+    <ScrollContainer
+      className="border-overlay max-h-[33%] flex-shrink-0 border-t"
+      overflowIndicators="top"
+    >
       <div className="px-1.5">
         <Accordion.Root>
           <Accordion.Trigger actionId="scenepanel_debug_toggle">
