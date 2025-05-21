@@ -1,4 +1,4 @@
-import { type Entity, type World } from "koota";
+import { Or, type Entity, type World } from "koota";
 import {
   DamageModifier,
   IsEkka,
@@ -7,7 +7,13 @@ import {
   TimeSinceLastStateChange,
 } from "../entities/ekka/traits";
 import { Position, Rotation, Scale, Velocity } from "../entities/shared/traits";
-import { Health, IsPlayer } from "../entities/xr-player/traits";
+import {
+  Damage,
+  Health,
+  IsInvulnerable,
+  IsPlayer,
+  IsXRPlayer,
+} from "../entities/xr-player/traits";
 
 function positionalTraits(entity: Entity) {
   return {
@@ -19,9 +25,11 @@ function positionalTraits(entity: Entity) {
 }
 
 export function serialize(world: World) {
-  const players = world.query(IsPlayer).map((entity) => ({
+  const players = world.query(Or(IsPlayer, IsXRPlayer)).map((entity) => ({
     ...positionalTraits(entity),
+    damage: entity.get(Damage),
     health: entity.get(Health),
+    invulnerable: entity.get(IsInvulnerable),
   }));
 
   const ekkas = world.query(IsEkka).map((entity) => ({

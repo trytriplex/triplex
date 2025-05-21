@@ -28,3 +28,17 @@ export const locomotionXR = createSystem((world, delta, state, store) => {
     delta,
   );
 });
+
+export const locomotionXRDevOnly = createSystem(
+  (world) => {
+    const entity = world.queryFirst(IsXRPlayer, Velocity);
+    if (!entity) {
+      return;
+    }
+
+    entity.set(Velocity, {
+      z: -0.1,
+    });
+  },
+  { dev: true, name: "devOnlyLocomotion" },
+);

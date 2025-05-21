@@ -57,7 +57,7 @@ export function DebugPanel() {
       overflowIndicators="top"
     >
       <div className="px-1.5">
-        <Accordion.Root>
+        <Accordion.Root defaultExpanded={false}>
           <Accordion.Trigger actionId="scenepanel_debug_toggle">
             {({ isExpanded }) =>
               isExpanded ? "Debug" : `Debug (${panels.length})`

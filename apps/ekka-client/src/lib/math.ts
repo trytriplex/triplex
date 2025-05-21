@@ -70,3 +70,7 @@ export function damp(
     z: MathUtils.damp(fromV.z, toV.z, lambda, delta),
   };
 }
+
+export function equal(v1: Vector3, v2: Vector3): boolean {
+  return v1.x === v2.x && v1.y === v2.y && v1.z === v2.z;
+}

@@ -1,16 +1,32 @@
-import { add, multiply } from "../../lib/math";
-import { Mesh, Position, Rotation, Scale, Velocity } from "./traits";
+import { add, equal, multiply } from "../../lib/math";
+import {
+  Mesh,
+  Position,
+  PositionChanged,
+  Rotation,
+  Scale,
+  Velocity,
+} from "./traits";
 import { type ECSSystem } from "./types";
 
-export function createSystem<TName extends string = never>(
-  ...args: [system: ECSSystem, name: TName] | [system: ECSSystem]
-): ECSSystem & { systemName?: TName } {
+export function createSystem<
+  TName extends string = never,
+  TDevOnly extends boolean = false,
+>(
+  ...args:
+    | [system: ECSSystem, name: TName | { dev?: TDevOnly; name: TName }]
+    | [system: ECSSystem]
+): ECSSystem & { dev?: TDevOnly; systemName?: TName } {
+  const system = args[0] as ECSSystem & { dev?: TDevOnly; systemName: TName };
+
   if (args.length === 1) {
-    return args[0];
+    return system;
   }
 
-  const system = args[0] as ECSSystem & { systemName: TName };
-  system.systemName = args[1];
+  const { dev, name } =
+    typeof args[1] === "string" ? { dev: undefined, name: args[1] } : args[1];
+  system.systemName = name;
+  system.dev = dev;
   return system;
 }
 
@@ -59,8 +75,12 @@ export const applyVelocity = createSystem((world, delta) => {
     if (velocity && position) {
       const displacement = multiply(velocity, delta);
       const nextPosition = add(position, displacement);
-      entity.set(Position, nextPosition);
-      entity.set(Velocity, { x: 0, y: 0, z: 0 });
+
+      if (!equal(position, nextPosition)) {
+        entity.add(PositionChanged);
+        entity.set(Position, nextPosition);
+        entity.set(Velocity, { x: 0, y: 0, z: 0 });
+      }
     }
   }
 }, "applyVelocity");

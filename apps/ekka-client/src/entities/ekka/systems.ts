@@ -1,12 +1,13 @@
-import { Not } from "koota";
+import { Not, Or } from "koota";
 import { createSystem } from "../shared/systems";
-import { Changed, Position, Scale } from "../shared/traits";
+import { PositionChanged, Scale } from "../shared/traits";
 import {
-  Damaged,
+  Damage,
   Health,
   IsDead,
   IsInvulnerable,
   IsPlayer,
+  IsXRPlayer,
 } from "../xr-player/traits";
 import {
   DamageModifier,
@@ -16,8 +17,14 @@ import {
   TimeSinceLastStateChange,
 } from "./traits";
 
-export const tryChangeEkkaState = createSystem((world) => {
-  const entity = world.queryFirst(IsEkka, TimeSinceLastStateChange, State);
+export const ekkaStateChange = createSystem((world) => {
+  const entity = world.queryFirst(
+    IsEkka,
+    DamageModifier,
+    TimeSinceLastStateChange,
+    State,
+  );
+
   if (!entity) {
     return;
   }
@@ -29,9 +36,9 @@ export const tryChangeEkkaState = createSystem((world) => {
     entity.set(State, { value: newState });
     entity.set(TimeSinceLastStateChange, { value: 0 });
   }
-}, "tryChangeEkkaState");
+}, "stepEkkaState");
 
-export const focusEkkaEyeTowardsPlayer = createSystem((world) => {
+export const directEyeToPlayer = createSystem((world) => {
   const ekkaEntity = world.queryFirst(IsEkka, State);
   const eyeEntities = world.query(IsEkkaEye);
   const state = ekkaEntity?.get(State);
@@ -40,16 +47,16 @@ export const focusEkkaEyeTowardsPlayer = createSystem((world) => {
     return;
   }
 
-  eyeEntities.forEach((eye) => {
+  for (const eye of eyeEntities) {
     if (state.value === "active") {
       eye.set(Scale, { x: 1, y: 1, z: 2 });
     } else {
       eye.set(Scale, { x: 1, y: 1, z: 1 });
     }
-  });
-}, "focusEkkaEye");
+  }
+}, "directEyeToPlayer");
 
-export const incrementStateChangeTimer = createSystem((world, delta) => {
+export const stepStateChangeTimer = createSystem((world, delta) => {
   const entity = world.queryFirst(TimeSinceLastStateChange);
   const timeSince = entity?.get(TimeSinceLastStateChange);
 
@@ -61,7 +68,7 @@ export const incrementStateChangeTimer = createSystem((world, delta) => {
   entity.set(TimeSinceLastStateChange, { value: nextValue });
 });
 
-export const collectDamageIfPlayersMoved = createSystem((world) => {
+export const damageWhenMoved = createSystem((world) => {
   const ekka = world.queryFirst(IsEkka, DamageModifier);
   const modifier = ekka?.get(DamageModifier);
   const state = world.queryFirst(IsEkka, State)?.get(State);
@@ -70,31 +77,43 @@ export const collectDamageIfPlayersMoved = createSystem((world) => {
     return;
   }
 
-  const playersThatHaveMoved = world.query(
-    Changed(Position),
-    Health,
-    IsPlayer,
-    Not(Damaged),
+  const players = world.query(
+    PositionChanged,
+    Or(IsPlayer, IsXRPlayer),
+    Not(Damage),
+    Not(IsDead),
     Not(IsInvulnerable),
   );
 
-  const multiplier = modifier.value;
-
-  for (const player of playersThatHaveMoved) {
-    player.set(Damaged, { value: 1 * multiplier });
+  if (players.length === 0) {
+    return;
   }
 
-  ekka.set(DamageModifier, {
-    value: modifier.value * 1.5,
-  });
-}, "collectDamage");
+  const multiplier = modifier.value;
 
-export const applyDamageToPlayers = createSystem((world) => {
-  const damagedPlayers = world.query(Damaged, Health, IsPlayer, Not(IsDead));
+  for (const player of players) {
+    player.remove(PositionChanged);
+    player.add(Damage({ value: 1 * multiplier }));
+  }
+}, "damageWhenMoved");
+
+export const applyDamage = createSystem((world) => {
+  const ekka = world.queryFirst(IsEkka, DamageModifier);
+  const damagedPlayers = world.query(
+    Damage,
+    Health,
+    Not(IsDead),
+    Not(IsInvulnerable),
+    Or(IsPlayer, IsXRPlayer),
+  );
+
+  if (damagedPlayers.length === 0 || !ekka) {
+    return;
+  }
 
   for (const player of damagedPlayers) {
     const health = player.get(Health);
-    const damage = player.get(Damaged);
+    const damage = player.get(Damage);
 
     if (!health || !damage) {
       continue;
@@ -103,19 +122,23 @@ export const applyDamageToPlayers = createSystem((world) => {
     const newHealth = health.value - damage.value;
 
     if (newHealth <= 0) {
-      player.set(IsDead, { value: true });
+      player.add(IsDead);
       player.set(Health, { value: 0 });
+      player.remove(Damage);
     } else {
+      player.add(IsInvulnerable({ duration: 1, timePassed: 0 }));
       player.set(Health, { value: newHealth });
-      player.set(IsInvulnerable, { duration: 1, timePassed: 0 });
+      player.remove(Damage);
     }
-
-    player.remove(Damaged);
   }
+
+  ekka.set(DamageModifier, (prev) => ({
+    value: prev.value * 1.5,
+  }));
 }, "applyDamage");
 
-export const tryRemovePlayerInvulnerability = createSystem((world, delta) => {
-  const players = world.query(IsInvulnerable, IsPlayer);
+export const stepPlayerInvulnerability = createSystem((world, delta) => {
+  const players = world.query(IsInvulnerable, Or(IsPlayer, IsXRPlayer));
 
   for (const player of players) {
     const invulnerable = player.get(IsInvulnerable);
