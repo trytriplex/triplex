@@ -1305,7 +1305,26 @@ importers:
         version: 5.8.3
 
   packages/api:
+    dependencies:
+      '@react-three/fiber':
+        specifier: '*'
+        version: 9.1.2(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
+      '@react-three/xr':
+        specifier: '*'
+        version: 6.6.17(@react-three/fiber@9.1.2(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
+      '@types/react':
+        specifier: ^19.0.8
+        version: 19.1.4
+      koota:
+        specifier: '*'
+        version: 0.4.1(@types/react@19.1.4)(react@19.1.0)
     devDependencies:
+      '@swc/cli':
+        specifier: ^0.1.59
+        version: 0.1.59(@swc/core@1.6.5(@swc/helpers@0.5.15))(chokidar@3.5.3)
+      '@swc/core':
+        specifier: ^1.6.5
+        version: 1.6.5(@swc/helpers@0.5.15)
       typescript:
         specifier: ^5.8.3
         version: 5.8.3

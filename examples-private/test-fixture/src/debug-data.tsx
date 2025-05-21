@@ -9,11 +9,11 @@ import { useEffect } from "react";
 
 export function DebugData() {
   useEffect(() => {
-    window.triplex?.api.debug("object", { hello: () => {}, yes: true });
-    window.triplex?.api.debug("string", "foobar");
-    window.triplex?.api.debug("number", 1234);
-    window.triplex?.api.debug("array", [1234]);
-    window.triplex?.api.debug("function", () => {});
+    window.triplex?.debug("object", { hello: () => {}, yes: true });
+    window.triplex?.debug("string", "foobar");
+    window.triplex?.debug("number", 1234);
+    window.triplex?.debug("array", [1234]);
+    window.triplex?.debug("function", () => {});
   }, []);
 
   return <div>hi mate</div>;

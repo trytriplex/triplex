@@ -98,14 +98,13 @@ export const scripts = {
 
     async function initialize() {
       window.triplex = JSON.parse(\`${JSON.stringify({
-        api: {},
-        env: { mode: "default", ports: template.ports },
+        env: { mode: "default" },
         preload: template.preload,
       })}\`);
 
       const lastMessageTime = {};
 
-      window.triplex.api.debug = (channel, data) => {
+      window.triplex.debug = (channel, data) => {
         if (!channel) {
           // Ignore invalid messages.
           return;
@@ -239,11 +238,10 @@ export const scripts = {
 
     async function initialize() {
       window.triplex = JSON.parse(\`${JSON.stringify({
-        api: {},
-        env: { mode: "webxr", ports: template.ports },
+        env: { mode: "webxr" },
         preload: template.preload,
       })}\`);
-      window.triplex.api.debug = () => {};
+      window.triplex.debug = () => {};
 
       // This is patched into the react-refresh runtime so we can be notified
       // on completion of a fast refresh. We need this as relying on the HMR

@@ -1,5 +1,5 @@
 import { createXRControllerLocomotionUpdate } from "@pmndrs/xr";
-import { createSystem } from "../shared/systems";
+import { createSystem } from "@triplex/api/koota";
 import { Rotation, Velocity } from "../shared/traits";
 import { IsXRPlayer } from "./traits";
 

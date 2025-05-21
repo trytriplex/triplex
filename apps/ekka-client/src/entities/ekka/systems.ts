@@ -1,5 +1,5 @@
+import { createSystem } from "@triplex/api/koota";
 import { Not, Or } from "koota";
-import { createSystem } from "../shared/systems";
 import { PositionChanged, Scale } from "../shared/traits";
 import {
   Damage,

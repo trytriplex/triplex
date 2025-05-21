@@ -1,3 +1,4 @@
+import { createSystem } from "@triplex/api/koota";
 import { add, equal, multiply } from "../../lib/math";
 import {
   Mesh,
@@ -7,28 +8,6 @@ import {
   Scale,
   Velocity,
 } from "./traits";
-import { type ECSSystem } from "./types";
-
-export function createSystem<
-  TName extends string = never,
-  TDevOnly extends boolean = false,
->(
-  ...args:
-    | [system: ECSSystem, name: TName | { dev?: TDevOnly; name: TName }]
-    | [system: ECSSystem]
-): ECSSystem & { dev?: TDevOnly; systemName?: TName } {
-  const system = args[0] as ECSSystem & { dev?: TDevOnly; systemName: TName };
-
-  if (args.length === 1) {
-    return system;
-  }
-
-  const { dev, name } =
-    typeof args[1] === "string" ? { dev: undefined, name: args[1] } : args[1];
-  system.systemName = name;
-  system.dev = dev;
-  return system;
-}
 
 /** Copies the transform trait values to the mesh trait value. */
 export const syncTransformsToMesh = createSystem((world) => {

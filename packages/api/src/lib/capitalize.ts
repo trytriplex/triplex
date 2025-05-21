@@ -4,8 +4,9 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-declare interface Window {
-  triplex?: {
-    debug: (channel: string, data: string | number | object) => void;
-  };
+
+export function capitalize<TString extends string>(
+  str: TString,
+): Capitalize<TString> {
+  return (str.charAt(0).toUpperCase() + str.slice(1)) as Capitalize<TString>;
 }

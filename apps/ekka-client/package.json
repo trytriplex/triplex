@@ -21,6 +21,7 @@
     "typescript": "^5.8.3"
   },
   "devDependencies": {
+    "@triplex/api": "*",
     "@types/react": "^19.1.4",
     "@types/three": "^0.171.0",
     "autoprefixer": "^10.4.14",
