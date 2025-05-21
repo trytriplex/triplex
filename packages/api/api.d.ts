@@ -6,7 +6,7 @@
  */
 declare interface Window {
   triplex?: {
-    api: {
+    api?: {
       debug: (channel: string, data: string | number | object) => void;
     };
   };
