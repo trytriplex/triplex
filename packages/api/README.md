@@ -24,7 +24,7 @@ Update your `tsconfig.json` / `jsconfig.json` to inject global Triplex types.
 
 ### Global Triplex API
 
-#### `window.triplex.debug(channel, data)`
+#### `window.triplex.debug(channel: string, data: object)`
 
 Log data to the Triplex debug panel call it whenever you want, even in frame loops. Any serializable data can be passed in the data argument.
 
@@ -36,11 +36,14 @@ window.triplex?.debug("players", 2);
 
 Helpers for [Koota](https://github.com/pmndrs/koota) that make it easier to use with Triplex.
 
-#### `createSystem(system, args)`
+#### `createSystem(system: Function, args: string | object)`
 
-Creates an ECS systems to be used in conjunction with `injectSystems`.
+Creates an ECS systems to be used in conjunction with `injectSystems`. Args are optional and can be a `string` or an `object`:
 
-#### `injectSystems(component, args)`
+- `string` — defines the system name which will then show up in provider controls. This system is always running by default. Disable by clicking the "pause(SystemName)" checkbox.
+- `{ dev: boolean, name: string }` — defines the system name and declares a system as "dev". This system is paused by default. Run it by clicking the "run(SystemName)" checkbox.
+
+#### `injectSystems(component: Function, args: System[])`
 
 Higher-order component that injects the [canvas provider](https://triplex.dev/docs/building-your-scene/providers#canvas-provider) with systems created from `createSystem`.
 
