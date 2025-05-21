@@ -12,6 +12,7 @@ import {
   stepPlayerInvulnerability,
   stepStateChangeTimer,
 } from "../src/entities/ekka/systems";
+import { checkPlayerExit } from "../src/entities/exit/systems";
 import {
   applyVelocity,
   syncTransformsToMesh,
@@ -24,6 +25,7 @@ import { serialize } from "../src/lib/koota-debug";
 import "../src/styles.css";
 
 const systems = [
+  checkPlayerExit,
   stepPlayerInvulnerability,
   applyDamage,
   ekkaStateChange,

@@ -1,13 +1,19 @@
 import { createXRControllerLocomotionUpdate } from "@pmndrs/xr";
 import { createSystem } from "@triplex/api/koota";
 import { Rotation, Velocity } from "../shared/traits";
-import { IsXRPlayer } from "./traits";
+import { IsDead, IsXRPlayer } from "./traits";
 
 const update = createXRControllerLocomotionUpdate();
 
 export const locomotionXR = createSystem((world, delta, state, store) => {
   const entity = world.queryFirst(IsXRPlayer, Velocity, Rotation);
   if (!entity || !store) {
+    return;
+  }
+
+  const isDead = entity.get(IsDead);
+  if (isDead) {
+    // Locomotion is disabled when dead.
     return;
   }
 
@@ -36,8 +42,14 @@ export const locomotionXRDevOnly = createSystem(
       return;
     }
 
+    const isDead = entity.get(IsDead);
+    if (isDead) {
+      // Locomotion is disabled when dead.
+      return;
+    }
+
     entity.set(Velocity, {
-      z: -0.1,
+      z: -1,
     });
   },
   { dev: true, name: "devOnlyLocomotion" },

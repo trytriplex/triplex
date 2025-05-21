@@ -6,10 +6,12 @@ import {
   State,
   TimeSinceLastStateChange,
 } from "../entities/ekka/traits";
+import { HasExited } from "../entities/exit/traits";
 import { Position, Rotation, Scale, Velocity } from "../entities/shared/traits";
 import {
   Damage,
   Health,
+  IsDead,
   IsInvulnerable,
   IsPlayer,
   IsXRPlayer,
@@ -28,6 +30,8 @@ export function serialize(world: World) {
   const players = world.query(Or(IsPlayer, IsXRPlayer)).map((entity) => ({
     ...positionalTraits(entity),
     damage: entity.get(Damage),
+    dead: entity.get(IsDead),
+    exited: entity.get(HasExited),
     health: entity.get(Health),
     invulnerable: entity.get(IsInvulnerable),
   }));

@@ -2,14 +2,14 @@ import { XROrigin } from "@react-three/xr";
 import { type Entity } from "koota";
 import { useWorld } from "koota/react";
 import { useEffect, useRef } from "react";
-import { type Group } from "three";
+import { type Vector3Tuple, type Group } from "three";
 import { Mesh, Position, Rotation, Velocity } from "../shared/traits";
 import { Health, IsXRPlayer } from "./traits";
 
 export function XRPlayerEntity({
   position = [0, 0, 0],
 }: {
-  position?: [number, number, number];
+  position?: Vector3Tuple;
 }) {
   const [x, y, z] = position;
   const world = useWorld();

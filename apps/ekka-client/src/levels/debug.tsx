@@ -1,4 +1,5 @@
 import { EkkaEntity } from "../entities/ekka";
+import { ExitEntity } from "../entities/exit";
 import { LandEntity } from "../entities/land";
 import { XRPlayerEntity } from "../entities/xr-player";
 
@@ -13,6 +14,7 @@ export function DebugLevel() {
       </LandEntity>
       <EkkaEntity position={[0, -0.45, -10.65]} />
       <XRPlayerEntity />
+      <ExitEntity position={[0, 0, -9.95]} />
     </>
   );
 }
