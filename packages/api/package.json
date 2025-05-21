@@ -9,22 +9,39 @@
     "url": "https://x.com/trytriplex"
   },
   "exports": {
+    "./koota": {
+      "default": "./src/koota/index.ts",
+      "types": "./src/koota/index.ts"
+    },
     "./types": {
       "types": "./api.d.ts"
     }
   },
   "files": [
-    "dist"
+    "dist",
+    "api.d.ts"
   ],
   "scripts": {
-    "build": "echo \"Not implemented\"",
+    "build": "swc ./src -d ./dist",
     "typedef": "tsc"
   },
   "devDependencies": {
+    "@swc/cli": "^0.1.59",
+    "@swc/core": "^1.6.5",
     "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "@react-three/fiber": "*",
+    "@react-three/xr": "*",
+    "@types/react": "*",
+    "koota": "*"
   },
   "publishConfig": {
     "exports": {
+      "./koota": {
+        "default": "./dist/koota/index.js",
+        "types": "./dist/koota/index.d.ts"
+      },
       "./types": {
         "types": "./api.d.ts"
       }

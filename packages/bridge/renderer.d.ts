@@ -8,7 +8,6 @@ declare interface Window {
   triplex: {
     env: {
       mode: "webxr" | "default";
-      ports: Record<string, number>;
     };
     preload: {
       reactThreeFiber: boolean;
