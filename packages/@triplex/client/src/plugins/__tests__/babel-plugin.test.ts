@@ -1457,13 +1457,15 @@ describe("babel plugin", () => {
     `);
   });
 
-  it("should set react-three-fiber root when using fiber hooks", () => {
+  it("should ignore drei hooks", () => {
     const result = transformSync(
       `
-      import { useScroll } from "@react-three/drei";
+      import { useLoader } from "@react-three/drei";
+      import { Canvas } from "@react-three/fiber";
 
       export function Component() {
-        useScroll();
+        useLoader();
+        return <Canvas><mesh /></Canvas>;
       }
     `,
       {
@@ -1475,9 +1477,63 @@ describe("babel plugin", () => {
     );
 
     expect(result?.code).toMatchInlineSnapshot(`
-      "import { useScroll } from "@react-three/drei";
+      "import { useLoader } from "@react-three/drei";
+      import "@react-three/fiber";
+      import { Canvas } from "triplex:canvas";
       export function Component() {
-        useScroll();
+        useLoader();
+        return <SceneObject __component={Canvas} __meta={{
+          "originExportName": "Canvas",
+          "originPath": "",
+          "exportName": "Component",
+          "path": "",
+          "name": "Canvas",
+          "line": 7,
+          "column": 16,
+          "translate": false,
+          "rotate": false,
+          "scale": false
+        }}><SceneObject __component={"mesh"} __meta={{
+            "originExportName": "",
+            "originPath": "",
+            "exportName": "Component",
+            "path": "",
+            "name": "mesh",
+            "line": 7,
+            "column": 24,
+            "translate": false,
+            "rotate": false,
+            "scale": false
+          }}></SceneObject></SceneObject>;
+      }
+      Component.triplexMeta = {
+        "lighting": "default",
+        "root": "react"
+      };"
+    `);
+  });
+
+  it("should set react-three-fiber root when using fiber hooks", () => {
+    const result = transformSync(
+      `
+      import { useFrame } from "@react-three/fiber";
+
+      export function Component() {
+        useFrame();
+      }
+    `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "import { useFrame } from "@react-three/fiber";
+      export function Component() {
+        useFrame();
       }
       Component.triplexMeta = {
         "lighting": "default",

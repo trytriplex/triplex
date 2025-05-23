@@ -151,6 +151,7 @@ const elements: Record<string, boolean> = {
 };
 
 const THREE_FIBER_MODULES = /(^@react-three\/)|(^ecctrl$)/;
+const IGNORED_HOOKS_MODULES = ["@react-three/drei"];
 const PROBABLY_THREE_FIBER = ["object3d"];
 
 export function isReactThreeElement(elementName: string): boolean {
@@ -213,10 +214,15 @@ export function isComponentFromThreeFiber(path: NodePath<t.JSXElement>) {
 export function isHookFromThreeFiber(path: NodePath<t.Identifier>): boolean {
   if (path.node.name.startsWith("use")) {
     const importSpecifier = resolveIdentifierImportSpecifier(path);
+    const moduleName =
+      (importSpecifier?.parentPath.isImportDeclaration() &&
+        importSpecifier?.parentPath.node.source.value) ||
+      "";
+
     if (
-      importSpecifier &&
-      importSpecifier.parentPath.isImportDeclaration() &&
-      THREE_FIBER_MODULES.test(importSpecifier.parentPath.node.source.value)
+      THREE_FIBER_MODULES.test(moduleName) &&
+      // Ignore hooks from @react-three/drei as some of them can be used outside of three fiber.
+      IGNORED_HOOKS_MODULES.every((module) => moduleName !== module)
     ) {
       return true;
     }
