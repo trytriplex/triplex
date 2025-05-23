@@ -319,13 +319,13 @@ importers:
   apps/electron:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.34
+        specifier: 0.70.35
         version: link:../../packages/@triplex/client
       '@triplex/editor':
-        specifier: 0.70.37
+        specifier: 0.70.38
         version: link:../../packages/@triplex/editor
       '@triplex/server':
-        specifier: 0.71.14
+        specifier: 0.71.15
         version: link:../../packages/@triplex/server
       create-triplex-project:
         specifier: 0.70.11
@@ -392,10 +392,10 @@ importers:
   apps/vscode:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.34
+        specifier: 0.70.35
         version: link:../../packages/@triplex/client
       '@triplex/server':
-        specifier: 0.71.14
+        specifier: 0.71.15
         version: link:../../packages/@triplex/server
     devDependencies:
       '@atlaskit/pragmatic-drag-and-drop':
@@ -417,13 +417,13 @@ importers:
         specifier: ^2.49.1
         version: 2.49.1
       '@triplex/bridge':
-        specifier: 0.70.8
+        specifier: 0.70.9
         version: link:../../packages/bridge
       '@triplex/lib':
         specifier: 0.69.16
         version: link:../../packages/lib
       '@triplex/ux':
-        specifier: 0.69.24
+        specifier: 0.69.25
         version: link:../../packages/@triplex/ux
       '@triplex/websocks-client':
         specifier: 0.0.8
@@ -967,10 +967,10 @@ importers:
         specifier: ^7.24.5
         version: 7.27.1
       '@triplex/bridge':
-        specifier: 0.70.8
+        specifier: 0.70.9
         version: link:../../bridge
       '@triplex/renderer':
-        specifier: 0.71.26
+        specifier: 0.71.27
         version: link:../../renderer
       '@vitejs/plugin-react':
         specifier: ^4.4.1
@@ -1001,7 +1001,7 @@ importers:
         specifier: 0.69.16
         version: link:../../lib
       '@triplex/server':
-        specifier: 0.71.14
+        specifier: 0.71.15
         version: link:../server
       '@triplex/websocks-client':
         specifier: 0.0.8
@@ -1079,13 +1079,13 @@ importers:
         specifier: ^8.30.0
         version: 8.30.0(react@19.1.0)
       '@triplex/bridge':
-        specifier: 0.70.8
+        specifier: 0.70.9
         version: link:../../bridge
       '@triplex/lib':
         specifier: 0.69.16
         version: link:../../lib
       '@triplex/ux':
-        specifier: 0.69.24
+        specifier: 0.69.25
         version: link:../ux
       '@triplex/websocks-client':
         specifier: 0.0.8
@@ -1125,7 +1125,7 @@ importers:
         specifier: ^14.0.0
         version: 14.0.0(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@triplex/server':
-        specifier: ^0.71.14
+        specifier: ^0.71.15
         version: link:../server
       '@types/react':
         specifier: ^19.0.8
@@ -1270,7 +1270,7 @@ importers:
         specifier: ^1.0.5
         version: 1.0.5(@types/react-dom@19.1.5(@types/react@19.1.4))(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@triplex/bridge':
-        specifier: 0.70.8
+        specifier: 0.70.9
         version: link:../../bridge
       '@triplex/lib':
         specifier: 0.69.16
@@ -1292,7 +1292,7 @@ importers:
         specifier: ^14.0.0
         version: 14.0.0(@types/react@19.1.4)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@triplex/server':
-        specifier: 0.71.14
+        specifier: 0.71.15
         version: link:../server
       '@types/react':
         specifier: ^19.0.8
@@ -1470,7 +1470,7 @@ importers:
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.1.4)(react@19.1.0)
       '@triplex/bridge':
-        specifier: 0.70.8
+        specifier: 0.70.9
         version: link:../bridge
       '@triplex/lib':
         specifier: 0.69.16

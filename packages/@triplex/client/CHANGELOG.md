@@ -1,5 +1,15 @@
 # @triplex/client
 
+## 0.70.35
+
+### Patch Changes
+
+- e447108: Add experimental debug data api behind a feature gate.
+- 212ae79: Fix component environment check using `@react-three/drei` hooks to prevent accidentally loading a three fiber environment when a react dom environment should have been loaded.
+- Updated dependencies [e447108]
+  - @triplex/bridge@0.70.9
+  - @triplex/renderer@0.71.27
+
 ## 0.70.34
 
 ### Patch Changes

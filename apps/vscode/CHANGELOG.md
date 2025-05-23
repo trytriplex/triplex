@@ -1,5 +1,18 @@
 # @triplex/vscode
 
+## 0.2.39
+
+### Patch Changes
+
+- e447108: Add experimental debug data api behind a feature gate.
+- 5c7d632: Remove bottom scroll overflow from scroll containers in the scene panel.
+- e447108: Fix scrollable containers overflow not being set as expected when the container height changes.
+- Updated dependencies [e447108]
+- Updated dependencies [212ae79]
+- Updated dependencies [ff67cb2]
+  - @triplex/client@0.70.35
+  - @triplex/server@0.71.15
+
 ## 0.2.38
 
 ### Patch Changes

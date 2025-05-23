@@ -1,5 +1,13 @@
 # @triplex/ux
 
+## 0.69.25
+
+### Patch Changes
+
+- e447108: Add experimental debug data api behind a feature gate.
+- Updated dependencies [e447108]
+  - @triplex/bridge@0.70.9
+
 ## 0.69.24
 
 ### Patch Changes

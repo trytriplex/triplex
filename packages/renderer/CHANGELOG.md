@@ -1,5 +1,12 @@
 # @triplex/renderer
 
+## 0.71.27
+
+### Patch Changes
+
+- Updated dependencies [e447108]
+  - @triplex/bridge@0.70.9
+
 ## 0.71.26
 
 ### Patch Changes

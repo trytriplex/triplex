@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.71.15
+
+### Patch Changes
+
+- ff67cb2: Fix function props being marked as required when they actually were optional.
+
 ## 0.71.14
 
 ### Patch Changes
