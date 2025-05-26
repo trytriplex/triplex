@@ -361,7 +361,7 @@ export function ThreeFiberSelection({
         {children}
       </SceneObjectEventsContext.Provider>
 
-      {!!resolvedObject?.object &&
+      {!!resolvedObject &&
         transform !== "none" &&
         window.triplex.env.mode === "default" &&
         fg("immutable_transform_controls") && (
@@ -372,7 +372,7 @@ export function ThreeFiberSelection({
                 : transforms[transform]
             }
             mode={transform}
-            object={resolvedObject.object}
+            object={resolvedObject}
             onChange={onChangeTransformHandler}
             onConfirm={onConfirmTransformHandler}
             space={space}

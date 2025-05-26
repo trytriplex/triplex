@@ -4,8 +4,14 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { createPortal, useFrame } from "@react-three/fiber";
+import {
+  applyProps,
+  createPortal,
+  useFrame,
+  type Instance,
+} from "@react-three/fiber";
 import { applyStepModifiers, useEvent, useStepModifiers } from "@triplex/lib";
+import { fg } from "@triplex/lib/fg";
 import {
   Fragment,
   useContext,
@@ -25,6 +31,7 @@ import {
   ActiveCameraContext,
   CameraControlsContext,
 } from "../camera-new/context";
+import { type ResolvedObject3D } from "./resolver";
 
 const steps = {
   rotate: {
@@ -33,6 +40,12 @@ const steps = {
   },
   scale: { ctrl: 0.1, default: 0.01 },
   translate: { ctrl: 1, default: 0.01 },
+};
+
+const defaultTransforms = {
+  position: [0, 0, 0] as Vector3Tuple,
+  rotation: [0, 0, 0] as Vector3Tuple,
+  scale: [1, 1, 1] as Vector3Tuple,
 };
 
 export type TransformMode = NonNullable<TransformControlsProps["mode"]>;
@@ -71,7 +84,7 @@ export function TransformControls({
 }: {
   enabled?: boolean;
   mode: TransformMode;
-  object: Object3D;
+  object: ResolvedObject3D;
   onChange?: (e: TransformEvent) => void;
   onConfirm?: (e: TransformEvent) => void;
   space?: TransformControlsProps["space"];
@@ -128,6 +141,7 @@ export function TransformControls({
 
   const onMouseUpHandler = useEvent(() => {
     setIsDragging(false);
+
     onConfirm?.({
       mode,
       value: resolveTransformValue(placeholder, mode),
@@ -142,9 +156,23 @@ export function TransformControls({
   });
 
   useFrame(() => {
-    placeholder.position.copy(object.position);
-    placeholder.rotation.copy(object.rotation);
-    placeholder.scale.copy(object.scale);
+    if (isDragging) {
+      return;
+    }
+
+    if (fg("transform_controls_read_from_props")) {
+      applyProps(placeholder as Instance["object"], {
+        position:
+          object.meta.props.current.position || defaultTransforms.position,
+        rotation:
+          object.meta.props.current.rotation || defaultTransforms.rotation,
+        scale: object.meta.props.current.scale || defaultTransforms.scale,
+      });
+    } else {
+      placeholder.position.copy(object.object.position);
+      placeholder.rotation.copy(object.object.rotation);
+      placeholder.scale.copy(object.object.scale);
+    }
   });
 
   return (
@@ -183,8 +211,8 @@ export function TransformControls({
         translationSnap={applyStepModifiers(steps.translate, modifiers)}
       />
 
-      {object.parent && (
-        <Fragment key={object.id}>
+      {object.object.parent && (
+        <Fragment key={object.object.id}>
           {createPortal(
             <group ref={setPlaceholder} />,
             /**
@@ -192,7 +220,7 @@ export function TransformControls({
              * position as the object otherwise inherited transforms from
              * parents will end up being super whacky.
              */
-            object.parent,
+            object.object.parent,
           )}
         </Fragment>
       )}
