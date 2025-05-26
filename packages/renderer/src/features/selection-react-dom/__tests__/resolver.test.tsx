@@ -65,32 +65,7 @@ describe("DOM resolver", () => {
             "parents": [],
             "path": "/baz",
             "props": {
-              "children": [
-                <SceneElement
-                  __component="div"
-                  __meta={
-                    {
-                      "column": 4,
-                      "exportName": "",
-                      "line": 2,
-                      "name": "div",
-                      "path": "/foo",
-                    }
-                  }
-                />,
-                <SceneElement
-                  __component="span"
-                  __meta={
-                    {
-                      "column": 4,
-                      "exportName": "",
-                      "line": 3,
-                      "name": "span",
-                      "path": "/foo",
-                    }
-                  }
-                />,
-              ],
+              "current": {},
             },
           },
           "node": <main>
@@ -154,32 +129,7 @@ describe("DOM resolver", () => {
             "parents": [],
             "path": "/baz",
             "props": {
-              "children": [
-                <SceneElement
-                  __component="div"
-                  __meta={
-                    {
-                      "column": 4,
-                      "exportName": "",
-                      "line": 2,
-                      "name": "div",
-                      "path": "/foo",
-                    }
-                  }
-                />,
-                <SceneElement
-                  __component="span"
-                  __meta={
-                    {
-                      "column": 4,
-                      "exportName": "",
-                      "line": 3,
-                      "name": "span",
-                      "path": "/foo",
-                    }
-                  }
-                />,
-              ],
+              "current": {},
             },
           },
           "node": <div />,
@@ -193,32 +143,7 @@ describe("DOM resolver", () => {
             "parents": [],
             "path": "/baz",
             "props": {
-              "children": [
-                <SceneElement
-                  __component="div"
-                  __meta={
-                    {
-                      "column": 4,
-                      "exportName": "",
-                      "line": 2,
-                      "name": "div",
-                      "path": "/foo",
-                    }
-                  }
-                />,
-                <SceneElement
-                  __component="span"
-                  __meta={
-                    {
-                      "column": 4,
-                      "exportName": "",
-                      "line": 3,
-                      "name": "span",
-                      "path": "/foo",
-                    }
-                  }
-                />,
-              ],
+              "current": {},
             },
           },
           "node": <span />,

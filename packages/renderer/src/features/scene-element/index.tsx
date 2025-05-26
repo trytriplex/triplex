@@ -14,6 +14,7 @@ import {
   Suspense,
   useContext,
   useEffect,
+  useLayoutEffect,
   useMemo,
   useRef,
   type ReactNode,
@@ -28,6 +29,7 @@ import {
   ParentComponentMetaProvider,
   SceneObjectContext,
 } from "./context";
+import { type SceneElementRef } from "./types";
 import { useSceneObjectEvents } from "./use-scene-element-events";
 import { useTemporaryProps } from "./use-temporary-props";
 
@@ -41,7 +43,7 @@ const disabledWhenEditState = [/^XROrigin$/];
 
 const passThroughWhenTriplexCamera = [/^Ecctrl$/, /Controls$/];
 
-export const SceneElement = forwardRef<unknown, RendererElementProps>(
+export const SceneElement = forwardRef<SceneElementRef, RendererElementProps>(
   (
     { __component: Component, __meta, forceInsideSceneObjectContext, ...props },
     ref,
@@ -52,31 +54,37 @@ export const SceneElement = forwardRef<unknown, RendererElementProps>(
     const type = typeof Component === "string" ? "host" : "custom";
     const hostRef = useRef(null);
     const insideSceneObjectContext = useContext(SceneObjectContext);
-    // eslint-disable-next-line react-compiler/react-compiler
-    const mergedRefs = useMemo(() => mergeRefs([ref, hostRef]), [ref]);
+    const mergedRefs = useMemo(
+      () => mergeRefs<SceneElementRef>([ref, hostRef]),
+      [ref],
+    );
+    const propsRef = useRef(props);
     const camera = useContext(ActiveCameraContext);
     const playState = usePlayState();
     const triplexMeta: TriplexMeta = useMemo(
       () => ({
         ...__meta,
         parents: parentMeta,
-        props,
+        props: propsRef,
       }),
-      [__meta, parentMeta, props],
+      [__meta, parentMeta],
     );
 
     useEffect(() => {
       onSceneObjectCommitted(__meta.path, __meta.line, __meta.column);
     }, [__meta.column, __meta.line, __meta.path, onSceneObjectCommitted]);
 
+    useLayoutEffect(() => {
+      propsRef.current = reconciledProps;
+    }, [reconciledProps]);
+
     useEffect(() => {
       if (type === "custom" || !mergedRefs.current) {
         return;
       }
 
-      // @ts-expect-error — Tag this element with meta to power scene selections.
       mergedRefs.current.__triplex = triplexMeta;
-    }, [__meta, mergedRefs, parentMeta, props, triplexMeta, type]);
+    }, [mergedRefs, triplexMeta, type]);
 
     if (
       camera?.type === "editor" &&

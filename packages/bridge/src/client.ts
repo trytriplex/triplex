@@ -178,7 +178,7 @@ export interface EmbeddedMeta {
 
 export interface TriplexMeta extends EmbeddedMeta {
   parents: TriplexMeta[];
-  props: Record<string, unknown>;
+  props: { current: Record<string, unknown> };
 }
 
 export interface TaggedMeta {

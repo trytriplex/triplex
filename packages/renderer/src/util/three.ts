@@ -62,7 +62,7 @@ export function isObjectVisible(obj: Object3D): boolean {
 }
 
 export function encodeProps(selected: ResolvedObject3D) {
-  const props = { ...selected.meta.props };
+  const props = { ...selected.meta.props.current };
 
   for (const key in props) {
     const prop = props[key];
