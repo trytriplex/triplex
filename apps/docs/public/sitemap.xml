@@ -19,7 +19,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/resources/fix-shadows-vertex-shader-threejs</loc>
-    <lastmod>2025-03-15</lastmod>
+    <lastmod>2025-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -31,19 +31,25 @@
   </url>
   <url>
     <loc>https://triplex.dev/resources/replacing-leva-with-props</loc>
-    <lastmod>2025-03-16</lastmod>
+    <lastmod>2025-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/resources/tailwind-css</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/resources/using-glsl-with-triplex</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-05-27</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
+    <loc>https://triplex.dev/resources/virtual-three-components</loc>
+    <lastmod>2025-05-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
