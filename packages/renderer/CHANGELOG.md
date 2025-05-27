@@ -1,5 +1,12 @@
 # @triplex/renderer
 
+## 0.71.28
+
+### Patch Changes
+
+- 7dc937f: Transform controls now reads the initial state from props instead of the scene fixing some edge cases affecting Triplex users, such as transforming decal meshes.
+- f50d251: Elements that have associated helpers now also render children when the helper is rendered.
+
 ## 0.71.27
 
 ### Patch Changes
