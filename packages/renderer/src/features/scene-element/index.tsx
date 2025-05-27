@@ -124,11 +124,14 @@ export const SceneElement = forwardRef<SceneElementRef, RendererElementProps>(
               : undefined)}
           >
             {threeFiberHelper ? (
-              <Suspense>
-                <ThreeFiberHelper helper={threeFiberHelper}>
-                  <primitive attach="__triplex" object={triplexMeta} />
-                </ThreeFiberHelper>
-              </Suspense>
+              <>
+                <Suspense>
+                  <ThreeFiberHelper helper={threeFiberHelper}>
+                    <primitive attach="__triplex" object={triplexMeta} />
+                  </ThreeFiberHelper>
+                </Suspense>
+                {children}
+              </>
             ) : (
               children
             )}
