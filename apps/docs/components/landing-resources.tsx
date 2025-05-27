@@ -79,7 +79,7 @@ export function LandingResources() {
       <div className="flex flex-col gap-6">
         <LandingResource page={getTutorialPage()} />
         <LandingResource page={getResource("tailwind-css")} />
-        <LandingResource page={getResource("replacing-leva-with-props")} />
+        <LandingResource page={getResource("virtual-three-components")} />
       </div>
     </div>
   );

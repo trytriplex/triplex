@@ -1,0 +1,83 @@
+---
+title: Using Transform Controls With Virtual Scene Components
+description: For use cases where transform controls would be a huge time saver but your 3D component doesn't render anything to the scene — you're still in luck.
+category: Components
+---
+
+## Virtual Scene Component
+
+A virtual scene component in this context is one that takes transform props like `position` or `rotation` but doesn't use them in the scene, instead using them somewhere else.
+
+Traditionally applying transform props looks like this:
+
+```tsx {7}
+export function Box({
+  position,
+}: {
+  position: [x: number, y: number, z: number];
+}) {
+  return (
+    <mesh position={position}>
+      <boxGeometry />
+    </mesh>
+  );
+}
+```
+
+The `position` prop is passed to the `mesh` element where it's used in the scene.
+
+A virtual scene component on the other hand doesn't pass transform props to a scene object, instead using it somewhere else:
+
+```tsx {6-8}
+export function MyVirtualSceneComponent({
+  position,
+}: {
+  position: [x: number, y: number, z: number];
+}) {
+  useEffect(() => {
+    // Do something with the position prop
+  }, [position]);
+
+  return null;
+}
+```
+
+## Using Transform Controls
+
+To have transform controls work with virtual scene components you need to render something to the scene, even if it's not used:
+
+```tsx {10}
+export function MyVirtualSceneComponent({
+  position,
+}: {
+  position: [x: number, y: number, z: number];
+}) {
+  useEffect(() => {
+    // Do something with the position prop
+  }, [position]);
+
+  return <group />;
+}
+```
+
+Transform controls will now be enabled for the transform mode selected. Remember the mode is only enabled if the component [takes the corresponding transform prop](/docs/building-your-scene/scene/visual-controls#transform-controls).
+
+Don't want the transform controls to be affected by parent object transforms? Render an object through a portal:
+
+```tsx {8,14}
+import { createPortal, useThree } from "@react-three/fiber";
+
+export function MyVirtualSceneComponent({
+  position,
+}: {
+  position: [x: number, y: number, z: number];
+}) {
+  const scene = useThree((state) => state.scene);
+
+  useEffect(() => {
+    // Do something with the position prop
+  }, [position]);
+
+  return createPortal(<group />, scene);
+}
+```
