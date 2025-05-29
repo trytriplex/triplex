@@ -88,8 +88,12 @@ export function createServer({
 
   app.use(async (ctx, next) => {
     try {
+      log.debug(`${ctx.request.method} ${ctx.request.url.toString()}`);
       await next();
     } catch (error) {
+      const err = error as Error;
+      log.error(err.message);
+
       if (isHttpError(error)) {
         ctx.response.body = { error: error.message };
         ctx.response.status = 500;
@@ -97,6 +101,16 @@ export function createServer({
         throw error;
       }
     }
+  });
+
+  tws.UNSAFE_use((ctx, next) => {
+    if (ctx.type === "route") {
+      log.debug(`WS(route) ${ctx.path}`);
+    } else {
+      log.debug(`WS(event) ${ctx.name}`);
+    }
+
+    return next();
   });
 
   app.use((ctx, next) => {
@@ -112,16 +126,6 @@ export function createServer({
     );
 
     return next();
-  });
-
-  app.use(async (_, next) => {
-    try {
-      await next();
-    } catch (error) {
-      const err = error as Error;
-      log.error(err.message);
-      throw error;
-    }
   });
 
   router.get("/healthcheck", (context) => {

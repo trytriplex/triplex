@@ -5,7 +5,13 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import "./styles.css";
-import { init } from "@sentry/react";
+import {
+  browserProfilingIntegration,
+  captureConsoleIntegration,
+  httpClientIntegration,
+  init,
+  setTag,
+} from "@sentry/react";
 import { initFeatureGates } from "@triplex/lib/fg";
 import { LoadingLogo } from "@triplex/lib/loader";
 import { TelemetryProvider } from "@triplex/ux";
@@ -21,14 +27,19 @@ import { EnsureCodeValidity } from "./features/invariants/ensure-code-validity";
 import { EnsureDependencies } from "./features/invariants/ensure-dependencies";
 import { preloadSubscription } from "./hooks/ws";
 
-if (
-  process.env.NODE_ENV === "production" &&
-  window.triplex.isTelemetryEnabled
-) {
-  init({
-    dsn: "https://cae61a2a840cbbe7f17e240c99ad0346@o4507990276177920.ingest.us.sentry.io/4507990321725440",
-  });
-}
+init({
+  dsn: "https://cae61a2a840cbbe7f17e240c99ad0346@o4507990276177920.ingest.us.sentry.io/4507990321725440",
+  enabled: window.triplex.isTelemetryEnabled,
+  environment: window.triplex.env.fgEnvironmentOverride,
+  integrations: [
+    browserProfilingIntegration(),
+    captureConsoleIntegration({ levels: ["error"] }),
+    httpClientIntegration(),
+  ],
+  sendDefaultPii: true,
+});
+
+setTag("name", "app");
 
 preloadSubscription(
   "/scene/:path/:exportName/props",

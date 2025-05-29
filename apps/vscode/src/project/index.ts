@@ -4,7 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { init } from "@sentry/node";
+import { captureConsoleIntegration, init, setTag } from "@sentry/node";
 import { createServer as createClientServer } from "@triplex/client";
 import { createForkLogger } from "@triplex/lib/log";
 import { type FGEnvironment } from "@triplex/lib/types";
@@ -15,7 +15,7 @@ import {
   type TriplexPorts,
 } from "@triplex/server";
 
-const log = createForkLogger("fork_process");
+const log = createForkLogger("triplex:fork_process");
 
 export type Args = {
   config: ReconciledTriplexConfig;
@@ -37,11 +37,14 @@ async function main() {
 
   const data: Args = JSON.parse(process.env.TRIPLEX_DATA);
 
-  if (process.env.NODE_ENV === "production" && data.isTelemetryEnabled) {
-    init({
-      dsn: "https://cae61a2a840cbbe7f17e240c99ad0346@o4507990276177920.ingest.us.sentry.io/4507990321725440",
-    });
-  }
+  init({
+    dsn: "https://cae61a2a840cbbe7f17e240c99ad0346@o4507990276177920.ingest.us.sentry.io/4507990321725440",
+    enabled: data.isTelemetryEnabled,
+    environment: data.fgEnvironmentOverride,
+    integrations: [captureConsoleIntegration({ levels: ["error"] })],
+  });
+
+  setTag("name", "fork_process");
 
   log.debug("start server");
   const server = await createServer(data);

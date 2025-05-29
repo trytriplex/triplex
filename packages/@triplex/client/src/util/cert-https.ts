@@ -5,14 +5,17 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import fsp from "node:fs/promises";
+import { createForkLogger } from "@triplex/lib/log";
 import { join } from "@triplex/lib/path";
 import { createCertificate } from "./cert-gen";
+
+const log = createForkLogger("client_cert");
 
 export async function getCertificate(
   cacheDir: string,
   name?: string,
   domains?: string[],
-) {
+): Promise<string | undefined> {
   const cachePath = join(cacheDir, "_cert.pem");
 
   try {
@@ -26,12 +29,21 @@ export async function getCertificate(
     }
 
     return content;
-  } catch {
-    const content = createCertificate(name, domains);
+  } catch (error) {
+    const err = error as Error;
+    log.debug(err.message);
 
-    await fsp.mkdir(cacheDir, { recursive: true });
-    await fsp.writeFile(cachePath, content);
+    try {
+      const content = createCertificate(name, domains);
 
-    return content;
+      await fsp.mkdir(cacheDir, { recursive: true });
+      await fsp.writeFile(cachePath, content);
+
+      return content;
+    } catch (error) {
+      const err = error as Error;
+      log.debug(err.message);
+      return undefined;
+    }
   }
 }

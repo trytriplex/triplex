@@ -10,6 +10,8 @@ import { WebSocketServer, type WebSocket } from "ws";
 import { decodeParams, stringifyJSON } from "./string";
 import {
   type AliveWebSocket,
+  type MessageContext,
+  type MiddlewareHandler,
   type RouteHandler,
   type RouteOpts,
   type RouteParams,
@@ -77,6 +79,40 @@ export function createWSServer() {
   const eventHandlers: Record<string, (ws: WebSocket) => void> = {};
   const wss = new WebSocketServer<AliveWebSocket>({ server });
   const routeHandlers: RouteHandler[] = [];
+  const middleware: MiddlewareHandler[] = [];
+
+  /**
+   * Processes each middleware sequentially. Each middleware must call `next` to
+   * then continue to each middleware and then the root one.
+   *
+   * Only calling `next` once is valid, calling it multiple times will no-op.
+   */
+  function processMiddleware(
+    context: MessageContext,
+    root: () => void | Promise<void>,
+  ) {
+    const processed: number[] = [];
+    let index = 0;
+
+    function next() {
+      if (processed.includes(index)) {
+        // We've already processed this so skip it.
+        return;
+      }
+
+      if (index >= middleware.length) {
+        return root();
+      }
+
+      const nextMiddleware = middleware[index];
+      processed.push(index);
+      index += 1;
+
+      return Promise.resolve(nextMiddleware(context, next));
+    }
+
+    return next();
+  }
 
   function ping() {
     wss.clients.forEach((ws) => {
@@ -101,18 +137,26 @@ export function createWSServer() {
       const path = rawData.toString();
 
       if (path.startsWith("/")) {
-        for (let i = 0; i < routeHandlers.length; i++) {
-          const handler = routeHandlers[i](path);
+        const context: MessageContext = { path, type: "route" };
+
+        return processMiddleware(context, () => {
+          for (let i = 0; i < routeHandlers.length; i++) {
+            const handler = routeHandlers[i](path);
+            if (handler) {
+              handler(ws);
+              return;
+            }
+          }
+        });
+      } else {
+        const context: MessageContext = { name: path, type: "event" };
+
+        return processMiddleware(context, () => {
+          const handler = eventHandlers[path];
           if (handler) {
             handler(ws);
-            return;
           }
-        }
-      } else {
-        const handler = eventHandlers[path];
-        if (handler) {
-          handler(ws);
-        }
+        });
       }
     });
   });
@@ -235,26 +279,51 @@ export function createWSServer() {
     return {} as any;
   }
 
+  /**
+   * **use()**
+   *
+   * Registers a middleware handler that will be called when messages are
+   * received but before they've matched with a route handler or event. You must
+   * call `next` to continue processing the message.
+   *
+   * @experimental
+   */
+  function UNSAFE_use(callback: MiddlewareHandler) {
+    middleware.push(callback);
+
+    return () => {
+      const index = middleware.indexOf(callback);
+      if (index !== -1) {
+        middleware.splice(index, 1);
+      }
+    };
+  }
+
+  /**
+   * **close()**
+   *
+   * Stops the server and closes all connections.
+   */
+  function close() {
+    wss.close();
+    server.close();
+  }
+
+  /**
+   * **listen()**
+   *
+   * Listens on the specified port.
+   */
+  function listen(port: number, hostname?: string) {
+    server.listen(port, hostname);
+  }
+
   return {
-    /**
-     * **close()**
-     *
-     * Stops the server and closes all connections.
-     */
-    close() {
-      wss.close();
-      server.close();
-    },
+    UNSAFE_use,
+    close,
     collectTypes,
     event,
-    /**
-     * **listen()**
-     *
-     * Listens on the specified port.
-     */
-    listen(port: number, hostname?: string) {
-      server.listen(port, hostname);
-    },
+    listen,
     route,
   };
 }

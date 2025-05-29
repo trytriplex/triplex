@@ -10,9 +10,9 @@ export interface AliveWebSocket extends WebSocket {
   isAlive: boolean;
 }
 
-export type RouteHandler = (
-  path: string,
-) => ((ws: WebSocket) => Promise<void>) | false;
+export type RouteHandler = (path: string) => RouteCallback | false;
+
+export type RouteCallback = (ws: WebSocket) => Promise<void>;
 
 export type UnionToIntersection<U> = (
   U extends unknown ? (k: U) => void : never
@@ -44,3 +44,18 @@ export type RouteParams<TRoute extends string> =
   ValidateShape<ExtractParams<TRoute>, object> extends never
     ? ExtractParams<TRoute>
     : never;
+
+export type MessageContext =
+  | {
+      path: string;
+      type: "route";
+    }
+  | {
+      name: string;
+      type: "event";
+    };
+
+export type MiddlewareHandler = (
+  context: MessageContext,
+  next: () => unknown | Promise<unknown>,
+) => unknown | Promise<unknown>;
