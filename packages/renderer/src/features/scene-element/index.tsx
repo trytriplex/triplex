@@ -39,7 +39,7 @@ const disabledWhenTriplexCamera = [
   /^XROrigin$/,
 ];
 
-const disabledWhenEditState = [/^XROrigin$/];
+const disabledWhenEditState: RegExp[] = [/^XROrigin$/];
 
 const passThroughWhenTriplexCamera = [/^Ecctrl$/, /Controls$/];
 

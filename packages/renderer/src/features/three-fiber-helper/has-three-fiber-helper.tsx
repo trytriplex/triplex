@@ -19,14 +19,14 @@ export const hasThreeFiberHelper = (
   }
 
   switch (meta.name) {
-    case "rectAreaLight":
-    case "pointLight":
     case "ambientLight":
-    case "hemisphereLight":
-    case "spotLight":
     case "directionalLight":
-    case "perspectiveCamera":
+    case "hemisphereLight":
     case "orthographicCamera":
+    case "perspectiveCamera":
+    case "pointLight":
+    case "rectAreaLight":
+    case "spotLight":
       return meta.name;
 
     default:
