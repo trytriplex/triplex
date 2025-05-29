@@ -41,7 +41,7 @@
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
     "@types/raf-schd": "^4.0.3",
-    "@types/react": "^19.1.4",
+    "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",
     "@types/three": "^0.171.0",
     "@types/tinycolor2": "^1.4.6",

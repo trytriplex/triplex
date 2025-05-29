@@ -33,7 +33,7 @@
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
     "@testing-library/dom": "^10.4.0",
-    "@types/react": "^19.1.4",
+    "@types/react": "^19.1.6",
     "react": "^19.1.0",
     "typescript": "^5.8.3",
     "vite": "^6.3.5"
