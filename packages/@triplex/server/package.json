@@ -30,7 +30,7 @@
     "ws": "^8.12.0"
   },
   "devDependencies": {
-    "@react-three/drei": "^10.0.7",
+    "@react-three/drei": "^10.1.1",
     "@react-three/fiber": "^9.1.2",
     "@react-three/rapier": "^2.1.0",
     "@triplex/lib": "0.69.16",
@@ -39,7 +39,7 @@
     "@types/hosted-git-info": "^3.0.5",
     "@types/node": "^18.11.18",
     "@types/picomatch": "^2.3.0",
-    "@types/react": "^19.1.4",
+    "@types/react": "^19.1.6",
     "@types/three": "^0.171.0",
     "@types/ws": "^8.5.4",
     "git-remote-origin-url": "^3.1.0",

@@ -20,7 +20,7 @@
   "devDependencies": {
     "@types/kill-port": "^2.0.3",
     "@types/node": "^18.11.18",
-    "@types/react": "^19.1.4",
+    "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",
     "kill-port": "^2.0.1",
     "tree-kill": "^1.2.2",

@@ -17,7 +17,7 @@ Make sure to run `pnpm dedupe` after upgrading.
 - Upgrade all `react` dependencies:
 
   ```bash
-  pnpm upgrade -r react@latest react-dom@latest @types/react@latest @types/react-dom@latest eslint-plugin-react-compiler@latest babel-plugin-react-compiler@latest
+  pnpm upgrade -r react@latest react-dom@latest @types/react@latest @types/react-dom@latest eslint-plugin-react-compiler@latest babel-plugin-react-compiler@latest react-compiler-runtime@latest
   ```
 
 - Upgrade all `typescript` dependencies:

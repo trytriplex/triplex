@@ -65,7 +65,7 @@
   "devDependencies": {
     "@swc/cli": "^0.1.59",
     "@swc/core": "^1.6.5",
-    "@types/react": "^19.1.4",
+    "@types/react": "^19.1.6",
     "typescript": "^5.8.3",
     "vite": "^6.3.5"
   },

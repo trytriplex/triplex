@@ -7,7 +7,7 @@
     "typedef": "echo \"Not implemented\""
   },
   "dependencies": {
-    "@types/react": "^19.1.4",
+    "@types/react": "^19.1.6",
     "react": "^19.1.0",
     "react-dom": "^19.1.0"
   }
