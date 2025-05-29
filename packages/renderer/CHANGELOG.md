@@ -1,5 +1,11 @@
 # @triplex/renderer
 
+## 0.71.29
+
+### Patch Changes
+
+- b458870: Add skeleton helper for skinned mesh.
+
 ## 0.71.28
 
 ### Patch Changes

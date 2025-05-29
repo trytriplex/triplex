@@ -1,5 +1,11 @@
 # @triplex/websocks-server
 
+## 0.0.7
+
+### Patch Changes
+
+- 030ed16: Add `UNSAFE_use` api that is called for every message recieved.
+
 ## 0.0.6
 
 ### Patch Changes

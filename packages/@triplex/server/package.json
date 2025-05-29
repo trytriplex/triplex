@@ -1,6 +1,6 @@
 {
   "name": "@triplex/server",
-  "version": "0.71.15",
+  "version": "0.71.16",
   "private": true,
   "repository": "https://github.com/trytriplex/triplex-monorepo",
   "author": {
@@ -34,7 +34,7 @@
     "@react-three/fiber": "^9.1.2",
     "@react-three/rapier": "^2.1.0",
     "@triplex/lib": "0.69.16",
-    "@triplex/websocks-server": "0.0.6",
+    "@triplex/websocks-server": "0.0.7",
     "@types/glob-parent": "^5.1.1",
     "@types/hosted-git-info": "^3.0.5",
     "@types/node": "^18.11.18",

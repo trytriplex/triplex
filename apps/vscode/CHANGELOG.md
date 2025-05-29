@@ -1,5 +1,14 @@
 # @triplex/vscode
 
+## 0.2.41
+
+### Patch Changes
+
+- 030ed16: Sentry integrations have been turned on to hopefully provide more insight into call stack exceptions.
+- Updated dependencies [030ed16]
+  - @triplex/server@0.71.16
+  - @triplex/client@0.70.37
+
 ## 0.2.40
 
 ### Patch Changes
