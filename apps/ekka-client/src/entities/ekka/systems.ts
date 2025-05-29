@@ -1,6 +1,6 @@
 import { createSystem } from "@triplex/api/koota";
 import { Not, Or } from "koota";
-import { PositionChanged, Scale } from "../shared/traits";
+import { PositionChanged } from "../shared/traits";
 import {
   Damage,
   Health,
@@ -12,7 +12,6 @@ import {
 import {
   DamageModifier,
   IsEkka,
-  IsEkkaEye,
   State,
   TimeSinceLastStateChange,
 } from "./traits";
@@ -37,24 +36,6 @@ export const ekkaStateChange = createSystem((world) => {
     entity.set(TimeSinceLastStateChange, { value: 0 });
   }
 }, "stepEkkaState");
-
-export const directEyeToPlayer = createSystem((world) => {
-  const ekkaEntity = world.queryFirst(IsEkka, State);
-  const eyeEntities = world.query(IsEkkaEye);
-  const state = ekkaEntity?.get(State);
-
-  if (!state) {
-    return;
-  }
-
-  for (const eye of eyeEntities) {
-    if (state.value === "active") {
-      eye.set(Scale, { x: 1, y: 1, z: 2 });
-    } else {
-      eye.set(Scale, { x: 1, y: 1, z: 1 });
-    }
-  }
-}, "directEyeToPlayer");
 
 export const stepStateChangeTimer = createSystem((world, delta) => {
   const entity = world.queryFirst(TimeSinceLastStateChange);

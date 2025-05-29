@@ -2,7 +2,7 @@ import { XROrigin } from "@react-three/xr";
 import { type Entity } from "koota";
 import { useWorld } from "koota/react";
 import { useEffect, useRef } from "react";
-import { type Vector3Tuple, type Group } from "three";
+import { type Group, type Vector3Tuple } from "three";
 import { Mesh, Position, Rotation, Velocity } from "../shared/traits";
 import { Health, IsXRPlayer } from "./traits";
 
@@ -34,11 +34,5 @@ export function XRPlayerEntity({
     };
   }, [world, x, y, z]);
 
-  return (
-    <XROrigin ref={ref}>
-      <mesh position={[0, 0.2, 0]}>
-        <boxGeometry args={[0.15, 0.4, 0.15]} />
-      </mesh>
-    </XROrigin>
-  );
+  return <XROrigin ref={ref} />;
 }

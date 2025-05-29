@@ -1,7 +1,9 @@
 import { useWorld } from "koota/react";
 import { useEffect, useRef } from "react";
-import { type Vector3Tuple, type Object3D } from "three";
+import { type Object3D, type Vector3Tuple } from "three";
+import { Kasa } from "../../components/characters/kasa";
 import { Mesh, Position } from "../shared/traits";
+import { XRPlayerEntity } from "../xr-player";
 import { EkkaEyeEntity } from "./eye";
 import {
   DamageModifier,
@@ -12,8 +14,10 @@ import {
 
 export function EkkaEntity({
   position = [0, 0, 0],
+  scale,
 }: {
   position?: Vector3Tuple;
+  scale?: number;
 }) {
   const world = useWorld();
   const ref = useRef<Object3D>(null);
@@ -35,12 +39,20 @@ export function EkkaEntity({
   }, [world, x, y, z]);
 
   return (
-    <group ref={ref}>
-      <mesh position={[0, 1.5, 0]}>
-        <boxGeometry args={[0.8, 3, 0.8]} />
-        <meshStandardMaterial />
-      </mesh>
-      <EkkaEyeEntity position={[0, 2.72, 0]} />
+    <group castShadow ref={ref} scale={scale}>
+      <Kasa>
+        <EkkaEyeEntity position={[-0.036, 0.34, 0.05]} />
+        <EkkaEyeEntity position={[0.05, 0.34, 0.04]} />
+      </Kasa>
     </group>
+  );
+}
+
+export function Example() {
+  return (
+    <>
+      <EkkaEntity />
+      <XRPlayerEntity position={[0, 0, 1.49]} />
+    </>
   );
 }

@@ -27,8 +27,8 @@ export function ExitEntity({
 
   return (
     <group ref={ref}>
-      <mesh position={[0, 0.5, 0]}>
-        <boxGeometry args={[0.7, 1, 0.1]} />
+      <mesh position={[0, 1, -9.1]}>
+        <boxGeometry args={[1, 2, 0.1]} />
         <meshBasicMaterial color="white" />
       </mesh>
     </group>

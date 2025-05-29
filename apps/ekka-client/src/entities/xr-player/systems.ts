@@ -21,7 +21,7 @@ export const locomotionXR = createSystem((world, delta, state, store) => {
     (velocity, rotationYChange) => {
       entity.set(Velocity, {
         x: velocity.x,
-        y: velocity.y,
+        y: 0,
         z: velocity.z,
       });
 

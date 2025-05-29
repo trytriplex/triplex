@@ -14,11 +14,8 @@ export function EkkaEyeEntity({
   const ekkaEntity = useQueryFirst(IsEkka);
   const ekkaState = useTrait(ekkaEntity, State);
   const [x, y, z] = position;
-  const eyeColor = ekkaState
-    ? ekkaState.value === "active"
-      ? "red"
-      : "green"
-    : "white";
+  const isActive = ekkaState?.value === "active";
+  const eyeColor = ekkaState ? (isActive ? "red" : "green") : "white";
 
   useEffect(() => {
     const entity = world.spawn(
@@ -36,9 +33,13 @@ export function EkkaEyeEntity({
 
   return (
     <group ref={ref}>
-      <mesh position={[0, 0, 0.25]}>
-        <boxGeometry args={[0.2, 0.2, 0.5]} />
-        <meshBasicMaterial color={eyeColor} />
+      <mesh position={[0, 0, 0]}>
+        <sphereGeometry args={[0.025]} />
+        <meshBasicMaterial
+          color={eyeColor}
+          opacity={isActive ? 1 : 0}
+          transparent
+        />
       </mesh>
     </group>
   );

@@ -7,7 +7,6 @@ import { useState } from "react";
 import {
   applyDamage,
   damageWhenMoved,
-  directEyeToPlayer,
   ekkaStateChange,
   stepPlayerInvulnerability,
   stepStateChangeTimer,
@@ -29,7 +28,6 @@ const systems = [
   stepPlayerInvulnerability,
   applyDamage,
   ekkaStateChange,
-  directEyeToPlayer,
   locomotionXRDevOnly,
   locomotionXR,
   applyVelocity,
