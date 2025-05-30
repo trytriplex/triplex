@@ -62,16 +62,24 @@ async function main() {
           : "interactive";
 
         if (mode === "non-interactive") {
-          // Validate inputs.
-          if (!["npm", "yarn", "pnpm"].includes(args.pkgManager)) {
+          // Check if we're using a Deno template
+          const isDenoTemplate = templateName.endsWith("-deno");
+          
+          // Only validate package manager if not a Deno template
+          if (!isDenoTemplate && !["npm", "yarn", "pnpm"].includes(args.pkgManager)) {
             program.error(
               `The package manager "${args.pkgManager}" is not supported.`,
             );
           }
+          
+          // Set packageManager to "deno" for Deno templates
+          if (isDenoTemplate) {
+            packageManager = "deno";
+          }
         } else {
-          const response = await prompt<{
+          // First ask for project name and template
+          const initialResponse = await prompt<{
             name: string;
-            pkgManager: "npm" | "pnpm" | "yarn";
             template: string;
           }>([
             {
@@ -89,21 +97,31 @@ async function main() {
               required: true,
               type: "select",
             },
-            {
-              choices:
-                packageManager !== DEFAULT_PKG_MANAGER
-                  ? [packageManager]
-                  : packageManagers,
-              message: "What package manager do you use?",
-              name: "pkgManager",
-              required: true,
-              type: "select",
-            },
           ]);
 
-          templateName = response.template;
-          packageManager = response.pkgManager;
-          projectName = response.name;
+          projectName = initialResponse.name;
+          templateName = initialResponse.template;
+
+          // Only prompt for package manager if not a Deno template
+          if (!templateName.endsWith("-deno")) {
+            const pkgResponse = await prompt<{
+              pkgManager: "npm" | "pnpm" | "yarn";
+            }>([
+              {
+                choices:
+                  packageManager !== DEFAULT_PKG_MANAGER
+                    ? [packageManager]
+                    : packageManagers,
+                message: "What package manager do you use?",
+                name: "pkgManager",
+                required: true,
+                type: "select",
+              },
+            ]);
+            packageManager = pkgResponse.pkgManager;
+          } else {
+            packageManager = "deno";
+          }
         }
 
         const { dir, open } = await init({
