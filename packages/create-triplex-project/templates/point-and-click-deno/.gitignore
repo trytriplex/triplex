@@ -1,0 +1,11 @@
+node_modules
+build
+dist
+yarn.lock
+package-lock.json
+pnpm-lock.yaml
+*.tgz
+*.log
+*.tsbuildinfo
+.vite/deps/
+deno.lock
