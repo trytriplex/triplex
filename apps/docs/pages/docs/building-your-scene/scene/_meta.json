@@ -3,9 +3,5 @@
   "visual-controls": "",
   "input-controls": "",
   "play-controls": "",
-  "scene-helpers": "",
-  "webxr": {
-    "title": "WebXR",
-    "type": "hidden"
-  }
+  "scene-helpers": ""
 }

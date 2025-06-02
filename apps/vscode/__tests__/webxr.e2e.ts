@@ -5,9 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { expect } from "@playwright/test";
-import { overrideFg, test } from "./utils/runner";
-
-overrideFg("xr_editing", true);
+import { test } from "./utils/runner";
 
 test("webxr panel ready", async ({ vsce }) => {
   await vsce.codelens("Plane").click();

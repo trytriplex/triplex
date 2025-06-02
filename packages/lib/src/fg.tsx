@@ -18,9 +18,15 @@ const overrideAdapter = new LocalOverrideAdapter();
 
 export async function initFeatureGates({
   environment,
+  overrides,
   userId,
 }: {
   environment: FGEnvironment;
+  /**
+   * Overrides the feature gate with a specific value if defined. When the value
+   * is undefined no override is applied.
+   */
+  overrides?: Record<string, boolean | undefined>;
   userId: string;
 }) {
   if (!userId) {
@@ -52,6 +58,14 @@ export async function initFeatureGates({
   if (typeof document !== "undefined") {
     document.documentElement.setAttribute("data-fg-user", userId);
     document.documentElement.setAttribute("data-fg-env", environment);
+  }
+
+  if (overrides) {
+    Object.entries(overrides).forEach(([key, value]) => {
+      if (typeof value === "boolean") {
+        overrideAdapter.overrideGate(key, value);
+      }
+    });
   }
 }
 

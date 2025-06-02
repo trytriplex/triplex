@@ -264,6 +264,9 @@ export interface TriplexConfig {
    *
    * This is inherently unsafe and its usage can cause upgrading pain when new
    * versions of Triplex are released. Use with caution.
+   *
+   * See:
+   * https://triplex.dev/docs/api-reference/config-options/unsafe-vite-config
    */
   UNSAFE_viteConfig?: string;
   /**
@@ -272,28 +275,50 @@ export interface TriplexConfig {
    * available to be added to the open component as a `<primitive>` element.
    *
    * Defaults to `"assets"`.
+   *
+   * See: https://triplex.dev/docs/api-reference/config-options/assets-dir
    */
   assetsDir?: string;
   /**
    * An array of relative glob paths to select what files can be added to other
    * components. You can define multiple roots.
+   *
+   * See: https://triplex.dev/docs/api-reference/config-options/components
    */
   components?: string[];
   /**
    * Variables that are replaced when running your scenes. Works exactly the
    * same as the `define` option in Vite or the `DefinePlugin` in Webpack.
+   *
+   * See: https://triplex.dev/docs/api-reference/config-options/define
    */
   define?: Record<string, string | number | object | Array<unknown>>;
+  /**
+   * Unstable experimental features that are still in development. Use with
+   * caution.
+   */
+  experimental?: {
+    /**
+     * Enables Triplex WebXR support for 3D components.
+     *
+     * See: https://triplex.dev/docs/building-your-scene/webxr
+     */
+    xr_editing?: boolean;
+  };
   /**
    * An array of relative path globs to select what files can be opened by
    * Triplex. You can define multiple roots. Found files will be available to
    * open in the `File` > `Open` menu.
+   *
+   * See: https://triplex.dev/docs/api-reference/config-options/files
    */
   files?: string[];
   /**
    * Path to a provider component that can hold all React providers needed
    * during runtime. The component must be the default export and return
    * children.
+   *
+   * See: https://triplex.dev/docs/api-reference/config-options/provider
    */
   provider?: string;
   /**
@@ -301,6 +326,8 @@ export interface TriplexConfig {
    * server, such as images, videos, and GLTF/GLB files. For example if the
    * public directory has a `image.png` file then it will be made available at
    * the `"/image.png"` URL.
+   *
+   * See: https://triplex.dev/docs/api-reference/config-options/public-dir
    */
   publicDir?: string;
 }

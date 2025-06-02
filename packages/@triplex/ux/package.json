@@ -18,6 +18,11 @@
       "types": "./src/inputs/index.tsx",
       "module": "./src/inputs/index.tsx",
       "default": "./src/inputs/index.tsx"
+    },
+    "./icons": {
+      "types": "./src/icons.tsx",
+      "module": "./src/icons.tsx",
+      "default": "./src/icons.tsx"
     }
   },
   "files": [
@@ -57,6 +62,11 @@
         "types": "./dist/inputs/index.d.ts",
         "module": "./dist/inputs/index.js",
         "default": "./dist/inputs/index.js"
+      },
+      "./icons": {
+        "types": "./dist/icons.d.ts",
+        "module": "./dist/icons.js",
+        "default": "./dist/icons.js"
       }
     }
   }

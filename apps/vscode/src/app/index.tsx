@@ -49,6 +49,7 @@ preloadSubscription(
 async function bootstrap() {
   await initFeatureGates({
     environment: window.triplex.env.fgEnvironmentOverride,
+    overrides: window.triplex.env.config.experimental,
     userId: window.triplex.userId,
   });
 

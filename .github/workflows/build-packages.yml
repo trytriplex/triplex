@@ -37,7 +37,7 @@ jobs:
         run: pnpm --filter @triplex/* build
 
       - name: Typecheck
-        run: pnpm --filter @triplex/* --filter !@triplex/electron --filter !@triplex/cloud --filter create-triplex-project typedef
+        run: pnpm --filter "@triplex/*" --filter \!@triplex/electron --filter \!@triplex/cloud --filter create-triplex-project typedef
 
       - name: Ensure clean git
         run: node ./scripts/ensure-clean-git.js

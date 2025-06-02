@@ -1,6 +1,7 @@
 {
   "scene": "Scene",
   "providers": "",
+  "webxr": "WebXR",
   "console-logs": "",
   "ui-glossary": "Learn the UI"
 }
