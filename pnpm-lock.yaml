@@ -186,7 +186,7 @@ importers:
         version: link:../../packages/lib
       '@triplex/ux':
         specifier: 0.69.25
-        version: link:../../packages/@triplex/ux
+        version: link:../../packages/ux
       '@types/cors':
         specifier: ^2.8.17
         version: 2.8.17
@@ -427,7 +427,7 @@ importers:
         version: link:../../packages/lib
       '@triplex/ux':
         specifier: 0.69.25
-        version: link:../../packages/@triplex/ux
+        version: link:../../packages/ux
       '@triplex/websocks-client':
         specifier: 0.0.8
         version: link:../../packages/websocks-client
@@ -1089,7 +1089,7 @@ importers:
         version: link:../../lib
       '@triplex/ux':
         specifier: 0.69.25
-        version: link:../ux
+        version: link:../../ux
       '@triplex/websocks-client':
         specifier: 0.0.8
         version: link:../../websocks-client
@@ -1263,49 +1263,6 @@ importers:
       vite:
         specifier: ^6.0.7
         version: 6.3.5(@types/node@18.11.18)(jiti@1.21.6)(tsx@4.19.2)(yaml@2.5.1)
-
-  packages/@triplex/ux:
-    dependencies:
-      '@radix-ui/react-icons':
-        specifier: ^1.3.0
-        version: 1.3.0(react@19.1.0)
-      '@radix-ui/react-scroll-area':
-        specifier: ^1.0.5
-        version: 1.0.5(@types/react-dom@19.1.5(@types/react@19.1.6))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@triplex/bridge':
-        specifier: 0.70.9
-        version: link:../../bridge
-      '@triplex/lib':
-        specifier: 0.69.16
-        version: link:../../lib
-      react:
-        specifier: ^19.0.0
-        version: 19.1.0
-      tinycolor2:
-        specifier: ^1.6.0
-        version: 1.6.0
-    devDependencies:
-      '@swc/cli':
-        specifier: ^0.1.59
-        version: 0.1.59(@swc/core@1.6.5(@swc/helpers@0.5.15))(chokidar@3.5.3)
-      '@swc/core':
-        specifier: ^1.6.5
-        version: 1.6.5(@swc/helpers@0.5.15)
-      '@testing-library/react':
-        specifier: ^14.0.0
-        version: 14.0.0(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
-      '@triplex/server':
-        specifier: 0.71.16
-        version: link:../server
-      '@types/react':
-        specifier: ^19.0.8
-        version: 19.1.6
-      '@types/tinycolor2':
-        specifier: ^1.4.3
-        version: 1.4.6
-      typescript:
-        specifier: ^5.8.3
-        version: 5.8.3
 
   packages/api:
     dependencies:
@@ -1563,6 +1520,49 @@ importers:
       vite-plugin-glsl:
         specifier: ^1.4.1
         version: 1.4.1(rollup@4.40.2)(vite@6.3.5(@types/node@20.16.5)(jiti@1.21.6)(tsx@4.19.2)(yaml@2.5.1))
+
+  packages/ux:
+    dependencies:
+      '@radix-ui/react-icons':
+        specifier: ^1.3.0
+        version: 1.3.0(react@19.1.0)
+      '@radix-ui/react-scroll-area':
+        specifier: ^1.0.5
+        version: 1.0.5(@types/react-dom@19.1.5(@types/react@19.1.6))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@triplex/bridge':
+        specifier: 0.70.9
+        version: link:../bridge
+      '@triplex/lib':
+        specifier: 0.69.16
+        version: link:../lib
+      react:
+        specifier: ^19.0.0
+        version: 19.1.0
+      tinycolor2:
+        specifier: ^1.6.0
+        version: 1.6.0
+    devDependencies:
+      '@swc/cli':
+        specifier: ^0.1.59
+        version: 0.1.59(@swc/core@1.6.5(@swc/helpers@0.5.15))(chokidar@3.5.3)
+      '@swc/core':
+        specifier: ^1.6.5
+        version: 1.6.5(@swc/helpers@0.5.15)
+      '@testing-library/react':
+        specifier: ^14.0.0
+        version: 14.0.0(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
+      '@triplex/server':
+        specifier: 0.71.16
+        version: link:../@triplex/server
+      '@types/react':
+        specifier: ^19.0.8
+        version: 19.1.6
+      '@types/tinycolor2':
+        specifier: ^1.4.3
+        version: 1.4.6
+      typescript:
+        specifier: ^5.8.3
+        version: 5.8.3
 
   packages/websocks-client:
     devDependencies:
