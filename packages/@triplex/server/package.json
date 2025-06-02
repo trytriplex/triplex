@@ -37,7 +37,7 @@
     "@triplex/websocks-server": "0.0.7",
     "@types/glob-parent": "^5.1.1",
     "@types/hosted-git-info": "^3.0.5",
-    "@types/node": "^18.11.18",
+    "@types/node": "^22.15.17",
     "@types/picomatch": "^2.3.0",
     "@types/react": "^19.1.6",
     "@types/three": "^0.171.0",

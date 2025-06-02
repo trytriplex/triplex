@@ -235,6 +235,7 @@
     "@triplex/lib": "0.69.16",
     "@triplex/ux": "0.69.25",
     "@triplex/websocks-client": "0.0.8",
+    "@types/node": "^22.15.17",
     "@types/raf-schd": "^4.0.3",
     "@types/react": "^19.1.6",
     "@types/react-dom": "^19.1.5",

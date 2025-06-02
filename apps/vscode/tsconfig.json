@@ -7,9 +7,9 @@
     "swc": true
   },
   "compilerOptions": {
-    "baseUrl": ".",
     "outDir": "./dist",
     "emitDeclarationOnly": false,
-    "noEmit": true
+    "noEmit": true,
+    "types": ["@types/node"]
   }
 }

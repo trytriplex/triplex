@@ -3,7 +3,6 @@
   "include": ["."],
   "exclude": ["dist", "build", "node_modules", "**/__mocks__"],
   "compilerOptions": {
-    "baseUrl": ".",
     "outDir": "./dist"
   }
 }

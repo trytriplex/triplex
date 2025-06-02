@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-    "baseUrl": ".",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "incremental": true,
@@ -15,7 +14,7 @@
     },
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "strict": true,
+    "strict": true
   },
   "include": [".", ".triplex/*.tsx"],
   "exclude": ["node_modules"]

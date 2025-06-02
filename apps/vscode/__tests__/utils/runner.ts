@@ -17,8 +17,8 @@ import {
   type WorkerInfo,
 } from "@playwright/test";
 import { resolveCliArgsFromVSCodeExecutablePath } from "@vscode/test-electron";
-import pkg from "package.json";
 import { resolveExecPath, runUseWithTrace } from "../../../../test/playwright";
+import pkg from "../../package.json";
 import { ExtensionPage } from "./po";
 
 async function tryInstallBundledExtension() {

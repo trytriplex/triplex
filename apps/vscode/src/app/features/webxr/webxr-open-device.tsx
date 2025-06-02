@@ -26,7 +26,7 @@ export function WebXROpenDevice() {
         headset, phone, or browser.{" "}
         <Link
           actionId="dialog_webxr_learn"
-          href="https://triplex.dev/docs/building-your-scene/scene/webxr"
+          href="https://triplex.dev/docs/building-your-scene/webxr"
         >
           Learn more
         </Link>

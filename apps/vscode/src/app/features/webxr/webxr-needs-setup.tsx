@@ -38,7 +38,7 @@ export function WebXRNeedsSetup() {
         </Button>
         <ButtonLink
           actionId="dialog_webxr_learn"
-          href="https://triplex.dev/docs/building-your-scene/scene/webxr"
+          href="https://triplex.dev/docs/building-your-scene/webxr"
         >
           Learn More
         </ButtonLink>
