@@ -1419,12 +1419,15 @@ importers:
 
   packages/lib:
     dependencies:
+      '@statsig/js-client':
+        specifier: ^3.17.2
+        version: 3.17.2
+      '@statsig/js-local-overrides':
+        specifier: ^3.17.2
+        version: 3.17.2
       react:
         specifier: ^19.0.0
         version: 19.1.0
-      statsig-js:
-        specifier: ^5.1.0
-        version: 5.1.0
     devDependencies:
       '@swc/cli':
         specifier: ^0.1.59
@@ -3689,6 +3692,15 @@ packages:
   '@sindresorhus/is@4.6.0':
     resolution: {integrity: sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==}
     engines: {node: '>=10'}
+
+  '@statsig/client-core@3.17.2':
+    resolution: {integrity: sha512-7jq4H2SinknR4L51lzaI2VodGR6BfO5paRRPAKubqGIG35NjwQ0Z0MozPCuR94aL0SV+VvwMsys3zavtdLV9Ng==}
+
+  '@statsig/js-client@3.17.2':
+    resolution: {integrity: sha512-wKlo0FA/h8TrNt+kJc9nHRIMcgHrpdgMrsQlK19gMy8wRDD0Xs5VIKnVN8MNP7JRNvQgEGaoXLR5eXyPQ8h3RA==}
+
+  '@statsig/js-local-overrides@3.17.2':
+    resolution: {integrity: sha512-DBT3Um8FaxswEarFtWdzBDQvR5xgd5E0ySIdklb+MXOwOpHxVxJdG96awYQ4LpF5NpZ+/LcrK9pL7JmkoLbC4w==}
 
   '@supabase/auth-js@2.68.0':
     resolution: {integrity: sha512-odG7nb7aOmZPUXk6SwL2JchSsn36Ppx11i2yWMIc/meUO2B2HK9YwZHPK06utD9Ql9ke7JKDbwGin/8prHKxxQ==}
@@ -6961,9 +6973,6 @@ packages:
     resolution: {integrity: sha512-2yTgeWTWzMWkHu6Jp9NKgePDaYHbntiwvYuuJLbbN9vl7DC9DvXKOB2BC3ZZ92D3cvV/aflH0osDfwpHepQ53w==}
     hasBin: true
 
-  js-sha256@0.11.0:
-    resolution: {integrity: sha512-6xNlKayMZvds9h1Y1VWc0fQHQ82BxTXizWPEtEeGvmOUYpBRy4gbWroHLpzowe6xiQhHpelCQiE7HEdznyBL9Q==}
-
   js-tokens@4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}
 
@@ -9171,10 +9180,6 @@ packages:
 
   stats.js@0.17.0:
     resolution: {integrity: sha512-hNKz8phvYLPEcRkeG1rsGmV5ChMjKDAWU7/OJJdDErPBNChQXxCo3WZurGpnWc6gZhAzEPFad1aVgyOANH1sMw==}
-
-  statsig-js@5.1.0:
-    resolution: {integrity: sha512-LTJUkJktM5/wf7CpBbifwKaV4Yq4rqFwi4DnVm8pMI7x8pTENyER8wp5feg+nZFyTv/0w4QPWmYUatFIMtvjFw==}
-    deprecated: Support for this package ends Jan 31 '25. Upgrade to the faster and smaller @statsig/js-client - see docs.statsig.com/js-migration
 
   statuses@2.0.1:
     resolution: {integrity: sha512-RwNA9Z/7PrK06rYLIzFMlaF+l73iwpzsqRIFgbMLbTcLD6cOao82TaWefPXQvB2fOC4AjuYSEndS7N/mTCbkdQ==}
@@ -12814,6 +12819,16 @@ snapshots:
   '@sindresorhus/is@0.7.0': {}
 
   '@sindresorhus/is@4.6.0': {}
+
+  '@statsig/client-core@3.17.2': {}
+
+  '@statsig/js-client@3.17.2':
+    dependencies:
+      '@statsig/client-core': 3.17.2
+
+  '@statsig/js-local-overrides@3.17.2':
+    dependencies:
+      '@statsig/client-core': 3.17.2
 
   '@supabase/auth-js@2.68.0':
     dependencies:
@@ -16823,8 +16838,6 @@ snapshots:
 
   jiti@1.21.6: {}
 
-  js-sha256@0.11.0: {}
-
   js-tokens@4.0.0: {}
 
   js-yaml@3.14.1:
@@ -19557,11 +19570,6 @@ snapshots:
       three: 0.172.0
 
   stats.js@0.17.0: {}
-
-  statsig-js@5.1.0:
-    dependencies:
-      js-sha256: 0.11.0
-      uuid: 9.0.1
 
   statuses@2.0.1: {}
 
