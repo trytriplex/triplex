@@ -147,7 +147,10 @@ export interface ProviderModule {
 
 export type UnknownComponent = (props: Record<string, unknown>) => JSX.Element;
 
-export type Config = { provider: string };
+export type Config = {
+  experimental: Record<string, boolean>;
+  provider: string;
+};
 
 export type BootstrapFunction = (
   container: HTMLElement,

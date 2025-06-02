@@ -28,6 +28,7 @@ export const bootstrap: BootstrapFunction = (container) => {
   return async (opts) => {
     await initFeatureGates({
       environment: opts.fgEnvironmentOverride,
+      overrides: opts.config.experimental,
       userId: opts.userId,
     });
 

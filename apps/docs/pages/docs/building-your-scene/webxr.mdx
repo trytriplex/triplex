@@ -1,0 +1,56 @@
+---
+title: Triplex WebXR
+description: View and edit your 3D components in WebXR.
+---
+
+import { VRGogglesIcon } from "@triplex/ux/icons";
+
+## Enabling the Feature
+
+Triplex WebXR is an experimental feature in active development. To enable it you need to turn on the feature gate inside your [Triplex config](/docs/api-reference/config-options):
+
+```json {2-4} filename=".triplex/config.json"
+{
+  "experimental": {
+    "xr_editing": true
+  }
+}
+```
+
+<KnowledgeCallout>
+  The renderer code for Triplex WebXR is open source and [available on
+  GitHub](https://github.com/trytriplex/triplex/tree/main/packages/renderer/src/features/webxr).
+  Contributions are welcome! If you want to help us improve the WebXR
+  experience, please check out the code and open a pull request.
+</KnowledgeCallout>
+
+## Get Started
+
+Open your 3D component by clicking the <ActionLink icon={VRGogglesIcon} name="Open in WebXR" /> action in the floating controls. If you don't have the `@react-three/xr` package installed you'll be prompted to install it.
+
+When ready there are three options to view your scene through WebXR:
+
+1. Send to Meta Quest — The WebXR scene gets sent to your Meta Quest headset.
+2. Open in Browser Emulator — For testing purposes, you can view the scene in a browser emulator that simulates a WebXR environment.
+3. Copy WebXR Link — The link that is sent to your headset, copy it to another device to view the scene in WebXR.
+
+## Available Controls
+
+When inside Triplex WebXR you can use the left controller to move around the scene, and the right controller to interact and transform elements.
+
+- <Kbd>Right Trigger</Kbd> — Select / deselect an object.
+- <Kbd>A Button</Kbd> — Cycle through the transform modes (translate, rotate,
+  scale).
+- <Kbd>B Button</Kbd> — Cycle through transform spaces (local, world).
+
+Any changes made through Triplex WebXR get synced back to the owning Triplex editor. To undo / redo / save changes you'll need to use the owning Triplex editor.
+
+## Common Questions
+
+### Why is there a certificate warning when opening the WebXR scene?
+
+WebXR requires a secure context, which means the page must be served over HTTPS. When running Triplex WebXR it uses a self-signed certificate and as such you can safely ignore this warning for local development purposes.
+
+## Next Steps
+
+For support and to learn more about this feature, report bugs, and suggest features, come [chat with the community on Discord](https://discord.gg/nBzRBUEs4b) or raise an issue on [GitHub](https://github.com/trytriplex/triplex/issues/new).

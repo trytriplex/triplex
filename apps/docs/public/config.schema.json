@@ -5,15 +5,15 @@
     "TriplexConfig": {
       "properties": {
         "UNSAFE_viteConfig": {
-          "description": "Relative path to a custom vite config. Use to define custom bundler configuration that otherwise can't be handled by default values.\n\nThis is inherently unsafe and its usage can cause upgrading pain when new versions of Triplex are released. Use with caution.",
+          "description": "Relative path to a custom vite config. Use to define custom bundler configuration that otherwise can't be handled by default values.\n\nThis is inherently unsafe and its usage can cause upgrading pain when new versions of Triplex are released. Use with caution.\n\nSee: https://triplex.dev/docs/api-reference/config-options/unsafe-vite-config",
           "type": "string"
         },
         "assetsDir": {
-          "description": "Folder inside the  {@link  publicDir }  folder where Triplex maintains static assets such as GLTF and GLB files. Files inside this directory are made available to be added to the open component as a `<primitive>` element.\n\nDefaults to `\"assets\"`.",
+          "description": "Folder inside the  {@link  publicDir }  folder where Triplex maintains static assets such as GLTF and GLB files. Files inside this directory are made available to be added to the open component as a `<primitive>` element.\n\nDefaults to `\"assets\"`.\n\nSee: https://triplex.dev/docs/api-reference/config-options/assets-dir",
           "type": "string"
         },
         "components": {
-          "description": "An array of relative glob paths to select what files can be added to other components. You can define multiple roots.",
+          "description": "An array of relative glob paths to select what files can be added to other components. You can define multiple roots.\n\nSee: https://triplex.dev/docs/api-reference/config-options/components",
           "items": {
             "type": "string"
           },
@@ -37,22 +37,32 @@
               }
             ]
           },
-          "description": "Variables that are replaced when running your scenes. Works exactly the same as the `define` option in Vite or the `DefinePlugin` in Webpack.",
+          "description": "Variables that are replaced when running your scenes. Works exactly the same as the `define` option in Vite or the `DefinePlugin` in Webpack.\n\nSee: https://triplex.dev/docs/api-reference/config-options/define",
+          "type": "object"
+        },
+        "experimental": {
+          "description": "Unstable experimental features that are still in development. Use with caution.",
+          "properties": {
+            "xr_editing": {
+              "description": "Enables Triplex WebXR support for 3D components.\n\nSee: https://triplex.dev/docs/building-your-scene/webxr",
+              "type": "boolean"
+            }
+          },
           "type": "object"
         },
         "files": {
-          "description": "An array of relative path globs to select what files can be opened by Triplex. You can define multiple roots. Found files will be available to open in the `File` > `Open` menu.",
+          "description": "An array of relative path globs to select what files can be opened by Triplex. You can define multiple roots. Found files will be available to open in the `File` > `Open` menu.\n\nSee: https://triplex.dev/docs/api-reference/config-options/files",
           "items": {
             "type": "string"
           },
           "type": "array"
         },
         "provider": {
-          "description": "Path to a provider component that can hold all React providers needed during runtime. The component must be the default export and return children.",
+          "description": "Path to a provider component that can hold all React providers needed during runtime. The component must be the default export and return children.\n\nSee: https://triplex.dev/docs/api-reference/config-options/provider",
           "type": "string"
         },
         "publicDir": {
-          "description": "Relative path to a folder used to expose files through the local dev server, such as images, videos, and GLTF/GLB files. For example if the public directory has a `image.png` file then it will be made available at the `\"/image.png\"` URL.",
+          "description": "Relative path to a folder used to expose files through the local dev server, such as images, videos, and GLTF/GLB files. For example if the public directory has a `image.png` file then it will be made available at the `\"/image.png\"` URL.\n\nSee: https://triplex.dev/docs/api-reference/config-options/public-dir",
           "type": "string"
         }
       },
