@@ -20,9 +20,8 @@ Yes. Aliases defined in your tsconfig.json are honored by Triplex. For example t
 ```json filename="tsconfig.json"
 {
   "compilerOptions": {
-    "baseUrl": "./src",
     "paths": {
-      "@components/*": ["components/*"]
+      "@components/*": ["./src/components/*"]
     }
   }
 }
