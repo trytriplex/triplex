@@ -60,7 +60,8 @@
     "typedef": "tsc"
   },
   "dependencies": {
-    "statsig-js": "^5.1.0"
+    "@statsig/js-client": "^3.17.2",
+    "@statsig/js-local-overrides": "^3.17.2"
   },
   "devDependencies": {
     "@swc/cli": "^0.1.59",
