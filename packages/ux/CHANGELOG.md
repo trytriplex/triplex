@@ -1,5 +1,14 @@
 # @triplex/ux
 
+## 0.69.26
+
+### Patch Changes
+
+- 689d15f: Fix select menus not having the correct color scheme for the users theme.
+- Updated dependencies [82103a4]
+- Updated dependencies [55feda2]
+  - @triplex/lib@0.69.17
+
 ## 0.69.25
 
 ### Patch Changes

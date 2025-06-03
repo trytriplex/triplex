@@ -1,5 +1,16 @@
 # @docs/triplex
 
+## 0.2.15
+
+### Patch Changes
+
+- 4546b3e: Upgrade three.js deps.
+- Updated dependencies [82103a4]
+- Updated dependencies [689d15f]
+- Updated dependencies [55feda2]
+  - @triplex/lib@0.69.17
+  - @triplex/ux@0.69.26
+
 ## 0.2.14
 
 ### Patch Changes

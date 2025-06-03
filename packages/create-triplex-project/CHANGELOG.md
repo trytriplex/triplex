@@ -1,5 +1,11 @@
 # create-triplex-project
 
+## 0.70.12
+
+### Patch Changes
+
+- 4546b3e: Upgrade three.js deps.
+
 ## 0.70.11
 
 ### Patch Changes

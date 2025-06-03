@@ -1,5 +1,17 @@
 # @triplex/vscode
 
+## 0.2.42
+
+### Patch Changes
+
+- 689d15f: Fix select menus not having the correct color scheme for the users theme.
+- 55feda2: Add experimental option to the Triplex config. The first available option is "xr_editing".
+- Updated dependencies [56b125d]
+- Updated dependencies [4546b3e]
+- Updated dependencies [55feda2]
+  - @triplex/server@0.71.17
+  - @triplex/client@0.70.38
+
 ## 0.2.41
 
 ### Patch Changes

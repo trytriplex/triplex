@@ -1,5 +1,11 @@
 # ekka-game
 
+## 0.1.3
+
+### Patch Changes
+
+- 4546b3e: Upgrade three.js deps.
+
 ## 0.1.2
 
 ### Patch Changes

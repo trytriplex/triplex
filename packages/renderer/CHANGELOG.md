@@ -1,5 +1,13 @@
 # @triplex/renderer
 
+## 0.71.30
+
+### Patch Changes
+
+- Updated dependencies [82103a4]
+- Updated dependencies [55feda2]
+  - @triplex/lib@0.69.17
+
 ## 0.71.29
 
 ### Patch Changes

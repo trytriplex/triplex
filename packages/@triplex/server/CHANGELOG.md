@@ -1,5 +1,13 @@
 # @triplex/server
 
+## 0.71.17
+
+### Patch Changes
+
+- 56b125d: Add debug_api to experimental options.
+- 4546b3e: Upgrade three.js deps.
+- 55feda2: Add experimental option to the Triplex config. The first available option is "xr_editing".
+
 ## 0.71.16
 
 ### Patch Changes
