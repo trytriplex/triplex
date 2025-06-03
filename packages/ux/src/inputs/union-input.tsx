@@ -4,7 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import type { Type } from "@triplex/server";
+import type { Type } from "@triplex/lib/types";
 import { useCallback, useLayoutEffect, useReducer, useRef } from "react";
 import { PropInput } from "./prop-input";
 import { type RenderInputsWithAction } from "./types";
