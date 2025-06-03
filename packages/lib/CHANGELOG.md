@@ -1,5 +1,12 @@
 # @triplex/lib
 
+## 0.69.17
+
+### Patch Changes
+
+- 82103a4: Upgrade statsig dependencies to the latest version.
+- 55feda2: Add experimental option to the Triplex config. The first available option is "xr_editing".
+
 ## 0.69.16
 
 ### Patch Changes
