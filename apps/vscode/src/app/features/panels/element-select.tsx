@@ -28,14 +28,14 @@ export function ElementSelect() {
   return (
     <Suspense
       fallback={
-        <select className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder h-[26px] w-full rounded-sm border px-1.5 focus:outline-none">
+        <select className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder h-[26px] w-full rounded-sm border px-1.5 [color-scheme:light_dark] focus:outline-none">
           <option>{context.exportName}</option>
         </select>
       }
     >
       <select
         aria-label="Switch component"
-        className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder h-[26px] w-full text-ellipsis whitespace-nowrap rounded-sm border px-1.5 focus:outline-none"
+        className="text-input focus:border-selected bg-input border-input placeholder:text-input-placeholder h-[26px] w-full text-ellipsis whitespace-nowrap rounded-sm border px-1.5 [color-scheme:light_dark] focus:outline-none"
         data-testid="ElementSelect"
         onChange={(e) => {
           const exportName = e.target.value;

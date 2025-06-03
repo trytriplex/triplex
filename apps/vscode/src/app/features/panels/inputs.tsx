@@ -285,7 +285,7 @@ export const renderPropInputs: RenderInputs = ({
             </Label>
             <select
               {...props}
-              className="text-input invalid:border-danger focus:border-selected bg-input border-input placeholder:text-input-placeholder mb-1 h-[26px] w-full rounded-sm border px-1.5 focus:outline-none"
+              className="text-input invalid:border-danger focus:border-selected bg-input border-input placeholder:text-input-placeholder mb-1 h-[26px] w-full rounded-sm border px-1.5 [color-scheme:light_dark] focus:outline-none"
               onChange={onChange}
               ref={ref}
             >

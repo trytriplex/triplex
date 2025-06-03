@@ -38,7 +38,7 @@ export function Menu({
       }}
     >
       <select
-        className="peer"
+        className="peer [color-scheme:light_dark]"
         id={id}
         onChange={(e) => {
           onSelect?.(e.target.value);
@@ -130,7 +130,7 @@ export function groupOptionsByGroup(options: MenuControl["options"]) {
   let currentGroupName: string | undefined;
 
   for (const option of options) {
-    const nextGroupName = "group" in option ? option.group ?? "" : "";
+    const nextGroupName = "group" in option ? (option.group ?? "") : "";
     if (currentGroupName !== nextGroupName) {
       currentGroupName = nextGroupName;
       groups.push([nextGroupName, [option]]);
