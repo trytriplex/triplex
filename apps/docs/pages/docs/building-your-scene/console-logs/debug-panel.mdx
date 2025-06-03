@@ -1,0 +1,53 @@
+---
+app: Triplex for VS Code
+description: Log data from anywhere in your components to the debug panel.
+---
+
+## Enabling the Feature
+
+The debug panel is an experimental feature. To enable it you need to turn on the feature gate inside your [Triplex config](/docs/api-reference/config-options):
+
+```json {2-4} filename=".triplex/config.json"
+{
+  "experimental": {
+    "debug_api": true
+  }
+}
+```
+
+## Installation
+
+To get types for the debug panel you need to install a package then update your `tsconfig.json` / `jsconfig.json` to inject global Triplex types.
+
+```bash filename="Terminal"
+npm i @triplex/api
+```
+
+```json {3} filename="tsconfig.json"
+{
+  "compilerOptions": {
+    "types": ["@triplex/api/types"]
+  }
+}
+```
+
+<KnowledgeCallout>
+  The code for the Triplex API is open source and [available on
+  GitHub](https://github.com/trytriplex/triplex/tree/main/packages/api).
+  Contributions are welcome! If you want to help us improve the API experience,
+  please check out the code and open a pull request.
+</KnowledgeCallout>
+
+## Usage
+
+Log data to the Triplex debug panel wherever you need, even in frame loops. Any serializable data can be passed in the data argument.
+
+```js
+window.triplex?.debug("players", 2);
+```
+
+`window.triplex?.debug(channel: string, data: object)`
+
+## Next Steps
+
+For support and to learn more about this feature, report bugs, and suggest features, come [chat with the community on Discord](https://discord.gg/nBzRBUEs4b) or raise an issue on [GitHub](https://github.com/trytriplex/triplex/issues/new).
