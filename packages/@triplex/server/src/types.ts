@@ -299,6 +299,13 @@ export interface TriplexConfig {
    */
   experimental?: {
     /**
+     * Enables the debug panel.
+     *
+     * See:
+     * https://triplex.dev/docs/building-your-scene/console-logs/debug-panel
+     */
+    debug_api?: boolean;
+    /**
      * Enables Triplex WebXR support for 3D components.
      *
      * See: https://triplex.dev/docs/building-your-scene/webxr

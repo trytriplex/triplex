@@ -28,6 +28,7 @@ const schema = object({
   define: optional(object({})),
   experimental: optional(
     object({
+      debug_api: optional(boolean()),
       xr_editing: optional(boolean()),
     }),
   ),

@@ -256,7 +256,7 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                 {title}
                 {frontMatter.app && (
                   <div
-                    className="text-subtlest bg-neutral inline-block rounded px-1 py-0.5 text-xs font-normal"
+                    className="text-subtlest bg-neutral font-default inline-block rounded px-1 py-0.5 text-xs font-medium"
                     title={`Only available in ${frontMatter.app}.`}
                   >
                     {frontMatter.app}

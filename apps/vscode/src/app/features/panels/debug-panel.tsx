@@ -72,6 +72,17 @@ export function DebugPanel() {
                 key={panel.channel}
               />
             ))}
+            {panels.length === 0 && (
+              <div className="p-1 pb-2">
+                Data logged through the debug API will appear here.{" "}
+                <a
+                  className="text-link underline"
+                  href="https://triplex.dev/docs/building-your-scene/console-logs/debug-panel"
+                >
+                  Learn how to use this feature.
+                </a>
+              </div>
+            )}
           </Accordion.Content>
         </Accordion.Root>
       </div>

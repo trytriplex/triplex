@@ -102,7 +102,7 @@ export const components: Components = {
   code: ({ children }) => {
     return typeof children === "string" ? (
       // Inline code
-      <code className="text-subtle border-neutral border px-1.5 py-0.5 font-mono text-lg md:text-base">
+      <code className="text-subtle border-neutral border px-1.5 py-0.5 font-mono text-[0.85em]">
         {children}
       </code>
     ) : (
