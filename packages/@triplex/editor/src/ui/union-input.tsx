@@ -5,7 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { SwitchIcon } from "@radix-ui/react-icons";
-import type { Type } from "@triplex/server";
+import type { Type } from "@triplex/lib/types";
 import { type ActionIdSafe } from "@triplex/ux";
 import { useState } from "react";
 import { IconButton } from "../ds/button";

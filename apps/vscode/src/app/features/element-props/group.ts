@@ -5,11 +5,8 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 
-import {
-  type DeclaredProp,
-  type Prop,
-  type PropGroupDef,
-} from "@triplex/server";
+import { type DeclaredProp, type Prop } from "@triplex/lib/types";
+import { type PropGroupDef } from "@triplex/server";
 
 interface PropGroup {
   defaultExpanded: boolean;

@@ -13,7 +13,7 @@ import type {
   StringLiteralType,
   UndeclaredProp,
   UnionLiteralType,
-} from "@triplex/server";
+} from "@triplex/lib/types";
 import { Fragment } from "react";
 import { type RenderInputs } from "./types";
 

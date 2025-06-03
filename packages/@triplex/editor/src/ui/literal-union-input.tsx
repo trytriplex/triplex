@@ -9,7 +9,7 @@ import type {
   BooleanLiteralType,
   NumberLiteralType,
   StringLiteralType,
-} from "@triplex/server";
+} from "@triplex/lib/types";
 import { useTelemetry, type ActionIdSafe } from "@triplex/ux";
 import {
   useEffect,

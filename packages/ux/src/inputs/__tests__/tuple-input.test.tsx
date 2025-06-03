@@ -6,7 +6,7 @@
  */
 // @vitest-environment jsdom
 import { fireEvent, render } from "@testing-library/react";
-import { type Type } from "@triplex/server";
+import { type Type } from "@triplex/lib/types";
 import { describe, expect, it, vi } from "vitest";
 import { NumberInput } from "../number-input";
 import { TupleInput } from "../tuple-input";

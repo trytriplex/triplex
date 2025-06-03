@@ -8,6 +8,7 @@ import { readFile } from "node:fs/promises";
 import { Application, isHttpError, Router } from "@oakserver/oak";
 import { createForkLogger } from "@triplex/lib/log";
 import { basename } from "@triplex/lib/path";
+import { type DeclaredProp, type Prop } from "@triplex/lib/types";
 import { createWSServer } from "@triplex/websocks-server";
 import { watch } from "chokidar";
 import { type DetectResult } from "package-manager-detector";
@@ -48,9 +49,7 @@ import {
 import {
   type ComponentTarget,
   type ComponentType,
-  type DeclaredProp,
   type ProjectAsset,
-  type Prop,
   type ReconciledTriplexConfig,
   type RendererManifest,
   type SourceFileChangedEvent,

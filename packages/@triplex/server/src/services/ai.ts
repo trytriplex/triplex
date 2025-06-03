@@ -6,10 +6,10 @@
  */
 
 import { createForkLogger } from "@triplex/lib/log";
+import { type Prop, type Type } from "@triplex/lib/types";
 import { getJsxElementPropTypes } from "../ast";
 import { getJsxElementAtOrThrow, getJsxTag } from "../ast/jsx";
 import { type TriplexProject } from "../ast/project";
-import { type Prop, type Type } from "../types";
 
 const log = createForkLogger("server:ai");
 const decoder = new TextDecoder();

@@ -5,6 +5,14 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import {
+  type AttributeValue,
+  type DeclaredProp,
+  type ExpressionValue,
+  type Prop,
+  type UnionType,
+  type Type as UnrolledType,
+} from "@triplex/lib/types";
+import {
   Node,
   type Expression,
   type JsxAttribute,
@@ -17,16 +25,7 @@ import {
   type ts,
   type Type,
 } from "ts-morph";
-import type {
-  AttributeValue,
-  DeclaredProp,
-  ExpressionValue,
-  Prop,
-  Source,
-  Transforms,
-  UnionType,
-  Type as UnrolledType,
-} from "../types";
+import type { Source, Transforms } from "../types";
 import { isReactDOMElement } from "./is-react-element";
 import { isReactThreeElement } from "./is-three-element";
 import { getAttributes, getJsxTag } from "./jsx";

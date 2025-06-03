@@ -8,7 +8,7 @@ import type {
   BooleanLiteralType,
   NumberLiteralType,
   StringLiteralType,
-} from "@triplex/server";
+} from "@triplex/lib/types";
 import {
   useEffect,
   useRef,

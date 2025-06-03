@@ -4,7 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { type Prop, type ValueKind } from "@triplex/server";
+import { type Prop, type ValueKind } from "@triplex/lib/types";
 
 export function resolveDefaultValue<TKind extends ValueKind | "any">(
   prop: Prop,

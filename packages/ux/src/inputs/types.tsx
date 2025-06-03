@@ -15,7 +15,7 @@ import {
   type TupleType,
   type UnionLiteralType,
   type UnionType,
-} from "@triplex/server";
+} from "@triplex/lib/types";
 import { type FormEventHandler, type JSX, type RefObject } from "react";
 
 type InputTypes =

@@ -11,7 +11,7 @@ import type {
   NumberLiteralType,
   Prop,
   StringLiteralType,
-} from "@triplex/server";
+} from "@triplex/lib/types";
 import { createContext, useContext } from "react";
 import { MathUtils } from "three";
 import { IDELink } from "../util/ide";

@@ -4,7 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import type { TupleType } from "@triplex/server";
+import type { TupleType } from "@triplex/lib/types";
 import { useLayoutEffect, useRef, useState } from "react";
 import { PropInput } from "./prop-input";
 import { type RenderInputs } from "./types";
