@@ -279,7 +279,7 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                   className={cn([
                     "absolute inset-0 overflow-hidden",
                     frontMatter.imageLayout === "cover" && "pl-6 pt-6",
-                    frontMatter.imageLayout !== "cover" && "p-6",
+                    frontMatter.imageLayout !== "cover" && "py-6 pl-6 sm:p-6",
                   ])}
                 >
                   <Image
@@ -288,7 +288,7 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                       frontMatter.imageLayout === "cover" &&
                         "h-[600px] object-cover object-left",
                       frontMatter.imageLayout !== "cover" &&
-                        "h-full object-contain",
+                        "h-full object-cover sm:object-contain",
                       "w-full rounded-none",
                     ])}
                     height={800}
