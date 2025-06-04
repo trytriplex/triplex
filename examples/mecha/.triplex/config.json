@@ -3,5 +3,9 @@
   "components": ["../src/components/*.tsx"],
   "files": ["../src/**/*.tsx"],
   "provider": "./provider.tsx",
-  "renderer": "../../../packages/renderer/src/index.tsx"
+  "renderer": "../../../packages/renderer/src/index.tsx",
+  "experimental": {
+    "xr_editing": true,
+    "debug_api": true
+  }
 }

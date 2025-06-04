@@ -366,6 +366,12 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://triplex.dev/blog/2025-june-update</loc>
+    <lastmod>2025-06-04</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://triplex.dev/blog/</loc>
     <lastmod>2024-10-24</lastmod>
     <changefreq>weekly</changefreq>

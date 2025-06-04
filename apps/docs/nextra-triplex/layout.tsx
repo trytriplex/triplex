@@ -211,7 +211,7 @@ export function Layout({ children, pageOpts }: NextraThemeLayoutProps) {
                     >
                       <Image
                         alt=""
-                        className="bg-neutral border-neutral mr-1 h-6 w-6 rounded-full border"
+                        className="bg-neutral mr-1 h-6 w-6 rounded-full"
                         height={20}
                         src={authorSocials.avatar}
                         width={20}

@@ -189,7 +189,7 @@ export function Pricing() {
           highlight
           name="Teams"
           perMonthLabel="per month"
-          perYearLabel={"per year, billed annually"}
+          perYearLabel={"per month, billed annually"}
           period={period}
         >
           <ul className="border-neutral -mx-4 -mb-4 mt-4 flex flex-col gap-3 border-t p-4">
