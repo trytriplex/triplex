@@ -1,0 +1,141 @@
+---
+author: Michael Dougall
+title: June 2025 Update
+date: 2025-06-01
+image: /blogs/2025-june-update/webxr.png
+description: Here's what's been happening since Triplex for VS Code was released.
+---
+
+Hey folks! Here's some updates on what's been happening over the last few months, there's some exciting new features, an open source announcement, and a look at what's coming next.
+
+As always if you have thoughts, questions, or feedback, please reach out on [Discord](https://discord.gg/nBzRBUEs4b). And [install Triplex for VS Code](https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce) if you haven't already!
+
+<KnowledgeCallout>
+  The Triplex renderer and other packages are [open source on
+  GitHub](https://github.com/trytriplex/triplex). I'd love for you to contribute
+  and make a positive impact on everyone who uses Triplex, check out [these
+  issues to get
+  started](https://github.com/trytriplex/triplex/issues?q=is%3Aissue%20state%3Aopen%20label%3A%22Contribution%20ready%22)
+  and make sure to join our [Discord community](https://discord.gg/nBzRBUEs4b).
+</KnowledgeCallout>
+
+## View and Edit 3D Components in Your VR Headset
+
+WebXR is a pretty dope piece of tech and React Three Fiber has great support for it thanks to the [XR package](https://github.com/pmndrs/xr) — loads of people use it to create immersive experiences for the browser. Triplex now supports [opening 3D components in WebXR](https://x.com/dougesdev/status/1914457718221619328/video/1) so you can view, interact, and transform 3D components in your headset.
+
+![](/blogs/2025-june-update/webxr.png)
+
+It's experimental so you need to enable it in your config file:
+
+```json filename=".triplex/config.json" {2-4}
+{
+  "experimental": {
+    "xr_editing": true
+  }
+}
+```
+
+See the [Triplex WebXR](/docs/building-your-scene/webxr) docs for details on using it.
+
+## Log Data to the Debug Panel From Anywhere
+
+A really common use case when building components is logging data at a point in time to see what the value is. During the Three.js game jam I was [building a game that didn't ship](https://github.com/trytriplex/ekka-game) (😅) and I really needed to debug some [Koota](https://github.com/pmndrs/koota) ECS systems (it's a great library, go give it a star!).
+
+![](/blogs/2025-june-update/debug-panel.png)
+
+Enter the debug panel with pairing global Triplex APIs. You can call this from anywhere and it'll log data to the debug panel, repeated calls override previous ones, and you can even call it inside your frame loops without worrying about performance!
+
+```tsx filename="scene.tsx"
+useFrame(() => {
+  window.triplex?.debug("ecs: players", { data: [{}] });
+});
+```
+
+This is also experimental so you need to enable it in your config file:
+
+```json filename=".triplex/config.json" {2-4}
+{
+  "experimental": {
+    "debug_api": true
+  }
+}
+```
+
+See the [Debug Panel](/docs/building-your-scene/console-logs/debug-panel) docs for details on using it.
+
+## Do More With Transform Controls
+
+Transform controls have had a massive update to make them useful across more scenarios. For 3D components that accept transform props (`position`, `rotation`, and `scale`) transform controls now flushes updates through props instead of mutating the Three.js object itself.
+
+![](/blogs/2025-june-update/decal.png)
+
+This has unblocked some novel use cases, such as:
+
+- [Positioning the decal component](https://x.com/trytriplex/status/1927235641537962323) on meshes
+- [Positioning bones](https://x.com/dougesdev/status/1928967155455778924) on skinned meshes
+- [Positioning individual instances](https://x.com/BrianBreiholz/status/1867560190452596828) of instanced / batched meshes set through effects
+
+All without needing to write extra code to wire up the transform controls yourself! This is another reason why you'd be more productive with Triplex and React Three Fiber over vanilla Three.js.
+
+See [Using Transform Controls With Virtual Scene Components](/resources/virtual-three-components) for more details.
+
+## Use Koota More Easily With API Helpers
+
+For those using [Koota](https://github.com/pmndrs/koota) (a new state management library out of pmndrs) I've built helpers to make it more easily integrate into your components and Triplex. There are now two experimental APIs in the `@triplex/api` package:
+
+- `createSystem(system: Function, args: string | object)` — lets you create a function that can be named and flagged as dev only where appropriate, like creating dev time systems for debugging purposes!
+- `injectSystems(component: Function, args: System[])` — lets you inject systems into a 3D component, it automatically adds props to the component which can then be set using Triplex input controls.
+
+See the [API docs](https://github.com/trytriplex/triplex/tree/main/packages/api#koota) for details on using it and example usage in the [Ekka Escape canvas provider](https://github.com/trytriplex/ekka-game/blob/main/apps/ekka-client/.triplex/providers.tsx#L39).
+
+## Use Post-Processing Through the Editor
+
+React Three Fiber has a great post-processing library `@react-three/postprocessing` that easily and performantly applies effect passes to your 3D components. Thanks to a [contribution from mommysgoodpuppy](https://github.com/trytriplex/triplex/pull/312) you can now render them inside Triplex when looking through the Triplex editor camera.
+
+See the [Caustics canvas provider](https://github.com/trytriplex/triplex/blob/main/examples/caustics/.triplex/provider.tsx#L19) for an example on using this.
+
+## Inputs and More Are Now Open Source
+
+Continuing our open source journey the `@triplex/ux` package is [now open source](https://github.com/trytriplex/triplex/tree/main/packages/ux) which includes code for:
+
+- input components, such as the [number input](https://github.com/trytriplex/triplex/blob/main/packages/ux/src/inputs/number-input.tsx#L62)
+- a native-like [menu component](https://github.com/trytriplex/triplex/blob/main/packages/ux/src/menu.tsx) that uses a select element; and
+- a simple [native dialog component](https://github.com/trytriplex/triplex/blob/main/packages/ux/src/dialog.tsx)
+
+These power core experiences across Triplex, I'd love you to take a look, get inspired, and even contribute some improvements to them!
+
+## Advanced Usage With Custom Vite Configs
+
+Triplex has always strived to minimize the amount of configuration needed by users to get started. The shortest path after all is installing Triplex for VS Code and then opening a component using the "Open in Triplex" CodeLens action!
+
+The reality however is some people just have more custom needs. To meet them in the middle there's now a new config option: `UNSAFE_viteConfig`. You can point this to a custom Vite config where you can define your custom behavior as needed, such as transforming imports to point to a CDN instead of locally.
+
+See the [UNSAFE_viteConfig](/docs/api-reference/config-options/unsafe-vite-config) docs for details on using it.
+
+## Get Started With Point & Click
+
+For those wanting to start a project quickly there's now a point & click template available through the `create-triplex-project` CLI, it's great for getting a step on your next 3D web experience!
+
+```bash filename="Terminal"
+npx create-triplex-project@latest --template point-and-click
+```
+
+See the [Point & Click](/docs/get-started/starting-a-project/create-from-template/point-and-click) docs for details on using it.
+
+## Exploring AI Chat
+
+AI assisted coding is huge right now, and seeing where it could fit into a Triplex workflow is super compelling. Rather than waiting for the code to be updated through Copilot / Cursor it could be changed directly in the scene by AI, hook into the undo / redo / save workflow you're used to, and enable you to quickly iterate on your components.
+
+![](/blogs/2025-june-update/ai-chat.png)
+
+This feature isn't good enough to ship yet, when it's in a state that is more useful than not it'll be available for early adopters (maybe you!).
+
+## Wrapping Up
+
+Slow and steady wins the race? Maybe. Either way it's been fun working on these features and seeing users find value in Triplex! I'm still dusting at the surface for what will help you use your tools more effectively, if you have thoughts on features that would be useful to you and your team please [post a message on Discord](https://discord.gg/nBzRBUEs4b) or email me directly at douges@triplex.dev.
+
+I'd love to learn more about what you're working on!
+
+In the meantime I'll be moving house from Sydney to Canberra (still in Australia) at the end of June! It's coming up real soon and hectic as with two kids, but I'm excited to start our next stage of life 😁. Wish us luck!
+
+[mike douges](https://x.com/dougesdev)
