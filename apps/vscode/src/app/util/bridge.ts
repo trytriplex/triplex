@@ -83,6 +83,12 @@ export interface ToVSCodeEvent extends ClientSendEventData {
     line: number;
     path: string;
   };
+  "element-move": {
+    action: "move-before" | "move-after" | "make-child" | "reparent";
+    destination: { column: number; line: number };
+    path: string;
+    source: { column: number; line: number };
+  };
   notification: {
     actions: string[];
     message: string;

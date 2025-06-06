@@ -60,13 +60,19 @@ module.exports = {
       semibold: 600,
     },
     outlineColor: {
-      selected: "var(--vscode-focusBorder)",
+      button: "var(--vscode-button-border, transparent)",
+      danger: "var(--vscode-editorError-foreground, transparent)",
+      input: "var(--vscode-dropdown-border, transparent)",
+      overlay: "var(--vscode-panel-border, transparent)",
+      selected: "var(--vscode-focusBorder, transparent)",
+      transparent: "transparent",
     },
     outlineOffset: {
       button: "2px",
       inset: "-1px",
     },
     outlineWidth: {
+      2: "2px",
       default: "1px",
     },
     textColor: {

@@ -146,6 +146,9 @@ export class TriplexEditorProvider
         on(panel.webview, "code-update", (prop) => {
           document.updateCode(prop);
         }),
+        on(panel.webview, "element-move", (ata) => {
+          document.moveElement(ata);
+        }),
         on(panel.webview, "element-set-prop", (prop) => {
           document.upsertProp(prop);
         }),

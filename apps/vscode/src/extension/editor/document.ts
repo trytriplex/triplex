@@ -160,6 +160,33 @@ export class TriplexDocument implements vscode.CustomDocument {
     });
   }
 
+  async moveElement(data: {
+    action: "move-before" | "move-after" | "make-child" | "reparent";
+    destination: { column: number; line: number };
+    path: string;
+    source: { column: number; line: number };
+  }) {
+    return this.undoableAction("Move element", async () => {
+      const result = await fetch(
+        `http://localhost:${
+          this._context.ports.server
+        }/scene/${encodeURIComponent(data.path)}/object/${data.source.line}/${
+          data.source.column
+        }/move?destLine=${data.destination.line}&destCol=${
+          data.destination.column
+        }&action=${data.action}`,
+        { method: "POST" },
+      );
+
+      const response: {
+        redoID: number;
+        undoID: number;
+      } = await result.json();
+
+      return { ...response, path: data.path };
+    });
+  }
+
   async updateCode(
     data:
       | {

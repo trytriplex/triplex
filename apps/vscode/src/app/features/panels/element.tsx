@@ -4,6 +4,10 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import {
+  draggable,
+  dropTargetForElements,
+} from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { compose, on, send } from "@triplex/bridge/host";
 import { cn } from "@triplex/lib";
@@ -23,8 +27,22 @@ import { Pressable } from "../../components/pressable";
 import { useOnSurfaceStateChange } from "../../components/surface";
 import { useLazySubscription } from "../../hooks/ws";
 import { useFilter } from "../../stores/filter-elements";
+import { sendVSCE } from "../../util/bridge";
 import { createCodeLink } from "../../util/commands";
+import {
+  attachInstruction,
+  extractInstruction,
+  type Instruction,
+  type InstructionType,
+} from "../../util/dnd";
 import { useSceneEvents, useSceneSelected } from "../app-root/context";
+
+const blockAll: InstructionType[] = [
+  "make-child",
+  "move-after",
+  "move-before",
+  "reparent",
+];
 
 function matchesFilter(
   filter: string | undefined,
@@ -45,7 +63,9 @@ function matchesFilter(
   return false;
 }
 
-export function SceneElement(props: JsxElementPositions & { level: number }) {
+export function SceneElement(
+  props: JsxElementPositions & { exportName: string; level: number },
+) {
   const id = useId();
   const selected = useSceneSelected();
   const { focusElement } = useSceneEvents();
@@ -53,6 +73,7 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
   const [isActive, setIsActive] = useState(false);
   const [isForciblyHovered, setForciblyHovered] = useState(false);
   const [isUserExpanded, toggleExpanded] = useReducer((state) => !state, false);
+  const [dragState, setDragState] = useState<false | Instruction>(false);
   const isCustomComponent =
     props.type === "custom" && props.exportName && props.path;
   const isSelected =
@@ -64,6 +85,14 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
   const filter = useFilter((state) => state.filter);
   const matches = matchesFilter(filter, props);
   const isExpanded = isUserExpanded || !!filter;
+
+  interface DragData {
+    column: number;
+    exportName: string;
+    level: number;
+    line: number;
+    parentPath: string;
+  }
 
   useOnSurfaceStateChange((active) => {
     setIsActive(active);
@@ -104,6 +133,100 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
     }
   }, [isSelected]);
 
+  useEffect(() => {
+    if (!ref.current) {
+      return;
+    }
+
+    return dropTargetForElements({
+      canDrop: (args) => {
+        return args.source.element !== ref.current;
+      },
+      element: ref.current,
+      getData: (args) => {
+        const dragData = args.source.data as unknown as DragData;
+        const isWithinSameComponent =
+          dragData.parentPath === props.parentPath &&
+          dragData.exportName === props.exportName;
+
+        let block: InstructionType[] | undefined = undefined;
+
+        if (!isWithinSameComponent) {
+          block = blockAll;
+        }
+
+        return attachInstruction(
+          {},
+          {
+            block,
+            currentLevel: props.level,
+            element: args.element,
+            indentPerLevel: 13,
+            input: args.input,
+            mode: "standard",
+          },
+        );
+      },
+      onDrag: (args) => {
+        const instruction = extractInstruction(args.self.data);
+        if (instruction) {
+          setDragState(instruction);
+        }
+      },
+      onDragLeave: () => setDragState(false),
+      onDrop: (args) => {
+        const instruction = extractInstruction(args.self.data);
+        const dragData = args.source.data as unknown as DragData;
+
+        if (instruction && !instruction.blocked) {
+          sendVSCE("element-move", {
+            action: instruction.type,
+            destination: {
+              column: props.column,
+              line: props.line,
+            },
+            path: dragData.parentPath,
+            source: {
+              column: dragData.column,
+              line: dragData.line,
+            },
+          });
+        }
+
+        setDragState(false);
+      },
+    });
+  }, [
+    props.column,
+    props.exportName,
+    props.level,
+    props.line,
+    props.parentPath,
+  ]);
+
+  useEffect(() => {
+    if (!ref.current) {
+      return;
+    }
+
+    return draggable({
+      element: ref.current,
+      getInitialData: () => ({
+        column: props.column,
+        exportName: props.exportName,
+        level: props.level,
+        line: props.line,
+        parentPath: props.parentPath,
+      }),
+    });
+  }, [
+    props.column,
+    props.exportName,
+    props.level,
+    props.line,
+    props.parentPath,
+  ]);
+
   return (
     <li>
       <div
@@ -122,6 +245,20 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
         ])}
         style={{ paddingLeft: props.level * 12 }}
       >
+        {dragState && (
+          <div
+            className={cn([
+              dragState.blocked
+                ? "border-danger outline-danger"
+                : "border-selected outline-selected",
+              dragState.type === "make-child" && "outline",
+              dragState.type === "move-before" && "border-t",
+              dragState.type === "move-after" && "border-b",
+              "outline-default absolute -bottom-0.5 -left-0.5 right-0 top-0 -outline-offset-[1px]",
+            ])}
+          />
+        )}
+
         {isCustomComponent ? (
           <Pressable
             actionId={
@@ -176,6 +313,7 @@ export function SceneElement(props: JsxElementPositions & { level: number }) {
         <ul>
           {props.children.map((element) => (
             <SceneElement
+              exportName={props.exportName}
               key={element.column + element.line}
               level={props.level + 1}
               {...element}
@@ -230,6 +368,7 @@ export function SceneElements({
 
   return elements.sceneObjects.map((element) => (
     <SceneElement
+      exportName={exportName}
       key={element.column + element.line}
       level={level}
       {...element}
