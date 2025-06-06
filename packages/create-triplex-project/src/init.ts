@@ -26,6 +26,10 @@ const templateEntrypoints: Record<
     entrypoint: "src/levels/debug.tsx",
     exportName: "DebugLevel",
   },
+  "point-and-click-deno": {
+    entrypoint: "src/levels/debug.tsx",
+    exportName: "DebugLevel",
+  },
 };
 
 export async function init({
