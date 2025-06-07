@@ -4,13 +4,14 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import { type TriplexObject } from "@triplex/editor-next/types";
 import { loadingLogo } from "@triplex/lib/loader";
 import { getLocalIP } from "@triplex/lib/node";
 import { basename, join, normalize } from "@triplex/lib/path";
 import { rootHTML } from "@triplex/lib/templates";
 import { type FGEnvironment } from "@triplex/lib/types";
 import * as vscode from "vscode";
-import { type TriplexObject } from "../../app/types";
+import { version } from "../../../package.json";
 import { sendVSCE } from "../util/bridge";
 import { getPort } from "../util/port";
 import { resolveProject, type TriplexProjectResolver } from "./project";
@@ -88,6 +89,7 @@ export async function initializeWebviewPanel(
     isTelemetryEnabled: vscode.env.isTelemetryEnabled,
     sessionId: vscode.env.sessionId,
     userId: vscode.env.machineId,
+    version,
   };
 
   let panelHTML = `

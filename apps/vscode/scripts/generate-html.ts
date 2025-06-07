@@ -17,7 +17,7 @@ async function generate() {
         position: "splash",
         variant: "stroke",
       }),
-      module: "./src/app/index.tsx",
+      script: `import "@triplex/editor-next/vsce";`,
       title: "Triplex",
     }),
   );

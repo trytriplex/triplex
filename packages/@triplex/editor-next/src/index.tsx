@@ -17,7 +17,6 @@ import { LoadingLogo } from "@triplex/lib/loader";
 import { TelemetryProvider } from "@triplex/ux";
 import { Suspense } from "react";
 import { createRoot } from "react-dom/client";
-import { version } from "../../package.json";
 import { RootErrorBoundary } from "./components/root-error-boundary";
 import { AppRoot } from "./features/app-root";
 import { SceneContextProvider } from "./features/app-root/context";
@@ -61,7 +60,7 @@ async function bootstrap() {
       sessionId={window.triplex.sessionId}
       trackingId="G-EC2Q4TXGD0"
       userId={window.triplex.userId}
-      version={version}
+      version={window.triplex.version}
     >
       <RootErrorBoundary>
         <Suspense fallback={<LoadingLogo position="splash" variant="fill" />}>

@@ -4,11 +4,11 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import type * as vscode from "vscode";
 import {
   type FromVSCodeEvent,
   type ToVSCodeEvent,
-} from "../../app/util/bridge";
+} from "@triplex/editor-next/vsce/bridge";
+import type * as vscode from "vscode";
 
 /** Sends a message to the webview extension. */
 export function sendVSCE<TEventName extends keyof FromVSCodeEvent>(

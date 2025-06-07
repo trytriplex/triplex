@@ -40,7 +40,7 @@
     "prepack": "node ../../scripts/workspace-run.js ./apply-publish-config.js",
     "pack": "node scripts/pack.js",
     "publish": "cd out && vsce publish --no-dependencies --skip-duplicate",
-    "typedef": "tsc -p ./tsconfig.json && tsc -p ./src/app/tsconfig.json"
+    "typedef": "tsc -p ./tsconfig.json"
   },
   "contributes": {
     "commands": [
@@ -225,44 +225,28 @@
     "@triplex/server": "0.71.17"
   },
   "devDependencies": {
-    "@atlaskit/pragmatic-drag-and-drop": "^1.2.3",
-    "@radix-ui/react-icons": "^1.3.0",
-    "@radix-ui/react-scroll-area": "^1.0.5",
     "@sentry/node": "^8.30.0",
-    "@sentry/react": "^8.30.0",
-    "@supabase/supabase-js": "^2.49.1",
-    "@triplex/bridge": "0.70.9",
-    "@triplex/lib": "0.69.17",
-    "@triplex/ux": "0.69.26",
+    "@triplex/editor-next": "^0.0.0",
     "@triplex/websocks-client": "0.0.8",
     "@types/node": "^22.15.17",
-    "@types/raf-schd": "^4.0.3",
-    "@types/react": "^19.1.6",
-    "@types/react-dom": "^19.1.5",
     "@types/vscode": "^1.88.0",
     "@vitejs/plugin-react": "^4.4.1",
     "@vscode/vsce": "^2.26.0",
     "anymatch": "^3.1.3",
     "autoprefixer": "^10.4.16",
     "babel-plugin-react-compiler": "19.1.0-rc.2",
-    "bind-event-listener": "^3.0.0",
     "electron": "34.3.0",
     "electron-builder": "^25.1.3",
     "get-port": "^7.0.0",
-    "raf-schd": "^4.0.3",
     "react": "^19.1.0",
     "react-compiler-runtime": "19.1.0-rc.2",
     "react-dom": "^19.1.0",
-    "react-error-boundary": "^3.1.4",
-    "suspend-react": "^0.1.3",
     "tailwindcss": "^3.3.2",
     "tiny-invariant": "^1.3.3",
     "ts-node": "^10.9.1",
     "tsx": "^4.19.2",
     "typescript": "^5.8.3",
-    "use-callback-ref": "^1.3.1",
-    "vite": "^6.3.5",
-    "zustand": "^4.3.2"
+    "vite": "^6.3.5"
   },
   "engines": {
     "vscode": "^1.88.0"

@@ -25,4 +25,5 @@ export interface TriplexObject {
   isTelemetryEnabled: boolean;
   sessionId: string;
   userId: string;
+  version: string;
 }

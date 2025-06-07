@@ -9,8 +9,8 @@ const { join } = require("node:path");
 /** @type {import("tailwindcss").Config} */
 module.exports = {
   content: [
-    join(__dirname, "./src/app/**/*.tsx"),
-    join(__dirname, "../packages/@triplex/ux/**/*.tsx"),
+    join(__dirname, "../../packages/@triplex/editor-next/**/*.tsx"),
+    join(__dirname, "../../packages/@triplex/ux/**/*.tsx"),
     join(__dirname, "./index.html"),
   ],
   theme: {
