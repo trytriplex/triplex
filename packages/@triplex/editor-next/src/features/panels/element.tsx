@@ -65,7 +65,7 @@ function matchesFilter(
 }
 
 export function SceneElement(
-  props: JsxElementPositions & { exportName: string; level: number },
+  props: JsxElementPositions & { level: number; owningExportName: string },
 ) {
   const id = useId();
   const selected = useSceneSelected();
@@ -151,7 +151,7 @@ export function SceneElement(
         const dragData = args.source.data as unknown as DragData;
         const isWithinSameComponent =
           dragData.parentPath === props.parentPath &&
-          dragData.exportName === props.exportName;
+          dragData.exportName === props.owningExportName;
 
         let block: InstructionType[] | undefined = undefined;
 
@@ -202,7 +202,7 @@ export function SceneElement(
     });
   }, [
     props.column,
-    props.exportName,
+    props.owningExportName,
     props.level,
     props.line,
     props.parentPath,
@@ -228,7 +228,7 @@ export function SceneElement(
       element: ref.current,
       getInitialData: () => ({
         column: props.column,
-        exportName: props.exportName,
+        exportName: props.owningExportName,
         level: props.level,
         line: props.line,
         parentPath: props.parentPath,
@@ -236,7 +236,7 @@ export function SceneElement(
     });
   }, [
     props.column,
-    props.exportName,
+    props.owningExportName,
     props.level,
     props.line,
     props.parentPath,
@@ -328,10 +328,10 @@ export function SceneElement(
         <ul>
           {props.children.map((element) => (
             <SceneElement
-              exportName={props.exportName}
+              {...element}
               key={element.column + element.line}
               level={props.level + 1}
-              {...element}
+              owningExportName={props.owningExportName}
             />
           ))}
           {isCustomComponent && isExpanded && (
@@ -383,10 +383,10 @@ export function SceneElements({
 
   return elements.sceneObjects.map((element) => (
     <SceneElement
-      exportName={exportName}
+      {...element}
       key={element.column + element.line}
       level={level}
-      {...element}
+      owningExportName={exportName}
     />
   ));
 }
