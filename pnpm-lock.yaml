@@ -322,16 +322,16 @@ importers:
   apps/electron:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.38
+        specifier: 0.70.39
         version: link:../../packages/@triplex/client
       '@triplex/editor':
-        specifier: 0.70.41
+        specifier: 0.70.42
         version: link:../../packages/@triplex/editor
       '@triplex/server':
-        specifier: 0.71.17
+        specifier: 0.71.18
         version: link:../../packages/@triplex/server
       create-triplex-project:
-        specifier: 0.70.12
+        specifier: 0.70.13
         version: link:../../packages/create-triplex-project
     devDependencies:
       '@sentry/electron':
@@ -395,17 +395,17 @@ importers:
   apps/vscode:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.38
+        specifier: 0.70.39
         version: link:../../packages/@triplex/client
       '@triplex/server':
-        specifier: 0.71.17
+        specifier: 0.71.18
         version: link:../../packages/@triplex/server
     devDependencies:
       '@sentry/node':
         specifier: ^8.30.0
         version: 8.30.0
       '@triplex/editor-next':
-        specifier: ^0.0.0
+        specifier: ^0.0.1
         version: link:../../packages/@triplex/editor-next
       '@triplex/websocks-client':
         specifier: 0.0.8
@@ -971,7 +971,7 @@ importers:
         specifier: 0.69.17
         version: link:../../lib
       '@triplex/server':
-        specifier: 0.71.17
+        specifier: 0.71.18
         version: link:../server
       '@triplex/websocks-client':
         specifier: 0.0.8
@@ -1095,7 +1095,7 @@ importers:
         specifier: ^14.0.0
         version: 14.0.0(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@triplex/server':
-        specifier: ^0.71.17
+        specifier: ^0.71.18
         version: link:../server
       '@types/react':
         specifier: ^19.0.8
@@ -1195,7 +1195,7 @@ importers:
         version: 4.5.7(@types/react@19.1.6)(react@19.1.0)
     devDependencies:
       '@triplex/server':
-        specifier: 0.71.17
+        specifier: 0.71.18
         version: link:../server
       '@types/raf-schd':
         specifier: ^4.0.3

@@ -1,7 +1,7 @@
 {
   "name": "triplex-vsce",
   "displayName": "Triplex for VS Code [BETA]",
-  "version": "0.2.42",
+  "version": "0.2.43",
   "private": true,
   "description": "Your visual workspace for React / Three Fiber.",
   "categories": [
@@ -241,12 +241,12 @@
     "onStartupFinished"
   ],
   "dependencies": {
-    "@triplex/client": "0.70.38",
-    "@triplex/server": "0.71.17"
+    "@triplex/client": "0.70.39",
+    "@triplex/server": "0.71.18"
   },
   "devDependencies": {
     "@sentry/node": "^8.30.0",
-    "@triplex/editor-next": "^0.0.0",
+    "@triplex/editor-next": "^0.0.1",
     "@triplex/websocks-client": "0.0.8",
     "@types/node": "^22.15.17",
     "@types/vscode": "^1.88.0",

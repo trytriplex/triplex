@@ -1,5 +1,11 @@
 # @triplex/client
 
+## 0.70.39
+
+### Patch Changes
+
+- 77ebf08: Add error screen when Vite failed to load a module.
+
 ## 0.70.38
 
 ### Patch Changes

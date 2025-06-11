@@ -1,5 +1,17 @@
 # @triplex/vscode
 
+## 0.2.43
+
+### Patch Changes
+
+- 9da0c8c: Elements in the element panel can now be moved via drag and drop.
+- 48d7e85: Add group element action in the element panel action menu.
+- 05006cf: Internal refactor.
+- Updated dependencies [48d7e85]
+- Updated dependencies [77ebf08]
+  - @triplex/server@0.71.18
+  - @triplex/client@0.70.39
+
 ## 0.2.42
 
 ### Patch Changes

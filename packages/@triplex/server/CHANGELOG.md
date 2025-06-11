@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.71.18
+
+### Patch Changes
+
+- 48d7e85: Add group element action in the element panel action menu.
+
 ## 0.71.17
 
 ### Patch Changes
