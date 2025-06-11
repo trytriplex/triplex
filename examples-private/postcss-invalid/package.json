@@ -1,0 +1,14 @@
+{
+  "name": "@example/postcss-invalid",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "echo \"Not implemented\"",
+    "typedef": "echo \"Not implemented\""
+  },
+  "dependencies": {
+    "@types/react": "^19.1.6",
+    "react": "^19.1.0",
+    "react-dom": "^19.1.0"
+  }
+}

@@ -42,7 +42,7 @@ export function ErrorSplash({ error }: { error: Error | { message: string } }) {
         </div>
 
         <code className="mx-auto my-2 max-h-32 w-full max-w-2xl select-text overflow-auto bg-white/5 px-4 py-2 text-left">
-          {"stack" in error ? error.stack : error.message}
+          <pre>{error.message}</pre>
         </code>
       </div>
     </>

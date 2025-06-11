@@ -543,6 +543,18 @@ importers:
         specifier: ^0.172.0
         version: 0.172.0
 
+  examples-private/postcss-invalid:
+    dependencies:
+      '@types/react':
+        specifier: ^19.0.8
+        version: 19.1.6
+      react:
+        specifier: ^19.0.0
+        version: 19.1.0
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.1.0(react@19.1.0)
+
   examples-private/react-only:
     dependencies:
       '@types/react':

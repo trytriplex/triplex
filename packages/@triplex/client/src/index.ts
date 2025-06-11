@@ -16,7 +16,11 @@ import type {
   TriplexPorts,
 } from "@triplex/server";
 import react from "@vitejs/plugin-react";
-import express from "express";
+import express, {
+  type NextFunction,
+  type Request,
+  type Response,
+} from "express";
 import resolvePackagePath from "resolve-package-path";
 import { version } from "../package.json";
 import triplexBabelPlugin from "./plugins/babel-plugin";
@@ -244,6 +248,37 @@ export async function createServer({
       vite.ssrFixStacktrace(error as Error);
       next(error);
     }
+  });
+
+  app.use((err: Error, _: Request, res: Response, __: NextFunction) => {
+    const html = rootHTML({
+      css: `
+        body {
+          background-color: var(--x-bg-surface);
+          color: var(--x-text);
+          padding: 1rem;
+          font-family: -apple-system, "system-ui", sans-serif;
+          height: auto;
+        }
+
+        * { 
+          box-sizing: border-box;
+        }
+      `,
+      loadingIndicator: `
+        <h1 style="font-size:1rem;font-weight:600;">Could Not Load Component</h1>
+        <div style="font-size:13px;margin-top:0.67rem;">An error occurred before your component could be loaded, there may be an issue with your config files.</div>
+        <div style="font-size:13px;margin-top:0.67rem;">Make sure they're in the correct format and try again.</div>
+        <code style="display:block;margin-top:1.25rem;margin-bottom:1.25rem;max-width:100%;">
+          <pre style="background-color:var(--x-bg-neutral);padding:0.5rem;overflow:auto;">${err.message}</pre>
+        </code>
+        ${err.message.includes("postcss") ? '<div style="font-size:13px;">See <a target="_blank" href="https://github.com/postcss/postcss-load-config" style="color:var(--x-text-link)">postcss-load-config</a> for examples of correct configuration.</div>' : ""}
+      `,
+      themes: ["base"],
+      title: "Could Not Load Component",
+    });
+
+    res.status(500).set({ "Content-Type": "text/html" }).end(html);
   });
 
   return {
