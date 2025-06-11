@@ -1,5 +1,11 @@
 # create-triplex-project
 
+## 0.70.13
+
+### Patch Changes
+
+- 97a64c6: Add `point-and-click-deno` template.
+
 ## 0.70.12
 
 ### Patch Changes
