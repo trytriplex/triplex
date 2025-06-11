@@ -70,6 +70,11 @@
       },
       {
         "category": "Triplex",
+        "command": "triplex.element-group",
+        "title": "Group"
+      },
+      {
+        "category": "Triplex",
         "command": "triplex.element-duplicate",
         "title": "Duplicate"
       },
@@ -119,6 +124,12 @@
         "when": "!inputFocus && activeCustomEditorId == 'triplex.editor'"
       },
       {
+        "command": "triplex.element-group",
+        "key": "Ctrl+G",
+        "mac": "Cmd+G",
+        "when": "!inputFocus && activeCustomEditorId == 'triplex.editor'"
+      },
+      {
         "command": "triplex.element-jump-to",
         "key": "F",
         "when": "!inputFocus && activeCustomEditorId == 'triplex.editor'"
@@ -148,6 +159,10 @@
         },
         {
           "command": "triplex.element-jump-to",
+          "when": "false"
+        },
+        {
+          "command": "triplex.element-group",
           "when": "false"
         },
         {
@@ -202,6 +217,11 @@
           "command": "triplex.open-file",
           "when": "webviewSection == 'element-actions'",
           "group": "1_navigation"
+        },
+        {
+          "command": "triplex.element-group",
+          "when": "webviewSection == 'element-actions'",
+          "group": "2_modification"
         },
         {
           "command": "triplex.element-duplicate",

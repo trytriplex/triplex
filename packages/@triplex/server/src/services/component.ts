@@ -607,3 +607,26 @@ export function move(
       throw new Error("invariant");
   }
 }
+
+export function group(
+  sourceFile: SourceFile,
+  {
+    elements,
+    group,
+  }: {
+    elements: { column: number; line: number }[];
+    group: "fragment" | "group";
+  },
+) {
+  const groupName = group === "fragment" ? "" : "group";
+
+  for (const element of elements) {
+    const node = getJsxElementAtOrThrow(
+      sourceFile,
+      element.line,
+      element.column,
+    );
+
+    node.replaceWithText(`<${groupName}>${node.getText()}</${groupName}>`);
+  }
+}

@@ -165,6 +165,9 @@ export class TriplexEditorProvider
             ...newElement,
           });
         }),
+        on(panel.webview, "element-group", async (elements) => {
+          await document.groupElements(elements);
+        }),
         on(panel.webview, "element-delete", async (element) => {
           sendVSCE(panel.webview, "vscode:request-blur-element", undefined);
           await document.deleteElement(element);
@@ -278,6 +281,11 @@ export class TriplexEditorProvider
                 }
               : undefined,
           );
+        });
+      }),
+      vscode.commands.registerCommand("triplex.element-group", (args) => {
+        resolveActivePanel((panel) => {
+          sendVSCE(panel.webview, "vscode:request-group-elements", args);
         });
       }),
       vscode.commands.registerCommand("triplex.element-jump-to", (args) => {

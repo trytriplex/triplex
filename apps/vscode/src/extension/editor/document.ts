@@ -116,6 +116,34 @@ export class TriplexDocument implements vscode.CustomDocument {
     });
   }
 
+  async groupElements(
+    elements: { column: number; line: number; path: string }[],
+  ) {
+    const elementsByPath = Object.groupBy(elements, (e) => e.path);
+
+    for (const path in elementsByPath) {
+      const elements = elementsByPath[path];
+
+      await this.undoableAction("Group elements", async () => {
+        const result = await fetch(
+          `http://localhost:${
+            this._context.ports.server
+          }/scene/${encodeURIComponent(path)}/object/group`,
+          { body: JSON.stringify({ elements }), method: "POST" },
+        );
+
+        const response: {
+          column: number;
+          line: number;
+          redoID: number;
+          undoID: number;
+        } = await result.json();
+
+        return { ...response, path };
+      });
+    }
+  }
+
   async duplicateElement(data: { column: number; line: number; path: string }) {
     return this.undoableAction("Duplicate element", async () => {
       const result = await fetch(

@@ -7,6 +7,7 @@
 import {
   draggable,
   dropTargetForElements,
+  monitorForElements,
 } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
 import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
 import { compose, on, send } from "@triplex/bridge/host";
@@ -70,13 +71,16 @@ export function SceneElement(
   const selected = useSceneSelected();
   const { focusElement } = useSceneEvents();
   const ref = useRef<HTMLButtonElement>(null);
-  const [isActive, setIsActive] = useState(false);
+  const [_isActive, setIsActive] = useState(false);
   const [isForciblyHovered, setForciblyHovered] = useState(false);
   const [isUserExpanded, toggleExpanded] = useReducer((state) => !state, false);
-  const [dragState, setDragState] = useState<false | Instruction>(false);
+  const [dropState, setDropState] = useState<false | Instruction>(false);
+  const [isDragging, setIsDragging] = useState(false);
   const isCustomComponent =
     props.type === "custom" && props.exportName && props.path;
+  const isActive = _isActive && !isDragging;
   const isSelected =
+    !isDragging &&
     selected &&
     "column" in selected &&
     selected.column === props.column &&
@@ -170,10 +174,10 @@ export function SceneElement(
       onDrag: (args) => {
         const instruction = extractInstruction(args.self.data);
         if (instruction) {
-          setDragState(instruction);
+          setDropState(instruction);
         }
       },
-      onDragLeave: () => setDragState(false),
+      onDragLeave: () => setDropState(false),
       onDrop: (args) => {
         const instruction = extractInstruction(args.self.data);
         const dragData = args.source.data as unknown as DragData;
@@ -193,7 +197,7 @@ export function SceneElement(
           });
         }
 
-        setDragState(false);
+        setDropState(false);
       },
     });
   }, [
@@ -203,6 +207,17 @@ export function SceneElement(
     props.line,
     props.parentPath,
   ]);
+
+  useEffect(() => {
+    return monitorForElements({
+      onDragStart: () => {
+        setIsDragging(true);
+      },
+      onDrop: () => {
+        setIsDragging(false);
+      },
+    });
+  }, []);
 
   useEffect(() => {
     if (!ref.current) {
@@ -245,15 +260,15 @@ export function SceneElement(
         ])}
         style={{ paddingLeft: props.level * 12 }}
       >
-        {dragState && (
+        {dropState && (
           <div
             className={cn([
-              dragState.blocked
+              dropState.blocked
                 ? "border-danger outline-danger"
                 : "border-selected outline-selected",
-              dragState.type === "make-child" && "outline",
-              dragState.type === "move-before" && "border-t",
-              dragState.type === "move-after" && "border-b",
+              dropState.type === "make-child" && "outline",
+              dropState.type === "move-before" && "border-t",
+              dropState.type === "move-after" && "border-b",
               "outline-default absolute -bottom-0.5 -left-0.5 right-0 top-0 -outline-offset-[1px]",
             ])}
           />

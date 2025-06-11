@@ -21,6 +21,7 @@ import {
   commentComponent,
   deleteCommentComponents,
   duplicate,
+  group,
   insertCode,
   move,
   rename,
@@ -1375,5 +1376,55 @@ describe("component service", () => {
       }
       "
     `);
+  });
+
+  it("should group a single element into a fragment", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/reuse.tsx"),
+    );
+
+    group(sourceFile, {
+      elements: [{ column: 7, line: 12 }],
+      group: "fragment",
+    });
+
+    expect(getExportName(sourceFile, "Reuse").declaration.getText())
+      .toMatchInlineSnapshot(`
+        "export function Reuse() {
+          return (
+            <>
+              <><Scene /></>
+            </>
+          );
+        }"
+      `);
+  });
+
+  it("should group a single element into a group", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.addSourceFileAtPath(
+      join(__dirname, "__mocks__/reuse.tsx"),
+    );
+
+    group(sourceFile, {
+      elements: [{ column: 7, line: 12 }],
+      group: "group",
+    });
+
+    expect(getExportName(sourceFile, "Reuse").declaration.getText())
+      .toMatchInlineSnapshot(`
+        "export function Reuse() {
+          return (
+            <>
+              <group><Scene /></group>
+            </>
+          );
+        }"
+      `);
   });
 });

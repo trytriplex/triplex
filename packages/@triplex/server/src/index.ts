@@ -33,6 +33,7 @@ import {
   commentComponent,
   create,
   duplicate,
+  group,
   insertCode,
   move,
   rename,
@@ -139,6 +140,17 @@ export function createServer({
 
     context.response.headers.set("Content-Type", "image/png");
     context.response.body = file;
+  });
+
+  router.post("/scene/:path/object/group", async (context) => {
+    const sourceFile = project.getSourceFile(context.params.path);
+    const body = await context.request.body({ type: "json" }).value;
+
+    const [ids] = await sourceFile.edit((source) => {
+      group(source, { elements: body.elements, group: "group" });
+    });
+
+    context.response.body = { message: "success", ...ids };
   });
 
   router.post("/scene/:path/object/:line/:column/move", async (context) => {

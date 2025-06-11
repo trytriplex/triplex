@@ -5,7 +5,7 @@
   "compilerOptions": {
     "jsx": "react-jsx",
     "resolveJsonModule": true,
-    "lib": ["dom", "dom.iterable", "es2022"],
+    "lib": ["dom", "dom.iterable", "es2024"],
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "target": "ES2022",

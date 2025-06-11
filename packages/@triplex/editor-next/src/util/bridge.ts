@@ -40,6 +40,13 @@ export interface FromVSCodeEvent {
     line: number;
     path: string;
   };
+  "vscode:request-group-elements":
+    | {
+        column: number;
+        line: number;
+        path: string;
+      }
+    | undefined;
   "vscode:request-jump-to-element":
     | {
         column: number;
@@ -83,6 +90,11 @@ export interface ToVSCodeEvent extends ClientSendEventData {
     line: number;
     path: string;
   };
+  "element-group": {
+    column: number;
+    line: number;
+    path: string;
+  }[];
   "element-move": {
     action: "move-before" | "move-after" | "make-child" | "reparent";
     destination: { column: number; line: number };

@@ -77,6 +77,21 @@ export function Events() {
         sendVSCE("element-duplicate", target);
         telemetry.event("contextmenu_element_duplicate");
       }),
+      onVSCE("vscode:request-group-elements", (data) => {
+        const target = data || selected;
+        if (!target) {
+          return;
+        }
+
+        sendVSCE("element-group", [
+          {
+            column: target.column,
+            line: target.line,
+            path: target.path,
+          },
+        ]);
+        telemetry.event("contextmenu_element_group");
+      }),
       onVSCE("vscode:request-focus-element", (target) => {
         send("request-focus-element", {
           ...target,
