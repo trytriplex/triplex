@@ -1,5 +1,11 @@
 # @triplex/vscode
 
+## 0.2.44
+
+### Patch Changes
+
+- acfa8b8: Opening a file with Triplex now opens the last component in the file by default instead of the first.
+
 ## 0.2.43
 
 ### Patch Changes
