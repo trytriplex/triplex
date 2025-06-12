@@ -23,7 +23,7 @@ test(
   async ({ vsce }) => {
     await vsce.openFileButton.click();
 
-    await expect(vsce.loadedComponent).toHaveText("Plane");
+    await expect(vsce.loadedComponent).toHaveText("Scene");
   },
 );
 

@@ -26,7 +26,7 @@ const logWebXR = logger("webxr");
 function getFallbackExportName(filepath: string): string {
   const code = readFileSync(filepath, "utf8");
   const exports = inferExports(code);
-  const lastExport = exports[0];
+  const lastExport = exports.at(-1);
 
   if (!lastExport) {
     throw new Error("invariant: export not found");
