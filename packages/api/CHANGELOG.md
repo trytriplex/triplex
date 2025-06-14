@@ -1,5 +1,11 @@
 # @triplex/api
 
+## 0.1.1
+
+### Patch Changes
+
+- 8ef1d5e: Types are now distributed to npm.
+
 ## 0.1.0
 
 ### Minor Changes

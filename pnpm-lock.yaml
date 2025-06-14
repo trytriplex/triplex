@@ -322,10 +322,10 @@ importers:
   apps/electron:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.39
+        specifier: 0.70.40
         version: link:../../packages/@triplex/client
       '@triplex/editor':
-        specifier: 0.70.42
+        specifier: 0.70.43
         version: link:../../packages/@triplex/editor
       '@triplex/server':
         specifier: 0.71.18
@@ -395,7 +395,7 @@ importers:
   apps/vscode:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.39
+        specifier: 0.70.40
         version: link:../../packages/@triplex/client
       '@triplex/server':
         specifier: 0.71.18
@@ -940,7 +940,7 @@ importers:
         specifier: 0.70.9
         version: link:../../bridge
       '@triplex/renderer':
-        specifier: 0.71.30
+        specifier: 0.71.31
         version: link:../../renderer
       '@vitejs/plugin-react':
         specifier: ^4.4.1

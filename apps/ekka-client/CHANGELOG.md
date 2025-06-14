@@ -1,5 +1,12 @@
 # ekka-game
 
+## 0.1.4
+
+### Patch Changes
+
+- Updated dependencies [8ef1d5e]
+  - @triplex/api@0.1.1
+
 ## 0.1.3
 
 ### Patch Changes
