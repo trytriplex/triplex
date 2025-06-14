@@ -38,6 +38,10 @@ Helpers for [Koota](https://github.com/pmndrs/koota) that make it easier to use 
 
 #### `createSystem(system: Function, args: string | object)`
 
+```tsx
+import { createSystem } from "@triplex/api/koota";
+```
+
 Creates an ECS systems to be used in conjunction with `injectSystems`. Args are optional and can be a `string` or an `object`:
 
 - `string` — defines the system name which will then show up in provider controls. This system is always running by default. Disable by clicking the "pause(SystemName)" checkbox.
@@ -45,9 +49,17 @@ Creates an ECS systems to be used in conjunction with `injectSystems`. Args are 
 
 #### `injectSystems(component: Function, args: System[])`
 
+```tsx
+import { injectSystem } from "@triplex/api/koota";
+```
+
 Higher-order component that injects the [canvas provider](https://triplex.dev/docs/building-your-scene/providers#canvas-provider) with systems created from `createSystem`.
 
 These systems are:
 
 1. Added to the frame loop and automatically run when inside Triplex.
 1. Added to provider input controls enabling you to run / pause them as needed.
+
+#### XR Support
+
+When wanting to inject the XR store into systems import from `@triplex/api/koota/xr` instead. It has the same 1:1 API as `@triplex/api/koota` except passes the XR store into systems.
