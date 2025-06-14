@@ -4,6 +4,8 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import { GridIcon } from "@radix-ui/react-icons";
+
 export function LocalSpaceIcon({ className }: { className?: string }) {
   return (
     <svg
@@ -67,5 +69,13 @@ export function VRGogglesIcon({ className }: { className?: string }) {
         vectorEffect="non-scaling-stroke"
       />
     </svg>
+  );
+}
+
+export function PerspectiveGridIcon() {
+  return (
+    <div style={{ transform: "perspective(30px) rotateX(45deg)", width: 16 }}>
+      <GridIcon />
+    </div>
   );
 }

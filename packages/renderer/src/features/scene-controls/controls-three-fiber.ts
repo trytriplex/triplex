@@ -18,6 +18,11 @@ export const settings: MenuControl["options"] = [
     id: "camera_editor",
     label: "Use Editor Camera",
   },
+  {
+    group: "Canvas Camera",
+    id: "camera_editor_toggle_default",
+    label: "Toggle Editor As Default",
+  },
 ];
 
 export const controls: Controls = [
