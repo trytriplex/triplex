@@ -1,5 +1,12 @@
 # @triplex/api
 
+## 0.1.2
+
+### Patch Changes
+
+- 6639a94: Systems are now tagged so the `injectSystem` function type errors when passed something made outside of `createSystem`.
+- 6639a94: The koota helper `injectSystems` now doesn't require `@react-three/xr` on its critical path. The XR logic has been moved to a new entrypoint that has a 1:1 API: `@triplex/api/koota/xr`, use it when needing the XR store passed to your systems.
+
 ## 0.1.1
 
 ### Patch Changes
