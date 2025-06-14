@@ -13,6 +13,10 @@
       "default": "./src/koota/index.ts",
       "types": "./src/koota/index.ts"
     },
+    "./koota/xr": {
+      "default": "./src/koota/xr.tsx",
+      "types": "./src/koota/xr.tsx"
+    },
     "./types": {
       "types": "./api.d.ts"
     }
@@ -32,15 +36,21 @@
   },
   "peerDependencies": {
     "@react-three/fiber": "*",
-    "@react-three/xr": "*",
     "@types/react": "*",
     "koota": "*"
+  },
+  "optionalDependencies": {
+    "@react-three/xr": "*"
   },
   "publishConfig": {
     "exports": {
       "./koota": {
         "default": "./dist/koota/index.js",
         "types": "./dist/koota/index.d.ts"
+      },
+      "./koota/xr": {
+        "default": "./dist/koota/xr.js",
+        "types": "./dist/koota/xr.d.ts"
       },
       "./types": {
         "types": "./api.d.ts"

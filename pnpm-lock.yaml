@@ -1309,9 +1309,6 @@ importers:
       '@react-three/fiber':
         specifier: '*'
         version: 9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
-      '@react-three/xr':
-        specifier: '*'
-        version: 6.6.17(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
       '@types/react':
         specifier: ^19.0.8
         version: 19.1.6
@@ -1328,6 +1325,10 @@ importers:
       typescript:
         specifier: ^5.8.3
         version: 5.8.3
+    optionalDependencies:
+      '@react-three/xr':
+        specifier: '*'
+        version: 6.6.17(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
 
   packages/bridge:
     devDependencies:

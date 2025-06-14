@@ -5,6 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { useFrame } from "@react-three/fiber";
+import { UNSAFE_useXRStore as useXRStore } from "@react-three/xr";
 import { useWorld } from "koota/react";
 import { type FunctionComponent, type ReactNode } from "react";
 import { capitalize } from "../lib/capitalize";
@@ -14,12 +15,17 @@ import {
   type SystemDebugOptions,
 } from "./types";
 
+export { createSystem } from "./systems";
+
+export { type ECSSystem, type ECSSystemControls } from "./types";
+
 export function injectSystems<
   TProps extends { children: ReactNode },
   TSystems extends (ECSSystem & SystemDebugOptions)[],
 >(Component: FunctionComponent<TProps>, systems: TSystems) {
   function RunSystems(props: ECSSystemControls<TSystems>) {
     const world = useWorld();
+    const store = useXRStore();
 
     useFrame((state, delta) => {
       systems.forEach((system) => {
@@ -34,7 +40,7 @@ export function injectSystems<
           : true;
 
         if (shouldRun) {
-          system(world, delta, state);
+          system(world, delta, state, store);
         }
       });
     });

@@ -24,9 +24,11 @@ export type ECSSystemControls<T extends SystemDebugOptions[]> = {
     : never]?: boolean;
 };
 
-export type ECSSystem = (
+declare const s: unique symbol;
+
+export type ECSSystem = { [s]: true } & ((
   world: World,
   delta: number,
   state: RootState,
   store?: XRStore,
-) => void;
+) => void);

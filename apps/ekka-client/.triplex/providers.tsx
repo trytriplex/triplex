@@ -1,6 +1,6 @@
 import { useFrame } from "@react-three/fiber";
 import { createXRStore, XR } from "@react-three/xr";
-import { injectSystems } from "@triplex/api/koota";
+import { injectSystems } from "@triplex/api/koota/xr";
 import { createWorld } from "koota";
 import { WorldProvider } from "koota/react";
 import { useState } from "react";
