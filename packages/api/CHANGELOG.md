@@ -1,5 +1,11 @@
 # @triplex/api
 
+## 0.1.3
+
+### Patch Changes
+
+- 3d41432: Fix build not using automatic jsx namespace.
+
 ## 0.1.2
 
 ### Patch Changes
