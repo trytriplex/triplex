@@ -2,6 +2,9 @@
 description: Learn about the built-in behavior for custom cameras.
 ---
 
+import { GridIcon } from "@radix-ui/react-icons";
+import { PerspectiveGridIcon } from "@triplex/ux/icons";
+
 This helper is only available in 3D components.
 
 ## Camera Preview
@@ -16,6 +19,16 @@ The editor camera can be controlled using the following keyboard and mouse short
 - Dolly the camera — <Kbd>Middle Click</Kbd>
 - Truck the camera — <Kbd>Shift</Kbd> + <Kbd>Left Click</Kbd>; or <Kbd>Right Click</Kbd>
 - Focus on a selected object — <Kbd>F</Kbd>
+
+Use the <ActionLink name="Switch To Orthographic" icon={GridIcon} /> action in the floating scene controls to set the editor camera to be orthographic. Use the <ActionLink name="Switch To Perspective" icon={PerspectiveGridIcon} /> action to switch back to perspective.
+
+## Camera Settings
+
+Found in the floating scene controls menu, you can use the camera settings to change which camera is active.
+
+- Use Default Camera — Sets the camera to look through the default camera.
+- Use Editor Camera (default: true) — Sets the camera to look through the editor camera.
+- Toggle Editor As Default (default: false) — Sets the editor camera to be the default camera for the scene state, meaning `useThree(state => state.camera)` will return the editor camera.
 
 ## Camera Axis Helper
 

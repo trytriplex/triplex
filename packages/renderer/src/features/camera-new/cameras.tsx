@@ -45,11 +45,14 @@ type ModeActions =
 
 export function Cameras({ children }: { children: ReactNode }) {
   const defaultEditorCamera = useContext(DefaultCameraContext);
+  const [editorCameraAsDefault, setEditorCameraAsDefault] = useState(false);
   const [activeCamera, setActiveCamera] = useState<
     PerspectiveCamera | OrthographicCamera | null
   >(null);
   const defaultCamera = useThree((state) => state.camera);
   const gl = useThree((state) => state.gl);
+  const set = useThree((state) => state.set);
+  const lastUserCamera = useRef(defaultCamera);
   const perspectiveRef = useRef<PerspectiveCamera>(null!);
   const orthographicRef = useRef<OrthographicCamera>(null!);
   const playState = usePlayState();
@@ -73,6 +76,16 @@ export function Cameras({ children }: { children: ReactNode }) {
   );
   const activeState = playState === "edit" ? state.edit : state.play;
 
+  useEffect(() => {
+    if (
+      defaultCamera !== orthographicRef.current &&
+      defaultCamera !== perspectiveRef.current
+    ) {
+      // Captures the last known user camera so we can restore it when appropriate.
+      lastUserCamera.current = defaultCamera;
+    }
+  }, [defaultCamera]);
+
   useLayoutEffect(() => {
     return fitCamerasToViewport(gl, [
       defaultCamera,
@@ -94,12 +107,28 @@ export function Cameras({ children }: { children: ReactNode }) {
   }, [activeState, defaultCamera, state.editor]);
 
   useEffect(() => {
+    if (editorCameraAsDefault && activeCamera && activeState === "editor") {
+      set({
+        camera: activeCamera,
+      });
+
+      return () => {
+        set({ camera: lastUserCamera.current });
+      };
+    }
+  }, [set, editorCameraAsDefault, activeCamera, activeState]);
+
+  useEffect(() => {
     return on("extension-point-triggered", ({ id, scope }) => {
       if (scope !== "scene") {
         return;
       }
 
       switch (id) {
+        case "camera_editor_toggle_default":
+          setEditorCameraAsDefault((prev) => !prev);
+          break;
+
         case "camera_editor":
           setCameraState({ action: "set-canvas-camera", camera: "editor" });
           break;

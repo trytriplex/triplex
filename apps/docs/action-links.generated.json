@@ -19,6 +19,8 @@
   "Settings": "Settings for the scene, find camera settings here.",
   "Stop": "Stops the scene and goes back to edit mode. The scene is reset.",
   "Switch Prop Type": "Switches the prop type to the next one available in its union type.",
+  "Switch To Orthographic": "Sets the editor camera to orthographic projection mode.",
+  "Switch To Perspective": "Sets the editor camera to perspective projection mode.",
   "Translate": "Turns on translate transform mode.",
   "Triplex: Open File": "VS Code command available in the command palette to open the currently focused file in Triplex.",
   "Turn Off Default Lights": "Turns off default lights used in the scene when no lights were found.",

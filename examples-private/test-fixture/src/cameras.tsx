@@ -4,7 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { PerspectiveCamera } from "@react-three/drei";
+import { Billboard, PerspectiveCamera } from "@react-three/drei";
 import Box from "./geometry/box";
 
 export function Camera() {
@@ -13,5 +13,15 @@ export function Camera() {
       <PerspectiveCamera name="foo" position={[0, 0, 0.15]} />
       <Box scale={0.1} />
     </>
+  );
+}
+
+export function LookAtCamera() {
+  return (
+    <Billboard>
+      <mesh>
+        <boxGeometry />
+      </mesh>
+    </Billboard>
   );
 }
