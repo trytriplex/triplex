@@ -4,6 +4,7 @@
   "private": true,
   "license": "MIT",
   "scripts": {
+    "build": "echo \"Not implemented\"",
     "typedef": "tsc"
   },
   "dependencies": {

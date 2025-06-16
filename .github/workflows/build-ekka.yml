@@ -1,10 +1,10 @@
-name: Cloud
+name: Ekka
 
 on:
   pull_request:
     paths:
       - packages/**
-      - apps/cloud/**
+      - apps/ekka-client/**
 
 env:
   CI: true
@@ -34,11 +34,11 @@ jobs:
       - name: Install dependencies
         run: pnpm i
 
-      - name: Build cloud
-        run: pnpm --filter @triplex/cloud build
+      - name: Build ekka client
+        run: pnpm --filter @ekka/client build
 
       - name: Typecheck
-        run: pnpm --filter @triplex/cloud typedef
+        run: pnpm --filter @ekka/client typedef
 
       - name: Ensure clean git
         run: node ./scripts/ensure-clean-git.js
