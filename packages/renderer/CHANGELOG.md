@@ -1,5 +1,11 @@
 # @triplex/renderer
 
+## 0.71.32
+
+### Patch Changes
+
+- 8fb5533: The selection outline in 3D components now ignores transparency from textures, instead outlining the entire mesh. This gives a less distracting outline.
+
 ## 0.71.31
 
 ### Patch Changes
