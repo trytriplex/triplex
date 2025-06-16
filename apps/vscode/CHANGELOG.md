@@ -1,5 +1,11 @@
 # @triplex/vscode
 
+## 0.2.46
+
+### Patch Changes
+
+- @triplex/client@0.70.41
+
 ## 0.2.45
 
 ### Patch Changes

@@ -1,5 +1,11 @@
 # @triplex/api
 
+## 0.1.4
+
+### Patch Changes
+
+- 86088ed: Fix createSystem function requiring tagged function.
+
 ## 0.1.3
 
 ### Patch Changes

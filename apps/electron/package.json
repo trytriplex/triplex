@@ -1,6 +1,6 @@
 {
   "name": "@triplex/electron",
-  "version": "0.70.43",
+  "version": "0.70.44",
   "private": true,
   "description": "Your visual workspace for React / Three Fiber.",
   "repository": "https://github.com/trytriplex/triplex",
@@ -22,8 +22,8 @@
     "typedef": "tsc"
   },
   "dependencies": {
-    "@triplex/client": "0.70.40",
-    "@triplex/editor": "0.70.43",
+    "@triplex/client": "0.70.41",
+    "@triplex/editor": "0.70.44",
     "@triplex/server": "0.71.18",
     "create-triplex-project": "0.70.13"
   },

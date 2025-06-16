@@ -1,6 +1,6 @@
 {
   "name": "@triplex/renderer",
-  "version": "0.71.31",
+  "version": "0.71.32",
   "private": true,
   "description": "Your visual workspace for React / Three Fiber.",
   "license": "SEE LICENSE IN LICENSE",
