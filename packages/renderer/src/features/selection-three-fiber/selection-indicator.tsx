@@ -6,7 +6,7 @@
  */
 import { useFrame } from "@react-three/fiber";
 import { useContext, useRef, useState } from "react";
-import { Vector2, type ShaderMaterial } from "three";
+import { MeshBasicMaterial, Vector2, type ShaderMaterial } from "three";
 import { useFBO } from "triplex-drei";
 import { hash } from "../../util/hash";
 import {
@@ -17,6 +17,11 @@ import {
 import { ActiveCameraContext } from "../camera-new/context";
 import frag from "./selection-indicator.frag";
 import vert from "./selection-indicator.vert";
+
+const maskMaterial = new MeshBasicMaterial({
+  color: "red",
+  transparent: false,
+});
 
 export function SelectionIndicator() {
   const selectionFBO = useFBO();
@@ -36,7 +41,9 @@ export function SelectionIndicator() {
 
     const currentLayersMask = camera.layers.mask;
     const prevBg = state.scene.background;
+    const prevOverrideMaterial = state.scene.overrideMaterial;
     state.scene.background = null;
+    state.scene.overrideMaterial = maskMaterial;
 
     state.gl.setRenderTarget(selectionFBO);
     camera.layers.set(SELECTION_LAYER_INDEX);
@@ -50,6 +57,7 @@ export function SelectionIndicator() {
     // eslint-disable-next-line react-compiler/react-compiler
     camera.layers.mask = currentLayersMask;
     state.scene.background = prevBg;
+    state.scene.overrideMaterial = prevOverrideMaterial;
   });
 
   return (
