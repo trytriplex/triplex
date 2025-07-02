@@ -26,7 +26,7 @@ export function Footer() {
               width={Math.round(818 / 9)}
             />
             <span className="text-subtlest text-base">
-              <span className="whitespace-nowrap">Built in Sydney</span>,
+              <span className="whitespace-nowrap">Built in Canberra</span>,
               Australia
             </span>
           </div>
