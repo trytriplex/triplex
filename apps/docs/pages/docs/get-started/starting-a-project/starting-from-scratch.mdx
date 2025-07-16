@@ -11,15 +11,24 @@ If you haven't already make sure to install a JavaScript runtime and initialize 
 
 - [Node.js](https://nodejs.org/en) + `npm init`
 - [Deno](https://deno.com) + `deno init`
+- [Bun](https://bun.com) + `bun init`
 
 Then follow the prompts.
 
 ## Install Dependencies
 
-This installs the required packages to your project and places them in its `package.json` file.
+Installs the required packages to your project.
 
-```bash filename="Terminal"
-npm install @types/react @types/react-dom @types/three @react-three/fiber react react-dom three
+```bash filename="Terminal (npm)"
+npm i @types/react @types/react-dom @types/three @react-three/fiber react react-dom three
+```
+
+```bash filename="Terminal (deno)"
+deno i @types/react @types/react-dom @types/three @react-three/fiber react react-dom three --npm
+```
+
+```bash filename="Terminal (bun)"
+bun add @types/react @types/react-dom @types/three @react-three/fiber react react-dom three
 ```
 
 ## Create a Component
