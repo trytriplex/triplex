@@ -22,32 +22,42 @@ test.describe(() => {
   });
 });
 
-test("should recover from initial syntax error", async ({ setFile, vsce }) => {
-  await setFile((file) => "{" + file);
+test("should recover from initial syntax error", async ({
+  getFile,
+  setFile,
+  vsce,
+}) => {
+  await setFile((file) => "%" + file);
   await vsce.codelens("Plane", { skipWait: true }).click();
   const { locator } = vsce.resolveEditor();
 
   await expect(locator.getByTestId("InvalidCodeSplash")).toHaveText(
     /There was an error parsing this file/,
   );
-  await setFile((file) => file.replace("{", ""));
+  // Don't continue until the file is flushed with the broken syntax
+  await expect.poll(() => getFile()).toContain("%");
+
+  await setFile((file) => file.replace("%", ""));
 
   await expect(locator.getByTestId("InvalidCodeSplash")).toBeHidden();
   await expect(vsce.loadedComponent).toHaveText("Plane");
 });
 
 test("should recover from subsequent syntax error", async ({
+  getFile,
   setFile,
   vsce,
 }) => {
   await vsce.codelens("Plane").click();
   const { locator } = vsce.resolveEditor();
 
-  await setFile((file) => "{" + file);
+  await setFile((file) => "%" + file);
   await expect(locator.getByTestId("InvalidCodeSplash")).toHaveText(
     /There was an error parsing this file/,
   );
-  await setFile((file) => file.replace("{", ""));
+  // Don't continue until the file is flushed with the broken syntax
+  await expect.poll(() => getFile()).toContain("%");
+  await setFile((file) => file.replace("%", ""));
 
   await expect(locator.getByTestId("InvalidCodeSplash")).toBeHidden();
   await expect(vsce.loadedComponent).toHaveText("Plane");
