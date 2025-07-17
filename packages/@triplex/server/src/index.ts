@@ -678,10 +678,12 @@ export function createServer({
         cwd: config.cwd,
       });
       const missingDependencies = checkMissingDependencies(config.cwd);
+      const tool = pkgManager ? pkgManager.name : "npm";
 
       return {
+        args: tool === "deno" ? ["--npm"] : [],
         missingDependencies,
-        pkgManager: pkgManager ? pkgManager.name : "npm",
+        pkgManager: tool,
       };
     }),
     tws.route(

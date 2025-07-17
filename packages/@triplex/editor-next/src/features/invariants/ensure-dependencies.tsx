@@ -15,6 +15,7 @@ import { ErrorIllustration } from "./error-illustration";
 
 export function EnsureDependencies({ children }: { children: ReactNode }) {
   const {
+    args,
     missingDependencies: { required: requiredMissingDependencies },
     pkgManager,
   } = useSubscription("/project/dependencies");
@@ -27,7 +28,8 @@ export function EnsureDependencies({ children }: { children: ReactNode }) {
   );
 
   if (requiredMissingDependencies.length) {
-    const command = `${pkgManager} i ${requiredMissingDependencies.join(" ")}`;
+    const command =
+      `${pkgManager} i ${requiredMissingDependencies.join(" ")} ${args.join(" ")}`.trim();
 
     return (
       <div className="fixed inset-0 mx-auto flex max-w-md select-none flex-col items-center justify-center gap-4 p-4 text-center">

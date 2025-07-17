@@ -99,3 +99,18 @@ test.describe(() => {
     );
   });
 });
+
+test.describe(() => {
+  test.use({
+    filename: "examples-private/missing-deps-deno/src/app.tsx",
+  });
+
+  test("missing deno deps shows arg", async ({ vsce }) => {
+    const { locator } = vsce.resolveEditor();
+    await vsce.codelens("MissingCriticalDeps", { skipWait: true }).click();
+
+    await expect(locator.getByTestId("DepsToInstall")).toHaveText(
+      "deno i react react-dom --npm",
+    );
+  });
+});

@@ -1,0 +1,11 @@
+{
+  "imports": {
+    "@types/react": "npm:@types/react",
+    "@types/three": "npm:@types/three",
+    "react": "npm:react@^19.1.0"
+  },
+  "nodeModulesDir": "auto",
+  "compilerOptions": {
+    "types": ["@react-three/fiber"]
+  }
+}
