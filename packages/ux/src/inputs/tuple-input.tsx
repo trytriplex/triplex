@@ -24,6 +24,10 @@ function merge(a: unknown[], b: Record<string, unknown>) {
   return c;
 }
 
+function isUndefinedOrEmptyStringValue(value: unknown) {
+  return value === undefined || value === "";
+}
+
 function isAnyRequiredValueUndefined(
   tupleTypes: TupleType["shape"],
   nextValue: unknown[],
@@ -31,7 +35,7 @@ function isAnyRequiredValueUndefined(
   for (let i = 0; i < tupleTypes.length; i++) {
     const type = tupleTypes[i];
     const value = nextValue[i];
-    const isUndefinedOrEmptyString = value === undefined || value === "";
+    const isUndefinedOrEmptyString = isUndefinedOrEmptyStringValue(value);
 
     if (isUndefinedOrEmptyString && "required" in type && type.required) {
       return true;
@@ -49,7 +53,7 @@ function areAllValuesUndefined(
 
   for (let i = 0; i < tupleTypes.length; i++) {
     const value = nextValue[i];
-    const isUndefinedOrEmptyString = value === undefined || value === "";
+    const isUndefinedOrEmptyString = isUndefinedOrEmptyStringValue(value);
     if (!isUndefinedOrEmptyString) {
       allUndefined = false;
     }
@@ -69,7 +73,7 @@ function dropUnneededOptionalValues(
 
   for (let i = nextValues.length - 1; i >= 0; i--) {
     const value = nextValues[i];
-    const isUndefinedOrEmptyString = value === undefined || value === "";
+    const isUndefinedOrEmptyString = isUndefinedOrEmptyStringValue(value);
     const type = valueDef[i];
 
     if (
@@ -84,7 +88,11 @@ function dropUnneededOptionalValues(
     }
   }
 
-  if (!required && clearedValues.filter(Boolean).length === 0) {
+  if (
+    !required &&
+    clearedValues.filter((value) => !isUndefinedOrEmptyStringValue(value))
+      .length === 0
+  ) {
     return undefined;
   }
 
@@ -127,7 +135,6 @@ export function TupleInput({
           intermediateValues.current[index] = value;
 
           const nextValue = merge(valueArr, intermediateValues.current);
-
           const allValuesUndefined = areAllValuesUndefined(values, nextValue);
           const someRequiredValueUndefined = isAnyRequiredValueUndefined(
             values,
@@ -150,7 +157,6 @@ export function TupleInput({
           intermediateValues.current[index] = value;
 
           const nextValue = merge(valueArr, intermediateValues.current);
-
           const allValuesUndefined = areAllValuesUndefined(values, nextValue);
           const someRequiredValueUndefined = isAnyRequiredValueUndefined(
             values,

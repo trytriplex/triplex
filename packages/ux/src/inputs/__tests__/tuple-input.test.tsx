@@ -289,4 +289,33 @@ describe("tuple input", () => {
     expect(onChange).toHaveBeenCalledWith([3, 2]);
     expect(onConfirm).toHaveBeenCalledWith([3, 2]);
   });
+
+  it("should not drop zero values", () => {
+    const onChange = vi.fn();
+    const onConfirm = vi.fn();
+    const { getAllByTestId } = render(
+      <TestHarness
+        defaultValue={undefined}
+        onChange={onChange}
+        onConfirm={onConfirm}
+        required={false}
+        values={[
+          { kind: "number", required: true },
+          { kind: "number", required: true },
+          { kind: "number", required: true },
+        ]}
+      />,
+    );
+    const inputs = getAllByTestId("input") as HTMLInputElement[];
+
+    fireEvent.change(inputs[0], { target: { value: "0" } });
+    fireEvent.blur(inputs[0]);
+    fireEvent.change(inputs[1], { target: { value: "0" } });
+    fireEvent.blur(inputs[1]);
+    fireEvent.change(inputs[2], { target: { value: "0" } });
+    fireEvent.blur(inputs[2]);
+
+    expect(onChange).toHaveBeenCalledWith([0, 0, 0]);
+    expect(onConfirm).toHaveBeenCalledWith([0, 0, 0]);
+  });
 });
