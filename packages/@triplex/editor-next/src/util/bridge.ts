@@ -106,6 +106,7 @@ export interface ToVSCodeEvent extends ClientSendEventData {
     message: string;
     type: "info" | "warning" | "error";
   };
+  "reload-webviews": undefined;
   terminal: {
     command: string;
   };

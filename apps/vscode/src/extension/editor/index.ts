@@ -143,6 +143,11 @@ export class TriplexEditorProvider
             skipDirtyCheck: true,
           });
         }),
+        on(panel.webview, "reload-webviews", () => {
+          vscode.commands.executeCommand(
+            "workbench.action.webview.reloadWebviewAction",
+          );
+        }),
         on(panel.webview, "code-update", (prop) => {
           document.updateCode(prop);
         }),

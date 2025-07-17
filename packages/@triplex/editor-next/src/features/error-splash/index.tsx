@@ -5,6 +5,9 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { useScreenView } from "@triplex/ux";
+import { Button } from "../../components/button";
+import { sendVSCE } from "../../util/bridge";
+import { ErrorIllustration } from "../invariants/error-illustration";
 
 export function ErrorSplash({ error }: { error: Error | { message: string } }) {
   useScreenView("error_splash", "Screen");
@@ -12,18 +15,28 @@ export function ErrorSplash({ error }: { error: Error | { message: string } }) {
   return (
     <>
       <div
-        className="fixed inset-0 mx-auto flex max-w-2xl select-none flex-col justify-center gap-4 p-10"
+        className="fixed inset-0 mx-auto flex h-full max-w-2xl select-none flex-col items-center justify-center gap-4 p-4"
         data-testid="ErrorSplash"
       >
+        <ErrorIllustration />
+
         <h1 className="text-heading text-center font-medium">
-          An Unexpected Error Occurred
+          This wasn't expected, sorry!
         </h1>
 
         <p className="mx-auto max-w-md text-center text-lg">
-          We&apos;re looking into it. Re-open Triplex for VS Code and try again,
-          if the problem persists try restarting Visual Studio Code or raising
-          an issue.
+          An unexpected error occurred, we&apos;re looking into it. Reload
+          Triplex for VS Code and try again. Problem persisting? Raise an issue
+          on GitHub or Discord.
         </p>
+
+        <Button
+          actionId="errorsplash_controls_reload"
+          onClick={() => sendVSCE("reload-webviews", undefined)}
+          variant="cta"
+        >
+          Reload Webviews
+        </Button>
 
         <div className="mx-auto flex items-center gap-2">
           <a
