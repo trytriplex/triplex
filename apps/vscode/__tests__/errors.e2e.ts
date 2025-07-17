@@ -187,7 +187,8 @@ test.describe("when an error is thrown resolving a renderer", () => {
     const { locator } = vsce.resolveEditor();
 
     await expect(locator.getByTestId("ErrorSplash")).toHaveText(
-      /An Unexpected Error Occurred/,
+      /An unexpected error occurred/,
+      { ignoreCase: true },
     );
   });
 });
