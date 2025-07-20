@@ -10,11 +10,9 @@ import { LocalOverrideAdapter } from "@statsig/js-local-overrides";
 import { type ReactNode } from "react";
 import { type FGEnvironment } from "./types";
 
-let initialized = false;
-
-/** Overrides set for test environments. This can't be set for production builds. */
-const fgOverrides = JSON.parse(import.meta.env.VITE_FG_OVERRIDES || "{}");
 const overrideAdapter = new LocalOverrideAdapter();
+
+let instance: StatsigClient;
 
 export async function initFeatureGates({
   environment,
@@ -33,15 +31,14 @@ export async function initFeatureGates({
     throw new Error("invariant: missing userId");
   }
 
-  if (initialized) {
+  if (instance) {
     if (process.env.NODE_ENV !== "production") {
       // eslint-disable-next-line no-console
       console.log("Statsig already initialized, skipping.");
     }
+
     return;
   }
-
-  initialized = true;
 
   const client = new StatsigClient(
     "client-RoO8UZOrk5aM4zXe3AP7vQjy66PWeumvN2PfQ2P6xt7",
@@ -54,6 +51,8 @@ export async function initFeatureGates({
   );
 
   await client.initializeAsync();
+
+  instance = client;
 
   if (typeof document !== "undefined") {
     document.documentElement.setAttribute("data-fg-user", userId);
@@ -70,13 +69,7 @@ export async function initFeatureGates({
 }
 
 export function fg(key: string): boolean {
-  if (fgOverrides[key] !== undefined) {
-    return !!fgOverrides[key];
-  }
-
-  const Statsig = StatsigClient.instance();
-
-  return Statsig.checkGate(key);
+  return instance.checkGate(key);
 }
 
 export function overrideFg(key: string, value: boolean) {

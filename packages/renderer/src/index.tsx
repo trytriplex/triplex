@@ -4,6 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+/// <reference types="vite/client" />
 import {
   init,
   type BootstrapFunction,
@@ -26,9 +27,15 @@ export const bootstrap: BootstrapFunction = (container) => {
   const root = createRoot(container);
 
   return async (opts) => {
+    // Parse VITE_FG_OVERRIDES for test environments
+    const viteOverrides = JSON.parse(import.meta.env.VITE_FG_OVERRIDES || "{}");
+    
     await initFeatureGates({
       environment: opts.fgEnvironmentOverride,
-      overrides: opts.config.experimental,
+      overrides: {
+        ...opts.config.experimental,
+        ...viteOverrides,
+      },
       userId: opts.userId,
     });
 
@@ -48,8 +55,15 @@ export const bootstrapWebXR: BootstrapFunction = (container) => {
   const root = createRoot(container);
 
   return async (opts) => {
+    // Parse VITE_FG_OVERRIDES for test environments
+    const viteOverrides = JSON.parse(import.meta.env.VITE_FG_OVERRIDES || "{}");
+    
     await initFeatureGates({
       environment: opts.fgEnvironmentOverride,
+      overrides: {
+        ...opts.config.experimental,
+        ...viteOverrides,
+      },
       userId: opts.userId,
     });
 
