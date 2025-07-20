@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.70.10
+
+### Patch Changes
+
+- 0cbd424: Components that are no longer exported are now gracefully handled. Instead of an error being thrown the UI remains available prompting you to export the component again.
+
 ## 0.70.9
 
 ### Patch Changes
