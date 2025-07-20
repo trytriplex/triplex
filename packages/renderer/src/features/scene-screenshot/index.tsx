@@ -6,7 +6,7 @@
  */
 import {
   type ProviderModule,
-  type SceneComponent,
+  type SceneComponentWithMeta,
 } from "@triplex/bridge/client";
 import { Suspense, useEffect } from "react";
 import { Canvas } from "../canvas";
@@ -25,7 +25,7 @@ export function SceneScreenshot({
   component,
   providers,
 }: {
-  component: SceneComponent;
+  component: SceneComponentWithMeta;
   providers: ProviderModule;
 }) {
   return (

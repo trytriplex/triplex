@@ -124,6 +124,10 @@ export { ClientSendEventData, ClientSendEventName };
 
 export interface SceneComponent {
   (props: unknown): JSX.Element;
+}
+
+export interface SceneComponentWithMeta {
+  (props: unknown): JSX.Element;
   triplexMeta: SceneMeta;
 }
 
@@ -132,7 +136,7 @@ export interface SceneMeta {
   root: "react" | "react-three-fiber" | undefined;
 }
 
-export type Module = Record<string, SceneComponent>;
+export type Module = Record<string, SceneComponentWithMeta | undefined>;
 
 export type Modules = Record<string, () => Promise<Module>>;
 
@@ -164,7 +168,10 @@ export type BootstrapFunction = (
 
 export type ThumbnailFunction = (
   container: HTMLElement,
-) => (opts: { component: SceneComponent; providers: ProviderModule }) => void;
+) => (opts: {
+  component: SceneComponentWithMeta;
+  providers: ProviderModule;
+}) => void;
 
 export interface EmbeddedMeta {
   column: number;
