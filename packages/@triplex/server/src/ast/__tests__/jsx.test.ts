@@ -106,7 +106,7 @@ describe("jsx ast extractor", () => {
       join(__dirname, "__mocks__/n_modules.tsx"),
     );
 
-    const { elements } = getJsxElementsPositions(sourceFile, "default");
+    const { elements } = getJsxElementsPositions(sourceFile, "default")!;
     elements[0].children = [];
 
     expect(elements[0]).toEqual({
@@ -129,7 +129,7 @@ describe("jsx ast extractor", () => {
       join(__dirname, "__mocks__/expression.tsx"),
     );
 
-    const { elements } = getJsxElementsPositions(sourceFile, "default");
+    const { elements } = getJsxElementsPositions(sourceFile, "default")!;
 
     expect(elements).toEqual([
       {
@@ -222,7 +222,7 @@ describe("jsx ast extractor", () => {
       join(__dirname, "__mocks__/scene.tsx"),
     );
 
-    const { elements } = getJsxElementsPositions(sourceFile, "default");
+    const { elements } = getJsxElementsPositions(sourceFile, "default")!;
 
     expect(elements).toEqual([
       {
@@ -297,7 +297,7 @@ describe("jsx ast extractor", () => {
       join(__dirname, "__mocks__/scene.tsx"),
     );
 
-    const { elements } = getJsxElementsPositions(sourceFile, "SceneAlt");
+    const { elements } = getJsxElementsPositions(sourceFile, "SceneAlt")!;
 
     expect(elements[0]).toEqual({
       children: [],
@@ -319,7 +319,7 @@ describe("jsx ast extractor", () => {
       join(__dirname, "__mocks__/scene.tsx"),
     );
 
-    const { elements } = getJsxElementsPositions(sourceFile, "SceneArrow");
+    const { elements } = getJsxElementsPositions(sourceFile, "SceneArrow")!;
 
     expect(elements[0]).toEqual({
       children: [],
@@ -341,7 +341,7 @@ describe("jsx ast extractor", () => {
       join(__dirname, "__mocks__/box.tsx"),
     );
 
-    const { elements } = getJsxElementsPositions(sourceFile, "default");
+    const { elements } = getJsxElementsPositions(sourceFile, "default")!;
 
     expect(elements).toEqual([
       {
@@ -3293,7 +3293,7 @@ describe("jsx ast extractor", () => {
       join(__dirname, "__mocks__/nested.tsx"),
     );
 
-    const { elements } = getJsxElementsPositions(sourceFile, "default");
+    const { elements } = getJsxElementsPositions(sourceFile, "default")!;
 
     expect(elements).toEqual([
       {
@@ -3341,7 +3341,7 @@ describe("jsx ast extractor", () => {
       join(__dirname, "__mocks__/cylinder.tsx"),
     );
 
-    const { elements } = getJsxElementsPositions(sourceFile, "default");
+    const { elements } = getJsxElementsPositions(sourceFile, "default")!;
 
     expect(elements).toEqual([
       {
@@ -3419,7 +3419,7 @@ describe("jsx ast extractor", () => {
     const { elements } = getJsxElementsPositions(
       sourceFile,
       "ShorthandFragment",
-    );
+    )!;
 
     expect(simplifyJsxPositions(elements)).toMatchInlineSnapshot(`
       [

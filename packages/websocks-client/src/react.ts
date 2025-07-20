@@ -137,12 +137,15 @@ export function createWSHooks<
         onError: () => {
           deferred.reject(new Error("Error connecting to websocket."));
         },
-        onMessage: (data) => {
+        onMessage: (_data) => {
+          const data = _data === undefined ? null : _data;
+
           const streamValue = experimental_streamCache.get(path) || [];
           streamValue.push(data);
           experimental_streamCache.set(path, streamValue);
 
           valueCache.set(path, data);
+
           subscriptions.forEach((cb) => cb());
           deferred.resolve();
         },
@@ -195,7 +198,7 @@ export function createWSHooks<
         ? experimental_streamCache.get(path)
         : valueCache.get(path);
 
-      if (!value) {
+      if (value === undefined) {
         if (suspend) {
           throw query.deferred.promise;
         } else {
@@ -203,7 +206,7 @@ export function createWSHooks<
         }
       }
 
-      if (typeof value === "object" && "error" in value) {
+      if (typeof value === "object" && value !== null && "error" in value) {
         throw new Error(
           `Error reading "${decodeURIComponent(path)}" - [${value.error}]`,
         );

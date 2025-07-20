@@ -611,7 +611,7 @@ describe("type infer", () => {
       join(__dirname, "__mocks__/type-extraction.tsx"),
     );
 
-    const { props } = getFunctionPropTypes(sourceFile, "UnionOptional");
+    const { props } = getFunctionPropTypes(sourceFile, "UnionOptional")!;
 
     expect(props).toMatchInlineSnapshot(`
       [
@@ -801,7 +801,7 @@ describe("type infer", () => {
       join(__dirname, "__mocks__/type-extraction.tsx"),
     );
 
-    const { props } = getFunctionPropTypes(sourceFile, "Home");
+    const { props } = getFunctionPropTypes(sourceFile, "Home")!;
 
     expect(props).toMatchInlineSnapshot(`
       [
@@ -877,7 +877,7 @@ describe("type infer", () => {
       join(__dirname, "__mocks__/type-extraction.tsx"),
     );
 
-    const { props } = getFunctionPropTypes(sourceFile, "ArrowFunc");
+    const { props } = getFunctionPropTypes(sourceFile, "ArrowFunc")!;
 
     expect(props).toMatchInlineSnapshot(`
       [
@@ -901,7 +901,7 @@ describe("type infer", () => {
       join(__dirname, "__mocks__/type-extraction.tsx"),
     );
 
-    const { props } = getFunctionPropTypes(sourceFile, "WrappedFunc");
+    const { props } = getFunctionPropTypes(sourceFile, "WrappedFunc")!;
 
     expect(props).toMatchInlineSnapshot(`
       [
@@ -925,7 +925,7 @@ describe("type infer", () => {
       join(__dirname, "__mocks__/type-extraction.tsx"),
     );
 
-    const { props } = getFunctionPropTypes(sourceFile, "Provider");
+    const { props } = getFunctionPropTypes(sourceFile, "Provider")!;
 
     expect(props).toMatchInlineSnapshot(`
       [
@@ -965,7 +965,7 @@ describe("type infer", () => {
       join(__dirname, "__mocks__/type-extraction.tsx"),
     );
 
-    const { props } = getFunctionPropTypes(sourceFile, "DefaultProps");
+    const { props } = getFunctionPropTypes(sourceFile, "DefaultProps")!;
 
     expect(props).toMatchInlineSnapshot(`
       [

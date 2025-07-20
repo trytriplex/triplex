@@ -13,7 +13,7 @@ import {
   getJsxElementAtOrThrow,
   getJsxElementsPositions,
 } from "../../ast/jsx";
-import { getExportName } from "../../ast/module";
+import { getExportNameOrThrow } from "../../ast/module";
 import { _createProject, createProject } from "../../ast/project";
 import { getJsxElementPropTypes } from "../../ast/type-infer";
 import {
@@ -103,8 +103,8 @@ describe("component service", () => {
 
     rename(sourceFile, "EmptyFragment", "MyNewName");
 
-    expect(() => getExportName(sourceFile, "EmptyFragment")).toThrow();
-    expect(() => getExportName(sourceFile, "MyNewName")).not.toThrow();
+    expect(() => getExportNameOrThrow(sourceFile, "EmptyFragment")).toThrow();
+    expect(() => getExportNameOrThrow(sourceFile, "MyNewName")).not.toThrow();
   });
 
   it("should rename a variable declaration named export", () => {
@@ -117,8 +117,8 @@ describe("component service", () => {
 
     rename(sourceFile, "NamedExport", "NewExport");
 
-    expect(() => getExportName(sourceFile, "NamedExport")).toThrow();
-    expect(() => getExportName(sourceFile, "NewExport")).not.toThrow();
+    expect(() => getExportNameOrThrow(sourceFile, "NamedExport")).toThrow();
+    expect(() => getExportNameOrThrow(sourceFile, "NewExport")).not.toThrow();
   });
 
   it("should rename local usages", () => {
@@ -131,8 +131,9 @@ describe("component service", () => {
 
     rename(sourceFile, "Reuse", "AnotherOne");
 
-    expect(getExportName(sourceFile, "NamedExport").declaration.getText())
-      .toMatchInlineSnapshot(`
+    expect(
+      getExportNameOrThrow(sourceFile, "NamedExport").declaration.getText(),
+    ).toMatchInlineSnapshot(`
       "NamedExport = () => {
         return (
           <>
@@ -153,7 +154,9 @@ describe("component service", () => {
 
     rename(sourceFile, "default", "MyNewName");
 
-    expect(getExportName(sourceFile, "default").name).toEqual("MyNewName");
+    expect(getExportNameOrThrow(sourceFile, "default").name).toEqual(
+      "MyNewName",
+    );
   });
 
   it("should return the line column number of new jsx element in shorthand", () => {
@@ -193,7 +196,7 @@ describe("component service", () => {
     expect(
       getJsxElementAtOrThrow(sourceFile, res.line, res.column).getText(),
     ).toMatchInlineSnapshot('"<mesh />"');
-    expect(getExportName(sourceFile, "EmptyMesh").declaration.getText())
+    expect(getExportNameOrThrow(sourceFile, "EmptyMesh").declaration.getText())
       .toMatchInlineSnapshot(`
         "export function EmptyMesh() {
           return (<><mesh /><mesh></mesh></>);
@@ -215,7 +218,7 @@ describe("component service", () => {
       type: "host",
     });
 
-    const result = getExportName(
+    const result = getExportNameOrThrow(
       sourceFile,
       "EmptyFragment",
     ).declaration.getText();
@@ -267,7 +270,7 @@ describe("component service", () => {
       type: "custom",
     });
 
-    const result = getExportName(
+    const result = getExportNameOrThrow(
       sourceFile,
       "EmptyFragment",
     ).declaration.getText();
@@ -319,7 +322,7 @@ describe("component service", () => {
       type: "custom",
     });
 
-    const result = getExportName(
+    const result = getExportNameOrThrow(
       sourceFile,
       "FragmentFragment",
     ).declaration.getText();
@@ -596,14 +599,14 @@ describe("component service", () => {
       join(__dirname, "__mocks__/add-prop.tsx"),
     );
     expect(
-      getJsxElementsPositions(sourceFile, "default").elements[0].children
+      getJsxElementsPositions(sourceFile, "default")!.elements[0].children
         .length,
     ).toEqual(4);
 
     commentComponent(sourceFile, 12, 7);
 
     expect(
-      getJsxElementsPositions(sourceFile, "default").elements[0].children
+      getJsxElementsPositions(sourceFile, "default")!.elements[0].children
         .length,
     ).toEqual(3);
     expect(getJsxElementAt(sourceFile, 12, 7)).not.toBeDefined();
@@ -634,7 +637,7 @@ describe("component service", () => {
 
     deleteCommentComponents(sourceFile);
 
-    expect(getExportName(sourceFile, "default").declaration.getText())
+    expect(getExportNameOrThrow(sourceFile, "default").declaration.getText())
       .toMatchInlineSnapshot(`
         "export default function Scene() {
           return (
@@ -673,7 +676,7 @@ describe("component service", () => {
     commentComponent(sourceFile, 47, 7);
     commentComponent(sourceFile, 42, 5);
 
-    expect(getExportName(sourceFile, "Nested").declaration.getText())
+    expect(getExportNameOrThrow(sourceFile, "Nested").declaration.getText())
       .toMatchInlineSnapshot(`
         "Nested = () => (
           <>
@@ -701,7 +704,7 @@ describe("component service", () => {
 
     uncommentComponent(sourceFile, 42, 5);
 
-    expect(getExportName(sourceFile, "Nested").declaration.getText())
+    expect(getExportNameOrThrow(sourceFile, "Nested").declaration.getText())
       .toMatchInlineSnapshot(`
         "Nested = () => (
           <>
@@ -755,8 +758,9 @@ describe("component service", () => {
     );
 
     expect(result).toEqual({ column: 19, line: 56 });
-    expect(getExportName(sourceFile, "AddComponent").declaration.getText())
-      .toMatchInlineSnapshot(`
+    expect(
+      getExportNameOrThrow(sourceFile, "AddComponent").declaration.getText(),
+    ).toMatchInlineSnapshot(`
         "export function AddComponent() {
           return (
             <>
@@ -789,8 +793,9 @@ describe("component service", () => {
     );
 
     expect(result).toEqual({ column: 19, line: 55 });
-    expect(getExportName(sourceFile, "AddComponent").declaration.getText())
-      .toMatchInlineSnapshot(`
+    expect(
+      getExportNameOrThrow(sourceFile, "AddComponent").declaration.getText(),
+    ).toMatchInlineSnapshot(`
         "export function AddComponent() {
           return (
             <>
@@ -896,7 +901,10 @@ describe("component service", () => {
     });
 
     expect(
-      getExportName(sourceFile, "EmptyArrowFunction").declaration.getText(),
+      getExportNameOrThrow(
+        sourceFile,
+        "EmptyArrowFunction",
+      ).declaration.getText(),
     ).toMatchInlineSnapshot('"EmptyArrowFunction = () => <><group /></>"');
   });
 
@@ -945,7 +953,10 @@ describe("component service", () => {
       getJsxElementAtOrThrow(sourceFile, actual.line, actual.column).getText(),
     ).toMatchInlineSnapshot('"<group />"');
     expect(
-      getExportName(sourceFile, "ArrowFuncReturnGroup").declaration.getText(),
+      getExportNameOrThrow(
+        sourceFile,
+        "ArrowFuncReturnGroup",
+      ).declaration.getText(),
     ).toMatchInlineSnapshot(
       '"ArrowFuncReturnGroup = () => <><group /><group></group></>"',
     );
@@ -968,7 +979,7 @@ describe("component service", () => {
     expect(
       getJsxElementAtOrThrow(sourceFile, actual.line, actual.column).getText(),
     ).toMatchInlineSnapshot(`"<mesh name="foo"/>"`);
-    expect(getExportName(sourceFile, "EmptyGroup").declaration.getText())
+    expect(getExportNameOrThrow(sourceFile, "EmptyGroup").declaration.getText())
       .toMatchInlineSnapshot(`
         "export function EmptyGroup() {
           return <><mesh name="foo"/><group></group></>;
@@ -990,7 +1001,7 @@ describe("component service", () => {
     // The sibling elements should remain on the same lines.
     expect(getJsxElementAt(sourceFile, 15, 7)).toBeDefined();
     expect(getJsxElementAt(sourceFile, 22, 7)).toBeDefined();
-    expect(getExportName(sourceFile, "Scene").declaration.getText())
+    expect(getExportNameOrThrow(sourceFile, "Scene").declaration.getText())
       .toMatchInlineSnapshot(`
         "export function Scene() {
           return (
@@ -1027,7 +1038,7 @@ describe("component service", () => {
     // The sibling elements should remain on the same lines.
     expect(getJsxElementAt(sourceFile, 15, 7)).toBeDefined();
     expect(getJsxElementAt(sourceFile, 22, 7)).toBeDefined();
-    expect(getExportName(sourceFile, "Scene").declaration.getText())
+    expect(getExportNameOrThrow(sourceFile, "Scene").declaration.getText())
       .toMatchInlineSnapshot(`
         "export function Scene() {
           return (
@@ -1057,7 +1068,7 @@ describe("component service", () => {
     const result = duplicate(sourceFile, 15, 7);
 
     expect(result).toEqual({ column: 57, line: 15 });
-    expect(getExportName(sourceFile, "Scene").declaration.getText())
+    expect(getExportNameOrThrow(sourceFile, "Scene").declaration.getText())
       .toMatchInlineSnapshot(`
         "export function Scene() {
           return (
@@ -1088,7 +1099,7 @@ describe("component service", () => {
 
     move(sourceFile, source, destination, "move-before");
 
-    expect(getExportName(sourceFile, "default").declaration.getText())
+    expect(getExportNameOrThrow(sourceFile, "default").declaration.getText())
       .toMatchInlineSnapshot(`
         "export default function Scene() {
           return (
@@ -1133,7 +1144,7 @@ describe("component service", () => {
 
     move(sourceFile, source, destination, "move-after");
 
-    expect(getExportName(sourceFile, "default").declaration.getText())
+    expect(getExportNameOrThrow(sourceFile, "default").declaration.getText())
       .toMatchInlineSnapshot(`
         "export default function Scene() {
           return (
@@ -1178,7 +1189,7 @@ describe("component service", () => {
 
     move(sourceFile, source, destination, "make-child");
 
-    expect(getExportName(sourceFile, "default").declaration.getText())
+    expect(getExportNameOrThrow(sourceFile, "default").declaration.getText())
       .toMatchInlineSnapshot(`
         "export default function Scene() {
           return (
@@ -1225,7 +1236,7 @@ describe("component service", () => {
 
     move(sourceFile, source, destination, "make-child");
 
-    expect(getExportName(sourceFile, "default").declaration.getText())
+    expect(getExportNameOrThrow(sourceFile, "default").declaration.getText())
       .toMatchInlineSnapshot(`
         "export default function Scene() {
           return (
@@ -1270,7 +1281,7 @@ describe("component service", () => {
 
     move(sourceFile, source, destination, "make-child");
 
-    expect(getExportName(sourceFile, "default").declaration.getText())
+    expect(getExportNameOrThrow(sourceFile, "default").declaration.getText())
       .toMatchInlineSnapshot(`
         "export default function Scene() {
           return (
@@ -1391,7 +1402,7 @@ describe("component service", () => {
       group: "fragment",
     });
 
-    expect(getExportName(sourceFile, "Reuse").declaration.getText())
+    expect(getExportNameOrThrow(sourceFile, "Reuse").declaration.getText())
       .toMatchInlineSnapshot(`
         "export function Reuse() {
           return (
@@ -1416,7 +1427,7 @@ describe("component service", () => {
       group: "group",
     });
 
-    expect(getExportName(sourceFile, "Reuse").declaration.getText())
+    expect(getExportNameOrThrow(sourceFile, "Reuse").declaration.getText())
       .toMatchInlineSnapshot(`
         "export function Reuse() {
           return (

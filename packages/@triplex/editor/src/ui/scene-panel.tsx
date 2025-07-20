@@ -117,7 +117,7 @@ function ComponentHeading() {
           className="overflow-hidden text-ellipsis rounded"
           data-testid="scene-panel-heading"
         >
-          {scene.name}
+          {scene?.name}
         </span>
 
         <CaretDownIcon className="flex-shrink-0" />
@@ -128,7 +128,7 @@ function ComponentHeading() {
           onChange={onChangeComponentHandler}
           value={exportName}
         >
-          {scene.exports.map((exp) => (
+          {scene?.exports.map((exp) => (
             <option key={exp.exportName} value={exp.exportName}>
               {exp.name}
             </option>
@@ -146,7 +146,7 @@ function ComponentHeading() {
             onClick={() => setFrame("intrinsic")}
           />
         )}
-        {!scene.matchesFilesGlob && (
+        {!scene?.matchesFilesGlob && (
           <IconButton
             actionId="scenepanel_docs_outsideproject"
             className="text-orange-400"
@@ -160,7 +160,7 @@ function ComponentHeading() {
                       files: window.triplex.env.config.files.map((file) =>
                         file.replace(window.triplex.env.config.cwd, ".."),
                       ),
-                      path: scene.path.replace(
+                      path: scene?.path.replace(
                         window.triplex.env.config.cwd,
                         "..",
                       ),
@@ -347,7 +347,7 @@ function JsxElements({
 
   return (
     <>
-      {scene.sceneObjects.map((element) => {
+      {scene?.sceneObjects.map((element) => {
         return (
           <JsxElementButton
             element={element}

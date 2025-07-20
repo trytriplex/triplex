@@ -20,7 +20,7 @@ import {
   getJsxElementAtOrThrow,
   getJsxTag,
 } from "../ast/jsx";
-import { getExportName } from "../ast/module";
+import { getExportNameOrThrow } from "../ast/module";
 import { type ComponentRawType, type ComponentTarget } from "../types";
 import { inferExports } from "../util/module";
 import { padLines, parseJSON } from "../util/string";
@@ -236,7 +236,7 @@ export function add(
   component: ComponentRawType,
   target?: ComponentTarget,
 ): { column: number; line: number } {
-  const { declaration } = getExportName(sourceFile, exportName);
+  const { declaration } = getExportNameOrThrow(sourceFile, exportName);
 
   if (
     Node.isFunctionDeclaration(declaration) ||
@@ -352,7 +352,7 @@ export function add(
       // Mutation we've done above for import statements. Not the end of the world
       // But might be a performance pitfall. This is a note for later to see if there
       // Are improvements to be made.
-      const { declaration } = getExportName(sourceFile, exportName);
+      const { declaration } = getExportNameOrThrow(sourceFile, exportName);
 
       // We add the JSX element after adding/updating imports so line/cols are always correct
       // For the freshly added JSX element.
@@ -377,7 +377,7 @@ export function add(
     }
   }
 
-  throw new Error("invariant: unhandled");
+  throw new Error("invariant: unhandled add type");
 }
 
 export function upsertProp(
@@ -531,7 +531,7 @@ export function rename(
   exportName: string,
   newName: string,
 ) {
-  const { declaration } = getExportName(sourceFile, exportName);
+  const { declaration } = getExportNameOrThrow(sourceFile, exportName);
 
   declaration.rename(newName);
 }
@@ -604,7 +604,7 @@ export function move(
     }
 
     default:
-      throw new Error("invariant");
+      throw new Error("invariant: unhandled move action");
   }
 }
 

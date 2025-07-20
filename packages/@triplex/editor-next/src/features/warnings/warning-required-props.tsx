@@ -11,6 +11,11 @@ import { WarningPredicate } from "./warning";
 export function WarningRequiredProps() {
   const context = useSceneContext();
   const props = useLazySubscription("/scene/:path/:exportName/props", context);
+
+  if (!props) {
+    return null;
+  }
+
   const missingRequiredProps = props.props
     .filter((prop) => prop.required && prop.defaultValue === undefined)
     .map((prop) => prop.name);

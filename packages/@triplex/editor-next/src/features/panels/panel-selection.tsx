@@ -60,9 +60,9 @@ function SelectionPanelLoadable({ selected }: { selected: SceneSelected }) {
       : "/scene/:path/object/:line/:column",
     selected,
   );
-  const hasProps = props.props.length > 0;
+  const hasProps = !!props && props.props.length > 0;
   const groupsDef = useLazySubscription("/prop-groups-def");
-  const groupedProps = propsByGroup(props.props, {
+  const groupedProps = propsByGroup(props?.props || [], {
     expandAll: isPropsForComponent,
     groupsDef,
   });
@@ -73,13 +73,13 @@ function SelectionPanelLoadable({ selected }: { selected: SceneSelected }) {
     }
 
     send("element-focused-props", {
-      props: props.props.map((props) => props.name),
+      props: props?.props.map((props) => props.name) || [],
     });
 
     return () => {
       send("element-focused-props", { props: [] });
     };
-  }, [isPropsForComponent, props.props]);
+  }, [isPropsForComponent, props?.props]);
 
   return (
     <>

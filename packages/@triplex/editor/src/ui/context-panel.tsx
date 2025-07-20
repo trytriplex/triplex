@@ -7,13 +7,7 @@
 import { Cross2Icon, EraserIcon } from "@radix-ui/react-icons";
 import { send } from "@triplex/bridge/host";
 import { useScreenView } from "@triplex/ux";
-import {
-  Suspense,
-  useDeferredValue,
-  useEffect,
-  useLayoutEffect,
-  useState,
-} from "react";
+import { Suspense, useDeferredValue, useEffect, useState } from "react";
 import { IconButton } from "../ds/button";
 import { ExternalLink } from "../ds/external-link";
 import { ScrollContainer } from "../ds/scroll-container";
@@ -40,7 +34,7 @@ function SelectedSceneObjectPanel({
 }) {
   useScreenView("component_props", "Panel");
 
-  const { blur, setPropValue } = useScene();
+  const { setPropValue } = useScene();
   const { persistPropValue } = useEditor();
 
   const data = useLazySubscription("/scene/:path/object/:line/:column", {
@@ -51,23 +45,13 @@ function SelectedSceneObjectPanel({
 
   useEffect(() => {
     send("element-focused-props", {
-      props: data.props.map((props) => props.name),
+      props: data?.props.map((props) => props.name) || [],
     });
 
     return () => {
       send("element-focused-props", { props: [] });
     };
-  }, [data.props]);
-
-  useLayoutEffect(() => {
-    // Sometimes we lose track of the line/col of the currently selected object.
-    // This could be for example when deleting a scene object, selecting another,
-    // and then saving. The line cols no-longer match up. When that is the case
-    // we immediately close the context panel.
-    if (data.name === "[deleted]") {
-      blur();
-    }
-  }, [blur, data.name]);
+  }, [data?.props]);
 
   return (
     <>
@@ -75,7 +59,7 @@ function SelectedSceneObjectPanel({
         className="px-4 pt-3 text-sm font-medium text-neutral-300"
         data-testid="context-panel-heading"
       >
-        <div className="overflow-hidden text-ellipsis">{data.name}</div>
+        <div className="overflow-hidden text-ellipsis">{data?.name}</div>
       </h2>
 
       <div className="-mt-0.5 mb-2.5 px-4">
@@ -88,7 +72,7 @@ function SelectedSceneObjectPanel({
           View usage
         </IDELink>
 
-        {data.type === "custom" && data.path && (
+        {data?.type === "custom" && data.path && (
           <>
             <span className="mx-1.5 text-xs text-neutral-400">•</span>
 
@@ -106,7 +90,7 @@ function SelectedSceneObjectPanel({
 
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
 
-      {data.props.length > 0 && (
+      {data && data.props.length > 0 && (
         <div className="px-3 py-2">
           <StringInput
             actionId="contextpanel_input_componentprops_filter"
@@ -119,13 +103,13 @@ function SelectedSceneObjectPanel({
       )}
 
       <ScrollContainer>
-        {data.props.length === 0 && (
+        {data?.props.length === 0 && (
           <div className="px-4 py-3 text-xs italic text-neutral-400">
             This element has no props.
           </div>
         )}
 
-        {data.props.map((prop) => {
+        {data?.props.map((prop) => {
           if (!prop.name.toLowerCase().includes(filter?.toLowerCase() || "")) {
             return null;
           }
@@ -218,7 +202,7 @@ function ComponentSandboxPanel({
 
       <div className="h-[1px] flex-shrink-0 bg-neutral-800" />
 
-      {data.props.length > 0 && (
+      {!!data?.props.length && (
         <div className="flex py-2 pl-3 pr-2">
           <StringInput
             actionId="contextpanel_input_controlsprops_filter"
@@ -251,7 +235,7 @@ function ComponentSandboxPanel({
       )}
 
       <ScrollContainer>
-        {data.props.length === 0 && (
+        {!data?.props.length && (
           <div className="flex flex-col gap-2 px-4 py-3">
             <span className="text-xs text-neutral-400">
               Props declared on your component appear here that can be set
@@ -268,7 +252,7 @@ function ComponentSandboxPanel({
           </div>
         )}
 
-        {data.props.map((prop) => {
+        {data?.props.map((prop) => {
           if (!prop.name.toLowerCase().includes(filter?.toLowerCase() || "")) {
             return null;
           }

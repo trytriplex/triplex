@@ -4,7 +4,11 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { type Modules } from "@triplex/bridge/client";
+import {
+  type Modules,
+  type SceneComponent,
+  type SceneMeta,
+} from "@triplex/bridge/client";
 import { Fragment } from "react";
 import { suspend } from "suspend-react";
 import { type Scene } from "./types";
@@ -29,10 +33,13 @@ export function useSceneLoader({
   const { component, meta } = suspend(async () => {
     const resolvedModule = await modules[relativePathToPickComponent]();
     const moduleExport = resolvedModule[exportName];
-    const resolvedMeta = moduleExport.triplexMeta;
+    const resolvedMeta: SceneMeta = moduleExport?.triplexMeta || {
+      lighting: "default",
+      root: undefined,
+    };
 
     return {
-      component: moduleExport || Fragment,
+      component: (moduleExport || Fragment) as SceneComponent,
       meta: resolvedMeta,
     };
   }, [exportName, modules, relativePathToPickComponent]);

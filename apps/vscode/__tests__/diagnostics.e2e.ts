@@ -62,3 +62,23 @@ test("should recover from subsequent syntax error", async ({
   await expect(locator.getByTestId("InvalidCodeSplash")).toBeHidden();
   await expect(vsce.loadedComponent).toHaveText("Plane");
 });
+
+test(
+  "should recover from component being unexported",
+  { tag: "@vsce_smoke" },
+  async ({ setFile, vsce }) => {
+    await vsce.codelens("Plane").click();
+    const { locator } = vsce.resolveEditor();
+
+    await setFile((file) =>
+      file.replace("export function Plane", "function Plane"),
+    );
+    await expect(locator.getByText("Component data was lost.")).toBeVisible();
+    await expect(vsce.loadedComponent).not.toBeAttached();
+
+    await setFile((file) =>
+      file.replace("function Plane", "export function Plane"),
+    );
+    await expect(vsce.loadedComponent).toHaveText("Plane");
+  },
+);

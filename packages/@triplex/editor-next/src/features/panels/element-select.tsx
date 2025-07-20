@@ -12,13 +12,27 @@ import { useSceneContext } from "../app-root/context";
 
 function ElementOptions() {
   const context = useSceneContext();
-  const { exports } = useLazySubscription("/scene/:path/:exportName", context);
+  const exportData = useLazySubscription("/scene/:path", context);
 
-  return exports.map((exp) => (
-    <option key={exp.exportName} value={exp.exportName}>
-      {exp.name}
-    </option>
-  ));
+  if (exportData.exports.some((exp) => exp.exportName === context.exportName)) {
+    return exportData.exports.map((exp) => (
+      <option key={exp.exportName} value={exp.exportName}>
+        {exp.name}
+      </option>
+    ));
+  }
+
+  // We've lost the export so we need to add it back to the list.
+  return (
+    <>
+      <option value={context.exportName}>{context.exportName}</option>
+      {exportData.exports.map((exp) => (
+        <option key={exp.exportName} value={exp.exportName}>
+          {exp.name}
+        </option>
+      ))}
+    </>
+  );
 }
 
 export function ElementSelect() {

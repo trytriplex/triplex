@@ -44,7 +44,7 @@ export function getAllJsxElements(
       .find((symbol) => symbol.getName() === exportName);
 
     if (!foundExport) {
-      throw new Error(`invariant: export ${exportName} not found`);
+      return [];
     }
 
     nodeToSearch = resolveExportDeclaration(foundExport.getDeclarations()[0]);
@@ -184,7 +184,7 @@ export function getJsxElementsPositions(
     .find((symbol) => symbol.getName() === exportName);
 
   if (!foundExport) {
-    throw new Error(`invariant: export ${exportName} not found`);
+    return undefined;
   }
 
   const declaration = resolveExportDeclaration(
@@ -233,7 +233,7 @@ export function getJsxElementsPositions(
       if (parentElement) {
         const parentPositions = parentPointers.get(parentElement);
         if (!parentPositions) {
-          throw new Error("invariant");
+          throw new Error("invariant: parent positions not found");
         }
 
         parentPositions.children.push(positions);
@@ -357,14 +357,6 @@ export function getJsxElementProps(
   return { props: sortedProps, transforms };
 }
 
-export function getFunctionPropsOrThrow(
-  sourceFile: SourceFileReadOnly,
-  exportName: string,
-) {
-  const { props, transforms } = getFunctionPropTypes(sourceFile, exportName);
-  return { props, transforms };
-}
-
 export function getFunctionProps(
   sourceFile: SourceFileReadOnly,
   exportName?: string,
@@ -373,12 +365,7 @@ export function getFunctionProps(
     return undefined;
   }
 
-  try {
-    const { props, transforms } = getFunctionPropTypes(sourceFile, exportName);
-    return { props, transforms };
-  } catch {
-    return undefined;
-  }
+  return getFunctionPropTypes(sourceFile, exportName);
 }
 
 export function getJsxElementAt(

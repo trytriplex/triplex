@@ -8,7 +8,6 @@ import { readFile } from "node:fs/promises";
 import { Application, isHttpError, Router } from "@oakserver/oak";
 import { createForkLogger } from "@triplex/lib/log";
 import { basename } from "@triplex/lib/path";
-import { type DeclaredProp, type Prop } from "@triplex/lib/types";
 import { createWSServer } from "@triplex/websocks-server";
 import { watch } from "chokidar";
 import { type DetectResult } from "package-manager-detector";
@@ -22,7 +21,6 @@ import {
 } from "./ast";
 import {
   getFunctionProps,
-  getFunctionPropsOrThrow,
   getJsxElementAtOrThrow,
   getJsxElementParentExportNameOrThrow,
 } from "./ast/jsx";
@@ -41,7 +39,7 @@ import {
   uncommentComponent,
   upsertProp,
 } from "./services/component";
-import { getAllFiles, getSceneExport } from "./services/file";
+import { getAllFiles, getExports, getSceneExport } from "./services/file";
 import {
   folderAssets,
   folderComponents,
@@ -565,6 +563,22 @@ export function createServer({
       },
     ),
     tws.route(
+      { defer: true, path: "/scene/:path" },
+      async ({ path }) => {
+        const result = await getExports({
+          files: config.files,
+          path,
+          project,
+        });
+
+        return result;
+      },
+      async (push, { path }) => {
+        const sourceFile = await project.getSourceFile(path);
+        sourceFile.onModified(push);
+      },
+    ),
+    tws.route(
       { defer: true, path: "/scene/:path/:exportName" },
       async ({ exportName, path }) => {
         const result = await getSceneExport({
@@ -584,7 +598,7 @@ export function createServer({
       { defer: true, path: "/scene/:path/:exportName/props" },
       async ({ exportName, path }) => {
         const sourceFile = await project.getSourceFile(path);
-        const props = getFunctionPropsOrThrow(sourceFile.read(), exportName);
+        const props = getFunctionProps(sourceFile.read(), exportName);
         return props;
       },
       async (push, { path }) => {
@@ -618,7 +632,7 @@ export function createServer({
     }),
     tws.route(
       { defer: true, path: "/scene/:path/object/:line/:column" },
-      (params, { type }) => {
+      (params) => {
         const path = params.path;
         const line = Number(params.line);
         const column = Number(params.column);
@@ -626,19 +640,7 @@ export function createServer({
         const sceneObject = getJsxElementAt(sourceFile.read(), line, column);
 
         if (!sceneObject) {
-          if (type === "pull") {
-            // Initial request - throw an error.
-            throw new Error(
-              `invariant: component at ${line}:${column} not found`,
-            );
-          } else {
-            return {
-              name: "[deleted]",
-              props: [] as (Prop | DeclaredProp)[],
-              transforms: { rotate: false, scale: false, translate: false },
-              type: "host",
-            } as const;
-          }
+          return undefined;
         }
 
         const tag = getJsxTag(sceneObject);

@@ -25,17 +25,17 @@ export function getSceneExport({
   project: TRIPLEXProject;
 }) {
   const sourceFile = project.getSourceFile(path).read();
-  const { declaration, elements } = getJsxElementsPositions(
-    sourceFile,
-    exportName,
-  );
+  const positions = getJsxElementsPositions(sourceFile, exportName);
   const foundExports = inferExports(sourceFile.getText());
   const foundExport = foundExports.find((exp) => exp.exportName === exportName);
-  const pos = sourceFile.getLineAndColumnAtPos(declaration.getStart());
 
-  if (!foundExport) {
-    throw new Error("invariant: unexpected");
+  if (!foundExport || !positions) {
+    return undefined;
   }
+
+  const pos = sourceFile.getLineAndColumnAtPos(
+    positions.declaration.getStart(),
+  );
 
   return {
     column: pos.column,
@@ -44,7 +44,26 @@ export function getSceneExport({
     matchesFilesGlob: matchFile(path, files),
     name: foundExport.name,
     path,
-    sceneObjects: elements,
+    sceneObjects: positions.elements,
+  };
+}
+
+export function getExports({
+  files,
+  path,
+  project,
+}: {
+  files: string[];
+  path: string;
+  project: TRIPLEXProject;
+}) {
+  const sourceFile = project.getSourceFile(path).read();
+  const foundExports = inferExports(sourceFile.getText());
+
+  return {
+    exports: foundExports,
+    matchesFilesGlob: matchFile(path, files),
+    path,
   };
 }
 

@@ -31,6 +31,10 @@ export const handlers = [
           break;
         }
 
+        case "/undefined": {
+          return client.send(JSON.stringify(undefined));
+        }
+
         default:
           client.send(JSON.stringify({ name: "bar" }));
       }

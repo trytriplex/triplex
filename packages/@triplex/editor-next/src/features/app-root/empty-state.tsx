@@ -16,7 +16,7 @@ export function EmptyState() {
     path: context.path,
   });
 
-  if (elements.sceneObjects.length > 0) {
+  if (elements && elements.sceneObjects.length > 0) {
     return null;
   }
 

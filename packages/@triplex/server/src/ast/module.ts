@@ -127,5 +127,16 @@ export function getExportName(
     );
   }
 
-  throw new Error(`invariant: no export ${exportName} found`);
+  return undefined;
+}
+
+export function getExportNameOrThrow(
+  sourceFile: SourceFileReadOnly,
+  exportName: string,
+) {
+  const result = getExportName(sourceFile, exportName);
+  if (!result) {
+    throw new Error(`invariant: no export ${exportName} found`);
+  }
+  return result;
 }

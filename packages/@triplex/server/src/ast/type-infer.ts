@@ -732,36 +732,31 @@ function getComponentPropsObjectBinding(
 export function getFunctionPropTypes(
   sourceFile: SourceFileReadOnly,
   exportName: string,
-): { props: Prop[]; source: Source; transforms: Transforms } {
+): { props: Prop[]; source: Source; transforms: Transforms } | undefined {
   const propTypes: Prop[] = [];
-  const empty = {
-    props: propTypes,
-    source: "unknown",
-    transforms: { rotate: false, scale: false, translate: false },
-  } as const;
-  const { declaration } = getExportName(sourceFile, exportName);
-  const type = declaration.getType();
-  const signatures = type.getCallSignatures();
+  const exportNode = getExportName(sourceFile, exportName);
+  const type = exportNode?.declaration.getType();
+  const signatures = type?.getCallSignatures();
   const sources = {
     react: false,
     three: false,
   };
 
-  if (signatures.length === 0) {
+  if (!signatures || !exportNode || signatures.length === 0) {
     // No signatures for this call-like node found.
-    return empty;
+    return undefined;
   }
 
   const [props] = signatures[0].getParameters();
   if (!props) {
     // No props arg
-    return empty;
+    return undefined;
   }
 
   const propsType = sourceFile
     .getProject()
     .getTypeChecker()
-    .getTypeOfSymbolAtLocation(props, declaration);
+    .getTypeOfSymbolAtLocation(props, exportNode.declaration);
 
   const properties = propsType.getApparentProperties();
   const defaultValues: Record<string, ExpressionValue> = {};
@@ -770,7 +765,7 @@ export function getFunctionPropTypes(
   let scale = false;
   let translate = false;
 
-  const binding = getComponentPropsObjectBinding(declaration, props);
+  const binding = getComponentPropsObjectBinding(exportNode.declaration, props);
   if (binding) {
     binding.getElements().forEach((element) => {
       const name = element.getPropertyNameNode() || element.getNameNode();
@@ -792,7 +787,7 @@ export function getFunctionPropTypes(
   for (let i = 0; i < properties.length; i++) {
     const prop = properties[i];
     const propName = prop.getName();
-    const propType = prop.getTypeAtLocation(declaration);
+    const propType = prop.getTypeAtLocation(exportNode.declaration);
     const { description, tags } = extractJSDoc(prop);
 
     if (propName === "rotation") {

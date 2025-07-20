@@ -22,7 +22,7 @@ describe("file", () => {
       files: [],
       path: join(cwd, "add-prop.tsx"),
       project,
-    });
+    })!;
 
     expect(actual.column).toEqual(14);
     expect(actual.line).toEqual(38);

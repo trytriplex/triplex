@@ -7,7 +7,7 @@
 import { join } from "@triplex/lib/path";
 import { describe, expect, it } from "vitest";
 import { getJsxElementAt, getJsxElementAtOrThrow } from "../jsx";
-import { getElementFilePath, getExportName } from "../module";
+import { getElementFilePath, getExportNameOrThrow } from "../module";
 import { _createProject } from "../project";
 
 describe("module", () => {
@@ -90,7 +90,7 @@ describe("module", () => {
       join(__dirname, "__mocks__/cylinder.tsx"),
     );
 
-    const { name } = getExportName(sourceFile, "default");
+    const { name } = getExportNameOrThrow(sourceFile, "default");
 
     expect(name).toEqual("Cylinder");
   });
@@ -103,7 +103,7 @@ describe("module", () => {
       join(__dirname, "__mocks__/shadowed-type.tsx"),
     );
 
-    const { name } = getExportName(sourceFile, "default");
+    const { name } = getExportNameOrThrow(sourceFile, "default");
 
     expect(name).toEqual("Plane");
   });
@@ -116,7 +116,7 @@ describe("module", () => {
       join(__dirname, "__mocks__/shadowed-interface.tsx"),
     );
 
-    const { name } = getExportName(sourceFile, "default");
+    const { name } = getExportNameOrThrow(sourceFile, "default");
 
     expect(name).toEqual("Plane");
   });
@@ -129,7 +129,7 @@ describe("module", () => {
       join(__dirname, "__mocks__/shadowed-type-import-specifier.tsx"),
     );
 
-    const { name } = getExportName(sourceFile, "default");
+    const { name } = getExportNameOrThrow(sourceFile, "default");
 
     expect(name).toEqual("Plane");
   });
@@ -142,7 +142,7 @@ describe("module", () => {
       join(__dirname, "__mocks__/shadowed-type-import.tsx"),
     );
 
-    const { name } = getExportName(sourceFile, "default");
+    const { name } = getExportNameOrThrow(sourceFile, "default");
 
     expect(name).toEqual("Plane");
   });
@@ -155,7 +155,7 @@ describe("module", () => {
       join(__dirname, "__mocks__/scene.tsx"),
     );
 
-    const actual = getExportName(sourceFile, "default");
+    const actual = getExportNameOrThrow(sourceFile, "default");
 
     expect(actual.name).toEqual("Scene");
   });
@@ -168,7 +168,7 @@ describe("module", () => {
       join(__dirname, "__mocks__/scene.tsx"),
     );
 
-    const actual = getExportName(sourceFile, "SceneAlt");
+    const actual = getExportNameOrThrow(sourceFile, "SceneAlt");
 
     expect(actual.name).toEqual("SceneAlt");
   });
@@ -181,7 +181,7 @@ describe("module", () => {
       join(__dirname, "__mocks__/scene.tsx"),
     );
 
-    const actual = getExportName(sourceFile, "SceneArrow");
+    const actual = getExportNameOrThrow(sourceFile, "SceneArrow");
 
     expect(actual.name).toEqual("SceneArrow");
   });
@@ -314,7 +314,7 @@ describe("module", () => {
       join(__dirname, "__mocks__/implicit.tsx"),
     );
 
-    const { name } = getExportName(sourceFile, "default");
+    const { name } = getExportNameOrThrow(sourceFile, "default");
 
     expect(name).toEqual("Component");
   });

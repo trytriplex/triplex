@@ -363,6 +363,16 @@ export function SceneElements({
     path,
   });
 
+  if (!elements) {
+    return (
+      <div className="flex flex-col gap-3 px-4 py-2">
+        <span className="italic">
+          Component data was lost. Is the component still exported?
+        </span>
+      </div>
+    );
+  }
+
   if (elements.sceneObjects.length === 0) {
     return (
       <div className="flex flex-col gap-3 px-4 py-2">
