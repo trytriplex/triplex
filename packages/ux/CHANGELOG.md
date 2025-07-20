@@ -1,5 +1,13 @@
 # @triplex/ux
 
+## 0.69.27
+
+### Patch Changes
+
+- 1e2a753: Tuple inputs no longer get set to `undefined` when entering a number tuple with all values as `0`, e.g. `[0,0,0]`.
+- Updated dependencies [0cbd424]
+  - @triplex/bridge@0.70.10
+
 ## 0.69.26
 
 ### Patch Changes

@@ -1,5 +1,17 @@
 # @triplex/vscode
 
+## 0.2.47
+
+### Patch Changes
+
+- 196d5f8: The unexpected error splash screen now has a "reload webviews" action, use it to reload your session to get back to it as fast as possible.
+- 4500a5f: Deno projects that are missing critical dependencies to run Triplex now have the install prompt set with the `--npm` arg.
+- 0cbd424: Components that are no longer exported are now gracefully handled. Instead of an error being thrown the UI remains available prompting you to export the component again.
+- Updated dependencies [4500a5f]
+- Updated dependencies [0cbd424]
+  - @triplex/server@0.71.19
+  - @triplex/client@0.70.42
+
 ## 0.2.46
 
 ### Patch Changes

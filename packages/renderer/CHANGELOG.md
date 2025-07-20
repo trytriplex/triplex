@@ -1,5 +1,14 @@
 # @triplex/renderer
 
+## 0.71.33
+
+### Patch Changes
+
+- 0cbd424: Components that are no longer exported are now gracefully handled. Instead of an error being thrown the UI remains available prompting you to export the component again.
+- 6d8af23: The editor camera is no longer repositioned if the scene suspends after initially loading, eliminating some user jank.
+- Updated dependencies [0cbd424]
+  - @triplex/bridge@0.70.10
+
 ## 0.71.32
 
 ### Patch Changes

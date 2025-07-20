@@ -1,5 +1,16 @@
 # @triplex/editor
 
+## 0.70.45
+
+### Patch Changes
+
+- 0cbd424: Components that are no longer exported are now gracefully handled. Instead of an error being thrown the UI remains available prompting you to export the component again.
+- Updated dependencies [0cbd424]
+- Updated dependencies [1e2a753]
+  - @triplex/websocks-client@0.0.9
+  - @triplex/bridge@0.70.10
+  - @triplex/ux@0.69.27
+
 ## 0.70.44
 
 ## 0.70.43

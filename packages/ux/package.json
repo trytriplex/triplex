@@ -1,6 +1,6 @@
 {
   "name": "@triplex/ux",
-  "version": "0.69.26",
+  "version": "0.69.27",
   "private": true,
   "description": "Common UI agnostic components for Triplex user experiences.",
   "author": {
@@ -35,7 +35,7 @@
   "dependencies": {
     "@radix-ui/react-icons": "^1.3.0",
     "@radix-ui/react-scroll-area": "^1.0.5",
-    "@triplex/bridge": "0.70.9",
+    "@triplex/bridge": "0.70.10",
     "@triplex/lib": "0.69.17",
     "tinycolor2": "^1.6.0"
   },

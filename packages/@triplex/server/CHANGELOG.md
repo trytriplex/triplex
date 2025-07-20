@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.71.19
+
+### Patch Changes
+
+- 4500a5f: Deno projects that are missing critical dependencies to run Triplex now have the install prompt set with the `--npm` arg.
+- 0cbd424: Components that are no longer exported are now gracefully handled. Instead of an error being thrown the UI remains available prompting you to export the component again.
+
 ## 0.71.18
 
 ### Patch Changes
