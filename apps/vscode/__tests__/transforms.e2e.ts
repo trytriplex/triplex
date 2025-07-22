@@ -26,4 +26,27 @@ test.describe(() => {
     await expect(panels.getByPlaceholder("y")).toHaveValue("1");
     await expect(panels.getByPlaceholder("z")).toHaveValue("1");
   });
+
+  test("only mutates onces", async ({ vsce }) => {
+    await vsce.codelens("Scene").click();
+    const { locator, panels, scene } = await vsce.resolveEditor();
+    await panels
+      .getByRole("button", { name: "TransformedInsideGroup" })
+      .click();
+    await locator.getByRole("button", { name: "Translate" }).click();
+
+    await scene.locator.getByText("Test Translation").click();
+    await scene.locator.getByText("Test Translation").click();
+
+    // Test Translation sets values to 1
+    await expect(panels.getByPlaceholder("x")).toHaveValue("1");
+    await expect(panels.getByPlaceholder("y")).toHaveValue("1");
+    await expect(panels.getByPlaceholder("z")).toHaveValue("1");
+
+    await vsce.page.keyboard.press("ControlOrMeta+Z");
+
+    await expect(panels.getByPlaceholder("x")).toHaveValue("-1.53");
+    await expect(panels.getByPlaceholder("y")).toHaveValue("0.2");
+    await expect(panels.getByPlaceholder("z")).toHaveValue("-0.31");
+  });
 });

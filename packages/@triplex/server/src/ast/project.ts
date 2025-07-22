@@ -15,7 +15,7 @@ import {
   type SourceFile,
 } from "ts-morph";
 import { deleteCommentComponents } from "../services/component";
-import { type SourceFileChangedEvent } from "../types";
+import { type Mutation, type SourceFileChangedEvent } from "../types";
 import { invalidateThumbnail } from "../util/thumbnail";
 import "@ts-morph/common";
 
@@ -182,7 +182,9 @@ export function createProject({
       return source.refreshFromFileSystem();
     });
 
-    onSourceFileExternalChangeCallbacks.forEach((cb) => cb({ ...ids, path }));
+    if (ids.status === "modified") {
+      onSourceFileExternalChangeCallbacks.forEach((cb) => cb({ ...ids, path }));
+    }
 
     privateSourceFile.getReferencingSourceFiles().forEach((refFile) => {
       const path = refFile.getFilePath();
@@ -274,10 +276,7 @@ export function ${componentName}() {
           sourceFile: SourceFile,
         ) => TResult extends SourceFile ? never : TResult,
       ): Promise<
-        [
-          ids: { redoID: number; undoID: number },
-          result: TResult extends SourceFile ? never : TResult,
-        ]
+        [ids: Mutation, result: TResult extends SourceFile ? never : TResult]
       > => {
         const currentFullText = sourceFile.getFullText();
 
@@ -304,12 +303,19 @@ export function ${componentName}() {
           sourceFileHistoryPointer.set(sourceFile, undoStackPointer);
           sourceFileHistory.set(sourceFile, undoStack);
           flushDirtyState();
+
+          return [
+            {
+              redoID: undoStackPointer,
+              status: "modified",
+              undoID: undoStackPointer - 1,
+            },
+            result,
+          ];
         }
 
-        return [
-          { redoID: undoStackPointer, undoID: undoStackPointer - 1 },
-          result,
-        ];
+        // Source has not changed so we return empty state.
+        return [{ status: "unmodified" }, result];
       },
       isDirty: () => {
         return modifiedSourceFiles.has(sourceFile);

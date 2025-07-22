@@ -4,6 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
+import { type Mutation } from "@triplex/server";
 import * as vscode from "vscode";
 
 function toJSONString(value: unknown): string {
@@ -110,7 +111,7 @@ export class TriplexDocument implements vscode.CustomDocument {
         )}`,
       );
 
-      const response: { redoID: number; undoID: number } = await result.json();
+      const response: Mutation = await result.json();
 
       return { ...response, path: data.path };
     });
@@ -132,11 +133,9 @@ export class TriplexDocument implements vscode.CustomDocument {
           { body: JSON.stringify({ elements }), method: "POST" },
         );
 
-        const response: {
+        const response: Mutation & {
           column: number;
           line: number;
-          redoID: number;
-          undoID: number;
         } = await result.json();
 
         return { ...response, path };
@@ -155,11 +154,9 @@ export class TriplexDocument implements vscode.CustomDocument {
         { method: "POST" },
       );
 
-      const response: {
+      const response: Mutation & {
         column: number;
         line: number;
-        redoID: number;
-        undoID: number;
       } = await result.json();
 
       return { ...response, path: data.path };
@@ -177,11 +174,9 @@ export class TriplexDocument implements vscode.CustomDocument {
         { method: "POST" },
       );
 
-      const response: {
+      const response: Mutation & {
         column: number;
         line: number;
-        redoID: number;
-        undoID: number;
       } = await result.json();
 
       return { ...response, path: data.path };
@@ -206,10 +201,7 @@ export class TriplexDocument implements vscode.CustomDocument {
         { method: "POST" },
       );
 
-      const response: {
-        redoID: number;
-        undoID: number;
-      } = await result.json();
+      const response: Mutation = await result.json();
 
       return { ...response, path: data.path };
     });
@@ -258,17 +250,16 @@ export class TriplexDocument implements vscode.CustomDocument {
               },
             );
 
-      const response: {
-        redoID: number;
-        undoID: number;
-      } = await result.json();
+      const response: Mutation = await result.json();
 
       return { ...response, path: data.path };
     });
   }
 
   async undoableAction<
-    TResponse extends { path: string; redoID: number; undoID: number },
+    TResponse extends
+      | { path: string; redoID: number; status: "modified"; undoID: number }
+      | { path: string; status: "unmodified" },
   >(
     label: string,
     callback: () => Promise<TResponse> | TResponse,
@@ -282,8 +273,14 @@ export class TriplexDocument implements vscode.CustomDocument {
        */
       skipDirtyCheck?: boolean;
     },
-  ): Promise<Omit<TResponse, "redoID" | "undoID" | "path">> {
-    const { path, redoID, undoID, ...response } = await callback();
+  ): Promise<Omit<TResponse, "redoID" | "undoID" | "path" | "status">> {
+    const result = await callback();
+
+    if (result.status === "unmodified") {
+      return result;
+    }
+
+    const { path, redoID, status, undoID, ...response } = result;
 
     this._modifiedPaths[path] = true;
 

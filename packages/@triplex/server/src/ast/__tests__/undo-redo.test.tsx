@@ -7,6 +7,7 @@
 import { join } from "@triplex/lib/path";
 import { watch } from "chokidar";
 import { describe, expect, it, vi } from "vitest";
+import { type Mutation } from "../../types";
 import { createProject } from "../project";
 
 function normalLines(source: string): string {
@@ -129,7 +130,7 @@ describe("undo/redo edge cases", () => {
       join(__dirname, "__mocks__", "box.tsx"),
     );
     const originalText = sourceFile.read().getText();
-    const undoLog: [{ undoID: number }, void][] = [];
+    const undoLog: [Mutation, void][] = [];
 
     undoLog.push(
       await sourceFile.edit((s) => {
@@ -140,8 +141,15 @@ describe("undo/redo edge cases", () => {
       }),
     );
 
-    await sourceFile.undo(undoLog.pop()![0].undoID);
-    await sourceFile.undo(undoLog.pop()![0].undoID);
+    const undo = async () => {
+      const next = undoLog.pop()![0];
+      if (next.status == "modified") {
+        await sourceFile.undo(next.undoID);
+      }
+    };
+
+    await undo();
+    await undo();
 
     undoLog.push(
       await sourceFile.edit((s) => {
@@ -152,8 +160,8 @@ describe("undo/redo edge cases", () => {
       }),
     );
 
-    await sourceFile.undo(undoLog.pop()![0].undoID);
-    await sourceFile.undo(undoLog.pop()![0].undoID);
+    await undo();
+    await undo();
 
     expect(sourceFile.read().getText()).toEqual(originalText);
   });

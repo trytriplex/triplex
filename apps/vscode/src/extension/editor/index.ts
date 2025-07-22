@@ -139,9 +139,14 @@ export class TriplexEditorProvider
             // We're only interested in changes that were made to this document.
             return;
           }
-          document.undoableAction("Sync from filesystem", () => data, {
-            skipDirtyCheck: true,
-          });
+
+          document.undoableAction(
+            "Sync from filesystem",
+            () => ({ ...data, status: "modified" }),
+            {
+              skipDirtyCheck: true,
+            },
+          );
         }),
         on(panel.webview, "reload-webviews", () => {
           vscode.commands.executeCommand(

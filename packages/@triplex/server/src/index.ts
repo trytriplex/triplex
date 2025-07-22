@@ -148,7 +148,7 @@ export function createServer({
       group(source, { elements: body.elements, group: "group" });
     });
 
-    context.response.body = { message: "success", ...ids };
+    context.response.body = { ...ids };
   });
 
   router.post("/scene/:path/object/:line/:column/move", async (context) => {
@@ -177,7 +177,7 @@ export function createServer({
       );
     });
 
-    context.response.body = { message: "success", ...ids };
+    context.response.body = { ...ids };
   });
 
   router.post("/ai/prompt", async (context) => {
@@ -201,7 +201,7 @@ export function createServer({
       insertCode(sourceFile, { code, line });
     });
 
-    context.response.body = { ...ids, message: "success" };
+    context.response.body = { ...ids };
   });
 
   router.post("/scene/:path/:lineFrom/:lineTo/replace", async (context) => {
@@ -215,7 +215,7 @@ export function createServer({
       replaceCode(sourceFile, { code, lineFrom, lineTo });
     });
 
-    context.response.body = { ...ids, message: "success" };
+    context.response.body = { ...ids };
   });
 
   router.get("/scene/:path/object/:line/:column", async (context) => {
@@ -255,7 +255,6 @@ export function createServer({
     context.response.body = {
       ...ids,
       action: result.action,
-      message: "success",
     };
   });
 
@@ -295,7 +294,7 @@ export function createServer({
       commentComponent(source, Number(line), Number(column));
     });
 
-    context.response.body = { message: "success", ...ids };
+    context.response.body = { ...ids };
   });
 
   router.post("/scene/new", (context) => {
@@ -322,8 +321,7 @@ export function createServer({
     context.response.body = {
       exportName,
       path,
-      redoID: ids.redoID,
-      undoID: ids.undoID,
+      ...ids,
     };
   });
 
@@ -371,7 +369,7 @@ export function createServer({
       rename(source, exportName, newName);
     });
 
-    context.response.body = { message: "success", ...ids };
+    context.response.body = { ...ids };
   });
 
   router.post("/scene/:path/object/:line/:column/restore", async (context) => {
@@ -382,7 +380,7 @@ export function createServer({
       uncommentComponent(source, Number(line), Number(column));
     });
 
-    context.response.body = { message: "success", ...ids };
+    context.response.body = { ...ids };
   });
 
   router.post("/scene/:path/:exportName/object", async (context) => {

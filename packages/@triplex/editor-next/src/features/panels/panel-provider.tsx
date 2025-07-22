@@ -232,12 +232,14 @@ export function ProviderControlsPanel() {
   return <>{isProviderSetUp ? <ProviderProps /> : <SetUpCTA />}</>;
 }
 
-preloadSubscription(
-  "/scene/:path/:exportName{/:exportName1}{/:exportName2}/props",
-  {
-    exportName: "GlobalProvider",
-    exportName1: "CanvasProvider",
-    exportName2: "default",
-    path: window.triplex.env.config.provider,
-  },
-);
+if (window.triplex.env.config.provider !== "triplex:empty-provider.jsx") {
+  preloadSubscription(
+    "/scene/:path/:exportName{/:exportName1}{/:exportName2}/props",
+    {
+      exportName: "GlobalProvider",
+      exportName1: "CanvasProvider",
+      exportName2: "default",
+      path: window.triplex.env.config.provider,
+    },
+  );
+}

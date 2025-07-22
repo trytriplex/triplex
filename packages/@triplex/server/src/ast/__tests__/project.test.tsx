@@ -259,8 +259,10 @@ describe("project ast", () => {
       });
     });
 
-    // Will undo to the revsion prior to this one
-    sourceFile.undo(ids.undoID);
+    if (ids.status === "modified") {
+      // Will undo to the revsion prior to this one
+      sourceFile.undo(ids.undoID);
+    }
 
     expect(sourceFile.read().getText()).toMatchInlineSnapshot(`
       "export function Untitled() {
@@ -301,7 +303,10 @@ describe("project ast", () => {
     sourceFile.undo();
     sourceFile.undo();
     sourceFile.undo();
-    sourceFile.redo(ids.redoID);
+
+    if (ids.status === "modified") {
+      sourceFile.redo(ids.redoID);
+    }
 
     expect(sourceFile.read().getText()).toMatchInlineSnapshot(`
       "export function Untitled() {
