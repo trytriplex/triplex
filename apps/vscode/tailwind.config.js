@@ -38,6 +38,7 @@ module.exports = {
     borderColor: {
       button: "var(--vscode-button-border, transparent)",
       danger: "var(--vscode-editorError-foreground, transparent)",
+      indent: "var(--vscode-tree-indentGuidesStroke, transparent)",
       input: "var(--vscode-dropdown-border, transparent)",
       overlay: "var(--vscode-panel-border, transparent)",
       selected: "var(--vscode-focusBorder, transparent)",

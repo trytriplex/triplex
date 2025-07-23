@@ -9,7 +9,11 @@ import {
   dropTargetForElements,
   monitorForElements,
 } from "@atlaskit/pragmatic-drag-and-drop/element/adapter";
-import { ChevronDownIcon, ChevronRightIcon } from "@radix-ui/react-icons";
+import {
+  ChevronDownIcon,
+  ChevronRightIcon,
+  ComponentInstanceIcon,
+} from "@radix-ui/react-icons";
 import { compose, on, send } from "@triplex/bridge/host";
 import { cn } from "@triplex/lib";
 import { type JsxElementPositions } from "@triplex/server";
@@ -44,6 +48,8 @@ const blockAll: InstructionType[] = [
   "move-before",
   "reparent",
 ];
+
+const IDENT = 12;
 
 function matchesFilter(
   filter: string | undefined,
@@ -89,6 +95,14 @@ export function SceneElement(
   const filter = useFilter((state) => state.filter);
   const matches = matchesFilter(filter, props);
   const isExpanded = isUserExpanded || !!filter;
+  const hasChildSelected = props.children.some(
+    (child) =>
+      selected &&
+      "column" in selected &&
+      selected.column === child.column &&
+      selected.line === child.line &&
+      selected.path === child.parentPath,
+  );
 
   interface DragData {
     column: number;
@@ -243,7 +257,18 @@ export function SceneElement(
   ]);
 
   return (
-    <li>
+    <li className="relative">
+      {(props.children.length > 0 || isCustomComponent) && (
+        <div
+          className={cn([
+            isActive && !hasChildSelected && "opacity-20",
+            !isActive && !hasChildSelected && "group-hover:opacity-20",
+            hasChildSelected && "opacity-60",
+            "border-indent pointer-events-none absolute bottom-0 top-[21.5px] z-20 border-l opacity-0 transition-opacity",
+          ])}
+          style={{ left: props.level * IDENT + 4 }}
+        />
+      )}
       <div
         className={cn([
           matches == false && "hidden",
@@ -258,7 +283,7 @@ export function SceneElement(
             isForciblyHovered &&
             "bg-list-hovered text-list-hovered",
         ])}
-        style={{ paddingLeft: props.level * 12 }}
+        style={{ paddingLeft: props.level * IDENT }}
       >
         {dropState && (
           <div
@@ -273,8 +298,7 @@ export function SceneElement(
             ])}
           />
         )}
-
-        {isCustomComponent ? (
+        {isCustomComponent && (
           <Pressable
             actionId={
               isExpanded
@@ -291,8 +315,16 @@ export function SceneElement(
               <ChevronRightIcon aria-label="Show Children" />
             )}
           </Pressable>
-        ) : (
-          <span className="w-[14px] flex-shrink-0" />
+        )}
+        {!isCustomComponent && (
+          <div
+            className={cn([
+              "-ml-[5px] flex flex-shrink-0 items-center px-0.5",
+              props.children.length > 0 ? "opacity-60" : "opacity-0",
+            ])}
+          >
+            <ComponentInstanceIcon />
+          </div>
         )}
         <Pressable
           actionId="scenepanel_element_focus"
