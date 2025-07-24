@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.71.20
+
+### Patch Changes
+
+- e1153b6: Changes that result in no code change are no longer added to the undo/redo stack.
+
 ## 0.71.19
 
 ### Patch Changes

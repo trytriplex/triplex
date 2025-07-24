@@ -1,5 +1,16 @@
 # @triplex/vscode
 
+## 0.2.48
+
+### Patch Changes
+
+- c8cea68: The elements panel now has lines to aid in showing the relationship of their children.
+- a7511d5: All elements that have children can now be expanded/collapsed in the elements panel instead of just custom components.
+- e1153b6: Changes that result in no code change are no longer added to the undo/redo stack.
+- Updated dependencies [e1153b6]
+  - @triplex/server@0.71.20
+  - @triplex/client@0.70.43
+
 ## 0.2.47
 
 ### Patch Changes

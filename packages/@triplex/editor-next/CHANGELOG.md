@@ -1,5 +1,14 @@
 # @triplex/editor-next
 
+## 0.0.3
+
+### Patch Changes
+
+- c8cea68: The elements panel now has lines to aid in showing the relationship of their children.
+- e1153b6: Fix provider data being preloaded when it hasn't been set by users yet.
+- a7511d5: All elements that have children can now be expanded/collapsed in the elements panel instead of just custom components.
+- e1153b6: Changes that result in no code change are no longer added to the undo/redo stack.
+
 ## 0.0.2
 
 ### Patch Changes
