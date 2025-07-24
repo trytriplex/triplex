@@ -1,5 +1,11 @@
 # @triplex/renderer
 
+## 0.71.34
+
+### Patch Changes
+
+- e1153b6: Fix provider data being preloaded when it hasn't been set by users yet.
+
 ## 0.71.33
 
 ### Patch Changes
