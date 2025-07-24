@@ -23,7 +23,6 @@ import {
   useEffect,
   useId,
   useLayoutEffect,
-  useReducer,
   useRef,
   useState,
 } from "react";
@@ -79,11 +78,14 @@ export function SceneElement(
   const ref = useRef<HTMLButtonElement>(null);
   const [_isActive, setIsActive] = useState(false);
   const [isForciblyHovered, setForciblyHovered] = useState(false);
-  const [isUserExpanded, toggleExpanded] = useReducer((state) => !state, false);
-  const [dropState, setDropState] = useState<false | Instruction>(false);
-  const [isDragging, setIsDragging] = useState(false);
   const isCustomComponent =
     props.type === "custom" && props.exportName && props.path;
+  const hasChildren = props.children.length > 0;
+  const [isUserExpanded, setExpanded] = useState(
+    !isCustomComponent && hasChildren,
+  );
+  const [dropState, setDropState] = useState<false | Instruction>(false);
+  const [isDragging, setIsDragging] = useState(false);
   const isActive = _isActive && !isDragging;
   const isSelected =
     !isDragging &&
@@ -256,14 +258,26 @@ export function SceneElement(
     props.parentPath,
   ]);
 
+  useEffect(() => {
+    if (dropState && !dropState.blocked) {
+      const id = setTimeout(() => {
+        setExpanded(true);
+      }, 666);
+
+      return () => {
+        clearTimeout(id);
+      };
+    }
+  }, [dropState]);
+
   return (
     <li className="relative">
-      {(props.children.length > 0 || isCustomComponent) && (
+      {(hasChildren || isCustomComponent) && (
         <div
           className={cn([
-            isActive && !hasChildSelected && "opacity-20",
-            !isActive && !hasChildSelected && "group-hover:opacity-20",
-            hasChildSelected && "opacity-60",
+            isActive && !hasChildSelected && "opacity-40",
+            !isActive && !hasChildSelected && "group-hover:opacity-40",
+            hasChildSelected && "opacity-80",
             "border-indent pointer-events-none absolute bottom-0 top-[21.5px] z-20 border-l opacity-0 transition-opacity",
           ])}
           style={{ left: props.level * IDENT + 4 }}
@@ -298,7 +312,7 @@ export function SceneElement(
             ])}
           />
         )}
-        {isCustomComponent && (
+        {(isCustomComponent || hasChildren) && (
           <Pressable
             actionId={
               isExpanded
@@ -307,7 +321,7 @@ export function SceneElement(
             }
             className="z-10 -ml-[5px] px-0.5"
             describedBy={id}
-            onClick={toggleExpanded}
+            onClick={() => setExpanded((state) => !state)}
           >
             {isExpanded ? (
               <ChevronDownIcon aria-label="Hide Children" />
@@ -316,13 +330,8 @@ export function SceneElement(
             )}
           </Pressable>
         )}
-        {!isCustomComponent && (
-          <div
-            className={cn([
-              "-ml-[5px] flex flex-shrink-0 items-center px-0.5",
-              props.children.length > 0 ? "opacity-60" : "opacity-0",
-            ])}
-          >
+        {!isCustomComponent && !hasChildren && (
+          <div className="-ml-[5px] flex flex-shrink-0 items-center px-0.5 opacity-0">
             <ComponentInstanceIcon />
           </div>
         )}
@@ -356,26 +365,28 @@ export function SceneElement(
           {isSelected && <span className="sr-only">selected</span>}
         </span>
       </div>
-      {(props.children.length > 0 || isCustomComponent) && (
-        <ul>
-          {props.children.map((element) => (
-            <SceneElement
-              {...element}
-              key={element.column + element.line}
-              level={props.level + 1}
-              owningExportName={props.owningExportName}
-            />
-          ))}
-          {isCustomComponent && isExpanded && (
-            <Suspense>
+      {(hasChildren || isCustomComponent) && isExpanded && (
+        <Suspense>
+          <ul>
+            <div>
+              {props.children.map((element) => (
+                <SceneElement
+                  {...element}
+                  key={element.column + element.line}
+                  level={props.level + 1}
+                  owningExportName={props.owningExportName}
+                />
+              ))}
+            </div>
+            {isCustomComponent && (
               <SceneElements
                 exportName={props.exportName}
                 level={props.level + 1}
                 path={props.path!}
               />
-            </Suspense>
-          )}
-        </ul>
+            )}
+          </ul>
+        </Suspense>
       )}
     </li>
   );

@@ -8,12 +8,14 @@ import { useState } from "react";
 import { type Vector3Tuple } from "three";
 
 function Box({
+  children,
   color = "blue",
   position,
   rotation,
   scale,
   size = 1,
 }: {
+  children?: React.ReactNode;
   color?: "red" | "green" | "blue";
   position?: Vector3Tuple | number;
   rotation?: Vector3Tuple;
@@ -43,6 +45,7 @@ function Box({
       >
         <boxGeometry args={[size, size, size]} />
         <meshStandardMaterial color={hover ? "purple" : color} key={color} />
+        {children}
       </mesh>
     </group>
   );

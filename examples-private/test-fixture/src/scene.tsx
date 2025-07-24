@@ -28,7 +28,9 @@ export function Scene({
   return (
     <>
       <ambientLight position={[2.12, 0, -0.88]} />
-      <Box scale={1.5} />
+      <Box scale={1.5}>
+        <meshBasicMaterial color="red" />
+      </Box>
       <PerspectiveCamera
         makeDefault={true}
         name={"user_defined"}
