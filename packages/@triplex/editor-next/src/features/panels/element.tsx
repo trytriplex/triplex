@@ -20,6 +20,7 @@ import { type JsxElementPositions } from "@triplex/server";
 import { bind } from "bind-event-listener";
 import {
   Suspense,
+  use,
   useEffect,
   useId,
   useLayoutEffect,
@@ -40,6 +41,7 @@ import {
   type InstructionType,
 } from "../../util/dnd";
 import { useSceneEvents, useSceneSelected } from "../app-root/context";
+import { ChildSelectedContext } from "./context";
 
 const blockAll: InstructionType[] = [
   "make-child",
@@ -48,7 +50,7 @@ const blockAll: InstructionType[] = [
   "reparent",
 ];
 
-const IDENT = 12;
+const indentation = 12;
 
 function matchesFilter(
   filter: string | undefined,
@@ -86,10 +88,11 @@ export function SceneElement(
   );
   const [dropState, setDropState] = useState<false | Instruction>(false);
   const [isDragging, setIsDragging] = useState(false);
+  const [hasChildSelected, setChildSelected] = useState(false);
   const isActive = _isActive && !isDragging;
   const isSelected =
     !isDragging &&
-    selected &&
+    !!selected &&
     "column" in selected &&
     selected.column === props.column &&
     selected.line === props.line &&
@@ -97,14 +100,7 @@ export function SceneElement(
   const filter = useFilter((state) => state.filter);
   const matches = matchesFilter(filter, props);
   const isExpanded = isUserExpanded || !!filter;
-  const hasChildSelected = props.children.some(
-    (child) =>
-      selected &&
-      "column" in selected &&
-      selected.column === child.column &&
-      selected.line === child.line &&
-      selected.path === child.parentPath,
-  );
+  const notifyParentSelected = use(ChildSelectedContext);
 
   interface DragData {
     column: number;
@@ -117,6 +113,16 @@ export function SceneElement(
   useOnSurfaceStateChange((active) => {
     setIsActive(active);
   });
+
+  useEffect(() => {
+    if (isSelected) {
+      notifyParentSelected(true);
+    }
+
+    return () => {
+      notifyParentSelected(false);
+    };
+  }, [isSelected, notifyParentSelected]);
 
   useEffect(() => {
     if (!ref.current) {
@@ -280,7 +286,7 @@ export function SceneElement(
             hasChildSelected && "opacity-80",
             "border-indent pointer-events-none absolute bottom-0 top-[21.5px] z-20 border-l opacity-0 transition-opacity",
           ])}
-          style={{ left: props.level * IDENT + 4 }}
+          style={{ left: props.level * indentation + 4 }}
         />
       )}
       <div
@@ -297,7 +303,7 @@ export function SceneElement(
             isForciblyHovered &&
             "bg-list-hovered text-list-hovered",
         ])}
-        style={{ paddingLeft: props.level * IDENT }}
+        style={{ paddingLeft: props.level * indentation }}
       >
         {dropState && (
           <div
@@ -366,9 +372,9 @@ export function SceneElement(
         </span>
       </div>
       {(hasChildren || isCustomComponent) && isExpanded && (
-        <Suspense>
-          <ul>
-            <div>
+        <ChildSelectedContext value={setChildSelected}>
+          <Suspense>
+            <ul>
               {props.children.map((element) => (
                 <SceneElement
                   {...element}
@@ -377,16 +383,16 @@ export function SceneElement(
                   owningExportName={props.owningExportName}
                 />
               ))}
-            </div>
-            {isCustomComponent && (
-              <SceneElements
-                exportName={props.exportName}
-                level={props.level + 1}
-                path={props.path!}
-              />
-            )}
-          </ul>
-        </Suspense>
+              {isCustomComponent && (
+                <SceneElements
+                  exportName={props.exportName}
+                  level={props.level + 1}
+                  path={props.path!}
+                />
+              )}
+            </ul>
+          </Suspense>
+        </ChildSelectedContext>
       )}
     </li>
   );
