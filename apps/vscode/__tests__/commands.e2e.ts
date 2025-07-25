@@ -21,18 +21,41 @@ test("fill number input", async ({ vsce }) => {
   await expect(input).toHaveValue("0.5");
 });
 
-test("drag to change number input", async ({ vsce }) => {
+test("drag over threshold to change number input", async ({ vsce }) => {
   await vsce.codelens("Plane").click();
   const { panels } = vsce.resolveEditor();
   await panels.getByRole("button", { name: "planeGeometry" }).click();
   const input = panels.getByLabel("width", { exact: true });
 
-  await vsce.dismissAllNotifications();
-  await input.dragTo(input, { force: true, targetPosition: { x: 100, y: 0 } });
+  await input.hover();
+  await vsce.page.mouse.down({ button: "left" });
+  await input.dispatchEvent("pointermove", { screenX: 0 });
+  await input.dispatchEvent("pointermove", { screenX: 10 });
+  await input.dispatchEvent("pointermove", { movementX: 10, screenX: 100 });
+  await input.dispatchEvent("pointerup");
 
-  // Escape should blur the input.
+  // Completing a drag should blur the input instead of focusing it.
+  // This allows the user to do another drag very quickly.
   await expect(input).not.toBeFocused();
-  await expect(input).toHaveValue("0.44");
+  await expect(input).toHaveValue(/0.2/);
+});
+
+test("drag under threshold should not change number input", async ({
+  vsce,
+}) => {
+  await vsce.codelens("Plane").click();
+  const { panels } = vsce.resolveEditor();
+  await panels.getByRole("button", { name: "planeGeometry" }).click();
+  const input = panels.getByLabel("width", { exact: true });
+
+  await input.hover();
+  await vsce.page.mouse.down({ button: "left" });
+  await input.dispatchEvent("pointermove", { screenX: 0 });
+  await input.dispatchEvent("pointermove", { movementX: 5, screenX: 5 });
+  await input.dispatchEvent("pointerup");
+
+  await expect(input).toBeFocused();
+  await expect(input).toHaveValue("");
 });
 
 test("delete element", async ({ vsce }) => {

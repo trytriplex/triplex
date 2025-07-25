@@ -11,6 +11,7 @@ import {
   useStepModifiers,
   type Modifiers,
 } from "@triplex/lib";
+import { bindAll } from "bind-event-listener";
 import {
   useEffect,
   useRef,
@@ -58,6 +59,15 @@ function toNumber(
 
   return defaultValue;
 }
+
+type DragState =
+  | {
+      state: "idle";
+    }
+  | { state: "dragging" }
+  | { initialScreenX: number; state: "testing" };
+
+const DRAG_START_DELTA = 5;
 
 export function NumberInput({
   actionId,
@@ -120,7 +130,7 @@ export function NumberInput({
   const modifiers = useStepModifiers({
     isDisabled: !isPointerLock && !isFocused,
   });
-  const isDragging = useRef(false);
+  const dragState = useRef<DragState>({ state: "idle" });
   const activePointerCaptureId = useRef<number | undefined>(undefined);
   const ref = useRef<HTMLInputElement>(null!);
   const step = applyStepModifiers(toNumber(tags.step, 0.02), modifiers);
@@ -132,26 +142,6 @@ export function NumberInput({
   useEffect(() => {
     ref.current.value = actualValue !== undefined ? `${actualValue}` : "";
   }, [actualValue]);
-
-  useEffect(() => {
-    const element = ref.current;
-
-    const onFocusHandler = () => {
-      setIsFocused(true);
-    };
-
-    const onBlurHandler = () => {
-      setIsFocused(false);
-    };
-
-    element.addEventListener("focus", onFocusHandler);
-    element.addEventListener("blur", onBlurHandler);
-
-    return () => {
-      element.removeEventListener("focus", onFocusHandler);
-      element.removeEventListener("blur", onBlurHandler);
-    };
-  }, []);
 
   const onChangeHandler = useEvent(() => {
     const nextValue = Number.isNaN(ref.current.valueAsNumber)
@@ -199,28 +189,40 @@ export function NumberInput({
 
   const onPointerMoveHandler: PointerEventHandler = useEvent((e) => {
     if (isPointerLock) {
-      isDragging.current = true;
-      const movement =
-        // When running tests we use clientX purely as JSDOM doesn't support
-        // Setting movementX. It's shit but at least this let's test things.
-        // See: https://github.com/jsdom/jsdom/issues/3209
-        process.env.NODE_ENV === "test" ? e.clientX : e.movementX;
-      const iterations = getIterations(movement, modifiers);
-      const stepFunc = getStepFunc(movement, ref.current);
+      if (dragState.current.state === "idle") {
+        dragState.current = {
+          initialScreenX: e.screenX,
+          state: "testing",
+        };
+      } else if (dragState.current.state === "testing") {
+        const delta = e.screenX - dragState.current.initialScreenX;
 
-      for (let i = 0; i < iterations; i++) {
-        // Call the step function for each pixel of movement.
-        // The further the distance the more times the step func
-        // Is called.
-        stepFunc();
+        if (Math.abs(delta) > DRAG_START_DELTA) {
+          dragState.current = { state: "dragging" };
+        }
+      } else if (dragState.current.state === "dragging") {
+        const movement =
+          // When running tests we use clientX purely as JSDOM doesn't support
+          // Setting movementX. It's shit but at least this let's test things.
+          // See: https://github.com/jsdom/jsdom/issues/3209
+          process.env.NODE_ENV === "test" ? e.clientX : e.movementX;
+        const iterations = getIterations(movement, modifiers);
+        const stepFunc = getStepFunc(movement, ref.current);
+
+        for (let i = 0; i < iterations; i++) {
+          // Call the step function for each pixel of movement.
+          // The further the distance the more times the step func
+          // Is called.
+          stepFunc();
+        }
+
+        onChangeHandler();
       }
-
-      onChangeHandler();
     }
   });
 
   const onPointerUpHandler: PointerEventHandler = useEvent(async (e) => {
-    if (!isDragging.current) {
+    if (dragState.current.state !== "dragging") {
       // A drag was never started so focus on the input instead.
       ref.current.focus();
       ref.current.select();
@@ -238,7 +240,7 @@ export function NumberInput({
       // The pointer lock was aborted with escape, nothing to do.
     }
 
-    isDragging.current = false;
+    dragState.current = { state: "idle" };
   });
 
   const onPointerDownHandler: PointerEventHandler = useEvent(async (e) => {
@@ -303,40 +305,51 @@ export function NumberInput({
   });
 
   useEffect(() => {
+    const element = ref.current;
+
+    return bindAll(element, [
+      {
+        listener: () => {
+          setIsFocused(true);
+        },
+        type: "focus",
+      },
+      {
+        listener: () => {
+          setIsFocused(false);
+        },
+        type: "blur",
+      },
+    ]);
+  }, []);
+
+  useEffect(() => {
     if (!isPointerLock) {
       return;
     }
 
-    const pointerLockChangeHandler = () => {
-      if (document.pointerLockElement !== ref.current) {
-        setIsPointerLock(false);
-        resetToInitialValue();
-      }
-    };
-
-    /**
-     * When pointer is locked we listen for escape being pressed and cancel the
-     * pointer.
-     */
-    const escapeListenerHandler = (e: KeyboardEvent) => {
-      if (e.key === "Escape" && activePointerCaptureId.current) {
-        e.stopPropagation();
-        setIsPointerLock(false);
-        ref.current.releasePointerCapture(activePointerCaptureId.current);
-        resetToInitialValue();
-      }
-    };
-
-    document.addEventListener("pointerlockchange", pointerLockChangeHandler);
-    document.addEventListener("keydown", escapeListenerHandler);
-
-    return () => {
-      document.removeEventListener(
-        "pointerlockchange",
-        pointerLockChangeHandler,
-      );
-      document.removeEventListener("keydown", escapeListenerHandler);
-    };
+    return bindAll(document, [
+      {
+        listener: () => {
+          if (document.pointerLockElement !== ref.current) {
+            setIsPointerLock(false);
+            resetToInitialValue();
+          }
+        },
+        type: "pointerlockchange",
+      },
+      {
+        listener: (e) => {
+          if (e.key === "Escape" && activePointerCaptureId.current) {
+            e.stopPropagation();
+            setIsPointerLock(false);
+            ref.current.releasePointerCapture(activePointerCaptureId.current);
+            resetToInitialValue();
+          }
+        },
+        type: "keydown",
+      },
+    ]);
   }, [isPointerLock, onChangeHandler, actualValue, resetToInitialValue]);
 
   return children(

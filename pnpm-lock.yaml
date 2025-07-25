@@ -1576,6 +1576,9 @@ importers:
       '@triplex/lib':
         specifier: 0.69.17
         version: link:../lib
+      bind-event-listener:
+        specifier: ^3.0.0
+        version: 3.0.0
       react:
         specifier: ^19.0.0
         version: 19.1.0
