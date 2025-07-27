@@ -1,5 +1,11 @@
 # @triplex/ux
 
+## 0.69.28
+
+### Patch Changes
+
+- e736aab: The number input now needs to be dragged by a distance before changes are picked up, preventing accidental drags when trying to click into the input.
+
 ## 0.69.27
 
 ### Patch Changes
