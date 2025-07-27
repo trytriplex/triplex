@@ -185,7 +185,7 @@ importers:
         specifier: 0.69.17
         version: link:../../packages/lib
       '@triplex/ux':
-        specifier: 0.69.27
+        specifier: 0.69.28
         version: link:../../packages/ux
       '@types/cors':
         specifier: ^2.8.17
@@ -325,7 +325,7 @@ importers:
         specifier: 0.70.43
         version: link:../../packages/@triplex/client
       '@triplex/editor':
-        specifier: 0.70.46
+        specifier: 0.70.47
         version: link:../../packages/@triplex/editor
       '@triplex/server':
         specifier: 0.71.20
@@ -405,7 +405,7 @@ importers:
         specifier: ^8.30.0
         version: 8.30.0
       '@triplex/editor-next':
-        specifier: ^0.0.3
+        specifier: ^0.0.4
         version: link:../../packages/@triplex/editor-next
       '@triplex/websocks-client':
         specifier: 0.0.9
@@ -1055,7 +1055,7 @@ importers:
         specifier: 0.69.17
         version: link:../../lib
       '@triplex/ux':
-        specifier: 0.69.27
+        specifier: 0.69.28
         version: link:../../ux
       '@triplex/websocks-client':
         specifier: 0.0.9
@@ -1158,7 +1158,7 @@ importers:
         specifier: 0.69.17
         version: link:../../lib
       '@triplex/ux':
-        specifier: 0.69.27
+        specifier: 0.69.28
         version: link:../../ux
       '@triplex/websocks-client':
         specifier: 0.0.9

@@ -1,5 +1,12 @@
 # @docs/triplex
 
+## 0.2.17
+
+### Patch Changes
+
+- Updated dependencies [e736aab]
+  - @triplex/ux@0.69.28
+
 ## 0.2.16
 
 ### Patch Changes

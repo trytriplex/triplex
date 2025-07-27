@@ -1,5 +1,14 @@
 # @triplex/editor-next
 
+## 0.0.4
+
+### Patch Changes
+
+- 487e3fa: Components in the element panel can now be opened in another Triplex editor using the "Open in Triplex" action.
+- 990cd9f: Elements returned from components now correctly highlight the parent relation line when selected.
+- Updated dependencies [e736aab]
+  - @triplex/ux@0.69.28
+
 ## 0.0.3
 
 ### Patch Changes

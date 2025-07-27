@@ -1,5 +1,13 @@
 # @triplex/vscode
 
+## 0.2.49
+
+### Patch Changes
+
+- e736aab: The number input now needs to be dragged by a distance before changes are picked up, preventing accidental drags when trying to click into the input.
+- 487e3fa: Components in the element panel can now be opened in another Triplex editor using the "Open in Triplex" action.
+- 990cd9f: Elements returned from components now correctly highlight the parent relation line when selected.
+
 ## 0.2.48
 
 ### Patch Changes
