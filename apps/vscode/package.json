@@ -85,6 +85,11 @@
       },
       {
         "category": "Triplex",
+        "command": "triplex.open-in-triplex",
+        "title": "Open in Triplex"
+      },
+      {
+        "category": "Triplex",
         "command": "triplex.open-file",
         "title": "Go To Definition"
       },
@@ -154,6 +159,10 @@
           "when": "false"
         },
         {
+          "command": "triplex.open-in-triplex",
+          "when": "false"
+        },
+        {
           "command": "triplex.element-duplicate",
           "when": "false"
         },
@@ -210,27 +219,32 @@
         },
         {
           "command": "triplex.element-jump-to",
-          "when": "webviewSection == 'element-actions'",
+          "when": "webviewSection == 'element-actions' || webviewSection == 'component-actions'",
+          "group": "1_navigation"
+        },
+        {
+          "command": "triplex.open-in-triplex",
+          "when": "webviewSection == 'component-actions'",
           "group": "1_navigation"
         },
         {
           "command": "triplex.open-file",
-          "when": "webviewSection == 'element-actions'",
+          "when": "webviewSection == 'element-actions' || webviewSection == 'component-actions'",
           "group": "1_navigation"
         },
         {
           "command": "triplex.element-group",
-          "when": "webviewSection == 'element-actions'",
+          "when": "webviewSection == 'element-actions' || webviewSection == 'component-actions'",
           "group": "2_modification"
         },
         {
           "command": "triplex.element-duplicate",
-          "when": "webviewSection == 'element-actions'",
+          "when": "webviewSection == 'element-actions' || webviewSection == 'component-actions'",
           "group": "2_modification"
         },
         {
           "command": "triplex.element-delete",
-          "when": "webviewSection == 'element-actions'",
+          "when": "webviewSection == 'element-actions' || webviewSection == 'component-actions'",
           "group": "99_danger"
         }
       ]

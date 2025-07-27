@@ -337,9 +337,24 @@ export class TriplexEditorProvider
           sendVSCE(panel.webview, "vscode:request-reload-scene", undefined);
         });
       }),
+      vscode.commands.registerCommand("triplex.open-in-triplex", (args) => {
+        if (!args) {
+          return;
+        }
+
+        vscode.commands.executeCommand("triplex.start", {
+          exportName: args.originExportName,
+          path: args.originPath,
+          viewColumn: "replace",
+        });
+      }),
       vscode.commands.registerCommand(
         "triplex.start",
-        async (ctx?: { exportName: string; path: string }) => {
+        async (ctx?: {
+          exportName?: string;
+          path?: string;
+          viewColumn?: "beside" | "replace";
+        }) => {
           const scopedFileName = normalize(
             ctx?.path ||
               vscode.window.activeTextEditor?.document.fileName ||
@@ -352,9 +367,12 @@ export class TriplexEditorProvider
 
           const existingPanel =
             TriplexEditorProvider.panelCache.get(scopedFileName);
-
           const nextExportName =
             ctx?.exportName || getFallbackExportName(scopedFileName);
+          const viewColumn =
+            ctx?.viewColumn === "replace"
+              ? vscode.ViewColumn.Active
+              : vscode.ViewColumn.Beside;
 
           if (existingPanel) {
             sendVSCE(existingPanel.webview, "vscode:request-open-component", {
@@ -374,7 +392,7 @@ export class TriplexEditorProvider
                 query: `triplex&exportName=${nextExportName}`,
               }),
               TriplexEditorProvider.viewType,
-              vscode.ViewColumn.Beside,
+              viewColumn,
             );
           }
         },

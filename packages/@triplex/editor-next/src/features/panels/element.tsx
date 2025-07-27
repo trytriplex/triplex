@@ -356,11 +356,17 @@ export function SceneElement(
           ref={ref}
           title={props.name}
           vscodeContext={{
+            ...("exportName" in props && {
+              originExportName: props.exportName,
+              originPath: props.path,
+            }),
             column: props.column,
             line: props.line,
             path: props.parentPath,
             preventDefaultContextMenuItems: true,
-            webviewSection: "element-actions",
+            webviewSection: isCustomComponent
+              ? "component-actions"
+              : "element-actions",
           }}
         />
         <span
@@ -378,7 +384,7 @@ export function SceneElement(
               {props.children.map((element) => (
                 <SceneElement
                   {...element}
-                  key={element.column + element.line}
+                  key={element.column + element.line + element.name}
                   level={props.level + 1}
                   owningExportName={props.owningExportName}
                 />
@@ -443,7 +449,7 @@ export function SceneElements({
   return elements.sceneObjects.map((element) => (
     <SceneElement
       {...element}
-      key={element.column + element.line}
+      key={element.column + element.line + element.name}
       level={level}
       owningExportName={exportName}
     />
