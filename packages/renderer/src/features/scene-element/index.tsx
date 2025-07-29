@@ -11,7 +11,6 @@ import {
 import {
   forwardRef,
   Fragment,
-  Suspense,
   useContext,
   useEffect,
   useLayoutEffect,
@@ -125,11 +124,9 @@ export const SceneElement = forwardRef<SceneElementRef, RendererElementProps>(
           >
             {threeFiberHelper ? (
               <>
-                <Suspense>
-                  <ThreeFiberHelper helper={threeFiberHelper}>
-                    <primitive attach="__triplex" object={triplexMeta} />
-                  </ThreeFiberHelper>
-                </Suspense>
+                <ThreeFiberHelper helper={threeFiberHelper}>
+                  <primitive attach="__triplex" object={triplexMeta} />
+                </ThreeFiberHelper>
                 {children}
               </>
             ) : (

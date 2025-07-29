@@ -7,9 +7,9 @@
 import { useThree } from "@react-three/fiber";
 import { send } from "@triplex/bridge/client";
 import { useContext } from "react";
-import { Spherical, Vector3, type Object3D } from "three";
+import { Vector3, type Object3D } from "three";
 import { type CameraControls } from "triplex-drei";
-import { buildSceneSphere } from "../../util/three";
+import { fitCameraToObjects } from "../../util/three";
 import {
   ActiveCameraContext,
   CameraControlsContext,
@@ -22,16 +22,12 @@ const tweenCamera = (
   scene: Object3D,
   position: Vector3,
 ) => {
-  const sphere = buildSceneSphere(scene);
-  if (sphere.isEmpty()) {
-    return;
-  }
-
-  const point = new Spherical().setFromVector3(
+  fitCameraToObjects(
+    scene.children,
+    controls,
     new Vector3(position.x, position.y, position.z),
+    true,
   );
-  controls.rotateTo(point.theta, point.phi, true);
-  controls.fitToSphere(sphere, true);
 };
 
 export function CameraAxisHelper() {

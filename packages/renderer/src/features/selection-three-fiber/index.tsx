@@ -9,10 +9,10 @@ import { compose, on, send } from "@triplex/bridge/client";
 import { useEvent } from "@triplex/lib";
 import { fg } from "@triplex/lib/fg";
 import { useContext, useEffect, useState, type ReactNode } from "react";
-import { Box3, Camera, Vector3 } from "three";
+import { Camera } from "three";
 import { HOVER_LAYER_INDEX, SELECTION_LAYER_INDEX } from "../../util/layers";
 import { resolveElementMeta } from "../../util/meta";
-import { encodeProps, strip } from "../../util/three";
+import { encodeProps, fitCameraToObjects, strip } from "../../util/three";
 import { SwitchToComponentContext } from "../app/context";
 import {
   ActiveCameraContext,
@@ -224,29 +224,13 @@ export function ThreeFiberSelection({
           ? findObject3D(scene, sceneObject).map((resolved) => resolved[0])
           : selections.map((resolved) => resolved.object);
 
-        if (objects.length === 0) {
+        if (objects.length === 0 || !controls) {
           return;
         }
 
         send("track", { actionId: "element_jumpto" });
 
-        const box = new Box3();
-
-        objects.forEach((object) => box.expandByObject(object));
-
-        if (box.min.x === Number.POSITIVE_INFINITY) {
-          box.setFromCenterAndSize(
-            objects[0].position,
-            new Vector3(0.5, 0.5, 0.5),
-          );
-        }
-
-        controls?.fitToBox(box, false, {
-          paddingBottom: 0.5,
-          paddingLeft: 0.5,
-          paddingRight: 0.5,
-          paddingTop: 0.5,
-        });
+        fitCameraToObjects(objects, controls);
       }),
     ]);
   }, [controls, resolvedObject, selections, scene, switchToComponent]);
