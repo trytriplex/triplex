@@ -5,31 +5,29 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 
-import { Box3, Sphere, Vector3, type Object3D } from "three";
+import type CameraControls from "camera-controls";
+import { Box3, Sphere, Spherical, Vector3, type Object3D } from "three";
 import { type ResolvedObject3D } from "../features/selection-three-fiber/resolver";
 import { editorLayer } from "./layers";
 
-export function buildSceneSphere(scene: Object3D) {
-  let sceneBox = new Box3();
+export function buildSceneSphere(objects: Object3D[]) {
+  const tempBox = new Box3();
+  const sceneBox = new Box3();
 
-  scene.children.forEach((child) => {
-    if (child.layers.test(editorLayer)) {
-      // Skip over anything that is in the editor layer.
+  objects.forEach((child) => {
+    if (child.layers.test(editorLayer) || child.type.includes("Helper")) {
+      // Skip over anything that is in the editor layer or a helper.
       return;
     }
 
-    const localBox = new Box3().setFromObject(child);
-    const length = localBox.max.lengthSq();
+    tempBox.setFromObject(child);
 
-    if (
-      child.name === "forced_visible" ||
-      length === Number.POSITIVE_INFINITY ||
-      length > 1_000_000
-    ) {
+    if (tempBox.max.lengthSq() > 1000) {
+      // Skip over anything that is too large.
       return;
     }
 
-    sceneBox = sceneBox.union(localBox);
+    sceneBox.union(tempBox);
   });
 
   return sceneBox.getBoundingSphere(new Sphere());
@@ -91,4 +89,30 @@ export function encodeProps(selected: ResolvedObject3D) {
 
 export function strip(num: number): number {
   return +Number.parseFloat(Number(num).toPrecision(15));
+}
+
+export function fitCameraToObjects(
+  objects: Object3D[],
+  controls: CameraControls,
+  vector = new Vector3(0, 0, 1),
+  tween = false,
+) {
+  const sphere = buildSceneSphere(objects);
+  if (
+    sphere.isEmpty() ||
+    /**
+     * There are edge cases where a scene can return NaN for its radius. One
+     * example is the uikit example in test-fixtures doing this on initial load.
+     * To prevent the camera from getting into invalid states we check this and
+     * abort early.
+     */
+    Number.isNaN(sphere.radius)
+  ) {
+    return;
+  }
+
+  const point = new Spherical().setFromVector3(vector);
+
+  controls.rotateTo(point.theta, point.phi, tween);
+  controls.fitToSphere(sphere, tween);
 }

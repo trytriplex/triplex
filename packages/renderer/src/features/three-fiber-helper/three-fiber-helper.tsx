@@ -74,17 +74,23 @@ export function ThreeFiberHelper({
 }) {
   const [targetObject, setTargetObject] = useState<Object3D | null>(null);
   const helperRef = useRef<HelperInstance>(null);
-  const interactiveRef = useRef<Mesh>(null!);
+  const interactiveRef = useRef<Mesh>(null);
   const scene = useThree((three) => three.scene);
   const state = usePlayState();
   const resolvedHelper = resolveHelper(helper, size);
 
   const captureParentSceneObject = useCallback((ref: Object3D | null) => {
-    setTargetObject(ref ? ref.parent : null);
+    const object = ref ? ref.parent : null;
+
+    if (object && interactiveRef.current) {
+      interactiveRef.current.position.copy(object.position);
+    }
+
+    setTargetObject(object);
   }, []);
 
   useFrame(() => {
-    if (!helperRef.current || !targetObject) {
+    if (!helperRef.current || !targetObject || !interactiveRef.current) {
       return;
     }
 
@@ -123,39 +129,38 @@ export function ThreeFiberHelper({
 
   return (
     <>
+      {createPortal(
+        <>
+          <mesh name="forced_visible" ref={interactiveRef} visible={false}>
+            <boxGeometry args={[size * 2, size * 2, size * 2]} />
+            {children}
+          </mesh>
+          {resolvedHelper.type === "inbuilt" && targetObject && (
+            <resolvedHelper.Element
+              // @ts-expect-error - Hacking, sorry!
+              args={[targetObject, ...resolvedHelper.args]}
+              // Hide this from both the default and the editor raycasters. Helper element
+              // bounding boxes aren't generally just what they look visually in the scene
+              // so we exclude them altogether and use a hidden box for selection instead.
+              layers={hiddenLayer}
+              // eslint-disable-next-line @typescript-eslint/no-explicit-any
+              ref={helperRef as any}
+              visible={state !== "play"}
+            />
+          )}
+          {resolvedHelper.type === "custom" && (
+            <group
+              layers={hiddenLayer}
+              ref={helperRef}
+              visible={state !== "play"}
+            >
+              {resolvedHelper.jsx}
+            </group>
+          )}
+        </>,
+        scene,
+      )}
       <group ref={captureParentSceneObject} />
-      {targetObject &&
-        createPortal(
-          <>
-            <mesh name="forced_visible" ref={interactiveRef} visible={false}>
-              <boxGeometry args={[size * 2, size * 2, size * 2]} />
-              {children}
-            </mesh>
-            {resolvedHelper.type === "inbuilt" && (
-              <resolvedHelper.Element
-                // @ts-expect-error - Hacking, sorry!
-                args={[targetObject, ...resolvedHelper.args]}
-                // Hide this from both the default and the editor raycasters. Helper element
-                // bounding boxes aren't generally just what they look visually in the scene
-                // so we exclude them altogether and use a hidden box for selection instead.
-                layers={hiddenLayer}
-                // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                ref={helperRef as any}
-                visible={state !== "play"}
-              />
-            )}
-            {resolvedHelper.type === "custom" && (
-              <group
-                layers={hiddenLayer}
-                ref={helperRef}
-                visible={state !== "play"}
-              >
-                {resolvedHelper.jsx}
-              </group>
-            )}
-          </>,
-          scene,
-        )}
     </>
   );
 }
