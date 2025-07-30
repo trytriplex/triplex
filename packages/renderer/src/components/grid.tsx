@@ -21,6 +21,7 @@ export function TriplexGrid() {
       followCamera
       infiniteGrid
       layers={editorLayer}
+      position={[0, 0.01, 0]}
       sectionColor="#9d4b4b"
       sectionSize={3}
       side={2}

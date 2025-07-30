@@ -28,10 +28,42 @@ export function broadcastForwardedKeyboardEvents() {
   ]);
 }
 
-export function forwardKeyboardEvents() {
-  return createKeyboardEventForwarder((eventName, data) => {
-    send(eventName, data);
+export function listenForStateChanges() {
+  on("request-state-change", (data) => {
+    // @ts-ignore — :-) Hacks when using this x-package.
+    window.triplex.env.state = data.state;
   });
+}
+
+function isCommandPaletteKeyPress(e: KeyboardEvent): boolean {
+  return (
+    e.key.toLowerCase() === "p" &&
+    (e.metaKey || e.ctrlKey) &&
+    !e.altKey &&
+    e.shiftKey
+  );
+}
+
+export function forwardKeyboardEvents() {
+  return createKeyboardEventForwarder(
+    (eventName, data) => {
+      send(eventName, data);
+    },
+    {
+      capture: true,
+      predicate: (e) => {
+        if (
+          // @ts-ignore — :-) Hacks when using this x-package.
+          window.triplex.env.state !== "play" ||
+          isCommandPaletteKeyPress(e)
+        ) {
+          return "stop-propagation";
+        }
+
+        return false;
+      },
+    },
+  );
 }
 
 export function on<TEvent extends HostSendEventName>(

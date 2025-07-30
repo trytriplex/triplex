@@ -7,7 +7,7 @@
 import { createContext, useContext } from "react";
 
 export const SceneObjectEventsContext = createContext<
-  (path: string, line: number, column: number) => void
+  (filter?: { column: number; line: number; path: string }) => void
 >(() => {});
 
 /**

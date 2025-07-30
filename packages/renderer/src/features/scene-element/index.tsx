@@ -70,7 +70,11 @@ export const SceneElement = forwardRef<SceneElementRef, RendererElementProps>(
     );
 
     useEffect(() => {
-      onSceneObjectCommitted(__meta.path, __meta.line, __meta.column);
+      onSceneObjectCommitted({
+        column: __meta.column,
+        line: __meta.line,
+        path: __meta.path,
+      });
     }, [__meta.column, __meta.line, __meta.path, onSceneObjectCommitted]);
 
     useLayoutEffect(() => {

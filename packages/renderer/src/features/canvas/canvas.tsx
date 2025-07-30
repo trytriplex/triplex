@@ -7,7 +7,7 @@
 import { Canvas as FiberCanvas, type CanvasProps } from "@react-three/fiber";
 import { send } from "@triplex/bridge/client";
 import { LoadingLogo } from "@triplex/lib/loader";
-import { Suspense, useLayoutEffect } from "react";
+import { Suspense, useEffect, useLayoutEffect, useRef } from "react";
 import { ErrorBoundaryForScene } from "../../components/error-boundary";
 import { ErrorFallback } from "../../components/error-fallback";
 import { TriplexGrid } from "../../components/grid";
@@ -19,6 +19,7 @@ import { FitCameraToScene } from "../camera-helpers/camera-fit-scene";
 import { Camera } from "../camera-new";
 import { SceneElement } from "../scene-element";
 import { useLoadedScene } from "../scene-loader/context";
+import { ResolveSelection } from "../selection-provider/resolve-selection";
 import { ThreeFiberSelection } from "../selection-three-fiber";
 import { CaptureShaderErrors } from "./capture-shader-errors";
 import { SceneLights } from "./scene-lights";
@@ -35,6 +36,13 @@ export function Canvas({ children, ...props }: CanvasProps) {
   const playState = usePlayState();
   const { exportName, path, providerPath, providers, scene } = useLoadedScene();
   const setMounted = useCanvasMounted((state) => state.setMounted);
+  const ref = useRef<HTMLCanvasElement>(null);
+
+  useEffect(() => {
+    if (playState === "play") {
+      ref.current?.focus();
+    }
+  }, [playState]);
 
   useLayoutEffect(() => {
     setMounted(true);
@@ -52,11 +60,12 @@ export function Canvas({ children, ...props }: CanvasProps) {
         ...props.raycaster,
         layers:
           playState === "play"
-            ? props.raycaster?.layers ?? defaultLayer
+            ? (props.raycaster?.layers ?? defaultLayer)
             : // This forces the default r3f raycaster to be fired on a different layer (31)
               // than the default layer (0) that object3d's are set to default.
               editorLayer,
       }}
+      ref={ref}
     >
       <CaptureShaderErrors />
       <Camera>
@@ -112,6 +121,7 @@ export function Canvas({ children, ...props }: CanvasProps) {
                   }
                 >
                   {children}
+                  <ResolveSelection />
                   <FitCameraToScene resetKeys={[path, exportName]} />
                   <SceneLights />
                   {window.triplex.env.mode === "default" && <TriplexGrid />}

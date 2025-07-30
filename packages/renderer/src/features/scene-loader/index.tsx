@@ -73,6 +73,8 @@ export function SceneLoader({
       on("request-state-change", ({ state }) => {
         if (state === "edit" && previousState !== "edit") {
           incrementReset();
+        } else if (state === "play" && previousState === "edit") {
+          incrementReset();
         }
 
         previousState = state;

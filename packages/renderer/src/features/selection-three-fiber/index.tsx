@@ -340,7 +340,7 @@ export function ThreeFiberSelection({
   return (
     <SceneObjectContext.Provider value={true}>
       <SceneObjectEventsContext.Provider
-        value={selectionActions.resolveIfMissing}
+        value={selectionActions.resolveSelections}
       >
         {children}
       </SceneObjectEventsContext.Provider>

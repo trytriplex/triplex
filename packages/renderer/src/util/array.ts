@@ -21,3 +21,19 @@ export function flatten<TItem extends { children: TItem[] }>(
 
   return result;
 }
+
+export function unique<TValue extends Array<object>>(arr: TValue): TValue {
+  const seen = new Set<string>();
+
+  return arr.filter((item) => {
+    const key = JSON.stringify(item);
+
+    if (seen.has(key)) {
+      return false;
+    }
+
+    seen.add(key);
+
+    return true;
+  }) as TValue;
+}
