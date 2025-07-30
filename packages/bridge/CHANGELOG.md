@@ -1,5 +1,11 @@
 # @triplex/bridge
 
+## 0.70.11
+
+### Patch Changes
+
+- b229047: Fix userland keyboard events being triggered outside of play state.
+
 ## 0.70.10
 
 ### Patch Changes
