@@ -1,5 +1,22 @@
 # @triplex/renderer
 
+## 0.71.35
+
+### Patch Changes
+
+- b229047: The scene graph is now reset when entering play state from edit state.
+- b229047: Fixed an edge case where stale scene objects could stick around when resetting the scene.
+- b229047: The editor grid has now been positioned slightly above y=0 so it doesn't z-fight with other objects placed on y=0.
+- b229047: Duplicate entries found in during hit testing for selecting elements in the scene are now removed, fixing an edge case where cycle selection would not work as expected.
+- b229047: Fixed an edge case where some elements were unable to be selected through the editor scene.
+- b229047: The canvas is now immediately focused when entering play state.
+- a72f57f: The editor camera now behaves the same on initial load, interacting with the axis controls, and using the "zoom to element" action.
+- a9a707f: Transform controls are no longer rendered in the scene if the selected scene element takes no transform props.
+- a72f57f: The editor camera now ignores very large objects when reorienting to scene objects.
+- b229047: Fix userland keyboard events being triggered outside of play state.
+- Updated dependencies [b229047]
+  - @triplex/bridge@0.70.11
+
 ## 0.71.34
 
 ### Patch Changes

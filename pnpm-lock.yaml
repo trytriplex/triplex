@@ -185,7 +185,7 @@ importers:
         specifier: 0.69.17
         version: link:../../packages/lib
       '@triplex/ux':
-        specifier: 0.69.28
+        specifier: 0.69.29
         version: link:../../packages/ux
       '@types/cors':
         specifier: ^2.8.17
@@ -268,7 +268,7 @@ importers:
     dependencies:
       '@pmndrs/xr':
         specifier: ^6.6.17
-        version: 6.6.17(@types/react@19.1.6)(react@19.1.0)(three@0.172.0)
+        version: 6.6.20(@types/react@19.1.6)(react@19.1.0)(three@0.172.0)
       '@react-three/drei':
         specifier: ^10.1.1
         version: 10.1.1(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(@types/three@0.171.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
@@ -280,7 +280,7 @@ importers:
         version: 6.6.17(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react@19.1.0)(three@0.172.0)
       '@react-three/xr':
         specifier: ^6.6.17
-        version: 6.6.17(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
+        version: 6.6.20(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
       '@triplex/api':
         specifier: workspace:*
         version: link:../../packages/api
@@ -322,10 +322,10 @@ importers:
   apps/electron:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.43
+        specifier: 0.70.44
         version: link:../../packages/@triplex/client
       '@triplex/editor':
-        specifier: 0.70.47
+        specifier: 0.70.48
         version: link:../../packages/@triplex/editor
       '@triplex/server':
         specifier: 0.71.20
@@ -395,7 +395,7 @@ importers:
   apps/vscode:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.43
+        specifier: 0.70.44
         version: link:../../packages/@triplex/client
       '@triplex/server':
         specifier: 0.71.20
@@ -405,7 +405,7 @@ importers:
         specifier: ^8.30.0
         version: 8.30.0
       '@triplex/editor-next':
-        specifier: ^0.0.4
+        specifier: ^0.0.5
         version: link:../../packages/@triplex/editor-next
       '@triplex/websocks-client':
         specifier: 0.0.9
@@ -580,7 +580,7 @@ importers:
         version: 0.8.19(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react@19.1.0)(three@0.172.0)
       '@react-three/xr':
         specifier: ^6.6.17
-        version: 6.6.17(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
+        version: 6.6.20(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
       '@triplex/api':
         specifier: workspace:*
         version: link:../../packages/api
@@ -781,7 +781,7 @@ importers:
         version: 9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
       '@react-three/xr':
         specifier: ^6.6.17
-        version: 6.6.17(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
+        version: 6.6.20(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
       '@types/react':
         specifier: ^19.0.8
         version: 19.1.6
@@ -938,7 +938,7 @@ importers:
         version: 9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
       '@react-three/xr':
         specifier: ^6.6.17
-        version: 6.6.17(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
+        version: 6.6.20(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
       '@types/react':
         specifier: ^19.0.8
         version: 19.1.6
@@ -964,10 +964,10 @@ importers:
         specifier: ^7.24.5
         version: 7.27.3
       '@triplex/bridge':
-        specifier: 0.70.10
+        specifier: 0.70.11
         version: link:../../bridge
       '@triplex/renderer':
-        specifier: 0.71.34
+        specifier: 0.71.35
         version: link:../../renderer
       '@vitejs/plugin-react':
         specifier: ^4.4.1
@@ -1076,13 +1076,13 @@ importers:
         specifier: ^8.30.0
         version: 8.30.0(react@19.1.0)
       '@triplex/bridge':
-        specifier: 0.70.10
+        specifier: 0.70.11
         version: link:../../bridge
       '@triplex/lib':
         specifier: 0.69.17
         version: link:../../lib
       '@triplex/ux':
-        specifier: 0.69.28
+        specifier: 0.69.29
         version: link:../../ux
       '@triplex/websocks-client':
         specifier: 0.0.9
@@ -1179,13 +1179,13 @@ importers:
         specifier: ^2.49.1
         version: 2.49.1
       '@triplex/bridge':
-        specifier: 0.70.10
+        specifier: 0.70.11
         version: link:../../bridge
       '@triplex/lib':
         specifier: 0.69.17
         version: link:../../lib
       '@triplex/ux':
-        specifier: 0.69.28
+        specifier: 0.69.29
         version: link:../../ux
       '@triplex/websocks-client':
         specifier: 0.0.9
@@ -1501,7 +1501,7 @@ importers:
         specifier: ^11.14.0
         version: 11.14.0(@types/react@19.1.6)(react@19.1.0)
       '@triplex/bridge':
-        specifier: 0.70.10
+        specifier: 0.70.11
         version: link:../bridge
       '@triplex/lib':
         specifier: 0.69.17
@@ -1545,7 +1545,7 @@ importers:
         version: 9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
       '@react-three/xr':
         specifier: ^6.6.17
-        version: 6.6.17(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
+        version: 6.6.20(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
       '@swc/cli':
         specifier: ^0.1.59
         version: 0.1.59(@swc/core@1.6.5(@swc/helpers@0.5.15))(chokidar@3.5.3)
@@ -1598,7 +1598,7 @@ importers:
         specifier: ^1.0.5
         version: 1.0.5(@types/react-dom@19.1.5(@types/react@19.1.6))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)
       '@triplex/bridge':
-        specifier: 0.70.10
+        specifier: 0.70.11
         version: link:../bridge
       '@triplex/lib':
         specifier: 0.69.17
@@ -3216,11 +3216,6 @@ packages:
     peerDependencies:
       three: '*'
 
-  '@pmndrs/xr@6.6.17':
-    resolution: {integrity: sha512-qLGgd9NAUveJ6krlJoQUyoPyyYiz5XVGu1Gvvz6P1o38nvJ1gqNFvzSMFaY10IjsSCTj+V8poa+nW2qvNH/AvQ==}
-    peerDependencies:
-      three: '*'
-
   '@pmndrs/xr@6.6.20':
     resolution: {integrity: sha512-n/+/sWmlderE9RCfyaSSQBXGJGJG5a6xw61PLi23ahOC9nZrE5D5cNhSYRsfj49s2Sgsge2wjGbFV5zxc8rWSw==}
     peerDependencies:
@@ -3614,14 +3609,6 @@ packages:
     resolution: {integrity: sha512-0mnZ+IxUQrcaZ51u83ImKNxMn+K5aADOJBxYMNqOBj9mqx9syC4pqe/fuGavCgvo3C2CmpUFpEom+5nxZX1Jag==}
     peerDependencies:
       '@react-three/fiber': '*'
-
-  '@react-three/xr@6.6.17':
-    resolution: {integrity: sha512-W2u7STf6CsL7sIcpkezAYODBoLDJJ3ulLP8GiEIRWHmDNAyfE7gzJKG+A0nSJ0BvqO5t90kEvd+GgUnWBtETsw==}
-    peerDependencies:
-      '@react-three/fiber': '>=8'
-      react: ^19.0.0
-      react-dom: ^19.0.0
-      three: '*'
 
   '@react-three/xr@6.6.20':
     resolution: {integrity: sha512-49T6CarIORzHk4KNl9ibrdVuQ1ABcnAnv8iTU/FpmmEzFgyLZXPH3qR5UQ/wStAgnjRLJ2anVoO+MkO2UMYX6A==}
@@ -11508,7 +11495,7 @@ snapshots:
       '@fortawesome/free-solid-svg-icons': 6.6.0
       '@fortawesome/react-fontawesome': 0.2.2(@fortawesome/fontawesome-svg-core@6.6.0)(react@19.1.0)
       '@pmndrs/handle': 6.6.17(@types/react@19.1.6)(react@19.1.0)
-      '@pmndrs/pointer-events': 6.6.17
+      '@pmndrs/pointer-events': 6.6.20
       iwer: 2.0.1
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
@@ -11750,7 +11737,7 @@ snapshots:
       '@typescript-eslint/eslint-plugin': 8.25.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.8.3))(eslint@8.51.0)(typescript@5.8.3)
       '@typescript-eslint/parser': 8.25.0(eslint@8.51.0)(typescript@5.8.3)
       eslint: 8.51.0
-      eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.31.0)(eslint@8.51.0)
+      eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.8.3))(eslint@8.51.0))(eslint@8.51.0)
       eslint-plugin-import: 2.31.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.8.3))(eslint-import-resolver-typescript@3.8.3)(eslint@8.51.0)
       eslint-plugin-no-only-tests: 3.3.0
       eslint-plugin-react: 7.37.4(eslint@8.51.0)
@@ -12301,7 +12288,7 @@ snapshots:
 
   '@pmndrs/handle@6.6.17(@types/react@19.1.6)(react@19.1.0)':
     dependencies:
-      '@pmndrs/pointer-events': 6.6.17
+      '@pmndrs/pointer-events': 6.6.20
       zustand: 4.5.7(@types/react@19.1.6)(react@19.1.0)
     transitivePeerDependencies:
       - '@types/react'
@@ -12338,20 +12325,6 @@ snapshots:
       '@viverse/sdk': 1.2.10-alpha.0
       three: 0.172.0
       three-mesh-bvh: 0.9.1(three@0.172.0)
-
-  '@pmndrs/xr@6.6.17(@types/react@19.1.6)(react@19.1.0)(three@0.172.0)':
-    dependencies:
-      '@iwer/devui': 1.1.1(@types/react@19.1.6)(iwer@2.0.1)
-      '@iwer/sem': 0.2.5(iwer@2.0.1)
-      '@pmndrs/pointer-events': 6.6.17
-      iwer: 2.0.1
-      meshline: 3.3.1(three@0.172.0)
-      three: 0.172.0
-      zustand: 4.5.7(@types/react@19.1.6)(react@19.1.0)
-    transitivePeerDependencies:
-      - '@types/react'
-      - immer
-      - react
 
   '@pmndrs/xr@6.6.20(@types/react@19.1.6)(react@19.1.0)(three@0.172.0)':
     dependencies:
@@ -12840,21 +12813,6 @@ snapshots:
       - react-dom
       - three
       - use-sync-external-store
-
-  '@react-three/xr@6.6.17(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)':
-    dependencies:
-      '@pmndrs/pointer-events': 6.6.17
-      '@pmndrs/xr': 6.6.17(@types/react@19.1.6)(react@19.1.0)(three@0.172.0)
-      '@react-three/fiber': 9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
-      react: 19.1.0
-      react-dom: 19.1.0(react@19.1.0)
-      suspend-react: 0.1.3(react@19.1.0)
-      three: 0.172.0
-      tunnel-rat: 0.1.2(@types/react@19.1.6)(react@19.1.0)
-      zustand: 4.5.7(@types/react@19.1.6)(react@19.1.0)
-    transitivePeerDependencies:
-      - '@types/react'
-      - immer
 
   '@react-three/xr@6.6.20(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)':
     dependencies:
@@ -15753,7 +15711,7 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0)(eslint@8.51.0):
+  eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.8.3))(eslint@8.51.0))(eslint@8.51.0):
     dependencies:
       '@nolyfill/is-core-module': 1.0.39
       debug: 4.4.1
@@ -15768,14 +15726,14 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
-  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3)(eslint@8.51.0):
+  eslint-module-utils@2.12.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.8.3))(eslint@8.51.0))(eslint@8.51.0))(eslint@8.51.0):
     dependencies:
       debug: 3.2.7
     optionalDependencies:
       '@typescript-eslint/parser': 8.25.0(eslint@8.51.0)(typescript@5.8.3)
       eslint: 8.51.0
       eslint-import-resolver-node: 0.3.9
-      eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.31.0)(eslint@8.51.0)
+      eslint-import-resolver-typescript: 3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.8.3))(eslint@8.51.0))(eslint@8.51.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -15794,7 +15752,7 @@ snapshots:
       doctrine: 2.1.0
       eslint: 8.51.0
       eslint-import-resolver-node: 0.3.9
-      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3)(eslint@8.51.0)
+      eslint-module-utils: 2.12.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.8.3))(eslint-import-resolver-node@0.3.9)(eslint-import-resolver-typescript@3.8.3(eslint-plugin-import@2.31.0(@typescript-eslint/parser@8.25.0(eslint@8.51.0)(typescript@5.8.3))(eslint@8.51.0))(eslint@8.51.0))(eslint@8.51.0)
       hasown: 2.0.2
       is-core-module: 2.15.1
       is-glob: 4.0.3

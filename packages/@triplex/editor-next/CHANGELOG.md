@@ -1,5 +1,13 @@
 # @triplex/editor-next
 
+## 0.0.5
+
+### Patch Changes
+
+- Updated dependencies [b229047]
+  - @triplex/bridge@0.70.11
+  - @triplex/ux@0.69.29
+
 ## 0.0.4
 
 ### Patch Changes

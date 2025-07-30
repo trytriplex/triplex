@@ -1,5 +1,24 @@
 # @triplex/client
 
+## 0.70.44
+
+### Patch Changes
+
+- b229047: Fix userland keyboard events being triggered outside of play state.
+- b229047: Fix @react-three/viverse requiring @react-three/xr to be installed before running in Triplex.
+- Updated dependencies [b229047]
+- Updated dependencies [b229047]
+- Updated dependencies [b229047]
+- Updated dependencies [b229047]
+- Updated dependencies [b229047]
+- Updated dependencies [b229047]
+- Updated dependencies [a72f57f]
+- Updated dependencies [a9a707f]
+- Updated dependencies [a72f57f]
+- Updated dependencies [b229047]
+  - @triplex/renderer@0.71.35
+  - @triplex/bridge@0.70.11
+
 ## 0.70.43
 
 ### Patch Changes
