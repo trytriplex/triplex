@@ -159,6 +159,9 @@ export function ThreeFiberSelection({
     });
   const controls = useContext(CameraControlsContext);
   const resolvedObject = selections.at(0);
+  const firstResolvedCamera = selections
+    .map((selection) => selection.object)
+    .find((object): object is Camera => object instanceof Camera);
 
   useEffect(() => {
     return on("extension-point-triggered", (data) => {
@@ -399,9 +402,7 @@ export function ThreeFiberSelection({
 
       {window.triplex.env.mode === "default" &&
         camera?.type === "editor" &&
-        resolvedObject?.object instanceof Camera && (
-          <CameraPreview camera={resolvedObject.object} />
-        )}
+        firstResolvedCamera && <CameraPreview camera={firstResolvedCamera} />}
 
       {import.meta.env.VITE_TRIPLEX_ENV !== "test" &&
         window.triplex.env.mode === "default" && (

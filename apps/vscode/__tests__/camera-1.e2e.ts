@@ -74,3 +74,14 @@ test("jump to element", async ({ vsce }) => {
 
   await expect(editor.devOnlyCameraPanel).toHaveText(/pos: 2\.12,0,-0\.88/);
 });
+
+test("camera preview when focused", async ({ vsce }) => {
+  await vsce.codelens("Scene").click();
+  const editor = vsce.resolveEditor();
+
+  await editor.panels.getByRole("button", { name: "user_defined" }).click();
+
+  await expect(editor.scene.locator.getByTestId("CameraPreview")).toHaveText(
+    "user_defined",
+  );
+});
