@@ -901,6 +901,33 @@ importers:
         specifier: ^0.172.0
         version: 0.172.0
 
+  examples/viverse:
+    dependencies:
+      '@react-three/drei':
+        specifier: ^10.1.1
+        version: 10.1.1(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(@types/three@0.171.0)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
+      '@react-three/fiber':
+        specifier: ^9.1.2
+        version: 9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
+      '@react-three/viverse':
+        specifier: ^0.1.11
+        version: 0.1.11(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)(use-sync-external-store@1.5.0(react@19.1.0))
+      '@types/react':
+        specifier: ^19.0.8
+        version: 19.1.6
+      '@types/three':
+        specifier: ^0.171.0
+        version: 0.171.0
+      react:
+        specifier: ^19.0.0
+        version: 19.1.0
+      react-dom:
+        specifier: ^19.0.0
+        version: 19.1.0(react@19.1.0)
+      three:
+        specifier: ^0.172.0
+        version: 0.172.0
+
   examples/xr-bowling:
     dependencies:
       '@react-three/drei':
@@ -1328,7 +1355,7 @@ importers:
     optionalDependencies:
       '@react-three/xr':
         specifier: '*'
-        version: 6.6.17(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
+        version: 6.6.20(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
 
   packages/bridge:
     devDependencies:
@@ -3082,6 +3109,73 @@ packages:
   '@paper-design/shaders@0.0.19':
     resolution: {integrity: sha512-Bc6aF6lcT/VJio8ShKghgus2o483NKlbJkvtqw/hkfHVsdwShqndPiZmHHHPtVeuoWDXntxc9Hamcob+klRJew==}
 
+  '@pixiv/three-vrm-animation@3.4.2':
+    resolution: {integrity: sha512-VB5Jem7T+mnxbExQbzOIXq+4pJ1VxfGYutZBC53lAQdGnS17usTwWqzZBEE5thT0k4Y/pJwhwFQ2YlOZfrIYng==}
+    peerDependencies:
+      three: '>=0.137'
+
+  '@pixiv/three-vrm-core@3.4.2':
+    resolution: {integrity: sha512-ucdf5hzCcgc421UVjhBQK3VpnodDdOJFf/3RY9glD4RLj0iURZ4hTd4zKXhSITKSS/IisRgU4J2lDhtU0u7e3g==}
+    peerDependencies:
+      three: '>=0.137'
+
+  '@pixiv/three-vrm-materials-hdr-emissive-multiplier@3.4.2':
+    resolution: {integrity: sha512-OuDBao5GRfAefPXK4w4su2AzM/yGvqYYfZQaQryyhSzQbA1UV8EpW4xfrWjdGJ4HiD98L9hVeObZrjZyq2ZVkA==}
+    peerDependencies:
+      three: '>=0.137'
+
+  '@pixiv/three-vrm-materials-mtoon@3.4.2':
+    resolution: {integrity: sha512-UH0ZwF3oWyxr+FwIc4CBdBKsGKfPsaDPt8/lplX+D8oExNZ4eKBSKUaNytV6XhxgWR5a0ZPoZJUzvsCzjv0BPQ==}
+    peerDependencies:
+      three: '>=0.137'
+
+  '@pixiv/three-vrm-materials-v0compat@3.4.2':
+    resolution: {integrity: sha512-h1E/CB3h3f3iK0QnzzfeBy4C2GiiSkSf6q4OSYg26Qnyvl8iCPduqukm85yD5xuyDU3i1KzimuWj0n1Ah3s6kw==}
+    peerDependencies:
+      three: '>=0.137'
+
+  '@pixiv/three-vrm-node-constraint@3.4.2':
+    resolution: {integrity: sha512-KjkvsZv91naCkblOttM46JdJP2UdKCd+fAxewnVAc+FWkS5qUA1fiKZhWz06JuO1yMVMY3/OohnIlDfRGtdq6A==}
+    peerDependencies:
+      three: '>=0.137'
+
+  '@pixiv/three-vrm-springbone@3.4.2':
+    resolution: {integrity: sha512-4IUOHehnWkg2ZhipCGpSppB7lfR+/GuLVLp42N5jQi6Tf3keAm/tXwDeGgJO2o9AgcDW2Gq3/MFxkcSfvojKCw==}
+    peerDependencies:
+      three: '>=0.137'
+
+  '@pixiv/three-vrm@3.4.2':
+    resolution: {integrity: sha512-Q3WLZ2Keh3y1GOhxWFieQCXsi+O9cGoPJD7GxQI6VJIEGuWXF0ghPND7RNUd1/AM2/Al7ChuWyaqyGq7j5/0/w==}
+    peerDependencies:
+      three: '>=0.137'
+
+  '@pixiv/types-vrm-0.0@3.4.2':
+    resolution: {integrity: sha512-Y8jELwRGYW5GkO0Q9SQ2XOwGHgbKiLB3bRedpRELCEJVki2vWWkNoK8MqyuXmBEk2pQdaU5YDJ1mDpdCNVaIDA==}
+
+  '@pixiv/types-vrmc-materials-hdr-emissive-multiplier-1.0@3.4.2':
+    resolution: {integrity: sha512-kqo08aM9mPq9c9sfq8x+TxhrhuF41aaCeOoDAcSfwcOQgXrZt6ZFbyiiI9ViMpeuCZ8bSjjN6f5Opf3BwbYMLQ==}
+
+  '@pixiv/types-vrmc-materials-mtoon-1.0@3.4.2':
+    resolution: {integrity: sha512-VVcY7SniFh+wj0fNA/MDWr7ST6AWoaKtlxzC/ZyQd28zxjRgGbe40OGdref64rBxGwIV8JfBXgtYUxrJ2BN5DQ==}
+
+  '@pixiv/types-vrmc-node-constraint-1.0@3.4.2':
+    resolution: {integrity: sha512-DIkmUxeyaAl6iMiH20ug+ns2trnQPvi5lU0Hf3r/g4Ikq+8WRDcX3pggG1Uihr6xAy4S4lc7u5dS5lLDrAEsbw==}
+
+  '@pixiv/types-vrmc-springbone-1.0@3.4.2':
+    resolution: {integrity: sha512-xbwsSPl31vltmYW9ADX6DxgnGZcXhhsqkcY4Jr6N0xCxH+H1V0qv5vNhN/+ntBMccQul35CtzNpXZohJ5zB1wA==}
+
+  '@pixiv/types-vrmc-springbone-extended-collider-1.0@3.4.2':
+    resolution: {integrity: sha512-4leeV4KmG8cw98L0vAVrv5XsyGmIEr4iTr5rZ2dTOW2KJjoA458mBWnlKImj2n6bVCoqgExvt6IIi2AFnJgWjA==}
+
+  '@pixiv/types-vrmc-vrm-1.0@2.0.3':
+    resolution: {integrity: sha512-RMP34Bk1qLFQv/CRB1Zqvn2qMFfWQfP2Hms5QrrfoBsW9XroZdEe0zPLNbGmUPYh4F7VtBb+B7+RCuymRtpehA==}
+
+  '@pixiv/types-vrmc-vrm-1.0@3.4.2':
+    resolution: {integrity: sha512-AcbcDDtPevbmds2N7HUfPb/eKbMlbDaS4VADUNC2uO4pQDHa4vi1gDDxneYNFq4htQ2VUco9Yhqr5idp2MofOg==}
+
+  '@pixiv/types-vrmc-vrm-animation-1.0@3.4.2':
+    resolution: {integrity: sha512-Ml+ka0WCB7+UobfT73p9yguY121l1kdxTsDygdL5QW/dSRV9P2JuNW78drIy8LKjMucMK0vQFasBmjfT9BYLzw==}
+
   '@pkgjs/parseargs@0.11.0':
     resolution: {integrity: sha512-+1VkjdD0QBLPodGrJUeqarH8VAIvQODIbwh9XpP5Syisf7YoQgsJKPNFoqqLQlu+VQ/tVSshMR6loPMn8U+dPg==}
     engines: {node: '>=14'}
@@ -3104,13 +3198,31 @@ packages:
   '@pmndrs/pointer-events@6.6.17':
     resolution: {integrity: sha512-+TumRqoq5p9ttBtSaRq0sifw2F9+EQRIeHGR3G2CVCibyfBtzbwaD1UbtYANQO03Fzks+CIsku20GpNAXihp7A==}
 
+  '@pmndrs/pointer-events@6.6.20':
+    resolution: {integrity: sha512-Jf5eNS8VREZ4d/lGX/TVxJrNNxQSUM94cd0RjlXfxwXQt10faETQW0j9u0jTOjsW7EtwjM/lTsjUsjbvxwPGlw==}
+
+  '@pmndrs/timeline@0.1.10':
+    resolution: {integrity: sha512-B7Uw8tUesPox1BcNY/IiybodYcShqvosRe0wrUHNYssBOqQl/4wK8VNJwJIb15+oJVrD2gWcWAS/nmDm1ZU6fw==}
+    peerDependencies:
+      three: '*'
+
   '@pmndrs/uikit@0.8.19':
     resolution: {integrity: sha512-DvqTIqA+sVGezl7Nwmf0iZFquGPjXxVUOmC3Oo6UEYQbjaCgXkPwMQ5DGQAu2Ti6sr1+Y6PgaZnkXKtLWLFCXQ==}
     peerDependencies:
       three: '>=0.160'
 
+  '@pmndrs/viverse@0.1.11':
+    resolution: {integrity: sha512-tMLsIK+ea0UMXV3Gn1aXzVgWc72HbfYUIe1Z104cLpVXeP2wBGPzihGxRDZokJcAkA7ntj4FNT7/3az8olG97A==}
+    peerDependencies:
+      three: '*'
+
   '@pmndrs/xr@6.6.17':
     resolution: {integrity: sha512-qLGgd9NAUveJ6krlJoQUyoPyyYiz5XVGu1Gvvz6P1o38nvJ1gqNFvzSMFaY10IjsSCTj+V8poa+nW2qvNH/AvQ==}
+    peerDependencies:
+      three: '*'
+
+  '@pmndrs/xr@6.6.20':
+    resolution: {integrity: sha512-n/+/sWmlderE9RCfyaSSQBXGJGJG5a6xw61PLi23ahOC9nZrE5D5cNhSYRsfj49s2Sgsge2wjGbFV5zxc8rWSw==}
     peerDependencies:
       three: '*'
 
@@ -3498,8 +3610,21 @@ packages:
       '@react-three/fiber': '>=8'
       react: ^19.0.0
 
+  '@react-three/viverse@0.1.11':
+    resolution: {integrity: sha512-0mnZ+IxUQrcaZ51u83ImKNxMn+K5aADOJBxYMNqOBj9mqx9syC4pqe/fuGavCgvo3C2CmpUFpEom+5nxZX1Jag==}
+    peerDependencies:
+      '@react-three/fiber': '*'
+
   '@react-three/xr@6.6.17':
     resolution: {integrity: sha512-W2u7STf6CsL7sIcpkezAYODBoLDJJ3ulLP8GiEIRWHmDNAyfE7gzJKG+A0nSJ0BvqO5t90kEvd+GgUnWBtETsw==}
+    peerDependencies:
+      '@react-three/fiber': '>=8'
+      react: ^19.0.0
+      react-dom: ^19.0.0
+      three: '*'
+
+  '@react-three/xr@6.6.20':
+    resolution: {integrity: sha512-49T6CarIORzHk4KNl9ibrdVuQ1ABcnAnv8iTU/FpmmEzFgyLZXPH3qR5UQ/wStAgnjRLJ2anVoO+MkO2UMYX6A==}
     peerDependencies:
       '@react-three/fiber': '>=8'
       react: ^19.0.0
@@ -4298,6 +4423,9 @@ packages:
 
   '@vitest/utils@3.1.3':
     resolution: {integrity: sha512-2Ltrpht4OmHO9+c/nmHtF09HWiyWdworqnHIwjfvDyWjuwKbdkcS9AnhsDn+8E2RM4x++foD1/tNuLPVvWG1Rg==}
+
+  '@viverse/sdk@1.2.10-alpha.0':
+    resolution: {integrity: sha512-6lojMwhYgCn2bf9Cq+UvmvqyuqdwR9nmF6TkcSu5ve8eN1oAT5xJZucgrNeghaV2WrxXEG8UyZzYmhrHPpN0PA==}
 
   '@vscode/test-electron@2.3.9':
     resolution: {integrity: sha512-z3eiChaCQXMqBnk2aHHSEkobmC2VRalFQN0ApOAtydL172zXGxTwGrRtviT5HnUB+Q+G3vtEYFtuQkYqBzYgMA==}
@@ -5152,6 +5280,9 @@ packages:
     resolution: {integrity: sha512-uV2QOWP2nWzsy2aMp8aRibhi9dlzF5Hgh5SHaB9OiTGEyDTiJJyx0uy51QXdyWbtAHNua4XJzUKca3OzKUd3vA==}
     engines: {node: '>= 8'}
 
+  crypto-js@4.2.0:
+    resolution: {integrity: sha512-KALDyEYgpY+Rlob/iriUtjV6d5Eq+Y191A5g4UqLAi8CyGP9N1+FdVbkc1SxKc2r4YAYqG8JzO2KGL+AizD70Q==}
+
   css-background-parser@0.1.0:
     resolution: {integrity: sha512-2EZLisiZQ+7m4wwur/qiYJRniHX4K5Tc9w93MT3AS0WS1u5kaZ4FKXlOTBhOjc+CgEgPiGY+fX1yWD8UwpEqUA==}
 
@@ -5738,6 +5869,9 @@ packages:
   es-abstract@1.23.9:
     resolution: {integrity: sha512-py07lI0wjxAC/DcfK1S6G7iANonniZwTISvdPzk9hzeH0IZIshbuuFxLIU96OyF89Yb9hiqWn8M/bY83KY5vzA==}
     engines: {node: '>= 0.4'}
+
+  es-cookie@1.5.0:
+    resolution: {integrity: sha512-fRv8TjgwY4/RmrP3kqQzfOwrQIMnAbQCHxSxqGVO1+3oWFsGYdIBOD8aqyALc/S4UY2wOIH894uvTDNP81tiyw==}
 
   es-define-property@1.0.1:
     resolution: {integrity: sha512-e3nRfgfUZ4rNGL232gUgX06QNyyez04KdjFrF+LTRoOXmrOgFKDg4BCdsjW8EnT69eqdYGmRpJwiPVYNrCaW3g==}
@@ -7042,6 +7176,9 @@ packages:
     peerDependenciesMeta:
       canvas:
         optional: true
+
+  jsencrypt@3.3.2:
+    resolution: {integrity: sha512-arQR1R1ESGdAxY7ZheWr12wCaF2yF47v5qpB76TtV64H1pyGudk9Hvw8Y9tb/FiTIaaTRUyaSnm5T/Y53Ghm/A==}
 
   jsesc@0.5.0:
     resolution: {integrity: sha512-uZz5UnB7u4T9LvwmFqXii7pZSouaRPorGs5who1Ip7VO0wxanFvBL7GkM6dTHlgX+jhBApRetaWpnDabOeTcnA==}
@@ -9497,6 +9634,11 @@ packages:
     peerDependencies:
       three: '>= 0.159.0'
 
+  three-mesh-bvh@0.9.1:
+    resolution: {integrity: sha512-WNT+m9jGQgtp4YdtwEnl4oFylNVifRf7iphlwWdJ4bJu7oNkY0xHIyntep9OzHuR1hpe/pyAP840gB/EsYDJfg==}
+    peerDependencies:
+      three: '>= 0.159.0'
+
   three-stdlib@2.36.0:
     resolution: {integrity: sha512-kv0Byb++AXztEGsULgMAs8U2jgUdz6HPpAB/wDJnLiLlaWQX2APHhiTJIN7rqW+Of0eRgcp7jn05U1BsCP3xBA==}
     peerDependencies:
@@ -10340,6 +10482,24 @@ packages:
 
   zustand@5.0.5:
     resolution: {integrity: sha512-mILtRfKW9xM47hqxGIxCv12gXusoY/xTSHBYApXozR0HmQv299whhBeeAcRy+KrPPybzosvJBCOmVjq6x12fCg==}
+    engines: {node: '>=12.20.0'}
+    peerDependencies:
+      '@types/react': ^19.0.8
+      immer: '>=9.0.6'
+      react: ^19.0.0
+      use-sync-external-store: '>=1.2.0'
+    peerDependenciesMeta:
+      '@types/react':
+        optional: true
+      immer:
+        optional: true
+      react:
+        optional: true
+      use-sync-external-store:
+        optional: true
+
+  zustand@5.0.6:
+    resolution: {integrity: sha512-ihAqNeUVhe0MAD+X8M5UzqyZ9k3FFZLBTtqo6JLPwV53cbRB/mJwBI0PxcIgqhBBHlEs8G45OTDTMq3gNcLq3A==}
     engines: {node: '>=12.20.0'}
     peerDependencies:
       '@types/react': ^19.0.8
@@ -12058,6 +12218,78 @@ snapshots:
 
   '@paper-design/shaders@0.0.19': {}
 
+  '@pixiv/three-vrm-animation@3.4.2(three@0.172.0)':
+    dependencies:
+      '@pixiv/three-vrm-core': 3.4.2(three@0.172.0)
+      '@pixiv/types-vrmc-vrm-1.0': 3.4.2
+      '@pixiv/types-vrmc-vrm-animation-1.0': 3.4.2
+      three: 0.172.0
+
+  '@pixiv/three-vrm-core@3.4.2(three@0.172.0)':
+    dependencies:
+      '@pixiv/types-vrm-0.0': 3.4.2
+      '@pixiv/types-vrmc-vrm-1.0': 3.4.2
+      three: 0.172.0
+
+  '@pixiv/three-vrm-materials-hdr-emissive-multiplier@3.4.2(three@0.172.0)':
+    dependencies:
+      '@pixiv/types-vrmc-materials-hdr-emissive-multiplier-1.0': 3.4.2
+      three: 0.172.0
+
+  '@pixiv/three-vrm-materials-mtoon@3.4.2(three@0.172.0)':
+    dependencies:
+      '@pixiv/types-vrm-0.0': 3.4.2
+      '@pixiv/types-vrmc-materials-mtoon-1.0': 3.4.2
+      three: 0.172.0
+
+  '@pixiv/three-vrm-materials-v0compat@3.4.2(three@0.172.0)':
+    dependencies:
+      '@pixiv/types-vrm-0.0': 3.4.2
+      '@pixiv/types-vrmc-materials-mtoon-1.0': 3.4.2
+      three: 0.172.0
+
+  '@pixiv/three-vrm-node-constraint@3.4.2(three@0.172.0)':
+    dependencies:
+      '@pixiv/types-vrmc-node-constraint-1.0': 3.4.2
+      three: 0.172.0
+
+  '@pixiv/three-vrm-springbone@3.4.2(three@0.172.0)':
+    dependencies:
+      '@pixiv/types-vrm-0.0': 3.4.2
+      '@pixiv/types-vrmc-springbone-1.0': 3.4.2
+      '@pixiv/types-vrmc-springbone-extended-collider-1.0': 3.4.2
+      three: 0.172.0
+
+  '@pixiv/three-vrm@3.4.2(three@0.172.0)':
+    dependencies:
+      '@pixiv/three-vrm-core': 3.4.2(three@0.172.0)
+      '@pixiv/three-vrm-materials-hdr-emissive-multiplier': 3.4.2(three@0.172.0)
+      '@pixiv/three-vrm-materials-mtoon': 3.4.2(three@0.172.0)
+      '@pixiv/three-vrm-materials-v0compat': 3.4.2(three@0.172.0)
+      '@pixiv/three-vrm-node-constraint': 3.4.2(three@0.172.0)
+      '@pixiv/three-vrm-springbone': 3.4.2(three@0.172.0)
+      three: 0.172.0
+
+  '@pixiv/types-vrm-0.0@3.4.2': {}
+
+  '@pixiv/types-vrmc-materials-hdr-emissive-multiplier-1.0@3.4.2': {}
+
+  '@pixiv/types-vrmc-materials-mtoon-1.0@3.4.2': {}
+
+  '@pixiv/types-vrmc-node-constraint-1.0@3.4.2': {}
+
+  '@pixiv/types-vrmc-springbone-1.0@3.4.2': {}
+
+  '@pixiv/types-vrmc-springbone-extended-collider-1.0@3.4.2': {}
+
+  '@pixiv/types-vrmc-vrm-1.0@2.0.3': {}
+
+  '@pixiv/types-vrmc-vrm-1.0@3.4.2': {}
+
+  '@pixiv/types-vrmc-vrm-animation-1.0@3.4.2':
+    dependencies:
+      '@pixiv/types-vrmc-vrm-1.0': 2.0.3
+
   '@pkgjs/parseargs@0.11.0':
     optional: true
 
@@ -12080,6 +12312,12 @@ snapshots:
 
   '@pmndrs/pointer-events@6.6.17': {}
 
+  '@pmndrs/pointer-events@6.6.20': {}
+
+  '@pmndrs/timeline@0.1.10(three@0.172.0)':
+    dependencies:
+      three: 0.172.0
+
   '@pmndrs/uikit@0.8.19(three@0.172.0)':
     dependencies:
       '@pmndrs/msdfonts': 0.8.19
@@ -12092,11 +12330,34 @@ snapshots:
     transitivePeerDependencies:
       - ts-node
 
+  '@pmndrs/viverse@0.1.11(three@0.172.0)':
+    dependencies:
+      '@pixiv/three-vrm': 3.4.2(three@0.172.0)
+      '@pixiv/three-vrm-animation': 3.4.2(three@0.172.0)
+      '@pmndrs/timeline': 0.1.10(three@0.172.0)
+      '@viverse/sdk': 1.2.10-alpha.0
+      three: 0.172.0
+      three-mesh-bvh: 0.9.1(three@0.172.0)
+
   '@pmndrs/xr@6.6.17(@types/react@19.1.6)(react@19.1.0)(three@0.172.0)':
     dependencies:
       '@iwer/devui': 1.1.1(@types/react@19.1.6)(iwer@2.0.1)
       '@iwer/sem': 0.2.5(iwer@2.0.1)
       '@pmndrs/pointer-events': 6.6.17
+      iwer: 2.0.1
+      meshline: 3.3.1(three@0.172.0)
+      three: 0.172.0
+      zustand: 4.5.7(@types/react@19.1.6)(react@19.1.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - immer
+      - react
+
+  '@pmndrs/xr@6.6.20(@types/react@19.1.6)(react@19.1.0)(three@0.172.0)':
+    dependencies:
+      '@iwer/devui': 1.1.1(@types/react@19.1.6)(iwer@2.0.1)
+      '@iwer/sem': 0.2.5(iwer@2.0.1)
+      '@pmndrs/pointer-events': 6.6.20
       iwer: 2.0.1
       meshline: 3.3.1(three@0.172.0)
       three: 0.172.0
@@ -12563,10 +12824,42 @@ snapshots:
       - three
       - ts-node
 
+  '@react-three/viverse@0.1.11(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)(use-sync-external-store@1.5.0(react@19.1.0))':
+    dependencies:
+      '@pixiv/three-vrm': 3.4.2(three@0.172.0)
+      '@pmndrs/viverse': 0.1.11(three@0.172.0)
+      '@react-three/fiber': 9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
+      '@react-three/xr': 6.6.20(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
+      '@viverse/sdk': 1.2.10-alpha.0
+      suspend-react: 0.1.3(react@19.1.0)
+      zustand: 5.0.6(@types/react@19.1.6)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0))
+    transitivePeerDependencies:
+      - '@types/react'
+      - immer
+      - react
+      - react-dom
+      - three
+      - use-sync-external-store
+
   '@react-three/xr@6.6.17(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)':
     dependencies:
       '@pmndrs/pointer-events': 6.6.17
       '@pmndrs/xr': 6.6.17(@types/react@19.1.6)(react@19.1.0)(three@0.172.0)
+      '@react-three/fiber': 9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
+      react: 19.1.0
+      react-dom: 19.1.0(react@19.1.0)
+      suspend-react: 0.1.3(react@19.1.0)
+      three: 0.172.0
+      tunnel-rat: 0.1.2(@types/react@19.1.6)(react@19.1.0)
+      zustand: 4.5.7(@types/react@19.1.6)(react@19.1.0)
+    transitivePeerDependencies:
+      - '@types/react'
+      - immer
+
+  '@react-three/xr@6.6.20(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)':
+    dependencies:
+      '@pmndrs/pointer-events': 6.6.20
+      '@pmndrs/xr': 6.6.20(@types/react@19.1.6)(react@19.1.0)(three@0.172.0)
       '@react-three/fiber': 9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
       react: 19.1.0
       react-dom: 19.1.0(react@19.1.0)
@@ -13535,6 +13828,12 @@ snapshots:
       '@vitest/pretty-format': 3.1.3
       loupe: 3.1.3
       tinyrainbow: 2.0.0
+
+  '@viverse/sdk@1.2.10-alpha.0':
+    dependencies:
+      crypto-js: 4.2.0
+      es-cookie: 1.5.0
+      jsencrypt: 3.3.2
 
   '@vscode/test-electron@2.3.9':
     dependencies:
@@ -14615,6 +14914,8 @@ snapshots:
       shebang-command: 2.0.0
       which: 2.0.2
 
+  crypto-js@4.2.0: {}
+
   css-background-parser@0.1.0: {}
 
   css-box-shadow@1.0.0-3: {}
@@ -15334,6 +15635,8 @@ snapshots:
       typed-array-length: 1.0.7
       unbox-primitive: 1.1.0
       which-typed-array: 1.1.18
+
+  es-cookie@1.5.0: {}
 
   es-define-property@1.0.1: {}
 
@@ -16924,6 +17227,8 @@ snapshots:
       - bufferutil
       - supports-color
       - utf-8-validate
+
+  jsencrypt@3.3.2: {}
 
   jsesc@0.5.0: {}
 
@@ -19924,6 +20229,10 @@ snapshots:
     dependencies:
       three: 0.172.0
 
+  three-mesh-bvh@0.9.1(three@0.172.0):
+    dependencies:
+      three: 0.172.0
+
   three-stdlib@2.36.0(three@0.172.0):
     dependencies:
       '@types/draco3d': 1.4.10
@@ -20782,6 +21091,12 @@ snapshots:
       react: 19.1.0
 
   zustand@5.0.5(@types/react@19.1.6)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0)):
+    optionalDependencies:
+      '@types/react': 19.1.6
+      react: 19.1.0
+      use-sync-external-store: 1.5.0(react@19.1.0)
+
+  zustand@5.0.6(@types/react@19.1.6)(react@19.1.0)(use-sync-external-store@1.5.0(react@19.1.0)):
     optionalDependencies:
       '@types/react': 19.1.6
       react: 19.1.0

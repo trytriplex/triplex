@@ -78,7 +78,15 @@ export function useSelectionMarshal<
 
   useLayoutEffect(() => {
     if (resetCount > 0) {
-      forciblyResolve();
+      /**
+       * We immediately clear the resolved objects prior to resolving them
+       * again. We clear instead of resolving because the new objects won't be
+       * available until sometime in the future, depending on any components
+       * suspending it could be a while! The {@link resolveSelections} function
+       * covers fetching when appropriate.
+       */
+      setResolvedSelections([]);
+      setResolvedHovered([]);
     }
   }, [resetCount]);
 
@@ -134,19 +142,25 @@ export function useSelectionMarshal<
     return listen(listenerEvent, priority);
   }, [listen, listenerEvent, priority]);
 
-  const resolveIfMissing = useEvent(
-    (path: string, line: number, column: number) => {
+  const resolveSelections = useEvent(
+    (filter?: { column: number; line: number; path: string }) => {
+      if (!filter) {
+        forciblyResolve();
+        return;
+      }
+
       const isSelected = selections.some(
         (selection) =>
-          selection.path === path &&
-          selection.line === line &&
-          selection.column === column,
+          selection.path === filter.path &&
+          selection.line === filter.line &&
+          selection.column === filter.column,
       );
+
       const isObjectMissing = resolvedSelections.every(
         (object) =>
-          object.meta.path !== path &&
-          object.meta.line !== line &&
-          object.meta.column !== column,
+          object.meta.path !== filter.path &&
+          object.meta.line !== filter.line &&
+          object.meta.column !== filter.column,
       );
 
       if (isSelected && isObjectMissing) {
@@ -158,11 +172,10 @@ export function useSelectionMarshal<
   const store = useMemo(
     () => ({
       clear,
-      forciblyResolve,
-      resolveIfMissing,
+      resolveSelections,
       select,
     }),
-    [select, clear, resolveIfMissing, forciblyResolve],
+    [select, clear, resolveSelections],
   );
 
   return [resolvedSelections, resolvedHovered, store] as const;

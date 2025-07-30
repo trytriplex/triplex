@@ -29,7 +29,7 @@ export const bootstrap: BootstrapFunction = (container) => {
   return async (opts) => {
     // Parse VITE_FG_OVERRIDES for test environments
     const viteOverrides = JSON.parse(import.meta.env.VITE_FG_OVERRIDES || "{}");
-    
+
     await initFeatureGates({
       environment: opts.fgEnvironmentOverride,
       overrides: {
@@ -57,7 +57,7 @@ export const bootstrapWebXR: BootstrapFunction = (container) => {
   return async (opts) => {
     // Parse VITE_FG_OVERRIDES for test environments
     const viteOverrides = JSON.parse(import.meta.env.VITE_FG_OVERRIDES || "{}");
-    
+
     await initFeatureGates({
       environment: opts.fgEnvironmentOverride,
       overrides: {

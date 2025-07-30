@@ -9,6 +9,7 @@ import { compose, on, send } from "@triplex/bridge/client";
 import { bindAll } from "bind-event-listener";
 import rafSchd from "raf-schd";
 import { useEffect } from "react";
+import { unique } from "../../util/array";
 import { useSelectionStore } from "./store";
 
 export function SelectionProvider({ children }: { children: React.ReactNode }) {
@@ -100,7 +101,10 @@ export function SelectionProvider({ children }: { children: React.ReactNode }) {
               ? // If there have been 2 or more consecutive clicks we change the selection mode to cycle.
                 "cycle"
               : "default";
-          const hitTestResult = listeners.flatMap((listener) => listener.cb(e));
+
+          const hitTestResult = unique(
+            listeners.flatMap((listener) => listener.cb(e)),
+          );
 
           if (selectionMode === "default") {
             if (hitTestResult.length) {

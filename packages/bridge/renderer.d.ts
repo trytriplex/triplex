@@ -5,12 +5,13 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 declare interface Window {
-  triplex: {
-    env: {
-      mode: "webxr" | "default";
+  readonly triplex: {
+    readonly env: {
+      readonly mode: "webxr" | "default";
+      state: "edit" | "pause" | "play";
     };
-    preload: {
-      reactThreeFiber: boolean;
+    readonly preload: {
+      readonly reactThreeFiber: boolean;
     };
   };
 }

@@ -106,6 +106,7 @@ export function CameraControls({ children }: { children: ReactNode }) {
               break;
           }
         },
+        options: { capture: true },
         type: "keydown",
       },
       {
@@ -118,6 +119,7 @@ export function CameraControls({ children }: { children: ReactNode }) {
               break;
           }
         },
+        options: { capture: true },
         type: "keyup",
       },
       {

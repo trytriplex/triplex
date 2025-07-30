@@ -46,8 +46,12 @@ test.describe(() => {
 
     await setExternalFile(
       "examples-private/test-fixture/src/util/external.tsx",
-      (contents) => {
-        return contents.replace("blue", "red");
+      () => {
+        return `
+          export function color() {
+            return "red" as const;
+          }
+        `;
       },
     );
 

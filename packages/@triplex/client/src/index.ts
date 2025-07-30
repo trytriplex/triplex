@@ -154,7 +154,9 @@ export async function createServer({
          * userland node_modules rather than @triplex package node_modules as
          * they won't be found when built for production.
          */
-        dedupe: (renderer.manifest.bundler?.dedupe || []).concat(optionalDeps),
+        dedupe: (renderer.manifest.bundler?.dedupe || []).concat(
+          optionalDeps.map((dep) => dep.name),
+        ),
       },
       root: config.cwd,
       server: {

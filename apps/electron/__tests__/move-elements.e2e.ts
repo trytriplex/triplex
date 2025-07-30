@@ -41,7 +41,7 @@ test("drag into an element", async ({ electron }) => {
 
   await source.locator.dragTo(destination.locator);
 
-  await expect(electron.scenePanel.allElements.nth(4)).toHaveText(
-    "ambientLight",
-  );
+  await expect(
+    destination.childElementButton("ambientLight").locator,
+  ).toHaveText("ambientLight");
 });

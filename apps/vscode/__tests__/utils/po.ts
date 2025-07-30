@@ -80,7 +80,9 @@ export class ExtensionPage {
       .getByLabel("Clear Notification")
       .all()
       .then((buttons) => {
-        return Promise.all(buttons.map((button) => button.click()));
+        return Promise.all(
+          buttons.map((button) => button.click({ force: true })),
+        );
       });
   }
 

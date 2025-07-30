@@ -83,7 +83,7 @@ export const scripts = {
   // dynamic import is present (https://github.com/vitejs/vite/pull/12732)
   dynamicImportHMR: `export const __hmr_import = (url) => import(/* @vite-ignore */ url);`,
   init: (template: InitializationConfig) => `
-    import { forwardKeyboardEvents, on, send } from "@triplex/bridge/client";
+    import { forwardKeyboardEvents, listenForStateChanges, on, send } from "@triplex/bridge/client";
     import { bootstrap } from "triplex:bootstrap.tsx";
 
     export const files = {
@@ -98,7 +98,7 @@ export const scripts = {
 
     async function initialize() {
       window.triplex = JSON.parse(\`${JSON.stringify({
-        env: { mode: "default" },
+        env: { mode: "default", state: "edit" },
         preload: template.preload,
       })}\`);
 
@@ -131,6 +131,9 @@ export const scripts = {
       // Forward keydown events to the parent window to prevent the client iframe
       // from swallowing events and the parent document being none-the-wiser.
       forwardKeyboardEvents();
+
+      // This updates the state property in the triplex object when requested.
+      listenForStateChanges();
 
       // Listen to any requests from the parent editor to refresh the scene frame.
       on("request-refresh-scene", (opts) => {
@@ -238,7 +241,7 @@ export const scripts = {
 
     async function initialize() {
       window.triplex = JSON.parse(\`${JSON.stringify({
-        env: { mode: "webxr" },
+        env: { mode: "webxr", state: "edit" },
         preload: template.preload,
       })}\`);
       window.triplex.debug = () => {};

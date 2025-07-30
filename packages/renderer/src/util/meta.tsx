@@ -41,21 +41,23 @@ export function resolveElementMeta(
 ): TriplexMeta | null {
   const objMeta = getTriplexMeta(obj);
 
-  if (!obj || !objMeta) {
+  if (!obj) {
     return null;
   }
 
-  const doesObjMatchFilter =
-    "column" in filter
-      ? filter.column === objMeta.column &&
-        filter.line === objMeta.line &&
-        objMeta.path === filter.path
-      : filter.exportName === objMeta.exportName &&
-        objMeta.path === filter.path;
+  if (objMeta) {
+    const doesObjMatchFilter =
+      "column" in filter
+        ? filter.column === objMeta.column &&
+          filter.line === objMeta.line &&
+          objMeta.path === filter.path
+        : filter.exportName === objMeta.exportName &&
+          objMeta.path === filter.path;
 
-  if (doesObjMatchFilter) {
-    // We short circuit and immediately return the objects meta if it matches the filter.
-    return objMeta;
+    if (doesObjMatchFilter) {
+      // We short circuit and immediately return the objects meta if it matches the filter.
+      return objMeta;
+    }
   }
 
   let parentObject: Node | Object3D | null = obj;
