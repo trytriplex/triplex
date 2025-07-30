@@ -351,6 +351,7 @@ export function ThreeFiberSelection({
       {!!resolvedObject &&
         transform !== "none" &&
         window.triplex.env.mode === "default" &&
+        Object.values(transforms).some(Boolean) &&
         fg("immutable_transform_controls") && (
           <TransformControlsImmutable
             enabled={
