@@ -102,10 +102,6 @@ export function getExportName(
 
     // We found our export!
     const declarations = symbol?.getDeclarations();
-    if (declarations.length !== 1) {
-      throw new Error("invariant: default export should be a single function");
-    }
-
     const declaration = resolveExportDeclaration(declarations[0]);
     if (
       Node.isFunctionDeclaration(declaration) ||
@@ -121,10 +117,6 @@ export function getExportName(
     if (Node.isIdentifier(declaration)) {
       return { declaration, name: declaration.getText() };
     }
-
-    throw new Error(
-      "invariant: default export should be a function declaration",
-    );
   }
 
   return undefined;

@@ -43,7 +43,21 @@ function LearnToUseCTA({ exportName }: { exportName: string }) {
 }
 
 function NoPropsCTA() {
-  return <div className="px-4 py-3 italic">This element has no props.</div>;
+  return (
+    <div className="flex flex-col gap-3 px-4 py-3">
+      <span className="italic">This element has no props.</span>
+      <span>
+        Unexpected? Make sure to check the element is typed.{" "}
+        <a
+          className="text-link underline"
+          href="https://triplex.dev/resources/check-element-types"
+        >
+          Learn more
+        </a>
+        .
+      </span>
+    </div>
+  );
 }
 
 function SelectionPanelLoadable({ selected }: { selected: SceneSelected }) {

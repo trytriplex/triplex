@@ -18,6 +18,12 @@
     <priority>0.5</priority>
   </url>
   <url>
+    <loc>https://triplex.dev/resources/check-element-types</loc>
+    <lastmod>2025-08-04</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://triplex.dev/resources/fix-shadows-vertex-shader-threejs</loc>
     <lastmod>2025-05-27</lastmod>
     <changefreq>monthly</changefreq>

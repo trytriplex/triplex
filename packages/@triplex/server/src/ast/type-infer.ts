@@ -246,9 +246,14 @@ function getJsxDeclProps(
   const tagNameText = tagName.getText();
 
   if (/^[a-z]/.exec(tagNameText)) {
-    const jsxType = tagName.getSymbolOrThrow().getTypeAtLocation(tagName);
+    const jsxType = tagName.getSymbol()?.getTypeAtLocation(tagName);
     const isThreeElement = isReactThreeElement(tagNameText) && "three";
     const isReactElement = isReactDOMElement(tagNameText) && "react";
+
+    if (!jsxType) {
+      // No type found for this JSX element.
+      return null;
+    }
 
     return {
       declaration: element,
