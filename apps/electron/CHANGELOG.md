@@ -1,5 +1,16 @@
 # @triplex/electron
 
+## 0.70.49
+
+### Patch Changes
+
+- 299a02e: Errors are no longer thrown if a components name could not be resolved.
+- 299a02e: Untyped host elements no-longer throw an exception when selecting through the elements panel.
+- Updated dependencies [299a02e]
+- Updated dependencies [299a02e]
+  - @triplex/server@0.71.21
+  - @triplex/editor@0.70.49
+
 ## 0.70.48
 
 ### Patch Changes

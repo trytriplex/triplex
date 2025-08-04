@@ -1,5 +1,12 @@
 # @triplex/server
 
+## 0.71.21
+
+### Patch Changes
+
+- 299a02e: Errors are no longer thrown if a components name could not be resolved.
+- 299a02e: Untyped host elements no-longer throw an exception when selecting through the elements panel.
+
 ## 0.71.20
 
 ### Patch Changes
