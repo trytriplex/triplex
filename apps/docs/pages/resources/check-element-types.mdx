@@ -1,0 +1,50 @@
+---
+title: How to Fix Missing Element Props
+description: Elements can be given props to change their appearance and behavior. This guide explains what to do if they're missing.
+category: Shaders
+---
+
+## Host Elements
+
+Host elements are the basic building blocks, like `<div>` in 2D components or `<mesh>` in 3D components. They can be given props to change their appearance and behavior.
+
+If you're missing props for a host element make sure to try the following:
+
+- Install missing packages, for example `three` needs `@types/three` installed.
+- For custom elements, make sure the element has been registered correctly.
+
+### React Three Fiber
+
+Extend the `ThreeElements` interface, where `customElement` is your custom element name:
+
+```tsx
+import { extend, type ThreeElement } from "@react-three/fiber";
+import { GridHelper } from "three";
+
+class CustomElement extends GridHelper {}
+
+// Extend so the reconciler will learn about it
+extend({ CustomElement });
+
+declare module "@react-three/fiber" {
+  interface ThreeElements {
+    customElement: ThreeElement<typeof CustomElement>;
+  }
+}
+```
+
+Learn more on at the [React Three Fiber documentation](https://r3f.docs.pmnd.rs/api/typescript).
+
+## Custom Components
+
+Custom components can have their props inferred even if they don't have a type definition, but it is limited and will only get you so far.
+
+For the best experience make sure to use TypeScript and define props on your component:
+
+```tsx
+export function MyCustomComponent({ color }: { color?: string }) {
+  return <div style={{ color }} />;
+}
+```
+
+If you think your component should have props but they are not showing up even after following the above you may have found a bug. Please raise an issue at the [Triplex repository](https://github.com/trytriplex/triplex/issues).
