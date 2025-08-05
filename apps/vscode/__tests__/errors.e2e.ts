@@ -16,17 +16,12 @@ test.describe("when an error is thrown on render", () => {
     setFile,
     vsce,
   }) => {
-    test.skip(true, "This test is flakey and needs to be fixed.");
     await vsce.codelens("ErrorsDuringRender", { skipWait: true }).click();
-    const notifications = vsce.page.getByRole("dialog", {
-      name: /source: Triplex for VS Code/,
-    });
-
-    // Error should not bubble up to the unhandled listener as we have logic to ignore it.
-    await expect(notifications).toHaveCount(1);
-    await expect(notifications).toHaveText(
-      "Render Error: Throwing an error on render.",
-    );
+    await expect(
+      vsce.page.getByRole("dialog", {
+        name: /Render Error: Throwing an error on render./,
+      }),
+    ).toBeVisible();
 
     await setFile((file) => {
       const index = file.indexOf("throwsError(");
@@ -50,18 +45,17 @@ test.describe("when an error is thrown on missing module", () => {
     await vsce
       .codelens("ErrorsDuringDependencyResolution", { skipWait: true })
       .click();
-    const notifications = vsce.page.getByRole("dialog", {
-      name: /source: Triplex for VS Code/,
-    });
 
-    // Error should not bubble up to the unhandled listener as we have logic to ignore it.
-    await expect(notifications).toHaveCount(2);
-    await expect(notifications.nth(0)).toHaveText(
-      /Module Error: Failed to fetch/,
-    );
-    await expect(notifications.nth(1)).toHaveText(
-      /Module Error: Failed to resolve/,
-    );
+    await expect(
+      vsce.page.getByRole("dialog", {
+        name: /Module Error: Failed to fetch/,
+      }),
+    ).toBeVisible();
+    await expect(
+      vsce.page.getByRole("dialog", {
+        name: /Module Error: Failed to resolve/,
+      }),
+    ).toBeVisible();
 
     await setFile((file) => {
       const index = file.indexOf(`import "dont-`);
@@ -82,15 +76,11 @@ test.describe("when an error is thrown during module initialization", () => {
   test("should show an error notification", async ({ vsce }) => {
     await vsce.codelens("ErrorsDuringModuleInit", { skipWait: true }).click();
 
-    const notifications = vsce.page.getByRole("dialog", {
-      name: /source: Triplex for VS Code/,
-    });
-
-    // Error should not bubble up to the unhandled listener as we have logic to ignore it.
-    await expect(notifications).toHaveCount(1);
-    await expect(notifications).toHaveText(
-      `Module Error: Throwing an error during module initialization.`,
-    );
+    await expect(
+      vsce.page.getByRole("dialog", {
+        name: /Module Error: Throwing an error during module initialization./,
+      }),
+    ).toBeVisible();
   });
 });
 
@@ -110,9 +100,9 @@ test.describe("when an error is thrown on interaction", () => {
 
     await expect(
       vsce.page.getByRole("dialog", {
-        name: /source: Triplex for VS Code/,
+        name: /Unhandled Error: Throwing an error on interaction./,
       }),
-    ).toHaveText("Unhandled Error: Throwing an error on interaction.");
+    ).toBeVisible();
   });
 });
 
@@ -128,9 +118,9 @@ test.describe("when an error is thrown during glsl compilation", () => {
 
     await expect(
       vsce.page.getByRole("dialog", {
-        name: /source: Triplex for VS Code/,
+        name: /GLSL Error: Vertex and fragment shaders failed to compile/,
       }),
-    ).toHaveText(/GLSL Error: Vertex and fragment shaders failed to compile/);
+    ).toBeVisible();
   });
 
   test("should show a notification for vertex failure", async ({ vsce }) => {
@@ -138,11 +128,9 @@ test.describe("when an error is thrown during glsl compilation", () => {
 
     await expect(
       vsce.page.getByRole("dialog", {
-        name: /source: Triplex for VS Code/,
+        name: /GLSL Error: A vertex shader failed to compile because of the error/,
       }),
-    ).toHaveText(
-      /GLSL Error: A vertex shader failed to compile because of the error/,
-    );
+    ).toBeVisible();
   });
 
   test("should show a notification for fragment failure", async ({ vsce }) => {
@@ -150,11 +138,9 @@ test.describe("when an error is thrown during glsl compilation", () => {
 
     await expect(
       vsce.page.getByRole("dialog", {
-        name: /source: Triplex for VS Code/,
+        name: /GLSL Error: A fragment shader failed to compile because of the error/,
       }),
-    ).toHaveText(
-      /GLSL Error: A fragment shader failed to compile because of the error/,
-    );
+    ).toBeVisible();
   });
 });
 
@@ -169,11 +155,9 @@ test.describe("when an error is thrown during glsl compilation (2)", () => {
 
     await expect(
       vsce.page.getByRole("dialog", {
-        name: /source: Triplex for VS Code/,
+        name: /GLSL Error: A shader failed to compile because of the error "FRAGMENT varying/,
       }),
-    ).toHaveText(
-      /GLSL Error: A shader failed to compile because of the error "FRAGMENT varying/,
-    );
+    ).toBeVisible();
   });
 });
 

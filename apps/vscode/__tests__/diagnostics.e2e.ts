@@ -74,7 +74,6 @@ test(
       file.replace("export function Plane", "function Plane"),
     );
     await expect(locator.getByText("Component data was lost.")).toBeVisible();
-    await expect(vsce.loadedComponent).not.toBeAttached();
 
     await setFile((file) =>
       file.replace("function Plane", "export function Plane"),

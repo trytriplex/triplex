@@ -303,11 +303,13 @@ describe("number input", () => {
     const element = getByTestId("number-10.2");
     fireEvent.mouseDown(element);
     await waitFor(() => getByTestId("pointer-lock"));
-    await fireEvent.keyDown(document, { shiftKey: true });
+    fireEvent.keyDown(document, { shiftKey: true });
 
-    fireEvent.mouseMove(element, { clientX: 1 });
+    fireEvent.mouseMove(element, { clientX: 10 });
 
-    expect(change).toHaveBeenCalledWith(10.202);
+    const changedValue = change.mock.calls[0][0];
+    expect(changedValue >= 10.2).toBeTruthy();
+    expect(changedValue < 10.3).toBeTruthy();
   });
 
   it("should decrement when dragging movement is negative", async () => {

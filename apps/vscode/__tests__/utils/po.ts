@@ -81,7 +81,16 @@ export class ExtensionPage {
       .all()
       .then((buttons) => {
         return Promise.all(
-          buttons.map((button) => button.click({ force: true })),
+          buttons.map(async (button, index) => {
+            try {
+              await button.click({ force: true });
+            } catch {
+              // eslint-disable-next-line no-console
+              console.error(
+                `Error: Could not dismiss notification at index: ${index}.`,
+              );
+            }
+          }),
         );
       });
   }
