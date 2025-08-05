@@ -5,6 +5,7 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 // @vitest-environment jsdom
+import { UNSAFE_clearCache } from "@triplex/lib/use-revivables";
 import { default as CameraControlsInstance } from "camera-controls";
 import { createElement, forwardRef, useContext, useState } from "react";
 import { render } from "react-three-test";
@@ -63,6 +64,7 @@ describe("camera", () => {
   beforeEach(() => {
     vi.useFakeTimers({ loopLimit: 10 });
     setDocumentFocus(true);
+    UNSAFE_clearCache();
   });
 
   it("should default to rest modifiers", async () => {
@@ -86,7 +88,7 @@ describe("camera", () => {
     });
   });
 
-  it("should unmount controls when userland", async () => {
+  it("should not mount controls when userland", async () => {
     let controlsRef: CameraControlsInstance | null = null;
     function HoistControls() {
       const controls = useContext(CameraControlsContext);
