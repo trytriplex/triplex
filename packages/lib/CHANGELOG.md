@@ -1,5 +1,11 @@
 # @triplex/lib
 
+## 0.69.18
+
+### Patch Changes
+
+- 9add655: Resetting a component that renders a canvas now persists the camera settings.
+
 ## 0.69.17
 
 ### Patch Changes
