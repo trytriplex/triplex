@@ -86,7 +86,7 @@
       {
         "category": "Triplex",
         "command": "triplex.open-in-triplex",
-        "title": "Open in Triplex"
+        "title": "Open in New Window"
       },
       {
         "category": "Triplex",
@@ -220,17 +220,17 @@
         {
           "command": "triplex.element-jump-to",
           "when": "webviewSection == 'element-actions' || webviewSection == 'component-actions'",
-          "group": "1_navigation"
+          "group": "1_navigation@2"
         },
         {
           "command": "triplex.open-in-triplex",
           "when": "webviewSection == 'component-actions'",
-          "group": "1_navigation"
+          "group": "1_navigation@1"
         },
         {
           "command": "triplex.open-file",
           "when": "webviewSection == 'element-actions' || webviewSection == 'component-actions'",
-          "group": "1_navigation"
+          "group": "1_navigation@3"
         },
         {
           "command": "triplex.element-group",
