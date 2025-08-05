@@ -49,6 +49,11 @@
       "types": "./src/types.ts",
       "module": "./src/types.ts",
       "default": "./src/types.ts"
+    },
+    "./use-revivables": {
+      "types": "./src/use-revivables.ts",
+      "module": "./src/use-revivables.ts",
+      "default": "./src/use-revivables.ts"
     }
   },
   "files": [
@@ -115,6 +120,11 @@
         "types": "./src/types.d.ts",
         "module": "./src/types.js",
         "default": "./src/types.js"
+      },
+      "./use-revivables": {
+        "types": "./src/use-revivables.ts",
+        "module": "./src/use-revivables.ts",
+        "default": "./src/use-revivables.ts"
       }
     }
   }

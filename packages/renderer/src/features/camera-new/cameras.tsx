@@ -7,11 +7,14 @@
 import { useFrame, useThree } from "@react-three/fiber";
 import { on } from "@triplex/bridge/client";
 import {
+  useRevivableReducer as useReducer,
+  useRevivableState,
+} from "@triplex/lib/use-revivables";
+import {
   useContext,
   useEffect,
   useLayoutEffect,
   useMemo,
-  useReducer,
   useRef,
   useState,
   type ReactNode,
@@ -45,7 +48,10 @@ type ModeActions =
 
 export function Cameras({ children }: { children: ReactNode }) {
   const defaultEditorCamera = useContext(DefaultCameraContext);
-  const [editorCameraAsDefault, setEditorCameraAsDefault] = useState(false);
+  const [editorCameraAsDefault, setEditorCameraAsDefault] = useRevivableState(
+    false,
+    "editor-default",
+  );
   const defaultCamera = useThree((state) => state.camera);
   const gl = useThree((state) => state.gl);
   const set = useThree((state) => state.set);
@@ -70,6 +76,7 @@ export function Cameras({ children }: { children: ReactNode }) {
       return state;
     },
     { edit: defaultEditorCamera, editor: "perspective", play: "default" },
+    "camera-state",
   );
   const activeState = playState === "edit" ? state.edit : state.play;
   const activeCamera =
@@ -130,7 +137,7 @@ export function Cameras({ children }: { children: ReactNode }) {
           return { handled: true };
       }
     });
-  }, [defaultCamera]);
+  }, [defaultCamera, setEditorCameraAsDefault]);
 
   useEffect(() => {
     if (!activeCamera) {

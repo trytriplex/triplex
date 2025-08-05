@@ -8,7 +8,8 @@ import { useThree } from "@react-three/fiber";
 import { compose, on, send } from "@triplex/bridge/client";
 import { useEvent } from "@triplex/lib";
 import { fg } from "@triplex/lib/fg";
-import { useContext, useEffect, useState, type ReactNode } from "react";
+import { useRevivableState } from "@triplex/lib/use-revivables";
+import { useContext, useEffect, type ReactNode } from "react";
 import { Camera } from "three";
 import { HOVER_LAYER_INDEX, SELECTION_LAYER_INDEX } from "../../util/layers";
 import { resolveElementMeta } from "../../util/meta";
@@ -54,11 +55,14 @@ export function ThreeFiberSelection({
   const scene = useThree((store) => store.scene);
   const camera = useContext(ActiveCameraContext);
   const gl = useThree((store) => store.gl);
-  const [transforms, setTransforms] = useState({
-    rotate: false,
-    scale: false,
-    translate: false,
-  });
+  const [transforms, setTransforms] = useRevivableState(
+    {
+      rotate: false,
+      scale: false,
+      translate: false,
+    },
+    "element-transforms",
+  );
   const [selections, hovered, selectionActions] =
     useSelectionMarshal<ResolvedObject3D>({
       listener: (e) => {
@@ -236,7 +240,14 @@ export function ThreeFiberSelection({
         fitCameraToObjects(objects, controls);
       }),
     ]);
-  }, [controls, resolvedObject, selections, scene, switchToComponent]);
+  }, [
+    controls,
+    resolvedObject,
+    selections,
+    scene,
+    switchToComponent,
+    setTransforms,
+  ]);
 
   const onConfirmTransformHandler = useEvent((e: TransformEvent) => {
     if (!resolvedObject) {
