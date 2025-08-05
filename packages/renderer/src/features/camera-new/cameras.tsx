@@ -46,15 +46,12 @@ type ModeActions =
 export function Cameras({ children }: { children: ReactNode }) {
   const defaultEditorCamera = useContext(DefaultCameraContext);
   const [editorCameraAsDefault, setEditorCameraAsDefault] = useState(false);
-  const [activeCamera, setActiveCamera] = useState<
-    PerspectiveCamera | OrthographicCamera | null
-  >(null);
   const defaultCamera = useThree((state) => state.camera);
   const gl = useThree((state) => state.gl);
   const set = useThree((state) => state.set);
   const lastUserCamera = useRef(defaultCamera);
-  const perspectiveRef = useRef<PerspectiveCamera>(null!);
-  const orthographicRef = useRef<OrthographicCamera>(null!);
+  const [perspective, setPerspective] = useState<PerspectiveCamera>();
+  const [orthographic, setOrthographic] = useState<OrthographicCamera>();
   const playState = usePlayState();
   const [state, setCameraState] = useReducer<ModeState, [ModeActions]>(
     (state, action) => {
@@ -75,36 +72,27 @@ export function Cameras({ children }: { children: ReactNode }) {
     { edit: defaultEditorCamera, editor: "perspective", play: "default" },
   );
   const activeState = playState === "edit" ? state.edit : state.play;
+  const activeCamera =
+    activeState === "default"
+      ? defaultCamera
+      : state.editor === "perspective"
+        ? perspective
+        : orthographic;
 
   useEffect(() => {
-    if (
-      defaultCamera !== orthographicRef.current &&
-      defaultCamera !== perspectiveRef.current
-    ) {
+    if (defaultCamera !== orthographic && defaultCamera !== perspective) {
       // Captures the last known user camera so we can restore it when appropriate.
       lastUserCamera.current = defaultCamera;
     }
-  }, [defaultCamera]);
+  }, [defaultCamera, orthographic, perspective]);
 
   useLayoutEffect(() => {
-    return fitCamerasToViewport(gl, [
-      defaultCamera,
-      perspectiveRef.current,
-      orthographicRef.current,
-    ]);
-  }, [defaultCamera, gl]);
-
-  useLayoutEffect(() => {
-    if (activeState === "default") {
-      setActiveCamera(defaultCamera);
-    } else {
-      setActiveCamera(
-        state.editor === "perspective"
-          ? perspectiveRef.current
-          : orthographicRef.current,
-      );
+    if (!perspective || !orthographic) {
+      return;
     }
-  }, [activeState, defaultCamera, state.editor]);
+
+    return fitCamerasToViewport(gl, [defaultCamera, perspective, orthographic]);
+  }, [defaultCamera, gl, orthographic, perspective]);
 
   useEffect(() => {
     if (editorCameraAsDefault && activeCamera && activeState === "editor") {
@@ -220,7 +208,7 @@ export function Cameras({ children }: { children: ReactNode }) {
         name="triplex_perspective"
         near={0.01}
         position={[0, 0, 1]}
-        ref={perspectiveRef}
+        ref={setPerspective}
       />
       <orthographicCamera
         far={100_000}
@@ -230,7 +218,7 @@ export function Cameras({ children }: { children: ReactNode }) {
         name="triplex_orthographic"
         near={-100}
         position={[0, 0, 1]}
-        ref={orthographicRef}
+        ref={setOrthographic}
         zoom={100}
       />
     </ActiveCameraContext.Provider>
