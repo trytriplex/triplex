@@ -1,5 +1,16 @@
 # @triplex/electron
 
+## 0.70.50
+
+### Patch Changes
+
+- b14a832: The camera preview no longer has the selection outline of the camera visible.
+- b14a832: Switching from default to editor camera now correctly fits the scene to it on the first switch.
+- b14a832: Switching the canvas camera between editor and defaul no longer bleeds state between each other.
+- 9add655: Resetting a component that renders a canvas now persists the camera settings.
+  - @triplex/client@0.70.45
+  - @triplex/editor@0.70.50
+
 ## 0.70.49
 
 ### Patch Changes

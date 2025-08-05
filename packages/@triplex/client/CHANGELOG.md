@@ -1,5 +1,15 @@
 # @triplex/client
 
+## 0.70.45
+
+### Patch Changes
+
+- Updated dependencies [b14a832]
+- Updated dependencies [b14a832]
+- Updated dependencies [b14a832]
+- Updated dependencies [9add655]
+  - @triplex/renderer@0.71.36
+
 ## 0.70.44
 
 ### Patch Changes

@@ -1,5 +1,13 @@
 # @triplex/editor-next
 
+## 0.0.6
+
+### Patch Changes
+
+- Updated dependencies [9add655]
+  - @triplex/lib@0.69.18
+  - @triplex/ux@0.69.30
+
 ## 0.0.5
 
 ### Patch Changes

@@ -130,7 +130,7 @@ importers:
         specifier: ^1.2.14
         version: 1.2.14(zod@3.25.36)
       '@triplex/lib':
-        specifier: 0.69.17
+        specifier: 0.69.18
         version: link:../../packages/lib
       ai:
         specifier: ^4.3.12
@@ -182,10 +182,10 @@ importers:
         specifier: ^9.1.2
         version: 9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
       '@triplex/lib':
-        specifier: 0.69.17
+        specifier: 0.69.18
         version: link:../../packages/lib
       '@triplex/ux':
-        specifier: 0.69.29
+        specifier: 0.69.30
         version: link:../../packages/ux
       '@types/cors':
         specifier: ^2.8.17
@@ -322,10 +322,10 @@ importers:
   apps/electron:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.44
+        specifier: 0.70.45
         version: link:../../packages/@triplex/client
       '@triplex/editor':
-        specifier: 0.70.49
+        specifier: 0.70.50
         version: link:../../packages/@triplex/editor
       '@triplex/server':
         specifier: 0.71.21
@@ -341,7 +341,7 @@ importers:
         specifier: ^8.30.0
         version: 8.30.0
       '@triplex/lib':
-        specifier: 0.69.17
+        specifier: 0.69.18
         version: link:../../packages/lib
       '@types/glob-parent':
         specifier: ^5.1.1
@@ -395,7 +395,7 @@ importers:
   apps/vscode:
     dependencies:
       '@triplex/client':
-        specifier: 0.70.44
+        specifier: 0.70.45
         version: link:../../packages/@triplex/client
       '@triplex/server':
         specifier: 0.71.21
@@ -405,7 +405,7 @@ importers:
         specifier: ^8.30.0
         version: 8.30.0
       '@triplex/editor-next':
-        specifier: ^0.0.5
+        specifier: ^0.0.6
         version: link:../../packages/@triplex/editor-next
       '@triplex/websocks-client':
         specifier: 0.0.9
@@ -690,7 +690,7 @@ importers:
         specifier: ^9.1.2
         version: 9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0)
       '@triplex/lib':
-        specifier: 0.69.17
+        specifier: 0.69.18
         version: link:../../packages/lib
       '@types/react':
         specifier: ^19.0.8
@@ -967,7 +967,7 @@ importers:
         specifier: 0.70.11
         version: link:../../bridge
       '@triplex/renderer':
-        specifier: 0.71.35
+        specifier: 0.71.36
         version: link:../../renderer
       '@vitejs/plugin-react':
         specifier: ^4.4.1
@@ -995,7 +995,7 @@ importers:
         specifier: ^1.6.5
         version: 1.6.5(@swc/helpers@0.5.15)
       '@triplex/lib':
-        specifier: 0.69.17
+        specifier: 0.69.18
         version: link:../../lib
       '@triplex/server':
         specifier: 0.71.21
@@ -1079,10 +1079,10 @@ importers:
         specifier: 0.70.11
         version: link:../../bridge
       '@triplex/lib':
-        specifier: 0.69.17
+        specifier: 0.69.18
         version: link:../../lib
       '@triplex/ux':
-        specifier: 0.69.29
+        specifier: 0.69.30
         version: link:../../ux
       '@triplex/websocks-client':
         specifier: 0.0.9
@@ -1182,10 +1182,10 @@ importers:
         specifier: 0.70.11
         version: link:../../bridge
       '@triplex/lib':
-        specifier: 0.69.17
+        specifier: 0.69.18
         version: link:../../lib
       '@triplex/ux':
-        specifier: 0.69.29
+        specifier: 0.69.30
         version: link:../../ux
       '@triplex/websocks-client':
         specifier: 0.0.9
@@ -1274,7 +1274,7 @@ importers:
         specifier: ^2.1.0
         version: 2.1.0(@react-three/fiber@9.1.2(@types/react@19.1.6)(react-dom@19.1.0(react@19.1.0))(react@19.1.0)(three@0.172.0))(react@19.1.0)(three@0.172.0)
       '@triplex/lib':
-        specifier: 0.69.17
+        specifier: 0.69.18
         version: link:../../lib
       '@triplex/websocks-server':
         specifier: 0.0.7
@@ -1504,7 +1504,7 @@ importers:
         specifier: 0.70.11
         version: link:../bridge
       '@triplex/lib':
-        specifier: 0.69.17
+        specifier: 0.69.18
         version: link:../lib
       bind-event-listener:
         specifier: ^3.0.0
@@ -1601,7 +1601,7 @@ importers:
         specifier: 0.70.11
         version: link:../bridge
       '@triplex/lib':
-        specifier: 0.69.17
+        specifier: 0.69.18
         version: link:../lib
       bind-event-listener:
         specifier: ^3.0.0

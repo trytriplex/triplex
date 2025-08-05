@@ -1,5 +1,16 @@
 # @triplex/vscode
 
+## 0.2.52
+
+### Patch Changes
+
+- b14a832: The camera preview no longer has the selection outline of the camera visible.
+- 69864bd: The "Open in Triplex" element action is now called "Open in New Window".
+- b14a832: Switching from default to editor camera now correctly fits the scene to it on the first switch.
+- b14a832: Switching the canvas camera between editor and defaul no longer bleeds state between each other.
+- 9add655: Resetting a component that renders a canvas now persists the camera settings.
+  - @triplex/client@0.70.45
+
 ## 0.2.51
 
 ### Patch Changes
