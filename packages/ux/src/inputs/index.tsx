@@ -11,6 +11,7 @@ export { NumberInput } from "./number-input";
 export { PropInput } from "./prop-input";
 export { StringInput } from "./string-input";
 export { TupleInput } from "./tuple-input";
+export { TupleInput as TupleInputNext } from "./tuple-input-next";
 export { UnionInput } from "./union-input";
 export type { RenderInput, RenderInputs } from "./types";
 export { resolveDefaultValue } from "./default-value";

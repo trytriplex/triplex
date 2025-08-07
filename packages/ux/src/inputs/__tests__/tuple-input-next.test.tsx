@@ -9,7 +9,7 @@ import { fireEvent, render } from "@testing-library/react";
 import { type Type } from "@triplex/lib/types";
 import { describe, expect, it, vi } from "vitest";
 import { NumberInput } from "../number-input";
-import { TupleInput } from "../tuple-input";
+import { TupleInput } from "../tuple-input-next";
 
 const TestHarness = (testProps: {
   defaultValue?: unknown[];
@@ -317,5 +317,93 @@ describe("tuple input", () => {
 
     expect(onChange).toHaveBeenCalledWith([0, 0, 0]);
     expect(onConfirm).toHaveBeenCalledWith([0, 0, 0]);
+  });
+
+  it("should set required values to zero when changing a tuple number input", () => {
+    const onChange = vi.fn();
+    const onConfirm = vi.fn();
+    const { getAllByTestId } = render(
+      <TestHarness
+        defaultValue={undefined}
+        onChange={onChange}
+        onConfirm={onConfirm}
+        required={false}
+        values={[
+          { kind: "number", required: true },
+          { kind: "number", required: true },
+          { kind: "number", required: true },
+        ]}
+      />,
+    );
+    const inputs = getAllByTestId("input") as HTMLInputElement[];
+
+    fireEvent.change(inputs[0], { target: { value: "1" } });
+    fireEvent.blur(inputs[0]);
+
+    expect(inputs[0]).toHaveProperty("value", "1");
+    expect(inputs[1]).toHaveProperty("value", "0");
+    expect(inputs[2]).toHaveProperty("value", "0");
+    expect(onConfirm).toHaveBeenCalledWith([1, 0, 0]);
+  });
+
+  it("should build up changed values across number inputs", () => {
+    const onChange = vi.fn();
+    const onConfirm = vi.fn();
+    const { getAllByTestId } = render(
+      <TestHarness
+        defaultValue={undefined}
+        onChange={onChange}
+        onConfirm={onConfirm}
+        required={false}
+        values={[
+          { kind: "number", required: true },
+          { kind: "number", required: true },
+          { kind: "number", required: true },
+        ]}
+      />,
+    );
+    const inputs = getAllByTestId("input") as HTMLInputElement[];
+
+    fireEvent.change(inputs[0], { target: { value: "1" } });
+    fireEvent.blur(inputs[0]);
+
+    expect(onChange).toHaveBeenCalledWith([1, 0, 0]);
+    expect(onConfirm).toHaveBeenCalledWith([1, 0, 0]);
+
+    fireEvent.change(inputs[1], { target: { value: "2" } });
+    fireEvent.blur(inputs[1]);
+
+    expect(onChange).toHaveBeenCalledWith([1, 2, 0]);
+    expect(onConfirm).toHaveBeenCalledWith([1, 2, 0]);
+
+    fireEvent.change(inputs[2], { target: { value: "3" } });
+    fireEvent.blur(inputs[2]);
+
+    expect(onChange).toHaveBeenCalledWith([1, 2, 3]);
+    expect(onConfirm).toHaveBeenCalledWith([1, 2, 3]);
+  });
+
+  it("should not callback if the persisted value is the same", () => {
+    const onChange = vi.fn();
+    const onConfirm = vi.fn();
+    const { getAllByTestId } = render(
+      <TestHarness
+        defaultValue={[1, 2]}
+        onChange={onChange}
+        onConfirm={onConfirm}
+        required={false}
+        values={[
+          { kind: "number", required: true },
+          { kind: "number", required: true },
+        ]}
+      />,
+    );
+    const inputs = getAllByTestId("input") as HTMLInputElement[];
+
+    fireEvent.change(inputs[0], { target: { value: "1" } });
+    fireEvent.blur(inputs[0]);
+
+    expect(onChange).not.toHaveBeenCalled();
+    expect(onConfirm).not.toHaveBeenCalled();
   });
 });
