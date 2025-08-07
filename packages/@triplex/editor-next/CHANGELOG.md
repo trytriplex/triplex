@@ -1,5 +1,14 @@
 # @triplex/editor-next
 
+## 0.0.7
+
+### Patch Changes
+
+- daaa8b9: Fixed element select flashing without an ellipsis on initial load.
+- 0d0e459: The tuple input now immediately applies changes by setting default values to empty required values where appropriate. This will be rolled out over time, if you would like to get this fix early please message on Discord.
+- Updated dependencies [0d0e459]
+  - @triplex/ux@0.69.31
+
 ## 0.0.6
 
 ### Patch Changes

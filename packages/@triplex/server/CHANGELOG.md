@@ -1,5 +1,11 @@
 # @triplex/server
 
+## 0.71.22
+
+### Patch Changes
+
+- e1575ed: Fix an internal error where a function that should have been defined wasn't.
+
 ## 0.71.21
 
 ### Patch Changes

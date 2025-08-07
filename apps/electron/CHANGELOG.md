@@ -1,5 +1,14 @@
 # @triplex/electron
 
+## 0.70.51
+
+### Patch Changes
+
+- e1575ed: Fix an internal error where a function that should have been defined wasn't.
+- Updated dependencies [e1575ed]
+  - @triplex/server@0.71.22
+  - @triplex/editor@0.70.51
+
 ## 0.70.50
 
 ### Patch Changes
