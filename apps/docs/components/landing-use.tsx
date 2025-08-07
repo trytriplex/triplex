@@ -186,7 +186,7 @@ export function LandingUseTriplexAnywhere() {
                   Download
                 </LandingLink>
                 <LandingLink
-                  href="/docs/building-your-scene"
+                  href="/docs/building-your-scene/webxr"
                   variant="inverse-border"
                 >
                   Learn More
