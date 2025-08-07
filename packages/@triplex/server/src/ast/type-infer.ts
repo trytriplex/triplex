@@ -37,7 +37,7 @@ export function resolveAttributeValue(attribute: JsxAttribute): {
   start: number;
   value: ExpressionValue;
 } {
-  const initializer = attribute.getInitializer();
+  const initializer = attribute.getInitializer?.();
   const value = resolveExpressionValue(
     Node.isJsxExpression(initializer)
       ? initializer.getExpressionOrThrow()
@@ -572,7 +572,7 @@ export function getJsxElementPropTypes(
       }
 
       const propertyName = name.getText();
-      const initializer = element.getInitializer();
+      const initializer = element.getInitializer?.();
 
       if (!initializer) {
         return;
@@ -719,7 +719,7 @@ function getComponentPropsObjectBinding(
   }
 
   if (Node.isVariableDeclaration(declaration)) {
-    const initializer = declaration.getInitializer();
+    const initializer = declaration.getInitializer?.();
     if (Node.isArrowFunction(initializer)) {
       const param = initializer.getParameters()[0];
       if (param) {
@@ -779,7 +779,7 @@ export function getFunctionPropTypes(
       }
 
       const propertyName = name.getText();
-      const initializer = element.getInitializer();
+      const initializer = element.getInitializer?.();
 
       if (!initializer) {
         return;

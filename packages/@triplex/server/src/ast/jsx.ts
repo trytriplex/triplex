@@ -88,7 +88,7 @@ export function getJsxTag(
   const type: "host" | "custom" = /^[a-z]/.exec(tagName) ? "host" : "custom";
 
   if (attributes.name) {
-    const nameInitializer = attributes.name.getInitializer();
+    const nameInitializer = attributes.name.getInitializer?.();
     const initializerValue = Node.isJsxExpression(nameInitializer)
       ? nameInitializer.getExpression()
       : nameInitializer;
