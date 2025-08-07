@@ -10,6 +10,7 @@ import {
   SwitchIcon,
 } from "@radix-ui/react-icons";
 import { cn } from "@triplex/lib";
+import { fgComponent } from "@triplex/lib/fg";
 import { type DeclaredProp, type Prop } from "@triplex/lib/types";
 import {
   BooleanInput,
@@ -18,13 +19,19 @@ import {
   NumberInput,
   resolveDefaultValue,
   StringInput,
-  TupleInput,
+  TupleInputNext,
+  TupleInput as TupleInputOld,
   UnionInput,
   type RenderInputs,
 } from "@triplex/ux/inputs";
 import { IconButton } from "../../components/button";
 import { Label } from "../../components/label";
 import { createCodeLink } from "../../util/commands";
+
+const TupleInput = fgComponent("tuple_input_set_defaults", {
+  off: TupleInputOld,
+  on: TupleInputNext,
+});
 
 const createIssueURL = (prop: DeclaredProp | Prop) =>
   encodeURI(
@@ -252,6 +259,7 @@ export const renderPropInputs: RenderInputs = ({
             onConfirm={onConfirm}
             path={path}
             persistedValue={"value" in prop.prop ? prop.prop.value : undefined}
+            propName={prop.prop.name}
             required={prop.prop.required}
             values={prop.prop.shape}
           >

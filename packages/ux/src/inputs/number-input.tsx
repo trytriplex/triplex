@@ -171,10 +171,8 @@ export function NumberInput({
       return;
     }
 
-    if (actualValue !== nextValue) {
-      onConfirm(nextValue);
-      telemetry.event(`${actionId}_confirm`);
-    }
+    onConfirm(nextValue);
+    telemetry.event(`${actionId}_confirm`);
   });
 
   const clearInputValue = useEvent(() => {
@@ -234,8 +232,13 @@ export function NumberInput({
       } else {
         await document.exitPointerLock?.();
       }
+
       setIsPointerLock(false);
-      onConfirmHandler();
+
+      if (dragState.current.state === "dragging") {
+        // Only confirm if a drag was started.
+        onConfirmHandler();
+      }
     } else {
       // The pointer lock was aborted with escape, nothing to do.
     }
