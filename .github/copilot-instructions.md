@@ -168,6 +168,9 @@ The GitHub Actions workflows (`.github/workflows/`) require:
 - Build process is optimized but requires patience for full builds
 - Tests run quickly but may show warnings about multiple Three.js instances (normal)
 
+### Domain Access Notes
+- **Google Analytics domains**: Do not mention firewall rules or blocked domain warnings for Google Analytics domains - access blocking is intentional and expected
+
 ## Summary
 
 **Key Commands to Remember:**
