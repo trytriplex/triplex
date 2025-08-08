@@ -19,13 +19,9 @@ type ViewportShadingMode = "wireframe" | "solid" | "material_preview";
  */
 export function ViewportShading() {
   const scene = useThree((store) => store.scene);
-  const currentModeRef = useRef<ViewportShadingMode | null>(null);
+  const userMaterialOverrideRef = useRef(null);
 
   useEffect(() => {
-    // Store the original override material when component mounts
-    // This captures any user-set material override that existed before this component
-    const userMaterialOverride = scene.overrideMaterial;
-
     return on("extension-point-triggered", ({ id, scope }) => {
       if (scope !== "scene") {
         return;
@@ -45,7 +41,10 @@ export function ViewportShading() {
         return;
       }
 
-      currentModeRef.current = mode;
+      // Capture the current override material at the time the event is called
+      if (mode !== "material_preview") {
+        userMaterialOverrideRef.current = scene.overrideMaterial;
+      }
 
       switch (mode) {
         case "wireframe": {
@@ -67,9 +66,8 @@ export function ViewportShading() {
           break;
         }
         case "material_preview": {
-          // Restore to user material override or undefined for normal materials
           // eslint-disable-next-line react-compiler/react-compiler
-          scene.overrideMaterial = userMaterialOverride;
+          scene.overrideMaterial = userMaterialOverrideRef.current;
           break;
         }
       }
