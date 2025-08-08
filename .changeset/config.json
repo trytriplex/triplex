@@ -6,5 +6,5 @@
   "baseBranch": "origin/main",
   "updateInternalDependencies": "patch",
   "ignore": ["@example/*"],
-  "fixed": [["@triplex/electron", "@triplex/editor"]]
+  "fixed": []
 }
