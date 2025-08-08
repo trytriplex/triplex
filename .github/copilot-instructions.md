@@ -106,10 +106,10 @@ Run these commands in sequence to set up the repository:
 - **Optional**: Install Volta for Node version management
 
 ### Key Dependencies
-- React 19.0.0
-- TypeScript 5.7.2+
-- Three.js 0.172.0+
-- @react-three/fiber 9.0.4+
+See `package.json` and workspace `package.json` files for current versions. Key frameworks:
+- React 19+ (see resolutions in root package.json)
+- TypeScript 5.7+ (latest stable)
+- Three.js and @react-three/fiber (see resolutions for compatibility)
 - Vitest for testing
 - ESLint for linting with custom rules
 
