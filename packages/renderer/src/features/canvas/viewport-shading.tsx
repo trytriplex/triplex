@@ -19,14 +19,12 @@ type ViewportShadingMode = "wireframe" | "solid" | "material_preview";
  */
 export function ViewportShading() {
   const scene = useThree((store) => store.scene);
-  const originalMaterialRef = useRef<Material | null>(null);
   const currentModeRef = useRef<ViewportShadingMode | null>(null);
   const userMaterialOverrideRef = useRef<Material | null>(null);
 
   useEffect(() => {
     // Store the original override material when component mounts
     // This captures any user-set material override that existed before this component
-    originalMaterialRef.current = scene.overrideMaterial;
     userMaterialOverrideRef.current = scene.overrideMaterial;
 
     return on("extension-point-triggered", ({ id, scope }) => {
