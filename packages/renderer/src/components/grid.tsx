@@ -29,7 +29,7 @@ export function TriplexGrid() {
 
   const shouldRenderGrid = state !== "play" && showGrid;
 
-  return shouldRenderGrid ? (
+  return (
     <Grid
       cellColor="#6f6f6f"
       cellSize={1}
@@ -43,6 +43,7 @@ export function TriplexGrid() {
       sectionColor="#9d4b4b"
       sectionSize={3}
       side={2}
+      visible={shouldRenderGrid}
     />
-  ) : null;
+  );
 }

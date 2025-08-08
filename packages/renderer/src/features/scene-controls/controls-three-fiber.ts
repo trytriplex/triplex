@@ -26,7 +26,7 @@ export const settings: MenuControl["options"] = [
   {
     group: "Grid",
     id: "toggle_grid",
-    label: "Toggle Grid",
+    label: "Toggle Visibility",
   },
 ];
 
