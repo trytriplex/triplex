@@ -47,15 +47,6 @@ export function ViewportShading() {
         return;
       }
 
-      // If switching back to the same mode, treat as toggle off
-      if (currentModeRef.current === mode) {
-        // Restore to user material override or undefined
-        // eslint-disable-next-line react-compiler/react-compiler
-        scene.overrideMaterial = userMaterialOverrideRef.current;
-        currentModeRef.current = null;
-        return;
-      }
-
       // Store current mode
       currentModeRef.current = mode;
 
@@ -89,15 +80,6 @@ export function ViewportShading() {
       }
     });
   }, [scene]);
-
-  // Track changes to scene.overrideMaterial that might be set by userland code
-  useEffect(() => {
-    // If the override material changes and we're not currently in a shading mode,
-    // update our reference to the user's material override
-    if (currentModeRef.current === null) {
-      userMaterialOverrideRef.current = scene.overrideMaterial;
-    }
-  }, [scene.overrideMaterial]);
 
   // This component doesn't render anything visual
   return null;
