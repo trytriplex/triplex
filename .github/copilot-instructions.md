@@ -126,6 +126,7 @@ See `package.json` and workspace `package.json` files for current versions. Key 
 - **MANDATORY**: TypeScript type checking must pass (`yarn typedef`)
 - **MANDATORY**: All tests must pass (`yarn test`)
 - **MANDATORY**: ESLint must pass with no errors (`yarn lint`)
+- **MANDATORY**: Never add comments to code unless they provide context that cannot be understood without them
 
 ### CI Requirements
 The GitHub Actions workflows (`.github/workflows/`) require:
