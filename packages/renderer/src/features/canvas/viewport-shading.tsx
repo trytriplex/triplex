@@ -7,7 +7,7 @@
 import { useThree } from "@react-three/fiber";
 import { on } from "@triplex/bridge/client";
 import { useEffect, useRef } from "react";
-import { MeshBasicMaterial, type Material } from "three";
+import { MeshBasicMaterial } from "three";
 
 type ViewportShadingMode = "wireframe" | "solid" | "material_preview";
 
@@ -20,12 +20,11 @@ type ViewportShadingMode = "wireframe" | "solid" | "material_preview";
 export function ViewportShading() {
   const scene = useThree((store) => store.scene);
   const currentModeRef = useRef<ViewportShadingMode | null>(null);
-  const userMaterialOverrideRef = useRef<Material | null>(null);
 
   useEffect(() => {
     // Store the original override material when component mounts
     // This captures any user-set material override that existed before this component
-    userMaterialOverrideRef.current = scene.overrideMaterial;
+    const userMaterialOverride = scene.overrideMaterial;
 
     return on("extension-point-triggered", ({ id, scope }) => {
       if (scope !== "scene") {
@@ -34,7 +33,6 @@ export function ViewportShading() {
 
       let mode: ViewportShadingMode | null = null;
 
-      // Determine the mode based on the event id
       if (id === "viewport_shading_wireframe") {
         mode = "wireframe";
       } else if (id === "viewport_shading_solid") {
@@ -47,12 +45,10 @@ export function ViewportShading() {
         return;
       }
 
-      // Store current mode
       currentModeRef.current = mode;
 
       switch (mode) {
         case "wireframe": {
-          // Create wireframe material
           const wireframeMaterial = new MeshBasicMaterial({
             color: 0xff_ff_ff,
             wireframe: true,
@@ -62,7 +58,6 @@ export function ViewportShading() {
           break;
         }
         case "solid": {
-          // Create solid material with flat shading for hard edges
           const solidMaterial = new MeshBasicMaterial({
             color: 0xcc_cc_cc,
             wireframe: false,
@@ -74,13 +69,12 @@ export function ViewportShading() {
         case "material_preview": {
           // Restore to user material override or undefined for normal materials
           // eslint-disable-next-line react-compiler/react-compiler
-          scene.overrideMaterial = userMaterialOverrideRef.current;
+          scene.overrideMaterial = userMaterialOverride;
           break;
         }
       }
     });
   }, [scene]);
 
-  // This component doesn't render anything visual
   return null;
 }
