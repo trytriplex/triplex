@@ -23,6 +23,11 @@ export const settings: MenuControl["options"] = [
     id: "camera_editor_toggle_default",
     label: "Toggle Editor As Default",
   },
+  {
+    group: "Grid",
+    id: "toggle_grid",
+    label: "Toggle Grid",
+  },
 ];
 
 export const controls: Controls = [
