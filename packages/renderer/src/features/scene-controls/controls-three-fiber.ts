@@ -23,6 +23,21 @@ export const settings: MenuControl["options"] = [
     id: "camera_editor_toggle_default",
     label: "Toggle Editor As Default",
   },
+  {
+    group: "Viewport Shading",
+    id: "viewport_shading_wireframe",
+    label: "Wireframe",
+  },
+  {
+    group: "Viewport Shading",
+    id: "viewport_shading_solid",
+    label: "Solid",
+  },
+  {
+    group: "Viewport Shading",
+    id: "viewport_shading_material_preview",
+    label: "Material Preview",
+  },
 ];
 
 export const controls: Controls = [

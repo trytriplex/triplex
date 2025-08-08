@@ -24,6 +24,7 @@ import { ThreeFiberSelection } from "../selection-three-fiber";
 import { CaptureShaderErrors } from "./capture-shader-errors";
 import { SceneLights } from "./scene-lights";
 import { useCanvasMounted } from "./store";
+import { ViewportShading } from "./viewport-shading";
 
 /**
  * **Canvas**
@@ -68,6 +69,7 @@ export function Canvas({ children, ...props }: CanvasProps) {
       ref={ref}
     >
       <CaptureShaderErrors />
+      <ViewportShading />
       <Camera>
         <ErrorBoundaryForScene
           fallbackRender={() => <ErrorFallback />}
