@@ -4,7 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { join } from "@triplex/lib/path";
+import { basename, join } from "@triplex/lib/path";
 import { describe, expect, it } from "vitest";
 import { type JsxElementPositions } from "../../types";
 import { fromCwd } from "../../util/path";
@@ -27,6 +27,15 @@ function simplifyJsxPositions(
       name: element.name,
     };
   });
+}
+
+function reducePaths(nodes: JsxElementPositions[]) {
+  nodes.forEach((node) => {
+    node.parentPath = basename(node.parentPath);
+    reducePaths(node.children);
+  });
+
+  return nodes;
 }
 
 describe("jsx ast extractor", () => {
@@ -110,6 +119,7 @@ describe("jsx ast extractor", () => {
     elements[0].children = [];
 
     expect(elements[0]).toEqual({
+      astPath: "root/RigidBody",
       children: [],
       column: 5,
       exportName: "",
@@ -117,6 +127,7 @@ describe("jsx ast extractor", () => {
       name: "RigidBody",
       parentPath: fromCwd("src/ast/__tests__/__mocks__/n_modules.tsx"),
       path: "",
+      tagName: "RigidBody",
       type: "custom",
     });
   });
@@ -133,21 +144,26 @@ describe("jsx ast extractor", () => {
 
     expect(elements).toEqual([
       {
+        astPath: "root/mesh",
         children: [
           {
+            astPath: "root/mesh/boxGeometry",
             children: [],
             column: 7,
             line: 14,
             name: "boxGeometry",
             parentPath: fromCwd("/src/ast/__tests__/__mocks__/expression.tsx"),
+            tagName: "boxGeometry",
             type: "host",
           },
           {
+            astPath: "root/mesh/meshStandardMaterial",
             children: [],
             column: 7,
             line: 15,
             name: "meshStandardMaterial",
             parentPath: fromCwd("/src/ast/__tests__/__mocks__/expression.tsx"),
+            tagName: "meshStandardMaterial",
             type: "host",
           },
         ],
@@ -155,6 +171,7 @@ describe("jsx ast extractor", () => {
         line: 13,
         name: "mesh",
         parentPath: fromCwd("/src/ast/__tests__/__mocks__/expression.tsx"),
+        tagName: "mesh",
         type: "host",
       },
     ]);
@@ -226,8 +243,10 @@ describe("jsx ast extractor", () => {
 
     expect(elements).toEqual([
       {
+        astPath: "root/Fragment",
         children: [
           {
+            astPath: "root/Fragment/Box",
             children: [],
             column: 7,
             exportName: "default",
@@ -235,9 +254,11 @@ describe("jsx ast extractor", () => {
             name: "Box",
             parentPath: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
             path: fromCwd("src/ast/__tests__/__mocks__/box.tsx"),
+            tagName: "Box",
             type: "custom",
           },
           {
+            astPath: "root/Fragment/Cylinder",
             children: [],
             column: 7,
             exportName: "default",
@@ -245,9 +266,11 @@ describe("jsx ast extractor", () => {
             name: "Cylinder",
             parentPath: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
             path: fromCwd("src/ast/__tests__/__mocks__/cylinder.tsx"),
+            tagName: "Cylinder",
             type: "custom",
           },
           {
+            astPath: "root/Fragment/SceneAlt",
             children: [],
             column: 7,
             exportName: "SceneAlt",
@@ -255,9 +278,11 @@ describe("jsx ast extractor", () => {
             name: "SceneAlt",
             parentPath: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
             path: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
+            tagName: "SceneAlt",
             type: "custom",
           },
           {
+            astPath: "root/Fragment/SceneWrapped",
             children: [],
             column: 7,
             exportName: "SceneWrapped",
@@ -265,9 +290,11 @@ describe("jsx ast extractor", () => {
             name: "SceneWrapped",
             parentPath: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
             path: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
+            tagName: "SceneWrapped",
             type: "custom",
           },
           {
+            astPath: "root/Fragment/SceneArrow",
             children: [],
             column: 7,
             exportName: "SceneArrow",
@@ -275,6 +302,7 @@ describe("jsx ast extractor", () => {
             name: "SceneArrow",
             parentPath: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
             path: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
+            tagName: "SceneArrow",
             type: "custom",
           },
         ],
@@ -284,6 +312,7 @@ describe("jsx ast extractor", () => {
         name: "Fragment",
         parentPath: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
         path: "",
+        tagName: "Fragment",
         type: "custom",
       },
     ]);
@@ -300,6 +329,7 @@ describe("jsx ast extractor", () => {
     const { elements } = getJsxElementsPositions(sourceFile, "SceneAlt")!;
 
     expect(elements[0]).toEqual({
+      astPath: "root/Box",
       children: [],
       column: 10,
       exportName: "default",
@@ -307,6 +337,7 @@ describe("jsx ast extractor", () => {
       name: "Box",
       parentPath: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
       path: fromCwd("src/ast/__tests__/__mocks__/box.tsx"),
+      tagName: "Box",
       type: "custom",
     });
   });
@@ -322,6 +353,7 @@ describe("jsx ast extractor", () => {
     const { elements } = getJsxElementsPositions(sourceFile, "SceneArrow")!;
 
     expect(elements[0]).toEqual({
+      astPath: "root/Box",
       children: [],
       column: 33,
       exportName: "default",
@@ -329,6 +361,7 @@ describe("jsx ast extractor", () => {
       name: "Box",
       parentPath: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
       path: fromCwd("src/ast/__tests__/__mocks__/box.tsx"),
+      tagName: "Box",
       type: "custom",
     });
   });
@@ -345,21 +378,26 @@ describe("jsx ast extractor", () => {
 
     expect(elements).toEqual([
       {
+        astPath: "root/mesh",
         children: [
           {
+            astPath: "root/mesh/boxGeometry",
             children: [],
             column: 7,
             line: 18,
             name: "boxGeometry",
             parentPath: fromCwd("/src/ast/__tests__/__mocks__/box.tsx"),
+            tagName: "boxGeometry",
             type: "host",
           },
           {
+            astPath: "root/mesh/meshStandardMaterial",
             children: [],
             column: 7,
             line: 19,
             name: "meshStandardMaterial",
             parentPath: fromCwd("/src/ast/__tests__/__mocks__/box.tsx"),
+            tagName: "meshStandardMaterial",
             type: "host",
           },
         ],
@@ -367,6 +405,7 @@ describe("jsx ast extractor", () => {
         line: 17,
         name: "mesh",
         parentPath: fromCwd("/src/ast/__tests__/__mocks__/box.tsx"),
+        tagName: "mesh",
         type: "host",
       },
     ]);
@@ -3297,23 +3336,29 @@ describe("jsx ast extractor", () => {
 
     expect(elements).toEqual([
       {
+        astPath: "root/group",
         children: [
           {
+            astPath: "root/group/mesh",
             children: [
               {
+                astPath: "root/group/mesh/boxGeometry",
                 children: [],
                 column: 9,
                 line: 11,
                 name: "boxGeometry",
                 parentPath: fromCwd("/src/ast/__tests__/__mocks__/nested.tsx"),
+                tagName: "boxGeometry",
                 type: "host",
               },
               {
+                astPath: "root/group/mesh/meshBasicMaterial",
                 children: [],
                 column: 9,
                 line: 12,
                 name: "meshBasicMaterial",
                 parentPath: fromCwd("/src/ast/__tests__/__mocks__/nested.tsx"),
+                tagName: "meshBasicMaterial",
                 type: "host",
               },
             ],
@@ -3321,6 +3366,7 @@ describe("jsx ast extractor", () => {
             line: 10,
             name: "mesh",
             parentPath: fromCwd("/src/ast/__tests__/__mocks__/nested.tsx"),
+            tagName: "mesh",
             type: "host",
           },
         ],
@@ -3328,6 +3374,7 @@ describe("jsx ast extractor", () => {
         line: 9,
         name: "group",
         parentPath: fromCwd("/src/ast/__tests__/__mocks__/nested.tsx"),
+        tagName: "group",
         type: "host",
       },
     ]);
@@ -3345,21 +3392,26 @@ describe("jsx ast extractor", () => {
 
     expect(elements).toEqual([
       {
+        astPath: "root/mesh",
         children: [
           {
+            astPath: "root/mesh/cylinderGeometry",
             children: [],
             column: 7,
             line: 10,
             name: "geo-hi (cylinderGeometry)",
             parentPath: fromCwd("/src/ast/__tests__/__mocks__/cylinder.tsx"),
+            tagName: "cylinderGeometry",
             type: "host",
           },
           {
+            astPath: "root/mesh/meshStandardMaterial",
             children: [],
             column: 7,
             line: 11,
             name: "meshStandardMaterial",
             parentPath: fromCwd("/src/ast/__tests__/__mocks__/cylinder.tsx"),
+            tagName: "meshStandardMaterial",
             type: "host",
           },
         ],
@@ -3367,6 +3419,7 @@ describe("jsx ast extractor", () => {
         line: 9,
         name: "this-is-cilly (mesh)",
         parentPath: fromCwd("/src/ast/__tests__/__mocks__/cylinder.tsx"),
+        tagName: "mesh",
         type: "host",
       },
     ]);
@@ -3436,6 +3489,65 @@ describe("jsx ast extractor", () => {
             },
           ],
           "name": "group",
+        },
+      ]
+    `);
+  });
+
+  it("should add suffix to ast path when more than one sibling of the same tag name", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.createSourceFile(
+      "foo.tsx",
+      `
+        export default function Bar() {
+          return (
+            <>
+              <mesh />
+              <mesh />
+            </>
+          );
+        }
+      `,
+    );
+
+    const { elements } = getJsxElementsPositions(sourceFile, "default")!;
+
+    expect(reducePaths(elements)).toMatchInlineSnapshot(`
+      [
+        {
+          "astPath": "root/Fragment",
+          "children": [
+            {
+              "astPath": "root/Fragment/mesh",
+              "children": [],
+              "column": 15,
+              "line": 5,
+              "name": "mesh",
+              "parentPath": "foo.tsx",
+              "tagName": "mesh",
+              "type": "host",
+            },
+            {
+              "astPath": "root/Fragment/mesh.1",
+              "children": [],
+              "column": 15,
+              "line": 6,
+              "name": "mesh",
+              "parentPath": "foo.tsx",
+              "tagName": "mesh",
+              "type": "host",
+            },
+          ],
+          "column": 13,
+          "exportName": "",
+          "line": 4,
+          "name": "Fragment",
+          "parentPath": "foo.tsx",
+          "path": "",
+          "tagName": "Fragment",
+          "type": "custom",
         },
       ]
     `);

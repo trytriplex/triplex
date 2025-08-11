@@ -85,6 +85,7 @@ export type JsxElementPositions =
   | HostJsxElementPosition;
 
 export interface CustomJsxElementPosition {
+  astPath: string;
   children: JsxElementPositions[];
   column: number;
   exportName: string;
@@ -93,15 +94,18 @@ export interface CustomJsxElementPosition {
   parentPath: string;
   /** Path will be defined if the jsx element exists in local source code. */
   path?: string;
+  tagName: string;
   type: "custom";
 }
 
 export interface HostJsxElementPosition {
+  astPath: string;
   children: JsxElementPositions[];
   column: number;
   line: number;
   name: string;
   parentPath: string;
+  tagName: string;
   type: "host";
 }
 

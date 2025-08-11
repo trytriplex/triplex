@@ -172,6 +172,27 @@ export function resolveExportDeclaration(node: Node<ts.Node>) {
   return node;
 }
 
+export function calculatePaths(
+  nodes: JsxElementPositions[],
+  parentPath: string,
+) {
+  const siblingCounter: Record<string, number> = {};
+
+  for (let i = 0; i < nodes.length; i++) {
+    // Count the number of sibling children and add a suffix when more than 1.
+    const node = nodes[i];
+
+    siblingCounter[node.tagName] ??= 0;
+    siblingCounter[node.tagName] += 1;
+
+    const count = siblingCounter[node.tagName] - 1;
+    const suffix = count > 0 ? `.${count}` : "";
+    node.astPath = `${parentPath}/${node.tagName}${suffix}`;
+
+    calculatePaths(node.children, node.astPath);
+  }
+}
+
 export function getJsxElementsPositions(
   sourceFile: SourceFileReadOnly,
   exportName: string,
@@ -206,6 +227,7 @@ export function getJsxElementsPositions(
       if (tag.type === "custom") {
         const paths = getElementFilePath(node);
         positions = {
+          astPath: "(unresolved)",
           children: [],
           column,
           exportName: paths.exportName,
@@ -213,15 +235,18 @@ export function getJsxElementsPositions(
           name: tag.friendlyName,
           parentPath,
           path: paths.filePath,
+          tagName: tag.tagName || tag.name || "",
           type: "custom",
         };
       } else {
         positions = {
+          astPath: "(unresolved)",
           children: [],
           column,
           line,
           name: tag.friendlyName,
           parentPath,
+          tagName: tag.tagName || tag.name || "",
           type: "host",
         };
       }
@@ -244,6 +269,8 @@ export function getJsxElementsPositions(
       parentPointers.set(node, positions);
     }
   });
+
+  calculatePaths(elements, "root");
 
   return { declaration, elements };
 }
