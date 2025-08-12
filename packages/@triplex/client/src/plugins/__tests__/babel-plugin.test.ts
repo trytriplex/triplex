@@ -40,6 +40,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "import { Fragment } from "react";
       <SceneObject __component={Fragment} __meta={{
+        "astPath": "root/Fragment",
         "path": "",
         "name": "Fragment",
         "line": 2,
@@ -127,6 +128,7 @@ describe("babel plugin", () => {
         position
       }) {
         return <SceneObject name="box" type="dynamic" position={position} colliders="cuboid" canSleep={false} __component={RigidBody} __meta={{
+          "astPath": "root/RigidBody",
           "originExportName": "RigidBody",
           "originPath": "",
           "exportName": "",
@@ -191,6 +193,7 @@ describe("babel plugin", () => {
         scale
       }) {
         return <SceneObject scale={scale} __component={"group"} __meta={{
+          "astPath": "root/group",
           "originExportName": "",
           "originPath": "",
           "exportName": "",
@@ -203,6 +206,7 @@ describe("babel plugin", () => {
           "scale": true
         }}>
                   <SceneObject position={[1, 1, 1]} __component={"mesh"} __meta={{
+            "astPath": "root/group/mesh",
             "originExportName": "",
             "originPath": "",
             "exportName": "",
@@ -215,6 +219,7 @@ describe("babel plugin", () => {
             "scale": false
           }}>
                     <SceneObject args={[1, 1, 1]} __component={"boxGeometry"} __meta={{
+              "astPath": "root/group/mesh/boxGeometry",
               "originExportName": "",
               "originPath": "",
               "exportName": "",
@@ -227,6 +232,7 @@ describe("babel plugin", () => {
               "scale": false
             }}></SceneObject>
                     <SceneObject color="black" __component={"standardMaterial"} __meta={{
+              "astPath": "root/group/mesh/standardMaterial",
               "originExportName": "",
               "originPath": "",
               "exportName": "",
@@ -268,6 +274,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "export function HelloWorld() {
         return <SceneObject __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "HelloWorld",
@@ -307,6 +314,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "export function HelloWorld() {
         return <SceneObject __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "HelloWorld",
@@ -350,6 +358,7 @@ describe("babel plugin", () => {
         position
       }) {
         return <SceneObject rotation={rotation} scale={scale} position={position} __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "",
@@ -389,6 +398,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "function Component(props) {
         return <SceneObject rotation={props.rotation} scale={props.scale} position={props.position} __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "",
@@ -428,6 +438,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "export const HelloWorld = () => {
         return <SceneObject __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "HelloWorld",
@@ -473,12 +484,14 @@ describe("babel plugin", () => {
       "import { Fragment } from "react";
       export const HelloWorld = () => {
         return <SceneObject __component={Fragment} __meta={{
+          "astPath": "root/Fragment",
           "path": "",
           "name": "Fragment",
           "line": 4,
           "column": 11
         }}>
                   <SceneObject visible __component={"mesh"} __meta={{
+            "astPath": "root/Fragment/mesh",
             "originExportName": "",
             "originPath": "",
             "exportName": "HelloWorld",
@@ -491,6 +504,7 @@ describe("babel plugin", () => {
             "scale": false
           }}>
                     <SceneObject __component={"boxGeometry"} __meta={{
+              "astPath": "root/Fragment/mesh/boxGeometry",
               "originExportName": "",
               "originPath": "",
               "exportName": "HelloWorld",
@@ -504,6 +518,7 @@ describe("babel plugin", () => {
             }}></SceneObject>
                   </SceneObject>
                   <SceneObject __component={"spotLight"} __meta={{
+            "astPath": "root/Fragment/spotLight",
             "originExportName": "",
             "originPath": "",
             "exportName": "HelloWorld",
@@ -552,6 +567,7 @@ describe("babel plugin", () => {
       function HelloWorld() {
         const onClick = () => {};
         return <SceneObject __component={"group"} __meta={{
+          "astPath": "root/group",
           "originExportName": "",
           "originPath": "",
           "exportName": "",
@@ -593,6 +609,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "const HelloWorld = () => {
         return <SceneObject __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "default",
@@ -633,6 +650,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "export default function HelloWorld() {
         return <SceneObject __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "default",
@@ -672,6 +690,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "export const HelloWorld = forwardRef(ref => {
         return <SceneObject ref={ref} __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "HelloWorld",
@@ -735,6 +754,7 @@ describe("babel plugin", () => {
       }) {
         const ok = {};
         return <SceneObject visible scale={scale} __component={"group"} __meta={{
+          "astPath": "root/group",
           "originExportName": "",
           "originPath": "",
           "exportName": "default",
@@ -749,6 +769,7 @@ describe("babel plugin", () => {
                   <SceneObject {...ok} userData={{
             hello: true
           }} onClick={() => {}} visible={true} position={position} rotation={rotation} __component={"mesh"} __meta={{
+            "astPath": "root/group/mesh",
             "originExportName": "",
             "originPath": "",
             "exportName": "default",
@@ -761,6 +782,7 @@ describe("babel plugin", () => {
             "scale": false
           }}>
                     <SceneObject args={[1, 1, 1]} __component={"boxGeometry"} __meta={{
+              "astPath": "root/group/mesh/boxGeometry",
               "originExportName": "",
               "originPath": "",
               "exportName": "default",
@@ -773,6 +795,7 @@ describe("babel plugin", () => {
               "scale": false
             }}></SceneObject>
                     <SceneObject color="#00ff00" __component={"meshStandardMaterial"} __meta={{
+              "astPath": "root/group/mesh/meshStandardMaterial",
               "originExportName": "",
               "originPath": "",
               "exportName": "default",
@@ -810,6 +833,7 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "<SceneObject __component={CustomComponent} __meta={{
+        "astPath": "root/CustomComponent",
         "originExportName": "",
         "originPath": "",
         "exportName": "",
@@ -839,6 +863,7 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "<SceneObject key="existing" __component={CustomComponent} __meta={{
+        "astPath": "root/CustomComponent",
         "originExportName": "",
         "originPath": "",
         "exportName": "",
@@ -868,6 +893,7 @@ describe("babel plugin", () => {
 
     expect(result?.code).toMatchInlineSnapshot(`
       "<SceneObject key={10} __component={CustomComponent} __meta={{
+        "astPath": "root/CustomComponent",
         "originExportName": "",
         "originPath": "",
         "exportName": "",
@@ -903,6 +929,7 @@ describe("babel plugin", () => {
         position
       }) {
         return <SceneObject position={position} __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "Component",
@@ -940,6 +967,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "function Component(props) {
         return <SceneObject {...props} __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "",
@@ -977,6 +1005,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "const Component = forwardRef(props => {
         return <SceneObject {...props} __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "",
@@ -1017,6 +1046,7 @@ describe("babel plugin", () => {
         ...props
       }) {
         return <SceneObject {...props} __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "",
@@ -1057,6 +1087,7 @@ describe("babel plugin", () => {
         ...props
       }) => {
         return <SceneObject {...props} __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "",
@@ -1101,6 +1132,7 @@ describe("babel plugin", () => {
           ...ok
         }) => {};
         return <SceneObject {...props} __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "Component",
@@ -1146,6 +1178,7 @@ describe("babel plugin", () => {
         ...props
       }) {
         return <SceneObject {...props} __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "Component",
@@ -1190,6 +1223,7 @@ describe("babel plugin", () => {
         ...props
       }) => {
         return <SceneObject {...props} __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "Component",
@@ -1229,6 +1263,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "const Component = forwardRef(function Hello(props) {
         return <SceneObject {...props} __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "Component",
@@ -1269,6 +1304,7 @@ describe("babel plugin", () => {
       "export const Component = forwardRef(function Hello(props) {
         test(function anotherOne(another) {});
         return <SceneObject {...props} __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "Component",
@@ -1483,6 +1519,7 @@ describe("babel plugin", () => {
       export function Component() {
         useLoader();
         return <SceneObject __component={Canvas} __meta={{
+          "astPath": "root/Canvas",
           "originExportName": "Canvas",
           "originPath": "",
           "exportName": "Component",
@@ -1494,6 +1531,7 @@ describe("babel plugin", () => {
           "rotate": false,
           "scale": false
         }}><SceneObject __component={"mesh"} __meta={{
+            "astPath": "root/Canvas/mesh",
             "originExportName": "",
             "originPath": "",
             "exportName": "Component",
@@ -1758,6 +1796,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "export function Component() {
         return <SceneObject __component={ContextProvider} __meta={{
+          "astPath": "root/ContextProvider",
           "originExportName": "",
           "originPath": "",
           "exportName": "Component",
@@ -1770,6 +1809,7 @@ describe("babel plugin", () => {
           "scale": false
         }}>
                     <SceneObject __component={"mesh"} __meta={{
+            "astPath": "root/ContextProvider/mesh",
             "originExportName": "",
             "originPath": "",
             "exportName": "Component",
@@ -1833,6 +1873,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "export function Inbuilt() {
         return <SceneObject __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "Inbuilt",
@@ -1845,6 +1886,7 @@ describe("babel plugin", () => {
           "scale": false
         }}>
                     <SceneObject __component={"boxGeometry"} __meta={{
+            "astPath": "root/mesh/boxGeometry",
             "originExportName": "",
             "originPath": "",
             "exportName": "Inbuilt",
@@ -1860,6 +1902,7 @@ describe("babel plugin", () => {
       }
       export function Inbuilt1() {
         return <SceneObject __component={Inbuilt} __meta={{
+          "astPath": "root/Inbuilt",
           "originExportName": "Inbuilt",
           "originPath": "/foo.tsx",
           "exportName": "Inbuilt1",
@@ -1874,6 +1917,7 @@ describe("babel plugin", () => {
       }
       export function Inbuilt2() {
         return <SceneObject __component={Inbuilt1} __meta={{
+          "astPath": "root/Inbuilt1",
           "originExportName": "Inbuilt1",
           "originPath": "/foo.tsx",
           "exportName": "Inbuilt2",
@@ -1888,6 +1932,7 @@ describe("babel plugin", () => {
       }
       export function Scene() {
         return <SceneObject __component={Inbuilt2} __meta={{
+          "astPath": "root/Inbuilt2",
           "originExportName": "Inbuilt2",
           "originPath": "/foo.tsx",
           "exportName": "Scene",
@@ -1991,6 +2036,7 @@ describe("babel plugin", () => {
         render: () => {},
         unmount: () => {}
       }).render(<SceneObject __component={"div"} __meta={{
+        "astPath": "root/div",
         "originExportName": "",
         "originPath": "",
         "exportName": "",
@@ -2041,6 +2087,7 @@ describe("babel plugin", () => {
       import { ImportedComponent } from "../component";
       export function LocalComponent() {
         return <SceneObject __component={"mesh"} __meta={{
+          "astPath": "root/mesh",
           "originExportName": "",
           "originPath": "",
           "exportName": "LocalComponent",
@@ -2055,12 +2102,14 @@ describe("babel plugin", () => {
       }
       export function Component() {
         return <SceneObject __component={Fragment} __meta={{
+          "astPath": "root/Fragment",
           "path": "/foo/bar/baz.tsx",
           "name": "Fragment",
           "line": 11,
           "column": 13
         }}>
                     <SceneObject __component={DefaultImportedComponent} __meta={{
+            "astPath": "root/Fragment/DefaultImportedComponent",
             "originExportName": "default",
             "originPath": "/foo/bar/default.tsx",
             "exportName": "Component",
@@ -2073,6 +2122,7 @@ describe("babel plugin", () => {
             "scale": false
           }}></SceneObject>
                     <SceneObject __component={LocalComponent} __meta={{
+            "astPath": "root/Fragment/LocalComponent",
             "originExportName": "LocalComponent",
             "originPath": "/foo/bar/baz.tsx",
             "exportName": "Component",
@@ -2085,6 +2135,7 @@ describe("babel plugin", () => {
             "scale": false
           }}></SceneObject>
                     <SceneObject __component={ImportedComponent} __meta={{
+            "astPath": "root/Fragment/ImportedComponent",
             "originExportName": "ImportedComponent",
             "originPath": "/foo/component.tsx",
             "exportName": "Component",
@@ -2242,6 +2293,7 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(`
       "const T_Hoisted = memo(function Component() {
         return <SceneObject __component={"div"} __meta={{
+          "astPath": "root/div",
           "originExportName": "",
           "originPath": "",
           "exportName": "",
@@ -2278,5 +2330,70 @@ describe("babel plugin", () => {
     expect(result?.code).toMatchInlineSnapshot(
       `"export const MyTrait = trait();"`,
     );
+  });
+
+  it("should append sibling count to ast path", () => {
+    const result = transformSync(
+      `
+        function Foo() {
+          return (
+            <>
+              <mesh />
+              <mesh />
+            </>
+          );
+        }
+      `,
+      {
+        plugins: [
+          plugin({ exclude: [] }),
+          require.resolve("@babel/plugin-syntax-jsx"),
+        ],
+      },
+    );
+
+    expect(result?.code).toMatchInlineSnapshot(`
+      "import { Fragment } from "react";
+      function Foo() {
+        return <SceneObject __component={Fragment} __meta={{
+          "astPath": "root/Fragment",
+          "path": "",
+          "name": "Fragment",
+          "line": 4,
+          "column": 13
+        }}>
+                    <SceneObject __component={"mesh"} __meta={{
+            "astPath": "root/Fragment/mesh",
+            "originExportName": "",
+            "originPath": "",
+            "exportName": "",
+            "path": "",
+            "name": "mesh",
+            "line": 5,
+            "column": 15,
+            "translate": false,
+            "rotate": false,
+            "scale": false
+          }}></SceneObject>
+                    <SceneObject __component={"mesh"} __meta={{
+            "astPath": "root/Fragment/mesh.1",
+            "originExportName": "",
+            "originPath": "",
+            "exportName": "",
+            "path": "",
+            "name": "mesh",
+            "line": 6,
+            "column": 15,
+            "translate": false,
+            "rotate": false,
+            "scale": false
+          }}></SceneObject>
+                  </SceneObject>;
+      }
+      Foo.triplexMeta = {
+        "lighting": "default",
+        "root": "react-three-fiber"
+      };"
+    `);
   });
 });

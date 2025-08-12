@@ -60,6 +60,12 @@ function resolveOrderingFromMap(dependencyMap: Map<string, string>) {
   return order;
 }
 
+interface JSXElementLocation {
+  children: JSXElementLocation[];
+  name: string;
+  parent: JSXElementLocation | null;
+}
+
 export default function triplexBabelPlugin({
   cwd = process.cwd(),
   exclude: excludeDirs,
@@ -73,6 +79,75 @@ export default function triplexBabelPlugin({
   const componentsFoundInPass = new Map<string, ComponentMetadata>();
   const componentMetaDependencyMap = new Map<string, string>();
   const exclude = excludeDirs.filter(Boolean);
+  const locationPointer: JSXElementLocation[] = [
+    {
+      children: [],
+      name: "root",
+      parent: null,
+    },
+  ];
+
+  function pushLocation(elementName: string) {
+    const pointer = locationPointer.at(-1);
+    const newLocation: JSXElementLocation = {
+      children: [],
+      name: elementName,
+      parent: locationPointer.at(-1) || null,
+    };
+
+    if (!pointer) {
+      throw new Error("invariant: pointer should be defined (push)");
+    }
+
+    pointer.children.push(newLocation);
+    locationPointer.push(newLocation);
+  }
+
+  function popLocation() {
+    if (locationPointer.length > 1) {
+      locationPointer.pop();
+    }
+  }
+
+  function buildLocation(): string {
+    const path: string[] = [];
+    const pointer = locationPointer.at(-1);
+
+    if (!pointer) {
+      throw new Error("invariant: pointer should be defined (build)");
+    }
+
+    let parent: JSXElementLocation | null = pointer;
+
+    while (parent) {
+      const siblingCounts: Record<string, number> = {};
+      const grandparent = parent.parent;
+
+      if (grandparent) {
+        for (let i = 0; i < grandparent.children.length; i++) {
+          const child = grandparent.children[i];
+          siblingCounts[child.name] = (siblingCounts[child.name] || 0) + 1;
+        }
+      }
+
+      const count = siblingCounts[parent.name];
+      const suffix = count > 1 ? `.${count - 1}` : "";
+
+      path.push(`${parent.name}${suffix}`);
+      parent = parent.parent;
+    }
+
+    return path.reverse().join("/");
+  }
+
+  function resetLocation() {
+    locationPointer.length = 0;
+    locationPointer.push({
+      children: [],
+      name: "root",
+      parent: null,
+    });
+  }
 
   let shouldSkip = false;
   let shouldImportFragment = false;
@@ -367,251 +442,280 @@ export default function triplexBabelPlugin({
           resetCurrentFunction(path);
         },
       },
-      JSXElement(path, pass) {
-        if (shouldSkip) {
-          return;
-        }
-
-        if (
-          cache.has(path.node) ||
-          path.node.openingElement.name.type !== "JSXIdentifier" ||
-          !path.node.loc ||
-          isIgnoredJSXElement(path)
-        ) {
-          return;
-        }
-
-        cache.add(path.node);
-
-        const elementName = path.node.openingElement.name.name;
-        const elementType = /^[A-Z]/.exec(elementName) ? "custom" : "host";
-        const functionMeta =
-          currentFunction && componentsFoundInPass.get(currentFunction.name);
-
-        if (functionMeta && currentFunction) {
-          currentFunction.returnsJSX = true;
-
-          if (elementName.endsWith("Light")) {
-            functionMeta.lighting = "custom";
+      JSXElement: {
+        enter(path, pass) {
+          if (shouldSkip) {
+            return;
           }
 
-          if (isChildOfReturnStatement(path)) {
-            if (elementType === "custom") {
-              if (isCanvasFromThreeFiber(path)) {
-                currentFunction.canvasComponent = true;
-              } else if (isComponentFromThreeFiber(path)) {
+          if (
+            cache.has(path.node) ||
+            path.node.openingElement.name.type !== "JSXIdentifier" ||
+            !path.node.loc ||
+            isIgnoredJSXElement(path)
+          ) {
+            return;
+          }
+
+          const elementName = path.node.openingElement.name.name;
+          const elementType = /^[A-Z]/.exec(elementName) ? "custom" : "host";
+          const functionMeta =
+            currentFunction && componentsFoundInPass.get(currentFunction.name);
+
+          pushLocation(elementName);
+          cache.add(path.node);
+
+          if (functionMeta && currentFunction) {
+            currentFunction.returnsJSX = true;
+
+            if (elementName.endsWith("Light")) {
+              functionMeta.lighting = "custom";
+            }
+
+            if (isChildOfReturnStatement(path)) {
+              if (elementType === "custom") {
+                if (isCanvasFromThreeFiber(path)) {
+                  currentFunction.canvasComponent = true;
+                } else if (isComponentFromThreeFiber(path)) {
+                  currentFunction.firstFoundHostElementSource ??=
+                    "react-three-fiber";
+                } else if (
+                  !isJSXIdentifierFromNodeModules(path, cwd) &&
+                  elementName !== currentFunction.name &&
+                  !!pass.file.scope.getBinding(elementName)
+                ) {
+                  currentFunction.firstFoundCustomComponentName = elementName;
+                }
+              } else if (isReactDOMElement(elementName)) {
+                currentFunction.firstFoundHostElementSource ??= "react";
+              } else if (isReactThreeElement(elementName)) {
                 currentFunction.firstFoundHostElementSource ??=
                   "react-three-fiber";
-              } else if (
-                !isJSXIdentifierFromNodeModules(path, cwd) &&
-                elementName !== currentFunction.name &&
-                !!pass.file.scope.getBinding(elementName)
-              ) {
-                currentFunction.firstFoundCustomComponentName = elementName;
               }
-            } else if (isReactDOMElement(elementName)) {
-              currentFunction.firstFoundHostElementSource ??= "react";
-            } else if (isReactThreeElement(elementName)) {
-              currentFunction.firstFoundHostElementSource ??=
-                "react-three-fiber";
             }
           }
-        }
 
-        const line = path.node.loc.start.line;
-        // Align to tsc where column numbers start from 1
-        const column = path.node.loc.start.column + 1;
+          const line = path.node.loc.start.line;
+          // Align to tsc where column numbers start from 1
+          const column = path.node.loc.start.column + 1;
 
-        const transformsFound = {
-          rotate: false,
-          scale: false,
-          translate: false,
-        };
+          const transformsFound = {
+            rotate: false,
+            scale: false,
+            translate: false,
+          };
 
-        const attributes = path.node.openingElement.attributes.filter(
-          (attr) => {
-            if (attr.type === "JSXAttribute") {
-              if (
-                elementType === "host" ||
-                isJSXIdentifierFromNodeModules(path, cwd)
-              ) {
-                const isIdentifierFromDestructuredProps =
-                  attr.value?.type === "JSXExpressionContainer" &&
-                  attr.value.expression.type === "Identifier" &&
-                  currentFunction?.props.destructured.includes(
-                    attr.value.expression.name,
-                  );
-
-                const isPropsMemberExpression =
-                  attr.value?.type === "JSXExpressionContainer" &&
-                  attr.value.expression.type === "MemberExpression" &&
-                  attr.value.expression.object.type === "Identifier" &&
-                  attr.value.expression.object.name ===
-                    currentFunction?.props.spreadIdentifier;
-
+          const attributes = path.node.openingElement.attributes.filter(
+            (attr) => {
+              if (attr.type === "JSXAttribute") {
                 if (
-                  isIdentifierFromDestructuredProps ||
-                  isPropsMemberExpression
+                  elementType === "host" ||
+                  isJSXIdentifierFromNodeModules(path, cwd)
                 ) {
-                  if (attr.name.name === "position") {
+                  const isIdentifierFromDestructuredProps =
+                    attr.value?.type === "JSXExpressionContainer" &&
+                    attr.value.expression.type === "Identifier" &&
+                    currentFunction?.props.destructured.includes(
+                      attr.value.expression.name,
+                    );
+
+                  const isPropsMemberExpression =
+                    attr.value?.type === "JSXExpressionContainer" &&
+                    attr.value.expression.type === "MemberExpression" &&
+                    attr.value.expression.object.type === "Identifier" &&
+                    attr.value.expression.object.name ===
+                      currentFunction?.props.spreadIdentifier;
+
+                  if (
+                    isIdentifierFromDestructuredProps ||
+                    isPropsMemberExpression
+                  ) {
+                    if (attr.name.name === "position") {
+                      transformsFound.translate = true;
+                    }
+
+                    if (attr.name.name === "rotation") {
+                      transformsFound.rotate = true;
+                    }
+
+                    if (attr.name.name === "scale") {
+                      transformsFound.scale = true;
+                    }
+                  }
+                }
+              } else {
+                // Spread attribute
+                if (
+                  attr.argument.type === "Identifier" &&
+                  attr.argument.name === currentFunction?.props.spreadIdentifier
+                ) {
+                  if (
+                    !currentFunction.props.destructured.includes("position")
+                  ) {
                     transformsFound.translate = true;
                   }
 
-                  if (attr.name.name === "rotation") {
+                  if (
+                    !currentFunction.props.destructured.includes("rotation")
+                  ) {
                     transformsFound.rotate = true;
                   }
 
-                  if (attr.name.name === "scale") {
+                  if (!currentFunction.props.destructured.includes("scale")) {
                     transformsFound.scale = true;
                   }
                 }
               }
-            } else {
-              // Spread attribute
-              if (
-                attr.argument.type === "Identifier" &&
-                attr.argument.name === currentFunction?.props.spreadIdentifier
-              ) {
-                if (!currentFunction.props.destructured.includes("position")) {
-                  transformsFound.translate = true;
-                }
 
-                if (!currentFunction.props.destructured.includes("rotation")) {
-                  transformsFound.rotate = true;
-                }
+              return true;
+            },
+          );
 
-                if (!currentFunction.props.destructured.includes("scale")) {
-                  transformsFound.scale = true;
-                }
-              }
-            }
+          const elementOrigin = resolveIdentifierOrigin(
+            pass,
+            path,
+            elementName,
+          );
 
-            return true;
-          },
-        );
-
-        const elementOrigin = resolveIdentifierOrigin(pass, path, elementName);
-
-        const newNode = t.jsxElement(
-          t.jsxOpeningElement(t.jsxIdentifier(SCENE_OBJECT_COMPONENT_NAME), [
-            ...attributes,
-            t.jsxAttribute(
-              t.jsxIdentifier("__component"),
-              t.jsxExpressionContainer(
-                elementType === "custom"
-                  ? t.identifier(elementName)
-                  : t.stringLiteral(elementName),
+          const newNode = t.jsxElement(
+            t.jsxOpeningElement(t.jsxIdentifier(SCENE_OBJECT_COMPONENT_NAME), [
+              ...attributes,
+              t.jsxAttribute(
+                t.jsxIdentifier("__component"),
+                t.jsxExpressionContainer(
+                  elementType === "custom"
+                    ? t.identifier(elementName)
+                    : t.stringLiteral(elementName),
+                ),
               ),
-            ),
-            t.jsxAttribute(
-              t.jsxIdentifier("__meta"),
-              t.jsxExpressionContainer(
-                t.objectExpression([
-                  t.objectProperty(
-                    t.stringLiteral("originExportName"),
-                    t.stringLiteral(elementOrigin?.exportName || ""),
-                  ),
-                  t.objectProperty(
-                    t.stringLiteral("originPath"),
-                    t.stringLiteral(elementOrigin?.path || ""),
-                  ),
-                  t.objectProperty(
-                    t.stringLiteral("exportName"),
-                    t.stringLiteral(currentFunction?.exportName || ""),
-                  ),
-                  t.objectProperty(
-                    t.stringLiteral("path"),
-                    t.stringLiteral(
-                      pass.filename ? normalize(pass.filename) : "",
+              t.jsxAttribute(
+                t.jsxIdentifier("__meta"),
+                t.jsxExpressionContainer(
+                  t.objectExpression([
+                    t.objectProperty(
+                      t.stringLiteral("astPath"),
+                      t.stringLiteral(buildLocation()),
                     ),
-                  ),
-                  t.objectProperty(
-                    t.stringLiteral("name"),
-                    t.stringLiteral(elementName),
-                  ),
-                  t.objectProperty(
-                    t.stringLiteral("line"),
-                    t.numericLiteral(line),
-                  ),
-                  t.objectProperty(
-                    t.stringLiteral("column"),
-                    t.numericLiteral(column),
-                  ),
-                  t.objectProperty(
-                    t.stringLiteral("translate"),
-                    t.booleanLiteral(transformsFound.translate),
-                  ),
-                  t.objectProperty(
-                    t.stringLiteral("rotate"),
-                    t.booleanLiteral(transformsFound.rotate),
-                  ),
-                  t.objectProperty(
-                    t.stringLiteral("scale"),
-                    t.booleanLiteral(transformsFound.scale),
-                  ),
-                ]),
+                    t.objectProperty(
+                      t.stringLiteral("originExportName"),
+                      t.stringLiteral(elementOrigin?.exportName || ""),
+                    ),
+                    t.objectProperty(
+                      t.stringLiteral("originPath"),
+                      t.stringLiteral(elementOrigin?.path || ""),
+                    ),
+                    t.objectProperty(
+                      t.stringLiteral("exportName"),
+                      t.stringLiteral(currentFunction?.exportName || ""),
+                    ),
+                    t.objectProperty(
+                      t.stringLiteral("path"),
+                      t.stringLiteral(
+                        pass.filename ? normalize(pass.filename) : "",
+                      ),
+                    ),
+                    t.objectProperty(
+                      t.stringLiteral("name"),
+                      t.stringLiteral(elementName),
+                    ),
+                    t.objectProperty(
+                      t.stringLiteral("line"),
+                      t.numericLiteral(line),
+                    ),
+                    t.objectProperty(
+                      t.stringLiteral("column"),
+                      t.numericLiteral(column),
+                    ),
+                    t.objectProperty(
+                      t.stringLiteral("translate"),
+                      t.booleanLiteral(transformsFound.translate),
+                    ),
+                    t.objectProperty(
+                      t.stringLiteral("rotate"),
+                      t.booleanLiteral(transformsFound.rotate),
+                    ),
+                    t.objectProperty(
+                      t.stringLiteral("scale"),
+                      t.booleanLiteral(transformsFound.scale),
+                    ),
+                  ]),
+                ),
               ),
-            ),
-          ]),
-          t.jsxClosingElement(t.jsxIdentifier(SCENE_OBJECT_COMPONENT_NAME)),
-          path.node.children,
-        );
+            ]),
+            t.jsxClosingElement(t.jsxIdentifier(SCENE_OBJECT_COMPONENT_NAME)),
+            path.node.children,
+          );
 
-        path.replaceWith(newNode);
+          path.replaceWith(newNode);
+        },
+        exit() {
+          popLocation();
+        },
       },
-      JSXFragment(path, pass) {
-        if (shouldSkip) {
-          return;
-        }
+      JSXFragment: {
+        enter(path, pass) {
+          if (shouldSkip) {
+            return;
+          }
 
-        if (cache.has(path.node) || !path.node.loc) {
-          return;
-        }
+          if (cache.has(path.node) || !path.node.loc) {
+            return;
+          }
 
-        shouldImportFragment = true;
-        cache.add(path.node);
+          pushLocation("Fragment");
 
-        const line = path.node.loc.start.line;
-        // Align to tsc where column numbers start from 1
-        const column = path.node.loc.start.column + 1;
+          shouldImportFragment = true;
+          cache.add(path.node);
 
-        const newNode = t.jsxElement(
-          t.jsxOpeningElement(t.jsxIdentifier(SCENE_OBJECT_COMPONENT_NAME), [
-            t.jsxAttribute(
-              t.jsxIdentifier("__component"),
-              t.jsxExpressionContainer(t.identifier("Fragment")),
-            ),
-            t.jsxAttribute(
-              t.jsxIdentifier("__meta"),
-              t.jsxExpressionContainer(
-                t.objectExpression([
-                  t.objectProperty(
-                    t.stringLiteral("path"),
-                    t.stringLiteral(
-                      pass.filename ? normalize(pass.filename) : "",
-                    ),
-                  ),
-                  t.objectProperty(
-                    t.stringLiteral("name"),
-                    t.stringLiteral("Fragment"),
-                  ),
-                  t.objectProperty(
-                    t.stringLiteral("line"),
-                    t.numericLiteral(line),
-                  ),
-                  t.objectProperty(
-                    t.stringLiteral("column"),
-                    t.numericLiteral(column),
-                  ),
-                ]),
+          const line = path.node.loc.start.line;
+          // Align to tsc where column numbers start from 1
+          const column = path.node.loc.start.column + 1;
+
+          const newNode = t.jsxElement(
+            t.jsxOpeningElement(t.jsxIdentifier(SCENE_OBJECT_COMPONENT_NAME), [
+              t.jsxAttribute(
+                t.jsxIdentifier("__component"),
+                t.jsxExpressionContainer(t.identifier("Fragment")),
               ),
-            ),
-          ]),
-          t.jsxClosingElement(t.jsxIdentifier(SCENE_OBJECT_COMPONENT_NAME)),
-          path.node.children,
-        );
+              t.jsxAttribute(
+                t.jsxIdentifier("__meta"),
+                t.jsxExpressionContainer(
+                  t.objectExpression([
+                    t.objectProperty(
+                      t.stringLiteral("astPath"),
+                      t.stringLiteral(buildLocation()),
+                    ),
+                    t.objectProperty(
+                      t.stringLiteral("path"),
+                      t.stringLiteral(
+                        pass.filename ? normalize(pass.filename) : "",
+                      ),
+                    ),
+                    t.objectProperty(
+                      t.stringLiteral("name"),
+                      t.stringLiteral("Fragment"),
+                    ),
+                    t.objectProperty(
+                      t.stringLiteral("line"),
+                      t.numericLiteral(line),
+                    ),
+                    t.objectProperty(
+                      t.stringLiteral("column"),
+                      t.numericLiteral(column),
+                    ),
+                  ]),
+                ),
+              ),
+            ]),
+            t.jsxClosingElement(t.jsxIdentifier(SCENE_OBJECT_COMPONENT_NAME)),
+            path.node.children,
+          );
 
-        path.replaceWith(newNode);
+          path.replaceWith(newNode);
+        },
+        exit() {
+          popLocation();
+        },
       },
       Program: {
         enter(_, state) {
@@ -706,6 +810,7 @@ export default function triplexBabelPlugin({
           shouldImportFragment = false;
           componentsFoundInPass.clear();
           componentMetaDependencyMap.clear();
+          resetLocation();
         },
       },
       VariableDeclarator: {

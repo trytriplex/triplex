@@ -43,6 +43,7 @@ describe("ignored elements", () => {
       "import { BrowserRouter, Route, Routes } from "react-router";
       function App() {
         return <SceneObject __component={BrowserRouter} __meta={{
+          "astPath": "root/BrowserRouter",
           "originExportName": "BrowserRouter",
           "originPath": "",
           "exportName": "",
