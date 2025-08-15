@@ -446,6 +446,12 @@ const DELETE_PRE_SAFE = `_/@@ ${DELETED_PRAGMA} `;
 const DELETE_POST = "*/}";
 const DELETE_POST_SAFE = "@/_";
 
+export function deleteElement(
+  element: JsxElement | JsxSelfClosingElement | JsxFragment,
+) {
+  element.replaceWithText("");
+}
+
 export function commentComponent(
   sourceFile: SourceFile,
   line: number,

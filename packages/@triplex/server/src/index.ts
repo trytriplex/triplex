@@ -34,6 +34,7 @@ import {
   add,
   commentComponent,
   create,
+  deleteElement,
   duplicate,
   group,
   insertCode,
@@ -313,9 +314,14 @@ export async function createServer({
   router.post("/scene/:path/object/:line/:column/delete", async (context) => {
     const { column, line, path } = context.params;
     const sourceFile = project.getSourceFile(path);
+    const astPath = getParamOptional(context, "astPath");
 
     const [ids] = await sourceFile.edit((source) => {
-      commentComponent(source, Number(line), Number(column));
+      if (astPath && fg("selection_ast_path")) {
+        deleteElement(getJsxElementFromAstPathOrThrow(source, astPath));
+      } else {
+        commentComponent(source, Number(line), Number(column));
+      }
     });
 
     context.response.body = { ...ids };
