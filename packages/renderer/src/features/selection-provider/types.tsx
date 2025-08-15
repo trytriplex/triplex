@@ -8,6 +8,7 @@
 import { type Vector3 } from "three";
 
 export interface SelectionState {
+  astPath: string;
   column: number;
   line: number;
   parentPath: string;

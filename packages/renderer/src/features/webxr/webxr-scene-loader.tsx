@@ -70,6 +70,7 @@ export function WebXRSceneLoader({
       <SceneElement
         __component={providers.GlobalProvider}
         __meta={{
+          astPath: "global/GlobalProvider",
           column: -888,
           exportName: "GlobalProvider",
           line: -888,

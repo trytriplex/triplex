@@ -69,6 +69,7 @@ export function SceneRenderer({
       <SceneElement
         __component={SceneComponent}
         __meta={{
+          astPath: "global/SceneComponent",
           column: -1,
           exportName: "(ignore)",
           line: -1,

@@ -6,6 +6,7 @@
  */
 
 import { type TriplexMeta } from "@triplex/bridge/client";
+import { fg } from "@triplex/lib/fg";
 import {
   Raycaster,
   Vector2,
@@ -23,7 +24,9 @@ export interface ResolvedObject3D {
 
 export const findTransformedObject3D = (
   sceneObject: Object3D,
-  filter: { transform: "none" | "translate" | "scale" | "rotate" },
+  filter: {
+    transform: "none" | "translate" | "scale" | "rotate";
+  },
 ): Object3D => {
   const transform =
     filter.transform === "none" ? "translate" : filter.transform;
@@ -65,7 +68,7 @@ export const findTransformedObject3D = (
  */
 export const findObject3D = (
   scene: Object3D,
-  filter: { column: number; line: number; path: string },
+  filter: { astPath: string; column: number; line: number; path: string },
 ): [object: Object3D, meta: TriplexMeta][] => {
   const foundObjects: [Object3D, TriplexMeta][] = [];
 
@@ -77,9 +80,10 @@ export const findObject3D = (
     const meta = obj.__triplex;
 
     if (
-      meta.path === filter.path &&
-      meta.column === filter.column &&
-      meta.line === filter.line
+      (meta.astPath === filter.astPath && fg("selection_ast_path")) ||
+      (meta.path === filter.path &&
+        meta.column === filter.column &&
+        meta.line === filter.line)
     ) {
       // We found a direct match for a host element — resolve it and return!
       foundObjects.push([obj, meta]);
@@ -89,9 +93,10 @@ export const findObject3D = (
     for (const parent of meta.parents) {
       // Check the parents in the meta to see if they are a match and if so resolve the object.
       if (
-        parent.path === filter.path &&
-        parent.column === filter.column &&
-        parent.line === filter.line &&
+        ((parent.astPath === filter.astPath && fg("selection_ast_path")) ||
+          (parent.path === filter.path &&
+            parent.column === filter.column &&
+            parent.line === filter.line)) &&
         parent.originExportName !== "Canvas"
       ) {
         foundObjects.push([obj, parent]);
@@ -106,6 +111,7 @@ export const findObject3D = (
 export const resolveObject3D = (
   scene: Object3D,
   filter: {
+    astPath: string;
     column: number;
     line: number;
     path: string;

@@ -112,18 +112,21 @@ export interface ClientSendEventData {
   "component-rendered": void;
   "element-blurred": undefined;
   "element-focused": {
+    astPath: string;
     column: number;
     line: number;
     parentPath: string;
     path: string;
   };
   "element-hint": {
+    astPath: string;
     column: number;
     line: number;
     parentPath: string;
     path: string;
   } | null;
   "element-preview-prop": {
+    astPath: string;
     column: number;
     line: number;
     path: string;
@@ -131,6 +134,7 @@ export interface ClientSendEventData {
     propValue: unknown;
   };
   "element-set-prop": {
+    astPath: string;
     column: number;
     line: number;
     path: string;
@@ -196,6 +200,7 @@ export interface HostSendEventData {
     props: string[];
   };
   "element-hint": {
+    astPath: string;
     column: number;
     line: number;
     parentPath: string;
@@ -215,11 +220,13 @@ export interface HostSendEventData {
   keyup: KeyboardEventObject;
   "request-blur-element": undefined;
   "request-delete-element": {
+    astPath: string;
     column: number;
     line: number;
     path: string;
   };
   "request-focus-element": {
+    astPath: string;
     column: number;
     exportName?: string;
     line: number;
@@ -228,6 +235,7 @@ export interface HostSendEventData {
   };
   "request-jump-to-element":
     | {
+        astPath: string;
         column: number;
         line: number;
         path: string;
@@ -242,6 +250,7 @@ export interface HostSendEventData {
     | undefined;
   "request-refresh-scene": { hard: true } | undefined;
   "request-reset-prop": {
+    astPath: string;
     column: number;
     line: number;
     path: string;
@@ -249,11 +258,13 @@ export interface HostSendEventData {
   };
   "request-reset-scene": undefined;
   "request-restore-element": {
+    astPath: string;
     column: number;
     line: number;
     parentPath: string;
   };
   "request-set-element-prop": {
+    astPath: string;
     column: number;
     line: number;
     path: string;

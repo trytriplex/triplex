@@ -19,6 +19,7 @@ describe("DOM resolver", () => {
         <SceneElement
           __component="main"
           __meta={{
+            astPath: "root/main",
             column: 4,
             exportName: "",
             line: 1,
@@ -29,6 +30,7 @@ describe("DOM resolver", () => {
           <SceneElement
             __component="div"
             __meta={{
+              astPath: "root/main/div",
               column: 4,
               exportName: "",
               line: 2,
@@ -39,6 +41,7 @@ describe("DOM resolver", () => {
           <SceneElement
             __component="span"
             __meta={{
+              astPath: "root/main/span",
               column: 4,
               exportName: "",
               line: 3,
@@ -51,13 +54,20 @@ describe("DOM resolver", () => {
     );
 
     const actual = resolveDOMNodes([
-      { column: 4, line: 1, parentPath: "/baz", path: "/baz" },
+      {
+        astPath: "root/main",
+        column: 4,
+        line: 1,
+        parentPath: "/baz",
+        path: "/baz",
+      },
     ]);
 
     expect(actual).toMatchInlineSnapshot(`
       [
         {
           "meta": {
+            "astPath": "root/main",
             "column": 4,
             "exportName": "",
             "line": 1,
@@ -83,6 +93,7 @@ describe("DOM resolver", () => {
         <SceneElement
           __component={Fragment}
           __meta={{
+            astPath: "root/Fragment",
             column: 4,
             exportName: "",
             line: 1,
@@ -93,6 +104,7 @@ describe("DOM resolver", () => {
           <SceneElement
             __component="div"
             __meta={{
+              astPath: "root/Fragment/div",
               column: 4,
               exportName: "",
               line: 2,
@@ -103,6 +115,7 @@ describe("DOM resolver", () => {
           <SceneElement
             __component="span"
             __meta={{
+              astPath: "root/Fragment/span",
               column: 4,
               exportName: "",
               line: 3,
@@ -115,13 +128,20 @@ describe("DOM resolver", () => {
     );
 
     const actual = resolveDOMNodes([
-      { column: 4, line: 1, parentPath: "/baz", path: "/baz" },
+      {
+        astPath: "root/Fragment",
+        column: 4,
+        line: 1,
+        parentPath: "/baz",
+        path: "/baz",
+      },
     ]);
 
     expect(actual).toMatchInlineSnapshot(`
       [
         {
           "meta": {
+            "astPath": "root/Fragment",
             "column": 4,
             "exportName": "",
             "line": 1,
@@ -136,6 +156,7 @@ describe("DOM resolver", () => {
         },
         {
           "meta": {
+            "astPath": "root/Fragment",
             "column": 4,
             "exportName": "",
             "line": 1,

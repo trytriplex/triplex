@@ -76,6 +76,7 @@ export function ThreeFiberSelection({
 
               if (meta) {
                 return {
+                  astPath: meta.astPath,
                   column: meta.column,
                   line: meta.line,
                   parentPath: filter.path,
@@ -118,6 +119,7 @@ export function ThreeFiberSelection({
 
             if (meta) {
               return {
+                astPath: meta.astPath,
                 column: meta.column,
                 line: meta.line,
                 parentPath: filter.path,
@@ -153,6 +155,7 @@ export function ThreeFiberSelection({
       resolve: (selections) => {
         return selections.flatMap((selection) => {
           return resolveObject3D(scene, {
+            astPath: selection.astPath,
             column: selection.column,
             line: selection.line,
             path: selection.parentPath,
@@ -256,6 +259,7 @@ export function ThreeFiberSelection({
 
     if (e.mode === "translate") {
       send("element-set-prop", {
+        astPath: resolvedObject.meta.astPath,
         column: resolvedObject.meta.column,
         line: resolvedObject.meta.line,
         path: resolvedObject.meta.path,
@@ -265,6 +269,7 @@ export function ThreeFiberSelection({
       send("track", { actionId: "element_transform_translate" });
     } else if (e.mode === "rotate") {
       send("element-set-prop", {
+        astPath: resolvedObject.meta.astPath,
         column: resolvedObject.meta.column,
         line: resolvedObject.meta.line,
         path: resolvedObject.meta.path,
@@ -274,6 +279,7 @@ export function ThreeFiberSelection({
       send("track", { actionId: "element_transform_rotate" });
     } else if (e.mode === "scale") {
       send("element-set-prop", {
+        astPath: resolvedObject.meta.astPath,
         column: resolvedObject.meta.column,
         line: resolvedObject.meta.line,
         path: resolvedObject.meta.path,
@@ -290,6 +296,7 @@ export function ThreeFiberSelection({
     }
 
     const update = (propName: string) => ({
+      astPath: resolvedObject.meta.astPath,
       column: resolvedObject.meta.column,
       line: resolvedObject.meta.line,
       path: resolvedObject.meta.path,
@@ -315,6 +322,7 @@ export function ThreeFiberSelection({
       const position = resolvedObject.object.position.toArray();
 
       send("element-set-prop", {
+        astPath: resolvedObject.meta.astPath,
         column: resolvedObject.meta.column,
         line: resolvedObject.meta.line,
         path: resolvedObject.meta.path,
@@ -328,6 +336,7 @@ export function ThreeFiberSelection({
       rotation.pop();
 
       send("element-set-prop", {
+        astPath: resolvedObject.meta.astPath,
         column: resolvedObject.meta.column,
         line: resolvedObject.meta.line,
         path: resolvedObject.meta.path,
@@ -340,6 +349,7 @@ export function ThreeFiberSelection({
       const scale = resolvedObject.object.scale.toArray();
 
       send("element-set-prop", {
+        astPath: resolvedObject.meta.astPath,
         column: resolvedObject.meta.column,
         line: resolvedObject.meta.line,
         path: resolvedObject.meta.path,

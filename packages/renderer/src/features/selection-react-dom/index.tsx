@@ -43,6 +43,7 @@ export function ReactDOMSelection({
 
           if (meta) {
             return {
+              astPath: meta.astPath,
               column: meta.column,
               line: meta.line,
               parentPath: filter.path,

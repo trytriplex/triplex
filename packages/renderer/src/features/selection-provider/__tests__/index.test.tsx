@@ -19,8 +19,20 @@ interface TestResolved {
   node: number;
 }
 
-const stubMeta = { column: 1, line: 1, parentPath: "/foo", path: "/bar" };
-const stubMeta1 = { column: 2, line: 3, parentPath: "/foo", path: "/bar" };
+const stubMeta = {
+  astPath: "root/mesh",
+  column: 1,
+  line: 1,
+  parentPath: "/foo",
+  path: "/bar",
+};
+const stubMeta1 = {
+  astPath: "root/mesh.1",
+  column: 2,
+  line: 3,
+  parentPath: "/foo",
+  path: "/bar",
+};
 
 describe("selection provider", () => {
   beforeEach(() => {
