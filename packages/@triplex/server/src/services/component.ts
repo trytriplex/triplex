@@ -4,7 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { basename, extname, relative } from "@triplex/lib/path";
+import { basename, dirname, extname, relative } from "@triplex/lib/path";
 import {
   Node,
   SyntaxKind,
@@ -18,6 +18,7 @@ import {
   getAttributes,
   getJsxElementAt,
   getJsxElementAtOrThrow,
+  getJsxElementFromAstPathOrThrow,
   getJsxTag,
 } from "../ast/jsx";
 import { getExportNameOrThrow } from "../ast/module";
@@ -556,6 +557,21 @@ export function duplicate(
   sourceFile.insertText(jsxElement.getEnd(), jsxElement.getText());
 
   return insertedLineCol;
+}
+
+export function duplicateElement(sourceFile: SourceFile, astPath: string) {
+  const jsxElement = getJsxElementFromAstPathOrThrow(sourceFile, astPath);
+  const insertedLineCol = sourceFile.getLineAndColumnAtPos(jsxElement.getEnd());
+  sourceFile.insertText(jsxElement.getEnd(), jsxElement.getText());
+
+  const astBasePath = dirname(astPath);
+  const [elementName, possibleCount = 0] = basename(astPath).split(".");
+  const count = Number(possibleCount) + 1;
+
+  return {
+    ...insertedLineCol,
+    astPath: `${astBasePath}/${elementName}.${count}`,
+  };
 }
 
 export function move(

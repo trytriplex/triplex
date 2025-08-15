@@ -36,6 +36,7 @@ import {
   create,
   deleteElement,
   duplicate,
+  duplicateElement,
   group,
   insertCode,
   move,
@@ -302,9 +303,14 @@ export async function createServer({
     async (context) => {
       const { column, line, path } = context.params;
       const sourceFile = project.getSourceFile(path);
+      const astPath = getParamOptional(context, "astPath");
 
       const [ids, result] = await sourceFile.edit((source) => {
-        return duplicate(source, Number(line), Number(column));
+        if (astPath && fg("selection_ast_path")) {
+          return duplicateElement(source, astPath);
+        } else {
+          return duplicate(source, Number(line), Number(column));
+        }
       });
 
       context.response.body = { ...result, ...ids };

@@ -158,12 +158,11 @@ export class TriplexDocument implements vscode.CustomDocument {
           this._context.ports.server
         }/scene/${encodeURIComponent(data.path)}/object/${data.line}/${
           data.column
-        }/duplicate`,
+        }/duplicate?astPath=${encodeURIComponent(data.astPath)}`,
         { method: "POST" },
       );
 
       const response: Mutation & {
-        // TODO: Add to response.
         astPath: string;
         column: number;
         line: number;

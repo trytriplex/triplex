@@ -21,6 +21,7 @@ import {
   commentComponent,
   deleteCommentComponents,
   duplicate,
+  duplicateElement,
   group,
   insertCode,
   move,
@@ -1437,5 +1438,41 @@ describe("component service", () => {
           );
         }"
       `);
+  });
+
+  it("should return assumed ast path after duplicating", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.createSourceFile(
+      "foo.tsx",
+      `
+        export function Test() {
+          return <><mesh /></>
+        }
+      `,
+    );
+
+    const actual = duplicateElement(sourceFile, "Test/Fragment/mesh");
+
+    expect(actual.astPath).toEqual("Test/Fragment/mesh.1");
+  });
+
+  it("should return assumed ast path after duplicating element with cound", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.createSourceFile(
+      "foo.tsx",
+      `
+        export function Test() {
+          return <><mesh /><mesh /></>
+        }
+      `,
+    );
+
+    const actual = duplicateElement(sourceFile, "Test/Fragment/mesh.1");
+
+    expect(actual.astPath).toEqual("Test/Fragment/mesh.2");
   });
 });
