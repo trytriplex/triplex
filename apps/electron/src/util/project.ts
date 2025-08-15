@@ -28,7 +28,9 @@ export async function startProject({
 }) {
   const backend = await createBackend({
     config,
+    fgEnvironmentOverride,
     renderer,
+    userId,
   });
   const closeBackend = await backend.listen(ports);
   const frontend = await createFrontend({

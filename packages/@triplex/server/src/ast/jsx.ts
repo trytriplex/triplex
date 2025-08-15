@@ -450,3 +450,15 @@ export function getJsxElementFromAstPath(
 
   return positions.nodes[astPath];
 }
+
+export function getJsxElementFromAstPathOrThrow(
+  sourceFile: SourceFileReadOnly,
+  astPath: string,
+) {
+  const sceneObject = getJsxElementFromAstPath(sourceFile, astPath);
+  if (!sceneObject) {
+    throw new Error("invariant: not found");
+  }
+
+  return sceneObject;
+}

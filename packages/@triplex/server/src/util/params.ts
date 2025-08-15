@@ -17,3 +17,11 @@ export function getParam<T extends string>(
 
   return path;
 }
+
+export function getParamOptional<T extends string>(
+  context: RouterContext<T>,
+  key: string,
+) {
+  const path = context.request.url.searchParams.get(key);
+  return path;
+}

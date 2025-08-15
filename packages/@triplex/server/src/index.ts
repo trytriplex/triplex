@@ -6,8 +6,10 @@
  */
 import { readFile } from "node:fs/promises";
 import { Application, isHttpError, Router } from "@oakserver/oak";
+import { fg, initFeatureGates } from "@triplex/lib/fg";
 import { createForkLogger } from "@triplex/lib/log";
 import { basename } from "@triplex/lib/path";
+import { type FGEnvironment } from "@triplex/lib/types";
 import { createWSServer } from "@triplex/websocks-server";
 import { watch } from "chokidar";
 import { type DetectResult } from "package-manager-detector";
@@ -23,6 +25,7 @@ import {
   getFunctionProps,
   getJsxElementAtOrThrow,
   getJsxElementFromAstPath,
+  getJsxElementFromAstPathOrThrow,
   getJsxElementParentExportNameOrThrow,
 } from "./ast/jsx";
 import { propGroupsDef } from "./ast/prop-groupings";
@@ -57,7 +60,7 @@ import {
 } from "./types";
 import { checkMissingDependencies } from "./util/deps";
 import { resolveGitRepoVisibility } from "./util/git";
-import { getParam } from "./util/params";
+import { getParam, getParamOptional } from "./util/params";
 import { getThumbnailPath } from "./util/thumbnail";
 
 export * from "./types";
@@ -65,17 +68,32 @@ export { type PropGroupDef } from "./ast/prop-groupings";
 
 const log = createForkLogger("triplex:server");
 
-export function createServer({
+export async function createServer({
   config,
+  fgEnvironmentOverride,
   renderer,
+  userId,
 }: {
   config: ReconciledTriplexConfig;
+  fgEnvironmentOverride: FGEnvironment;
   renderer: {
     manifest: RendererManifest;
     path: string;
     root: string;
   };
+  userId: string;
 }) {
+  const viteOverrides = JSON.parse(process.env.VITE_FG_OVERRIDES || "{}");
+
+  await initFeatureGates({
+    environment: fgEnvironmentOverride,
+    overrides: {
+      ...config.experimental,
+      ...viteOverrides,
+    },
+    userId,
+  });
+
   const app = new Application();
   const router = new Router();
   const project = createProject({
@@ -236,12 +254,17 @@ export function createServer({
     const path = getParam(context, "path");
     const value = getParam(context, "value");
     const name = getParam(context, "name");
+    const astPath = getParamOptional(context, "astPath");
     const line = Number(context.params.line);
     const column = Number(context.params.column);
     const sourceFile = project.getSourceFile(path);
 
     const [ids, result] = await sourceFile.edit((source) => {
-      const jsxElement = getJsxElementAtOrThrow(source, line, column);
+      const jsxElement =
+        astPath && fg("selection_ast_path")
+          ? getJsxElementFromAstPathOrThrow(source, astPath)
+          : getJsxElementAtOrThrow(source, line, column);
+
       const action = upsertProp(jsxElement, name, value);
 
       return {
@@ -781,10 +804,10 @@ export { inferExports } from "./util/module";
 export { getRendererMeta } from "./util/renderer";
 export { type AIChatContext } from "./services/ai";
 
-export type TWSRouteDefinition = ReturnType<
-  typeof createServer
+export type TWSRouteDefinition = Awaited<
+  ReturnType<typeof createServer>
 >["twsDefinition"];
 
-export type TWSEventDefinition = ReturnType<
-  typeof createServer
+export type TWSEventDefinition = Awaited<
+  ReturnType<typeof createServer>
 >["twsEventsDefinition"];

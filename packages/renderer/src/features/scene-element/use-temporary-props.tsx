@@ -6,6 +6,7 @@
  */
 
 import { compose, on, type RendererElementProps } from "@triplex/bridge/client";
+import { fg } from "@triplex/lib/fg";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 function useForceRender() {
@@ -39,7 +40,10 @@ export function useTemporaryProps(
         }
       }),
       on("request-set-element-prop", (data) => {
-        if (
+        if (data.astPath === meta.astPath && fg("selection_ast_path")) {
+          intermediateProps.current[data.propName] = data.propValue;
+          forceRender();
+        } else if (
           "column" in data &&
           data.column === meta.column &&
           data.line === meta.line &&
@@ -50,7 +54,10 @@ export function useTemporaryProps(
         }
       }),
       on("request-reset-prop", (data) => {
-        if (
+        if (data.astPath === meta.astPath && fg("selection_ast_path")) {
+          delete intermediateProps.current[data.propName];
+          forceRender();
+        } else if (
           data.column === meta.column &&
           data.line === meta.line &&
           data.path === meta.path
@@ -60,7 +67,7 @@ export function useTemporaryProps(
         }
       }),
     ]);
-  }, [meta.column, meta.line, meta.name, meta.path, forceRender]);
+  }, [meta.column, meta.line, meta.name, meta.path, forceRender, meta.astPath]);
 
   // eslint-disable-next-line react-compiler/react-compiler
   const nextProps = { ...props, ...intermediateProps.current };

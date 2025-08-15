@@ -109,7 +109,7 @@ export class TriplexDocument implements vscode.CustomDocument {
           toJSONString(data.propValue),
         )}&path=${encodeURIComponent(data.path)}&name=${encodeURIComponent(
           data.propName,
-        )}`,
+        )}&astPath=${encodeURIComponent(data.astPath)}`,
       );
 
       const response: Mutation = await result.json();
