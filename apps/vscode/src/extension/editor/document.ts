@@ -94,6 +94,7 @@ export class TriplexDocument implements vscode.CustomDocument {
   }
 
   async upsertProp(data: {
+    astPath: string;
     column: number;
     line: number;
     path: string;
@@ -118,7 +119,7 @@ export class TriplexDocument implements vscode.CustomDocument {
   }
 
   async groupElements(
-    elements: { column: number; line: number; path: string }[],
+    elements: { astPath: string; column: number; line: number; path: string }[],
   ) {
     const elementsByPath = Object.groupBy(elements, (e) => e.path);
 
@@ -134,6 +135,8 @@ export class TriplexDocument implements vscode.CustomDocument {
         );
 
         const response: Mutation & {
+          // TODO: Add to response.
+          astPath: string;
           column: number;
           line: number;
         } = await result.json();
@@ -143,7 +146,12 @@ export class TriplexDocument implements vscode.CustomDocument {
     }
   }
 
-  async duplicateElement(data: { column: number; line: number; path: string }) {
+  async duplicateElement(data: {
+    astPath: string;
+    column: number;
+    line: number;
+    path: string;
+  }) {
     return this.undoableAction("Duplicate element", async () => {
       const result = await fetch(
         `http://localhost:${
@@ -155,6 +163,8 @@ export class TriplexDocument implements vscode.CustomDocument {
       );
 
       const response: Mutation & {
+        // TODO: Add to response.
+        astPath: string;
         column: number;
         line: number;
       } = await result.json();
@@ -174,10 +184,7 @@ export class TriplexDocument implements vscode.CustomDocument {
         { method: "POST" },
       );
 
-      const response: Mutation & {
-        column: number;
-        line: number;
-      } = await result.json();
+      const response: Mutation = await result.json();
 
       return { ...response, path: data.path };
     });
@@ -185,9 +192,9 @@ export class TriplexDocument implements vscode.CustomDocument {
 
   async moveElement(data: {
     action: "move-before" | "move-after" | "make-child" | "reparent";
-    destination: { column: number; line: number };
+    destination: { astPath: string; column: number; line: number };
     path: string;
-    source: { column: number; line: number };
+    source: { astPath: string; column: number; line: number };
   }) {
     return this.undoableAction("Move element", async () => {
       const result = await fetch(

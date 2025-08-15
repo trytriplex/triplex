@@ -6,6 +6,7 @@
  */
 import { EraserIcon } from "@radix-ui/react-icons";
 import { send } from "@triplex/bridge/host";
+import { fg } from "@triplex/lib/fg";
 import { PropInput } from "@triplex/ux/inputs";
 import { useEffect, useReducer } from "react";
 import * as Accordion from "../../components/accordion";
@@ -71,7 +72,9 @@ function SelectionPanelLoadable({ selected }: { selected: SceneSelected }) {
   const props = useLazySubscription(
     isPropsForComponent
       ? "/scene/:path/:exportName/props"
-      : "/scene/:path/object/:line/:column",
+      : selected.astPath && fg("selection_ast_path")
+        ? "/scene/:path/object/:astPath"
+        : "/scene/:path/object/:line/:column",
     selected,
   );
   const hasProps = !!props && props.props.length > 0;
@@ -116,6 +119,7 @@ function SelectionPanelLoadable({ selected }: { selected: SceneSelected }) {
               onClick={() => {
                 props.props.forEach((prop) => {
                   send("request-reset-prop", {
+                    astPath: selected.astPath,
                     column: -1,
                     line: -1,
                     path: selected.path,
@@ -162,7 +166,12 @@ function SelectionPanelLoadable({ selected }: { selected: SceneSelected }) {
                     onChange={(propValue) => {
                       send("request-set-element-prop", {
                         ...(isPropsForComponent
-                          ? { column: -1, line: -1, path: selected.path }
+                          ? {
+                              astPath: selected.astPath,
+                              column: -1,
+                              line: -1,
+                              path: selected.path,
+                            }
                           : selected),
                         propName: prop.name,
                         propValue,

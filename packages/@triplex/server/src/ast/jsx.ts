@@ -172,27 +172,6 @@ export function resolveExportDeclaration(node: Node<ts.Node>) {
   return node;
 }
 
-export function calculatePaths(
-  nodes: JsxElementPositions[],
-  parentPath: string,
-) {
-  const siblingCounter: Record<string, number> = {};
-
-  for (let i = 0; i < nodes.length; i++) {
-    // Count the number of sibling children and add a suffix when more than 1.
-    const node = nodes[i];
-
-    siblingCounter[node.tagName] ??= 0;
-    siblingCounter[node.tagName] += 1;
-
-    const count = siblingCounter[node.tagName] - 1;
-    const suffix = count > 0 ? `.${count}` : "";
-    node.astPath = `${parentPath}/${node.tagName}${suffix}`;
-
-    calculatePaths(node.children, node.astPath);
-  }
-}
-
 export function getJsxElementsPositions(
   sourceFile: SourceFileReadOnly,
   exportName: string,
@@ -203,9 +182,42 @@ export function getJsxElementsPositions(
   const foundExport = sourceFile
     .getExportSymbols()
     .find((symbol) => symbol.getName() === exportName);
+  const positionsNodes = new Map<
+    JsxElementPositions,
+    JsxElement | JsxFragment | JsxSelfClosingElement
+  >();
+  const astPathNodes: Record<
+    string,
+    JsxElement | JsxFragment | JsxSelfClosingElement
+  > = {};
 
   if (!foundExport) {
     return undefined;
+  }
+
+  function calculatePaths(nodes: JsxElementPositions[], parentPath: string) {
+    const siblingCounter: Record<string, number> = {};
+
+    for (let i = 0; i < nodes.length; i++) {
+      // Count the number of sibling children and add a suffix when more than 1.
+      const node = nodes[i];
+
+      siblingCounter[node.tagName] ??= 0;
+      siblingCounter[node.tagName] += 1;
+
+      const count = siblingCounter[node.tagName] - 1;
+      const suffix = count > 0 ? `.${count}` : "";
+      node.astPath = `${parentPath}/${node.tagName}${suffix}`;
+
+      calculatePaths(node.children, node.astPath);
+
+      const astNode = positionsNodes.get(node);
+      if (!astNode) {
+        throw new Error("invariant: unexpected");
+      }
+
+      astPathNodes[node.astPath] = astNode;
+    }
   }
 
   const declaration = resolveExportDeclaration(
@@ -266,13 +278,14 @@ export function getJsxElementsPositions(
         elements.push(positions);
       }
 
+      positionsNodes.set(positions, node);
       parentPointers.set(node, positions);
     }
   });
 
-  calculatePaths(elements, "root");
+  calculatePaths(elements, exportName);
 
-  return { declaration, elements };
+  return { declaration, elements, nodes: astPathNodes };
 }
 
 export type AttributesResult = {
@@ -423,4 +436,17 @@ export function getJsxElementAtOrThrow(
   }
 
   return sceneObject;
+}
+
+export function getJsxElementFromAstPath(
+  sourceFile: SourceFileReadOnly,
+  astPath: string,
+) {
+  const exportName = astPath.split("/")[0];
+  const positions = getJsxElementsPositions(sourceFile, exportName);
+  if (!positions) {
+    return undefined;
+  }
+
+  return positions.nodes[astPath];
 }

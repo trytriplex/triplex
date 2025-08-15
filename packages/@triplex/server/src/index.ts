@@ -22,6 +22,7 @@ import {
 import {
   getFunctionProps,
   getJsxElementAtOrThrow,
+  getJsxElementFromAstPath,
   getJsxElementParentExportNameOrThrow,
 } from "./ast/jsx";
 import { propGroupsDef } from "./ast/prop-groupings";
@@ -636,6 +637,51 @@ export function createServer({
         const column = Number(params.column);
         const sourceFile = project.getSourceFile(path);
         const sceneObject = getJsxElementAt(sourceFile.read(), line, column);
+
+        if (!sceneObject) {
+          return undefined;
+        }
+
+        const tag = getJsxTag(sceneObject);
+        const { props, transforms } = getJsxElementProps(
+          sourceFile.read(),
+          sceneObject,
+        );
+
+        if (tag.type === "custom") {
+          const elementPath = getElementFilePath(sceneObject);
+
+          return {
+            exportName: elementPath.exportName,
+            name: tag.tagName,
+            path: elementPath.filePath,
+            props,
+            transforms,
+            type: tag.type,
+          };
+        }
+
+        return {
+          name: tag.tagName,
+          props,
+          transforms,
+          type: tag.type,
+        } as const;
+      },
+      async (push, { path }) => {
+        const sourceFile = await project.getSourceFile(path);
+        sourceFile.onModified(push);
+        sourceFile.onDependencyModified(push);
+      },
+    ),
+    tws.route(
+      { defer: true, path: "/scene/:path/object/:astPath" },
+      ({ astPath, path }) => {
+        const sourceFile = project.getSourceFile(path);
+        const sceneObject = getJsxElementFromAstPath(
+          sourceFile.read(),
+          astPath,
+        );
 
         if (!sceneObject) {
           return undefined;

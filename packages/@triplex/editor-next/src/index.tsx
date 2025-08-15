@@ -46,9 +46,15 @@ preloadSubscription(
 );
 
 async function bootstrap() {
+  // Parse VITE_FG_OVERRIDES for test environments
+  const viteOverrides = JSON.parse(import.meta.env.VITE_FG_OVERRIDES || "{}");
+
   await initFeatureGates({
     environment: window.triplex.env.fgEnvironmentOverride,
-    overrides: window.triplex.env.config.experimental,
+    overrides: {
+      ...window.triplex.env.config.experimental,
+      ...viteOverrides,
+    },
     userId: window.triplex.userId,
   });
 

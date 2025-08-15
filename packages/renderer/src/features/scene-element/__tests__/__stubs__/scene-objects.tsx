@@ -13,6 +13,7 @@ function Component({ children }: { children: React.ReactNode }) {
     <SceneElement
       __component="group"
       __meta={{
+        astPath: "root/group",
         column: 1,
         exportName: "Component",
         line: 1,
@@ -26,6 +27,7 @@ function Component({ children }: { children: React.ReactNode }) {
       <SceneElement
         __component="mesh"
         __meta={{
+          astPath: "root/group/mesh",
           column: 22,
           exportName: "Component",
           line: 1,
@@ -47,6 +49,7 @@ export const nested = () => (
     <SceneElement
       __component={Fragment}
       __meta={{
+        astPath: "root/ComponentA",
         column: 1,
         exportName: "Nested",
         line: 1,
@@ -60,6 +63,7 @@ export const nested = () => (
       <SceneElement
         __component={Component}
         __meta={{
+          astPath: "root/ComponentA/ComponentB",
           column: 10,
           exportName: "Nested",
           line: 20,

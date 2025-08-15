@@ -206,6 +206,7 @@ export type ThumbnailFunction = (
 }) => void;
 
 export interface EmbeddedMeta {
+  astPath: string;
   column: number;
   exportName?: string;
   line: number;

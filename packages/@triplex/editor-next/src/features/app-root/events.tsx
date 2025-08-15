@@ -85,6 +85,7 @@ export function Events() {
 
         sendVSCE("element-group", [
           {
+            astPath: target.astPath,
             column: target.column,
             line: target.line,
             path: target.path,

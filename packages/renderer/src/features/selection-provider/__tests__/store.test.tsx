@@ -78,17 +78,39 @@ describe("selection store", () => {
 
     act(() => {
       store.current.select(
-        [{ column: 1, line: 2, parentPath: "/foo", path: "/bar" }],
+        [
+          {
+            astPath: "/root/mesh",
+            column: 1,
+            line: 2,
+            parentPath: "/foo",
+            path: "/bar",
+          },
+        ],
         "replace",
       );
       store.current.select(
-        [{ column: 2, line: 4, parentPath: "/foo", path: "/bar" }],
+        [
+          {
+            astPath: "/root/mesh.1",
+            column: 2,
+            line: 4,
+            parentPath: "/foo",
+            path: "/bar",
+          },
+        ],
         "replace",
       );
     });
 
     expect(store.current.selections).toEqual([
-      { column: 2, line: 4, parentPath: "/foo", path: "/bar" },
+      {
+        astPath: "/root/mesh.1",
+        column: 2,
+        line: 4,
+        parentPath: "/foo",
+        path: "/bar",
+      },
     ]);
   });
 
@@ -98,18 +120,46 @@ describe("selection store", () => {
 
     act(() => {
       store.current.select(
-        [{ column: 1, line: 2, parentPath: "/foo", path: "/bar" }],
+        [
+          {
+            astPath: "/root/mesh",
+            column: 1,
+            line: 2,
+            parentPath: "/foo",
+            path: "/bar",
+          },
+        ],
         "addition",
       );
       store.current.select(
-        [{ column: 2, line: 4, parentPath: "/foo", path: "/bar" }],
+        [
+          {
+            astPath: "/root/mesh.1",
+            column: 2,
+            line: 4,
+            parentPath: "/foo",
+            path: "/bar",
+          },
+        ],
         "addition",
       );
     });
 
     expect(store.current.selections).toEqual([
-      { column: 1, line: 2, parentPath: "/foo", path: "/bar" },
-      { column: 2, line: 4, parentPath: "/foo", path: "/bar" },
+      {
+        astPath: "/root/mesh",
+        column: 1,
+        line: 2,
+        parentPath: "/foo",
+        path: "/bar",
+      },
+      {
+        astPath: "/root/mesh.1",
+        column: 2,
+        line: 4,
+        parentPath: "/foo",
+        path: "/bar",
+      },
     ]);
   });
 
@@ -119,7 +169,15 @@ describe("selection store", () => {
 
     act(() => {
       store.current.select(
-        [{ column: 1, line: 2, parentPath: "/foo", path: "/bar" }],
+        [
+          {
+            astPath: "/root/mesh",
+            column: 1,
+            line: 2,
+            parentPath: "/foo",
+            path: "/bar",
+          },
+        ],
         "replace",
       );
       store.current.clear();
@@ -134,6 +192,7 @@ describe("selection store", () => {
 
     act(() => {
       store.current.setHovered({
+        astPath: "/root/mesh",
         column: 1,
         line: 2,
         parentPath: "/foo",
@@ -142,6 +201,7 @@ describe("selection store", () => {
     });
 
     expect(store.current.hovered).toEqual({
+      astPath: "/root/mesh",
       column: 1,
       line: 2,
       parentPath: "/foo",
@@ -155,13 +215,22 @@ describe("selection store", () => {
 
     act(() => {
       store.current.setHovered({
+        astPath: "/root/mesh",
         column: 1,
         line: 2,
         parentPath: "/foo",
         path: "/bar",
       });
       store.current.select(
-        [{ column: 1, line: 2, parentPath: "/foo", path: "/bar" }],
+        [
+          {
+            astPath: "/root/mesh",
+            column: 1,
+            line: 2,
+            parentPath: "/foo",
+            path: "/bar",
+          },
+        ],
         "replace",
       );
     });
@@ -188,6 +257,7 @@ describe("selection store", () => {
     render(<Component />);
 
     const selection = () => ({
+      astPath: "/root/mesh",
       column: 1,
       line: 2,
       parentPath: "/foo",

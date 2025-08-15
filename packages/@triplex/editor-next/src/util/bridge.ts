@@ -23,6 +23,7 @@ export interface FromVSCodeEvent {
   "vscode:request-blur-element": void;
   "vscode:request-delete-element":
     | {
+        astPath: string;
         column: number;
         line: number;
         path: string;
@@ -30,18 +31,21 @@ export interface FromVSCodeEvent {
     | undefined;
   "vscode:request-duplicate-element":
     | {
+        astPath: string;
         column: number;
         line: number;
         path: string;
       }
     | undefined;
   "vscode:request-focus-element": {
+    astPath: string;
     column: number;
     line: number;
     path: string;
   };
   "vscode:request-group-elements":
     | {
+        astPath: string;
         column: number;
         line: number;
         path: string;
@@ -49,6 +53,7 @@ export interface FromVSCodeEvent {
     | undefined;
   "vscode:request-jump-to-element":
     | {
+        astPath: string;
         column: number;
         line: number;
         path: string;
@@ -81,25 +86,28 @@ export interface ToVSCodeEvent extends ClientSendEventData {
         type: "add";
       };
   "element-delete": {
+    astPath: string;
     column: number;
     line: number;
     path: string;
   };
   "element-duplicate": {
+    astPath: string;
     column: number;
     line: number;
     path: string;
   };
   "element-group": {
+    astPath: string;
     column: number;
     line: number;
     path: string;
   }[];
   "element-move": {
     action: "move-before" | "move-after" | "make-child" | "reparent";
-    destination: { column: number; line: number };
+    destination: { astPath: string; column: number; line: number };
     path: string;
-    source: { column: number; line: number };
+    source: { astPath: string; column: number; line: number };
   };
   notification: {
     actions: string[];

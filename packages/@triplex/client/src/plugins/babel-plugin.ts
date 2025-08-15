@@ -79,15 +79,26 @@ export default function triplexBabelPlugin({
   const componentsFoundInPass = new Map<string, ComponentMetadata>();
   const componentMetaDependencyMap = new Map<string, string>();
   const exclude = excludeDirs.filter(Boolean);
-  const locationPointer: JSXElementLocation[] = [
-    {
-      children: [],
-      name: "root",
-      parent: null,
-    },
-  ];
+  const locationPointer: JSXElementLocation[] = [];
 
-  function pushLocation(elementName: string) {
+  function pushLocation(elementName: string, exportName: string) {
+    if (locationPointer.length === 0) {
+      // First push, add the root (exports are considered root!).
+      locationPointer.push({
+        children: [],
+        name: exportName,
+        parent: null,
+      });
+    } else if (locationPointer.at(0)?.name !== exportName) {
+      // We've changed exports, start again.
+      locationPointer.length = 0;
+      locationPointer.push({
+        children: [],
+        name: exportName,
+        parent: null,
+      });
+    }
+
     const pointer = locationPointer.at(-1);
     const newLocation: JSXElementLocation = {
       children: [],
@@ -142,11 +153,6 @@ export default function triplexBabelPlugin({
 
   function resetLocation() {
     locationPointer.length = 0;
-    locationPointer.push({
-      children: [],
-      name: "root",
-      parent: null,
-    });
   }
 
   let shouldSkip = false;
@@ -462,7 +468,10 @@ export default function triplexBabelPlugin({
           const functionMeta =
             currentFunction && componentsFoundInPass.get(currentFunction.name);
 
-          pushLocation(elementName);
+          pushLocation(
+            elementName,
+            (currentFunction && currentFunction.exportName) || "root",
+          );
           cache.add(path.node);
 
           if (functionMeta && currentFunction) {
@@ -662,7 +671,10 @@ export default function triplexBabelPlugin({
             return;
           }
 
-          pushLocation("Fragment");
+          pushLocation(
+            "Fragment",
+            (currentFunction && currentFunction.exportName) || "root",
+          );
 
           shouldImportFragment = true;
           cache.add(path.node);

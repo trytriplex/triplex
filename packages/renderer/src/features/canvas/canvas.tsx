@@ -97,6 +97,7 @@ export function Canvas({ children, ...props }: CanvasProps) {
             <SceneElement
               __component={providers.CanvasProvider}
               __meta={{
+                astPath: "global/CanvasProvider",
                 column: -999,
                 exportName: "CanvasProvider",
                 line: -999,

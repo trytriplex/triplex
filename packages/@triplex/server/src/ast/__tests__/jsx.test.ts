@@ -7,7 +7,6 @@
 import { basename, join } from "@triplex/lib/path";
 import { describe, expect, it } from "vitest";
 import { type JsxElementPositions } from "../../types";
-import { fromCwd } from "../../util/path";
 import {
   getJsxElementAt,
   getJsxElementAtOrThrow,
@@ -32,6 +31,9 @@ function simplifyJsxPositions(
 function reducePaths(nodes: JsxElementPositions[]) {
   nodes.forEach((node) => {
     node.parentPath = basename(node.parentPath);
+    if ("path" in node && node.path) {
+      node.path = basename(node.path);
+    }
     reducePaths(node.children);
   });
 
@@ -118,18 +120,20 @@ describe("jsx ast extractor", () => {
     const { elements } = getJsxElementsPositions(sourceFile, "default")!;
     elements[0].children = [];
 
-    expect(elements[0]).toEqual({
-      astPath: "root/RigidBody",
-      children: [],
-      column: 5,
-      exportName: "",
-      line: 19,
-      name: "RigidBody",
-      parentPath: fromCwd("src/ast/__tests__/__mocks__/n_modules.tsx"),
-      path: "",
-      tagName: "RigidBody",
-      type: "custom",
-    });
+    expect(reducePaths(elements)[0]).toMatchInlineSnapshot(`
+      {
+        "astPath": "default/RigidBody",
+        "children": [],
+        "column": 5,
+        "exportName": "",
+        "line": 19,
+        "name": "RigidBody",
+        "parentPath": "n_modules.tsx",
+        "path": "",
+        "tagName": "RigidBody",
+        "type": "custom",
+      }
+    `);
   });
 
   it("should return jsx positions for a expression export", () => {
@@ -142,39 +146,41 @@ describe("jsx ast extractor", () => {
 
     const { elements } = getJsxElementsPositions(sourceFile, "default")!;
 
-    expect(elements).toEqual([
-      {
-        astPath: "root/mesh",
-        children: [
-          {
-            astPath: "root/mesh/boxGeometry",
-            children: [],
-            column: 7,
-            line: 14,
-            name: "boxGeometry",
-            parentPath: fromCwd("/src/ast/__tests__/__mocks__/expression.tsx"),
-            tagName: "boxGeometry",
-            type: "host",
-          },
-          {
-            astPath: "root/mesh/meshStandardMaterial",
-            children: [],
-            column: 7,
-            line: 15,
-            name: "meshStandardMaterial",
-            parentPath: fromCwd("/src/ast/__tests__/__mocks__/expression.tsx"),
-            tagName: "meshStandardMaterial",
-            type: "host",
-          },
-        ],
-        column: 5,
-        line: 13,
-        name: "mesh",
-        parentPath: fromCwd("/src/ast/__tests__/__mocks__/expression.tsx"),
-        tagName: "mesh",
-        type: "host",
-      },
-    ]);
+    expect(reducePaths(elements)).toMatchInlineSnapshot(`
+      [
+        {
+          "astPath": "default/mesh",
+          "children": [
+            {
+              "astPath": "default/mesh/boxGeometry",
+              "children": [],
+              "column": 7,
+              "line": 14,
+              "name": "boxGeometry",
+              "parentPath": "expression.tsx",
+              "tagName": "boxGeometry",
+              "type": "host",
+            },
+            {
+              "astPath": "default/mesh/meshStandardMaterial",
+              "children": [],
+              "column": 7,
+              "line": 15,
+              "name": "meshStandardMaterial",
+              "parentPath": "expression.tsx",
+              "tagName": "meshStandardMaterial",
+              "type": "host",
+            },
+          ],
+          "column": 5,
+          "line": 13,
+          "name": "mesh",
+          "parentPath": "expression.tsx",
+          "tagName": "mesh",
+          "type": "host",
+        },
+      ]
+    `);
   });
 
   it("should a group custom component props that is sourced from three.js", () => {
@@ -241,81 +247,83 @@ describe("jsx ast extractor", () => {
 
     const { elements } = getJsxElementsPositions(sourceFile, "default")!;
 
-    expect(elements).toEqual([
-      {
-        astPath: "root/Fragment",
-        children: [
-          {
-            astPath: "root/Fragment/Box",
-            children: [],
-            column: 7,
-            exportName: "default",
-            line: 25,
-            name: "Box",
-            parentPath: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
-            path: fromCwd("src/ast/__tests__/__mocks__/box.tsx"),
-            tagName: "Box",
-            type: "custom",
-          },
-          {
-            astPath: "root/Fragment/Cylinder",
-            children: [],
-            column: 7,
-            exportName: "default",
-            line: 31,
-            name: "Cylinder",
-            parentPath: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
-            path: fromCwd("src/ast/__tests__/__mocks__/cylinder.tsx"),
-            tagName: "Cylinder",
-            type: "custom",
-          },
-          {
-            astPath: "root/Fragment/SceneAlt",
-            children: [],
-            column: 7,
-            exportName: "SceneAlt",
-            line: 34,
-            name: "SceneAlt",
-            parentPath: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
-            path: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
-            tagName: "SceneAlt",
-            type: "custom",
-          },
-          {
-            astPath: "root/Fragment/SceneWrapped",
-            children: [],
-            column: 7,
-            exportName: "SceneWrapped",
-            line: 35,
-            name: "SceneWrapped",
-            parentPath: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
-            path: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
-            tagName: "SceneWrapped",
-            type: "custom",
-          },
-          {
-            astPath: "root/Fragment/SceneArrow",
-            children: [],
-            column: 7,
-            exportName: "SceneArrow",
-            line: 36,
-            name: "SceneArrow",
-            parentPath: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
-            path: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
-            tagName: "SceneArrow",
-            type: "custom",
-          },
-        ],
-        column: 5,
-        exportName: "",
-        line: 24,
-        name: "Fragment",
-        parentPath: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
-        path: "",
-        tagName: "Fragment",
-        type: "custom",
-      },
-    ]);
+    expect(reducePaths(elements)).toMatchInlineSnapshot(`
+      [
+        {
+          "astPath": "default/Fragment",
+          "children": [
+            {
+              "astPath": "default/Fragment/Box",
+              "children": [],
+              "column": 7,
+              "exportName": "default",
+              "line": 25,
+              "name": "Box",
+              "parentPath": "scene.tsx",
+              "path": "box.tsx",
+              "tagName": "Box",
+              "type": "custom",
+            },
+            {
+              "astPath": "default/Fragment/Cylinder",
+              "children": [],
+              "column": 7,
+              "exportName": "default",
+              "line": 31,
+              "name": "Cylinder",
+              "parentPath": "scene.tsx",
+              "path": "cylinder.tsx",
+              "tagName": "Cylinder",
+              "type": "custom",
+            },
+            {
+              "astPath": "default/Fragment/SceneAlt",
+              "children": [],
+              "column": 7,
+              "exportName": "SceneAlt",
+              "line": 34,
+              "name": "SceneAlt",
+              "parentPath": "scene.tsx",
+              "path": "scene.tsx",
+              "tagName": "SceneAlt",
+              "type": "custom",
+            },
+            {
+              "astPath": "default/Fragment/SceneWrapped",
+              "children": [],
+              "column": 7,
+              "exportName": "SceneWrapped",
+              "line": 35,
+              "name": "SceneWrapped",
+              "parentPath": "scene.tsx",
+              "path": "scene.tsx",
+              "tagName": "SceneWrapped",
+              "type": "custom",
+            },
+            {
+              "astPath": "default/Fragment/SceneArrow",
+              "children": [],
+              "column": 7,
+              "exportName": "SceneArrow",
+              "line": 36,
+              "name": "SceneArrow",
+              "parentPath": "scene.tsx",
+              "path": "scene.tsx",
+              "tagName": "SceneArrow",
+              "type": "custom",
+            },
+          ],
+          "column": 5,
+          "exportName": "",
+          "line": 24,
+          "name": "Fragment",
+          "parentPath": "scene.tsx",
+          "path": "",
+          "tagName": "Fragment",
+          "type": "custom",
+        },
+      ]
+    `);
   });
 
   it("should return top level components for named export", async () => {
@@ -328,18 +336,20 @@ describe("jsx ast extractor", () => {
 
     const { elements } = getJsxElementsPositions(sourceFile, "SceneAlt")!;
 
-    expect(elements[0]).toEqual({
-      astPath: "root/Box",
-      children: [],
-      column: 10,
-      exportName: "default",
-      line: 13,
-      name: "Box",
-      parentPath: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
-      path: fromCwd("src/ast/__tests__/__mocks__/box.tsx"),
-      tagName: "Box",
-      type: "custom",
-    });
+    expect(reducePaths(elements)[0]).toMatchInlineSnapshot(`
+      {
+        "astPath": "SceneAlt/Box",
+        "children": [],
+        "column": 10,
+        "exportName": "default",
+        "line": 13,
+        "name": "Box",
+        "parentPath": "scene.tsx",
+        "path": "box.tsx",
+        "tagName": "Box",
+        "type": "custom",
+      }
+    `);
   });
 
   it("should return top level components for named arrow export", async () => {
@@ -352,18 +362,20 @@ describe("jsx ast extractor", () => {
 
     const { elements } = getJsxElementsPositions(sourceFile, "SceneArrow")!;
 
-    expect(elements[0]).toEqual({
-      astPath: "root/Box",
-      children: [],
-      column: 33,
-      exportName: "default",
-      line: 10,
-      name: "Box",
-      parentPath: fromCwd("src/ast/__tests__/__mocks__/scene.tsx"),
-      path: fromCwd("src/ast/__tests__/__mocks__/box.tsx"),
-      tagName: "Box",
-      type: "custom",
-    });
+    expect(reducePaths(elements)[0]).toMatchInlineSnapshot(`
+      {
+        "astPath": "SceneArrow/Box",
+        "children": [],
+        "column": 33,
+        "exportName": "default",
+        "line": 10,
+        "name": "Box",
+        "parentPath": "scene.tsx",
+        "path": "box.tsx",
+        "tagName": "Box",
+        "type": "custom",
+      }
+    `);
   });
 
   it("should return jsx information nested", () => {
@@ -376,39 +388,41 @@ describe("jsx ast extractor", () => {
 
     const { elements } = getJsxElementsPositions(sourceFile, "default")!;
 
-    expect(elements).toEqual([
-      {
-        astPath: "root/mesh",
-        children: [
-          {
-            astPath: "root/mesh/boxGeometry",
-            children: [],
-            column: 7,
-            line: 18,
-            name: "boxGeometry",
-            parentPath: fromCwd("/src/ast/__tests__/__mocks__/box.tsx"),
-            tagName: "boxGeometry",
-            type: "host",
-          },
-          {
-            astPath: "root/mesh/meshStandardMaterial",
-            children: [],
-            column: 7,
-            line: 19,
-            name: "meshStandardMaterial",
-            parentPath: fromCwd("/src/ast/__tests__/__mocks__/box.tsx"),
-            tagName: "meshStandardMaterial",
-            type: "host",
-          },
-        ],
-        column: 5,
-        line: 17,
-        name: "mesh",
-        parentPath: fromCwd("/src/ast/__tests__/__mocks__/box.tsx"),
-        tagName: "mesh",
-        type: "host",
-      },
-    ]);
+    expect(reducePaths(elements)).toMatchInlineSnapshot(`
+      [
+        {
+          "astPath": "default/mesh",
+          "children": [
+            {
+              "astPath": "default/mesh/boxGeometry",
+              "children": [],
+              "column": 7,
+              "line": 18,
+              "name": "boxGeometry",
+              "parentPath": "box.tsx",
+              "tagName": "boxGeometry",
+              "type": "host",
+            },
+            {
+              "astPath": "default/mesh/meshStandardMaterial",
+              "children": [],
+              "column": 7,
+              "line": 19,
+              "name": "meshStandardMaterial",
+              "parentPath": "box.tsx",
+              "tagName": "meshStandardMaterial",
+              "type": "host",
+            },
+          ],
+          "column": 5,
+          "line": 17,
+          "name": "mesh",
+          "parentPath": "box.tsx",
+          "tagName": "mesh",
+          "type": "host",
+        },
+      ]
+    `);
   });
 
   it("should extract tuple props from a host jsx element", () => {
@@ -3334,50 +3348,52 @@ describe("jsx ast extractor", () => {
 
     const { elements } = getJsxElementsPositions(sourceFile, "default")!;
 
-    expect(elements).toEqual([
-      {
-        astPath: "root/group",
-        children: [
-          {
-            astPath: "root/group/mesh",
-            children: [
-              {
-                astPath: "root/group/mesh/boxGeometry",
-                children: [],
-                column: 9,
-                line: 11,
-                name: "boxGeometry",
-                parentPath: fromCwd("/src/ast/__tests__/__mocks__/nested.tsx"),
-                tagName: "boxGeometry",
-                type: "host",
-              },
-              {
-                astPath: "root/group/mesh/meshBasicMaterial",
-                children: [],
-                column: 9,
-                line: 12,
-                name: "meshBasicMaterial",
-                parentPath: fromCwd("/src/ast/__tests__/__mocks__/nested.tsx"),
-                tagName: "meshBasicMaterial",
-                type: "host",
-              },
-            ],
-            column: 7,
-            line: 10,
-            name: "mesh",
-            parentPath: fromCwd("/src/ast/__tests__/__mocks__/nested.tsx"),
-            tagName: "mesh",
-            type: "host",
-          },
-        ],
-        column: 5,
-        line: 9,
-        name: "group",
-        parentPath: fromCwd("/src/ast/__tests__/__mocks__/nested.tsx"),
-        tagName: "group",
-        type: "host",
-      },
-    ]);
+    expect(reducePaths(elements)).toMatchInlineSnapshot(`
+      [
+        {
+          "astPath": "default/group",
+          "children": [
+            {
+              "astPath": "default/group/mesh",
+              "children": [
+                {
+                  "astPath": "default/group/mesh/boxGeometry",
+                  "children": [],
+                  "column": 9,
+                  "line": 11,
+                  "name": "boxGeometry",
+                  "parentPath": "nested.tsx",
+                  "tagName": "boxGeometry",
+                  "type": "host",
+                },
+                {
+                  "astPath": "default/group/mesh/meshBasicMaterial",
+                  "children": [],
+                  "column": 9,
+                  "line": 12,
+                  "name": "meshBasicMaterial",
+                  "parentPath": "nested.tsx",
+                  "tagName": "meshBasicMaterial",
+                  "type": "host",
+                },
+              ],
+              "column": 7,
+              "line": 10,
+              "name": "mesh",
+              "parentPath": "nested.tsx",
+              "tagName": "mesh",
+              "type": "host",
+            },
+          ],
+          "column": 5,
+          "line": 9,
+          "name": "group",
+          "parentPath": "nested.tsx",
+          "tagName": "group",
+          "type": "host",
+        },
+      ]
+    `);
   });
 
   it("should extract jsx positions from a separated export", () => {
@@ -3390,39 +3406,41 @@ describe("jsx ast extractor", () => {
 
     const { elements } = getJsxElementsPositions(sourceFile, "default")!;
 
-    expect(elements).toEqual([
-      {
-        astPath: "root/mesh",
-        children: [
-          {
-            astPath: "root/mesh/cylinderGeometry",
-            children: [],
-            column: 7,
-            line: 10,
-            name: "geo-hi (cylinderGeometry)",
-            parentPath: fromCwd("/src/ast/__tests__/__mocks__/cylinder.tsx"),
-            tagName: "cylinderGeometry",
-            type: "host",
-          },
-          {
-            astPath: "root/mesh/meshStandardMaterial",
-            children: [],
-            column: 7,
-            line: 11,
-            name: "meshStandardMaterial",
-            parentPath: fromCwd("/src/ast/__tests__/__mocks__/cylinder.tsx"),
-            tagName: "meshStandardMaterial",
-            type: "host",
-          },
-        ],
-        column: 5,
-        line: 9,
-        name: "this-is-cilly (mesh)",
-        parentPath: fromCwd("/src/ast/__tests__/__mocks__/cylinder.tsx"),
-        tagName: "mesh",
-        type: "host",
-      },
-    ]);
+    expect(reducePaths(elements)).toMatchInlineSnapshot(`
+      [
+        {
+          "astPath": "default/mesh",
+          "children": [
+            {
+              "astPath": "default/mesh/cylinderGeometry",
+              "children": [],
+              "column": 7,
+              "line": 10,
+              "name": "geo-hi (cylinderGeometry)",
+              "parentPath": "cylinder.tsx",
+              "tagName": "cylinderGeometry",
+              "type": "host",
+            },
+            {
+              "astPath": "default/mesh/meshStandardMaterial",
+              "children": [],
+              "column": 7,
+              "line": 11,
+              "name": "meshStandardMaterial",
+              "parentPath": "cylinder.tsx",
+              "tagName": "meshStandardMaterial",
+              "type": "host",
+            },
+          ],
+          "column": 5,
+          "line": 9,
+          "name": "this-is-cilly (mesh)",
+          "parentPath": "cylinder.tsx",
+          "tagName": "mesh",
+          "type": "host",
+        },
+      ]
+    `);
   });
 
   it("should get the tag name from a string literal for a named group", () => {
@@ -3517,10 +3535,10 @@ describe("jsx ast extractor", () => {
     expect(reducePaths(elements)).toMatchInlineSnapshot(`
       [
         {
-          "astPath": "root/Fragment",
+          "astPath": "default/Fragment",
           "children": [
             {
-              "astPath": "root/Fragment/mesh",
+              "astPath": "default/Fragment/mesh",
               "children": [],
               "column": 15,
               "line": 5,
@@ -3530,7 +3548,7 @@ describe("jsx ast extractor", () => {
               "type": "host",
             },
             {
-              "astPath": "root/Fragment/mesh.1",
+              "astPath": "default/Fragment/mesh.1",
               "children": [],
               "column": 15,
               "line": 6,

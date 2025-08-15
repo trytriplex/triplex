@@ -53,6 +53,7 @@ describe("scene object component", () => {
           <SceneElement
             __component={(props: unknown) => <mesh userData={{ props }} />}
             __meta={{
+              astPath: "root/ScrollControls",
               column: 1,
               exportName: "Component",
               line: 1,
@@ -81,6 +82,7 @@ describe("scene object component", () => {
           <SceneElement
             __component={(props: unknown) => <mesh userData={{ props }} />}
             __meta={{
+              astPath: "root/ScrollControls",
               column: 1,
               exportName: "Component",
               line: 1,
@@ -106,6 +108,7 @@ describe("scene object component", () => {
         <SceneElement
           __component="mesh"
           __meta={{
+            astPath: "root/mesh",
             column: 1,
             exportName: "Component",
             line: 1,
@@ -138,6 +141,7 @@ describe("scene object component", () => {
         <SceneElement
           __component="mesh"
           __meta={{
+            astPath: "root/mesh",
             column: 1,
             exportName: "Component",
             line: 1,
@@ -165,6 +169,7 @@ describe("scene object component", () => {
         <SceneElement
           __component="group"
           __meta={{
+            astPath: "root/group",
             column: 1,
             exportName: "Component",
             line: 1,
@@ -179,6 +184,7 @@ describe("scene object component", () => {
           <SceneElement
             __component="group"
             __meta={{
+              astPath: "root/group/group",
               column: 1,
               exportName: "Component",
               line: 2,
@@ -193,6 +199,7 @@ describe("scene object component", () => {
           <SceneElement
             __component="group"
             __meta={{
+              astPath: "root/group/group.1",
               column: 1,
               exportName: "Component",
               line: 3,
@@ -220,6 +227,7 @@ describe("scene object component", () => {
         <SceneElement
           __component="mesh"
           __meta={{
+            astPath: "root/mesh",
             column: 1,
             exportName: "Component",
             line: 1,
@@ -239,6 +247,7 @@ describe("scene object component", () => {
         <SceneElement
           __component={Component}
           __meta={{
+            astPath: "root/Component",
             column: 1,
             exportName: "Component",
             line: 1,
@@ -273,6 +282,7 @@ describe("scene object component", () => {
           <SceneElement
             __component="directionalLight"
             __meta={{
+              astPath: "root/directionalLight",
               column: 10,
               exportName: "Component",
               line: 99,
@@ -286,6 +296,7 @@ describe("scene object component", () => {
             <SceneElement
               __component="orthographicCamera"
               __meta={{
+                astPath: "root/orthographicCamera",
                 column: 10,
                 exportName: "Component",
                 line: 100,
@@ -314,6 +325,7 @@ describe("scene object component", () => {
         <SceneElement
           __component="mesh"
           __meta={{
+            astPath: "root/mesh",
             column: 1,
             exportName: "Component",
             line: 1,
@@ -334,6 +346,7 @@ describe("scene object component", () => {
         <SceneElement
           __component={Fragment}
           __meta={{
+            astPath: "root/componentA",
             column: 1,
             exportName: "ComponentA",
             line: 1,
@@ -347,6 +360,7 @@ describe("scene object component", () => {
           <SceneElement
             __component={Component}
             __meta={{
+              astPath: "root/componentA/ComponentB",
               column: 1,
               exportName: "ComponentB",
               line: 2,
@@ -380,6 +394,7 @@ describe("scene object component", () => {
         <SceneElement
           __component="group"
           __meta={{
+            astPath: "root/group",
             column: 1,
             exportName: "Component",
             line: 1,
@@ -393,6 +408,7 @@ describe("scene object component", () => {
           <SceneElement
             __component="mesh"
             __meta={{
+              astPath: "root/group/mesh",
               column: 1,
               exportName: "Component",
               line: 1,
@@ -414,6 +430,7 @@ describe("scene object component", () => {
         <SceneElement
           __component={Fragment}
           __meta={{
+            astPath: "root/Fragment",
             column: 1,
             exportName: "Comp1",
             line: 1,
@@ -427,6 +444,7 @@ describe("scene object component", () => {
           <SceneElement
             __component={Component}
             __meta={{
+              astPath: "root/Fragment/Component",
               column: 1,
               exportName: "Comp1",
               line: 2,
@@ -457,6 +475,7 @@ describe("scene object component", () => {
     const { scene } = await render(nested());
 
     const [[object]] = findObject3D(scene.instance, {
+      astPath: "root/group/mesh",
       column: 22,
       line: 1,
       path: "/foo",
@@ -470,6 +489,7 @@ describe("scene object component", () => {
     const { scene } = await render(nested());
 
     const [[object]] = findObject3D(scene.instance, {
+      astPath: "root/ComponentA/ComponentB",
       column: 10,
       line: 20,
       path: "/bar",
@@ -490,6 +510,7 @@ describe("scene object component", () => {
         <SceneElement
           __component={MapControls}
           __meta={{
+            astPath: "root/MapControls",
             column: 1,
             exportName: "Component",
             line: 1,
@@ -513,6 +534,7 @@ describe("scene object component", () => {
           <SceneElement
             __component={MapControls}
             __meta={{
+              astPath: "root/MapControls",
               column: 1,
               exportName: "Component",
               line: 1,
@@ -547,6 +569,7 @@ describe("scene object component", () => {
               <mesh name="xr_origin" {...props} />
             )}
             __meta={{
+              astPath: "root/XROrigin",
               column: -1,
               exportName: "XROrigin",
               line: -1,
@@ -576,6 +599,7 @@ describe("scene object component", () => {
               <mesh name="xr_origin" {...props} />
             )}
             __meta={{
+              astPath: "root/XROrigin",
               column: -1,
               exportName: "XROrigin",
               line: -1,

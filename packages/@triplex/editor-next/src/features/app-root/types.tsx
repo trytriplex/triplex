@@ -7,12 +7,14 @@
 
 export type SceneSelected =
   | {
+      astPath: string;
       column: number;
       line: number;
       parentPath: string;
       path: string;
     }
   | {
+      astPath: string;
       column: number;
       exportName: string;
       line: number;

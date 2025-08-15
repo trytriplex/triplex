@@ -156,8 +156,8 @@ export class TriplexEditorProvider
         on(panel.webview, "code-update", (prop) => {
           document.updateCode(prop);
         }),
-        on(panel.webview, "element-move", (ata) => {
-          document.moveElement(ata);
+        on(panel.webview, "element-move", (data) => {
+          document.moveElement(data);
         }),
         on(panel.webview, "element-set-prop", (prop) => {
           document.upsertProp(prop);
@@ -257,6 +257,7 @@ export class TriplexEditorProvider
             "vscode:request-delete-element",
             args
               ? {
+                  astPath: args.astPath,
                   column: args.column,
                   line: args.line,
                   path: args.path,
@@ -285,6 +286,7 @@ export class TriplexEditorProvider
             "vscode:request-duplicate-element",
             args
               ? {
+                  astPath: args.astPath,
                   column: args.column,
                   line: args.line,
                   path: args.path,
@@ -305,6 +307,7 @@ export class TriplexEditorProvider
             "vscode:request-jump-to-element",
             args
               ? {
+                  astPath: args.astPath,
                   column: args.column,
                   line: args.line,
                   path: args.path,

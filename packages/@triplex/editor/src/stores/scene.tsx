@@ -89,13 +89,30 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
       send("request-blur-element", undefined);
     },
     deleteComponent(data) {
-      send("request-delete-element", data);
+      send("request-delete-element", {
+        ...data,
+        // AST PATH IS NOT SUPPORTED IN TRIPLEX STANDALONE CURRENTLY
+        astPath: "",
+      });
     },
     focus(sceneObject) {
-      send("request-focus-element", sceneObject);
+      send("request-focus-element", {
+        ...sceneObject,
+        // AST PATH IS NOT SUPPORTED IN TRIPLEX STANDALONE CURRENTLY
+        astPath: "",
+      });
     },
     jumpTo(sceneObject) {
-      send("request-jump-to-element", sceneObject);
+      send(
+        "request-jump-to-element",
+        sceneObject
+          ? {
+              ...sceneObject,
+              // AST PATH IS NOT SUPPORTED IN TRIPLEX STANDALONE CURRENTLY
+              astPath: "",
+            }
+          : undefined,
+      );
     },
     navigateTo(sceneObject) {
       send("request-open-component", sceneObject);
@@ -143,7 +160,11 @@ export const useScene = create<BridgeContext & { sceneReady: () => void }>(
       }
     },
     setPropValue(data) {
-      send("request-set-element-prop", data);
+      send("request-set-element-prop", {
+        ...data,
+        // AST PATH IS NOT SUPPORTED IN TRIPLEX STANDALONE CURRENTLY
+        astPath: "",
+      });
     },
   }),
 );

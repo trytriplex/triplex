@@ -32,6 +32,7 @@ function ProviderProps() {
 
   const providerPropGroups = [
     {
+      astPath: "global/GlobalProvider",
       column: -888,
       exportName: "GlobalProvider",
       line: -888,
@@ -42,6 +43,7 @@ function ProviderProps() {
         const props = globalProvider?.props;
         props?.forEach((prop) => {
           send("request-reset-prop", {
+            astPath: "global/GlobalProvider",
             column: -888,
             line: -888,
             path: window.triplex.env.config.provider,
@@ -51,6 +53,7 @@ function ProviderProps() {
       },
     },
     {
+      astPath: "global/CanvasProvider",
       column: -999,
       exportName: "CanvasProvider",
       line: -999,
@@ -77,6 +80,7 @@ function ProviderProps() {
         const props = (canvasProvider || deprecatedCanvasProvider)?.props;
         props?.forEach((prop) => {
           send("request-reset-prop", {
+            astPath: "global/CanvasProvider",
             column: -999,
             line: -999,
             path: window.triplex.env.config.provider,
@@ -166,6 +170,7 @@ function ProviderProps() {
                     key={prop.name}
                     onChange={(propValue) => {
                       send("request-set-element-prop", {
+                        astPath: group.astPath,
                         column: group.column,
                         line: group.line,
                         path: window.triplex.env.config.provider,

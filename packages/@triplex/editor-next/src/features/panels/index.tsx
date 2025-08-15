@@ -96,6 +96,7 @@ export function Panels() {
                   blurElement();
                 } else {
                   focusElement({
+                    astPath: "",
                     column: -1,
                     exportName: context.exportName,
                     line: -1,
