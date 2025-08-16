@@ -122,11 +122,17 @@ export class TriplexDocument implements vscode.CustomDocument {
     elements: { astPath: string; column: number; line: number; path: string }[],
   ) {
     const elementsByPath = Object.groupBy(elements, (e) => e.path);
+    const response: {
+      astPath: string;
+      column: number;
+      line: number;
+      path: string;
+    }[] = [];
 
     for (const path in elementsByPath) {
       const elements = elementsByPath[path];
 
-      await this.undoableAction("Group elements", async () => {
+      const result = await this.undoableAction("Group elements", async () => {
         const result = await fetch(
           `http://localhost:${
             this._context.ports.server
@@ -135,7 +141,6 @@ export class TriplexDocument implements vscode.CustomDocument {
         );
 
         const response: Mutation & {
-          // TODO: Add to response.
           astPath: string;
           column: number;
           line: number;
@@ -143,7 +148,16 @@ export class TriplexDocument implements vscode.CustomDocument {
 
         return { ...response, path };
       });
+
+      response.push({
+        astPath: result.astPath,
+        column: result.column,
+        line: result.line,
+        path,
+      });
     }
+
+    return response;
   }
 
   async duplicateElement(data: {

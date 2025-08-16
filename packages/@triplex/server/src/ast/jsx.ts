@@ -15,7 +15,7 @@ import {
   type JsxSelfClosingElement,
   type ts,
 } from "ts-morph";
-import type { JsxElementPositions } from "../types";
+import type { AstPathTreeNode, JsxElementPositions } from "../types";
 import { getElementFilePath } from "./module";
 import { type SourceFileReadOnly } from "./project";
 import {
@@ -186,16 +186,20 @@ export function getJsxElementsPositions(
     JsxElementPositions,
     JsxElement | JsxFragment | JsxSelfClosingElement
   >();
-  const astPathNodes: Record<
+  const astPathElements: Record<
     string,
     JsxElement | JsxFragment | JsxSelfClosingElement
   > = {};
+  const astPathNodes: Record<string, AstPathTreeNode> = {};
 
   if (!foundExport) {
     return undefined;
   }
 
-  function calculatePaths(nodes: JsxElementPositions[], parentPath: string) {
+  function calculatePaths(
+    nodes: JsxElementPositions[],
+    parent: AstPathTreeNode,
+  ) {
     const siblingCounter: Record<string, number> = {};
 
     for (let i = 0; i < nodes.length; i++) {
@@ -207,17 +211,30 @@ export function getJsxElementsPositions(
 
       const count = siblingCounter[node.tagName] - 1;
       const suffix = count > 0 ? `.${count}` : "";
-      node.astPath = `${parentPath}/${node.tagName}${suffix}`;
+      node.astPath = `${parent.astPath}/${node.tagName}${suffix}`;
 
-      calculatePaths(node.children, node.astPath);
+      const child: AstPathTreeNode = {
+        astPath: node.astPath,
+        children: [],
+        parent,
+        tagName: node.tagName,
+      };
+
+      astPathNodes[node.astPath] = child;
+
+      parent.children.push(child);
+
+      calculatePaths(node.children, child);
 
       const astNode = positionsNodes.get(node);
       if (!astNode) {
         throw new Error("invariant: unexpected");
       }
 
-      astPathNodes[node.astPath] = astNode;
+      astPathElements[node.astPath] = astNode;
     }
+
+    return parent;
   }
 
   const declaration = resolveExportDeclaration(
@@ -283,9 +300,20 @@ export function getJsxElementsPositions(
     }
   });
 
-  calculatePaths(elements, exportName);
+  const astPathRoot = calculatePaths(elements, {
+    astPath: exportName,
+    children: [],
+    parent: null,
+    tagName: "",
+  });
 
-  return { declaration, elements, nodes: astPathNodes };
+  return {
+    astPathElements,
+    astPathNodes,
+    astPathRoot,
+    declaration,
+    elements,
+  };
 }
 
 export type AttributesResult = {
@@ -448,17 +476,17 @@ export function getJsxElementFromAstPath(
     return undefined;
   }
 
-  return positions.nodes[astPath];
+  return [positions.astPathElements[astPath], positions.astPathNodes] as const;
 }
 
 export function getJsxElementFromAstPathOrThrow(
   sourceFile: SourceFileReadOnly,
   astPath: string,
 ) {
-  const sceneObject = getJsxElementFromAstPath(sourceFile, astPath);
-  if (!sceneObject) {
+  const result = getJsxElementFromAstPath(sourceFile, astPath);
+  if (!result) {
     throw new Error("invariant: not found");
   }
 
-  return sceneObject;
+  return result;
 }

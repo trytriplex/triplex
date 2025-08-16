@@ -271,3 +271,10 @@ export interface TriplexPorts {
   server: number;
   ws: number;
 }
+
+export interface AstPathTreeNode {
+  astPath: string;
+  children: AstPathTreeNode[];
+  parent: null | AstPathTreeNode;
+  tagName: string;
+}

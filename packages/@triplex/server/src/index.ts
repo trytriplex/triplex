@@ -38,6 +38,7 @@ import {
   duplicate,
   duplicateElement,
   group,
+  groupElements,
   insertCode,
   move,
   rename,
@@ -165,11 +166,18 @@ export async function createServer({
     const sourceFile = project.getSourceFile(context.params.path);
     const body = await context.request.body({ type: "json" }).value;
 
-    const [ids] = await sourceFile.edit((source) => {
-      group(source, { elements: body.elements, group: "group" });
+    const [ids, result] = await sourceFile.edit((source) => {
+      if (fg("selection_ast_path")) {
+        return groupElements(source, {
+          elements: body.elements,
+          tag: "group",
+        });
+      } else {
+        return group(source, { elements: body.elements, group: "group" });
+      }
     });
 
-    context.response.body = { ...ids };
+    context.response.body = { ...ids, ...result };
   });
 
   router.post("/scene/:path/object/:line/:column/move", async (context) => {
@@ -264,7 +272,7 @@ export async function createServer({
     const [ids, result] = await sourceFile.edit((source) => {
       const jsxElement =
         astPath && fg("selection_ast_path")
-          ? getJsxElementFromAstPathOrThrow(source, astPath)
+          ? getJsxElementFromAstPathOrThrow(source, astPath)[0]
           : getJsxElementAtOrThrow(source, line, column);
 
       const action = upsertProp(jsxElement, name, value);
@@ -324,7 +332,7 @@ export async function createServer({
 
     const [ids] = await sourceFile.edit((source) => {
       if (astPath && fg("selection_ast_path")) {
-        deleteElement(getJsxElementFromAstPathOrThrow(source, astPath));
+        deleteElement(getJsxElementFromAstPathOrThrow(source, astPath)[0]);
       } else {
         commentComponent(source, Number(line), Number(column));
       }
@@ -713,15 +721,13 @@ export async function createServer({
       { defer: true, path: "/scene/:path/object/:astPath" },
       ({ astPath, path }) => {
         const sourceFile = project.getSourceFile(path);
-        const sceneObject = getJsxElementFromAstPath(
-          sourceFile.read(),
-          astPath,
-        );
+        const result = getJsxElementFromAstPath(sourceFile.read(), astPath);
 
-        if (!sceneObject) {
+        if (!result) {
           return undefined;
         }
 
+        const [sceneObject] = result;
         const tag = getJsxTag(sceneObject);
         const { props, transforms } = getJsxElementProps(
           sourceFile.read(),

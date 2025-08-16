@@ -176,7 +176,12 @@ export class TriplexEditorProvider
           });
         }),
         on(panel.webview, "element-group", async (elements) => {
-          await document.groupElements(elements);
+          const groups = await document.groupElements(elements);
+          const firstGroup = groups.at(0);
+
+          if (firstGroup && firstGroup.astPath) {
+            sendVSCE(panel.webview, "vscode:request-focus-element", firstGroup);
+          }
         }),
         on(panel.webview, "element-delete", async (element) => {
           sendVSCE(panel.webview, "vscode:request-blur-element", undefined);

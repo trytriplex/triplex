@@ -23,6 +23,7 @@ import {
   duplicate,
   duplicateElement,
   group,
+  groupElements,
   insertCode,
   move,
   rename,
@@ -1458,7 +1459,7 @@ describe("component service", () => {
     expect(actual.astPath).toEqual("Test/Fragment/mesh.1");
   });
 
-  it("should return assumed ast path after duplicating element with cound", () => {
+  it("should return assumed ast path after duplicating element with count", () => {
     const project = _createProject({
       tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
     });
@@ -1474,5 +1475,57 @@ describe("component service", () => {
     const actual = duplicateElement(sourceFile, "Test/Fragment/mesh.1");
 
     expect(actual.astPath).toEqual("Test/Fragment/mesh.2");
+  });
+
+  it("should group elements via ast path and return top level group data", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.createSourceFile(
+      "groups.tsx",
+      `
+        export function Groups() {
+          return (
+            <>
+              <mesh />
+            </>
+          );
+        }
+      `,
+    );
+
+    const [result] = groupElements(sourceFile, {
+      elements: [{ astPath: "Groups/Fragment/mesh" }],
+      tag: "group",
+    });
+
+    expect(result.astPath).toEqual("Groups/Fragment/group");
+  });
+
+  it("should increment group name for duplicate elements", () => {
+    const project = _createProject({
+      tsConfigFilePath: join(__dirname, "__mocks__/tsconfig.json"),
+    });
+    const sourceFile = project.createSourceFile(
+      "groups.tsx",
+      `
+        export function Groups() {
+          return (
+            <>
+              <skinnedMesh />
+              <group />
+              <mesh />
+            </>
+          );
+        }
+      `,
+    );
+
+    const [result] = groupElements(sourceFile, {
+      elements: [{ astPath: "Groups/Fragment/mesh" }],
+      tag: "group",
+    });
+
+    expect(result.astPath).toEqual("Groups/Fragment/group.1");
   });
 });

@@ -560,7 +560,7 @@ export function duplicate(
 }
 
 export function duplicateElement(sourceFile: SourceFile, astPath: string) {
-  const jsxElement = getJsxElementFromAstPathOrThrow(sourceFile, astPath);
+  const [jsxElement] = getJsxElementFromAstPathOrThrow(sourceFile, astPath);
   const insertedLineCol = sourceFile.getLineAndColumnAtPos(jsxElement.getEnd());
   sourceFile.insertText(jsxElement.getEnd(), jsxElement.getText());
 
@@ -651,4 +651,46 @@ export function group(
 
     node.replaceWithText(`<${groupName}>${node.getText()}</${groupName}>`);
   }
+}
+
+export function groupElements(
+  sourceFile: SourceFile,
+  {
+    elements,
+    tag,
+  }: {
+    elements: { astPath: string }[];
+    tag: "Fragment" | "group";
+  },
+) {
+  const result: { astPath: string }[] = [];
+  const tagName = tag === "Fragment" ? "" : "group";
+
+  for (const element of elements) {
+    const [node, tree] = getJsxElementFromAstPathOrThrow(
+      sourceFile,
+      element.astPath,
+    );
+    node.replaceWithText(`<${tagName}>${node.getText()}</${tagName}>`);
+
+    const location = tree[element.astPath];
+    if (!location.parent) {
+      throw new Error("invariant");
+    }
+
+    const currentIndex = location.parent.children.findIndex(
+      (child) => child.astPath === element.astPath,
+    );
+    const tagsBeforeCurrentIndex = location.parent.children
+      .slice(0, currentIndex)
+      .filter((child) => child.tagName === tag).length;
+
+    const nextAstPath = `${location.parent.astPath}/${tag}${tagsBeforeCurrentIndex > 0 ? `.${tagsBeforeCurrentIndex}` : ""}`;
+
+    result.push({
+      astPath: nextAstPath,
+    });
+  }
+
+  return result;
 }
