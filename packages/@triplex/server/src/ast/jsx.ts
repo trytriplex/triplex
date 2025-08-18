@@ -476,7 +476,12 @@ export function getJsxElementFromAstPath(
     return undefined;
   }
 
-  return [positions.astPathElements[astPath], positions.astPathNodes] as const;
+  const matchingElement = positions.astPathElements[astPath];
+  if (!matchingElement) {
+    return undefined;
+  }
+
+  return [matchingElement, positions.astPathNodes] as const;
 }
 
 export function getJsxElementFromAstPathOrThrow(
