@@ -20,13 +20,6 @@ export default defineConfig({
       expect: {
         timeout: 60_000,
       },
-      name: "electron",
-      testDir: "./apps/electron/__tests__",
-    },
-    {
-      expect: {
-        timeout: 60_000,
-      },
       name: "vsce",
       testDir: "./apps/vscode/__tests__",
     },

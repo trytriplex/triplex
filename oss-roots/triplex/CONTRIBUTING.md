@@ -17,17 +17,13 @@ $ yarn
   [2/5] 🔍  Resolving packages...
 ```
 
-3. Install either [Triplex for VS Code](https://triplex.dev/docs/get-started/vscode) or [Triplex Standalone](https://triplex.dev/docs/get-started/standalone).
+3. Install [Triplex for VS Code](https://triplex.dev/docs/get-started/vscode).
 
 4. You're now ready to start developing!
 
 ## Developing With Triplex for VS Code
 
 With either VS Code or Cursor open, go to the `/examples` folder, find a component, and click the "Open in Triplex" Code Lens action.
-
-## Developing With Triplex Standalone
-
-With Triplex Standalone open, open one of the example packages and then open the component you want to develop against.
 
 ## Using Your Own Project
 

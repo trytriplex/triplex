@@ -1,3 +1,3 @@
 # @triplex/editor
 
-This package contains code for the standalone Triplex app.
+This package contains code for the deprecated standalone Triplex app.

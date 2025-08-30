@@ -141,7 +141,7 @@ export function Pricing() {
           <ul className="border-neutral -mx-4 -mb-4 mt-4 flex flex-col gap-3 border-t px-4 py-5">
             <li>
               <DetailsSummary
-                details="Develop with Triplex on your OS of choice using Triplex Standalone, or with Triplex for VS Code."
+                details="Develop with Triplex on your OS of choice using Triplex for VS Code."
                 summary="Visual development environment"
               />
             </li>

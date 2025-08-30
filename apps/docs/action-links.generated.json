@@ -1,12 +1,8 @@
 {
-  "Add Child Element": "Opens the assets panel to add a new element as a child to an element.",
-  "Add Element": "Opens the assets panel to add a new element to the scene.",
   "Component Controls": "Opens the component controls panel where you can change the props given to the component you have open.",
   "Component Switcher": "Switches between components found in the file.",
   "Controlled By Code": "Prop that is controlled by code, it can't be edited through the UI. Clicking on it jumps to its code declaration.",
   "Duplicate Element": "Duplicates the element with all of its props and children. The duplicated element will be selected.",
-  "New File": "Creates a new file and component in the editor.",
-  "Open Component": "Used to open a component in the editor.",
   "Open in Triplex": "VS Code CodeLens action to open the component in Triplex.",
   "Open in WebXR": "Used to open 3D components in WebXR where you can view and edit your components.",
   "Pause": "Pauses the scene in its current state so you can inspect and edit it.",

@@ -4,11 +4,5 @@
       "childLinks": true
     }
   },
-  "vscode": "Visual Studio Code",
-  "standalone": {
-    "title": "Standalone",
-    "theme": {
-      "childLinks": false
-    }
-  }
+  "vscode": "Visual Studio Code"
 }

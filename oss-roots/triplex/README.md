@@ -10,7 +10,7 @@ Triplex is your visual workspace for building [React](https://react.dev/) / [Thr
 
 ## Get Started
 
-1. Install [Triplex for VS Code](https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce) or [Triplex Standalone](https://triplex.dev/download).
+1. Install [Triplex for VS Code](https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce).
 1. Create a project using a [starter template](https://triplex.dev/docs/get-started/starting-a-project/create-from-template) or [open your existing one](https://triplex.dev/docs/get-started/starting-a-project/pre-existing-project).
 1. Open a component and build!
 

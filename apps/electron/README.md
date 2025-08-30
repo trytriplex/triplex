@@ -1,6 +1,6 @@
 # @triplex/electron
 
-This package contains the code for the standalone Electron app.
+This package contains the code for the deprecated standalone Electron app.
 
 To run locally:
 

@@ -17,24 +17,6 @@
         "--extensionDevelopmentPath=${workspaceFolder}/apps/vscode",
         "--enable-coi"
       ]
-    },
-    {
-      "args": [".", "--inspect"],
-      "cwd": "${workspaceFolder}/apps/electron",
-      "name": "Run Triplex Standalone",
-      "outputCapture": "std",
-      "request": "launch",
-      "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron",
-      "type": "node",
-      "windows": {
-        "runtimeExecutable": "${workspaceFolder}/node_modules/.bin/electron.cmd"
-      }
-    },
-    {
-      "name": "Attach Fork Process",
-      "request": "attach",
-      "type": "node",
-      "port": 40895
     }
   ]
 }

@@ -5,25 +5,8 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import Image from "next/image";
-import { Fragment, Suspense } from "react";
-import { suspend } from "suspend-react";
 import { cn } from "../util/cn";
 import { useBeginDownloadURL } from "../util/download";
-
-interface Release {
-  assets: {
-    browser_download_url: string;
-    id: number;
-    name: string;
-    size: number;
-  }[];
-  published_at: string;
-  tag_name: string;
-}
-
-function extname(path: string) {
-  return path.split(".").at(-1) || "";
-}
 
 const logos = {
   apple: (
@@ -82,100 +65,6 @@ function AssetDownload({
   );
 }
 
-function List() {
-  const beginDownload = useBeginDownloadURL();
-  const release: Release = suspend(
-    () =>
-      fetch(
-        "https://api.github.com/repos/try-triplex/triplex/releases/latest",
-      ).then((res) => res.json()),
-    [],
-  );
-
-  const downloadableAssets = release.assets
-    .filter((asset) => ["AppImage", "exe", "dmg"].includes(extname(asset.name)))
-    .sort((a, b) =>
-      new Intl.Collator().compare(extname(b.name), extname(a.name)),
-    );
-
-  return (
-    <>
-      {downloadableAssets.map((asset) => {
-        let logo: React.ReactNode = null;
-        let forwardURL = "";
-
-        if (asset.name.includes("AppImage")) {
-          logo = logos.linux;
-          forwardURL = "/docs/get-started?dl=linux";
-        } else if (asset.name.includes("dmg")) {
-          logo = logos.apple;
-          forwardURL = "/docs/get-started?dl=macos";
-        } else if (asset.name.includes("exe")) {
-          logo = logos.windows;
-          forwardURL = "/docs/get-started?dl=windows";
-        }
-
-        const winget = asset.name.includes("exe") && (
-          <AssetDownload
-            action={
-              <a
-                className="text-inverse bg-brand flex-shrink-0 rounded px-4 py-1 text-base font-medium"
-                href="https://winstall.app/apps/Triplex.Triplex"
-                onClick={(e) => {
-                  beginDownload(e, "/docs/get-started?dl=winget");
-                }}
-                rel="noreferrer"
-                target="_blank"
-              >
-                Visit winstall
-              </a>
-            }
-            logo={logos.windows}
-            subtitle="Use the CLI command available on Windows."
-            title="Install with WinGet"
-          />
-        );
-
-        return (
-          <Fragment key={asset.name}>
-            <AssetDownload
-              action={
-                <a
-                  className="text-inverse bg-brand rounded px-4 py-1 text-base font-medium"
-                  href={asset.browser_download_url}
-                  onClick={(e) => {
-                    beginDownload(e, forwardURL);
-                  }}
-                  rel="noreferrer"
-                  target="_blank"
-                >
-                  Download
-                </a>
-              }
-              logo={logo}
-              subtitle={`${Math.round(asset.size / 1024 / 1024)} MB`}
-              title={asset.name}
-            />
-            {winget}
-          </Fragment>
-        );
-      })}
-    </>
-  );
-}
-
-const fallbackListItems = Array(6)
-  .fill(undefined)
-  .map((_, i) => (
-    <AssetDownload
-      action={<div />}
-      key={i}
-      logo={<div />}
-      subtitle={<div className="opacity-0">Loading...</div>}
-      title={<div className="opacity-0">Loading...</div>}
-    />
-  ));
-
 export function DownloadList() {
   const beginDownload = useBeginDownloadURL();
   return (
@@ -195,24 +84,9 @@ export function DownloadList() {
           </a>
         }
         logo={logos.vscode}
-        subtitle={
-          <>
-            Find on the Visual Studio marketplace. Using Cursor?{" "}
-            <a
-              className="text-link text-base hover:underline"
-              href="https://www.cursor.com/how-to-install-extension"
-              rel="noreferrer"
-              target="_blank"
-            >
-              Follow their installation guide.
-            </a>
-          </>
-        }
-        title="Install for Visual Studio Code / Cursor"
+        subtitle="Find on the Visual Studio marketplace."
+        title="Install for Visual Studio Code"
       />
-      <Suspense fallback={fallbackListItems}>
-        <List />
-      </Suspense>
     </div>
   );
 }

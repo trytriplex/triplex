@@ -53,14 +53,14 @@ jobs:
 
       - name: Run end-to-end tests
         if: ${{ startsWith(matrix.os, 'ubuntu-') }}
-        run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- pnpm test:e2e --shard ${{ matrix.shard }}/${{ env.SHARD_TOTAL }} ${{ contains(github.event.pull_request.body, '/playwright-electron') && '--project electron' || '' }} ${{ contains(github.event.pull_request.body, '/playwright-vsce') && '--project vsce' || '' }}
+        run: xvfb-run --auto-servernum --server-args="-screen 0 1280x960x24" -- pnpm test:e2e --shard ${{ matrix.shard }}/${{ env.SHARD_TOTAL }} ${{ contains(github.event.pull_request.body, '/playwright-vsce') && '--project vsce' || '' }}
         env:
           # This is passed to a config option inside the Playwright config for the blob filename.
           PWTEST_BLOB_NAME: ${{ matrix.os }}-${{ matrix.shard }}
 
       - name: Run end-to-end tests
         if: ${{ !startsWith(matrix.os, 'ubuntu-') }}
-        run: pnpm test:e2e --shard ${{ matrix.shard }}/${{ env.SHARD_TOTAL }} ${{ contains(github.event.pull_request.body, '/playwright-electron') && '--project electron' || '' }} ${{ contains(github.event.pull_request.body, '/playwright-vsce') && '--project vsce' || '' }}
+        run: pnpm test:e2e --shard ${{ matrix.shard }}/${{ env.SHARD_TOTAL }} ${{ contains(github.event.pull_request.body, '/playwright-vsce') && '--project vsce' || '' }}
         env:
           # This is passed to a config option inside the Playwright config for the blob filename.
           PWTEST_BLOB_NAME: ${{ matrix.os }}-${{ matrix.shard }}

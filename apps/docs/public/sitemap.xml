@@ -120,12 +120,6 @@
     <priority>0.5</priority>
   </url>
   <url>
-    <loc>https://triplex.dev/docs/get-started/standalone</loc>
-    <lastmod>2025-03-24</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
     <loc>https://triplex.dev/docs/get-started/starting-a-project</loc>
     <lastmod>2025-01-09</lastmod>
     <changefreq>monthly</changefreq>
@@ -139,7 +133,7 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/starting-a-project/create-from-template</loc>
-    <lastmod>2025-04-29</lastmod>
+    <lastmod>2025-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -151,19 +145,13 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/starting-a-project/starting-from-scratch</loc>
-    <lastmod>2025-07-16</lastmod>
+    <lastmod>2025-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/get-started/starting-a-project/your-first-3d-component</loc>
     <lastmod>2025-03-16</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://triplex.dev/docs/get-started/starting-a-project/your-first-3d-component/standalone</loc>
-    <lastmod>2025-03-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -176,24 +164,6 @@
   <url>
     <loc>https://triplex.dev/docs/get-started/starting-a-project/create-from-template/point-and-click</loc>
     <lastmod>2025-05-10</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://triplex.dev/docs/get-started/standalone/linux</loc>
-    <lastmod>2024-10-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://triplex.dev/docs/get-started/standalone/macos</loc>
-    <lastmod>2024-10-27</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://triplex.dev/docs/get-started/standalone/windows</loc>
-    <lastmod>2024-10-27</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -289,13 +259,13 @@
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/console-logs/dev-tools</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
   <url>
     <loc>https://triplex.dev/docs/building-your-scene/console-logs/logs</loc>
-    <lastmod>2025-03-14</lastmod>
+    <lastmod>2025-08-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>
@@ -320,18 +290,6 @@
   <url>
     <loc>https://triplex.dev/docs/api-reference/props</loc>
     <lastmod>2025-03-15</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://triplex.dev/docs/api-reference/config-options/assets-dir</loc>
-    <lastmod>2024-10-30</lastmod>
-    <changefreq>monthly</changefreq>
-    <priority>0.5</priority>
-  </url>
-  <url>
-    <loc>https://triplex.dev/docs/api-reference/config-options/components</loc>
-    <lastmod>2024-10-30</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.5</priority>
   </url>

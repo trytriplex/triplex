@@ -8,7 +8,7 @@ This repo uses `pnpm`.
 
 ### Apps
 
-All the published apps including the documentation (`docs`), VS Code extension (`vscode`) and standalone Electron app (`electron`).
+All the published apps including the documentation (`docs`) and VS Code extension (`vscode`).
 
 ### Packages
 
@@ -28,7 +28,7 @@ Collection of example projects showcasing Triplex usage.
 
 ## Changesets
 
-We use `changesets` when making any production facing changes in Triplex apps (Standalone & Triplex for VS Code). If you're only making a change to a test, example, or documentation, then don't bother creating a changeset.
+We use `changesets` when making any production facing changes in Triplex apps. If you're only making a change to a test, example, or documentation, then don't bother creating a changeset.
 
 To create a changeset run the following:
 
@@ -39,5 +39,3 @@ pnpm changeset
 New features should be `minor` and bug fixes / chores should be `patch`. The message you should write needs to be informative enough to end users that if they were to read it they can understand it will enough.
 
 Don't worry about getting it 100% correct we can update the CHANGELOG.md after a release if we need.
-
-**Note** — For Triplex Standalone releases we manually curate the CHANGELOG in the GitHub release by copying over the changes from this private monorepo to the public repo that has the releases.

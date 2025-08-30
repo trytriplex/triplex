@@ -5,11 +5,9 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { bind } from "bind-event-listener";
-import Link from "next/link";
 import rafSchd from "raf-schd";
 import { useEffect, useRef } from "react";
 import { useBeginDownloadURL } from "../util/download";
-import { DownloadButton } from "./download-button";
 import { BgGrid } from "./grid";
 import { LandingVideo } from "./landing-video";
 
@@ -74,18 +72,8 @@ export function LandingHero() {
             beginDownload(e, "/docs/get-started?dl=vsce");
           }}
         >
-          Install for Visual Studio Code / Cursor
+          Install for Visual Studio Code
         </a>
-        <div className="text-subtle items-center self-center px-8 text-center text-base">
-          <DownloadButton variant="link" />, or for{" "}
-          <Link
-            className="hover:text-default cursor-pointer underline"
-            href="/download"
-          >
-            other platforms
-          </Link>
-          .
-        </div>
       </div>
     </div>
   );
