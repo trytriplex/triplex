@@ -1,5 +1,15 @@
 # @triplex/client
 
+## 0.70.46
+
+### Patch Changes
+
+- 46b8c74: The selection system now keeps hold of your selected element across file changes. This fix will be rolled out incrementally across Triplex for VS Code users. Want early access? Reach out on Discord.
+- Updated dependencies [46b8c74]
+- Updated dependencies [66e723d]
+  - @triplex/renderer@0.72.0
+  - @triplex/bridge@0.70.12
+
 ## 0.70.45
 
 ### Patch Changes
