@@ -1,5 +1,11 @@
 # @docs/triplex
 
+## 0.2.21
+
+### Patch Changes
+
+- @triplex/ux@0.69.32
+
 ## 0.2.20
 
 ### Patch Changes

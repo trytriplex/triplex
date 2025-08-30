@@ -1,5 +1,17 @@
 # @triplex/renderer
 
+## 0.72.0
+
+### Minor Changes
+
+- 66e723d: Added grid toggle feature to scene controls. Users can now show/hide the grid using the "Toggle Visibility" option in the scene settings.
+
+### Patch Changes
+
+- 46b8c74: The selection system now keeps hold of your selected element across file changes. This fix will be rolled out incrementally across Triplex for VS Code users. Want early access? Reach out on Discord.
+- Updated dependencies [46b8c74]
+  - @triplex/bridge@0.70.12
+
 ## 0.71.36
 
 ### Patch Changes
