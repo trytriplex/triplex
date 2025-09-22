@@ -30,7 +30,6 @@
     "*.{ts,tsx}": "eslint --cache --fix"
   },
   "dependencies": {
-    "@adeira/monorepo-shipit": "^0.4.0",
     "@changesets/cli": "^2.27.8",
     "@ianvs/prettier-plugin-sort-imports": "^4.2.1",
     "@nkzw/eslint-config": "^1.19.0",
@@ -86,7 +85,6 @@
       "vite": "^6.0.7"
     },
     "patchedDependencies": {
-      "@adeira/monorepo-shipit": "patches/@adeira__monorepo-shipit.patch",
       "@httptoolkit/httpolyglot": "patches/@httptoolkit__httpolyglot.patch",
       "@vscode/vsce@2.26.0": "patches/@vscode__vsce@2.26.0.patch",
       "react-refresh": "patches/react-refresh.patch"

@@ -1,1 +1,0 @@
-# ekka-game
