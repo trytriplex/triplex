@@ -7,7 +7,6 @@
 import "./styles.css";
 import {
   browserProfilingIntegration,
-  captureConsoleIntegration,
   httpClientIntegration,
   init,
   setTag,
@@ -30,11 +29,7 @@ init({
   dsn: "https://cae61a2a840cbbe7f17e240c99ad0346@o4507990276177920.ingest.us.sentry.io/4507990321725440",
   enabled: window.triplex.isTelemetryEnabled,
   environment: window.triplex.env.fgEnvironmentOverride,
-  integrations: [
-    browserProfilingIntegration(),
-    captureConsoleIntegration({ levels: ["error"] }),
-    httpClientIntegration(),
-  ],
+  integrations: [browserProfilingIntegration(), httpClientIntegration()],
   sendDefaultPii: true,
 });
 

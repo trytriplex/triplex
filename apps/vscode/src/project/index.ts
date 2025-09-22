@@ -4,7 +4,7 @@
  * This repository utilizes multiple licenses across different directories. To
  * see this files license find the nearest LICENSE file up the source tree.
  */
-import { captureConsoleIntegration, init, setTag } from "@sentry/node";
+import { init, setTag } from "@sentry/node";
 import { createServer as createClientServer } from "@triplex/client";
 import { createForkLogger } from "@triplex/lib/log";
 import { type FGEnvironment } from "@triplex/lib/types";
@@ -41,7 +41,6 @@ async function main() {
     dsn: "https://cae61a2a840cbbe7f17e240c99ad0346@o4507990276177920.ingest.us.sentry.io/4507990321725440",
     enabled: data.isTelemetryEnabled,
     environment: data.fgEnvironmentOverride,
-    integrations: [captureConsoleIntegration({ levels: ["error"] })],
   });
 
   setTag("name", "fork_process");
