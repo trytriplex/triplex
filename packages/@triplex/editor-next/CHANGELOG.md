@@ -1,5 +1,11 @@
 # @triplex/editor-next
 
+## 0.0.9
+
+### Patch Changes
+
+- 40d59fa: Turn off console error capture.
+
 ## 0.0.8
 
 ### Patch Changes
