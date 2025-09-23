@@ -2,6 +2,7 @@
   "name": "@triplex/websocks-server",
   "version": "0.0.7",
   "description": "An end-to-end typed websocket API router and React client.",
+  "license": "SEE LICENSE IN LICENSE",
   "author": {
     "name": "Triplex",
     "email": "support@triplex.dev",

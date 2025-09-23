@@ -3,6 +3,7 @@
   "version": "0.70.46",
   "private": true,
   "repository": "https://github.com/trytriplex/triplex-monorepo",
+  "license": "SEE LICENSE IN LICENSE",
   "author": {
     "name": "Triplex",
     "email": "support@triplex.dev",

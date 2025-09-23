@@ -3,6 +3,7 @@
   "version": "0.70.52",
   "private": true,
   "description": "Your visual workspace for React / Three Fiber.",
+  "license": "SEE LICENSE IN LICENSE",
   "author": {
     "name": "Triplex",
     "email": "support@triplex.dev",

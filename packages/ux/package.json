@@ -3,6 +3,7 @@
   "version": "0.69.32",
   "private": true,
   "description": "Common UI agnostic components for Triplex user experiences.",
+  "license": "SEE LICENSE IN LICENSE",
   "author": {
     "name": "Triplex",
     "email": "support@triplex.dev",
