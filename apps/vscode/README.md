@@ -13,9 +13,8 @@ Get started by opening any React component by clicking the "Open in Triplex" Cod
 
 There are a few online forums we recommend you join when building with Triplex.
 
-- [The Official Triplex Discord](https://discord.gg/SUHCwfEk)
-- [Triplex GitHub Repository](https://github.com/trytriplex/triplex) (focus: roadmap, issues, bugs)
 - [Poimandres Collective Discord](https://discord.com/invite/poimandres) (focus: React Three Fiber ecosystem)
+- [Triplex GitHub Repository](https://github.com/trytriplex/triplex) (focus: roadmap, issues, bugs)
 - [Web Game Dev Discord](https://webgamedev.com/discord) (focus: building games)
 
 # Common Questions
