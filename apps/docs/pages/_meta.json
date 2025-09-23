@@ -31,13 +31,6 @@
     "title": "Resources",
     "href": "/resources"
   },
-  "pricing": {
-    "title": "Pricing",
-    "href": "/pricing",
-    "theme": {
-      "layout": "raw"
-    }
-  },
   "github": {
     "title": "Visit GitHub",
     "href": "https://github.com/trytriplex/triplex",
