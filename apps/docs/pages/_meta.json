@@ -33,18 +33,18 @@
   },
   "github": {
     "title": "Visit GitHub",
-    "href": "https://github.com/trytriplex/triplex",
+    "href": "https://github.com/pmndrs/triplex",
     "type": "hidden",
     "newWindow": true
   },
   "bugs": {
     "title": "Raise an issue",
-    "href": "https://github.com/trytriplex/triplex/issues/new",
+    "href": "https://github.com/pmndrs/triplex/issues/new",
     "type": "hidden"
   },
   "discord": {
     "title": "Visit Discord",
-    "href": "https://discord.gg/nBzRBUEs4b",
+    "href": "https://discord.gg/SUHCwfEk",
     "type": "hidden"
   },
   "youtube": {

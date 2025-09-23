@@ -2,44 +2,31 @@
 title: "Triplex 0.62: The One With Linux"
 ogTitle: Triplex 0.62
 date: 2023-12-27
-description:
-  This release introduces experimental Linux support, component thumbnails, and
-  a whole load more.
+description: This release introduces experimental Linux support, component thumbnails, and a whole load more.
 author: Michael Dougall
 ---
 
-▵ Triplex 0.62 introduces experimental Linux support, component thumbnails, and
-a whole load more. Have feedback? Join our
-[Discord community](https://discord.gg/nBzRBUEs4b)!
+▵ Triplex 0.62 introduces experimental Linux support, component thumbnails, and a whole load more. Have feedback? Join our [Discord community](https://discord.gg/SUHCwfEk)!
 
 ## New features
 
 - Experimental Linux support, [download today](/download)
-- Component thumbnails are now available in the open component / add component
-  drawers
+- Component thumbnails are now available in the open component / add component drawers
 - Create / open project flow from the welcome screen has had a UX refresh
-- The view camera action in the scene panel is now a toggle button, click once
-  to enter, click again to exit
+- The view camera action in the scene panel is now a toggle button, click once to enter, click again to exit
 
 ## Bug fixes
 
-- Editing children elements now opens the elements file as a tab if not yet open
-  [[#165](https://github.com/trytriplex/triplex/issues/165)]
-- Fix "save as" breaking HMR
-  [[#156](https://github.com/trytriplex/triplex/issues/156)]
-- Triplex now finds random open ports every time a project is opened instead of
-  using hardcoded ones
-- Saving files outside of the project folder is now presented with an error
-  message preventing the save, instead of allowing the save and then being
-  presented with an exception
-- Finding a Triplex config when opening a project now stops when getting to the
-  root directory instead of going forever on Windows
+- Editing children elements now opens the elements file as a tab if not yet open [[#165](https://github.com/trytriplex/triplex/issues/165)]
+- Fix "save as" breaking HMR [[#156](https://github.com/trytriplex/triplex/issues/156)]
+- Triplex now finds random open ports every time a project is opened instead of using hardcoded ones
+- Saving files outside of the project folder is now presented with an error message preventing the save, instead of allowing the save and then being presented with an exception
+- Finding a Triplex config when opening a project now stops when getting to the root directory instead of going forever on Windows
 - Fix IDE links (view source / view usage) not opening in some scenarios
 - Open project modals are now tied to a browser window when available
 
 ## Chores
 
-- Triplex now finds random open ports every time a project is opened instead of
-  using hardcoded ones [[#64](https://github.com/trytriplex/triplex/issues/64)]
+- Triplex now finds random open ports every time a project is opened instead of using hardcoded ones [[#64](https://github.com/trytriplex/triplex/issues/64)]
 - Background color of the scene is now a smooth gradient
 - The React Three Fiber renderer has been refactored to remove some dependencies

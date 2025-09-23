@@ -41,7 +41,7 @@ export function ErrorSplash({ error }: { error: Error | { message: string } }) {
         <div className="mx-auto flex items-center gap-2">
           <a
             className="text-link hover:underline"
-            href="https://discord.gg/nBzRBUEs4b"
+            href="https://discord.gg/SUHCwfEk"
           >
             Join Discord
           </a>
