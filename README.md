@@ -1,41 +1,21 @@
-# Triplex Monorepo
+<img aria-label="Triplex" src="https://github.com/trytriplex/triplex/blob/main/logo-dark.svg#gh-light-mode-only" height="70" />
 
-This is an internal private monorepo for Triplex.
+<img aria-label="Triplex" src="https://github.com/trytriplex/triplex/blob/main/logo-light.svg#gh-dark-mode-only" height="70" />
 
-This repo uses `pnpm`.
+[![Discord](https://img.shields.io/badge/dynamic/json?url=https%3A%2F%2Fdiscord.com%2Fapi%2Finvites%2FnBzRBUEs4b%3Fwith_counts%3Dtrue&query=%24.approximate_member_count&style=flat&colorA=000000&colorB=000000&label=discord&logo=&logoColor=000000)](https://discord.gg/nBzRBUEs4b) [![Downloads](https://img.shields.io/github/downloads/trytriplex/triplex/total?style=flat&colorA=000000&colorB=000000&label=downloads&logo=&logoColor=000000)](https://triplex.dev/download) [![Version](https://img.shields.io/github/v/release/trytriplex/triplex?style=flat&colorA=000000&colorB=000000&label=latest&logo=&logoColor=000000)](https://github.com/trytriplex/triplex/releases)
 
-## Repository Structure
+Triplex is the open source visual workspace for building [React](https://react.dev/) / [Three Fiber](https://r3f.docs.pmnd.rs/) components. Build 2D and 3D components using its visual and input controls. Jump down to code when you need.
 
-### Apps
+[<img alt="" height="300" src="https://github.com/trytriplex/triplex/blob/main/hero-preview.gif" />](https://www.youtube.com/watch?v=XEvvJ5Siff8)
 
-All the published apps including the documentation (`docs`) and VS Code extension (`vscode`).
+## Get Started
 
-### Packages
+1. Install [Triplex for VS Code](https://marketplace.visualstudio.com/items?itemName=trytriplex.triplex-vsce).
+1. Create a project using a [starter template](https://triplex.dev/docs/get-started/starting-a-project/create-from-template) or [open your existing one](https://triplex.dev/docs/get-started/starting-a-project/pre-existing-project).
+1. Open a component and build!
 
-Core packages that power Triplex. `@triplex` namespaces most of the business logic broken up in the following:
+Visit https://triplex.dev/docs/building-your-scene to learn more.
 
-- `editor` - Main editor UI and functionality
-- `server` - Backend for file operations and type inference
-- `client` - Scene runner and userland code execution
-- `lib` - Common UI-agnostic code shared between packages
-- `ux` - Common UI components shared between packages
-- `renderer` - React Three Fiber/React renderer implementation
-- `bridge` - Communication layer between editor and renderers
+## Contributions
 
-### Examples
-
-Collection of example projects showcasing Triplex usage.
-
-## Changesets
-
-We use `changesets` when making any production facing changes in Triplex apps. If you're only making a change to a test, example, or documentation, then don't bother creating a changeset.
-
-To create a changeset run the following:
-
-```bash
-pnpm changeset
-```
-
-New features should be `minor` and bug fixes / chores should be `patch`. The message you should write needs to be informative enough to end users that if they were to read it they can understand it will enough.
-
-Don't worry about getting it 100% correct we can update the CHANGELOG.md after a release if we need.
+Contributions are welcomed! Please see [CONTRIBUTING.md](./CONTRIBUTING.md) to get started. If you haven't already make sure to join the [pmndrs Discord community](https://discord.gg/SUHCwfEk).
