@@ -32,12 +32,36 @@ export function Footer() {
           </div>
           <div className="mt-4 flex items-center gap-3">
             <a
-              aria-label="GitHub"
-              className="text-subtle hover:text-default -mt-0.5"
-              href="https://github.com/trytriplex/triplex"
+              aria-label="Poimandres Collective"
+              className="text-subtle"
+              href="https://pmnd.rs/"
               rel="noreferrer"
               target="_blank"
-              title="GitHub (@trytriplex/triplex)"
+              title="Poimandres Collective"
+            >
+              <svg
+                className="text-current"
+                height="16"
+                viewBox="0 0 800 797"
+                width="16"
+              >
+                <path
+                  d="M800 0H280v230.579h280v280.704h240z"
+                  fill="currentColor"
+                ></path>
+                <path
+                  d="M520 270.679H280v240.604h240zM0 270.679h240v240.604H0zM520 551.384H280V797h240z"
+                  fill="currentColor"
+                ></path>
+              </svg>
+            </a>
+            <a
+              aria-label="GitHub"
+              className="text-subtle hover:text-default -mt-0.5"
+              href="https://github.com/pmndrs/triplex"
+              rel="noreferrer"
+              target="_blank"
+              title="GitHub (@pmndrs/triplex)"
             >
               <svg
                 fill="none"
@@ -65,6 +89,7 @@ export function Footer() {
                 </defs>
               </svg>
             </a>
+
             <a
               aria-label="X (formerly Twitter)"
               className="text-subtle hover:text-default"
@@ -137,14 +162,6 @@ export function Footer() {
                 Get Started
               </Link>
             </li>
-            <li>
-              <Link
-                className="text-subtlest hover:text-subtle text-base"
-                href="https://github.com/trytriplex/triplex/releases"
-              >
-                Changelog
-              </Link>
-            </li>
             {productPages.map((page) => (
               <li key={page.name}>
                 <Link
@@ -162,7 +179,7 @@ export function Footer() {
             <li>
               <Link
                 className="text-subtlest hover:text-subtle text-base"
-                href="https://discord.gg/nBzRBUEs4b"
+                href="https://discord.gg/SUHCwfEk"
               >
                 Discord
               </Link>
@@ -178,7 +195,7 @@ export function Footer() {
             <li>
               <Link
                 className="text-subtlest hover:text-subtle text-base"
-                href="https://github.com/trytriplex/triplex/issues/new"
+                href="https://github.com/pmndrs/triplex/issues/new"
               >
                 Raise an Issue
               </Link>
@@ -200,7 +217,7 @@ export function Footer() {
             <li>
               <Link
                 className="text-subtlest hover:text-subtle text-base"
-                href="https://github.com/trytriplex/triplex"
+                href="https://github.com/pmndrs/triplex"
               >
                 GitHub
               </Link>
