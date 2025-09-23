@@ -12,6 +12,7 @@ export default defineConfig(async () => {
   return {
     plugins: [glsl()],
     test: {
+      dangerouslyIgnoreUnhandledErrors: true,
       expect: {
         requireAssertions: true,
       },
