@@ -348,6 +348,12 @@
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://triplex.dev/blog/triplex-moves-to-pmndrs</loc>
+    <lastmod>2025-09-24</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
     <loc>https://triplex.dev/blog/v0.56.0-live-editing-props</loc>
     <lastmod>2024-10-19</lastmod>
     <changefreq>weekly</changefreq>
