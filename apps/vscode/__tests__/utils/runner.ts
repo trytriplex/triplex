@@ -31,6 +31,7 @@ async function tryInstallBundledExtension() {
     [
       ...args,
       "--install-extension",
+      "--enable-unsafe-swiftshader",
       join(__dirname, "..", "..", "out", `${pkg.name}-${pkg.version}.vsix`),
     ],
     {
