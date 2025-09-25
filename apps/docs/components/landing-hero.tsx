@@ -43,7 +43,7 @@ export function LandingHero() {
       </h1>
       <div className="h-8" />
       <Link
-        className="text-subtle hover:text-default pl-0.5 font-mono text-base font-medium"
+        className="text-subtle hover:text-default pl-0.5 font-mono text-base font-medium lg:text-lg"
         href={latestBlog.route}
       >
         Latest Blog: {latestBlog.meta?.title}
