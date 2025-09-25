@@ -46,7 +46,7 @@ export function LandingHero() {
         className="text-subtle hover:text-default pl-0.5 font-mono text-base font-medium lg:text-lg"
         href={latestBlog.route}
       >
-        Latest Blog: {latestBlog.meta?.title}
+        Latest Blog: <span className="underline">{latestBlog.meta?.title}</span>
       </Link>
       <div className="relative mt-20 md:mt-28">
         <div className="bg-neutral group relative -mx-8 h-60 overflow-hidden md:mx-0 md:h-80 md:rounded-[62px] lg:h-96">

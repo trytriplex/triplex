@@ -1,15 +1,32 @@
 ---
 author: Michael Dougall
 title: Triplex Moves To Poimandres
-date: 2025-09-24
+date: 2025-09-30
 description: Triplex has moved into the Poimandres Collective and is now completely open source!
 image: /logos/pmndrs.svg
 ---
 
-Triplex has now moved into the [Poimandres Collective](https://pmnd.rs/) and is now completely open source! You can find the new repository location here [github.com/pmndrs/triplex](https://github.com/pmndrs/triplex) along with all previously created issues and history.
+Triplex has moved into the [Poimandres Collective](https://pmnd.rs/) and is now completely open source! You can find the new repository location over here [github.com/pmndrs/triplex](https://github.com/pmndrs/triplex) along with all previously created issues and history.
 
 Keep reading for the history of building Triplex and what led to this moment.
 
 ## The Journey Until Now
+
+Triplex started out as an experiment late 2022 when I was building games with React Three Fiber. I found it super frustrating to flesh out and iterate on components. Making changes in code felt insane! Surely there must exist a better way, right? Well... no! The gold standard was editing your code, at best manually wiring up props to a control panel.
+
+So the experiment [ended with a proof-of-concept editor](https://x.com/dougesdev/status/1597178413449904129) where you could transform components in 3d space and save them back to code. It felt like a real game changer. From there I was hooked, and I started building out the core features in my spare time before and after work that would eventually become Triplex.
+
+Here's a short timeline of the major releases and refactors in Triplex:
+
+- **Jun 2023**: [Released Triplex Standalone](https://x.com/dougesdev/status/1664874971481382913)
+- **Sep 2023**: Editing child elements through the element panel
+- **Oct 2023**: Internal re-write to prevent losing unsaved changes when refreshing, switching tabs, etc
+- **Mar 2024**: Selection system re-write to stop modifying the Three.js scene
+- **May 2024**: Removed the need for a Triplex config when getting started
+- **Jan 2025**: Added support for React HTML elements and Canvas components
+- **Mar 2025**: [Released Triplex for VS Code](https://x.com/trytriplex/status/1904135005670113636)
+- **Sep 2025**: Triplex moves to Poimandres
+
+I made so many architectural mistakes. But you can only know you made them if you have people using your stuff and run into issues, so for that I'm grateful!
 
 ## Where To From Here
