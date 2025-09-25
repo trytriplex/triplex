@@ -5,6 +5,8 @@
  * see this files license find the nearest LICENSE file up the source tree.
  */
 import { bind } from "bind-event-listener";
+import Link from "next/link";
+import { getPagesUnderRoute } from "nextra/context";
 import rafSchd from "raf-schd";
 import { useEffect, useRef } from "react";
 import { useBeginDownloadURL } from "../util/download";
@@ -14,6 +16,7 @@ import { LandingVideo } from "./landing-video";
 export function LandingHero() {
   const beginDownload = useBeginDownloadURL();
   const ref = useRef<HTMLDivElement>(null);
+  const latestBlog = getPagesUnderRoute("/blog")[0];
 
   useEffect(() => {
     return bind(document, {
@@ -38,6 +41,13 @@ export function LandingHero() {
       <h1 className="font-brand text-brand max-w-2xl text-6xl font-medium sm:text-7xl lg:max-w-3xl lg:text-8xl">
         Build the 2D and 3D web without coding.
       </h1>
+      <div className="h-8" />
+      <Link
+        className="text-subtle hover:text-default pl-0.5 font-mono text-base font-medium"
+        href={latestBlog.route}
+      >
+        Latest Blog: {latestBlog.meta?.title}
+      </Link>
       <div className="relative mt-20 md:mt-28">
         <div className="bg-neutral group relative -mx-8 h-60 overflow-hidden md:mx-0 md:h-80 md:rounded-[62px] lg:h-96">
           <div className="absolute inset-0" ref={ref}>
